@@ -2285,8 +2285,29 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </div>
               )}
 
+              {/* Loading overlay while seeding — tells the user something is happening */}
+              {seeding && (
+                <div style={{
+                  position: 'absolute', inset: 0, zIndex: 20,
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  background: 'rgba(5,5,5,0.75)', backdropFilter: 'blur(2px)',
+                  gap: 12, pointerEvents: 'none',
+                }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    border: `2px solid ${EMBRY.border}`,
+                    borderTopColor: EMBRY.accent,
+                    animation: 'seed-spin 0.7s linear infinite',
+                  }} />
+                  <span style={{ fontSize: 11, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.06em' }}>
+                    Loading binary structure…
+                  </span>
+                  <span style={{ fontSize: 9, color: EMBRY.dim }}>Resolving namespace hierarchy and hub nodes</span>
+                </div>
+              )}
+
               {/* Empty scene card — actionable, not confusing */}
-              {sceneNodeIds.size === 0 && !data.loading && viewMode === 'graph' && (
+              {sceneNodeIds.size === 0 && !data.loading && !seeding && viewMode === 'graph' && (
                 <div style={{
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                   zIndex: 5, pointerEvents: 'auto', width: 380,
@@ -2351,9 +2372,14 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   </div>
 
                   {/* Quick actions */}
+                  <div style={{ marginBottom: 6, fontSize: 9, color: EMBRY.muted, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ color: EMBRY.accent, fontSize: 11 }}>↓</span>
+                    <span>Click an option below to load the binary's structure into the graph</span>
+                  </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <button onClick={() => {
                       setSeeding(true)
+                      // Delay gives React time to paint the loading overlay before the synchronous computation blocks
                       setTimeout(() => {
                         const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
                         const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
@@ -2361,20 +2387,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           .sort((a, b) => b.deg - a.deg).slice(0, 5)
                         addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
                         setSeeding(false)
-                      }, 0)
+                      }, 350)
                     }} disabled={seeding} style={{
                       display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: seeding ? `${EMBRY.accent}20` : `${EMBRY.accent}10`,
-                      border: `1px solid ${seeding ? EMBRY.accent : `${EMBRY.accent}33`}`,
+                      background: `${EMBRY.accent}10`,
+                      border: `2px solid ${EMBRY.accent}`,
                       color: EMBRY.accent,
                       borderRadius: 4, cursor: seeding ? 'default' : 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                      transition: 'all 0.2s ease', opacity: seeding ? 0.8 : 1,
+                      transition: 'all 0.2s ease',
                     }}>
-                      <Layers size={16} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
+                      <Layers size={16} style={{ flexShrink: 0 }} />
                       <div style={{ flex: 1 }}>
-                        <div>{seeding ? 'Seeding…' : 'Namespace Overview'}</div>
+                        <div>Seed Namespaces  <span style={{ fontSize: 9, fontWeight: 400, color: EMBRY.dim }}>— start here</span></div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
-                          {seeding ? 'Resolving namespace hierarchy…' : `${data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces · top-5 hub nodes by edge degree`}
+                          {`Loads ${data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces + top-5 hub nodes → populates the graph`}
                         </div>
                       </div>
                     </button>
@@ -3855,6 +3881,11 @@ if (styleInjector) {
     @keyframes seed-spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+    @keyframes node-appear {
+      0% { opacity: 0; transform: scale(0.6); }
+      60% { opacity: 1; transform: scale(1.08); }
+      100% { transform: scale(1); }
     }
     [style*="contextItem"]:hover {
       background: #1a1a1a;
