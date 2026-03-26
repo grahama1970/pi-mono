@@ -161,8 +161,11 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
 // ── Basic block & obfuscation analysis ───────────────────────────────────────
 
 const isBlockEnd = (line: string) => {
-  const t = line.trim().split(/\s+/)[0].toLowerCase().replace(/^(lock|rep[ne]?z?)\s+/, '')
-  return /^(ret|retn|retf|jmp|ud2|hlt)$/.test(t)
+  const trimmed = line.trim().toLowerCase()
+  // Strip lock/rep prefix before checking the mnemonic
+  const stripped = trimmed.replace(/^(?:lock|rep[ne]?z?)\s+/, '')
+  const mnem = stripped.split(/\s+/)[0]
+  return /^(ret|retn|retf|jmp|ud2|hlt)$/.test(mnem)
 }
 const isLabelLine = (line: string) => /^\s*[.\w]+:/.test(line)
 
@@ -170,13 +173,23 @@ interface ObfuscationAnalysis {
   deadCodeLines: Set<number>
   nopSledLines: Set<number>
   opaquePredLines: Set<number>
+  /** Lines that look like a CFF dispatcher (cmp state_var, const → je/jne back-edge pattern) */
+  cffSuspectLines: Set<number>
 }
 
 function analyzeObfuscation(lines: string[]): ObfuscationAnalysis {
   const deadCodeLines = new Set<number>()
   const nopSledLines = new Set<number>()
   const opaquePredLines = new Set<number>()
+  const cffSuspectLines = new Set<number>()
   let inDeadCode = false
+
+  // Pass 1: build label → line index map for back-edge detection
+  const labelIdx = new Map<string, number>()
+  lines.forEach((line, i) => {
+    const m = line.match(/^\s*([.\w@$]+):/)
+    if (m) labelIdx.set(m[1], i)
+  })
 
   lines.forEach((line, i) => {
     const trimmed = line.trim()
@@ -203,9 +216,29 @@ function analyzeObfuscation(lines: string[]): ObfuscationAnalysis {
         opaquePredLines.add(i + 1)
       }
     }
+
+    // CFF dispatcher heuristic: cmp reg/mem, const followed by a conditional jump
+    // whose target is a back-edge (target line < current line) — characteristic of
+    // OLLVM-style control flow flattening where the dispatcher routes to basic blocks
+    // via a state variable comparison.
+    if (/^\s*cmp\s+/i.test(line)) {
+      const next = lines[i + 1]?.trim() ?? ''
+      const jmpMatch = next.match(/^(je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe)\s+(\S+)/i)
+      if (jmpMatch) {
+        const target = jmpMatch[2]
+        const targetLine = labelIdx.get(target)
+        // Back-edge: target is before the cmp — this is the dispatcher loop pattern
+        if (targetLine != null && targetLine < i) {
+          cffSuspectLines.add(i)
+          cffSuspectLines.add(i + 1)
+          // Mark the target label line as CFF entry point too
+          cffSuspectLines.add(targetLine)
+        }
+      }
+    }
   })
 
-  return { deadCodeLines, nopSledLines, opaquePredLines }
+  return { deadCodeLines, nopSledLines, opaquePredLines, cffSuspectLines }
 }
 
 // ── Assembly helpers ──────────────────────────────────────────────────────────
@@ -353,9 +386,11 @@ export function CodePane({
             const isDeadCode = obfAnalysis?.deadCodeLines.has(i)
             const isNopSled = obfAnalysis?.nopSledLines.has(i)
             const isOpaquePred = obfAnalysis?.opaquePredLines.has(i)
+            const isCff = obfAnalysis?.cffSuspectLines.has(i)
             const obfBg = isHighlighted ? highlightColor
               : isDeadCode ? '#1a0f0f'
               : isNopSled ? '#0f1a10'
+              : isCff ? '#0d0f1a'
               : isOpaquePred ? '#1a140a'
               : 'transparent'
 
@@ -369,6 +404,7 @@ export function CodePane({
                 data-dead-code={isDeadCode ? 'true' : undefined}
                 data-nop-sled={isNopSled ? 'true' : undefined}
                 data-opaque-pred={isOpaquePred ? 'true' : undefined}
+                data-cff-suspect={isCff ? 'true' : undefined}
                 style={{
                   display: 'flex',
                   minHeight: 20,
@@ -429,6 +465,7 @@ export function CodePane({
                 {isDeadCode && <span title="Unreachable code (after unconditional transfer)" style={{ fontSize: 8, color: '#7a3a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>DEAD</span>}
                 {isNopSled && <span title="NOP sled — possible padding or anti-disassembly" style={{ fontSize: 8, color: '#3a7a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>NOP</span>}
                 {isOpaquePred && <span title="Potential opaque predicate candidate" style={{ fontSize: 8, color: '#7a6a2a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>OP?</span>}
+                {isCff && <span title="Control flow flattening suspect — dispatcher back-edge (OLLVM-style state variable)" style={{ fontSize: 8, color: '#3a4a7a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>CFF</span>}
               </div>
               </div>
             )
