@@ -534,7 +534,6 @@ export function BinaryExplorerView() {
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
   const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
-  const [smTracedPath, setSmTracedPath] = useState<Set<number>>(new Set())
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
   const linkBus = useLinkBus()
   const [linkedNodeId, setLinkedNodeId] = useState<string | null>(null) // node highlighted by code hover
@@ -3282,6 +3281,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                         {e.typeInfo.isBitfield ? `${e.typeInfo.bits}b` : e.size > 0 ? `${e.size}B` : e.typeInfo.isPtr ? '8B' : '?'}
                                       </span>
                                       <span style={{ fontSize: 7, color: e.endian === 'BE' ? '#FF5722' : EMBRY.green }}>{e.endian}</span>
+<<<<<<< HEAD
                       {/* Row 4: States — state machine ring/directed graph */}
                       {selectedNode.states && selectedNode.states.length > 0 && (() => {
                         const TERMINAL_RE = /error|fail|dead|final|done|term|end|halt|clos|reject|disconnect|timeout|abort|invalid/i
@@ -3472,10 +3472,25 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 )
                               })}
                             </svg>
+=======
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
+                                      <span style={{ color: EMBRY.white, flex: 1 }}>{e.name}</span>
+                                      {e.rawType && <span style={{ color: '#9C27B0', fontSize: 8 }}>{e.typeInfo.ctype}</span>}
+                                      {e.desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.desc}</span>}
+                                    </>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+>>>>>>> parent of c76f2b30 (persona/gynvael-coldwind: fix state-machines)
                           </div>
                         )
                       })()}
 
+<<<<<<< HEAD
                                 const textColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#9C27B0'
                                 const label = st.name.length > 11 ? st.name.slice(0, 10) + '…' : st.name
                                 return (
@@ -3491,9 +3506,33 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 )
                               })}
                             </svg>
+=======
+                      {/* Row 4: States — state machine transition view */}
+                      {selectedNode.states && selectedNode.states.length > 0 && (
+                        <div>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>STATE MACHINE ({selectedNode.states.length} states)</div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                            {selectedNode.states.map((s: any, i: number) => {
+                              const name = typeof s === 'string' ? s : s.name || String(s)
+                              return (
+                                <div key={i} style={{
+                                  display: 'flex', alignItems: 'center', gap: 4,
+                                  fontSize: 9, padding: '3px 8px', borderRadius: 3,
+                                  background: i === 0 ? '#1a2721' : '#0a0a0a',
+                                  border: `1px solid ${i === 0 ? EMBRY.green + '44' : EMBRY.border}`,
+                                  color: i === 0 ? EMBRY.green : '#9C27B0',
+                                  fontFamily: 'JetBrains Mono, monospace',
+                                }}>
+                                  {i === 0 && <span style={{ fontSize: 7, color: EMBRY.green }}>▸</span>}
+                                  {name}
+                                  {i < selectedNode.states!.length - 1 && <span style={{ color: EMBRY.muted, marginLeft: 2 }}>→</span>}
+                                </div>
+                              )
+                            })}
+>>>>>>> parent of c76f2b30 (persona/gynvael-coldwind: fix state-machines)
                           </div>
-                        )
-                      })()}
+                        </div>
+                      )}
 
                       {/* Row 5: RPC/Event interface details */}
                       {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (() => {
