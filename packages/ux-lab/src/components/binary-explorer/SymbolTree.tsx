@@ -12,7 +12,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import {
   ChevronRight, ChevronDown, Search, X,
-  Code2, Zap, Database, GitBranch, Terminal, Hash, Package, Radio,
+  Code2, Zap, Database, GitBranch, Terminal, Hash, Package, Radio, Braces,
   ArrowUpAZ, Layers, Activity,
 } from 'lucide-react'
 import { EMBRY } from '../common/EmbryStyle'
@@ -72,7 +72,7 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
   const [search, setSearch] = useState('')
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set())
-  const [typeFilter, setTypeFilter] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'parameter']))
+  const [typeFilter, setTypeFilter] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'parameter', 'function']))
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; node: BinaryGraphNode } | null>(null)
   const treeRef = useRef<HTMLDivElement>(null)
   const [focusIdx, setFocusIdx] = useState(-1)
@@ -181,7 +181,7 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
       for (const [, group] of relationGroups) group.nodes.sort(nodeCmp)
 
       // Determine section: .text = code, .data = data/schema, .events = events, .bss = mixed
-      const codeTypes = ['rpc', 'cli_command', 'state_machine']
+      const codeTypes = ['rpc', 'cli_command', 'state_machine', 'function']
       const dataTypes = ['schema', 'parameter']
       let codeCount = 0, dataCount = 0, eventCount = 0
       for (const [type, nodes] of children) {
@@ -303,7 +303,7 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
     setPeekNode(null)
   }
 
-  const typeOrder = ['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'parameter']
+  const typeOrder = ['function', 'rpc', 'event', 'schema', 'state_machine', 'cli_command', 'parameter']
   const edgeTypeColors: Record<string, string> = {
     triggers: '#4CAF50', emits: '#FF9800', payload: '#2196F3',
     has_parameter: '#9C27B0', contains: '#64748b',
@@ -311,6 +311,7 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
 
   // Icons that map to RE-meaningful node types — icons beat colored dots for quick scanning
   const NODE_TYPE_ICONS: Record<string, React.ReactNode> = {
+    function:      <Braces   size={10} />,
     rpc:           <Code2    size={10} />,
     event:         <Radio    size={10} />,
     schema:        <Database size={10} />,
@@ -428,7 +429,9 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
                 position: 'sticky', top: 0, zIndex: 3,
               }}>
               {expandedSections.has(section.name) ? <ChevronDown size={10} color={EMBRY.dim} /> : <ChevronRight size={10} color={EMBRY.dim} />}
-              <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', flex: 1, letterSpacing: '0.05em' }}>{section.name}</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em' }}>{section.name}</span>
+              <span style={{ fontSize: 7, color: EMBRY.muted, marginLeft: 4, fontStyle: 'italic' }}>logical</span>
+              <span style={{ flex: 1 }} />
               <span style={{ fontSize: 8, color: EMBRY.muted }}>{section.namespaces.length} ns · {section.totalCount} sym</span>
             </div>
 

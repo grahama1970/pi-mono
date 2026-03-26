@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
-import { Shield, Workflow, Trash2, Code, Layers, MessageSquare, Network, Search, History, Table2, Undo, Redo, GitGraph, List, Zap } from 'lucide-react'
+import { Shield, Workflow, Trash2, Code, Layers, MessageSquare, Network, Search, History, Table2, Undo, Redo, GitGraph, List } from 'lucide-react'
 import { EMBRY } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 import { ContextMenu } from '../common/ContextMenu'
@@ -87,10 +87,6 @@ function BinaryLeftPane({ binaryName, binaries, binaryMetas, onSelectBinary, onR
               key={b}
               style={{ ...paneItemStyle(b === binaryName), display: 'flex', flexDirection: 'column', gap: 2 }}
               onClick={() => onSelectBinary(b)}
-              tabIndex={0}
-              role="button"
-              aria-label={`Select binary: ${b}`}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectBinary(b) } }}
               onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, binary: b }) }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -159,7 +155,7 @@ function BinaryLeftPane({ binaryName, binaries, binaryMetas, onSelectBinary, onR
       {filteredScenes.length > 0 && (
         <LeftPaneSection title={`Saved Scenes (${filteredScenes.length})`}>
           {filteredScenes.map(s => (
-            <div key={s.name} style={paneItemStyle(false)} onClick={() => onLoadScene(s)} tabIndex={0} role="button" aria-label={`Load scene: ${s.name}`} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onLoadScene(s) } }}>
+            <div key={s.name} style={paneItemStyle(false)} onClick={() => onLoadScene(s)}>
               {s.name}
             </div>
           ))}
@@ -246,62 +242,18 @@ function renderInline(text: string, onFeatureClick: (name: string) => void): Rea
 interface ExplainStep { type: 'question' | 'grounding' | 'exploration' | 'intent' | 'answer'; label: string; detail?: string; chips?: { label: string; color: string }[] }
 interface ChatMessage { role: 'user' | 'assistant'; content: string; isExplanation?: boolean; feedback?: 'up' | 'down' | null; _querySpec?: Record<string, unknown>; _explain?: ExplainStep[] }
 
-type Perspective = 'all' | 'security' | 'data_flow' | 'protocol' | 'attack_surface'
+type Perspective = 'all' | 'security' | 'data_flow' | 'protocol'
 const PERSPECTIVE_LABELS: Record<Perspective, string> = {
   all: 'All Features',
   security: 'Security',
   data_flow: 'Data Flow',
   protocol: 'Protocol',
-  attack_surface: 'Attack Surface',
 }
 const PERSPECTIVE_TYPES: Record<Perspective, string[]> = {
   all: [],  // empty = no filter
-  // Security: all types that represent exploitable entry points, validation schemas, and auth/state logic
-  security: ['rpc', 'schema', 'event', 'namespace', 'cli_command', 'parameter'],
+  security: ['rpc', 'schema', 'event', 'namespace'],
   data_flow: ['schema', 'event', 'state_machine', 'namespace'],
   protocol: ['namespace', 'rpc', 'cli_command', 'event'],
-  // Attack surface: input handlers, network listeners, file parsers, CLI entry points
-  attack_surface: ['cli_command', 'rpc', 'event', 'parameter'],
-}
-
-/** Professional error pane shown when the backend is unreachable or returns an error.
- *  Classifies the error, shows a human-readable message, and provides a retry button. */
-function BackendErrorPane({ error, onRetry, api }: { error: string; onRetry: () => void; api: string }) {
-  const [hovered, setHovered] = useState(false)
-  const isNetwork = error.includes('fetch') || error.includes('NetworkError') || error.includes('Failed to fetch') || error.includes('ECONNREFUSED') || error.includes('ERR_CONNECTION')
-  const isNotFound = error.includes('404') || error.toLowerCase().includes('not found')
-  const isServer = error.includes('500') || error.toLowerCase().includes('internal server')
-  const title = isNetwork ? 'BACKEND UNREACHABLE' : isNotFound ? 'DATA NOT FOUND' : isServer ? 'SERVER ERROR' : 'CONNECTION ERROR'
-  const message = isNetwork
-    ? 'Cannot connect to the analysis backend. The memory daemon may not be running.'
-    : isNotFound
-    ? 'Binary data not found. Try re-ingesting the binary using + INGEST BINARY in the sidebar.'
-    : isServer
-    ? 'The backend returned an internal server error. Check the backend logs for details.'
-    : error.split('\n')[0].slice(0, 200)
-  const hint = isNetwork ? `Expected backend at: ${api}` : isNotFound ? 'Re-ingest via the sidebar to rebuild the analysis.' : `Backend: ${api}`
-  return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: '#050505' }}>
-      <div style={{ width: 44, height: 44, border: `2px solid #ef4444`, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, color: '#ef4444', userSelect: 'none' }}>✕</div>
-      <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 700, color: '#ef4444', letterSpacing: '0.1em' }}>{title}</div>
-      <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: EMBRY.fg, maxWidth: 400, textAlign: 'center', lineHeight: 1.7 }}>{message}</div>
-      <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, color: EMBRY.dim, textAlign: 'center' }}>{hint}</div>
-      <button
-        onClick={onRetry}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          fontFamily: 'JetBrains Mono, monospace', fontSize: 11, fontWeight: 700,
-          padding: '8px 24px', background: hovered ? `${EMBRY.accent}22` : 'transparent',
-          border: `1px solid ${hovered ? EMBRY.accent : EMBRY.muted}`,
-          color: hovered ? EMBRY.accent : EMBRY.muted,
-          cursor: 'pointer', letterSpacing: '0.08em', transition: 'all 0.15s',
-        }}
-      >
-        ↺ RETRY CONNECTION
-      </button>
-    </div>
-  )
 }
 
 export function BinaryExplorerView() {
@@ -332,8 +284,6 @@ export function BinaryExplorerView() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
-  const [seeding, setSeeding] = useState(false)
-  const [seedDone, setSeedDone] = useState(0) // node count after seed, briefly shown as confirmation toast
 
   // --- Graph Visual State ---
   const [viewMode, setViewMode] = useState<'graph' | 'tree' | 'code' | 'vulns'>('graph')
@@ -347,11 +297,8 @@ export function BinaryExplorerView() {
   const [dataPanelHeight, setDataPanelHeight] = useState(220)
   const [dataTab, setDataTab] = useState<'summary' | 'connections' | 'ast' | 'explain' | 'raw' | 'table' | 'code'>('summary')
   const [tableSearch, setTableSearch] = useState('')
-  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'confidence' | 'connections' | 'cwe' | 'attack' | 'address' | 'size' | 'namespace'>('connections')
+  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'confidence' | 'connections' | 'cwe' | 'attack'>('connections')
   const [tableSortAsc, setTableSortAsc] = useState(false)
-  const [tableVisibleCols, setTableVisibleCols] = useState<Set<string>>(new Set(['label', 'nodeType', 'address', 'size', 'namespace', 'connections', 'cwe', 'attack']))
-  const [tableAnnotations, setTableAnnotations] = useState<Record<string, string>>({})
-  const [tableShowColPicker, setTableShowColPicker] = useState(false)
 
   // --- Taxonomy State ---
   const [taxonomyMap, setTaxonomyMap] = useState<Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>>(new Map())
@@ -361,8 +308,6 @@ export function BinaryExplorerView() {
   const [codeViewTab, setCodeViewTab] = useState<'assembly' | 'decompiled' | 'pseudocode'>('pseudocode')
   const [pseudocode, setPseudocode] = useState<string | null>(null)
   const [pseudocodeLoading, setPseudocodeLoading] = useState(false)
-  const [pseudocodeModel, setPseudocodeModel] = useState<string | null>(null)
-  const [pseudocodeGenCount, setPseudocodeGenCount] = useState(0)
   const [leftPaneWidth, setLeftPaneWidth] = useState(65)
 
   // --- Voice State ---
@@ -489,10 +434,9 @@ export function BinaryExplorerView() {
   // Generate Python pseudocode for selected node
   useEffect(() => {
     if (!selectedNode || codeViewTab !== 'pseudocode' || dataTab !== 'code') return
-    if (pseudocodeLoading) return
+    if (pseudocode && pseudocodeLoading) return
     setPseudocodeLoading(true)
     setPseudocode(null)
-    setPseudocodeModel(null)
     const nodeInfo = `Feature: ${selectedNode.label}\nType: ${selectedNode.nodeType}\nDescription: ${selectedNode.description || 'N/A'}\n${selectedNode.source_pattern ? `Source pattern:\n${selectedNode.source_pattern}` : ''}${selectedNode.fields?.length ? `\nFields: ${selectedNode.fields.map((f: any) => f.name || f).join(', ')}` : ''}${selectedNode.states?.length ? `\nStates: ${selectedNode.states.map((s: any) => s.name || s).join(', ')}` : ''}`
 
     fetch('/api/scillm', {
@@ -501,7 +445,7 @@ export function BinaryExplorerView() {
       body: JSON.stringify({
         model: 'text',
         messages: [
-          { role: 'system', content: 'You are a reverse engineering expert assistant. Convert binary feature descriptions into Pythonic pseudocode for RE analysts. Use ctypes or construct-style structs where applicable. Include comments explaining obfuscation patterns, data structures, and control flow. Be concise (under 50 lines) and accurate — never invent behaviors not present in the feature description.' },
+          { role: 'system', content: 'You are a reverse engineering assistant. Convert binary feature descriptions into clean Python pseudocode that a beginner could understand. Include comments explaining what each section does. Keep it concise (under 40 lines).' },
           { role: 'user', content: `Generate Python pseudocode for this binary feature:\n\n${nodeInfo}` }
         ],
         temperature: 0.2,
@@ -509,14 +453,10 @@ export function BinaryExplorerView() {
       }),
     })
       .then(r => r.json())
-      .then((d: any) => {
-        setPseudocode(d.choices?.[0]?.message?.content || '# No pseudocode generated')
-        setPseudocodeModel(d.model || 'scillm')
-      })
-      .catch(() => { setPseudocode('# Error: LLM service unavailable'); setPseudocodeModel(null) })
+      .then((d: any) => setPseudocode(d.choices?.[0]?.message?.content || 'No pseudocode generated'))
+      .catch(() => setPseudocode('# Error: LLM service unavailable'))
       .finally(() => setPseudocodeLoading(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedNode?.id, codeViewTab, dataTab, pseudocodeGenCount])
+  }, [selectedNode?.id, codeViewTab, dataTab])
 
   // --- Saved Scenes ---
   const [savedScenes, setSavedScenes] = useState<{ name: string; nodeIds: string[]; perspective: Perspective; layoutMode: string }[]>([])
@@ -524,15 +464,11 @@ export function BinaryExplorerView() {
 
   // --- Context Menu ---
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, node: BinaryGraphNode } | null>(null)
-  /** Local rename overrides: nodeId → display label */
-  const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({})
-  /** Local annotations: nodeId → comment text */
-  const [nodeAnnotations, setNodeAnnotations] = useState<Record<string, string>>({})
 
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
-  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
+  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
   const linkBus = useLinkBus()
@@ -705,62 +641,19 @@ export function BinaryExplorerView() {
     addToScene(nodes.map(n => n.id))
   }, [data.graphNodes, addToScene])
 
-  // --- Scene Save/Load/Export/Import ---
-  const buildScenePayload = useCallback((name: string) => ({
-    name: name.trim(),
-    binary: binaryName,
-    nodeIds: [...sceneNodeIds],
-    perspective,
-    layoutMode,
-    selectedNodeId: selectedNode?.id || null,
-    breadcrumbIds: breadcrumbs.map(b => b.id),
-    annotations: nodeAnnotations,
-    nodeLabels,
-    chatHistory: chatMessages,
-    savedAt: new Date().toISOString(),
-    version: 2,
-  }), [sceneNodeIds, binaryName, perspective, layoutMode, selectedNode, breadcrumbs, nodeAnnotations, nodeLabels, chatMessages])
-
-  const exportScene = useCallback((name: string) => {
-    if (sceneNodeIds.size === 0) return
-    const payload = buildScenePayload(name || `${binaryName}-scene`)
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${payload.name.replace(/\s+/g, '-')}.scene.json`
-    a.click()
-    URL.revokeObjectURL(url)
-  }, [sceneNodeIds, buildScenePayload, binaryName])
-
-  const importScene = useCallback(() => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.json'
-    input.onchange = (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0]
-      if (!file) return
-      const reader = new FileReader()
-      reader.onload = (ev) => {
-        try {
-          const parsed = JSON.parse(ev.target?.result as string)
-          if (parsed.nodeIds) {
-            loadScene(parsed)
-            if (parsed.annotations) setNodeAnnotations(parsed.annotations)
-            if (parsed.nodeLabels) setNodeLabels(parsed.nodeLabels)
-            if (parsed.chatHistory?.length) setChatMessages(parsed.chatHistory)
-            if (parsed.name) setSceneName(parsed.name)
-          }
-        } catch { /* ignore malformed */ }
-      }
-      reader.readAsText(file)
-    }
-    input.click()
-  }, [loadScene])
-
+  // --- Scene Save/Load ---
   const saveScene = useCallback(async (name: string) => {
     if (!name.trim() || sceneNodeIds.size === 0) return
-    const sceneData = buildScenePayload(name)
+    const sceneData = {
+      name: name.trim(),
+      binary: binaryName,
+      nodeIds: [...sceneNodeIds],
+      perspective,
+      layoutMode,
+      selectedNodeId: selectedNode?.id || null,
+      breadcrumbIds: breadcrumbs.map(b => b.id),
+      savedAt: new Date().toISOString(),
+    }
     try {
       await fetch(`${API}/api/memory/learn`, {
         method: 'POST',
@@ -777,7 +670,7 @@ export function BinaryExplorerView() {
     } catch (err) {
       console.error('Failed to save scene:', err)
     }
-  }, [buildScenePayload, sceneNodeIds, binaryName])
+  }, [sceneNodeIds, binaryName, perspective, layoutMode, selectedNode, breadcrumbs])
 
   const loadScene = useCallback((sceneData: { nodeIds: string[]; perspective?: string; layoutMode?: string; selectedNodeId?: string; breadcrumbIds?: string[] }) => {
     setSceneNodeIds(new Set(sceneData.nodeIds))
@@ -888,31 +781,16 @@ export function BinaryExplorerView() {
     pushSnapshot(sceneNodeIds)
   }, [sceneNodeIds, pushSnapshot])
 
-  // --- Keyboard Shortcuts ---
-  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
+  // --- Keyboard Shortcuts: Ctrl+Z (undo), Ctrl+Shift+Z / Ctrl+Y (redo) ---
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement
-      const inInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
-      if (e.key === '?') { e.preventDefault(); setShowKeyboardHelp(h => !h); return }
-      if (!inInput) {
-        if (e.key === 'Escape') { setShowKeyboardHelp(false); setContextMenu(null); return }
-        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-          if (e.key === 'g') { setViewMode('graph'); return }
-          if (e.key === 't') { setViewMode('tree'); return }
-          if (e.key === 'c') { setViewMode('code'); return }
-          if (e.key === 'v') { setViewMode('vulns'); return }
-          if (e.key === '/') { e.preventDefault(); (document.querySelector('input[placeholder]') as HTMLInputElement)?.focus(); return }
-          if (e.key === 'e' && selectedNode) { addNodeWithNeighbors(selectedNode.id, 1, 6); return }
-        }
-      }
       if (!e.ctrlKey) return
       if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       else if ((e.key === 'z' && e.shiftKey) || e.key === 'y') { e.preventDefault(); redo() }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [undo, redo, selectedNode, addNodeWithNeighbors])
+  }, [undo, redo])
 
   // --- Voice Input (STT) ---
   useEffect(() => {
@@ -1582,24 +1460,7 @@ export function BinaryExplorerView() {
       }
 
       // Load prompt template from /prompt-lab
-      const isBeginnerMode = analysisMode === 'beginner'
-      const systemPrompt = isBeginnerMode
-        ? `You are a helpful guide explaining the "${binaryName}" program to someone who has never done reverse engineering before. Answer in plain, everyday English. Avoid jargon — if you must use a technical term, explain it in one sentence. When someone asks "what does this program do?", give a simple one-paragraph summary of its purpose, not a list of internal components. Treat every question as if it comes from a curious person who just wants to understand what they're looking at.
-
-## What we know about this program
-${nodeCtx ? nodeCtx + (edgeCtx ? '\nConnections: ' + edgeCtx : '') : 'No specific part selected — give an overview.'}
-
-## Program internals (for your reference — translate these into plain English for the user)
-${graphQueryCtx}
-${memoryRecallCtx ? '\n## Prior analysis\n' + memoryRecallCtx : ''}
-
-## Instructions
-- Answer in plain English — no bullet-point walls of jargon
-- Lead with what the program or feature *does*, not what it *is*
-- If a beginner asks a vague question ("what is this?", "what does it do?"), give a useful plain-language answer
-- Keep answers short: 2-3 sentences for simple questions, a short paragraph for complex ones
-- Only use \`code\` formatting for actual function or variable names`
-        : `You are a reverse-engineering analyst for the "${binaryName}" binary extracted via /analyze-elf + /treesitter.
+      const systemPrompt = `You are a reverse-engineering analyst for the "${binaryName}" binary extracted via /analyze-elf + /treesitter.
 
 ## Context
 ${nodeCtx ? nodeCtx + (edgeCtx ? '\nConnections: ' + edgeCtx : '') : 'No node selected.'}
@@ -1723,73 +1584,28 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
   // Legacy flat grouping (used in summary)
   const edgesByType: Record<string, string[]> = {}
   // Directional grouping (TrustGraph pattern)
-  const outgoingEdges: { type: string; target: string; targetId: string; targetType?: string }[] = []
-  const incomingEdges: { type: string; source: string; sourceId: string; sourceType?: string }[] = []
+  const outgoingEdges: { type: string; target: string; targetId: string }[] = []
+  const incomingEdges: { type: string; source: string; sourceId: string }[] = []
   for (const e of allSelectedEdges) {
     const isOutgoing = e._from === selectedNode?.id
     const otherId = isOutgoing ? e._to : e._from
     const otherLabel = otherId.split('/').pop() ?? ''
-    const otherNode = data.graphNodes.find(n => n.id === otherId)
     const group = edgesByType[e.edge_type] ?? []
     group.push(otherLabel)
     edgesByType[e.edge_type] = group
     if (isOutgoing) {
-      outgoingEdges.push({ type: e.edge_type, target: otherLabel, targetId: otherId, targetType: otherNode?.nodeType })
+      outgoingEdges.push({ type: e.edge_type, target: otherLabel, targetId: otherId })
     } else {
-      incomingEdges.push({ type: e.edge_type, source: otherLabel, sourceId: otherId, sourceType: otherNode?.nodeType })
+      incomingEdges.push({ type: e.edge_type, source: otherLabel, sourceId: otherId })
     }
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', overflow: 'hidden', minHeight: 0 }}>
       {data.loading ? (
-        <div style={{ display: 'flex', flex: 1, height: '100%' }}>
-          {/* Keep sidebar visible during load so user can switch binaries */}
-          <BinaryLeftPane
-            binaryName={binaryName}
-            binaries={binaries}
-            binaryMetas={binaryMetas}
-            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
-            savedScenes={savedScenes}
-            onLoadScene={loadScene}
-            onIngest={() => {
-              const path = prompt('Path to ELF binary:')
-              if (path) { setIngestPath(path); setIsIngesting(true) }
-            }}
-          />
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, background: '#050505' }}>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 700, color: EMBRY.accent, letterSpacing: '0.1em' }}>
-              LOADING: {binaryName.toUpperCase()}
-            </div>
-            {binaryMetas[binaryName] && (
-              <div style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace', display: 'flex', gap: 10 }}>
-                {[binaryMetas[binaryName].format, binaryMetas[binaryName].arch].filter(Boolean).join(' / ')}
-                {binaryMetas[binaryName].sizeBytes > 0 && (
-                  <span>{binaryMetas[binaryName].sizeBytes > 1048576 ? `${(binaryMetas[binaryName].sizeBytes / 1048576).toFixed(1)} MB` : `${(binaryMetas[binaryName].sizeBytes / 1024).toFixed(0)} KB`}</span>
-                )}
-                {binaryMetas[binaryName].stripped && <span style={{ color: EMBRY.red }}>STRIPPED</span>}
-                {binaryMetas[binaryName].pie && <span style={{ color: EMBRY.green }}>PIE</span>}
-              </div>
-            )}
-            <div style={{ fontSize: 9, color: EMBRY.muted }}>parsing features & call graph…</div>
-          </div>
-        </div>
+        <div style={{ padding: 20, color: EMBRY.dim }}>Loading analysis...</div>
       ) : data.error ? (
-        <div style={{ display: 'flex', flex: 1, height: '100%' }}>
-          <BinaryLeftPane
-            binaryName={binaryName}
-            binaries={binaries}
-            binaryMetas={binaryMetas}
-            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
-            savedScenes={savedScenes}
-            onLoadScene={loadScene}
-            onIngest={() => {
-              const path = prompt('Path to ELF binary:')
-              if (path) { setIngestPath(path); setIsIngesting(true) }
-            }}
-          />
-          <BackendErrorPane error={data.error} onRetry={data.refresh} api={API} />
-        </div>
+        <div style={{ padding: 20, color: EMBRY.red }}>{data.error}</div>
       ) : (
         <div style={styles.panes}>
           {/* ═══ LEFT SIDEBAR: Binary selector + scenes + sessions ═══ */}
@@ -2039,26 +1855,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       onClick={() => saveScene(sceneName)}
                       style={{ fontSize: 8, padding: '2px 6px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}
                     >SAVE</button>
-                    <button
-                      onClick={() => exportScene(sceneName)}
-                      title="Export scene to portable JSON (includes graph state, annotations, and chat history)"
-                      style={{ fontSize: 8, padding: '2px 6px', background: '#22c55e15', border: '1px solid #22c55e33', color: '#22c55e', borderRadius: 2, cursor: 'pointer' }}
-                    >EXPORT</button>
                   </div>
                 )}
-                <button
-                  onClick={importScene}
-                  title="Import scene from JSON file (restores graph, annotations, and chat history)"
-                  style={{ fontSize: 8, padding: '2px 6px', background: '#f59e0b15', border: '1px solid #f59e0b33', color: '#f59e0b', borderRadius: 2, cursor: 'pointer' }}
-                >IMPORT</button>
               </div>
-              {/* Keyboard shortcuts reference */}
-              <button
-                onClick={() => setShowKeyboardHelp(h => !h)}
-                title="Keyboard shortcuts (?)"
-                aria-label="Show keyboard shortcuts"
-                style={{ marginLeft: 8, width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', background: showKeyboardHelp ? `${EMBRY.accent}20` : 'transparent', border: `1px solid ${showKeyboardHelp ? EMBRY.accent : EMBRY.border}`, color: showKeyboardHelp ? EMBRY.accent : EMBRY.dim, borderRadius: 3, cursor: 'pointer', fontSize: 11, fontWeight: 700, flexShrink: 0 }}
-              >?</button>
             </div>
 
             {/* Entity type filter bar (TrustGraph pattern) */}
@@ -2093,139 +1892,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   </button>
                 )
               })}
-              {/* Persistent graph search — instant, supports name/address/content/regex */}
-              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Search size={9} style={{ color: data.searchQuery ? EMBRY.accent : EMBRY.muted, flexShrink: 0 }} />
-                <input
-                  value={data.searchQuery}
-                  onChange={e => data.setSearchQuery(e.target.value)}
-                  placeholder="name / 0xaddr / /regex/"
-                  title="Instant search across name, address, content, fields, states. /regex/flags supported. Esc to clear."
-                  style={{
-                    width: 160, background: 'transparent',
-                    border: `1px solid ${data.searchQuery ? EMBRY.accent + '55' : EMBRY.border}`,
-                    borderRadius: 2, padding: '1px 5px', color: EMBRY.white, fontSize: 9,
-                    fontFamily: 'JetBrains Mono, monospace', outline: 'none',
-                  }}
-                  onKeyDown={e => { if (e.key === 'Escape') data.setSearchQuery('') }}
-                />
-                {data.searchQuery && data.matchedNodeIds.size > 0 && (
-                  <span style={{ fontSize: 8, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'nowrap' }}>
-                    {data.matchedNodeRanked.length} match{data.matchedNodeRanked.length !== 1 ? 'es' : ''}
-                  </span>
-                )}
-                {data.searchQuery && data.matchedNodeIds.size === 0 && (
-                  <span style={{ fontSize: 8, color: '#ef4444', fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'nowrap' }}>no match</span>
-                )}
-                {data.searchQuery && (
-                  <button onClick={() => data.setSearchQuery('')} title="Clear search (Esc)"
-                    style={{ fontSize: 9, color: EMBRY.muted, background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', lineHeight: 1 }}>✕</button>
-                )}
-                <span style={{ fontSize: 8, color: EMBRY.dim, marginLeft: 6, whiteSpace: 'nowrap' }}>
-                  {sceneNodeIds.size} in scene · {viewMode}
-                </span>
-              </div>
+              <span style={{ marginLeft: 'auto', color: EMBRY.dim }}>
+                {sceneNodeIds.size} in scene · {viewMode}
+              </span>
             </div>
-
-            {/* Security risk bar — shown only in security / attack_surface perspective */}
-            {(perspective === 'security' || perspective === 'attack_surface') && (() => {
-              const pTypes = PERSPECTIVE_TYPES[perspective]
-              // All nodes matching this perspective's type filter — not just what's in scene
-              const allSecNodes = data.graphNodes.filter(n => pTypes.length === 0 || pTypes.includes(n.nodeType))
-              const sceneNodes = data.graphNodes.filter(n => sceneNodeIds.has(n.id))
-              const withCwe = sceneNodes.filter(n => (taxonomyMap.get(n.id)?.cwe?.length ?? 0) > 0)
-              const withAttack = sceneNodes.filter(n => (taxonomyMap.get(n.id)?.attack?.length ?? 0) > 0)
-              // Severity tiers: CRITICAL(cwe≥2 AND attack≥2), HIGH(sum≥3), MED(sum≥1)
-              const critical = sceneNodes.filter(n => {
-                const tax = taxonomyMap.get(n.id)
-                return (tax?.cwe?.length ?? 0) >= 2 && (tax?.attack?.length ?? 0) >= 2
-              })
-              const criticalIds = new Set(critical.map(n => n.id))
-              const high = sceneNodes.filter(n => {
-                if (criticalIds.has(n.id)) return false
-                const tax = taxonomyMap.get(n.id)
-                return (tax?.cwe?.length ?? 0) + (tax?.attack?.length ?? 0) >= 3
-              })
-              const highIds = new Set(high.map(n => n.id))
-              const med = sceneNodes.filter(n => {
-                if (criticalIds.has(n.id) || highIds.has(n.id)) return false
-                const tax = taxonomyMap.get(n.id)
-                return (tax?.cwe?.length ?? 0) + (tax?.attack?.length ?? 0) >= 1
-              })
-              // Quick-start: rank all security-type nodes by CWE+ATT&CK score, pick top 10
-              const allSorted = [...allSecNodes].sort((a, b) => {
-                const ta = taxonomyMap.get(a.id); const tb = taxonomyMap.get(b.id)
-                const sa = (ta?.cwe?.length ?? 0) * 2 + (ta?.attack?.length ?? 0)
-                const sb = (tb?.cwe?.length ?? 0) * 2 + (tb?.attack?.length ?? 0)
-                return sb - sa
-              })
-              const top10 = allSorted.slice(0, 10)
-              return (
-                <div style={{
-                  display: 'flex', gap: 6, padding: '3px 12px',
-                  fontSize: 8, fontFamily: 'JetBrains Mono, monospace',
-                  background: '#0a0505', borderBottom: `1px solid #f4433633`, flexShrink: 0,
-                  alignItems: 'center', flexWrap: 'wrap',
-                }}>
-                  <Shield size={10} style={{ color: '#f44336', flexShrink: 0 }} />
-                  <span style={{ color: '#f44336', fontWeight: 700, marginRight: 2 }}>RISK</span>
-                  {/* Severity tier badges — click to load that tier into scene */}
-                  {critical.length > 0 && (
-                    <button
-                      onClick={() => { critical.forEach(n => addToScene([n.id])); setSelectedNode(critical[0] ?? null) }}
-                      title="CRITICAL: CWE≥2 AND ATT&CK≥2 — highest audit priority"
-                      style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid #f4433699`, background: '#f4433625', color: '#f44336', fontWeight: 800 }}
-                    >CRIT: {critical.length}</button>
-                  )}
-                  {high.length > 0 && (
-                    <button
-                      onClick={() => { high.forEach(n => addToScene([n.id])); setSelectedNode(high[0] ?? null) }}
-                      title="HIGH: 3+ security taxonomy tags — high audit priority"
-                      style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid #FF572266`, background: '#FF572215', color: '#FF5722', fontWeight: 700 }}
-                    >HIGH: {high.length}</button>
-                  )}
-                  {med.length > 0 && (
-                    <button
-                      onClick={() => med.forEach(n => addToScene([n.id]))}
-                      title="MED: 1–2 security taxonomy tags — secondary audit targets"
-                      style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid #FF980066`, background: '#FF980015', color: '#FF9800' }}
-                    >MED: {med.length}</button>
-                  )}
-                  <span style={{ color: EMBRY.border, margin: '0 2px' }}>|</span>
-                  <button
-                    onClick={() => withCwe.forEach(n => addToScene([n.id]))}
-                    title="Filter scene to nodes with CWE vulnerability classifications"
-                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: withCwe.length > 0 ? 'pointer' : 'default', border: `1px solid #9C27B066`, background: '#9C27B015', color: '#CE93D8' }}
-                  >CWE: {withCwe.length}</button>
-                  <button
-                    onClick={() => withAttack.forEach(n => addToScene([n.id]))}
-                    title="Filter scene to nodes with MITRE ATT&CK technique mappings"
-                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: withAttack.length > 0 ? 'pointer' : 'default', border: `1px solid #2196F366`, background: '#2196F315', color: '#90CAF9' }}
-                  >ATT&amp;CK: {withAttack.length}</button>
-                  <span style={{ color: EMBRY.border, margin: '0 2px' }}>|</span>
-                  {/* Audit quick-start: load top-N nodes ranked by security score */}
-                  <button
-                    onClick={() => { top10.forEach(n => addToScene([n.id])); if (top10[0]) setSelectedNode(top10[0]) }}
-                    title={`Load top ${top10.length} highest-risk nodes ranked by CWE+ATT&CK score — security audit quick-start`}
-                    style={{ fontSize: 8, padding: '1px 8px', borderRadius: 8, cursor: top10.length > 0 ? 'pointer' : 'default', border: `1px solid #f4433644`, background: '#f4433610', color: '#f44336' }}
-                  >LOAD TOP-{top10.length} →</button>
-                  <button
-                    onClick={() => setViewMode('vulns')}
-                    title="Open full vulnerability map"
-                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim }}
-                  >VULN MAP →</button>
-                  {sceneNodeIds.size === 0 && allSecNodes.length > 0 && (
-                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>{allSecNodes.length} security-relevant nodes — click LOAD TOP-{top10.length} to start audit</span>
-                  )}
-                  {sceneNodeIds.size === 0 && allSecNodes.length === 0 && (
-                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>Load nodes into scene to see risk indicators</span>
-                  )}
-                  {sceneNodeIds.size > 0 && withCwe.length === 0 && withAttack.length === 0 && (
-                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>No taxonomy data yet — run /analyze-elf with --taxonomy to populate</span>
-                  )}
-                </div>
-              )
-            })()}
 
             <div
               style={{ flex: '1 1 0%', display: 'flex', flexDirection: splitCodeView && viewMode === 'graph' && selectedNode ? 'row' : 'column' as const, position: 'relative', overflow: 'hidden', minHeight: 0 }}
@@ -2299,7 +1969,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     onNodeClick={onNodeClick}
                     onContextMenu={(n, x, y) => setContextMenu({ x, y, node: n })}
                     graphSvgRef={graphSvgRef}
-                    taxonomyMap={taxonomyMap}
                   />
                 )
               })()}
@@ -2337,20 +2006,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         <span style={{ fontWeight: 800, color: EMBRY.white }}>{selectedNode.label}</span>
                         <span style={{ color: EMBRY.muted, fontSize: 8 }}>{selectedNode.nodeType} · {selectedNode.cluster} · {selectedNode.tier}</span>
                         <span style={{ flex: 1 }} />
-                        {/* LLM badge — shown when pseudocode tab is active */}
-                        {codeViewTab === 'pseudocode' && pseudocodeModel && (
-                          <span data-testid="llm-model-badge" style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#FF980015', border: '1px dashed #FF980044', color: '#FF9800', fontWeight: 700, letterSpacing: '0.5px' }}>
-                            LLM · {pseudocodeModel}
-                          </span>
-                        )}
-                        {codeViewTab === 'pseudocode' && pseudocode && !pseudocodeLoading && (
-                          <button
-                            data-testid="pseudocode-regen"
-                            onClick={() => { setPseudocodeGenCount(c => c + 1) }}
-                            title="Regenerate pseudocode"
-                            style={{ fontSize: 8, padding: '1px 6px', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer', fontWeight: 700 }}
-                          >↺ REGEN</button>
-                        )}
                         {/* Code sub-tabs */}
                         {(['asm', 'c', 'python'] as const).map(t => (
                           <button key={t} onClick={() => setCodeViewTab(t === 'asm' ? 'assembly' : t === 'c' ? 'decompiled' : 'pseudocode')}
@@ -2370,9 +2025,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             : (selectedNode.source_pattern || '// No source data available\n// Run /analyze-elf to extract source patterns')}
                           language={codeViewTab === 'assembly' ? 'asm' : codeViewTab === 'decompiled' ? 'c' : 'python'}
                           header={`${selectedNode.label} — ${codeViewTab === 'assembly' ? 'Assembly' : codeViewTab === 'decompiled' ? 'Decompiled C' : 'Python Pseudocode'}`}
-                          showCopyButton
-                          testId="code-view-pane"
-                          onLineClick={(_i) => {
+                          onLineClick={(i) => {
                             // Future: cross-link to graph nodes at this line
                           }}
                         />
@@ -2389,26 +2042,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     <Shield size={14} style={{ color: EMBRY.red }} />
                     <span style={{ fontWeight: 800, color: EMBRY.white }}>VULNERABILITY MAP</span>
                     <span style={{ color: EMBRY.muted, fontSize: 8 }}>{taxonomyMap.size} nodes with taxonomy data</span>
-                    <button
-                      onClick={() => {
-                        setTaxonomyMap(new Map())
-                        setTaxonomyLoading(true)
-                        const nodes = data.graphNodes.filter(n => n.nodeType !== 'namespace').slice(0, 200)
-                        Promise.all(nodes.map(n =>
-                          fetch(`${API}/api/memory/taxonomy/extract`, {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ text: `${n.label} ${n.description || ''} ${n.nodeType}` }),
-                          }).then(r => r.json()).then(d => ({ id: n.id, tags: d })).catch(() => ({ id: n.id, tags: {} }))
-                        )).then(results => {
-                          const next = new Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>()
-                          for (const { id, tags } of results) next.set(id, { mind: tags.mind||[], cwe: tags.cwe||[], attack: tags.attack||[], d3fend: tags.d3fend||[], nist: tags.nist||[] })
-                          setTaxonomyMap(next)
-                          setTaxonomyLoading(false)
-                        })
-                      }}
-                      title="Re-run auto-tagging for all nodes"
-                      style={{ fontSize: 7, padding: '1px 6px', background: 'transparent', border: `1px solid #9C27B044`, color: '#9C27B0', borderRadius: 2, cursor: 'pointer', fontWeight: 700 }}
-                    >RE-TAG</button>
                     <span style={{ flex: 1 }} />
                     <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
                       placeholder="Filter by CWE, ATT&CK, feature..."
@@ -2486,333 +2119,66 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </div>
               )}
 
-              {/* Loading overlay while seeding — tells the user something is happening */}
-              {seeding && (
-                <div style={{
-                  position: 'absolute', inset: 0, zIndex: 20,
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  background: 'rgba(5,5,5,0.75)', backdropFilter: 'blur(2px)',
-                  gap: 12, pointerEvents: 'none',
-                }}>
-                  <div style={{
-                    width: 32, height: 32, borderRadius: '50%',
-                    border: `2px solid ${EMBRY.border}`,
-                    borderTopColor: EMBRY.accent,
-                    animation: 'seed-spin 0.7s linear infinite',
-                  }} />
-                  <span style={{ fontSize: 11, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.06em' }}>
-                    Building your graph…
-                  </span>
-                  <span style={{ fontSize: 9, color: EMBRY.dim }}>Nodes are appearing — triggered by your click</span>
-                </div>
-              )}
-
-              {/* Confirmation toast — briefly confirms nodes appeared due to user action */}
-              {seedDone > 0 && (
-                <div style={{
-                  position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)',
-                  zIndex: 30, pointerEvents: 'none',
-                  background: '#050505', border: `1px solid ${EMBRY.accent}`,
-                  borderRadius: 3, padding: '5px 14px',
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  animation: 'seed-done-in 0.25s ease both',
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: EMBRY.accent,
-                  boxShadow: `0 0 16px ${EMBRY.accent}22`,
-                }}>
-                  <span style={{ color: EMBRY.green, fontWeight: 700 }}>✓</span>
-                  <span>{seedDone} nodes loaded into graph</span>
-                </div>
-              )}
-
-              {/* Empty scene panel — dense binary info like IDA/Ghidra initial state */}
-              {sceneNodeIds.size === 0 && !data.loading && !seeding && viewMode === 'graph' && (
+              {/* Empty scene card — actionable, not confusing */}
+              {sceneNodeIds.size === 0 && !data.loading && viewMode === 'graph' && (
                 <div style={{
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                  zIndex: 5, pointerEvents: 'auto', width: 460,
-                  background: '#080808', border: `1px solid ${EMBRY.border}`, borderRadius: 3,
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.8)',
-                  animation: 'scene-card-in 0.15s ease both',
-                  fontFamily: 'JetBrains Mono, monospace',
+                  zIndex: 5, pointerEvents: 'auto', width: 380,
+                  background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
+                  padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
                 }}>
-                  {/* Title bar — IDA-style */}
-                  <div style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '5px 10px', borderBottom: `1px solid ${EMBRY.border}`,
-                    background: '#0d0d0d',
-                  }}>
-                    <Shield size={11} style={{ color: EMBRY.accent, flexShrink: 0 }} />
-                    <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.white, letterSpacing: '0.05em', flex: 1 }}>{binaryName}</span>
-                    {binaries.length > 1 && (
-                      <span style={{ fontSize: 8, color: EMBRY.muted, letterSpacing: '0.04em', marginRight: 8 }}>
-                        {binaries.indexOf(binaryName) + 1}/{binaries.length}
-                      </span>
-                    )}
-                    {data.graphNodes.length > 0
-                      ? <span style={{ fontSize: 8, color: EMBRY.green, letterSpacing: '0.08em' }}>ANALYSIS READY</span>
-                      : <span style={{ fontSize: 8, color: '#f59e0b', letterSpacing: '0.08em' }}>NOT INGESTED</span>
-                    }
+                  <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>No nodes in scene</div>
+                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, lineHeight: 1.6 }}>
+                    Select a namespace or symbol from the left pane, or use one of these quick actions:
                   </div>
 
-                  {/* Binary properties table — dense, like IDA's file info dialog */}
-                  {binaryMetas[binaryName] && (() => {
-                    const m = binaryMetas[binaryName]
-                    const rows: [string, React.ReactNode][] = []
-                    if (m.format) rows.push(['Format', <span style={{ color: EMBRY.white }}>{m.format}</span>])
-                    if (m.arch) rows.push(['Arch', <span style={{ color: EMBRY.white }}>{m.arch}</span>])
-                    if (m.entryPoint) rows.push(['Entry point', <span style={{ color: '#f59e0b' }}>{m.entryPoint}</span>])
-                    if (m.sizeBytes > 0) rows.push(['File size', <span style={{ color: EMBRY.fg }}>{m.sizeBytes > 1048576 ? `${(m.sizeBytes / 1048576).toFixed(2)} MB` : `${(m.sizeBytes / 1024).toFixed(0)} KB`} ({m.sizeBytes.toLocaleString()} B)</span>])
-                    if (typeof m.importCount === 'number') rows.push(['Imports', <span style={{ color: EMBRY.fg }}>{m.importCount}</span>])
-                    rows.push(['Features', <span style={{ color: EMBRY.fg }}>{m.featureCount} nodes · {m.edgeCount} edges</span>])
-                    const flags: React.ReactNode[] = []
-                    if (m.stripped) flags.push(<span key="s" style={{ color: '#ef4444' }}>STRIPPED</span>)
-                    if (m.pie) flags.push(<span key="p" style={{ color: '#22c55e' }}>PIE</span>)
-                    if (m.relro) flags.push(<span key="r" style={{ color: '#3b82f6' }}>{m.relro.toUpperCase()}</span>)
-                    if (flags.length > 0) rows.push(['Mitigations', <span style={{ display: 'flex', gap: 8 }}>{flags}</span>])
-                    if (m.sha256) rows.push(['SHA-256', (
-                      <span
-                        title={`SHA256: ${m.sha256}\nClick to copy`}
-                        onClick={() => navigator.clipboard.writeText(m.sha256)}
-                        style={{ color: EMBRY.accent, cursor: 'pointer' }}
-                      >{m.sha256}</span>
-                    )])
-                    return (
-                      <div style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}` }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9 }}>
-                          <tbody>
-                            {rows.map(([label, value]) => (
-                              <tr key={label as string}>
-                                <td style={{ color: EMBRY.muted, paddingRight: 16, paddingBottom: 2, whiteSpace: 'nowrap', verticalAlign: 'top', width: 80 }}>{label}</td>
-                                <td style={{ paddingBottom: 2, color: EMBRY.fg }}>{value}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap', marginTop: 6 }}>
-                          {Object.entries(m.byType).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([type, count]) => (
-                            <span key={type} style={{
-                              fontSize: 8, padding: '1px 5px', borderRadius: 2,
-                              background: `${NODE_TYPE_COLORS[type] || EMBRY.muted}15`,
-                              color: NODE_TYPE_COLORS[type] || EMBRY.muted,
-                              border: `1px solid ${NODE_TYPE_COLORS[type] || EMBRY.muted}30`,
-                            }}>
-                              {count} {TYPE_ABBREV[type] || type}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )
-                  })()}
-                  {!binaryMetas[binaryName] && (
-                    <div style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, color: EMBRY.dim }}>
-                      {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
-                    </div>
-                  )}
-
-                  {/* Quick-load actions — compact 2-column grid */}
-                  <div style={{ padding: '6px 10px' }}>
-                    {data.graphNodes.length === 0 ? (
-                      <div style={{ padding: '10px 0', textAlign: 'center' }}>
-                        <div style={{ fontSize: 9, color: '#f59e0b', marginBottom: 6, fontWeight: 700 }}>No features found for this binary</div>
-                        <div style={{ fontSize: 8, color: EMBRY.muted, lineHeight: 1.6 }}>
-                          Use <span style={{ color: EMBRY.accent }}>+ INGEST BINARY</span> in the left pane to extract features,<br />
-                          or run the analyzer pipeline via the REST API below.
-                        </div>
-                      </div>
-                    ) : (
-                    <>
-                    {/* Dual-track start guide: vulnerability hunting vs architecture exploration */}
-                    <div style={{ marginBottom: 8, padding: '6px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 3 }}>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.accent, marginBottom: 5, letterSpacing: '0.06em' }}>START HERE</div>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: '#f44336', marginBottom: 2, letterSpacing: '0.05em' }}>HUNTING FOR BUGS?</div>
-                      {([
-                        { n: '1', t: '"CTF QUICK HUNT" below — attack surface + dangerous sinks in one click' },
-                        { n: '2', t: '"Attack Surface" → input handlers, net listeners, file parsers highlighted' },
-                        { n: '3', t: '"Vuln Map" → CWE + ATT&CK classifications for every function' },
-                      ] as const).map(({ n, t }) => (
-                        <div key={`vuln${n}`} style={{ display: 'flex', gap: 4, fontSize: 8, marginBottom: 1 }}>
-                          <span style={{ fontWeight: 700, color: '#f44336', minWidth: 10, fontFamily: 'JetBrains Mono, monospace' }}>{n}.</span>
-                          <span style={{ color: EMBRY.dim }}>{t}</span>
-                        </div>
-                      ))}
-                      <div style={{ height: 5 }} />
-                      <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.accent, marginBottom: 2, letterSpacing: '0.05em' }}>EXPLORING ARCHITECTURE?</div>
-                      {([
-                        { n: '1', t: '"Load Binary Structure" below — namespaces + top hubs' },
-                        { n: '2', t: 'Click any node — expands its neighbors' },
-                        { n: '3', t: 'Ask chat: "What does this binary do?"' },
-                      ] as const).map(({ n, t }) => (
-                        <div key={`arch${n}`} style={{ display: 'flex', gap: 4, fontSize: 8, marginBottom: 1 }}>
-                          <span style={{ fontWeight: 700, color: EMBRY.accent, minWidth: 10, fontFamily: 'JetBrains Mono, monospace' }}>{n}.</span>
-                          <span style={{ color: EMBRY.dim }}>{t}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {/* CTF one-click: attack surface + dangerous sinks combined */}
+                  {/* Quick actions */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <button onClick={() => {
-                      const entryPoints = data.graphNodes.filter(n =>
-                        n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
-                      )
-                      const topByConnections = entryPoints
+                      const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
+                      const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
                         .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                        .sort((a, b) => b.deg - a.deg)
-                        .slice(0, 20)
-                      const sinkPattern = /recv|read|fread|gets|strcpy|strcat|sprintf|memcpy|memmove|scanf|popen|system|exec|open|fopen|socket|connect|bind|listen|accept|malloc|free|realloc/i
-                      const interesting = data.graphNodes.filter(n =>
-                        sinkPattern.test(n.label) ||
-                        (n.nodeType === 'rpc' && data.allEdges.filter(e => e._from === n.id || e._to === n.id).length > 3)
-                      )
-                      addToScene([...new Set([...topByConnections.map(n => n.id), ...interesting.map(n => n.id)])])
-                      handleSetPerspective('attack_surface')
+                        .sort((a, b) => b.deg - a.deg).slice(0, 5)
+                      addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
                     }} style={{
-                      display: 'flex', alignItems: 'center', gap: 6, padding: '6px 8px', marginBottom: 6,
-                      width: '100%', background: '#2a0a0a', border: `2px solid #f44336`,
-                      color: '#f44336', borderRadius: 2, cursor: 'pointer',
-                      fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: `${EMBRY.accent}10`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                     }}>
-                      <Zap size={11} style={{ flexShrink: 0 }} />
+                      <span style={{ fontSize: 18 }}>⚡</span>
                       <div>
-                        <div>CTF QUICK HUNT <span style={{ fontSize: 7, color: '#f44336', background: '#f4433620', padding: '0px 3px', borderRadius: 8, marginLeft: 2 }}>ONE CLICK</span></div>
-                        <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>attack surface + dangerous sinks (gets/recv/strcpy/…) + I/O · sets attack_surface view</div>
+                        <div>Load Sample Graph</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>Namespaces + top 5 connected features</div>
                       </div>
                     </button>
-                    <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 5, letterSpacing: '0.06em' }}>LOAD INTO GRAPH</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                      <button onClick={() => {
-                        setSeeding(true)
-                        // 50ms lets React paint the loading overlay before computation blocks the thread
-                        setTimeout(() => {
-                          const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
-                          const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
-                            .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                            .sort((a, b) => b.deg - a.deg).slice(0, 5)
-                          const ids = [...namespaces.map(n => n.id), ...topHubs.map(n => n.id)]
-                          addToScene(ids)
-                          setSeeding(false)
-                          setSeedDone(ids.length)
-                          setTimeout(() => setSeedDone(0), 3000)
-                        }, 50)
-                      }} disabled={seeding} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                        background: `${EMBRY.accent}15`, border: `2px solid ${EMBRY.accent}`,
-                        color: EMBRY.accent, borderRadius: 2, cursor: seeding ? 'default' : 'pointer',
-                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
-                        animation: seeding ? 'none' : 'seed-cta-pulse 2.5s ease-in-out infinite',
-                      }}>
-                        <Layers size={11} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
-                        <div>
-                          <div>{seeding ? 'Building graph…' : 'Load Binary Structure'}</div>
-                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>
-                            {seeding ? 'Nodes are appearing now…' : `${data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces + top-5 hubs · start here`}
-                          </div>
-                        </div>
-                      </button>
 
-                      <button onClick={() => {
-                        const entryPoints = data.graphNodes.filter(n =>
-                          n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
-                        )
-                        const topByConnections = entryPoints
-                          .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                          .sort((a, b) => b.deg - a.deg)
-                          .slice(0, 20)
-                        addToScene(topByConnections.map(n => n.id))
-                        handleSetPerspective('attack_surface')
-                      }} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                        background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
-                        borderRadius: 2, cursor: 'pointer',
-                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
-                      }}>
-                        <Network size={11} style={{ flexShrink: 0 }} />
-                        <div>
-                          <div>Attack Surface <span style={{ fontSize: 7, color: '#f44336', background: '#f4433620', padding: '0px 3px', borderRadius: 8, marginLeft: 2 }}>CTF</span></div>
-                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>{`${data.graphNodes.filter(n => ['cli_command','rpc','event','parameter'].includes(n.nodeType)).length} — input handlers · net listeners · parsers`}</div>
-                        </div>
-                      </button>
-
-                      <button onClick={() => {
-                        const sinkPattern = /recv|read|fread|gets|strcpy|strcat|sprintf|memcpy|memmove|scanf|popen|system|exec|open|fopen|socket|connect|bind|listen|accept|malloc|free|realloc/i
-                        const interesting = data.graphNodes.filter(n =>
-                          sinkPattern.test(n.label) ||
-                          (n.nodeType === 'rpc' && data.allEdges.filter(e => e._from === n.id || e._to === n.id).length > 3)
-                        )
-                        addToScene(interesting.map(n => n.id))
-                        handleSetPerspective('attack_surface')
-                      }} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                        background: '#0a1510', border: `1px solid #4CAF5033`, color: '#4CAF50',
-                        borderRadius: 2, cursor: 'pointer',
-                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
-                      }}>
-                        <Zap size={11} style={{ flexShrink: 0 }} />
-                        <div>
-                          <div>Interesting Fns <span style={{ fontSize: 7, color: '#4CAF50', background: '#4CAF5020', padding: '0px 3px', borderRadius: 8, marginLeft: 2 }}>CTF</span></div>
-                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>dangerous sinks · I/O · high-degree hubs</div>
-                        </div>
-                      </button>
-
-                      <button onClick={() => { setViewMode('code'); setCodeViewTab('assembly') }} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                        background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
-                        borderRadius: 2, cursor: 'pointer',
-                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
-                      }}>
-                        <Code size={11} style={{ flexShrink: 0 }} />
-                        <div>
-                          <div>Disassembly</div>
-                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>ASM → decompiled C → pseudocode</div>
-                        </div>
-                      </button>
-
-                      <button onClick={() => setViewMode('vulns')} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                        background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
-                        borderRadius: 2, cursor: 'pointer',
-                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
-                      }}>
-                        <Shield size={11} style={{ flexShrink: 0 }} />
-                        <div>
-                          <div>Vuln Map</div>
-                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>CWE · ATT&CK · D3FEND · CAPEC</div>
-                        </div>
-                      </button>
-                    </div>
-                    <button onClick={() => addToScene(data.graphNodes.map(n => n.id))} style={{
-                      display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', marginTop: 4,
-                      width: '100%', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim,
-                      borderRadius: 2, cursor: 'pointer',
-                      fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 400, textAlign: 'left',
+                    <button onClick={() => setViewMode('vulns')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                     }}>
-                      <GitGraph size={11} style={{ flexShrink: 0 }} />
-                      <span>Load All ({data.graphNodes.length} nodes)</span>
+                      <span style={{ fontSize: 18 }}>🛡</span>
+                      <div>
+                        <div>View Vulnerability Map</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
+                      </div>
                     </button>
-                    </>
-                    )}
+
+                    <button onClick={() => setViewMode('code')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>📄</span>
+                      <div>
+                        <div>Browse Source Patterns</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
+                      </div>
+                    </button>
                   </div>
 
-                  {/* Pipeline / REST API — prominent for automation workflows */}
-                  <div style={{
-                    padding: '6px 10px', borderTop: `1px solid ${EMBRY.border}`,
-                    background: '#0a0a0a',
-                  }}>
-                    <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 5, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Workflow size={9} style={{ color: EMBRY.muted }} />
-                      REST API
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      {[
-                        ['GET', `/api/binary/${binaryName}/features`, 'feature graph JSON'],
-                        ['GET', `/api/binary/${binaryName}/graph`, 'adjacency + edge data'],
-                        ['GET', `/api/binary/${binaryName}/taxonomy`, 'CWE / ATT&CK export'],
-                        ['POST', '/api/binary/ingest', 'trigger ingestion pipeline'],
-                      ].map(([method, path, desc]) => (
-                        <div key={path} style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
-                          <span style={{ fontSize: 7, fontWeight: 700, color: method === 'GET' ? '#22c55e' : '#f59e0b', minWidth: 28 }}>{method}</span>
-                          <span style={{ fontSize: 8, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', flex: 1 }}>{path}</span>
-                          <span style={{ fontSize: 7, color: EMBRY.muted }}>{desc}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 12, textAlign: 'center' }}>
+                    {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
                   </div>
                 </div>
               )}
@@ -2839,125 +2205,38 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
             </div>
 
             {/* Context Menu Overlay */}
-            {contextMenu && (() => {
-              const n = contextMenu.node
-              const displayLabel = nodeLabels[n.id] ?? n.label
-              const annotation = nodeAnnotations[n.id]
-              return (
-                <ContextMenu
-                  x={contextMenu.x}
-                  y={contextMenu.y}
-                  title={displayLabel}
-                  onClose={() => setContextMenu(null)}
-                  items={[
-                    {
-                      label: 'Rename', icon: <Code size={12} />, shortcut: 'N',
-                      onClick: () => {
-                        const next = window.prompt('Rename node:', displayLabel)
-                        if (next && next.trim()) setNodeLabels(m => ({ ...m, [n.id]: next.trim() }))
-                      },
-                    },
-                    {
-                      label: annotation ? 'Edit Annotation' : 'Add Annotation',
-                      icon: <MessageSquare size={12} />, shortcut: ';',
-                      onClick: () => {
-                        const next = window.prompt('Annotation:', annotation ?? '')
-                        if (next !== null) setNodeAnnotations(m => ({ ...m, [n.id]: next.trim() }))
-                      },
-                    },
-                    {
-                      label: 'Copy ID / Address', icon: <List size={12} />, shortcut: 'Ctrl+C',
-                      onClick: () => { navigator.clipboard.writeText(n.id) },
-                    },
-                    { label: '', separator: true, onClick: () => {} },
-                    { label: 'Navigation', header: true, onClick: () => {} },
-                    {
-                      label: 'Callers & Callees (XRefs)', icon: <Search size={12} />, shortcut: 'X',
-                      onClick: () => {
-                        setChatInput(`List all callers and callees of ${displayLabel}. For each caller: where does it call from and what arguments does it pass? For each callee: what does ${displayLabel} call and in what order? Include indirect calls via function pointers or vtable dispatch.`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Trace Call Depth…', icon: <GitGraph size={12} />, shortcut: 'D',
-                      onClick: () => {
-                        const depth = window.prompt('Call depth (1–10):', '3')
-                        const d = parseInt(depth ?? '3', 10)
-                        const clamped = isNaN(d) ? 3 : Math.max(1, Math.min(10, d))
-                        setChatInput(`Trace all callers and callees of ${displayLabel} to depth ${clamped}. Show the full call tree level by level, listing direct calls first then indirect calls (function pointers, vtable slots, callbacks) at each level. Mark any cycles.`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Full Dependency Chain', icon: <Network size={12} />, shortcut: 'C',
-                      onClick: () => {
-                        setChatInput(`Show the full dependency chain from all binary entry points to ${displayLabel}. For each path: list every intermediate function in call order, note direct vs indirect calls, and flag any path that crosses a privilege or trust boundary (syscall, extern, callback). Which path is shortest? Which has the most external-input exposure?`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Indirect Calls (Ptrs / Vtables)', icon: <Workflow size={12} />,
-                      onClick: () => {
-                        setChatInput(`Find all indirect calls involving ${displayLabel}: function-pointer assignments, vtable slots, dispatch tables, or callback registrations. For each: where is the pointer set, where is it invoked, and can the target be statically resolved or does it require dynamic analysis?`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Highlight Call Path…', icon: <Search size={12} />, shortcut: 'H',
-                      onClick: () => {
-                        const target = window.prompt('Highlight path to (function name):', displayLabel)
-                        if (!target?.trim()) return
-                        setChatInput(`Highlight the specific call path from the binary entry point to ${target.trim()}. List each function in the chain in call order, noting direct vs indirect calls. If multiple paths exist, show the shortest and the one with the most external-input exposure.`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Expand 6 Neighbors', icon: <Network size={12} />, shortcut: 'E',
-                      onClick: () => { addNodeWithNeighbors(n.id, 1, 6) },
-                    },
-                    {
-                      label: 'Expand All Neighbors', icon: <Network size={12} />,
-                      onClick: () => { addNodeWithNeighbors(n.id, 1, 20) },
-                    },
-                    { label: '', separator: true, onClick: () => {} },
-                    { label: 'Analysis', header: true, onClick: () => {} },
-                    {
-                      label: 'Trace Execution Path', icon: <Workflow size={12} />,
-                      onClick: () => {
-                        setChatInput(`Trace the execution path of ${displayLabel}. What state machines, events, and schemas does it touch?`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: 'Find Attack Surface', icon: <Shield size={12} />,
-                      onClick: () => {
-                        setChatInput(`What is the security attack surface of ${displayLabel}? What auth, permissions, or external inputs does it use?`)
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    {
-                      label: selectedNode && selectedNode.id !== n.id
-                        ? `Compare with ${selectedNode.label}` : 'Analyze Connections',
-                      icon: <Search size={12} />,
-                      onClick: () => {
-                        const other = selectedNode && selectedNode.id !== n.id ? selectedNode.label : ''
-                        if (other) {
-                          setChatInput(`Compare ${displayLabel} and ${other}. How are they related? What do they share?`)
-                        } else {
-                          setChatInput(`What are the most important connections of ${displayLabel} and why?`)
-                        }
-                        setTimeout(() => sendChat(), 100)
-                      },
-                    },
-                    { label: '', separator: true, onClick: () => {} },
-                    {
-                      label: 'Remove from Scene', icon: <Trash2 size={12} />, danger: true, shortcut: 'Del',
-                      onClick: () => { removeFromScene(n.id) },
-                    },
-                  ]}
-                />
-              )
-            })()}
+            {contextMenu && (
+              <div onClick={() => setContextMenu(null)} style={{ position: 'fixed', inset: 0, zIndex: 9999 }} onContextMenu={e => { e.preventDefault(); setContextMenu(null) }}>
+                <div style={{ position: 'absolute', top: contextMenu.y, left: contextMenu.x, background: '#090909', border: `1px solid ${EMBRY.border}`, padding: '4px', borderRadius: 2, minWidth: 160, boxShadow: '0 8px 32px rgba(0,0,0,0.8)' }} onClick={e => e.stopPropagation()}>
+                  <div style={{ padding: '6px 10px', fontSize: 9, fontWeight: 700, color: EMBRY.dim, borderBottom: `1px solid ${EMBRY.border}`, marginBottom: 4 }}>{contextMenu.node.label.toUpperCase()}</div>
+                  <div style={styles.contextItem} onClick={() => { addNodeWithNeighbors(contextMenu.node.id, 1, 6); setContextMenu(null) }}><Network size={12} /> Expand 6 Neighbors</div>
+                  <div style={styles.contextItem} onClick={() => { addNodeWithNeighbors(contextMenu.node.id, 1, 20); setContextMenu(null) }}><Network size={12} /> Expand All Neighbors</div>
+                  <div style={styles.contextItem} onClick={() => { removeFromScene(contextMenu.node.id); setContextMenu(null) }}><Trash2 size={12} /> Remove from Scene</div>
+                  <div style={{ height: 1, background: EMBRY.border, margin: '4px 0' }} />
+                  <div style={{ padding: '4px 10px', fontSize: 8, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase' }}>Scene Actions</div>
+                  <div style={styles.contextItem} onClick={() => {
+                    setContextMenu(null)
+                    setChatInput(`Trace the execution path of ${contextMenu.node.label}. What state machines, events, and schemas does it touch?`)
+                    setTimeout(() => sendChat(), 100)
+                  }}><Workflow size={12} /> Trace Execution Path</div>
+                  <div style={styles.contextItem} onClick={() => {
+                    setContextMenu(null)
+                    setChatInput(`What is the security attack surface of ${contextMenu.node.label}? What auth, permissions, or external inputs does it use?`)
+                    setTimeout(() => sendChat(), 100)
+                  }}><Shield size={12} /> Find Attack Surface</div>
+                  <div style={styles.contextItem} onClick={() => {
+                    setContextMenu(null)
+                    const other = selectedNode && selectedNode.id !== contextMenu.node.id ? selectedNode.label : ''
+                    if (other) {
+                      setChatInput(`Compare ${contextMenu.node.label} and ${other}. How are they related? What do they share?`)
+                    } else {
+                      setChatInput(`What are the most important connections of ${contextMenu.node.label} and why?`)
+                    }
+                    setTimeout(() => sendChat(), 100)
+                  }}><Search size={12} /> {selectedNode && selectedNode.id !== contextMenu.node.id ? `Compare with ${selectedNode.label}` : 'Analyze Connections'}</div>
+                </div>
+              </div>
+            )}
 
             {/* ═══ BOTTOM DATA VIEW — resizable, tabbed inspector ═══ */}
             {/* Drag handle for vertical resize */}
@@ -3041,8 +2320,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     const deg = data.allEdges.filter(e => e._from === n.id || e._to === n.id).length
                     return (
                       <span key={n.id} onClick={() => onFeatureClick(n.label)}
-                        tabIndex={0} role="button" aria-label={`Navigate to namespace: ${n.label}`}
-                        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onFeatureClick(n.label) } }}
                         style={{ fontSize: 9, padding: '2px 6px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace' }}>
                         {n.label} <span style={{ color: EMBRY.muted }}>({deg})</span>
                       </span>
@@ -3060,8 +2337,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     .slice(0, 10)
                     .map(n => (
                       <span key={n.id} onClick={() => onFeatureClick(n.label)}
-                        tabIndex={0} role="button" aria-label={`Select feature: ${n.label}`}
-                        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onFeatureClick(n.label) } }}
                         style={{ fontSize: 9, padding: '2px 6px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#22d3ee', cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', borderBottom: '1px dotted rgba(34,211,238,0.3)' }}>
                         {n.label} <span style={{ color: EMBRY.muted }}>({n.deg})</span>
                       </span>
@@ -3081,10 +2356,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {([
                     { id: 'summary' as const, title: 'Overview', icon: <Layers size={14} /> },
                     { id: 'connections' as const, title: 'Connections', icon: <Network size={14} /> },
+                    { id: 'ast' as const, title: 'AST / Fields', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4C5.5 6.5 4 9 4 12s1.5 5.5 4 8" /><path d="M16 4c2.5 2.5 4 5 4 8s-1.5 5.5-4 8" /><line x1="9.5" y1="9" x2="14.5" y2="15" /><line x1="14.5" y1="9" x2="9.5" y2="15" /></svg> },
                     { id: 'explain' as const, title: 'Explanation', icon: <MessageSquare size={14} /> },
                     { id: 'code' as const, title: 'Code View', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/><path d="M14 4l-4 16"/></svg> },
                     { id: 'table' as const, title: 'All Features', icon: <Table2 size={14} /> },
-                    { id: 'ast' as const, title: 'AST / Fields', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4C5.5 6.5 4 9 4 12s1.5 5.5 4 8" /><path d="M16 4c2.5 2.5 4 5 4 8s-1.5 5.5-4 8" /><line x1="9.5" y1="9" x2="14.5" y2="15" /><line x1="14.5" y1="9" x2="9.5" y2="15" /></svg> },
                     { id: 'raw' as const, title: 'Raw JSON', icon: <Code size={14} /> },
                   ]).map(tab => (
                     <button key={tab.id} title={tab.title}
@@ -3168,346 +2443,37 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 3: Fields/Parameters — expandable struct view with RE annotations */}
-                      {selectedNode.fields && selectedNode.fields.length > 0 && (() => {
-                        const isSchema = selectedNode.nodeType === 'schema'
-                        // Map common type names → C-style type annotation + byte size
-                        const toCType = (raw: string): { ctype: string; size: number; isPtr: boolean; isBitfield: boolean; bits?: number } => {
-                          const r = raw.toLowerCase().trim()
-                          if (!r) return { ctype: 'uint8_t', size: 1, isPtr: false, isBitfield: false }
-                          // bitfield (must check before pointer so "uint32_t:3" parses correctly)
-                          const bfMatch = r.match(/:(\d+)$/)
-                          if (bfMatch) { const base = toCType(r.replace(/:(\d+)$/, '')); return { ...base, ctype: base.ctype, isBitfield: true, bits: parseInt(bfMatch[1]), size: 0 } }
-                          // struct pointer — preserve struct name: "struct_foo_ptr", "struct foo*"
-                          const structPtrMatch = r.match(/^struct[_ ](.+?)(?:_ptr|\s*\*)$/)
-                          if (structPtrMatch) return { ctype: `struct ${structPtrMatch[1].replace(/_ptr$/i,'').trim()}*`, size: 8, isPtr: true, isBitfield: false }
-                          // plain pointer types (non-struct)
-                          if (r.includes('*') || r.includes('ptr') || r.includes('pointer') || r === 'address') return { ctype: r.includes('char') ? 'char*' : r.includes('void') ? 'void*' : 'uintptr_t', size: 8, isPtr: true, isBitfield: false }
-                          if (r === 'bool' || r === 'boolean') return { ctype: 'uint8_t /*bool*/', size: 1, isPtr: false, isBitfield: false }
-                          if (r === 'byte' || r === 'uint8' || r === 'uint8_t' || r === 'u8') return { ctype: 'uint8_t', size: 1, isPtr: false, isBitfield: false }
-                          if (r === 'int8' || r === 'int8_t' || r === 'i8') return { ctype: 'int8_t', size: 1, isPtr: false, isBitfield: false }
-                          if (r === 'uint16' || r === 'uint16_t' || r === 'u16' || r === 'word' || r === 'short') return { ctype: 'uint16_t', size: 2, isPtr: false, isBitfield: false }
-                          if (r === 'int16' || r === 'int16_t' || r === 'i16') return { ctype: 'int16_t', size: 2, isPtr: false, isBitfield: false }
-                          if (r === 'uint32' || r === 'uint32_t' || r === 'u32' || r === 'dword' || r === 'int' || r === 'uint') return { ctype: 'uint32_t', size: 4, isPtr: false, isBitfield: false }
-                          if (r === 'int32' || r === 'int32_t' || r === 'i32') return { ctype: 'int32_t', size: 4, isPtr: false, isBitfield: false }
-                          if (r === 'uint64' || r === 'uint64_t' || r === 'u64' || r === 'qword') return { ctype: 'uint64_t', size: 8, isPtr: false, isBitfield: false }
-                          if (r === 'int64' || r === 'int64_t' || r === 'i64') return { ctype: 'int64_t', size: 8, isPtr: false, isBitfield: false }
-                          if (r === 'float' || r === 'f32') return { ctype: 'float', size: 4, isPtr: false, isBitfield: false }
-                          if (r === 'double' || r === 'f64') return { ctype: 'double', size: 8, isPtr: false, isBitfield: false }
-                          if (r === 'string' || r === 'str') return { ctype: 'char*', size: 8, isPtr: true, isBitfield: false }
-                          if (r.startsWith('char[')) { const n = parseInt(r.slice(5)); return { ctype: raw, size: isNaN(n) ? 0 : n, isPtr: false, isBitfield: false } }
-                          if (r === 'char') return { ctype: 'char', size: 1, isPtr: false, isBitfield: false }
-                          if (r.startsWith('struct ') || r.startsWith('struct_')) return { ctype: `struct ${raw.replace(/^struct_?/i,'').trim()}`, size: 0, isPtr: false, isBitfield: false }
-                          if (r === 'list' || r === 'array') return { ctype: 'void*[]', size: 8, isPtr: true, isBitfield: false }
-                          if (r === 'map' || r === 'dict') return { ctype: 'void* /*map*/', size: 8, isPtr: true, isBitfield: false }
-                          // fallback: treat as opaque struct
-                          return { ctype: `struct ${raw}`, size: 0, isPtr: false, isBitfield: false }
-                        }
-                        // Calculate cumulative offsets
-                        const enriched = selectedNode.fields.map((f: any) => {
-                          const name = typeof f === 'string' ? f : f.name || f.label || String(f)
-                          const rawType = typeof f === 'object' ? (f.type || f.dataType || f.kind || '') : ''
-                          const desc = typeof f === 'object' ? (f.description || '') : ''
-                          const explicitOffset: number | undefined = typeof f === 'object' && f.offset != null ? Number(f.offset) : undefined
-                          const explicitSize: number | undefined = typeof f === 'object' && f.size != null ? Number(f.size) : undefined
-                          const explicitBits: number | undefined = typeof f === 'object' && f.bits != null ? Number(f.bits) : undefined
-                          const endian: string = typeof f === 'object' && f.endian ? String(f.endian).toUpperCase() : 'LE'
-                          const typeInfo = toCType(rawType)
-                          if (explicitBits) { typeInfo.isBitfield = true; typeInfo.bits = explicitBits; typeInfo.size = 0 }
-                          const size = explicitSize ?? typeInfo.size
-                          return { name, rawType, desc, typeInfo, size, endian, explicitOffset }
-                        })
-                        // Assign offsets: use explicit if given, else accumulate; track bit positions within bitfield words
-                        let cursor = 0
-                        let bitCursor = 0
-                        let lastBfBase = -1
-                        const withOffsets = enriched.map((e: any) => {
-                          const offset = e.explicitOffset ?? cursor
-                          let bitOffset = 0
-                          if (e.typeInfo.isBitfield) {
-                            if (lastBfBase !== offset) { bitCursor = 0; lastBfBase = offset }
-                            bitOffset = bitCursor
-                            bitCursor += (e.typeInfo.bits ?? 1)
-                          } else {
-                            cursor = offset + (e.size || 0)
-                            bitCursor = 0
-                            lastBfBase = -1
-                          }
-                          return { ...e, offset, bitOffset }
-                        })
-                        // Global endianness — majority vote
-                        const leCount = withOffsets.filter((e: any) => e.endian === 'LE').length
-                        const globalEndian = leCount >= withOffsets.length / 2 ? 'LE' : 'BE'
-                        return (
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                              <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase' }}>
-                                {isSchema ? 'STRUCT FIELDS' : 'PARAMETERS'} ({selectedNode.fields.length})
-                              </div>
-                              {isSchema && (
-                                <>
-                                  <span style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#1a2a1a', border: `1px solid ${EMBRY.green}44`, color: EMBRY.green, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>{globalEndian}</span>
-                                  {binaryMetas[binaryName]?.arch && <span style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#0a0a1a', border: '1px solid #2196F344', color: '#2196F3', fontFamily: 'JetBrains Mono, monospace' }}>{binaryMetas[binaryName].arch}</span>}
-                                  {cursor > 0 && <span style={{ fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>sizeof={cursor}B</span>}
-                                </>
-                              )}
-                            </div>
-                            {isSchema && (
-                              <div style={{ display: 'grid', gridTemplateColumns: '52px 100px 1fr 28px 24px', gap: '0 6px', padding: '2px 8px 2px', fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', borderBottom: `1px solid ${EMBRY.border}` }}>
-                                <span>OFFSET</span><span>TYPE</span><span>NAME</span><span>SIZE</span><span>END</span>
-                              </div>
-                            )}
-                            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '2px 0' }}>
-                              {withOffsets.map((e: any, i: number) => (
-                                <div key={i} onClick={() => onFeatureClick(e.name)}
+                      {/* Row 3: Fields/Parameters — expandable struct view */}
+                      {selectedNode.fields && selectedNode.fields.length > 0 && (
+                        <div>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>
+                            {selectedNode.nodeType === 'schema' ? 'STRUCT FIELDS' : 'PARAMETERS'} ({selectedNode.fields.length})
+                          </div>
+                          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '4px 0' }}>
+                            {selectedNode.fields.map((f: any, i: number) => {
+                              const name = typeof f === 'string' ? f : f.name || f.label || String(f)
+                              const type = typeof f === 'object' ? (f.type || f.dataType || '') : ''
+                              const desc = typeof f === 'object' ? (f.description || '') : ''
+                              return (
+                                <div key={i} onClick={() => onFeatureClick(name)}
                                   style={{
-                                    display: isSchema ? 'grid' : 'flex',
-                                    gridTemplateColumns: isSchema ? '52px 100px 1fr 28px 24px' : undefined,
-                                    gap: isSchema ? '0 6px' : 8,
-                                    padding: '3px 8px', cursor: 'pointer',
+                                    display: 'flex', gap: 8, padding: '2px 8px', cursor: 'pointer',
                                     borderBottom: i < selectedNode.fields!.length - 1 ? `1px solid ${EMBRY.border}` : 'none',
                                   }}
-                                  onMouseEnter={ev => (ev.currentTarget.style.background = '#0a0a0a')}
-                                  onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
+                                  onMouseEnter={e => (e.currentTarget.style.background = '#0a0a0a')}
+                                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                                 >
-                                  {isSchema ? (
-                                    <>
-                                      <span style={{ color: '#4a9eff', fontSize: 8 }}>+0x{e.offset.toString(16).padStart(4,'0').toUpperCase()}{e.typeInfo.isBitfield ? <span style={{ color: '#FF9800', fontSize: 7 }}>.b{e.bitOffset}</span> : null}</span>
-                                      <span style={{ color: e.typeInfo.isPtr ? '#22d3ee' : e.typeInfo.isBitfield ? '#FF9800' : '#9C27B0', fontSize: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                        {e.typeInfo.isBitfield ? `${e.typeInfo.ctype}:${e.typeInfo.bits}` : e.typeInfo.ctype}
-                                      </span>
-                                      <span style={{ color: EMBRY.white, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={e.desc || e.name}>{e.name}{e.desc ? <span style={{ color: EMBRY.muted, fontSize: 7, marginLeft: 4 }}>{e.desc.slice(0,40)}{e.desc.length>40?'…':''}</span> : null}</span>
-                                      <span style={{ color: e.typeInfo.isBitfield ? '#FF9800' : EMBRY.muted, fontSize: 8, textAlign: 'right' }}>
-                                        {e.typeInfo.isBitfield ? `${e.typeInfo.bits}b` : e.size > 0 ? `${e.size}B` : e.typeInfo.isPtr ? '8B' : '?'}
-                                      </span>
-                                      <span style={{ fontSize: 7, color: e.endian === 'BE' ? '#FF5722' : EMBRY.green }}>{e.endian}</span>
-<<<<<<< HEAD
-                      {/* Row 4: States — state machine ring/directed graph */}
-                      {selectedNode.states && selectedNode.states.length > 0 && (() => {
-                        const TERMINAL_RE = /error|fail|dead|final|done|term|end|halt|clos|reject|disconnect|timeout|abort|invalid/i
-                        const ERROR_RE = /error|fail|invalid|abort|reject/i
-                        const INITIAL_RE = /^(init|idle|start|ready|none|disconnected|closed|new|reset)$/i
-                        const states = selectedNode.states!
-                        const classified = states.map((s: any, i: number) => {
-                          const name = typeof s === 'string' ? s : (s.name || String(s))
-                          // Extract explicit transitions from .transitions / .on / .events
-                          const txns: Array<{label: string; target: string}> = []
-                          if (typeof s === 'object' && s !== null) {
-                            const src = s.transitions || s.on || s.events || {}
-                            for (const [evt, tgt] of Object.entries(src as Record<string, any>)) {
-                              const tgtName = typeof tgt === 'string' ? tgt : ((tgt as any)?.target ?? (tgt as any)?.state ?? String(tgt))
-                              txns.push({ label: evt, target: String(tgtName) })
-                            }
-                          }
-                          const isInitial = i === 0 || INITIAL_RE.test(name)
-                          const isError = ERROR_RE.test(name)
-                          const isTerminal = isError || TERMINAL_RE.test(name)
-                          return { name, isInitial, isError, isTerminal, idx: i, txns }
-                        })
-                        // Only first state is initial unless a later state explicitly matches the regex
-                        const hasExplicitInitial = classified.some((s, i) => i > 0 && INITIAL_RE.test(s.name))
-                        if (!hasExplicitInitial) classified.forEach((s, i) => { if (i > 0) s.isInitial = false })
-
-                        // Build edge list: prefer explicit transitions, else sequential with inferred event labels
-                        const nameToIdx = new Map(classified.map(s => [s.name.toLowerCase(), s.idx]))
-                        const edges: Array<{from: number; to: number; label: string}> = []
-                        let hasExplicit = false
-                        classified.forEach(st => {
-                          if (st.txns.length > 0) {
-                            hasExplicit = true
-                            st.txns.forEach(t => {
-                              const toIdx = nameToIdx.get(t.target.toLowerCase())
-                              if (toIdx !== undefined && toIdx !== st.idx) edges.push({ from: st.idx, to: toIdx, label: t.label })
-                            })
-                          }
-                        })
-                        if (!hasExplicit) {
-                          classified.slice(0, -1).forEach((st, i) => {
-                            const next = classified[i + 1]
-                            const lbl = (() => {
-                              if (next.isError) return 'error'
-                              if (TERMINAL_RE.test(next.name)) return 'done'
-                              if (/connect/i.test(next.name)) return 'connect'
-                              if (/auth/i.test(next.name)) return 'auth'
-                              if (/open/i.test(next.name)) return 'open'
-                              if (/send|write/i.test(next.name)) return 'send'
-                              if (/recv|read/i.test(next.name)) return 'recv'
-                              if (/ack/i.test(next.name)) return 'ack'
-                              if (/close/i.test(next.name)) return 'close'
-                              return '→'
-                            })()
-                            edges.push({ from: i, to: i + 1, label: lbl })
-                          })
-                        }
-
-                        // Ring layout for ≤14 states, grid otherwise
-                        const n = classified.length
-                        const useRing = n <= 14
-                        const NODE_W = 72, NODE_H = 18, NR = 10
-
-                        let SVG_W = 0, SVG_H = 0
-                        const positions: Array<{x: number; y: number; cx: number; cy: number}> = []
-                        if (useRing) {
-                          const R = Math.max(60, n * 11)
-                          const pad = NODE_W / 2 + 22
-                          SVG_W = (R + pad) * 2; SVG_H = (R + pad) * 2
-                          const CX = SVG_W / 2, CY = SVG_H / 2
-                          for (let i = 0; i < n; i++) {
-                            const angle = -Math.PI / 2 + (2 * Math.PI * i) / n
-                            const cx = CX + R * Math.cos(angle), cy = CY + R * Math.sin(angle)
-                            positions.push({ cx, cy, x: cx - NODE_W / 2, y: cy - NODE_H / 2 })
-                          }
-                        } else {
-                          const COLS = Math.min(4, n), H_GAP = 22, V_GAP = 30
-                          const ROWS = Math.ceil(n / COLS)
-                          SVG_W = COLS * NODE_W + (COLS - 1) * H_GAP + 20
-                          SVG_H = ROWS * NODE_H + (ROWS - 1) * V_GAP + 20
-                          for (let i = 0; i < n; i++) {
-                            const x = 10 + (i % COLS) * (NODE_W + H_GAP)
-                            const y = 10 + Math.floor(i / COLS) * (NODE_H + V_GAP)
-                            positions.push({ x, y, cx: x + NODE_W / 2, cy: y + NODE_H / 2 })
-                          }
-                        }
-
-                        // Compute edge endpoint nudged to node border (toward target)
-                        const edgePt = (from: number, to: number, side: 'exit' | 'entry') => {
-                          const f = positions[from], t = positions[to]
-                          const dx = t.cx - f.cx, dy = t.cy - f.cy
-                          const len = Math.sqrt(dx * dx + dy * dy) || 1
-                          const src = side === 'exit' ? f : t
-                          const sign = side === 'exit' ? 1 : -1
-                          const offset = side === 'entry' ? NR + 5 : NR
-                          return { x: src.cx + sign * (dx / len) * offset, y: src.cy + sign * (dy / len) * offset }
-                        }
-
-                        const traceAll = () => {
-                          setSmTracedPath(new Set(classified.map((_, i) => i)))
-                          setTimeout(() => setSmTracedPath(new Set()), 2500)
-                        }
-
-                        return (
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
-                              <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase' }}>
-                                STATE MACHINE — {useRing ? 'RING' : 'DIRECTED'} GRAPH · {states.length} states · {edges.length} transitions
-                              </div>
-                              <button onClick={traceAll} style={{ fontSize: 7, padding: '1px 6px', borderRadius: 3, cursor: 'pointer', background: '#0a1a14', border: `1px solid ${EMBRY.green}55`, color: EMBRY.green }}>
-                                TRACE ALL
-                              </button>
-                            </div>
-                            {/* Legend */}
-                            <div style={{ display: 'flex', gap: 10, marginBottom: 4 }}>
-                              <span style={{ fontSize: 7, color: EMBRY.green, fontFamily: 'JetBrains Mono, monospace' }}>◉ INITIAL</span>
-                              <span style={{ fontSize: 7, color: '#FF5722', fontFamily: 'JetBrains Mono, monospace' }}>▣ ERROR</span>
-                              <span style={{ fontSize: 7, color: EMBRY.amber, fontFamily: 'JetBrains Mono, monospace' }}>◆ TERMINAL</span>
-                              <span style={{ fontSize: 7, color: '#9C27B0', fontFamily: 'JetBrains Mono, monospace' }}>○ STATE</span>
-                              <span style={{ fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>{hasExplicit ? '⚡ explicit' : '~ inferred'}</span>
-                            </div>
-                            {/* SVG directed graph */}
-                            <svg width={SVG_W} height={SVG_H} style={{ display: 'block', overflow: 'visible', background: '#050505', borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
-                              <defs>
-                                <marker id="sm-arrow" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-                                  <polygon points="0 0, 6 2, 0 4" fill="#444" />
-                                </marker>
-                                <marker id="sm-arrow-traced" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-                                  <polygon points="0 0, 6 2, 0 4" fill={EMBRY.green} />
-                                </marker>
-                                <marker id="sm-arrow-err" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-                                  <polygon points="0 0, 6 2, 0 4" fill="#FF5722" />
-                                </marker>
-                              </defs>
-                              {/* Initial-state entry arrow from outside the ring */}
-                              {(() => {
-                                const p0 = positions[0]
-                                const angle = useRing ? -Math.PI / 2 : 0
-                                const ex = p0.cx - Math.cos(angle) * (NR + 14)
-                                const ey = p0.cy - Math.sin(angle) * (NR + 14)
-                                const ax = p0.cx - Math.cos(angle) * (NR + 3)
-                                const ay = p0.cy - Math.sin(angle) * (NR + 3)
-                                return <line x1={ex} y1={ey} x2={ax} y2={ay} stroke={EMBRY.green} strokeWidth={1.5} markerEnd="url(#sm-arrow-traced)" />
-                              })()}
-                              {/* Transition edges with event/condition labels */}
-                              {edges.map((e, ei) => {
-                                const ep = edgePt(e.from, e.to, 'exit')
-                                const tp = edgePt(e.from, e.to, 'entry')
-                                const isTraced = smTracedPath.has(e.from) && smTracedPath.has(e.to)
-                                const toErr = classified[e.to]?.isError
-                                const stroke = isTraced ? EMBRY.green : toErr ? '#FF572266' : '#2a2a2a'
-                                const marker = isTraced ? 'url(#sm-arrow-traced)' : toErr ? 'url(#sm-arrow-err)' : 'url(#sm-arrow)'
-                                const dx = tp.x - ep.x, dy = tp.y - ep.y
-                                const len = Math.sqrt(dx * dx + dy * dy) || 1
-                                // Slight perpendicular curve so bidirectional edges don't overlap
-                                const qx = (ep.x + tp.x) / 2 - (dy / len) * 8
-                                const qy = (ep.y + tp.y) / 2 + (dx / len) * 8
-                                const d = `M${ep.x.toFixed(1)} ${ep.y.toFixed(1)} Q${qx.toFixed(1)} ${qy.toFixed(1)} ${tp.x.toFixed(1)} ${tp.y.toFixed(1)}`
-                                const lbl = e.label.length > 9 ? e.label.slice(0, 8) + '\u2026' : e.label
-                                return (
-                                  <g key={ei}>
-                                    <path d={d} stroke={stroke} strokeWidth={isTraced ? 1.5 : 0.8} fill="none" markerEnd={marker} />
-                                    <text x={qx.toFixed(1)} y={(qy - 3).toFixed(1)} fontSize={5} fill={isTraced ? EMBRY.green : toErr ? '#FF572299' : '#3a3a3a'} textAnchor="middle" fontFamily="JetBrains Mono, monospace">{lbl}</text>
-                                  </g>
-                                )
-                              })}
-                              {/* State nodes */}
-                              {classified.map((st, i) => {
-                                const pos = positions[i]
-                                const isTraced = smTracedPath.has(i)
-                                const borderColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#222'
-                                const bgColor = st.isError ? '#1a0a05' : st.isInitial ? '#0a1a12' : st.isTerminal ? '#1a1205' : '#0d0d0d'
-                                const textColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#9C27B0'
-                                const label = st.name.length > 10 ? st.name.slice(0, 9) + '\u2026' : st.name
-                                return (
-                                  <g key={i} style={{ cursor: 'pointer' }} onClick={() => setSmTracedPath(prev => { const s = new Set(prev); s.has(i) ? s.delete(i) : s.add(i); return s })}>
-                                    {/* Double-ring marker for initial state */}
-                                    {st.isInitial && <rect x={pos.x - 3} y={pos.y - 3} width={NODE_W + 6} height={NODE_H + 6} rx={5} ry={5} fill="none" stroke={EMBRY.green + '44'} strokeWidth={0.8} />}
-                                    <rect x={pos.x} y={pos.y} width={NODE_W} height={NODE_H} rx={3} ry={3}
-                                      fill={bgColor}
-                                      stroke={isTraced ? textColor : borderColor}
-                                      strokeWidth={isTraced ? 1.5 : 0.8}
-                                      strokeDasharray={st.isError ? '3 2' : undefined}
-                                    />
-                                    <text x={pos.cx} y={pos.cy + 3} fontSize={7} fill={isTraced ? textColor : textColor + 'cc'} textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight={st.isInitial ? 700 : 400}>{label}</text>
-                                    <text x={pos.x + 3} y={pos.y + 6} fontSize={5} fill="#333" fontFamily="JetBrains Mono, monospace">S{i}</text>
-                                  </g>
-                                )
-                              })}
-                            </svg>
-=======
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
-                                      <span style={{ color: EMBRY.white, flex: 1 }}>{e.name}</span>
-                                      {e.rawType && <span style={{ color: '#9C27B0', fontSize: 8 }}>{e.typeInfo.ctype}</span>}
-                                      {e.desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.desc}</span>}
-                                    </>
-                                  )}
+                                  <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
+                                  <span style={{ color: EMBRY.white, flex: 1 }}>{name}</span>
+                                  {type && <span style={{ color: '#9C27B0' }}>{type}</span>}
+                                  {desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{desc}</span>}
                                 </div>
-                              ))}
-                            </div>
->>>>>>> parent of c76f2b30 (persona/gynvael-coldwind: fix state-machines)
+                              )
+                            })}
                           </div>
-                        )
-                      })()}
+                        </div>
+                      )}
 
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-                                const textColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#9C27B0'
-                                const label = st.name.length > 11 ? st.name.slice(0, 10) + '…' : st.name
-                                return (
-                                  <g key={i} style={{ cursor: 'pointer' }} onClick={() => setSmTracedPath(new Set([i]))}>
-                                    <rect x={pos.x} y={pos.y} width={NODE_W} height={NODE_H} rx={3} ry={3}
-                                      fill={isTraced ? bgColor : bgColor}
-                                      stroke={isTraced ? textColor : borderColor}
-                                      strokeWidth={isTraced ? 1.5 : 0.8}
-                                    />
-                                    <text x={pos.x + 3} y={pos.y + 7} fontSize={5} fill="#444" fontFamily="JetBrains Mono, monospace">S{i}</text>
-                                    <text x={pos.x + NODE_W / 2} y={pos.y + NODE_H / 2 + 3} fontSize={7} fill={textColor} textAnchor="middle" fontFamily="JetBrains Mono, monospace">{label}</text>
-                                  </g>
-                                )
-                              })}
-                            </svg>
-=======
                       {/* Row 4: States — state machine transition view */}
                       {selectedNode.states && selectedNode.states.length > 0 && (
                         <div>
@@ -3530,211 +2496,62 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 </div>
                               )
                             })}
->>>>>>> parent of c76f2b30 (persona/gynvael-coldwind: fix state-machines)
                           </div>
                         </div>
                       )}
 
-=======
->>>>>>> Stashed changes
                       {/* Row 5: RPC/Event interface details */}
-                      {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (() => {
-                        const fullDoc = data.allNodes.find(n => n._id === selectedNode.id) as any
-                        const tax = taxonomyMap.get(selectedNode.id)
-                        const authEdgeNodes = allSelectedEdges
-                          .map(e => data.graphNodes.find(n => n.id === (e._from === selectedNode.id ? e._to : e._from)))
-                          .filter(Boolean)
-                          .filter(n => n!.label.includes('auth') || n!.label.includes('permission') || n!.label.includes('token') || n!.label.includes('credential'))
-                        const hasAuth = authEdgeNodes.length > 0 || !!(fullDoc?.auth || fullDoc?.authentication || fullDoc?.requires_auth)
-                        const authDetail: string = fullDoc?.auth || fullDoc?.authentication || fullDoc?.requires_auth || (authEdgeNodes.length > 0 ? authEdgeNodes.map(n => n!.label).join(', ') : '')
-                        const callingConv: string = fullDoc?.calling_convention || fullDoc?.call_convention || ''
-                        const returnType: string = fullDoc?.return_type || fullDoc?.returns || ''
-                        const handler: string = fullDoc?.handler || fullDoc?.handler_fn || fullDoc?.implementation || fullDoc?.impl_fn || fullDoc?.function || ''
-                        const handlerList: string[] = (() => {
-                          const h = fullDoc?.handlers || fullDoc?.handler_fns || fullDoc?.implementations
-                          if (Array.isArray(h) && h.length > 0) return h.map(String)
-                          if (handler) return [handler]
-                          return []
-                        })()
-                        // Also surface implementing functions from incoming 'contains' edges (function nodes wrapping this RPC)
-                        const containsCallers = incomingEdges
-                          .filter(e => e.type === 'contains')
-                          .map(e => e.source)
-                          .filter(s => !handlerList.includes(s))
-                        const paramNodeEdges = outgoingEdges.filter(e => e.type === 'has_parameter')
-                        const paramFromGraph: { name: string; type?: string; required?: boolean }[] = paramNodeEdges
-                          .map(e => {
-                            const n = data.graphNodes.find(g => g.id === e.targetId) as any
-                            const t = n ? (n.fields?.[0]?.type || (n as any).data_type || (n as any).type || undefined) : undefined
-                            return { name: n?.label ?? e.target, type: t }
-                          })
-                        const paramList: { name: string; type?: string; required?: boolean }[] = (() => {
-                          const raw = fullDoc?.parameters || fullDoc?.params
-                          if (Array.isArray(raw) && raw.length > 0) {
-                            return raw.map((p: any) => typeof p === 'object'
-                              ? { name: p.name || p.label || String(p), type: p.type || p.data_type, required: p.required }
-                              : { name: String(p) }
-                            )
-                          }
-                          if (paramFromGraph.length > 0) return paramFromGraph
-                          return (selectedNode.fields ?? []).map(f => ({ name: f }))
-                        })()
-                        const payloadOut = outgoingEdges.filter(e => e.type === 'payload')
-                        const payloadIn = incomingEdges.filter(e => e.type === 'payload')
-                        const emitsEdges = outgoingEdges.filter(e => e.type === 'emits')
-                        const triggersEdges = outgoingEdges.filter(e => e.type === 'triggers')
-                        return (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                            {/* Interface section */}
-                            <div>
-                              <div style={{ fontSize: 8, color: '#2196F3', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>INTERFACE</div>
-                              <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '2px 8px', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
-                                <span style={{ color: EMBRY.muted }}>Type</span>
-                                <span style={{ color: EMBRY.white }}>{selectedNode.nodeType.toUpperCase()}</span>
-                                <span style={{ color: EMBRY.muted }}>Namespace</span>
-                                <span style={{ color: '#22d3ee' }}>{selectedNode.cluster}</span>
-                                {callingConv && <>
-                                  <span style={{ color: EMBRY.muted }}>Convention</span>
-                                  <span style={{ color: '#a78bfa' }}>{callingConv}</span>
-                                </>}
-                                {returnType && <>
-                                  <span style={{ color: EMBRY.muted }}>Returns</span>
-                                  <span style={{ color: '#34d399' }}>{returnType}</span>
-                                </>}
-                                {handlerList.length > 0 && <>
-                                  <span style={{ color: EMBRY.muted, alignSelf: 'flex-start', paddingTop: 1 }}>Handler{handlerList.length > 1 ? 's' : ''}</span>
-                                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                    {handlerList.map((h, i) => (
-                                      <code key={i} style={{ color: '#fbbf24', wordBreak: 'break-all', fontSize: 8, cursor: 'pointer' }} onClick={() => onFeatureClick(h)}>{h}</code>
-                                    ))}
-                                  </div>
-                                </>}
-                                {containsCallers.length > 0 && <>
-                                  <span style={{ color: EMBRY.muted, alignSelf: 'flex-start', paddingTop: 1 }}>Callers</span>
-                                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                    {containsCallers.slice(0, 4).map((c, i) => (
-                                      <code key={i} style={{ color: '#94a3b8', wordBreak: 'break-all', fontSize: 8, cursor: 'pointer' }} onClick={() => onFeatureClick(c)}>{c}</code>
-                                    ))}
-                                    {containsCallers.length > 4 && <span style={{ fontSize: 7, color: EMBRY.muted }}>+{containsCallers.length - 4} more</span>}
-                                  </div>
-                                </>}
-                                <span style={{ color: EMBRY.muted }}>Tier</span>
-                                <span style={{ color: selectedNode.tier === 'T0' ? EMBRY.green : selectedNode.tier === 'T1' ? EMBRY.amber : EMBRY.red }}>{selectedNode.tier}</span>
-                              </div>
-                            </div>
-
-                            {/* Parameters with types */}
-                            {paramList.length > 0 && (
-                              <div>
-                                <div style={{ fontSize: 8, color: '#9C27B0', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>PARAMETERS ({paramList.length})</div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                  {paramList.map((p, i) => (
-                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'JetBrains Mono, monospace', fontSize: 9 }}>
-                                      {p.required != null && (
-                                        <span style={{ fontSize: 7, color: p.required ? '#ef4444' : EMBRY.muted, minWidth: 12 }}>{p.required ? '!' : '?'}</span>
-                                      )}
-                                      <code style={{ color: '#22d3ee', cursor: 'pointer' }} onClick={() => onFeatureClick(p.name)}>{p.name}</code>
-                                      {p.type && <span style={{ color: '#a78bfa', fontSize: 8 }}>: {p.type}</span>}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Request/Response schemas via payload edges */}
-                            {(payloadOut.length > 0 || payloadIn.length > 0 || emitsEdges.length > 0 || triggersEdges.length > 0) && (
-                              <div>
-                                <div style={{ fontSize: 8, color: '#2196F3', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SCHEMAS</div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, fontFamily: 'JetBrains Mono, monospace', fontSize: 9 }}>
-                                  {payloadOut.map((e, i) => (
-                                    <div key={`po-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                                      <span style={{ color: '#2196F3', fontSize: 8 }}>REQ→</span>
-                                      <code style={{ color: '#22d3ee', cursor: 'pointer' }} onClick={() => onFeatureClick(e.target)}>{e.target}</code>
-                                    </div>
-                                  ))}
-                                  {payloadIn.map((e, i) => (
-                                    <div key={`pi-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                                      <span style={{ color: '#FF9800', fontSize: 8 }}>←RSP</span>
-                                      <code style={{ color: '#22d3ee', cursor: 'pointer' }} onClick={() => onFeatureClick(e.source)}>{e.source}</code>
-                                    </div>
-                                  ))}
-                                  {emitsEdges.map((e, i) => (
-                                    <div key={`em-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                                      <span style={{ color: '#FF5722', fontSize: 8 }}>EMIT→</span>
-                                      <code style={{ color: '#22d3ee', cursor: 'pointer' }} onClick={() => onFeatureClick(e.target)}>{e.target}</code>
-                                    </div>
-                                  ))}
-                                  {triggersEdges.map((e, i) => (
-                                    <div key={`tr-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                                      <span style={{ color: EMBRY.green, fontSize: 8 }}>TRIG→</span>
-                                      <code style={{ color: '#22d3ee', cursor: 'pointer' }} onClick={() => onFeatureClick(e.target)}>{e.target}</code>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Security / Auth section */}
-                            <div>
-                              <div style={{ fontSize: 8, color: '#FF5722', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SECURITY</div>
-                              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                                <span style={{
-                                  fontSize: 8, padding: '2px 6px', borderRadius: 2, fontWeight: 700,
-                                  background: hasAuth ? '#1a272120' : '#2a151520',
-                                  border: `1px solid ${hasAuth ? EMBRY.green + '44' : '#FF572244'}`,
-                                  color: hasAuth ? EMBRY.green : '#FF5722',
-                                }}>{hasAuth ? 'AUTH REQUIRED' : 'NO AUTH DETECTED'}</span>
-                                {authDetail && authDetail !== 'true' && (
-                                  <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: `${EMBRY.green}10`, border: `1px solid ${EMBRY.green}33`, color: EMBRY.green }}>{authDetail}</span>
-                                )}
-                                {tax?.cwe?.map(c => (
-                                  <span key={c} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF572210', border: '1px solid #FF572233', color: '#FF5722' }}>{c}</span>
-                                ))}
-                                {tax?.attack?.map(a => (
-                                  <span key={a} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF980010', border: '1px solid #FF980033', color: '#FF9800' }}>{a}</span>
-                                ))}
-                                {tax?.mind?.map(m => (
-                                  <span key={m} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#9C27B010', border: '1px solid #9C27B033', color: '#9C27B0' }}>{m}</span>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Fuzzer summary */}
-                            <div style={{ background: '#050a05', border: '1px solid #22c55e22', borderRadius: 3, padding: '4px 8px' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
-                                <div style={{ fontSize: 8, color: EMBRY.green, fontWeight: 700, textTransform: 'uppercase' }}>FUZZER TARGETS</div>
-                                <button
-                                  style={{ fontSize: 7, padding: '1px 6px', borderRadius: 2, cursor: 'pointer', background: '#0a1a0a', border: `1px solid ${EMBRY.green}44`, color: EMBRY.green }}
-                                  onClick={() => {
-                                    const structName = selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')
-                                    const params = paramList.map(p => `  ${p.type ?? 'uint8_t'} ${p.name};  // ${p.required === false ? 'optional' : 'required'}`).join('\n')
-                                    const handlerComment = handlerList.length > 0 ? `// Handler: ${handlerList.join(', ')}\n` : ''
-                                    const authComment = hasAuth ? `// Auth: ${authDetail || 'required'}\n` : '// Auth: none\n'
-                                    const convComment = callingConv ? `// Calling convention: ${callingConv}\n` : ''
-                                    const reqSchemas = payloadOut.map(e => `// REQ schema: ${e.target}`).join('\n')
-                                    const rspSchemas = payloadIn.map(e => `// RSP schema: ${e.source}`).join('\n')
-                                    const tmpl = `${handlerComment}${authComment}${convComment}${reqSchemas}${reqSchemas ? '\n' : ''}${rspSchemas}${rspSchemas ? '\n' : ''}typedef struct {\n${params || '  // no typed params extracted'}\n} ${structName}_t;\n`
-                                    navigator.clipboard.writeText(tmpl).catch(() => {})
-                                  }}
-                                >COPY STRUCT</button>
-                              </div>
-                              <div style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.muted, display: 'flex', flexWrap: 'wrap', gap: '2px 10px' }}>
-                                <span>{paramList.length} input{paramList.length !== 1 ? 's' : ''}</span>
-                                {payloadOut.length > 0 && <span>{payloadOut.length} req schema{payloadOut.length !== 1 ? 's' : ''}</span>}
-                                {payloadIn.length > 0 && <span>{payloadIn.length} rsp schema{payloadIn.length !== 1 ? 's' : ''}</span>}
-                                {handlerList.length > 0 && <span>{handlerList.length} handler{handlerList.length !== 1 ? 's' : ''}</span>}
-                                {containsCallers.length > 0 && <span>{containsCallers.length} caller{containsCallers.length !== 1 ? 's' : ''}</span>}
-                                <span style={{ color: hasAuth ? '#ef444488' : EMBRY.green }}>{hasAuth ? 'auth-gated' : 'unauthenticated'}</span>
-                                {callingConv && <span>conv: {callingConv}</span>}
-                                <span
-                                  style={{ color: EMBRY.green, cursor: 'pointer', textDecoration: 'underline' }}
-                                  onClick={() => setChatInput(`Generate a fuzzer for the ${selectedNode.label} ${selectedNode.nodeType}. What are the parameter types, edge cases, and boundary values? How would you mutate inputs to find bugs?`)}
-                                >→ ask AI</span>
-                              </div>
+                      {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          {/* Interface section */}
+                          <div>
+                            <div style={{ fontSize: 8, color: '#2196F3', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>INTERFACE</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '2px 8px', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+                              <span style={{ color: EMBRY.muted }}>Type</span>
+                              <span style={{ color: EMBRY.white }}>{selectedNode.nodeType.toUpperCase()}</span>
+                              <span style={{ color: EMBRY.muted }}>Namespace</span>
+                              <span style={{ color: '#22d3ee' }}>{selectedNode.cluster}</span>
+                              {selectedNode.fields && selectedNode.fields.length > 0 && <>
+                                <span style={{ color: EMBRY.muted }}>Params</span>
+                                <span style={{ color: EMBRY.white }}>{selectedNode.fields.length} ({selectedNode.fields.slice(0, 3).join(', ')}{selectedNode.fields.length > 3 ? '...' : ''})</span>
+                              </>}
+                              <span style={{ color: EMBRY.muted }}>Tier</span>
+                              <span style={{ color: selectedNode.tier === 'T0' ? EMBRY.green : selectedNode.tier === 'T1' ? EMBRY.amber : EMBRY.red }}>{selectedNode.tier}</span>
                             </div>
                           </div>
-                        )
-                      })()}
+
+                          {/* Security section */}
+                          <div>
+                            <div style={{ fontSize: 8, color: '#FF5722', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SECURITY</div>
+                            {(() => {
+                              const tax = taxonomyMap.get(selectedNode.id)
+                              const hasAuth = allSelectedEdges.some(e => {
+                                const otherNode = data.graphNodes.find(n => n.id === (e._from === selectedNode.id ? e._to : e._from))
+                                return otherNode && (otherNode.label.includes('auth') || otherNode.label.includes('permission') || otherNode.label.includes('token'))
+                              })
+                              return (
+                                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                                  <span style={{
+                                    fontSize: 8, padding: '2px 6px', borderRadius: 2, fontWeight: 700,
+                                    background: hasAuth ? '#1a272120' : '#2a151520',
+                                    border: `1px solid ${hasAuth ? EMBRY.green + '44' : '#FF572244'}`,
+                                    color: hasAuth ? EMBRY.green : '#FF5722',
+                                  }}>{hasAuth ? 'AUTH REQUIRED' : 'NO AUTH DETECTED'}</span>
+                                  {tax?.cwe?.map(c => (
+                                    <span key={c} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF572210', border: '1px solid #FF572233', color: '#FF5722' }}>{c}</span>
+                                  ))}
+                                  {tax?.attack?.map(a => (
+                                    <span key={a} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF980010', border: '1px solid #FF980033', color: '#FF9800' }}>{a}</span>
+                                  ))}
+                                  {tax?.mind?.map(m => (
+                                    <span key={m} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#9C27B010', border: '1px solid #9C27B033', color: '#9C27B0' }}>{m}</span>
+                                  ))}
+                                </div>
+                              )
+                            })()}
+                          </div>
+                        </div>
+                      )}
 
                       {/* Row 6: Source pattern (if available) */}
                       {selectedNode.source_pattern && (
@@ -3745,42 +2562,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           </pre>
                         </div>
                       )}
-
-                      {/* Row 7: Full node metadata — _id, _key, binary_name, namespace, all extra fields */}
-                      {(() => {
-                        const fullDoc = data.allNodes.find(n => n._id === selectedNode.id) as any
-                        if (!fullDoc) return null
-                        // Show fields not already prominent in the summary
-                        const shown = new Set(['description', 'source_pattern', 'fields', 'states', 'label', 'name'])
-                        const metaRows: { key: string; value: string }[] = []
-                        // Always front-and-center: document identity + provenance
-                        if (fullDoc._id) metaRows.push({ key: '_id', value: fullDoc._id })
-                        if (fullDoc._key) metaRows.push({ key: '_key', value: fullDoc._key })
-                        if (fullDoc.binary_name) metaRows.push({ key: 'binary', value: fullDoc.binary_name })
-                        if (fullDoc.namespace) metaRows.push({ key: 'namespace', value: fullDoc.namespace })
-                        // Any other fields from the raw document not already displayed
-                        for (const [k, v] of Object.entries(fullDoc)) {
-                          if (k.startsWith('_') && k !== '_id' && k !== '_key') continue
-                          if (shown.has(k) || ['binary_name', 'namespace', 'node_type', 'cluster', 'extraction_tier', 'confidence'].includes(k)) continue
-                          if (v == null || (Array.isArray(v) && (v as any[]).length === 0)) continue
-                          const strVal = typeof v === 'object' ? (() => { const s = JSON.stringify(v); return s.length > 120 ? s.slice(0, 120) + '…' : s })() : String(v)
-                          metaRows.push({ key: k, value: strVal })
-                        }
-                        if (metaRows.length === 0) return null
-                        return (
-                          <div>
-                            <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>NODE METADATA</div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '1px 8px', fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '4px 8px' }}>
-                              {metaRows.map(({ key, value }) => (
-                                <>
-                                  <span key={`k-${key}`} style={{ color: EMBRY.muted, paddingTop: 1 }}>{key}</span>
-                                  <span key={`v-${key}`} style={{ color: key === '_id' || key === '_key' ? '#4a9eff' : key === 'binary' ? '#22d3ee' : key === 'namespace' ? '#9C27B0' : EMBRY.white, wordBreak: 'break-all' }}>{value}</span>
-                                </>
-                              ))}
-                            </div>
-                          </div>
-                        )
-                      })()}
 
                       {/* Bookmark */}
                       <button
@@ -3818,9 +2599,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
                             >
                               <span style={{ color: '#2196F3' }}>→</span>
-                              {e.targetType && <span style={{ width: 5, height: 5, borderRadius: '50%', background: NODE_TYPE_COLORS[e.targetType] ?? EMBRY.dim, flexShrink: 0 }} title={e.targetType} />}
                               <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.target}</span>
-                              {e.targetType && <span style={{ fontSize: 7, color: EMBRY.muted }}>{e.targetType.replace('_', ' ')}</span>}
                               <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
                             </div>
                           ))}
@@ -3837,9 +2616,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
                             >
                               <span style={{ color: '#FF9800' }}>←</span>
-                              {e.sourceType && <span style={{ width: 5, height: 5, borderRadius: '50%', background: NODE_TYPE_COLORS[e.sourceType] ?? EMBRY.dim, flexShrink: 0 }} title={e.sourceType} />}
                               <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.source}</span>
-                              {e.sourceType && <span style={{ fontSize: 7, color: EMBRY.muted }}>{e.sourceType.replace('_', ' ')}</span>}
                               <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
                             </div>
                           ))}
@@ -3950,110 +2727,71 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )}
 
                   {dataTab === 'table' && (() => {
-                    // Sortable function table: name, type, address, size, namespace, refs, CWE, ATT&CK, annotation
-                    const ALL_COLS: { key: string; label: string; width: number }[] = [
-                      { key: 'label',       label: 'Name',      width: 160 },
-                      { key: 'nodeType',    label: 'Type',      width: 90  },
-                      { key: 'address',     label: 'Address',   width: 84  },
-                      { key: 'size',        label: 'Size',      width: 52  },
-                      { key: 'namespace',   label: 'Namespace', width: 100 },
-                      { key: 'connections', label: 'Refs',      width: 44  },
-                      { key: 'cwe',         label: 'CWE',       width: 90  },
-                      { key: 'attack',      label: 'ATT&CK',    width: 90  },
-                      { key: '_annotation', label: 'Note',      width: 120 },
-                    ]
+                    // Sortable table with taxonomy columns (NIST/CWE/ATT&CK/D3FEND/CAPEC)
                     const nodeWithDeg = data.graphNodes.map(n => {
                       const tax = taxonomyMap.get(n.id)
-                      const raw = data.allNodes.find(r => r._id === n.id)
                       return {
                         ...n,
-                        address:     (raw as any)?.address   ?? (raw as any)?.va       ?? '',
-                        size:        (raw as any)?.size      ?? (raw as any)?.byte_size ?? '',
-                        namespace:   (raw as any)?.namespace ?? (raw as any)?.module    ?? n.cluster,
                         connections: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length,
-                        cwe:         tax?.cwe?.join(', ')    || '',
-                        attack:      tax?.attack?.join(', ') || '',
-                        _annotation: tableAnnotations[n.id]  ?? '',
+                        cwe: tax?.cwe?.join(', ') || '',
+                        attack: tax?.attack?.join(', ') || '',
+                        d3fend: tax?.d3fend?.join(', ') || '',
+                        nist: tax?.nist?.join(', ') || '',
+                        mind: tax?.mind?.join(', ') || '',
                       }
                     })
                     const q = tableSearch.toLowerCase()
                     const filtered = nodeWithDeg
-                      .filter(n => !q || n.label.toLowerCase().includes(q) || n.nodeType.includes(q) || String(n.namespace).toLowerCase().includes(q) || n.cwe.toLowerCase().includes(q) || n.attack.toLowerCase().includes(q))
+                      .filter(n => !q || n.label.toLowerCase().includes(q) || n.nodeType.includes(q) || n.cluster.includes(q) || n.cwe.toLowerCase().includes(q) || n.attack.toLowerCase().includes(q))
                       .sort((a, b) => {
                         const va = (a as any)[tableSortKey] ?? ''
                         const vb = (b as any)[tableSortKey] ?? ''
                         const cmp = typeof va === 'number' ? va - (vb as number) : String(va).localeCompare(String(vb))
                         return tableSortAsc ? cmp : -cmp
                       })
-                    const visibleCols = ALL_COLS.filter(c => tableVisibleCols.has(c.key))
-                    const sortHeader = (col: typeof ALL_COLS[0]) => (
-                      <th key={col.key}
-                        onClick={() => {
-                          if (col.key === '_annotation') return
-                          const k = col.key as typeof tableSortKey
-                          if (tableSortKey === k) setTableSortAsc(!tableSortAsc); else { setTableSortKey(k); setTableSortAsc(true) }
-                        }}
-                        style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: tableSortKey === col.key ? EMBRY.accent : EMBRY.dim, cursor: col.key === '_annotation' ? 'default' : 'pointer', textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap', width: col.width }}>
-                        {col.label}{tableSortKey === col.key ? (tableSortAsc ? ' \u25b2' : ' \u25bc') : ''}
+                    const sortHeader = (key: typeof tableSortKey, label: string) => (
+                      <th key={key} onClick={() => { if (tableSortKey === key) setTableSortAsc(!tableSortAsc); else { setTableSortKey(key); setTableSortAsc(true) } }}
+                        style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: tableSortKey === key ? EMBRY.accent : EMBRY.dim, cursor: 'pointer', textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap' }}>
+                        {label} {tableSortKey === key ? (tableSortAsc ? '▲' : '▼') : ''}
                       </th>
                     )
-                    const exportCsv = () => {
-                      const header = visibleCols.map(c => `"${c.label}"`).join(',')
-                      const rows = filtered.map(n => visibleCols.map(c => `"${String((n as any)[c.key] ?? '').replace(/"/g, '""')}"`).join(','))
-                      const blob = new Blob([[header, ...rows].join('\n')], { type: 'text/csv' })
-                      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${binaryName}-functions.csv`; a.click()
-                    }
                     return (
                       <div>
-                        <div style={{ display: 'flex', gap: 6, marginBottom: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'center' }}>
                           <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
-                            placeholder="Filter name, namespace, CWE, ATT&CK..." style={{ flex: 1, minWidth: 120, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
+                            placeholder="Filter features, CWE, ATT&CK..." style={{ flex: 1, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
                           <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
-                          {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading...</span>}
-                          <button onClick={() => setTableShowColPicker(v => !v)} style={{ fontSize: 8, padding: '2px 7px', background: tableShowColPicker ? `${EMBRY.accent}20` : '#111', border: `1px solid ${EMBRY.border}`, color: tableShowColPicker ? EMBRY.accent : EMBRY.dim, borderRadius: 2, cursor: 'pointer' }}>COLUMNS</button>
-                          <button onClick={exportCsv} style={{ fontSize: 8, padding: '2px 7px', background: '#111', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer' }}>EXPORT CSV</button>
+                          {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
                         </div>
-                        {tableShowColPicker && (
-                          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 6, padding: '4px 8px', background: '#080808', border: `1px solid ${EMBRY.border}`, borderRadius: 2 }}>
-                            {ALL_COLS.map(c => (
-                              <label key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 8, color: tableVisibleCols.has(c.key) ? EMBRY.white : EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>
-                                <input type="checkbox" checked={tableVisibleCols.has(c.key)} onChange={() => setTableVisibleCols(prev => { const s = new Set(prev); s.has(c.key) ? s.delete(c.key) : s.add(c.key); return s })} style={{ accentColor: EMBRY.accent, width: 10, height: 10 }} />
-                                {c.label}
-                              </label>
-                            ))}
-                          </div>
-                        )}
                         <div style={{ maxHeight: 300, overflow: 'auto' }}>
-                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace', tableLayout: 'fixed' }}>
-                            <thead><tr>{visibleCols.map(c => sortHeader(c))}</tr></thead>
+                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+                            <thead><tr>
+                              {sortHeader('label', 'Name')}
+                              {sortHeader('nodeType', 'Type')}
+                              {sortHeader('cluster', 'Cluster')}
+                              {sortHeader('connections', 'Conn')}
+                              {sortHeader('cwe', 'CWE')}
+                              {sortHeader('attack', 'ATT&CK')}
+                            </tr></thead>
                             <tbody>
-                              {filtered.slice(0, 200).map(n => (
+                              {filtered.slice(0, 100).map(n => (
                                 <tr key={n.id}
                                   onClick={() => onFeatureClick(n.label)}
                                   style={{ cursor: 'pointer', borderBottom: `1px solid ${EMBRY.border}`, background: n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
                                   onMouseLeave={e => (e.currentTarget.style.background = n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent')}
                                 >
-                                  {visibleCols.map(c => {
-                                    const val = (n as any)[c.key] ?? ''
-                                    if (c.key === 'label')       return <td key={c.key} style={{ padding: '3px 6px', color: '#22d3ee', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={String(val)}>{val}</td>
-                                    if (c.key === 'nodeType')    return <td key={c.key} style={{ padding: '3px 6px', whiteSpace: 'nowrap' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[n.nodeType] ?? EMBRY.dim, flexShrink: 0, display: 'inline-block' }} />{n.nodeType.replace(/_/g, ' ')}</span></td>
-                                    if (c.key === 'address')     return <td key={c.key} style={{ padding: '3px 6px', color: '#a78bfa', fontVariantNumeric: 'tabular-nums' }}>{val !== '' ? (typeof val === 'number' ? `0x${val.toString(16).padStart(8, '0')}` : val) : '\u2014'}</td>
-                                    if (c.key === 'size')        return <td key={c.key} style={{ padding: '3px 6px', color: EMBRY.dim, textAlign: 'right' }}>{val !== '' ? val : '\u2014'}</td>
-                                    if (c.key === 'namespace')   return <td key={c.key} style={{ padding: '3px 6px', color: EMBRY.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={String(val)}>{val || '\u2014'}</td>
-                                    if (c.key === 'connections') return <td key={c.key} style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 10 ? EMBRY.white : EMBRY.dim, textAlign: 'right' }}>{n.connections}</td>
-                                    if (c.key === 'cwe')         return <td key={c.key} style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={String(val)}>{val || '\u2014'}</td>
-                                    if (c.key === 'attack')      return <td key={c.key} style={{ padding: '3px 6px', color: '#f97316', fontSize: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={String(val)}>{val || '\u2014'}</td>
-                                    if (c.key === '_annotation') return (
-                                      <td key={c.key} style={{ padding: '1px 4px' }} onClick={e => e.stopPropagation()}>
-                                        <input value={tableAnnotations[n.id] ?? ''} onChange={e => setTableAnnotations(prev => ({ ...prev, [n.id]: e.target.value }))}
-                                          placeholder="note..." style={{ width: '100%', background: 'transparent', border: '1px solid transparent', borderRadius: 2, padding: '1px 4px', color: EMBRY.white, fontSize: 8, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }}
-                                          onFocus={e => (e.target.style.border = `1px solid ${EMBRY.accent}66`)}
-                                          onBlur={e => (e.target.style.border = '1px solid transparent')} />
-                                      </td>
-                                    )
-                                    return <td key={c.key} style={{ padding: '3px 6px', color: EMBRY.dim }}>{val}</td>
-                                  })}
+                                  <td style={{ padding: '3px 6px', color: '#22d3ee' }}>{n.label}</td>
+                                  <td style={{ padding: '3px 6px' }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                      <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[n.nodeType] ?? EMBRY.dim, display: 'inline-block' }} />
+                                      {n.nodeType.replace('_', ' ')}
+                                    </span>
+                                  </td>
+                                  <td style={{ padding: '3px 6px', color: EMBRY.dim }}>{n.cluster}</td>
+                                  <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 10 ? EMBRY.white : EMBRY.dim }}>{n.connections}</td>
+                                  <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8 }}>{n.cwe}</td>
+                                  <td style={{ padding: '3px 6px', color: '#f97316', fontSize: 8 }}>{n.attack}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -4066,22 +2804,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {dataTab === 'raw' && (() => {
                     // Show full ArangoDB document, not the stripped D3 node
                     const fullDoc = data.allNodes.find(n => n._id === selectedNode.id)
-                    const jsonText = JSON.stringify(fullDoc ?? selectedNode, null, 2)
                     return (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
-                            {fullDoc ? 'ArangoDB document' : 'graph node (full doc not loaded)'} · {Object.keys(fullDoc ?? selectedNode).length} fields
-                          </span>
-                          <button
-                            onClick={() => navigator.clipboard.writeText(jsonText).catch(() => {})}
-                            style={{ marginLeft: 'auto', fontSize: 8, padding: '2px 8px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}
-                          >COPY</button>
-                        </div>
-                        <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
-                          {jsonText}
-                        </pre>
-                      </div>
+                      <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
+                        {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
+                      </pre>
                     )
                   })()}
                 </div>
@@ -4128,7 +2854,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   }}
                 >
                   <MessageSquare size={12} />
-                  {analysisMode === 'beginner' ? 'CHAT — START HERE' : 'NL ANALYSIS'}
+                  ANALYSIS
                 </button>
                 <button
                   onClick={() => setRightTab('journal')}
@@ -4164,7 +2890,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       background: analysisMode === mode ? `${EMBRY.accent}20` : 'transparent',
                       color: analysisMode === mode ? EMBRY.accent : EMBRY.dim,
                       textTransform: 'uppercase',
-                    }}>{mode === 'beginner' ? 'guided' : 'expert'}</button>
+                    }}>{mode}</button>
                   ))}
                 </div>
                 {/* Actions shown for whichever tab is active */}
@@ -4229,8 +2955,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     <div key={`${b.id}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                       <span
                         onClick={() => onNodeClick(b)}
-                        tabIndex={0} role="button" aria-label={`Go back to ${b.label}`}
-                        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNodeClick(b) } }}
                         style={{
                           fontSize: 9, cursor: 'pointer', whiteSpace: 'nowrap',
                           color: b.id === selectedNode?.id ? EMBRY.accent : EMBRY.white,
@@ -4244,24 +2968,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   ))}
                 </div>
               )}
-
-              {/* Binary context strip — visible during active conversation */}
-              {chatMessages.length > 0 && (() => {
-                const m = binaryMetas[binaryName]
-                return (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: '#07070a', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, fontWeight: 800 }}>{binaryName}</span>
-                    {m && (m.format || m.arch) && <span style={{ fontSize: 9, color: EMBRY.dim }}>{[m.format, m.arch].filter(Boolean).join(' · ')}</span>}
-                    {m?.stripped && <span style={{ fontSize: 8, color: '#ef4444', fontWeight: 700 }}>STRIPPED</span>}
-                    {m?.pie && <span style={{ fontSize: 8, color: '#22c55e', fontWeight: 700 }}>PIE</span>}
-                    {m?.relro && <span style={{ fontSize: 8, color: '#3b82f6' }}>{m.relro}</span>}
-                    {typeof m?.importCount === 'number' && <span style={{ fontSize: 8, color: EMBRY.muted }}>{m.importCount} imports</span>}
-                    {m?.entryPoint && <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>ep:{m.entryPoint}</span>}
-                    <div style={{ flex: 1 }} />
-                    <span style={{ fontSize: 8, color: EMBRY.muted }}>{data.stats.totalNodes} features · {data.stats.totalEdges} edges</span>
-                  </div>
-                )
-              })()}
 
               {/* Chat Thread */}
               <div ref={chatScrollRef} className="modern-scrollbar" style={styles.chatThread}>
@@ -4278,46 +2984,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   type Seg = { text: string; entity?: boolean }
                   const suggestions: { segments: Seg[]; raw: string }[] = []
                   const q = (segs: Seg[]) => suggestions.push({ segments: segs, raw: segs.map(s => s.text).join('') })
-                  if (analysisMode === 'investigator') {
-                    // RE workflow queries — domain-specific, actionable
-                    q([{text:`Find dangerous sinks in `},{text:binaryName,entity:true},{text:` (gets, strcpy, recv, system) — which are reachable from user input?`}])
-                    q([{text:`Find all functions in `},{text:binaryName,entity:true},{text:` that process network input`}])
-                    q([{text:`Which file parser entry points in `},{text:binaryName,entity:true},{text:` lack bounds checking on input size?`}])
-                    q([{text:`Show obfuscated or high-entropy functions in `},{text:binaryName,entity:true}])
-                    q([{text:`What anti-debugging or anti-analysis techniques does `},{text:binaryName,entity:true},{text:` use?`}])
-                    q([{text:`Find cryptographic routines and key material handling in `},{text:binaryName,entity:true}])
-                    if (namespaces.length > 0) q([{text:'What is the full call graph rooted at '},{text:namespaces[0],entity:true},{text:'?'}])
-                    if (topRpcs[0]) q([{text:'What external inputs reach '},{text:topRpcs[0].label,entity:true},{text:' and how are they validated?'}])
-                    if (stateMachines[0]) q([{text:'Identify reachable states from '},{text:stateMachines[0],entity:true},{text:' and flag impossible transitions'}])
-                    q([{text:`Which functions in `},{text:binaryName,entity:true},{text:` manipulate strings without bounds checking?`}])
-                  } else {
-                    if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
-                    if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
-                    if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
-                    if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
-                    if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
-                    q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
-                  }
+                  if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
+                  if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
+                  if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
+                  if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
+                  if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
+                  q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
                   return (
                     <div style={{ padding: 10 }}>
                       <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>{binaryName.toUpperCase()}</div>
-                      <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: analysisMode === 'investigator' ? 6 : 12 }}>
+                      <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 12 }}>
                         {data.stats.totalNodes} features · {namespaces.length} namespaces · {stateMachines.length} state machines
                       </div>
-                      {analysisMode === 'investigator' && (
-                        <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace', opacity: 0.7 }}>
-                          NL interface · domain-aware · complements scripting
-                        </div>
-                      )}
                       {/* Beginner guided path */}
                       {analysisMode === 'beginner' && (
                         <div style={{ marginBottom: 12, padding: '8px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4 }}>
-                          <div style={{ fontSize: 9, color: EMBRY.accent, fontWeight: 800, marginBottom: 2 }}>Start here — no jargon needed</div>
-                          <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 8, lineHeight: '1.4' }}>Just ask in plain English. Click a question or type your own.</div>
+                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.accent, marginBottom: 6 }}>GUIDED ANALYSIS PATH</div>
                           {[
-                            { step: 1, label: 'What does this program do?', query: `What does ${binaryName} do? Explain it in plain English.` },
-                            { step: 2, label: 'How is it structured inside?', query: `What are the main components of ${binaryName}? Explain simply.` },
-                            { step: 3, label: 'Where could this break or be attacked?', query: `What is the attack surface of ${binaryName}? Explain in plain English.` },
+                            { step: 1, label: 'What is this binary made of?', query: `What are the main components of ${binaryName}?` },
+                            { step: 2, label: 'How do the parts communicate?', query: `How do ${namespaces[0] || 'the namespaces'} and ${namespaces[1] || 'other components'} interact?` },
+                            { step: 3, label: 'Where could this break?', query: `What is the attack surface of ${binaryName}?` },
                           ].map(g => (
                             <div key={g.step} onClick={() => { setChatInput(''); sendChat(g.query) }}
                               style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
@@ -4330,32 +3016,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           ))}
                         </div>
                       )}
-                      {/* Investigator RE workflow path */}
-                      {analysisMode === 'investigator' && (
-                        <div style={{ marginBottom: 12, padding: '8px 10px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 4 }}>
-                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.dim, marginBottom: 6, letterSpacing: '0.08em' }}>RE WORKFLOW</div>
-                          {[
-                            { label: 'Find interesting functions', query: `List all functions in ${binaryName} that call dangerous libc sinks (gets, strcpy, recv, read, system, exec, popen, sprintf). Which are reachable from user input?` },
-                            { label: 'Network attack surface', query: `Find all functions in ${binaryName} that receive or parse network input. What validation is missing? Are there format string bugs or buffer overflows?` },
-                            { label: 'File parser entry points', query: `Which functions in ${binaryName} open or parse files? Trace the input path from fopen/read to memory. Where could a malformed file trigger a bug?` },
-                            { label: 'Deobfuscation pass', query: `Identify control flow flattening, opaque predicates, or dead code in ${binaryName}. Which functions look obfuscated?` },
-                            { label: 'Crypto & key handling', query: `What cryptographic routines are present in ${binaryName}? Locate key generation, IV reuse, or weak algorithm usage.` },
-                            { label: 'Taint & data-flow trace', query: `Trace all data flows from external input sources to memory write operations in ${binaryName}. Flag functions with missing bounds checks — replaces manual xref scripting.` },
-                          ].map(g => (
-                            <div key={g.label} onClick={() => { setChatInput(''); sendChat(g.query) }}
-                              style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '6px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 4, transition: 'background 0.15s', border: `1px solid ${EMBRY.border}` }}
-                              onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}12`)}
-                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                            >
-                              <span style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{g.label}</span>
-                              <span style={{ fontSize: 9, color: EMBRY.dim, lineHeight: '1.4', fontStyle: 'italic' }}>{g.query}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>{analysisMode === 'investigator' ? 'RE QUERY TEMPLATES' : 'SUGGESTED QUERIES'}</div>
+                      <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
                       {suggestions.map((s, si) => (
-                        <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { setChatInput(''); sendChat(s.raw) }, 50) }} tabIndex={0} role="button" aria-label={s.raw} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setChatInput(''); sendChat(s.raw) } }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
+                        <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { setChatInput(''); sendChat(s.raw) }, 50) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
                           {s.segments.map((seg, j) => seg.entity
                             ? <code key={j} style={{ color: '#22d3ee', background: '#0a1628', padding: '1px 4px', borderRadius: 3, fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{seg.text}</code>
                             : <span key={j} style={{ color: EMBRY.accent }}>{seg.text}</span>
@@ -4366,27 +3029,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )
                 })()}
                 {chatMessages.length === 0 && selectedNode && (
-                  <div style={{ padding: 16, color: EMBRY.dim, fontSize: 11 }}>
-                    <div style={{ textAlign: 'center', marginBottom: 8 }}>
-                      Ask anything about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
-                    </div>
-                    {(analysisMode === 'investigator' ? [
-                      `What does ${selectedNode.label} do? Walk me through the logic.`,
-                      `What callers reach ${selectedNode.label} and what arguments do they pass?`,
-                      `Does ${selectedNode.label} process untrusted input? Where could it be exploited?`,
-                      `Does ${selectedNode.label} call any dangerous sinks (gets, strcpy, recv, system)?`,
-                      `Are there obfuscation patterns in ${selectedNode.label}?`,
-                    ] : [
-                      `What does ${selectedNode.label} do?`,
-                      `Explain ${selectedNode.label} in plain English.`,
-                      `What calls ${selectedNode.label}?`,
-                    ]).map(q => (
-                      <div key={q} onClick={() => sendChat(q)}
-                        style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }}
-                        onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)}
-                        onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}
-                      >{q}</div>
-                    ))}
+                  <div style={{ padding: 16, textAlign: 'center', color: EMBRY.dim, fontSize: 11 }}>
+                    Ask a question about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
                   </div>
                 )}
                 {chatMessages.map((m, i) => (
@@ -4513,45 +3157,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 {chatLoading && <div style={{ fontSize: 10, color: EMBRY.accent, padding: 10 }}>THINKING...</div>}
               </div>
 
-
-              {/* Quick RE query chips — always visible, fast pivot without clearing chat */}
-              <div style={{ padding: '5px 10px', borderTop: `1px solid ${EMBRY.border}`, background: '#06060a', display: 'flex', gap: 4, flexWrap: 'wrap', flexShrink: 0, alignItems: 'center' }}>
-                <span style={{ fontSize: 7, color: EMBRY.muted, fontWeight: 800, letterSpacing: '0.08em', flexShrink: 0 }}>QUICK:</span>
-                {(analysisMode === 'investigator' ? [
-                  { label: 'obfuscation?', query: `Find obfuscated functions in ${binaryName}: control flow flattening, opaque predicates, dead code.` },
-                  { label: 'network input', query: `What functions in ${binaryName} receive or parse network input? Are inputs validated?` },
-                  { label: 'crypto?', query: `What cryptographic routines are in ${binaryName}? Identify weak algorithms, IV reuse, or hardcoded keys.` },
-                  { label: 'vuln surface', query: `What is the vulnerability attack surface of ${binaryName}? Find dangerous patterns: unchecked inputs, format strings, integer overflows.` },
-                  ...(selectedNode ? [{ label: `xref:${selectedNode.label}`, query: `List all callers and callees of ${selectedNode.label}. Full cross-reference picture.` }] : []),
-                ] : [
-                  { label: 'what does this do?', query: `What does ${binaryName} do? Plain English overview.` },
-                  { label: 'attack surface?', query: `What is the attack surface of ${binaryName}?` },
-                  { label: 'key components', query: `What are the main components of ${binaryName}?` },
-                ]).slice(0, 5).map(chip => (
-                  <button key={chip.label} onClick={() => sendChat(chip.query)}
-                    style={{
-                      fontSize: 8, padding: '2px 8px',
-                      background: `${EMBRY.accent}0d`, border: `1px solid ${EMBRY.accent}28`,
-                      borderRadius: 10, cursor: 'pointer', color: EMBRY.accent,
-                      fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, flexShrink: 0,
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}22`)}
-                    onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}0d`)}
-                  >{chip.label}</button>
-                ))}
-              </div>
-
               {/* Chat Input */}
               <form onSubmit={e => { e.preventDefault(); sendChat() }} style={styles.chatForm}>
                 <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 4 }}>
                   <input style={{ ...styles.chatInput, border: 'none', background: 'transparent' }} placeholder={
                     [...chatMessages].reverse().find(m => m.role === 'assistant')?.feedback === 'down'
                       ? 'What should have happened instead?'
-                      : selectedNode
-                        ? `Ask about ${selectedNode.label}... (e.g. "what calls this?" / "obfuscated?")`
-                        : analysisMode === 'investigator'
-                          ? 'e.g. "find obfuscated functions" / "network input handlers" / "crypto routines"'
-                          : 'Try: "what does this program do?" — plain English works!'
+                      : selectedNode ? `Ask about ${selectedNode.label}...` : 'Ask about this binary...'
                   } value={chatInput} onChange={e => setChatInput(e.target.value)} />
                 </div>
                 <button type="submit" style={styles.sendButton}>↑</button>
@@ -4659,27 +3271,6 @@ if (styleInjector) {
     @keyframes context-pop {
       0% { transform: scale(0.95); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
-    }
-    @keyframes scene-card-in {
-      0% { opacity: 0; transform: translate(-50%, -46%); }
-      100% { opacity: 1; transform: translate(-50%, -50%); }
-    }
-    @keyframes seed-cta-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(100, 220, 180, 0.35); }
-      50% { box-shadow: 0 0 0 5px rgba(100, 220, 180, 0); }
-    }
-    @keyframes seed-done-in {
-      0% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
-      100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    @keyframes seed-spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes node-appear {
-      0% { opacity: 0; transform: scale(0.6); }
-      60% { opacity: 1; transform: scale(1.08); }
-      100% { transform: scale(1); }
     }
     [style*="contextItem"]:hover {
       background: #1a1a1a;
