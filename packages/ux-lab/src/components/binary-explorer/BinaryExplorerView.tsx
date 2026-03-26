@@ -4,6 +4,9 @@ import { EMBRY } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 import { ContextMenu } from '../common/ContextMenu'
 import { StatusBar } from '../common/StatusBar'
+import { CodePane } from './CodePane'
+import { useLinkBus } from './useLinkBus'
+import type { LinkLineEvent } from './useLinkBus'
 import { BinaryGraph } from './BinaryGraph'
 import { SymbolTree } from './SymbolTree'
 import { useBinaryData, NODE_TYPE_COLORS } from '../../hooks/useBinaryData'
@@ -154,7 +157,8 @@ function renderInline(text: string, onFeatureClick: (name: string) => void): Rea
 }
 
 
-interface ChatMessage { role: 'user' | 'assistant'; content: string; isExplanation?: boolean; feedback?: 'up' | 'down' | null; _querySpec?: Record<string, unknown> }
+interface ExplainStep { type: 'question' | 'grounding' | 'exploration' | 'intent' | 'answer'; label: string; detail?: string; chips?: { label: string; color: string }[] }
+interface ChatMessage { role: 'user' | 'assistant'; content: string; isExplanation?: boolean; feedback?: 'up' | 'down' | null; _querySpec?: Record<string, unknown>; _explain?: ExplainStep[] }
 
 type Perspective = 'all' | 'security' | 'data_flow' | 'protocol'
 const PERSPECTIVE_LABELS: Record<Perspective, string> = {
@@ -342,6 +346,10 @@ export function BinaryExplorerView() {
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
   const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
+  const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
+  const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
+  const linkBus = useLinkBus()
+  const [linkedNodeId, setLinkedNodeId] = useState<string | null>(null) // node highlighted by code hover
 
   /** Record an investigation step. Snapshot is attached asynchronously via useEffect. */
   const recordStep = useCallback((action: Step['action'], description: string) => {
@@ -606,9 +614,29 @@ export function BinaryExplorerView() {
     }
   }, [data.loading, data.graphNodes.length, sceneNodeIds.size, autoSeeded])
 
+  // --- Link Bus subscriber: code pane → graph highlighting ---
+  useEffect(() => {
+    return linkBus.subscribe((evt: LinkLineEvent) => {
+      if (evt.sender === 'code') {
+        // Code pane emitted — highlight the referenced node in the graph
+        setLinkedNodeId(evt.sourceNodeId)
+        if (evt.reveal) {
+          // Pan graph to the node
+          const node = data.graphNodes.find(n => n.id === evt.sourceNodeId)
+          if (node && !sceneNodeIds.has(node.id)) {
+            addToScene([node.id])
+          }
+        }
+      }
+    })
+  }, [linkBus, data.graphNodes, sceneNodeIds, addToScene])
+
   // --- Graph Helpers ---
   const onNodeClick = useCallback((node: BinaryGraphNode) => {
     setSelectedNode(node)
+
+    // Emit graph→code link event
+    linkBus.emit({ sourceNodeId: node.id, sender: 'graph', reveal: true, label: node.label })
 
     // Breadcrumbs: add unique or move to end
     setBreadcrumbs(prev => {
@@ -1344,7 +1372,28 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
       })
       const reply = await res.json()
       const content = reply.choices?.[0]?.message?.content || reply.error || 'No response'
-      setChatMessages((prev) => [...prev, { role: 'assistant', content }])
+
+      // Build TrustGraph-style Explain Pipeline
+      const explainSteps: ExplainStep[] = [
+        { type: 'question', label: 'QUESTION', detail: text },
+        {
+          type: 'grounding', label: 'GROUNDING',
+          detail: mentionedEntities.length > 0 ? `${mentionedEntities.length} entities extracted` : 'No entities matched',
+          chips: mentionedEntities.map(e => ({ label: e.label, color: NODE_TYPE_COLORS[e.nodeType] ?? '#94a3b8' })),
+        },
+        {
+          type: 'exploration', label: 'EXPLORATION',
+          detail: `Subgraph: ${sceneNodeIds.size} nodes in scene · ${data.allEdges.filter(e => sceneNodeIds.has(e._from) || sceneNodeIds.has(e._to)).length} edges · ${graphQueryCtx?.split('\n').length || 0} context lines`,
+        },
+        {
+          type: 'intent', label: 'INTENT',
+          detail: intentFound
+            ? `${intentData?.action || 'CHAT'} via ${intentData?.ui_action ? 'heuristic' : 'recall'}`
+            : 'LLM reasoning (no intent match)',
+        },
+      ]
+
+      setChatMessages((prev) => [...prev, { role: 'assistant', content, _explain: explainSteps }])
       recordStep('chat', `Asked: ${text.substring(0, 80)}${text.length > 80 ? '…' : ''}`)
       // Highlight mentioned features in graph
       const mentioned = extractMentionedNodes(content)
@@ -1405,16 +1454,27 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
     setJournalSteps(prev => prev.map((s, i) => i === stepIndex ? { ...s, note } : s))
   }, [])
 
-  // ── Connection chips for selected node ──
+  // ── Connection chips for selected node (with direction) ──
   const allSelectedEdges = selectedNode
     ? data.allEdges.filter((e) => e._from === selectedNode.id || e._to === selectedNode.id)
     : []
+  // Legacy flat grouping (used in summary)
   const edgesByType: Record<string, string[]> = {}
+  // Directional grouping (TrustGraph pattern)
+  const outgoingEdges: { type: string; target: string; targetId: string }[] = []
+  const incomingEdges: { type: string; source: string; sourceId: string }[] = []
   for (const e of allSelectedEdges) {
-    const other = (e._from === selectedNode?.id ? e._to : e._from).split('/').pop() ?? ''
+    const isOutgoing = e._from === selectedNode?.id
+    const otherId = isOutgoing ? e._to : e._from
+    const otherLabel = otherId.split('/').pop() ?? ''
     const group = edgesByType[e.edge_type] ?? []
-    group.push(other)
+    group.push(otherLabel)
     edgesByType[e.edge_type] = group
+    if (isOutgoing) {
+      outgoingEdges.push({ type: e.edge_type, target: otherLabel, targetId: otherId })
+    } else {
+      incomingEdges.push({ type: e.edge_type, source: otherLabel, sourceId: otherId })
+    }
   }
 
   return (
@@ -1429,7 +1489,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           <BinaryLeftPane
             binaryName={binaryName}
             binaries={binaries}
-            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]) }}
+            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
             onRenameBinary={(name) => {
               const newName = prompt(`Rename "${name}" to:`, name)
               if (newName && newName !== name) {
@@ -1565,6 +1625,54 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     backgroundColor: viewMode === 'vulns' ? `${EMBRY.accent}20` : 'transparent',
                     color: viewMode === 'vulns' ? EMBRY.accent : EMBRY.dim,
                   }}><Shield size={15} /></button>
+                {/* Split view toggle (Godbolt-style: code left + graph right) */}
+                <div style={{ width: 1, height: 16, background: EMBRY.border, margin: '0 4px' }} />
+                <button onClick={() => setSplitCodeView(!splitCodeView)} title="Split view: code + graph side by side"
+                  style={{
+                    width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 3, cursor: 'pointer', border: 'none',
+                    backgroundColor: splitCodeView ? `${EMBRY.accent}20` : 'transparent',
+                    color: splitCodeView ? EMBRY.accent : EMBRY.dim,
+                    fontSize: 13, fontWeight: 900,
+                  }}>⫿</button>
+
+                {/* Capture/Export button */}
+                <button onClick={() => {
+                  const svgEl = graphSvgRef.current
+                  if (!svgEl) return
+                  // Serialize SVG to PNG via canvas
+                  const svgData = new XMLSerializer().serializeToString(svgEl)
+                  const canvas = document.createElement('canvas')
+                  const rect = svgEl.getBoundingClientRect()
+                  const scale = 2 // 2x resolution
+                  canvas.width = rect.width * scale
+                  canvas.height = rect.height * scale
+                  const ctx = canvas.getContext('2d')!
+                  ctx.scale(scale, scale)
+                  const img = new Image()
+                  img.onload = () => {
+                    // Dark background
+                    ctx.fillStyle = '#0a0a0a'
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height)
+                    // Add title watermark
+                    ctx.fillStyle = '#ffffff44'
+                    ctx.font = '10px JetBrains Mono, monospace'
+                    ctx.fillText(`${binaryName.toUpperCase()} — ${sceneNodeIds.size} nodes · Binary Explorer`, 8, canvas.height / scale - 8)
+                    // Download
+                    const a = document.createElement('a')
+                    a.download = `${binaryName}-graph-${new Date().toISOString().slice(0,10)}.png`
+                    a.href = canvas.toDataURL('image/png')
+                    a.click()
+                  }
+                  img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
+                }} title="Export graph as PNG (2x)"
+                  style={{
+                    width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 3, cursor: 'pointer', border: 'none',
+                    backgroundColor: 'transparent', color: EMBRY.dim,
+                    fontSize: 12,
+                  }}>📷</button>
               </div>
 
               {/* Layout removed — organic is the only useful layout for exploration */}
@@ -1628,25 +1736,80 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               </div>
             </div>
 
-            {/* Interaction hints bar */}
+            {/* Entity type filter bar (TrustGraph pattern) */}
             <div style={{
-              display: 'flex', gap: 16, padding: '3px 16px',
-              fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace',
+              display: 'flex', gap: 4, padding: '3px 12px',
+              fontSize: 8, fontFamily: 'JetBrains Mono, monospace',
               background: '#060606', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
+              alignItems: 'center',
             }}>
-              <span>Click: select node</span>
-              <span>Double-click: expand neighbors</span>
-              <span>Right-click: context menu</span>
-              <span>Scroll: zoom</span>
-              <span>Drag: pan</span>
+              <span style={{ color: EMBRY.muted, marginRight: 4, fontWeight: 700 }}>FILTER:</span>
+              <button onClick={() => setVisibleTypes(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))}
+                style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid ${visibleTypes.size === 7 ? EMBRY.accent + '66' : EMBRY.border}`, background: visibleTypes.size === 7 ? `${EMBRY.accent}15` : 'transparent', color: visibleTypes.size === 7 ? EMBRY.accent : EMBRY.dim }}>All</button>
+              {Object.entries(NODE_TYPE_COLORS).map(([type, color]) => {
+                const count = data.graphNodes.filter(n => n.nodeType === type && sceneNodeIds.has(n.id)).length
+                const totalCount = data.graphNodes.filter(n => n.nodeType === type).length
+                const active = visibleTypes.has(type)
+                return (
+                  <button key={type} onClick={() => {
+                    const next = new Set(visibleTypes)
+                    if (active) next.delete(type); else next.add(type)
+                    setVisibleTypes(next)
+                  }} style={{
+                    display: 'flex', alignItems: 'center', gap: 3,
+                    fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer',
+                    border: `1px solid ${active ? color + '66' : EMBRY.border}`,
+                    background: active ? `${color}15` : 'transparent',
+                    color: active ? color : EMBRY.muted,
+                    opacity: active ? 1 : 0.5,
+                  }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: color }} />
+                    {type.replace('_', ' ')} ({count}/{totalCount})
+                  </button>
+                )
+              })}
               <span style={{ marginLeft: 'auto', color: EMBRY.dim }}>
-                {sceneNodeIds.size} nodes · {viewMode} · {layoutMode === 'organic' ? 'force' : layoutMode}
+                {sceneNodeIds.size} in scene · {viewMode}
               </span>
             </div>
 
             <div
-              style={{ flex: '1 1 0%', display: 'flex', flexDirection: 'column' as const, position: 'relative', overflow: 'hidden', minHeight: 0 }}
+              style={{ flex: '1 1 0%', display: 'flex', flexDirection: splitCodeView && viewMode === 'graph' && selectedNode ? 'row' : 'column' as const, position: 'relative', overflow: 'hidden', minHeight: 0 }}
             >
+              {/* Godbolt-style split: code left, graph right */}
+              {splitCodeView && viewMode === 'graph' && selectedNode && (
+                <div style={{ flex: '0 0 40%', borderRight: `1px solid ${EMBRY.border}`, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <CodePane
+                    code={selectedNode.source_pattern || pseudocode || `// No source data for ${selectedNode.label}\n// Select a node with source patterns\n// or switch to Python tab for LLM pseudocode`}
+                    language={selectedNode.source_pattern ? 'c' : 'python'}
+                    header={`${selectedNode.label} — ${selectedNode.source_pattern ? 'Source' : 'Pseudocode'}`}
+                    onLineHover={(lineIdx) => {
+                      if (lineIdx != null && selectedNode) {
+                        // Emit link event so graph can highlight this node
+                        linkBus.emit({ sourceNodeId: selectedNode.id, sourceLine: lineIdx, sender: 'code', reveal: false })
+                      } else {
+                        setLinkedNodeId(null)
+                      }
+                    }}
+                    onLineClick={(lineIdx) => {
+                      if (selectedNode) {
+                        // Try to find a referenced feature name on this line
+                        const code = selectedNode.source_pattern || pseudocode || ''
+                        const line = code.split('\n')[lineIdx] || ''
+                        // Check if any graph node label appears on this line
+                        const match = data.graphNodes.find(n =>
+                          n.id !== selectedNode.id && n.label.length > 3 && line.toLowerCase().includes(n.label.toLowerCase())
+                        )
+                        if (match) {
+                          onNodeClick(match)
+                          linkBus.emit({ sourceNodeId: match.id, sender: 'code', reveal: true, label: match.label })
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              )}
+
               {/* Tree view */}
               {viewMode === 'tree' && (
                 <SymbolTree
@@ -1662,7 +1825,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               {viewMode === 'graph' && (() => {
                 const pTypes = PERSPECTIVE_TYPES[perspective]
                 const sceneNodes = data.graphNodes.filter(n => sceneNodeIds.has(n.id))
-                const pNodes = pTypes.length > 0 ? sceneNodes.filter(n => pTypes.includes(n.nodeType)) : sceneNodes
+                const pNodes = sceneNodes
+                  .filter(n => visibleTypes.has(n.nodeType))
+                  .filter(n => pTypes.length === 0 || pTypes.includes(n.nodeType))
                 const visibleNodeIds = new Set(pNodes.map(n => n.id))
                 const visibleEdges = data.allEdges.filter(e => visibleNodeIds.has(e._from) && visibleNodeIds.has(e._to)).map(e => ({
                   ...e, source: e._from, target: e._to, edgeType: e.edge_type
@@ -1728,23 +1893,18 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             }}>{t === 'asm' ? 'ASM' : t === 'c' ? 'C (decompiled)' : 'Python'}</button>
                         ))}
                       </div>
-                      {/* Code content with line numbers */}
-                      <div style={{ flex: 1, overflow: 'auto', padding: 0 }}>
-                        {(() => {
-                          const code = codeViewTab === 'pseudocode' ? (pseudocode || '# Select a node to generate Python pseudocode') : (selectedNode.source_pattern || '// No source data available for this node\n// Run /analyze-elf to extract source patterns')
-                          const lines = code.split('\n')
-                          const syntaxColor = codeViewTab === 'assembly' ? '#a5b4fc' : codeViewTab === 'decompiled' ? '#86efac' : '#fde68a'
-                          return (
-                            <pre style={{ margin: 0, padding: 0 }}>
-                              {lines.map((line, i) => (
-                                <div key={i} style={{ display: 'flex', borderBottom: '1px solid #111', minHeight: 18 }}>
-                                  <span style={{ width: 40, textAlign: 'right', paddingRight: 8, color: EMBRY.muted, fontSize: 9, userSelect: 'none', flexShrink: 0, background: '#030303' }}>{i + 1}</span>
-                                  <span style={{ color: syntaxColor, padding: '0 8px', whiteSpace: 'pre-wrap', flex: 1 }}>{line || ' '}</span>
-                                </div>
-                              ))}
-                            </pre>
-                          )
-                        })()}
+                      {/* Godbolt-style code pane with syntax highlighting */}
+                      <div style={{ flex: 1, overflow: 'hidden' }}>
+                        <CodePane
+                          code={codeViewTab === 'pseudocode'
+                            ? (pseudocode || '# Select a node to generate Python pseudocode')
+                            : (selectedNode.source_pattern || '// No source data available\n// Run /analyze-elf to extract source patterns')}
+                          language={codeViewTab === 'assembly' ? 'asm' : codeViewTab === 'decompiled' ? 'c' : 'python'}
+                          header={`${selectedNode.label} — ${codeViewTab === 'assembly' ? 'Assembly' : codeViewTab === 'decompiled' ? 'Decompiled C' : 'Python Pseudocode'}`}
+                          onLineClick={(i) => {
+                            // Future: cross-link to graph nodes at this line
+                          }}
+                        />
                       </div>
                     </div>
                   )}
@@ -2303,20 +2463,44 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )}
 
                   {dataTab === 'connections' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {Object.entries(edgesByType).map(([type, targets]) => (
-                        <div key={type} style={{ borderLeft: `2px solid ${EDGE_COLORS[type] || EMBRY.muted}`, paddingLeft: 8 }}>
-                          <div style={{ fontSize: 8, color: EDGE_COLORS[type] || EMBRY.dim, fontWeight: 800, textTransform: 'uppercase', marginBottom: 4 }}>{type} ({targets.length})</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {targets.map(t => (
-                              <code key={t} onClick={() => onFeatureClick(t)} style={{
-                                fontSize: 9, padding: '1px 4px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`,
-                                color: '#22d3ee', cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace',
-                              }}>{t.split('/').pop()}</code>
-                            ))}
-                          </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {/* Outgoing relationships (→) */}
+                      {outgoingEdges.length > 0 && (
+                        <div>
+                          <div style={{ fontSize: 8, color: '#2196F3', fontWeight: 800, textTransform: 'uppercase', marginBottom: 4 }}>OUTGOING → ({outgoingEdges.length})</div>
+                          {outgoingEdges.map((e, i) => (
+                            <div key={i} onClick={() => onFeatureClick(e.target)}
+                              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 8px', cursor: 'pointer', borderRadius: 2, fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
+                              onMouseEnter={ev => (ev.currentTarget.style.background = '#0a0a0a')}
+                              onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
+                            >
+                              <span style={{ color: '#2196F3' }}>→</span>
+                              <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.target}</span>
+                              <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
+                      {/* Incoming relationships (←) */}
+                      {incomingEdges.length > 0 && (
+                        <div>
+                          <div style={{ fontSize: 8, color: '#FF9800', fontWeight: 800, textTransform: 'uppercase', marginBottom: 4 }}>INCOMING ← ({incomingEdges.length})</div>
+                          {incomingEdges.map((e, i) => (
+                            <div key={i} onClick={() => onFeatureClick(e.source)}
+                              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 8px', cursor: 'pointer', borderRadius: 2, fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
+                              onMouseEnter={ev => (ev.currentTarget.style.background = '#0a0a0a')}
+                              onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
+                            >
+                              <span style={{ color: '#FF9800' }}>←</span>
+                              <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.source}</span>
+                              <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {outgoingEdges.length === 0 && incomingEdges.length === 0 && (
+                        <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>No connections</div>
+                      )}
                     </div>
                   )}
 
@@ -2736,6 +2920,46 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <pre style={{ fontSize: 8, color: EMBRY.dim, background: '#050505', padding: 6, margin: '4px 0 0', borderRadius: 2, overflowX: 'auto', whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', border: `1px solid ${EMBRY.border}` }}>
                             {JSON.stringify(m._querySpec, null, 2)}
                           </pre>
+                        </details>
+                      )}
+                      {/* TrustGraph-style Explain Pipeline */}
+                      {m._explain && m._explain.length > 0 && (
+                        <details style={{ marginTop: 6 }}>
+                          <summary style={{ fontSize: 9, color: EMBRY.accent, cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+                            Explain Pipeline ({m._explain.length} steps)
+                          </summary>
+                          <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            {m._explain.map((step, si) => {
+                              const stepColors: Record<string, string> = {
+                                question: '#F59E0B', grounding: '#FF9800', exploration: '#2196F3', intent: '#9C27B0', answer: EMBRY.green,
+                              }
+                              const color = stepColors[step.type] || EMBRY.dim
+                              return (
+                                <div key={si} style={{
+                                  display: 'flex', gap: 6, alignItems: 'flex-start',
+                                  padding: '4px 8px', borderLeft: `2px solid ${color}`,
+                                  background: `${color}08`, borderRadius: '0 3px 3px 0',
+                                }}>
+                                  <span style={{ fontSize: 10, fontWeight: 900, color, minWidth: 14, textAlign: 'center', fontFamily: 'JetBrains Mono, monospace' }}>{si + 1}</span>
+                                  <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: 8, fontWeight: 800, color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{step.label}</div>
+                                    {step.detail && <div style={{ fontSize: 9, color: EMBRY.dim, marginTop: 1 }}>{step.detail}</div>}
+                                    {step.chips && step.chips.length > 0 && (
+                                      <div style={{ display: 'flex', gap: 3, marginTop: 3, flexWrap: 'wrap' }}>
+                                        {step.chips.map((chip, ci) => (
+                                          <span key={ci} onClick={() => onFeatureClick(chip.label)} style={{
+                                            fontSize: 8, padding: '1px 6px', borderRadius: 3, cursor: 'pointer',
+                                            background: `${chip.color}20`, border: `1px solid ${chip.color}44`, color: chip.color,
+                                            fontFamily: 'JetBrains Mono, monospace', fontWeight: 600,
+                                          }}>{chip.label}</span>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
                         </details>
                       )}
                     </div>
