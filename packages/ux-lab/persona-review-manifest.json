@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "type": "persona-review-manifest",
+  "total": 34,
+  "reviews": [
+    {
+      "persona": "tim-blazytko",
+      "group": "first-impressions",
+      "source": "BinaryExplorerView.tsx:1-200",
+      "criteria": "As an RE professional who builds agentic analysis pipelines: Does this tool's initial state communicate what binaries are available and how to start analysis? Is the information hierarchy clear? Does it feel like a professional tool or a toy? Could this integrate into an automated analysis workflow?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "graph-navigation",
+      "source": "BinaryGraph.tsx",
+      "criteria": "As someone who builds graph-based analysis tools: Is the force-directed layout appropriate for binary call/data flow graphs? Are edge crossings minimized? Is the layout stable (nodes don't jump around)? Would a hierarchical layout be better for showing call hierarchies? Can you switch between layout algorithms?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "node-detail",
+      "source": "BinaryExplorerView.tsx:2400-2800",
+      "criteria": "As someone who analyzes IPC and RPC interfaces: When viewing an RPC endpoint or API node, are parameters shown with types? Are request/response schemas visible? Is the calling convention documented? Can you see which functions implement the endpoint? Are authentication/authorization requirements noted? Would this help you build a fuzzer for the interface?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "symbol-tree",
+      "source": "SymbolTree.tsx",
+      "criteria": "As someone who navigates symbol tables: Is the tree hierarchy logical (binary \u2192 sections \u2192 namespaces \u2192 functions)? Are node types indicated by icons? Is the tree sortable (alphabetical, by address, by size)? Can you see the total count at each level? Does the tree mirror the actual binary structure or is it an abstraction?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "table-view",
+      "source": "BinaryExplorerView.tsx:1800-2100",
+      "criteria": "As someone who analyzes function tables in binaries: Are the table columns appropriate (name, type, address, size, namespace, tags)? Can you customize which columns are visible? Are the column widths appropriate for the data? Is there a way to add custom columns for annotation? Would you want to export this table to CSV for batch processing?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "taxonomy-integration",
+      "source": "BinaryExplorerView.tsx:270-350",
+      "criteria": "As someone who uses semantic tagging for binary classification: Are SPARTA mind tags visible on nodes? Are the tags relevant to the node's actual function? Can you add/remove tags manually? Is there an auto-tagging capability? Do tags influence the graph layout or coloring? Would you use tags to build a malware family classifier?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "code-view",
+      "source": "CodePane.tsx",
+      "criteria": "As someone who writes deobfuscation passes: Is the ASM view useful for understanding obfuscated code? Can you identify obfuscation patterns (opaque predicates, control flow flattening, dead code)? Are basic blocks visually separated? Is there CFG-level visualization? Would this ASM view integrate with your deobfuscation pipeline?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "chat-analysis",
+      "source": "BinaryExplorerView.tsx:2800-3100",
+      "criteria": "As someone who builds NL interfaces for binary analysis: Is the chat positioned as a first-class analysis tool? Are suggested queries relevant to RE workflows? Could you ask 'find all functions that process network input' or 'show obfuscated functions'? Does the chat understand binary analysis domain terminology? Would this replace or complement your existing scripting workflow?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "automation",
+      "source": "server/index.ts",
+      "criteria": "As someone who scripts everything: Is there an API behind this UI that I could call directly? Are the network requests visible in DevTools with a clear REST/GraphQL pattern? Could I build a headless client? Is there API documentation? Would this support building automated analysis pipelines that feed results into other tools?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "perspective-views",
+      "source": "BinaryExplorerView.tsx:220-280",
+      "criteria": "As someone who focuses on security analysis: Is there a security-focused view that highlights attack surfaces, vulnerable functions, and security-relevant code paths? Does the security perspective filter out irrelevant nodes? Are risk scores or severity indicators shown? Would this accelerate a security audit compared to generic code browsing?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "scene-management",
+      "source": "BinaryExplorerView.tsx:500-600",
+      "criteria": "As someone who works on analysis across multiple sessions: Can you save the current scene (graph state, selections, annotations)? Is there a save/load UI? Is the scene format portable (could you share it with a colleague)? Does the scene include chat history? Would scene management enable reproducible analysis workflows?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "tim-blazytko",
+      "group": "investigation-journal",
+      "source": "InvestigationJournal.tsx",
+      "criteria": "As someone who documents analysis for reproducibility: Is there an investigation journal that records your actions? Are navigation steps, queries, and findings logged automatically? Can you add manual notes? Is the journal timestamped? Would this journal be useful for writing a technical report or training an agentic analysis pipeline?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "first-impressions",
+      "source": "BinaryExplorerView.tsx:1-200",
+      "criteria": "As a low-level systems programmer: Does the initial load communicate this is a serious binary analysis tool? Is the layout efficient for someone who will spend hours inspecting binaries? Does the information density match what you'd expect from IDA Pro or Ghidra's initial state?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "data-structures",
+      "source": "BinaryExplorerView.tsx:2400-2700",
+      "criteria": "As someone who parses binary formats: Are schema fields displayed with proper type annotations (uint32_t, char*, struct pointer)? Are field sizes shown in bytes? Is there endianness indication? Can you see the raw offset of each field within the structure? Are bitfields represented correctly?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "graph-exploration",
+      "source": "BinaryGraph.tsx",
+      "criteria": "As someone who analyzes program structure graphs: Are different node types (functions, data structures, namespaces, imports) visually distinct? Can you tell at a glance what category a node belongs to? Is the color/shape coding consistent and learnable? Does the legend (if any) cover all node types?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "code-view",
+      "source": "CodePane.tsx",
+      "criteria": "As someone who reads x86/ARM assembly daily: Is the assembly syntax correct (Intel vs AT&T, consistent)? Are operand sizes explicit? Are addresses properly formatted as hex? Are symbolic names resolved for known library calls? Is the instruction encoding (opcode bytes) shown alongside mnemonics? Are branch targets visually connected?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "node-detail",
+      "source": "BinaryExplorerView.tsx:2400-2800",
+      "criteria": "As a thorough analyst who needs every byte documented: Does the detail panel show all available metadata for the selected node? Is there a raw JSON/data view? Are field types, sizes, and offsets shown? Is anything hidden that should be front-and-center? Would you need to switch to another tool to get information that's missing here?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "search-and-filter",
+      "source": "BinaryExplorerView.tsx:300-500",
+      "criteria": "As someone who searches for specific functions and addresses: Is the search instant or does it lag? Does it search across node names, addresses, and content? Can you search by hex pattern or regex? Are results ranked by relevance? Is the current search term visible and easy to modify? Does search highlight matches in the graph?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "context-menu",
+      "source": "ContextMenu.tsx + BinaryExplorerView.tsx",
+      "criteria": "As someone who relies on right-click menus in IDA and Ghidra: Does right-clicking a node show useful options (rename, annotate, show xrefs, copy address, expand neighbors)? Are the menu items relevant to binary analysis? Is the menu organized logically? Are there keyboard shortcuts shown next to menu items? Is the custom context menu used instead of the browser default?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "cross-references",
+      "source": "BinaryExplorerView.tsx:2600-2800",
+      "criteria": "As someone who traces dependencies to understand attack surfaces: Can you trace all callers and callees of a selected function? Is the call depth configurable? Can you see the full dependency chain from entry point to a specific function? Are indirect calls (via function pointers, vtables) represented? Can you highlight a specific call path?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "state-machines",
+      "source": "BinaryExplorerView.tsx:2700-2900",
+      "criteria": "As someone who reverse engineers protocol state machines: Is there a dedicated state machine visualization? Are states shown as nodes in a ring or directed graph? Are transitions labeled with the triggering event/condition? Can you trace a path through the state machine? Is the initial state clearly marked? Are error/terminal states visually distinct?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "performance",
+      "source": "BinaryGraph.tsx",
+      "criteria": "As someone who analyzes binaries with thousands of functions: How does the graph perform with the current number of nodes? Is there any lag when clicking, panning, or zooming? Would you trust this to handle 500+ nodes without WebGL/Canvas? Is there a virtualization strategy visible (lazy loading, level-of-detail)? What's the upper bound before it becomes unusable?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "group": "chat-analysis",
+      "source": "BinaryExplorerView.tsx:2800-3100",
+      "criteria": "As a security researcher who would ask technical RE questions: Is the chat interface positioned to answer questions about the binary? Can you see suggested queries that are relevant to binary analysis? Does the chat area feel like a first-class analysis tool (as per the design philosophy) or an afterthought? Would you use natural language to query the binary?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "first-impressions",
+      "source": "BinaryExplorerView.tsx:1-200",
+      "criteria": "As a security educator who makes complex topics accessible: Could a CTF beginner understand how to use this tool? Is there guidance on what to do first? Does the empty-graph progressive disclosure help or confuse newcomers? What would you add to make this a teaching tool? Would you feature this in a YouTube tutorial?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "progressive-disclosure",
+      "source": "BinaryExplorerView.tsx:550-650",
+      "criteria": "As someone who believes UI should tell a story: Is the transition from empty to populated graph smooth and understandable? Does the animation convey that nodes are 'appearing' in response to your action? Is it clear that you caused this to happen? Would a beginner understand that clicking 'Seed Namespaces' loads the binary's structure? Is there a loading indicator?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "learning-path",
+      "source": "BinaryExplorerView.tsx:100-300",
+      "criteria": "As someone who thinks about pedagogical order: In what order would a newcomer discover features? Is the order logical (overview \u2192 detail \u2192 code \u2192 chat)? Are advanced features hidden until basics are understood? Could someone accidentally discover a confusing advanced feature before understanding the basics? Is there a natural flow?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "vulnerability-hunting",
+      "source": "BinaryExplorerView.tsx:2100-2400",
+      "criteria": "As someone who hunts for bugs in CTF challenges: Can you identify the binary's attack surface (input handlers, network listeners, file parsers)? Are these highlighted or do you have to find them yourself? Would a beginner know where to start looking for vulnerabilities? Is there a 'find interesting functions' feature? Would this help you during a CTF time crunch?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "code-view",
+      "source": "CodePane.tsx",
+      "criteria": "As someone who uses Python to explain binary concepts: Is the Python pseudocode readable for someone who knows Python but not assembly? Does it accurately represent the binary's logic? Are comments included to explain non-obvious operations? Would you use this in a tutorial to explain what a function does? Is it better than reading raw C decompilation?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "chat-exploration",
+      "source": "BinaryExplorerView.tsx:2800-3100",
+      "criteria": "As someone who explains things in plain English: Can the chat understand plain English questions about the binary? Could a beginner ask 'what does this program do?' and get a useful answer? Does it handle vague questions gracefully? Is the chat the most beginner-friendly entry point to analysis? Would you recommend starting with the chat instead of the graph?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "visual-design",
+      "source": "EmbryStyle.ts",
+      "criteria": "As someone who uses color to teach: Are the colors in the graph meaningful (different colors for different types)? Is there a legend explaining the color coding? Would a colorblind viewer understand the graph? Are the colors consistent throughout the tool (same type = same color everywhere)? Is the color scheme aesthetically pleasing for screenshots and videos?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "ctf-workflow",
+      "source": "InvestigationJournal.tsx",
+      "criteria": "As someone who writes CTF writeups: Is there an investigation journal that records your analysis steps? Could you export it as a writeup? Does it capture screenshots of the graph at each step? Would this save time writing a CTF writeup after the competition? Can you add personal notes alongside automated recording?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "graph-interaction",
+      "source": "BinaryGraph.tsx",
+      "criteria": "As someone who values intuitive interactions: Does clicking a node do what you'd expect? Is single-click = select and double-click = expand obvious? Are click targets large enough to hit easily? Does clicking empty space deselect? Is there visual feedback on hover (cursor change, highlight)? Would a newcomer understand the click model without instruction?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "accessibility",
+      "source": "BinaryExplorerView.tsx (global)",
+      "criteria": "As someone who advocates for inclusive tools: Can you navigate the tool using only the keyboard? Does Tab move through interactive elements in a logical order? Can you use arrow keys in the graph? Are keyboard shortcuts available? Is there a keyboard shortcut reference? Would a viewer with a broken mouse be able to use this tool?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    },
+    {
+      "persona": "liveoverflow",
+      "group": "error-states",
+      "source": "BinaryExplorerView.tsx:1550-1600",
+      "criteria": "As someone who demos tools live and things break: What happens if the backend is unreachable? Is there a clear error message or does the UI just hang? Would a beginner understand what went wrong? Is there a retry button? Does the error state look professional or like an unhandled exception? Would this embarrass you in a live demo?",
+      "score": null,
+      "verdict": null,
+      "weaknesses": [],
+      "status": "pending"
+    }
+  ]
+}
