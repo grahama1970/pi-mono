@@ -284,6 +284,7 @@ export function BinaryExplorerView() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
+  const [seeding, setSeeding] = useState(false)
 
   // --- Graph Visual State ---
   const [viewMode, setViewMode] = useState<'graph' | 'tree' | 'code' | 'vulns'>('graph')
@@ -475,7 +476,7 @@ export function BinaryExplorerView() {
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
-  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
+  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
   const linkBus = useLinkBus()
@@ -1610,7 +1611,37 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', overflow: 'hidden', minHeight: 0 }}>
       {data.loading ? (
-        <div style={{ padding: 20, color: EMBRY.dim }}>Loading analysis...</div>
+        <div style={{ display: 'flex', flex: 1, height: '100%' }}>
+          {/* Keep sidebar visible during load so user can switch binaries */}
+          <BinaryLeftPane
+            binaryName={binaryName}
+            binaries={binaries}
+            binaryMetas={binaryMetas}
+            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
+            savedScenes={savedScenes}
+            onLoadScene={loadScene}
+            onIngest={() => {
+              const path = prompt('Path to ELF binary:')
+              if (path) { setIngestPath(path); setIsIngesting(true) }
+            }}
+          />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, background: '#050505' }}>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 700, color: EMBRY.accent, letterSpacing: '0.1em' }}>
+              LOADING: {binaryName.toUpperCase()}
+            </div>
+            {binaryMetas[binaryName] && (
+              <div style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace', display: 'flex', gap: 10 }}>
+                {[binaryMetas[binaryName].format, binaryMetas[binaryName].arch].filter(Boolean).join(' / ')}
+                {binaryMetas[binaryName].sizeBytes > 0 && (
+                  <span>{binaryMetas[binaryName].sizeBytes > 1048576 ? `${(binaryMetas[binaryName].sizeBytes / 1048576).toFixed(1)} MB` : `${(binaryMetas[binaryName].sizeBytes / 1024).toFixed(0)} KB`}</span>
+                )}
+                {binaryMetas[binaryName].stripped && <span style={{ color: EMBRY.red }}>STRIPPED</span>}
+                {binaryMetas[binaryName].pie && <span style={{ color: EMBRY.green }}>PIE</span>}
+              </div>
+            )}
+            <div style={{ fontSize: 9, color: EMBRY.muted }}>parsing features & call graph…</div>
+          </div>
+        </div>
       ) : data.error ? (
         <div style={{ padding: 20, color: EMBRY.red }}>{data.error}</div>
       ) : (
@@ -2149,41 +2180,41 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   zIndex: 5, pointerEvents: 'auto', width: 380,
                   background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
                   padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                  animation: 'scene-card-in 0.25s ease both',
                 }}>
-                  <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>No nodes in scene</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>Graph is empty</div>
                   <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, lineHeight: 1.6 }}>
-                    Select a namespace or symbol from the left pane, or use one of these quick actions:
+                    Click <strong style={{ color: EMBRY.accent }}>Seed Namespaces</strong> to load the binary&apos;s structure into the graph, or select a symbol from the left pane.
                   </div>
 
                   {/* Quick actions */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <button onClick={() => {
-                      const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
-                      const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
-                        .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                        .sort((a, b) => b.deg - a.deg).slice(0, 5)
-                      addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
-                    }} style={{
+                      setSeeding(true)
+                      setTimeout(() => {
+                        const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
+                        const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
+                          .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                          .sort((a, b) => b.deg - a.deg).slice(0, 5)
+                        addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
+                        setSeeding(false)
+                      }, 0)
+                    }} disabled={seeding} style={{
                       display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: `${EMBRY.accent}10`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                      background: seeding ? `${EMBRY.accent}20` : `${EMBRY.accent}10`,
+                      border: `1px solid ${seeding ? EMBRY.accent : `${EMBRY.accent}33`}`,
+                      color: EMBRY.accent,
+                      borderRadius: 4, cursor: seeding ? 'default' : 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                      transition: 'all 0.2s ease', opacity: seeding ? 0.8 : 1,
                     }}>
-                      <span style={{ fontSize: 18 }}>⚡</span>
+                      <span style={{ fontSize: 18, display: 'inline-block', animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }}>
+                        {seeding ? '⟳' : '⚡'}
+                      </span>
                       <div>
-                        <div>Load Sample Graph</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>Namespaces + top 5 connected features</div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => setViewMode('vulns')} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <span style={{ fontSize: 18 }}>🛡</span>
-                      <div>
-                        <div>View Vulnerability Map</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
+                        <div>{seeding ? 'Seeding…' : 'Seed Namespaces'}</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
+                          {seeding ? 'Loading binary structure into graph…' : 'Namespaces + top 5 connected features'}
+                        </div>
                       </div>
                     </button>
 
@@ -2196,6 +2227,18 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div>
                         <div>Browse Source Patterns</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => setViewMode('vulns')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>🛡</span>
+                      <div>
+                        <div>View Vulnerability Map</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
                       </div>
                     </button>
                   </div>
@@ -2466,36 +2509,120 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 3: Fields/Parameters — expandable struct view */}
-                      {selectedNode.fields && selectedNode.fields.length > 0 && (
-                        <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>
-                            {selectedNode.nodeType === 'schema' ? 'STRUCT FIELDS' : 'PARAMETERS'} ({selectedNode.fields.length})
-                          </div>
-                          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '4px 0' }}>
-                            {selectedNode.fields.map((f: any, i: number) => {
-                              const name = typeof f === 'string' ? f : f.name || f.label || String(f)
-                              const type = typeof f === 'object' ? (f.type || f.dataType || '') : ''
-                              const desc = typeof f === 'object' ? (f.description || '') : ''
-                              return (
-                                <div key={i} onClick={() => onFeatureClick(name)}
+                      {/* Row 3: Fields/Parameters — expandable struct view with RE annotations */}
+                      {selectedNode.fields && selectedNode.fields.length > 0 && (() => {
+                        const isSchema = selectedNode.nodeType === 'schema'
+                        // Map common type names → C-style type annotation + byte size
+                        const toCType = (raw: string): { ctype: string; size: number; isPtr: boolean; isBitfield: boolean; bits?: number } => {
+                          const r = raw.toLowerCase().trim()
+                          if (!r) return { ctype: 'uint8_t', size: 1, isPtr: false, isBitfield: false }
+                          // pointer types
+                          if (r.includes('*') || r.includes('ptr') || r.includes('pointer') || r === 'address') return { ctype: r.includes('char') ? 'char*' : r.includes('void') ? 'void*' : 'uintptr_t', size: 8, isPtr: true, isBitfield: false }
+                          // bitfield
+                          const bfMatch = r.match(/:(\d+)$/)
+                          if (bfMatch) { const base = toCType(r.replace(/:(\d+)$/, '')); return { ...base, ctype: base.ctype, isBitfield: true, bits: parseInt(bfMatch[1]), size: 0 } }
+                          if (r === 'bool' || r === 'boolean') return { ctype: 'uint8_t /*bool*/', size: 1, isPtr: false, isBitfield: false }
+                          if (r === 'byte' || r === 'uint8' || r === 'uint8_t' || r === 'u8') return { ctype: 'uint8_t', size: 1, isPtr: false, isBitfield: false }
+                          if (r === 'int8' || r === 'int8_t' || r === 'i8') return { ctype: 'int8_t', size: 1, isPtr: false, isBitfield: false }
+                          if (r === 'uint16' || r === 'uint16_t' || r === 'u16' || r === 'word' || r === 'short') return { ctype: 'uint16_t', size: 2, isPtr: false, isBitfield: false }
+                          if (r === 'int16' || r === 'int16_t' || r === 'i16') return { ctype: 'int16_t', size: 2, isPtr: false, isBitfield: false }
+                          if (r === 'uint32' || r === 'uint32_t' || r === 'u32' || r === 'dword' || r === 'int' || r === 'uint') return { ctype: 'uint32_t', size: 4, isPtr: false, isBitfield: false }
+                          if (r === 'int32' || r === 'int32_t' || r === 'i32') return { ctype: 'int32_t', size: 4, isPtr: false, isBitfield: false }
+                          if (r === 'uint64' || r === 'uint64_t' || r === 'u64' || r === 'qword') return { ctype: 'uint64_t', size: 8, isPtr: false, isBitfield: false }
+                          if (r === 'int64' || r === 'int64_t' || r === 'i64') return { ctype: 'int64_t', size: 8, isPtr: false, isBitfield: false }
+                          if (r === 'float' || r === 'f32') return { ctype: 'float', size: 4, isPtr: false, isBitfield: false }
+                          if (r === 'double' || r === 'f64') return { ctype: 'double', size: 8, isPtr: false, isBitfield: false }
+                          if (r === 'string' || r === 'str') return { ctype: 'char*', size: 8, isPtr: true, isBitfield: false }
+                          if (r.startsWith('char[')) { const n = parseInt(r.slice(5)); return { ctype: raw, size: isNaN(n) ? 0 : n, isPtr: false, isBitfield: false } }
+                          if (r === 'char') return { ctype: 'char', size: 1, isPtr: false, isBitfield: false }
+                          if (r.startsWith('struct ') || r.startsWith('struct_')) return { ctype: `struct ${raw.replace(/^struct_?/i,'').trim()}`, size: 0, isPtr: false, isBitfield: false }
+                          if (r === 'list' || r === 'array') return { ctype: 'void*[]', size: 8, isPtr: true, isBitfield: false }
+                          if (r === 'map' || r === 'dict') return { ctype: 'void* /*map*/', size: 8, isPtr: true, isBitfield: false }
+                          // fallback: treat as opaque struct
+                          return { ctype: `struct ${raw}`, size: 0, isPtr: false, isBitfield: false }
+                        }
+                        // Calculate cumulative offsets
+                        const enriched = selectedNode.fields.map((f: any) => {
+                          const name = typeof f === 'string' ? f : f.name || f.label || String(f)
+                          const rawType = typeof f === 'object' ? (f.type || f.dataType || f.kind || '') : ''
+                          const desc = typeof f === 'object' ? (f.description || '') : ''
+                          const explicitOffset: number | undefined = typeof f === 'object' && f.offset != null ? Number(f.offset) : undefined
+                          const explicitSize: number | undefined = typeof f === 'object' && f.size != null ? Number(f.size) : undefined
+                          const explicitBits: number | undefined = typeof f === 'object' && f.bits != null ? Number(f.bits) : undefined
+                          const endian: string = typeof f === 'object' && f.endian ? String(f.endian).toUpperCase() : 'LE'
+                          const typeInfo = toCType(rawType)
+                          if (explicitBits) { typeInfo.isBitfield = true; typeInfo.bits = explicitBits; typeInfo.size = 0 }
+                          const size = explicitSize ?? typeInfo.size
+                          return { name, rawType, desc, typeInfo, size, endian, explicitOffset }
+                        })
+                        // Assign offsets: use explicit if given, else accumulate
+                        let cursor = 0
+                        const withOffsets = enriched.map((e: any) => {
+                          const offset = e.explicitOffset ?? cursor
+                          if (!e.typeInfo.isBitfield) cursor = offset + (e.size || 0)
+                          return { ...e, offset }
+                        })
+                        // Global endianness — majority vote
+                        const leCount = withOffsets.filter((e: any) => e.endian === 'LE').length
+                        const globalEndian = leCount >= withOffsets.length / 2 ? 'LE' : 'BE'
+                        return (
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                              <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase' }}>
+                                {isSchema ? 'STRUCT FIELDS' : 'PARAMETERS'} ({selectedNode.fields.length})
+                              </div>
+                              {isSchema && (
+                                <>
+                                  <span style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#1a2a1a', border: `1px solid ${EMBRY.green}44`, color: EMBRY.green, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>{globalEndian}</span>
+                                  <span style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#0a0a1a', border: '1px solid #2196F344', color: '#2196F3', fontFamily: 'JetBrains Mono, monospace' }}>x86_64</span>
+                                  {cursor > 0 && <span style={{ fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>sizeof={cursor}B</span>}
+                                </>
+                              )}
+                            </div>
+                            {isSchema && (
+                              <div style={{ display: 'grid', gridTemplateColumns: '52px 100px 1fr 28px 24px', gap: '0 6px', padding: '2px 8px 2px', fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', borderBottom: `1px solid ${EMBRY.border}` }}>
+                                <span>OFFSET</span><span>TYPE</span><span>NAME</span><span>SIZE</span><span>END</span>
+                              </div>
+                            )}
+                            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '2px 0' }}>
+                              {withOffsets.map((e: any, i: number) => (
+                                <div key={i} onClick={() => onFeatureClick(e.name)}
                                   style={{
-                                    display: 'flex', gap: 8, padding: '2px 8px', cursor: 'pointer',
+                                    display: isSchema ? 'grid' : 'flex',
+                                    gridTemplateColumns: isSchema ? '52px 100px 1fr 28px 24px' : undefined,
+                                    gap: isSchema ? '0 6px' : 8,
+                                    padding: '3px 8px', cursor: 'pointer',
                                     borderBottom: i < selectedNode.fields!.length - 1 ? `1px solid ${EMBRY.border}` : 'none',
                                   }}
-                                  onMouseEnter={e => (e.currentTarget.style.background = '#0a0a0a')}
-                                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                                  onMouseEnter={ev => (ev.currentTarget.style.background = '#0a0a0a')}
+                                  onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
                                 >
-                                  <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
-                                  <span style={{ color: EMBRY.white, flex: 1 }}>{name}</span>
-                                  {type && <span style={{ color: '#9C27B0' }}>{type}</span>}
-                                  {desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{desc}</span>}
+                                  {isSchema ? (
+                                    <>
+                                      <span style={{ color: '#4a9eff', fontSize: 8 }}>+0x{e.offset.toString(16).padStart(3,'0').toUpperCase()}</span>
+                                      <span style={{ color: e.typeInfo.isPtr ? '#22d3ee' : e.typeInfo.isBitfield ? '#FF9800' : '#9C27B0', fontSize: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        {e.typeInfo.isBitfield ? `${e.typeInfo.ctype}:${e.typeInfo.bits}` : e.typeInfo.ctype}
+                                      </span>
+                                      <span style={{ color: EMBRY.white, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={e.desc || e.name}>{e.name}{e.desc ? <span style={{ color: EMBRY.muted, fontSize: 7, marginLeft: 4 }}>{e.desc.slice(0,40)}{e.desc.length>40?'…':''}</span> : null}</span>
+                                      <span style={{ color: e.typeInfo.isBitfield ? '#FF9800' : EMBRY.muted, fontSize: 8, textAlign: 'right' }}>
+                                        {e.typeInfo.isBitfield ? `${e.typeInfo.bits}b` : e.size > 0 ? `${e.size}B` : e.typeInfo.isPtr ? '8B' : '?'}
+                                      </span>
+                                      <span style={{ fontSize: 7, color: e.endian === 'BE' ? '#FF5722' : EMBRY.green }}>{e.endian}</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
+                                      <span style={{ color: EMBRY.white, flex: 1 }}>{e.name}</span>
+                                      {e.rawType && <span style={{ color: '#9C27B0', fontSize: 8 }}>{e.typeInfo.ctype}</span>}
+                                      {e.desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.desc}</span>}
+                                    </>
+                                  )}
                                 </div>
-                              )
-                            })}
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )
+                      })()}
 
                       {/* Row 4: States — state machine transition view */}
                       {selectedNode.states && selectedNode.states.length > 0 && (
@@ -3294,6 +3421,14 @@ if (styleInjector) {
     @keyframes context-pop {
       0% { transform: scale(0.95); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes scene-card-in {
+      0% { opacity: 0; transform: translate(-50%, -46%); }
+      100% { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    @keyframes seed-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     [style*="contextItem"]:hover {
       background: #1a1a1a;
