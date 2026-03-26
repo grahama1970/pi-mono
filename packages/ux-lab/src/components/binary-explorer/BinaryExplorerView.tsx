@@ -1584,19 +1584,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
   // Legacy flat grouping (used in summary)
   const edgesByType: Record<string, string[]> = {}
   // Directional grouping (TrustGraph pattern)
-  const outgoingEdges: { type: string; target: string; targetId: string }[] = []
-  const incomingEdges: { type: string; source: string; sourceId: string }[] = []
+  const outgoingEdges: { type: string; target: string; targetId: string; targetType?: string }[] = []
+  const incomingEdges: { type: string; source: string; sourceId: string; sourceType?: string }[] = []
   for (const e of allSelectedEdges) {
     const isOutgoing = e._from === selectedNode?.id
     const otherId = isOutgoing ? e._to : e._from
     const otherLabel = otherId.split('/').pop() ?? ''
+    const otherNode = data.graphNodes.find((n) => n.id === otherId)
     const group = edgesByType[e.edge_type] ?? []
     group.push(otherLabel)
     edgesByType[e.edge_type] = group
     if (isOutgoing) {
-      outgoingEdges.push({ type: e.edge_type, target: otherLabel, targetId: otherId })
+      outgoingEdges.push({ type: e.edge_type, target: otherLabel, targetId: otherId, targetType: otherNode?.nodeType })
     } else {
-      incomingEdges.push({ type: e.edge_type, source: otherLabel, sourceId: otherId })
+      incomingEdges.push({ type: e.edge_type, source: otherLabel, sourceId: otherId, sourceType: otherNode?.nodeType })
     }
   }
 
@@ -1969,6 +1970,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     onNodeClick={onNodeClick}
                     onContextMenu={(n, x, y) => setContextMenu({ x, y, node: n })}
                     graphSvgRef={graphSvgRef}
+                    taxonomyMap={taxonomyMap}
                   />
                 )
               })()}
@@ -2173,6 +2175,48 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div>
                         <div>Browse Source Patterns</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => {
+                      const entryPoints = data.graphNodes.filter(n =>
+                        n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
+                      )
+                      const topByConnections = entryPoints
+                        .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                        .sort((a, b) => b.deg - a.deg)
+                        .slice(0, 20)
+                      addToScene(topByConnections.map(n => n.id))
+                      handleSetPerspective('attack_surface')
+                    }} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>🎯</span>
+                      <div>
+                        <div>Attack Surface <span style={{ fontSize: 8, color: '#f44336', background: '#f4433622', padding: '1px 5px', borderRadius: 8, marginLeft: 4 }}>CTF</span></div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>{`${data.graphNodes.filter(n => ['cli_command','rpc','event','parameter'].includes(n.nodeType)).length} entry points — input handlers · network listeners · file parsers`}</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => {
+                      const sinkPattern = /recv|read|fread|gets|strcpy|strcat|sprintf|memcpy|memmove|scanf|popen|system|exec|open|fopen|socket|connect|bind|listen|accept|malloc|free|realloc/i
+                      const interesting = data.graphNodes.filter(n =>
+                        sinkPattern.test(n.label) ||
+                        (n.nodeType === 'rpc' && data.allEdges.filter(e => e._from === n.id || e._to === n.id).length > 3)
+                      )
+                      addToScene(interesting.map(n => n.id))
+                      handleSetPerspective('attack_surface')
+                    }} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#0a1510', border: `1px solid #4CAF5033`, color: '#4CAF50',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>⚡</span>
+                      <div>
+                        <div>Find Interesting Functions <span style={{ fontSize: 8, color: '#4CAF50', background: '#4CAF5022', padding: '1px 5px', borderRadius: 8, marginLeft: 4 }}>CTF</span></div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>dangerous sinks · I/O handlers · high-degree hubs — start here in a time crunch</div>
                       </div>
                     </button>
                   </div>
@@ -2543,9 +2587,35 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                   {tax?.attack?.map(a => (
                                     <span key={a} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF980010', border: '1px solid #FF980033', color: '#FF9800' }}>{a}</span>
                                   ))}
-                                  {tax?.mind?.map(m => (
-                                    <span key={m} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#9C27B010', border: '1px solid #9C27B033', color: '#9C27B0' }}>{m}</span>
+                                  {(tax?.mind ?? []).map(m => (
+                                    <span key={m} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#9C27B010', border: '1px solid #9C27B033', color: '#CE93D8', display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                                      {m}
+                                      <span
+                                        style={{ cursor: 'pointer', color: '#9C27B0', fontWeight: 900, lineHeight: 1 }}
+                                        title="Remove tag"
+                                        onClick={() => setTaxonomyMap(prev => {
+                                          const next = new Map(prev)
+                                          const entry = next.get(selectedNode.id)
+                                          if (entry) next.set(selectedNode.id, { ...entry, mind: entry.mind.filter(t => t !== m) })
+                                          return next
+                                        })}
+                                      >×</span>
+                                    </span>
                                   ))}
+                                  <span
+                                    style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: 'transparent', border: '1px dashed #9C27B044', color: '#9C27B0', cursor: 'pointer' }}
+                                    title="Add SPARTA mind tag"
+                                    onClick={() => {
+                                      const tag = prompt('Add SPARTA mind tag:')
+                                      if (!tag?.trim()) return
+                                      setTaxonomyMap(prev => {
+                                        const next = new Map(prev)
+                                        const entry = next.get(selectedNode.id) ?? { mind: [], cwe: [], attack: [], d3fend: [], nist: [] }
+                                        if (!entry.mind.includes(tag.trim())) next.set(selectedNode.id, { ...entry, mind: [...entry.mind, tag.trim()] })
+                                        return next
+                                      })
+                                    }}
+                                  >+ tag</span>
                                 </div>
                               )
                             })()}
@@ -2599,7 +2669,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
                             >
                               <span style={{ color: '#2196F3' }}>→</span>
+                              {e.targetType && <span style={{ width: 5, height: 5, borderRadius: '50%', background: NODE_TYPE_COLORS[e.targetType] ?? EMBRY.dim, flexShrink: 0 }} title={e.targetType} />}
                               <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.target}</span>
+                              {e.targetType && <span style={{ fontSize: 7, color: EMBRY.muted }}>{e.targetType.replace('_', ' ')}</span>}
                               <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
                             </div>
                           ))}
@@ -2616,7 +2688,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               onMouseLeave={ev => (ev.currentTarget.style.background = 'transparent')}
                             >
                               <span style={{ color: '#FF9800' }}>←</span>
+                              {e.sourceType && <span style={{ width: 5, height: 5, borderRadius: '50%', background: NODE_TYPE_COLORS[e.sourceType] ?? EMBRY.dim, flexShrink: 0 }} title={e.sourceType} />}
                               <span style={{ color: EMBRY.white, fontWeight: 600 }}>{e.source}</span>
+                              {e.sourceType && <span style={{ fontSize: 7, color: EMBRY.muted }}>{e.sourceType.replace('_', ' ')}</span>}
                               <span style={{ color: EDGE_COLORS[e.type] || EMBRY.muted, fontSize: 8, marginLeft: 'auto' }}>{e.type}</span>
                             </div>
                           ))}
@@ -2804,10 +2878,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {dataTab === 'raw' && (() => {
                     // Show full ArangoDB document, not the stripped D3 node
                     const fullDoc = data.allNodes.find(n => n._id === selectedNode.id)
+                    const jsonText = JSON.stringify(fullDoc ?? selectedNode, null, 2)
                     return (
-                      <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
-                        {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
-                      </pre>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
+                            {fullDoc ? 'ArangoDB document' : 'graph node (full doc not loaded)'} · {Object.keys(fullDoc ?? selectedNode).length} fields
+                          </span>
+                          <button
+                            onClick={() => navigator.clipboard.writeText(jsonText).catch(() => {})}
+                            style={{ marginLeft: 'auto', fontSize: 8, padding: '2px 8px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}
+                          >COPY JSON</button>
+                        </div>
+                        <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
+                          {jsonText}
+                        </pre>
+                      </div>
                     )
                   })()}
                 </div>
@@ -2984,12 +3070,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   type Seg = { text: string; entity?: boolean }
                   const suggestions: { segments: Seg[]; raw: string }[] = []
                   const q = (segs: Seg[]) => suggestions.push({ segments: segs, raw: segs.map(s => s.text).join('') })
-                  if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
-                  if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
-                  if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
-                  if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
-                  if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
-                  q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
+                  if (analysisMode === 'investigator') {
+                    q([{text:`Find dangerous sinks in `},{text:binaryName,entity:true},{text:` (gets, strcpy, recv, system) — which are reachable from user input?`}])
+                    q([{text:`Find all functions in `},{text:binaryName,entity:true},{text:` that receive or parse network input`}])
+                    q([{text:`Which file parser entry points in `},{text:binaryName,entity:true},{text:` lack bounds checking on input size?`}])
+                    q([{text:`Show obfuscated or high-entropy functions in `},{text:binaryName,entity:true}])
+                    if (topRpcs[0]) q([{text:'What external inputs reach '},{text:topRpcs[0].label,entity:true},{text:' and how are they validated?'}])
+                    q([{text:`Which functions in `},{text:binaryName,entity:true},{text:` manipulate strings without bounds checking?`}])
+                  } else {
+                    if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
+                    if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
+                    if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
+                    if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
+                    if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
+                    q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
+                  }
                   return (
                     <div style={{ padding: 10 }}>
                       <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>{binaryName.toUpperCase()}</div>
@@ -3003,7 +3098,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           {[
                             { step: 1, label: 'What is this binary made of?', query: `What are the main components of ${binaryName}?` },
                             { step: 2, label: 'How do the parts communicate?', query: `How do ${namespaces[0] || 'the namespaces'} and ${namespaces[1] || 'other components'} interact?` },
-                            { step: 3, label: 'Where could this break?', query: `What is the attack surface of ${binaryName}?` },
+                            { step: 3, label: 'Where could this break?', query: `What is the attack surface of ${binaryName}? Explain in plain English.` },
                           ].map(g => (
                             <div key={g.step} onClick={() => { setChatInput(''); sendChat(g.query) }}
                               style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
@@ -3012,6 +3107,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             >
                               <span style={{ fontSize: 16, fontWeight: 900, color: EMBRY.accent, width: 20, textAlign: 'center' }}>{g.step}</span>
                               <span style={{ fontSize: 10, color: EMBRY.white }}>{g.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {/* Investigator CTF RE workflow */}
+                      {analysisMode === 'investigator' && (
+                        <div style={{ marginBottom: 12, padding: '8px 10px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 4 }}>
+                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.dim, marginBottom: 6, letterSpacing: '0.08em' }}>CTF RE WORKFLOW</div>
+                          {[
+                            { label: 'Find interesting functions', query: `List all functions in ${binaryName} that call dangerous libc sinks (gets, strcpy, recv, read, system, exec, popen, sprintf). Which are reachable from user input?` },
+                            { label: 'Network attack surface', query: `Find all functions in ${binaryName} that receive or parse network input. What validation is missing? Are there format string bugs or buffer overflows?` },
+                            { label: 'File parser entry points', query: `Which functions in ${binaryName} open or parse files? Trace the input path from fopen/read to memory. Where could a malformed file trigger a bug?` },
+                            { label: 'Deobfuscation pass', query: `Identify control flow flattening, opaque predicates, or dead code in ${binaryName}. Which functions look obfuscated?` },
+                          ].map(g => (
+                            <div key={g.label} onClick={() => { setChatInput(''); sendChat(g.query) }}
+                              style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '6px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 4, transition: 'background 0.15s', border: `1px solid ${EMBRY.border}` }}
+                              onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}12`)}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <span style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{g.label}</span>
                             </div>
                           ))}
                         </div>
