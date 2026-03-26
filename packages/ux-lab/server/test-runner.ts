@@ -697,44 +697,52 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
         }
         case 'persona_review': {
           const personaSlug = step.persona || 'unknown';
-          const personaName = personaSlug.replace(/-/g, ' ');
-          const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface for usability, information density, and workflow support.';
+          const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface.';
           const reviewUrl = step.url || await cdp.evaluate('window.location.href');
 
-          // Load AGENTS.md profile for persona context
-          let agentProfile = '';
-          const agentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
-          if (existsSync(agentPath)) {
-            agentProfile = readFileSync(agentPath, 'utf-8');
-          }
+          // Load prompt from /prompt-lab
+          const prPromptDir = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts');
+          const prTemplate = existsSync(join(prPromptDir, 'persona_review_v1.txt'))
+            ? readFileSync(join(prPromptDir, 'persona_review_v1.txt'), 'utf-8')
+            : 'You are {persona_name}. Navigate to {review_url}. Review against: {review_criteria}. Return JSON verdict.';
 
-          // Load persona review prompt template from prompt-lab
-          const promptPath = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts', 'persona_review_v1.txt');
-          const promptTemplate = existsSync(promptPath)
-            ? readFileSync(promptPath, 'utf-8')
-            : 'Persona: {persona_name}\nURL: {review_url}\nCriteria: {review_criteria}\nProfile:\n{agent_profile}\n\nNavigate to the URL and return your review.';
+          // Load AGENTS.md
+          const prAgentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
+          const prAgentProfile = existsSync(prAgentPath) ? readFileSync(prAgentPath, 'utf-8').slice(0, 1500) : '';
 
-          let personaPrompt = promptTemplate
-            .replace('{persona_name}', personaName)
-            .replace('{review_url}', String(reviewUrl || ''))
-            .replace('{review_criteria}', reviewCriteria)
-            .replace('{agent_profile}', agentProfile);
+          const personaPrompt = prTemplate
+            .replace('{persona_name}', personaSlug.replace(/-/g, ' '))
+            .replace('{agent_profile}', prAgentProfile)
+            .replace('{persona_context}', '')
+            .replace('{review_criteria}', `Navigate to ${reviewUrl} and evaluate: ${reviewCriteria}`);
 
-          // Ensure required context is present even if template placeholders differ.
-          personaPrompt += `\n\n[Review Context]\nPersona: ${personaName}\nURL: ${reviewUrl || ''}\nCriteria: ${reviewCriteria}\n`;
+          // Per-persona model routing
+          const prModels: Record<string, string> = {
+            'tim-blazytko': 'codex', 'gynvael-coldwind': 'claude-opus-4-6', 'liveoverflow': 'gemini-3-flash-preview',
+          };
 
           try {
-            const prRes = await fetch('http://localhost:8620/chat', {
+            const subagentPort = Number(process.env.SUBAGENT_PORT || 8620);
+            const subagentModel = prModels[personaSlug] || 'codex';
+            console.log(`[PERSONA_REVIEW] ${personaSlug} via ${subagentModel} on port ${subagentPort}...`);
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 180_000); // 3 min timeout
+
+            const prRes = await fetch(`http://localhost:${subagentPort}/chat`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              signal: controller.signal,
               body: JSON.stringify({
-                model: 'codex',
+                model: subagentModel,
                 prompt: personaPrompt,
                 workspace: resolve(process.cwd()),
               }),
             });
+            clearTimeout(timeoutId);
 
             const prData = await prRes.json() as any;
+            console.log(`[PERSONA_REVIEW] ${personaSlug}: exit=${prData.exit_code}, response_len=${(prData.response||'').length}`);
             const prAnswer = prData.response || 'No persona review response';
             const prPassed = prAnswer.toUpperCase().includes('"PASS"') || prAnswer.includes('"verdict": "PASS"');
 
