@@ -3490,6 +3490,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         )
                       })()}
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
                                 const textColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#9C27B0'
                                 const label = st.name.length > 11 ? st.name.slice(0, 10) + '…' : st.name
@@ -3534,6 +3535,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
+=======
+>>>>>>> Stashed changes
                       {/* Row 5: RPC/Event interface details */}
                       {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (() => {
                         const fullDoc = data.allNodes.find(n => n._id === selectedNode.id) as any

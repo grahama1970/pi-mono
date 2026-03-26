@@ -1144,12 +1144,54 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         display: 'flex', gap: 12, fontSize: 9, alignItems: 'center', color: EMBRY.dim, flexWrap: 'wrap',
       }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-          {Object.entries(NODE_TYPE_COLORS).filter(([k]) => k !== 'parameter').map(([type, color]) => (
-            <span key={type} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <span style={{ width: 6, height: 6, backgroundColor: color, display: 'inline-block', borderRadius: '50%' }} />
-              {type.replace('_', ' ')}
-            </span>
-          ))}
+          {Object.entries(NODE_TYPE_COLORS).map(([type, color]) => {
+            // Match shapes used in nodeShapePath: diamond=event, square=schema, triangle=cli_command, double-ring=state_machine, circle=rest
+            const S = 10
+            let shapeEl: React.ReactNode
+            if (type === 'event') {
+              // Diamond
+              shapeEl = (
+                <svg width={S} height={S} viewBox="-5 -5 10 10" style={{ flexShrink: 0 }}>
+                  <path d="M0,-4 L4,0 L0,4 L-4,0 Z" fill={color} fillOpacity={0.8} />
+                </svg>
+              )
+            } else if (type === 'schema') {
+              // Square
+              shapeEl = (
+                <svg width={S} height={S} viewBox="-5 -5 10 10" style={{ flexShrink: 0 }}>
+                  <rect x="-3.5" y="-3.5" width="7" height="7" fill={color} fillOpacity={0.8} />
+                </svg>
+              )
+            } else if (type === 'cli_command') {
+              // Triangle
+              shapeEl = (
+                <svg width={S} height={S} viewBox="-5 -5 10 10" style={{ flexShrink: 0 }}>
+                  <path d="M0,-4 L3.8,2.4 L-3.8,2.4 Z" fill={color} fillOpacity={0.8} />
+                </svg>
+              )
+            } else if (type === 'state_machine') {
+              // Circle with dashed outer ring
+              shapeEl = (
+                <svg width={S + 2} height={S + 2} viewBox="-6 -6 12 12" style={{ flexShrink: 0 }}>
+                  <circle r="3.5" fill={color} fillOpacity={0.8} />
+                  <circle r="5" fill="none" stroke={color} strokeWidth="0.8" strokeOpacity={0.5} strokeDasharray="2,1.5" />
+                </svg>
+              )
+            } else {
+              // Circle (namespace, rpc, parameter, etc.)
+              shapeEl = (
+                <svg width={S} height={S} viewBox="-5 -5 10 10" style={{ flexShrink: 0 }}>
+                  <circle r="3.5" fill={color} fillOpacity={0.8} />
+                </svg>
+              )
+            }
+            return (
+              <span key={type} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                {shapeEl}
+                {type.replace(/_/g, ' ')}
+              </span>
+            )
+          })}
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
           {(['organic', 'hierarchical', 'stratified', 'clustered'] as const).map((mode) => (

@@ -47,7 +47,7 @@ const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with
 // Bitwise/shift operators are the core logic in binary analysis pseudocode — highlight them distinctly
 // so readers can scan mask operations (& 0xFF), bit tests (flags & (1 << n)), rotates, etc. at a glance.
 // Compound assignments first so >>= / <<= don't split into >> and =.
-const PY_OPERATORS = /(<<=|>>=|&=|\|=|\^=|<<|>>|~)/g
+const PY_OPERATORS = /(<<=|>>=|&=|\|=|\^=|<<|>>|[&|^~])/g
 // Known Python stdlib + binary-analysis helpers seen in pseudocode
 const PY_KNOWN_SYMBOLS = /\b(struct|binascii|hashlib|hmac|ctypes|zlib|lzma|bz2|base64|codecs|io|os|sys|re|pack|unpack|pack_into|unpack_from|calcsize|hexlify|unhexlify|b2a_hex|a2b_hex|digest|hexdigest|compress|decompress|b64encode|b64decode|open|len|range|enumerate|zip|map|filter|sorted|reversed|list|dict|set|tuple|bytes|bytearray|int|str|hex|bin|oct|ord|chr|abs|min|max|sum|print|repr|isinstance|issubclass|getattr|setattr|hasattr|type|id|hash)\b/g
 
@@ -396,6 +396,13 @@ export function CodePane({
       {header && (
         <div style={{ padding: '4px 12px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', background: '#252526', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ flex: 1 }}>{header}</span>
+          {/* Python pseudocode badge — signals decompiled logic, not real executable Python */}
+          {language === 'python' && (
+            <span
+              title="Python pseudocode — decompiled binary logic expressed as Python for readability"
+              style={{ fontSize: 8, padding: '1px 5px', border: '1px solid #4a6a4a', color: '#7abf7a', borderRadius: 2, cursor: 'default' }}
+            >PSEUDOCODE</span>
+          )}
           {/* Syntax dialect badge — Intel / AT&T / ARM / unknown */}
           {asmSyntax && asmSyntax !== 'unknown' && (
             <span
