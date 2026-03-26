@@ -163,22 +163,39 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
         }
       }
 
-      // Sort children within each type according to sortBy
-      const tierRank = (t: string) => t === 'T0' ? 0 : t === 'T1' ? 1 : 2
+      // Sort children within each type: alpha, address (VA order = disasm view), or size (largest first)
       const nodeCmp = (a: BinaryGraphNode, b: BinaryGraphNode): number => {
-        if (sortBy === 'tier') return tierRank(a.tier) - tierRank(b.tier) || a.label.localeCompare(b.label)
-        if (sortBy === 'connections') {
-          const da = localDegree.get(a.id) ?? 0
-          const db = localDegree.get(b.id) ?? 0
-          return db - da || a.label.localeCompare(b.label)
+        if (sortBy === 'address') {
+          const addrA = (a as any).address ?? (a as any).va ?? Infinity
+          const addrB = (b as any).address ?? (b as any).va ?? Infinity
+          return addrA - addrB || a.label.localeCompare(b.label)
+        }
+        if (sortBy === 'size') {
+          const sizeA = (a as any).size ?? (a as any).byte_count ?? 0
+          const sizeB = (b as any).size ?? (b as any).byte_count ?? 0
+          return sizeB - sizeA || a.label.localeCompare(b.label)
         }
         return a.label.localeCompare(b.label)
       }
       for (const [, arr] of children) arr.sort(nodeCmp)
       for (const [, group] of relationGroups) group.nodes.sort(nodeCmp)
 
+      // Determine section: .text = code, .data = data/schema, .events = events, .bss = mixed
+      const codeTypes = ['rpc', 'cli_command', 'state_machine']
+      const dataTypes = ['schema', 'parameter']
+      let codeCount = 0, dataCount = 0, eventCount = 0
+      for (const [type, nodes] of children) {
+        if (codeTypes.includes(type)) codeCount += nodes.length
+        if (dataTypes.includes(type)) dataCount += nodes.length
+        if (type === 'event') eventCount += nodes.length
+      }
+      let section = '.bss'
+      if (eventCount > 0 && eventCount >= codeCount && eventCount >= dataCount) section = '.events'
+      else if (dataCount > codeCount) section = '.data'
+      else if (codeCount > 0) section = '.text'
+
       if (totalCount > 0 || !q) {
-        result.push({ name: ns.label, id: ns.id, node: ns, children, relationGroups, totalCount })
+        result.push({ name: ns.label, id: ns.id, node: ns, children, relationGroups, totalCount, section })
       }
     }
 
@@ -188,9 +205,33 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
       setExpandedTypes(new Set(result.flatMap(r => [...r.children.keys()].map(t => `${r.id}:${t}`))))
     }
 
-    // Sort namespaces by totalCount desc, then alpha
-    result.sort((a, b) => b.totalCount - a.totalCount || a.name.localeCompare(b.name))
-    return result
+    // Sort namespaces: address order mirrors disasm view, size = largest ns first, alpha = name
+    if (sortBy === 'address') {
+      result.sort((a, b) => {
+        const addrA = (a.node as any).address ?? (a.node as any).va ?? Infinity
+        const addrB = (b.node as any).address ?? (b.node as any).va ?? Infinity
+        return addrA - addrB || a.name.localeCompare(b.name)
+      })
+    } else if (sortBy === 'size') {
+      result.sort((a, b) => b.totalCount - a.totalCount || a.name.localeCompare(b.name))
+    } else {
+      result.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
+    // Group into sections — binary → sections (.text/.data/.events/.bss) → namespaces → symbols
+    const sectionOrder = ['.text', '.data', '.events', '.bss']
+    const sectionMap = new Map<string, TreeNamespace[]>()
+    for (const ns of result) {
+      const arr = sectionMap.get(ns.section) || []
+      arr.push(ns)
+      sectionMap.set(ns.section, arr)
+    }
+    return sectionOrder
+      .filter(s => sectionMap.has(s))
+      .map(s => {
+        const namespaces = sectionMap.get(s)!
+        return { name: s, namespaces, totalCount: namespaces.reduce((sum, ns) => sum + ns.totalCount, 0) } as TreeSection
+      })
   }, [graphNodes, allEdges, search, typeFilter, sortBy])
 
   // Degree lookup for connection count
@@ -210,22 +251,30 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
     const next = new Set(prev); next.has(key) ? next.delete(key) : next.add(key); return next
   })
 
+  const toggleSection = (name: string) => setExpandedSections(prev => {
+    const next = new Set(prev); next.has(name) ? next.delete(name) : next.add(name); return next
+  })
+
   // Flat list of visible items for keyboard navigation
   const flatItems = useMemo(() => {
     const items: BinaryGraphNode[] = []
-    for (const ns of tree) {
-      items.push(ns.node)
-      if (expanded.has(ns.id)) {
-        for (const [type, nodes] of ns.children) {
-          const key = `${ns.id}:${type}`
-          if (expandedTypes.has(key)) {
-            items.push(...nodes)
+    if (!binaryExpanded) return items
+    for (const section of tree) {
+      if (!expandedSections.has(section.name)) continue
+      for (const ns of section.namespaces) {
+        items.push(ns.node)
+        if (expanded.has(ns.id)) {
+          for (const [type, nodes] of ns.children) {
+            const key = `${ns.id}:${type}`
+            if (expandedTypes.has(key)) {
+              items.push(...nodes)
+            }
           }
         }
       }
     }
     return items
-  }, [tree, expanded, expandedTypes])
+  }, [tree, binaryExpanded, expandedSections, expanded, expandedTypes])
 
   // Keyboard navigation
   useEffect(() => {
@@ -295,6 +344,18 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
           {search ? highlightMatch(node.label, search) : node.label}
         </span>
         {tierLabel && <span style={{ fontSize: 7, color: EMBRY.muted, padding: '0 2px', borderRadius: 2, border: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>{tierLabel}</span>}
+        {/* Address (VA) when available — mirrors disasm view column */}
+        {(node as any).address != null && (
+          <span style={{ fontSize: 7, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>
+            {`0x${((node as any).address as number).toString(16).padStart(8, '0')}`}
+          </span>
+        )}
+        {/* Size in bytes when available */}
+        {(node as any).size != null && (
+          <span style={{ fontSize: 7, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>
+            {`${(node as any).size}B`}
+          </span>
+        )}
         <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>{degreeMap.get(node.id) ?? 0}</span>
       </div>
     )
@@ -323,14 +384,14 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
             }}>{type.replace('_', ' ')}</button>
           ))}
           <span style={{ flex: 1 }} />
-          {/* Sort control */}
+          {/* Sort control: alpha → address (VA order) → size — all RE-meaningful orderings */}
           <button
-            onClick={() => setSortBy(s => s === 'alpha' ? 'tier' : s === 'tier' ? 'connections' : 'alpha')}
-            title={sortBy === 'alpha' ? 'Sorted A→Z (click for tier)' : sortBy === 'tier' ? 'Sorted by tier (click for connections)' : 'Sorted by connections (click for A→Z)'}
+            onClick={() => setSortBy(s => s === 'alpha' ? 'address' : s === 'address' ? 'size' : 'alpha')}
+            title={sortBy === 'alpha' ? 'A→Z (click for address order)' : sortBy === 'address' ? 'By VA address (click for size)' : 'By size, largest first (click for A→Z)'}
             style={{ fontSize: 7, padding: '1px 4px', borderRadius: 2, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim, display: 'flex', alignItems: 'center', gap: 2 }}>
-            {sortBy === 'alpha' && <><ArrowUpAZ size={8} /> AZ</>}
-            {sortBy === 'tier'  && <><Layers    size={8} /> TIER</>}
-            {sortBy === 'connections' && <><Activity size={8} /> CONN</>}
+            {sortBy === 'alpha'   && <><ArrowUpAZ size={8} /> AZ</>}
+            {sortBy === 'address' && <><Hash      size={8} /> ADDR</>}
+            {sortBy === 'size'    && <><Activity  size={8} /> SIZE</>}
           </button>
           {/* View mode toggle: by type vs by relationship */}
           <button onClick={() => setViewMode(v => v === 'type' ? 'relationship' : 'type')}
@@ -341,73 +402,95 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
         </div>
       </div>
 
-      {/* Tree with sticky namespace headers */}
+      {/* Tree: binary → sections → namespaces → type groups → symbols */}
       <div style={{ flex: 1, overflow: 'auto', padding: '4px 0' }}>
-        {/* Binary root — mirrors Ghidra's program tree top node */}
+        {/* Binary root — collapsible, mirrors Ghidra program tree root */}
         {tree.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: '#0d0d0d', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div
+            onClick={() => setBinaryExpanded(b => !b)}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: '#0d0d0d', borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer' }}>
+            {binaryExpanded ? <ChevronDown size={11} color={EMBRY.dim} /> : <ChevronRight size={11} color={EMBRY.dim} />}
             <span style={{ color: EMBRY.dim, display: 'flex', alignItems: 'center' }}><Layers size={11} /></span>
             <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace', flex: 1 }}>binary</span>
-            <span style={{ fontSize: 8, color: EMBRY.muted }}>{tree.length} ns · {tree.reduce((s, n) => s + n.totalCount, 0)} sym</span>
+            <span style={{ fontSize: 8, color: EMBRY.muted }}>
+              {tree.reduce((s, sec) => s + sec.namespaces.length, 0)} ns · {tree.reduce((s, sec) => s + sec.totalCount, 0)} sym
+            </span>
           </div>
         )}
-        {tree.map(ns => (
-          <div key={ns.id}>
-            {/* Sticky namespace header */}
+        {binaryExpanded && tree.map(section => (
+          <div key={section.name}>
+            {/* Section header (.text / .data / .events / .bss) — ELF/PE section analogue */}
             <div
-              onClick={() => { toggleNs(ns.id); onSelectNode(ns.node) }}
-              onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, node: ns.node }) }}
+              onClick={() => toggleSection(section.name)}
               style={{
-                display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', cursor: 'pointer',
-                background: selectedNode?.id === ns.id ? `${EMBRY.accent}15` : '#0a0a0a',
-                borderLeft: selectedNode?.id === ns.id ? `2px solid ${EMBRY.accent}` : '2px solid transparent',
-                position: 'sticky', top: 0, zIndex: 2,
-                borderBottom: `1px solid ${EMBRY.border}`,
-              }}
-            >
-              {expanded.has(ns.id) ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
-              <span style={{ color: NODE_TYPE_COLORS.namespace, display: 'flex', alignItems: 'center', flexShrink: 0 }}><Package size={11} /></span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: EMBRY.white, flex: 1, fontFamily: 'JetBrains Mono, monospace' }}>{ns.name}</span>
-              <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>{ns.totalCount}</span>
+                display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px 3px 20px', cursor: 'pointer',
+                background: '#0b0b0b', borderBottom: `1px solid ${EMBRY.border}`,
+                position: 'sticky', top: 0, zIndex: 3,
+              }}>
+              {expandedSections.has(section.name) ? <ChevronDown size={10} color={EMBRY.dim} /> : <ChevronRight size={10} color={EMBRY.dim} />}
+              <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', flex: 1, letterSpacing: '0.05em' }}>{section.name}</span>
+              <span style={{ fontSize: 8, color: EMBRY.muted }}>{section.namespaces.length} ns · {section.totalCount} sym</span>
             </div>
 
-            {/* Type groups (default view) */}
-            {expanded.has(ns.id) && viewMode === 'type' && typeOrder.map(type => {
-              const nodes = ns.children.get(type)
-              if (!nodes || nodes.length === 0) return null
-              const typeKey = `${ns.id}:${type}`
-              return (
-                <div key={typeKey}>
-                  <div onClick={() => toggleType(typeKey)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px 2px 24px', cursor: 'pointer' }}>
-                    {expandedTypes.has(typeKey) ? <ChevronDown size={10} color={EMBRY.muted} /> : <ChevronRight size={10} color={EMBRY.muted} />}
-                    <span style={{ color: NODE_TYPE_COLORS[type] || EMBRY.dim, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-                      {NODE_TYPE_ICONS[type] ?? <Zap size={10} />}
-                    </span>
-                    <span style={{ fontSize: 9, color: NODE_TYPE_COLORS[type] || EMBRY.dim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{type.replace('_', ' ')}</span>
-                    <span style={{ fontSize: 8, color: EMBRY.muted }}>{nodes.length}</span>
-                  </div>
-                  {expandedTypes.has(typeKey) && nodes.map(node => renderFeatureRow(node, 44))}
+            {expandedSections.has(section.name) && section.namespaces.map(ns => (
+              <div key={ns.id}>
+                {/* Sticky namespace header */}
+                <div
+                  onClick={() => { toggleNs(ns.id); onSelectNode(ns.node) }}
+                  onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, node: ns.node }) }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px 4px 28px', cursor: 'pointer',
+                    background: selectedNode?.id === ns.id ? `${EMBRY.accent}15` : '#0a0a0a',
+                    borderLeft: selectedNode?.id === ns.id ? `2px solid ${EMBRY.accent}` : '2px solid transparent',
+                    position: 'sticky', top: 24, zIndex: 2,
+                    borderBottom: `1px solid ${EMBRY.border}`,
+                  }}
+                >
+                  {expanded.has(ns.id) ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
+                  <span style={{ color: NODE_TYPE_COLORS.namespace, display: 'flex', alignItems: 'center', flexShrink: 0 }}><Package size={11} /></span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: EMBRY.white, flex: 1, fontFamily: 'JetBrains Mono, monospace' }}>{ns.name}</span>
+                  <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>{ns.totalCount}</span>
                 </div>
-              )
-            })}
 
-            {/* Relationship groups (logical view) */}
-            {expanded.has(ns.id) && viewMode === 'relationship' && [...ns.relationGroups.entries()].map(([edgeType, group]) => {
-              const groupKey = `${ns.id}:rel:${edgeType}`
-              return (
-                <div key={groupKey}>
-                  <div onClick={() => toggleType(groupKey)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px 2px 24px', cursor: 'pointer' }}>
-                    {expandedTypes.has(groupKey) ? <ChevronDown size={10} color={EMBRY.muted} /> : <ChevronRight size={10} color={EMBRY.muted} />}
-                    <span style={{ width: 8, height: 2, backgroundColor: edgeTypeColors[edgeType] || EMBRY.dim, flexShrink: 0, borderRadius: 1 }} />
-                    <span style={{ fontSize: 9, color: edgeTypeColors[edgeType] || EMBRY.dim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{edgeType.replace('_', ' ')}</span>
-                    <span style={{ fontSize: 8, color: EMBRY.muted }}>{group.nodes.length}</span>
-                  </div>
-                  {expandedTypes.has(groupKey) && group.nodes.map(node => renderFeatureRow(node, 44))}
-                </div>
-              )
-            })}
+                {/* Type groups (default view) */}
+                {expanded.has(ns.id) && viewMode === 'type' && typeOrder.map(type => {
+                  const nodes = ns.children.get(type)
+                  if (!nodes || nodes.length === 0) return null
+                  const typeKey = `${ns.id}:${type}`
+                  return (
+                    <div key={typeKey}>
+                      <div onClick={() => toggleType(typeKey)}
+                        style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px 2px 44px', cursor: 'pointer' }}>
+                        {expandedTypes.has(typeKey) ? <ChevronDown size={10} color={EMBRY.muted} /> : <ChevronRight size={10} color={EMBRY.muted} />}
+                        <span style={{ color: NODE_TYPE_COLORS[type] || EMBRY.dim, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                          {NODE_TYPE_ICONS[type] ?? <Zap size={10} />}
+                        </span>
+                        <span style={{ fontSize: 9, color: NODE_TYPE_COLORS[type] || EMBRY.dim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{type.replace('_', ' ')}</span>
+                        <span style={{ fontSize: 8, color: EMBRY.muted }}>{nodes.length}</span>
+                      </div>
+                      {expandedTypes.has(typeKey) && nodes.map(node => renderFeatureRow(node, 60))}
+                    </div>
+                  )
+                })}
+
+                {/* Relationship groups (logical view) */}
+                {expanded.has(ns.id) && viewMode === 'relationship' && [...ns.relationGroups.entries()].map(([edgeType, group]) => {
+                  const groupKey = `${ns.id}:rel:${edgeType}`
+                  return (
+                    <div key={groupKey}>
+                      <div onClick={() => toggleType(groupKey)}
+                        style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px 2px 44px', cursor: 'pointer' }}>
+                        {expandedTypes.has(groupKey) ? <ChevronDown size={10} color={EMBRY.muted} /> : <ChevronRight size={10} color={EMBRY.muted} />}
+                        <span style={{ width: 8, height: 2, backgroundColor: edgeTypeColors[edgeType] || EMBRY.dim, flexShrink: 0, borderRadius: 1 }} />
+                        <span style={{ fontSize: 9, color: edgeTypeColors[edgeType] || EMBRY.dim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{edgeType.replace('_', ' ')}</span>
+                        <span style={{ fontSize: 8, color: EMBRY.muted }}>{group.nodes.length}</span>
+                      </div>
+                      {expandedTypes.has(groupKey) && group.nodes.map(node => renderFeatureRow(node, 60))}
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
           </div>
         ))}
       </div>

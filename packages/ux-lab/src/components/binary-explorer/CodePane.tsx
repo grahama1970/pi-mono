@@ -30,9 +30,11 @@ const TOKEN_COLORS: Record<TokenType, string> = {
   operator: '#e06c75',   // red — bitwise/shift ops critical in binary analysis pseudocode (&, |, ^, ~, <<, >>)
 }
 
-const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movups|push|pop|pushf|popf|pushfq|popfq|call|ret|retn|retf|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|add|sub|mul|div|imul|idiv|inc|dec|neg|not|xor|and|or|shl|shr|sar|sal|rol|ror|rcl|rcr|cmp|test|lea|nop|int|syscall|sysenter|sysexit|sysret|lock|rep|repe|repne|repz|repnz|cdq|cdqe|cbw|cwde|cqo|bsf|bsr|bswap|bt|bts|btr|btc|xchg|xadd|cmpxchg|cmpxchg8b|cmpxchg16b|leave|enter|hlt|pause|lfence|mfence|sfence|endbr32|endbr64|cmove|cmovne|cmovz|cmovnz|cmovg|cmovge|cmovl|cmovle|cmova|cmovae|cmovb|cmovbe|cmovs|cmovns|cmovo|cmovno|sete|setne|setz|setnz|setg|setge|setl|setle|seta|setae|setb|setbe|sets|setns|seto|setno|lahf|sahf|stc|clc|std|cld|sti|cli|rdtsc|rdtscp|cpuid|nop|ud2|int3|into|iret|iretd|iretq|popfd|pushfd|pushfq|popfq|vmovdqu|vmovdqa|vpxor|vpand|vpor|vpcmpeqb|vpcmpeqd|vpsubb|vpsubw|vpsubd|vpsllq|vpsrlq|addss|subss|mulss|divss|addsd|subsd|mulsd|divsd|xorps|xorpd|andps|andpd|orps|orpd|comisd|comiss|ucomisd|ucomiss|cvtsi2sd|cvtsi2ss|cvttsd2si|cvttss2si)\b/g
-// Intel syntax registers — size specifiers (DWORD/QWORD/etc.) are NOT registers; kept separate below
-const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|r8d|r9d|r10d|r11d|r12d|r13d|r14d|r15d|r8w|r9w|r10w|r11w|r12w|r13w|r14w|r15w|r8b|r9b|r10b|r11b|r12b|r13b|r14b|r15b|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|xmm0|xmm1|xmm2|xmm3|xmm4|xmm5|xmm6|xmm7|xmm8|xmm9|xmm10|xmm11|xmm12|xmm13|xmm14|xmm15|ymm0|ymm1|ymm2|ymm3|ymm4|ymm5|ymm6|ymm7|ymm8|ymm9|ymm10|ymm11|ymm12|ymm13|ymm14|ymm15|zmm0|zmm1|zmm2|zmm3|zmm4|zmm5|zmm6|zmm7|zmm8|zmm9|zmm10|zmm11|zmm12|zmm13|zmm14|zmm15|st0|st1|st2|st3|st4|st5|st6|st7|mm0|mm1|mm2|mm3|mm4|mm5|mm6|mm7|cr0|cr2|cr3|cr4|cr8|dr0|dr1|dr2|dr3|dr6|dr7)\b/g
+const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movups|push|pop|pushf|popf|pushfq|popfq|call|ret|retn|retf|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|add|sub|mul|div|imul|idiv|inc|dec|neg|not|xor|and|or|shl|shr|sar|sal|rol|ror|rcl|rcr|cmp|test|lea|nop|int|syscall|sysenter|sysexit|sysret|lock|rep|repe|repne|repz|repnz|cdq|cdqe|cbw|cwde|cqo|bsf|bsr|bswap|bt|bts|btr|btc|xchg|xadd|cmpxchg|cmpxchg8b|cmpxchg16b|leave|enter|hlt|pause|lfence|mfence|sfence|endbr32|endbr64|cmove|cmovne|cmovz|cmovnz|cmovg|cmovge|cmovl|cmovle|cmova|cmovae|cmovb|cmovbe|cmovs|cmovns|cmovo|cmovno|sete|setne|setz|setnz|setg|setge|setl|setle|seta|setae|setb|setbe|sets|setns|seto|setno|lahf|sahf|stc|clc|std|cld|sti|cli|rdtsc|rdtscp|cpuid|nop|ud2|int3|into|iret|iretd|iretq|popfd|pushfd|pushfq|popfq|vmovdqu|vmovdqa|vpxor|vpand|vpor|vpcmpeqb|vpcmpeqd|vpsubb|vpsubw|vpsubd|vpsllq|vpsrlq|addss|subss|mulss|divss|addsd|subsd|mulsd|divsd|xorps|xorpd|andps|andpd|orps|orpd|comisd|comiss|ucomisd|ucomiss|cvtsi2sd|cvtsi2ss|cvttsd2si|cvttss2si|ldr|ldrb|ldrh|ldrsb|ldrsh|ldrsw|ldrex|ldxr|ldxrb|ldxrh|ldar|ldarb|ldarh|str|strb|strh|stlex|stlxr|stlxrb|stlxrh|stlr|stlrb|stlrh|ldp|stp|ldur|stur|ldurb|ldurh|ldursb|ldursh|ldursw|adrp|adr|movk|movn|movz|madd|msub|mneg|sdiv|udiv|smull|umull|smulh|umulh|orr|eor|bic|orn|mvn|tst|cmn|cbz|cbnz|tbz|tbnz|bl|blr|bx|blx|br|eret|drps|svc|hvc|smc|brk|dmb|dsb|isb|clrex|prfm|mrs|msr|rev|rev16|rev32|clz|cls|rbit|extr|ubfm|sbfm|bfm|ubfx|sbfx|bfi|bfxil|uxtb|uxth|sxtb|sxth|sxtw|fcmp|fcmpe|fmov|fadd|fsub|fmul|fdiv|fneg|fabs|fsqrt|frintn|frintz|frinta|frintm|frintp|fcvtzs|fcvtzu|scvtf|ucvtf|fcvt|fmla|fmls|fmax|fmin|fmaxnm|fminnm)\b/g
+// AT&T size-suffixed mnemonics: b=byte w=word l=long/32-bit q=quad/64-bit; listed longest first to win over base mnemonic
+const ASM_KEYWORDS_ATT = /\b(movsbw|movsbl|movsbq|movswl|movswq|movslq|movzbw|movzbl|movzbq|movzwl|movzwq|movabsq|movb|movw|movl|movq|leab|leaw|leal|leaq|pushb|pushw|pushl|pushq|popb|popw|popl|popq|addb|addw|addl|addq|subb|subw|subl|subq|imulb|imulw|imull|imulq|idivb|idivw|idivl|idivq|mulb|mulw|mull|mulq|divb|divw|divl|divq|incb|incw|incl|incq|decb|decw|decl|decq|negb|negw|negl|negq|notb|notw|notl|notq|xorb|xorw|xorl|xorq|andb|andw|andl|andq|orb|orw|orl|orq|shlb|shlw|shll|shlq|shrb|shrw|shrl|shrq|sarb|sarw|sarl|sarq|rolb|rolw|roll|rolq|rorb|rorw|rorl|rorq|cmpb|cmpw|cmpl|cmpq|testb|testw|testl|testq|callq|retq|retl|cltq|cltd|cwtl|cwtd|cqto|flds|fldl|fldt|fsts|fstl|fstps|fstpl|fstpt|fadds|faddl|fsubs|fsubl|fmuls|fmull|fdivs|fdivl)\b/g
+// Intel/AArch64 registers — size specifiers (DWORD/QWORD/etc.) are NOT registers; kept separate below
+const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|r8d|r9d|r10d|r11d|r12d|r13d|r14d|r15d|r8w|r9w|r10w|r11w|r12w|r13w|r14w|r15w|r8b|r9b|r10b|r11b|r12b|r13b|r14b|r15b|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|xmm0|xmm1|xmm2|xmm3|xmm4|xmm5|xmm6|xmm7|xmm8|xmm9|xmm10|xmm11|xmm12|xmm13|xmm14|xmm15|ymm0|ymm1|ymm2|ymm3|ymm4|ymm5|ymm6|ymm7|ymm8|ymm9|ymm10|ymm11|ymm12|ymm13|ymm14|ymm15|zmm0|zmm1|zmm2|zmm3|zmm4|zmm5|zmm6|zmm7|zmm8|zmm9|zmm10|zmm11|zmm12|zmm13|zmm14|zmm15|st0|st1|st2|st3|st4|st5|st6|st7|mm0|mm1|mm2|mm3|mm4|mm5|mm6|mm7|cr0|cr2|cr3|cr4|cr8|dr0|dr1|dr2|dr3|dr6|dr7|x0|x1|x2|x3|x4|x5|x6|x7|x8|x9|x10|x11|x12|x13|x14|x15|x16|x17|x18|x19|x20|x21|x22|x23|x24|x25|x26|x27|x28|x29|x30|w0|w1|w2|w3|w4|w5|w6|w7|w8|w9|w10|w11|w12|w13|w14|w15|w16|w17|w18|w19|w20|w21|w22|w23|w24|w25|w26|w27|w28|w29|w30|xzr|wzr|r0|r1|r2|r3|r4|r5|r6|r7|r8|r9|r10|r11|r12|r13|r14|r15|v0|v1|v2|v3|v4|v5|v6|v7|v8|v9|v10|v11|v12|v13|v14|v15|v16|v17|v18|v19|v20|v21|v22|v23|v24|v25|v26|v27|v28|v29|v30|v31|q0|q1|q2|q3|q4|q5|q6|q7|q8|q9|q10|q11|q12|q13|q14|q15|q16|q17|q18|q19|q20|q21|q22|q23|q24|q25|q26|q27|q28|q29|q30|q31|d0|d1|d2|d3|d4|d5|d6|d7|d8|d9|d10|d11|d12|d13|d14|d15|d16|d17|d18|d19|d20|d21|d22|d23|d24|d25|d26|d27|d28|d29|d30|d31|s0|s1|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|s12|s13|s14|s15|s16|s17|s18|s19|s20|s21|s22|s23|s24|s25|s26|s27|s28|s29|s30|s31|h0|h1|h2|h3|h4|h5|h6|h7|h8|h9|h10|h11|h12|h13|h14|h15|h16|h17|h18|h19|h20|h21|h22|h23|h24|h25|h26|h27|h28|h29|h30|h31|b0|b1|b2|b3|b4|b5|b6|b7|b8|b9|b10|b11|b12|b13|b14|b15|b16|b17|b18|b19|b20|b21|b22|b23|b24|b25|b26|b27|b28|b29|b30|b31|fp|lr|pc)\b/g
 // AT&T syntax: %register (percent-prefixed)
 const ASM_REGISTERS_ATT = /%([re]?[abcd]x|[re]?[sd]i|[re]?[sb]p|r(?:1[0-5]|[89])[dwb]?|r(?:1[0-5]|[89])|[re]ip|[re]flags|[abcd][lh]|[csdefs]s|xmm\d{1,2}|ymm\d{1,2}|zmm\d{1,2}|mm[0-7]|st[0-7])\b/g
 // Intel size specifiers (operand width qualifiers, not registers)
@@ -48,6 +50,26 @@ const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with
 const PY_OPERATORS = /(<<=|>>=|&=|\|=|\^=|<<|>>|~)/g
 // Known Python stdlib + binary-analysis helpers seen in pseudocode
 const PY_KNOWN_SYMBOLS = /\b(struct|binascii|hashlib|hmac|ctypes|zlib|lzma|bz2|base64|codecs|io|os|sys|re|pack|unpack|pack_into|unpack_from|calcsize|hexlify|unhexlify|b2a_hex|a2b_hex|digest|hexdigest|compress|decompress|b64encode|b64decode|open|len|range|enumerate|zip|map|filter|sorted|reversed|list|dict|set|tuple|bytes|bytearray|int|str|hex|bin|oct|ord|chr|abs|min|max|sum|print|repr|isinstance|issubclass|getattr|setattr|hasattr|type|id|hash)\b/g
+
+/**
+ * Detect assembly syntax dialect by sampling up to the first 60 lines.
+ * Returns 'att' if AT&T indicators (%reg, $imm) dominate,
+ * 'arm' if AArch64/AArch32 indicators dominate (x0-x30, w0-w30, adrp, ldp),
+ * 'intel' if Intel indicators (PTR, [reg+disp]) dominate, or 'unknown'.
+ */
+function detectAsmSyntax(code: string): 'intel' | 'att' | 'arm' | 'unknown' {
+  const lines = code.split('\n').slice(0, 60)
+  let att = 0, intel = 0, arm = 0
+  for (const line of lines) {
+    if (/%[re]?[abcd]x|%[re]?[sd]i|%[re]?[sb]p|\$0x|\$-?\d/.test(line)) att++
+    if (/\bDWORD PTR\b|\bQWORD PTR\b|\bBYTE PTR\b|\bWORD PTR\b|\[r[abcdesbp]/.test(line)) intel++
+    if (/\b[xw][0-9]|[xw][12][0-9]|[xw]30\b|\badrp\b|\bldp\b|\bstp\b|\blr\b/.test(line)) arm++
+  }
+  if (arm > att && arm > intel) return 'arm'
+  if (att > intel) return 'att'
+  if (intel > att) return 'intel'
+  return 'unknown'
+}
 
 function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   if (!text) return [{ text: ' ', type: 'plain' }]
@@ -103,12 +125,14 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
 
   const patterns: { regex: RegExp; type: TokenType }[] =
     language === 'asm' ? [
+      // AT&T size-suffixed mnemonics before base keywords so movl beats mov
+      { regex: ASM_KEYWORDS_ATT, type: 'keyword' },
       { regex: ASM_KEYWORDS, type: 'keyword' },
       { regex: ASM_KNOWN_SYMBOLS, type: 'symbol' },
       { regex: ASM_SIZE_SPECS, type: 'sizespec' },
       { regex: ASM_REGISTERS, type: 'register' },
       { regex: ASM_REGISTERS_ATT, type: 'register' },
-      // Hex address/immediate: uppercase with 0x prefix for display consistency
+      // Hex address/immediate: 0x-prefixed, uppercase hex digits for display consistency
       { regex: /0x[0-9a-fA-F]+/g, type: 'number' },
       { regex: /\b\d+\b/g, type: 'number' },
       { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
@@ -125,6 +149,8 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
       { regex: /\b[a-zA-Z_]\w*(?=\s*\()/g, type: 'function' },
       { regex: /0x[0-9a-fA-F]+|\b\d+(?:\.\d+)?\b/g, type: 'number' },
       { regex: /"[^"]*"|'[^']*'|"""[\s\S]*?"""|'''[\s\S]*?'''/g, type: 'string' },
+      { regex: PY_OPERATORS, type: 'operator' },
+      { regex: PY_KNOWN_SYMBOLS, type: 'symbol' },
     ]
 
   // Simple approach: scan character by character, apply first matching pattern
@@ -250,11 +276,11 @@ function analyzeObfuscation(lines: string[]): ObfuscationAnalysis {
 
 // ── Assembly helpers ──────────────────────────────────────────────────────────
 
-const BRANCH_MNEMONICS = /^\s*(jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|call)\s+/i
+const BRANCH_MNEMONICS = /^\s*(jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|call|cbz|cbnz|tbz|tbnz|bl|blr|bx|blx|b\.eq|b\.ne|b\.lt|b\.gt|b\.le|b\.ge|b\.cs|b\.cc|b\.mi|b\.pl|b\.vs|b\.vc|b\.hi|b\.ls)\s+/i
 
 /** Extract the branch/call target operand (label name or hex address) from an asm line. */
 function parseBranchTarget(line: string): string | null {
-  const m = line.match(/^\s*(?:lock\s+)?(?:j\w+|call)\s+((?:0x[0-9a-fA-F]+|\w[\w.@$+\-]*))(?:\s|$)/i)
+  const m = line.match(/^\s*(?:lock\s+)?(?:j\w+|call|cbz\s+\w+,|cbnz\s+\w+,|tbz\s+\w+,\w+,|tbnz\s+\w+,\w+,|b\.\w+|bl?r?x?)\s+((?:0x[0-9a-fA-F]+|\w[\w.@$+\-]*))(?:\s|$)/i)
   return m ? m[1] : null
 }
 
@@ -265,7 +291,7 @@ function formatAddress(addr: string | number): string {
     // Heuristic: ≤ 0xFFFFFFFF → 32-bit (8 digits), else 64-bit (16 digits)
     return addr <= 0xFFFFFFFF ? `0x${hex.padStart(8, '0')}` : `0x${hex.padStart(16, '0')}`
   }
-  // Already a string — normalise: if it starts with 0x, uppercase the hex digits
+  // Already a string — normalise: if it starts with 0x, uppercase the hex digits and zero-pad
   if (/^0x[0-9a-fA-F]+$/i.test(addr)) {
     const hex = addr.slice(2).toUpperCase()
     return `0x${hex.padStart(hex.length <= 8 ? 8 : 16, '0')}`
@@ -341,6 +367,9 @@ export function CodePane({
   const obfAnalysis: ObfuscationAnalysis | null =
     language === 'asm' && obfuscationHints ? analyzeObfuscation(lines) : null
 
+  // Syntax dialect detection — shown as a badge in the header
+  const asmSyntax = language === 'asm' ? detectAsmSyntax(code) : null
+
   // Branch target index: label name → line index (for visual branch connection)
   const labelIndex = new Map<string, number>()
   if (language === 'asm') {
@@ -367,6 +396,14 @@ export function CodePane({
       {header && (
         <div style={{ padding: '4px 12px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', background: '#252526', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ flex: 1 }}>{header}</span>
+          {/* Syntax dialect badge — Intel / AT&T / ARM / unknown */}
+          {asmSyntax && asmSyntax !== 'unknown' && (
+            <span
+              data-asm-syntax={asmSyntax}
+              title={asmSyntax === 'att' ? 'AT&T syntax: %reg, $imm, size suffixes on mnemonics' : asmSyntax === 'arm' ? 'AArch64/AArch32 assembly' : 'Intel syntax: reg, imm, DWORD PTR [reg+disp]'}
+              style={{ fontSize: 8, padding: '1px 5px', border: `1px solid ${asmSyntax === 'arm' ? '#4a7a4a' : '#4a5a7a'}`, color: asmSyntax === 'arm' ? '#6abf6a' : '#8aaabf', borderRadius: 2, cursor: 'default' }}
+            >{asmSyntax === 'att' ? 'AT&T' : asmSyntax === 'arm' ? 'ARM' : 'INTEL'}</span>
+          )}
           {showCopyButton && (
             <button
               data-testid="code-pane-copy"
@@ -418,13 +455,17 @@ export function CodePane({
             const showBlockSeparator = language === 'asm' && i > 0 && isLabelLine(line) && lines[i - 1].trim() !== ''
             const blockEnd = language === 'asm' && isBlockEnd(line)
 
-            // Branch target indicator: resolve target label to a line number if possible
+            // Branch target indicator: resolve target label to a line number if possible.
+            // Direction arrow: ↑ = back-edge (loop/goto earlier), ↓ = forward branch, → = unresolved
             const isBranchLine = language === 'asm' && BRANCH_MNEMONICS.test(line)
             const branchTarget = isBranchLine ? parseBranchTarget(line) : null
             const branchTargetLine = branchTarget != null ? labelIndex.get(branchTarget) : undefined
+            const branchArrow = branchTargetLine != null ? (branchTargetLine < i ? '↑' : '↓') : '→'
             const branchTargetDisplay = branchTarget != null
-              ? (branchTargetLine != null ? `→ L${branchTargetLine + 1}` : `→ ${branchTarget}`)
+              ? (branchTargetLine != null ? `${branchArrow} L${branchTargetLine + 1}` : `→ ${branchTarget}`)
               : null
+            // Back-edge branches (loops/dispatchers) use a warmer color to stand out
+            const branchColor = branchTargetLine != null && branchTargetLine < i ? '#c07a4a' : '#4a7a9a'
 
             // Obfuscation hint backgrounds (layered under highlight)
             const isDeadCode = obfAnalysis?.deadCodeLines.has(i)
@@ -480,13 +521,14 @@ export function CodePane({
                   </span>
                 )}
 
-                {/* Opcode bytes (optional) — wide enough for 15-byte encodings (e.g. VEX/EVEX) */}
-                {showOpcodes && opcode && (
+                {/* Opcode bytes (optional) — always reserve the column when showOpcodes=true
+                    so alignment is preserved on lines that have no encoding (labels, directives) */}
+                {showOpcodes && (
                   <span style={{
                     width: 150, color: '#4a5568', fontSize: 9,
                     paddingRight: 8, flexShrink: 0, letterSpacing: '0.5px',
                     fontVariantNumeric: 'tabular-nums',
-                  }}>{opcode}</span>
+                  }}>{opcode ?? ''}</span>
                 )}
 
                 {/* Tokenized code content */}
@@ -496,13 +538,13 @@ export function CodePane({
                   ))}
                 </span>
 
-                {/* Branch target indicator — resolves label to line number when possible */}
+                {/* Branch target indicator — ↑ back-edge (loop), ↓ forward branch, → unresolved */}
                 {branchTargetDisplay && (
                   <span
                     data-branch-target={branchTarget ?? undefined}
                     data-branch-target-line={branchTargetLine != null ? String(branchTargetLine) : undefined}
                     title={branchTargetLine != null ? `Branch target: ${branchTarget} (line ${branchTargetLine + 1})` : `Branch target: ${branchTarget}`}
-                    style={{ fontSize: 8, color: '#4a7a9a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center', fontStyle: 'italic' }}
+                    style={{ fontSize: 8, color: branchColor, paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center', fontStyle: 'italic' }}
                   >{branchTargetDisplay}</span>
                 )}
                 {/* Obfuscation hint badges */}
@@ -520,5 +562,5 @@ export function CodePane({
   )
 }
 
-export { tokenizeLine, TOKEN_COLORS, analyzeObfuscation, isBlockEnd, isLabelLine, parseBranchTarget, formatAddress }
+export { tokenizeLine, TOKEN_COLORS, analyzeObfuscation, isBlockEnd, isLabelLine, parseBranchTarget, formatAddress, detectAsmSyntax }
 export type { Token, TokenType, CodePaneProps, ObfuscationAnalysis }

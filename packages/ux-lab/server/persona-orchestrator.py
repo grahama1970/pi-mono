@@ -28,6 +28,7 @@ import httpx
 
 SUBAGENT_URL = "http://localhost:8620/chat/stream"
 WORKSPACE = "/home/node/workspace/packages/ux-lab"  # container path
+USE_DIRECT_CLI = True  # Use local claude -p instead of subagent-service
 HOST_WORKSPACE = Path(__file__).resolve().parent.parent
 REPORT_PATH = HOST_WORKSPACE / "persona-review-report.md"
 RESULTS_DIR = HOST_WORKSPACE / "convergence-reports"
@@ -127,20 +128,58 @@ def load_tasks(persona: str, group_filter: Optional[str] = None) -> list[Task]:
     return tasks
 
 
-# ── Run one subagent call via SSE ────────────────────────────────────────────
+# ── Run one task via claude -p directly ───────────────────────────────────────
 
-async def run_subagent(prompt: str, max_turns: int = 15) -> tuple[str, list[str], float]:
-    """Returns (accumulated_text, tool_calls, duration_ms)."""
-    result_text = ""
-    all_text = ""
+async def run_subagent(prompt: str, max_turns: int = 50) -> tuple[str, list[str], float]:
+    """Spawn claude -p directly. Returns (result_text, tool_calls, duration_ms)."""
     tools: list[str] = []
+    result_text = ""
     duration_ms = 0
 
+    if USE_DIRECT_CLI:
+        proc = await asyncio.create_subprocess_exec(
+            "claude", "-p", prompt,
+            "--dangerously-skip-permissions",
+            "--max-turns", str(max_turns),
+            "--output-format", "stream-json",
+            "--verbose",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=str(HOST_WORKSPACE),
+        )
+
+        stdout_bytes, stderr_bytes = await proc.communicate()
+        stdout = stdout_bytes.decode(errors="replace")
+
+        for line in stdout.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data = json.loads(line)
+                msg_type = data.get("type", "")
+                if msg_type == "assistant":
+                    content = data.get("message", {}).get("content", [])
+                    if isinstance(content, list):
+                        for c in content:
+                            if c.get("type") == "tool_use":
+                                tools.append(c["name"])
+                                print(f"      [tool] {c['name']}", flush=True)
+                elif msg_type == "result":
+                    result_text = data.get("result", "")
+                    duration_ms = data.get("duration_ms", 0)
+            except json.JSONDecodeError:
+                pass
+
+        return result_text, tools, duration_ms
+
+    # Fallback: subagent-service SSE
+    all_text = ""
     payload = {
         "model": "sonnet",
         "prompt": prompt,
         "workspace": WORKSPACE,
-        "max_turns": max_turns,
+        "max_turns": min(max_turns, 50),
         "idle_timeout": 300,
     }
 
@@ -337,15 +376,20 @@ async def main():
         print("No tasks to run.")
         return
 
-    # Check subagent health
-    try:
-        async with httpx.AsyncClient(timeout=5) as client:
-            r = await client.get("http://localhost:8620/health")
-            health = r.json()
-            print(f"Subagent: {health['status']} ({health['backends']})")
-    except Exception as e:
-        print(f"ERROR: Subagent not available: {e}")
-        return
+    # Check availability
+    if USE_DIRECT_CLI:
+        import subprocess as sp
+        v = sp.run(["claude", "--version"], capture_output=True, text=True)
+        print(f"Claude CLI: {v.stdout.strip()}")
+    else:
+        try:
+            async with httpx.AsyncClient(timeout=5) as client:
+                r = await client.get("http://localhost:8620/health")
+                health = r.json()
+                print(f"Subagent: {health['status']} ({health['backends']})")
+        except Exception as e:
+            print(f"ERROR: Subagent not available: {e}")
+            return
 
     print(f"\nTotal: {sum(len(t) for t in persona_tasks.values())} tasks across {len(persona_tasks)} personas")
     print(f"Mode: {'parallel' if args.parallel else 'sequential'}\n")

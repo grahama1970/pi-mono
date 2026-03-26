@@ -4,7 +4,7 @@
  * Click-to-reveal: edges hidden by default, shown for clicked node (max 10).
  * Hover: tooltip only. Color by node type.
  */
-import { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import * as d3 from 'd3'
 import { EMBRY } from '../common/EmbryStyle'
 import type { BinaryGraphNode, BinaryGraphEdge } from '../../hooks/useBinaryData'
@@ -23,6 +23,8 @@ export interface BinaryGraphProps {
   graphSvgRef?: React.MutableRefObject<SVGSVGElement | null>
   expandedNodeIds?: Set<string>
   perspective?: string
+  /** SPARTA mind tags + taxonomy per node — drives tag dots and coloring on graph */
+  taxonomyMap?: Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>
 }
 
 interface SimNode extends d3.SimulationNodeDatum {
@@ -102,7 +104,7 @@ function hullPath(points: [number, number][], pad = 16): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNodeClick, onNodeHover, onContextMenu, layoutMode = 'organic', selectedNodeId = null, graphSvgRef }: BinaryGraphProps) {
+export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNodeClick, onNodeHover, onContextMenu, layoutMode = 'organic', selectedNodeId = null, graphSvgRef, taxonomyMap }: BinaryGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null)
   const [activeLayout, setActiveLayout] = useState<'organic' | 'stratified' | 'clustered' | 'hierarchical'>(layoutMode)
@@ -125,6 +127,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
   nodesRef.current = nodes
   edgesRef.current = edges
   matchedRef.current = matchedNodeIds
+  const taxonomyRef = useRef(taxonomyMap)
+  taxonomyRef.current = taxonomyMap
 
   const hasFilter = matchedNodeIds && matchedNodeIds.size > 0
   const isMatched = (id: string) => !hasFilter || matchedNodeIds!.has(id)
@@ -161,7 +165,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     d3.select(svg).selectAll('*').remove()
 
     const root = d3.select(svg).attr('viewBox', `0 0 ${width} ${height}`)
-    const bgRect = root.append('rect').attr('width', width).attr('height', height).attr('fill', EMBRY.bgDeep).style('cursor', 'default')
+    const bgRect = root.append('rect').attr('width', width).attr('height', height).attr('fill', EMBRY.bgDeep).style('cursor', 'grab')
 
     // SVG defs: animations + arrowhead markers
     const defs = root.append('defs')
@@ -332,20 +336,37 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     const area = width * height
     const chargeStrength = -Math.max(800, area / (simNodes.length * 1.2))
 
+    // LOD thresholds: SVG without WebGL tops out around 200–300 nodes before the
+    // frame budget is exhausted. Above these thresholds we trade layout quality for
+    // responsiveness — faster decay, weaker/no collision, capped charge distance.
+    const LARGE_GRAPH = simNodes.length > 200
+    const HUGE_GRAPH  = simNodes.length > 400
+
+    // Faster alpha decay for large graphs so the simulation converges and stops sooner.
+    // Default 0.008 keeps ticking ~1200 frames; at N=500 that is ~5 s of jank.
+    const alphaDecayVal = HUGE_GRAPH ? 0.04  : LARGE_GRAPH ? 0.02  : 0.008
+    const alphaMinVal   = HUGE_GRAPH ? 0.002 : LARGE_GRAPH ? 0.001 : 0.0005
+
     const simulation = d3.forceSimulation(simNodes)
       .force('link', d3.forceLink<SimNode, SimEdge>(simEdges).id((d) => d.id).distance(150).strength(0.35))
-      .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(Math.max(width, height) * 1.5))
-      .force('collision', d3.forceCollide().radius((d) => {
+      .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(
+        // Limit charge distance for huge graphs — Barnes-Hut still has to evaluate
+        // distant clusters and at N>400 the per-tick cost is measurable.
+        HUGE_GRAPH ? 400 : Math.max(width, height) * 1.5
+      ))
+      // Disable collision for huge graphs: forceCollide is O(N log N) per tick and
+      // dominates frame time at N>400 with no perceptible benefit at that density.
+      .force('collision', HUGE_GRAPH ? null : d3.forceCollide().radius((d) => {
         const n = d as SimNode; return nodeRadius(n.nodeType, degree.get(n.id) ?? 0) + 30
-      }).strength(0.9))
+      }).strength(LARGE_GRAPH ? 0.5 : 0.9))
       .force('center', d3.forceCenter(width / 2, height / 2).strength(0.08))
       .force('x', d3.forceX(width / 2).strength(0.05))
       .force('y', d3.forceY(height / 2).strength(0.05))
       .alpha(0.2)
-      .alphaDecay(0.008)
-      .alphaMin(0.0005)
+      .alphaDecay(alphaDecayVal)
+      .alphaMin(alphaMinVal)
       .alphaTarget(0)
-      .velocityDecay(0.4)
+      .velocityDecay(LARGE_GRAPH ? 0.6 : 0.55) // Higher decay = more stable, less jitter
 
     if (activeLayout === 'stratified') {
       const getY = (type: string) => {
@@ -419,8 +440,24 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         if (!rankGroups.has(r)) rankGroups.set(r, [])
         rankGroups.get(r)!.push(n)
       }
-      for (const [, ns] of rankGroups) {
-        ns.sort((a, b) => (degree.get(b.id) ?? 0) - (degree.get(a.id) ?? 0))
+      // Barycenter heuristic: sort within each rank by avg neighbor index in previous rank.
+      // Top-down pass minimizes edge crossings vs degree-only sort.
+      const rankOrder: Record<string, number> = {}
+      for (const [, ns] of [...rankGroups.entries()].sort(([a], [b]) => a - b)) {
+        ns.sort((a, b) => {
+          const getBC = (n: SimNode) => {
+            const indices: number[] = []
+            for (const e of simEdges) {
+              const s = typeof e.source === 'string' ? e.source : (e.source as SimNode).id
+              const t = typeof e.target === 'string' ? e.target : (e.target as SimNode).id
+              const other = s === n.id ? t : t === n.id ? s : null
+              if (other !== null && rankOrder[other] !== undefined) indices.push(rankOrder[other])
+            }
+            return indices.length ? indices.reduce((acc, v) => acc + v, 0) / indices.length : -(degree.get(n.id) ?? 0)
+          }
+          return getBC(a) - getBC(b)
+        })
+        ns.forEach((n, i) => { rankOrder[n.id] = i })
       }
       // Assign fixed positions: callers at top, callees at bottom
       const vPad = 60
@@ -438,12 +475,15 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     }
 
     // --- Pre-warm the simulation (CRITICAL for preventing violent jitter) ---
-    // Run 300 ticks off-screen before any DOM rendering.
-    // At alphaDecay 0.008, this settles the layout completely.
-    // Without this, 166 nodes explode outward from the center.
+    // Run ticks synchronously before any DOM rendering to seed positions.
+    // 500 ticks × O(N log N) per tick ≈ 1.4 M ops at N=400 — blocks the main thread
+    // for several hundred ms. Scale down for large graphs: fewer ticks, but the
+    // faster alphaDecay above means the live simulation converges just as quickly.
+    const preWarmTicks = HUGE_GRAPH ? 50 : LARGE_GRAPH ? 150 : 500
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const savedAlpha = simulation.alpha()
     simulation.alpha(0.8) // Temporarily high energy for pre-warm
-    for (let i = 0; i < 500; ++i) simulation.tick() // 500 ticks for better spreading
+    for (let i = 0; i < preWarmTicks; ++i) simulation.tick()
     simulation.alpha(0.2) // Reset after settling
 
     // ── Grouping Hulls (behind edges and nodes) ──
@@ -573,7 +613,22 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         connIds.add((e.target as SimNode).id)
       })
 
-      // Pure visual changes — NO physics restart, NO camera zoom
+      // Pure visual changes — NO physics restart, NO camera zoom.
+      // Flush edge positions now (the tick loop skips path updates when no node is
+      // selected, so edges may have stale 'd' attributes if the simulation moved
+      // nodes after the last deselect).
+      edgeLines.attr('d', (e) => {
+        const sx = (e.source as SimNode).x!, sy = (e.source as SimNode).y!
+        const tx = (e.target as SimNode).x!, ty = (e.target as SimNode).y!
+        if (e.edgeType === 'contains') {
+          const mx = (sx + tx) / 2, my = (sy + ty) / 2
+          const dx2 = tx - sx, dy2 = ty - sy
+          const len = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1
+          const cx2 = mx + (-dy2 / len) * 18, cy2 = my + (dx2 / len) * 18
+          return `M${sx},${sy} Q${cx2},${cy2} ${tx},${ty}`
+        }
+        return `M${sx},${sy} L${tx},${ty}`
+      })
       edgeLines.transition().duration(200)
         .attr('stroke-opacity', (e) => shownEdges.has(e) ? 0.9 : 0)
         .attr('stroke-width', (e) => shownEdges.has(e) ? (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 1.2 : (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 0.3)
@@ -673,6 +728,15 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       }
     })
 
+    // Double-click → zoom in and center on node (stop dblclick.zoom from firing on the svg)
+    nodeGs.on('dblclick', function (event, d) {
+      event.stopPropagation()
+      const currentTransform = d3.zoomTransform(svg)
+      const targetScale = Math.min(Math.max(currentTransform.k * 1.5, 2), 4)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(svg as any).__panToNode?.(d.id, targetScale)
+    })
+
     // Right-click → context menu
     nodeGs.on('contextmenu', function (event, d) {
       event.preventDefault()
@@ -714,7 +778,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
           `<div style="font-size:9px;color:${tierColor};margin-bottom:6px;font-style:italic">${tierLabel} · ${Math.round((d.confidence ?? 0) * 100)}% confidence</div>`,
           top3.length > 0 ? `<div style="font-size:9px;color:${EMBRY.muted};margin-bottom:6px">${top3.join(', ')}</div>` : '',
           d.description ? `<div style="font-size:10px;color:${EMBRY.white};opacity:0.8;margin:6px 0;line-height:1.4;white-space:normal;max-width:240px">${d.description}</div>` : '',
-          `<div style="font-size:8px;color:${EMBRY.accent};margin-top:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em">Click to analyze</div>`,
+          (() => { const mindTags = taxonomyRef.current?.get(d.id)?.mind ?? []; return mindTags.length > 0 ? `<div style="margin-top:6px;display:flex;gap:3px;flex-wrap:wrap">${mindTags.map(t => `<span style="font-size:7px;padding:1px 4px;border-radius:2px;background:#9C27B015;border:1px solid #9C27B044;color:#CE93D8">${t}</span>`).join('')}</div>` : '' })(),
+          `<div style="font-size:8px;color:${EMBRY.accent};margin-top:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em">click to select · dbl-click to focus</div>`,
         ].join('')
         tooltipEl.style.opacity = '1'
         const svgRect = svg.getBoundingClientRect()
@@ -732,6 +797,17 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       if (clickedRef.current !== d.id) {
         d3.select(this).select('.node-label').transition().duration(80).attr('opacity', 1)
       }
+
+      // Hover ring — visible affordance that this node is clickable
+      d3.select(this).select('.hover-ring').remove()
+      d3.select(this).append('circle')
+        .attr('class', 'hover-ring')
+        .attr('r', nodeRadius(d.nodeType, degree.get(d.id) ?? 0) + 6)
+        .attr('fill', 'none')
+        .attr('stroke', EMBRY.white)
+        .attr('stroke-width', 1.5)
+        .attr('stroke-opacity', 0.3)
+        .attr('pointer-events', 'none')
     })
     .on('mouseleave', function (_event, d) {
       if (onNodeHover) onNodeHover(null)
@@ -740,6 +816,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       if (clickedRef.current !== d.id && d.nodeType !== 'namespace') {
         d3.select(this).select('.node-label').transition().duration(150).attr('opacity', 0)
       }
+      d3.select(this).select('.hover-ring').remove()
     })
 
     // ── Node shapes: logarithmic size-by-degree with entrance animation on `r` ──
@@ -802,6 +879,21 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('stroke', EMBRY.bgDeep)
       .attr('stroke-width', 1)
       .attr('opacity', 0.8)
+
+
+    // SPARTA mind-tag badge — purple dot at bottom-left for tagged nodes
+    nodeGs.filter((d) => (taxonomyRef.current?.get(d.id)?.mind?.length ?? 0) > 0)
+      .append('circle')
+      .attr('class', 'mind-tag-dot')
+      .attr('cx', (d) => -(r(d) - 2))
+      .attr('cy', (d) => r(d) - 2)
+      .attr('r', 3.5)
+      .attr('fill', '#9C27B0')
+      .attr('stroke', EMBRY.bgDeep)
+      .attr('stroke-width', 1)
+      .attr('opacity', 0.9)
+      .append('title')
+      .text((d) => 'SPARTA: ' + (taxonomyRef.current?.get(d.id)?.mind ?? []).join(', '))
 
     // Hub badge (edge count) for nodes with >8 connections
     nodeGs.filter((d) => (degree.get(d.id) ?? 0) > 8)
@@ -869,6 +961,10 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
 
     // ── Tick ──
     simulation.on('tick', () => {
+      // LOD: for large graphs skip DOM writes on odd ticks — physics still advances
+      // every tick but we paint half as often, halving layout-phase jank.
+      if (LARGE_GRAPH && tickCount % 2 !== 0) { tickCount++; return }
+
       // Soft boundary — gently push nodes back toward viewport, not hard clamp
       const margin = 50
       const pushStrength = 0.5
@@ -879,27 +975,35 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         else if (d.y! > height - margin) d.vy! -= (d.y! - (height - margin)) * pushStrength
       }
 
-      // Edge paths: curved for `contains`, straight for others
-      edgeLines.attr('d', (d) => {
-        const sx = (d.source as SimNode).x!, sy = (d.source as SimNode).y!
-        const tx = (d.target as SimNode).x!, ty = (d.target as SimNode).y!
-        if (d.edgeType === 'contains') {
-          // Quadratic curve — offset perpendicular to line
-          const mx = (sx + tx) / 2, my = (sy + ty) / 2
-          const dx = tx - sx, dy = ty - sy
-          const len = Math.sqrt(dx * dx + dy * dy) || 1
-          const cx = mx + (-dy / len) * 18, cy = my + (dx / len) * 18
-          return `M${sx},${sy} Q${cx},${cy} ${tx},${ty}`
-        }
-        return `M${sx},${sy} L${tx},${ty}`
-      })
+      // Edge paths: only recompute when a node is selected (edges are opacity=0
+      // otherwise). Skipping this saves O(E) attribute writes per tick — the primary
+      // DOM bottleneck on high-edge-count graphs.
+      if (clickedRef.current !== null) {
+        edgeLines.attr('d', (d) => {
+          const sx = (d.source as SimNode).x!, sy = (d.source as SimNode).y!
+          const tx = (d.target as SimNode).x!, ty = (d.target as SimNode).y!
+          if (d.edgeType === 'contains') {
+            // Quadratic curve — offset perpendicular to line
+            const mx = (sx + tx) / 2, my = (sy + ty) / 2
+            const dx = tx - sx, dy = ty - sy
+            const len = Math.sqrt(dx * dx + dy * dy) || 1
+            const cx = mx + (-dy / len) * 18, cy = my + (dx / len) * 18
+            return `M${sx},${sy} Q${cx},${cy} ${tx},${ty}`
+          }
+          return `M${sx},${sy} L${tx},${ty}`
+        })
+      }
       nodeGs.attr('transform', (d) => `translate(${d.x},${d.y})`)
 
-      // Update hull positions
-      hullPaths.attr('d', ([, ns]) => hullPath(ns.map(n => [n.x!, n.y!] as [number, number]), 12))
-      hullGroup.selectAll<SVGTextElement, [string, SimNode[]]>('.hull-label')
-        .attr('x', ([, ns]) => ns.reduce((s, n) => s + (n.x ?? 0), 0) / ns.length)
-        .attr('y', ([, ns]) => ns.reduce((s, n) => s + (n.y ?? 0), 0) / ns.length)
+      // Hull positions: throttle more aggressively for large graphs — convex hull
+      // is decorative and recomputing it every tick is wasteful at N>200.
+      const hullInterval = LARGE_GRAPH ? 4 : 1
+      if (tickCount % hullInterval === 0) {
+        hullPaths.attr('d', ([, ns]) => hullPath(ns.map(n => [n.x!, n.y!] as [number, number]), 12))
+        hullGroup.selectAll<SVGTextElement, [string, SimNode[]]>('.hull-label')
+          .attr('x', ([, ns]) => ns.reduce((s, n) => s + (n.x ?? 0), 0) / ns.length)
+          .attr('y', ([, ns]) => ns.reduce((s, n) => s + (n.y ?? 0), 0) / ns.length)
+      }
 
       // Update minimap nodes every 10 ticks (hide minimap when <15 nodes — not useful)
       if (tickCount % 10 === 0) {

@@ -1,8 +1,12 @@
 /**
  * InvestigationJournal — records every user interaction as a timestamped step.
  *
- * Timeline view with replay, delete, inline notes, and markdown export.
+ * Timeline view with replay, delete, inline notes, and markdown/JSON export.
  * Rendered as a collapsible panel in the right pane of BinaryExplorerView.
+ *
+ * All actions are logged automatically with ISO-8601 timestamps. Manual notes
+ * can be attached to any step. Exports support both human writeups (Markdown)
+ * and machine-readable JSON for agentic pipeline training.
  */
 
 import { useState, useCallback, useRef, useEffect } from "react";
@@ -22,6 +26,9 @@ import {
 	Eraser,
 	FileText,
 	Camera,
+	Search,
+	Lightbulb,
+	Braces,
 } from "lucide-react";
 import { EMBRY, panel, label, heading } from "./EmbryStyle";
 
@@ -33,7 +40,9 @@ export type StepActionType =
 	| "chat"
 	| "perspective_change"
 	| "layout_change"
-	| "scene_clear";
+	| "scene_clear"
+	| "query"
+	| "finding";
 
 export interface Step {
 	/** ISO-8601 timestamp */
@@ -73,6 +82,8 @@ const ACTION_META: Record<
 	perspective_change: { icon: Eye, color: EMBRY.amber, label: "Perspective" },
 	layout_change: { icon: LayoutGrid, color: EMBRY.white, label: "Layout" },
 	scene_clear: { icon: Eraser, color: EMBRY.red, label: "Clear" },
+	query: { icon: Search, color: "#7dd3fc", label: "Query" },
+	finding: { icon: Lightbulb, color: "#86efac", label: "Finding" },
 };
 
 /* ────────────────────────── Helpers ────────────────────────── */
@@ -147,8 +158,29 @@ function exportWriteup(steps: Step[], challengeTitle = "CTF Challenge"): string 
 	return lines.join("\n");
 }
 
-function downloadBlob(content: string, filename: string) {
-	const blob = new Blob([content], { type: "text/markdown" });
+/** JSON export for agentic pipeline training — one record per step. */
+function exportJson(steps: Step[], challengeTitle: string): string {
+	return JSON.stringify(
+		{
+			challenge: challengeTitle || null,
+			exported: new Date().toISOString(),
+			steps: steps.map((s, i) => ({
+				index: i + 1,
+				timestamp: s.timestamp,
+				action: s.action,
+				description: s.description,
+				note: s.note ?? null,
+				hasSnapshot: s.snapshot !== undefined,
+				screenshotUrl: s.screenshotUrl ?? null,
+			})),
+		},
+		null,
+		2,
+	);
+}
+
+function downloadBlob(content: string, filename: string, mime = "text/markdown") {
+	const blob = new Blob([content], { type: mime });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement("a");
 	a.href = url;
@@ -385,11 +417,17 @@ export function InvestigationJournal({
 	}, [steps]);
 
 	const handleExportWriteup = useCallback(() => {
-		const title = challengeTitle.trim() || "ctf-challenge";
-		const md = exportWriteup(steps, title || undefined);
+		const title = challengeTitle.trim() || "CTF Challenge";
+		const md = exportWriteup(steps, title);
 		const slug = title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 		const ts = new Date().toISOString().slice(0, 10);
 		downloadBlob(md, `${slug || "ctf-writeup"}-${ts}.md`);
+	}, [steps, challengeTitle]);
+
+	const handleExportJson = useCallback(() => {
+		const json = exportJson(steps, challengeTitle);
+		const ts = new Date().toISOString().slice(0, 10);
+		downloadBlob(json, `investigation-journal-${ts}.json`, "application/json");
 	}, [steps, challengeTitle]);
 
 	const Chevron = collapsed ? ChevronRight : ChevronDown;
@@ -411,6 +449,7 @@ export function InvestigationJournal({
 					<span style={heading}>Investigation Journal</span>
 					<span style={styles.badge}>{steps.length}</span>
 				</div>
+
 				{!collapsed && onChallengeTitleChange && (
 					<div
 						style={{ display: "flex", alignItems: "center", gap: 4, flex: 1, marginLeft: 8 }}
@@ -459,7 +498,7 @@ export function InvestigationJournal({
 					>
 						<button
 							style={styles.iconBtn}
-							title="Export as CTF Writeup"
+							title="Export as CTF Writeup (Markdown)"
 							onClick={handleExportWriteup}
 							disabled={steps.length === 0}
 						>
@@ -473,6 +512,14 @@ export function InvestigationJournal({
 						>
 							<Download size={13} />
 						</button>
+						<button
+							style={styles.iconBtn}
+							title="Export as JSON (agentic pipeline / training data)"
+							onClick={handleExportJson}
+							disabled={steps.length === 0}
+						>
+							<Braces size={13} color="#7dd3fc" />
+						</button>
 					</div>
 				)}
 			</div>
@@ -482,7 +529,9 @@ export function InvestigationJournal({
 				<div style={styles.timeline} ref={timelineRef}>
 					{steps.length === 0 && (
 						<div style={styles.empty}>
-							No steps recorded yet. Interact with the graph to begin.
+							All actions are logged automatically with timestamps.
+							Interact with the graph to begin — clicks, queries, and findings
+							are recorded. Add manual notes to any step for your writeup.
 						</div>
 					)}
 
@@ -525,25 +574,8 @@ export function InvestigationJournal({
 										{step.description}
 									</div>
 
-									{/* Screenshot thumbnail */}
-									{step.screenshotUrl && (
-										<img
-											src={step.screenshotUrl}
-											alt={`Step ${idx + 1} screenshot`}
-											style={{
-												marginTop: 4,
-												borderRadius: 4,
-												border: `1px solid ${EMBRY.border}`,
-												maxWidth: "100%",
-												maxHeight: 80,
-												objectFit: "cover" as const,
-												display: "block",
-											}}
-										/>
-									)}
-
-									{/* Snapshot indicator (no screenshot) */}
-									{step.snapshot && !step.screenshotUrl && (
+									{/* Snapshot indicator */}
+									{step.snapshot && (
 										<div style={styles.snapshotBadge}>
 											<Camera size={9} color={EMBRY.blue} />
 											snapshot captured
@@ -579,7 +611,7 @@ export function InvestigationJournal({
 													if (e.key === "Escape")
 														handleCancelNote();
 												}}
-												placeholder="Add a personal note (Ctrl+Enter to save)..."
+												placeholder="Add a manual note (Ctrl+Enter to save)..."
 											/>
 											<div style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
 												<button

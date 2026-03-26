@@ -121,6 +121,8 @@ export interface BinaryData {
 	graphEdges: BinaryGraphEdge[];
 	/** IDs of nodes matching current search/filter (empty = all match) */
 	matchedNodeIds: Set<string>;
+	/** Matched nodes sorted by relevance score (highest first) */
+	matchedNodeRanked: Array<{ id: string; score: number }>;
 	/** Search query */
 	searchQuery: string;
 	setSearchQuery: (q: string) => void;
@@ -272,28 +274,85 @@ ${schemaDescriptions.map((s) => `- ${s.name}: fields=[${s.fields.join(", ")}] co
 
 	// ── Always show ALL nodes — search/filter controls dimming, not visibility ──
 
-	const q = searchQuery.toLowerCase().trim();
+	const rawQ = searchQuery.trim();
+	const q = rawQ.toLowerCase();
+
+	// Regex support: /pattern/flags syntax (e.g. /sub_[0-9a-f]+/i)
+	let regex: RegExp | null = null;
+	if (q.startsWith("/") && q.length > 2) {
+		const lastSlash = q.lastIndexOf("/", q.length - 1);
+		if (lastSlash > 0) {
+			try {
+				const pat = rawQ.slice(1, lastSlash);
+				const fl = rawQ.slice(lastSlash + 1).replace(/[^gimsuy]/g, "");
+				regex = new RegExp(pat, fl.includes("i") ? fl : "i" + fl);
+			} catch {
+				/* invalid regex — fall through to literal */
+			}
+		}
+	}
+	// Hex address: 0x prefix → strip for matching sub_XXXXXX style names
+	const qHex = q.startsWith("0x") ? q.slice(2) : null;
 
 	// Compute which nodes match the current search/filter for highlighting
 	// Empty matchedNodeIds = everything matches (no filter active)
 	const hasFilter = q !== "" || nodeTypeFilter.size > 0;
 	const matchedNodeIds = new Set<string>();
+	const matchedNodeRanked: Array<{ id: string; score: number }> = [];
+
 	if (hasFilter) {
 		for (const n of allNodes) {
 			// Type filter gate
 			if (nodeTypeFilter.size > 0 && !nodeTypeFilter.has(n.node_type)) continue;
 			// Search gate
 			if (q) {
-				if (
-					!n.name.toLowerCase().includes(q) &&
-					!(n.label ?? "").toLowerCase().includes(q) &&
-					!(n.description ?? "").toLowerCase().includes(q) &&
-					!n.namespace.toLowerCase().includes(q)
-				)
-					continue;
+				let matches = false;
+				if (regex) {
+					const blob = [
+						n.name,
+						n.label ?? "",
+						n.description ?? "",
+						n.namespace,
+						n._id,
+						...(n.fields ?? []),
+						...(n.states ?? []),
+						n.source_pattern ?? "",
+					].join("\n");
+					matches = regex.test(blob);
+				} else {
+					const nl = n.name.toLowerCase();
+					const ll = (n.label ?? "").toLowerCase();
+					const dl = (n.description ?? "").toLowerCase();
+					const idl = n._id.toLowerCase();
+					matches =
+						nl.includes(q) ||
+						ll.includes(q) ||
+						dl.includes(q) ||
+						n.namespace.toLowerCase().includes(q) ||
+						idl.includes(q) ||
+						(qHex != null && (nl.includes(qHex) || idl.includes(qHex))) ||
+						(n.fields ?? []).some((f) => f.toLowerCase().includes(q)) ||
+						(n.states ?? []).some((s) => s.toLowerCase().includes(q)) ||
+						(n.source_pattern ?? "").toLowerCase().includes(q);
+				}
+				if (!matches) continue;
+			}
+			// Relevance score: exact name > prefix > substring > content
+			let score = 0;
+			if (q && !regex) {
+				const nl = n.name.toLowerCase();
+				const ll = (n.label ?? "").toLowerCase();
+				if (nl === q || ll === q) score += 100;
+				else if (nl.startsWith(q) || ll.startsWith(q)) score += 50;
+				else if (nl.includes(q)) score += 30;
+				else if (ll.includes(q)) score += 25;
+				else if ((n.description ?? "").toLowerCase().includes(q)) score += 10;
+				else score += 5;
 			}
 			matchedNodeIds.add(n._id);
+			matchedNodeRanked.push({ id: n._id, score });
 		}
+		matchedNodeRanked.sort((a, b) => b.score - a.score);
 	}
 
 	// Build a map of schema/short-name nodes → their connected RPC names for context
@@ -376,6 +435,7 @@ ${schemaDescriptions.map((s) => `- ${s.name}: fields=[${s.fields.join(", ")}] co
 		graphNodes,
 		graphEdges,
 		matchedNodeIds,
+		matchedNodeRanked,
 		searchQuery,
 		setSearchQuery,
 		nodeTypeFilter,
