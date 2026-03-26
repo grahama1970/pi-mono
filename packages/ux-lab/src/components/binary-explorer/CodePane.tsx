@@ -31,7 +31,7 @@ const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movu
 const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|DWORD|QWORD|BYTE|WORD|PTR)\b/g
 const C_KEYWORDS = /\b(if|else|for|while|do|switch|case|break|continue|return|goto|sizeof|typedef|struct|union|enum|const|static|extern|volatile|inline|register|auto|signed|unsigned|restrict|_Bool|_Complex|_Imaginary)\b/g
 const C_TYPES = /\b(void|int|char|short|long|float|double|size_t|ssize_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|bool|FILE|NULL|true|false)\b/g
-const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|raise|pass|break|continue|lambda|and|or|not|in|is|None|True|False|self)\b/g
+const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|raise|pass|break|continue|lambda|and|or|not|in|is|assert|del|global|nonlocal|async|await|None|True|False|self)\b/g
 
 function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   if (!text) return [{ text: ' ', type: 'plain' }]
@@ -41,7 +41,7 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   if (language === 'asm' && (trimmed.startsWith(';') || trimmed.startsWith('#'))) {
     return [{ text, type: 'comment' }]
   }
-  if ((language === 'c' || language === 'python') && trimmed.startsWith('//')) {
+  if (language === 'c' && trimmed.startsWith('//')) {
     return [{ text, type: 'comment' }]
   }
   if (language === 'python' && trimmed.startsWith('#')) {
@@ -70,9 +70,15 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
     const idx = text.indexOf('//')
     if (idx >= 0) { codepart = text.slice(0, idx); commentSuffix = text.slice(idx) }
   } else if (language === 'python') {
-    // Find '#' not inside a string (simple heuristic: count quotes before the #)
-    const idx = text.indexOf('#')
-    if (idx >= 0) { codepart = text.slice(0, idx); commentSuffix = text.slice(idx) }
+    // Find '#' not inside a string — scan char by char tracking quote state
+    let inStr = false; let strChar = ''; let pyCommentIdx = -1
+    for (let ci = 0; ci < text.length; ci++) {
+      const ch = text[ci]
+      if (inStr) { if (ch === strChar && text[ci - 1] !== '\\') inStr = false }
+      else if (ch === '"' || ch === "'") { inStr = true; strChar = ch }
+      else if (ch === '#') { pyCommentIdx = ci; break }
+    }
+    if (pyCommentIdx >= 0) { codepart = text.slice(0, pyCommentIdx); commentSuffix = text.slice(pyCommentIdx) }
   }
 
   // Token-level splitting
@@ -93,6 +99,8 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
       { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
     ] : [
       { regex: PY_KEYWORDS, type: 'keyword' },
+      // ctypes / struct / bytes types common in binary analysis pseudocode
+      { regex: /\b(int|str|bytes|bytearray|bool|float|list|dict|tuple|set|type|object|memoryview|c_uint8|c_uint16|c_uint32|c_uint64|c_int8|c_int16|c_int32|c_int64|c_char|c_void_p|c_size_t|Structure|Union|POINTER|Array)\b/g, type: 'type' },
       { regex: /\b[a-zA-Z_]\w*(?=\s*\()/g, type: 'function' },
       { regex: /0x[0-9a-fA-F]+|\b\d+(?:\.\d+)?\b/g, type: 'number' },
       { regex: /"[^"]*"|'[^']*'|"""[\s\S]*?"""|'''[\s\S]*?'''/g, type: 'string' },
