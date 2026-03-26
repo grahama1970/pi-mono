@@ -23,13 +23,42 @@ const EDGE_COLORS: Record<string, string> = {
 }
 
 
-const FALLBACK_BINARIES = ['droid', 'daemon', 'tunnel', 'mcp']
-const API = 'http://localhost:3001'
+/** API base — configurable via env or falls back to same-origin for production builds */
+const API = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001')
+
+/** Abbreviated node type labels for sidebar chips */
+const TYPE_ABBREV: Record<string, string> = { rpc: 'rpc', event: 'evt', schema: 'sch', state_machine: 'sm', cli_command: 'cli', namespace: 'ns', parameter: 'par' }
+
+/** Per-binary summary stats fetched from ArangoDB.
+ *  File-level metadata (arch, format, size, hash) comes from binary_metadata collection
+ *  populated by /analyze-elf during ingestion. Feature stats come from binary_features. */
+interface BinaryMeta {
+  name: string
+  featureCount: number
+  edgeCount: number
+  byType: Record<string, number>
+  confidence: number
+  /** Binary format from header parsing (ELF, PE, Mach-O) — from binary_metadata collection */
+  format: string
+  /** Architecture from ELF header (x86_64, ARM, MIPS, etc.) */
+  arch: string
+  /** File size in bytes */
+  sizeBytes: number
+  /** SHA256 hash */
+  sha256: string
+  /** ELF security properties */
+  stripped?: boolean
+  pie?: boolean
+  relro?: string
+  importCount?: number
+  entryPoint?: string
+}
 
 /** Left sidebar — binary selector, saved scenes, sessions. Uses shared LeftPane component. */
-function BinaryLeftPane({ binaryName, binaries, onSelectBinary, onRenameBinary, onDeleteBinary, onDuplicateBinary, savedScenes, onLoadScene, onIngest }: {
+function BinaryLeftPane({ binaryName, binaries, binaryMetas, onSelectBinary, onRenameBinary, onDeleteBinary, onDuplicateBinary, savedScenes, onLoadScene, onIngest }: {
   binaryName: string
   binaries: string[]
+  binaryMetas: Record<string, BinaryMeta>
   onSelectBinary: (name: string) => void
   onRenameBinary?: (name: string) => void
   onDeleteBinary?: (name: string) => void
@@ -46,16 +75,69 @@ function BinaryLeftPane({ binaryName, binaries, onSelectBinary, onRenameBinary, 
   return (
     <LeftPane title="Binary Explorer" searchable>
       <LeftPaneSection title={`Binaries (${filteredBinaries.length})`}>
-        {filteredBinaries.map(b => (
-          <div
-            key={b}
-            style={paneItemStyle(b === binaryName)}
-            onClick={() => onSelectBinary(b)}
-            onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, binary: b }) }}
-          >
-            {b}
+        {filteredBinaries.length === 0 && (
+          <div style={{ padding: '12px 10px', fontSize: 11, color: EMBRY.muted, textAlign: 'center' }}>
+            {binaries.length === 0 ? 'No binaries ingested. Use + INGEST BINARY below to analyze an ELF.' : 'No matches for search.'}
           </div>
-        ))}
+        )}
+        {filteredBinaries.map(b => {
+          const meta = binaryMetas[b]
+          return (
+            <div
+              key={b}
+              style={{ ...paneItemStyle(b === binaryName), display: 'flex', flexDirection: 'column', gap: 2 }}
+              onClick={() => onSelectBinary(b)}
+              onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, binary: b }) }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontWeight: b === binaryName ? 700 : 500 }}>{b}</span>
+                {meta && <span style={{ fontSize: 10, color: EMBRY.muted }}>{meta.featureCount} features</span>}
+              </div>
+              {meta && (
+                <>
+                  <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+                    {Object.entries(meta.byType).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([type, count]) => {
+                      return (
+                        <span key={type} style={{
+                          fontSize: 10, padding: '1px 5px', borderRadius: 2,
+                          background: `${NODE_TYPE_COLORS[type] || EMBRY.muted}22`,
+                          color: NODE_TYPE_COLORS[type] || EMBRY.muted,
+                          border: `1px solid ${NODE_TYPE_COLORS[type] || EMBRY.muted}33`,
+                        }}>
+                          {count}{TYPE_ABBREV[type] || type}
+                        </span>
+                      )
+                    })}
+                  </div>
+                  <div style={{ fontSize: 10, color: EMBRY.muted, display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                    {(meta.format || meta.arch) && (
+                      <span style={{ fontWeight: 600, color: EMBRY.fg }}>
+                        {[meta.format, meta.arch].filter(Boolean).join(' ')}
+                      </span>
+                    )}
+                    <span>{meta.featureCount} features · {meta.edgeCount} edges</span>
+                    {meta.sizeBytes > 0 && <span>{meta.sizeBytes > 1048576 ? `${(meta.sizeBytes / 1048576).toFixed(1)}MB` : `${(meta.sizeBytes / 1024).toFixed(0)}KB`}</span>}
+                    {meta.sha256 && (
+                      <span
+                        title={`SHA256: ${meta.sha256}\nClick to copy`}
+                        style={{ fontFamily: 'monospace', cursor: 'pointer', color: EMBRY.accent }}
+                        onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(meta.sha256) }}
+                      >{meta.sha256.slice(0, 8)}</span>
+                    )}
+                  </div>
+                  {(meta.stripped !== undefined || meta.pie !== undefined) && (
+                    <div style={{ fontSize: 9, display: 'flex', gap: 4 }}>
+                      {meta.stripped && <span style={{ color: '#ef4444', fontSize: 9 }}>stripped</span>}
+                      {meta.pie && <span style={{ color: '#22c55e', fontSize: 9 }}>PIE</span>}
+                      {meta.relro && <span style={{ color: '#3b82f6', fontSize: 9 }}>{meta.relro}</span>}
+                      {typeof meta.importCount === 'number' && <span style={{ color: EMBRY.muted }}>{meta.importCount} imports</span>}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )
+        })}
       </LeftPaneSection>
       {ctxMenu && (
         <ContextMenu
@@ -232,39 +314,80 @@ export function BinaryExplorerView() {
   const [isListening, setIsListening] = useState(false)
   const [ttsEnabled, setTtsEnabled] = useState(true)
 
-  // --- Binary Selector (dynamic from ArangoDB) ---
-  const [binaries, setBinaries] = useState(FALLBACK_BINARIES)
+  // --- Binary Selector (dynamic from ArangoDB — no hardcoded fallbacks) ---
+  const [binaries, setBinaries] = useState<string[]>([])
+  const [binaryMetas, setBinaryMetas] = useState<Record<string, BinaryMeta>>({})
   const [binarySearchQuery, setBinarySearchQuery] = useState('')
 
   // --- Ingestion State ---
   const [ingestPath, setIngestPath] = useState('')
   const [isIngesting, setIsIngesting] = useState(false)
 
-  // Load available binaries from ArangoDB on mount
+  // Load available binaries from ArangoDB on mount — with per-binary metadata
   useEffect(() => {
-    fetch(`${API}/api/memory/list`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ collection: 'binary_features', limit: 1, return_fields: ['_key'] }),
-    })
-      .then(r => r.json())
-      .then(d => {
-        // Get distinct binary names from the collection's namespace nodes
-        return fetch(`${API}/api/memory/list`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collection: 'binary_features', limit: 500, return_fields: ['name', 'node_type'], filters: { node_type: 'namespace' } }),
-        })
+    Promise.all([
+      fetch(`${API}/api/memory/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collection: 'binary_features', limit: 500, return_fields: ['binary_name', 'node_type', 'confidence'] }),
+      }).then(r => r.json()),
+      fetch(`${API}/api/memory/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collection: 'binary_feature_edges', limit: 500, return_fields: ['binary_name'] }),
+      }).then(r => r.json()),
+      // Fetch file-level metadata (arch, format, size, hash) from binary_metadata collection
+      fetch(`${API}/api/memory/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collection: 'binary_metadata', limit: 100, return_fields: ['binary_name', 'format', 'arch', 'size_bytes', 'sha256'] }),
+      }).then(r => r.json()).catch(() => ({ documents: [] })),
+    ])
+      .then(([featData, edgeData, metadataData]) => {
+        const docs = featData.documents || []
+        const edgeDocs = edgeData.documents || []
+        // Build per-binary metadata from all features
+        const metaMap: Record<string, BinaryMeta> = {}
+        for (const doc of docs) {
+          const bn = (doc as { binary_name?: string }).binary_name || ''
+          if (!bn) continue
+          if (!metaMap[bn]) metaMap[bn] = { name: bn, featureCount: 0, edgeCount: 0, byType: {}, confidence: 0, format: '', arch: '', sizeBytes: 0, sha256: '' }
+          const m = metaMap[bn]
+          m.featureCount++
+          const nt = (doc as { node_type?: string }).node_type || 'unknown'
+          m.byType[nt] = (m.byType[nt] || 0) + 1
+          m.confidence += (doc as { confidence?: number }).confidence || 0
+        }
+        // Count edges per binary
+        for (const doc of edgeDocs) {
+          const bn = (doc as { binary_name?: string }).binary_name || ''
+          if (bn && metaMap[bn]) metaMap[bn].edgeCount++
+        }
+        // Average confidence
+        for (const m of Object.values(metaMap)) {
+          m.confidence = m.featureCount > 0 ? Math.round(m.confidence / m.featureCount * 100) / 100 : 0
+        }
+        // Merge file-level metadata (arch, format, size, hash)
+        for (const doc of (metadataData.documents || [])) {
+          const bn = (doc as { binary_name?: string }).binary_name || ''
+          if (bn && metaMap[bn]) {
+            const d = doc as Record<string, unknown>
+            if (d.format) metaMap[bn].format = String(d.format)
+            if (d.arch) metaMap[bn].arch = String(d.arch)
+            if (d.size_bytes) metaMap[bn].sizeBytes = Number(d.size_bytes)
+            if (d.sha256) metaMap[bn].sha256 = String(d.sha256)
+            if (d.stripped !== undefined) metaMap[bn].stripped = Boolean(d.stripped)
+            if (d.pie !== undefined) metaMap[bn].pie = Boolean(d.pie)
+            if (d.relro) metaMap[bn].relro = String(d.relro)
+            if (d.import_count !== undefined) metaMap[bn].importCount = Number(d.import_count)
+            if (d.entry_point) metaMap[bn].entryPoint = String(d.entry_point)
+          }
+        }
+        setBinaryMetas(metaMap)
+        const names = Object.keys(metaMap).sort()
+        if (names.length > 0) setBinaries(names)
       })
-      .then(r => r.json())
-      .then(d => {
-        const names = (d.documents || [])
-          .map((doc: { name?: string }) => doc.name?.split('.')[0]?.split(':')[0] || '')
-          .filter((n: string) => n.length > 1)
-        const unique = [...new Set(names)] as string[]
-        if (unique.length > 0) setBinaries(unique.sort())
-      })
-      .catch(() => {}) // fallback to FALLBACK_BINARIES
+      .catch(() => {})
   }, [])
 
   // Load taxonomy tags for all nodes when data changes
@@ -1489,6 +1612,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           <BinaryLeftPane
             binaryName={binaryName}
             binaries={binaries}
+            binaryMetas={binaryMetas}
             onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
             onRenameBinary={(name) => {
               const newName = prompt(`Rename "${name}" to:`, name)

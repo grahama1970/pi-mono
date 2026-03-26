@@ -261,7 +261,7 @@ class ChatRequest(BaseModel):
     model: Optional[str] = Field(None, description="Model name — routes to backend automatically")
     max_turns: int = Field(5, ge=1, le=50)
     system_prompt: Optional[str] = None
-    idle_timeout: int = Field(IDLE_TIMEOUT_S, ge=10, le=600)
+    idle_timeout: int = Field(IDLE_TIMEOUT_S, ge=0, le=86400)  # 0 = no timeout, max 24h
     images: Optional[list[ImageInput]] = Field(None, description="Images to pass to the subagent for vision review (base64)")
     image_paths: Optional[list[str]] = Field(None, description="Container-local file paths to images (use instead of base64 for large images)")
     output_dir: Optional[str] = Field(None, description="Directory inside container to scan for output images")
@@ -585,7 +585,7 @@ async def chat_stream(req: ChatRequest):
                     )
                 except asyncio.TimeoutError:
                     idle_s = time.monotonic() - last_event_time
-                    if idle_s > req.idle_timeout:
+                    if req.idle_timeout > 0 and idle_s > req.idle_timeout:
                         yield _sse("error", {
                             "message": f"Idle timeout ({req.idle_timeout}s)",
                             "backend": backend_name,
@@ -684,10 +684,14 @@ async def _collect_with_idle_timeout(
 
     while True:
         try:
-            line = await asyncio.wait_for(
-                proc.stdout.readline(),
-                timeout=float(idle_timeout),
-            )
+            if idle_timeout > 0:
+                line = await asyncio.wait_for(
+                    proc.stdout.readline(),
+                    timeout=float(idle_timeout),
+                )
+            else:
+                # No timeout — wait indefinitely (monitor via SSE stream)
+                line = await proc.stdout.readline()
         except asyncio.TimeoutError:
             raise TimeoutError(f"No output for {idle_timeout}s")
 

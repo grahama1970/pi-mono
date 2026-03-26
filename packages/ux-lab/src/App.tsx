@@ -189,7 +189,7 @@ const Mockups = ({ projectId }: { projectId: string }) => {
   );
 };
 
-const FinalSite = ({ projectId }: { projectId: string }) => {
+const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
       <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
@@ -220,7 +220,7 @@ const FinalSite = ({ projectId }: { projectId: string }) => {
           {projectId === 'prompt-lab' && <PromptLab />}
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
           {projectId === 'classifier-lab' && <ClassifierLab />}
-          {projectId === 'architecture' && <ArchitectureView initialProjectId={hashSubpath || undefined} />}
+          {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
@@ -1543,7 +1543,7 @@ export default function App() {
               {activeView === 'reviews' && <Reviews projectId={activeProjectId} />}
               {activeView === 'mockups' && <Mockups projectId={activeProjectId} />}
               {activeView === 'testing' && <TestingPanel />}
-              {activeView === 'final-site' && <FinalSite projectId={activeProjectId} />}
+              {activeView === 'final-site' && <FinalSite projectId={activeProjectId} subpath={hashSubpath} />}
               {activeView === 'components' && (
                 <div className="h-full flex flex-col">
                   {activeProjectId === 'music-lab-pipeline' ? (
