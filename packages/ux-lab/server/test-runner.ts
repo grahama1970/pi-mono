@@ -661,7 +661,7 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sk-dev-proxy-123' },
             body: JSON.stringify({
-              model: 'vlm',
+              model: 'vlm-openrouter',
               messages: [{
                 role: 'user',
                 content: [
@@ -731,42 +731,44 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
 
         const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface for usability, information density, and workflow support.';
 
-        const personaPrompt = `You are ${personaSlug.replace(/-/g, ' ')}, a reverse engineering professional.
-${agentProfile ? `\nYour profile:\n${agentProfile.slice(0, 800)}\n` : ''}
-${personaContext ? `\nYour domain knowledge:\n${personaContext.slice(0, 1500)}\n` : ''}
-You are reviewing a Binary Explorer interface — a tool for analyzing ELF binary features.
+        // Load prompt from /prompt-lab (NOT hand-written)
+        const promptLabDir = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts');
+        const promptTemplate = existsSync(join(promptLabDir, 'persona_review_v1.txt'))
+          ? readFileSync(join(promptLabDir, 'persona_review_v1.txt'), 'utf-8')
+          : 'You are {persona_name}. Review the screenshot. Return JSON with verdict, score, strengths, weaknesses, changes.';
 
-Evaluate the screenshot against these criteria:
-${reviewCriteria}
-
-Respond with:
-1. PASS or FAIL (based on whether this meets professional RE tool standards)
-2. Score: X/10
-3. Strengths (2-3 bullet points)
-4. Weaknesses (2-3 bullet points)
-5. What you would change (1-2 specific suggestions)`;
+        const personaPrompt = promptTemplate
+          .replace('{persona_name}', personaSlug.replace(/-/g, ' '))
+          .replace('{agent_profile}', agentProfile ? agentProfile.slice(0, 800) : '')
+          .replace('{persona_context}', personaContext ? personaContext.slice(0, 1500) : '')
+          .replace('{review_criteria}', reviewCriteria);
 
         try {
-          const prRes = await fetch(`${process.env.SCILLM_URL || 'http://localhost:4001'}/v1/chat/completions`, {
+          // Route to /subagent-service — NOT scillm
+          // Use whichever subagent-service container is running
+          const SUBAGENT_PORT = Number(process.env.SUBAGENT_PORT || 8620);
+          const personaPorts: Record<string, number> = {
+            'tim-blazytko': SUBAGENT_PORT, 'gynvael-coldwind': SUBAGENT_PORT, 'liveoverflow': SUBAGENT_PORT,
+          };
+          const personaModels: Record<string, string> = {
+            'tim-blazytko': 'codex', 'gynvael-coldwind': 'claude-opus-4-6', 'liveoverflow': 'gemini-3-flash-preview',
+          };
+          const subagentPort = personaPorts[personaSlug] || 8622;
+          const subagentModel = personaModels[personaSlug] || 'codex';
+
+          const prRes = await fetch(`http://localhost:${subagentPort}/chat`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}` },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: 'vlm',
-              messages: [{
-                role: 'user',
-                content: [
-                  { type: 'image_url', image_url: { url: `data:image/png;base64,${prImgBase64}` } },
-                  { type: 'text', text: personaPrompt }
-                ]
-              }],
-              temperature: 0.3,
-              max_tokens: 500,
+              model: subagentModel,
+              prompt: personaPrompt + '\n\n[Screenshot attached as context — evaluate what you see in the Binary Explorer interface]',
+              workspace: resolve(process.cwd()),
             }),
           });
 
           const prData = await prRes.json() as any;
-          const prAnswer = prData.choices?.[0]?.message?.content || 'No persona review response';
-          const prPassed = prAnswer.toUpperCase().startsWith('PASS');
+          const prAnswer = prData.response || 'No persona review response';
+          const prPassed = prAnswer.toUpperCase().includes('"PASS"') || prAnswer.includes('"verdict": "PASS"');
 
           return {
             status: prPassed ? 'PASSED' : 'FAILED',
