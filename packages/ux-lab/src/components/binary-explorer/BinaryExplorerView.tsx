@@ -252,7 +252,8 @@ const PERSPECTIVE_LABELS: Record<Perspective, string> = {
 }
 const PERSPECTIVE_TYPES: Record<Perspective, string[]> = {
   all: [],  // empty = no filter
-  security: ['rpc', 'schema', 'event', 'namespace'],
+  // Security: all types that represent exploitable entry points, validation schemas, and auth/state logic
+  security: ['rpc', 'schema', 'event', 'namespace', 'cli_command', 'parameter'],
   data_flow: ['schema', 'event', 'state_machine', 'namespace'],
   protocol: ['namespace', 'rpc', 'cli_command', 'event'],
   // Attack surface: input handlers, network listeners, file parsers, CLI entry points
@@ -1995,6 +1996,56 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 {sceneNodeIds.size} in scene · {viewMode}
               </span>
             </div>
+
+            {/* Security risk bar — shown only in security / attack_surface perspective */}
+            {(perspective === 'security' || perspective === 'attack_surface') && (() => {
+              const sceneNodes = data.graphNodes.filter(n => sceneNodeIds.has(n.id))
+              const withCwe = sceneNodes.filter(n => (taxonomyMap.get(n.id)?.cwe?.length ?? 0) > 0)
+              const withAttack = sceneNodes.filter(n => (taxonomyMap.get(n.id)?.attack?.length ?? 0) > 0)
+              const highRisk = sceneNodes.filter(n => {
+                const tax = taxonomyMap.get(n.id)
+                return (tax?.cwe?.length ?? 0) + (tax?.attack?.length ?? 0) >= 3
+              })
+              return (
+                <div style={{
+                  display: 'flex', gap: 8, padding: '3px 12px',
+                  fontSize: 8, fontFamily: 'JetBrains Mono, monospace',
+                  background: '#0a0505', borderBottom: `1px solid #f4433633`, flexShrink: 0,
+                  alignItems: 'center',
+                }}>
+                  <Shield size={10} style={{ color: '#f44336', flexShrink: 0 }} />
+                  <span style={{ color: '#f44336', fontWeight: 700, marginRight: 4 }}>RISK</span>
+                  <button
+                    onClick={() => withCwe.forEach(n => addToScene([n.id]))}
+                    title="Show all nodes with CWE classifications in scene"
+                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: withCwe.length > 0 ? 'pointer' : 'default', border: `1px solid #FF572266`, background: '#FF572215', color: '#FF5722' }}
+                  >CWE: {withCwe.length}</button>
+                  <button
+                    onClick={() => withAttack.forEach(n => addToScene([n.id]))}
+                    title="Show all nodes with ATT&CK technique mappings in scene"
+                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: withAttack.length > 0 ? 'pointer' : 'default', border: `1px solid #FF980066`, background: '#FF980015', color: '#FF9800' }}
+                  >ATT&CK: {withAttack.length}</button>
+                  {highRisk.length > 0 && (
+                    <button
+                      onClick={() => { highRisk.forEach(n => addToScene([n.id])); setSelectedNode(highRisk[0] ?? null) }}
+                      title="Nodes with 3+ security tags — highest priority for audit"
+                      style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid #f4433666`, background: '#f4433615', color: '#f44336', fontWeight: 700 }}
+                    >HIGH RISK: {highRisk.length}</button>
+                  )}
+                  <button
+                    onClick={() => setViewMode('vulns')}
+                    title="Open full vulnerability map"
+                    style={{ fontSize: 8, padding: '1px 6px', borderRadius: 8, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim }}
+                  >VULN MAP →</button>
+                  {sceneNodeIds.size === 0 && (
+                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>Load nodes into scene to see risk indicators</span>
+                  )}
+                  {sceneNodeIds.size > 0 && withCwe.length === 0 && withAttack.length === 0 && (
+                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>No taxonomy data yet — run /analyze-elf with --taxonomy to populate</span>
+                  )}
+                </div>
+              )
+            })()}
 
             <div
               style={{ flex: '1 1 0%', display: 'flex', flexDirection: splitCodeView && viewMode === 'graph' && selectedNode ? 'row' : 'column' as const, position: 'relative', overflow: 'hidden', minHeight: 0 }}
