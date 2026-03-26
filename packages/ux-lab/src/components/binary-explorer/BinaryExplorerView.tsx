@@ -485,6 +485,7 @@ export function BinaryExplorerView() {
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
   const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
+  const [smTracedPath, setSmTracedPath] = useState<Set<number>>(new Set())
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
   const linkBus = useLinkBus()
   const [linkedNodeId, setLinkedNodeId] = useState<string | null>(null) // node highlighted by code hover
@@ -2762,31 +2763,112 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         )
                       })()}
 
-                      {/* Row 4: States — state machine transition view */}
-                      {selectedNode.states && selectedNode.states.length > 0 && (
-                        <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>STATE MACHINE ({selectedNode.states.length} states)</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {selectedNode.states.map((s: any, i: number) => {
-                              const name = typeof s === 'string' ? s : s.name || String(s)
-                              return (
-                                <div key={i} style={{
-                                  display: 'flex', alignItems: 'center', gap: 4,
-                                  fontSize: 9, padding: '3px 8px', borderRadius: 3,
-                                  background: i === 0 ? '#1a2721' : '#0a0a0a',
-                                  border: `1px solid ${i === 0 ? EMBRY.green + '44' : EMBRY.border}`,
-                                  color: i === 0 ? EMBRY.green : '#9C27B0',
-                                  fontFamily: 'JetBrains Mono, monospace',
-                                }}>
-                                  {i === 0 && <span style={{ fontSize: 7, color: EMBRY.green }}>▸</span>}
-                                  {name}
-                                  {i < selectedNode.states!.length - 1 && <span style={{ color: EMBRY.muted, marginLeft: 2 }}>→</span>}
-                                </div>
-                              )
-                            })}
+                      {/* Row 4: States — state machine directed graph */}
+                      {selectedNode.states && selectedNode.states.length > 0 && (() => {
+                        const TERMINAL_RE = /error|fail|dead|final|done|term|end|halt|clos|reject|disconnect|timeout|abort|invalid/i
+                        const ERROR_RE = /error|fail|invalid|abort|reject/i
+                        const states = selectedNode.states!
+                        const classified = states.map((s: any, i: number) => {
+                          const name = typeof s === 'string' ? s : (s.name || String(s))
+                          const isInitial = i === 0
+                          const isError = ERROR_RE.test(name)
+                          const isTerminal = isError || TERMINAL_RE.test(name) || i === states.length - 1
+                          return { name, isInitial, isError, isTerminal, idx: i }
+                        })
+                        const COLS = Math.min(4, classified.length)
+                        const NODE_W = 88, NODE_H = 22, H_GAP = 22, V_GAP = 30
+                        const SVG_W = COLS * NODE_W + (COLS - 1) * H_GAP + 20
+                        const ROWS = Math.ceil(classified.length / COLS)
+                        const SVG_H = ROWS * NODE_H + (ROWS - 1) * V_GAP + 20
+                        const nodePos = (idx: number) => ({
+                          x: 10 + (idx % COLS) * (NODE_W + H_GAP),
+                          y: 10 + Math.floor(idx / COLS) * (NODE_H + V_GAP),
+                        })
+                        const traceAll = () => {
+                          setSmTracedPath(new Set(classified.map((_, i) => i)))
+                          setTimeout(() => setSmTracedPath(new Set()), 2500)
+                        }
+                        return (
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
+                              <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase' }}>
+                                STATE MACHINE ({states.length} states)
+                              </div>
+                              <button onClick={traceAll} style={{ fontSize: 7, padding: '1px 6px', borderRadius: 3, cursor: 'pointer', background: '#0a1a14', border: `1px solid ${EMBRY.green}55`, color: EMBRY.green }}>
+                                TRACE PATH
+                              </button>
+                            </div>
+                            {/* Legend */}
+                            <div style={{ display: 'flex', gap: 10, marginBottom: 5 }}>
+                              <span style={{ fontSize: 7, color: EMBRY.green, fontFamily: 'JetBrains Mono, monospace' }}>●→ INITIAL</span>
+                              <span style={{ fontSize: 7, color: '#FF5722', fontFamily: 'JetBrains Mono, monospace' }}>■ ERROR</span>
+                              <span style={{ fontSize: 7, color: EMBRY.amber, fontFamily: 'JetBrains Mono, monospace' }}>◆ TERMINAL</span>
+                              <span style={{ fontSize: 7, color: '#9C27B0', fontFamily: 'JetBrains Mono, monospace' }}>○ STATE</span>
+                            </div>
+                            {/* SVG directed graph */}
+                            <svg width={SVG_W} height={SVG_H} style={{ display: 'block', overflow: 'visible', background: '#050505', borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
+                              <defs>
+                                <marker id="sm-arrow" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                                  <polygon points="0 0, 6 2, 0 4" fill="#444" />
+                                </marker>
+                                <marker id="sm-arrow-traced" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                                  <polygon points="0 0, 6 2, 0 4" fill={EMBRY.green} />
+                                </marker>
+                              </defs>
+                              {/* Initial-state entry arrow */}
+                              {(() => {
+                                const p0 = nodePos(0)
+                                return <line x1={p0.x - 12} y1={p0.y + NODE_H / 2} x2={p0.x - 1} y2={p0.y + NODE_H / 2} stroke={EMBRY.green} strokeWidth={1.5} markerEnd="url(#sm-arrow-traced)" />
+                              })()}
+                              {/* Transition edges */}
+                              {classified.slice(0, -1).map((_, ti) => {
+                                const from = nodePos(ti)
+                                const to = nodePos(ti + 1)
+                                const isTraced = smTracedPath.has(ti) && smTracedPath.has(ti + 1)
+                                const stroke = isTraced ? EMBRY.green : '#333'
+                                const marker = isTraced ? 'url(#sm-arrow-traced)' : 'url(#sm-arrow)'
+                                const sameRow = Math.floor(ti / COLS) === Math.floor((ti + 1) / COLS)
+                                if (sameRow) {
+                                  const x1 = from.x + NODE_W, y1 = from.y + NODE_H / 2
+                                  const x2 = to.x - 3, y2 = to.y + NODE_H / 2
+                                  return (
+                                    <g key={ti}>
+                                      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={isTraced ? 1.5 : 1} markerEnd={marker} />
+                                      <text x={(x1 + x2) / 2} y={y1 - 3} fontSize={5} fill="#333" textAnchor="middle" fontFamily="JetBrains Mono, monospace">trigger</text>
+                                    </g>
+                                  )
+                                }
+                                // Wrap to next row
+                                const midY = from.y + NODE_H + V_GAP / 2
+                                const fx = from.x + NODE_W, fy = from.y + NODE_H / 2
+                                const tx = to.x, ty = to.y + NODE_H / 2
+                                const d = `M${fx} ${fy} L${fx + 6} ${fy} L${fx + 6} ${midY} L${tx - 6} ${midY} L${tx - 6} ${ty} L${tx - 3} ${ty}`
+                                return <path key={ti} d={d} stroke={stroke} strokeWidth={isTraced ? 1.5 : 1} fill="none" markerEnd={marker} />
+                              })}
+                              {/* State nodes */}
+                              {classified.map((st, i) => {
+                                const pos = nodePos(i)
+                                const isTraced = smTracedPath.has(i)
+                                const borderColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#222'
+                                const bgColor = st.isError ? '#1a0a05' : st.isInitial ? '#0a1a12' : st.isTerminal ? '#1a1205' : '#0d0d0d'
+                                const textColor = st.isError ? '#FF5722' : st.isInitial ? EMBRY.green : st.isTerminal ? EMBRY.amber : '#9C27B0'
+                                const label = st.name.length > 11 ? st.name.slice(0, 10) + '…' : st.name
+                                return (
+                                  <g key={i} style={{ cursor: 'pointer' }} onClick={() => setSmTracedPath(new Set([i]))}>
+                                    <rect x={pos.x} y={pos.y} width={NODE_W} height={NODE_H} rx={3} ry={3}
+                                      fill={isTraced ? bgColor : bgColor}
+                                      stroke={isTraced ? textColor : borderColor}
+                                      strokeWidth={isTraced ? 1.5 : 0.8}
+                                    />
+                                    <text x={pos.x + 3} y={pos.y + 7} fontSize={5} fill="#444" fontFamily="JetBrains Mono, monospace">S{i}</text>
+                                    <text x={pos.x + NODE_W / 2} y={pos.y + NODE_H / 2 + 3} fontSize={7} fill={textColor} textAnchor="middle" fontFamily="JetBrains Mono, monospace">{label}</text>
+                                  </g>
+                                )
+                              })}
+                            </svg>
                           </div>
-                        </div>
-                      )}
+                        )
+                      })()}
 
                       {/* Row 5: RPC/Event interface details */}
                       {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (
