@@ -538,6 +538,9 @@ You are reviewing and FIXING Binary Explorer. For each feature group below:
 - Fix one task at a time. Verify. Then next.
 - If a fix breaks compilation, revert and try again
 - Do NOT skip tasks. Each must PASS before moving on.
+- You MUST use Edit or Write tool calls to fix code. Reading alone is not enough.
+- If you cannot edit a file, report the exact error. Do not silently skip.
+- Do NOT spend more than 2 Read calls surveying before your first Edit.
 - Return a JSON summary at the end
 
 ## Feature Groups to Review and Fix
@@ -587,14 +590,18 @@ After all fixes, return JSON:
 
       // Subagent runs in Docker: host path maps to /home/node/workspace
       const containerWorkspace = process.cwd().replace(/^\/home\/graham\/workspace\/experiments\/pi-mono/, '/home/node/workspace');
-      const payload = JSON.stringify({ model: 'sonnet', prompt, workspace: containerWorkspace });
+      // max_turns=50 (default 5 is too low — agent spends all turns reading, never edits)
+      // idle_timeout=600 for long-running fix sessions
+      const payload = JSON.stringify({ model: 'sonnet', prompt, workspace: containerWorkspace, max_turns: 50, idle_timeout: 600 });
       const sseReq = httpRequest(
         { hostname: 'localhost', port: subagentPort, path: '/chat/stream', method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } },
         (sseRes) => {
           let resultText = '';
+          let allAssistantText = ''; // Accumulate ALL text the agent produces
           let currentEvent = '';
           let buffer = '';
+          const toolCalls: string[] = [];
 
           sseRes.on('data', (chunk: Buffer) => {
             buffer += chunk.toString();
@@ -612,8 +619,10 @@ After all fixes, return JSON:
                     if (Array.isArray(content)) {
                       for (const c of content) {
                         if (c.type === 'tool_use') {
-                          broadcast({ type: 'persona-converge-progress', payload: { convergenceId, persona, tool: c.name } });
+                          toolCalls.push(c.name);
+                          broadcast({ type: 'persona-converge-progress', payload: { convergenceId, persona, tool: c.name, toolCount: toolCalls.length } });
                         } else if (c.type === 'text') {
+                          allAssistantText += (c.text || '') + '\n';
                           broadcast({ type: 'persona-converge-text', payload: { convergenceId, persona, text: c.text?.slice(0, 200) } });
                         }
                       }
@@ -622,12 +631,14 @@ After all fixes, return JSON:
                     resultText = data.result || '';
                   } else if (currentEvent === 'done') {
                     const durationMs = data.duration_ms || 0;
+                    // Use accumulated text if result event was empty
+                    const finalResult = resultText || allAssistantText;
                     activeConvergences.set(convergenceId, { persona, branch, status: 'DONE' });
-                    broadcast({ type: 'persona-converge-done', payload: { convergenceId, persona, durationMs, resultLength: resultText.length } });
+                    broadcast({ type: 'persona-converge-done', payload: { convergenceId, persona, durationMs, resultLength: finalResult.length, toolCalls } });
 
-                    // Save result to disk
+                    // Save result to disk — use accumulated text if result event was empty
                     const outPath = join(RESULTS_DIR, `converge-${convergenceId}.json`);
-                    writeFileSync(outPath, JSON.stringify({ convergenceId, persona, branch, durationMs, result: resultText }, null, 2));
+                    writeFileSync(outPath, JSON.stringify({ convergenceId, persona, branch, durationMs, result: finalResult, toolCalls }, null, 2));
                   }
                 } catch {}
               }
