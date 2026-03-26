@@ -2621,20 +2621,61 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       </div>
                     ) : (
                     <>
-                    {/* Beginner 3-step guide */}
+                    {/* Dual-track start guide: vulnerability hunting vs architecture exploration */}
                     <div style={{ marginBottom: 8, padding: '6px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 3 }}>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.accent, marginBottom: 4, letterSpacing: '0.06em' }}>NEW TO THIS?</div>
+                      <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.accent, marginBottom: 5, letterSpacing: '0.06em' }}>START HERE</div>
+                      <div style={{ fontSize: 8, fontWeight: 700, color: '#f44336', marginBottom: 2, letterSpacing: '0.05em' }}>HUNTING FOR BUGS?</div>
                       {([
-                        { n: '1', t: 'Click "Overview" below — loads the big-picture structure' },
-                        { n: '2', t: 'Click any node in the graph — expands its neighbors' },
+                        { n: '1', t: '"CTF QUICK HUNT" below — attack surface + dangerous sinks in one click' },
+                        { n: '2', t: '"Attack Surface" → input handlers, net listeners, file parsers highlighted' },
+                        { n: '3', t: '"Vuln Map" → CWE + ATT&CK classifications for every function' },
+                      ] as const).map(({ n, t }) => (
+                        <div key={`vuln${n}`} style={{ display: 'flex', gap: 4, fontSize: 8, marginBottom: 1 }}>
+                          <span style={{ fontWeight: 700, color: '#f44336', minWidth: 10, fontFamily: 'JetBrains Mono, monospace' }}>{n}.</span>
+                          <span style={{ color: EMBRY.dim }}>{t}</span>
+                        </div>
+                      ))}
+                      <div style={{ height: 5 }} />
+                      <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.accent, marginBottom: 2, letterSpacing: '0.05em' }}>EXPLORING ARCHITECTURE?</div>
+                      {([
+                        { n: '1', t: '"Load Binary Structure" below — namespaces + top hubs' },
+                        { n: '2', t: 'Click any node — expands its neighbors' },
                         { n: '3', t: 'Ask chat: "What does this binary do?"' },
                       ] as const).map(({ n, t }) => (
-                        <div key={n} style={{ display: 'flex', gap: 4, fontSize: 8, marginBottom: 1 }}>
+                        <div key={`arch${n}`} style={{ display: 'flex', gap: 4, fontSize: 8, marginBottom: 1 }}>
                           <span style={{ fontWeight: 700, color: EMBRY.accent, minWidth: 10, fontFamily: 'JetBrains Mono, monospace' }}>{n}.</span>
                           <span style={{ color: EMBRY.dim }}>{t}</span>
                         </div>
                       ))}
                     </div>
+                    {/* CTF one-click: attack surface + dangerous sinks combined */}
+                    <button onClick={() => {
+                      const entryPoints = data.graphNodes.filter(n =>
+                        n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
+                      )
+                      const topByConnections = entryPoints
+                        .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                        .sort((a, b) => b.deg - a.deg)
+                        .slice(0, 20)
+                      const sinkPattern = /recv|read|fread|gets|strcpy|strcat|sprintf|memcpy|memmove|scanf|popen|system|exec|open|fopen|socket|connect|bind|listen|accept|malloc|free|realloc/i
+                      const interesting = data.graphNodes.filter(n =>
+                        sinkPattern.test(n.label) ||
+                        (n.nodeType === 'rpc' && data.allEdges.filter(e => e._from === n.id || e._to === n.id).length > 3)
+                      )
+                      addToScene([...new Set([...topByConnections.map(n => n.id), ...interesting.map(n => n.id)])])
+                      handleSetPerspective('attack_surface')
+                    }} style={{
+                      display: 'flex', alignItems: 'center', gap: 6, padding: '6px 8px', marginBottom: 6,
+                      width: '100%', background: '#2a0a0a', border: `2px solid #f44336`,
+                      color: '#f44336', borderRadius: 2, cursor: 'pointer',
+                      fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                    }}>
+                      <Zap size={11} style={{ flexShrink: 0 }} />
+                      <div>
+                        <div>CTF QUICK HUNT <span style={{ fontSize: 7, color: '#f44336', background: '#f4433620', padding: '0px 3px', borderRadius: 8, marginLeft: 2 }}>ONE CLICK</span></div>
+                        <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>attack surface + dangerous sinks (gets/recv/strcpy/…) + I/O · sets attack_surface view</div>
+                      </div>
+                    </button>
                     <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 5, letterSpacing: '0.06em' }}>LOAD INTO GRAPH</div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
                       <button onClick={() => {

@@ -124,19 +124,19 @@ combined_score = 0.35 * shared_technique_ratio
                + 0.25 * recall_bm25
 ```
 
-| Signal | Weight | Source | Type |
-|--------|--------|--------|------|
-| **Shared Technique Ratio** | 0.35 | Count of SPARTA techniques referencing both controls / union | Deterministic |
-| **Mind Tag Jaccard** | 0.25 | Jaccard similarity of enriched mind tag sets | Deterministic |
-| **Category Match** | 0.15 | Same parent/family (0.5) + same framework (0.5) | Deterministic |
-| **Recall BM25** | 0.25 | `/memory recall` BM25 + graph traversal score | Semantic |
+1. **Gate**: Do both controls share at least one SPARTA technique? If no → score = 0, not related.
+2. **Primary (70%)**: Shared technique count / union of both controls' techniques.
+3. **Secondary (30%)**: Category tag overlap — mind tags, NIST family, CWE pillar, D3FEND tactic, control type, framework.
+
+```
+score = 0.7 * (shared_techniques / technique_union)
+      + 0.3 * (shared_category_tags / category_tag_union)
+```
 
 ```mermaid
 pie title "Relationship Score Weights"
-    "Shared Techniques (deterministic)" : 35
-    "Mind Tag Jaccard (deterministic)" : 25
-    "Category Match (deterministic)" : 15
-    "Recall BM25 (semantic)" : 25
+    "Shared Technique Ratio (gate + primary)" : 70
+    "Category Tag Overlap (secondary)" : 30
 ```
 
 ## MITRE Bridge: CWE → CAPEC → ATT&CK
