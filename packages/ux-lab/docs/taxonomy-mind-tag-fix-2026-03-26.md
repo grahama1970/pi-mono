@@ -192,20 +192,80 @@ graph LR
 | D3FEND | 424 | 195 (46%) | 229 | 0 |
 | ESA | 137 | 9 (7%) | 128 | 0 |
 
-### Example: AC-1 (NIST Access Control)
+### Example: AC-1 (NIST Access Control) — Full Hierarchy
 
-**Before:** `mind: ['Harden']` (classifier-inferred from description text)
+**Before:** `mind: ['Harden']` — a single flat tag from a text classifier.
 
-**After:** `mind: ['Evade', 'Exploit', 'Model', 'Persist']` (derived from 67 SPARTA techniques that reference AC-1, spanning 7 of 9 SPARTA tactics)
+**After:** Three layers of deterministic taxonomy, all from the SPARTA spreadsheet and MITRE data:
 
-Referenced by techniques in:
-- **REC** (Reconnaissance/Model): 31 techniques
-- **IA** (Initial Access/Exploit): 13 techniques
-- **RD** (Resource Development/Model): 8 techniques
-- **EXF** (Exfiltration/Persist): 6 techniques
-- **DE** (Defense Evasion/Evade): 5 techniques
-- **PER** (Persistence/Persist): 2 techniques
-- **LM** (Lateral Movement/Persist+Exploit): 2 techniques
+```
+AC-1 (NIST / Access Control)
+├── mind: ['Evade', 'Exploit', 'Model', 'Persist']     ← derived from techniques below
+├── nist_family: "Access Control"                        ← NIST-specific category
+├── sparta_technique_count: 67
+├── sparta_technique_profile:                            ← LAYER 1: which SPARTA techniques?
+│   ├── Reconnaissance (31): REC-0001..REC-0009         → mind: Model
+│   ├── Initial Access (13): IA-0002..IA-0013           → mind: Exploit
+│   ├── Resource Development (8): RD-0002..RD-0004      → mind: Model
+│   ├── Exfiltration (6): EXF-0006..EXF-0009            → mind: Persist
+│   ├── Defense Evasion (5): DE-0002..DE-0011            → mind: Evade
+│   ├── Persistence (2): PER-0003, PER-0005              → mind: Persist
+│   └── Lateral Movement (2): LM-0001, LM-0007          → mind: Persist, Exploit
+├── related_sparta_countermeasures: [CM0088, CM0005]     ← LAYER 2: SPARTA cross-refs
+├── related_nist_controls: [IA-1, PM-9, PM-24, ...]     ← LAYER 3: NIST-specific tags
+├── related_iso_controls: [5.2, 5.3, 7.5.1, A.5.1, ...]
+└── tor_threats: [SV-MA-7]
+```
+
+```mermaid
+graph TD
+    AC1["AC-1<br/>Policy and Procedures<br/>NIST / Access Control"]
+
+    subgraph "Layer 1: SPARTA Technique References (67 techniques)"
+        REC["Reconnaissance (31)<br/>REC-0001..REC-0009"]
+        IA["Initial Access (13)<br/>IA-0002..IA-0013"]
+        RD["Resource Dev (8)<br/>RD-0002..RD-0004"]
+        EXF["Exfiltration (6)<br/>EXF-0006..EXF-0009"]
+        DE["Defense Evasion (5)<br/>DE-0002..DE-0011"]
+        PER["Persistence (2)<br/>PER-0003, PER-0005"]
+        LM["Lateral Movement (2)<br/>LM-0001, LM-0007"]
+    end
+
+    subgraph "Layer 2: SPARTA Cross-References"
+        CM["Countermeasures<br/>CM0088, CM0005"]
+        TOR["TOR Threats<br/>SV-MA-7"]
+    end
+
+    subgraph "Layer 3: NIST-Specific Tags"
+        FAM["Family: Access Control"]
+        NIST_REL["Related: IA-1, PM-9,<br/>PM-24, PS-8, SI-12"]
+        ISO_REL["ISO: 5.2, 5.3, 7.5.1,<br/>A.5.1, A.5.2, A.5.15..."]
+    end
+
+    subgraph "Derived Mind Tags"
+        MIND["mind: Evade, Exploit,<br/>Model, Persist"]
+    end
+
+    AC1 --> REC & IA & RD & EXF & DE & PER & LM
+    AC1 --> CM & TOR
+    AC1 --> FAM & NIST_REL & ISO_REL
+
+    REC -->|"Model"| MIND
+    IA -->|"Exploit"| MIND
+    RD -->|"Model"| MIND
+    EXF -->|"Persist"| MIND
+    DE -->|"Evade"| MIND
+    PER -->|"Persist"| MIND
+    LM -->|"Exploit+Persist"| MIND
+
+    style AC1 fill:#4af,stroke:#036
+    style MIND fill:#4f4,stroke:#060
+    style FAM fill:#fda,stroke:#963
+    style NIST_REL fill:#fda,stroke:#963
+    style ISO_REL fill:#fda,stroke:#963
+```
+
+**The hierarchy matters because:** when scoring the relationship between AC-1 and CM0001, the score is not just "do their mind tags overlap?" — it's "how many SPARTA techniques reference both of them, which tactics do those techniques belong to, and do their NIST/ISO categories align?" All three layers are deterministic and from the spreadsheet.
 
 ## Files Changed
 

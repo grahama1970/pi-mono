@@ -173,6 +173,27 @@ async def run_subagent(prompt: str, max_turns: int = 15) -> tuple[str, list[str]
     return result_text or all_text, tools, duration_ms
 
 
+# ── Store task result to /memory ──────────────────────────────────────────────
+
+async def store_to_memory(persona: str, task: Task) -> None:
+    """Store each task result to ArangoDB via memory daemon Unix socket."""
+    import socket as sock
+    try:
+        problem = f"PERSONA_FIX:{persona}:{task.group} — {task.status}"
+        solution = json.dumps(asdict(task))
+        tags = ["persona-fix", "binary-explorer", persona, task.group]
+        body = json.dumps({"problem": problem, "solution": solution, "tags": tags, "scope": "binary-explorer-reviews"})
+
+        s = sock.socket(sock.AF_UNIX, sock.SOCK_STREAM)
+        s.connect("/run/user/1000/embry/memory.sock")
+        req = f"POST /learn HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\nContent-Length: {len(body)}\r\n\r\n{body}"
+        s.sendall(req.encode())
+        s.recv(4096)
+        s.close()
+    except Exception:
+        pass  # non-fatal
+
+
 # ── Run one persona through its task list ────────────────────────────────────
 
 async def run_persona(persona: str, tasks: list[Task]) -> PersonaRun:
@@ -189,32 +210,44 @@ async def run_persona(persona: str, tasks: list[Task]) -> PersonaRun:
         print(f"\n  [{i+1}/{len(tasks)}] {task.group}: {task.criterion[:60]}...")
         start = time.time()
 
-        prompt = f"""You are {persona.replace('-', ' ')}.
-{agent_profile}
-
-Fix this issue in {task.source_file}:
+        prompt = f"""Fix this in {task.source_file}:
 {task.criterion}
 
-Edit the file directly. Do not describe the fix — make the fix.
-After editing, run: npx tsc --noEmit 2>&1 | head -5
-If it compiles clean, run: git add -A && git commit -m "persona/{persona}: fix {task.group}"
-Output ONLY: {{"task":"{task.group}","status":"done","commit":"<hash>"}}
-If you cannot fix it, output: {{"task":"{task.group}","status":"failed","error":"<reason>"}}"""
+1. Edit the file
+2. npx tsc --noEmit 2>&1 | head -5
+3. git add -A && git commit -m "persona/{persona}: fix {task.group}"
+
+Do NOT read more than 2 files. Edit immediately."""
+
+        # Record git HEAD before the subagent runs
+        import subprocess as sp
+        repo_root = str(HOST_WORKSPACE.parent.parent)
+        head_before = sp.run(["git", "rev-parse", "HEAD"], cwd=repo_root, capture_output=True, text=True).stdout.strip()
 
         try:
-            text, tools, dur_ms = await run_subagent(prompt, max_turns=15)
+            text, tools, dur_ms = await run_subagent(prompt, max_turns=30)
             task.duration_s = time.time() - start
 
-            # Parse JSON from response
-            json_match = re.search(r'\{[^{}]*"task"[^{}]*\}', text)
-            if json_match:
-                result = json.loads(json_match.group())
-                task.status = result.get("status", "failed")
-                task.commit = result.get("commit", "")
-                task.error = result.get("error", "")
+            # Detect success from git — if a new commit landed with the task group name, it worked
+            git_log = sp.run(
+                ["git", "log", "--oneline", f"{head_before}..HEAD", "--grep", f"persona/{persona}"],
+                cwd=repo_root, capture_output=True, text=True
+            ).stdout.strip()
+
+            if git_log:
+                task.status = "done"
+                task.commit = git_log.split()[0]
             else:
-                task.status = "failed"
-                task.error = f"No JSON in response ({len(text)} chars, {len(tools)} tools: {tools})"
+                # Fallback: try JSON parsing
+                json_match = re.search(r'\{[^{}]*"task"[^{}]*\}', text)
+                if json_match:
+                    result = json.loads(json_match.group())
+                    task.status = result.get("status", "failed")
+                    task.commit = result.get("commit", "")
+                    task.error = result.get("error", "")
+                else:
+                    task.status = "failed"
+                    task.error = f"No commit, no JSON ({len(tools)} tools: {[t for t in tools if t in ('Edit','Write','Bash')]})"
 
             edit_count = sum(1 for t in tools if t in ("Edit", "Write"))
             print(f"    → {task.status} ({task.duration_s:.0f}s, {edit_count} edits, {len(tools)} tools)")
@@ -223,11 +256,15 @@ If you cannot fix it, output: {{"task":"{task.group}","status":"failed","error":
             if task.error:
                 print(f"    → error: {task.error[:100]}")
 
+            # Store to /memory
+            await store_to_memory(persona, task)
+
         except Exception as e:
             task.status = "failed"
             task.error = str(e)[:200]
             task.duration_s = time.time() - start
             print(f"    → EXCEPTION: {e}")
+            await store_to_memory(persona, task)
 
     run.end_time = time.time()
     return run

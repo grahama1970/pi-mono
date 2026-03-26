@@ -2294,9 +2294,60 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
                   animation: 'scene-card-in 0.25s ease both',
                 }}>
-                  <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>Graph is empty</div>
-                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, lineHeight: 1.6 }}>
-                    Click <strong style={{ color: EMBRY.accent }}>Seed Namespaces</strong> to load the binary&apos;s structure into the graph, or select a symbol from the left pane.
+                  {/* Binary identity header */}
+                  <div style={{ marginBottom: 14 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 15, fontWeight: 900, color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace' }}>{binaryName}</span>
+                      <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: EMBRY.green, border: `1px solid ${EMBRY.green}44`, borderRadius: 2, padding: '1px 5px' }}>READY</span>
+                    </div>
+                    {binaryMetas[binaryName] && (() => {
+                      const m = binaryMetas[binaryName]
+                      return (
+                        <>
+                          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 6 }}>
+                            {(m.format || m.arch) && (
+                              <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.fg, fontFamily: 'JetBrains Mono, monospace' }}>
+                                {[m.format, m.arch].filter(Boolean).join(' / ')}
+                              </span>
+                            )}
+                            {m.sizeBytes > 0 && <span style={{ fontSize: 10, color: EMBRY.dim }}>{m.sizeBytes > 1048576 ? `${(m.sizeBytes / 1048576).toFixed(1)} MB` : `${(m.sizeBytes / 1024).toFixed(0)} KB`}</span>}
+                            {m.stripped && <span style={{ fontSize: 9, color: '#ef4444', border: '1px solid #ef444433', borderRadius: 2, padding: '1px 4px' }}>STRIPPED</span>}
+                            {m.pie && <span style={{ fontSize: 9, color: '#22c55e', border: '1px solid #22c55e33', borderRadius: 2, padding: '1px 4px' }}>PIE</span>}
+                            {m.relro && <span style={{ fontSize: 9, color: '#3b82f6', border: '1px solid #3b82f633', borderRadius: 2, padding: '1px 4px' }}>{m.relro.toUpperCase()}</span>}
+                          </div>
+                          {m.sha256 && (
+                            <div
+                              title={`SHA256: ${m.sha256}\nClick to copy`}
+                              onClick={() => navigator.clipboard.writeText(m.sha256)}
+                              style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, cursor: 'pointer', letterSpacing: '0.04em' }}
+                            >{m.sha256.slice(0, 16)}…</div>
+                          )}
+                          {/* Feature type inventory */}
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 8 }}>
+                            {Object.entries(m.byType).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([type, count]) => (
+                              <span key={type} style={{
+                                fontSize: 9, padding: '2px 6px', borderRadius: 2,
+                                background: `${NODE_TYPE_COLORS[type] || EMBRY.muted}18`,
+                                color: NODE_TYPE_COLORS[type] || EMBRY.muted,
+                                border: `1px solid ${NODE_TYPE_COLORS[type] || EMBRY.muted}33`,
+                                fontFamily: 'JetBrains Mono, monospace',
+                              }}>
+                                {count} {TYPE_ABBREV[type] || type}
+                              </span>
+                            ))}
+                          </div>
+                        </>
+                      )
+                    })()}
+                    {!binaryMetas[binaryName] && (
+                      <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                        {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 10, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}>
+                    Select an analysis entry point:
                   </div>
 
                   {/* Quick actions */}
@@ -2319,9 +2370,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       borderRadius: 4, cursor: seeding ? 'default' : 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                       transition: 'all 0.2s ease', opacity: seeding ? 0.8 : 1,
                     }}>
-                      <span style={{ fontSize: 18, display: 'inline-block', animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }}>
-                        {seeding ? '⟳' : '⚡'}
-                      </span>
+                      <Layers size={16} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
                       <div>
                         <div>{seeding ? 'Seeding…' : 'Seed Namespaces'}</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
@@ -2335,7 +2384,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
                       borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                     }}>
-                      <span style={{ fontSize: 18 }}>📄</span>
+                      <Code size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>Browse Source Patterns</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
@@ -2347,7 +2396,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
                       borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                     }}>
-                      <span style={{ fontSize: 18 }}>🛡</span>
+                      <Shield size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>View Vulnerability Map</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
@@ -2355,8 +2404,6 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     </button>
 
                     <button onClick={() => {
-                      // Seed graph with attack surface nodes: CLI commands, RPCs, events, parameters
-                      // These are the external-facing entry points a CTF player hunts first
                       const entryPoints = data.graphNodes.filter(n =>
                         n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
                       )
@@ -2371,16 +2418,12 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
                       borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
                     }}>
-                      <span style={{ fontSize: 18 }}>🎯</span>
+                      <Network size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>Find Entry Points</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CLI args · RPC handlers · events · params — where input enters</div>
                       </div>
                     </button>
-                  </div>
-
-                  <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 12, textAlign: 'center' }}>
-                    {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
                   </div>
                 </div>
               )}
