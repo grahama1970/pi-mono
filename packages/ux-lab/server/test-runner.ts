@@ -1,10 +1,126 @@
-// server/test-runner.ts
+// server/test-runner.ts — CDP-based (no Puppeteer)
 import { Express } from 'express';
-import puppeteer, { Browser, Page } from 'puppeteer-core';
 import { readFileSync, mkdirSync, existsSync, writeFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { WebSocket } from 'ws';
 import { randomUUID } from 'crypto';
+import { request as httpRequest } from 'http';
+
+const CDP_PORT = Number(process.env.CDP_PORT || 9252);
+const CDP_HEADLESS_PORT = 9253; // Port for our own headless Chrome when user's Chrome lacks CDP
+
+/** Lightweight CDP client — connects to existing Chrome via DevTools Protocol */
+class CDPClient {
+  private ws: WebSocket | null = null;
+  private msgId = 0;
+  private handlers = new Map<number, (msg: any) => void>();
+
+  private childProcess: any = null;
+
+  async connect(): Promise<void> {
+    // Try user's Chrome first, then launch headless fallback
+    let pages: any[];
+    let port = CDP_PORT;
+    try {
+      pages = await this._getPages(CDP_PORT);
+      console.log(`[CDP] Connected to user Chrome on port ${CDP_PORT}`);
+    } catch {
+      console.log(`[CDP] User Chrome not available on port ${CDP_PORT}, launching headless...`);
+      await this._launchHeadless();
+      port = CDP_HEADLESS_PORT;
+      // Wait for Chrome to start
+      for (let i = 0; i < 10; i++) {
+        try { pages = await this._getPages(CDP_HEADLESS_PORT); break; } catch { await new Promise(r => setTimeout(r, 500)); }
+      }
+      if (!pages!) throw new Error('Failed to start headless Chrome with CDP');
+    }
+
+    // Find a page with our UX Lab URL, or use the first page
+    const target = pages.find((p: any) => p.url?.includes('localhost:5173') || p.url?.includes('localhost:3001') || p.url?.includes('localhost:3002'))
+      || pages.find((p: any) => p.type === 'page' && !p.url?.includes('devtools'))
+      || pages[0];
+
+    if (!target?.webSocketDebuggerUrl) throw new Error(`No CDP target found on port ${port}`);
+
+    this.ws = new WebSocket(target.webSocketDebuggerUrl);
+    await new Promise<void>((resolve, reject) => {
+      this.ws!.on('open', resolve);
+      this.ws!.on('error', reject);
+      setTimeout(() => reject(new Error('CDP WebSocket timeout')), 5000);
+    });
+
+    this.ws.on('message', (raw: Buffer) => {
+      const msg = JSON.parse(raw.toString());
+      if (msg.id && this.handlers.has(msg.id)) {
+        this.handlers.get(msg.id)!(msg);
+        this.handlers.delete(msg.id);
+      }
+    });
+
+    await this.send('Runtime.enable');
+    await this.send('Page.enable');
+  }
+
+  async send(method: string, params: Record<string, unknown> = {}): Promise<any> {
+    if (!this.ws) throw new Error('CDP not connected');
+    const id = ++this.msgId;
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => { this.handlers.delete(id); reject(new Error(`CDP timeout: ${method}`)); }, 30000);
+      this.handlers.set(id, (msg) => { clearTimeout(timeout); resolve(msg); });
+      this.ws!.send(JSON.stringify({ id, method, params }));
+    });
+  }
+
+  async evaluate(expression: string): Promise<any> {
+    const r = await this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+    if (r.result?.exceptionDetails) {
+      throw new Error(r.result.exceptionDetails.exception?.description || r.result.exceptionDetails.text || 'Eval error');
+    }
+    return r.result?.result?.value;
+  }
+
+  async navigate(url: string): Promise<void> {
+    await this.send('Page.navigate', { url });
+    // Wait for load
+    await new Promise(r => setTimeout(r, 2000));
+  }
+
+  async screenshot(path: string): Promise<void> {
+    const r = await this.send('Page.captureScreenshot', { format: 'png' });
+    writeFileSync(path, Buffer.from(r.result.data, 'base64'));
+  }
+
+  close(): void {
+    if (this.ws) { this.ws.close(); this.ws = null; }
+    this.handlers.clear();
+    if (this.childProcess) {
+      try { this.childProcess.kill(); } catch {}
+      this.childProcess = null;
+    }
+  }
+
+  private async _getPages(port: number): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      httpRequest(`http://localhost:${port}/json`, (res) => {
+        let data = '';
+        res.on('data', (c: string) => data += c);
+        res.on('end', () => {
+          try { resolve(JSON.parse(data)); } catch { reject(new Error('Bad JSON')); }
+        });
+      }).on('error', reject).end();
+    });
+  }
+
+  private async _launchHeadless(): Promise<void> {
+    const { spawn } = await import('child_process');
+    this.childProcess = spawn('/usr/bin/google-chrome-stable', [
+      '--headless=new', '--no-sandbox', '--disable-gpu',
+      '--remote-debugging-port=' + CDP_HEADLESS_PORT,
+      '--window-size=1920,1080',
+      'about:blank',
+    ], { stdio: 'ignore', detached: false });
+  }
+}
 
 interface TestStep {
   action: string;
@@ -80,7 +196,7 @@ const MANIFEST_PATH = resolve(process.cwd(), 'test-manifest.json');
 
 // In-memory store for results (persisted to disk optionally)
 const runHistory = new Map<string, RunResult>();
-let activeBrowser: Browser | null = null;
+let activeCDP: CDPClient | null = null;
 let activeRunId: string | null = null;
 
 function scanTestIds(dir: string): string[] {
@@ -275,9 +391,9 @@ export function registerTestRunnerRoutes(app: Express, broadcast: (msg: any) => 
   });
 
   app.post('/api/test-runner/abort', async (req, res) => {
-    if (activeBrowser) {
-      await activeBrowser.close();
-      activeBrowser = null;
+    if (activeCDP) {
+      activeCDP.close();
+      activeCDP = null;
       if (activeRunId) {
         const run = runHistory.get(activeRunId);
         if (run) run.status = 'ABORTED';
@@ -338,18 +454,13 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
   broadcast({ type: 'test-run-start', payload: { runId, totalTests: tests.length, headless } });
 
   try {
-    activeBrowser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome-stable',
-      headless: headless ? 'new' : false,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080']
-    });
+    // Connect to existing Chrome via CDP — no Puppeteer, no new browser launch
+    activeCDP = new CDPClient();
+    await activeCDP.connect();
+    console.log(`[TEST_RUNNER] Connected to Chrome via CDP on port ${CDP_PORT}`);
 
     for (const test of tests) {
-      if (!activeBrowser) break; // Aborted
-
-      // Fresh page per test — prevents frame detach on long runs
-      const page = await activeBrowser.newPage();
-      await page.setViewport({ width: 1920, height: 1080 });
+      if (!activeCDP) break; // Aborted
 
       const testStart = Date.now();
       const testResult = { testId: test.id, status: 'RUNNING', steps: [] as any[], durationMs: 0 };
@@ -358,7 +469,7 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
 
       try {
         for (const step of test.steps) {
-          const stepResult = await executeStep(page, step, runId);
+          const stepResult = await executeStep(activeCDP!, step, runId);
           testResult.steps.push({ ...step, ...stepResult });
           
           broadcast({
@@ -393,16 +504,15 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
 
         broadcast({ type: 'test-result', payload: { runId, testId: test.id, status: testResult.status, durationMs: testResult.durationMs } });
 
-        // Close page after each test to prevent frame detach
-        await page.close().catch(() => {});
+        // CDP uses existing tab — no page close needed
       }
     }
   } catch (err) {
     console.error('[TEST_RUNNER] Critical failure:', err);
   } finally {
-    if (activeBrowser) {
-      await activeBrowser.close();
-      activeBrowser = null;
+    if (activeCDP) {
+      activeCDP.close();
+      activeCDP = null;
     }
     
     const run = runHistory.get(runId)!;
@@ -415,57 +525,55 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
   }
 }
 
-async function executeStep(page: Page, step: TestStep, runId: string): Promise<{ status: 'PASSED' | 'FAILED', detail?: string, screenshotUrl?: string }> {
+async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promise<{ status: 'PASSED' | 'FAILED', detail?: string, screenshotUrl?: string }> {
   try {
     switch (step.action) {
-      case 'click':
-        await page.waitForSelector(step.selector!, { timeout: 5000 });
-        await page.click(step.selector!);
+      case 'click': {
+        await cdp.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(step.selector)}); if (!el) throw new Error('Not found: ${step.selector}'); el.click(); return 'clicked'; })()`);
         return { status: 'PASSED', actual: `Clicked ${step.selector}` };
-      
-      case 'rightclick':
-        await page.waitForSelector(step.selector!, { timeout: 5000 });
-        await page.click(step.selector!, { button: 'right' });
+      }
+
+      case 'rightclick': {
+        await cdp.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(step.selector)}); if (!el) throw new Error('Not found'); const rect = el.getBoundingClientRect(); el.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: rect.left+10, clientY: rect.top+10 })); return 'right-clicked'; })()`);
         break;
+      }
 
-      case 'type':
-        await page.waitForSelector(step.selector!, { timeout: 5000 });
-        await page.type(step.selector!, step.text!);
+      case 'type': {
+        await cdp.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(step.selector)}); if (!el) throw new Error('Not found'); const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, ${JSON.stringify(step.text)}); el.dispatchEvent(new Event('input', { bubbles: true })); return 'typed'; })()`);
         return { status: 'PASSED', actual: `Typed "${step.text}" into ${step.selector}` };
+      }
 
-      case 'clear':
-        await page.waitForSelector(step.selector!, { timeout: 5000 });
-        await page.click(step.selector!, { clickCount: 3 });
-        await page.keyboard.press('Backspace');
+      case 'clear': {
+        await cdp.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(step.selector)}); if (!el) throw new Error('Not found'); const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, ''); el.dispatchEvent(new Event('input', { bubbles: true })); return 'cleared'; })()`);
         return { status: 'PASSED', actual: `Cleared ${step.selector}` };
+      }
 
       case 'wait':
         await new Promise(r => setTimeout(r, step.ms || 1000));
         return { status: 'PASSED', actual: `Waited ${step.ms || 1000}ms` };
 
       case 'navigate':
-        if (step.url) await page.goto(step.url, { waitUntil: 'networkidle2' });
-        if (step.hash) await page.evaluate((h) => window.location.hash = h, step.hash);
+        if (step.url) await cdp.navigate(step.url);
+        if (step.hash) await cdp.evaluate(`window.location.hash = ${JSON.stringify(step.hash)}`);
         return { status: 'PASSED', actual: `Navigated to ${step.url || '#' + step.hash}` };
 
-      case 'screenshot':
+      case 'screenshot': {
         const screenshotPath = `screenshots/${step.name}_${Date.now()}.png`;
-        await page.screenshot({ path: join(RESULTS_DIR, runId, screenshotPath) });
+        const fullPath = join(RESULTS_DIR, runId, screenshotPath);
+        mkdirSync(join(RESULTS_DIR, runId, 'screenshots'), { recursive: true });
+        await cdp.screenshot(fullPath);
         return { status: 'PASSED', screenshotUrl: `/test-results/${runId}/${screenshotPath}` };
+      }
 
-      case 'drag':
-        const element = await page.waitForSelector(step.selector!);
-        const box = await element!.boundingBox();
-        if (!box) throw new Error('Element not visible');
-        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-        await page.mouse.down();
-        await page.mouse.move(box.x + box.width / 2 + (step.dx || 0), box.y + box.height / 2 + (step.dy || 0), { steps: 10 });
-        await page.mouse.up();
+      case 'drag': {
+        await cdp.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(step.selector)}); if (!el) throw new Error('Not found'); const rect = el.getBoundingClientRect(); const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2; el.dispatchEvent(new MouseEvent('mousedown', { bubbles:true, clientX:cx, clientY:cy })); el.dispatchEvent(new MouseEvent('mousemove', { bubbles:true, clientX:cx+${step.dx||0}, clientY:cy+${step.dy||0} })); el.dispatchEvent(new MouseEvent('mouseup', { bubbles:true, clientX:cx+${step.dx||0}, clientY:cy+${step.dy||0} })); return 'dragged'; })()`);
         break;
+      }
 
-      case 'evaluate':
-        await page.evaluate(step.script!);
-        break;
+      case 'evaluate': {
+        const result = await cdp.evaluate(step.script!);
+        return { status: 'PASSED', actual: String(result ?? 'undefined') };
+      }
 
       case 'assert': {
         // Returns { pass: boolean, expected: string, actual: string }
@@ -513,11 +621,12 @@ async function executeStep(page: Page, step: TestStep, runId: string): Promise<{
             return { pass: false, expected: 'unknown assert type', actual: a.type };
           })()
         `;
-        const result = await page.evaluate(assertScript) as { pass: boolean; expected: string; actual: string };
+        const result = await cdp.evaluate(assertScript) as { pass: boolean; expected: string; actual: string };
         // Auto-screenshot on assert
         const assertScreenPath = `screenshots/assert_${step.type}_${Date.now()}.png`;
         try {
-          await page.screenshot({ path: join(RESULTS_DIR, runId, assertScreenPath) });
+          mkdirSync(join(RESULTS_DIR, runId, 'screenshots'), { recursive: true });
+          await cdp.screenshot(join(RESULTS_DIR, runId, assertScreenPath));
         } catch (_) { /* screenshot optional */ }
         if (!result.pass) {
           return {
@@ -539,7 +648,7 @@ async function executeStep(page: Page, step: TestStep, runId: string): Promise<{
         // Take screenshot → send to Gemini VLM → pass/fail based on visual assessment
         const vsScreenPath = `screenshots/visual_${step.name || 'check'}_${Date.now()}.png`;
         const vsFullPath = join(RESULTS_DIR, runId, vsScreenPath);
-        await page.screenshot({ path: vsFullPath });
+        await cdp.screenshot(vsFullPath);
 
         // Read screenshot as base64
         const imgBase64 = readFileSync(vsFullPath).toString('base64');
@@ -590,7 +699,8 @@ async function executeStep(page: Page, step: TestStep, runId: string): Promise<{
         // for persona-specific evaluation of the UI
         const prScreenPath = `screenshots/persona_${step.persona || 'unknown'}_${step.name || 'review'}_${Date.now()}.png`;
         const prFullPath = join(RESULTS_DIR, runId, prScreenPath);
-        await page.screenshot({ path: prFullPath, fullPage: true });
+        mkdirSync(join(RESULTS_DIR, runId, 'screenshots'), { recursive: true });
+        await cdp.screenshot(prFullPath);
         const prImgBase64 = readFileSync(prFullPath).toString('base64');
 
         // Fetch persona context (QRAs) from memory
@@ -700,17 +810,12 @@ async function executeFixForwardRun(
   broadcast({ type: 'test-run-start', payload: { runId, totalTests: tests.length, headless, mode: 'fix-forward' } });
 
   try {
-    activeBrowser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome-stable',
-      headless: headless ? 'new' : false,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080']
-    });
-
-    const page = await activeBrowser.newPage();
-    await page.setViewport({ width: 1920, height: 1080 });
+    activeCDP = new CDPClient();
+    await activeCDP.connect();
+    console.log(`[FIX-FORWARD] Connected to Chrome via CDP on port ${CDP_PORT}`);
 
     for (const test of tests) {
-      if (!activeBrowser) break;
+      if (!activeCDP) break;
 
       const testStart = Date.now();
       const testResult = { testId: test.id, status: 'RUNNING', steps: [] as any[], durationMs: 0 };
@@ -718,9 +823,6 @@ async function executeFixForwardRun(
       broadcast({ type: 'test-step', payload: { runId, testId: test.id, action: 'START', status: 'RUNNING', mode: 'fix-forward' } });
 
       try {
-        if (page.url() === 'about:blank') {
-          await page.goto(baseUrl, { waitUntil: 'networkidle2' });
-        }
 
         for (const step of test.steps) {
           let stepResult = await executeStep(page, step, runId);
@@ -753,7 +855,7 @@ async function executeFixForwardRun(
               const fixScreenPath = `screenshots/fix_${test.id}_${attempt}_${Date.now()}.png`;
               let screenshotBase64 = '';
               try {
-                await page.screenshot({ path: join(RESULTS_DIR, runId, fixScreenPath) });
+                await activeCDP!.screenshot(join(RESULTS_DIR, runId, fixScreenPath));
                 screenshotBase64 = readFileSync(join(RESULTS_DIR, runId, fixScreenPath)).toString('base64');
               } catch { /* */ }
 
@@ -838,7 +940,7 @@ async function executeFixForwardRun(
 
               // Reload page and retry the step
               try {
-                await page.reload({ waitUntil: 'networkidle2' });
+                await activeCDP!.evaluate('window.location.reload()'); await new Promise(r => setTimeout(r, 3000));
                 await new Promise(r => setTimeout(r, 2000));
               } catch { /* page may have navigated */ }
 
@@ -902,9 +1004,9 @@ async function executeFixForwardRun(
   } catch (err) {
     console.error('[FIX_FORWARD] Critical failure:', err);
   } finally {
-    if (activeBrowser) {
-      await activeBrowser.close();
-      activeBrowser = null;
+    if (activeCDP) {
+      activeCDP.close();
+      activeCDP = null;
     }
 
     const run = runHistory.get(runId)!;

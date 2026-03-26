@@ -572,6 +572,8 @@ export function ArchitectureView() {
               appState: {
                 viewBackgroundColor: 'transparent',
                 theme: 'dark',
+                currentItemStrokeColor: '#ffffff',
+                currentItemFontFamily: 3,
               },
             }}
             excalidrawAPI={(api) => {
