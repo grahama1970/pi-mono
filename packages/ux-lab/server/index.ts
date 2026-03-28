@@ -16,11 +16,13 @@ import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
+import { execFile } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
 import { existsSync } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
+import { promisify } from 'util'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -38,6 +40,7 @@ type JsonRecord = Record<string, unknown>
 type WorksheetConfig = { description_source?: string } & Record<string, unknown>
 
 let worksheetsCache: { expiresAt: number; worksheets: Record<string, WorksheetConfig> } | null = null
+const execFileAsync = promisify(execFile)
 
 interface ArchitectureMetadata {
   attachments: string[]
@@ -1152,6 +1155,294 @@ const CLASSIFIER_SKILL = resolve(PI_MONO, '.pi/skills/create-classifier')
 const CLASSIFIER_DIR = resolve(CLASSIFIER_SKILL, 'projects')
 const CLASSIFIER_CONFIGS = resolve(CLASSIFIER_SKILL, 'configs')
 const CLASSIFIER_ARTIFACTS = resolve(PI_MONO, '.pi/skills/classifier-lab/.artifacts')
+const CLASSIFIER_LAB_SKILL_DIR = resolve(PI_MONO, '.pi/skills/classifier-lab')
+const CLASSIFIER_SWITCHBOARD_URL = 'http://localhost:7890'
+
+const CLASSIFIER_DEFAULT_HPS: Record<string, { lr: number; batch_size: number; epochs: number; dropout: number; weight_decay: number }> = {
+  text: { lr: 2e-5, batch_size: 16, epochs: 2, dropout: 0.1, weight_decay: 1e-4 },
+  vision: { lr: 2e-4, batch_size: 32, epochs: 10, dropout: 0.1, weight_decay: 1e-4 },
+  tabular: { lr: 0.1, batch_size: 64, epochs: 1, dropout: 0, weight_decay: 0 },
+  paired: { lr: 2e-4, batch_size: 16, epochs: 10, dropout: 0.1, weight_decay: 1e-4 },
+}
+
+interface ClassifierRerunBody {
+  backbones: string[]
+  gate_f1: number
+  max_rounds: number
+  max_train_samples: number
+  modality: string
+  task: string
+}
+
+interface TuneResultsPayload extends Record<string, unknown> {
+  trials: unknown[]
+  strategy: string
+  winningRound: number | null
+  completed: number
+  total: number
+}
+
+interface EvalPerClassMetrics {
+  precision: number
+  recall: number
+  f1: number
+  support: number
+}
+
+interface EvalResultsPayload extends Record<string, unknown> {
+  model: string
+  macro_f1: number
+  accuracy: number
+  test_samples: number
+  holdout_passed: boolean
+  classes: string[]
+  confusion_matrix: number[][]
+  per_class: Record<string, EvalPerClassMetrics>
+}
+
+interface SwitchboardManifest {
+  version: number
+  run_id: string
+  worker_id: string
+  runtime_state: { current_step_id: null; next_eligible_steps: string[] }
+  steps: Array<{
+    step_id: string
+    label: string
+    status: 'pending'
+    action: Record<string, unknown>
+    timeout_seconds?: number
+    postcondition?: Record<string, unknown>
+  }>
+}
+
+function sanitizeBackboneName(backbone: string): string {
+  return backbone.replace(/\//g, '-').replace(/\./g, '-').replace(/_/g, '-').slice(0, 60)
+}
+
+function generateClassifierManifest(
+  backbone: string,
+  projectId: string,
+  task: string,
+  modality: string,
+  dataDir: string,
+  gateF1: number,
+  maxRounds: number,
+  maxTrainSamples: number,
+): SwitchboardManifest {
+  const safeName = sanitizeBackboneName(backbone)
+  const runId = `clf-${projectId}-${safeName}`
+  const logDir = `/tmp/clf-switchboard/${projectId}/${safeName}`
+  const defaults = CLASSIFIER_DEFAULT_HPS[modality] ?? CLASSIFIER_DEFAULT_HPS.text
+  const config = {
+    name: backbone,
+    modality,
+    task,
+    data_dir: dataDir,
+    lr: defaults.lr,
+    batch_size: defaults.batch_size,
+    epochs: defaults.epochs,
+    dropout: defaults.dropout,
+    weight_decay: defaults.weight_decay,
+    gate: gateF1,
+    max_rounds: maxRounds,
+    max_train_samples: maxTrainSamples,
+    log_dir: logDir,
+    project_id: projectId,
+  }
+  const configJson = JSON.stringify(config)
+  const venvPython = resolve(CLASSIFIER_LAB_SKILL_DIR, '.venv/bin/python')
+  const trainScript = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts/backbone_train_loop.py')
+
+  return {
+    version: 1,
+    run_id: runId,
+    worker_id: 'local-executor',
+    runtime_state: {
+      current_step_id: null,
+      next_eligible_steps: ['train-loop'],
+    },
+    steps: [
+      {
+        step_id: 'train-loop',
+        label: `${backbone} self-improving loop: gate ${gateF1}, ${maxRounds} rounds`,
+        status: 'pending',
+        action: {
+          type: 'run_command',
+          command: `${venvPython} ${trainScript} '${configJson}'`,
+          cwd: CLASSIFIER_LAB_SKILL_DIR,
+        },
+        timeout_seconds: maxRounds * 600,
+      },
+      {
+        step_id: 'verify-gate',
+        label: `Verify F1 gate >= ${gateF1}`,
+        status: 'pending',
+        action: {
+          type: 'check_metrics',
+          file_path: `${logDir}/metrics.json`,
+        },
+        postcondition: {
+          type: 'metric_gate',
+          metric: 'f1',
+          threshold: gateF1,
+        },
+      },
+    ],
+  }
+}
+
+async function resolveClassifierDataDir(projectId: string): Promise<string> {
+  const dataPath = resolve(CLASSIFIER_DIR, projectId, 'data.json')
+  if (existsSync(dataPath)) {
+    try {
+      const data = JSON.parse(await readFile(dataPath, 'utf-8')) as { path?: unknown }
+      if (typeof data.path === 'string' && data.path.trim().length > 0) return data.path.trim()
+    } catch { /* ignore malformed data.json */ }
+  }
+
+  const configPath = resolve(CLASSIFIER_CONFIGS, `${projectId}.yaml`)
+  if (!existsSync(configPath)) return ''
+
+  try {
+    const rawConfig = yamlLoad(await readFile(configPath, 'utf-8'))
+    const config = rawConfig && typeof rawConfig === 'object' && !Array.isArray(rawConfig)
+      ? rawConfig as Record<string, unknown>
+      : {}
+
+    const topLevelDataDir = config.data_dir
+    if (typeof topLevelDataDir === 'string' && topLevelDataDir.trim().length > 0) return topLevelDataDir.trim()
+
+    const dataset = config.dataset
+    if (typeof dataset === 'string' && dataset.trim().length > 0) return dataset.trim()
+
+    const dataCollection = config.data_collection
+    if (dataCollection && typeof dataCollection === 'object' && !Array.isArray(dataCollection)) {
+      const source = (dataCollection as Record<string, unknown>).source
+      if (typeof source === 'string' && source.trim().length > 0) return source.trim()
+    }
+
+    const data = config.data
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      const dataRecord = data as Record<string, unknown>
+      const source = dataRecord.source
+      if (typeof source === 'string' && source.trim().length > 0) return source.trim()
+      const path = dataRecord.path
+      if (typeof path === 'string' && path.trim().length > 0) return path.trim()
+      const dir = dataRecord.dir
+      if (typeof dir === 'string' && dir.trim().length > 0) return dir.trim()
+    }
+  } catch { /* ignore malformed config */ }
+
+  return ''
+}
+
+function getDefaultTuneResults(): TuneResultsPayload {
+  return {
+    trials: [],
+    strategy: 'self-improvement-loop',
+    winningRound: null,
+    completed: 0,
+    total: 0,
+  }
+}
+
+function normalizeTuneResultsPayload(payload: unknown): TuneResultsPayload {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return getDefaultTuneResults()
+  }
+
+  const record = payload as Record<string, unknown>
+  const trials = Array.isArray(record.trials) ? record.trials : []
+  const completed = typeof record.completed === 'number'
+    ? record.completed
+    : trials.filter((trial) => (
+      trial &&
+      typeof trial === 'object' &&
+      (trial as Record<string, unknown>).status === 'complete'
+    )).length
+
+  const total = typeof record.total === 'number' ? record.total : trials.length
+  const strategy = typeof record.strategy === 'string' && record.strategy.trim().length > 0
+    ? record.strategy
+    : 'self-improvement-loop'
+  const winningRound = typeof record.winningRound === 'number' ? record.winningRound : null
+
+  return {
+    ...record,
+    trials,
+    strategy,
+    winningRound,
+    completed,
+    total,
+  }
+}
+
+function toEvalMetricNumber(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0
+}
+
+function toEvalPerClassMetrics(value: unknown): EvalPerClassMetrics {
+  const metrics = value && typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {}
+  return {
+    precision: toEvalMetricNumber(metrics.precision),
+    recall: toEvalMetricNumber(metrics.recall),
+    f1: toEvalMetricNumber(metrics.f1),
+    support: toEvalMetricNumber(metrics.support),
+  }
+}
+
+function normalizeEvalResultsPayload(payload: unknown): EvalResultsPayload {
+  const record = payload && typeof payload === 'object' && !Array.isArray(payload)
+    ? payload as Record<string, unknown>
+    : {}
+
+  const classes = Array.isArray(record.classes)
+    ? record.classes.filter((value): value is string => typeof value === 'string')
+    : []
+
+  const model = typeof record.model === 'string'
+    ? record.model
+    : (typeof record.winner === 'string' ? record.winner : 'unknown')
+  const macro_f1 = toEvalMetricNumber(record.macro_f1 ?? record.f1)
+  const accuracy = toEvalMetricNumber(record.accuracy)
+  const holdout_passed = record.holdout_passed === true || record.gate_passed === true
+
+  const per_class: Record<string, EvalPerClassMetrics> = {}
+  const rawPerClass = record.per_class
+  const rawPerClassMap = rawPerClass && typeof rawPerClass === 'object' && !Array.isArray(rawPerClass)
+    ? rawPerClass as Record<string, unknown>
+    : {}
+  for (const cls of classes) {
+    per_class[cls] = toEvalPerClassMetrics(rawPerClassMap[cls])
+  }
+
+  const rawMatrix = Array.isArray(record.confusion_matrix) ? record.confusion_matrix : []
+  const confusion_matrix = rawMatrix
+    .filter((row): row is unknown[] => Array.isArray(row))
+    .map((row) => row.map((value) => toEvalMetricNumber(value)))
+
+  const normalizedMatrix = confusion_matrix.length > 0
+    ? confusion_matrix
+    : classes.map(() => classes.map(() => 0))
+  const inferredTestSamples = normalizedMatrix.flat().reduce((sum, value) => sum + value, 0)
+  const test_samples = typeof record.test_samples === 'number' && Number.isFinite(record.test_samples)
+    ? record.test_samples
+    : inferredTestSamples
+
+  return {
+    ...record,
+    model,
+    macro_f1,
+    accuracy,
+    test_samples,
+    holdout_passed,
+    classes,
+    confusion_matrix: normalizedMatrix,
+    per_class,
+  }
+}
 
 app.get('/api/projects/classifier-lab/projects', async (_req, res) => {
   try {
@@ -1206,7 +1497,7 @@ app.get('/api/projects/classifier-lab/projects', async (_req, res) => {
         if (projects.find(p => p.id === d)) continue // skip if already from configs
         try {
           const meta = JSON.parse(await readFile(resolve(CLASSIFIER_DIR, d, 'meta.json'), 'utf-8'))
-          projects.push({ id: d, name: meta.name || d, modality: meta.modality || 'unknown', status: meta.status || 'created', f1: meta.f1, samples: meta.samples || 0 })
+          projects.push({ id: d, name: meta.name || d, modality: meta.modality || 'unknown', status: meta.status || 'created', f1: meta.f1, samples: meta.samples || 0, classes: meta.classes || 0, backbone: meta.backbone || '' })
         } catch {
           projects.push({ id: d, name: d, modality: 'unknown', status: 'created' })
         }
@@ -1258,9 +1549,59 @@ app.get('/api/projects/classifier-lab/data/:id', async (req, res) => {
 })
 
 app.get('/api/projects/classifier-lab/data/:id/files', async (req, res) => {
-  const { pageIndex, pageSize, split, class: cls, search, sortBy, sortDir } = req.query
-  // Return empty paginated result — data loaded when training runs
-  res.json({ rows: [], total: 0 })
+  const { pageIndex = '0', pageSize = '50', split, class: cls, search, sortBy, sortDir } = req.query
+  const projDir = resolve(CLASSIFIER_DIR, req.params.id)
+  const parquetPath = resolve(projDir, 'dataset.parquet')
+  const samplesPath = resolve(projDir, 'samples.jsonl')
+
+  // Prefer Parquet (handles millions of rows via polars lazy scan)
+  if (existsSync(parquetPath)) {
+    try {
+      const { execSync } = await import('child_process')
+      const clfVenv = resolve(PI_MONO, '.pi/skills/classifier-lab/.venv/bin/python')
+      const queryScript = resolve(PI_MONO, '.pi/skills/classifier-lab/scripts/query_dataset.py')
+      const args = [
+        queryScript, parquetPath,
+        '--page', String(pageIndex), '--page-size', String(pageSize),
+        ...(cls ? ['--class', String(cls)] : []),
+        ...(split && split !== 'All splits' ? ['--split', String(split)] : []),
+        ...(search ? ['--search', String(search)] : []),
+        ...(sortBy ? ['--sort-by', String(sortBy), '--sort-dir', String(sortDir || 'asc')] : []),
+      ]
+      const output = execSync(`${clfVenv} ${args.map(a => `'${a}'`).join(' ')}`, {
+        encoding: 'utf-8', timeout: 10000, env: { ...process.env, VIRTUAL_ENV: '' },
+      })
+      return res.json(JSON.parse(output))
+    } catch (e) {
+      console.error('[clf-files] Parquet query failed, falling back to JSONL:', String(e).slice(0, 200))
+    }
+  }
+
+  // Fallback: JSONL sample file
+  try {
+    if (!existsSync(samplesPath)) return res.json({ rows: [], total: 0 })
+    const lines = (await readFile(samplesPath, 'utf-8')).trim().split('\n')
+    let rows = lines.map(l => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)
+      .map((r: any) => ({ filename: r.filename || '', className: r.class || r.className || '', split: r.split || 'train', path: r.path || '', text: r.text || '' })) as any[]
+
+    if (split && split !== 'All splits') rows = rows.filter((r: any) => r.split === split)
+    if (cls && cls !== 'All classes') rows = rows.filter((r: any) => r.className === cls)
+    if (search) {
+      const q = String(search).toLowerCase()
+      rows = rows.filter((r: any) => r.filename?.toLowerCase().includes(q) || r.text?.toLowerCase().includes(q))
+    }
+    const total = rows.length
+    if (sortBy) {
+      const dir = sortDir === 'desc' ? -1 : 1
+      rows.sort((a: any, b: any) => String(a[String(sortBy)] ?? '').localeCompare(String(b[String(sortBy)] ?? '')) * dir)
+    }
+    const pi = Number(pageIndex) || 0
+    const ps = Number(pageSize) || 50
+    rows = rows.slice(pi * ps, (pi + 1) * ps)
+    res.json({ rows, total })
+  } catch {
+    res.json({ rows: [], total: 0 })
+  }
 })
 
 app.get('/api/projects/classifier-lab/research-gate/:id', async (req, res) => {
@@ -1303,14 +1644,39 @@ app.get('/api/projects/classifier-lab/research/:id', async (req, res) => {
 })
 
 app.get('/api/projects/classifier-lab/gpu-info', async (_req, res) => {
-  // Check nvidia-smi if available
+  // Query GPUs via nvidia-smi if available.
   try {
-    const { execSync } = await import('child_process')
-    const output = execSync('nvidia-smi --query-gpu=name,memory.total,memory.used,temperature.gpu --format=csv,noheader', { encoding: 'utf-8', timeout: 5000 })
-    const gpus = output.trim().split('\n').map((line: string, i: number) => {
-      const [name, memTotal, memUsed, temp] = line.split(', ')
-      return { index: i, name, memTotal, memUsed, temp }
-    })
+    const { stdout } = await execFileAsync(
+      'nvidia-smi',
+      [
+        '--query-gpu=index,name,memory.total,memory.used,temperature.gpu',
+        '--format=csv,noheader,nounits',
+      ],
+      { timeout: 5000, encoding: 'utf-8' }
+    )
+
+    const gpus = stdout
+      .trim()
+      .split('\n')
+      .filter((line: string) => line.trim().length > 0)
+      .map((line: string) => {
+        const [indexRaw = '', nameRaw = '', memTotalRaw = '', memUsedRaw = '', tempRaw = ''] =
+          line.split(',').map((part) => part.trim())
+
+        const index = Number.parseInt(indexRaw, 10)
+        const memTotal = Number.parseInt(memTotalRaw, 10)
+        const memUsed = Number.parseInt(memUsedRaw, 10)
+        const temp = Number.parseInt(tempRaw, 10)
+
+        return {
+          index: Number.isFinite(index) ? index : 0,
+          name: nameRaw,
+          memTotal: Number.isFinite(memTotal) ? memTotal : 0,
+          memUsed: Number.isFinite(memUsed) ? memUsed : 0,
+          temp: Number.isFinite(temp) ? temp : 0,
+        }
+      })
+
     res.json({ gpus })
   } catch {
     res.json({ gpus: [] })
@@ -1321,7 +1687,21 @@ app.get('/api/projects/classifier-lab/tune-results/:id', async (req, res) => {
   try {
     const path = resolve(CLASSIFIER_DIR, req.params.id, 'tune-results.json')
     if (existsSync(path)) {
-      res.json(JSON.parse(await readFile(path, 'utf-8')))
+      res.json(normalizeTuneResultsPayload(JSON.parse(await readFile(path, 'utf-8'))))
+    } else {
+      res.json(getDefaultTuneResults())
+    }
+  } catch {
+    res.json(getDefaultTuneResults())
+  }
+})
+
+app.get('/api/projects/classifier-lab/eval-results/:id', async (req, res) => {
+  try {
+    const path = resolve(CLASSIFIER_DIR, req.params.id, 'eval-results.json')
+    if (existsSync(path)) {
+      const raw = JSON.parse(await readFile(path, 'utf-8'))
+      res.json(normalizeEvalResultsPayload(raw))
     } else {
       res.json({})
     }
@@ -1330,17 +1710,64 @@ app.get('/api/projects/classifier-lab/tune-results/:id', async (req, res) => {
   }
 })
 
-app.get('/api/projects/classifier-lab/eval-results/:id', async (req, res) => {
-  try {
-    const path = resolve(CLASSIFIER_DIR, req.params.id, 'eval-results.json')
-    if (existsSync(path)) {
-      res.json(JSON.parse(await readFile(path, 'utf-8')))
-    } else {
-      res.json({})
-    }
-  } catch {
-    res.json({})
+app.post('/api/projects/classifier-lab/rerun/:id', async (req, res) => {
+  const projectId = req.params.id
+  const body = req.body as Partial<ClassifierRerunBody>
+
+  const backbones = Array.isArray(body.backbones)
+    ? body.backbones.filter((item): item is string => typeof item === 'string' && item.trim().length > 0).map((item) => item.trim())
+    : []
+  const gateF1 = typeof body.gate_f1 === 'number' ? body.gate_f1 : NaN
+  const maxRounds = typeof body.max_rounds === 'number' ? body.max_rounds : NaN
+  const maxTrainSamples = typeof body.max_train_samples === 'number' ? body.max_train_samples : NaN
+  const modality = typeof body.modality === 'string' ? body.modality.trim() : ''
+  const task = typeof body.task === 'string' ? body.task.trim() : ''
+
+  if (!projectId || backbones.length === 0 || !Number.isFinite(gateF1) || !Number.isFinite(maxRounds) || !Number.isFinite(maxTrainSamples) || !modality || !task) {
+    return res.status(400).json({
+      error: 'Invalid body. Expected {backbones:[], gate_f1, max_rounds, max_train_samples, modality, task}',
+    })
   }
+
+  const dataDir = await resolveClassifierDataDir(projectId)
+  if (!dataDir) return res.status(400).json({ error: `Unable to resolve data_dir for project ${projectId}` })
+
+  const manifests = backbones.map((backbone) => generateClassifierManifest(
+    backbone,
+    projectId,
+    task,
+    modality,
+    dataDir,
+    gateF1,
+    maxRounds,
+    maxTrainSamples,
+  ))
+
+  const submittedRunIds: string[] = []
+  for (const manifest of manifests) {
+    try {
+      const switchboardRes = await fetch(`${CLASSIFIER_SWITCHBOARD_URL}/run/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ manifest }),
+      })
+      if (!switchboardRes.ok) {
+        const detail = await switchboardRes.text()
+        return res.status(502).json({
+          error: `Switchboard submission failed for ${manifest.run_id}`,
+          detail,
+        })
+      }
+      submittedRunIds.push(manifest.run_id)
+    } catch (err) {
+      return res.status(502).json({
+        error: `Switchboard submission failed for ${manifest.run_id}`,
+        detail: err instanceof Error ? err.message : String(err),
+      })
+    }
+  }
+
+  return res.json({ submitted: true, run_ids: submittedRunIds })
 })
 
 // ── Unified Lab / Convergence Loop ──────────────────────────────────────────

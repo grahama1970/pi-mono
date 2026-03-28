@@ -17,11 +17,12 @@ import {
   type SortingState, type PaginationState,
 } from '@tanstack/react-table'
 import { EMBRY, label, heading, body, card, panel, glowDot } from '../common/EmbryStyle'
-import { LeftPane, paneItemStyle, ContextMenu, useContextMenu } from '../common/LeftPane'
-import type { ContextMenuAction } from '../common/LeftPane'
+import { LeftPane, paneItemStyle, ContextMenu, useContextMenu, useLeftPaneSort } from '../common/LeftPane'
+import type { ContextMenuAction, SortMode } from '../common/LeftPane'
 import { ImageThumb } from '../common/ImageLightbox'
 import { AgentControl } from '../common/AgentControl'
 import { RunButton } from '../common/RunButton'
+import { RerunButton } from '../common/RerunButton'
 import { useAgentBus } from '../common/useAgentBus'
 
 const API = 'http://localhost:3001/api'
@@ -38,6 +39,31 @@ interface TrainingRow {
   rank: number; backbone: string; lr: string; bs: number
   f1: number; acc: number; latency: string; cost: string
   status: 'pass' | 'fail' | 'training' | 'queued'; progress?: number
+}
+
+interface BenchmarkRow {
+  name: string
+  f1: number
+  acc: number
+  wilson: number
+  rounds: number
+  lat50: number
+  lat95: number
+  params: number
+  time: string
+  winner?: boolean
+}
+
+interface BenchmarkBackboneCandidate {
+  backbone?: string
+}
+
+interface BenchmarkTrainConfigResponse {
+  gate_f1?: number
+  max_rounds?: number
+  max_train_samples?: number
+  backbones?: string[]
+  results?: BenchmarkBackboneCandidate[]
 }
 
 type Tab = 'research' | 'data' | 'tune' | 'train' | 'benchmark' | 'evaluate' | 'promote'
@@ -58,6 +84,7 @@ export function ClassifierLabView() {
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newProjectName, setNewProjectName] = useState('')
   const [creating, setCreating] = useState(false)
+  const [filterModality, setFilterModality] = useState<string>('')
 
   // Agent bus for live training telemetry
   const { connected, narration } = useAgentBus((msg) => {
@@ -107,12 +134,39 @@ export function ClassifierLabView() {
 
   // Load benchmark results when project changes
   const [benchmarkData, setBenchmarkData] = useState<any>(null)
-  useEffect(() => {
-    if (!selectedProjectId) return
-    fetch(`${API}/projects/classifier-lab/benchmark-results/${selectedProjectId}`)
+  const loadBenchmarkData = useCallback((projectId: string) => {
+    fetch(`${API}/projects/classifier-lab/benchmark-results/${projectId}`)
       .then(r => r.json()).then(setBenchmarkData)
       .catch(() => setBenchmarkData(null))
-  }, [selectedProjectId])
+  }, [])
+
+  useEffect(() => {
+    if (!selectedProjectId) return
+    loadBenchmarkData(selectedProjectId)
+  }, [selectedProjectId, loadBenchmarkData])
+
+  // Sort + filter projects — sorting driven by shared LeftPane sort context
+  const sortProjects = useCallback((mode: SortMode, list: Project[]) => {
+    const filtered = filterModality
+      ? list.filter(p => p.modality?.toLowerCase().includes(filterModality.toLowerCase()))
+      : list
+    const sorted = [...filtered]
+    if (mode === 'score') {
+      sorted.sort((a, b) => (b.f1 ?? 0) - (a.f1 ?? 0))
+    } else if (mode === 'alpha') {
+      sorted.sort((a, b) => a.name.localeCompare(b.name))
+    } else {
+      // recent: trained projects first (by F1 desc), then rest alphabetically
+      sorted.sort((a, b) => {
+        const aT = a.status === 'trained' || a.f1 ? 1 : 0
+        const bT = b.status === 'trained' || b.f1 ? 1 : 0
+        if (aT !== bT) return bT - aT
+        if (aT && bT) return (b.f1 ?? 0) - (a.f1 ?? 0)
+        return a.name.localeCompare(b.name)
+      })
+    }
+    return sorted
+  }, [filterModality])
 
   const activeProject = useMemo(
     () => projects.find(p => p.id === selectedProjectId) ?? projects[0],
@@ -137,7 +191,8 @@ export function ClassifierLabView() {
     return benchmarkData.results.map((r: any) => ({
       name: r.backbone, f1: r.macro_f1 || 0, acc: r.accuracy || 0,
       wilson: r.wilson_score_lower || 0, lat50: 0, lat95: 0,
-      params: 0, time: '-',
+      params: 0, time: '-', rounds: Number(r.rounds || 0),
+      winner: benchmarkData.selected_backbone === r.backbone,
     }))
   }, [benchmarkData])
 
@@ -202,33 +257,13 @@ export function ClassifierLabView() {
     <div data-testid="classifier-lab" style={{ display: 'flex', height: '100%', background: EMBRY.bg, color: EMBRY.white, fontFamily: 'Inter, sans-serif' }}>
       {menuProps && <ContextMenu {...menuProps} />}
       {/* Left pane — classifier project list */}
-      <LeftPane title="CLASSIFIER LAB" searchable>
-        <div style={{ padding: '0 4px' }}>
-          {projects.map(p => {
-            const sel = p.id === selectedProjectId
-            const f1Color = !p.f1 ? EMBRY.muted : p.f1 < 0.80 ? EMBRY.red : p.f1 >= 0.90 ? EMBRY.green : EMBRY.dim
-            return (
-              <div key={p.id} data-testid={`clf-project-${p.id}`}
-                onClick={() => setSelectedProjectId(p.id)}
-                onContextMenu={e => triggerContextMenu(e, p.id)}
-                style={{ ...paneItemStyle(sel), display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, fontFamily: MONO, color: sel ? EMBRY.accent : EMBRY.white }}>{p.name}</div>
-                  <div style={{ fontSize: 9, color: EMBRY.dim }}>{p.modality}, {p.classes} cl, {(p.samples ?? 0).toLocaleString()} spl</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  {p.status === 'training' ? (
-                    <span style={{ fontSize: 9, fontWeight: 900, color: EMBRY.amber }}>TRAINING</span>
-                  ) : (
-                    <span style={{ fontSize: 11, fontWeight: 900, fontFamily: MONO, color: f1Color }}>
-                      {p.f1 ? `${p.f1.toFixed(2)}` : '—'}
-                    </span>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+      <LeftPane title="CLASSIFIER LAB" searchable sortable
+        activeFilter={filterModality || undefined}
+        onClearFilter={() => setFilterModality('')}>
+        <SortedProjectList projects={projects} sortFn={sortProjects}
+          selectedProjectId={selectedProjectId} setSelectedProjectId={setSelectedProjectId}
+          filterModality={filterModality} setFilterModality={setFilterModality}
+          triggerContextMenu={triggerContextMenu} />
         <div style={{ padding: 12, borderTop: `1px solid ${EMBRY.border}`, marginTop: 'auto' }}>
           <button style={{
             width: '100%', background: 'rgba(255,255,255,0.03)', border: `1px dashed ${EMBRY.border}`,
@@ -297,7 +332,17 @@ export function ClassifierLabView() {
               )
             })}
           </nav>
-          <AgentControl projectId="classifier-lab" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <RerunButton
+              projectId={selectedProjectId}
+              disabled={!selectedProjectId}
+              onRerun={() => {
+                setTrainingRows([])
+                if (selectedProjectId) loadBenchmarkData(selectedProjectId)
+              }}
+            />
+            <AgentControl projectId="classifier-lab" />
+          </div>
         </header>
 
         {/* Tab content */}
@@ -479,13 +524,7 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
             }}>AUGMENT DATASET</button>
           </div>
         ) : (
-          <div style={{ ...card, border: `1px solid ${EMBRY.green}`, textAlign: 'center', background: 'rgba(0,255,136,0.03)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <ShieldCheck size={32} color={EMBRY.green} style={{ marginBottom: 12 }} />
-            <div style={{ ...heading, color: EMBRY.green, marginBottom: 8 }}>VALIDATION PASSED</div>
-            <div style={{ ...body, fontSize: 12, color: EMBRY.dim }}>
-              All {dataInfo.classCount} classes have {dataInfo.gateThreshold}+ training samples.
-            </div>
-          </div>
+          <DataTrainingSummary projectId={project.id} classCount={dataInfo.classCount} gateThreshold={dataInfo.gateThreshold} />
         )}
       </div>
 
@@ -495,9 +534,97 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
   )
 }
 
+/** Shows training results instead of a vague "PASSED" badge */
+function DataTrainingSummary({ projectId, classCount, gateThreshold }: { projectId: string; classCount: number; gateThreshold: number }) {
+  const [bench, setBench] = useState<any>(null)
+  useEffect(() => {
+    fetch(`${API}/projects/classifier-lab/benchmark-results/${projectId}`)
+      .then(r => r.json()).then(setBench).catch(() => {})
+  }, [projectId])
+
+  const winner = bench?.selected_backbone
+  const f1 = bench?.selected_metrics?.macro_f1
+  const acc = bench?.selected_metrics?.accuracy
+  const results = bench?.results || []
+  const gatePassed = f1 != null && f1 >= (bench?.gate_f1 || 0.90)
+
+  // No training results yet — show simple data gate pass
+  if (!bench || !results.length) return (
+    <div style={{ ...card, border: `1px solid ${EMBRY.green}`, background: 'rgba(0,255,136,0.03)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <ShieldCheck size={24} color={EMBRY.green} style={{ marginBottom: 8 }} />
+      <div style={{ fontSize: 11, fontWeight: 700, color: EMBRY.green, marginBottom: 4 }}>DATA GATE PASSED</div>
+      <div style={{ fontSize: 10, color: EMBRY.dim }}>{classCount} classes, {gateThreshold}+ samples/class</div>
+      <div style={{ fontSize: 9, color: EMBRY.muted, marginTop: 8 }}>Run training to see results here</div>
+    </div>
+  )
+
+  const borderColor = gatePassed ? EMBRY.green : EMBRY.amber
+  return (
+    <div style={{ ...card, border: `1px solid ${borderColor}`, background: `${borderColor}05`, padding: 20 }}>
+      {/* Winner headline */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        {gatePassed ? <ShieldCheck size={18} color={EMBRY.green} /> : <AlertTriangle size={18} color={EMBRY.amber} />}
+        <span style={{ fontSize: 12, fontWeight: 900, color: borderColor }}>
+          {gatePassed ? 'GATE PASSED' : 'GATE NOT MET'}
+        </span>
+        <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 'auto' }}>
+          gate: F1 ≥ {bench?.gate_f1 || 0.90}
+        </span>
+      </div>
+
+      {/* Winner stats */}
+      {winner && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>WINNER</div>
+            <div style={{ fontSize: 12, fontWeight: 700, fontFamily: MONO, color: EMBRY.white }}>{winner}</div>
+          </div>
+          <div>
+            <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>F1 SCORE</div>
+            <div style={{ fontSize: 20, fontWeight: 900, fontFamily: MONO, color: gatePassed ? EMBRY.green : EMBRY.amber }}>
+              {f1?.toFixed(3)}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>ACCURACY</div>
+            <div style={{ fontSize: 20, fontWeight: 900, fontFamily: MONO, color: EMBRY.white }}>
+              {acc?.toFixed(3)}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* All backbones mini-table */}
+      {results.length > 1 && (
+        <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
+          <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 8 }}>ALL BACKBONES</div>
+          {results.map((r: any, i: number) => {
+            const isWinner = r.backbone === winner
+            return (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0',
+                opacity: isWinner ? 1 : 0.6 }}>
+                <span style={{ fontSize: 10, fontFamily: MONO, flex: 1, color: isWinner ? EMBRY.white : EMBRY.dim }}>
+                  {r.backbone}
+                </span>
+                <span style={{ fontSize: 11, fontFamily: MONO, fontWeight: 700,
+                  color: r.gate_passed ? EMBRY.green : EMBRY.red }}>
+                  {(r.macro_f1 || 0).toFixed(3)}
+                </span>
+                <span style={{ fontSize: 9, color: EMBRY.muted, width: 30, textAlign: 'left' }}>
+                  R{r.rounds || '?'}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Data File Table (virtualized with @tanstack/react-table) ──────
 
-interface DataFileRow { filename: string; className: string; split: string; path: string }
+interface DataFileRow { filename: string; className: string; split: string; path: string; text?: string }
 const fileColumnHelper = createColumnHelper<DataFileRow>()
 
 function DataFileTable({ projectId, classes }: { projectId: string; classes: string[] }) {
@@ -536,7 +663,11 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
   const isImageFile = (f: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
   const imageUrl = (row: DataFileRow) => `${API}/projects/classifier-lab/images/${projectId}/${row.path}`
 
+  const hasText = data.some(r => r.text)
+  const hasImages = data.some(r => isImageFile(r.filename))
+
   const columns = useMemo(() => [
+    // Thumbnail for vision, icon for text
     fileColumnHelper.display({
       id: 'thumb',
       header: '',
@@ -547,31 +678,45 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
         return <ImageThumb src={imageUrl(r)} alt={`${r.className} — ${r.filename}`} size={32} />
       },
     }),
-    fileColumnHelper.accessor('filename', {
-      header: 'FILENAME',
-      cell: info => <span>{info.getValue()}</span>,
-    }),
+    // Class label — always first real column
     fileColumnHelper.accessor('className', {
       header: 'CLASS',
+      size: 100,
       cell: info => {
         const idx = classes.indexOf(info.getValue())
         const colors = [EMBRY.green, EMBRY.blue, EMBRY.accent, '#22d3ee', EMBRY.amber, EMBRY.red]
         return <span style={{ color: colors[idx % colors.length], fontWeight: 700 }}>{info.getValue()}</span>
       },
     }),
+    // Text content for text modality, filename for vision
+    ...(hasText ? [
+      fileColumnHelper.accessor('text', {
+        header: 'TEXT',
+        size: 500,
+        cell: (info: any) => (
+          <span style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.4, display: '-webkit-box',
+            WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }}>
+            {info.getValue() || '—'}
+          </span>
+        ),
+      }),
+    ] : [
+      fileColumnHelper.accessor('filename', {
+        header: 'FILENAME',
+        cell: (info: any) => <span>{info.getValue()}</span>,
+      }),
+    ]),
+    // Split badge
     fileColumnHelper.accessor('split', {
       header: 'SPLIT',
+      size: 80,
       cell: info => {
         const s = info.getValue()
         const color = s === 'train' ? EMBRY.green : s === 'val' ? EMBRY.amber : EMBRY.blue
         return <span style={{ ...statusBadge, background: `${color}15`, color }}>{s.toUpperCase()}</span>
       },
     }),
-    fileColumnHelper.accessor('path', {
-      header: 'PATH',
-      cell: info => <span style={{ color: EMBRY.dim, fontSize: 10 }}>{info.getValue()}</span>,
-    }),
-  ], [classes])
+  ], [classes, hasText])
 
   const table = useReactTable({
     data,
@@ -672,12 +817,82 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
 
 // ── Train Tab (the core product — live leaderboard) ─────────────────
 
+/** Inner component that reads LeftPane sort context and renders sorted project list */
+function SortedProjectList({ projects, sortFn, selectedProjectId, setSelectedProjectId, filterModality, setFilterModality, triggerContextMenu }: {
+  projects: Project[]
+  sortFn: (mode: SortMode, list: Project[]) => Project[]
+  selectedProjectId: string
+  setSelectedProjectId: (id: string) => void
+  filterModality: string
+  setFilterModality: (m: string) => void
+  triggerContextMenu: (e: React.MouseEvent, id: string) => void
+}) {
+  const sortMode = useLeftPaneSort()
+  const sorted = useMemo(() => sortFn(sortMode, projects), [sortMode, projects, sortFn])
+
+  return (
+    <div style={{ padding: '0 4px' }}>
+      {sorted.map(p => {
+        const sel = p.id === selectedProjectId
+        const f1Color = !p.f1 ? EMBRY.muted : p.f1 < 0.80 ? EMBRY.red : p.f1 >= 0.90 ? EMBRY.green : EMBRY.dim
+        return (
+          <div key={p.id} data-testid={`clf-project-${p.id}`}
+            onClick={() => setSelectedProjectId(p.id)}
+            onContextMenu={e => triggerContextMenu(e, p.id)}
+            style={{ ...paneItemStyle(sel), display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, fontFamily: MONO, color: sel ? EMBRY.accent : EMBRY.white }}>{p.name}</div>
+              <div style={{ fontSize: 9, color: EMBRY.dim }}>
+                <span style={{ cursor: 'pointer' }} onClick={e => { e.stopPropagation(); setFilterModality(p.modality === filterModality ? '' : p.modality) }}
+                  title={`Filter by ${p.modality}`}>{p.modality}</span>, {p.classes ?? 0} cl, {(p.samples ?? 0).toLocaleString()} spl
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              {p.status === 'training' ? (
+                <span style={{ fontSize: 9, fontWeight: 900, color: EMBRY.amber }}>TRAINING</span>
+              ) : (
+                <span style={{ fontSize: 11, fontWeight: 900, fontFamily: MONO, color: f1Color }}>
+                  {p.f1 ? `${p.f1.toFixed(2)}` : '—'}
+                </span>
+              )}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) {
   const [selectedGpu, setSelectedGpu] = useState('local')
   const [gpuInfo, setGpuInfo] = useState<any>(null)
+  const [backbonesInput, setBackbonesInput] = useState('')
+  const [gateF1Input, setGateF1Input] = useState('0.90')
+  const [maxRoundsInput, setMaxRoundsInput] = useState('5')
+  const [maxTrainSamplesInput, setMaxTrainSamplesInput] = useState('10000')
   const best = rows.find(r => r.status === 'pass')
   const passCount = rows.filter(r => r.status === 'pass').length
   const totalCount = rows.length
+
+  const parseBackbones = useCallback((data: BenchmarkTrainConfigResponse): string[] => {
+    if (Array.isArray(data.backbones) && data.backbones.length) {
+      return data.backbones
+        .filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+        .map((item) => item.trim())
+    }
+    if (Array.isArray(data.results) && data.results.length) {
+      return data.results
+        .map((result) => result.backbone)
+        .filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+        .map((item) => item.trim())
+    }
+    return []
+  }, [])
+
+  const fallbackBackbones = useMemo(
+    () => Array.from(new Set(rows.map((row) => row.backbone.trim()).filter((item) => item.length > 0))),
+    [rows],
+  )
 
   // Fetch real GPU info
   useEffect(() => {
@@ -685,6 +900,42 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
       .then(r => r.json()).then(setGpuInfo)
       .catch(() => setGpuInfo(null))
   }, [])
+
+  useEffect(() => {
+    setGateF1Input('0.90')
+    setMaxRoundsInput('5')
+    setMaxTrainSamplesInput('10000')
+    setBackbonesInput(fallbackBackbones.join(', '))
+    fetch(`${API}/projects/classifier-lab/benchmark-results/${project.id}`)
+      .then(r => r.json())
+      .then((data: BenchmarkTrainConfigResponse) => {
+        const parsedBackbones = parseBackbones(data)
+        if (parsedBackbones.length > 0) {
+          setBackbonesInput(parsedBackbones.join(', '))
+        }
+        if (typeof data.gate_f1 === 'number' && Number.isFinite(data.gate_f1)) {
+          setGateF1Input(data.gate_f1.toFixed(2))
+        }
+        if (typeof data.max_rounds === 'number' && Number.isFinite(data.max_rounds)) {
+          setMaxRoundsInput(String(Math.max(1, Math.round(data.max_rounds))))
+        }
+        if (typeof data.max_train_samples === 'number' && Number.isFinite(data.max_train_samples)) {
+          setMaxTrainSamplesInput(String(Math.max(1, Math.round(data.max_train_samples))))
+        }
+      })
+      .catch(() => {})
+  }, [fallbackBackbones, parseBackbones, project.id])
+
+  const rerunBackbones = useMemo(
+    () => backbonesInput.split(',').map((item) => item.trim()).filter((item) => item.length > 0),
+    [backbonesInput],
+  )
+  const gateF1 = Number(gateF1Input)
+  const maxRounds = Number(maxRoundsInput)
+  const maxTrainSamples = Number(maxTrainSamplesInput)
+  const rerunGateF1 = Number.isFinite(gateF1) && gateF1 > 0 ? gateF1 : 0.9
+  const rerunMaxRounds = Number.isFinite(maxRounds) && maxRounds > 0 ? Math.round(maxRounds) : 5
+  const rerunMaxTrainSamples = Number.isFinite(maxTrainSamples) && maxTrainSamples > 0 ? Math.round(maxTrainSamples) : 10000
 
   const localGpu = gpuInfo?.gpus?.[0]
 
@@ -695,7 +946,9 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         <div>
           <div style={{ ...heading, fontSize: 22 }}>{project.name.toUpperCase()}</div>
           <div style={{ display: 'flex', gap: 12, marginTop: 6 }}>
-            <span style={{ ...gateBadge, background: 'rgba(124,58,237,0.1)', color: EMBRY.accent, borderColor: EMBRY.accent + '44' }}>TARGET: F1 ≥ 0.90</span>
+            <span style={{ ...gateBadge, background: 'rgba(124,58,237,0.1)', color: EMBRY.accent, borderColor: EMBRY.accent + '44' }}>
+              TARGET: F1 ≥ {rerunGateF1.toFixed(2)}
+            </span>
             {totalCount > 0 && (
               <span style={{ ...gateBadge, background: 'rgba(255,170,0,0.1)', color: EMBRY.amber, borderColor: EMBRY.amber + '44' }}>
                 {passCount > 0 ? `${passCount} PASSED` : `${totalCount} CANDIDATES`}
@@ -711,6 +964,65 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         <div style={{ display: 'flex', gap: 12 }}>
           <button style={{ ...btnOutline, borderColor: EMBRY.amber + '66', color: EMBRY.amber }}>CONTINUE SEARCH</button>
           <RunButton onClick={() => {}} disabled={!best}>PROMOTE</RunButton>
+        </div>
+      </div>
+
+      <div style={{ ...card, marginBottom: 14, padding: 16 }}>
+        <div style={{ ...label, marginBottom: 12 }}>RERUN CONFIGURATION</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr 1fr 1fr auto', gap: 10, alignItems: 'end' }}>
+          <div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>BACKBONES</div>
+            <input
+              value={backbonesInput}
+              onChange={(e) => setBackbonesInput(e.target.value)}
+              placeholder="resnet50, efficientnet_b0, convnext_tiny"
+              style={rerunInputStyle}
+            />
+          </div>
+          <div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>GATE F1</div>
+            <input
+              type="number"
+              min={0}
+              step="0.01"
+              value={gateF1Input}
+              onChange={(e) => setGateF1Input(e.target.value)}
+              style={rerunInputStyle}
+            />
+          </div>
+          <div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>MAX ROUNDS</div>
+            <input
+              type="number"
+              min={1}
+              step={1}
+              value={maxRoundsInput}
+              onChange={(e) => setMaxRoundsInput(e.target.value)}
+              style={rerunInputStyle}
+            />
+          </div>
+          <div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>MAX TRAIN SAMPLES</div>
+            <input
+              type="number"
+              min={1}
+              step={1}
+              value={maxTrainSamplesInput}
+              onChange={(e) => setMaxTrainSamplesInput(e.target.value)}
+              style={rerunInputStyle}
+            />
+          </div>
+          <RerunButton
+            projectId={project.id}
+            disabled={rerunBackbones.length === 0}
+            rerunOverrides={{
+              backbones: rerunBackbones,
+              gate_f1: rerunGateF1,
+              max_rounds: rerunMaxRounds,
+              max_train_samples: rerunMaxTrainSamples,
+            }}
+            onRerun={() => {}}
+          />
         </div>
       </div>
 
@@ -736,7 +1048,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
                 <td style={{ ...tdStyle, fontWeight: 700, color: r.rank === 1 ? EMBRY.green : EMBRY.white }}>{r.backbone}</td>
                 <td style={tdStyle}>{r.lr}</td>
                 <td style={tdStyle}>{r.bs || '—'}</td>
-                <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= 0.90 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
+                <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= rerunGateF1 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
                   {r.f1 ? r.f1.toFixed(2) : '—'}
                 </td>
                 <td style={tdStyle}>{r.acc ? r.acc.toFixed(2) : '—'}</td>
@@ -828,9 +1140,60 @@ function TuneTab({ project }: { project: Project }) {
     </div>
   )
 
-  const trials: any[] = tuneData.trials || []
-  const completedTrials = trials.filter((t: any) => t.status === 'complete')
-  const bestTrial = completedTrials.sort((a: any, b: any) => (b.testF1 || b.valF1 || 0) - (a.testF1 || a.valF1 || 0))[0]
+  type TuneTrial = {
+    trial: number
+    backbone: string
+    epochs: number | null
+    lr: string
+    augment: string
+    valF1: number | null
+    testF1: number | null
+    status: string
+    passed: boolean
+  }
+
+  const asRecord = (value: unknown): Record<string, unknown> | null => (
+    value && typeof value === 'object' && !Array.isArray(value)
+      ? value as Record<string, unknown>
+      : null
+  )
+  const asNumber = (value: unknown): number | null => (
+    typeof value === 'number' && Number.isFinite(value) ? value : null
+  )
+  const normalizeStatus = (value: unknown): string => {
+    if (typeof value !== 'string') return 'pending'
+    const status = value.toLowerCase()
+    if (status === 'complete' || status === 'completed' || status === 'passed' || status === 'failed' || status === 'running') {
+      return status
+    }
+    return status || 'pending'
+  }
+
+  const rawTrials: unknown[] = Array.isArray(tuneData.trials) ? tuneData.trials : []
+  const trials: TuneTrial[] = rawTrials.map((value, i) => {
+    const record = asRecord(value) ?? {}
+    const hps = asRecord(record.hps) ?? {}
+    const trialNum = asNumber(record.trial) ?? asNumber(record.round) ?? (i + 1)
+    const rawStatus = normalizeStatus(record.status)
+    const valF1 = asNumber(record.valF1) ?? asNumber(record.val_f1)
+    const testF1 = asNumber(record.testF1) ?? asNumber(record.test_f1) ?? asNumber(record.f1)
+    const passed = record.passed === true || record.gate_passed === true || rawStatus === 'passed'
+
+    return {
+      trial: Math.max(1, Math.round(trialNum)),
+      backbone: typeof record.backbone === 'string' && record.backbone.trim().length > 0 ? record.backbone : '—',
+      epochs: asNumber(record.epochs) ?? asNumber(hps.epochs),
+      lr: String(record.lr ?? hps.lr ?? '—'),
+      augment: String(record.augment ?? record.augmentation ?? '—'),
+      valF1,
+      testF1,
+      status: rawStatus,
+      passed,
+    }
+  }).sort((a, b) => a.trial - b.trial)
+
+  const completedTrials = trials.filter((t) => t.status === 'complete' || t.status === 'completed' || t.status === 'passed' || t.status === 'failed')
+  const bestTrial = [...completedTrials].sort((a, b) => (b.testF1 ?? b.valF1 ?? 0) - (a.testF1 ?? a.valF1 ?? 0))[0]
   const totalCount = trials.length
   const completedCount = completedTrials.length
   const strategy = tuneData.strategy || 'self-improvement-loop'
@@ -869,7 +1232,7 @@ function TuneTab({ project }: { project: Project }) {
           <div style={glowDot(bestTrial.passed ? EMBRY.green : EMBRY.amber, 10)} />
           <span style={{ ...label, color: bestTrial.passed ? EMBRY.green : EMBRY.amber }}>BEST SO FAR</span>
           <span style={{ fontFamily: MONO, fontWeight: 700, fontSize: 13 }}>
-            Round #{bestTrial.trial} — {bestTrial.backbone} — Test F1 {(bestTrial.testF1 || bestTrial.valF1 || 0).toFixed(3)}
+            Round #{bestTrial.trial} — {bestTrial.backbone} — Test F1 {(bestTrial.testF1 ?? bestTrial.valF1 ?? 0).toFixed(3)}
           </span>
           <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 'auto' }}>
             LR={bestTrial.lr} epochs={bestTrial.epochs} augment={bestTrial.augment || '—'}
@@ -879,18 +1242,19 @@ function TuneTab({ project }: { project: Project }) {
 
       {/* Round progress circles */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        {trials.map((t: any, i: number) => {
+        {trials.map((t) => {
           const passed = t.passed
           const isRunning = t.status === 'running'
+          const isDone = t.status === 'complete' || t.status === 'completed' || t.status === 'passed' || t.status === 'failed'
           return (
-            <div key={i} style={{
+            <div key={t.trial} style={{
               width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 10, fontWeight: 900, fontFamily: MONO,
-              background: passed ? EMBRY.green + '20' : isRunning ? EMBRY.amber + '20' : EMBRY.red + '15',
-              color: passed ? EMBRY.green : isRunning ? EMBRY.amber : EMBRY.red,
-              border: `1px solid ${passed ? EMBRY.green + '44' : isRunning ? EMBRY.amber + '44' : EMBRY.red + '33'}`,
+              background: passed ? EMBRY.green + '20' : isRunning ? EMBRY.amber + '20' : isDone ? EMBRY.red + '15' : EMBRY.blue + '15',
+              color: passed ? EMBRY.green : isRunning ? EMBRY.amber : isDone ? EMBRY.red : EMBRY.blue,
+              border: `1px solid ${passed ? EMBRY.green + '44' : isRunning ? EMBRY.amber + '44' : isDone ? EMBRY.red + '33' : EMBRY.blue + '33'}`,
             }}>
-              {passed ? '✓' : i + 1}
+              {t.trial}
             </div>
           )
         })}
@@ -912,10 +1276,10 @@ function TuneTab({ project }: { project: Project }) {
             </tr>
           </thead>
           <tbody>
-            {trials.map((t: any) => {
+            {trials.map((t) => {
               const isBest = bestTrial && t.trial === bestTrial.trial
-              const testF1 = t.testF1 || 0
-              const valF1 = t.valF1 || 0
+              const testF1 = t.testF1 ?? 0
+              const valF1 = t.valF1 ?? 0
               return (
                 <tr key={t.trial} style={{
                   borderBottom: `1px solid ${EMBRY.border}`,
@@ -924,7 +1288,7 @@ function TuneTab({ project }: { project: Project }) {
                 }}>
                   <td style={tdStyle}>#{t.trial}</td>
                   <td style={{ ...tdStyle, fontWeight: 700, color: isBest ? EMBRY.green : EMBRY.white }}>{t.backbone}</td>
-                  <td style={tdStyle}>{t.epochs || '—'}</td>
+                  <td style={tdStyle}>{t.epochs ?? '—'}</td>
                   <td style={tdStyle}>{t.lr}</td>
                   <td style={tdStyle}>{t.augment || '—'}</td>
                   <td style={{ ...tdStyle, color: valF1 >= 0.90 ? EMBRY.green : valF1 > 0 ? EMBRY.white : EMBRY.muted }}>
@@ -938,6 +1302,8 @@ function TuneTab({ project }: { project: Project }) {
                       <span style={{ ...statusBadge, background: 'rgba(0,255,136,0.1)', color: EMBRY.green }}>PASSED</span>
                     ) : t.status === 'running' ? (
                       <span style={{ ...statusBadge, background: 'rgba(124,58,237,0.15)', color: EMBRY.accent }}>RUNNING</span>
+                    ) : t.status === 'pending' ? (
+                      <span style={{ ...statusBadge, background: 'rgba(56,189,248,0.15)', color: EMBRY.blue }}>PENDING</span>
                     ) : (
                       <span style={{ ...statusBadge, background: 'rgba(255,68,68,0.1)', color: EMBRY.red }}>FAILED</span>
                     )}
@@ -970,15 +1336,22 @@ function TuneTab({ project }: { project: Project }) {
         {/* HP delta between rounds */}
         <div style={card}>
           <div style={{ ...heading, fontSize: 13, marginBottom: 16 }}>HP Changes Between Rounds</div>
-          {trials.length > 1 ? trials.slice(1).map((t: any, i: number) => {
+          {trials.length > 1 ? trials.slice(1).map((t, i) => {
             const prev = trials[i]
             const changes: string[] = []
             if (t.lr !== prev.lr) changes.push(`LR: ${prev.lr} → ${t.lr}`)
             if (t.epochs !== prev.epochs) changes.push(`Epochs: ${prev.epochs} → ${t.epochs}`)
             if (t.augment !== prev.augment) changes.push(`Augment: ${prev.augment || 'none'} → ${t.augment || 'none'}`)
+            const prevScore = prev.testF1 ?? prev.valF1 ?? null
+            const currentScore = t.testF1 ?? t.valF1 ?? null
+            if (prevScore !== null && currentScore !== null) {
+              const delta = currentScore - prevScore
+              const sign = delta > 0 ? '+' : ''
+              changes.push(`F1 Δ: ${sign}${delta.toFixed(3)} (${prevScore.toFixed(3)} → ${currentScore.toFixed(3)})`)
+            }
             if (!changes.length) changes.push('No changes')
             return (
-              <div key={i} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${EMBRY.border}` }}>
+              <div key={`${prev.trial}-${t.trial}`} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${EMBRY.border}` }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: t.passed ? EMBRY.green : EMBRY.dim, marginBottom: 4 }}>
                   Round {prev.trial} → {t.trial}
                 </div>
@@ -998,10 +1371,42 @@ function TuneTab({ project }: { project: Project }) {
 
 // ── Benchmark Tab ───────────────────────────────────────────────────
 
-function BenchmarkTab({ project, data: propData }: { project: Project; data?: any[] }) {
+function BenchmarkTab({ project, data: propData }: { project: Project; data?: BenchmarkRow[] }) {
   const data = propData?.length ? propData : []
-  const bestF1 = Math.max(...data.map(d => d.f1))
-  const bestLat = Math.min(...data.map(d => d.lat50))
+  const bestF1 = data.length ? Math.max(...data.map(d => d.f1)) : 0
+  const bestLat = data.length ? Math.min(...data.map(d => d.lat50)) : 0
+  const fallbackWinner = data.reduce<BenchmarkRow | null>(
+    (best, row) => (!best || row.f1 > best.f1 ? row : best),
+    null,
+  )
+  const winnerName = data.find(d => d.winner)?.name || fallbackWinner?.name || ''
+  const chartTop = 8
+  const chartBottom = 192
+  const axisX = [60, 360, 660, 960]
+
+  const parallelAxes = [
+    { key: 'f1', label: 'F1' },
+    { key: 'acc', label: 'ACCURACY' },
+    { key: 'wilson', label: 'WILSON LOWER' },
+    { key: 'rounds', label: 'ROUNDS' },
+  ] as const
+
+  const axisBounds = parallelAxes.map((axis) => {
+    const values = data.map(d => d[axis.key])
+    if (!values.length) return { min: 0, max: 1 }
+    return { min: Math.min(...values), max: Math.max(...values) }
+  })
+
+  const axisY = (axisIdx: number, value: number) => {
+    const { min, max } = axisBounds[axisIdx]
+    if (max === min) return chartTop + (chartBottom - chartTop) / 2
+    const t = (value - min) / (max - min)
+    return chartBottom - t * (chartBottom - chartTop)
+  }
+
+  const linePath = (row: BenchmarkRow) => parallelAxes
+    .map((axis, axisIdx) => `${axisIdx === 0 ? 'M' : 'L'} ${axisX[axisIdx]} ${axisY(axisIdx, row[axis.key]).toFixed(2)}`)
+    .join(' ')
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
@@ -1046,32 +1451,51 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: an
         </table>
       </div>
 
-      {/* Parallel coordinates placeholder */}
+      {/* Parallel coordinates from real benchmark results */}
       <div style={{ ...card, position: 'relative', padding: '40px 40px 60px' }}>
-        <div style={{ ...label, marginBottom: 16 }}>HYPERPARAMETER OPTIMIZATION (PARALLEL COORDINATES)</div>
+        <div style={{ ...label, marginBottom: 16 }}>BENCHMARK METRICS (PARALLEL COORDINATES)</div>
         <svg width="100%" height="200" viewBox="0 0 1000 200" style={{ overflow: 'visible' }}>
           {/* Axes */}
-          {['LEARNING RATE', 'BATCH SIZE', 'DROPOUT', 'WEIGHT DECAY', 'VAL F1'].map((name, i) => {
-            const x = i * 225 + 50
+          {parallelAxes.map((axis, i) => {
+            const x = axisX[i]
+            const bounds = axisBounds[i]
             return (
-              <g key={name}>
+              <g key={axis.key}>
                 <line x1={x} y1={0} x2={x} y2={200} stroke={EMBRY.muted} strokeWidth={1} strokeDasharray="4 2" />
-                <text x={x} y={220} fill={EMBRY.dim} fontSize={9} textAnchor="middle" fontWeight={700}>{name}</text>
+                <text x={x} y={-8} fill={EMBRY.muted} fontSize={8} textAnchor="middle" fontFamily={MONO}>
+                  {bounds.max.toFixed(axis.key === 'rounds' ? 0 : 3)}
+                </text>
+                <text x={x} y={208} fill={EMBRY.muted} fontSize={8} textAnchor="middle" fontFamily={MONO}>
+                  {bounds.min.toFixed(axis.key === 'rounds' ? 0 : 3)}
+                </text>
+                <text x={x} y={220} fill={EMBRY.dim} fontSize={9} textAnchor="middle" fontWeight={700}>{axis.label}</text>
               </g>
             )
           })}
-          {/* Winner line (green) */}
-          <path d="M 50 40 L 275 80 L 500 30 L 725 100 L 950 20" fill="none" stroke={EMBRY.green} strokeWidth={2.5} opacity={0.8} />
-          {/* Runner-up (blue) */}
-          <path d="M 50 80 L 275 60 L 500 70 L 725 80 L 950 60" fill="none" stroke={EMBRY.blue} strokeWidth={2} opacity={0.6} />
-          {/* Worst (red) */}
-          <path d="M 50 160 L 275 170 L 500 150 L 725 50 L 950 170" fill="none" stroke={EMBRY.red} strokeWidth={1.5} opacity={0.4} />
+
+          {/* One line per backbone */}
+          {data.map(row => {
+            const isWinner = row.name === winnerName
+            return (
+              <path
+                key={row.name}
+                d={linePath(row)}
+                fill="none"
+                stroke={isWinner ? EMBRY.accent : EMBRY.blue}
+                strokeWidth={isWinner ? 3 : 1.4}
+                opacity={isWinner ? 0.95 : 0.4}
+              />
+            )
+          })}
+
           {/* Legend */}
           <g>
-            <line x1={800} y1={-10} x2={830} y2={-10} stroke={EMBRY.green} strokeWidth={2} />
-            <text x={835} y={-7} fill={EMBRY.dim} fontSize={8}>HIGH F1</text>
-            <line x1={900} y1={-10} x2={930} y2={-10} stroke={EMBRY.red} strokeWidth={2} />
-            <text x={935} y={-7} fill={EMBRY.dim} fontSize={8}>LOW F1</text>
+            <line x1={740} y1={-10} x2={770} y2={-10} stroke={EMBRY.accent} strokeWidth={2.5} />
+            <text x={775} y={-7} fill={EMBRY.dim} fontSize={8}>
+              WINNER {winnerName ? `(${winnerName})` : ''}
+            </text>
+            <line x1={900} y1={-10} x2={930} y2={-10} stroke={EMBRY.blue} strokeWidth={2} opacity={0.7} />
+            <text x={935} y={-7} fill={EMBRY.dim} fontSize={8}>OTHER BACKBONES</text>
           </g>
         </svg>
       </div>
@@ -1104,12 +1528,55 @@ function EvaluateTab({ project }: { project: Project }) {
     </div>
   )
 
-  const classes: string[] = evalData.classes || []
-  const matrix: number[][] = evalData.confusion_matrix || []
-  const perClass = classes.map(cls => evalData.per_class?.[cls] || { precision: 0, recall: 0, f1: 0, support: 0 })
-  const macroF1 = evalData.macro_f1 || 0
-  const accuracy = evalData.accuracy || 0
-  const passed = evalData.holdout_passed === true
+  const toFiniteNumber = (value: unknown): number => (
+    typeof value === 'number' && Number.isFinite(value) ? value : 0
+  )
+  const toMetric = (value: unknown): { precision: number; recall: number; f1: number; support: number } => {
+    const record = value && typeof value === 'object' && !Array.isArray(value)
+      ? value as Record<string, unknown>
+      : {}
+    return {
+      precision: toFiniteNumber(record.precision),
+      recall: toFiniteNumber(record.recall),
+      f1: toFiniteNumber(record.f1),
+      support: toFiniteNumber(record.support),
+    }
+  }
+
+  const modelName = typeof evalData.model === 'string' && evalData.model.trim().length > 0
+    ? evalData.model
+    : (typeof evalData.winner === 'string' ? evalData.winner : 'unknown')
+  const gateThreshold = toFiniteNumber(evalData.gate_threshold ?? evalData.holdout_gate_f1) || 0.90
+  const macroF1 = toFiniteNumber(evalData.macro_f1 ?? evalData.f1)
+  const accuracy = toFiniteNumber(evalData.accuracy)
+
+  const rawPerClass = evalData.per_class && typeof evalData.per_class === 'object' && !Array.isArray(evalData.per_class)
+    ? evalData.per_class as Record<string, unknown>
+    : {}
+  const fallbackClasses = Object.keys(rawPerClass)
+  const classes: string[] = Array.isArray(evalData.classes)
+    ? evalData.classes.filter((value: unknown): value is string => typeof value === 'string')
+    : fallbackClasses
+  const perClass = classes.map((cls) => toMetric(rawPerClass[cls]))
+
+  const rawMatrix = Array.isArray(evalData.confusion_matrix) ? evalData.confusion_matrix : []
+  const matrix: number[][] = rawMatrix.length > 0
+    ? rawMatrix
+      .filter((row: unknown): row is unknown[] => Array.isArray(row))
+      .slice(0, classes.length)
+      .map((row: unknown[]) => {
+        const normalizedRow = row.map((value) => toFiniteNumber(value)).slice(0, classes.length)
+        while (normalizedRow.length < classes.length) normalizedRow.push(0)
+        return normalizedRow
+      })
+    : classes.map(() => classes.map(() => 0))
+  while (matrix.length < classes.length) matrix.push(classes.map(() => 0))
+  const inferredTestSamples = matrix.flat().reduce((sum, value) => sum + value, 0)
+  const testSamples = toFiniteNumber(evalData.test_samples) || inferredTestSamples
+
+  const passed = typeof evalData.holdout_passed === 'boolean'
+    ? evalData.holdout_passed
+    : (evalData.gate_passed === true || macroF1 >= gateThreshold)
   const gateColor = passed ? EMBRY.green : EMBRY.red
   const maxCmVal = Math.max(...matrix.flat().map(Math.abs), 1)
 
@@ -1119,10 +1586,10 @@ function EvaluateTab({ project }: { project: Project }) {
       <div style={{ ...panel, border: `1px solid ${gateColor}33`, background: `${gateColor}08`, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={glowDot(gateColor, 10)} />
         <span style={{ fontFamily: MONO, fontWeight: 700, fontSize: 14 }}>
-          {evalData.model} — F1 {macroF1.toFixed(3)} — HOLDOUT {passed ? 'PASSED' : 'FAILED'}
+          {modelName} — F1 {macroF1.toFixed(3)} — HOLDOUT {passed ? 'PASSED' : 'FAILED'}
         </span>
         <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 'auto' }}>
-          {evalData.test_samples} test samples
+          {testSamples} test samples
         </span>
       </div>
 
@@ -1194,13 +1661,13 @@ function EvaluateTab({ project }: { project: Project }) {
           }}>
             {passed ? <ShieldCheck size={16} color={gateColor} /> : <AlertTriangle size={16} color={gateColor} />}
             <span style={{ fontSize: 11, fontWeight: 700, color: gateColor, fontFamily: MONO }}>
-              HOLDOUT {passed ? 'PASSED' : 'FAILED'} — F1 {macroF1.toFixed(3)} {passed ? '≥' : '<'} 0.90
+              HOLDOUT {passed ? 'PASSED' : 'FAILED'} — F1 {macroF1.toFixed(3)} {passed ? '≥' : '<'} {gateThreshold.toFixed(2)}
             </span>
           </div>
 
           {/* Accuracy */}
           <div style={{ marginTop: 12, fontSize: 11, color: EMBRY.dim, fontFamily: MONO }}>
-            Accuracy: {accuracy.toFixed(3)} ({evalData.test_samples} samples)
+            Accuracy: {accuracy.toFixed(3)} ({testSamples} samples)
           </div>
         </div>
       </div>
@@ -1213,9 +1680,12 @@ function EvaluateTab({ project }: { project: Project }) {
 function PromoteTab({ project }: { project: Project }) {
   const [evalData, setEvalData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [promoting, setPromoting] = useState(false)
+  const [promoteStatus, setPromoteStatus] = useState<{ kind: 'idle' | 'success' | 'warn' | 'error'; text: string }>({ kind: 'idle', text: '' })
 
   useEffect(() => {
     setLoading(true)
+    setPromoteStatus({ kind: 'idle', text: '' })
     fetch(`${API}/projects/classifier-lab/eval-results/${project.id}`)
       .then(r => r.json()).then(d => { setEvalData(d); setLoading(false) })
       .catch(() => { setEvalData(null); setLoading(false) })
@@ -1235,13 +1705,84 @@ function PromoteTab({ project }: { project: Project }) {
     </div>
   )
 
-  const modelName: string = evalData.model || 'unknown'
-  const macroF1: number = evalData.macro_f1 || 0
-  const accuracy: number = evalData.accuracy || 0
-  const holdoutPassed: boolean = evalData.holdout_passed === true
-  const testSamples: number = evalData.test_samples || 0
+  const toFiniteNumber = (value: unknown): number => (
+    typeof value === 'number' && Number.isFinite(value) ? value : 0
+  )
+  const formatStatus = (value: unknown, emptyLabel: string): string => {
+    if (typeof value === 'boolean') return value ? 'Complete' : 'Pending'
+    if (typeof value === 'string' && value.trim().length > 0) return value
+    if (typeof value === 'number' && Number.isFinite(value)) return String(value)
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const record = value as Record<string, unknown>
+      if (typeof record.status === 'string' && record.status.trim().length > 0) return record.status
+      if (typeof record.state === 'string' && record.state.trim().length > 0) return record.state
+      if (record.completed === true || record.ok === true || record.success === true) return 'Complete'
+      if (record.completed === false || record.ok === false || record.success === false) return 'Pending'
+    }
+    return emptyLabel
+  }
+  const modelName = typeof evalData.model === 'string' && evalData.model.trim().length > 0
+    ? evalData.model
+    : (typeof evalData.winner === 'string' && evalData.winner.trim().length > 0 ? evalData.winner : 'unknown')
+  const gateThreshold = toFiniteNumber(evalData.gate_threshold ?? evalData.holdout_gate_f1) || 0.90
+  const macroF1 = toFiniteNumber(evalData.macro_f1 ?? evalData.f1)
+  const accuracy = toFiniteNumber(evalData.accuracy)
+  const holdoutPassed = typeof evalData.holdout_passed === 'boolean'
+    ? evalData.holdout_passed
+    : (evalData.gate_passed === true || macroF1 >= gateThreshold)
+  const testSamples = toFiniteNumber(evalData.test_samples)
   const winningRound: number | undefined = evalData.winning_round
   const classes: string[] = evalData.classes || []
+  const exportStatus = formatStatus(
+    evalData.export_status ?? evalData.export ?? evalData.exported,
+    'Not exported',
+  )
+  const deploymentStatus = formatStatus(
+    evalData.deployment_status ?? evalData.deployment ?? evalData.deployed,
+    'Not deployed',
+  )
+  const exportArtifacts: string[] = Array.isArray(evalData.export_artifacts)
+    ? evalData.export_artifacts.filter((item: unknown): item is string => typeof item === 'string' && item.trim().length > 0)
+    : []
+
+  const promoteModel = async () => {
+    if (!holdoutPassed || promoting) return
+    setPromoting(true)
+    setPromoteStatus({ kind: 'idle', text: '' })
+    try {
+      const response = await fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: modelName, macro_f1: macroF1, accuracy }),
+      })
+      let payload: Record<string, unknown> = {}
+      try {
+        payload = await response.json() as Record<string, unknown>
+      } catch {
+        payload = {}
+      }
+
+      if (response.ok) {
+        setPromoteStatus({ kind: 'success', text: 'Promotion submitted.' })
+      } else if (response.status === 404) {
+        setPromoteStatus({
+          kind: 'warn',
+          text: 'Promote API not available. Manual step: export winner artifacts and deploy via your registry pipeline.',
+        })
+      } else {
+        const detail = typeof payload.error === 'string' ? payload.error : `Request failed (${response.status})`
+        setPromoteStatus({ kind: 'error', text: detail })
+      }
+    } catch {
+      setPromoteStatus({
+        kind: 'warn',
+        text: 'Unable to reach promote API. Manual step: export winner artifacts and deploy via your registry pipeline.',
+      })
+    } finally {
+      setPromoting(false)
+    }
+  }
+
   const gateColor = holdoutPassed ? EMBRY.green : EMBRY.red
   const gateIcon = holdoutPassed
     ? <ShieldCheck size={56} color={EMBRY.green} style={{ marginBottom: 20 }} />
@@ -1269,7 +1810,7 @@ function PromoteTab({ project }: { project: Project }) {
             borderColor: gateColor + '66',
             background: gateColor + '0A',
           }}>
-            HOLDOUT {holdoutPassed ? 'PASSED' : 'FAILED'} {'\u2014'} F1 {macroF1.toFixed(3)} {holdoutPassed ? '\u2265' : '<'} 0.90
+            HOLDOUT {holdoutPassed ? 'PASSED' : 'FAILED'} {'\u2014'} F1 {macroF1.toFixed(3)} {holdoutPassed ? '\u2265' : '<'} {gateThreshold.toFixed(2)}
           </span>
         </div>
 
@@ -1303,29 +1844,46 @@ function PromoteTab({ project }: { project: Project }) {
           <>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, textAlign: 'left', marginBottom: 36 }}>
               <div style={panel}>
-                <div style={label}>EXPORT ARTIFACTS</div>
-                {['PyTorch (.pt)', 'ONNX', 'TorchScript'].map(a => (
-                  <label key={a} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 12, cursor: 'pointer' }}>
-                    <input type="checkbox" defaultChecked style={{ accentColor: EMBRY.green }} />
-                    <span style={{ fontFamily: MONO }}>{a}</span>
-                  </label>
-                ))}
+                <div style={label}>EXPORT STATUS</div>
+                <div style={{ marginTop: 8, fontSize: 12, fontFamily: MONO, color: exportStatus.toLowerCase().includes('not') ? EMBRY.amber : EMBRY.green }}>
+                  {exportStatus}
+                </div>
+                {exportArtifacts.length > 0 && (
+                  <div style={{ marginTop: 10, fontSize: 11, color: EMBRY.dim, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {exportArtifacts.map((artifact) => (
+                      <span key={artifact} style={{ ...statusBadge, fontFamily: MONO, color: EMBRY.white, background: 'rgba(255,255,255,0.05)', border: `1px solid ${EMBRY.border}` }}>
+                        {artifact}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               <div style={panel}>
-                <div style={label}>DEPLOYMENT TARGET</div>
-                {['Production Registry', 'Staging', 'Extended Shadow Mode'].map((a, i) => (
-                  <label key={a} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 12, cursor: 'pointer' }}>
-                    <input type="radio" name="target" defaultChecked={i === 0} style={{ accentColor: EMBRY.green }} />
-                    <span>{a}</span>
-                  </label>
-                ))}
+                <div style={label}>DEPLOYMENT STATUS</div>
+                <div style={{ marginTop: 8, fontSize: 12, fontFamily: MONO, color: deploymentStatus.toLowerCase().includes('not') ? EMBRY.amber : EMBRY.green }}>
+                  {deploymentStatus}
+                </div>
               </div>
             </div>
 
-            <RunButton onClick={() => {/* POST endpoint wired separately */}}>
-              PROMOTE TO PRODUCTION
+            <RunButton onClick={promoteModel} disabled={promoting}>
+              {promoting ? 'PROMOTING...' : 'PROMOTE TO PRODUCTION'}
             </RunButton>
-            <div style={{ marginTop: 12, fontSize: 10, color: EMBRY.dim }}>or continue in shadow mode</div>
+            <div style={{ marginTop: 12, fontSize: 10, color: EMBRY.dim }}>Promote endpoint: POST /api/projects/classifier-lab/promote/{project.id}</div>
+            {promoteStatus.kind !== 'idle' && (
+              <div style={{
+                marginTop: 10,
+                fontSize: 10,
+                color: promoteStatus.kind === 'success'
+                  ? EMBRY.green
+                  : promoteStatus.kind === 'error'
+                    ? EMBRY.red
+                    : EMBRY.amber,
+                fontFamily: MONO,
+              }}>
+                {promoteStatus.text}
+              </div>
+            )}
           </>
         )}
 
@@ -1405,6 +1963,18 @@ const gateBadge: React.CSSProperties = { padding: '3px 8px', borderRadius: 4, fo
 const btnOutline: React.CSSProperties = {
   background: 'none', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim,
   padding: '8px 16px', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+}
+const rerunInputStyle: React.CSSProperties = {
+  width: '100%',
+  background: EMBRY.bgDeep,
+  border: `1px solid ${EMBRY.border}`,
+  color: EMBRY.white,
+  padding: '8px 10px',
+  borderRadius: 4,
+  fontSize: 11,
+  fontFamily: MONO,
+  outline: 'none',
+  boxSizing: 'border-box',
 }
 const filterSelect: React.CSSProperties = {
   background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, color: EMBRY.white,

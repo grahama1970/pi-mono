@@ -65,6 +65,8 @@ class TaskRuntime:
     finished_at: float | None = None
     output_path: Path | None = None
     error: str = ""
+    review_status: str = ""  # pass/warn/fail
+    review_output: str = ""
     _subagent_port: int = 0
     _subagent_task_id: str = ""
     _cancel_event: asyncio.Event = field(default_factory=asyncio.Event)
@@ -432,6 +434,9 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
             await _run_scillm(task, session_dir)
         elif task.runner == "subagent-service":
             await _run_subagent(task, session_dir)
+        elif task.runner == "code-runner":
+            # Deterministic run-and-debug loop via /code-runner skill
+            await _run_code_runner(task, session_dir)
         else:
             raise RuntimeError(f"Unsupported runner: {task.runner}")
         task.status = "completed"
@@ -441,6 +446,42 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
         raise
     finally:
         task.finished_at = time.time()
+
+
+async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
+    """Delegate to /code-runner skill — deterministic run-and-debug loop."""
+    code_runner = SKILLS_DIR / "code-runner" / "run.sh"
+    if not code_runner.exists():
+        raise RuntimeError(f"/code-runner skill not found at {code_runner}")
+
+    # Write task spec as JSON for /code-runner to consume
+    spec_file = session_dir / f"{task.task_id}.code-runner-spec.json"
+    spec_file.write_text(json.dumps({
+        "task_id": task.task_id,
+        "title": task.title,
+        "prompt": task.prompt,
+        "backend": task.backend or "codex",
+        "cwd": str(task.cwd),
+        "output_dir": str(session_dir),
+    }, indent=2))
+
+    proc = await asyncio.create_subprocess_exec(
+        "bash", str(code_runner), "run", str(spec_file),
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        cwd=str(task.cwd),
+    )
+    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1800)
+
+    output_path = session_dir / f"{task.task_id}.response.txt"
+    output_path.write_text(stdout.decode(errors="replace"))
+    task.output_path = output_path
+    task.review_status = "code-runner"
+
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"/code-runner failed (exit {proc.returncode}): {stderr.decode(errors='replace')[:500]}"
+        )
 
 
 # ---------------------------------------------------------------------------

@@ -30,6 +30,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
 import { WebSocketServer, WebSocket } from "ws";
+import { startRun, cancelRun, pauseRun, getRunState, getActiveRuns, validateManifest, validateRunId, type Manifest, type RunEvent } from "./src/executor.js";
 
 // Configuration
 const PORT = parseInt(process.env.SWITCHBOARD_PORT || "7890", 10);
@@ -217,6 +218,108 @@ function ackMessage(agentName: string, messageId: string): Message | null {
   return removed;
 }
 
+// ── Run execution log directory ──────────────────────────────────────
+const RUN_LOG_DIR = path.join(os.homedir(), ".pi/agent/services/switchboard/runs");
+
+// Bridge executor events → WebSocket push to all connected supervisors
+function broadcastRunEvent(event: RunEvent): void {
+  const payload = JSON.stringify({ type: "run_event", data: event });
+  // Push to all connected agents (supervisors watch all events)
+  for (const [_agent, sockets] of connections) {
+    for (const ws of sockets) {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(payload);
+      }
+    }
+  }
+  console.log(`[Switchboard] Run event: ${event.type} run=${event.run_id} step=${event.step_id || "-"}`);
+}
+
+// ── Run API handlers ─────────────────────────────────────────────────
+
+async function handleRunStart(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+  const body = (await parseBody(req)) as { manifest: Manifest };
+
+  if (!body.manifest) {
+    sendJson(res, 400, { error: "Missing required field: manifest" });
+    return;
+  }
+
+  // Validate manifest structure + run_id safety
+  const validationError = validateManifest(body.manifest as Manifest);
+  if (validationError) {
+    sendJson(res, 400, { error: validationError });
+    return;
+  }
+
+  const existing = getRunState(body.manifest.run_id);
+  if (existing && existing.status === "running") {
+    sendJson(res, 409, { error: `Run ${body.manifest.run_id} already running` });
+    return;
+  }
+
+  const manifest = body.manifest as Manifest;
+  sendJson(res, 202, { success: true, run_id: manifest.run_id, status: "starting", steps: manifest.steps.length });
+
+  // Execute asynchronously
+  startRun(manifest, broadcastRunEvent, RUN_LOG_DIR).catch((e) => {
+    console.error(`[Switchboard] Run ${manifest.run_id} failed: ${e}`);
+  });
+}
+
+async function handleRunStatus(res: http.ServerResponse, runId: string): Promise<void> {
+  const state = getRunState(runId);
+  if (!state) {
+    sendJson(res, 404, { error: `Run ${runId} not found` });
+    return;
+  }
+
+  sendJson(res, 200, {
+    run_id: state.run_id,
+    status: state.status,
+    started_at: state.started_at,
+    finished_at: state.finished_at,
+    current_step_id: state.current_step_id,
+    log_path: state.log_path,
+    steps: state.manifest.steps.map(s => ({
+      step_id: s.step_id,
+      label: s.label,
+      status: s.status,
+      result: s.result,
+    })),
+  });
+}
+
+async function handleRunCancel(res: http.ServerResponse, runId: string): Promise<void> {
+  const success = cancelRun(runId, broadcastRunEvent);
+  if (!success) {
+    sendJson(res, 404, { error: `Run ${runId} not found or not running` });
+    return;
+  }
+  sendJson(res, 200, { success: true, run_id: runId, status: "cancelled" });
+}
+
+async function handleRunPause(res: http.ServerResponse, runId: string): Promise<void> {
+  const success = pauseRun(runId, broadcastRunEvent);
+  if (!success) {
+    sendJson(res, 404, { error: `Run ${runId} not found or not running` });
+    return;
+  }
+  sendJson(res, 200, { success: true, run_id: runId, status: "paused" });
+}
+
+async function handleRunList(res: http.ServerResponse): Promise<void> {
+  const runs = Array.from(getActiveRuns().entries()).map(([id, state]) => ({
+    run_id: id,
+    status: state.status,
+    started_at: state.started_at,
+    finished_at: state.finished_at,
+    steps_total: state.manifest.steps.length,
+    steps_completed: state.manifest.steps.filter(s => s.status === "completed").length,
+  }));
+  sendJson(res, 200, { runs });
+}
+
 // HTTP Route handlers
 async function handleEmit(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
   const body = (await parseBody(req)) as Partial<Message> & { to: string };
@@ -350,6 +453,44 @@ async function handleRequest(req: http.IncomingMessage, res: http.ServerResponse
         connectedAgents: connectedCount,
         totalMessages: Array.from(inboxes.values()).reduce((sum, inbox) => sum + inbox.length, 0)
       });
+      return;
+    }
+
+    // ── Run execution API ──────────────────────────────────────────
+    if (pathname === "/run/start" && method === "POST") {
+      await handleRunStart(req, res);
+      return;
+    }
+
+    const runMatch = pathname.match(/^\/run\/([^/]+)$/);
+    if (runMatch && method === "GET") {
+      const runId = decodeURIComponent(runMatch[1]);
+      const idErr = validateRunId(runId);
+      if (idErr) { sendJson(res, 400, { error: idErr }); return; }
+      await handleRunStatus(res, runId);
+      return;
+    }
+
+    const runCancelMatch = pathname.match(/^\/run\/([^/]+)\/cancel$/);
+    if (runCancelMatch && method === "POST") {
+      const runId = decodeURIComponent(runCancelMatch[1]);
+      const idErr = validateRunId(runId);
+      if (idErr) { sendJson(res, 400, { error: idErr }); return; }
+      await handleRunCancel(res, runId);
+      return;
+    }
+
+    const runPauseMatch = pathname.match(/^\/run\/([^/]+)\/pause$/);
+    if (runPauseMatch && method === "POST") {
+      const runId = decodeURIComponent(runPauseMatch[1]);
+      const idErr = validateRunId(runId);
+      if (idErr) { sendJson(res, 400, { error: idErr }); return; }
+      await handleRunPause(res, runId);
+      return;
+    }
+
+    if (pathname === "/runs" && method === "GET") {
+      await handleRunList(res);
       return;
     }
 
@@ -514,6 +655,11 @@ function start(): void {
   });
 
   // Heartbeat to detect dead connections
+  wss.on("connection", (ws) => {
+    (ws as any).isAlive = true;
+    ws.on("pong", () => { (ws as any).isAlive = true; });
+  });
+
   const heartbeat = setInterval(() => {
     wss.clients.forEach((ws) => {
       if ((ws as any).isAlive === false) {

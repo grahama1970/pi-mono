@@ -3,7 +3,7 @@
  * Used by Library, Results, and PromptLab.
  */
 import { useState, useEffect, useCallback, useRef, createContext, useContext } from 'react'
-import { PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
+import { PanelLeftClose, PanelLeftOpen, Search, Clock, ArrowDownWideNarrow, ArrowDownAZ } from 'lucide-react'
 import { EMBRY, label } from './EmbryStyle'
 
 /* ── Context Menu ──────────────────────────────────────────── */
@@ -90,14 +90,32 @@ export function useContextMenu(onContextMenu?: (itemId: string, action: ContextM
   return { menuProps, triggerContextMenu }
 }
 
-export function LeftPane({ title, children, width = 260, searchable = false }: {
+export type SortMode = 'recent' | 'score' | 'alpha'
+const MONO = '"JetBrains Mono", "SF Mono", monospace'
+const SORT_ICONS: { mode: SortMode; Icon: typeof Clock; title: string }[] = [
+  { mode: 'recent', Icon: Clock, title: 'Sort by recent' },
+  { mode: 'score', Icon: ArrowDownWideNarrow, title: 'Sort by score' },
+  { mode: 'alpha', Icon: ArrowDownAZ, title: 'Sort A-Z' },
+]
+
+export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter }: {
   title: string
   children: React.ReactNode
   width?: number
   searchable?: boolean
+  /** Show sort chips below the filter input */
+  sortable?: boolean
+  /** Custom sort modes (default: recent, score, alpha) */
+  sortModes?: SortMode[]
+  /** Active filter label shown as a removable chip */
+  activeFilter?: string
+  /** Called when the filter chip × is clicked */
+  onClearFilter?: () => void
 }) {
   const [collapsed, setCollapsed] = useState(false)
   const [search, setSearch] = useState('')
+  const [sortMode, setSortMode] = useState<SortMode>('recent')
+  const modes = sortModes ?? ['recent', 'score', 'alpha']
 
   if (collapsed) {
     return (
@@ -116,34 +134,53 @@ export function LeftPane({ title, children, width = 260, searchable = false }: {
 
   return (
     <LeftPaneContext.Provider value={search}>
-      <div style={{
-        width, flexShrink: 0, borderRight: `1px solid ${EMBRY.border}`,
-        background: EMBRY.bgPanel, display: 'flex', flexDirection: 'column', overflow: 'hidden',
-      }}>
+      <LeftPaneSortContext.Provider value={sortMode}>
         <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
+          width, flexShrink: 0, borderRight: `1px solid ${EMBRY.border}`,
+          background: EMBRY.bgPanel, display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}>
-          <div style={label}>{title}</div>
-          <button onClick={() => setCollapsed(true)} aria-label="Collapse pane"
-            style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
-            <PanelLeftClose size={14} />
-          </button>
-        </div>
-        {searchable && (
-          <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', background: EMBRY.bgDeep, borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
-              <Search size={12} color={EMBRY.dim} />
-              <input value={search} onChange={e => setSearch(e.target.value)}
-                placeholder="Filter..." aria-label={`Search ${title}`}
-                style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: '"JetBrains Mono", monospace' }} />
-            </div>
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
+          }}>
+            <div style={label}>{title}</div>
+            <button onClick={() => setCollapsed(true)} aria-label="Collapse pane"
+              style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
+              <PanelLeftClose size={14} />
+            </button>
           </div>
-        )}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}>
-          {children}
+          {searchable && (
+            <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', background: EMBRY.bgDeep, borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
+                <Search size={12} color={EMBRY.dim} />
+                <input value={search} onChange={e => setSearch(e.target.value)}
+                  placeholder="Filter..." aria-label={`Search ${title}`}
+                  style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
+                {sortable && (
+                  <div style={{ display: 'flex', gap: 2, alignItems: 'center', flexShrink: 0 }}>
+                    {SORT_ICONS.filter(s => modes.includes(s.mode)).map(s => (
+                      <button key={s.mode} onClick={() => setSortMode(s.mode)} title={s.title}
+                        style={{ background: 'none', border: 'none', padding: 2, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                        <s.Icon size={14} color={sortMode === s.mode ? EMBRY.accent : EMBRY.dim} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {activeFilter && (
+                <button onClick={onClearFilter} style={{
+                  marginTop: 4, background: 'rgba(255,60,60,0.1)', border: `1px solid ${EMBRY.red}`,
+                  color: EMBRY.red, padding: '2px 8px', borderRadius: 3, fontSize: 9, fontWeight: 700, cursor: 'pointer',
+                  fontFamily: MONO,
+                }}>{activeFilter} ✕</button>
+              )}
+            </div>
+          )}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}>
+            {children}
+          </div>
         </div>
-      </div>
+      </LeftPaneSortContext.Provider>
     </LeftPaneContext.Provider>
   )
 }
@@ -151,6 +188,10 @@ export function LeftPane({ title, children, width = 260, searchable = false }: {
 /** Context so children can read the search term */
 const LeftPaneContext = createContext('')
 export function useLeftPaneSearch() { return useContext(LeftPaneContext) }
+
+/** Context so children can read the current sort mode */
+const LeftPaneSortContext = createContext<SortMode>('recent')
+export function useLeftPaneSort() { return useContext(LeftPaneSortContext) }
 
 /** Style for a selectable item inside LeftPane */
 export function paneItemStyle(selected: boolean): React.CSSProperties {
