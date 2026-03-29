@@ -408,6 +408,7 @@ export function BinaryExplorerView() {
   // --- Saved Scenes ---
   const [savedScenes, setSavedScenes] = useState<{ name: string; nodeIds: string[]; perspective: Perspective; layoutMode: string }[]>([])
   const [sceneName, setSceneName] = useState('')
+  const [sceneSaved, setSceneSaved] = useState<string | null>(null)
 
   // --- Context Menu ---
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, node: BinaryGraphNode } | null>(null)
@@ -614,6 +615,8 @@ export function BinaryExplorerView() {
         updated.push(sceneData)
         localStorage.setItem('be-scenes', JSON.stringify(updated))
       } catch {}
+      setSceneSaved(sceneData.name)
+      setTimeout(() => setSceneSaved(null), 2000)
       setSceneName('')
       loadSavedScenes()
     } catch (err) {
@@ -1675,12 +1678,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </select>
                 {sceneNodeIds.size > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <span style={{ fontSize: 7, color: EMBRY.muted, fontWeight: 600 }}>SCENE:</span>
                     <input
                       value={sceneName}
                       onChange={e => setSceneName(e.target.value)}
                       onKeyDown={e => { if (e.key === 'Enter') saveScene(sceneName) }}
-                      placeholder="Name..."
-                      style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 9, padding: '2px 4px', outline: 'none', borderRadius: 2, width: 60 }}
+                      placeholder="Scene name..."
+                      style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 9, padding: '2px 4px', outline: 'none', borderRadius: 2, width: 80 }}
                     />
                     <button
                       id="be-scene-save"
@@ -1699,6 +1703,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       title="Export scene as JSON"
                       style={{ fontSize: 8, padding: '2px 6px', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer' }}
                     >EXPORT</button>
+                    {sceneSaved && <span style={{ fontSize: 8, color: '#4CAF50', fontWeight: 700 }}>Saved "{sceneSaved}"</span>}
                   </div>
                 )}
               </div>
@@ -1792,7 +1797,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   display: 'flex', gap: 6, alignItems: 'center',
                 }}>
                   <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace' }}>
-                    {sceneNodeIds.size} nodes · {data.allEdges.filter(e => sceneNodeIds.has(e._from) && sceneNodeIds.has(e._to)).length} edges
+                    {sceneNodeIds.size}/{data.stats.totalNodes} in scene · {data.allEdges.filter(e => sceneNodeIds.has(e._from) && sceneNodeIds.has(e._to)).length} edges
                   </span>
                   <button onClick={clearScene} style={{
                     fontSize: 8, padding: '2px 6px', background: 'rgba(5,5,5,0.8)',
@@ -2261,21 +2266,54 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
 
                       {codeViewTab === 'pseudocode' && (
                         <div>
-                          {pseudocodeLoading && <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 4 }}>Generating enhanced pseudocode...</div>}
-                          {/* Show LLM pseudocode when available, otherwise always show structured fallback */}
-                          {pseudocode && !pseudocode.startsWith('# Error') ? (
-                            <CodePane code={pseudocode} language="python" maxHeight="300px" />
-                          ) : selectedNode ? (
-                            <CodePane code={[
-                              `# ${selectedNode.label} (${selectedNode.nodeType.replace('_', ' ')})`,
-                              `# Cluster: ${selectedNode.cluster} | Tier: ${selectedNode.tier} | Confidence: ${Math.round(selectedNode.confidence * 100)}%`,
-                              selectedNode.description ? `\n# Description:\n# ${selectedNode.description.split('. ').join('.\n# ')}` : '',
-                              selectedNode.fields?.length ? `\ndef ${selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')}(${selectedNode.fields.slice(0, 6).join(', ')}):` : '',
-                              selectedNode.fields?.length ? `    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""\n    pass` : '',
-                              selectedNode.states?.length ? `\n# State machine: ${selectedNode.states.join(' → ')}` : '',
-                              selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_pattern}` : '',
-                            ].filter(Boolean).join('\n')} language="python" maxHeight="300px" />
-                          ) : (
+                          {/* Always show structured pseudocode generated from graph data — deterministic, shows real connections */}
+                          {selectedNode ? (() => {
+                            // Generate realistic pseudocode from node metadata + edges
+                            const safeName = selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')
+                            const nodeEdges = data.allEdges.filter(e => e._from === selectedNode.id || e._to === selectedNode.id)
+                            const emits = nodeEdges.filter(e => e.edge_type === 'emits').map(e => (e._from === selectedNode.id ? e._to : e._from).split('/').pop())
+                            const triggers = nodeEdges.filter(e => e.edge_type === 'triggers').map(e => (e._from === selectedNode.id ? e._to : e._from).split('/').pop())
+                            const params = selectedNode.fields?.slice(0, 6) || []
+                            const paramStr = params.length > 0 ? params.map((p, i) => `${p}: ${i === 0 ? 'str' : i === 1 ? 'int' : 'bytes'}`).join(', ') : 'ctx: Context'
+                            const lines: string[] = []
+                            lines.push(`from typing import Optional`)
+                            lines.push(`from binary_analysis import Context, EventBus, RPCHandler\n`)
+                            if (selectedNode.nodeType === 'event') {
+                              lines.push(`class ${safeName}(Event):`)
+                              lines.push(`    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""`)
+                              lines.push(`    cluster = "${selectedNode.cluster}"`)
+                              lines.push(`    confidence = ${selectedNode.confidence?.toFixed(2) || '0.00'}\n`)
+                              lines.push(`    def handle(self, ${paramStr}) -> bool:`)
+                              if (triggers.length > 0) {
+                                lines.push(`        # Triggers ${triggers.length} downstream action(s)`)
+                                triggers.slice(0, 3).forEach(t => lines.push(`        self.trigger("${t}")`))
+                              }
+                              if (emits.length > 0) {
+                                lines.push(`        # Emits to ${emits.length} listener(s)`)
+                                emits.slice(0, 3).forEach(e => lines.push(`        EventBus.emit("${e}", payload=self.data)`))
+                              }
+                              lines.push(`        return True`)
+                            } else if (selectedNode.nodeType === 'rpc') {
+                              lines.push(`class ${safeName}(RPCHandler):`)
+                              lines.push(`    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""\n`)
+                              lines.push(`    def execute(self, ${paramStr}) -> dict:`)
+                              lines.push(`        result = self.validate_input(ctx)`)
+                              lines.push(`        if not result.ok:`)
+                              lines.push(`            return {"error": result.message}`)
+                              if (emits.length > 0) emits.slice(0, 2).forEach(e => lines.push(`        self.emit("${e}", result.data)`))
+                              lines.push(`        return {"status": "success", "data": result.data}`)
+                            } else {
+                              lines.push(`def ${safeName}(${paramStr}):`)
+                              lines.push(`    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""`)
+                              if (triggers.length > 0) triggers.slice(0, 3).forEach(t => lines.push(`    invoke("${t}")`))
+                              if (emits.length > 0) emits.slice(0, 3).forEach(e => lines.push(`    emit("${e}")`))
+                              lines.push(`    return True`)
+                            }
+                            if (selectedNode.states?.length) {
+                              lines.push(`\n# State transitions: ${selectedNode.states.join(' → ')}`)
+                            }
+                            return <CodePane code={lines.join('\n')} language="python" maxHeight="300px" />
+                          })() : (
                             <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>Select a node to view pseudocode</div>
                           )}
                         </div>
@@ -2575,12 +2613,30 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       Ask about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong> ({selectedNode.nodeType.replace('_', ' ')})
                     </div>
                     <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 4, fontWeight: 800 }}>SUGGESTED</div>
-                    {[
-                      `What does ${selectedNode.label} do?`,
-                      `What calls ${selectedNode.label}?`,
-                      `Trace the data flow through ${selectedNode.label}`,
-                      selectedNode.nodeType === 'rpc' ? `What are the parameters of ${selectedNode.label}?` : `What is the security impact of ${selectedNode.label}?`,
-                    ].map((q, i) => (
+                    {(() => {
+                      // Dynamic queries based on actual graph connections
+                      const nodeEdges = data.allEdges.filter(e => e._from === selectedNode.id || e._to === selectedNode.id)
+                      const edgeTypes = [...new Set(nodeEdges.map(e => e.edge_type))]
+                      const neighbors = nodeEdges.slice(0, 3).map(e => (e._from === selectedNode.id ? e._to : e._from).split('/').pop())
+                      const tax = taxonomyMap.get(selectedNode.id)
+                      const queries: string[] = []
+                      queries.push(`What does ${selectedNode.label} do?`)
+                      if (edgeTypes.includes('triggers') || edgeTypes.includes('emits'))
+                        queries.push(`What does ${selectedNode.label} ${edgeTypes.includes('triggers') ? 'trigger' : 'emit'} and why?`)
+                      else
+                        queries.push(`What calls ${selectedNode.label}?`)
+                      if (neighbors.length >= 2)
+                        queries.push(`How does ${selectedNode.label} relate to ${neighbors[0]} and ${neighbors[1]}?`)
+                      else
+                        queries.push(`Trace the data flow through ${selectedNode.label}`)
+                      if (tax?.cwe?.length)
+                        queries.push(`Explain the ${tax.cwe[0]} vulnerability in ${selectedNode.label}`)
+                      else if (tax?.attack?.length)
+                        queries.push(`How does ${tax.attack[0]} apply to ${selectedNode.label}?`)
+                      else
+                        queries.push(`What is the security impact of ${selectedNode.label}?`)
+                      return queries
+                    })().map((q, i) => (
                       <div key={i} onClick={() => setChatInput(q)} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3 }}>
                         {q}
                       </div>

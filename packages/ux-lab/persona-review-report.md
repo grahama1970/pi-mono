@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 16:33
+Generated: 2026-03-29 18:15
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 22 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: orange edges from 'add_mcp_se | 7901ms |
-| 22 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 7302ms |
-| 22 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks structured metadata: no CWE/ATT&CK tags v | 8130ms |
-| 22 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on the | 7908ms |
-| 22 | tim-blazytko | table-view | 5 | FAIL | The 'CONN' column still uses red bars without displaying the | 8861ms |
-| 22 | tim-blazytko | taxonomy-integration | 5 | FAIL | CWE and ATT&CK tags are not visible in the detail panel for  | 7688ms |
-| 22 | tim-blazytko | code-view | 4 | FAIL | Code View under 'Python' tab displays only prose description | 7073ms |
-| 22 | tim-blazytko | chat-analysis | 4 | FAIL | The 'SUGGESTED' queries in the chat panel are static and gen | 8560ms |
-| 22 | tim-blazytko | automation | 8 | PASS | Raw JSON toggle is still at the bottom of the detail panel,  | 6048ms |
-| 22 | tim-blazytko | perspective-views | 8 | PASS | Edge labels ('emits', 'triggers') remain small and lack hove | 8089ms |
-| 22 | tim-blazytko | scene-management | 4 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 7729ms |
-| 22 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 5441ms |
+| 24 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'add_mcp_server' to 'mcp_auth_completed' s | 7769ms |
+| 24 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 8026ms |
+| 24 | tim-blazytko | node-detail | 8 | PASS | No inferred parameter types (e.g., string, int, pointer) are | 9446ms |
+| 24 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on the | 7857ms |
+| 24 | tim-blazytko | table-view | 5 | FAIL | The 'CONN' column still uses red bars without displaying the | 7480ms |
+| 24 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE and ATT&CK tags are absent from the detail panel for the | 7242ms |
+| 24 | tim-blazytko | code-view | 8 | PASS | The graph edge labels ('emits', 'triggers') remain small, lo | 8027ms |
+| 24 | tim-blazytko | chat-analysis | 4 | FAIL | The 'SUGGESTED' queries in the chat panel are static and do  | 8750ms |
+| 24 | tim-blazytko | automation | 8 | PASS | No visible API authentication mechanism (e.g., API key, toke | 6525ms |
+| 24 | tim-blazytko | perspective-views | 7 | PASS | Edge labels ('emits', 'triggers') remain small and lack hove | 7225ms |
+| 24 | tim-blazytko | scene-management | 5 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 7482ms |
+| 24 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 5533ms |
 | 18 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges still lack directional arrows — orange edges fro | 12892ms |
 | 18 | gynvael-coldwind | data-structures | 3 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 11854ms |
 | 18 | gynvael-coldwind | graph-exploration | 5 | FAIL | Legend is static and non-interactive — clicking 'event' or ' | 10137ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 16:33
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 5.9/10
-- Passed (>=8): 11/34
+- Average score: 6.0/10
+- Passed (>=8): 12/34
 - Gate: FAIL (target: 8.0)

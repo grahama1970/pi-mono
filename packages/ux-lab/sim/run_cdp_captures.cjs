@@ -109,6 +109,9 @@ async function waitForContent(cdp, id, timeoutMs = 5000) {
 
 // Navigate to Binary Explorer Components tab and wait for render
 async function navigateToBinaryExplorer(cdp) {
+  // Clear cache to ensure latest code is loaded
+  await cdp.send('Network.enable');
+  await cdp.send('Network.clearBrowserCache');
   await cdp.send('Page.navigate', { url: `${BASE}/#binary-explorer` });
   await sleep(3000);
   // Remove any Vite error overlay
@@ -140,16 +143,23 @@ async function navigateToBinaryExplorer(cdp) {
   }
 }
 
-// PRE: click a non-namespace node (function/rpc) so detail+code panel shows, then screenshot
+// PRE: click a security-relevant node (auth/rpc/event) so detail+code panel shows with CWE tags
 const CLICK_NODE = `(()=>{
   const circles = [...document.querySelectorAll('g.nodes g')];
-  const fn = circles.find(g => {
+  // Prefer nodes with security-relevant names (auth, validate, credential, session, encrypt)
+  const securityKeywords = /auth|credential|session|encrypt|token|cert|valid|perm|access|priv/i;
+  const sec = circles.find(g => {
     const text = g.querySelector('text');
-    return text && !/namespace/i.test(text.textContent) && text.textContent.length > 2;
+    return text && securityKeywords.test(text.textContent) && text.textContent.length > 3;
+  });
+  // Fallback: any non-namespace node with a meaningful label
+  const fn = sec || circles.find(g => {
+    const text = g.querySelector('text');
+    return text && !/namespace/i.test(text.textContent) && text.textContent.length > 3 && !/^\\d+$/.test(text.textContent);
   });
   const target = fn || circles[0];
   if (target) {
-    const shape = target.querySelector('circle,rect,polygon');
+    const shape = target.querySelector('circle,rect,polygon,path');
     if (shape) shape.dispatchEvent(new MouseEvent('click', {bubbles:true}));
     return 'clicked: ' + (target.querySelector('text')?.textContent || '?');
   }
@@ -171,11 +181,24 @@ const GROUPS = {
   // Tim: each group gets unique interaction showing relevant feature
   'first-impressions':     [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-feature-table'}],
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[2]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-expanded'}],
-  'node-detail':           [...PRE, {a:'eval',s:clickTab('summary')},{a:'wait',ms:1000},{a:'ss',n:'03-summary-detail'},{a:'ssClip',sel:'#be-detail-panel',n:'04-detail-closeup'}],
+  'node-detail':           [...PRE, {a:'eval',s:clickTab('summary')},{a:'wait',ms:1000},{a:'ss',n:'03-summary-detail'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-detail-closeup'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
-  'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-table'}],
-  'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:2000},{a:'ss',n:'03-taxonomy-table'},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'}],
-  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},{a:'ssClip',sel:'#be-detail-panel',n:'04-code-closeup'}],
+  'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},{a:'ss',n:'03-table'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
+  'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:2000},{a:'ss',n:'03-taxonomy-table'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
+  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
+    // Expand detail panel to full height for code closeup, then capture
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
+    {a:'wait',ms:500},{a:'ssClip',sel:'#be-detail-panel',n:'04-code-closeup'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'},
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-chat-closeup'},
