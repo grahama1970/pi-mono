@@ -34,6 +34,8 @@ taxonomy:
   - planning
 ---
 
+> STOP. READ THIS ENTIRE SKILL.MD BEFORE CALLING ANY ENDPOINT.
+
 # /plan
 
 Create YAML task files that `/orchestrate` executes directly. No markdown intermediate.

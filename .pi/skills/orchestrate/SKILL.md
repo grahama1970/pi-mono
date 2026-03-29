@@ -40,6 +40,8 @@ taxonomy:
   - execution
 ---
 
+> STOP. READ THIS ENTIRE SKILL.MD BEFORE CALLING ANY ENDPOINT.
+
 # Orchestrate
 
 Task execution engine with quality gates, preflight checks, and multi-backend support.

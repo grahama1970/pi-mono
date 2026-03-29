@@ -26,6 +26,7 @@ from typing import Optional
 
 import yaml
 from fastapi import FastAPI, HTTPException
+from loguru import logger
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -212,11 +213,9 @@ def _build_cmd(backend_name: str, model: str, prompt: str,
         if storage.is_dir():
             cmd.extend(["--add-dir", str(storage)])
         else:
-            import logging
-            logging.warning(f"/mnt/storage12tb not found (exists={storage.exists()}, is_dir={storage.is_dir()})")
+            logger.warning(f"/mnt/storage12tb not found (exists={storage.exists()}, is_dir={storage.is_dir()})")
 
-    import logging
-    logging.info(f"Built command: {' '.join(str(c) for c in cmd[:10])}...")
+    logger.info(f"Built command: {' '.join(str(c) for c in cmd[:10])}...")
     return cmd
 
 

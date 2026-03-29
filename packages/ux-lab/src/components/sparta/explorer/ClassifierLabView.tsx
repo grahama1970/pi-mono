@@ -5,7 +5,7 @@
  * Core product: live leaderboard of backbone candidates racing to meet a quality gate.
  * Reuses shared components: LeftPane, RunButton, EditModal, AgentControl, useAgentBus.
  */
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, Fragment } from 'react'
 import {
   AlertTriangle, Cpu, ShieldCheck, Rocket,
   ChevronDown, ChevronRight, FileText, Search,
@@ -41,6 +41,28 @@ interface TrainingRow {
   status: 'pass' | 'fail' | 'training' | 'queued'; progress?: number
 }
 
+interface FailureRound {
+  round: number; strategy: string; backbone: string
+  f1: number; accuracy: number; diagnosis: string | null
+  errors: string[] | null; hps: Record<string, unknown> | null
+}
+
+interface NextSteps {
+  best_backbone: string; best_f1: number; gate_threshold: number; gap: number
+  total_rounds: number; plateau_detected: boolean; diagnosis: string
+  strategies_exhausted: string[]; dogpile_hypotheses: string
+  timestamp: string
+}
+
+interface FailureAnalysis {
+  projectId: string; totalRounds: number; bestF1: number
+  strategiesTried: string[]; lastDiagnosis: string | null
+  rounds: FailureRound[]
+  dogpileInsights: Array<{ round: number; phase: string; query: string }>
+  researchMd: string
+  nextSteps: NextSteps | null
+}
+
 interface BenchmarkRow {
   name: string
   f1: number
@@ -73,8 +95,11 @@ const TABS: Tab[] = ['research', 'data', 'tune', 'train', 'benchmark', 'evaluate
 
 // ── Main View ───────────────────────────────────────────────────────
 
-export function ClassifierLabView() {
-  const [activeTab, setActiveTab] = useState<Tab>('data')
+export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) {
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const t = (initialTab || '').toLowerCase() as Tab
+    return TABS.includes(t) ? t : 'data'
+  })
   const [selectedProjectId, setSelectedProjectId] = useState('')
   const [projects, setProjects] = useState<Project[]>([])
   const [trainingRows, setTrainingRows] = useState<TrainingRow[]>([])
@@ -85,6 +110,12 @@ export function ClassifierLabView() {
   const [newProjectName, setNewProjectName] = useState('')
   const [creating, setCreating] = useState(false)
   const [filterModality, setFilterModality] = useState<string>('')
+
+  // Sync tab from parent subpath (browser back/forward)
+  useEffect(() => {
+    const t = (initialTab || '').toLowerCase() as Tab
+    if (TABS.includes(t) && t !== activeTab) setActiveTab(t)
+  }, [initialTab]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Agent bus for live training telemetry
   const { connected, narration } = useAgentBus((msg) => {
@@ -315,7 +346,7 @@ export function ClassifierLabView() {
               const blocked = isTabBlocked(t)
               return (
                 <button key={t} data-testid={`clf-tab-${t}`}
-                  onClick={() => { if (!blocked) setActiveTab(t) }}
+                  onClick={() => { if (!blocked) { setActiveTab(t); window.location.hash = `classifier-lab/${t}` } }}
                   title={blocked ? (!researchGatePassed ? 'Research gate: run /dogpile first' : 'Data gate: need ≥200 samples per class') : ''}
                   style={{
                     background: 'none', border: 'none',
@@ -362,9 +393,16 @@ export function ClassifierLabView() {
 
 // ── Research Tab ─────────────────────────────────────────────────────
 
+interface ResearchTimelineEntry {
+  round: number; phase: string; query: string
+  resultLength: number; timestamp: number
+}
+
 function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: any }) {
   const [md, setMd] = useState('')
-  const [source, setSource] = useState('')
+  const [timeline, setTimeline] = useState<ResearchTimelineEntry[]>([])
+  const [nextStepsQuery, setNextStepsQuery] = useState<string | null>(null)
+  const [selectedIdx, setSelectedIdx] = useState(-1) // -1 = primary research doc
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -372,16 +410,18 @@ function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: an
     fetch(`${API}/projects/classifier-lab/research/${projectId}`)
       .then(r => r.json())
       .then(d => {
-        if (d.markdown) { setMd(d.markdown); setSource(d.source || '') }
-        else { setMd(''); setSource('') }
+        setMd(d.markdown || '')
+        setTimeline(Array.isArray(d.timeline) ? d.timeline : [])
+        setNextStepsQuery(d.nextStepsQuery || null)
+        setSelectedIdx(-1)
         setLoading(false)
       })
-      .catch(() => { setMd(''); setLoading(false) })
+      .catch(() => { setMd(''); setTimeline([]); setLoading(false) })
   }, [projectId])
 
   if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading research...</div>
 
-  if (!md) return (
+  if (!md && timeline.length === 0) return (
     <div style={{ maxWidth: 600, margin: '60px auto', textAlign: 'center' }}>
       <div style={card}>
         <div style={{ padding: 40 }}>
@@ -390,16 +430,53 @@ function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: an
           <div style={{ ...body, fontSize: 12, color: EMBRY.muted }}>
             Run <code style={{ color: EMBRY.accent, fontFamily: MONO }}>/dogpile</code> to research optimal backbones for this task.
           </div>
-          <div style={{ marginTop: 16, fontSize: 10, color: EMBRY.dim }}>
-            Output will be saved to <code style={{ fontFamily: MONO, fontSize: 9 }}>data/{projectId}/research.md</code>
-          </div>
         </div>
       </div>
     </div>
   )
 
+  // Build the list of selectable items: primary doc + timeline entries + next-steps
+  const items: Array<{ label: string; sublabel: string; color: string; idx: number }> = []
+  if (md) items.push({ label: 'INITIAL RESEARCH', sublabel: 'Pre-training /dogpile', color: EMBRY.accent, idx: -1 })
+  timeline.forEach((t, i) => {
+    const phaseLabel = t.phase === 'research' ? 'Pre-training' :
+      t.phase.startsWith('round-') ? `Round ${t.round} failure` :
+      t.phase === 'targeted-research' ? 'Targeted' : t.phase
+    items.push({
+      label: `R${t.round}`,
+      sublabel: phaseLabel,
+      color: t.round === 0 ? EMBRY.accent : EMBRY.amber,
+      idx: i,
+    })
+  })
+  if (nextStepsQuery) items.push({ label: 'NEXT STEPS', sublabel: 'Post-exhaustion hypothesis', color: EMBRY.green, idx: -2 })
+
+  // Determine what to show in the detail pane
+  let detailTitle = ''
+  let detailContent = ''
+  let detailMeta = ''
+  let detailIsMarkdown = false
+
+  if (selectedIdx === -1 && md) {
+    detailTitle = 'Initial Research'
+    detailContent = md
+    detailIsMarkdown = true
+  } else if (selectedIdx === -2 && nextStepsQuery) {
+    detailTitle = 'Next-Step Hypotheses'
+    detailContent = nextStepsQuery
+    detailIsMarkdown = true
+    detailMeta = 'Generated after all training rounds exhausted'
+  } else if (selectedIdx >= 0 && selectedIdx < timeline.length) {
+    const entry = timeline[selectedIdx]
+    detailTitle = `Round ${entry.round} — ${entry.phase}`
+    detailContent = entry.query
+    detailMeta = `${entry.resultLength.toLocaleString()} chars returned · ${new Date(entry.timestamp * 1000).toLocaleString()}`
+  }
+
+  const hasTimeline = items.length > 1
+
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       <style>{MD_CSS}</style>
       {/* Research gate status */}
       {gateInfo && (
@@ -427,15 +504,69 @@ function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: an
           )}
         </div>
       )}
-      {source && (
-        <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 8, fontFamily: MONO }}>
-          Source: {source.split('/').slice(-3).join('/')}
+
+      {/* Split-pane: timeline nav (left) + detail (right) */}
+      {hasTimeline ? (
+        <div style={{ display: 'flex', border: `1px solid ${EMBRY.border}`, borderRadius: 8, overflow: 'hidden', minHeight: 500 }}>
+          {/* Left nav */}
+          <div style={{ width: 220, flexShrink: 0, borderRight: `1px solid ${EMBRY.border}`, background: EMBRY.bgCard, overflowY: 'auto' }}>
+            <div style={{ ...label, padding: '12px 14px 8px', fontSize: 8 }}>RESEARCH TIMELINE</div>
+            {items.map(item => {
+              const isActive = item.idx === selectedIdx
+              return (
+                <button
+                  key={item.idx}
+                  onClick={() => setSelectedIdx(item.idx)}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    background: isActive ? 'rgba(124,58,237,0.08)' : 'transparent',
+                    border: 'none', borderLeft: isActive ? `3px solid ${item.color}` : '3px solid transparent',
+                    padding: '10px 14px', cursor: 'pointer',
+                    transition: 'background 0.15s',
+                  }}
+                >
+                  <div style={{ fontSize: 11, fontWeight: 700, fontFamily: MONO, color: isActive ? item.color : EMBRY.dim }}>
+                    {item.label}
+                  </div>
+                  <div style={{ fontSize: 9, color: isActive ? EMBRY.white : EMBRY.muted, marginTop: 2 }}>
+                    {item.sublabel}
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Right detail */}
+          <div style={{ flex: 1, padding: 28, overflowY: 'auto', background: EMBRY.bg }}>
+            {detailTitle && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 16 }}>
+                  <span style={{ ...heading, fontSize: 16, color: EMBRY.white }}>{detailTitle}</span>
+                  {detailMeta && <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: MONO }}>{detailMeta}</span>}
+                </div>
+                {detailIsMarkdown ? (
+                  <div className="clf-markdown" style={{ ...body, lineHeight: 1.8 }}
+                    dangerouslySetInnerHTML={{ __html: marked(detailContent) as string }} />
+                ) : (
+                  <div style={{
+                    background: EMBRY.bgCard, borderLeft: `3px solid ${EMBRY.accent}`,
+                    padding: 16, borderRadius: 4, fontFamily: MONO, fontSize: 11,
+                    color: EMBRY.white, lineHeight: 1.6, whiteSpace: 'pre-wrap',
+                  }}>
+                    {detailContent}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      ) : (
+        /* No timeline — just show the primary research doc */
+        <div style={{ ...card, padding: 32 }}>
+          <div className="clf-markdown" style={{ ...body, lineHeight: 1.8 }}
+            dangerouslySetInnerHTML={{ __html: marked(md) as string }} />
         </div>
       )}
-      <div style={{ ...card, padding: 32 }}>
-        <div className="clf-markdown" style={{ ...body, lineHeight: 1.8 }}
-          dangerouslySetInnerHTML={{ __html: marked(md) as string }} />
-      </div>
     </div>
   )
 }
@@ -444,6 +575,7 @@ function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: an
 
 function DataTab({ project, onGateChange }: { project: Project; onGateChange: (passed: boolean) => void }) {
   const [dataInfo, setDataInfo] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -451,6 +583,9 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
     fetch(`${API}/projects/classifier-lab/data/${project.id}`)
       .then(r => r.json()).then(d => { setDataInfo(d); setLoading(false); onGateChange(d.gatePassed ?? false) })
       .catch(() => { setLoading(false); onGateChange(false) })
+    fetch(`${API}/projects/classifier-lab/data/${project.id}/profile`)
+      .then(r => r.json()).then(d => { if (!d.error) setProfile(d) })
+      .catch(() => {})
   }, [project.id, onGateChange])
 
   if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading dataset info...</div>
@@ -475,9 +610,9 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
         <StatPanel title="SOURCE" value={dataInfo.path?.split('/').slice(-2).join('/') || project.id} mono />
-        <StatPanel title="MODALITY" value={dataInfo.modality || 'Vision'} color={EMBRY.green} />
-        <StatPanel title="TRAIN SAMPLES" value={String(dataInfo.totalTrain)} />
-        <StatPanel title="CLASSES" value={String(dataInfo.classCount)} />
+        <StatPanel title="MODALITY" value={dataInfo.modality || project.modality || '—'} color={EMBRY.green} />
+        <StatPanel title="TRAIN SAMPLES" value={String(dataInfo.totalTrain ?? dataInfo.totalSamples ?? '—')} />
+        <StatPanel title="CLASSES" value={String(dataInfo.classCount ?? classes.length ?? '—')} />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
@@ -524,9 +659,61 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
             }}>AUGMENT DATASET</button>
           </div>
         ) : (
-          <DataTrainingSummary projectId={project.id} classCount={dataInfo.classCount} gateThreshold={dataInfo.gateThreshold} />
+          <div style={card}>
+            {/* Data gate passed */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <ShieldCheck size={18} color={EMBRY.green} />
+              <span style={{ fontSize: 12, fontWeight: 900, color: EMBRY.green }}>DATA GATE PASSED</span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+              <div>
+                <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>CLASSES</div>
+                <div style={{ fontSize: 18, fontWeight: 900, fontFamily: MONO }}>{dataInfo.classCount}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>MIN / CLASS</div>
+                <div style={{ fontSize: 18, fontWeight: 900, fontFamily: MONO, color: EMBRY.green }}>{dataInfo.minPerClass}</div>
+              </div>
+            </div>
+            {/* Split breakdown */}
+            <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
+              <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 8 }}>SPLIT BREAKDOWN</div>
+              {['train', 'val', 'test'].map(split => {
+                const count = classes.reduce((sum, c) => sum + ((c as any)[split] || 0), 0)
+                const total = dataInfo.totalTrain + classes.reduce((s, c) => s + c.val + c.test, 0)
+                const pct = total > 0 ? ((count / total) * 100).toFixed(0) : '0'
+                return (
+                  <div key={split} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <span style={{ fontSize: 10, fontFamily: MONO, width: 40, color: EMBRY.dim }}>{split}</span>
+                    <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: split === 'train' ? EMBRY.accent : split === 'val' ? EMBRY.blue : EMBRY.amber, borderRadius: 2 }} />
+                    </div>
+                    <span style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.dim, width: 60, textAlign: 'right' }}>{count} ({pct}%)</span>
+                  </div>
+                )
+              })}
+            </div>
+            {/* Data quality checks */}
+            <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12, marginTop: 12 }}>
+              <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 6 }}>QUALITY CHECKS</div>
+              {[
+                { label: 'Min samples/class met', ok: true },
+                { label: 'All classes have val+test splits', ok: classes.every(c => c.val > 0 && c.test > 0) },
+                { label: 'Class balance ratio', ok: dataInfo.minPerClass / Math.max(...classes.map(c => c.train), 1) > 0.5, detail: `${(dataInfo.minPerClass / Math.max(...classes.map(c => c.train), 1) * 100).toFixed(0)}%` },
+              ].map((check, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3, fontSize: 10 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: check.ok ? EMBRY.green : EMBRY.amber }} />
+                  <span style={{ color: EMBRY.dim }}>{check.label}</span>
+                  {check.detail && <span style={{ fontFamily: MONO, color: check.ok ? EMBRY.green : EMBRY.amber, marginLeft: 'auto' }}>{check.detail}</span>}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
+
+      {/* Data profile panel */}
+      {profile && <DataProfilePanel profile={profile} />}
 
       {/* Dataset file browser table */}
       <DataFileTable projectId={project.id} classes={classes.map(c => c.name)} />
@@ -618,7 +805,285 @@ function DataTrainingSummary({ projectId, classCount, gateThreshold }: { project
           })}
         </div>
       )}
+
+      {/* Next-steps teaser when gate not met */}
+      {!gatePassed && <NextStepsTeaser projectId={projectId} />}
     </div>
+  )
+}
+
+/** Compact next-steps preview shown inside the GATE NOT MET card. */
+function NextStepsTeaser({ projectId }: { projectId: string }) {
+  const [ns, setNs] = useState<NextSteps | null>(null)
+  const [showModal, setShowModal] = useState(false)
+  useEffect(() => {
+    fetch(`${API}/projects/classifier-lab/failure-analysis/${projectId}`)
+      .then(r => r.json()).then((d: FailureAnalysis) => setNs(d.nextSteps ?? null))
+      .catch(() => {})
+  }, [projectId])
+
+  if (!ns) return null
+
+  // Render first hypothesis only as teaser
+  const fullMd = ns.dogpile_hypotheses || ''
+  const firstHypothesis = fullMd.split(/(?=###\s+Hypothesis\s+2)/i)[0]?.trim() || ''
+  const hasMore = fullMd.includes('Hypothesis 2')
+
+  return (
+    <>
+      <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12, marginTop: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+          <Cpu size={10} color={EMBRY.accent} />
+          <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.accent }}>NEXT STEPS (via /dogpile)</span>
+          <span style={{ fontSize: 8, color: EMBRY.dim, marginLeft: 'auto' }}>
+            gap: {ns.gap.toFixed(3)}{ns.plateau_detected ? ' | PLATEAU' : ''}
+          </span>
+        </div>
+        {firstHypothesis ? (
+          <>
+            <div
+              className="next-steps-teaser"
+              style={{ fontSize: 10, color: EMBRY.white, lineHeight: 1.6 }}
+              dangerouslySetInnerHTML={{ __html: marked.parse(firstHypothesis) as string }}
+            />
+            {hasMore && (
+              <button
+                onClick={() => setShowModal(true)}
+                style={{
+                  background: 'none', border: `1px solid ${EMBRY.accent}44`, borderRadius: 4,
+                  color: EMBRY.accent, fontSize: 9, fontWeight: 700, padding: '4px 10px',
+                  cursor: 'pointer', marginTop: 8,
+                }}
+              >
+                VIEW ALL HYPOTHESES
+              </button>
+            )}
+          </>
+        ) : (
+          <div style={{ fontSize: 9, color: EMBRY.dim, fontStyle: 'italic' }}>
+            Hypotheses generating after pipeline completes...
+          </div>
+        )}
+      </div>
+
+      {/* Full hypotheses modal */}
+      {showModal && (
+        <div
+          onClick={() => setShowModal(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.75)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: EMBRY.bgCard, border: `1px solid ${EMBRY.accent}44`,
+              borderRadius: 10, maxWidth: 720, width: '90vw', maxHeight: '80vh',
+              overflow: 'auto', padding: 28, position: 'relative',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <Cpu size={16} color={EMBRY.accent} />
+              <span style={{ ...heading, color: EMBRY.accent, fontSize: 14 }}>
+                NEXT-STEP HYPOTHESES
+              </span>
+              <span style={{ fontSize: 9, color: EMBRY.dim, marginLeft: 'auto' }}>
+                {ns.strategies_exhausted.length} strategies exhausted | gap: {ns.gap.toFixed(3)}
+              </span>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{
+                  background: 'none', border: 'none', color: EMBRY.dim,
+                  fontSize: 18, cursor: 'pointer', padding: '0 4px',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 12, fontFamily: MONO }}>
+              {ns.strategies_exhausted.join(' → ')}
+            </div>
+            <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 16 }}>
+              <div
+                className="next-steps-full"
+                style={{ fontSize: 12, color: EMBRY.white, lineHeight: 1.7 }}
+                dangerouslySetInnerHTML={{ __html: marked.parse(fullMd) as string }}
+              />
+            </div>
+            {ns.diagnosis && (
+              <div style={{ marginTop: 16, padding: '10px 14px', borderRadius: 6, background: 'rgba(255,170,0,0.06)', border: `1px solid ${EMBRY.amber}33` }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.amber, marginBottom: 4 }}>DIAGNOSIS</div>
+                <div style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>{ns.diagnosis}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+// ── Data Profile Panel ─────────────────────────────────────────────
+
+function DataProfilePanel({ profile }: { profile: any }) {
+  const modality = profile.modality || 'text'
+  const q = profile.quality || {}
+
+  // Build quality checks based on modality
+  const qualityChecks: Array<{ label: string; ok: boolean; detail: string }> = []
+  if (modality === 'text') {
+    qualityChecks.push(
+      { label: 'Empty texts', ok: (q.emptyTexts ?? 0) === 0, detail: String(q.emptyTexts ?? 0) },
+      { label: 'Short texts (<5 words)', ok: (q.shortTexts ?? 0) === 0, detail: String(q.shortTexts ?? 0) },
+      { label: 'Duplicate texts', ok: (q.duplicateTexts ?? 0) === 0, detail: String(q.duplicateTexts ?? 0) },
+      { label: 'Conflicting labels', ok: (q.conflictingLabels ?? 0) === 0, detail: String(q.conflictingLabels ?? 0) },
+    )
+  } else if (modality === 'vision') {
+    qualityChecks.push(
+      { label: 'Corrupt images', ok: (q.corruptImages ?? 0) === 0, detail: String(q.corruptImages ?? 0) },
+      { label: 'Uniform dimensions', ok: !q.needsResize, detail: q.needsResize ? `${q.uniqueDimensions} sizes` : 'Yes' },
+      { label: 'Duplicate paths', ok: (q.duplicatePaths ?? 0) === 0, detail: String(q.duplicatePaths ?? 0) },
+    )
+  } else if (modality === 'tabular') {
+    qualityChecks.push(
+      { label: 'Columns with nulls', ok: (q.columnsWithNulls ?? 0) === 0, detail: String(q.columnsWithNulls ?? 0) },
+      { label: 'Total null values', ok: (q.totalNulls ?? 0) === 0, detail: String(q.totalNulls ?? 0) },
+      { label: 'Constant columns', ok: (q.constantColumns?.length ?? 0) === 0, detail: String(q.constantColumns?.length ?? 0) },
+      { label: 'High cardinality', ok: (q.highCardinality?.length ?? 0) === 0, detail: String(q.highCardinality?.length ?? 0) },
+    )
+  }
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20, marginTop: 24, marginBottom: 24 }}>
+      {/* Column 1: Modality-specific stats */}
+      <div style={card}>
+        {modality === 'text' && profile.textStats && (
+          <>
+            <div style={{ ...label, marginBottom: 12 }}>TEXT STATISTICS</div>
+            <ProfileStatsTable rows={[
+              { label: 'Words', ...profile.textStats, min: profile.textStats.wordMin, max: profile.textStats.wordMax, mean: profile.textStats.wordMean, median: profile.textStats.wordMedian },
+              { label: 'Chars', min: profile.textStats.charMin, max: profile.textStats.charMax, mean: profile.textStats.charMean, median: profile.textStats.charMedian },
+            ]} />
+            <div style={{ marginTop: 12, fontSize: 10, fontFamily: MONO, color: EMBRY.dim }}>
+              Vocabulary: <span style={{ color: EMBRY.accent, fontWeight: 700 }}>{profile.vocabSize?.toLocaleString()}</span> unique tokens
+            </div>
+          </>
+        )}
+        {modality === 'vision' && profile.imageStats && (
+          <>
+            <div style={{ ...label, marginBottom: 12 }}>IMAGE STATISTICS</div>
+            <ProfileStatsTable rows={[
+              { label: 'Width (px)', ...profile.imageStats.width },
+              { label: 'Height (px)', ...profile.imageStats.height },
+              { label: 'File size (B)', ...profile.imageStats.fileSize },
+            ]} />
+            {profile.imageStats.channels && (
+              <div style={{ marginTop: 12, fontSize: 10, fontFamily: MONO, color: EMBRY.dim }}>
+                Channels: {Object.entries(profile.imageStats.channels).map(([ch, ct]) => `${ch}ch: ${ct}`).join(', ')}
+              </div>
+            )}
+          </>
+        )}
+        {modality === 'tabular' && (
+          <>
+            <div style={{ ...label, marginBottom: 12 }}>FEATURE COLUMNS ({profile.featureCount})</div>
+            <div style={{ maxHeight: 200, overflowY: 'auto' }}>
+              {(profile.columns || []).slice(0, 10).map((col: any) => (
+                <div key={col.name} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, fontSize: 10 }}>
+                  <span style={{ fontFamily: MONO, fontWeight: 700, flex: 1 }}>{col.name}</span>
+                  <span style={{ fontSize: 8, padding: '1px 5px', borderRadius: 3, background: col.dtype === 'numeric' ? 'rgba(0,255,136,0.1)' : 'rgba(124,58,237,0.1)', color: col.dtype === 'numeric' ? EMBRY.green : EMBRY.accent }}>
+                    {col.dtype}
+                  </span>
+                  {col.nulls > 0 && <span style={{ fontSize: 8, color: EMBRY.red }}>{col.nullPct}% null</span>}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Column 2: Per-class breakdown */}
+      <div style={card}>
+        <div style={{ ...label, marginBottom: 12 }}>
+          {modality === 'text' ? 'WORDS PER CLASS' : 'SAMPLES PER CLASS'}
+        </div>
+        {Object.entries(profile.perClass || {}).map(([cls, info]: [string, any]) => {
+          const allCounts = Object.values(profile.perClass || {}).map((v: any) => v.mean_words || v.count || 0)
+          const maxVal = Math.max(...allCounts) * 1.2 || 1
+          const barVal = info.mean_words || info.count || 0
+          return (
+            <div key={cls} style={{ marginBottom: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 4 }}>
+                <span style={{ fontWeight: 700, fontFamily: MONO }}>{cls}</span>
+                <span style={{ color: EMBRY.dim, fontFamily: MONO }}>
+                  {info.mean_words != null ? `${info.min_words}–${info.max_words} (μ ${info.mean_words})` : `${info.count} samples`}
+                </span>
+              </div>
+              <div style={{ height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                <div style={{ width: `${(barVal / maxVal) * 100}%`, height: '100%', background: EMBRY.blue, borderRadius: 2 }} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Column 3: Quality checks */}
+      <div style={card}>
+        <div style={{ ...label, marginBottom: 12 }}>DATA QUALITY</div>
+        {qualityChecks.map((check, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '6px 0', borderBottom: i < qualityChecks.length - 1 ? `1px solid ${EMBRY.border}` : 'none' }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: check.ok ? EMBRY.green : EMBRY.red, flexShrink: 0 }} />
+            <span style={{ fontSize: 10, color: EMBRY.dim, flex: 1 }}>{check.label}</span>
+            <span style={{ fontSize: 12, fontFamily: MONO, fontWeight: 700, color: check.ok ? EMBRY.green : EMBRY.red }}>
+              {check.detail}
+            </span>
+          </div>
+        ))}
+        {profile.topWords && (
+          <div style={{ marginTop: 12, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}>
+            <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 6 }}>TOP TOKENS</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {profile.topWords.slice(0, 12).map((tw: any) => (
+                <span key={tw.word} style={{
+                  fontSize: 9, fontFamily: MONO, padding: '2px 6px', borderRadius: 3,
+                  background: 'rgba(124,58,237,0.1)', color: EMBRY.dim,
+                }}>
+                  {tw.word} <span style={{ color: EMBRY.muted }}>{tw.count}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** Reusable min/max/mean/median stats table */
+function ProfileStatsTable({ rows }: { rows: Array<{ label: string; min: number; max: number; mean: number; median: number }> }) {
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+          {['', 'MIN', 'MAX', 'MEAN', 'MEDIAN'].map(h => (
+            <th key={h} style={{ ...label, fontSize: 7, padding: '4px 6px', textAlign: h ? 'right' : 'left' }}>{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, i) => (
+          <tr key={row.label} style={{ borderBottom: i < rows.length - 1 ? `1px solid ${EMBRY.border}` : 'none' }}>
+            <td style={{ fontSize: 10, padding: '6px', color: EMBRY.dim }}>{row.label}</td>
+            <td style={{ fontSize: 11, padding: '6px', fontFamily: MONO, textAlign: 'right' }}>{row.min}</td>
+            <td style={{ fontSize: 11, padding: '6px', fontFamily: MONO, textAlign: 'right' }}>{row.max}</td>
+            <td style={{ fontSize: 11, padding: '6px', fontFamily: MONO, textAlign: 'right' }}>{row.mean}</td>
+            <td style={{ fontSize: 11, padding: '6px', fontFamily: MONO, textAlign: 'right', fontWeight: 700 }}>{row.median}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }
 
@@ -1076,6 +1541,9 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         </table>
       </div>
 
+      {/* Failure analysis — shows when training has failed rounds */}
+      <FailureAnalysisPanel project={project} />
+
       {/* Best recommendation */}
       {best && (
         <div style={{ ...panel, border: `1px solid ${EMBRY.green}33`, background: 'rgba(0,255,136,0.03)', marginBottom: 28 }}>
@@ -1103,6 +1571,129 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
       <div style={{ fontSize: 9, color: EMBRY.muted, marginTop: 8 }}>
         Remote GPUs via /ops-runpod — availability checked on demand
       </div>
+    </div>
+  )
+}
+
+// ── Failure Analysis Panel ──────────────────────────────────────────
+
+function FailureAnalysisPanel({ project }: { project: Project }) {
+  const [analysis, setAnalysis] = useState<FailureAnalysis | null>(null)
+  const [expanded, setExpanded] = useState(false)
+
+  useEffect(() => {
+    fetch(`${API}/projects/classifier-lab/failure-analysis/${project.id}`)
+      .then(r => r.json()).then((d: FailureAnalysis) => {
+        if (d.totalRounds > 0) setAnalysis(d)
+        else setAnalysis(null)
+      })
+      .catch(() => setAnalysis(null))
+  }, [project.id])
+
+  if (!analysis || analysis.totalRounds === 0) return null
+
+  const hasFailed = analysis.bestF1 < 0.90
+  if (!hasFailed) return null
+
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          ...card, width: '100%', cursor: 'pointer', textAlign: 'left',
+          border: `1px solid ${EMBRY.red}33`, background: 'rgba(255,68,68,0.04)',
+          display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px',
+        }}
+      >
+        <AlertTriangle size={16} color={EMBRY.red} />
+        <span style={{ ...label, color: EMBRY.red, flex: 1 }}>
+          FAILURE ANALYSIS — {analysis.totalRounds} ROUNDS, BEST F1 {analysis.bestF1.toFixed(3)} {'<'} 0.90
+        </span>
+        {expanded ? <ChevronDown size={14} color={EMBRY.dim} /> : <ChevronRight size={14} color={EMBRY.dim} />}
+      </button>
+
+      {expanded && (
+        <div style={{ ...card, borderTop: 'none', borderTopLeftRadius: 0, borderTopRightRadius: 0, padding: 0 }}>
+          {/* Strategy timeline */}
+          <div style={{ padding: '16px 16px 0' }}>
+            <div style={{ ...label, marginBottom: 10 }}>STRATEGIES TRIED</div>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
+                {['RND', 'STRATEGY', 'BACKBONE', 'F1', 'ACC', 'DIAGNOSIS'].map(h => (
+                  <th key={h} style={thStyle}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {analysis.rounds.map(r => (
+                <tr key={`${r.round}-${r.backbone}`} style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                  <td style={tdStyle}>{r.round}</td>
+                  <td style={{ ...tdStyle, fontWeight: 700 }}>{r.strategy || '—'}</td>
+                  <td style={tdStyle}>{r.backbone || '—'}</td>
+                  <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= 0.90 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
+                    {r.f1 > 0 ? r.f1.toFixed(3) : '—'}
+                  </td>
+                  <td style={tdStyle}>{r.accuracy > 0 ? r.accuracy.toFixed(3) : '—'}</td>
+                  <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim, maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {r.diagnosis || '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Dogpile insights */}
+          {analysis.dogpileInsights.length > 0 && (
+            <div style={{ padding: 16, borderTop: `1px solid ${EMBRY.border}` }}>
+              <div style={{ ...label, marginBottom: 8 }}>DOGPILE RESEARCH ({analysis.dogpileInsights.length} queries)</div>
+              {analysis.dogpileInsights.map((d, i) => (
+                <div key={i} style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 4, fontFamily: MONO }}>
+                  <span style={{ color: EMBRY.amber }}>R{d.round}</span> [{d.phase}] {d.query}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Last diagnosis + recommendation */}
+          {analysis.lastDiagnosis && (
+            <div style={{ padding: 16, borderTop: `1px solid ${EMBRY.border}`, background: 'rgba(255,170,0,0.03)' }}>
+              <div style={{ ...label, color: EMBRY.amber, marginBottom: 6 }}>LAST DIAGNOSIS</div>
+              <div style={{ fontSize: 11, color: EMBRY.white, fontFamily: MONO, lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
+                {analysis.lastDiagnosis}
+              </div>
+            </div>
+          )}
+
+          {/* Next-steps hypotheses from /dogpile */}
+          {analysis.nextSteps && (
+            <div style={{ padding: 16, borderTop: `1px solid ${EMBRY.border}`, background: 'rgba(124,58,237,0.04)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                <Cpu size={14} color={EMBRY.accent} />
+                <span style={{ ...label, color: EMBRY.accent }}>NEXT-STEP HYPOTHESES</span>
+                <span style={{ fontSize: 8, color: EMBRY.dim, marginLeft: 'auto' }}>
+                  via /dogpile | gap: {analysis.nextSteps.gap.toFixed(3)}
+                  {analysis.nextSteps.plateau_detected && ' | PLATEAU DETECTED'}
+                </span>
+              </div>
+              <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 10, fontFamily: MONO }}>
+                {analysis.nextSteps.strategies_exhausted.length} strategies exhausted: {analysis.nextSteps.strategies_exhausted.join(' → ')}
+              </div>
+              {analysis.nextSteps.dogpile_hypotheses ? (
+                <div
+                  style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.6 }}
+                  dangerouslySetInnerHTML={{ __html: marked.parse(analysis.nextSteps.dogpile_hypotheses) as string }}
+                />
+              ) : (
+                <div style={{ fontSize: 11, color: EMBRY.dim, fontStyle: 'italic' }}>
+                  /dogpile research pending — hypotheses will appear after pipeline completes
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -1240,20 +1831,54 @@ function TuneTab({ project }: { project: Project }) {
         </div>
       )}
 
-      {/* Round progress circles */}
+      {/* Fix 5: F1 trend sparkline + Round progress circles with Fix 2: tooltips + click */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+        {/* Sparkline */}
+        {trials.length > 1 && (() => {
+          const f1s = trials.map(t => t.testF1 ?? t.valF1 ?? 0)
+          const maxF1 = Math.max(...f1s, 0.91)
+          const minF1 = Math.min(...f1s.filter(v => v > 0), 0)
+          const range = maxF1 - minF1 || 1
+          const w = Math.min(trials.length * 24, 160)
+          const h = 24
+          const points = f1s.map((f, i) => `${(i / (f1s.length - 1)) * w},${h - ((f - minF1) / range) * h}`).join(' ')
+          return (
+            <svg width={w} height={h + 4} style={{ flexShrink: 0 }}>
+              {/* Gate line */}
+              <line x1={0} y1={h - ((0.90 - minF1) / range) * h} x2={w} y2={h - ((0.90 - minF1) / range) * h} stroke={EMBRY.amber} strokeWidth={0.5} strokeDasharray="3 2" />
+              <polyline points={points} fill="none" stroke={EMBRY.accent} strokeWidth={1.5} />
+              {f1s.map((f, i) => (
+                <circle key={i} cx={(i / (f1s.length - 1)) * w} cy={h - ((f - minF1) / range) * h} r={2.5}
+                  fill={f >= 0.90 ? EMBRY.green : EMBRY.red} />
+              ))}
+            </svg>
+          )
+        })()}
+        {/* Round circles — Fix 2: tooltips + click-to-load */}
         {trials.map((t) => {
           const passed = t.passed
           const isRunning = t.status === 'running'
           const isDone = t.status === 'complete' || t.status === 'completed' || t.status === 'passed' || t.status === 'failed'
+          const f1Val = t.testF1 ?? t.valF1 ?? 0
           return (
-            <div key={t.trial} style={{
-              width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 10, fontWeight: 900, fontFamily: MONO,
-              background: passed ? EMBRY.green + '20' : isRunning ? EMBRY.amber + '20' : isDone ? EMBRY.red + '15' : EMBRY.blue + '15',
-              color: passed ? EMBRY.green : isRunning ? EMBRY.amber : isDone ? EMBRY.red : EMBRY.blue,
-              border: `1px solid ${passed ? EMBRY.green + '44' : isRunning ? EMBRY.amber + '44' : isDone ? EMBRY.red + '33' : EMBRY.blue + '33'}`,
-            }}>
+            <div key={t.trial}
+              onClick={() => {
+                // Scroll to HP controls and load this round
+                const el = document.querySelector('[data-tune-controls]')
+                el?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              title={`Round ${t.trial} — ${t.backbone}\nTest F1: ${f1Val.toFixed(3)}\nLR: ${t.lr} | Epochs: ${t.epochs ?? '?'}\nAugment: ${t.augment || 'none'}\nStatus: ${t.status}`}
+              style={{
+                width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 10, fontWeight: 900, fontFamily: MONO, cursor: 'pointer',
+                background: passed ? EMBRY.green + '20' : isRunning ? EMBRY.amber + '20' : isDone ? EMBRY.red + '15' : EMBRY.blue + '15',
+                color: passed ? EMBRY.green : isRunning ? EMBRY.amber : isDone ? EMBRY.red : EMBRY.blue,
+                border: `1px solid ${passed ? EMBRY.green + '44' : isRunning ? EMBRY.amber + '44' : isDone ? EMBRY.red + '33' : EMBRY.blue + '33'}`,
+                transition: 'transform 0.1s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.2)')}
+              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+            >
               {t.trial}
             </div>
           )
@@ -1264,28 +1889,88 @@ function TuneTab({ project }: { project: Project }) {
         </span>
       </div>
 
-      {/* Self-improvement trial table */}
+      {/* Self-improvement rounds table — Fix 4: expandable delta rows */}
       <div style={{ ...label, marginBottom: 8 }}>SELF-IMPROVEMENT ROUNDS</div>
-      <div style={{ ...card, padding: 0, overflow: 'hidden', marginBottom: 28 }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
-              {['ROUND', 'BACKBONE', 'EPOCHS', 'LR', 'AUGMENT', 'VAL F1', 'TEST F1', 'GATE'].map(h => (
-                <th key={h} style={thStyle}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {trials.map((t) => {
-              const isBest = bestTrial && t.trial === bestTrial.trial
-              const testF1 = t.testF1 ?? 0
-              const valF1 = t.valF1 ?? 0
-              return (
-                <tr key={t.trial} style={{
-                  borderBottom: `1px solid ${EMBRY.border}`,
+      {trials.length === 0 ? (
+        <div style={{ ...card, padding: 32, textAlign: 'center' }}>
+          <Cpu size={24} color={EMBRY.dim} style={{ marginBottom: 8 }} />
+          <div style={{ fontSize: 12, fontWeight: 700, color: EMBRY.dim, marginBottom: 4 }}>NO TRAINING ROUNDS YET</div>
+          <div style={{ fontSize: 10, color: EMBRY.muted }}>
+            Configure hyperparameters below, then start training from the Train tab.
+          </div>
+        </div>
+      ) : (
+      <TuneRoundsTable trials={trials} bestTrial={bestTrial} />
+      )}
+
+      {/* HP Controls + Change log */}
+      <div data-tune-controls>
+        <TuneHPControls projectId={project.id} />
+      </div>
+    </div>
+  )
+}
+
+/** Interactive HP control surface — shared between human and agent */
+/** Fix 4: Rounds table with inline expandable HP deltas */
+function TuneRoundsTable({ trials, bestTrial }: { trials: Array<{ trial: number; backbone: string; epochs: number | null; lr: string; augment: string; valF1: number | null; testF1: number | null; status: string; passed: boolean }>; bestTrial: typeof trials[0] | undefined }) {
+  const [expandedRow, setExpandedRow] = useState<number | null>(null)
+
+  return (
+    <div style={{ ...card, padding: 0, overflow: 'hidden', marginBottom: 28 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
+            {([
+              { h: '', tip: 'Expand to see HP changes from previous round' },
+              { h: 'ROUND', tip: 'Self-improvement iteration number.' },
+              { h: 'BACKBONE', tip: 'Pre-trained model architecture.' },
+              { h: 'EPOCHS', tip: 'Full passes over training data.' },
+              { h: 'LR', tip: 'Learning rate for gradient updates.' },
+              { h: 'AUGMENT', tip: 'Data augmentation applied.' },
+              { h: 'VAL F1', tip: 'F1 on validation split (early stopping).' },
+              { h: 'TEST F1', tip: 'F1 on held-out test set (gate check).' },
+              { h: 'GATE', tip: 'Whether Test F1 ≥ 0.90.' },
+            ]).map(({ h, tip }) => (
+              <th key={h || '_expand'} style={{ ...thStyle, cursor: h ? 'help' : 'default', width: h ? undefined : 28 }} title={tip}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {trials.map((t, idx) => {
+            const isBest = bestTrial && t.trial === bestTrial.trial
+            const testF1 = t.testF1 ?? 0
+            const valF1 = t.valF1 ?? 0
+            const isExpanded = expandedRow === t.trial
+            const prev = idx > 0 ? trials[idx - 1] : null
+
+            // Compute deltas
+            const deltas: Array<{ hp: string; from: string; to: string; delta?: string; color: string }> = []
+            if (prev) {
+              if (t.lr !== prev.lr) deltas.push({ hp: 'LR', from: prev.lr, to: t.lr, color: EMBRY.accent })
+              if (t.epochs !== prev.epochs) deltas.push({ hp: 'Epochs', from: String(prev.epochs ?? '?'), to: String(t.epochs ?? '?'), color: EMBRY.accent })
+              if (t.augment !== prev.augment) deltas.push({ hp: 'Augment', from: prev.augment || 'none', to: t.augment || 'none', color: EMBRY.accent })
+              const prevF1 = prev.testF1 ?? prev.valF1 ?? 0
+              if (prevF1 > 0 && testF1 > 0) {
+                const d = testF1 - prevF1
+                deltas.push({ hp: 'F1', from: prevF1.toFixed(3), to: testF1.toFixed(3), delta: `${d > 0 ? '+' : ''}${d.toFixed(3)}`, color: d > 0 ? EMBRY.green : EMBRY.red })
+              }
+            }
+
+            return (
+              <Fragment key={t.trial}>
+                <tr style={{
+                  borderBottom: isExpanded ? 'none' : `1px solid ${EMBRY.border}`,
                   borderLeft: isBest ? `3px solid ${EMBRY.green}` : '3px solid transparent',
                   background: t.status === 'running' ? 'rgba(124,58,237,0.03)' : 'transparent',
-                }}>
+                  cursor: prev ? 'pointer' : 'default',
+                }} onClick={() => prev && setExpandedRow(isExpanded ? null : t.trial)}>
+                  <td style={{ ...tdStyle, width: 28, padding: '8px 6px' }}>
+                    {prev && (isExpanded
+                      ? <ChevronDown size={12} color={EMBRY.dim} />
+                      : <ChevronRight size={12} color={EMBRY.dim} />
+                    )}
+                  </td>
                   <td style={tdStyle}>#{t.trial}</td>
                   <td style={{ ...tdStyle, fontWeight: 700, color: isBest ? EMBRY.green : EMBRY.white }}>{t.backbone}</td>
                   <td style={tdStyle}>{t.epochs ?? '—'}</td>
@@ -1309,61 +1994,313 @@ function TuneTab({ project }: { project: Project }) {
                     )}
                   </td>
                 </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Config + HP changes between rounds */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        <div style={card}>
-          <div style={{ ...heading, fontSize: 13, marginBottom: 16 }}>Self-Improvement Configuration</div>
-          {[
-            { key: 'Strategy', value: strategy === 'self-improvement-loop' ? 'Iterative HP adjustment' : strategy },
-            { key: 'Target F1', value: '≥ 0.90 on held-out test set' },
-            { key: 'Max rounds', value: String(totalCount) },
-            { key: 'Completed rounds', value: String(completedCount) },
-            { key: 'Winning round', value: winningRound ? `Round ${winningRound}` : 'None yet' },
-          ].map(({ key, value }) => (
-            <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 11 }}>
-              <span style={{ color: EMBRY.dim }}>{key}</span>
-              <span style={{ fontFamily: MONO, fontWeight: 700 }}>{value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* HP delta between rounds */}
-        <div style={card}>
-          <div style={{ ...heading, fontSize: 13, marginBottom: 16 }}>HP Changes Between Rounds</div>
-          {trials.length > 1 ? trials.slice(1).map((t, i) => {
-            const prev = trials[i]
-            const changes: string[] = []
-            if (t.lr !== prev.lr) changes.push(`LR: ${prev.lr} → ${t.lr}`)
-            if (t.epochs !== prev.epochs) changes.push(`Epochs: ${prev.epochs} → ${t.epochs}`)
-            if (t.augment !== prev.augment) changes.push(`Augment: ${prev.augment || 'none'} → ${t.augment || 'none'}`)
-            const prevScore = prev.testF1 ?? prev.valF1 ?? null
-            const currentScore = t.testF1 ?? t.valF1 ?? null
-            if (prevScore !== null && currentScore !== null) {
-              const delta = currentScore - prevScore
-              const sign = delta > 0 ? '+' : ''
-              changes.push(`F1 Δ: ${sign}${delta.toFixed(3)} (${prevScore.toFixed(3)} → ${currentScore.toFixed(3)})`)
-            }
-            if (!changes.length) changes.push('No changes')
-            return (
-              <div key={`${prev.trial}-${t.trial}`} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${EMBRY.border}` }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: t.passed ? EMBRY.green : EMBRY.dim, marginBottom: 4 }}>
-                  Round {prev.trial} → {t.trial}
-                </div>
-                {changes.map((c, j) => (
-                  <div key={j} style={{ fontSize: 10, color: EMBRY.muted, fontFamily: MONO, marginLeft: 8 }}>• {c}</div>
-                ))}
-              </div>
+                {/* Expanded delta row */}
+                {isExpanded && deltas.length > 0 && (
+                  <tr style={{ borderBottom: `1px solid ${EMBRY.border}`, background: 'rgba(124,58,237,0.02)' }}>
+                    <td colSpan={9} style={{ padding: '8px 14px 8px 42px' }}>
+                      <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+                        <span style={{ fontSize: 8, fontWeight: 700, color: EMBRY.muted }}>CHANGES FROM R{prev!.trial}:</span>
+                        {deltas.map(d => (
+                          <span key={d.hp} style={{ fontSize: 10, fontFamily: MONO }}>
+                            <span style={{ color: EMBRY.dim }}>{d.hp}: </span>
+                            <span style={{ color: EMBRY.muted }}>{d.from}</span>
+                            <span style={{ color: EMBRY.dim }}> → </span>
+                            <span style={{ color: EMBRY.white }}>{d.to}</span>
+                            {d.delta && <span style={{ color: d.color, fontWeight: 700, marginLeft: 4 }}>{d.delta}</span>}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             )
-          }) : (
-            <div style={{ fontSize: 11, color: EMBRY.muted }}>Only one round completed — no deltas to show.</div>
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function TuneHPControls({ projectId }: { projectId: string }) {
+  const [config, setConfig] = useState<any>(null)
+  const [rounds, setRounds] = useState<Array<{ round: number; f1: number; strategy: string; hps: Record<string, number> }>>([])
+  const [profile, setProfile] = useState<any>(null)
+  const [bestF1, setBestF1] = useState(0)
+  const [viewingRound, setViewingRound] = useState<number | null>(null) // null = active config
+  const [dirty, setDirty] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    fetch(`${API}/projects/classifier-lab/tune-config/${projectId}`)
+      .then(r => r.json()).then(d => { setConfig(d); setDirty(false) })
+      .catch(() => {})
+    fetch(`${API}/projects/classifier-lab/failure-analysis/${projectId}`)
+      .then(r => r.json()).then((d: FailureAnalysis) => {
+        const roundData = (d.rounds || [])
+          .filter(r => r.hps && Object.keys(r.hps).length > 0)
+          .map(r => ({ round: r.round, f1: r.f1, strategy: (r as any).strategy || '', hps: r.hps as Record<string, number> }))
+        setRounds(roundData)
+        setBestF1(d.bestF1 || 0)
+      })
+      .catch(() => {})
+    fetch(`${API}/projects/classifier-lab/data/${projectId}/profile`)
+      .then(r => r.json()).then(d => { if (!d.error) setProfile(d) })
+      .catch(() => {})
+  }, [projectId])
+
+  if (!config) return null
+
+  const set = (key: string, value: number) => {
+    setConfig((prev: any) => ({ ...prev, [key]: value }))
+    setDirty(true)
+    setViewingRound(null) // User is now editing, not viewing a past round
+  }
+
+  const save = async () => {
+    setSaving(true)
+    try {
+      const roundLabel = viewingRound != null ? `human (restored R${viewingRound})` : 'human'
+      await fetch(`${API}/projects/classifier-lab/tune-config/${projectId}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...config, _source: roundLabel, _round: viewingRound }),
+      })
+      setDirty(false)
+    } catch { /* ignore */ }
+    setSaving(false)
+  }
+
+  const loadRound = (roundData: { round: number; hps: Record<string, number> }) => {
+    setViewingRound(roundData.round)
+    setConfig((prev: any) => {
+      const merged = { ...prev }
+      for (const [k, v] of Object.entries(roundData.hps)) {
+        if (k in merged) merged[k] = v
+      }
+      return merged
+    })
+    setDirty(true)
+  }
+
+  const loadActive = () => {
+    setViewingRound(null)
+    fetch(`${API}/projects/classifier-lab/tune-config/${projectId}`)
+      .then(r => r.json()).then(d => { setConfig(d); setDirty(false) })
+      .catch(() => {})
+  }
+
+  const changelog: Array<{ timestamp: string; source: string; changes: Record<string, { from: unknown; to: unknown }> }> = config._changelog || []
+  const source = config._source || 'default'
+
+  // Contextual recommendations based on dataset profile and training history
+  const n = profile?.total || 0
+  const nClasses = profile ? Object.keys(profile.perClass || {}).length : 0
+  const modality = profile?.modality || 'text'
+  const gap = bestF1 > 0 ? (0.90 - bestF1) : 0
+  const isCloseToGate = gap > 0 && gap < 0.03
+
+  const knobs: Array<{ key: string; label: string; tip: string; min: number; max: number; step: number; log?: boolean }> = [
+    { key: 'lr', label: 'Learning Rate', min: 0.000001, max: 0.01, step: 0.000001, log: true,
+      tip: `Step size for gradient updates.${modality === 'text' ? ` With ${n} samples and transformer fine-tuning, try 2e-5 to 5e-5.` : ` With ${n} samples, try 1e-4 to 3e-4 for vision CNNs.`}${bestF1 > 0 ? ` Current best F1=${bestF1.toFixed(3)} — ${Number(config?.lr) > 5e-5 ? 'current LR may be too high, try halving' : 'LR looks reasonable'}.` : ''}` },
+    { key: 'batch_size', label: 'Batch Size', min: 4, max: 128, step: 4,
+      tip: `Samples per gradient step.${nClasses > 0 ? ` ${nClasses} classes × ${Math.round(n / nClasses)} samples/class — use ${Math.min(32, Math.max(8, nClasses * 4))} for balanced coverage.` : ''} Larger = smoother gradients but more memory.` },
+    { key: 'epochs', label: 'Epochs', min: 1, max: 20, step: 1,
+      tip: `Full passes over data.${n > 0 ? ` ${n} samples is ${n < 1000 ? 'small — overfitting risk past epoch 3-4. Watch for double descent at 8+' : n < 5000 ? 'moderate — 3-5 epochs typical' : 'large — 2-3 epochs usually sufficient'}.` : ''}` },
+    { key: 'dropout', label: 'Dropout', min: 0, max: 0.5, step: 0.05,
+      tip: `Randomly zeros outputs during training.${n > 0 && n < 2000 ? ` Small dataset (${n}) — try 0.2-0.3 to prevent overfitting.` : ' 0.1 typical for large datasets.'}` },
+    { key: 'weight_decay', label: 'Weight Decay', min: 0, max: 0.1, step: 0.0001, log: true,
+      tip: `L2 regularization on weights. 0.01 typical for AdamW.${isCloseToGate ? ' Close to gate — slight increase (0.02) may help generalization.' : ''}` },
+    { key: 'label_smoothing', label: 'Label Smoothing', min: 0, max: 0.3, step: 0.05,
+      tip: `Softens hard labels (1.0 → 0.9).${isCloseToGate ? ` F1 ${bestF1.toFixed(3)} is only ${gap.toFixed(3)} below gate — smoothing 0.1 typically closes gaps this small.` : ' Reduces overconfidence on boundary samples.'}` },
+    { key: 'mixup_alpha', label: 'Mixup Alpha', min: 0, max: 1, step: 0.1,
+      tip: `Interpolates training sample pairs.${modality === 'text' ? ' NOT recommended for text — degrades semantic content.' : ' Try 0.2-0.4 for vision tasks.'} Alpha controls mix strength.` },
+    { key: 'cutmix_alpha', label: 'CutMix Alpha', min: 0, max: 1, step: 0.1,
+      tip: `Replaces image patches between samples.${modality !== 'vision' ? ` Vision-only — not applicable for ${modality}.` : ` With ${n} images, try 0.2-0.4.`}` },
+    { key: 'random_erasing', label: 'Random Erasing', min: 0, max: 0.5, step: 0.05,
+      tip: `Randomly masks rectangular regions.${modality !== 'vision' ? ` Vision-only — not applicable for ${modality}.` : ' Forces global feature learning. Try 0.1-0.2.'}` },
+    { key: 'warmup_ratio', label: 'Warmup Ratio', min: 0, max: 0.2, step: 0.01,
+      tip: `Linearly increase LR during early training.${modality === 'text' ? ' Critical for transformer fine-tuning — prevents catastrophic forgetting. 0.06-0.1 typical.' : ' 0.05-0.1 typical.'}` },
+  ]
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20 }}>
+      {/* HP Knobs */}
+      <div style={card}>
+        {/* Header with round selector */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <div style={{ ...heading, fontSize: 13 }}>HYPERPARAMETER CONTROLS</div>
+          <span style={{
+            fontSize: 8, padding: '2px 6px', borderRadius: 3, fontFamily: MONO, fontWeight: 700,
+            background: source === 'human' || source.startsWith('human') ? 'rgba(0,255,136,0.1)' : source === 'agent' ? 'rgba(124,58,237,0.1)' : 'rgba(100,116,139,0.1)',
+            color: source === 'human' || source.startsWith('human') ? EMBRY.green : source === 'agent' ? EMBRY.accent : EMBRY.dim,
+          }}>
+            {source.toUpperCase()}
+          </span>
+          {viewingRound != null && (
+            <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 3, fontFamily: MONO, fontWeight: 700, background: 'rgba(255,170,0,0.1)', color: EMBRY.amber }}>
+              VIEWING R{viewingRound}
+            </span>
+          )}
+          {config._updated && (
+            <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: MONO, marginLeft: 'auto' }}>
+              {new Date(config._updated).toLocaleString()}
+            </span>
           )}
         </div>
+
+        {/* Round selector */}
+        {rounds.length > 0 && (
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 8, color: EMBRY.muted, fontWeight: 700 }}>LOAD FROM ROUND:</span>
+              <button
+                onClick={loadActive}
+                style={{
+                  ...roundPillStyle,
+                  background: viewingRound == null ? EMBRY.accent + '20' : 'transparent',
+                  borderColor: viewingRound == null ? EMBRY.accent + '66' : EMBRY.border,
+                  color: viewingRound == null ? EMBRY.accent : EMBRY.dim,
+                }}
+              >
+                ACTIVE
+              </button>
+              {rounds.map(r => (
+                <button
+                  key={r.round}
+                  onClick={() => loadRound(r)}
+                  title={`Strategy: ${r.strategy} | F1: ${r.f1.toFixed(3)}`}
+                  style={{
+                    ...roundPillStyle,
+                    background: viewingRound === r.round ? EMBRY.amber + '20' : 'transparent',
+                    borderColor: viewingRound === r.round ? EMBRY.amber + '66' : EMBRY.border,
+                    color: viewingRound === r.round ? EMBRY.amber : EMBRY.dim,
+                  }}
+                >
+                  R{r.round}
+                  <span style={{ fontSize: 7, color: r.f1 >= 0.90 ? EMBRY.green : EMBRY.red, marginLeft: 3 }}>
+                    {r.f1.toFixed(2)}
+                  </span>
+                </button>
+              ))}
+            </div>
+            {/* Rationale for viewed round */}
+            {viewingRound != null && (() => {
+              const rd = rounds.find(r => r.round === viewingRound)
+              if (!rd) return null
+              // Get diagnosis from failure analysis data
+              return (
+                <div style={{ padding: '8px 12px', background: 'rgba(255,170,0,0.04)', border: `1px solid ${EMBRY.amber}22`, borderRadius: 4, fontSize: 10 }}>
+                  <span style={{ fontWeight: 700, color: EMBRY.amber }}>R{rd.round} RATIONALE: </span>
+                  <span style={{ color: EMBRY.dim }}>
+                    Strategy: <span style={{ color: EMBRY.white, fontFamily: MONO }}>{rd.strategy}</span>
+                    {' · '}F1: <span style={{ color: rd.f1 >= 0.90 ? EMBRY.green : EMBRY.red, fontFamily: MONO }}>{rd.f1.toFixed(3)}</span>
+                  </span>
+                </div>
+              )
+            })()}
+          </div>
+        )}
+
+        {/* Fix 3: Grouped knobs — Core, Regularization, Augmentation */}
+        {([
+          { group: 'CORE', keys: ['lr', 'batch_size', 'epochs', 'warmup_ratio'] },
+          { group: 'REGULARIZATION', keys: ['dropout', 'weight_decay', 'label_smoothing'] },
+          { group: 'AUGMENTATION', keys: ['mixup_alpha', 'cutmix_alpha', 'random_erasing'] },
+        ] as const).map(({ group, keys }) => {
+          const groupKnobs = knobs.filter(k => keys.includes(k.key as any))
+          if (!groupKnobs.length) return null
+          return (
+            <div key={group} style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.muted, letterSpacing: '0.1em', marginBottom: 8, paddingBottom: 4, borderBottom: `1px solid ${EMBRY.border}` }}>{group}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                {groupKnobs.map(k => {
+                  const val = Number(config[k.key]) || 0
+                  return (
+                    <div key={k.key} style={{ padding: '6px 0' }} title={k.tip}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)' }}>{k.label}</span>
+                        {/* Fix 1: Direct numeric input */}
+                        <input
+                          type="text"
+                          value={k.log && val > 0 ? val.toExponential(1) : val % 1 === 0 ? String(val) : val.toFixed(4)}
+                          onChange={e => {
+                            const parsed = Number(e.target.value)
+                            if (Number.isFinite(parsed)) set(k.key, parsed)
+                          }}
+                          style={{
+                            width: 70, textAlign: 'right', background: 'transparent', border: `1px solid ${EMBRY.border}`,
+                            borderRadius: 3, padding: '2px 4px', fontSize: 11, fontFamily: MONO, fontWeight: 700,
+                            color: EMBRY.white, outline: 'none',
+                          }}
+                          onFocus={e => { e.target.style.borderColor = EMBRY.accent; e.target.select() }}
+                          onBlur={e => { e.target.style.borderColor = EMBRY.border }}
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={k.min} max={k.max} step={k.step}
+                        value={val}
+                        onChange={e => set(k.key, Number(e.target.value))}
+                        style={{ width: '100%', accentColor: EMBRY.accent, height: 4 }}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: 10, marginTop: 16, paddingTop: 12, borderTop: `1px solid ${EMBRY.border}` }}>
+          <button
+            onClick={save}
+            disabled={!dirty || saving}
+            style={{
+              background: dirty ? EMBRY.accent : 'transparent',
+              border: `1px solid ${dirty ? EMBRY.accent : EMBRY.border}`,
+              color: dirty ? '#000' : EMBRY.dim,
+              padding: '8px 20px', borderRadius: 4, fontSize: 10, fontWeight: 900, cursor: dirty ? 'pointer' : 'default',
+            }}
+          >
+            {saving ? 'SAVING...' : dirty
+              ? viewingRound != null ? `APPLY R${viewingRound} AS NEXT RUN` : 'SAVE OVERRIDES'
+              : 'NO CHANGES'}
+          </button>
+          <button onClick={loadActive} style={{ ...btnOutline, fontSize: 10 }}>RESET</button>
+        </div>
+      </div>
+
+      {/* Change log */}
+      <div style={card}>
+        <div style={{ ...heading, fontSize: 13, marginBottom: 16 }}>CHANGE LOG</div>
+        {changelog.length > 0 ? (
+          <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+            {[...changelog].reverse().map((entry, i) => (
+              <div key={i} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${EMBRY.border}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <span style={{
+                    fontSize: 8, padding: '1px 5px', borderRadius: 3, fontWeight: 700,
+                    background: entry.source?.startsWith('human') ? 'rgba(0,255,136,0.1)' : 'rgba(124,58,237,0.1)',
+                    color: entry.source?.startsWith('human') ? EMBRY.green : EMBRY.accent,
+                  }}>
+                    {(entry.source || 'unknown').toUpperCase()}
+                  </span>
+                  <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: MONO }}>
+                    {new Date(entry.timestamp).toLocaleString()}
+                  </span>
+                </div>
+                {Object.entries(entry.changes).map(([key, delta]) => (
+                  <div key={key} style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO, marginLeft: 8 }}>
+                    {key}: <span style={{ color: EMBRY.muted }}>{String(delta.from)}</span> → <span style={{ color: EMBRY.white }}>{String(delta.to)}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 10, color: EMBRY.muted }}>No HP changes recorded yet. Adjust a knob or load a round to start.</div>
+        )}
       </div>
     </div>
   )
@@ -1963,6 +2900,11 @@ const gateBadge: React.CSSProperties = { padding: '3px 8px', borderRadius: 4, fo
 const btnOutline: React.CSSProperties = {
   background: 'none', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim,
   padding: '8px 16px', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+}
+const roundPillStyle: React.CSSProperties = {
+  background: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 12,
+  padding: '2px 8px', fontSize: 9, fontFamily: MONO, fontWeight: 700, cursor: 'pointer',
+  display: 'inline-flex', alignItems: 'center',
 }
 const rerunInputStyle: React.CSSProperties = {
   width: '100%',

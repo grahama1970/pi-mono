@@ -164,10 +164,14 @@ export function RelationshipsView() {
 
 const DAEMON = 'http://localhost:3001/api/memory'
 
+const API = 'http://localhost:3001'
+
 function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: () => void }) {
   const [sourceMind, setSourceMind] = useState<string[]>([])
   const [targetMind, setTargetMind] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
+  const [rationale, setRationale] = useState<string | null>(null)
+  const [rationaleLoading, setRationaleLoading] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -241,6 +245,56 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
             <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
               No taxonomy tags on source/target controls
             </div>
+          )}
+        </div>
+
+        {/* Gate evidence */}
+        {(edge as any).gate_evidence && (() => {
+          const ge = (edge as any).gate_evidence
+          return (
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ ...label, marginBottom: 6 }}>Gate Evidence</div>
+              <div style={{ fontSize: 11, color: EMBRY.dim, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <div>Verdict: <span style={{ color: ge.verdict === 'strong' ? EMBRY.green : ge.verdict === 'moderate' ? EMBRY.amber : EMBRY.red, fontWeight: 700 }}>{ge.verdict}</span>
+                  {ge.tier === 'T2' && <span style={{ marginLeft: 6, fontSize: 9, padding: '1px 5px', borderRadius: 3, backgroundColor: `${EMBRY.amber}22`, color: EMBRY.amber, border: `1px solid ${EMBRY.amber}44` }}>LLM Graded</span>}
+                </div>
+                <div>Gates passed: {ge.gates_passed}/4</div>
+                <div>Mind Jaccard: {ge.gate3_mind_jaccard?.toFixed(3) ?? '—'}</div>
+                <div>Cosine: {ge.gate4_cosine_similarity?.toFixed(4) ?? '—'}</div>
+                {ge.gate2_curated_methods?.length > 0 && (
+                  <div>Curated: {ge.gate2_curated_methods.join(', ')}</div>
+                )}
+              </div>
+            </div>
+          )
+        })()}
+
+        {/* Explain button + rationale */}
+        <div style={{ marginBottom: 12 }}>
+          {rationale ? (
+            <div style={{ fontSize: 12, color: EMBRY.white, lineHeight: 1.6, padding: '8px 12px', borderRadius: 6, backgroundColor: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22` }}>
+              {rationale}
+            </div>
+          ) : (
+            <button
+              disabled={rationaleLoading}
+              onClick={async () => {
+                setRationaleLoading(true)
+                try {
+                  const r = await fetch(`${API}/api/edge-rationale`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ _key: (edge as any)._key }),
+                  })
+                  const data = await r.json()
+                  if (data.rationale) setRationale(data.rationale)
+                } catch { /* non-critical */ }
+                setRationaleLoading(false)
+              }}
+              style={{ fontSize: 11, padding: '6px 14px', borderRadius: 6, border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`, color: EMBRY.accent, cursor: rationaleLoading ? 'wait' : 'pointer', fontWeight: 700 }}
+            >
+              {rationaleLoading ? 'Generating...' : 'Explain Relationship'}
+            </button>
           )}
         </div>
       </div>

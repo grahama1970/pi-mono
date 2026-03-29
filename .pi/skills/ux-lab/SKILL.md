@@ -28,6 +28,8 @@ taxonomy:
   - precision
 ---
 
+> STOP. READ THIS ENTIRE SKILL.MD BEFORE CALLING ANY ENDPOINT.
+
 # ux-lab
 
 React + Vite component workbench for building the SPARTA Explorer UI.

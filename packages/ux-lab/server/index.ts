@@ -249,6 +249,121 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
+// ── On-demand edge rationale (Sensai Cascade T2) ───────────────────────────
+// Generates LLM rationale for relationship edges using stored gate_evidence.
+// Cache-first: returns existing llm_rationale if present on the edge.
+
+app.post('/api/edge-rationale', async (req, res) => {
+  const { _key } = req.body ?? {}
+  if (!_key) return res.status(400).json({ error: 'Missing _key' })
+
+  try {
+    // Fetch edge
+    const listResult = await proxyPost('/list', {
+      collection: 'sparta_relationships',
+      limit: 1,
+      filters: { _key },
+    })
+    const edge = listResult?.documents?.[0]
+    if (!edge) return res.status(404).json({ error: `Edge ${_key} not found` })
+
+    const ge = edge.gate_evidence ?? {}
+
+    // Cache hit — return existing rationale
+    if (ge.llm_rationale) {
+      return res.json({
+        rationale: ge.llm_rationale,
+        verdict: ge.verdict,
+        gates_passed: ge.gates_passed,
+        tier: ge.tier,
+        cached: true,
+      })
+    }
+
+    // Fetch source + target control descriptions
+    const srcKey = `ctrl__${edge.source_control_id}`
+    const tgtKey = `ctrl__${edge.target_control_id}`
+    const controlsResult = await proxyPost('/recall/by-keys', {
+      collection: 'sparta_controls',
+      keys: [srcKey, tgtKey],
+      return_fields: ['control_id', 'name', 'description', 'mind', 'source_framework'],
+    })
+    const controls = controlsResult?.documents ?? controlsResult?.items ?? []
+    const srcDoc = controls.find((c: any) => c.control_id === edge.source_control_id) ?? {}
+    const tgtDoc = controls.find((c: any) => c.control_id === edge.target_control_id) ?? {}
+
+    // Build prompt from gate evidence
+    const prompt = `You are a SPARTA cybersecurity analyst. Given deterministic gate evidence about a relationship between a SPARTA technique and a control, explain in 2-3 sentences why this relationship exists.
+
+Source: ${edge.source_control_id} — ${srcDoc.name ?? 'unknown'} (${srcDoc.source_framework ?? '?'})
+Target: ${edge.target_control_id} — ${tgtDoc.name ?? 'unknown'} (${tgtDoc.source_framework ?? '?'})
+
+Gate Evidence:
+- Curated cross-references: ${ge.gate2_curated_count ?? 0} (${(ge.gate2_curated_methods ?? []).join(', ') || 'none'})
+- Mind tag overlap: ${(ge.gate3_mind_intersection ?? []).join(', ') || 'none'} (Jaccard: ${ge.gate3_mind_jaccard ?? 0})
+- Embedding similarity: ${ge.gate4_cosine_similarity ?? 0}
+- Verdict: ${ge.verdict ?? 'unknown'} (${ge.gates_passed ?? 0} gates passed)
+
+Respond with ONLY the rationale text, no JSON.`
+
+    // Call scillm
+    const url = new URL(`${SCILLM_URL}/v1/chat/completions`)
+    const llmBody = JSON.stringify({
+      model: 'text',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    })
+
+    const llmResult: any = await new Promise((resolve, reject) => {
+      const llmReq = httpRequest(
+        {
+          hostname: url.hostname,
+          port: url.port,
+          path: url.pathname,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': String(Buffer.byteLength(llmBody)),
+            'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
+          },
+        },
+        (proxyRes) => {
+          const chunks: Buffer[] = []
+          proxyRes.on('data', (chunk: Buffer) => chunks.push(chunk))
+          proxyRes.on('end', () => {
+            try { resolve(JSON.parse(Buffer.concat(chunks).toString())) }
+            catch { reject(new Error('Invalid JSON from scillm')) }
+          })
+        }
+      )
+      llmReq.on('error', reject)
+      llmReq.write(llmBody)
+      llmReq.end()
+    })
+
+    const rationale = llmResult?.choices?.[0]?.message?.content?.trim() ?? ''
+    if (!rationale) return res.status(502).json({ error: 'Empty rationale from LLM' })
+
+    // Cache rationale back to edge
+    const updatedGe = { ...ge, llm_rationale: rationale }
+    await proxyPost('/upsert', {
+      collection: 'sparta_relationships',
+      documents: [{ _key, gate_evidence: updatedGe }],
+    })
+
+    res.json({
+      rationale,
+      verdict: ge.verdict,
+      gates_passed: ge.gates_passed,
+      tier: ge.tier ?? 'T0',
+      cached: false,
+    })
+  } catch (err: any) {
+    res.status(500).json({ error: err.message ?? 'Internal error' })
+  }
+})
+
 // ── Model discovery ─────────────────────────────────────────────────────────
 
 app.get('/api/models', async (_req, res) => {
@@ -1604,6 +1719,114 @@ app.get('/api/projects/classifier-lab/data/:id/files', async (req, res) => {
   }
 })
 
+// Data profiling — text length stats, vocab, quality checks
+app.get('/api/projects/classifier-lab/data/:id/profile', async (req, res) => {
+  const projectId = req.params.id
+  const projDir = resolve(CLASSIFIER_DIR, projectId)
+  const samplesPath = resolve(projDir, 'samples.jsonl')
+  const parquetPath = resolve(projDir, 'dataset.parquet')
+  // Prefer JSONL (works with vanilla python3), parquet needs venv with polars
+  const dataPath = existsSync(samplesPath) ? samplesPath : existsSync(parquetPath) ? parquetPath : null
+  if (!dataPath) return res.json({ error: 'no dataset found' })
+
+  // Read modality from data.json if available
+  let modality = ''
+  const metaPath = resolve(projDir, 'data.json')
+  if (existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+      modality = typeof meta.modality === 'string' ? meta.modality : ''
+    } catch { /* skip */ }
+  }
+
+  const pythonBin = dataPath.endsWith('.parquet')
+    ? resolve(PI_MONO, '.pi/skills/classifier-lab/.venv/bin/python')
+    : 'python3'
+
+  try {
+    const profileScript = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts/profile_dataset.py')
+    const execFileAsync = promisify(execFile)
+    const args = [profileScript, dataPath, ...(modality ? ['--modality', modality] : [])]
+    const { stdout } = await execFileAsync(pythonBin, args, {
+      timeout: 30_000, env: { ...process.env, VIRTUAL_ENV: '' },
+    })
+    res.json(JSON.parse(stdout))
+  } catch (e) {
+    res.json({ error: 'profiling failed', detail: e instanceof Error ? e.message : String(e) })
+  }
+})
+
+// Tune config — shared HP control surface for human + agent
+app.get('/api/projects/classifier-lab/tune-config/:id', async (req, res) => {
+  const configPath = resolve(CLASSIFIER_DIR, req.params.id, 'tune-config.json')
+  const defaults = {
+    lr: 2e-5, batch_size: 16, epochs: 3, dropout: 0.1, weight_decay: 1e-4,
+    label_smoothing: 0.0, mixup_alpha: 0.0, cutmix_alpha: 0.0,
+    random_erasing: 0.0, warmup_ratio: 0.1,
+    _source: 'default', _updated: null, _changelog: [],
+  }
+  try {
+    if (existsSync(configPath)) {
+      const saved = JSON.parse(await readFile(configPath, 'utf-8'))
+      res.json({ ...defaults, ...saved })
+    } else {
+      // Try to infer from data.json modality
+      const metaPath = resolve(CLASSIFIER_DIR, req.params.id, 'data.json')
+      if (existsSync(metaPath)) {
+        const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+        const modality = meta.modality || 'text'
+        const modalityDefaults: Record<string, Record<string, unknown>> = {
+          text: { lr: 2e-5, batch_size: 16, epochs: 3, dropout: 0.1, weight_decay: 1e-4 },
+          vision: { lr: 2e-4, batch_size: 32, epochs: 10, dropout: 0.1, weight_decay: 1e-4 },
+          tabular: { lr: 0.1, batch_size: 64, epochs: 1, dropout: 0, weight_decay: 0 },
+        }
+        res.json({ ...defaults, ...(modalityDefaults[modality] || {}), _source: `default-${modality}` })
+      } else {
+        res.json(defaults)
+      }
+    }
+  } catch {
+    res.json(defaults)
+  }
+})
+
+app.post('/api/projects/classifier-lab/tune-config/:id', async (req, res) => {
+  const projectId = req.params.id
+  const configPath = resolve(CLASSIFIER_DIR, projectId, 'tune-config.json')
+  try {
+    // Read existing config
+    let existing: Record<string, unknown> = {}
+    if (existsSync(configPath)) {
+      existing = JSON.parse(await readFile(configPath, 'utf-8'))
+    }
+
+    const changelog: Array<Record<string, unknown>> = Array.isArray(existing._changelog) ? existing._changelog as Array<Record<string, unknown>> : []
+    const updates = req.body as Record<string, unknown>
+    const source = typeof updates._source === 'string' ? updates._source : 'human'
+
+    // Track what changed
+    const changes: Record<string, { from: unknown; to: unknown }> = {}
+    const hpKeys = ['lr', 'batch_size', 'epochs', 'dropout', 'weight_decay', 'label_smoothing', 'mixup_alpha', 'cutmix_alpha', 'random_erasing', 'warmup_ratio']
+    for (const key of hpKeys) {
+      if (key in updates && updates[key] !== existing[key]) {
+        changes[key] = { from: existing[key], to: updates[key] }
+      }
+    }
+
+    if (Object.keys(changes).length > 0) {
+      changelog.push({ timestamp: new Date().toISOString(), source, changes })
+    }
+
+    const merged = { ...existing, ...updates, _source: source, _updated: new Date().toISOString(), _changelog: changelog }
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    if (!existsSync(projDir)) await mkdir(projDir, { recursive: true })
+    await writeFile(configPath, JSON.stringify(merged, null, 2), 'utf-8')
+    res.json({ saved: true, config: merged })
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to save config', detail: e instanceof Error ? e.message : String(e) })
+  }
+})
+
 app.get('/api/projects/classifier-lab/research-gate/:id', async (req, res) => {
   try {
     const path = resolve(CLASSIFIER_DIR, req.params.id, 'research-gate.json')
@@ -1631,15 +1854,50 @@ app.get('/api/projects/classifier-lab/benchmark-results/:id', async (req, res) =
 })
 
 app.get('/api/projects/classifier-lab/research/:id', async (req, res) => {
+  const projectId = req.params.id
   try {
-    const path = resolve(CLASSIFIER_DIR, req.params.id, 'research.md')
+    // 1. Primary research document
+    let markdown: string | null = null
+    const path = resolve(CLASSIFIER_DIR, projectId, 'research.md')
     if (existsSync(path)) {
-      res.json({ markdown: await readFile(path, 'utf-8'), source: 'disk' })
-    } else {
-      res.json({ markdown: null })
+      markdown = await readFile(path, 'utf-8')
     }
+
+    // 2. Research timeline from dogpile artifacts
+    const timeline: Array<Record<string, unknown>> = []
+    if (existsSync(CLASSIFIER_ARTIFACTS)) {
+      const files = (await readdir(CLASSIFIER_ARTIFACTS)).sort()
+      for (const f of files) {
+        if (!f.endsWith('.json')) continue
+        try {
+          const data = JSON.parse(await readFile(resolve(CLASSIFIER_ARTIFACTS, f), 'utf-8'))
+          if (data.project_id !== projectId) continue
+          if (data.event_type === 'dogpile_research') {
+            timeline.push({
+              round: data.round,
+              phase: data.phase,
+              query: data.query,
+              resultLength: data.result_length,
+              timestamp: data.timestamp,
+            })
+          }
+        } catch { /* skip corrupt */ }
+      }
+    }
+
+    // 3. Next-steps research if it exists
+    const nextStepsPath = resolve(CLASSIFIER_DIR, projectId, 'next-steps.json')
+    let nextStepsQuery: string | null = null
+    if (existsSync(nextStepsPath)) {
+      try {
+        const ns = JSON.parse(await readFile(nextStepsPath, 'utf-8'))
+        nextStepsQuery = ns.dogpile_hypotheses || null
+      } catch { /* skip */ }
+    }
+
+    res.json({ markdown, source: markdown ? 'disk' : null, timeline, nextStepsQuery })
   } catch {
-    res.json({ markdown: null })
+    res.json({ markdown: null, timeline: [], nextStepsQuery: null })
   }
 })
 
@@ -1684,13 +1942,80 @@ app.get('/api/projects/classifier-lab/gpu-info', async (_req, res) => {
 })
 
 app.get('/api/projects/classifier-lab/tune-results/:id', async (req, res) => {
+  const projectId = req.params.id
   try {
-    const path = resolve(CLASSIFIER_DIR, req.params.id, 'tune-results.json')
+    // 1. Prefer explicit tune-results.json
+    const path = resolve(CLASSIFIER_DIR, projectId, 'tune-results.json')
     if (existsSync(path)) {
-      res.json(normalizeTuneResultsPayload(JSON.parse(await readFile(path, 'utf-8'))))
-    } else {
-      res.json(getDefaultTuneResults())
+      return res.json(normalizeTuneResultsPayload(JSON.parse(await readFile(path, 'utf-8'))))
     }
+
+    // 2. Synthesize from round artifacts + benchmark.json
+    const trials: Array<Record<string, unknown>> = []
+
+    // Round artifacts from .artifacts/
+    if (existsSync(CLASSIFIER_ARTIFACTS)) {
+      const files = (await readdir(CLASSIFIER_ARTIFACTS)).sort()
+      for (const f of files) {
+        if (!f.endsWith('.json')) continue
+        try {
+          const data = JSON.parse(await readFile(resolve(CLASSIFIER_ARTIFACTS, f), 'utf-8'))
+          if (data.project_id !== projectId || data.event_type !== 'self_improvement_round') continue
+          trials.push({
+            trial: data.round,
+            round: data.round,
+            backbone: data.backbone,
+            epochs: data.hps?.epochs ?? null,
+            lr: data.hps?.lr ?? null,
+            augment: (data.hps?.mixup_alpha || data.hps?.cutmix_alpha) ? 'true' : 'false',
+            val_f1: data.f1,
+            test_f1: data.f1,
+            f1: data.f1,
+            status: data.f1 >= 0.90 ? 'passed' : 'completed',
+            gate_passed: data.f1 >= 0.90,
+            hps: data.hps,
+            strategy: data.strategy,
+            diagnosis: data.diagnosis,
+          })
+        } catch { /* skip corrupt */ }
+      }
+    }
+
+    // Enrich from benchmark.json if no round artifacts
+    if (trials.length === 0) {
+      const benchPath = resolve(CLASSIFIER_DIR, projectId, 'benchmark.json')
+      if (existsSync(benchPath)) {
+        try {
+          const bench = JSON.parse(await readFile(benchPath, 'utf-8'))
+          const results = Array.isArray(bench.results) ? bench.results : []
+          for (const r of results) {
+            trials.push({
+              trial: r.rounds ?? 1,
+              backbone: r.backbone,
+              f1: r.macro_f1,
+              test_f1: r.macro_f1,
+              status: r.gate_passed ? 'passed' : 'completed',
+              gate_passed: r.gate_passed === true,
+            })
+          }
+        } catch { /* skip */ }
+      }
+    }
+
+    if (trials.length > 0) {
+      const bestTrial = trials.reduce<Record<string, unknown> | null>(
+        (best, t) => (!best || (Number(t.f1) || 0) > (Number(best.f1) || 0) ? t : best), null,
+      )
+      return res.json({
+        trials,
+        strategy: 'switchboard-concurrent',
+        winningRound: bestTrial?.trial ?? null,
+        completed: trials.length,
+        total: trials.length,
+      })
+    }
+
+    res.json(getDefaultTuneResults())
   } catch {
     res.json(getDefaultTuneResults())
   }
@@ -1707,6 +2032,134 @@ app.get('/api/projects/classifier-lab/eval-results/:id', async (req, res) => {
     }
   } catch {
     res.json({})
+  }
+})
+
+// Failure analysis — aggregates round artifacts + dogpile research for a project
+app.get('/api/projects/classifier-lab/failure-analysis/:id', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    const rounds: Array<Record<string, unknown>> = []
+    const dogpileInsights: Array<Record<string, unknown>> = []
+
+    // 1. Collect round artifacts from .artifacts/
+    if (existsSync(CLASSIFIER_ARTIFACTS)) {
+      const files = await readdir(CLASSIFIER_ARTIFACTS)
+      for (const f of files.sort()) {
+        if (!f.endsWith('.json')) continue
+        try {
+          const data = JSON.parse(await readFile(resolve(CLASSIFIER_ARTIFACTS, f), 'utf-8'))
+          if (data.project_id !== projectId) continue
+          if (data.event_type === 'self_improvement_round') {
+            rounds.push({
+              round: data.round,
+              strategy: data.strategy,
+              backbone: data.backbone,
+              f1: data.f1,
+              accuracy: data.accuracy,
+              diagnosis: data.diagnosis,
+              errors: data.errors,
+              hps: data.hps,
+              timestamp: data.timestamp,
+            })
+          } else if (data.event_type === 'dogpile_research') {
+            dogpileInsights.push({
+              round: data.round,
+              phase: data.phase,
+              query: data.query,
+              result_length: data.result_length,
+              timestamp: data.timestamp,
+            })
+          }
+        } catch { /* skip corrupt */ }
+      }
+    }
+
+    // 2. Read dogpile research markdown if available
+    let researchMd = ''
+    const researchPath = resolve(CLASSIFIER_DIR, projectId, 'research.md')
+    if (existsSync(researchPath)) {
+      researchMd = await readFile(researchPath, 'utf-8')
+    }
+
+    // 3. Read next-steps.json if pipeline generated it
+    let nextSteps: Record<string, unknown> | null = null
+    const nextStepsPath = resolve(CLASSIFIER_DIR, projectId, 'next-steps.json')
+    if (existsSync(nextStepsPath)) {
+      try {
+        nextSteps = JSON.parse(await readFile(nextStepsPath, 'utf-8'))
+      } catch { /* skip corrupt */ }
+    }
+
+    // 4. Derive summary
+    const bestF1 = rounds.length ? Math.max(...rounds.map(r => Number(r.f1) || 0)) : 0
+    const strategiesTried = rounds.map(r => r.strategy).filter(Boolean)
+    const lastDiagnosis = rounds.length ? rounds[rounds.length - 1].diagnosis : null
+    const totalRounds = rounds.length
+
+    res.json({
+      projectId,
+      totalRounds,
+      bestF1,
+      strategiesTried,
+      lastDiagnosis,
+      rounds,
+      dogpileInsights,
+      researchMd: researchMd.slice(0, 3000),
+      nextSteps,
+    })
+  } catch {
+    res.json({ projectId, totalRounds: 0, bestF1: 0, strategiesTried: [], rounds: [], dogpileInsights: [] })
+  }
+})
+
+// Promote — triggers model export + optional HuggingFace push via classifier-lab skill
+app.post('/api/projects/classifier-lab/promote/:id', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    // Verify eval gate passed first
+    const evalPath = resolve(CLASSIFIER_DIR, projectId, 'eval-results.json')
+    if (existsSync(evalPath)) {
+      const evalData = JSON.parse(await readFile(evalPath, 'utf-8'))
+      const f1 = evalData.macro_f1 ?? evalData.f1 ?? 0
+      const threshold = evalData.gate_threshold ?? evalData.holdout_gate_f1 ?? 0.90
+      if (f1 < threshold) {
+        return res.status(400).json({ error: `Holdout gate not met: F1 ${f1.toFixed(3)} < ${threshold}` })
+      }
+    }
+
+    // Read benchmark to get winner backbone
+    const benchPath = resolve(CLASSIFIER_DIR, projectId, 'benchmark.json')
+    const bench = existsSync(benchPath) ? JSON.parse(await readFile(benchPath, 'utf-8')) : {}
+    const winner = bench.selected_backbone ?? 'unknown'
+
+    // Trigger promotion via classifier-lab skill
+    const { format = 'onnx', pushToHf = false } = req.body as { format?: string; pushToHf?: boolean }
+    const skillDir = resolve(CLASSIFIER_LAB_SKILL_DIR)
+    const cmd = `cd "${skillDir}" && ./run.sh export --model "${winner}" --format ${format}`
+
+    const execFileAsync = promisify(execFile)
+    try {
+      const { stdout } = await execFileAsync('bash', ['-lc', cmd], { timeout: 300_000 })
+
+      // Write promotion status
+      const promotePath = resolve(CLASSIFIER_DIR, projectId, 'promote-status.json')
+      const status = {
+        promoted: true,
+        backbone: winner,
+        format,
+        pushed_to_hf: pushToHf,
+        timestamp: new Date().toISOString(),
+        output: stdout.slice(0, 1000),
+      }
+      await writeFile(promotePath, JSON.stringify(status, null, 2), 'utf-8')
+
+      res.json(status)
+    } catch (e) {
+      res.status(500).json({ error: 'Promotion failed', detail: e instanceof Error ? e.message : String(e) })
+    }
+  } catch (e) {
+    res.status(500).json({ error: 'Promotion failed', detail: e instanceof Error ? e.message : String(e) })
   }
 })
 

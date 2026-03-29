@@ -219,7 +219,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'music-lab-pipeline' && <MusicLab />}
           {projectId === 'prompt-lab' && <PromptLab />}
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
-          {projectId === 'classifier-lab' && <ClassifierLab />}
+          {projectId === 'classifier-lab' && <ClassifierLab initialTab={subpath || undefined} />}
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">

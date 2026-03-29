@@ -33,6 +33,8 @@ metadata:
   version: "1.0.0"
 ---
 
+> STOP. READ THIS ENTIRE SKILL.MD BEFORE CALLING ANY ENDPOINT.
+
 # /review-plan
 
 Validate task files before `/orchestrate` runs them. Catches errors that waste hours of agent time.

@@ -45,6 +45,7 @@ def _check_shell_syntax(script: Path, skill_name: str) -> List[Violation]:
             capture_output=True,
             text=True,
             timeout=10,
+            env={k: v for k, v in os.environ.items() if k != 'VIRTUAL_ENV'},
         )
         if result.returncode != 0:
             stderr = result.stderr.strip()

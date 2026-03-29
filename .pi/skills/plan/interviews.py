@@ -7,6 +7,7 @@ any YAML. Composes /interview for the UX.
 This module exists because plan.py hit the 800-line limit.
 """
 from __future__ import annotations
+import os
 
 import subprocess
 import sys
@@ -157,6 +158,7 @@ def run_post_plan_interview(plan_path: Path) -> dict | None:
                 subprocess.run(
                     [str(review_plan_skill), "review", str(plan_path)],
                     capture_output=False, text=True, timeout=120,
+                    env={k: v for k, v in os.environ.items() if k != 'VIRTUAL_ENV'},
                 )
 
         # If human chose to generate a diagram, do it
@@ -167,6 +169,7 @@ def run_post_plan_interview(plan_path: Path) -> dict | None:
             subprocess.run(
                 [sys.executable, str(plan_py), "--mermaid", str(plan_path)],
                 capture_output=False, text=True, timeout=30,
+                env={k: v for k, v in os.environ.items() if k != 'VIRTUAL_ENV'},
             )
         if "walkthrough" in str(diagram_choice).lower() or "Both" in str(diagram_choice):
             walkthrough_skill = SKILLS_DIR / "create-walkthrough" / "run.sh"
@@ -175,6 +178,7 @@ def run_post_plan_interview(plan_path: Path) -> dict | None:
                 subprocess.run(
                     [str(walkthrough_skill), str(plan_path)],
                     capture_output=False, text=True, timeout=120,
+                    env={k: v for k, v in os.environ.items() if k != 'VIRTUAL_ENV'},
                 )
 
         return result

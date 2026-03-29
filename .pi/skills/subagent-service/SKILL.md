@@ -43,6 +43,8 @@ taxonomy:
   - create
 ---
 
+> STOP. READ THIS ENTIRE SKILL.MD BEFORE CALLING ANY ENDPOINT.
+
 # subagent-service
 
 > **DOCKER ONLY** — This skill runs a FastAPI server inside a Docker container.
