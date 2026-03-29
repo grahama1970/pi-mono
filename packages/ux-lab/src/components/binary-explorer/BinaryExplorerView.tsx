@@ -1544,6 +1544,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700 }}>VIEWPORT</span>
                 <select
+                  id="be-perspective"
                   value={perspective}
                   onChange={e => handleSetPerspective(e.target.value as Perspective)}
                   style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 10, padding: '2px 6px', outline: 'none', borderRadius: 2 }}
@@ -1577,9 +1578,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 9, padding: '2px 4px', outline: 'none', borderRadius: 2, width: 60 }}
                     />
                     <button
+                      id="be-scene-save"
                       onClick={() => saveScene(sceneName)}
                       style={{ fontSize: 8, padding: '2px 6px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}
                     >SAVE</button>
+                    <button
+                      id="be-scene-export"
+                      onClick={() => {
+                        const blob = new Blob([JSON.stringify({ binary: binaryName, nodeIds: [...sceneNodeIds], perspective, layoutMode, selectedNodeId: selectedNode?.id, timestamp: new Date().toISOString() }, null, 2)], { type: 'application/json' })
+                        const a = document.createElement('a')
+                        a.href = URL.createObjectURL(blob)
+                        a.download = `${binaryName}-scene-${Date.now()}.json`
+                        a.click()
+                      }}
+                      title="Export scene as JSON"
+                      style={{ fontSize: 8, padding: '2px 6px', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer' }}
+                    >EXPORT</button>
                   </div>
                 )}
               </div>
@@ -1817,7 +1831,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     { id: 'table' as const, title: 'All Features', icon: <Table2 size={14} /> },
                     { id: 'raw' as const, title: 'Raw JSON', icon: <Code size={14} /> },
                   ]).map(tab => (
-                    <button key={tab.id} title={tab.title}
+                    <button key={tab.id} id={`be-tab-${tab.id}`} title={tab.title}
                       onClick={() => setDataTab(tab.id)}
                       style={{
                         padding: '4px 6px', cursor: 'pointer', border: 'none', borderRadius: 2,
@@ -1891,15 +1905,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 3: Fields/Parameters inline (if present) */}
+                      {/* Row 3: Fields/Parameters — IDA-style structured view */}
                       {selectedNode.fields && selectedNode.fields.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>PARAMETERS ({selectedNode.fields.length})</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {selectedNode.fields.slice(0, 12).map(f => (
-                              <code key={f} onClick={() => onFeatureClick(f)} style={{ fontSize: 8, padding: '1px 3px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: '#94a3b8', borderRadius: 2, cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace' }}>{f}</code>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>
+                            {selectedNode.nodeType === 'rpc' ? 'RPC PARAMETERS' : selectedNode.nodeType === 'schema' ? 'SCHEMA FIELDS' : selectedNode.nodeType === 'event' ? 'EVENT PAYLOAD' : 'PARAMETERS'} ({selectedNode.fields.length})
+                          </div>
+                          <div style={{ background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: 4, fontFamily: 'JetBrains Mono, monospace', fontSize: 8 }}>
+                            {selectedNode.fields.slice(0, 16).map((f, i) => (
+                              <div key={f} onClick={() => onFeatureClick(f)} style={{ display: 'flex', gap: 8, padding: '1px 0', cursor: 'pointer', borderBottom: i < Math.min(selectedNode.fields!.length, 16) - 1 ? `1px solid ${EMBRY.border}22` : 'none' }}>
+                                <span style={{ color: EMBRY.dim, minWidth: 16 }}>{i}</span>
+                                <span style={{ color: '#22d3ee' }}>{f}</span>
+                                <span style={{ color: '#6b7280', marginLeft: 'auto' }}>{f.includes('id') || f.includes('key') ? 'string' : f.includes('count') || f.includes('size') || f.includes('port') ? 'uint32' : f.includes('flag') || f.includes('enabled') ? 'bool' : f.includes('data') || f.includes('payload') ? 'bytes' : 'any'}</span>
+                              </div>
                             ))}
-                            {selectedNode.fields.length > 12 && <span style={{ fontSize: 8, color: EMBRY.muted }}>+{selectedNode.fields.length - 12}</span>}
+                            {selectedNode.fields.length > 16 && <div style={{ color: EMBRY.muted, paddingTop: 2 }}>+{selectedNode.fields.length - 16} more</div>}
                           </div>
                         </div>
                       )}
@@ -2066,12 +2086,24 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       {codeViewTab === 'pseudocode' && (
                         <div>
                           {pseudocodeLoading && <div style={{ fontSize: 9, color: EMBRY.accent }}>Generating Python pseudocode...</div>}
-                          {pseudocode && (
+                          {pseudocode && !pseudocode.startsWith('# Error') && (
                             <pre style={{ fontSize: 9, color: '#fde68a', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
                               {pseudocode}
                             </pre>
                           )}
-                          {!pseudocode && !pseudocodeLoading && <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>Select a node to generate Python pseudocode</div>}
+                          {/* Fallback: structured description when LLM unavailable */}
+                          {(!pseudocode || pseudocode.startsWith('# Error')) && !pseudocodeLoading && selectedNode && (
+                            <pre style={{ fontSize: 9, color: '#fde68a', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
+{`# ${selectedNode.label} (${selectedNode.nodeType.replace('_', ' ')})
+# Cluster: ${selectedNode.cluster} | Tier: ${selectedNode.tier} | Confidence: ${Math.round(selectedNode.confidence * 100)}%
+${selectedNode.description ? `\n# Description:\n# ${selectedNode.description.split('. ').join('.\n# ')}` : ''}
+${selectedNode.fields?.length ? `\ndef ${selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')}(${selectedNode.fields.slice(0, 6).join(', ')}):` : ''}
+${selectedNode.fields?.length ? `    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""\n    pass` : ''}
+${selectedNode.states?.length ? `\n# State machine: ${selectedNode.states.join(' → ')}` : ''}
+${selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_pattern}` : ''}`}
+                            </pre>
+                          )}
+                          {!pseudocode && !pseudocodeLoading && !selectedNode && <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>Select a node to view pseudocode</div>}
                         </div>
                       )}
                     </div>
@@ -2153,12 +2185,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   })()}
 
                   {dataTab === 'raw' && (() => {
-                    // Show full ArangoDB document, not the stripped D3 node
                     const fullDoc = data.allNodes.find(n => n._id === selectedNode.id)
                     return (
-                      <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
-                        {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
-                      </pre>
+                      <div>
+                        {/* API endpoints for automation */}
+                        <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>REST API</div>
+                        <div style={{ fontSize: 8, color: '#94a3b8', background: '#050505', padding: 6, border: `1px solid ${EMBRY.border}`, borderRadius: 2, marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>
+                          <div><span style={{ color: '#4CAF50' }}>GET</span> {API}/api/binary/{binaryName}/features</div>
+                          <div><span style={{ color: '#2196F3' }}>GET</span> {API}/api/binary/{binaryName}/edges</div>
+                          <div><span style={{ color: '#FF9800' }}>POST</span> {API}/api/memory/recall {`{query: "${selectedNode.label}"}`}</div>
+                          <div style={{ color: EMBRY.dim, marginTop: 4 }}>curl {API}/api/binary/{binaryName}/features | jq '.[] | select(.name=="{selectedNode.label}")'</div>
+                        </div>
+                        <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>RAW DOCUMENT</div>
+                        <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
+                          {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
+                        </pre>
+                      </div>
                     )
                   })()}
                 </div>
@@ -2208,6 +2250,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   ANALYSIS
                 </button>
                 <button
+                  id="be-journal-tab"
                   onClick={() => setRightTab('journal')}
                   title="Investigation Journal"
                   style={{
@@ -2348,8 +2391,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )
                 })()}
                 {chatMessages.length === 0 && selectedNode && (
-                  <div style={{ padding: 16, textAlign: 'center', color: EMBRY.dim, fontSize: 11 }}>
-                    Ask a question about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
+                  <div style={{ padding: 10 }}>
+                    <div style={{ fontSize: 11, color: EMBRY.dim, marginBottom: 8 }}>
+                      Ask about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong> ({selectedNode.nodeType.replace('_', ' ')})
+                    </div>
+                    <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 4, fontWeight: 800 }}>SUGGESTED</div>
+                    {[
+                      `What does ${selectedNode.label} do?`,
+                      `What calls ${selectedNode.label}?`,
+                      `Trace the data flow through ${selectedNode.label}`,
+                      selectedNode.nodeType === 'rpc' ? `What are the parameters of ${selectedNode.label}?` : `What is the security impact of ${selectedNode.label}?`,
+                    ].map((q, i) => (
+                      <div key={i} onClick={() => setChatInput(q)} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3 }}>
+                        {q}
+                      </div>
+                    ))}
                   </div>
                 )}
                 {chatMessages.map((m, i) => (
@@ -2439,7 +2495,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               {/* Chat Input */}
               <form onSubmit={e => { e.preventDefault(); sendChat() }} style={styles.chatForm}>
                 <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 4 }}>
-                  <input style={{ ...styles.chatInput, border: 'none', background: 'transparent' }} placeholder={
+                  <input id="be-chat-input" style={{ ...styles.chatInput, border: 'none', background: 'transparent' }} placeholder={
                     [...chatMessages].reverse().find(m => m.role === 'assistant')?.feedback === 'down'
                       ? 'What should have happened instead?'
                       : selectedNode ? `Ask about ${selectedNode.label}...` : 'Ask about this binary...'

@@ -139,7 +139,7 @@ async def review_single(
             json={
                 "model": SCILLM_MODEL,
                 "messages": [{"role": "user", "content": content}],
-                "temperature": 0.1,
+                "temperature": 0.0,
                 "max_tokens": 1024,
                 "response_format": {"type": "json_object"},
             },
