@@ -55,6 +55,34 @@ async function connectCDP(port) {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// Poll DOM until a selector exists and has content, or timeout (default 5s)
+async function waitForSelector(cdp, selector, timeoutMs = 5000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const r = await cdp.send('Runtime.evaluate', {
+      expression: `(()=>{const el=document.querySelector('${selector}');return el && el.offsetHeight > 0 ? 'found' : null})()`,
+      returnByValue: true,
+    });
+    if (r.result?.result?.value === 'found') return true;
+    await sleep(200);
+  }
+  return false;
+}
+
+// Poll until an element with given id has non-empty textContent
+async function waitForContent(cdp, id, timeoutMs = 5000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const r = await cdp.send('Runtime.evaluate', {
+      expression: `(()=>{const el=document.getElementById('${id}');return el && el.textContent.trim().length > 10 ? 'ready' : null})()`,
+      returnByValue: true,
+    });
+    if (r.result?.result?.value === 'ready') return true;
+    await sleep(200);
+  }
+  return false;
+}
+
 // Navigate to Binary Explorer Components tab and wait for render
 async function navigateToBinaryExplorer(cdp) {
   await cdp.send('Page.navigate', { url: `${BASE}/#binary-explorer` });
@@ -107,7 +135,7 @@ const GROUPS = {
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
   'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-table'}],
   'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-taxonomy-table'}],
-  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'wait',ms:500},{a:'ss',n:'03-code-view'}],
+  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'}],
   'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'}],
   'chat-exploration':      [...PRE],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
@@ -116,9 +144,11 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'initial-triage');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 1'}return 'no input'})()`},
     {a:'wait',ms:1500},
     {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth-deep-dive');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 2'}return 'no input'})()`},
-    {a:'wait',ms:1500},
+    {a:'wait',ms:2000},
+    {a:'eval',s:`(()=>{const sel=document.getElementById('be-scene-load');return sel?sel.outerHTML.substring(0,100):'no load'})()`,timeout:2000},
+    {a:'wait',ms:500},
     {a:'ss',n:'03-scenes-saved'}],
-  'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'wait',ms:500},{a:'ss',n:'03-journal'}],
+  'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'waitId',id:'be-journal-export-writeup',timeout:3000},{a:'wait',ms:500},{a:'ss',n:'03-journal'}],
   'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'}],
   'graph-exploration':     [...PRE],
   'search-and-filter':     [...PRE],
@@ -187,6 +217,12 @@ async function run() {
         }
         else if (s.a === 'eval') {
           await cdp.send('Runtime.evaluate', { expression: s.s, returnByValue: true });
+        }
+        else if (s.a === 'waitSel') {
+          await waitForSelector(cdp, s.sel, s.timeout || 5000);
+        }
+        else if (s.a === 'waitId') {
+          await waitForContent(cdp, s.id, s.timeout || 5000);
         }
       } catch(e) { failed++; console.log(`  ! ${g}/${s.a}: ${e.message}`); }
     }

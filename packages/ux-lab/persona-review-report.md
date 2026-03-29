@@ -1,46 +1,46 @@
 # Persona Review Report
 
-Generated: 2026-03-29 15:33
+Generated: 2026-03-29 16:11
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 17 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are missing: connections between nodes (e.g., fr | 9534ms |
-| 17 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are still partially occluded or too | 8967ms |
-| 17 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks explicit CWE/ATT&CK security tags despite | 8796ms |
-| 17 | tim-blazytko | symbol-tree | 8 | PASS | No visual cue (e.g., expand/collapse icon, hover state) indi | 9522ms |
-| 17 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column still uses a red bar without displaying th | 6983ms |
-| 17 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE/ATT&CK tags are not visible in the detail panel for 'mcp | 7949ms |
-| 17 | tim-blazytko | code-view | 4 | FAIL | Code View lacks syntax highlighting for Python pseudocode, m | 7158ms |
-| 17 | tim-blazytko | chat-analysis | 5 | FAIL | Node labels like 'list_mcp_tools' are truncated in the graph | 7619ms |
-| 17 | tim-blazytko | automation | 7 | PASS | The 'Raw JSON' toggle is still buried at the bottom of the d | 6560ms |
-| 17 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector dropdown ('Security') remains small and | 7416ms |
-| 17 | tim-blazytko | scene-management | 8 | PASS | The 'Name...' input field next to 'SAVE' is still ambiguous  | 10292ms |
-| 17 | tim-blazytko | investigation-journal | 4 | FAIL | Journal entries are truncated (e.g., 'ked: mcp _aut h_co mpl | 8944ms |
-| 16 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — cannot infer control/d | 12376ms |
-| 16 | gynvael-coldwind | data-structures | 4 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 8919ms |
-| 16 | gynvael-coldwind | graph-exploration | 8 | PASS | The legend is static and non-interactive; clicking a legend  | 19687ms |
-| 16 | gynvael-coldwind | code-view | 4 | FAIL | The 'Code View' under the Python tab displays only descripti | 8795ms |
-| 16 | gynvael-coldwind | node-detail | 5 | FAIL | Detail panel lacks CWE/ATT&CK tags for the 'mcp_auth_complet | 10171ms |
-| 16 | gynvael-coldwind | search-and-filter | 5 | FAIL | No visual feedback when filtering: typing in 'Filter...' doe | 9877ms |
-| 16 | gynvael-coldwind | context-menu | 8 | PASS | No visible contextual query suggestions in the chat pane or  | 8769ms |
-| 16 | gynvael-coldwind | cross-references | 8 | PASS | Edge types (triggers, contains, emits, payload) are not visu | 13993ms |
-| 16 | gynvael-coldwind | state-machines | 4 | FAIL | AST/Fields tab for 'mcp_auth_completed' shows 'No AST extrac | 8675ms |
-| 16 | gynvael-coldwind | performance | 7 | PASS | Edge labels (e.g., 'emits') are present but tiny and partial | 13079ms |
-| 16 | gynvael-coldwind | chat-analysis | 7 | PASS | Graph nodes like 'mcp', 'list_mcp_tools', and others lack cl | 7908ms |
-| 7 | liveoverflow | first-impressions | 8 | PASS | The graph’s initial state is sparse and abstract (e.g., unla | 10764ms |
-| 7 | liveoverflow | progressive-disclosure | 8 | PASS | Graph edges are dense and overlapping, making individual rel | 9676ms |
-| 7 | liveoverflow | learning-path | 8 | PASS | Chat interface is not visible in the screenshot — critical f | 7876ms |
-| 7 | liveoverflow | vulnerability-hunting | 8 | PASS | CWE/ATT&CK tags are not visible in the detail panel or graph | 9413ms |
-| 7 | liveoverflow | code-view | 8 | PASS | The Python pseudocode view is truncated in the screenshot —  | 7599ms |
-| 7 | liveoverflow | chat-exploration | 8 | PASS | The chat input is not pre-populated with suggested queries w | 8528ms |
-| 7 | liveoverflow | visual-design | 8 | PASS | No visible legend explaining the color coding — users must i | 7099ms |
-| 7 | liveoverflow | ctf-workflow | 9 | PASS | No visible UI element for adding manual notes or annotations | 7566ms |
-| 7 | liveoverflow | graph-interaction | 8 | PASS | The graph’s node labels (e.g., 'other', 'daemon') are someti | 9556ms |
-| 7 | liveoverflow | accessibility | 8 | PASS | No visible keyboard shortcuts for graph navigation (pan/zoom | 7564ms |
-| 7 | liveoverflow | error-states | 0 | None | --- | 120112ms |
+| 20 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: orange edges from 'add_mcp_se | 10183ms |
+| 20 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are still partially occluded on den | 9330ms |
+| 20 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks structured metadata: no CWE/ATT&CK tags v | 9380ms |
+| 20 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on the | 9058ms |
+| 20 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column still uses red bars without displaying the | 7488ms |
+| 20 | tim-blazytko | taxonomy-integration | 5 | FAIL | Selected node 'mcp_auth_completed' in the detail panel shows | 7840ms |
+| 20 | tim-blazytko | code-view | 4 | FAIL | Code View under the 'Python' tab displays only high-level co | 7485ms |
+| 20 | tim-blazytko | chat-analysis | 5 | FAIL | Node labels like 'list_mcp_tools' are truncated in the graph | 7428ms |
+| 20 | tim-blazytko | automation | 7 | PASS | The 'Raw JSON' toggle is still at the bottom of the detail p | 7359ms |
+| 20 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector ('Security') remains a small, low-contr | 7190ms |
+| 20 | tim-blazytko | scene-management | 4 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 7946ms |
+| 20 | tim-blazytko | investigation-journal | 4 | FAIL | Investigation Journal panel displays truncated, untimestampe | 7076ms |
+| 18 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges still lack directional arrows — orange edges fro | 12892ms |
+| 18 | gynvael-coldwind | data-structures | 3 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 11854ms |
+| 18 | gynvael-coldwind | graph-exploration | 5 | FAIL | Legend is static and non-interactive — clicking 'event' or ' | 10137ms |
+| 18 | gynvael-coldwind | code-view | 4 | FAIL | The 'Code View' under the 'Python' tab displays only comment | 10702ms |
+| 18 | gynvael-coldwind | node-detail | 5 | FAIL | Detail panel for 'mcp_auth_completed' lacks any CWE or ATT&C | 11106ms |
+| 18 | gynvael-coldwind | search-and-filter | 4 | FAIL | Filter input field labeled 'Filter...' lacks placeholder tex | 12906ms |
+| 18 | gynvael-coldwind | context-menu | 8 | PASS | No contextual query suggestions visible in the chat pane or  | 11625ms |
+| 18 | gynvael-coldwind | cross-references | 5 | FAIL | Only 'EMITS' edge type is visible in the Connections tab; 'T | 10449ms |
+| 18 | gynvael-coldwind | state-machines | 4 | FAIL | AST/Fields tab for 'mcp_auth_completed' displays 'No AST ext | 10121ms |
+| 18 | gynvael-coldwind | performance | 5 | FAIL | Node labels (e.g., 'schema', 'daemon') are small and cluster | 11243ms |
+| 18 | gynvael-coldwind | chat-analysis | 7 | PASS | Graph nodes lack type icons or color-coding in main view: 'm | 10944ms |
+| 18 | liveoverflow | first-impressions | 8 | PASS | Initial graph state (first screenshot) is sparse with unlabe | 11683ms |
+| 18 | liveoverflow | progressive-disclosure | 4 | FAIL | Graph edges are extremely dense and overlapping, making it i | 12470ms |
+| 18 | liveoverflow | learning-path | 7 | PASS | Perspective selector (Security/Architecture/Data Flow) in to | 9523ms |
+| 18 | liveoverflow | vulnerability-hunting | 5 | FAIL | No CWE or ATT&CK tags are visible in the detail panel or on  | 9426ms |
+| 18 | liveoverflow | code-view | 7 | PASS | The Python pseudocode view is truncated — only the top 8 lin | 6684ms |
+| 18 | liveoverflow | chat-exploration | 4 | FAIL | The chat input is not visible in the screenshot — a critical | 7401ms |
+| 18 | liveoverflow | visual-design | 5 | FAIL | No visible legend explaining what each node color represents | 7869ms |
+| 18 | liveoverflow | ctf-workflow | 5 | FAIL | No visible UI element (e.g., text box, pencil icon, 'Add Not | 7512ms |
+| 18 | liveoverflow | graph-interaction | 8 | PASS | The 'Expand 6 Neighbors' option in the context menu is not v | 8507ms |
+| 18 | liveoverflow | accessibility | 5 | FAIL | No visible keyboard shortcuts for graph navigation (pan/zoom | 8115ms |
+| 18 | liveoverflow | error-states | 8 | PASS | No visible 'no results' state or feedback when searching for | 7786ms |
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.8/10
-- Passed (>=8): 20/33
+- Average score: 5.8/10
+- Passed (>=8): 10/34
 - Gate: FAIL (target: 8.0)

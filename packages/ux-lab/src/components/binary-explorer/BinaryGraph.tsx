@@ -500,7 +500,11 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     const savedAlpha = simulation.alpha()
     simulation.alpha(0.8) // Temporarily high energy for pre-warm
     for (let i = 0; i < preWarmTicks; ++i) simulation.tick()
-    simulation.alpha(0.2) // Reset after settling
+    // After pre-warm: set alpha just above alphaMin so simulation runs ~10 more
+    // ticks for final adjustment then stops. This makes the layout deterministic —
+    // the same data always produces the same node positions regardless of when
+    // the screenshot is captured.
+    simulation.alpha(alphaMinVal * 2)
 
     // ── Grouping Hulls (behind edges and nodes) ──
     const hullGroup = zoomG.append('g').attr('class', 'hulls')
