@@ -48,6 +48,8 @@ async function connectCDP(port) {
   });
   await send('Runtime.enable');
   await send('Page.enable');
+  // Upscale viewport to 1440x900 for readable screenshots
+  await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
   return { send, close: () => ws.close() };
 }
 
@@ -98,18 +100,19 @@ const switchPerspective = (val) => `(()=>{const sel=document.getElementById('be-
 const clickJournal = `(()=>{const j=document.getElementById('be-journal-tab');if(j){j.click();return 'journal'}return 'no #be-journal-tab'})()`;
 
 const GROUPS = {
-  'first-impressions':     [...PRE],
+  // Tim: each group gets unique interaction showing relevant feature
+  'first-impressions':     [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-feature-table'}],
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[2]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-expanded'}],
-  'node-detail':           [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-json'}],
+  'node-detail':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'}],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast'}],
   'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-table'}],
   'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-taxonomy-table'}],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'wait',ms:500},{a:'ss',n:'03-code-view'}],
-  'chat-analysis':         [...PRE],
+  'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'}],
   'chat-exploration':      [...PRE],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
-  'scene-management':      [...PRE],
+  'scene-management':      [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-scene-with-raw'}],
   'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'wait',ms:500},{a:'ss',n:'03-journal'}],
   'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'}],
   'graph-exploration':     [...PRE],

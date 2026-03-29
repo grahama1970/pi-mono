@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 12:18
+Generated: 2026-03-29 13:43
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 7 | tim-blazytko | first-impressions | 7 | PASS | Graph readability degrades under density: 57 nodes and 755 e | 12140ms |
-| 7 | tim-blazytko | graph-navigation | 0 | None | --- | 120083ms |
-| 7 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks explicit security tags (CWE/ATT&CK) for ' | 11450ms |
-| 7 | tim-blazytko | symbol-tree | 4 | FAIL | Binary metadata (format, arch, size) is completely absent fr | 12592ms |
-| 7 | tim-blazytko | table-view | 4 | FAIL | The table lacks explicit column headers with sorting indicat | 9267ms |
-| 7 | tim-blazytko | taxonomy-integration | 5 | FAIL | The detail panel for the selected node 'apply_patch' (visibl | 9666ms |
-| 7 | tim-blazytko | code-view | 4 | FAIL | The Python pseudocode in the 'Code View' is partially cut of | 8826ms |
-| 7 | tim-blazytko | chat-analysis | 7 | PASS | Graph nodes like 'other' and '19' lack clear type icons or l | 10303ms |
-| 7 | tim-blazytko | automation | 8 | PASS | The API section is buried in the detail panel and not discov | 8374ms |
-| 7 | tim-blazytko | perspective-views | 5 | FAIL | The 'Security' view still displays non-security nodes like ' | 7932ms |
-| 7 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown to select previou | 7254ms |
-| 7 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element in the journal panel allows adding man | 9974ms |
+| 12 | tim-blazytko | first-impressions | 4 | FAIL | The graph remains a hairball: 334 features and 755 edges are | 8008ms |
+| 12 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels (e.g., 'triggers' on green edges) are partially  | 6970ms |
+| 12 | tim-blazytko | node-detail | 4 | FAIL | Detail panel for 'apply_patch' shows only 'Raw JSON' and API | 6341ms |
+| 12 | tim-blazytko | symbol-tree | 4 | FAIL | Graph nodes labeled 'trigger', 'apply_patch' lack semantic f | 7091ms |
+| 12 | tim-blazytko | table-view | 4 | FAIL | No visual sorting indicators (arrows) are present on columns | 8160ms |
+| 12 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE and ATT&CK tags are absent from the detail panel for 'ap | 6423ms |
+| 12 | tim-blazytko | code-view | 7 | PASS | The Python pseudocode in the 'Code View' is partially cut of | 6021ms |
+| 12 | tim-blazytko | chat-analysis | 7 | PASS | Graph nodes 'triggers' and 'connection' lack type icons or d | 8655ms |
+| 12 | tim-blazytko | automation | 7 | PASS | API section is still buried in the detail panel and not disc | 5769ms |
+| 12 | tim-blazytko | perspective-views | 5 | FAIL | The 'Security' view still displays non-security nodes like ' | 7416ms |
+| 12 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown — only 'Save' and | 7958ms |
+| 12 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element (e.g., pencil icon, 'Add Note' button, | 5706ms |
 | 7 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows or weight indicators, ma | 9544ms |
 | 7 | gynvael-coldwind | data-structures | 4 | FAIL | Detail panel for 'apply_patch' shows no field-level structur | 9736ms |
 | 7 | gynvael-coldwind | graph-exploration | 8 | PASS | The graph's density in the first screenshot makes it hard to | 9655ms |
@@ -42,5 +42,5 @@ Generated: 2026-03-29 12:18
 ## Summary
 - Reviewed: 34/34
 - Average score: 7.0/10
-- Passed (>=8): 21/32
+- Passed (>=8): 21/33
 - Gate: FAIL (target: 8.0)

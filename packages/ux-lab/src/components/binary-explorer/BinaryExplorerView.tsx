@@ -45,11 +45,12 @@ function BinaryLeftPane({ binaryName, binaries, onSelectBinary, onRenameBinary, 
         {filteredBinaries.map(b => (
           <div
             key={b}
-            style={paneItemStyle(b === binaryName)}
+            style={{ ...paneItemStyle(b === binaryName), display: 'flex', flexDirection: 'column', gap: 1 }}
             onClick={() => onSelectBinary(b)}
             onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, binary: b }) }}
           >
-            {b}
+            <span style={{ fontWeight: b === binaryName ? 700 : 400 }}>{b}</span>
+            {b === binaryName && <span style={{ fontSize: 7, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace' }}>ELF · x86_64 · analyzed</span>}
           </div>
         ))}
       </LeftPaneSection>
@@ -164,7 +165,7 @@ const PERSPECTIVE_LABELS: Record<Perspective, string> = {
 }
 const PERSPECTIVE_TYPES: Record<Perspective, string[]> = {
   all: [],  // empty = no filter
-  security: ['rpc', 'schema', 'event', 'namespace'],
+  security: ['rpc', 'schema', 'event', 'state_machine', 'cli_command'],
   data_flow: ['schema', 'event', 'state_machine', 'namespace'],
   protocol: ['namespace', 'rpc', 'cli_command', 'event'],
 }
@@ -612,13 +613,13 @@ export function BinaryExplorerView() {
   // --- Auto-seed: populate graph when binary data loads and scene is empty ---
   useEffect(() => {
     if (data.loading || data.graphNodes.length === 0 || sceneNodeIds.size > 0) return
-    // Seed with namespaces + top 50 most-connected nodes for a dense initial view
+    // Seed with namespaces + top 25 most-connected nodes — enough to show structure without hairball
     const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
     const byDegree = data.graphNodes
       .filter(n => n.nodeType !== 'parameter')
       .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
       .sort((a, b) => b.deg - a.deg)
-      .slice(0, 50)
+      .slice(0, 25)
     const seedIds = [...new Set([...namespaces.map(n => n.id), ...byDegree.map(n => n.id)])]
     if (seedIds.length > 0) {
       addToScene(seedIds)
@@ -1555,19 +1556,18 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
 
               {/* Scene Save/Load */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 4, borderLeft: `1px solid ${EMBRY.border}`, paddingLeft: 12 }}>
-                {savedScenes.length > 0 && (
-                  <select
-                    value=""
-                    onChange={e => {
-                      const scene = savedScenes.find(s => s.name === e.target.value)
-                      if (scene) loadScene(scene)
-                    }}
-                    style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, fontSize: 9, padding: '2px 4px', outline: 'none', borderRadius: 2, maxWidth: 100 }}
-                  >
-                    <option value="">Scenes</option>
-                    {savedScenes.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
-                  </select>
-                )}
+                <select
+                  id="be-scene-load"
+                  value=""
+                  onChange={e => {
+                    const scene = savedScenes.find(s => s.name === e.target.value)
+                    if (scene) loadScene(scene)
+                  }}
+                  style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, fontSize: 9, padding: '2px 4px', outline: 'none', borderRadius: 2, maxWidth: 120 }}
+                >
+                  <option value="">{savedScenes.length > 0 ? `LOAD (${savedScenes.length})` : 'NO SCENES'}</option>
+                  {savedScenes.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+                </select>
                 {sceneNodeIds.size > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <input
@@ -1936,17 +1936,23 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 5: Security tags (CWE / ATT&CK) */}
-                      {(selectedNode.cwe || selectedNode.attack) && (
-                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                          {selectedNode.cwe && selectedNode.cwe !== 'none' && (
-                            <span style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>CWE: {selectedNode.cwe}</span>
-                          )}
-                          {selectedNode.attack && selectedNode.attack !== 'none' && (
-                            <span style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>ATT&CK: {selectedNode.attack}</span>
-                          )}
-                        </div>
-                      )}
+                      {/* Row 5: Security tags (CWE / ATT&CK from taxonomy map) */}
+                      {(() => {
+                        const tax = taxonomyMap.get(selectedNode.id)
+                        const cweList = tax?.cwe?.filter(c => c && c !== 'none') ?? []
+                        const attackList = tax?.attack?.filter(a => a && a !== 'none') ?? []
+                        if (cweList.length === 0 && attackList.length === 0) return null
+                        return (
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                            {cweList.map(c => (
+                              <span key={c} style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{c}</span>
+                            ))}
+                            {attackList.map(a => (
+                              <span key={a} style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{a}</span>
+                            ))}
+                          </div>
+                        )
+                      })()}
 
                       {/* Row 6: Source pattern (if available) */}
                       {selectedNode.source_pattern && (

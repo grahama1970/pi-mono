@@ -8,70 +8,89 @@
       "group": "first-impressions",
       "source": "BinaryExplorerView.tsx:1-200",
       "criteria": "As an RE professional who builds agentic analysis pipelines: Does this graph-first tool communicate what binaries are available and how to start exploring relationships? Is the graph readable with meaningful node labels and visible edges? Does the chat integration feel like a first-class analysis interface? Could this feed into an automated analysis workflow via its API?",
-      "score": 7,
-      "verdict": "PASS",
+      "score": 4,
+      "verdict": "FAIL",
       "weaknesses": [
-        "Graph readability degrades under density: 57 nodes and 755 edges create a hairball; many nodes are unlabeled (e.g., '35', '9') or use ambiguous labels like 'daemon' without context.",
-        "Detail panel for 'G:Connection' shows triggers/states but lacks type-specific visualization (e.g., no state transition diagram, just lists).",
-        "No visual entry point: 'BINARIES (4)' list is present but no 'Start Here' or tutorial cue guides new users on how to begin exploring relationships."
+        "The graph remains a hairball: 334 features and 755 edges are visually overwhelming with no clustering or filtering; edges are too thin and dense to trace relationships.",
+        "Many nodes are unlabeled (e.g., '11', '15', '9') or use ambiguous labels like 'daemon' without context, reducing readability.",
+        "No visual entry point or onboarding cue: the 'BINARIES (4)' list lacks a 'Start Here' or tutorial guidance to begin exploring relationships.",
+        "Edges lack color-coding or thickness to indicate type or weight, making it impossible to discern meaningful connections at a glance.",
+        "The detail panel for 'mcp_auth_completed' shows connections as a flat list, not a visual flow or graph, failing to provide type-specific visualization."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph-first navigation is visually implemented with color-coded node types (rpc, event, schema, state machine) and visible edges showing relationships.",
-        "Chat integration is first-class: the 'Ask about G:Connection' input and suggested natural language queries are context-aware and drive exploration.",
-        "Progressive disclosure works: clicking 'G:Connection' expands its triggers/states in the detail panel without overwhelming the graph.",
-        "API/automation potential is signaled by 'EXPORT' and 'SAVE' buttons, and the 'ANALYSIS' tab suggests scriptable workflows."
+        "The graph visually expands on node selection (e.g., 'mcp_auth_completed' reveals connected nodes like 'add_mcp_server', 'clear_mcp_auth'), demonstrating progressive disclosure.",
+        "The right-side 'ANALYSIS' panel provides LLM-driven suggested queries, making chat feel like a first-class interface for driving exploration.",
+        "The detail panel for 'mcp_auth_completed' shows a structured table of connected features with type, cluster, and connection count, offering quantitative context."
       ],
       "changes": [
-        "Add tooltips or hover labels to all graph nodes (e.g., show full name like 'daemon.* namespace' for node '35') to resolve ambiguity.",
-        "In the detail panel for state machines, replace text lists with a mini state transition diagram to provide type-specific visualization.",
-        "Add a 'Start Exploring' button next to 'BINARIES (4)' that auto-loads a suggested query (e.g., 'What are the core schemas in droid?') to guide onboarding."
+        "Add color-coded edges (e.g., orange for 'event' connections, blue for 'schema') and vary thickness by connection weight to make relationships legible.",
+        "Replace numeric node IDs (e.g., '11', '15') with meaningful labels or tooltips that show the feature name and type on hover.",
+        "Add a 'Start Exploring' button or onboarding tour next to the 'BINARIES (4)' list to guide new users to their first graph interaction.",
+        "Implement a 'Focus Mode' that hides non-selected nodes and edges to reduce visual clutter when inspecting a specific node like 'mcp_auth_completed'.",
+        "Enhance the detail panel to include a mini-graph or flow diagram for the selected node\u2019s connections, not just a table."
       ],
-      "round": 7,
-      "latency_ms": 12140,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 8008,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
       "group": "graph-navigation",
       "source": "BinaryGraph.tsx",
       "criteria": "As someone who builds graph-based analysis tools: Does the force-directed graph show meaningful relationships between binary features? Can you see edge labels showing relationship types (contains, triggers, emits)? Are multiple layout modes available and clearly labeled? Does clicking a node reveal its connections? Is the graph responsive to interaction (expand on double-click, fit-to-graph)?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Edge labels (e.g., 'triggers' on green edges) are partially occluded by node labels or other edges in dense areas, reducing legibility.",
+        "No visible UI affordance (tooltip, icon, button) confirms double-click to expand subgraph or fit-to-graph; interaction model is implied but not visually communicated.",
+        "Mini-map in bottom-right lacks a legend or scale indicator, making spatial relationships and graph density hard to interpret at a glance."
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 7,
-      "latency_ms": 120083,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "strengths": [
+        "Force-directed graph clearly shows meaningful relationships between binary features (e.g., 'mcp_auth_completed' event triggers multiple RPCs and state transitions).",
+        "Edge labels (e.g., 'triggers', 'emits') are visible and semantically meaningful, directly mapping to binary behavior.",
+        "Clicking a node (e.g., 'mcp_auth_completed', 'G:Connection') reveals its connections and populates a rich detail panel with type-specific metadata.",
+        "Graph responds to interaction: expanding 'G:Connection' state machine reveals its internal transitions ('apply_patch', 'ask_user') with labeled edges.",
+        "Multiple layout modes ('FORCE', 'HIERARCHY', 'LAYERS') are clearly labeled and available in the toolbar."
+      ],
+      "changes": [
+        "Add subtle tooltips or hover indicators on edges to reveal full relationship labels when occluded.",
+        "Add a small icon or tooltip near the graph canvas that explicitly states 'Double-click node to expand subgraph' and 'Double-click background to fit graph'.",
+        "Add a legend or scale bar to the mini-map to clarify node density and spatial relationships."
+      ],
+      "round": 12,
+      "latency_ms": 6970,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
       "group": "node-detail",
       "source": "BinaryExplorerView.tsx:2400-2800",
       "criteria": "As someone who analyzes binary feature relationships: When clicking a node, does the detail panel show structured metadata \u2014 connection types grouped by edge type, fields/parameters with inferred types, security tags (CWE/ATT&CK)? Are connected nodes clickable for navigation? Is there enough information to understand the node's role in the binary without switching to another tool?",
-      "score": 5,
+      "score": 4,
       "verdict": "FAIL",
       "weaknesses": [
-        "Detail panel lacks explicit security tags (CWE/ATT&CK) for 'apply_patch', making security impact assessment impossible from this view.",
-        "Connection types (e.g., 'triggers') are not grouped or categorized in the detail panel; only a single 'TRIGGERS' label is shown without edge-type grouping.",
-        "No type-specific views (e.g., Security, Data Flow) are visible or selectable in the detail panel, limiting perspective switching as promised."
+        "Detail panel for 'apply_patch' shows only 'Raw JSON' and API endpoints \u2014 no inferred parameter types, fields, or security tags (CWE/ATT&CK) are visible.",
+        "Connection types are not grouped or categorized; only 'triggers' is shown as a label without edge-type filtering or grouping.",
+        "No type-specific views (Security, Data Flow, Architecture) are visible or selectable in the detail panel, limiting perspective switching.",
+        "The 'Overview' tab for 'G:Connection' contains prose and lists but lacks structured fields or inferred parameter types."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph visualization clearly shows 'apply_patch' node and its 'triggers' edge to 'droid:fsn:6', enabling relationship discovery at a glance.",
-        "Detail panel provides structured text explaining purpose, mechanics, and connections of the selected node, reducing need to switch tools.",
-        "API access is visible via 'Raw JSON' tab, showing REST endpoints and raw data, supporting agentic pipeline integration."
+        "Graph visualization clearly shows directional edges (e.g., 'triggers') between nodes like 'G:Connection' and 'apply_patch', enabling relationship mapping at a glance.",
+        "Chat panel provides LLM-driven exploration prompts (e.g., 'What calls apply_patch?') that align with the tool\u2019s chat-as-product philosophy.",
+        "Node selection triggers a detail panel with contextual metadata (e.g., 'G:Connection' shows state machine purpose and event handling)."
       ],
       "changes": [
-        "Add a 'Security' tab to the detail panel that displays CWE/ATT&CK tags for the selected node, enabling immediate risk assessment.",
-        "In the detail panel, group connections by edge type (e.g., 'TRIGGERS', 'CALLS', 'DATA_FLOW') with collapsible sections for each type.",
-        "Expose a tab bar in the detail panel with 'Overview', 'Security', 'Data Flow', and 'Architecture' views to enable perspective switching."
+        "Add a 'Parameters' section in the detail panel with inferred types (e.g., 'string', 'int') for function/event inputs/outputs.",
+        "Introduce edge-type grouping in the graph legend (e.g., 'triggers', 'calls', 'data_flow') with toggle filters to reduce visual noise.",
+        "Replace 'Raw JSON' with a structured view (key-value pairs with type annotations) and add a 'Security' tab showing CWE/ATT&CK tags.",
+        "Add a 'View Mode' selector in the detail panel to switch between Security, Data Flow, and Architecture perspectives."
       ],
-      "round": 7,
-      "latency_ms": 11450,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 6341,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -81,26 +100,26 @@
       "score": 4,
       "verdict": "FAIL",
       "weaknesses": [
-        "Binary metadata (format, arch, size) is completely absent from the UI, depriving the analyst of critical context for any binary.",
-        "No visible saved analysis scenes or scene-switching controls in the left sidebar or top toolbar \u2014 no way to recall or compare prior exploration states.",
-        "Graph node labels like '19' and 'other' are ambiguous and uninformative \u2014 they do not indicate function names, types, or meaningful identifiers, reducing immediate readability.",
-        "AST/Fields view in the detail panel explicitly states 'No AST extractions for this node', indicating missing or broken feature for code structure analysis."
+        "Graph nodes labeled 'trigger', 'apply_patch' lack semantic function names or types \u2014 visual analysis is impossible without chat.",
+        "Detail panel's 'AST / Fields' tab explicitly states 'No AST extractions for this node', indicating a core analysis feature is missing.",
+        "Left sidebar 'NO SCENES' dropdown shows no saved scenes or scene-switching controls \u2014 no way to load or compare analysis states.",
+        "Binary metadata is minimal \u2014 only 'ELF - x86_64' visible; no size, entry point, or section info for 'droid' in the UI."
       ],
       "status": "reviewed",
       "strengths": [
-        "Left sidebar clearly lists binaries (daemon, droid, test, tunnel) enabling quick switching between binaries.",
-        "Graph visually represents relationships between nodes (e.g., '6:Connection' linked to 'apply_patch'), fulfilling the graph-first promise for high-level relationship mapping.",
-        "Detail panel provides context-specific views (Overview, Raw JSON, AST/Fields) and shows API endpoints for automation, aligning with agentic pipeline goals."
+        "Left sidebar clearly lists binaries (daemon, droid, test, tunnel) with format/arch (ELF - x86_64) visible, enabling basic binary switching.",
+        "Graph visually links nodes like 'trigger' and 'apply_patch' with directional edges, offering a spatial alternative to cross-reference tables.",
+        "Detail panel shows node type ('EVENT - OTHER - TO') and triggers ('droid:fsm:6'), providing context for selected elements."
       ],
       "changes": [
-        "Add binary metadata (format, arch, size) to the top header or left sidebar next to the binary name \u2014 essential context for any RE workflow.",
-        "Introduce a 'Scenes' section in the left sidebar or top toolbar with named saved views and a 'Save Scene' button \u2014 enables reproducible, collaborative analysis.",
-        "Replace ambiguous node labels (e.g., '19', 'other') with meaningful identifiers (e.g., function names, event types, schema IDs) \u2014 improves graph readability at a glance.",
-        "Either populate the AST/Fields view with actual data or hide the tab if no AST is available \u2014 avoid showing 'No AST extractions' as it signals incomplete functionality."
+        "Replace generic node labels like 'trigger' with actual function names or semantic types (e.g., 'rpc_handler_0x401000') to enable visual analysis.",
+        "Fix or remove the 'AST / Fields' tab if no AST data is available \u2014 display a placeholder like 'AST not supported for this binary type' instead of 'No AST extractions'.",
+        "Add a 'SCENES' dropdown with saved scene names and a '+' button to create new scenes, enabling state persistence and comparison.",
+        "Display full binary metadata (size, entry point, section count) in the binary list or detail panel for 'droid' and other binaries."
       ],
-      "round": 7,
-      "latency_ms": 12592,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 7091,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -110,83 +129,83 @@
       "score": 4,
       "verdict": "FAIL",
       "weaknesses": [
-        "The table lacks explicit column headers with sorting indicators (e.g., up/down arrows), making it unclear which column is sorted or how to sort.",
-        "The 'CONN' column shows raw numbers (e.g., 115, 183) without any visual scale, legend, or context to interpret whether these values are high or low.",
-        "The row height is fixed and very dense, which hinders quick scanning and readability for large datasets.",
-        "The table does not show all 334 features at once \u2014 it\u2019s paginated or truncated, requiring scrolling, which breaks the 'flat view' requirement for rapid overview."
+        "No visual sorting indicators (arrows) are present on columns 'NAME', 'TYPE', 'CLUSTER', 'CWE', or 'ATT&CK', making it unclear if they are sortable or their current state.",
+        "The 'CONN' column displays raw numbers (115, 113, 183) without any color coding, scale, or legend to indicate relative importance or magnitude.",
+        "Row height is extremely dense with minimal vertical padding, making it visually fatiguing and difficult to scan across hundreds of rows.",
+        "The table is truncated at the bottom; only a small subset of rows is visible, requiring scrolling to see all 334 features, which breaks the 'flat view' requirement for rapid overview.",
+        "There is no visible affordance (e.g., clickable row, highlight, or link) to navigate from a table row to the corresponding node in the graph."
       ],
       "status": "reviewed",
       "strengths": [
-        "The feature table is visible and shows extracted features with columns for NAME, TYPE, CLUSTER, CONN, CWE, and ATT&CK.",
-        "The table includes a search/filter bar above the rows, suggesting filtering capability.",
-        "Clicking a row appears to navigate to the corresponding node in the graph, as seen when 'apply_patch' is selected and its detail panel opens.",
-        "The table displays a high data density, which is appropriate for scanning hundreds of features."
+        "The feature table is present and displays key columns (NAME, TYPE, CLUSTER, CONN, CWE, ATT&CK) as requested.",
+        "The table shows a count of 334/334 features, indicating it contains the full dataset for this binary.",
+        "The 'CONN' column is visibly sorted (descending, indicated by arrow), proving at least one column is sortable."
       ],
       "changes": [
-        "Add sortable column headers with up/down arrows to indicate current sort state and allow user sorting.",
-        "Add a visual indicator (e.g., color gradient, bar chart, or tooltip) to the 'CONN' column to provide context for connection counts.",
-        "Increase row height slightly or allow user-adjustable row density to improve readability during rapid scanning.",
-        "Provide an option to expand the table to show all features without pagination or add a 'Show All' toggle for flat view."
+        "Add small up/down arrow icons to the header of every sortable column (NAME, TYPE, CLUSTER, CWE, ATT&CK) to indicate sortability and current state.",
+        "Implement a color scale (e.g., green-to-red gradient) or size encoding for the 'CONN' column values to visually convey relative importance.",
+        "Increase row height by 50% and add 8px of vertical padding to improve scanability and reduce visual fatigue for large datasets.",
+        "Add a 'Show All' toggle or pagination control to allow viewing the entire 334-row table without scrolling for a true flat overview.",
+        "Make each table row clickable, with a visual highlight (e.g., row background change) upon hover, to navigate to the corresponding node in the graph."
       ],
-      "round": 7,
-      "latency_ms": 9267,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 8160,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
       "group": "taxonomy-integration",
       "source": "BinaryExplorerView.tsx:270-350",
       "criteria": "As someone who uses semantic tagging for binary classification: Are CWE and ATT&CK tags visible in the feature table and detail panel? Can you filter features by security taxonomy? Do the tags influence the graph coloring or the security perspective view? Would the taxonomy help you prioritize which features to analyze first?",
-      "score": 5,
+      "score": 4,
       "verdict": "FAIL",
       "weaknesses": [
-        "The detail panel for the selected node 'apply_patch' (visible in the second screenshot) does not display CWE or ATT&CK tags, forcing context switching to the feature table.",
-        "The graph nodes (e.g., '6:Connection', 'other') show no visual indication (color, icon, badge) of associated CWE/ATT&CK tags or severity, making security-critical nodes indistinguishable from benign ones.",
-        "The 'Security' perspective view is not visibly activated or differentiated \u2014 there is no visual cue (e.g., red nodes, threat icons) that the graph is filtered or styled for security analysis.",
-        "The filter input 'Filter features, CWE, ATT&CK...' is present but no filter is visibly applied in the table or graph, leaving the user uncertain if taxonomy-based filtering is active or effective."
+        "CWE and ATT&CK tags are absent from the detail panel for 'apply_patch' \u2014 user must switch context to the feature table to see them.",
+        "Graph nodes ('apply_patch', 'triggers', 'connection') show no color, icon, or badge indicating associated CWE/ATT&CK tags or severity.",
+        "The 'Security' perspective view is not activated \u2014 no red nodes, threat icons, or filtered graph to highlight high-risk features.",
+        "Filter input 'Filter features, CWE, ATT&CK...' is present but no filter is visibly applied \u2014 user cannot confirm if taxonomy filtering is active or effective."
       ],
       "status": "reviewed",
       "strengths": [
-        "The feature table at the bottom clearly displays CWE and ATT&CK columns, allowing for taxonomy-based filtering via the 'Filter features, CWE, ATT&CK...' input field.",
-        "The graph visually represents relationships between features (e.g., 'apply_patch' connected to '6:Connection'), fulfilling the graph-first promise for high-level navigation.",
-        "The chat panel offers LLM-native queries about the selected node, aligning with the 'chat is the product' value proposition."
+        "Feature table includes CWE and ATT&CK columns, enabling taxonomy-based filtering via the 'Filter features, CWE, ATT&CK...' input.",
+        "Chat panel offers LLM-native queries about 'apply_patch', suggesting semantic exploration is integrated."
       ],
       "changes": [
-        "Add CWE and ATT&CK tags to the detail panel for the selected node 'apply_patch' to eliminate context switching.",
-        "Color-code graph nodes based on CWE/ATT&CK severity (e.g., red for high-risk CWEs) or add small icon overlays to indicate taxonomy category, making security-critical nodes instantly visible.",
-        "Activate and visually differentiate the 'Security' perspective view by applying a distinct graph theme (e.g., red background, threat icons) and highlighting nodes with known vulnerabilities.",
-        "Show a visual indicator (e.g., badge, filter tag) in the feature table and graph when a CWE/ATT&CK filter is applied, confirming the filter is active and effective."
+        "Add CWE/ATT&CK badges or color-coding to graph nodes (e.g., red for high-severity CWE) to make security context visible at a glance.",
+        "Render CWE/ATT&CK tags in the detail panel for the selected node 'apply_patch' to avoid context switching.",
+        "Activate and visually distinguish the 'Security' perspective view with threat icons or filtered graph to prioritize high-risk features.",
+        "Show applied filter state in the filter input (e.g., 'CWE-78' or 'T1078') to confirm taxonomy filtering is active."
       ],
-      "round": 7,
-      "latency_ms": 9666,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 6423,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
       "group": "code-view",
       "source": "CodePane.tsx",
       "criteria": "As someone who needs to understand what a binary feature does: Does the code view show the extracted source pattern or description in a structured format? Is there a Python pseudocode representation that explains the feature's behavior? Can you see the feature's fields formatted as a function signature? Is the code view useful for understanding the feature without needing a separate disassembler?",
-      "score": 4,
-      "verdict": "FAIL",
+      "score": 7,
+      "verdict": "PASS",
       "weaknesses": [
         "The Python pseudocode in the 'Code View' is partially cut off at the bottom; the full logic is not visible without scrolling, reducing immediate usability.",
-        "The graph node labels (e.g., '19', 'other') are ambiguous and lack context; without hovering or clicking, their meaning is unclear, reducing graph readability.",
-        "The 'TRIGGERS' section in the detail panel is minimal and doesn't show a full function signature or parameter list, which would aid in understanding the feature's interface."
+        "Graph node labels like '10' and 'other' are ambiguous and lack context; without hovering or clicking, their meaning is unclear, reducing graph readability.",
+        "The 'TRIGGERS' section in the detail panel does not show a full function signature or parameter list, which would aid in understanding the feature's interface."
       ],
       "status": "reviewed",
       "strengths": [
-        "The graph visually shows relationships between 'apply_patch', '6:Connection', and 'mcp' via directed edges, which is better than a flat cross-reference table.",
-        "The detail panel provides a natural language description of 'apply_patch' and its connection to 'droid:fsn:6', which aids high-level understanding.",
-        "The 'Code View' tab offers a Python pseudocode representation, which is a structured format for understanding behavior."
+        "The 'Code View' panel displays a structured Python pseudocode representation with a clear function signature: '# apply_patch (event)' and includes a purpose and 'How It Works' section.",
+        "The detail panel for 'apply_patch' provides a structured table of related features (schema, namespace, state machine) with metadata like CLUSTER and CWE, enabling quick contextual understanding.",
+        "The graph visually links 'apply_patch' to 'triggers' and 'connection' nodes, offering a relationship-aware view that surpasses traditional cross-reference tables for high-level flow."
       ],
       "changes": [
-        "In the 'Code View' panel, ensure the Python pseudocode is fully visible without requiring vertical scroll; increase panel height or implement auto-scroll to top of code.",
-        "Replace ambiguous graph node labels like '19' and 'other' with meaningful names (e.g., 'schema_cluster_19', 'event_handler_other') or add tooltips on hover to clarify their type and purpose.",
-        "Expand the 'TRIGGERS' section in the detail panel to include a full function signature (e.g., 'apply_patch(patch_id: str, user: str) -> bool') and parameter descriptions."
+        "In the 'Code View' panel, add a scroll indicator or expand the visible area to show the full Python pseudocode without requiring user interaction.",
+        "Replace ambiguous graph node labels like '10' and 'other' with descriptive names (e.g., 'apply_patch_trigger', 'connection_handler') to improve immediate readability.",
+        "In the detail panel's 'TRIGGERS' section, display the full function signature including parameters (e.g., 'trigger_patch(event: str, target: int)') to clarify the interface."
       ],
-      "round": 7,
-      "latency_ms": 8826,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 6021,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -196,53 +215,55 @@
       "score": 7,
       "verdict": "PASS",
       "weaknesses": [
-        "Graph nodes like 'other' and '19' lack clear type icons or labels, reducing information density and forcing users to click for context.",
-        "The 'Code View' tab in the detail panel is visible but empty \u2014 no ASM or decompiled code is shown, undermining graph-aware code-level responses.",
-        "The graph\u2019s layout is sparse and cluttered with unlabeled edges, making it hard to interpret relationships at a glance without interaction."
+        "Graph nodes 'triggers' and 'connection' lack type icons or descriptive labels, forcing users to click to understand their role \u2014 violates progressive disclosure by hiding semantics.",
+        "Edges between nodes are unlabeled; no visual indication of relationship type (e.g., 'triggers', 'calls', 'data flow') without interacting with the detail panel.",
+        "Code View tab in detail panel is empty \u2014 no ASM or decompiled code is shown, undermining code-level, graph-aware responses despite the 'Python' tab being active.",
+        "Graph layout is sparse and lacks visual grouping or hierarchy \u2014 nodes are scattered with no clear clustering, making relationship density hard to interpret at a glance."
       ],
       "status": "reviewed",
       "strengths": [
-        "Suggested queries in the ANALYSIS panel (e.g., 'What calls apply_patch?', 'Trace the data flow through apply_patch') are grounded in real binary features (apply_patch, droid:fsn:6) and reflect graph-aware intent.",
-        "The chat interface is positioned as the primary analysis driver \u2014 the ANALYSIS panel is persistent, query-focused, and tied to the selected node (apply_patch), not a detached chatbot.",
-        "Graph relationships are visually represented (e.g., green 'triggers' edge from apply_patch to droid:fsn:6), demonstrating graph-aware responses beyond static cross-references.",
-        "Detail panel shows structured metadata (Cluster: other, Tier: T0, Confidence: 100%) and links to related entities (TRIGGERS: droid:fsn:6), enabling progressive disclosure."
+        "Suggested queries in the ANALYSIS panel (e.g., 'What calls apply_patch?', 'Trace the data flow through apply_patch') are grounded in actual binary feature names ('apply_patch', 'droid:fsn:6') and reflect graph-aware intent.",
+        "Chat is positioned as the primary interface \u2014 the ANALYSIS panel is persistent, query-focused, and drives exploration, not a secondary chatbot.",
+        "Detail panel for 'apply_patch' shows type-specific metadata (event, cluster, tier, confidence) and architecture context ('droid:fsn:6'), enabling graph-aware reasoning.",
+        "Graph visually links 'apply_patch' to 'triggers' and 'connection' with directional edges, suggesting relationship semantics are modeled, not just listed."
       ],
       "changes": [
-        "Add type icons and tooltips to unlabeled nodes (e.g., 'other', '19') to improve information density without requiring clicks.",
-        "Populate the 'Code View' tab with actual decompiled/ASM code for the selected node (apply_patch) to fulfill the graph-aware response promise.",
-        "Implement edge labels (e.g., 'triggers', 'calls') on graph connections to clarify relationships without relying on the detail panel."
+        "Add type icons and tooltips to graph nodes (e.g., 'triggers' as an event icon, 'connection' as a network icon) to reveal semantics without clicking.",
+        "Label edges with relationship types (e.g., 'triggers', 'calls') directly on the graph to make semantics visible at a glance.",
+        "Populate the Code View tab with decompiled or ASM code for the selected node to enable code-level, graph-aware responses.",
+        "Implement visual clustering or bounding boxes around related nodes (e.g., 'apply_patch' and its triggers) to improve graph hierarchy and readability."
       ],
-      "round": 7,
-      "latency_ms": 10303,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 8655,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
       "group": "automation",
       "source": "server/index.ts",
       "criteria": "As someone who scripts everything: Are REST API endpoints visible in the UI? Can you see curl examples for accessing features and edges? Is the raw JSON view showing the actual ArangoDB document structure? Could you build a headless client from what you see? Does the tool show enough about its API to integrate into an automated pipeline?",
-      "score": 8,
+      "score": 7,
       "verdict": "PASS",
       "weaknesses": [
-        "The API section is buried in the detail panel and not discoverable from the main graph or toolbar; users might miss it without explicit guidance.",
-        "No visual indicator or button in the graph or top menu to 'Export API Schema' or 'Generate Client Code' \u2014 a missed opportunity for pipeline automation.",
-        "The API section is only visible after selecting a node and expanding the detail panel; there\u2019s no global API access point or documentation hub visible."
+        "API section is still buried in the detail panel and not discoverable from the main graph or toolbar; no global API access point is visible.",
+        "No visual indicator or button to 'Export API Schema' or 'Generate Client Code' \u2014 a missed opportunity for pipeline automation.",
+        "The API section only appears after selecting a node and expanding the detail panel; there\u2019s no way to view API documentation without first selecting a node."
       ],
       "status": "reviewed",
       "strengths": [
-        "REST API endpoints are clearly visible in the detail panel under the 'REST API' section, including GET and POST examples with curl commands.",
-        "Raw JSON view is present and shows the actual ArangoDB document structure for the selected node, enabling direct schema understanding.",
-        "The API examples are actionable and include specific paths and query syntax, allowing a user to build a headless client from the visible information.",
-        "The detail panel\u2019s API section is contextually tied to the selected node, reinforcing the graph-first, agentic workflow."
+        "REST API endpoints are visibly exposed in the detail panel under the 'REST API' section for the selected 'apply_patch' node.",
+        "curl examples are explicitly shown in the API section, enabling immediate scripting and pipeline integration.",
+        "Raw JSON view is present and displays the actual ArangoDB document structure, including _key, _id, and binary_name fields.",
+        "The API section is contextually tied to the selected graph node, making it clear which entity the API calls target."
       ],
       "changes": [
-        "Add a dedicated 'API' button in the top toolbar next to 'SAVE' and 'EXPORT' that opens a global API reference panel with schema and client generation options.",
-        "Add a small 'API' icon or badge on each graph node that, when hovered, shows a tooltip with the node\u2019s REST endpoint and a 'Copy curl' button.",
-        "Include a 'Generate Client' button in the detail panel\u2019s API section that outputs a ready-to-use Python/JS client stub based on the visible endpoints."
+        "Add a global 'API' button in the top toolbar that opens a dedicated API explorer pane, independent of node selection.",
+        "Add an 'Export Schema' button next to the 'Raw JSON' toggle to generate OpenAPI/Swagger specs for automated client generation.",
+        "Introduce a 'Copy All Endpoints' button in the REST API section to bulk-export curl commands for scripting."
       ],
-      "round": 7,
-      "latency_ms": 8374,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 5769,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -252,24 +273,24 @@
       "score": 5,
       "verdict": "FAIL",
       "weaknesses": [
-        "The 'Security' view still displays non-security nodes like 'other' and 'namespace', diluting the security focus and contradicting the tool's claim of filtering for security-relevant features.",
-        "Security-relevant nodes (RPCs, events, schemas) use the same color/shape as non-security nodes, making critical paths impossible to distinguish at a glance.",
-        "The perspective selector ('Security' dropdown) is not labeled as a 'perspective' or 'view', making its purpose ambiguous without prior knowledge."
+        "The 'Security' view still displays non-security nodes like 'daemon' and 'schema' with identical visual styling (color/shape) as security-relevant nodes, failing to highlight attack surfaces.",
+        "Critical security nodes such as 'apply_patch' and 'mcp_auth_required' are not visually distinguished from non-security nodes, making threat prioritization impossible at a glance.",
+        "The perspective selector is labeled 'VIEWPORT' with a dropdown showing 'Security', which is ambiguous and does not clearly communicate its function as a perspective filter."
       ],
       "status": "reviewed",
       "strengths": [
-        "The graph visually reveals relationships between features like 'apply_patch' and 'droid:fsn:6' state machine, which is more intuitive than cross-reference tables.",
-        "The 'Security' perspective filter is visibly active and changes the graph content, showing a different node layout and set compared to 'All Features'.",
-        "The detail panel provides rich, type-specific metadata for the selected 'apply_patch' event, including triggers and architectural context."
+        "The 'Security' perspective is visibly selected in the viewport dropdown, indicating the filter is active.",
+        "The graph displays relationships (edges) between nodes like 'apply_patch', 'daemon', and 'schema', revealing structural connections.",
+        "The detail panel for 'apply_patch' provides rich, type-specific metadata including REST API endpoints and architectural notes, which is valuable for security analysis."
       ],
       "changes": [
-        "Add a 'Perspective' label next to the 'Security' dropdown to clarify its function.",
-        "Introduce visual encoding (e.g., red border, warning icon) for high-risk nodes (RPCs, events) in the Security view to highlight attack surfaces.",
-        "Filter out 'other' and 'namespace' nodes from the Security view to enforce focus on security-relevant features."
+        "Change the label 'VIEWPORT' to 'PERSPECTIVE' or 'VIEW' to clarify its purpose as a filter for analysis context.",
+        "Apply distinct visual styling (e.g., red border, warning icon, or unique color) to security-relevant nodes like 'apply_patch' and 'mcp_auth_required' in the Security view to make them stand out.",
+        "Filter out or visually de-emphasize non-security nodes (e.g., 'daemon', 'schema') in the Security perspective to reduce noise and focus on attack surfaces."
       ],
-      "round": 7,
-      "latency_ms": 7932,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 7416,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -279,25 +300,27 @@
       "score": 4,
       "verdict": "FAIL",
       "weaknesses": [
-        "No visible 'Load Scene' button or dropdown to select previously saved scenes \u2014 only 'Save' and 'Export' are present.",
-        "The 'Name...' input field next to Save is ambiguous \u2014 it\u2019s unclear if this names a scene or an export file, and no saved scene list is visible.",
-        "No visual indicator of which nodes are currently selected or bookmarked in the graph, making state recall ambiguous.",
-        "The '56 nodes / 57/334 in scene' text is confusing \u2014 it implies a scene exists but provides no way to manage or recall it."
+        "No visible 'Load Scene' button or dropdown \u2014 only 'Save' and 'Export' are present, making state recall impossible from UI.",
+        "The 'Name...' input next to 'Save' is ambiguous \u2014 unclear if it names a scene or export file; no saved scene list visible to confirm.",
+        "No visual indicator (highlight, border, icon) shows which nodes are selected or bookmarked in the graph, making state recall ambiguous.",
+        "Text '37/334 in scene' implies a scene exists but provides no UI to manage, rename, or load it \u2014 confusing and non-actionable.",
+        "No visible way to switch between or manage multiple scenes \u2014 'NO SCENES' dropdown suggests no scenes are loaded but offers no way to load existing ones."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph visualization is dense and shows multiple relationship types (rpc, event, schema) with distinct node colors.",
-        "Detail panel for 'apply_patch' provides rich, structured metadata including purpose, triggers, and architecture notes.",
-        "Chat interface is integrated and offers LLM-driven exploration prompts relevant to the selected node."
+        "Graph visualization is present and shows relationships between nodes (e.g., 'droid', 'daemon', 'schema') with visible edges, fulfilling the graph-first promise.",
+        "Detail panel provides rich, type-specific metadata for selected nodes (e.g., 'apply_patch' event with purpose, triggers, and architecture notes).",
+        "API access is visibly exposed in the detail panel ('REST API' section), supporting agentic pipeline integration."
       ],
       "changes": [
-        "Add a 'Load Scene' button next to 'Save' with a dropdown list of saved scene names to enable state recall.",
-        "Replace the ambiguous 'Name...' input with a clear label like 'Scene Name:' and add a 'Saved Scenes' list panel below it.",
-        "Add visual highlighting (e.g., border glow or color shift) to selected nodes in the graph to make state obvious."
+        "Add a 'Load Scene' button next to 'Save' and 'Export' with a dropdown list of saved scenes for recall.",
+        "Replace the ambiguous 'Name...' input with a clear label like 'Scene Name:' and display a list of saved scenes below it.",
+        "Add visual indicators (e.g., colored borders or icons) to selected or bookmarked nodes in the graph for state clarity.",
+        "Replace 'NO SCENES' dropdown with a functional scene manager that lists saved scenes and allows switching, renaming, or deleting."
       ],
-      "round": 7,
-      "latency_ms": 7254,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 7958,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "tim-blazytko",
@@ -307,22 +330,23 @@
       "score": 8,
       "verdict": "PASS",
       "weaknesses": [
-        "No visible UI element in the journal panel allows adding manual notes to existing entries; the journal appears read-only.",
-        "No visible export button or menu option to save the journal as a markdown file; the download icon next to the journal title is ambiguous and not clearly labeled for markdown export."
+        "No visible UI element (e.g., pencil icon, 'Add Note' button, or text input field) allows adding manual annotations to journal entries; the journal appears read-only.",
+        "The download icon next to the 'Investigation Journal' title lacks a clear label (e.g., 'Export as Markdown') and its function is ambiguous from the screenshot alone."
       ],
       "status": "reviewed",
       "strengths": [
-        "The journal panel visibly auto-records graph interactions (clicks on 'apply_patch') with precise timestamps (e.g., '11:23:17 AM'), enabling reconstruction of the analysis path.",
-        "The journal includes context-aware entries like 'PERSPECTIVE: Security', showing it captures high-level analytical context, not just low-level clicks, which is valuable for training agentic pipelines.",
-        "The journal's structure (timestamped, labeled entries with 'snapshot captured') suggests it can serve as a reproducible log for automated workflows, aligning with the tool's API-first, pipeline integration value."
+        "The Investigation Journal panel on the right visibly logs user interactions (e.g., 'CLICK' events with node names like 'apply_patch'), proving automatic recording of graph navigation.",
+        "Journal entries are timestamped with a green vertical bar and numerical indicators (e.g., '1', '100%'), enabling reconstruction of analysis sequence.",
+        "The journal\u2019s structured log format (e.g., 'CLICK', 'Clic ked: appl y_pa tch') is machine-readable and suitable for feeding into agentic pipelines or automation scripts.",
+        "The graph\u2019s force-directed layout clearly visualizes relationships (e.g., 'apply_patch' connected to 'droid:fs:6') better than a flat cross-reference table, aligning with the tool\u2019s graph-first value proposition."
       ],
       "changes": [
-        "Add a small 'Add Note' button or text field next to each journal entry in the 'Investigation Journal' panel to allow manual annotation.",
-        "Replace the ambiguous download icon next to the journal title with a clearly labeled 'Export as Markdown' button to enable one-click export for writeups."
+        "Add a small pencil icon or 'Add Note' button next to each journal entry to enable manual annotations, ensuring reproducibility and context capture.",
+        "Label the download icon explicitly as 'Export as Markdown' to clarify its function and support automated pipeline integration."
       ],
-      "round": 7,
-      "latency_ms": 9974,
-      "reviewed_at": "2026-03-29T12:18:02"
+      "round": 12,
+      "latency_ms": 5706,
+      "reviewed_at": "2026-03-29T13:43:27"
     },
     {
       "persona": "gynvael-coldwind",

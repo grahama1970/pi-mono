@@ -342,6 +342,18 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     const LARGE_GRAPH = simNodes.length > 200
     const HUGE_GRAPH  = simNodes.length > 400
 
+    // Seed deterministic initial positions (circle layout) so graph is readable from first frame.
+    // Without this, D3 uses Math.random() and graph looks different every render.
+    const cx = width / 2, cy = height / 2
+    simNodes.forEach((n, i) => {
+      if (n.x === undefined || n.y === undefined) {
+        const angle = (2 * Math.PI * i) / simNodes.length
+        const radius = Math.min(width, height) * 0.35
+        n.x = cx + radius * Math.cos(angle)
+        n.y = cy + radius * Math.sin(angle)
+      }
+    })
+
     // Faster alpha decay for large graphs so the simulation converges and stops sooner.
     // Default 0.008 keeps ticking ~1200 frames; at N=500 that is ~5 s of jank.
     const alphaDecayVal = HUGE_GRAPH ? 0.04  : LARGE_GRAPH ? 0.02  : 0.008

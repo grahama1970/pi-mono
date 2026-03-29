@@ -119,6 +119,9 @@ async def review_single(
     screenshots = load_screenshots(group)
     if not screenshots:
         return {"error": f"No screenshots for group {group}", "score": 0}
+    # Cap at 2 screenshots to avoid Gemini payload limits
+    if len(screenshots) > 2:
+        screenshots = [screenshots[0], screenshots[-1]]
 
     prompt = build_prompt(template, persona, criteria, prior_weaknesses)
 
@@ -132,23 +135,34 @@ async def review_single(
         })
 
     t0 = time.time()
-    try:
-        resp = await client.post(
-            SCILLM_URL,
-            headers={"Authorization": f"Bearer {SCILLM_KEY}"},
-            json={
-                "model": SCILLM_MODEL,
-                "messages": [{"role": "user", "content": content}],
-                "temperature": 0.0,
-                "max_tokens": 1024,
-                "response_format": {"type": "json_object"},
-            },
-            timeout=120.0,
-        )
-        resp.raise_for_status()
-    except httpx.HTTPError as e:
-        logger.error("[{}/{}] scillm error: {}", persona, group, e)
-        return {"error": str(e), "score": 0, "latency_ms": int((time.time() - t0) * 1000)}
+    payload = {
+        "model": SCILLM_MODEL,
+        "messages": [{"role": "user", "content": content}],
+        "temperature": 0.0,
+        "max_tokens": 1024,
+        "response_format": {"type": "json_object"},
+    }
+    # Retry up to 2 times on timeout (Gemini Flash 1M context handles large payloads)
+    resp = None
+    for attempt in range(3):
+        try:
+            resp = await client.post(
+                SCILLM_URL,
+                headers={"Authorization": f"Bearer {SCILLM_KEY}"},
+                json=payload,
+                timeout=180.0,
+            )
+            resp.raise_for_status()
+            break
+        except httpx.HTTPError as e:
+            if attempt < 2:
+                logger.warning("[{}/{}] attempt {} failed: {}, retrying...", persona, group, attempt + 1, e)
+                await asyncio.sleep(2)
+            else:
+                logger.error("[{}/{}] scillm error after 3 attempts: {}", persona, group, e)
+                return {"error": str(e), "score": 0, "latency_ms": int((time.time() - t0) * 1000)}
+    if resp is None:
+        return {"error": "no response", "score": 0, "latency_ms": int((time.time() - t0) * 1000)}
 
     latency_ms = int((time.time() - t0) * 1000)
     raw_text = resp.json()["choices"][0]["message"]["content"]
@@ -219,6 +233,7 @@ def review(
     group: str = typer.Option(None, help="Filter to one group"),
     round_num: int = typer.Option(1, "--round", help="Round number"),
     concurrency: int = typer.Option(4, help="Max concurrent VLM calls"),
+    votes: int = typer.Option(1, help="Number of VLM calls per review, take median score"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without calling VLM"),
 ):
     """Run VLM batch review of all captured screenshots."""
@@ -253,15 +268,32 @@ def review(
         sem = asyncio.Semaphore(concurrency)
         async def bounded(r):
             async with sem:
-                return await review_single(client, r["persona"], r["group"],
-                    r["criteria"], r.get("weaknesses", []), template)
+                if votes <= 1:
+                    return await review_single(client, r["persona"], r["group"],
+                        r["criteria"], r.get("weaknesses", []), template)
+                # Median voting: run N times, take median score
+                results_list = []
+                for v in range(votes):
+                    res = await review_single(client, r["persona"], r["group"],
+                        r["criteria"], r.get("weaknesses", []), template)
+                    if res.get("score", 0) > 0:
+                        results_list.append(res)
+                if not results_list:
+                    return {"error": "all votes failed", "score": 0}
+                results_list.sort(key=lambda x: x.get("score", 0))
+                median = results_list[len(results_list) // 2]
+                median["votes"] = [r.get("score", 0) for r in results_list]
+                logger.debug("[{}/{}] votes: {}", r["persona"], r["group"], median["votes"])
+                return median
         async with httpx.AsyncClient() as client:
             results = await asyncio.gather(*[bounded(r) for r in target_reviews], return_exceptions=True)
         for r, result in zip(target_reviews, results):
             if isinstance(result, Exception):
                 logger.error("[{}/{}] {}", r["persona"], r["group"], result); continue
-            logger.info("[{}/{}] score={} verdict={} {}ms",
-                r["persona"], r["group"], result.get("score",0), result.get("verdict","?"), result.get("latency_ms","?"))
+            logger.info("[{}/{}] score={} verdict={} {}ms{}",
+                r["persona"], r["group"], result.get("score",0), result.get("verdict","?"),
+                result.get("latency_ms","?"),
+                f" votes={result['votes']}" if "votes" in result else "")
             update_manifest(manifest, r["persona"], r["group"], result, round_num)
 
     asyncio.run(run_all())
