@@ -299,6 +299,36 @@ export function BinaryExplorerView() {
           })
         }
       }
+      // Fallback: use /memory recall to get taxonomy-enriched data for features
+      if (newMap.size === 0 || [...newMap.values()].every(v => v.cwe.length === 0 && v.attack.length === 0)) {
+        try {
+          const recallResp = await fetch(`${API}/api/memory/recall`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ q: `binary features ${data.graphNodes.slice(0, 10).map(n => n.label).join(' ')}`, k: 50 }),
+          })
+          if (recallResp.ok) {
+            const recallData = await recallResp.json()
+            const items = recallData.items || []
+            for (const item of items) {
+              const tax = item.taxonomy || {}
+              const tags = item.tags || []
+              // Match recalled items to graph nodes by label overlap
+              for (const n of data.graphNodes) {
+                if ((item.problem || '').includes(n.label) || (item.solution || '').includes(n.label)) {
+                  const existing = newMap.get(n.id) || { mind: [], cwe: [], attack: [], d3fend: [], nist: [] }
+                  const cweTags = tags.filter((t: string) => t.startsWith('CWE-'))
+                  const attackTags = tags.filter((t: string) => /^T\d{4}/.test(t))
+                  if (cweTags.length > 0) existing.cwe = [...new Set([...existing.cwe, ...cweTags])]
+                  if (attackTags.length > 0) existing.attack = [...new Set([...existing.attack, ...attackTags])]
+                  if (tax.bridge_attributes) existing.mind = [...new Set([...existing.mind, ...tax.bridge_attributes])]
+                  newMap.set(n.id, existing)
+                }
+              }
+            }
+          }
+        } catch { /* memory daemon not available — taxonomy columns stay empty */ }
+      }
       setTaxonomyMap(newMap)
       setTaxonomyLoading(false)
     })()

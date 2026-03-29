@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 13:55
+Generated: 2026-03-29 14:18
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 14 | tim-blazytko | first-impressions | 4 | FAIL | The graph remains visually overwhelming with 334 features an | 7957ms |
-| 14 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels (e.g., 'emits' on orange edges) are partially oc | 8182ms |
-| 14 | tim-blazytko | node-detail | 5 | FAIL | Detail panel for 'mcp_auth_completed' shows only prose and r | 7439ms |
-| 14 | tim-blazytko | symbol-tree | 5 | FAIL | Left sidebar 'NO SCENES' dropdown is empty and lacks any sce | 7839ms |
-| 14 | tim-blazytko | table-view | 4 | FAIL | No visual sorting indicators (arrows) on any column headers  | 7468ms |
-| 14 | tim-blazytko | taxonomy-integration | 4 | FAIL | Detail panel for selected node 'mcp_auth_completed' shows no | 8063ms |
-| 14 | tim-blazytko | code-view | 8 | PASS | Python pseudocode in Code View is partially cut off at the b | 7326ms |
-| 14 | tim-blazytko | chat-analysis | 7 | PASS | Graph nodes lack type icons (e.g., no visual indicator that  | 9513ms |
-| 14 | tim-blazytko | automation | 7 | PASS | API section is still buried in the detail panel and not disc | 5745ms |
-| 14 | tim-blazytko | perspective-views | 5 | FAIL | Security-relevant nodes (e.g., 'mcp_auth_completed', 'list_m | 6649ms |
-| 14 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown — only 'Save' and | 7342ms |
-| 14 | tim-blazytko | investigation-journal | 5 | FAIL | No visible UI element (e.g., pencil icon, 'Add Note' button, | 6003ms |
+| 16 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: connections between nodes (e. | 10884ms |
+| 16 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded or too small | 8130ms |
+| 16 | tim-blazytko | node-detail | 7 | PASS | Detail panel lacks explicit CWE/ATT&CK security tags despite | 8070ms |
+| 16 | tim-blazytko | symbol-tree | 7 | PASS | No visible saved analysis scenes or project-specific graph s | 7375ms |
+| 16 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column uses a red bar without displaying the exac | 7492ms |
+| 16 | tim-blazytko | taxonomy-integration | 5 | FAIL | CWE/ATT&CK tags are not reflected in graph node coloring, si | 8455ms |
+| 16 | tim-blazytko | code-view | 7 | PASS | Code View lacks syntax highlighting for the Python pseudocod | 8274ms |
+| 16 | tim-blazytko | chat-analysis | 8 | PASS | Node labels like 'list_mcp_tools' are truncated in the graph | 8075ms |
+| 16 | tim-blazytko | automation | 8 | PASS | The 'Raw JSON' toggle is still buried at the bottom of the d | 8283ms |
+| 16 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector dropdown is small and visually understa | 6891ms |
+| 16 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown — only 'Save' and | 8183ms |
+| 16 | tim-blazytko | investigation-journal | 5 | FAIL | The journal entries (e.g., 'ked: mcp _aut h_co mpl eted (eve | 8166ms |
 | 7 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows or weight indicators, ma | 9544ms |
 | 7 | gynvael-coldwind | data-structures | 4 | FAIL | Detail panel for 'apply_patch' shows no field-level structur | 9736ms |
 | 7 | gynvael-coldwind | graph-exploration | 8 | PASS | The graph's density in the first screenshot makes it hard to | 9655ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 13:55
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 7.0/10
-- Passed (>=8): 21/33
+- Average score: 7.5/10
+- Passed (>=8): 25/33
 - Gate: FAIL (target: 8.0)

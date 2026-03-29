@@ -8,30 +8,29 @@
       "group": "first-impressions",
       "source": "BinaryExplorerView.tsx:1-200",
       "criteria": "As an RE professional who builds agentic analysis pipelines: Does this graph-first tool communicate what binaries are available and how to start exploring relationships? Is the graph readable with meaningful node labels and visible edges? Does the chat integration feel like a first-class analysis interface? Could this feed into an automated analysis workflow via its API?",
-      "score": 4,
-      "verdict": "FAIL",
+      "score": 8,
+      "verdict": "PASS",
       "weaknesses": [
-        "The graph remains visually overwhelming with 334 features and 755 edges; edges are thin and densely packed, creating a hairball effect that obscures relationships.",
-        "Many nodes are unlabeled (e.g., '11', '15') or use ambiguous labels like 'daemon' without context, reducing readability and making it hard to trace meaningful paths.",
-        "The 'BINARIES (4)' list lacks any visual cue or onboarding indicator to guide the user on where to start exploring relationships.",
-        "Edges lack color-coding or thickness to indicate type or weight, making it impossible to discern meaningful connections at a glance.",
-        "The detail panel for 'mcp_auth_completed' displays connections as a flat table, not a visual subgraph or flow, failing to provide type-specific visualization."
+        "Edge labels are still missing: connections between nodes (e.g., from 'add_mcp_server' to 'mcp_auth_completed') are visible but lack semantic labels like 'calls' or 'triggers', forcing manual inference.",
+        "Node density in clusters remains high: the 'mcp' cluster in the second screenshot is visually cluttered with overlapping nodes and edges, making individual relationships hard to parse without zooming.",
+        "Suggested queries are not fully dynamic: while context-aware, they appear as a fixed list; no visual indication they adapt in real-time to graph filters or multi-node selections."
       ],
       "status": "reviewed",
       "strengths": [
-        "The graph visually represents relationships between binary features like 'daemon', 'schema', and 'mcp' with labeled nodes.",
-        "The chat panel on the right provides suggested natural language queries, making LLM interaction a first-class interface.",
-        "The detail panel for 'mcp_auth_completed' shows a table of connected features with connection counts, offering structured metadata."
+        "Graph-first navigation is clear: nodes like 'mcp_auth_completed', 'add_mcp_server', and 'daemon.* namespace' are labeled and connected with visible edges, revealing relationships at a glance.",
+        "Chat is a first-class interface: the right panel shows context-aware suggested queries (e.g., 'What calls mcp_auth_completed?') tied to the selected node, not static prompts.",
+        "Progressive disclosure works: the graph starts sparse and expands meaningfully upon interaction \u2014 clicking 'mcp_auth_completed' reveals its incoming/outgoing connections and related features.",
+        "Detail panel is type-specific: selected node 'mcp_auth_completed' shows metadata (EVENT, MCP, 70 connections) and a table of connected features with metrics (CONN, CWE, ATT&CK), enabling deep dives.",
+        "API/pipeline readiness implied: 'EXPORT' button and 'All Features' toggle suggest scriptable access; node counts (334 features, 755 edges) provide quantifiable state for automation."
       ],
       "changes": [
-        "Add color-coding and variable edge thickness to the graph to indicate relationship type (e.g., RPC, event) and connection weight, improving visual discrimination.",
-        "Replace unlabeled nodes (e.g., '11') with meaningful, context-rich labels or allow hover tooltips to reveal full names and types.",
-        "Introduce a visual entry point in the 'BINARIES (4)' list (e.g., a 'Start Here' badge or auto-highlighted first binary) to guide initial exploration.",
-        "Enhance the detail panel to render a mini-graph or flow diagram for selected nodes, not just a flat table, to visualize connections contextually."
+        "Add edge labels: for each connection in the graph (e.g., between 'add_mcp_server' and 'mcp_auth_completed'), render a small text label (e.g., 'calls', 'triggers') to clarify relationship semantics.",
+        "Implement cluster zoom/expand: add a 'zoom to cluster' button or double-click behavior for dense clusters (e.g., 'mcp') to automatically expand and space nodes for readability.",
+        "Make queries dynamic: update the 'SUGGESTED QUERIES' panel in real-time based on active filters (e.g., 'All Features' toggle) or multi-node selections to reflect current graph state."
       ],
-      "round": 14,
-      "latency_ms": 7957,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 10884,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
@@ -41,257 +40,247 @@
       "score": 8,
       "verdict": "PASS",
       "weaknesses": [
-        "Edge labels (e.g., 'emits' on orange edges) are partially occluded by node labels or other edges in dense areas, reducing legibility \u2014 visible near 'list_mcp_tools' and 'mcp_status_changed'.",
-        "No visible UI affordance (tooltip, icon, or button) confirms double-click to expand subgraph or fit-to-graph; interaction model is implied but not visually communicated.",
-        "Mini-map in bottom-right lacks a legend or scale indicator, making spatial relationships and graph density hard to interpret at a glance."
+        "Edge labels like 'emits' are partially occluded or too small to read reliably at current zoom level, especially on dense edges near the center node",
+        "Node labels (e.g., 'schema', 'daemon') remain low-contrast against the dark background, reducing legibility without manual zoom",
+        "No arrowheads on edges \u2014 directionality is implied by label text but not reinforced visually, which can cause ambiguity in complex graphs"
       ],
       "status": "reviewed",
       "strengths": [
-        "Force-directed graph clearly shows meaningful relationships between binary features (e.g., 'mcp_auth_completed' event node emitting to 'add_mcp_server', 'list_mcp_tools' via labeled 'emits' edges).",
-        "Edge labels ('emits', 'triggers') are visible and semantically meaningful, directly mapping to binary behavior (RPC calls, state transitions).",
-        "Clicking a node ('mcp_auth_completed') reveals its connections and populates a rich detail panel with purpose, architecture notes, and metadata \u2014 progressive disclosure works.",
-        "Graph is responsive to interaction: zoomed-in view shows expanded subgraph around selected node, confirming dynamic layout adjustment.",
-        "Multiple perspectives ('All Features', 'Hierarchy', 'Layers', 'Clusters') are available and clearly labeled in the toolbar, enabling filtered views of the same graph."
+        "Force-directed graph visually reveals meaningful relationships between binary features (e.g., 'mcp_auth_completed' event emitting to multiple RPCs like 'add_mcp_server', 'list_mcp_tools')",
+        "Edge labels ('emits', 'triggers') are visible on key connections, making relationship types explicit without requiring cross-reference tables",
+        "Clicking a node (e.g., 'mcp_auth_completed') reveals its connections and populates a detailed, type-specific metadata panel with purpose, architecture notes, and connections",
+        "Graph responds to interaction \u2014 zooming and panning are evident, and the detail panel updates contextually based on selection",
+        "Multiple layout modes ('FORCE', 'HIERARCHY', 'LAYERS', 'CLUSTERS') are clearly labeled and available in the toolbar"
       ],
       "changes": [
-        "Add subtle edge label background or offset to prevent occlusion by nodes/edges \u2014 e.g., add a semi-transparent dark halo around 'emits' labels near 'list_mcp_tools'.",
-        "Add a small tooltip or icon (e.g., '+' on node hover) to explicitly indicate double-click expands subgraph, and a 'fit-to-graph' button in the graph toolbar.",
-        "Add a mini-map legend (e.g., color-coded node types, scale bar) to clarify spatial context and density in the bottom-right corner."
+        "Increase font size and contrast of edge labels (e.g., 'emits', 'triggers') to ensure readability at default zoom; use stroke or glow for legibility against dark background",
+        "Add subtle arrowheads to edges to visually reinforce relationship directionality, especially for 'triggers' and 'emits' relationships",
+        "Increase contrast or add background halo to node labels (e.g., 'schema', 'daemon') to improve readability without requiring zoom"
       ],
-      "round": 14,
-      "latency_ms": 8182,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8130,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "node-detail",
       "source": "BinaryExplorerView.tsx:2400-2800",
       "criteria": "As someone who analyzes binary feature relationships: When clicking a node, does the detail panel show structured metadata \u2014 connection types grouped by edge type, fields/parameters with inferred types, security tags (CWE/ATT&CK)? Are connected nodes clickable for navigation? Is there enough information to understand the node's role in the binary without switching to another tool?",
-      "score": 5,
-      "verdict": "FAIL",
+      "score": 7,
+      "verdict": "PASS",
       "weaknesses": [
-        "Detail panel for 'mcp_auth_completed' shows only prose and raw text \u2014 no structured fields, inferred parameter types, or security tags (CWE/ATT&CK) are visible.",
-        "Connection types (e.g., 'emits', 'triggers') are not grouped or filterable by edge type; no UI control to isolate or categorize relationships.",
-        "No type-specific views (Security, Data Flow, Architecture) are visible or selectable in the detail panel, limiting perspective switching as promised.",
-        "The 'Overview' tab contains unstructured markdown-style text without tables or collapsible sections for parameters, fields, or security metadata."
+        "Detail panel lacks explicit CWE/ATT&CK security tags despite the tool\u2019s security focus \u2014 critical for threat modeling and triage.",
+        "Edge labels (e.g., 'emits') do not show inferred parameter types (e.g., string, int, pointer) for RPCs or events, reducing precision for binary analysis.",
+        "Graph node density (26 nodes, 82 edges) appears sparse \u2014 may not reflect real-world binary complexity, and it\u2019s unclear if this is intentional progressive disclosure or limited analysis scope."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph visually shows relationships via labeled edges (e.g., 'emits', 'triggers') radiating from 'mcp_auth_completed', enabling quick pattern recognition.",
-        "Chat panel on right offers LLM-driven exploration with suggested natural language queries, aligning with the 'chat is the product' philosophy.",
-        "Node selection highlights connected elements in the graph, and the detail panel provides contextual prose explaining the node\u2019s purpose and behavior."
+        "Graph-first navigation clearly shows relationships via labeled edges (e.g., 'emits', 'triggers') between nodes like 'mcp_auth_completed', 'list_mcp_tools', and 'mcp', enabling rapid understanding of event flow without cross-reference tables.",
+        "Detail panel for 'mcp_auth_completed' provides structured, type-specific metadata including purpose, how it works, and architecture notes \u2014 sufficient to understand the node\u2019s role without switching tools.",
+        "Connected nodes (e.g., 'list_mcp_tools', 'mcp') are visually distinct and appear clickable, supporting graph traversal for deeper exploration.",
+        "Chat pane is integrated as a first-class interface with suggested natural language queries (e.g., 'What does mcp_auth_completed do?'), aligning with LLM-native design."
       ],
       "changes": [
-        "Add a 'Metadata' tab to the detail panel showing structured fields: parameters with inferred types, CWE/ATT&CK tags, and edge-type groupings (e.g., 'Emits: [list]', 'Triggers: [list]').",
-        "Introduce edge-type filters in the graph toolbar (e.g., toggle 'emits', 'triggers', 'calls') to allow relationship categorization and reduce visual noise.",
-        "Replace the prose-only 'Overview' with a collapsible, type-aware view that surfaces security, data flow, and architecture metadata as distinct sections."
+        "Add CWE/ATT&CK tags to the detail panel header or metadata section for security-relevant nodes \u2014 e.g., next to 'EVENT - MCP - T0' \u2014 to enable threat-centric analysis.",
+        "Annotate edge labels with inferred parameter types (e.g., 'emits: string, int') or add a tooltip on hover to reveal type information for RPC/event arguments.",
+        "Include a scale indicator or density toggle in the graph controls to clarify whether the sparse view is by design or requires further analysis."
       ],
-      "round": 14,
-      "latency_ms": 7439,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8070,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "symbol-tree",
       "source": "SymbolTree.tsx",
       "criteria": "As someone who navigates large binaries: Is the left sidebar useful for navigating between binaries and features? Can you see saved analysis scenes? Does the graph provide a visual alternative to traditional symbol tree navigation \u2014 where clicking a namespace expands its children in the graph? Is the binary metadata (format, arch, size) visible?",
-      "score": 5,
-      "verdict": "FAIL",
+      "score": 7,
+      "verdict": "PASS",
       "weaknesses": [
-        "Left sidebar 'NO SCENES' dropdown is empty and lacks any scene-switching controls or saved scene indicators, making it impossible to load or compare analysis states.",
-        "Graph nodes like 'list_mcp_tools' and 'mcp' lack semantic type labels (e.g., 'rpc', 'event') or function signatures, forcing reliance on the detail panel for basic context.",
-        "Binary metadata for 'droid' is minimal \u2014 only 'ELF - x86_64' is visible; no size, entry point, or section info is displayed anywhere in the UI.",
-        "The graph's 'namespace' concept is not visually represented; there is no indication that clicking a namespace (e.g., 'droid') would expand its children in the graph, undermining the progressive disclosure claim."
+        "No visible saved analysis scenes or project-specific graph states in the left sidebar \u2014 only binary ingestion and project selection are shown.",
+        "Graph lacks visual indication of namespace expansion (e.g., no UI cue that clicking 'mcp' will show children; no expand/collapse icons).",
+        "Binary metadata (format, arch, size) is visible for 'droid' in the sidebar but not in a global info bar at the top of the graph view."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph visually reveals relationships between 'mcp_auth_completed' and its emitted RPCs (e.g., 'add_mcp_server', 'list_mcp_tools') via orange 'emits' edges, offering a spatial alternative to cross-reference tables.",
-        "Left sidebar clearly lists binaries ('droid', 'daemon', 'test', 'tunnel') with format/arch ('ELF - x86_64') and analysis status ('analyzed'), enabling quick binary switching.",
-        "Detail panel provides rich, type-specific metadata for the selected node ('mcp_auth_completed'), including purpose, architecture notes, and a comprehensive list of emitted RPCs under the 'Connections' tab."
+        "Graph visually reveals relationships (e.g., 'emits' edges from 'mcp_auth_completed' to RPCs like 'list_mcp_tools') better than a cross-reference table.",
+        "Left sidebar clearly lists binaries ('droid', 'daemon', etc.) with format/arch metadata (e.g., 'ELF - x86_64') visible for selected binary.",
+        "Detail panel provides type-specific views (e.g., 'EMITS (22)' list) that contextualize the selected node's behavior.",
+        "Chat pane is integrated as a first-class analysis interface with suggested queries about the selected node."
       ],
       "changes": [
-        "Add a 'SCENES' dropdown in the left sidebar with a list of saved scenes and a 'Load Scene' button to enable state persistence and comparison.",
-        "Annotate every graph node with its semantic type (e.g., 'rpc', 'event', 'schema') and, for functions, its signature (e.g., 'int add_mcp_server(char*)') directly on the node or in a hover tooltip.",
-        "Display full binary metadata (size, entry point, section count) for the selected binary ('droid') in the left sidebar or in the graph header.",
-        "Implement a visual namespace expansion mechanism: clicking a namespace node (e.g., 'droid') should render its child nodes (functions, events) in the graph with a clear visual hierarchy."
+        "Add a 'Saved Scenes' section in the left sidebar with thumbnails or names of saved graph states for quick recall.",
+        "Add small expand/collapse icons (e.g., '+'/'-') on namespace nodes (like 'mcp') in the graph to indicate they can be clicked to reveal children.",
+        "Add a global binary info bar at the top of the graph view showing format, arch, and size for the currently active binary."
       ],
-      "round": 14,
-      "latency_ms": 7839,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 7375,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "table-view",
       "source": "BinaryExplorerView.tsx:1800-2100",
       "criteria": "As someone who needs a flat view of all extracted features: Does the feature table show all binary features with sortable columns (name, type, cluster, connections, CWE, ATT&CK)? Is the search/filter functional? Can you click a row to navigate to that feature in the graph? Is the data density appropriate for scanning hundreds of features?",
-      "score": 4,
-      "verdict": "FAIL",
+      "score": 8,
+      "verdict": "PASS",
       "weaknesses": [
-        "No visual sorting indicators (arrows) on any column headers (NAME, TYPE, CLUSTER, CONN, CWE, ATT&CK), making it unclear if they are sortable or their current state.",
-        "The 'CONN' column displays raw numbers (115, 113, 183) without any color coding, scale, or legend to indicate relative importance or magnitude.",
-        "Row height is extremely dense with minimal vertical padding, making it visually fatiguing and difficult to scan across hundreds of rows.",
-        "The table is truncated at the bottom; only a small subset of rows is visible, requiring scrolling to see all 334 features, which breaks the 'flat view' requirement for rapid overview.",
-        "There is no visible affordance (e.g., clickable row, highlight, or link) to navigate from a table row to the corresponding node in the graph."
+        "The 'CONN' column uses a red bar without displaying the exact numeric value inline, forcing users to hover or infer magnitude",
+        "No explicit visual feedback (e.g., row highlight or animation) when clicking a row to confirm navigation to the graph node"
       ],
       "status": "reviewed",
       "strengths": [
-        "The graph view effectively visualizes relationships (e.g., 'emits' edges from 'mcp_auth_completed') in a way that cross-reference tables cannot.",
-        "The 'All Features' table is present and displays key columns (NAME, TYPE, CLUSTER, CONN, CWE, ATT&CK) as requested.",
-        "The table shows a count (334/334) indicating all features are loaded, and a filter bar is available for search."
+        "Feature table displays sortable columns (NAME, TYPE, CLUSTER, CONN, CWE, ATT&CK) with visible sort indicators (e.g., 'CONN \u25bc')",
+        "Search/filter bar is functional and actively filtering features (e.g., 'Filter features, CWE, ATT&CK...')",
+        "Rows are clickable \u2014 selecting a row (e.g., 'mcp_auth_completed') highlights the corresponding node in the graph",
+        "Data density is high and scannable: 334/334 features visible, with compact rows and color-coded type icons for rapid triage"
       ],
       "changes": [
-        "Add small up/down arrow icons to each column header to indicate sortability and current sort direction.",
-        "Apply a color scale (e.g., red-to-green gradient) to the 'CONN' column values to visually encode magnitude relative to the dataset.",
-        "Increase row height by 50% and add subtle horizontal dividers to improve scannability and reduce visual fatigue.",
-        "Add a 'Show All' toggle or pagination control to allow viewing all 334 features without scrolling, or implement virtual scrolling with a fixed header.",
-        "Make each table row clickable, with a visual highlight (e.g., border or background change) to indicate selection and trigger graph navigation."
+        "Add numeric value next to the 'CONN' bar (e.g., '115') to enable direct quantitative comparison without hovering",
+        "Add a brief row highlight or graph node pulse animation when a row is clicked to confirm navigation"
       ],
-      "round": 14,
-      "latency_ms": 7468,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 7492,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "taxonomy-integration",
       "source": "BinaryExplorerView.tsx:270-350",
       "criteria": "As someone who uses semantic tagging for binary classification: Are CWE and ATT&CK tags visible in the feature table and detail panel? Can you filter features by security taxonomy? Do the tags influence the graph coloring or the security perspective view? Would the taxonomy help you prioritize which features to analyze first?",
-      "score": 4,
+      "score": 5,
       "verdict": "FAIL",
       "weaknesses": [
-        "Detail panel for selected node 'mcp_auth_completed' shows no CWE/ATT&CK tags \u2014 user must context-switch to feature table to see them.",
-        "Graph nodes (e.g., 'mcp_auth_completed', 'list_mcp_tools') lack color, icon, or badge indicating associated CWE/ATT&CK tags or severity \u2014 no visual prioritization.",
-        "'Security' perspective view is not activated \u2014 graph shows no red nodes, threat icons, or filtered view to highlight high-risk features.",
-        "Filter input 'Filter features, CWE, ATT&CK...' is present but no filter is visibly applied \u2014 user cannot confirm if taxonomy filtering is active or effective."
+        "CWE/ATT&CK tags are not reflected in graph node coloring, size, or shape \u2014 missing visual triage for security-critical features.",
+        "The 'Filter features, CWE, ATT&CK...' input field shows no active filter state or tag-based highlighting in the graph or table.",
+        "No 'Security' perspective view is selected or visible \u2014 current 'All Features' view dilutes security-focused navigation.",
+        "Detail panel for 'mcp_auth_completed' does not display CWE/ATT&CK tags, despite their presence in the table."
       ],
       "status": "reviewed",
       "strengths": [
-        "Feature table includes CWE and ATT&CK columns, enabling manual taxonomy lookup.",
-        "Filter input field explicitly supports filtering by CWE and ATT&CK tags, indicating intent for taxonomy-driven analysis.",
-        "Graph visually shows relationships via edges (e.g., 'emits', 'triggers') between features like 'mcp_auth_completed' and 'list_mcp_tools', fulfilling graph-first navigation."
+        "Feature table includes CWE and ATT&CK columns, enabling manual filtering and sorting by security taxonomy.",
+        "Graph visually exposes relationships (e.g., 'emits', 'triggers') between features like 'mcp_auth_completed' and 'list_mcp_tools', which is superior to cross-reference tables for high-level triage.",
+        "Chat panel offers LLM-native queries about security impact, aligning with the tool\u2019s agentic, query-driven design."
       ],
       "changes": [
-        "Add CWE/ATT&CK tags to the detail panel for the selected node \u2014 eliminate context switching.",
-        "Color-code or badge graph nodes based on CWE/ATT&CK severity (e.g., red for high-risk) to enable visual prioritization in the graph view.",
-        "Activate and visibly render the 'Security' perspective \u2014 show filtered graph with threat icons or red nodes to highlight high-risk features.",
-        "Show applied filter state in the filter input (e.g., 'CWE-78' or 'T1078') to confirm taxonomy filtering is active and effective."
+        "Add visual encoding: color graph nodes by CWE/ATT&CK severity (e.g., red for high-risk CWEs) to enable rapid security triage.",
+        "Show active filter state in the 'Filter features, CWE, ATT&CK...' input (e.g., badge or highlight) and highlight matching nodes in the graph.",
+        "Make 'Security' perspective view selectable and default in security-focused workflows; ensure it filters graph and table by CWE/ATT&CK.",
+        "Display CWE/ATT&CK tags in the detail panel for selected nodes to reinforce taxonomy-driven analysis."
       ],
-      "round": 14,
-      "latency_ms": 8063,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8455,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "code-view",
       "source": "CodePane.tsx",
       "criteria": "As someone who needs to understand what a binary feature does: Does the code view show the extracted source pattern or description in a structured format? Is there a Python pseudocode representation that explains the feature's behavior? Can you see the feature's fields formatted as a function signature? Is the code view useful for understanding the feature without needing a separate disassembler?",
-      "score": 8,
+      "score": 7,
       "verdict": "PASS",
       "weaknesses": [
-        "Python pseudocode in Code View is partially cut off at the bottom; full logic is not visible without scrolling, reducing immediate usability for quick analysis.",
-        "Graph node labels like 'mcp' and 'list_mcp_tools' lack type context (e.g., is 'mcp' a namespace, state machine, or RPC?) without hovering, reducing graph readability at a glance.",
-        "The 'triggers' relationship edge only shows the target node name, not the function signature or parameters, limiting understanding of the interface contract."
+        "Code View lacks syntax highlighting for the Python pseudocode, reducing readability for complex logic and making it harder to parse nested or conditional behavior.",
+        "Graph edge labels ('emits', 'triggers') are small, low-contrast text on dark background, making relationship semantics difficult to read at a glance without zooming.",
+        "No traditional function signature (return type, parameters) is visible in Code View or detail panel \u2014 only inferred via cluster/type metadata, which is insufficient for low-level RE tasks requiring parameter inspection."
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph clearly shows 'emits' and 'triggers' relationships from 'mcp_auth_completed' to other nodes like 'list_mcp_tools' and 'mcp', enabling rapid understanding of event propagation without cross-reference tables.",
-        "Code View panel provides structured Python pseudocode with a clear description, purpose, and 'How It Works' section for the selected event, explaining behavior in high-level terms without requiring disassembly.",
-        "Function signature is implicitly conveyed via the event's description and emitted RPCs (e.g., 'add_mcp_server'), making the feature's interface understandable at a glance.",
-        "Chat panel offers natural language queries as a first-class interface, aligning with LLM-native exploration and enabling agentic workflows."
+        "Graph clearly visualizes relationships (e.g., 'emits' edges from 'mcp_auth_completed' to 'list_mcp_tools') in a force-directed layout, making data flow and event triggers immediately apparent.",
+        "Code View panel provides a structured, natural language description of the feature's purpose and behavior, including RPC calls and configuration actions, which is useful for high-level understanding without disassembly.",
+        "Python tab in Code View offers pseudocode-like structure with comments explaining the event's role and mechanics, aiding rapid comprehension of feature semantics.",
+        "Detail panel below graph shows type-specific metadata (TYPE, CLUSTER, CWE, ATT&CK) for selected node, enabling security and architectural context without leaving the view."
       ],
       "changes": [
-        "In Code View, add a fixed-height scrollable container with a visible scrollbar to ensure full pseudocode is accessible without losing context.",
-        "In the graph, append type icons or suffixes to node labels (e.g., 'mcp [namespace]', 'list_mcp_tools [rpc]') to provide immediate context without requiring interaction.",
-        "On relationship edges like 'triggers', display a tooltip or inline label showing the function signature (e.g., 'triggers: list_mcp_tools(param1, param2)') when hovered or selected."
+        "Add syntax highlighting to Python pseudocode in Code View to improve readability of logic structure and comments.",
+        "Increase font size and contrast of edge labels (e.g., 'emits', 'triggers') in the graph to make relationship semantics legible without zooming.",
+        "Add a function signature section to the Code View or detail panel, showing inferred parameters and return type for the selected feature, even if synthetic."
       ],
-      "round": 14,
-      "latency_ms": 7326,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8274,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "chat-analysis",
       "source": "BinaryExplorerView.tsx:2800-3100",
       "criteria": "As someone who builds NL interfaces for binary analysis: Are suggested queries generated from actual binary data (referencing real feature names and namespaces)? Can you ask questions like 'what calls this function' or 'trace the data flow' and get graph-aware responses? Is the chat positioned as the primary analysis interface \u2014 not a chatbot bolted onto a graph viewer?",
-      "score": 7,
+      "score": 8,
       "verdict": "PASS",
       "weaknesses": [
-        "Graph nodes lack type icons (e.g., no visual indicator that 'mcp_auth_completed' is an 'event' beyond text label), forcing users to click or read the detail panel to understand semantics.",
-        "Edges are minimally labeled \u2014 only 'emits' and 'triggers' are visible; no visual distinction for other relationship types (e.g., 'calls', 'data flow') without inspecting the detail panel or hovering.",
-        "Graph layout is sparse and unclustered \u2014 nodes are scattered with no visual grouping, making it hard to perceive hierarchy or relationship density at a glance.",
-        "Code View tab in detail panel is empty despite 'Python' tab being active \u2014 no ASM or decompiled code is shown, undermining code-level, graph-aware responses."
+        "Node labels like 'list_mcp_tools' are truncated in the graph view, forcing reliance on the detail panel or hover to read full names, reducing information density.",
+        "No visual differentiation (color, icon, shape) between node types (e.g., 'event' vs 'rpc') in the graph itself \u2014 type must be inferred from the legend or detail panel, breaking glanceability.",
+        "The 'SUGGESTED' queries in the chat panel are static and not dynamically generated based on the current graph context or selected node's relationships."
       ],
       "status": "reviewed",
       "strengths": [
-        "Suggested queries in the ANALYSIS panel (e.g., 'What calls mcp_auth_completed', 'Trace the data flow') are grounded in actual binary feature names visible in the graph, demonstrating LLM-native query generation from real data.",
-        "The chat/analysis panel is positioned as the primary interface \u2014 queries are contextually tied to the selected node 'mcp_auth_completed', making it a first-class analysis driver, not a bolted-on chatbot.",
-        "The graph visually reveals relationships (e.g., 'emits', 'triggers') between 'mcp_auth_completed' and other nodes like 'list_mcp_tools', offering a spatial overview superior to cross-reference tables.",
-        "Detail panel provides type-specific metadata (event, cluster, tier, confidence) and narrative explanation for the selected node, supporting progressive disclosure."
+        "Chat panel is positioned as the primary analysis interface with context-aware suggested queries (e.g., 'What calls mcp_auth_completed?', 'Trace the data flow through mcp_auth_completed') that reference actual node names from the graph.",
+        "Graph visually reveals relationships (e.g., 'emits' edges from 'mcp_auth_completed' to 'list_mcp_tools', 'mcp') better than a cross-reference table by showing fan-out at a glance.",
+        "Detail panel provides type-specific metadata (event description, RPC calls, confidence score) that enriches the graph node without cluttering it.",
+        "Progressive disclosure is evident: graph starts focused on 'mcp_auth_completed' and its immediate connections, avoiding visual overload."
       ],
       "changes": [
-        "Add small type icons (e.g., lightning bolt for event, gear for state machine) next to node labels in the graph to convey semantics without clicking.",
-        "Label edges with relationship type (e.g., 'calls', 'data flow') directly on the line or via hover tooltip, not just in the detail panel.",
-        "Implement visual clustering or force-directed grouping (e.g., by namespace or cluster) to reduce node scatter and reveal hierarchy.",
-        "Populate the Code View tab with actual decompiled or ASM code for the selected node to enable code-level graph-aware analysis."
+        "Add a small type icon (e.g., lightning bolt for event, gear for rpc) directly on each graph node to enable instant type recognition without consulting the legend or detail panel.",
+        "Increase node label font size or implement dynamic label scaling to prevent truncation of names like 'list_mcp_tools' \u2014 or add a tooltip on hover that shows the full name immediately.",
+        "Make the 'SUGGESTED' queries in the chat panel context-aware: when 'mcp_auth_completed' is selected, dynamically generate queries like 'What functions does this event trigger?' or 'Show all RPCs it emits'."
       ],
-      "round": 14,
-      "latency_ms": 9513,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8075,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "automation",
       "source": "server/index.ts",
       "criteria": "As someone who scripts everything: Are REST API endpoints visible in the UI? Can you see curl examples for accessing features and edges? Is the raw JSON view showing the actual ArangoDB document structure? Could you build a headless client from what you see? Does the tool show enough about its API to integrate into an automated pipeline?",
-      "score": 7,
+      "score": 8,
       "verdict": "PASS",
       "weaknesses": [
-        "API section is still buried in the detail panel and not discoverable from the main graph or toolbar; no global API access point is visible.",
-        "No visual indicator or button to 'Export API Schema' or 'Generate Client Code' \u2014 a missed opportunity for pipeline automation.",
-        "The API section only appears after selecting a node and expanding the detail panel; there\u2019s no way to view API documentation without first selecting a node."
+        "The 'Raw JSON' toggle is still buried at the bottom of the detail panel, requiring scrolling to access \u2014 not ideal for automation-focused users who need quick access to the data schema.",
+        "No visible API authentication or rate-limiting guidance in the API panel, which is critical for building robust, production-grade pipelines.",
+        "The API section lacks documentation on error codes, pagination, or query parameters beyond the basic examples shown."
       ],
       "status": "reviewed",
       "strengths": [
-        "REST API endpoints are clearly visible in the detail panel under 'REST API' with actual curl examples for querying features and edges.",
-        "Raw JSON view is present and shows the actual ArangoDB document structure, including _key, _id, _rev, and binary_name fields.",
-        "The API section is accessible via a dedicated 'Raw JSON' tab in the detail panel, making it scriptable and pipeline-integrable.",
-        "The graph visually reveals relationships (emits, triggers) better than a cross-reference table, with directional edges and node types color-coded."
+        "REST API endpoints are clearly visible in the detail panel with concrete curl examples for features and edges.",
+        "Raw JSON view is present and shows the actual ArangoDB document structure, enabling direct scripting against the backend.",
+        "The API section is integrated into the detail panel, allowing a user to inspect the data model and immediately test queries from the same context.",
+        "The graph visualization effectively reveals relationships (e.g., 'emits', 'triggers') between binary features, which is superior to traditional cross-reference tables for high-level exploration."
       ],
       "changes": [
-        "Add a global 'API' button in the top toolbar that opens a dedicated API explorer pane with all endpoints, curl examples, and schema export.",
-        "Add an 'Export Schema' button in the detail panel next to 'Raw JSON' that generates OpenAPI/Swagger spec for client code generation.",
-        "Make the API section visible by default in the detail panel when any node is selected, with a collapsible header to reduce clutter."
+        "Move the 'Raw JSON' toggle to the top of the detail panel, adjacent to the 'Overview' tab, to make it immediately accessible for automation workflows.",
+        "Add a small collapsible 'API Docs' section within the detail panel that includes authentication headers, rate limits, and common error codes.",
+        "Include a 'Copy as curl' button next to each API endpoint example to reduce manual transcription errors in scripts."
       ],
-      "round": 14,
-      "latency_ms": 5745,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8283,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
       "group": "perspective-views",
       "source": "BinaryExplorerView.tsx:220-280",
       "criteria": "As someone who focuses on security analysis: Does the security perspective filter the graph to show security-relevant features (RPCs, schemas, events)? Is the perspective selector easy to find? Does switching perspectives visibly change the graph content? Would the security view help you identify attack surfaces faster than browsing all features?",
-      "score": 5,
-      "verdict": "FAIL",
+      "score": 8,
+      "verdict": "PASS",
       "weaknesses": [
-        "Security-relevant nodes (e.g., 'mcp_auth_completed', 'list_mcp_tools') are not visually distinguished from non-security nodes (e.g., 'daemon', 'schema') by color, icon, or border, making threat prioritization impossible.",
-        "The 'PERSPECTIVE' dropdown label is ambiguous and does not clearly communicate its function as a security filter.",
-        "The graph lacks visual hierarchy or emphasis for critical security nodes, forcing manual inspection rather than instant recognition."
+        "Perspective selector dropdown is small and visually understated; not immediately obvious to first-time users despite being functional.",
+        "Graph node labels (e.g., 'emits', 'triggers') are small and lack hover tooltips or visual emphasis, reducing readability at a glance."
       ],
       "status": "reviewed",
       "strengths": [
-        "The graph visually connects 'mcp_auth_completed' to multiple RPCs and events, revealing attack surface relationships at a glance.",
-        "The 'PERSPECTIVE' dropdown is visible and set to 'Security', indicating the filter is active.",
-        "Switching to 'Security' perspective visibly reduces graph density, removing non-security nodes like 'daemon' and 'schema'.",
-        "The detail panel provides rich, type-specific metadata (REST API, raw JSON) for the selected security node."
+        "Security perspective filter is active and visibly changes graph content to highlight security-relevant nodes (events, RPCs, schemas) like 'mcp_auth_completed', 'schema', and 'daemon'.",
+        "Graph clearly shows relationships (emits, triggers) between security features, making attack surface identification faster than cross-reference tables.",
+        "Perspective selector is functional and located next to 'PERSPECTIVE' label; switching to 'Security' visibly prunes non-security nodes from the graph.",
+        "Detail panel provides rich, type-specific metadata (REST API, raw JSON, documentation) for selected nodes, aiding rapid security assessment."
       ],
       "changes": [
-        "Add a red border or warning icon to all security-relevant nodes (RPCs, events, auth-related functions) in the Security perspective to highlight attack surfaces.",
-        "Rename the 'PERSPECTIVE' dropdown to 'SECURITY FILTER' or 'ATTACK SURFACE VIEW' to make its purpose unambiguous.",
-        "Use a distinct color palette (e.g., red/orange for security nodes, gray for non-security) to enable instant visual triage."
+        "Enlarge the perspective selector dropdown and add a subtle icon (e.g., shield for Security) to make it more discoverable.",
+        "Increase font size of edge labels ('emits', 'triggers') and add hover tooltips to explain relationship semantics without cluttering the graph."
       ],
-      "round": 14,
-      "latency_ms": 6649,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 6891,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
@@ -309,18 +298,18 @@
       ],
       "status": "reviewed",
       "strengths": [
-        "Graph visualization clearly shows relationships between binary features (e.g., 'apply_patch' event connected to 'daemon', 'schema', 'mcp') with color-coded node types.",
-        "Detail panel provides rich, type-specific metadata (e.g., REST API endpoints, raw JSON) for selected nodes, supporting deep analysis.",
-        "Chat interface offers LLM-driven exploration with suggested queries, aligning with the 'chat is the product' value proposition."
+        "Graph visualization clearly shows relationships between nodes (e.g., 'emits' edges from 'mcp_auth_completed' to RPCs), fulfilling the graph-first promise.",
+        "Detail panel provides rich, type-specific metadata for selected nodes (e.g., event purpose, architecture notes), enhancing context.",
+        "Chat panel offers LLM-native exploration with suggested queries, making natural language analysis a first-class interface."
       ],
       "changes": [
-        "Add a 'Load Scene' button next to 'Save' with a dropdown list of saved scenes; make the 'Name...' input explicitly label 'Scene Name' to disambiguate from export.",
-        "Add a visual indicator (e.g., glowing border or icon) to selected nodes in the graph to clarify which elements are part of the current scene state.",
-        "Replace 'NO SCENES' dropdown with a scene manager panel showing saved scenes, allowing rename, delete, and load actions directly from the UI."
+        "Add a 'Load Scene' button next to 'Save' with a dropdown list of saved scenes; make 'Name...' input explicitly label 'Scene Name' to disambiguate from export.",
+        "Add visual indicators (e.g., colored borders or icons) to selected/bookmarked nodes in the graph to clarify state.",
+        "Replace 'NO SCENES' dropdown with a scene manager that lists saved scenes and allows renaming/deletion, making state management actionable."
       ],
-      "round": 14,
-      "latency_ms": 7342,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8183,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "tim-blazytko",
@@ -330,24 +319,25 @@
       "score": 5,
       "verdict": "FAIL",
       "weaknesses": [
-        "No visible UI element (e.g., pencil icon, 'Add Note' button, or text input field) allows adding manual annotations to journal entries; the journal appears read-only.",
-        "The download icon next to 'Investigation Journal' lacks a clear label (e.g., 'Export as Markdown') and its function is ambiguous from the screenshot alone.",
-        "The journal entries are cryptic (e.g., 'ked: mcp _aut h_co mpl eted (eve nt)') and lack human-readable context, reducing utility for reproducibility or pipeline training."
+        "The journal entries (e.g., 'ked: mcp _aut h_co mpl eted (eve nt)') are truncated, lack timestamps, and have no visible structure or separation, making reconstruction difficult.",
+        "No visible UI element (e.g., text box, pencil icon) allows adding manual notes to journal entries \u2014 it appears purely automated.",
+        "No visible export button, menu, or format indicator (e.g., '.md', 'Export as Markdown') for the journal, making it unclear if it can be turned into a writeup.",
+        "The journal's text is vertically compressed and lacks clear entry boundaries, reducing readability for pipeline training or audit."
       ],
       "status": "reviewed",
       "strengths": [
-        "The Investigation Journal panel visibly logs user interactions like 'CLICK' and 'snapshot capture', providing a basic audit trail of graph navigation.",
-        "The journal entries appear timestamped or sequentially ordered, which supports reconstructing the analysis path.",
-        "The journal is persistently visible alongside the graph, enabling correlation between actions and visual state."
+        "The graph visually reveals relationships between functions and events (e.g., 'mcp_auth_completed' emitting to multiple RPCs) better than a cross-reference table.",
+        "The 'Investigation Journal' panel on the right visibly logs interactions like 'CLICK' and 'snapshot capture', indicating automated recording of user actions.",
+        "The detail panel for 'mcp_auth_completed' provides structured, type-specific metadata (purpose, how it works, architecture note) which aids reproducibility."
       ],
       "changes": [
-        "Add a small pencil icon or 'Add Note' button next to each journal entry to enable manual annotation.",
-        "Replace the generic download icon with a clearly labeled 'Export as Markdown' button to unambiguously indicate export functionality.",
-        "Enhance journal entries with human-readable summaries (e.g., 'Clicked node: mcp_auth_completed') instead of abbreviated codes."
+        "Add a timestamp (e.g., '2025-04-05 14:32:17') to each journal entry in the 'Investigation Journal' panel to enable chronological reconstruction.",
+        "Add a small 'Add Note' button or inline text field next to each journal entry to allow manual annotation, visible in the right-side panel.",
+        "Add an 'Export Journal' button with a dropdown to select 'Markdown' format, placed at the top of the 'Investigation Journal' panel."
       ],
-      "round": 14,
-      "latency_ms": 6003,
-      "reviewed_at": "2026-03-29T13:55:49"
+      "round": 16,
+      "latency_ms": 8166,
+      "reviewed_at": "2026-03-29T14:18:47"
     },
     {
       "persona": "gynvael-coldwind",
