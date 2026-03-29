@@ -1,6 +1,6 @@
 # Persona Review Report
 
-Generated: 2026-03-29 14:18
+Generated: 2026-03-29 14:31
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
@@ -16,17 +16,17 @@ Generated: 2026-03-29 14:18
 | 16 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector dropdown is small and visually understa | 6891ms |
 | 16 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown — only 'Save' and | 8183ms |
 | 16 | tim-blazytko | investigation-journal | 5 | FAIL | The journal entries (e.g., 'ked: mcp _aut h_co mpl eted (eve | 8166ms |
-| 7 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows or weight indicators, ma | 9544ms |
-| 7 | gynvael-coldwind | data-structures | 4 | FAIL | Detail panel for 'apply_patch' shows no field-level structur | 9736ms |
-| 7 | gynvael-coldwind | graph-exploration | 8 | PASS | The graph's density in the first screenshot makes it hard to | 9655ms |
-| 7 | gynvael-coldwind | code-view | 7 | PASS | The 'Code View' content is primarily descriptive text and co | 9904ms |
-| 7 | gynvael-coldwind | node-detail | 8 | PASS | Detail panel does not show CWE/ATT&CK tags for the 'apply_pa | 10950ms |
-| 7 | gynvael-coldwind | search-and-filter | 8 | PASS | No visible indication that typing in 'Filter...' highlights  | 7245ms |
-| 7 | gynvael-coldwind | context-menu | 8 | PASS | No visible contextual query suggestions in chat or detail pa | 8398ms |
-| 7 | gynvael-coldwind | cross-references | 8 | PASS | Edge types (triggers, contains, emits, payload) are not visu | 9455ms |
-| 7 | gynvael-coldwind | state-machines | 8 | PASS | AST/Fields tab for 'apply_patch' shows 'No AST extractions f | 8509ms |
-| 7 | gynvael-coldwind | performance | 8 | PASS | Edge labels are missing — relationships between nodes (e.g., | 7411ms |
-| 7 | gynvael-coldwind | chat-analysis | 8 | PASS | The graph is visually sparse and lacks clear node labels for | 8805ms |
+| 16 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — cannot infer control/d | 12376ms |
+| 16 | gynvael-coldwind | data-structures | 4 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 8919ms |
+| 16 | gynvael-coldwind | graph-exploration | 8 | PASS | The legend is static and non-interactive; clicking a legend  | 19687ms |
+| 16 | gynvael-coldwind | code-view | 4 | FAIL | The 'Code View' under the Python tab displays only descripti | 8795ms |
+| 16 | gynvael-coldwind | node-detail | 5 | FAIL | Detail panel lacks CWE/ATT&CK tags for the 'mcp_auth_complet | 10171ms |
+| 16 | gynvael-coldwind | search-and-filter | 5 | FAIL | No visual feedback when filtering: typing in 'Filter...' doe | 9877ms |
+| 16 | gynvael-coldwind | context-menu | 8 | PASS | No visible contextual query suggestions in the chat pane or  | 8769ms |
+| 16 | gynvael-coldwind | cross-references | 8 | PASS | Edge types (triggers, contains, emits, payload) are not visu | 13993ms |
+| 16 | gynvael-coldwind | state-machines | 4 | FAIL | AST/Fields tab for 'mcp_auth_completed' shows 'No AST extrac | 8675ms |
+| 16 | gynvael-coldwind | performance | 7 | PASS | Edge labels (e.g., 'emits') are present but tiny and partial | 13079ms |
+| 16 | gynvael-coldwind | chat-analysis | 7 | PASS | Graph nodes like 'mcp', 'list_mcp_tools', and others lack cl | 7908ms |
 | 7 | liveoverflow | first-impressions | 8 | PASS | The graph’s initial state is sparse and abstract (e.g., unla | 10764ms |
 | 7 | liveoverflow | progressive-disclosure | 8 | PASS | Graph edges are dense and overlapping, making individual rel | 9676ms |
 | 7 | liveoverflow | learning-path | 8 | PASS | Chat interface is not visible in the screenshot — critical f | 7876ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 14:18
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 7.5/10
-- Passed (>=8): 25/33
+- Average score: 7.0/10
+- Passed (>=8): 20/33
 - Gate: FAIL (target: 8.0)
