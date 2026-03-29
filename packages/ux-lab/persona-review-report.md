@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 16:11
+Generated: 2026-03-29 16:33
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 20 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: orange edges from 'add_mcp_se | 10183ms |
-| 20 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are still partially occluded on den | 9330ms |
-| 20 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks structured metadata: no CWE/ATT&CK tags v | 9380ms |
-| 20 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on the | 9058ms |
-| 20 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column still uses red bars without displaying the | 7488ms |
-| 20 | tim-blazytko | taxonomy-integration | 5 | FAIL | Selected node 'mcp_auth_completed' in the detail panel shows | 7840ms |
-| 20 | tim-blazytko | code-view | 4 | FAIL | Code View under the 'Python' tab displays only high-level co | 7485ms |
-| 20 | tim-blazytko | chat-analysis | 5 | FAIL | Node labels like 'list_mcp_tools' are truncated in the graph | 7428ms |
-| 20 | tim-blazytko | automation | 7 | PASS | The 'Raw JSON' toggle is still at the bottom of the detail p | 7359ms |
-| 20 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector ('Security') remains a small, low-contr | 7190ms |
-| 20 | tim-blazytko | scene-management | 4 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 7946ms |
-| 20 | tim-blazytko | investigation-journal | 4 | FAIL | Investigation Journal panel displays truncated, untimestampe | 7076ms |
+| 22 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: orange edges from 'add_mcp_se | 7901ms |
+| 22 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 7302ms |
+| 22 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks structured metadata: no CWE/ATT&CK tags v | 8130ms |
+| 22 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on the | 7908ms |
+| 22 | tim-blazytko | table-view | 5 | FAIL | The 'CONN' column still uses red bars without displaying the | 8861ms |
+| 22 | tim-blazytko | taxonomy-integration | 5 | FAIL | CWE and ATT&CK tags are not visible in the detail panel for  | 7688ms |
+| 22 | tim-blazytko | code-view | 4 | FAIL | Code View under 'Python' tab displays only prose description | 7073ms |
+| 22 | tim-blazytko | chat-analysis | 4 | FAIL | The 'SUGGESTED' queries in the chat panel are static and gen | 8560ms |
+| 22 | tim-blazytko | automation | 8 | PASS | Raw JSON toggle is still at the bottom of the detail panel,  | 6048ms |
+| 22 | tim-blazytko | perspective-views | 8 | PASS | Edge labels ('emits', 'triggers') remain small and lack hove | 8089ms |
+| 22 | tim-blazytko | scene-management | 4 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 7729ms |
+| 22 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 5441ms |
 | 18 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges still lack directional arrows — orange edges fro | 12892ms |
 | 18 | gynvael-coldwind | data-structures | 3 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 11854ms |
 | 18 | gynvael-coldwind | graph-exploration | 5 | FAIL | Legend is static and non-interactive — clicking 'event' or ' | 10137ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 16:11
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 5.8/10
-- Passed (>=8): 10/34
+- Average score: 5.9/10
+- Passed (>=8): 11/34
 - Gate: FAIL (target: 8.0)

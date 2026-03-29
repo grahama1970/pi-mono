@@ -122,6 +122,22 @@ async function navigateToBinaryExplorer(cdp) {
   // Click both seed buttons to populate the graph with namespaces + top hubs
   await cdp.send('Runtime.evaluate', { expression: `(()=>{const btns=[...document.querySelectorAll('button')];const ns=btns.find(b=>/seed.*namespace/i.test(b.textContent));const hubs=btns.find(b=>/seed.*hub/i.test(b.textContent));if(ns)ns.click();if(hubs)hubs.click();return (ns?'namespaces ':'')+(hubs?'hubs':'')||'no seed btns'})()`, returnByValue: true }).then(r => console.log('Seed:', r.result?.result?.value));
   await sleep(4000);
+  // Wait for taxonomy loading to complete (up to 25s — 200 nodes in batches of 20)
+  // The "Loading taxonomy..." text disappears when done. We poll for its absence.
+  console.log('Waiting for taxonomy...');
+  await sleep(5000); // Give taxonomy batches a head start
+  const taxStart = Date.now();
+  while (Date.now() - taxStart < 20000) {
+    const r = await cdp.send('Runtime.evaluate', {
+      expression: `(()=>{const txt=document.body.innerText;if(txt.includes('Loading taxonomy'))return 'loading';return 'done'})()`,
+      returnByValue: true,
+    });
+    if (r.result?.result?.value === 'done') {
+      console.log(`Taxonomy loaded (${5000 + Date.now()-taxStart}ms)`);
+      break;
+    }
+    await sleep(1000);
+  }
 }
 
 // PRE: click a non-namespace node (function/rpc) so detail+code panel shows, then screenshot
