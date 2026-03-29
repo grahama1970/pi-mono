@@ -1,0 +1,171 @@
+## Persona Review Pipeline for Binary Explorer
+## CDP captures → Gemini Flash VLM review → code-runner fixes → repeat
+##
+## Run: /orchestrate run packages/ux-lab/10_PERSONA_REVIEW_PIPELINE.yaml
+
+capability_overlap:
+  - "sim/cdp-harness.cjs reused for CDP (not reimplemented)"
+  - "scillm text-gemini model for VLM (Gemini Flash, multimodal)"
+  - "prompt-lab persona_review_vlm_v1.txt template"
+  - "code-runner for git-backed fix loop"
+
+lanes:
+  - label: "CDP Captures"
+  - label: "VLM Review"
+  - label: "Gate + Fix"
+
+tasks:
+  # ── Phase 1: CDP Captures ──────────────────────────────────────
+
+  - id: cdp-captures
+    title: "Capture screenshots for all 28 review groups"
+    lane: 0
+    runner: local
+    command: "cd packages/ux-lab && node sim/run_cdp_captures.cjs"
+    definition_of_done:
+      command: "test -f packages/ux-lab/captures/persona-reviews/capture-summary.json"
+      assertion: "capture-summary.json exists"
+
+  # ── Phase 2: VLM Batch Review (3 personas, parallel) ──────────
+
+  - id: vlm-review-tim
+    title: "Tim Blazytko VLM review (12 groups)"
+    lane: 1
+    runner: local
+    depends_on: [cdp-captures]
+    command: "cd packages/ux-lab && python sim/vlm_batch_review.py review --persona tim-blazytko --round 1"
+    definition_of_done:
+      command: "python -c \"import json; m=json.load(open('packages/ux-lab/persona-review-manifest.json')); print(sum(1 for r in m['reviews'] if r['persona']=='tim-blazytko' and r.get('status')=='reviewed'))\""
+      assertion: "10"
+
+  - id: vlm-review-gynvael
+    title: "Gynvael Coldwind VLM review (11 groups)"
+    lane: 1
+    runner: local
+    depends_on: [cdp-captures]
+    command: "cd packages/ux-lab && python sim/vlm_batch_review.py review --persona gynvael-coldwind --round 1"
+    definition_of_done:
+      command: "python -c \"import json; m=json.load(open('packages/ux-lab/persona-review-manifest.json')); print(sum(1 for r in m['reviews'] if r['persona']=='gynvael-coldwind' and r.get('status')=='reviewed'))\""
+      assertion: "9"
+
+  - id: vlm-review-liveoverflow
+    title: "LiveOverflow VLM review (11 groups)"
+    lane: 1
+    runner: local
+    depends_on: [cdp-captures]
+    command: "cd packages/ux-lab && python sim/vlm_batch_review.py review --persona liveoverflow --round 1"
+    definition_of_done:
+      command: "python -c \"import json; m=json.load(open('packages/ux-lab/persona-review-manifest.json')); print(sum(1 for r in m['reviews'] if r['persona']=='liveoverflow' and r.get('status')=='reviewed'))\""
+      assertion: "9"
+
+  # ── Phase 3: Gate Check ────────────────────────────────────────
+
+  - id: score-gate
+    title: "Check average score against 8.0 gate"
+    lane: 2
+    runner: local
+    depends_on: [vlm-review-tim, vlm-review-gynvael, vlm-review-liveoverflow]
+    command: |
+      cd packages/ux-lab && python -c "
+      import json, sys
+      m = json.load(open('persona-review-manifest.json'))
+      reviewed = [r for r in m['reviews'] if r.get('status') == 'reviewed']
+      scores = [r['score'] for r in reviewed if r.get('score')]
+      avg = sum(scores) / len(scores) if scores else 0
+      passed = sum(1 for s in scores if s >= 8)
+      print(f'Reviewed: {len(reviewed)}/{m[\"total\"]}')
+      print(f'Average: {avg:.1f}/10')
+      print(f'Passed: {passed}/{len(scores)}')
+      gate = avg >= 8.0
+      print(f'Gate: {\"PASS\" if gate else \"FAIL\"}')
+      json.dump({'avg_score': avg, 'passed': passed, 'total': len(scores), 'gate': gate}, open('persona-review-gate.json', 'w'))
+      "
+    definition_of_done:
+      command: "test -f packages/ux-lab/persona-review-gate.json"
+      assertion: "persona-review-gate.json exists"
+
+  # ── Phase 4: Fix Loop (only runs if gate fails) ───────────────
+
+  - id: extract-fixes
+    title: "Rank weaknesses into fix queue"
+    lane: 2
+    runner: local
+    depends_on: [score-gate]
+    command: |
+      cd packages/ux-lab && python -c "
+      import json
+      m = json.load(open('persona-review-manifest.json'))
+      counts = {}
+      for r in m['reviews']:
+        for w in r.get('weaknesses', []):
+          k = w.strip()[:120]
+          counts[k] = counts.get(k, 0) + 1
+      ranked = sorted(counts.items(), key=lambda x: -x[1])
+      tasks = [{'id': f'fix-{i+1}', 'title': w, 'mentioned_by': c,
+                'dod_command': 'cd packages/ux-lab && npx tsc --noEmit',
+                'max_rounds': 5} for i, (w, c) in enumerate(ranked[:10])]
+      json.dump(tasks, open('fix-queue.json', 'w'), indent=2)
+      print(f'{len(tasks)} fixes from {len(ranked)} weaknesses')
+      "
+    definition_of_done:
+      command: "test -f packages/ux-lab/fix-queue.json"
+      assertion: "fix queue exists"
+
+  - id: run-fixes
+    title: "code-runner: fix top weaknesses one at a time"
+    lane: 2
+    runner: code-runner
+    depends_on: [extract-fixes]
+    command: "cd packages/ux-lab && cat fix-queue.json"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit 2>&1 | tail -1"
+      assertion: "no errors"
+    max_rounds: 5
+
+  # ── Round 2: Re-capture and re-review ──────────────────────────
+
+  - id: cdp-captures-r2
+    title: "Round 2: Re-capture after fixes"
+    lane: 0
+    runner: local
+    depends_on: [run-fixes]
+    command: "cd packages/ux-lab && node sim/run_cdp_captures.cjs"
+    definition_of_done:
+      command: "test -f packages/ux-lab/captures/persona-reviews/capture-summary.json"
+      assertion: "exists"
+
+  - id: vlm-review-r2
+    title: "Round 2: All personas re-review"
+    lane: 1
+    runner: local
+    depends_on: [cdp-captures-r2]
+    command: "cd packages/ux-lab && python sim/vlm_batch_review.py review --round 2"
+    definition_of_done:
+      command: "python -c \"import json; m=json.load(open('packages/ux-lab/persona-review-manifest.json')); print(sum(1 for r in m['reviews'] if r.get('round')==2))\""
+      assertion: "20"
+
+  - id: final-gate
+    title: "Round 2: Final score gate"
+    lane: 2
+    runner: local
+    depends_on: [vlm-review-r2]
+    command: |
+      cd packages/ux-lab && python -c "
+      import json, sys
+      m = json.load(open('persona-review-manifest.json'))
+      reviewed = [r for r in m['reviews'] if r.get('round') == 2]
+      scores = [r['score'] for r in reviewed if r.get('score')]
+      avg = sum(scores) / len(scores) if scores else 0
+      print(f'Round 2 avg: {avg:.1f}/10')
+      json.dump({'avg_score': avg, 'round': 2, 'gate': avg >= 8.0}, open('persona-review-gate.json', 'w'))
+      sys.exit(0 if avg >= 8.0 else 1)
+      "
+    definition_of_done:
+      command: "python -c \"import json; g=json.load(open('packages/ux-lab/persona-review-gate.json')); assert g['gate']\""
+      assertion: "gate passed"
+    postconditions:
+      - type: metric_gate
+        path: "packages/ux-lab/persona-review-gate.json"
+        metric: "avg_score"
+        operator: ">="
+        value: 8.0

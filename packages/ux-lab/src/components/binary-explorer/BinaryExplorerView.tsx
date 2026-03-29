@@ -591,6 +591,13 @@ export function BinaryExplorerView() {
   const onNodeClick = useCallback((node: BinaryGraphNode) => {
     setSelectedNode(node)
 
+    // Auto-switch to code tab for function/rpc nodes, summary for others
+    if (['function', 'rpc_method', 'cli_command'].includes(node.nodeType)) {
+      setDataTab('code')
+    } else {
+      setDataTab('summary')
+    }
+
     // Breadcrumbs: add unique or move to end
     setBreadcrumbs(prev => {
       const filtered = prev.filter(b => b.id !== node.id)
@@ -601,6 +608,22 @@ export function BinaryExplorerView() {
     addNodeWithNeighbors(node.id, 1, 6, true)
     recordStep('node_click', `Clicked: ${node.label} (${node.nodeType})`)
   }, [addNodeWithNeighbors, recordStep])
+
+  // --- Auto-seed: populate graph when binary data loads and scene is empty ---
+  useEffect(() => {
+    if (data.loading || data.graphNodes.length === 0 || sceneNodeIds.size > 0) return
+    // Seed with namespaces + top 50 most-connected nodes for a dense initial view
+    const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
+    const byDegree = data.graphNodes
+      .filter(n => n.nodeType !== 'parameter')
+      .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+      .sort((a, b) => b.deg - a.deg)
+      .slice(0, 50)
+    const seedIds = [...new Set([...namespaces.map(n => n.id), ...byDegree.map(n => n.id)])]
+    if (seedIds.length > 0) {
+      addToScene(seedIds)
+    }
+  }, [data.loading, data.graphNodes.length, sceneNodeIds.size, data.graphNodes, data.allEdges, addToScene])
 
   // --- Auto-snapshot: push to sceneHistory whenever sceneNodeIds changes (skip during undo/redo) ---
   useEffect(() => {

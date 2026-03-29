@@ -528,7 +528,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('fill', 'none')
       .attr('stroke', (d) => EDGE_COLORS[d.edgeType] ?? EMBRY.dim)
       .attr('stroke-width', (d) => (EDGE_WIDTHS[d.edgeType] ?? 1.0) * 0.3)
-      .attr('stroke-opacity', 0)
+      .attr('stroke-opacity', 0.25)
       .attr('marker-end', (d) => d.edgeType !== 'contains' ? `url(#arrow-${d.edgeType})` : null)
 
     // ── Nodes ──
@@ -577,8 +577,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       const visited = visitedRef.current
 
       if (!targetId) {
-        // Deselect: hide all edges, restore all nodes, clear highlights — NO physics changes
-        edgeLines.transition().duration(200).attr('stroke-opacity', 0)
+        // Deselect: dim edges back to ambient, restore all nodes — NO physics changes
+        edgeLines.transition().duration(200).attr('stroke-opacity', 0.25)
         nodeGs.select('.node-shape').transition().duration(200)
           .attr('stroke', 'none').attr('stroke-width', 0)
         // Visited breadcrumb nodes keep a subtle ring even when deselected
@@ -978,10 +978,9 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         else if (d.y! > height - margin) d.vy! -= (d.y! - (height - margin)) * pushStrength
       }
 
-      // Edge paths: only recompute when a node is selected (edges are opacity=0
-      // otherwise). Skipping this saves O(E) attribute writes per tick — the primary
-      // DOM bottleneck on high-edge-count graphs.
-      if (clickedRef.current !== null) {
+      // Edge paths: recompute every tick so edges are visible at low opacity.
+      // For huge graphs (>500 edges), throttle to every 3rd tick.
+      if (tickCount % (HUGE_GRAPH ? 3 : 1) === 0) {
         edgeLines.attr('d', (d) => {
           const sx = (d.source as SimNode).x!, sy = (d.source as SimNode).y!
           const tx = (d.target as SimNode).x!, ty = (d.target as SimNode).y!
@@ -1213,7 +1212,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
                 borderRadius: 0,
               }}
             >
-              {mode === 'organic' ? 'force' : mode === 'hierarchical' ? 'dag' : mode === 'stratified' ? 'strat' : 'clust'}
+              {mode === 'organic' ? 'FORCE' : mode === 'hierarchical' ? 'HIERARCHY' : mode === 'stratified' ? 'LAYERS' : 'CLUSTERS'}
             </button>
           ))}
         </div>

@@ -8,340 +8,931 @@
       "group": "first-impressions",
       "source": "BinaryExplorerView.tsx:1-200",
       "criteria": "As an RE professional who builds agentic analysis pipelines: Does this tool's initial state communicate what binaries are available and how to start analysis? Is the information hierarchy clear? Does it feel like a professional tool or a toy? Could this integrate into an automated analysis workflow?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Information hierarchy is still unclear: the graph header says 'DROID / EXPLORER' but doesn't visually badge which binary is active; the user must infer it from the left panel's highlight or the detail panel's title.",
+        "Detail panel is text-dense: the 'mcp_auth_completed' metadata is rich but presented as a single wall of text; no collapsible sections or tabs (e.g., 'Purpose', 'Connections') to aid rapid scanning.",
+        "Graph clutter persists: with 334 features and 755 edges, the full graph is visually noisy; the 'LAYERS' and 'CLUSTERS' buttons are present but their effect isn't demonstrated, leaving the user to guess how to reduce complexity."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph-first navigation is visually compelling: the force-directed graph with color-coded nodes (rpc, event, schema) and visible edges immediately reveals structural relationships that cross-reference tables bury.",
+        "Chat as primary interface is well-executed: the 'Ask about this binary...' input and 'SUGGESTED QUERIES' panel make LLM-driven exploration feel native, not bolted on.",
+        "Progressive disclosure works: clicking 'mcp_auth_completed' expands the graph and populates the detail panel with rich, structured metadata, validating the 'click to discover' model.",
+        "API-first design is implied: the 'DEPLOY' button and 'SYSTEM: NOMINAL' status suggest pipeline integration and automation readiness, aligning with agentic workflows."
+      ],
+      "changes": [
+        "Add a visual badge or header label (e.g., 'ACTIVE BINARY: droid') at the top of the graph viewport to immediately clarify context without requiring user inference.",
+        "Refactor the detail panel into collapsible sections or tabs (e.g., 'Overview', 'Connections', 'Architecture') to improve scanability and reduce cognitive load during rapid analysis.",
+        "Add a tooltip or mini-demo on hover for 'LAYERS' and 'CLUSTERS' buttons to show their effect (e.g., 'Toggle to hide RPCs' or 'Group by namespace'), making graph simplification discoverable."
+      ],
+      "round": 3,
+      "latency_ms": 11078,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "graph-navigation",
       "source": "BinaryGraph.tsx",
       "criteria": "As someone who builds graph-based analysis tools: Is the force-directed layout appropriate for binary call/data flow graphs? Are edge crossings minimized? Is the layout stable (nodes don't jump around)? Would a hierarchical layout be better for showing call hierarchies? Can you switch between layout algorithms?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No arrowheads on orange RPC edges \u2014 directionality is ambiguous, which is critical for call flow analysis.",
+        "Node labels like 'update_mcp_configtoggle_mcp_server...' are truncated, forcing reliance on hover or detail panel for full names.",
+        "Hierarchical grouping for 'daemon' or 'schema' is visually weak \u2014 nodes are scattered rather than clustered, reducing subsystem context."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Force-directed graph effectively reveals RPC fan-out from 'mcp_auth_completed' node, making call relationships immediately visible without cross-reference tables.",
+        "Layout is stable across zoom/pan (no node jitter visible), and edge density is manageable for the current view.",
+        "Multiple layout options ('FORCE', 'HIERARCHY', 'LAYERS', 'CLUSTERS') are exposed in the UI, allowing user to switch algorithms as needed."
+      ],
+      "changes": [
+        "Add arrowheads to all orange RPC edges to explicitly show call direction from source to target.",
+        "Increase node label width or implement dynamic truncation with tooltips to display full function names without hover.",
+        "Use color or bounding boxes to visually group nodes by subsystem (e.g., all 'daemon' nodes in a blue container)."
+      ],
+      "round": 3,
+      "latency_ms": 9392,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "node-detail",
       "source": "BinaryExplorerView.tsx:2400-2800",
       "criteria": "As someone who analyzes IPC and RPC interfaces: When viewing an RPC endpoint or API node, are parameters shown with types? Are request/response schemas visible? Is the calling convention documented? Can you see which functions implement the endpoint? Are authentication/authorization requirements noted? Would this help you build a fuzzer for the interface?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No parameter types or request/response schemas visible for any RPC endpoint (e.g., 'add_mcp_server') in graph or detail panel",
+        "Calling convention (e.g., stdcall, fastcall) for RPC implementers is not documented anywhere in the visible UI",
+        "Authentication/authorization requirements for RPC endpoints are not explicitly noted in the detail panel or graph metadata",
+        "Graph uses only orange lines for all relationships, failing to distinguish semantic types like 'emits' vs 'calls' vs 'depends on'"
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals high-level RPC relationships (e.g., 'mcp_auth_completed' emits to multiple RPCs like 'add_mcp_server')",
+        "Detail panel provides natural language context about the event's purpose and emitted RPCs, which is useful for initial triage",
+        "EMITS section in detail panel lists concrete RPC endpoints with full paths (e.g., 'droid:rpc:daemon.add_mcp_server'), enabling direct targeting"
+      ],
+      "changes": [
+        "Add a 'Schema' tab to the detail panel for RPC nodes showing parameter types and request/response JSON/protobuf schemas",
+        "Annotate RPC nodes in the graph with a small icon or tooltip indicating calling convention (e.g., 'cdecl', 'fastcall')",
+        "Add an 'Auth' field to the detail panel for RPC nodes explicitly stating requirements (e.g., 'requires admin token', 'no auth')",
+        "Use color-coded or labeled edges in the graph (e.g., green for 'emits', blue for 'calls', red for 'depends on') to clarify relationship semantics"
+      ],
+      "round": 3,
+      "latency_ms": 8627,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "symbol-tree",
       "source": "SymbolTree.tsx",
       "criteria": "As someone who navigates symbol tables: Is the tree hierarchy logical (binary \u2192 sections \u2192 namespaces \u2192 functions)? Are node types indicated by icons? Is the tree sortable (alphabetical, by address, by size)? Can you see the total count at each level? Does the tree mirror the actual binary structure or is it an abstraction?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The screenshot displays an HTTP 404 error page instead of the Binary Explorer UI, indicating the application failed to load.",
+        "No graph, tree hierarchy, chat pane, or detail panel is visible \u2014 all core components of the tool are missing.",
+        "No node types, icons, sorting controls, or level counts are present because the UI is not rendered.",
+        "The tool is completely non-functional in this state, making it impossible to evaluate any of its claimed features."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Fix the application routing to render the Binary Explorer UI instead of a 404 page.",
+        "Ensure all core panels (graph, tree, chat, detail) are visible and interactive in the screenshot.",
+        "Display node icons, sorting controls, and level counts to evaluate the tree hierarchy as requested."
+      ],
+      "round": 3,
+      "latency_ms": 7497,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "table-view",
       "source": "BinaryExplorerView.tsx:1800-2100",
       "criteria": "As someone who analyzes function tables in binaries: Are the table columns appropriate (name, type, address, size, namespace, tags)? Can you customize which columns are visible? Are the column widths appropriate for the data? Is there a way to add custom columns for annotation? Would you want to export this table to CSV for batch processing?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The screenshot shows no function table at all \u2014 the core UI element requested for evaluation is completely missing.",
+        "The central graph view is visible but does not display any function table columns (name, type, address, size, namespace, tags) as required for the review task.",
+        "There is no visible UI control to customize column visibility, adjust column widths, add custom annotation columns, or export to CSV.",
+        "The interface is entirely focused on a graph and detail panel, making it impossible to evaluate the function table criteria specified in the task."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Add a visible function table panel to the UI with columns for name, type, address, size, namespace, and tags.",
+        "Include UI controls (e.g., column header right-click menu or settings gear) to allow users to customize visible columns, adjust widths, and add custom annotation columns.",
+        "Add an export button or menu option to export the function table to CSV for batch processing."
+      ],
+      "round": 3,
+      "latency_ms": 7045,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "taxonomy-integration",
       "source": "BinaryExplorerView.tsx:270-350",
       "criteria": "As someone who uses semantic tagging for binary classification: Are SPARTA mind tags visible on nodes? Are the tags relevant to the node's actual function? Can you add/remove tags manually? Is there an auto-tagging capability? Do tags influence the graph layout or coloring? Would you use tags to build a malware family classifier?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The screenshot displays an HTTP 404 error page instead of the Binary Explorer UI, meaning no graph, chat pane, detail panel, or nodes are visible.",
+        "No SPARTA mind tags can be evaluated because no nodes exist in the view.",
+        "No UI controls for tagging, auto-tagging, or graph manipulation are present \u2014 the entire tool interface is missing.",
+        "The only interactive element visible is a 'Reload' button, indicating a broken or unstarted application state."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Fix the application routing or deployment to render the Binary Explorer UI instead of a 404 page.",
+        "Ensure the graph, chat pane, and detail panel are fully loaded and interactive before capturing screenshots for review."
+      ],
+      "round": 3,
+      "latency_ms": 5294,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "code-view",
       "source": "CodePane.tsx",
       "criteria": "As someone who writes deobfuscation passes: Is the ASM view useful for understanding obfuscated code? Can you identify obfuscation patterns (opaque predicates, control flow flattening, dead code)? Are basic blocks visually separated? Is there CFG-level visualization? Would this ASM view integrate with your deobfuscation pipeline?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No ASM view, basic blocks, or CFG visualization is visible anywhere in the UI \u2014 critical for deobfuscation work.",
+        "Graph displays only high-level semantic nodes (events, RPCs), not low-level code constructs needed to identify opaque predicates or control flow flattening.",
+        "Detail panel shows event metadata and emits, not assembly instructions or control flow \u2014 irrelevant for writing deobfuscation passes.",
+        "No visible API access points, script hooks, or pipeline integration controls in the UI to automate deobfuscation workflows."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually highlights high-level RPC/event relationships (e.g., 'mcp_auth_completed' emitting to multiple RPCs) with clear node labels and directional edges.",
+        "Detail panel provides structured metadata (purpose, how it works, emits) for selected nodes, useful for architectural understanding.",
+        "Chat interface is integrated as a primary analysis surface, aligning with LLM-native workflow."
+      ],
+      "changes": [
+        "Add a dedicated 'ASM View' tab or split-pane next to the graph that displays disassembly for the selected node, with basic blocks visually separated and CFG overlays.",
+        "Introduce a 'Deobfuscation Mode' toggle in the graph toolbar that highlights potential obfuscation patterns (e.g., dense control flow, dead code) using color or iconography on nodes/edges.",
+        "Expose an 'API/Script' panel in the detail view showing REST endpoints or Python bindings for the selected node to enable pipeline integration."
+      ],
+      "round": 3,
+      "latency_ms": 6794,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "chat-analysis",
       "source": "BinaryExplorerView.tsx:2800-3100",
       "criteria": "As someone who builds NL interfaces for binary analysis: Is the chat positioned as a first-class analysis tool? Are suggested queries relevant to RE workflows? Could you ask 'find all functions that process network input' or 'show obfuscated functions'? Does the chat understand binary analysis domain terminology? Would this replace or complement your existing scripting workflow?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Chat input field lacks any visible suggested queries or examples (e.g., 'find all functions that process network input', 'show obfuscated functions') to guide RE workflows or demonstrate domain understanding.",
+        "Graph node labels are truncated (e.g., 'henticate_mcp_ser...') and require zooming to read, reducing information density and usability during exploration.",
+        "No visible tooltips or hints in the chat panel to indicate understanding of RE terminology like 'RPC', 'obfuscated', or 'state machine'."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals relationships between MCP-related functions and events (e.g., 'mcp_auth_completed' connected to 'authenticate_mcp_server', 'clear_mcp_auth') better than a flat cross-reference table.",
+        "Detail panel provides structured, type-specific metadata for selected nodes (e.g., purpose, how it works, emits RPCs) which is valuable for RE context.",
+        "Chat input field is prominently positioned and labeled as a first-class interface ('Ask a question about mcp_auth_completed'), aligning with the LLM-native value prop."
+      ],
+      "changes": [
+        "Add a row of suggested query chips below the chat input (e.g., 'Find all RPC handlers', 'Show functions calling get_mcp_config', 'List obfuscated functions') to guide users and demonstrate domain awareness.",
+        "Increase node label font size or implement dynamic label truncation with hover tooltips in the graph to ensure full function names are readable without zooming.",
+        "Add a small tooltip or placeholder text inside the chat input field (e.g., 'Try: \"What functions handle network input?\" or \"Show obfuscated code regions\"') to signal domain terminology understanding."
+      ],
+      "round": 3,
+      "latency_ms": 8406,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "automation",
       "source": "server/index.ts",
       "criteria": "As someone who scripts everything: Is there an API behind this UI that I could call directly? Are the network requests visible in DevTools with a clear REST/GraphQL pattern? Could I build a headless client? Is there API documentation? Would this support building automated analysis pipelines that feed results into other tools?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The entire UI is a browser 404 error page \u2014 no graph, no chat, no detail panel, no UI elements of Binary Explorer are visible.",
+        "The URL shown (http://localhost:3002/#binary-explorer) indicates the app failed to load, making any evaluation of its features impossible.",
+        "No API endpoints, network requests, or automation hooks can be observed because the application is not rendered."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Fix the application routing so that the Binary Explorer UI loads correctly at http://localhost:3002/#binary-explorer instead of showing a 404 page.",
+        "Ensure the graph, chat, and detail panels render before any user interaction to validate core functionality."
+      ],
+      "round": 3,
+      "latency_ms": 4954,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "perspective-views",
       "source": "BinaryExplorerView.tsx:220-280",
       "criteria": "As someone who focuses on security analysis: Is there a security-focused view that highlights attack surfaces, vulnerable functions, and security-relevant code paths? Does the security perspective filter out irrelevant nodes? Are risk scores or severity indicators shown? Would this accelerate a security audit compared to generic code browsing?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The screenshot displays an HTTP 404 error page, indicating the Binary Explorer UI failed to load entirely.",
+        "No graph, chat pane, detail panel, or security view is rendered \u2014 the core features of the tool are completely absent.",
+        "The only visible interactive element is a 'Reload' button, confirming the application is in a broken, non-functional state.",
+        "Zero security-relevant nodes, attack surfaces, risk scores, or filtered views are visible, making a security audit impossible from this state."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Fix the server-side routing or asset loading to ensure the Binary Explorer UI renders correctly instead of returning a 404.",
+        "Implement a client-side error boundary with a meaningful message and recovery options (e.g., 'Analysis failed \u2014 try re-ingesting the binary') instead of a generic 404."
+      ],
+      "round": 3,
+      "latency_ms": 6237,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "scene-management",
       "source": "BinaryExplorerView.tsx:500-600",
       "criteria": "As someone who works on analysis across multiple sessions: Can you save the current scene (graph state, selections, annotations)? Is there a save/load UI? Is the scene format portable (could you share it with a colleague)? Does the scene include chat history? Would scene management enable reproducible analysis workflows?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visible 'LOAD' or 'EXPORT' button next to the 'SAVE' button \u2014 scene persistence and sharing are not visually supported.",
+        "Chat history panel is absent \u2014 only the input field is visible, making it impossible to review prior queries or LLM responses for reproducibility.",
+        "No UI for annotations \u2014 no visible controls to add, view, or manage user notes on nodes or edges, hindering collaborative or iterative analysis.",
+        "Scene format portability is unconfirmed \u2014 no file extension, export option, or sharing mechanism is visible to determine if scenes can be shared with colleagues."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visualization clearly shows relationships between 'mcp_auth_completed' and related RPCs/functions via orange edges, fulfilling the graph-first promise.",
+        "Detail panel provides rich, structured metadata for the selected node, including purpose, emits, and architecture notes, which is valuable for analysis.",
+        "Chat input is present and context-aware ('Ask a question about mcp_auth_completed'), indicating LLM-native interaction is functional."
+      ],
+      "changes": [
+        "Add a 'LOAD' button next to 'SAVE' and an 'EXPORT' button with a file format indicator (e.g., .binexp) to enable scene sharing and reproducibility.",
+        "Introduce a collapsible chat history panel below the input field to display prior queries and LLM responses, enabling workflow audit and replay.",
+        "Add an annotation icon (e.g., sticky note) to the detail panel or node context menu to allow users to add and view notes on selected elements."
+      ],
+      "round": 3,
+      "latency_ms": 6287,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "tim-blazytko",
       "group": "investigation-journal",
       "source": "InvestigationJournal.tsx",
       "criteria": "As someone who documents analysis for reproducibility: Is there an investigation journal that records your actions? Are navigation steps, queries, and findings logged automatically? Can you add manual notes? Is the journal timestamped? Would this journal be useful for writing a technical report or training an agentic analysis pipeline?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visible UI element (e.g., text box, '+' button, or note icon) allows the user to add manual notes or annotations to the journal, limiting its utility for documenting insights or hypotheses.",
+        "The journal logs only node clicks, not the natural language queries entered in the chat pane (e.g., 'Ask about mcp_auth_completed'), breaking the traceability of the LLM-native workflow.",
+        "Timestamps lack timezone or session context (e.g., '11:06:08 AM' without 'UTC' or session ID), which hinders reproducibility when correlating logs across analysts or timezones."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The Investigation Journal panel visibly logs automated navigation steps (e.g., 'CLICK' events on 'mcp_auth_completed') with precise timestamps, providing a basic audit trail.",
+        "The journal entries include context such as node type (event) and a snapshot capture indicator, which aids in reconstructing the analysis state."
+      ],
+      "changes": [
+        "Add a 'Add Note' button or text input field at the top or bottom of the Investigation Journal panel to allow manual annotation of findings or hypotheses.",
+        "Log every user query from the chat pane (e.g., 'Ask about mcp_auth_completed') as a distinct entry in the journal, prefixed with 'QUERY' or similar, to capture the LLM-driven exploration path.",
+        "Append timezone (e.g., 'UTC') or a session identifier to each timestamp in the journal to enable cross-analysis reproducibility."
+      ],
+      "round": 3,
+      "latency_ms": 8574,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "first-impressions",
       "source": "BinaryExplorerView.tsx:1-200",
       "criteria": "As a low-level systems programmer: Does the initial load communicate this is a serious binary analysis tool? Is the layout efficient for someone who will spend hours inspecting binaries? Does the information density match what you'd expect from IDA Pro or Ghidra's initial state?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Node labels like 'update_mcp_config' are truncated and overlap with adjacent nodes, reducing readability in dense clusters.",
+        "No visual weighting (e.g., glow, border thickness, or color saturation) for high-centrality nodes like 'daemon' or 'mcp_auth_completed' \u2014 they rely only on size and connection count.",
+        "SUGGESTED QUERIES panel remains static and does not adapt to the selected node 'mcp_auth_completed' \u2014 it still shows generic queries about 'daemon.* namespace' instead of context-specific ones like 'What RPCs does mcp_auth_completed trigger?'"
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals high-degree nodes like 'mcp_auth_completed' and 'daemon' with clear orange connection lines, making critical RPC relationships immediately apparent.",
+        "Detail panel for 'mcp_auth_completed' provides dense, structured metadata including purpose, emitted RPCs, and connections \u2014 matches low-level RE needs for function-level context.",
+        "Top features by connections in the detail panel (e.g., 'add_mcp_server', 'mcp_auth_completed') offer immediate attack surface prioritization without manual XREF traversal.",
+        "Chat input 'Ask about mcp_auth_completed' is context-aware and integrated as a primary analysis interface, not a decorative add-on."
+      ],
+      "changes": [
+        "Add dynamic label collision avoidance and truncation ellipsis for node labels to prevent overlap and ensure full text visibility on hover.",
+        "Apply visual emphasis (e.g., pulsing border or increased saturation) to nodes with >20 connections or marked as 'core' in the detail panel to highlight architectural centrality.",
+        "Make SUGGESTED QUERIES panel context-aware: when 'mcp_auth_completed' is selected, replace static queries with dynamic ones like 'List all RPCs emitted by mcp_auth_completed' or 'Show all state machines connected to this event'."
+      ],
+      "round": 3,
+      "latency_ms": 9520,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "data-structures",
       "source": "BinaryExplorerView.tsx:2400-2700",
       "criteria": "As someone who parses binary formats: Are schema fields displayed with proper type annotations (uint32_t, char*, struct pointer)? Are field sizes shown in bytes? Is there endianness indication? Can you see the raw offset of each field within the structure? Are bitfields represented correctly?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Detail panel for 'mcp_auth_completed' contains only prose and RPC lists \u2014 no binary schema, field types, sizes, offsets, or endianness",
+        "No visible representation of bitfields, struct layout, or memory alignment anywhere in UI",
+        "Graph nodes show names but no underlying binary metadata (e.g., size, offset, type signature)",
+        "No hex dump, raw byte view, or field-level binary inspection available in any panel"
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually shows relationships between RPCs and events (e.g., 'mcp_auth_completed' connected to 'authenticate_mcp_server', 'clear_mcp_auth')",
+        "Node types are color-coded (rpc, event, schema) for quick visual filtering",
+        "Detail panel provides high-level prose description and emitted RPCs for selected node",
+        "Investigation Journal logs user interactions for reproducibility"
+      ],
+      "changes": [
+        "Add a 'Binary Layout' tab to the detail panel showing struct fields with type annotations (uint32_t, char*), byte sizes, offsets, and endianness",
+        "Render bitfields as packed bit ranges within struct view (e.g., 'flags: 3 bits', 'reserved: 5 bits')",
+        "Display raw memory offset (e.g., '0x1234') for each struct/field in the detail panel",
+        "Add a hex viewer pane that syncs with selected node to show raw bytes at its offset"
+      ],
+      "round": 3,
+      "latency_ms": 8149,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "graph-exploration",
       "source": "BinaryGraph.tsx",
       "criteria": "As someone who analyzes program structure graphs: Are different node types (functions, data structures, namespaces, imports) visually distinct? Can you tell at a glance what category a node belongs to? Is the color/shape coding consistent and learnable? Does the legend (if any) cover all node types?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Node labels like 'henticate_mcp_ser' and 'p_registry' are truncated or overlap, reducing readability and forcing zooming.",
+        "The legend defines 'parameter' and 'namespace' node types, but no instances are visible in the graph, leaving their visual representation unconfirmed.",
+        "No visible scale or zoom indicator makes it hard to gauge the density of the full 51/334 nodes in scene.",
+        "The 'G:Connection' node label is ambiguous \u2014 it's unclear if 'G' is a prefix, a type, or a graph group identifier."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Node types (rpc, event, schema, state machine, cli command, namespace, parameter) are visually distinct via color and shape in the legend and graph.",
+        "The central 'mcp_auth_completed' event node is clearly highlighted with a diamond shape and purple border, making its role as a hub instantly recognizable.",
+        "Edges are color-coded (orange for rpc, green for connection) and directional, revealing interaction flows at a glance better than a flat cross-reference table.",
+        "The detail panel provides rich, type-specific metadata for the selected node, enhancing the graph's context without cluttering the view."
+      ],
+      "changes": [
+        "Add a zoom level indicator (e.g., '100%') and a mini-map to the graph viewport to convey spatial context and node density.",
+        "Implement dynamic label truncation or collision avoidance for node labels to prevent overlap and ensure full text visibility at current zoom.",
+        "Render at least one example 'parameter' and 'namespace' node in the graph to validate their visual encoding against the legend.",
+        "Clarify ambiguous node labels like 'G:Connection' by either removing the 'G:' prefix or adding a tooltip explaining its meaning."
+      ],
+      "round": 3,
+      "latency_ms": 8190,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "code-view",
       "source": "CodePane.tsx",
       "criteria": "As someone who reads x86/ARM assembly daily: Is the assembly syntax correct (Intel vs AT&T, consistent)? Are operand sizes explicit? Are addresses properly formatted as hex? Are symbolic names resolved for known library calls? Is the instruction encoding (opcode bytes) shown alongside mnemonics? Are branch targets visually connected?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No assembly code visible anywhere: zero mnemonics, opcodes, addresses, operand sizes, or symbolic names for library calls.",
+        "Detail panel contains only prose and RPC signatures \u2014 no raw bytes, instruction encoding, register states, or stack frames.",
+        "Graph nodes represent abstract events/functions but lack any low-level binary context (e.g., memory addresses, instruction offsets).",
+        "Branch targets and control flow are not visually connected at the assembly level \u2014 only high-level RPC call graphs are shown."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually shows high-level RPC/event relationships (e.g., 'mcp_auth_completed' emitting calls) with clear directional edges.",
+        "Detail panel provides structured natural language documentation for selected nodes, useful for understanding intent and behavior.",
+        "UI supports progressive disclosure \u2014 graph starts sparse and expands on interaction, reducing initial cognitive load."
+      ],
+      "changes": [
+        "Add a 'Disassembly View' tab to the detail panel showing Intel/ARM assembly with opcode bytes, hex addresses, and resolved symbols for the selected node.",
+        "Overlay instruction-level branch arrows on the graph for selected functions, connecting to target addresses with hex labels.",
+        "Include a 'Raw Bytes' section in the detail panel showing the actual machine code for the selected node\u2019s code region."
+      ],
+      "round": 3,
+      "latency_ms": 7093,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "node-detail",
       "source": "BinaryExplorerView.tsx:2400-2800",
       "criteria": "As a thorough analyst who needs every byte documented: Does the detail panel show all available metadata for the selected node? Is there a raw JSON/data view? Are field types, sizes, and offsets shown? Is anything hidden that should be front-and-center? Would you need to switch to another tool to get information that's missing here?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Detail panel for 'mcp_auth_completed' shows only rendered markdown text; no raw JSON/data view is visible, forcing trust in the rendering instead of inspection.",
+        "No hex offsets, field sizes, or type definitions are shown for the selected event or its emitted RPCs \u2014 critical for byte-level analysis.",
+        "Graph nodes (e.g., 'mcp_auth_completed', 'add_mcp_server') lack low-level identifiers like virtual addresses, section names, or symbol indices, preventing correlation with disassemblers.",
+        "The 'EMITS' section lists RPC names but omits parameters, return types, or wire formats \u2014 essential for protocol reverse engineering."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals high-level relationships between events and RPCs (e.g., 'mcp_auth_completed' emitting multiple RPCs), which is better than a flat cross-reference table.",
+        "Chat interface is integrated as a first-class analysis surface, allowing natural language queries about the selected node.",
+        "Progressive disclosure via node expansion is visually clear \u2014 the graph starts sparse and reveals connections on interaction."
+      ],
+      "changes": [
+        "Add a 'Raw Data' tab next to 'Overview' in the detail panel showing the underlying JSON structure of the selected node, including offsets, sizes, and types.",
+        "Annotate graph nodes with virtual addresses or symbol table indices in small font beneath the node name to enable cross-tool correlation.",
+        "Expand the 'EMITS' section to show parameter types, return types, and wire format (e.g., protobuf, JSON) for each RPC call listed."
+      ],
+      "round": 3,
+      "latency_ms": 8462,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "search-and-filter",
       "source": "BinaryExplorerView.tsx:300-500",
       "criteria": "As someone who searches for specific functions and addresses: Is the search instant or does it lag? Does it search across node names, addresses, and content? Can you search by hex pattern or regex? Are results ranked by relevance? Is the current search term visible and easy to modify? Does search highlight matches in the graph?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No visible evidence of search performance (instant vs. lag), hex pattern or regex support, or result ranking \u2014 search functionality is not demonstrated.",
+        "Search field 'Filter...' does not show current term or highlight matches in the graph \u2014 cannot verify if matches are visually emphasized.",
+        "Graph node labels (e.g., 'G:Connection', 'mcp') are partially obscured or truncated, reducing readability at scale.",
+        "No visible chat pane \u2014 the 'Chat IS the product' claim cannot be evaluated from this screenshot."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals relationships between MCP-related events and RPCs (e.g., 'mcp_auth_completed' connected to 'authenticate_mcp_server', 'clear_mcp_auth') better than a cross-reference table.",
+        "Detail panel provides dense, structured metadata for selected node 'mcp_auth_completed', including purpose, RPC emissions, and architecture notes \u2014 high information density.",
+        "Search field labeled 'Filter...' is visible and positioned for quick access; current term is not shown but field is present.",
+        "Investigation Journal logs user interactions (clicks on 'mcp_auth_completed') with timestamps, enabling reproducible analysis \u2014 supports agentic workflows."
+      ],
+      "changes": [
+        "Add a visible search term indicator and match highlighting in the graph (e.g., glow or color overlay on matching nodes/edges) to confirm search results are actionable.",
+        "Expose search capabilities in the UI: add icons or tooltips to 'Filter...' field indicating support for hex patterns (e.g., '0xdeadbeef') and regex (e.g., '/^rpc_/').",
+        "Ensure node labels are fully legible by increasing font size or implementing dynamic label scaling based on zoom level."
+      ],
+      "round": 3,
+      "latency_ms": 7809,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "context-menu",
       "source": "ContextMenu.tsx + BinaryExplorerView.tsx",
       "criteria": "As someone who relies on right-click menus in IDA and Ghidra: Does right-clicking a node show useful options (rename, annotate, show xrefs, copy address, expand neighbors)? Are the menu items relevant to binary analysis? Is the menu organized logically? Are there keyboard shortcuts shown next to menu items? Is the custom context menu used instead of the browser default?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No keyboard shortcuts are shown next to any menu items, which is a critical usability gap for power users who rely on muscle memory.",
+        "The menu lacks essential reverse engineering actions such as 'Rename', 'Annotate', or 'Copy Address' \u2014 these are expected even in a graph-first tool for note-taking and cross-referencing.",
+        "The 'Remove from Scene' option remains ambiguous \u2014 there is no visual confirmation, tooltip, or icon to indicate whether it hides or deletes the node, creating risk of accidental data loss.",
+        "The context menu does not include 'Show Xrefs' or any equivalent, which is a core RE function for understanding call/flow relationships, even in a graph view."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The context menu is a custom UI element, not the browser's default, which is correct for a professional tool.",
+        "Menu items like 'Expand 6 Neighbors' and 'Trace Execution Path' are relevant to graph-based binary exploration and align with the tool's value proposition.",
+        "The menu is logically grouped under 'SCENE ACTIONS', indicating intentional organization for graph manipulation."
+      ],
+      "changes": [
+        "Add keyboard shortcuts (e.g., 'Ctrl+R' for Rename, 'Ctrl+C' for Copy Address) next to each menu item to support power users.",
+        "Add 'Rename', 'Annotate', and 'Copy Address' menu items under a new 'RE ACTIONS' section to meet baseline RE tool expectations.",
+        "Replace 'Remove from Scene' with 'Hide Node' (with icon) and add a 'Delete Node' option with a confirmation dialog to clarify intent and prevent data loss.",
+        "Add 'Show Xrefs' or 'Show Callers/Callees' to the context menu to provide traditional RE functionality within the graph context."
+      ],
+      "round": 3,
+      "latency_ms": 8829,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "cross-references",
       "source": "BinaryExplorerView.tsx:2600-2800",
       "criteria": "As someone who traces dependencies to understand attack surfaces: Can you trace all callers and callees of a selected function? Is the call depth configurable? Can you see the full dependency chain from entry point to a specific function? Are indirect calls (via function pointers, vtables) represented? Can you highlight a specific call path?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visible UI control to configure call depth; 'Expand 6 Neighbors' is fixed, not adjustable.",
+        "Indirect calls (function pointers, vtables) are not visually distinguished \u2014 all edges are uniform orange lines.",
+        "Entry point is not labeled or highlighted; full dependency chain from entry to 'mcp_auth_completed' cannot be confirmed.",
+        "Graph lacks legend or edge type indicators \u2014 unclear if orange lines represent calls, data flow, or event triggers."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals multiple RPC callers to 'mcp_auth_completed' via orange edges, offering immediate dependency overview.",
+        "Context menu provides 'Trace Execution Path' option, suggesting intent to highlight call paths.",
+        "Detail panel lists emitted RPCs (e.g., 'add_mcp_server'), enabling manual reconstruction of downstream effects."
+      ],
+      "changes": [
+        "Add a 'Max Hops' slider or input field near the 'Expand 6 Neighbors' option to let users control call depth.",
+        "Introduce edge styling (e.g., dashed lines for indirect calls, different colors for data vs control flow) and a legend in the graph viewport.",
+        "Highlight the entry point node with a distinct icon or color and add a 'Trace from Entry' button in the context menu.",
+        "Label edge types in the context menu or detail panel when a node is selected to clarify relationship semantics."
+      ],
+      "round": 3,
+      "latency_ms": 9719,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "state-machines",
       "source": "BinaryExplorerView.tsx:2700-2900",
       "criteria": "As someone who reverse engineers protocol state machines: Is there a dedicated state machine visualization? Are states shown as nodes in a ring or directed graph? Are transitions labeled with the triggering event/condition? Can you trace a path through the state machine? Is the initial state clearly marked? Are error/terminal states visually distinct?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No dedicated state machine visualization; states are not rendered as a ring or directed graph with labeled transitions.",
+        "Transitions between states are not visible \u2014 edges connect events/RPCs, not state changes with triggering conditions.",
+        "Initial state is not marked; no visual indicator (e.g., green start node, 'INIT' label) identifies entry point.",
+        "Error/terminal states are not visually distinct \u2014 all nodes use same color/shape regardless of state type.",
+        "Graph appears to be a flat dependency graph of events and RPCs, not a state machine; impossible to trace logical state progression."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph shows RPC and event nodes with clear labels like 'mcp_auth_completed' and 'authenticate_mcp_server'.",
+        "Context menu offers 'Trace Execution Path' which implies state path tracing capability.",
+        "Detail panel provides rich textual metadata about the selected event, including emitted RPCs and architectural notes."
+      ],
+      "changes": [
+        "Add a 'State Machine' view toggle that renders states as circular nodes in a directed graph with labeled transition edges showing triggering events.",
+        "Introduce visual markers: green node for initial state, red for terminal/error states, and edge labels showing conditions like 'on mcp_auth_completed'.",
+        "Replace generic 'event' nodes with 'state' nodes in state machine view, and make transitions explicit rather than implied via RPC connections."
+      ],
+      "round": 3,
+      "latency_ms": 7066,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "performance",
       "source": "BinaryGraph.tsx",
       "criteria": "As someone who analyzes binaries with thousands of functions: How does the graph perform with the current number of nodes? Is there any lag when clicking, panning, or zooming? Would you trust this to handle 500+ nodes without WebGL/Canvas? Is there a virtualization strategy visible (lazy loading, level-of-detail)? What's the upper bound before it becomes unusable?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Graph layout is visually dense and overlapping even at 51 nodes; no visible clustering, LOD, or virtualization to handle scale.",
+        "No visual feedback (spinner, progress bar) during node expansion or graph re-layout, masking potential lag.",
+        "No performance indicator (FPS, node count limit) to reassure user about scalability to 500+ nodes.",
+        "Right-side 'Investigation Journal' shows repeated identical clicks without visual consequence, suggesting UI state is not updating or is lagging."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually encodes relationships (e.g., orange RPC edges from 'mcp_auth_completed') better than a flat cross-reference table.",
+        "Context menu on node ('Expand 6 Neighbors') enables progressive disclosure, aligning with the tool's stated design.",
+        "Detail panel provides rich, type-specific metadata (purpose, emits, connections) for selected node, increasing information density."
+      ],
+      "changes": [
+        "Add a 'Clustering' or 'LOD' toggle button near 'VIEWPORT' to collapse dense regions into meta-nodes for >100 nodes.",
+        "Show a loading spinner or skeleton UI in the graph area during node expansion or layout recalculation.",
+        "Display a real-time FPS counter and node count limit warning (e.g., '51/500 nodes \u2014 performance may degrade') in the graph status bar."
+      ],
+      "round": 3,
+      "latency_ms": 7540,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "gynvael-coldwind",
       "group": "chat-analysis",
       "source": "BinaryExplorerView.tsx:2800-3100",
       "criteria": "As a security researcher who would ask technical RE questions: Is the chat interface positioned to answer questions about the binary? Can you see suggested queries that are relevant to binary analysis? Does the chat area feel like a first-class analysis tool (as per the design philosophy) or an afterthought? Would you use natural language to query the binary?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Chat input lacks placeholder text or example prompts (e.g., 'Show me all functions calling this event') to guide effective binary analysis queries.",
+        "Graph node labels like 'henticate_mcp_ser...' are truncated and lack hover tooltips or zoom controls, reducing readability and forcing manual inspection.",
+        "No visible 'Send' button or visual cue for submitting chat queries, making the chat feel like a passive display rather than an active analysis interface."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph visually reveals relationships between 'mcp_auth_completed' and its emitted RPCs (e.g., 'add_mcp_server', 'clear_mcp_auth') via orange edges, which is superior to a flat cross-reference table.",
+        "Detail panel for 'mcp_auth_completed' provides structured metadata (Purpose, How It Works, Architecture Note) with hyperlinked emits, enabling deep-dive analysis.",
+        "Chat input field explicitly prompts 'Ask a question about mcp_auth_completed', positioning natural language as the primary interaction method for this node."
+      ],
+      "changes": [
+        "Add placeholder text to chat input: 'e.g., \"What functions call this?\", \"Show me the data flow for this event\"' to guide users on effective binary analysis queries.",
+        "Implement hover tooltips on graph nodes to display full names and metadata, and add zoom controls to handle label truncation at scale.",
+        "Add a visible 'Send' button or icon next to the chat input to reinforce that it is an active command interface, not just a display field."
+      ],
+      "round": 3,
+      "latency_ms": 7242,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "first-impressions",
       "source": "BinaryExplorerView.tsx:1-200",
       "criteria": "As a security educator who makes complex topics accessible: Could a CTF beginner understand how to use this tool? Is there guidance on what to do first? Does the empty-graph progressive disclosure help or confuse newcomers? What would you add to make this a teaching tool? Would you feature this in a YouTube tutorial?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "Graph is still visually overwhelming \u2014 51 nodes and 755 edges with no 'Focus on Critical Paths' or 'Show Only High-Value Nodes' filter visible.",
+        "Numbers on nodes (e.g., '25', '35') lack tooltips or a legend \u2014 beginners won\u2019t know if they represent connection counts, confidence, or something else.",
+        "Chat input 'Ask about this binary...' has no placeholder text or example prompt to guide first-time users.",
+        "Suggested queries are static \u2014 no context-aware suggestion like 'Ask about mcp_auth_completed' appears when it\u2019s selected."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph-first navigation clearly reveals relationships between functions and RPCs \u2014 far superior to cross-reference tables for spotting attack surfaces.",
+        "Detail panel for 'mcp_auth_completed' provides rich, type-specific context (purpose, emits, connections) that educates while analyzing.",
+        "Suggested queries in the right panel lower the barrier for beginners by offering concrete, security-relevant questions to ask.",
+        "Progressive disclosure works: clicking 'mcp_auth_completed' highlights its connections in orange, making critical paths visually obvious."
+      ],
+      "changes": [
+        "Add a tooltip on node numbers: hover over '25' to show '25 connections to other features'.",
+        "Add placeholder text to chat input: 'Try asking: \u201cWhat\u2019s the attack surface?\u201d or \u201cShow me authentication flows\u201d'.",
+        "Add a 'Focus on Critical Paths' toggle button above the graph to filter edges by connection weight or security relevance.",
+        "Update 'SUGGESTED QUERIES' dynamically: when 'mcp_auth_completed' is selected, add 'Ask about mcp_auth_completed\u2019s RPC calls'."
+      ],
+      "round": 3,
+      "latency_ms": 10678,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "progressive-disclosure",
       "source": "BinaryExplorerView.tsx:550-650",
       "criteria": "As someone who believes UI should tell a story: Is the transition from empty to populated graph smooth and understandable? Does the animation convey that nodes are 'appearing' in response to your action? Is it clear that you caused this to happen? Would a beginner understand that clicking 'Seed Namespaces' loads the binary's structure? Is there a loading indicator?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No animation or loading indicator is visible \u2014 the graph appears fully populated and static, making it impossible to tell if nodes appeared in response to user action or were pre-loaded.",
+        "The transition from empty to populated graph is not shown \u2014 the progressive disclosure model (click to expand, chat to discover) is not visually demonstrated or explained.",
+        "No visible trigger (like a 'Seed Namespaces' button) is present in the screenshot to indicate how the graph was populated \u2014 a beginner would not know what caused the graph to appear.",
+        "The graph is visually dense and cluttered with 51 nodes and 755 edges, which obscures relationships rather than revealing them \u2014 defeating the purpose of a 'graph-first' view for beginners."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The graph visually encodes multiple feature types (rpc, event, schema, etc.) with distinct colors and shapes, which supports the 'graph-first' value proposition.",
+        "The detail panel below the graph provides structured metadata (namespaces, top features by connections) that complements the visual graph.",
+        "The 'SUGGESTED QUERIES' panel in the right sidebar offers LLM-native interaction hooks, aligning with the 'Chat IS the product' principle."
+      ],
+      "changes": [
+        "Add a subtle animation (e.g., nodes fading in or pulsing) when they are added to the graph in response to a user action like clicking a button or submitting a chat query.",
+        "Include a small loading spinner or progress bar near the graph viewport when the graph is being populated, with a tooltip explaining 'Nodes are appearing based on your query or selection'.",
+        "Add a visible 'Seed Graph' or 'Expand View' button near the graph with a tooltip explaining its purpose, to make the progressive disclosure model explicit to beginners.",
+        "Implement a 'Focus Mode' or 'Simplify Graph' toggle that reduces edge density and highlights only the most relevant connections based on the selected node or query."
+      ],
+      "round": 3,
+      "latency_ms": 10865,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "learning-path",
       "source": "BinaryExplorerView.tsx:100-300",
       "criteria": "As someone who thinks about pedagogical order: In what order would a newcomer discover features? Is the order logical (overview \u2192 detail \u2192 code \u2192 chat)? Are advanced features hidden until basics are understood? Could someone accidentally discover a confusing advanced feature before understanding the basics? Is there a natural flow?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No visual legend or tooltip explains node colors (green, blue, orange) without hovering \u2014 a critical pedagogical gap for beginners.",
+        "The 'Overview' button in the detail panel is ambiguous: it\u2019s unclear if it collapses the panel, resets the graph, or toggles a view mode.",
+        "Initial graph density (51 nodes, 755 edges) may overwhelm a true beginner \u2014 no 'start here' or 'focus on one namespace' toggle is visible.",
+        "The 'VIEWPORT' and 'All Features' dropdowns lack visual affordance \u2014 it\u2019s not obvious they are interactive filters without hovering."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph-first navigation is visually effective: the force-directed layout reveals dense relationships (755 edges) at a glance, far superior to cross-reference tables.",
+        "Chat is integrated as a first-class analysis interface: the 'Ask about this binary...' input and suggested queries in the ANALYSIS panel drive discovery naturally.",
+        "Progressive disclosure works: the graph starts sparse (51 nodes visible), and clicking 'mcp_auth_completed' expands context with orange-highlighted connections and a rich detail panel.",
+        "Detail panel provides type-specific views: the selected event node shows purpose, RPC emissions, and architecture notes \u2014 exactly what a reverse engineer needs.",
+        "Multiple perspectives are supported: the legend (rpc, event, schema, etc.) and filter controls allow users to toggle views without leaving the graph."
+      ],
+      "changes": [
+        "Add a persistent color legend below the graph: label green=rpc, blue=schema, orange=event, etc., with icons \u2014 no hover required.",
+        "Rename the 'Overview' button to 'Collapse Detail' or 'Reset View' to clarify its function.",
+        "Add a 'Focus Namespace' toggle in the graph toolbar: let users isolate 'daemon.*' or 'droid.*' to reduce initial cognitive load.",
+        "Add subtle hover tooltips to 'VIEWPORT' and 'All Features' dropdowns: e.g., 'Filter visible nodes by type or scope'."
+      ],
+      "round": 3,
+      "latency_ms": 10450,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "vulnerability-hunting",
       "source": "BinaryExplorerView.tsx:2100-2400",
       "criteria": "As someone who hunts for bugs in CTF challenges: Can you identify the binary's attack surface (input handlers, network listeners, file parsers)? Are these highlighted or do you have to find them yourself? Would a beginner know where to start looking for vulnerabilities? Is there a 'find interesting functions' feature? Would this help you during a CTF time crunch?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No visual indicator (e.g., red border, warning icon) on nodes like 'authenticate_mcp_server' or 'submit_mcp_auth_code' to flag them as high-risk or vulnerable \u2014 forces user to infer risk from function names.",
+        "Graph layout is cluttered: edges overlap heavily around 'mcp_auth_completed', partially obscuring node labels like 'update_mcp_config' \u2014 reduces readability under time pressure.",
+        "No 'Find Interesting Functions' button or filter preset (e.g., 'Show All RPCs', 'Show Auth Functions') \u2014 beginners must manually click nodes or guess which types (rpc/event) to explore."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Graph clearly shows 'rpc' and 'event' nodes (e.g., 'mcp_auth_completed', 'authenticate_mcp_server') which directly map to attack surface like network handlers and authentication flows.",
+        "Detail panel for 'mcp_auth_completed' explicitly lists emitted RPCs (e.g., 'add_mcp_server', 'submit_mcp_auth_code'), giving immediate context on what functions are triggered \u2014 critical for CTF exploit chains.",
+        "Chat panel is active and contextual ('Ask a question about mcp_auth_completed'), enabling LLM-driven exploration without leaving the graph view \u2014 aligns with 'chat IS the product' philosophy.",
+        "Node types are color-coded (green for rpc, orange for event) and visible in the legend, helping users quickly filter for input handlers or network-related functions."
+      ],
+      "changes": [
+        "Add a 'VULN' or 'HIGH-RISK' badge to nodes with names like 'authenticate', 'submit', 'exec' \u2014 visible in graph and detail panel to guide CTF players.",
+        "Implement a 'Focus Attack Surface' toggle that filters graph to show only rpc, event, and cli_command nodes \u2014 reduces noise and highlights input handlers.",
+        "Add a 'Show Overlapping Labels' button that temporarily spaces nodes to reveal obscured text \u2014 critical for dense graphs during time-crunched analysis."
+      ],
+      "round": 3,
+      "latency_ms": 7937,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "code-view",
       "source": "CodePane.tsx",
       "criteria": "As someone who uses Python to explain binary concepts: Is the Python pseudocode readable for someone who knows Python but not assembly? Does it accurately represent the binary's logic? Are comments included to explain non-obvious operations? Would you use this in a tutorial to explain what a function does? Is it better than reading raw C decompilation?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The detail panel for 'mcp_auth_completed' contains only natural language documentation and RPC call lists \u2014 there is no Python pseudocode, executable logic, or control flow representation visible.",
+        "The graph view shows event/RPC relationships but does not display any function-level logic, control flow, or data flow that could be translated into Python pseudocode for educational purposes.",
+        "The chat interface prompts 'Ask a question about mcp_auth_completed' but shows no evidence of generating or displaying code in response to queries \u2014 failing the 'chat IS the product' promise for code explanation.",
+        "The selected node's detail panel lacks any code representation (Python or otherwise), making it impossible for a Python user to understand the binary's logic beyond high-level descriptions."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The force-directed graph visually highlights relationships between events and RPCs, making high-level dependencies (like 'mcp_auth_completed' connecting to 'add_mcp_server', 'clear_mcp_auth', etc.) immediately apparent.",
+        "The detail panel provides structured natural language documentation with clear sections (Purpose, How It Works, Architecture Note), which is useful for understanding the semantic role of the selected node.",
+        "The UI clearly labels node types (event, rpc, schema) in the graph legend, aiding in quick visual parsing of the binary's architecture."
+      ],
+      "changes": [
+        "Add a 'Python Pseudocode' tab to the detail panel that generates executable, commented Python logic for the selected node's behavior, translating assembly-level operations into readable Python with explanations for non-obvious steps.",
+        "Modify the chat interface to auto-generate and display Python pseudocode when a user asks 'How does this function work?' or 'Show me the logic in Python', making the LLM-native aspect visible and actionable.",
+        "Enhance the graph node tooltips or a dedicated 'Logic View' to show a mini-control-flow diagram or pseudocode snippet for the selected node, bridging the gap between high-level relationships and low-level logic."
+      ],
+      "round": 3,
+      "latency_ms": 10624,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "chat-exploration",
       "source": "BinaryExplorerView.tsx:2800-3100",
       "criteria": "As someone who explains things in plain English: Can the chat understand plain English questions about the binary? Could a beginner ask 'what does this program do?' and get a useful answer? Does it handle vague questions gracefully? Is the chat the most beginner-friendly entry point to analysis? Would you recommend starting with the chat instead of the graph?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "The chat input field lacks placeholder text or example prompts (e.g., 'Try: What does this program do?') to guide beginners on how to formulate their first question.",
+        "The graph node labels (e.g., 'update_mcp_config', 'list_mcp_registry') are technical and not self-explanatory; a beginner would need to click each node to understand its purpose, which is not intuitive.",
+        "The chat input field shows no visual feedback (e.g., loading spinner, example response snippet) to indicate it's active and ready for natural language queries, making it feel static."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The chat input field is clearly labeled 'Ask a question about mcp_auth_completed', which directly invites natural language queries and contextualizes the interaction.",
+        "The detail panel for 'mcp_auth_completed' provides a rich, structured explanation in plain English, demonstrating the LLM's ability to translate technical node data into human-readable summaries.",
+        "The graph visually reveals relationships (e.g., RPC calls from 'mcp_auth_completed' to 'add_mcp_server', 'authenticate_mcp_server') at a glance, fulfilling the 'graph-first' promise better than a cross-reference table."
+      ],
+      "changes": [
+        "Add placeholder text to the chat input field: 'Try: What does this program do? or How does authentication work?' to guide beginners.",
+        "Add tooltips or hover previews to graph nodes that show a one-sentence plain English description (e.g., 'update_mcp_config: Changes server settings') to reduce the need for clicking.",
+        "Add a subtle loading animation or a sample response preview (e.g., 'Example: This event triggers server setup...') in the chat input area to signal interactivity."
+      ],
+      "round": 3,
+      "latency_ms": 10211,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "visual-design",
       "source": "EmbryStyle.ts",
       "criteria": "As someone who uses color to teach: Are the colors in the graph meaningful (different colors for different types)? Is there a legend explaining the color coding? Would a colorblind viewer understand the graph? Are the colors consistent throughout the tool (same type = same color everywhere)? Is the color scheme aesthetically pleasing for screenshots and videos?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No colorblind accessibility: relies solely on color to distinguish node types \u2014 no shapes, patterns, or text labels on nodes to support users with color vision deficiency.",
+        "Node label truncation: some node labels (e.g., 'update_mcp_config', 'toggle_mcp_server') are cut off or overlap in dense areas, reducing readability without zooming."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "Color coding is meaningful: green for rpc, orange for event, blue for schema, purple for state machine, red for cli command \u2014 clearly differentiates node types at a glance.",
+        "Color consistency is maintained: same type (e.g., 'event') always uses the same color across all nodes in the graph.",
+        "Aesthetic color scheme: dark background with vibrant, high-contrast node colors works well for screenshots and videos, reducing eye strain while highlighting relationships.",
+        "Legend is present and visible: small colored dots with labels (rpc, event, schema, etc.) above the graph clearly explain the color coding."
+      ],
+      "changes": [
+        "Add shape encoding: use different node shapes (circle, square, diamond) alongside color to differentiate types \u2014 e.g., events as diamonds, schemas as squares \u2014 so colorblind users can distinguish types.",
+        "Increase node spacing or implement dynamic label positioning: prevent label overlap and truncation by adjusting layout or showing full labels on hover."
+      ],
+      "round": 3,
+      "latency_ms": 7127,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "ctf-workflow",
       "source": "InvestigationJournal.tsx",
       "criteria": "As someone who writes CTF writeups: Is there an investigation journal that records your analysis steps? Could you export it as a writeup? Does it capture screenshots of the graph at each step? Would this save time writing a CTF writeup after the competition? Can you add personal notes alongside automated recording?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The journal only logs 'CLICK' events on the same node ('mcp_auth_completed') repeatedly; it does not capture the user's chat queries or LLM-generated insights, which are core to the tool's value.",
+        "There is no visible UI element (e.g., text box, annotation button) to add personal notes or commentary alongside the automated journal entries.",
+        "The journal entries lack context \u2014 they don't show what the user was trying to achieve or why they clicked the node, making them insufficient for a narrative writeup."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The graph visually reveals relationships between MCP-related functions and events, which is better than a cross-reference table for understanding system architecture.",
+        "The 'Investigation Journal' panel is visible and logs node clicks with timestamps and captured screenshots, providing a basic audit trail.",
+        "The detail panel for 'mcp_auth_completed' provides structured, type-specific metadata including purpose, behavior, and emitted RPCs, which is useful for writeups."
+      ],
+      "changes": [
+        "Add a text input field or 'Add Note' button next to each journal entry to allow users to annotate their thought process or findings.",
+        "Log chat queries and LLM responses in the journal alongside node clicks, with clear visual distinction (e.g., different icons or colors for user input vs. system output).",
+        "Include a 'Export as Writeup' button that generates a Markdown or PDF document with journal entries, annotated notes, and embedded graph screenshots."
+      ],
+      "round": 3,
+      "latency_ms": 8956,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "graph-interaction",
       "source": "BinaryGraph.tsx",
       "criteria": "As someone who values intuitive interactions: Does clicking a node do what you'd expect? Is single-click = select and double-click = expand obvious? Are click targets large enough to hit easily? Does clicking empty space deselect? Is there visual feedback on hover (cursor change, highlight)? Would a newcomer understand the click model without instruction?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visual feedback is visible on hover \u2014 cursor change or node highlight is absent, making discoverability of clickable elements poor.",
+        "The single-click vs. double-click interaction model is not visually communicated; a newcomer cannot infer that double-clicking expands a node.",
+        "Clicking empty space in the graph has no visible effect or indicator \u2014 it\u2019s ambiguous whether it deselects or does nothing.",
+        "The 'FORCE' layout button lacks a tooltip or icon label, so its function is not self-explanatory."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The graph visually reveals relationships between binary features (e.g., 'mcp_auth_completed' emitting RPCs to 'add_mcp_server', 'authenticate_mcp_server') better than a cross-reference table.",
+        "The detail panel provides rich, type-specific metadata for the selected node, which supports progressive disclosure.",
+        "The 'Investigation Journal' logs user clicks, providing a clear audit trail of interaction history."
+      ],
+      "changes": [
+        "Add a subtle node highlight and cursor change (e.g., pointer) on hover to indicate interactivity.",
+        "Add a small tooltip or visual cue (e.g., '+' icon on node) to indicate that double-clicking expands the node.",
+        "Add a visual indicator (e.g., fade or border reset) when clicking empty space to confirm deselection.",
+        "Add a tooltip or label to the 'FORCE' button explaining it toggles the physics layout."
+      ],
+      "round": 3,
+      "latency_ms": 6717,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "accessibility",
       "source": "BinaryExplorerView.tsx (global)",
       "criteria": "As someone who advocates for inclusive tools: Can you navigate the tool using only the keyboard? Does Tab move through interactive elements in a logical order? Can you use arrow keys in the graph? Are keyboard shortcuts available? Is there a keyboard shortcut reference? Would a viewer with a broken mouse be able to use this tool?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 2,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The screenshot shows an HTTP 404 error page, not the Binary Explorer tool. No graph, chat, or detail panels are visible.",
+        "No interactive elements from the tool (graph nodes, chat input, sidebar filters) are present to evaluate for keyboard navigation.",
+        "The only visible interactive element is a 'Reload' button, which is insufficient to assess the tool\u2019s core functionality or accessibility."
+      ],
+      "status": "reviewed",
+      "strengths": [],
+      "changes": [
+        "Replace the 404 error page with the actual Binary Explorer UI to enable evaluation of keyboard navigation and graph interactions.",
+        "Ensure the graph, chat pane, and detail panel are fully rendered and interactive in the screenshot."
+      ],
+      "round": 3,
+      "latency_ms": 5788,
+      "reviewed_at": "2026-03-29T11:10:45"
     },
     {
       "persona": "liveoverflow",
       "group": "error-states",
       "source": "BinaryExplorerView.tsx:1550-1600",
       "criteria": "As someone who demos tools live and things break: What happens if the backend is unreachable? Is there a clear error message or does the UI just hang? Would a beginner understand what went wrong? Is there a retry button? Does the error state look professional or like an unhandled exception? Would this embarrass you in a live demo?",
-      "score": null,
-      "verdict": null,
-      "weaknesses": [],
-      "status": "pending"
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "The 'EMPTY SCENE' state for the 'NONEXISTENT' binary looks identical to a valid empty state \u2014 no visual indicator (e.g., red text, warning icon, network error) suggests a backend failure or missing binary.",
+        "No retry button or network status indicator is visible anywhere in the UI, even when the graph is empty or the binary is invalid.",
+        "The detail panel for 'NONEXISTENT' still claims it's an 'ELF binary - extracted via /analyze-elf + /treesitter', which is misleading if the binary doesn't exist or failed to load.",
+        "The graph in the 'DROID' view is visually overwhelming with 755 edges \u2014 no visible toggle or filter to reduce edge density for beginners."
+      ],
+      "status": "reviewed",
+      "strengths": [
+        "The graph visualization for the 'droid' binary is rich with nodes and edges, clearly showing relationships between RPCs, events, and namespaces.",
+        "The detail panel provides structured, type-specific metadata for selected nodes, including purpose, triggers, and connections.",
+        "The 'Investigation Journal' on the right logs user interactions, offering a clear audit trail of exploration steps.",
+        "The UI includes helpful 'Suggested Queries' in the analysis panel to guide beginners."
+      ],
+      "changes": [
+        "Add a red 'Connection Lost' banner or a warning icon next to the 'EMPTY SCENE' text if the backend is unreachable or the binary fails to load.",
+        "Add a 'Retry' button next to the 'EMPTY SCENE' message and in the detail panel when a binary fails to load.",
+        "Change the detail panel text for nonexistent binaries to 'Binary not found or failed to load' instead of claiming extraction via tools.",
+        "Add a 'Simplify Graph' toggle or 'Edge Density' slider in the graph toolbar to reduce visual clutter for beginners."
+      ],
+      "round": 3,
+      "latency_ms": 9263,
+      "reviewed_at": "2026-03-29T11:10:45"
     }
   ]
 }
