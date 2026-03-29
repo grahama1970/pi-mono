@@ -2785,13 +2785,6 @@ function EvaluateTab({ project }: { project: Project }) {
   // ── Evaluation checklist — expected vs actual, pass/fail per row ──
   const offDiagonalTotal = matrix.reduce((sum, row, i) => sum + row.reduce((s, v, j) => s + (j !== i ? v : 0), 0), 0)
   const totalPredictions = matrix.flat().reduce((s, v) => s + v, 0)
-  const _errorRate = totalPredictions > 0 ? offDiagonalTotal / totalPredictions : 0
-
-  // Find worst confusion pair
-  let worstPairCount = 0, worstPairFrom = '', worstPairTo = ''
-  matrix.forEach((row, i) => row.forEach((c, j) => {
-    if (i !== j && c > worstPairCount) { worstPairCount = c; worstPairFrom = classes[i] || '?'; worstPairTo = classes[j] || '?' }
-  }))
 
   // Per-class eval results — straight from the dataset, no invented thresholds
   const classResults = classes.map((cls, i) => {
@@ -2826,7 +2819,7 @@ function EvaluateTab({ project }: { project: Project }) {
             { label: `F1 ≥ ${gateThreshold.toFixed(2)} on holdout`, ok: passed, detail: macroF1.toFixed(3) },
             { label: 'All classes F1 ≥ 0.80', ok: weakClasses.length === 0, detail: weakClasses.length > 0 ? `${weakClasses.length} weak` : 'Yes' },
             { label: 'Confusion matrix diagonal-dominant', ok: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)), detail: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)) ? 'Clean' : 'Off-diagonal' },
-            { label: 'All eval checks passed', ok: failedChecks === 0, detail: failedChecks > 0 ? `${failedChecks} failed` : `${passedChecks} passed` },
+            { label: `All classes meet ${gateThreshold.toFixed(2)} target`, ok: classesFailing.length === 0, detail: classesFailing.length > 0 ? `${classesFailing.map(c => c.cls).join(', ')} below` : `${classes.length}/${classes.length}` },
           ]}
         />
       </div>
