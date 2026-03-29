@@ -539,8 +539,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .data(simEdges).join('path')
       .attr('fill', 'none')
       .attr('stroke', (d) => EDGE_COLORS[d.edgeType] ?? EMBRY.dim)
-      .attr('stroke-width', (d) => (EDGE_WIDTHS[d.edgeType] ?? 1.0) * 0.3)
-      .attr('stroke-opacity', 0.25)
+      .attr('stroke-width', (d) => (EDGE_WIDTHS[d.edgeType] ?? 1.0) * 0.4)
+      .attr('stroke-opacity', 0.08)
       .attr('marker-end', (d) => d.edgeType !== 'contains' ? `url(#arrow-${d.edgeType})` : null)
 
     // ── Edge Labels (hidden by default, shown on node select) ──
@@ -602,8 +602,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       const visited = visitedRef.current
 
       if (!targetId) {
-        // Deselect: dim edges back to ambient, hide labels — NO physics changes
-        edgeLines.transition().duration(200).attr('stroke-opacity', 0.25)
+        // Deselect: edges nearly invisible until a node is selected — prevents hairball
+        edgeLines.transition().duration(200).attr('stroke-opacity', 0.08)
         edgeLabels.transition().duration(200).attr('opacity', 0)
         nodeGs.select('.node-shape').transition().duration(200)
           .attr('stroke', 'none').attr('stroke-width', 0)
@@ -659,8 +659,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         return `M${sx},${sy} L${tx},${ty}`
       })
       edgeLines.transition().duration(200)
-        .attr('stroke-opacity', (e) => shownEdges.has(e) ? 0.9 : 0.08)
-        .attr('stroke-width', (e) => shownEdges.has(e) ? (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 1.2 : (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 0.3)
+        .attr('stroke-opacity', (e) => shownEdges.has(e) ? 0.85 : 0)
+        .attr('stroke-width', (e) => shownEdges.has(e) ? (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 1.5 : 0)
 
       // Show edge labels for selected node's edges
       edgeLabels.transition().duration(200)

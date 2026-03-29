@@ -613,13 +613,13 @@ export function BinaryExplorerView() {
   // --- Auto-seed: populate graph when binary data loads and scene is empty ---
   useEffect(() => {
     if (data.loading || data.graphNodes.length === 0 || sceneNodeIds.size > 0) return
-    // Seed with namespaces + top 25 most-connected nodes — enough to show structure without hairball
+    // Seed with namespaces + top 20 most-connected NAMED nodes — skip numeric/ambiguous labels
     const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
     const byDegree = data.graphNodes
-      .filter(n => n.nodeType !== 'parameter')
+      .filter(n => n.nodeType !== 'parameter' && n.label.length > 3 && !/^\d+$/.test(n.label) && n.label !== 'other')
       .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
       .sort((a, b) => b.deg - a.deg)
-      .slice(0, 25)
+      .slice(0, 20)
     const seedIds = [...new Set([...namespaces.map(n => n.id), ...byDegree.map(n => n.id)])]
     if (seedIds.length > 0) {
       addToScene(seedIds)
@@ -1543,7 +1543,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
 
               {/* Perspective Selector */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700 }}>VIEWPORT</span>
+                <span style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700 }}>PERSPECTIVE</span>
                 <select
                   id="be-perspective"
                   value={perspective}
@@ -1685,7 +1685,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   display: 'flex', gap: 6, alignItems: 'center',
                 }}>
                   <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace' }}>
-                    {sceneNodeIds.size}/{data.graphNodes.length} in scene
+                    {sceneNodeIds.size} nodes · {data.allEdges.filter(e => sceneNodeIds.has(e._from) && sceneNodeIds.has(e._to)).length} edges
                   </span>
                   <button onClick={clearScene} style={{
                     fontSize: 8, padding: '2px 6px', background: 'rgba(5,5,5,0.8)',
@@ -2141,7 +2141,7 @@ ${selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_patt
                     const sortHeader = (key: typeof tableSortKey, label: string) => (
                       <th key={key} onClick={() => { if (tableSortKey === key) setTableSortAsc(!tableSortAsc); else { setTableSortKey(key); setTableSortAsc(true) } }}
                         style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: tableSortKey === key ? EMBRY.accent : EMBRY.dim, cursor: 'pointer', textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap' }}>
-                        {label} {tableSortKey === key ? (tableSortAsc ? '▲' : '▼') : ''}
+                        {label} {tableSortKey === key ? (tableSortAsc ? '▲' : '▼') : '⇅'}
                       </th>
                     )
                     return (
@@ -2178,7 +2178,12 @@ ${selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_patt
                                     </span>
                                   </td>
                                   <td style={{ padding: '3px 6px', color: EMBRY.dim }}>{n.cluster}</td>
-                                  <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 10 ? EMBRY.white : EMBRY.dim }}>{n.connections}</td>
+                                  <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : n.connections > 10 ? EMBRY.white : EMBRY.dim }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                                      {n.connections}
+                                      {n.connections > 20 && <span style={{ width: Math.min(n.connections / 3, 40), height: 3, background: n.connections > 50 ? '#ef4444' : '#f97316', borderRadius: 1, display: 'inline-block' }} />}
+                                    </span>
+                                  </td>
                                   <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8 }}>{n.cwe}</td>
                                   <td style={{ padding: '3px 6px', color: '#f97316', fontSize: 8 }}>{n.attack}</td>
                                 </tr>
