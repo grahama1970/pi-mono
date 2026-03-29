@@ -25,6 +25,10 @@ export interface BinaryGraphProps {
   perspective?: string
   /** SPARTA mind tags + taxonomy per node — drives tag dots and coloring on graph */
   taxonomyMap?: Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>
+  /** Active node type filters — when non-empty, only these types are shown */
+  activeTypeFilters?: Set<string>
+  /** Toggle a node type in the filter set */
+  onToggleTypeFilter?: (type: string) => void
 }
 
 interface SimNode extends d3.SimulationNodeDatum {
@@ -104,7 +108,7 @@ function hullPath(points: [number, number][], pad = 16): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNodeClick, onNodeHover, onContextMenu, layoutMode = 'organic', selectedNodeId = null, graphSvgRef, taxonomyMap }: BinaryGraphProps) {
+export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNodeClick, onNodeHover, onContextMenu, layoutMode = 'organic', selectedNodeId = null, graphSvgRef, taxonomyMap, activeTypeFilters, onToggleTypeFilter }: BinaryGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null)
   const [activeLayout, setActiveLayout] = useState<'organic' | 'stratified' | 'clustered' | 'hierarchical'>(layoutMode)
@@ -1228,8 +1232,18 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
                 </svg>
               )
             }
+            const isFiltered = activeTypeFilters && activeTypeFilters.size > 0
+            const isActive = !isFiltered || activeTypeFilters!.has(type)
             return (
-              <span key={type} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span key={type} id={`be-legend-${type}`}
+                onClick={() => onToggleTypeFilter?.(type)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 3,
+                  cursor: onToggleTypeFilter ? 'pointer' : 'default',
+                  opacity: isActive ? 1 : 0.3,
+                  textDecoration: activeTypeFilters?.has(type) ? 'underline' : 'none',
+                  transition: 'opacity 0.15s',
+                }}>
                 {shapeEl}
                 {type.replace(/_/g, ' ')}
               </span>

@@ -192,6 +192,52 @@ python3 "$SCRIPT_DIR/structured_execute.py" run plan.yaml  # system python, wron
 nohup python3 "$SCRIPT_DIR/worker.py" &                    # alias doesn't expand in nohup
 ```
 
+## Common Mistakes
+
+### WRONG: Using `import logging` instead of loguru
+```python
+import logging
+logger = logging.getLogger(__name__)
+```
+
+### RIGHT: Always use loguru
+```python
+from loguru import logger
+```
+
+### WRONG: Using `import requests` for HTTP calls
+```python
+import requests
+resp = requests.get("https://api.example.com")
+```
+
+### RIGHT: Use httpx
+```python
+import httpx
+resp = httpx.get("https://api.example.com")
+```
+
+### WRONG: Using bare `python3` in run.sh when pyproject.toml exists
+```bash
+python3 "$SCRIPT_DIR/main.py"
+```
+
+### RIGHT: Use uv run for proper dependency isolation
+```bash
+uv run --project "$SCRIPT_DIR" python "$SCRIPT_DIR/main.py"
+```
+
+### WRONG: Missing dependency in pyproject.toml that the code imports
+```python
+from loguru import logger  # imported but not in pyproject.toml dependencies
+```
+
+### RIGHT: Every import has a matching pyproject.toml entry
+```toml
+[project]
+dependencies = ["loguru>=0.7.0"]
+```
+
 ---
 
 ## Docker Skills Must Have docker-compose.yml

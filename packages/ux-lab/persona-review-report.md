@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 14:31
+Generated: 2026-03-29 15:33
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 16 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are still missing: connections between nodes (e. | 10884ms |
-| 16 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded or too small | 8130ms |
-| 16 | tim-blazytko | node-detail | 7 | PASS | Detail panel lacks explicit CWE/ATT&CK security tags despite | 8070ms |
-| 16 | tim-blazytko | symbol-tree | 7 | PASS | No visible saved analysis scenes or project-specific graph s | 7375ms |
-| 16 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column uses a red bar without displaying the exac | 7492ms |
-| 16 | tim-blazytko | taxonomy-integration | 5 | FAIL | CWE/ATT&CK tags are not reflected in graph node coloring, si | 8455ms |
-| 16 | tim-blazytko | code-view | 7 | PASS | Code View lacks syntax highlighting for the Python pseudocod | 8274ms |
-| 16 | tim-blazytko | chat-analysis | 8 | PASS | Node labels like 'list_mcp_tools' are truncated in the graph | 8075ms |
-| 16 | tim-blazytko | automation | 8 | PASS | The 'Raw JSON' toggle is still buried at the bottom of the d | 8283ms |
-| 16 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector dropdown is small and visually understa | 6891ms |
-| 16 | tim-blazytko | scene-management | 4 | FAIL | No visible 'Load Scene' button or dropdown — only 'Save' and | 8183ms |
-| 16 | tim-blazytko | investigation-journal | 5 | FAIL | The journal entries (e.g., 'ked: mcp _aut h_co mpl eted (eve | 8166ms |
+| 17 | tim-blazytko | first-impressions | 8 | PASS | Edge labels are missing: connections between nodes (e.g., fr | 9534ms |
+| 17 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are still partially occluded or too | 8967ms |
+| 17 | tim-blazytko | node-detail | 5 | FAIL | Detail panel lacks explicit CWE/ATT&CK security tags despite | 8796ms |
+| 17 | tim-blazytko | symbol-tree | 8 | PASS | No visual cue (e.g., expand/collapse icon, hover state) indi | 9522ms |
+| 17 | tim-blazytko | table-view | 8 | PASS | The 'CONN' column still uses a red bar without displaying th | 6983ms |
+| 17 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE/ATT&CK tags are not visible in the detail panel for 'mcp | 7949ms |
+| 17 | tim-blazytko | code-view | 4 | FAIL | Code View lacks syntax highlighting for Python pseudocode, m | 7158ms |
+| 17 | tim-blazytko | chat-analysis | 5 | FAIL | Node labels like 'list_mcp_tools' are truncated in the graph | 7619ms |
+| 17 | tim-blazytko | automation | 7 | PASS | The 'Raw JSON' toggle is still buried at the bottom of the d | 6560ms |
+| 17 | tim-blazytko | perspective-views | 8 | PASS | Perspective selector dropdown ('Security') remains small and | 7416ms |
+| 17 | tim-blazytko | scene-management | 8 | PASS | The 'Name...' input field next to 'SAVE' is still ambiguous  | 10292ms |
+| 17 | tim-blazytko | investigation-journal | 4 | FAIL | Journal entries are truncated (e.g., 'ked: mcp _aut h_co mpl | 8944ms |
 | 16 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — cannot infer control/d | 12376ms |
 | 16 | gynvael-coldwind | data-structures | 4 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 8919ms |
 | 16 | gynvael-coldwind | graph-exploration | 8 | PASS | The legend is static and non-interactive; clicking a legend  | 19687ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 14:31
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 7.0/10
+- Average score: 6.8/10
 - Passed (>=8): 20/33
 - Gate: FAIL (target: 8.0)

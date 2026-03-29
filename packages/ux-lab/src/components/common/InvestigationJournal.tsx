@@ -284,10 +284,11 @@ const styles = {
 		margin: 0,
 	},
 	description: {
-		fontSize: 12,
+		fontSize: 11,
 		color: EMBRY.white,
-		lineHeight: 1.4,
-		wordBreak: "break-word" as const,
+		lineHeight: 1.5,
+		overflowWrap: "break-word" as const,
+		whiteSpace: "normal" as const,
 	},
 	note: {
 		fontSize: 11,
@@ -497,28 +498,34 @@ export function InvestigationJournal({
 						role="toolbar"
 					>
 						<button
-							style={styles.iconBtn}
+							id="be-journal-export-writeup"
+							style={{ ...styles.iconBtn, display: 'flex', alignItems: 'center', gap: 3 }}
 							title="Export as CTF Writeup (Markdown)"
 							onClick={handleExportWriteup}
 							disabled={steps.length === 0}
 						>
-							<FileText size={13} color={EMBRY.amber} />
+							<FileText size={11} color={EMBRY.amber} />
+							<span style={{ fontSize: 8, color: EMBRY.amber, fontWeight: 600 }}>WRITEUP</span>
 						</button>
 						<button
-							style={styles.iconBtn}
+							id="be-journal-export-md"
+							style={{ ...styles.iconBtn, display: 'flex', alignItems: 'center', gap: 3 }}
 							title="Export raw journal (Markdown table)"
 							onClick={handleExport}
 							disabled={steps.length === 0}
 						>
-							<Download size={13} />
+							<Download size={11} />
+							<span style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 600 }}>MD</span>
 						</button>
 						<button
-							style={styles.iconBtn}
+							id="be-journal-export-json"
+							style={{ ...styles.iconBtn, display: 'flex', alignItems: 'center', gap: 3 }}
 							title="Export as JSON (agentic pipeline / training data)"
 							onClick={handleExportJson}
 							disabled={steps.length === 0}
 						>
-							<Braces size={13} color="#7dd3fc" />
+							<Braces size={11} color="#7dd3fc" />
+							<span style={{ fontSize: 8, color: '#7dd3fc', fontWeight: 600 }}>JSON</span>
 						</button>
 					</div>
 				)}

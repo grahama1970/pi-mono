@@ -11,6 +11,7 @@ import { IngestionProgress } from '../common/IngestionProgress'
 import type { IngestStats } from '../common/IngestionProgress'
 import { InvestigationJournal } from '../common/InvestigationJournal'
 import type { Step } from '../common/InvestigationJournal'
+import { CodePane } from './CodePane'
 
 
 const EDGE_COLORS: Record<string, string> = {
@@ -221,6 +222,13 @@ export function BinaryExplorerView() {
   // --- Code View State ---
   const [codeViewTab, setCodeViewTab] = useState<'assembly' | 'decompiled' | 'pseudocode'>('pseudocode')
   const [pseudocode, setPseudocode] = useState<string | null>(null)
+  // Evidence case state — deterministic CWE proof chains
+  const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
+  const [evidenceCaseResult, setEvidenceCaseResult] = useState<{
+    cweId: string; verdict: string; grade: string; score: number
+    gateTrace: Array<{ gate: string; passed: boolean; detail?: string }>
+    reasoning?: string; lean4?: string; elapsed_s?: number
+  } | null>(null)
   const [pseudocodeLoading, setPseudocodeLoading] = useState(false)
   const [leftPaneWidth, setLeftPaneWidth] = useState(65)
 
@@ -360,6 +368,42 @@ export function BinaryExplorerView() {
       .catch(() => setPseudocode('# Error: LLM service unavailable'))
       .finally(() => setPseudocodeLoading(false))
   }, [selectedNode?.id, codeViewTab, dataTab])
+
+  // --- Evidence Case (deterministic CWE proof chains) ---
+  const runEvidenceCase = useCallback(async (cweId: string) => {
+    if (!selectedNode) return
+    setEvidenceCaseLoading(cweId)
+    setEvidenceCaseResult(null)
+    try {
+      const nodeEdges = data.allEdges.filter(e => e._from === selectedNode.id || e._to === selectedNode.id)
+      const connLabels = nodeEdges.slice(0, 5).map(e => {
+        const other = e._from === selectedNode.id ? e._to : e._from
+        return `${e.edge_type}: ${other.split('/').pop()}`
+      }).join(', ')
+      const question = `Does the binary feature "${selectedNode.label}" (${selectedNode.nodeType}, cluster: ${selectedNode.cluster}) exhibit vulnerability ${cweId}? Context: ${selectedNode.description || 'no description'}. Connections: ${connLabels}`
+
+      const res = await fetch(`${API}/api/evidence-case/run`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, controlId: cweId, nodeLabel: selectedNode.label }),
+      })
+      const d = await res.json()
+      setEvidenceCaseResult({
+        cweId,
+        verdict: d.verdict?.state?.toUpperCase() || d.primary_state || d.verdict || 'UNKNOWN',
+        grade: d.verdict?.grade || d.grade || '?',
+        score: d.verdict?.score ?? d.score ?? 0,
+        gateTrace: d.gate_trace || d.claim?.gate_results || [],
+        reasoning: d.verdict?.reasoning || d.recommendation || '',
+        lean4: d.lean4_result?.prediction || (d.claim?.gate_results?.find((g: { gate: string }) => g.gate === 'step_5_lean4')?.detail) || null,
+        elapsed_s: d.elapsed_s ?? null,
+      })
+    } catch (err) {
+      setEvidenceCaseResult({ cweId, verdict: 'ERROR', grade: '?', score: 0, gateTrace: [], reasoning: String(err) })
+    } finally {
+      setEvidenceCaseLoading(null)
+    }
+  }, [selectedNode, data.allEdges])
 
   // --- Saved Scenes ---
   const [savedScenes, setSavedScenes] = useState<{ name: string; nodeIds: string[]; perspective: Perspective; layoutMode: string }[]>([])
@@ -563,10 +607,26 @@ export function BinaryExplorerView() {
           scope: 'binary-explorer',
         }),
       })
+      // Also persist to localStorage as fallback
+      try {
+        const stored = JSON.parse(localStorage.getItem('be-scenes') || '[]')
+        const updated = stored.filter((s: { name?: string }) => s.name !== sceneData.name)
+        updated.push(sceneData)
+        localStorage.setItem('be-scenes', JSON.stringify(updated))
+      } catch {}
       setSceneName('')
       loadSavedScenes()
     } catch (err) {
       console.error('Failed to save scene:', err)
+      // Still save to localStorage even if memory daemon fails
+      try {
+        const stored = JSON.parse(localStorage.getItem('be-scenes') || '[]')
+        const updated = stored.filter((s: { name?: string }) => s.name !== sceneData.name)
+        updated.push(sceneData)
+        localStorage.setItem('be-scenes', JSON.stringify(updated))
+        setSceneName('')
+        loadSavedScenes()
+      } catch {}
     }
   }, [sceneNodeIds, binaryName, perspective, layoutMode, selectedNode, breadcrumbs])
 
@@ -591,26 +651,41 @@ export function BinaryExplorerView() {
   }, [data.graphNodes])
 
   const loadSavedScenes = useCallback(async () => {
+    // Load from localStorage first (always available, instant)
+    const localScenes: typeof savedScenes = []
+    try {
+      const stored = JSON.parse(localStorage.getItem('be-scenes') || '[]')
+      localScenes.push(...stored.filter((s: { binary?: string }) => s.binary === binaryName))
+    } catch {}
+
+    // Also try memory daemon recall
     try {
       const res = await fetch(`${API}/api/memory/recall`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: `scene ${binaryName}`, k: 10, labels: ['binary-explorer-scene'] }),
+        body: JSON.stringify({ q: `binary-explorer-scene ${binaryName}`, k: 20, tags: ['binary-explorer-scene'] }),
       })
       if (res.ok) {
         const d = await res.json()
         if (d.found && d.items?.length > 0) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const scenes = d.items.map((item: any) => {
+          const memScenes = d.items.map((item: any) => {
             try {
               const parsed = typeof item.solution === 'string' ? JSON.parse(item.solution) : item.solution
               return parsed
             } catch { return null }
           }).filter((s: unknown): s is { name: string; nodeIds: string[]; perspective: Perspective; layoutMode: string } => s != null && typeof s === 'object' && 'name' in (s as Record<string, unknown>))
-          setSavedScenes(scenes)
+          // Merge: dedupe by name, prefer memory daemon version
+          const byName = new Map(localScenes.map(s => [s.name, s]))
+          for (const s of memScenes) byName.set(s.name, s)
+          setSavedScenes([...byName.values()])
+          return
         }
       }
     } catch {}
+
+    // Fallback: only localStorage scenes
+    if (localScenes.length > 0) setSavedScenes(localScenes)
   }, [binaryName])
 
   // Load saved scenes on binary change
@@ -1666,6 +1741,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     onNodeClick={onNodeClick}
                     onContextMenu={(n, x, y) => setContextMenu({ x, y, node: n })}
                     graphSvgRef={graphSvgRef}
+                    activeTypeFilters={data.nodeTypeFilter}
+                    onToggleTypeFilter={data.toggleNodeTypeFilter}
                   />
                 )
               })()}
@@ -1966,20 +2043,87 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 5: Security tags (CWE / ATT&CK from taxonomy map) */}
+                      {/* Row 5: Security tags (CWE / ATT&CK from taxonomy map) — clickable for evidence cases */}
                       {(() => {
                         const tax = taxonomyMap.get(selectedNode.id)
                         const cweList = tax?.cwe?.filter(c => c && c !== 'none') ?? []
                         const attackList = tax?.attack?.filter(a => a && a !== 'none') ?? []
                         if (cweList.length === 0 && attackList.length === 0) return null
                         return (
-                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                            {cweList.map(c => (
-                              <span key={c} style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{c}</span>
-                            ))}
-                            {attackList.map(a => (
-                              <span key={a} style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{a}</span>
-                            ))}
+                          <div>
+                            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 4 }}>
+                              {cweList.map(c => (
+                                <span key={c} id={`be-cwe-${c}`} onClick={() => runEvidenceCase(c)}
+                                  title={`Run evidence case for ${c}`}
+                                  style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
+                                  onMouseEnter={e => (e.currentTarget.style.background = '#991b1b')}
+                                  onMouseLeave={e => (e.currentTarget.style.background = '#7f1d1d')}
+                                >{evidenceCaseLoading === c ? '⏳ ' : '🔍 '}{c}</span>
+                              ))}
+                              {attackList.map(a => (
+                                <span key={a} id={`be-attack-${a}`} onClick={() => runEvidenceCase(a)}
+                                  title={`Run evidence case for ${a}`}
+                                  style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
+                                  onMouseEnter={e => (e.currentTarget.style.background = '#92400e')}
+                                  onMouseLeave={e => (e.currentTarget.style.background = '#713f12')}
+                                >{evidenceCaseLoading === a ? '⏳ ' : '🔍 '}{a}</span>
+                              ))}
+                            </div>
+                            {/* Evidence Case Gate Trace — inline pipeline visualization */}
+                            {evidenceCaseResult && (
+                              <div id="be-evidence-case" style={{ background: '#0a0a12', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: 8, marginTop: 4 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                                  <span style={{ fontSize: 8, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.05em' }}>EVIDENCE CASE</span>
+                                  <span style={{ fontSize: 8, color: EMBRY.muted }}>{evidenceCaseResult.cweId}</span>
+                                  {evidenceCaseResult.elapsed_s != null && <span style={{ fontSize: 7, color: EMBRY.muted, marginLeft: 'auto' }}>{evidenceCaseResult.elapsed_s.toFixed(1)}s</span>}
+                                </div>
+                                {/* Gate trace pipeline — horizontal dots */}
+                                <div style={{ display: 'flex', gap: 2, alignItems: 'center', marginBottom: 8 }}>
+                                  {(evidenceCaseResult.gateTrace.length > 0 ? evidenceCaseResult.gateTrace : [
+                                    { gate: 'topic', passed: false }, { gate: 'recall', passed: false },
+                                    { gate: 'ground', passed: false }, { gate: 'bridge', passed: false }, { gate: 'verdict', passed: false },
+                                  ]).map((g, i) => {
+                                    const label = g.gate.replace('step_', '').replace(/^\d+_/, '')
+                                    const color = g.passed ? '#4CAF50' : '#ef4444'
+                                    return (
+                                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                        <div title={g.detail || label} style={{
+                                          width: 10, height: 10, borderRadius: '50%',
+                                          background: color, border: `1px solid ${color}88`,
+                                          boxShadow: `0 0 4px ${color}44`,
+                                        }} />
+                                        <span style={{ fontSize: 7, color: EMBRY.muted, textTransform: 'uppercase' }}>{label}</span>
+                                        {i < (evidenceCaseResult.gateTrace.length || 5) - 1 && (
+                                          <span style={{ color: EMBRY.border, fontSize: 8 }}>→</span>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                {/* Verdict + grade */}
+                                <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 4 }}>
+                                  <span style={{
+                                    fontSize: 10, fontWeight: 900, padding: '2px 8px', borderRadius: 2,
+                                    background: evidenceCaseResult.verdict === 'SATISFIED' ? '#14532d' : evidenceCaseResult.verdict === 'INCONCLUSIVE' ? '#713f12' : '#7f1d1d',
+                                    border: `1px solid ${evidenceCaseResult.verdict === 'SATISFIED' ? '#16a34a' : evidenceCaseResult.verdict === 'INCONCLUSIVE' ? '#d97706' : '#dc2626'}`,
+                                    color: evidenceCaseResult.verdict === 'SATISFIED' ? '#86efac' : evidenceCaseResult.verdict === 'INCONCLUSIVE' ? '#fde68a' : '#fca5a5',
+                                  }}>{evidenceCaseResult.verdict}</span>
+                                  <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.white }}>Grade: {evidenceCaseResult.grade}</span>
+                                  <span style={{ fontSize: 9, color: EMBRY.muted }}>Score: {(evidenceCaseResult.score * 100).toFixed(0)}%</span>
+                                  {evidenceCaseResult.lean4 && (
+                                    <span style={{ fontSize: 7, padding: '1px 4px', background: '#1e1b4b', border: '1px solid #4338ca', color: '#a5b4fc', borderRadius: 2 }}>
+                                      LEAN4: {evidenceCaseResult.lean4}
+                                    </span>
+                                  )}
+                                </div>
+                                {/* Reasoning */}
+                                {evidenceCaseResult.reasoning && (
+                                  <div style={{ fontSize: 9, color: EMBRY.dim, lineHeight: 1.5, marginTop: 4, maxHeight: 60, overflow: 'auto' }}>
+                                    {evidenceCaseResult.reasoning.substring(0, 300)}
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
                         )
                       })()}
@@ -2098,9 +2242,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       {codeViewTab === 'assembly' && (
                         <div>
                           {selectedNode?.source_pattern ? (
-                            <pre style={{ fontSize: 9, color: '#a5b4fc', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
-                              {selectedNode.source_pattern}
-                            </pre>
+                            <CodePane code={selectedNode.source_pattern} language="asm" maxHeight="300px" />
                           ) : (
                             <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>No assembly data available. Run /analyze-elf to extract.</div>
                           )}
@@ -2110,9 +2252,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       {codeViewTab === 'decompiled' && (
                         <div>
                           {selectedNode?.source_pattern ? (
-                            <pre style={{ fontSize: 9, color: '#86efac', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
-                              {`// Decompiled representation of: ${selectedNode.label}\n// Type: ${selectedNode.nodeType}\n\n${selectedNode.source_pattern || '// No source data available'}`}
-                            </pre>
+                            <CodePane code={`// Decompiled representation of: ${selectedNode.label}\n// Type: ${selectedNode.nodeType}\n\n${selectedNode.source_pattern || '// No source data available'}`} language="c" maxHeight="300px" />
                           ) : (
                             <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>No decompiled source available. Run /analyze-elf with Ghidra backend.</div>
                           )}
@@ -2121,25 +2261,23 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
 
                       {codeViewTab === 'pseudocode' && (
                         <div>
-                          {pseudocodeLoading && <div style={{ fontSize: 9, color: EMBRY.accent }}>Generating Python pseudocode...</div>}
-                          {pseudocode && !pseudocode.startsWith('# Error') && (
-                            <pre style={{ fontSize: 9, color: '#fde68a', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
-                              {pseudocode}
-                            </pre>
+                          {pseudocodeLoading && <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 4 }}>Generating enhanced pseudocode...</div>}
+                          {/* Show LLM pseudocode when available, otherwise always show structured fallback */}
+                          {pseudocode && !pseudocode.startsWith('# Error') ? (
+                            <CodePane code={pseudocode} language="python" maxHeight="300px" />
+                          ) : selectedNode ? (
+                            <CodePane code={[
+                              `# ${selectedNode.label} (${selectedNode.nodeType.replace('_', ' ')})`,
+                              `# Cluster: ${selectedNode.cluster} | Tier: ${selectedNode.tier} | Confidence: ${Math.round(selectedNode.confidence * 100)}%`,
+                              selectedNode.description ? `\n# Description:\n# ${selectedNode.description.split('. ').join('.\n# ')}` : '',
+                              selectedNode.fields?.length ? `\ndef ${selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')}(${selectedNode.fields.slice(0, 6).join(', ')}):` : '',
+                              selectedNode.fields?.length ? `    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""\n    pass` : '',
+                              selectedNode.states?.length ? `\n# State machine: ${selectedNode.states.join(' → ')}` : '',
+                              selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_pattern}` : '',
+                            ].filter(Boolean).join('\n')} language="python" maxHeight="300px" />
+                          ) : (
+                            <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>Select a node to view pseudocode</div>
                           )}
-                          {/* Fallback: structured description when LLM unavailable */}
-                          {(!pseudocode || pseudocode.startsWith('# Error')) && !pseudocodeLoading && selectedNode && (
-                            <pre style={{ fontSize: 9, color: '#fde68a', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace', background: '#050505', padding: 8, border: `1px solid ${EMBRY.border}`, borderRadius: 2, maxHeight: 300, overflow: 'auto' }}>
-{`# ${selectedNode.label} (${selectedNode.nodeType.replace('_', ' ')})
-# Cluster: ${selectedNode.cluster} | Tier: ${selectedNode.tier} | Confidence: ${Math.round(selectedNode.confidence * 100)}%
-${selectedNode.description ? `\n# Description:\n# ${selectedNode.description.split('. ').join('.\n# ')}` : ''}
-${selectedNode.fields?.length ? `\ndef ${selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')}(${selectedNode.fields.slice(0, 6).join(', ')}):` : ''}
-${selectedNode.fields?.length ? `    """${selectedNode.description?.split('.')[0] || selectedNode.label}"""\n    pass` : ''}
-${selectedNode.states?.length ? `\n# State machine: ${selectedNode.states.join(' → ')}` : ''}
-${selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_pattern}` : ''}`}
-                            </pre>
-                          )}
-                          {!pseudocode && !pseudocodeLoading && !selectedNode && <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>Select a node to view pseudocode</div>}
                         </div>
                       )}
                     </div>
@@ -2177,7 +2315,7 @@ ${selectedNode.source_pattern ? `\n# Source pattern:\n${selectedNode.source_patt
                     return (
                       <div>
                         <div style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'center' }}>
-                          <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
+                          <input id="be-table-filter" value={tableSearch} onChange={e => { setTableSearch(e.target.value); data.setSearchQuery(e.target.value) }}
                             placeholder="Filter features, CWE, ATT&CK..." style={{ flex: 1, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
                           <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
                           {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
