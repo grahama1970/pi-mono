@@ -25,7 +25,6 @@ import asyncio
 import json
 import os
 import time
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -38,166 +37,22 @@ import sys
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from _shared.structured_plan import load_structured_plan, validate_structured_plan  # type: ignore
 
+from structured_execute_helpers import (  # noqa: E402
+    SCILLM_KEY,
+    SCILLM_URL,
+    SKILLS_DIR,
+    STATE_ROOT,
+    SUBAGENT_RUN,
+    WATCHDOG_POLL_S,
+    TaskRuntime,
+    _build_runtimes,
+    _build_system_prompt,
+    _dependency_graph,
+    _render_state,
+    _subagent_backend_name,
+)
+
 app = typer.Typer(add_completion=False)
-
-SCILLM_URL = os.environ.get("SCILLM_API_BASE", "http://localhost:4001/v1/chat/completions")
-SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
-SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", str(Path(__file__).resolve().parents[1])))
-SUBAGENT_RUN = SKILLS_DIR / "subagent-service" / "run.sh"
-STATE_ROOT = Path(os.environ.get("ORCHESTRATE_HOME", str(Path(__file__).resolve().parent)))
-WATCHDOG_POLL_S = 2
-
-
-@dataclass
-class TaskRuntime:
-    task_id: str
-    title: str
-    lane: str
-    runner: str
-    backend: str
-    mode: str
-    prompt: str
-    command: str
-    cwd: Path
-    agent: str = ""
-    definition_of_done: dict = field(default_factory=dict)
-    allowlist: list[str] | None = None
-    max_rounds: int = 5
-    status: str = "queued"
-    started_at: float | None = None
-    finished_at: float | None = None
-    output_path: Path | None = None
-    error: str = ""
-    review_status: str = ""  # pass/warn/fail
-    review_output: str = ""
-    _subagent_port: int = 0
-    _subagent_task_id: str = ""
-    _cancel_event: asyncio.Event = field(default_factory=asyncio.Event)
-    _proc: asyncio.subprocess.Process | None = field(default=None, repr=False)
-
-
-# ---------------------------------------------------------------------------
-# Helpers (pure functions, no async needed)
-# ---------------------------------------------------------------------------
-
-def _build_system_prompt(task: TaskRuntime) -> str:
-    """Inject extension rules + persona context into subagent system prompt."""
-    parts = [
-        "You are executing a task within an Embry OS orchestration pipeline.",
-        "",
-        "## NON-NEGOTIABLE RULES",
-        "- Query /memory recall BEFORE scanning any codebase",
-        "- Use `from loguru import logger` (NEVER `import logging`)",
-        "- Use `httpx` (NEVER `import requests`)",
-        "- Use `typer` for CLI (NEVER `argparse`)",
-        "- Max 800 lines per Python file",
-        "- If an existing skill handles this, USE IT — never reimplement",
-        "- All AQL must reside in the memory project only",
-        "- Run tests before claiming done",
-    ]
-    if task.agent:
-        agents_md = SKILLS_DIR.parent / "agents" / task.agent / "AGENTS.md"
-        if agents_md.exists():
-            lines = agents_md.read_text().splitlines()[:50]
-            parts.extend(["", f"## Persona: {task.agent}", ""])
-            parts.extend(lines)
-    return "\n".join(parts)
-
-
-def _as_list(value: Any) -> list[Any]:
-    if value is None:
-        return []
-    return value if isinstance(value, list) else [value]
-
-
-def _task_prompt(task: dict[str, Any]) -> str:
-    explicit = str(task.get("prompt") or "").strip()
-    if explicit:
-        return explicit
-    impl = [str(item).strip() for item in _as_list(task.get("implementation")) if str(item).strip()]
-    if not impl:
-        return ""
-    parts = [f"Task: {task.get('title', '')}", "", "Implementation:"]
-    parts.extend(f"- {item}" for item in impl)
-    dod = task.get("definition_of_done") or {}
-    if isinstance(dod, dict) and (dod.get("command") or dod.get("assertion")):
-        parts.extend(["", "Definition of Done:",
-                       f"- Command: {dod.get('command', '')}",
-                       f"- Assertion: {dod.get('assertion', '')}"])
-    tests = [str(item).strip() for item in _as_list(task.get("tests")) if str(item).strip()]
-    if tests:
-        parts.extend(["", "Tests:"])
-        parts.extend(f"- {item}" for item in tests)
-    return "\n".join(parts).strip()
-
-
-def _build_runtimes(plan: dict[str, Any], repo_root: Path) -> dict[str, TaskRuntime]:
-    runtimes: dict[str, TaskRuntime] = {}
-    for raw_task in _as_list(plan.get("tasks")):
-        if not isinstance(raw_task, dict):
-            continue
-        task_id = str(raw_task.get("id") or "").strip()
-        cwd = Path(str(raw_task.get("cwd") or repo_root))
-        if not cwd.is_absolute():
-            cwd = (repo_root / cwd).resolve()
-        runtimes[task_id] = TaskRuntime(
-            task_id=task_id,
-            title=str(raw_task.get("title") or "").strip(),
-            lane=str(raw_task.get("lane") or "default").strip() or "default",
-            runner=str(raw_task.get("runner") or "").strip(),
-            backend=str(raw_task.get("backend") or raw_task.get("model") or "").strip(),
-            mode=str(raw_task.get("mode") or "").strip(),
-            prompt=_task_prompt(raw_task),
-            command=str(raw_task.get("command") or "").strip(),
-            cwd=cwd,
-            agent=str(raw_task.get("agent") or "").strip(),
-            definition_of_done=raw_task.get("definition_of_done") or {},
-            allowlist=raw_task.get("allowlist"),
-            max_rounds=int(raw_task.get("max_rounds") or 5),
-        )
-    return runtimes
-
-
-def _dependency_graph(plan: dict[str, Any]) -> tuple[dict[str, list[str]], dict[str, int]]:
-    deps: dict[str, list[str]] = {}
-    indegree: dict[str, int] = {}
-    task_ids = {str(t.get("id")) for t in _as_list(plan.get("tasks")) if isinstance(t, dict)}
-    for task in _as_list(plan.get("tasks")):
-        if not isinstance(task, dict):
-            continue
-        tid = str(task.get("id"))
-        raw = [str(i) for i in _as_list(task.get("depends_on")) if str(i)]
-        filtered = [i for i in raw if i in task_ids]
-        deps[tid] = filtered
-        indegree[tid] = len(filtered)
-    return deps, indegree
-
-
-def _render_state(session_dir: Path, runtimes: dict[str, TaskRuntime],
-                  deps: dict[str, list[str]], failed: bool) -> None:
-    payload = {
-        "generated_at": time.time(), "failed": failed, "session_dir": str(session_dir),
-        "tasks": [
-            {"id": t.task_id, "title": t.title, "lane": t.lane, "runner": t.runner,
-             "backend": t.backend, "mode": t.mode, "agent": t.agent, "status": t.status,
-             "depends_on": deps.get(t.task_id, []),
-             "output_path": str(t.output_path) if t.output_path else "",
-             "error": t.error, "started_at": t.started_at, "finished_at": t.finished_at,
-             "subagent_task_id": t._subagent_task_id or "",
-             "subagent_port": t._subagent_port or 0}
-            for t in runtimes.values()
-        ],
-    }
-    (session_dir / "status.json").write_text(json.dumps(payload, indent=2))
-
-
-def _subagent_backend_name(model: str) -> str:
-    low = model.lower()
-    if low.startswith(("gpt", "codex", "o3", "o4")):
-        return "codex"
-    if low.startswith(("gemini",)):
-        return "gemini"
-    return "claude"
 
 
 # ---------------------------------------------------------------------------

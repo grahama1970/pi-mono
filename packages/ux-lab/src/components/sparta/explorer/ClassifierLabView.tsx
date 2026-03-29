@@ -1335,6 +1335,8 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
   const [gateF1Input, setGateF1Input] = useState('0.90')
   const [maxRoundsInput, setMaxRoundsInput] = useState('5')
   const [maxTrainSamplesInput, setMaxTrainSamplesInput] = useState('10000')
+  const [trainSorting, setTrainSorting] = useState<SortingState>([{ id: 'f1', desc: true }])
+  const [retrying, setRetrying] = useState<string | null>(null)
   const best = rows.find(r => r.status === 'pass')
   const passCount = rows.filter(r => r.status === 'pass').length
   const totalCount = rows.length
@@ -1523,8 +1525,31 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         </div>
       </div>
 
-      {/* Leaderboard with tooltips */}
-      <div style={{ ...label, marginBottom: 8 }}>LIVE TRAINING LEADERBOARD</div>
+      {/* Sortable leaderboard */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <div style={label}>LIVE TRAINING LEADERBOARD</div>
+        {rows.some(r => r.status === 'fail') && (
+          <button
+            onClick={() => {
+              const failed = rows.filter(r => r.status === 'fail').map(r => r.backbone)
+              if (!failed.length) return
+              setRetrying(failed.join(','))
+              fetch(`${API}/projects/classifier-lab/rerun/${project.id}`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  backbones: failed, gate_f1: rerunGateF1,
+                  max_rounds: rerunMaxRounds, max_train_samples: rerunMaxTrainSamples,
+                  modality: project.modality, task: project.name, retry: true,
+                }),
+              }).finally(() => setRetrying(null))
+            }}
+            disabled={!!retrying}
+            style={{ ...btnOutline, borderColor: EMBRY.amber + '66', color: EMBRY.amber, fontSize: 9, padding: '4px 12px' }}
+          >
+            {retrying ? 'RETRYING...' : `RETRY ${rows.filter(r => r.status === 'fail').length} FAILED`}
+          </button>
+        )}
+      </div>
       {rows.length === 0 ? (
         <div style={{ ...card, padding: 32, textAlign: 'center', marginBottom: 28 }}>
           <Cpu size={24} color={EMBRY.dim} style={{ marginBottom: 8 }} />
@@ -1535,61 +1560,95 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         </div>
       ) : (
       <div style={{ ...card, padding: 0, overflow: 'hidden', marginBottom: 28 }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
-              {([
-                { h: '#', tip: 'Rank by F1 score (best first)' },
-                { h: 'BACKBONE', tip: 'Pre-trained model architecture being evaluated' },
-                { h: 'LR', tip: 'Learning rate used for this training run' },
-                { h: 'BATCH SIZE', tip: 'Number of samples per gradient update step' },
-                { h: 'F1', tip: 'Macro F1 on held-out test set — primary quality metric' },
-                { h: 'ACC', tip: 'Overall accuracy — can be misleading with imbalanced classes' },
-                { h: 'LATENCY', tip: 'Inference latency per sample (p50)' },
-                { h: 'COST', tip: 'Training cost for this backbone (FREE = local GPU)' },
-                { h: 'GATE', tip: `Whether F1 ≥ ${rerunGateF1.toFixed(2)} on held-out test set` },
-              ]).map(({ h, tip }) => (
-                <th key={h} style={{ ...thStyle, cursor: 'help' }} title={tip}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(r => (
-              <tr key={r.backbone} style={{
-                borderBottom: `1px solid ${EMBRY.border}`,
-                borderLeft: r.rank === 1 && r.status === 'pass' ? `3px solid ${EMBRY.green}` : '3px solid transparent',
-                background: r.status === 'training' ? 'rgba(124,58,237,0.03)' : 'transparent',
-              }}>
-                <td style={tdStyle}>{r.rank}</td>
-                <td style={{ ...tdStyle, fontWeight: 700, color: r.rank === 1 ? EMBRY.green : EMBRY.white }}>{r.backbone}</td>
-                <td style={tdStyle}>{r.lr}</td>
-                <td style={tdStyle}>{r.bs || '—'}</td>
-                <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= rerunGateF1 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
-                  {r.f1 ? r.f1.toFixed(3) : '—'}
-                </td>
-                <td style={tdStyle}>{r.acc ? r.acc.toFixed(3) : '—'}</td>
-                <td style={tdStyle}>{r.latency}</td>
-                <td style={{ ...tdStyle, color: r.cost === 'FREE' ? EMBRY.green : EMBRY.white }}>{r.cost}</td>
-                <td style={tdStyle}>
-                  {r.status === 'training' ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <div style={{ width: 60, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${r.progress ?? 0}%`, background: EMBRY.amber }} />
-                      </div>
-                      <span style={{ fontSize: 8, color: EMBRY.amber, fontWeight: 700 }}>{r.progress}%</span>
-                    </div>
-                  ) : r.status === 'queued' ? (
-                    <span style={{ ...statusBadge, background: 'rgba(100,116,139,0.15)', color: EMBRY.dim }}>QUEUED</span>
-                  ) : (
-                    <span style={{ ...statusBadge, background: r.status === 'pass' ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)', color: r.status === 'pass' ? EMBRY.green : EMBRY.red }}>
-                      {r.status.toUpperCase()}
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {(() => {
+          const trainColumns = [
+            { id: 'rank', header: '#', tip: 'Rank by F1 score (best first)', accessor: (r: TrainingRow) => r.rank, sortable: true },
+            { id: 'backbone', header: 'BACKBONE', tip: 'Pre-trained model architecture being evaluated', accessor: (r: TrainingRow) => r.backbone, sortable: true },
+            { id: 'lr', header: 'LR', tip: 'Learning rate used for this training run', accessor: (r: TrainingRow) => parseFloat(r.lr) || 0, sortable: true },
+            { id: 'bs', header: 'BATCH', tip: 'Number of samples per gradient update step', accessor: (r: TrainingRow) => r.bs, sortable: true },
+            { id: 'f1', header: 'F1', tip: 'Macro F1 on held-out test set — primary quality metric', accessor: (r: TrainingRow) => r.f1, sortable: true },
+            { id: 'acc', header: 'ACC', tip: 'Overall accuracy — can be misleading with imbalanced classes', accessor: (r: TrainingRow) => r.acc, sortable: true },
+            { id: 'latency', header: 'LATENCY', tip: 'Inference latency per sample (p50)', accessor: (r: TrainingRow) => r.latency, sortable: false },
+            { id: 'cost', header: 'COST', tip: 'Training cost for this backbone (FREE = local GPU)', accessor: (r: TrainingRow) => r.cost, sortable: false },
+            { id: 'gate', header: 'GATE', tip: `Whether F1 ≥ ${rerunGateF1.toFixed(2)} on held-out test set`, accessor: (r: TrainingRow) => r.status, sortable: true },
+          ]
+          const sorted = [...rows].sort((a, b) => {
+            if (!trainSorting.length) return 0
+            const { id, desc } = trainSorting[0]
+            const col = trainColumns.find(c => c.id === id)
+            if (!col) return 0
+            const av = col.accessor(a), bv = col.accessor(b)
+            const cmp = typeof av === 'number' && typeof bv === 'number' ? av - bv : String(av).localeCompare(String(bv))
+            return desc ? -cmp : cmp
+          })
+          const sortIcon = (colId: string) => {
+            const s = trainSorting.find(x => x.id === colId)
+            if (!s) return ' ↕'
+            return s.desc ? ' ↓' : ' ↑'
+          }
+          const toggleSort = (colId: string) => {
+            setTrainSorting(prev => {
+              const existing = prev.find(x => x.id === colId)
+              if (!existing) return [{ id: colId, desc: true }]
+              if (existing.desc) return [{ id: colId, desc: false }]
+              return []
+            })
+          }
+          return (
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
+                  {trainColumns.map(col => (
+                    <th
+                      key={col.id}
+                      style={{ ...thStyle, cursor: col.sortable ? 'pointer' : 'help', userSelect: 'none' }}
+                      title={col.tip}
+                      onClick={() => col.sortable && toggleSort(col.id)}
+                    >
+                      {col.header}{col.sortable ? sortIcon(col.id) : ''}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {sorted.map(r => (
+                  <tr key={r.backbone} style={{
+                    borderBottom: `1px solid ${EMBRY.border}`,
+                    borderLeft: r.status === 'pass' && r.f1 === Math.max(...rows.filter(x => x.status === 'pass').map(x => x.f1)) ? `3px solid ${EMBRY.green}` : '3px solid transparent',
+                    background: r.status === 'training' ? 'rgba(124,58,237,0.03)' : 'transparent',
+                  }}>
+                    <td style={tdStyle}>{r.rank}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: r.status === 'pass' ? EMBRY.green : EMBRY.white }}>{r.backbone}</td>
+                    <td style={tdStyle}>{r.lr}</td>
+                    <td style={tdStyle}>{r.bs || '—'}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= rerunGateF1 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
+                      {r.f1 ? r.f1.toFixed(3) : '—'}
+                    </td>
+                    <td style={tdStyle}>{r.acc ? r.acc.toFixed(3) : '—'}</td>
+                    <td style={tdStyle}>{r.latency}</td>
+                    <td style={{ ...tdStyle, color: r.cost === 'FREE' ? EMBRY.green : EMBRY.white }}>{r.cost}</td>
+                    <td style={tdStyle}>
+                      {r.status === 'training' ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <div style={{ width: 60, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${r.progress ?? 0}%`, background: EMBRY.amber }} />
+                          </div>
+                          <span style={{ fontSize: 8, color: EMBRY.amber, fontWeight: 700 }}>{r.progress}%</span>
+                        </div>
+                      ) : r.status === 'queued' ? (
+                        <span style={{ ...statusBadge, background: 'rgba(100,116,139,0.15)', color: EMBRY.dim }}>QUEUED</span>
+                      ) : (
+                        <span style={{ ...statusBadge, background: r.status === 'pass' ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)', color: r.status === 'pass' ? EMBRY.green : EMBRY.red }}>
+                          {r.status.toUpperCase()}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
+        })()}
       </div>
       )}
 
@@ -2418,6 +2477,15 @@ function TuneHPControls({ projectId }: { projectId: string }) {
 
 function BenchmarkTab({ project, data: propData }: { project: Project; data?: BenchmarkRow[] }) {
   const data = propData?.length ? propData : []
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const toggleSelect = (name: string) => {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(name)) next.delete(name); else next.add(name)
+      return next
+    })
+  }
+  const comparing = selected.size >= 2
   const bestF1 = data.length ? Math.max(...data.map(d => d.f1)) : 0
   const bestLat = data.length ? Math.min(...data.map(d => d.lat50)) : 0
   const fallbackWinner = data.reduce<BenchmarkRow | null>(
@@ -2478,8 +2546,15 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div style={{ ...heading, fontSize: 16 }}>BACKBONE COMPARISON — {project.name.toUpperCase()} ({data.length} backbones)</div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button style={btnOutline}>FILTER</button>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {comparing && (
+            <span style={{ fontSize: 9, color: EMBRY.accent, fontWeight: 700 }}>
+              COMPARING {selected.size} BACKBONES
+            </span>
+          )}
+          {selected.size > 0 && (
+            <button style={{ ...btnOutline, fontSize: 9, padding: '4px 10px' }} onClick={() => setSelected(new Set())}>CLEAR</button>
+          )}
           <button style={btnOutline}>EXPORT</button>
         </div>
       </div>
@@ -2489,30 +2564,45 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
+              <th style={{ ...thStyle, width: 32 }}>
+                <input type="checkbox" checked={selected.size === data.length && data.length > 0}
+                  onChange={() => setSelected(prev => prev.size === data.length ? new Set() : new Set(data.map(d => d.name)))}
+                  style={{ accentColor: EMBRY.accent }} />
+              </th>
               {['BACKBONE', 'MACRO F1', 'ACCURACY', 'WILSON CI', 'LAT p50 (ms)', 'LAT p95 (ms)', 'PARAMS (M)', 'TRAIN TIME'].map(h => (
                 <th key={h} style={thStyle}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {data.map((b, i) => (
-              <tr key={b.name} style={{
-                borderBottom: `1px solid ${EMBRY.border}`,
-                borderLeft: i === 0 ? `3px solid ${EMBRY.green}` : '3px solid transparent',
-                background: i === 0 ? 'rgba(0,255,136,0.02)' : 'transparent',
-              }}>
-                <td style={{ ...tdStyle, fontWeight: 700, color: i === 0 ? EMBRY.green : EMBRY.white }}>
-                  {i === 0 && '★ '}{b.name}
-                </td>
-                <td style={{ ...tdStyle, fontWeight: 700, color: b.f1 === bestF1 ? EMBRY.green : EMBRY.white }}>{b.f1.toFixed(3)}</td>
-                <td style={tdStyle}>{b.acc.toFixed(3)}</td>
-                <td style={tdStyle}>{b.wilson.toFixed(3)}</td>
-                <td style={{ ...tdStyle, color: b.lat50 === bestLat ? EMBRY.green : EMBRY.white }}>{b.lat50}</td>
-                <td style={tdStyle}>{b.lat95}</td>
-                <td style={tdStyle}>{b.params}</td>
-                <td style={tdStyle}>{b.time}</td>
-              </tr>
-            ))}
+            {data.map((b, i) => {
+              const isSelected = selected.has(b.name)
+              const dimmed = comparing && !isSelected
+              return (
+                <tr key={b.name} onClick={() => toggleSelect(b.name)} style={{
+                  borderBottom: `1px solid ${EMBRY.border}`,
+                  borderLeft: isSelected ? `3px solid ${EMBRY.accent}` : i === 0 ? `3px solid ${EMBRY.green}` : '3px solid transparent',
+                  background: isSelected ? 'rgba(124,58,237,0.06)' : i === 0 ? 'rgba(0,255,136,0.02)' : 'transparent',
+                  opacity: dimmed ? 0.4 : 1,
+                  cursor: 'pointer',
+                  transition: 'opacity 0.15s',
+                }}>
+                  <td style={{ ...tdStyle, width: 32 }} onClick={e => e.stopPropagation()}>
+                    <input type="checkbox" checked={isSelected} onChange={() => toggleSelect(b.name)} style={{ accentColor: EMBRY.accent }} />
+                  </td>
+                  <td style={{ ...tdStyle, fontWeight: 700, color: i === 0 ? EMBRY.green : EMBRY.white }}>
+                    {i === 0 && '★ '}{b.name}
+                  </td>
+                  <td style={{ ...tdStyle, fontWeight: 700, color: b.f1 === bestF1 ? EMBRY.green : EMBRY.white }}>{b.f1.toFixed(3)}</td>
+                  <td style={tdStyle}>{b.acc.toFixed(3)}</td>
+                  <td style={tdStyle}>{b.wilson.toFixed(3)}</td>
+                  <td style={{ ...tdStyle, color: b.lat50 === bestLat ? EMBRY.green : EMBRY.white }}>{b.lat50}</td>
+                  <td style={tdStyle}>{b.lat95}</td>
+                  <td style={tdStyle}>{b.params}</td>
+                  <td style={tdStyle}>{b.time}</td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -2539,17 +2629,19 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
             )
           })}
 
-          {/* One line per backbone */}
+          {/* One line per backbone — selected highlighted in comparison mode */}
           {data.map(row => {
             const isWinner = row.name === winnerName
+            const isSelected = selected.has(row.name)
+            const dimmed = comparing && !isSelected
             return (
               <path
                 key={row.name}
                 d={linePath(row)}
                 fill="none"
-                stroke={isWinner ? EMBRY.accent : EMBRY.blue}
-                strokeWidth={isWinner ? 3 : 1.4}
-                opacity={isWinner ? 0.95 : 0.4}
+                stroke={isSelected ? EMBRY.accent : isWinner ? EMBRY.green : EMBRY.blue}
+                strokeWidth={isSelected ? 3 : isWinner ? 2.5 : 1.4}
+                opacity={dimmed ? 0.1 : isSelected ? 0.95 : isWinner ? 0.9 : 0.4}
               />
             )
           })}
@@ -2565,6 +2657,47 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
           </g>
         </svg>
       </div>
+
+      {/* Comparison delta panel — shows when 2+ selected */}
+      {comparing && (() => {
+        const sel = data.filter(d => selected.has(d.name))
+        const best = sel.reduce((a, b) => a.f1 > b.f1 ? a : b)
+        const metrics = ['f1', 'acc', 'wilson', 'lat50', 'lat95', 'params'] as const
+        const metricLabels: Record<string, string> = { f1: 'Macro F1', acc: 'Accuracy', wilson: 'Wilson CI', lat50: 'Lat p50', lat95: 'Lat p95', params: 'Params (M)' }
+        const lowerIsBetter = new Set(['lat50', 'lat95', 'params'])
+        return (
+          <div style={{ ...card, marginTop: 16 }}>
+            <div style={{ ...label, marginBottom: 12 }}>COMPARISON DELTA</div>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                  <th style={thStyle}>BACKBONE</th>
+                  {metrics.map(m => <th key={m} style={thStyle}>{metricLabels[m]}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {sel.map(row => (
+                  <tr key={row.name} style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: row.name === best.name ? EMBRY.green : EMBRY.white }}>
+                      {row.name === best.name && '★ '}{row.name}
+                    </td>
+                    {metrics.map(m => {
+                      const val = row[m]
+                      const bestVal = lowerIsBetter.has(m) ? Math.min(...sel.map(s => s[m])) : Math.max(...sel.map(s => s[m]))
+                      const isBest = val === bestVal
+                      return (
+                        <td key={m} style={{ ...tdStyle, fontWeight: isBest ? 700 : 400, color: isBest ? EMBRY.green : EMBRY.white }}>
+                          {typeof val === 'number' ? (m === 'params' || m === 'lat50' || m === 'lat95' ? val : val.toFixed(3)) : val}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      })()}
     </div>
   )
 }
@@ -2574,6 +2707,7 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
 function EvaluateTab({ project }: { project: Project }) {
   const [evalData, setEvalData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [expandedClass, setExpandedClass] = useState<string | null>(null)
 
   useEffect(() => {
     setLoading(true)
@@ -2648,6 +2782,34 @@ function EvaluateTab({ project }: { project: Project }) {
 
   const weakClasses = classes.filter((_, i) => perClass[i] && perClass[i].f1 < 0.80)
 
+  // ── Evaluation checklist — expected vs actual, pass/fail per row ──
+  const offDiagonalTotal = matrix.reduce((sum, row, i) => sum + row.reduce((s, v, j) => s + (j !== i ? v : 0), 0), 0)
+  const totalPredictions = matrix.flat().reduce((s, v) => s + v, 0)
+  const _errorRate = totalPredictions > 0 ? offDiagonalTotal / totalPredictions : 0
+
+  // Find worst confusion pair
+  let worstPairCount = 0, worstPairFrom = '', worstPairTo = ''
+  matrix.forEach((row, i) => row.forEach((c, j) => {
+    if (i !== j && c > worstPairCount) { worstPairCount = c; worstPairFrom = classes[i] || '?'; worstPairTo = classes[j] || '?' }
+  }))
+
+  // Per-class eval results — straight from the dataset, no invented thresholds
+  const classResults = classes.map((cls, i) => {
+    const m = perClass[i]
+    const row = matrix[i] || []
+    const correct = row[i] || 0
+    const total = m.support
+    const wrong = total - correct
+    const topMistake = row
+      .map((count, j) => ({ cls: classes[j], count }))
+      .filter((_, j) => j !== i)
+      .sort((a, b) => b.count - a.count)[0]
+    return { cls, ...m, correct, wrong, total, topMistake, meetsGate: m.f1 >= gateThreshold }
+  })
+
+  const classesPassingGate = classResults.filter(c => c.meetsGate).length
+  const classesFailing = classResults.filter(c => !c.meetsGate)
+
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
       {/* Evaluate gate card */}
@@ -2664,8 +2826,100 @@ function EvaluateTab({ project }: { project: Project }) {
             { label: `F1 ≥ ${gateThreshold.toFixed(2)} on holdout`, ok: passed, detail: macroF1.toFixed(3) },
             { label: 'All classes F1 ≥ 0.80', ok: weakClasses.length === 0, detail: weakClasses.length > 0 ? `${weakClasses.length} weak` : 'Yes' },
             { label: 'Confusion matrix diagonal-dominant', ok: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)), detail: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)) ? 'Clean' : 'Off-diagonal' },
+            { label: 'All eval checks passed', ok: failedChecks === 0, detail: failedChecks > 0 ? `${failedChecks} failed` : `${passedChecks} passed` },
           ]}
         />
+      </div>
+
+      {/* ── Per-class results from the test set ────────────── */}
+      <div style={{ ...card, marginBottom: 24, border: `1px solid ${classesFailing.length > 0 ? EMBRY.red : EMBRY.green}22` }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div style={{ ...label, fontSize: 11 }}>
+            RESULTS BY CLASS — {testSamples} test samples, target F1 ≥ {gateThreshold.toFixed(2)}
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <span style={{ ...gateBadge, color: EMBRY.green, borderColor: EMBRY.green + '44', background: EMBRY.green + '0A', fontSize: 8 }}>
+              {classesPassingGate}/{classes.length} PASS
+            </span>
+            {classesFailing.length > 0 && (
+              <span style={{ ...gateBadge, color: EMBRY.red, borderColor: EMBRY.red + '44', background: EMBRY.red + '0A', fontSize: 8 }}>
+                {classesFailing.length} BELOW TARGET
+              </span>
+            )}
+          </div>
+        </div>
+
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
+              <th style={thStyle}>CLASS</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>SAMPLES</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>CORRECT</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>WRONG</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>PRECISION</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>RECALL</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>F1</th>
+              <th style={{ ...thStyle, textAlign: 'right' }}>TARGET</th>
+              <th style={{ ...thStyle, textAlign: 'center', width: 50 }} />
+              <th style={thStyle}>TOP MISTAKE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classResults.map(r => (
+              <tr key={r.cls} style={{
+                borderBottom: `1px solid ${EMBRY.border}`,
+                background: r.meetsGate ? 'transparent' : 'rgba(255,68,68,0.03)',
+              }}>
+                <td style={{ ...tdStyle, fontWeight: 700 }}>{r.cls}</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.total}</td>
+                <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green }}>{r.correct}</td>
+                <td style={{ ...tdStyle, textAlign: 'right', color: r.wrong > 0 ? EMBRY.red : EMBRY.dim }}>{r.wrong}</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.precision.toFixed(3)}</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.recall.toFixed(3)}</td>
+                <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700, color: r.meetsGate ? EMBRY.green : EMBRY.red }}>{r.f1.toFixed(3)}</td>
+                <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
+                <td style={{ textAlign: 'center', padding: '8px 4px' }}>
+                  <span style={{
+                    ...statusBadge, fontSize: 8,
+                    background: r.meetsGate ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
+                    color: r.meetsGate ? EMBRY.green : EMBRY.red,
+                  }}>
+                    {r.meetsGate ? 'PASS' : 'FAIL'}
+                  </span>
+                </td>
+                <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
+                  {r.topMistake && r.topMistake.count > 0
+                    ? `${r.topMistake.count}× confused with "${r.topMistake.cls}"`
+                    : '—'
+                  }
+                </td>
+              </tr>
+            ))}
+            {/* Overall row */}
+            <tr style={{ borderTop: `2px solid ${EMBRY.border}`, background: 'rgba(255,255,255,0.02)' }}>
+              <td style={{ ...tdStyle, fontWeight: 900 }}>OVERALL</td>
+              <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700 }}>{testSamples}</td>
+              <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green, fontWeight: 700 }}>{totalPredictions - offDiagonalTotal}</td>
+              <td style={{ ...tdStyle, textAlign: 'right', color: offDiagonalTotal > 0 ? EMBRY.red : EMBRY.dim, fontWeight: 700 }}>{offDiagonalTotal}</td>
+              <td style={{ ...tdStyle, textAlign: 'right' }}>—</td>
+              <td style={{ ...tdStyle, textAlign: 'right' }}>—</td>
+              <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 900, color: passed ? EMBRY.green : EMBRY.red }}>{macroF1.toFixed(3)}</td>
+              <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
+              <td style={{ textAlign: 'center', padding: '8px 4px' }}>
+                <span style={{
+                  ...statusBadge, fontSize: 8,
+                  background: passed ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
+                  color: passed ? EMBRY.green : EMBRY.red,
+                }}>
+                  {passed ? 'PASS' : 'FAIL'}
+                </span>
+              </td>
+              <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
+                {offDiagonalTotal > 0 ? `${offDiagonalTotal} total errors` : ''}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       {/* Result banner */}
@@ -2711,12 +2965,13 @@ function EvaluateTab({ project }: { project: Project }) {
           ))}
         </div>
 
-        {/* Per-class metrics — real data */}
+        {/* Per-class metrics — expandable drill-down */}
         <div style={card}>
           <div style={{ ...heading, marginBottom: 16 }}>Per-Class Metrics (Test Set)</div>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                <th style={{ ...thStyle, width: 20 }} />
                 {['CLASS', 'PREC', 'RECALL', 'F1', 'SUPPORT'].map(h => (
                   <th key={h} style={thStyle}>{h}</th>
                 ))}
@@ -2726,14 +2981,89 @@ function EvaluateTab({ project }: { project: Project }) {
               {classes.map((cls, i) => {
                 const m = perClass[i]
                 const f1Color = m.f1 >= 0.90 ? EMBRY.green : m.f1 >= 0.80 ? EMBRY.white : EMBRY.red
+                const isExpanded = expandedClass === cls
+                const isWeak = m.f1 < 0.80
+                const cmRow = matrix[i] || []
+                const topConfusions = cmRow
+                  .map((count, j) => ({ cls: classes[j], count }))
+                  .filter((_, j) => j !== i && cmRow[j] > 0)
+                  .sort((a, b) => b.count - a.count)
+                  .slice(0, 3)
                 return (
-                  <tr key={cls} style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
-                    <td style={{ ...tdStyle, fontWeight: 700 }}>{cls}</td>
-                    <td style={{ ...tdStyle, color: m.precision >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.precision.toFixed(2)}</td>
-                    <td style={{ ...tdStyle, color: m.recall >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.recall.toFixed(2)}</td>
-                    <td style={{ ...tdStyle, fontWeight: 700, color: f1Color }}>{m.f1.toFixed(2)}</td>
-                    <td style={tdStyle}>{m.support}</td>
-                  </tr>
+                  <Fragment key={cls}>
+                    <tr
+                      onClick={() => setExpandedClass(isExpanded ? null : cls)}
+                      style={{
+                        borderBottom: isExpanded ? 'none' : `1px solid ${EMBRY.border}`,
+                        cursor: 'pointer',
+                        background: isWeak ? 'rgba(255,68,68,0.03)' : 'transparent',
+                      }}
+                    >
+                      <td style={{ ...tdStyle, width: 20, padding: '12px 6px' }}>
+                        {isExpanded ? <ChevronDown size={10} color={EMBRY.dim} /> : <ChevronRight size={10} color={EMBRY.dim} />}
+                      </td>
+                      <td style={{ ...tdStyle, fontWeight: 700 }}>
+                        {isWeak && <span style={{ color: EMBRY.red, marginRight: 4 }}>⚠</span>}
+                        {cls}
+                      </td>
+                      <td style={{ ...tdStyle, color: m.precision >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.precision.toFixed(2)}</td>
+                      <td style={{ ...tdStyle, color: m.recall >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.recall.toFixed(2)}</td>
+                      <td style={{ ...tdStyle, fontWeight: 700, color: f1Color }}>{m.f1.toFixed(2)}</td>
+                      <td style={tdStyle}>{m.support}</td>
+                    </tr>
+                    {isExpanded && (
+                      <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                        <td colSpan={6} style={{ padding: '0 14px 14px 32px' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                            {/* Misclassification breakdown */}
+                            <div style={{ ...panel, padding: 10 }}>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>TOP MISCLASSIFICATIONS</div>
+                              {topConfusions.length > 0 ? topConfusions.map(c => (
+                                <div key={c.cls} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                  <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                                    <div style={{ height: '100%', width: `${(c.count / (m.support || 1)) * 100}%`, background: EMBRY.red, borderRadius: 2 }} />
+                                  </div>
+                                  <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.red, minWidth: 20, textAlign: 'right' }}>{c.count}</span>
+                                  <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.dim }}>→ {c.cls}</span>
+                                </div>
+                              )) : (
+                                <div style={{ fontSize: 9, color: EMBRY.dim }}>No misclassifications</div>
+                              )}
+                            </div>
+                            {/* Remediation suggestions */}
+                            <div style={{ ...panel, padding: 10 }}>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>
+                                {isWeak ? 'REMEDIATION' : 'STATUS'}
+                              </div>
+                              {isWeak ? (
+                                <div style={{ fontSize: 9, color: EMBRY.dim, lineHeight: 1.6 }}>
+                                  {m.recall < m.precision ? (
+                                    <>
+                                      <div style={{ color: EMBRY.amber, marginBottom: 2 }}>→ Low recall ({m.recall.toFixed(2)}) — model misses "{cls}" samples</div>
+                                      <div>• Add more "{cls}" training examples</div>
+                                      <div>• Check for label noise — some "{cls}" may be mislabeled</div>
+                                      <div>• Try class-weighted loss to upweight "{cls}"</div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div style={{ color: EMBRY.amber, marginBottom: 2 }}>→ Low precision ({m.precision.toFixed(2)}) — false positives for "{cls}"</div>
+                                      <div>• Check if "{cls}" overlaps with {topConfusions[0]?.cls || 'other classes'}</div>
+                                      <div>• Consider merging similar classes or adding distinguishing features</div>
+                                      <div>• Add hard negatives to training set</div>
+                                    </>
+                                  )}
+                                </div>
+                              ) : (
+                                <div style={{ fontSize: 9, color: EMBRY.green }}>
+                                  ✓ Class performing well (F1 {m.f1.toFixed(2)})
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 )
               })}
             </tbody>
@@ -2944,52 +3274,90 @@ function PromoteTab({ project }: { project: Project }) {
           </div>
         )}
 
-        {holdoutPassed && (
-          <>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, textAlign: 'left', marginBottom: 36 }}>
-              <div style={panel}>
-                <div style={label}>EXPORT STATUS</div>
-                <div style={{ marginTop: 8, fontSize: 12, fontFamily: MONO, color: exportStatus.toLowerCase().includes('not') ? EMBRY.amber : EMBRY.green }}>
-                  {exportStatus}
+        {holdoutPassed && (() => {
+          const steps = [
+            { id: 'eval', label: 'Holdout evaluation passed', detail: `F1 ${macroF1.toFixed(3)} ≥ ${gateThreshold.toFixed(2)}`, done: true },
+            { id: 'export', label: 'Model exported', detail: exportStatus, done: exportStatus !== 'Not exported' },
+            { id: 'artifacts', label: 'Artifacts generated', detail: exportArtifacts.length > 0 ? `${exportArtifacts.length} files` : 'None', done: exportArtifacts.length > 0 },
+            { id: 'registry', label: 'Registered in model registry', detail: deploymentStatus, done: deploymentStatus !== 'Not deployed' && deploymentStatus !== 'Pending' },
+            { id: 'deploy', label: 'Deployed to production', detail: deploymentStatus, done: deploymentStatus.toLowerCase().includes('complete') || deploymentStatus.toLowerCase().includes('deployed') },
+          ]
+          const completedSteps = steps.filter(s => s.done).length
+          const allDone = completedSteps === steps.length
+          return (
+            <>
+              {/* Workflow checklist */}
+              <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <div style={label}>PROMOTION WORKFLOW</div>
+                  <span style={{ fontSize: 9, fontFamily: MONO, color: allDone ? EMBRY.green : EMBRY.amber }}>
+                    {completedSteps}/{steps.length} COMPLETE
+                  </span>
                 </div>
-                {exportArtifacts.length > 0 && (
-                  <div style={{ marginTop: 10, fontSize: 11, color: EMBRY.dim, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {exportArtifacts.map((artifact) => (
-                      <span key={artifact} style={{ ...statusBadge, fontFamily: MONO, color: EMBRY.white, background: 'rgba(255,255,255,0.05)', border: `1px solid ${EMBRY.border}` }}>
-                        {artifact}
+                {/* Progress bar */}
+                <div style={{ height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden', marginBottom: 16 }}>
+                  <div style={{ height: '100%', width: `${(completedSteps / steps.length) * 100}%`, background: allDone ? EMBRY.green : EMBRY.accent, borderRadius: 2, transition: 'width 0.3s' }} />
+                </div>
+                {steps.map((step, i) => (
+                  <div key={step.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: i < steps.length - 1 ? 12 : 0 }}>
+                    {/* Step indicator */}
+                    <div style={{
+                      width: 20, height: 20, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: step.done ? EMBRY.green : 'transparent',
+                      border: step.done ? 'none' : `2px solid ${EMBRY.border}`,
+                      fontSize: 10, fontWeight: 900,
+                      color: step.done ? '#000' : EMBRY.dim,
+                    }}>
+                      {step.done ? '✓' : i + 1}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: step.done ? EMBRY.white : EMBRY.dim }}>{step.label}</div>
+                      <div style={{ fontSize: 9, fontFamily: MONO, color: step.done ? EMBRY.green : EMBRY.muted, marginTop: 2 }}>{step.detail}</div>
+                    </div>
+                    {/* Connector line */}
+                    {i < steps.length - 1 && (
+                      <div style={{ position: 'absolute', left: 9, top: 22, width: 2, height: 12, background: step.done ? EMBRY.green + '33' : EMBRY.border }} />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Artifacts list */}
+              {exportArtifacts.length > 0 && (
+                <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
+                  <div style={{ ...label, marginBottom: 8 }}>EXPORT ARTIFACTS</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {exportArtifacts.map(artifact => (
+                      <span key={artifact} style={{ ...statusBadge, fontFamily: MONO, color: EMBRY.white, background: 'rgba(255,255,255,0.05)', border: `1px solid ${EMBRY.border}`, padding: '3px 8px' }}>
+                        <FileText size={8} style={{ marginRight: 4, verticalAlign: 'middle' }} />{artifact}
                       </span>
                     ))}
                   </div>
-                )}
-              </div>
-              <div style={panel}>
-                <div style={label}>DEPLOYMENT STATUS</div>
-                <div style={{ marginTop: 8, fontSize: 12, fontFamily: MONO, color: deploymentStatus.toLowerCase().includes('not') ? EMBRY.amber : EMBRY.green }}>
-                  {deploymentStatus}
                 </div>
-              </div>
-            </div>
+              )}
 
-            <RunButton onClick={promoteModel} disabled={promoting}>
-              {promoting ? 'PROMOTING...' : 'PROMOTE TO PRODUCTION'}
-            </RunButton>
-            <div style={{ marginTop: 12, fontSize: 10, color: EMBRY.dim }}>Promote endpoint: POST /api/projects/classifier-lab/promote/{project.id}</div>
-            {promoteStatus.kind !== 'idle' && (
-              <div style={{
-                marginTop: 10,
-                fontSize: 10,
-                color: promoteStatus.kind === 'success'
-                  ? EMBRY.green
-                  : promoteStatus.kind === 'error'
-                    ? EMBRY.red
-                    : EMBRY.amber,
-                fontFamily: MONO,
-              }}>
-                {promoteStatus.text}
-              </div>
-            )}
-          </>
-        )}
+              <RunButton onClick={promoteModel} disabled={promoting}>
+                {promoting ? 'PROMOTING...' : 'PROMOTE TO PRODUCTION'}
+              </RunButton>
+              <div style={{ marginTop: 12, fontSize: 10, color: EMBRY.dim }}>Promote endpoint: POST /api/projects/classifier-lab/promote/{project.id}</div>
+              {promoteStatus.kind !== 'idle' && (
+                <div style={{
+                  marginTop: 10,
+                  fontSize: 10,
+                  color: promoteStatus.kind === 'success'
+                    ? EMBRY.green
+                    : promoteStatus.kind === 'error'
+                      ? EMBRY.red
+                      : EMBRY.amber,
+                  fontFamily: MONO,
+                }}>
+                  {promoteStatus.text}
+                </div>
+              )}
+            </>
+          )
+        })()}
 
         {!holdoutPassed && (
           <div style={{ ...panel, marginTop: 12, border: `1px solid ${EMBRY.red}33`, background: `${EMBRY.red}08` }}>

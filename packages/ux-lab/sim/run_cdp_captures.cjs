@@ -55,6 +55,30 @@ async function connectCDP(port) {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// Capture a clipped screenshot of a specific DOM element by selector
+async function clipScreenshot(cdp, selector, outPath) {
+  const r = await cdp.send('Runtime.evaluate', {
+    expression: `(()=>{const el=document.querySelector('${selector}');if(!el)return null;const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}})()`,
+    returnByValue: true,
+  });
+  const rect = r.result?.result?.value;
+  if (!rect || rect.width < 10 || rect.height < 10) return false;
+  // Ensure clip is within viewport and has minimum size
+  const clip = {
+    x: Math.max(0, rect.x),
+    y: Math.max(0, rect.y),
+    width: Math.min(rect.width, 1440 - rect.x),
+    height: Math.min(rect.height, 900 - rect.y),
+    scale: 2, // 2x for readability
+  };
+  const ss = await cdp.send('Page.captureScreenshot', { format: 'png', clip });
+  if (ss.result?.data) {
+    fs.writeFileSync(outPath, Buffer.from(ss.result.data, 'base64'));
+    return true;
+  }
+  return false;
+}
+
 // Poll DOM until a selector exists and has content, or timeout (default 5s)
 async function waitForSelector(cdp, selector, timeoutMs = 5000) {
   const start = Date.now();
@@ -131,12 +155,15 @@ const GROUPS = {
   // Tim: each group gets unique interaction showing relevant feature
   'first-impressions':     [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-feature-table'}],
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[2]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-expanded'}],
-  'node-detail':           [...PRE, {a:'eval',s:clickTab('summary')},{a:'wait',ms:500},{a:'ss',n:'03-summary-detail'}],
+  'node-detail':           [...PRE, {a:'eval',s:clickTab('summary')},{a:'wait',ms:1000},{a:'ss',n:'03-summary-detail'},{a:'ssClip',sel:'#be-detail-panel',n:'04-detail-closeup'}],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
   'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-table'}],
-  'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-taxonomy-table'}],
-  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'}],
-  'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'}],
+  'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:2000},{a:'ss',n:'03-taxonomy-table'},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'}],
+  'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},{a:'ssClip',sel:'#be-detail-panel',n:'04-code-closeup'}],
+  'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'},
+    {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-chat-closeup'},
+    {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
   'chat-exploration':      [...PRE],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
@@ -147,8 +174,13 @@ const GROUPS = {
     {a:'wait',ms:2000},
     {a:'eval',s:`(()=>{const sel=document.getElementById('be-scene-load');return sel?sel.outerHTML.substring(0,100):'no load'})()`,timeout:2000},
     {a:'wait',ms:500},
-    {a:'ss',n:'03-scenes-saved'}],
-  'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'waitId',id:'be-journal-export-writeup',timeout:3000},{a:'wait',ms:500},{a:'ss',n:'03-journal'}],
+    {a:'ss',n:'03-scenes-saved'},{a:'ssClip',sel:'#be-graph-pane',n:'04-scenes-closeup'}],
+  'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'waitId',id:'be-journal-export-writeup',timeout:3000},{a:'wait',ms:500},{a:'ss',n:'03-journal'},
+    // Temporarily widen right pane for readable journal closeup
+    {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-journal-closeup'},
+    // Restore
+    {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
   'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'}],
   'graph-exploration':     [...PRE],
   'search-and-filter':     [...PRE],
@@ -223,6 +255,11 @@ async function run() {
         }
         else if (s.a === 'waitId') {
           await waitForContent(cdp, s.id, s.timeout || 5000);
+        }
+        else if (s.a === 'ssClip') {
+          // Clipped screenshot of a specific element (2x scale for readability)
+          const ok = await clipScreenshot(cdp, s.sel, path.join(dir, s.n + '.png'));
+          if (ok) { shots++; captured++; }
         }
       } catch(e) { failed++; console.log(`  ! ${g}/${s.a}: ${e.message}`); }
     }

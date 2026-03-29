@@ -303,3 +303,45 @@ For design plans, the execution pipeline inside `/orchestrate` is:
 | `/dogpile` | Research unfamiliar dependencies |
 | `/mockup-lab` | Design generation (Stitch) + VLM review (scillm) for UI plans |
 | `/ux-lab` | React component development with Vite HMR |
+
+## Common Mistakes
+
+### WRONG: Writing bespoke code when a skill already exists
+```yaml
+tasks:
+  - id: "1"
+    title: "Implement PDF extraction"
+    runner: "subagent-service"
+    # A /extractor skill already does this!
+```
+
+### RIGHT: Check skill manifest first, call existing skills
+```bash
+cat ~/.pi/skills-manifest.json | python3 -c "..."  # search for existing skills
+# Then in YAML: runner: local, command: ".pi/skills/extractor/run.sh ..."
+```
+
+### WRONG: Skipping /review-plan and going straight to /orchestrate
+```bash
+/orchestrate run 01_TASKS.yaml  # untested plan, may have skill overlap or wrong routing
+```
+
+### RIGHT: Always validate plan before execution
+```bash
+plan.py --validate 01_TASKS.yaml
+/review-plan 01_TASKS.yaml  # must PASS before /orchestrate
+```
+
+### WRONG: Design tasks without specifying --device for Stitch
+```yaml
+tasks:
+  - title: "Generate mockup"
+    command: "mockup-lab generate"  # defaults to mobile!
+```
+
+### RIGHT: Always specify device type for design tasks
+```yaml
+tasks:
+  - title: "Generate mockup"
+    command: "mockup-lab generate --device desktop"
+```

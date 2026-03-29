@@ -1584,7 +1584,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           )}
 
           {/* ═══ GRAPH PANE ═══ */}
-          <div style={{ ...styles.graphPane, flex: `0 0 ${leftPaneWidth}%` }}>
+          <div id="be-graph-pane" style={{ ...styles.graphPane, flex: `0 0 ${leftPaneWidth}%` }}>
             <div style={styles.topbar}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <Shield size={16} style={{ color: EMBRY.accent }} />
@@ -1852,7 +1852,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 window.addEventListener('mouseup', onUp)
               }}
             />
-            <div style={{
+            <div id="be-detail-panel" style={{
               height: dataPanelHeight, flexShrink: 0,
               background: '#090909', overflow: 'hidden', display: 'flex', flexDirection: 'column',
             }}>
@@ -2408,7 +2408,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           />
 
           {/* ═══ RIGHT: CHAT + JOURNAL PANE ═══ */}
-          <div style={{ ...styles.convPane, flex: `1 1 0%`, display: 'flex', flexDirection: 'column' }}>
+          <div id="be-right-pane" style={{ ...styles.convPane, flex: `1 1 0%`, display: 'flex', flexDirection: 'column' }}>
 
               {/* Right pane header: tab switcher + actions */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 0, padding: '0 12px', background: '#060606', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>

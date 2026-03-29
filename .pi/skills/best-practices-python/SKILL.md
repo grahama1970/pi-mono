@@ -49,7 +49,7 @@ This skill is a curated set of atomic rules for writing and refactoring Python i
 
 ## Package Reference
 
-See **[PACKAGES.md](PACKAGES.md)** for the full Python package reference — mandatory standards, standard toolkit (80+ packages across 15 categories), and anti-patterns. Generated from 1,414 pyproject.toml files. Also available via `/memory recall "python packages"`.
+See **[PACKAGES.md](docs/PACKAGES.md)** for the full Python package reference — mandatory standards, standard toolkit (80+ packages across 15 categories), and anti-patterns. Generated from 1,414 pyproject.toml files. Also available via `/memory recall "python packages"`.
 
 ## When to Apply
 
