@@ -2372,7 +2372,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               {filtered.slice(0, 100).map(n => (
                                 <tr key={n.id}
                                   onClick={() => onFeatureClick(n.label)}
-                                  style={{ cursor: 'pointer', borderBottom: `1px solid ${EMBRY.border}`, background: n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent' }}
+                                  style={{ cursor: 'pointer', borderBottom: `1px solid ${EMBRY.border}`, background: n.id === selectedNode?.id ? `${EMBRY.accent}25` : 'transparent', borderLeft: n.id === selectedNode?.id ? `3px solid ${EMBRY.accent}` : '3px solid transparent' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
                                   onMouseLeave={e => (e.currentTarget.style.background = n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent')}
                                 >
