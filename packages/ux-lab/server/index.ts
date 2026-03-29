@@ -2416,6 +2416,58 @@ app.post('/api/evidence-case', async (req, res) => {
   }
 })
 
+app.post('/api/evidence-case/run', async (req, res) => {
+  // Run the /create-evidence-case skill and return the full case with gate trace
+  const { question, controlId, nodeLabel } = req.body
+  if (!question) return res.status(400).json({ error: 'question required' })
+
+  const skillDir = process.env.SKILLS_DIR || resolve(process.env.HOME || '/home/graham', '.pi', 'skills', 'create-evidence-case')
+  const runSh = resolve(skillDir, 'run.sh')
+
+  try {
+    const { execFile } = await import('child_process')
+    const { promisify } = await import('util')
+    const execFileAsync = promisify(execFile)
+
+    // Run with 60s timeout — evidence cases can take a while
+    const { stdout } = await execFileAsync(runSh, ['create', question, '--json'], {
+      timeout: 60000,
+      cwd: skillDir,
+      env: { ...process.env, PYTHONUNBUFFERED: '1' },
+      maxBuffer: 1024 * 1024,
+    })
+
+    // Parse JSON from stdout (may have log lines before the JSON)
+    const jsonStart = stdout.indexOf('{')
+    const jsonEnd = stdout.lastIndexOf('}')
+    if (jsonStart >= 0 && jsonEnd > jsonStart) {
+      const parsed = JSON.parse(stdout.substring(jsonStart, jsonEnd + 1))
+      res.json(parsed)
+    } else {
+      res.json({ verdict: { state: 'error', grade: '?', score: 0 }, gate_trace: [], raw: stdout.substring(0, 500) })
+    }
+  } catch (e: any) {
+    // Fallback: return a basic recall-based evidence case
+    console.error('[evidence-case/run] Skill execution failed:', e.message)
+    try {
+      const recall = await proxyPost('/recall', { query: `${controlId || ''} ${nodeLabel || ''} vulnerability`, collection: 'sparta_qra', limit: 5 })
+      const items = recall.results || recall.items || []
+      res.json({
+        verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
+        gate_trace: [
+          { gate: 'step_1_topic', passed: true, detail: `control=${controlId}` },
+          { gate: 'step_2_recall', passed: items.length > 0, detail: `${items.length} QRAs found` },
+          { gate: 'step_3_ground', passed: false, detail: 'Skill unavailable, using recall fallback' },
+        ],
+        evidence: items.slice(0, 3).map((i: any) => ({ method: 'EXAMINE', layer: 'sparta_qra', result: { qra_text: i.problem || i.question, control_id: controlId }, confidence: i.score || 0.5 })),
+        recommendation: items.length > 0 ? `Found ${items.length} related QRAs. Full evidence case requires /create-evidence-case skill.` : 'No related QRAs found in corpus.',
+      })
+    } catch {
+      res.status(502).json({ error: 'Evidence case skill and memory recall both unavailable' })
+    }
+  }
+})
+
 // ── Static file serving for captures/screenshots ────────────────────────────
 app.use('/captures', express.static(CAPTURES_DIR))
 app.use('/screenshots', express.static(SCREENSHOTS_DIR))

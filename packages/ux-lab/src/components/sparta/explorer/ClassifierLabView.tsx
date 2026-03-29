@@ -1432,11 +1432,30 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         </div>
       </div>
 
+      {/* Train gate card */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="TRAIN GATE"
+          passed={passCount > 0}
+          metrics={[
+            { label: 'BEST F1', value: best ? best.f1.toFixed(3) : rows.length > 0 ? Math.max(...rows.map(r => r.f1)).toFixed(3) : '—', color: best ? EMBRY.green : rows.length > 0 ? EMBRY.red : EMBRY.dim },
+            { label: 'BACKBONES', value: String(totalCount) },
+            { label: 'PASSED', value: `${passCount} / ${totalCount}`, color: passCount > 0 ? EMBRY.green : EMBRY.red },
+          ]}
+          checks={[
+            { label: 'Gate met by ≥1 backbone', ok: passCount > 0, detail: passCount > 0 ? `${passCount} passed` : 'No' },
+            { label: 'No crashed runs', ok: !rows.some(r => r.status === 'fail' && r.f1 === 0), detail: rows.filter(r => r.f1 === 0).length > 0 ? `${rows.filter(r => r.f1 === 0).length} crashed` : 'Clean' },
+            { label: 'All runs complete', ok: !rows.some(r => r.status === 'training' || r.status === 'queued'), detail: rows.filter(r => r.status === 'training' || r.status === 'queued').length > 0 ? 'In progress' : 'Yes' },
+          ]}
+        />
+      </div>
+
+      {/* Rerun config — clearer labels with tooltips */}
       <div style={{ ...card, marginBottom: 14, padding: 16 }}>
-        <div style={{ ...label, marginBottom: 12 }}>RERUN CONFIGURATION</div>
+        <div style={{ ...label, marginBottom: 12 }}>TRAINING CONFIGURATION</div>
         <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr 1fr 1fr auto', gap: 10, alignItems: 'end' }}>
           <div>
-            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>BACKBONES</div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Comma-separated list of pre-trained model architectures to race against each other">BACKBONES</div>
             <input
               value={backbonesInput}
               onChange={(e) => setBackbonesInput(e.target.value)}
@@ -1445,7 +1464,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
             />
           </div>
           <div>
-            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>GATE F1</div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Minimum macro F1 score on held-out test set to pass the quality gate">TARGET F1</div>
             <input
               type="number"
               min={0}
@@ -1456,7 +1475,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
             />
           </div>
           <div>
-            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>MAX ROUNDS</div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Maximum self-improvement iterations per backbone before escalating to next strategy">MAX ROUNDS</div>
             <input
               type="number"
               min={1}
@@ -1467,7 +1486,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
             />
           </div>
           <div>
-            <div style={{ ...label, fontSize: 8, marginBottom: 6 }}>MAX TRAIN SAMPLES</div>
+            <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Cap training samples per class to speed up experimentation">MAX SAMPLES</div>
             <input
               type="number"
               min={1}
@@ -1477,28 +1496,60 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
               style={rerunInputStyle}
             />
           </div>
-          <RerunButton
-            projectId={project.id}
-            disabled={rerunBackbones.length === 0}
-            rerunOverrides={{
-              backbones: rerunBackbones,
-              gate_f1: rerunGateF1,
-              max_rounds: rerunMaxRounds,
-              max_train_samples: rerunMaxTrainSamples,
+          <button
+            onClick={() => {
+              if (rerunBackbones.length === 0) return
+              fetch(`${API}/projects/classifier-lab/rerun/${project.id}`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  backbones: rerunBackbones, gate_f1: rerunGateF1,
+                  max_rounds: rerunMaxRounds, max_train_samples: rerunMaxTrainSamples,
+                  modality: project.modality, task: project.name,
+                }),
+              }).catch(() => {})
             }}
-            onRerun={() => {}}
-          />
+            disabled={rerunBackbones.length === 0}
+            style={{
+              background: rerunBackbones.length > 0 ? EMBRY.accent : 'transparent',
+              border: `1px solid ${rerunBackbones.length > 0 ? EMBRY.accent : EMBRY.border}`,
+              color: rerunBackbones.length > 0 ? '#000' : EMBRY.dim,
+              padding: '10px 24px', borderRadius: 6, fontSize: 11, fontWeight: 900,
+              cursor: rerunBackbones.length > 0 ? 'pointer' : 'default',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            START TRAINING
+          </button>
         </div>
       </div>
 
-      {/* Leaderboard */}
+      {/* Leaderboard with tooltips */}
       <div style={{ ...label, marginBottom: 8 }}>LIVE TRAINING LEADERBOARD</div>
+      {rows.length === 0 ? (
+        <div style={{ ...card, padding: 32, textAlign: 'center', marginBottom: 28 }}>
+          <Cpu size={24} color={EMBRY.dim} style={{ marginBottom: 8 }} />
+          <div style={{ fontSize: 12, fontWeight: 700, color: EMBRY.dim, marginBottom: 4 }}>NO TRAINING RUNS</div>
+          <div style={{ fontSize: 10, color: EMBRY.muted }}>
+            Configure backbones above and click START TRAINING to begin.
+          </div>
+        </div>
+      ) : (
       <div style={{ ...card, padding: 0, overflow: 'hidden', marginBottom: 28 }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
-              {['#', 'BACKBONE', 'LR', 'BS', 'F1', 'ACC', 'LATENCY', 'COST', 'GATE'].map(h => (
-                <th key={h} style={thStyle}>{h}</th>
+              {([
+                { h: '#', tip: 'Rank by F1 score (best first)' },
+                { h: 'BACKBONE', tip: 'Pre-trained model architecture being evaluated' },
+                { h: 'LR', tip: 'Learning rate used for this training run' },
+                { h: 'BATCH SIZE', tip: 'Number of samples per gradient update step' },
+                { h: 'F1', tip: 'Macro F1 on held-out test set — primary quality metric' },
+                { h: 'ACC', tip: 'Overall accuracy — can be misleading with imbalanced classes' },
+                { h: 'LATENCY', tip: 'Inference latency per sample (p50)' },
+                { h: 'COST', tip: 'Training cost for this backbone (FREE = local GPU)' },
+                { h: 'GATE', tip: `Whether F1 ≥ ${rerunGateF1.toFixed(2)} on held-out test set` },
+              ]).map(({ h, tip }) => (
+                <th key={h} style={{ ...thStyle, cursor: 'help' }} title={tip}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -1514,9 +1565,9 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
                 <td style={tdStyle}>{r.lr}</td>
                 <td style={tdStyle}>{r.bs || '—'}</td>
                 <td style={{ ...tdStyle, fontWeight: 700, color: r.f1 >= rerunGateF1 ? EMBRY.green : r.f1 > 0 ? EMBRY.red : EMBRY.muted }}>
-                  {r.f1 ? r.f1.toFixed(2) : '—'}
+                  {r.f1 ? r.f1.toFixed(3) : '—'}
                 </td>
-                <td style={tdStyle}>{r.acc ? r.acc.toFixed(2) : '—'}</td>
+                <td style={tdStyle}>{r.acc ? r.acc.toFixed(3) : '—'}</td>
                 <td style={tdStyle}>{r.latency}</td>
                 <td style={{ ...tdStyle, color: r.cost === 'FREE' ? EMBRY.green : EMBRY.white }}>{r.cost}</td>
                 <td style={tdStyle}>
@@ -1540,19 +1591,53 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </tbody>
         </table>
       </div>
+      )}
 
-      {/* Failure analysis — shows when training has failed rounds */}
-      <FailureAnalysisPanel project={project} />
+      {/* All-failed inline guidance — when every backbone missed the gate */}
+      {!best && rows.length > 0 && (
+        <div style={{ ...card, border: `1px solid ${EMBRY.amber}33`, background: 'rgba(255,170,0,0.03)', marginBottom: 16, padding: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <AlertTriangle size={14} color={EMBRY.amber} />
+            <span style={{ fontSize: 11, fontWeight: 900, color: EMBRY.amber }}>
+              ALL {rows.length} BACKBONES FAILED GATE (F1 {'<'} {rerunGateF1.toFixed(2)})
+            </span>
+          </div>
+          <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.6 }}>
+            {(() => {
+              const bestRow = [...rows].sort((a, b) => b.f1 - a.f1)[0]
+              const gap = bestRow ? rerunGateF1 - bestRow.f1 : 0
+              const suggestions: string[] = []
+              if (gap < 0.02) suggestions.push('Gap is small — try label smoothing (0.1) or a larger model (bert-base-uncased)')
+              if (gap >= 0.02 && gap < 0.1) suggestions.push('Try a larger backbone (bert-base, roberta-base) or increase epochs')
+              if (gap >= 0.1) suggestions.push('Model is far from gate — check data quality, consider more training data')
+              if (bestRow && !bestRow.lr) suggestions.push('LR and batch size not recorded — check Tune tab HP configuration')
+              suggestions.push('See Failure Analysis below for /dogpile research and per-round diagnosis')
+              return suggestions.map((s, i) => (
+                <div key={i} style={{ display: 'flex', gap: 6, marginBottom: 2 }}>
+                  <span style={{ color: EMBRY.amber }}>→</span> {s}
+                </div>
+              ))
+            })()}
+          </div>
+        </div>
+      )}
 
-      {/* Best recommendation */}
+      {/* Best recommendation — above failure analysis for visibility */}
       {best && (
-        <div style={{ ...panel, border: `1px solid ${EMBRY.green}33`, background: 'rgba(0,255,136,0.03)', marginBottom: 28 }}>
+        <div style={{ ...panel, border: `1px solid ${EMBRY.green}33`, background: 'rgba(0,255,136,0.03)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={glowDot(EMBRY.green, 8)} />
           <span style={{ ...label, color: EMBRY.green }}>RECOMMENDED</span>
-          <span style={{ marginLeft: 12, fontFamily: MONO, fontWeight: 700, fontSize: 13 }}>
-            {best.backbone} — F1 {best.f1.toFixed(2)}, {best.latency}, {best.cost}
+          <span style={{ fontFamily: MONO, fontWeight: 700, fontSize: 13 }}>
+            {best.backbone}
+          </span>
+          <span style={{ fontSize: 11, color: EMBRY.dim, fontFamily: MONO }}>
+            F1 {best.f1.toFixed(3)} · {best.latency || '—'} · {best.cost || 'FREE'}
           </span>
         </div>
       )}
+
+      {/* Failure analysis — auto-expand when gate has failed */}
+      <FailureAnalysisPanel project={project} autoExpand={!best && rows.length > 0} />
 
       {/* GPU picker */}
       <div style={{ ...label, marginBottom: 8 }}>RESOURCE ALLOCATION</div>
@@ -1577,9 +1662,12 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
 
 // ── Failure Analysis Panel ──────────────────────────────────────────
 
-function FailureAnalysisPanel({ project }: { project: Project }) {
+function FailureAnalysisPanel({ project, autoExpand = false }: { project: Project; autoExpand?: boolean }) {
   const [analysis, setAnalysis] = useState<FailureAnalysis | null>(null)
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(autoExpand)
+
+  // Sync autoExpand when it changes (data loads async)
+  useEffect(() => { if (autoExpand) setExpanded(true) }, [autoExpand])
 
   useEffect(() => {
     fetch(`${API}/projects/classifier-lab/failure-analysis/${project.id}`)
@@ -1597,6 +1685,7 @@ function FailureAnalysisPanel({ project }: { project: Project }) {
 
   return (
     <div style={{ marginBottom: 28 }}>
+      <style>{MD_CSS}</style>
       <button
         onClick={() => setExpanded(!expanded)}
         style={{
@@ -1682,7 +1771,8 @@ function FailureAnalysisPanel({ project }: { project: Project }) {
               </div>
               {analysis.nextSteps.dogpile_hypotheses ? (
                 <div
-                  style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.6 }}
+                  className="next-steps-full clf-markdown"
+                  style={{ fontSize: 12, color: EMBRY.white, lineHeight: 1.7 }}
                   dangerouslySetInnerHTML={{ __html: marked.parse(analysis.nextSteps.dogpile_hypotheses) as string }}
                 />
               ) : (
@@ -1830,6 +1920,24 @@ function TuneTab({ project }: { project: Project }) {
           </span>
         </div>
       )}
+
+      {/* Tune gate card */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="TUNE GATE"
+          passed={bestTrial != null && (bestTrial.testF1 ?? bestTrial.valF1 ?? 0) >= 0.90}
+          metrics={[
+            { label: 'BEST F1', value: bestTrial ? (bestTrial.testF1 ?? bestTrial.valF1 ?? 0).toFixed(3) : '—', color: bestTrial && (bestTrial.testF1 ?? 0) >= 0.90 ? EMBRY.green : EMBRY.red },
+            { label: 'ROUNDS', value: `${completedCount} / ${totalCount}` },
+            { label: 'STRATEGY', value: strategy.replace(/-/g, ' ').slice(0, 20) },
+          ]}
+          checks={[
+            { label: 'HPs configured (not defaults)', ok: completedCount > 0, detail: completedCount > 0 ? 'Yes' : 'Pending' },
+            { label: 'At least 1 round completed', ok: completedCount > 0 },
+            { label: 'Gate met by ≥1 trial', ok: trials.some(t => t.passed), detail: trials.filter(t => t.passed).length > 0 ? `${trials.filter(t => t.passed).length} passed` : 'No' },
+          ]}
+        />
+      </div>
 
       {/* Fix 5: F1 trend sparkline + Round progress circles with Fix 2: tooltips + click */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
@@ -2345,8 +2453,29 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
     .map((axis, axisIdx) => `${axisIdx === 0 ? 'M' : 'L'} ${axisX[axisIdx]} ${axisY(axisIdx, row[axis.key]).toFixed(2)}`)
     .join(' ')
 
+  const benchPassed = bestF1 >= 0.90 && data.length >= 2
+  const winnerWilson = fallbackWinner?.wilson ?? 0
+
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      {/* Benchmark gate card */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="BENCHMARK GATE"
+          passed={benchPassed}
+          metrics={[
+            { label: 'WINNER F1', value: bestF1 > 0 ? bestF1.toFixed(3) : '—', color: bestF1 >= 0.90 ? EMBRY.green : EMBRY.red },
+            { label: 'WILSON CI', value: winnerWilson > 0 ? winnerWilson.toFixed(3) : '—' },
+            { label: 'BACKBONES', value: String(data.length) },
+          ]}
+          checks={[
+            { label: 'F1 ≥ 0.90 by winner', ok: bestF1 >= 0.90, detail: bestF1 > 0 ? bestF1.toFixed(3) : 'No data' },
+            { label: '≥2 backbones compared', ok: data.length >= 2, detail: `${data.length} tested` },
+            { label: 'Latency within budget', ok: bestLat > 0 && bestLat < 100, detail: bestLat > 0 ? `${bestLat}ms` : '—' },
+          ]}
+        />
+      </div>
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div style={{ ...heading, fontSize: 16 }}>BACKBONE COMPARISON — {project.name.toUpperCase()} ({data.length} backbones)</div>
         <div style={{ display: 'flex', gap: 8 }}>
@@ -2517,8 +2646,28 @@ function EvaluateTab({ project }: { project: Project }) {
   const gateColor = passed ? EMBRY.green : EMBRY.red
   const maxCmVal = Math.max(...matrix.flat().map(Math.abs), 1)
 
+  const weakClasses = classes.filter((_, i) => perClass[i] && perClass[i].f1 < 0.80)
+
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      {/* Evaluate gate card */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="EVAL GATE"
+          passed={passed}
+          metrics={[
+            { label: 'HOLDOUT F1', value: macroF1.toFixed(3), color: passed ? EMBRY.green : EMBRY.red },
+            { label: 'ACCURACY', value: accuracy.toFixed(3) },
+            { label: 'TEST SAMPLES', value: String(testSamples) },
+          ]}
+          checks={[
+            { label: `F1 ≥ ${gateThreshold.toFixed(2)} on holdout`, ok: passed, detail: macroF1.toFixed(3) },
+            { label: 'All classes F1 ≥ 0.80', ok: weakClasses.length === 0, detail: weakClasses.length > 0 ? `${weakClasses.length} weak` : 'Yes' },
+            { label: 'Confusion matrix diagonal-dominant', ok: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)), detail: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)) ? 'Clean' : 'Off-diagonal' },
+          ]}
+        />
+      </div>
+
       {/* Result banner */}
       <div style={{ ...panel, border: `1px solid ${gateColor}33`, background: `${gateColor}08`, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={glowDot(gateColor, 10)} />
@@ -2727,6 +2876,24 @@ function PromoteTab({ project }: { project: Project }) {
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      {/* Promote gate card */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="PROMOTE GATE"
+          passed={holdoutPassed}
+          metrics={[
+            { label: 'HOLDOUT F1', value: macroF1.toFixed(3), color: holdoutPassed ? EMBRY.green : EMBRY.red },
+            { label: 'MODEL', value: modelName.split('/').pop() || modelName },
+            { label: 'EXPORT', value: exportStatus },
+          ]}
+          checks={[
+            { label: 'Eval gate passed', ok: holdoutPassed, detail: holdoutPassed ? 'Yes' : 'No — run Evaluate first' },
+            { label: 'Model exported', ok: exportStatus !== 'Not exported', detail: exportStatus },
+            { label: 'Artifacts ready', ok: exportArtifacts.length > 0, detail: exportArtifacts.length > 0 ? `${exportArtifacts.length} files` : 'None' },
+          ]}
+        />
+      </div>
+
       <div style={{ ...card, padding: 48, textAlign: 'center' }}>
         {gateIcon}
         <div style={{ ...heading, fontSize: 28, marginBottom: 8 }}>
@@ -2846,6 +3013,68 @@ function StatPanel({ title, value, mono, color }: { title: string; value: string
     <div style={panel}>
       <div style={label}>{title}</div>
       <div style={{ ...heading, fontSize: mono ? 12 : 22, fontFamily: mono ? MONO : 'inherit', color: color ?? EMBRY.white, marginTop: 4 }}>{value}</div>
+    </div>
+  )
+}
+
+/** Reusable gate status card — used in every tab beyond Research */
+function GateCard({ name, passed, metrics, checks, bars }: {
+  name: string
+  passed: boolean
+  metrics: Array<{ label: string; value: string | number; color?: string }>
+  checks: Array<{ label: string; ok: boolean; detail?: string }>
+  bars?: Array<{ label: string; value: number; total: number; color: string }>
+}) {
+  const borderColor = passed ? EMBRY.green : EMBRY.red
+  return (
+    <div style={{ ...card, border: `1px solid ${borderColor}33`, background: `${borderColor}04` }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        {passed ? <ShieldCheck size={18} color={EMBRY.green} /> : <AlertTriangle size={18} color={EMBRY.red} />}
+        <span style={{ fontSize: 12, fontWeight: 900, color: borderColor }}>
+          {name} {passed ? 'PASSED' : 'FAILED'}
+        </span>
+      </div>
+      {/* Key metrics */}
+      {metrics.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(metrics.length, 3)}, 1fr)`, gap: 12, marginBottom: 16 }}>
+          {metrics.map(m => (
+            <div key={m.label}>
+              <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 2 }}>{m.label}</div>
+              <div style={{ fontSize: 18, fontWeight: 900, fontFamily: MONO, color: m.color || EMBRY.white }}>{m.value}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* Progress bars */}
+      {bars && bars.length > 0 && (
+        <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12, marginBottom: 12 }}>
+          {bars.map(b => {
+            const pct = b.total > 0 ? (b.value / b.total) * 100 : 0
+            return (
+              <div key={b.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 10, fontFamily: MONO, width: 50, color: EMBRY.dim }}>{b.label}</span>
+                <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                  <div style={{ width: `${pct}%`, height: '100%', background: b.color, borderRadius: 2 }} />
+                </div>
+                <span style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.dim, width: 80, textAlign: 'right' }}>{b.value} ({pct.toFixed(0)}%)</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+      {/* Quality checks */}
+      {checks.length > 0 && (
+        <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
+          <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 6 }}>QUALITY CHECKS</div>
+          {checks.map((c, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3, fontSize: 10 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: c.ok ? EMBRY.green : EMBRY.amber }} />
+              <span style={{ color: EMBRY.dim, flex: 1 }}>{c.label}</span>
+              {c.detail && <span style={{ fontFamily: MONO, color: c.ok ? EMBRY.green : EMBRY.amber }}>{c.detail}</span>}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
