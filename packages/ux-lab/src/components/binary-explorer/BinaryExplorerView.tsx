@@ -1916,7 +1916,19 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 5: Source pattern (if available) */}
+                      {/* Row 5: Security tags (CWE / ATT&CK) */}
+                      {(selectedNode.cwe || selectedNode.attack) && (
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          {selectedNode.cwe && selectedNode.cwe !== 'none' && (
+                            <span style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>CWE: {selectedNode.cwe}</span>
+                          )}
+                          {selectedNode.attack && selectedNode.attack !== 'none' && (
+                            <span style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>ATT&CK: {selectedNode.attack}</span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Row 6: Source pattern (if available) */}
                       {selectedNode.source_pattern && (
                         <div>
                           <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SOURCE</div>

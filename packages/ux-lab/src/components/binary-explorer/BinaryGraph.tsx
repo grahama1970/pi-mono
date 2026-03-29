@@ -531,6 +531,19 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('stroke-opacity', 0.25)
       .attr('marker-end', (d) => d.edgeType !== 'contains' ? `url(#arrow-${d.edgeType})` : null)
 
+    // ── Edge Labels (hidden by default, shown on node select) ──
+    const edgeLabelGroup = zoomG.append('g').attr('class', 'edge-labels')
+    const edgeLabels = edgeLabelGroup.selectAll('text')
+      .data(simEdges).join('text')
+      .attr('font-size', 7)
+      .attr('font-family', 'JetBrains Mono, monospace')
+      .attr('fill', (d) => EDGE_COLORS[d.edgeType] ?? EMBRY.dim)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('opacity', 0)
+      .attr('pointer-events', 'none')
+      .text((d) => d.edgeType.replace(/_/g, ' '))
+
     // ── Nodes ──
     const nodeGroup = zoomG.append('g').attr('class', 'nodes')
     const nodeGs = nodeGroup.selectAll('g')
@@ -577,8 +590,9 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       const visited = visitedRef.current
 
       if (!targetId) {
-        // Deselect: dim edges back to ambient, restore all nodes — NO physics changes
+        // Deselect: dim edges back to ambient, hide labels — NO physics changes
         edgeLines.transition().duration(200).attr('stroke-opacity', 0.25)
+        edgeLabels.transition().duration(200).attr('opacity', 0)
         nodeGs.select('.node-shape').transition().duration(200)
           .attr('stroke', 'none').attr('stroke-width', 0)
         // Visited breadcrumb nodes keep a subtle ring even when deselected
@@ -633,8 +647,20 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         return `M${sx},${sy} L${tx},${ty}`
       })
       edgeLines.transition().duration(200)
-        .attr('stroke-opacity', (e) => shownEdges.has(e) ? 0.9 : 0)
+        .attr('stroke-opacity', (e) => shownEdges.has(e) ? 0.9 : 0.08)
         .attr('stroke-width', (e) => shownEdges.has(e) ? (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 1.2 : (EDGE_WIDTHS[e.edgeType] ?? 1.0) * 0.3)
+
+      // Show edge labels for selected node's edges
+      edgeLabels.transition().duration(200)
+        .attr('opacity', (e) => shownEdges.has(e) ? 0.85 : 0)
+      // Position labels at edge midpoint
+      edgeLabels.attr('x', (e) => {
+        const sx = (e.source as SimNode).x!, tx = (e.target as SimNode).x!
+        return (sx + tx) / 2
+      }).attr('y', (e) => {
+        const sy = (e.source as SimNode).y!, ty = (e.target as SimNode).y!
+        return (sy + ty) / 2 - 6
+      })
 
       // Visual hierarchy: Target=100%, connected=70%, visited=50%, unrelated=dimmed
       // Gemini interaction model: dim unrelated to 30%, connected 70%, visited 50%
@@ -996,6 +1022,12 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         })
       }
       nodeGs.attr('transform', (d) => `translate(${d.x},${d.y})`)
+
+      // Update edge label positions (only when visible = node selected)
+      if (clickedRef.current !== null) {
+        edgeLabels.attr('x', (e) => ((e.source as SimNode).x! + (e.target as SimNode).x!) / 2)
+          .attr('y', (e) => ((e.source as SimNode).y! + (e.target as SimNode).y!) / 2 - 6)
+      }
 
       // Hull positions: throttle more aggressively for large graphs — convex hull
       // is decorative and recomputing it every tick is wasteful at N>200.

@@ -70,11 +70,25 @@ async function navigateToBinaryExplorer(cdp) {
   await sleep(4000);
 }
 
-// PRE: click a node so detail panel is visible, then screenshot
+// PRE: click a non-namespace node (function/rpc) so detail+code panel shows, then screenshot
+const CLICK_NODE = `(()=>{
+  const circles = [...document.querySelectorAll('g.nodes g')];
+  const fn = circles.find(g => {
+    const text = g.querySelector('text');
+    return text && !/namespace/i.test(text.textContent) && text.textContent.length > 2;
+  });
+  const target = fn || circles[0];
+  if (target) {
+    const shape = target.querySelector('circle,rect,polygon');
+    if (shape) shape.dispatchEvent(new MouseEvent('click', {bubbles:true}));
+    return 'clicked: ' + (target.querySelector('text')?.textContent || '?');
+  }
+  return 'no nodes';
+})()`;
 const PRE = [
   {a:'wait',ms:500},
   {a:'ss',n:'01-initial'},
-  {a:'eval',s:`document.querySelector('g.nodes circle')?.dispatchEvent(new MouseEvent('click',{bubbles:true}))`},
+  {a:'eval',s:CLICK_NODE},
   {a:'wait',ms:1500},
   {a:'ss',n:'02-with-selection'},
 ];
@@ -83,7 +97,7 @@ const GROUPS = {
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelector('g.nodes circle')?.dispatchEvent(new MouseEvent('click',{bubbles:true}))`},{a:'wait',ms:1000},{a:'ss',n:'02-click'},{a:'eval',s:`document.querySelector('g.nodes circle')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:2000},{a:'ss',n:'03-expand'}],
   'node-detail':           [...PRE, {a:'eval',s:`document.querySelector('g.nodes circle')?.dispatchEvent(new MouseEvent('click',{bubbles:true}))`},{a:'wait',ms:1000},{a:'ss',n:'02-detail'}],
   'symbol-tree':           [...PRE],
-  'table-view':            [...PRE, {a:'eval',s:`(()=>{const b=[...document.querySelectorAll('button')].find(b=>/table/i.test(b.textContent));if(b){b.click();return 'ok'}return 'none'})()`},{a:'wait',ms:1000},{a:'ss',n:'02-table'}],
+  'table-view':            [...PRE, {a:'eval',s:`(()=>{const tabs=[...document.querySelectorAll('button,div')];const t=tabs.find(e=>e.title&&/table/i.test(e.title));if(t){t.click();return 'clicked table tab'}const t2=tabs.find(e=>/Table View/i.test(e.textContent||e.title||''));if(t2){t2.click();return 'clicked Table View'}return 'no table tab'})()`},{a:'wait',ms:1000},{a:'ss',n:'03-table'}],
   'taxonomy-integration':  [...PRE],
   'code-view':             [...PRE, {a:'eval',s:`document.querySelector('g.nodes circle')?.dispatchEvent(new MouseEvent('click',{bubbles:true}))`},{a:'wait',ms:1000},{a:'eval',s:`(()=>{const b=[...document.querySelectorAll('button')].find(b=>/code|asm/i.test(b.textContent));if(b){b.click();return 'ok'}return 'none'})()`},{a:'wait',ms:1000},{a:'ss',n:'02-code'}],
   'chat-analysis':         [...PRE, {a:'ss',n:'02-chat'}],
