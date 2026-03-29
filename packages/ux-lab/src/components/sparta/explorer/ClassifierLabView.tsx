@@ -2858,36 +2858,104 @@ function EvaluateTab({ project }: { project: Project }) {
             </tr>
           </thead>
           <tbody>
-            {classResults.map(r => (
-              <tr key={r.cls} style={{
-                borderBottom: `1px solid ${EMBRY.border}`,
-                background: r.meetsGate ? 'transparent' : 'rgba(255,68,68,0.03)',
-              }}>
-                <td style={{ ...tdStyle, fontWeight: 700 }}>{r.cls}</td>
-                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.total}</td>
-                <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green }}>{r.correct}</td>
-                <td style={{ ...tdStyle, textAlign: 'right', color: r.wrong > 0 ? EMBRY.red : EMBRY.dim }}>{r.wrong}</td>
-                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.precision.toFixed(3)}</td>
-                <td style={{ ...tdStyle, textAlign: 'right' }}>{r.recall.toFixed(3)}</td>
-                <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700, color: r.meetsGate ? EMBRY.green : EMBRY.red }}>{r.f1.toFixed(3)}</td>
-                <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
-                <td style={{ textAlign: 'center', padding: '8px 4px' }}>
-                  <span style={{
-                    ...statusBadge, fontSize: 8,
-                    background: r.meetsGate ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
-                    color: r.meetsGate ? EMBRY.green : EMBRY.red,
-                  }}>
-                    {r.meetsGate ? 'PASS' : 'FAIL'}
-                  </span>
-                </td>
-                <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
-                  {r.topMistake && r.topMistake.count > 0
-                    ? `${r.topMistake.count}× confused with "${r.topMistake.cls}"`
-                    : '—'
-                  }
-                </td>
-              </tr>
-            ))}
+            {classResults.map(r => {
+              const isExpanded = expandedClass === r.cls
+              const cmRow = matrix[classes.indexOf(r.cls)] || []
+              const allConfusions = cmRow
+                .map((count, j) => ({ cls: classes[j], count }))
+                .filter((_, j) => j !== classes.indexOf(r.cls) && cmRow[j] > 0)
+                .sort((a, b) => b.count - a.count)
+              return (
+                <Fragment key={r.cls}>
+                  <tr
+                    onClick={() => setExpandedClass(isExpanded ? null : r.cls)}
+                    style={{
+                      borderBottom: isExpanded ? 'none' : `1px solid ${EMBRY.border}`,
+                      background: r.meetsGate ? 'transparent' : 'rgba(255,68,68,0.03)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <td style={{ ...tdStyle, fontWeight: 700 }}>
+                      {isExpanded ? <ChevronDown size={9} color={EMBRY.dim} style={{ marginRight: 4 }} /> : <ChevronRight size={9} color={EMBRY.dim} style={{ marginRight: 4 }} />}
+                      {r.cls}
+                    </td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.total}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green }}>{r.correct}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right', color: r.wrong > 0 ? EMBRY.red : EMBRY.dim }}>{r.wrong}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.precision.toFixed(3)}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.recall.toFixed(3)}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700, color: r.meetsGate ? EMBRY.green : EMBRY.red }}>{r.f1.toFixed(3)}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
+                    <td style={{ textAlign: 'center', padding: '8px 4px' }}>
+                      <span style={{
+                        ...statusBadge, fontSize: 8,
+                        background: r.meetsGate ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
+                        color: r.meetsGate ? EMBRY.green : EMBRY.red,
+                      }}>
+                        {r.meetsGate ? 'PASS' : 'FAIL'}
+                      </span>
+                    </td>
+                    <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
+                      {r.topMistake && r.topMistake.count > 0
+                        ? `${r.topMistake.count}× confused with "${r.topMistake.cls}"`
+                        : '—'
+                      }
+                    </td>
+                  </tr>
+                  {isExpanded && (
+                    <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+                      <td colSpan={10} style={{ padding: '0 14px 14px 14px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                          <div style={{ ...panel, padding: 10 }}>
+                            <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>MISCLASSIFICATION BREAKDOWN</div>
+                            {allConfusions.length > 0 ? allConfusions.map(c => (
+                              <div key={c.cls} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
+                                  <div style={{ height: '100%', width: `${(c.count / (r.total || 1)) * 100}%`, background: EMBRY.red, borderRadius: 2 }} />
+                                </div>
+                                <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.red, minWidth: 20, textAlign: 'right' }}>{c.count}</span>
+                                <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.dim }}>→ {c.cls}</span>
+                              </div>
+                            )) : (
+                              <div style={{ fontSize: 9, color: EMBRY.green }}>No misclassifications</div>
+                            )}
+                          </div>
+                          <div style={{ ...panel, padding: 10 }}>
+                            <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>
+                              {!r.meetsGate ? 'WHY THIS CLASS FAILED' : 'CLASS STATUS'}
+                            </div>
+                            {!r.meetsGate ? (
+                              <div style={{ fontSize: 9, color: EMBRY.dim, lineHeight: 1.6 }}>
+                                <div style={{ color: EMBRY.amber, marginBottom: 4 }}>
+                                  F1 {r.f1.toFixed(3)} is {(gateThreshold - r.f1).toFixed(3)} below your {gateThreshold.toFixed(2)} target
+                                </div>
+                                {r.recall < r.precision ? (
+                                  <>
+                                    <div>→ Low recall ({r.recall.toFixed(2)}) — {r.wrong} of {r.total} "{r.cls}" samples were missed</div>
+                                    <div style={{ marginTop: 4 }}>• Data tab → add more "{r.cls}" training examples</div>
+                                    <div>• Tune tab → try class-weighted loss</div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div>→ Low precision ({r.precision.toFixed(2)}) — other classes are being labeled "{r.cls}"</div>
+                                    <div style={{ marginTop: 4 }}>• Check if "{r.cls}" overlaps with "{allConfusions[0]?.cls || 'other classes'}"</div>
+                                    <div>• Data tab → add examples that distinguish "{r.cls}"</div>
+                                  </>
+                                )}
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: 9, color: EMBRY.green }}>
+                                ✓ Meets {gateThreshold.toFixed(2)} target (F1 {r.f1.toFixed(3)})
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              )
+            })}
             {/* Overall row */}
             <tr style={{ borderTop: `2px solid ${EMBRY.border}`, background: 'rgba(255,255,255,0.02)' }}>
               <td style={{ ...tdStyle, fontWeight: 900 }}>OVERALL</td>
@@ -2926,7 +2994,7 @@ function EvaluateTab({ project }: { project: Project }) {
         </span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 28 }}>
+      <div style={{ maxWidth: 600, marginBottom: 28 }}>
         {/* Confusion matrix — real counts */}
         <div style={card}>
           <div style={{ ...heading, marginBottom: 16 }}>Confusion Matrix (Test Set)</div>
@@ -2958,127 +3026,6 @@ function EvaluateTab({ project }: { project: Project }) {
           ))}
         </div>
 
-        {/* Per-class metrics — expandable drill-down */}
-        <div style={card}>
-          <div style={{ ...heading, marginBottom: 16 }}>Per-Class Metrics (Test Set)</div>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
-                <th style={{ ...thStyle, width: 20 }} />
-                {['CLASS', 'PREC', 'RECALL', 'F1', 'SUPPORT'].map(h => (
-                  <th key={h} style={thStyle}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {classes.map((cls, i) => {
-                const m = perClass[i]
-                const f1Color = m.f1 >= 0.90 ? EMBRY.green : m.f1 >= 0.80 ? EMBRY.white : EMBRY.red
-                const isExpanded = expandedClass === cls
-                const isWeak = m.f1 < 0.80
-                const cmRow = matrix[i] || []
-                const topConfusions = cmRow
-                  .map((count, j) => ({ cls: classes[j], count }))
-                  .filter((_, j) => j !== i && cmRow[j] > 0)
-                  .sort((a, b) => b.count - a.count)
-                  .slice(0, 3)
-                return (
-                  <Fragment key={cls}>
-                    <tr
-                      onClick={() => setExpandedClass(isExpanded ? null : cls)}
-                      style={{
-                        borderBottom: isExpanded ? 'none' : `1px solid ${EMBRY.border}`,
-                        cursor: 'pointer',
-                        background: isWeak ? 'rgba(255,68,68,0.03)' : 'transparent',
-                      }}
-                    >
-                      <td style={{ ...tdStyle, width: 20, padding: '12px 6px' }}>
-                        {isExpanded ? <ChevronDown size={10} color={EMBRY.dim} /> : <ChevronRight size={10} color={EMBRY.dim} />}
-                      </td>
-                      <td style={{ ...tdStyle, fontWeight: 700 }}>
-                        {isWeak && <span style={{ color: EMBRY.red, marginRight: 4 }}>⚠</span>}
-                        {cls}
-                      </td>
-                      <td style={{ ...tdStyle, color: m.precision >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.precision.toFixed(2)}</td>
-                      <td style={{ ...tdStyle, color: m.recall >= 0.90 ? EMBRY.green : EMBRY.white }}>{m.recall.toFixed(2)}</td>
-                      <td style={{ ...tdStyle, fontWeight: 700, color: f1Color }}>{m.f1.toFixed(2)}</td>
-                      <td style={tdStyle}>{m.support}</td>
-                    </tr>
-                    {isExpanded && (
-                      <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
-                        <td colSpan={6} style={{ padding: '0 14px 14px 32px' }}>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                            {/* Misclassification breakdown */}
-                            <div style={{ ...panel, padding: 10 }}>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>TOP MISCLASSIFICATIONS</div>
-                              {topConfusions.length > 0 ? topConfusions.map(c => (
-                                <div key={c.cls} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                                  <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
-                                    <div style={{ height: '100%', width: `${(c.count / (m.support || 1)) * 100}%`, background: EMBRY.red, borderRadius: 2 }} />
-                                  </div>
-                                  <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.red, minWidth: 20, textAlign: 'right' }}>{c.count}</span>
-                                  <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.dim }}>→ {c.cls}</span>
-                                </div>
-                              )) : (
-                                <div style={{ fontSize: 9, color: EMBRY.dim }}>No misclassifications</div>
-                              )}
-                            </div>
-                            {/* Remediation suggestions */}
-                            <div style={{ ...panel, padding: 10 }}>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>
-                                {isWeak ? 'REMEDIATION' : 'STATUS'}
-                              </div>
-                              {isWeak ? (
-                                <div style={{ fontSize: 9, color: EMBRY.dim, lineHeight: 1.6 }}>
-                                  {m.recall < m.precision ? (
-                                    <>
-                                      <div style={{ color: EMBRY.amber, marginBottom: 2 }}>→ Low recall ({m.recall.toFixed(2)}) — model misses "{cls}" samples</div>
-                                      <div>• Add more "{cls}" training examples</div>
-                                      <div>• Check for label noise — some "{cls}" may be mislabeled</div>
-                                      <div>• Try class-weighted loss to upweight "{cls}"</div>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <div style={{ color: EMBRY.amber, marginBottom: 2 }}>→ Low precision ({m.precision.toFixed(2)}) — false positives for "{cls}"</div>
-                                      <div>• Check if "{cls}" overlaps with {topConfusions[0]?.cls || 'other classes'}</div>
-                                      <div>• Consider merging similar classes or adding distinguishing features</div>
-                                      <div>• Add hard negatives to training set</div>
-                                    </>
-                                  )}
-                                </div>
-                              ) : (
-                                <div style={{ fontSize: 9, color: EMBRY.green }}>
-                                  ✓ Class performing well (F1 {m.f1.toFixed(2)})
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                )
-              })}
-            </tbody>
-          </table>
-
-          {/* Holdout gate — real result */}
-          <div style={{
-            marginTop: 20, padding: '10px 16px', borderRadius: 6,
-            background: `${gateColor}0A`, border: `1px solid ${gateColor}33`,
-            display: 'flex', alignItems: 'center', gap: 8,
-          }}>
-            {passed ? <ShieldCheck size={16} color={gateColor} /> : <AlertTriangle size={16} color={gateColor} />}
-            <span style={{ fontSize: 11, fontWeight: 700, color: gateColor, fontFamily: MONO }}>
-              HOLDOUT {passed ? 'PASSED' : 'FAILED'} — F1 {macroF1.toFixed(3)} {passed ? '≥' : '<'} {gateThreshold.toFixed(2)}
-            </span>
-          </div>
-
-          {/* Accuracy */}
-          <div style={{ marginTop: 12, fontSize: 11, color: EMBRY.dim, fontFamily: MONO }}>
-            Accuracy: {accuracy.toFixed(3)} ({testSamples} samples)
-          </div>
-        </div>
       </div>
     </div>
   )
