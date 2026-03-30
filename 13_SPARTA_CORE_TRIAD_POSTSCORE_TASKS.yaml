@@ -1,0 +1,166 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "SPARTA Core Triad: T2 Verdict, Grey Zone Grading, Pipeline Fix, Chat Integration"
+  goal: "Wire T2 Claude Sonnet into evidence verdicts, grade 588 grey zone edges, fix pipeline runner, integrate evidence cases into Explorer chat"
+  plan_type: code
+  created: "2026-03-30"
+  primary_persona:
+    name: "Brandon Bailey"
+    role: "SPARTA Security Analyst"
+    source: ".pi/agents/brandon-bailey/AGENTS.md"
+
+execution:
+  max_concurrency: 4
+
+capability_overlap:
+  - "/create-evidence-case runner.py + scoring.py: 6 T0 gates with gates_to_verdict() — EXTENDED with t2_override param"
+  - "server/index.ts /api/scillm + /api/evidence-case/run: existing endpoints — CALLED"
+  - "ChatWell.tsx verdict field + EvidenceCasePanel: existing components — EXTENDED"
+  - "08b_score_relationships.py 4-gate scorer: produces gate_evidence on edges — REUSED"
+  - "14_llm_label_uncertain.py: existing LLM labeling pattern — REUSED for grey zone"
+  - "/classifier-lab: DEFERRED — only 50 labeled evidence cases, need 200/class minimum"
+
+questions_blockers:
+  - "Classifier training (Task 2) deferred: only 50 labeled evidence cases, need 200+ per class"
+
+lanes:
+  - id: "0"
+    label: "Lane 0: Preflight"
+  - id: "1"
+    label: "Lane 1: T2 Verdict + Chat Integration"
+  - id: "2"
+    label: "Lane 2: Grey Zone Grading"
+  - id: "3"
+    label: "Lane 3: Pipeline Fix"
+
+tasks:
+  # ── LANE 0: PREFLIGHT ──────────────────────────────────────────────
+  - id: "0.1"
+    title: "Verify scillm, memory daemon, UX Lab services"
+    lane: "0"
+    runner: "local"
+    depends_on: []
+    command: "python3 -c \"import httpx; c=httpx.Client(transport=httpx.HTTPTransport(uds='/run/user/1000/embry/memory.sock'),base_url='http://localhost',timeout=10); assert c.post('/list',json={'collection':'sparta_controls','limit':1}).status_code==200; c.close(); assert httpx.get('http://localhost:4001/v1/models',timeout=10,headers={'Authorization':'Bearer sk-dev-proxy-123'}).status_code==200; print('PASS')\""
+    definition_of_done:
+      command: "same as command"
+      assertion: "All services return 200"
+
+  # ── LANE 1: T2 VERDICT + CHAT ──────────────────────────────────────
+  - id: "1.1"
+    title: "Add t2_override param to scoring.py gates_to_verdict()"
+    lane: "1"
+    runner: "local"
+    depends_on: ["0.1"]
+    status: "completed"
+    implementation:
+      - "scoring.py:82 — gates_to_verdict now accepts t2_override: str | None"
+      - "Only applies when T0 verdict would be 'inconclusive'"
+      - "Cannot override 'satisfied' or 'not_satisfied'"
+    definition_of_done:
+      command: "cd .pi/skills/create-evidence-case && python3 -c \"from scoring import gates_to_verdict; assert gates_to_verdict(3,6,t2_override='satisfied')=='satisfied'; assert gates_to_verdict(6,6,t2_override='not_satisfied')=='satisfied'; print('PASS')\""
+      assertion: "T2 override works for inconclusive, cannot override definitive"
+
+  - id: "1.2"
+    title: "Add _run_t2_verdict method + T2 gate to runner.py"
+    lane: "1"
+    runner: "local"
+    depends_on: ["1.1"]
+    status: "completed"
+    implementation:
+      - "runner.py:114 — _run_t2_verdict() calls scillm /v1/chat/completions"
+      - "runner.py:752 — T2 gate fires when T0 verdict == 'inconclusive'"
+      - "step_7_t2_verdict added to gate trace with tier='T2'"
+      - "result['tier'] = 'T2' if t2_override else 'T0'"
+    definition_of_done:
+      command: "cd .pi/skills/create-evidence-case && python3 -c \"from runner import EvidenceCaseRunner; r=EvidenceCaseRunner(enable_t2=True); print(f'T2 method: {hasattr(r, \"_run_t2_verdict\")}'); print('PASS')\""
+      assertion: "Runner has T2 method, creates with enable_t2"
+
+  - id: "5.1"
+    title: "Add onRunEvidenceCase prop + button to ChatWell.tsx"
+    lane: "1"
+    runner: "local"
+    depends_on: ["1.2"]
+    status: "completed"
+    implementation:
+      - "ChatWellProps: added onRunEvidenceCase, evidenceCaseLoading"
+      - "Button renders on system messages with resolved entities and no existing verdict"
+      - "Loading state with 'Running...' text"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit && echo 'PASS'"
+      assertion: "TypeScript compiles cleanly"
+
+  - id: "5.2"
+    title: "Wire handleRunEvidenceCase in SpartaExplorer.tsx"
+    lane: "1"
+    runner: "local"
+    depends_on: ["5.1"]
+    status: "completed"
+    implementation:
+      - "handleRunEvidenceCase callback: POSTs to /api/evidence-case/run"
+      - "Renders gate trace with colored dots, verdict badge"
+      - "T2 sub-badge when tier === 'T2'"
+      - "Passed to ChatWell as onRunEvidenceCase + evidenceCaseLoading"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit && echo 'PASS'"
+      assertion: "TypeScript compiles cleanly with full integration"
+
+  # ── LANE 2: GREY ZONE GRADING ──────────────────────────────────────
+  - id: "3.1"
+    title: "Build grey zone edge grading script"
+    lane: "2"
+    runner: "local"
+    depends_on: ["0.1"]
+    status: "completed"
+    implementation:
+      - "sparta/tools/grade_grey_zone.py — queries grey edges, calls scillm, updates via /upsert"
+      - "Prompt: source/target control context + gate_evidence → {is_valid, confidence, reasoning, suggested_verdict}"
+      - "Batch of 20, 1s delay between batches"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/sparta && uv run python tools/grade_grey_zone.py --dry-run --limit 3 2>&1 | grep 'DRY RUN' | wc -l"
+      assertion: "3 dry run lines printed"
+
+  - id: "3.2"
+    title: "Execute full grey zone grading (588 edges)"
+    lane: "2"
+    runner: "local"
+    depends_on: ["3.1"]
+    status: "in_progress"
+    implementation:
+      - "Running: uv run python tools/grade_grey_zone.py --collection all"
+      - "308 sparta_relationships + 280 sparta_qra_edges with verdict='grey'"
+      - "Budget: ~588 calls × ~$0.003 = ~$1.76"
+    definition_of_done:
+      command: "python3 -c \"import httpx; c=httpx.Client(transport=httpx.HTTPTransport(uds='/run/user/1000/embry/memory.sock'),base_url='http://localhost',timeout=30); r=c.post('/query',json={'aql':'FOR r IN sparta_relationships FILTER r.method==\\\"technique_reference\\\" AND r.gate_evidence.verdict==\\\"grey\\\" AND r.gate_evidence.llm_label==null COLLECT WITH COUNT INTO cnt RETURN cnt'}); n=r.json()['documents'][0]; print(f'Ungraded grey: {n}'); c.close()\""
+      assertion: "Zero ungraded grey relationships"
+
+  # ── LANE 3: PIPELINE FIX ───────────────────────────────────────────
+  - id: "4.1"
+    title: "Diagnose pipeline — identify stale module imports"
+    lane: "3"
+    runner: "local"
+    depends_on: []
+    status: "completed"
+    implementation:
+      - "Root cause: scripts/run_pipeline.py has 19 stale module imports"
+      - "DuckDB removal refactor (2026-03-17) renamed all steps but didn't update runner"
+      - "ModuleNotFoundError on first import (sparta.pipeline.steps.06_fetch_urls)"
+    definition_of_done:
+      command: "echo 'Diagnosis complete: 19 stale imports in run_pipeline.py'"
+      assertion: "Root cause documented"
+
+  - id: "4.2"
+    title: "Create run_pipeline_v2.py with correct step inventory"
+    lane: "3"
+    runner: "local"
+    depends_on: ["4.1"]
+    status: "completed"
+    implementation:
+      - "scripts/run_pipeline_v2.py — 20 steps matching current file inventory"
+      - "Subprocess-based execution (uv run python -m sparta.pipeline.steps.XX)"
+      - "Step gating: --from-step, --to-step, --only, --skip-optional"
+      - "Required vs optional steps, 1hr timeout per step"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/sparta && uv run python scripts/run_pipeline_v2.py list-steps 2>&1 | grep 'Step' | wc -l"
+      assertion: "20 steps listed"
