@@ -38,6 +38,8 @@ export interface ChatWellProps {
   renderExtras?: (msg: ChatMessage) => ReactNode
   onClarifyClick?: (question: string) => void
   onFeedback?: (msgId: string, feedback: 'up' | 'down') => void
+  onRunEvidenceCase?: (msg: ChatMessage) => void
+  evidenceCaseLoading?: string | null  // msgId currently loading
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -47,7 +49,7 @@ const LAYER_COLORS: Record<CascadeLayer, string> = {
   aql: EMBRY.accent,
 }
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'natural' | 'aql'>('natural')
 
@@ -206,6 +208,30 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
                   </div>
                 ))}
               </div>
+            )}
+
+            {/* Run Evidence Case button — shown on system messages with entities */}
+            {msg.role === 'system' && onRunEvidenceCase && msg.entities && msg.entities.some(e => e.exists) && !msg.verdict && (
+              <button
+                onClick={() => onRunEvidenceCase(msg)}
+                disabled={evidenceCaseLoading === msg.id}
+                style={{
+                  marginTop: 6,
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: '4px 12px',
+                  borderRadius: 12,
+                  border: `1px solid ${EMBRY.accent}66`,
+                  backgroundColor: evidenceCaseLoading === msg.id ? `${EMBRY.accent}08` : `${EMBRY.accent}18`,
+                  color: EMBRY.accent,
+                  cursor: evidenceCaseLoading === msg.id ? 'wait' : 'pointer',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  opacity: evidenceCaseLoading === msg.id ? 0.6 : 1,
+                }}
+              >
+                {evidenceCaseLoading === msg.id ? 'Running\u2026' : '\u{1F6E1}\uFE0F Run Evidence Case'}
+              </button>
             )}
 
             {/* Clarify chips */}

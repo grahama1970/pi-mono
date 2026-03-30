@@ -322,6 +322,46 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
 
   const handleClarify = useCallback((q: string) => { handleSend(q, 'natural') }, [handleSend])
 
+  // ── Evidence Case ───────────────────────────────────────────────────────
+  const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
+
+  const handleRunEvidenceCase = useCallback(async (msg: ChatMessage) => {
+    // Find the user query that preceded this system message
+    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
+    if (!userMsg) return
+    setEvidenceCaseLoading(msg.id)
+    try {
+      const controlId = msg.entities?.find(e => e.exists)?.id
+      const res = await fetch(`${API}/api/evidence-case/run`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: userMsg.content, controlId }),
+        signal: AbortSignal.timeout(90_000),
+      })
+      const data = await res.json()
+      const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
+        gate: g.gate ?? g.name ?? '?',
+        passed: !!g.passed,
+        detail: g.detail ?? '',
+      }))
+      const verdict = data.verdict?.state ?? data.verdict_state ?? 'unknown'
+      const tier = data.tier ?? 'T0'
+      const tierLabel = tier === 'T2' ? ' [LLM Adjudicated]' : ''
+      addMsg({
+        role: 'system',
+        content: `Evidence Case: ${verdict.toUpperCase()}${tierLabel}\n${data.answer ?? ''}`,
+        type: 'natural',
+        cascadeLayer: 'llm',
+        entities: msg.entities,
+        verdict: { state: verdict.toUpperCase(), gates },
+      })
+    } catch (err) {
+      addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
+    } finally {
+      setEvidenceCaseLoading(null)
+    }
+  }, [messages, addMsg])
+
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -432,7 +472,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           </div>
         </div>
         <div style={{ flex: 1, overflow: 'hidden' }}>
-          <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} />
+          <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
         </div>
       </div>
 

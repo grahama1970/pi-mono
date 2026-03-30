@@ -91,7 +91,41 @@ interface BenchmarkTrainConfigResponse {
 type Tab = 'research' | 'data' | 'tune' | 'train' | 'benchmark' | 'evaluate' | 'promote'
 const TABS: Tab[] = ['research', 'data', 'tune', 'train', 'benchmark', 'evaluate', 'promote']
 
-// No mock data — all tabs fetch from real API endpoints
+// ── Glossary — plain-language tooltips for technical terms ──────────
+
+const GLOSSARY: Record<string, string> = {
+  'F1': 'A score from 0 to 1 that balances how many correct predictions the model makes (precision) with how many it misses (recall). Higher is better.',
+  'Macro F1': 'F1 averaged equally across all classes — treats rare classes as important as common ones.',
+  'Precision': 'Of all the items the model labeled as this class, how many were actually correct.',
+  'Recall': 'Of all the items that actually belong to this class, how many did the model find.',
+  'Accuracy': 'Percentage of all predictions that were correct. Can be misleading if classes are imbalanced.',
+  'Backbone': 'The pre-trained model architecture used as a starting point (e.g., distilbert-base-uncased). Like choosing a foundation to build on.',
+  'Learning Rate': 'How much the model adjusts on each training step. Too high = unstable, too low = slow. Typical range: 1e-5 to 1e-3.',
+  'Epochs': 'Number of times the model sees the entire training dataset. More epochs = more learning, but too many can cause overfitting.',
+  'Batch Size': 'Number of samples processed together in one training step. Larger = faster but uses more memory.',
+  'Holdout': 'A separate test set the model has never seen during training — used to check real performance.',
+  'Wilson CI': 'Wilson confidence interval — a statistical range for the true score. Higher lower bound = more reliable result.',
+  'Gate': 'A minimum quality threshold the model must meet before proceeding to the next step.',
+  'Confusion Matrix': 'A grid showing what the model predicted vs what was correct. Green diagonal = correct, red off-diagonal = mistakes.',
+  'Dropout': 'Randomly disables parts of the model during training to prevent memorizing the training data.',
+  'Weight Decay': 'Penalizes large model weights to keep the model simple and generalizable.',
+  'Label Smoothing': 'Slightly softens the training targets to make the model less overconfident.',
+  'Augmentation': 'Artificially modifying training data (mixing, cropping, erasing) to help the model generalize better.',
+  'ONNX': 'Open Neural Network Exchange — a portable model format that runs on many platforms.',
+  'SafeTensors': 'A safe, fast model file format. Preferred for HuggingFace models.',
+  'GGUF': 'A model format optimized for CPU inference. Used by llama.cpp and similar tools.',
+}
+
+/** Wraps a technical term with a hover tooltip from the glossary */
+function Term({ children }: { children: string }) {
+  const tip = GLOSSARY[children]
+  if (!tip) return <span>{children}</span>
+  return (
+    <span style={{ borderBottom: '1px dotted rgba(100,116,139,0.5)', cursor: 'help', position: 'relative' }} title={tip}>
+      {children}
+    </span>
+  )
+}
 
 // ── Main View ───────────────────────────────────────────────────────
 
@@ -1546,7 +1580,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
             disabled={!!retrying}
             style={{ ...btnOutline, borderColor: EMBRY.amber + '66', color: EMBRY.amber, fontSize: 9, padding: '4px 12px' }}
           >
-            {retrying ? 'RETRYING...' : `RETRY ${rows.filter(r => r.status === 'fail').length} FAILED`}
+            {retrying ? 'RETRYING...' : `RETRY ${rows.filter(r => r.status === 'fail').length} FAILED BACKBONE${rows.filter(r => r.status === 'fail').length === 1 ? '' : 'S'}`}
           </button>
         )}
       </div>
@@ -1984,9 +2018,9 @@ function TuneTab({ project }: { project: Project }) {
       <div style={{ marginBottom: 20 }}>
         <GateCard
           name="TUNE GATE"
-          passed={bestTrial != null && (bestTrial.testF1 ?? bestTrial.valF1 ?? 0) >= 0.90}
+          passed={bestTrial != null && (bestTrial.testF1 ?? bestTrial.valF1 ?? 0) >= (project.f1 ? 0.90 : 0.90)}
           metrics={[
-            { label: 'BEST F1', value: bestTrial ? (bestTrial.testF1 ?? bestTrial.valF1 ?? 0).toFixed(3) : '—', color: bestTrial && (bestTrial.testF1 ?? 0) >= 0.90 ? EMBRY.green : EMBRY.red },
+            { label: 'BEST F1', value: bestTrial ? (bestTrial.testF1 ?? bestTrial.valF1 ?? 0).toFixed(3) : '—', color: bestTrial && (bestTrial.testF1 ?? bestTrial.valF1 ?? 0) >= 0.90 ? EMBRY.green : EMBRY.red },
             { label: 'ROUNDS', value: `${completedCount} / ${totalCount}` },
             { label: 'STRATEGY', value: strategy.replace(/-/g, ' ').slice(0, 20) },
           ]}
@@ -2023,10 +2057,10 @@ function TuneTab({ project }: { project: Project }) {
         })()}
         {/* Round circles — Fix 2: tooltips + click-to-load */}
         {trials.map((t) => {
-          const passed = t.passed
+          const f1Val = t.testF1 ?? t.valF1 ?? 0
+          const passed = f1Val >= 0.90  // Gate-based, not backend status
           const isRunning = t.status === 'running'
           const isDone = t.status === 'complete' || t.status === 'completed' || t.status === 'passed' || t.status === 'failed'
-          const f1Val = t.testF1 ?? t.valF1 ?? 0
           return (
             <div key={t.trial}
               onClick={() => {
@@ -2532,12 +2566,12 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
           name="BENCHMARK GATE"
           passed={benchPassed}
           metrics={[
-            { label: 'WINNER F1', value: bestF1 > 0 ? bestF1.toFixed(3) : '—', color: bestF1 >= 0.90 ? EMBRY.green : EMBRY.red },
+            { label: benchPassed ? 'BEST F1' : 'BEST F1 (below target)', value: bestF1 > 0 ? bestF1.toFixed(3) : '—', color: benchPassed ? EMBRY.green : EMBRY.red },
             { label: 'WILSON CI', value: winnerWilson > 0 ? winnerWilson.toFixed(3) : '—' },
             { label: 'BACKBONES', value: String(data.length) },
           ]}
           checks={[
-            { label: 'F1 ≥ 0.90 by winner', ok: bestF1 >= 0.90, detail: bestF1 > 0 ? bestF1.toFixed(3) : 'No data' },
+            { label: `Best F1 meets target`, ok: bestF1 >= 0.90, detail: bestF1 > 0 ? bestF1.toFixed(3) : 'No data' },
             { label: '≥2 backbones compared', ok: data.length >= 2, detail: `${data.length} tested` },
             { label: 'Latency within budget', ok: bestLat > 0 && bestLat < 100, detail: bestLat > 0 ? `${bestLat}ms` : '—' },
           ]}
@@ -2569,8 +2603,17 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
                   onChange={() => setSelected(prev => prev.size === data.length ? new Set() : new Set(data.map(d => d.name)))}
                   style={{ accentColor: EMBRY.accent }} />
               </th>
-              {['BACKBONE', 'MACRO F1', 'ACCURACY', 'WILSON CI', 'LAT p50 (ms)', 'LAT p95 (ms)', 'PARAMS (M)', 'TRAIN TIME'].map(h => (
-                <th key={h} style={thStyle}>{h}</th>
+              {[
+                { h: 'BACKBONE', tip: GLOSSARY['Backbone'] },
+                { h: 'MACRO F1', tip: GLOSSARY['Macro F1'] },
+                { h: 'ACCURACY', tip: GLOSSARY['Accuracy'] },
+                { h: 'WILSON CI', tip: GLOSSARY['Wilson CI'] },
+                { h: 'LAT p50 (ms)', tip: 'Median inference latency — time to classify one sample' },
+                { h: 'LAT p95 (ms)', tip: '95th percentile latency — worst case for most requests' },
+                { h: 'PARAMS (M)', tip: 'Model size in millions of parameters — larger models are slower but may be more accurate' },
+                { h: 'TRAIN TIME', tip: 'Wall-clock time to train this backbone' },
+              ].map(({ h, tip }) => (
+                <th key={h} style={{ ...thStyle, cursor: 'help' }} title={tip}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -2845,7 +2888,7 @@ function EvaluateTab({ project }: { project: Project }) {
               display: 'flex', alignItems: 'center', gap: 4,
             }}
           >
-            <Play size={10} /> {running ? 'RUNNING...' : 'RUN EVALUATION'}
+            <Play size={10} /> {running ? 'RUNNING...' : totalQ === 0 ? 'ADD QUESTIONS FIRST' : 'RUN EVALUATION'}
           </button>
         </div>
       </div>
