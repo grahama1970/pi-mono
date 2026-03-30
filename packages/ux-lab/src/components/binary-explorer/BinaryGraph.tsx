@@ -183,8 +183,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taxonomySize])
 
-  // Only change this key when data shape changes, not on every render
-  const dataKey = `${nodes.length}:${edges.length}`
+  // Rebuild when data shape OR taxonomy changes (CWE coloring needs fresh D3 setup)
+  const dataKey = `${nodes.length}:${edges.length}:${taxonomySize}`
 
   const setupSimulation = useCallback(() => {
     const svg = svgRef.current
