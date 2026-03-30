@@ -172,10 +172,70 @@ const PRE = [
   {a:'wait',ms:1500},
   {a:'ss',n:'02-with-selection'},
 ];
+
+// Click node by type (schema, state_machine, etc.) — falls back to CLICK_NODE
+const CLICK_TYPE = (type) => `(()=>{
+  const nodes = [...document.querySelectorAll('g.nodes g')];
+  const match = nodes.find(g => {
+    const shape = g.querySelector('rect,circle,polygon,path');
+    if (!shape) return false;
+    const d = shape.__data__ || g.__data__;
+    return d && d.nodeType === '${type}';
+  });
+  // Fallback: try matching by label text
+  const byLabel = !match && nodes.find(g => {
+    const text = g.querySelector('text.node-label');
+    return text && /${type === 'schema' ? 'schema|struct|field' : type === 'state_machine' ? 'fsm|state|machine' : type}/i.test(text.textContent);
+  });
+  const target = match || byLabel || nodes.find(g => g.querySelector('text')?.textContent?.length > 3);
+  if (target) {
+    const shape = target.querySelector('circle,rect,polygon,path');
+    if (shape) shape.dispatchEvent(new MouseEvent('click', {bubbles:true}));
+    return 'clicked:' + (target.querySelector('text')?.textContent || '?');
+  }
+  return 'none';
+})()`;
+
+// Click the hub node with most connections
+const CLICK_HUB = `(()=>{
+  const nodes = [...document.querySelectorAll('g.nodes g')];
+  // Hub badge text shows connection count — find highest
+  let best = null, bestDeg = 0;
+  for (const g of nodes) {
+    const badge = g.querySelector('.hub-badge');
+    if (badge) {
+      const deg = parseInt(badge.textContent) || 0;
+      if (deg > bestDeg) { bestDeg = deg; best = g; }
+    }
+  }
+  // Fallback: node with most visible connections
+  if (!best) best = nodes.find(g => g.querySelector('text')?.textContent?.length > 3) || nodes[0];
+  if (best) {
+    const shape = best.querySelector('circle,rect,polygon,path');
+    if (shape) shape.dispatchEvent(new MouseEvent('click', {bubbles:true}));
+    return 'hub:' + (best.querySelector('text')?.textContent || '?') + ' deg=' + bestDeg;
+  }
+  return 'none';
+})()`;
+
+// Expand a node by double-clicking (triggers neighbor expansion)
+const EXPAND_HUB = (idx) => `(()=>{
+  const nodes = [...document.querySelectorAll('g.nodes g')];
+  const badges = nodes.filter(g => g.querySelector('.hub-badge'));
+  const target = badges[${idx}] || nodes[${idx + 2}];
+  if (target) {
+    const shape = target.querySelector('circle,rect,polygon,path');
+    if (shape) shape.dispatchEvent(new MouseEvent('dblclick', {bubbles:true}));
+    return 'expanded:' + (target.querySelector('text')?.textContent || '?');
+  }
+  return 'none';
+})()`;
+
 // Helpers using element IDs for reliable targeting
 const clickTab = (tabId) => `(()=>{const t=document.getElementById('be-tab-${tabId}');if(t){t.click();return 'tab:${tabId}'}return 'no #be-tab-${tabId}'})()`;
 const switchPerspective = (val) => `(()=>{const sel=document.getElementById('be-perspective');if(sel){sel.value='${val}';sel.dispatchEvent(new Event('change',{bubbles:true}));return 'perspective:${val}'}return 'no #be-perspective'})()`;
 const clickJournal = `(()=>{const j=document.getElementById('be-journal-tab');if(j){j.click();return 'journal'}return 'no #be-journal-tab'})()`;
+const clickAnalysis = `(()=>{const btns=[...document.querySelectorAll('button')];const a=btns.find(b=>/ANALYSIS/i.test(b.textContent)&&b.offsetWidth>0);if(a){a.click();return 'analysis'}return 'no analysis tab'})()`;
 
 // Reusable expand-capture sequences for panel closeups
 const expandPanel = (id, w, h) => ({a:'eval',s:`(()=>{const el=document.getElementById('${id}');if(el){el.style.position='fixed';el.style.left='0';el.style.top='0';el.style.width='${w}px';el.style.height='${h}px';el.style.zIndex='9999';return 'expanded'}return 'no #${id}'})()`});
@@ -188,10 +248,18 @@ const GROUPS = {
   // Tim: each group gets unique interaction showing relevant feature
   'first-impressions':     [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-feature-table'}],
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[2]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-expanded'}],
-  'node-detail':           [...PRE, {a:'eval',s:clickTab('summary')},{a:'wait',ms:1000},{a:'ss',n:'03-summary-detail'},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
-    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-detail-closeup'},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
+  'node-detail':           [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Click hub node for rich metadata
+    {a:'eval',s:CLICK_HUB},{a:'wait',ms:1500},
+    {a:'eval',s:clickTab('summary')},{a:'wait',ms:500},{a:'ss',n:'02-summary'},
+    ...detailCloseup('03-summary-closeup'),
+    // Show connections tab with edge type grouping
+    {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},
+    ...detailCloseup('04-connections-closeup'),
+    // Show raw JSON tab
+    {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},
+    ...detailCloseup('05-raw-closeup')],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
   'table-view':            [
     // Custom: click node, switch to table tab, show full page + expanded table closeup with CWE/ATT&CK badges + CSV export visible
@@ -234,7 +302,12 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'02-chat-closeup'},
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
-  'chat-exploration':      [...PRE, ...rightPaneCloseup('03-chat-closeup')],
+  'chat-exploration':      [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    // Show the Analysis/chat tab (not journal) — this is where suggested queries appear
+    {a:'eval',s:clickAnalysis},{a:'wait',ms:500},
+    ...rightPaneCloseup('03-chat-closeup')],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
   'scene-management':      [
@@ -255,27 +328,113 @@ const GROUPS = {
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-journal-closeup'},
     // Restore
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
-  // Gynvael groups — expanded closeups for detail/graph readability
-  'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'},...detailCloseup('04-ast-closeup')],
-  'graph-exploration':     [...PRE, ...graphCloseup('03-graph-closeup')],
-  'search-and-filter':     [...PRE,
-    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Filter"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth'}return 'no filter'})()`},
-    {a:'wait',ms:1000},{a:'ss',n:'03-search-active'},...graphCloseup('04-search-closeup')],
+  // Gynvael groups — targeted node clicks + relevant tab closeups
+  'data-structures':       [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_TYPE('schema')},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'},
+    ...detailCloseup('04-ast-closeup')],
+  'graph-exploration':     [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Click legend to toggle filter — demonstrates interactivity
+    {a:'eval',s:`(()=>{const l=document.getElementById('be-legend-event');if(l){l.click();return 'toggled event'}return 'no legend'})()`},
+    {a:'wait',ms:500},{a:'ss',n:'02-legend-filter'},
+    // Restore and click a node
+    {a:'eval',s:`(()=>{const l=document.getElementById('be-legend-event');if(l)l.click()})()`},
+    {a:'wait',ms:300},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1000},
+    {a:'ss',n:'03-with-selection'},
+    ...graphCloseup('04-graph-closeup')],
+  'search-and-filter':     [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Use the TABLE filter (not left pane) to trigger graph highlighting
+    {a:'eval',s:clickTab('table')},{a:'wait',ms:500},
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth via table'}return 'no table filter'})()`},
+    {a:'wait',ms:1000},{a:'ss',n:'02-search-active'},
+    // Graph closeup showing green neon highlights on matched nodes
+    ...graphCloseup('03-search-graph'),
+    ...detailCloseup('04-search-table-closeup')],
   'context-menu':          [...PRE, {a:'eval',s:`(()=>{const n=document.querySelector('g.nodes circle');if(!n)return;const r=n.getBoundingClientRect();n.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,clientX:r.x+5,clientY:r.y+5}))})()`},{a:'wait',ms:500},{a:'ss',n:'03-ctx'}],
-  'cross-references':      [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'},...detailCloseup('04-connections-closeup')],
-  'state-machines':        [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-states'},...detailCloseup('04-states-closeup')],
-  'performance':           [...PRE, ...graphCloseup('03-perf-closeup')],
-  // LiveOverflow groups — right pane + graph closeups
-  'progressive-disclosure':[{a:'wait',ms:500},{a:'ss',n:'01-seeded-graph'},...graphCloseup('02-graph-closeup')],
-  'learning-path':         [...PRE],
-  'vulnerability-hunting': [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security-view'},...detailCloseup('04-security-closeup')],
-  'visual-design':         [...PRE, ...graphCloseup('03-legend-closeup')],
+  'cross-references':      [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Click hub node for maximum edge type diversity
+    {a:'eval',s:CLICK_HUB},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'},
+    ...detailCloseup('04-connections-closeup')],
+  'state-machines':        [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Click state_machine node to show dashed ring + states data
+    {a:'eval',s:CLICK_TYPE('state_machine')},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-states'},
+    ...detailCloseup('04-states-closeup')],
+  'performance':           [
+    {a:'wait',ms:500},
+    // Expand 2 hub nodes to get more nodes in graph (triggers minimap at >15)
+    {a:'eval',s:EXPAND_HUB(0)},{a:'wait',ms:2000},
+    {a:'eval',s:EXPAND_HUB(1)},{a:'wait',ms:2000},
+    {a:'ss',n:'01-expanded-graph'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1000},{a:'ss',n:'02-with-selection'},
+    ...graphCloseup('03-perf-closeup')],
+  // LiveOverflow groups — beginner-friendly captures showing discoverability
+  'progressive-disclosure':[
+    // Show sparse initial graph (few nodes), then expand to show progressive materialization
+    {a:'wait',ms:500},{a:'ss',n:'01-seeded-graph'},
+    // Click a node to show detail + chat panel
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    // Expand a hub to show nodes materializing
+    {a:'eval',s:EXPAND_HUB(0)},{a:'wait',ms:2000},{a:'ss',n:'02-after-expand'},
+    ...graphCloseup('03-graph-closeup'),
+    // Switch to Analysis tab before right pane closeup
+    {a:'eval',s:clickAnalysis},{a:'wait',ms:500},
+    ...rightPaneCloseup('04-chat-closeup')],
+  'learning-path':         [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    // Ensure Analysis tab is active, then show chat pane with suggested queries
+    {a:'eval',s:clickAnalysis},{a:'wait',ms:500},
+    ...rightPaneCloseup('03-chat-closeup'),
+    ...detailCloseup('04-detail-closeup')],
+  'vulnerability-hunting': [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'02-security-view'},
+    // Show detail panel with CWE tags
+    ...detailCloseup('03-detail-closeup'),
+    // Show table with CWE/ATT&CK columns
+    {a:'eval',s:clickTab('table')},{a:'wait',ms:500},
+    ...detailCloseup('04-table-closeup')],
+  'visual-design':         [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1000},{a:'ss',n:'02-with-selection'},
+    // Graph closeup showing legend bar, node shapes, edge colors
+    ...graphCloseup('03-graph-closeup')],
   'ctf-workflow':          [...PRE, {a:'eval',s:clickJournal},{a:'wait',ms:500},{a:'ss',n:'03-journal'},...rightPaneCloseup('04-journal-closeup')],
-  'graph-interaction':     [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[3]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-dblclick-expand'},...graphCloseup('04-interaction-closeup')],
-  'accessibility':         [...PRE, ...graphCloseup('03-keyboard-help')],
-  'error-states':          [...PRE,
-    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Filter"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'error');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'searched error'}return 'no filter'})()`},
-    {a:'wait',ms:500},{a:'ss',n:'03-search-error'},...graphCloseup('04-error-closeup')],
+  'graph-interaction':     [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    // Click node — shows pulse ring, edge highlighting, detail panel
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:800},{a:'ss',n:'02-selected'},
+    // Double-click to expand neighbors
+    {a:'eval',s:`document.querySelectorAll('g.nodes g')[3]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},
+    {a:'wait',ms:2000},{a:'ss',n:'03-dblclick-expand'},
+    ...graphCloseup('04-interaction-closeup')],
+  'accessibility':         [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1000},{a:'ss',n:'02-with-selection'},
+    // Graph closeup showing keyboard hints (F=fit Esc=desel) in legend bar
+    ...graphCloseup('03-keyboard-help'),
+    // Detail closeup showing labeled export buttons and tabs
+    ...detailCloseup('04-detail-closeup')],
+  'error-states':          [
+    {a:'wait',ms:500},{a:'ss',n:'01-initial'},
+    {a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    // Use TABLE filter with nonexistent term to show empty/filtered state
+    {a:'eval',s:clickTab('table')},{a:'wait',ms:500},
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'zzz_nonexistent');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered zzz'}return 'no filter'})()`},
+    {a:'wait',ms:500},{a:'ss',n:'02-empty-filter'},
+    // Graph closeup showing dimmed nodes (all filtered out)
+    ...graphCloseup('03-dimmed-graph'),
+    // Clear and search "error" to show matching
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth'}return 'no filter'})()`},
+    {a:'wait',ms:500},{a:'ss',n:'04-auth-filter'}],
 };
 
 async function run() {

@@ -1,6 +1,6 @@
 # Persona Review Report
 
-Generated: 2026-03-30 11:45
+Generated: 2026-03-30 12:31
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
@@ -16,31 +16,31 @@ Generated: 2026-03-30 11:45
 | 43 | tim-blazytko | perspective-views | 7 | PASS | Graph lacks visual clustering — 'daemon', 'schema', and 'mcp | 9595ms |
 | 43 | tim-blazytko | scene-management | 7 | PASS | No visual highlight on the graph node 'mcp_auth_completed' — | 13378ms |
 | 43 | tim-blazytko | investigation-journal | 7 | PASS | No visible UI element to add manual notes or annotations to  | 11213ms |
-| 43 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — orange lines from 'mcp | 13667ms |
-| 43 | gynvael-coldwind | data-structures | 4 | FAIL | AST / Fields tab in detail panel is empty with 'No AST extra | 11530ms |
-| 43 | gynvael-coldwind | graph-exploration | 4 | FAIL | Node labels truncated (e.g., 'add_mcp_server' → 'add_mcp_ser | 10776ms |
-| 43 | gynvael-coldwind | code-view | 8 | PASS | No visible line numbers in Code View panel, making precise r | 13286ms |
-| 43 | gynvael-coldwind | node-detail | 5 | FAIL | No ATT&CK tags visible in the detail panel for 'mcp_auth_com | 11049ms |
-| 43 | gynvael-coldwind | search-and-filter | 4 | FAIL | Filter input labeled 'Filter...' has no placeholder text or  | 11309ms |
-| 43 | gynvael-coldwind | context-menu | 8 | PASS | No contextual query suggestions visible in chat pane or deta | 10686ms |
-| 43 | gynvael-coldwind | cross-references | 5 | FAIL | Detail panel and graph edges still lack 'CONTAINS' and 'PAYL | 12962ms |
-| 43 | gynvael-coldwind | state-machines | 4 | FAIL | AST/Fields tab explicitly states 'No AST extractions for thi | 15478ms |
-| 43 | gynvael-coldwind | performance | 4 | FAIL | Node labels (e.g., 'schema', 'daemon') are tiny and overlap  | 11534ms |
-| 43 | gynvael-coldwind | chat-analysis | 8 | PASS | Graph nodes ('daemon', 'schema') lack type icons or color-co | 12315ms |
-| 43 | liveoverflow | first-impressions | 8 | PASS | Initial graph state (top panel) still shows unlabeled, spars | 8375ms |
-| 43 | liveoverflow | progressive-disclosure | 4 | FAIL | The graph is visually overwhelming: dense, overlapping orang | 16777ms |
-| 43 | liveoverflow | learning-path | 5 | FAIL | Graph contains unlabeled small green circles and faint dashe | 10753ms |
-| 43 | liveoverflow | vulnerability-hunting | 7 | PASS | The 'Find Attack Surface' action remains buried in a context | 17111ms |
-| 43 | liveoverflow | code-view | 8 | PASS | Only top 15 lines of pseudocode are visible — critical logic | 11938ms |
-| 43 | liveoverflow | chat-exploration | 4 | FAIL | No visible chat input field anywhere — violates 'Chat IS the | 10446ms |
-| 43 | liveoverflow | visual-design | 7 | PASS | No visible legend explaining node color meanings — users mus | 9996ms |
-| 43 | liveoverflow | ctf-workflow | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 10739ms |
-| 43 | liveoverflow | graph-interaction | 4 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight,  | 12216ms |
-| 43 | liveoverflow | accessibility | 5 | FAIL | No visible keyboard shortcuts for graph pan/zoom, node selec | 12475ms |
-| 43 | liveoverflow | error-states | 3 | FAIL | Searching for 'error' in the filter bar (visible in bottom p | 7685ms |
+| 46 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — orange lines from 'mcp | 9753ms |
+| 46 | gynvael-coldwind | data-structures | 9 | PASS | Schema field types in the bottom panel are not consistently  | 12547ms |
+| 46 | gynvael-coldwind | graph-exploration | 8 | PASS | Legend bar is small and partially obscured by graph nodes in | 12539ms |
+| 46 | gynvael-coldwind | code-view | 8 | PASS | No line numbers visible in Code View panel — prevents precis | 16438ms |
+| 46 | gynvael-coldwind | node-detail | 9 | PASS | CWE/ATT&CK tags are not visible in the detail panel for 'mcp | 7855ms |
+| 46 | gynvael-coldwind | search-and-filter | 8 | PASS | Search field 'Filter...' lacks placeholder text or examples  | 7279ms |
+| 46 | gynvael-coldwind | context-menu | 8 | PASS | No contextual query suggestions visible in chat pane or deta | 12224ms |
+| 46 | gynvael-coldwind | cross-references | 9 | PASS | No explicit legend or edge-type labels in graph (e.g., 'trig | 8721ms |
+| 46 | gynvael-coldwind | state-machines | 9 | PASS | Graph node labels are truncated (e.g., 'Gy0 (add_mcp_server) | 8311ms |
+| 46 | gynvael-coldwind | performance | 8 | PASS | No minimap visible — critical for orientation in graphs with | 7702ms |
+| 46 | gynvael-coldwind | chat-analysis | 8 | PASS | Graph nodes ('daemon', 'schema') still lack type icons or co | 7808ms |
+| 46 | liveoverflow | first-impressions | 8 | PASS | Initial graph state (top panel) still shows unlabeled, spars | 13060ms |
+| 46 | liveoverflow | progressive-disclosure | 9 | PASS | Graph node labels (e.g., 'schema', 'daemon') are small and l | 11577ms |
+| 46 | liveoverflow | learning-path | 9 | PASS | The graph’s node labels (e.g., 'other', 'schema') are too ge | 9568ms |
+| 46 | liveoverflow | vulnerability-hunting | 9 | PASS | ATT&CK tags (T1546, T1562) are visible in the table but not  | 15830ms |
+| 47 | liveoverflow | code-view | 9 | PASS | Pseudocode panel lacks line numbers in the visible portion — | 5801ms |
+| 46 | liveoverflow | chat-exploration | 9 | PASS | Suggested queries use technical terms like 'CWE-393' without | 8427ms |
+| 46 | liveoverflow | visual-design | 8 | PASS | No visible legend explaining edge colors or line styles — e. | 12856ms |
+| 46 | liveoverflow | ctf-workflow | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 11038ms |
+| 46 | liveoverflow | graph-interaction | 8 | PASS | No visual indication in the graph that double-clicking a nod | 12221ms |
+| 46 | liveoverflow | accessibility | 8 | PASS | No visible keyboard shortcuts for graph navigation (pan/zoom | 12167ms |
+| 46 | liveoverflow | error-states | 8 | PASS | The graph contains unlabeled or ambiguous nodes (e.g., 'othe | 12495ms |
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.5/10
-- Passed (>=8): 15/34
-- Gate: FAIL (target: 8.0)
+- Average score: 8.2/10
+- Passed (>=8): 30/34
+- Gate: PASS (target: 8.0)

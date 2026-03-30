@@ -2014,6 +2014,11 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: 14, fontWeight: 800, color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace' }}>{allSelectedEdges.length}</div>
                             <div style={{ color: EMBRY.dim, fontSize: 7, textTransform: 'uppercase' }}>conn</div>
+                            <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center', marginTop: 2 }}>
+                              {Object.entries(edgesByType).map(([type, targets]) => (
+                                <span key={type} style={{ fontSize: 6, color: EDGE_COLORS[type] || EMBRY.dim, fontWeight: 700 }}>{targets.length}{type.charAt(0).toUpperCase()}</span>
+                              ))}
+                            </div>
                           </div>
                           {(selectedNode.fields?.length ?? 0) > 0 && <div style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: 14, fontWeight: 800, color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace' }}>{selectedNode.fields!.length}</div>
@@ -2281,7 +2286,12 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
                       {!selectedNode.fields?.length && !selectedNode.states?.length && !selectedNode.source_pattern && (
-                        <div style={{ fontSize: 9, color: EMBRY.muted, fontStyle: 'italic' }}>No AST extractions for this node</div>
+                        <div style={{ fontSize: 9, color: EMBRY.muted }}>
+                          <div style={{ fontStyle: 'italic', marginBottom: 6 }}>No field/state extractions for this {selectedNode.nodeType.replace('_', ' ')} node.</div>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, padding: '4px 8px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2 }}>
+                            Run <code style={{ color: EMBRY.accent }}>/analyze-elf --deep</code> to extract fields, types, and byte offsets for schema nodes.
+                          </div>
+                        </div>
                       )}
                     </div>
                   )}

@@ -576,7 +576,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('fill', 'none')
       .attr('stroke', (d) => EDGE_COLORS[d.edgeType] ?? EMBRY.dim)
       .attr('stroke-width', (d) => (EDGE_WIDTHS[d.edgeType] ?? 1.0) * 0.4)
-      .attr('stroke-opacity', 0.08)
+      .attr('stroke-opacity', 0.15)
       .attr('marker-end', (d) => d.edgeType !== 'contains' ? `url(#arrow-${d.edgeType})` : null)
 
     // ── Edge Labels (hidden by default, shown on node select) ──
@@ -639,7 +639,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
 
       if (!targetId) {
         // Deselect: edges nearly invisible until a node is selected — prevents hairball
-        edgeLines.transition().duration(200).attr('stroke-opacity', 0.08)
+        edgeLines.transition().duration(200).attr('stroke-opacity', 0.15)
         edgeLabels.transition().duration(200).attr('opacity', 0)
         nodeGs.select('.node-shape').transition().duration(200)
           .attr('stroke', 'none').attr('stroke-width', 0)
@@ -1029,7 +1029,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('dy', (d) => r(d) + 10)
       .attr('text-anchor', 'middle')
       .attr('fill', EMBRY.dim)
-      .attr('font-size', 8)
+      .attr('font-size', 9)
       .attr('font-weight', 600)
       .attr('font-family', 'JetBrains Mono, monospace')
       .style('paint-order', 'stroke fill')
@@ -1038,10 +1038,10 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .style('filter', 'drop-shadow(0 0 2px rgba(0,0,0,0.6))')
       .attr('opacity', (d) => {
         if (d.nodeType === 'namespace') return 1
-        if ((degree.get(d.id) ?? 0) > 8) return 0.7
+        if ((degree.get(d.id) ?? 0) > 5) return 0.7
         return 0
       })
-      .text((d) => d.label.length > 22 ? `${d.label.slice(0, 20)}…` : d.label)
+      .text((d) => d.label.length > 28 ? `${d.label.slice(0, 26)}…` : d.label)
 
     // ── Drag ──
     // Shared flag: set true on drag, checked in click handler to suppress false clicks
