@@ -200,17 +200,15 @@ const GROUPS = {
     {a:'ss',n:'01-table-full'},
     ...detailCloseup('02-table-closeup')],
   'taxonomy-integration':  [
-    // Click security-relevant node, switch to Security perspective, zoom in to show CWE coloring
+    // Click security-relevant node, switch to Security perspective
     {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
     {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
-    // Zoom into the graph to make nodes larger (double-click selected node to zoom 2x)
-    {a:'eval',s:`(()=>{const svg=document.querySelector('#be-graph-pane svg');if(svg&&svg.__panToNode){const sel=document.querySelector('g.nodes g .pulse-ring');if(sel){const id=sel.parentElement?.__data__?.id;if(id){svg.__panToNode(id,2.5);return 'zoomed:'+id}}}return 'no zoom'})()`},
-    {a:'wait',ms:1000},
-    // Full page showing zoomed graph with larger nodes (CWE red fill visible)
-    {a:'ss',n:'01-security-zoomed'},
-    // Expanded detail panel showing CWE badges
+    // Show table with CWE/ATT&CK columns (clearest proof of taxonomy integration)
+    {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
+    ...detailCloseup('01-table-with-cwe'),
+    // Then show detail panel with CWE badges
     {a:'eval',s:clickTab('summary')},{a:'wait',ms:300},
-    ...detailCloseup('02-cwe-detail')],
+    ...detailCloseup('02-cwe-badges')],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},

@@ -2357,6 +2357,19 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             placeholder="Filter features, CWE, ATT&CK..." style={{ flex: 1, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
                           <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
                           {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
+                          <button
+                            id="be-table-export-csv"
+                            onClick={() => {
+                              const header = 'Name,Type,Cluster,Connections,CWE,ATT&CK\n'
+                              const rows = filtered.map(n => `"${n.label}","${n.nodeType}","${n.cluster}",${n.connections},"${n.cwe}","${n.attack}"`).join('\n')
+                              const blob = new Blob([header + rows], { type: 'text/csv' })
+                              const a = document.createElement('a')
+                              a.href = URL.createObjectURL(blob)
+                              a.download = `${binaryName}-features.csv`
+                              a.click()
+                            }}
+                            style={{ fontSize: 8, padding: '2px 6px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer', fontWeight: 600 }}
+                          >EXPORT CSV</button>
                         </div>
                         <div style={{ maxHeight: 300, overflow: 'auto' }}>
                           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
