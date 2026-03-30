@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-30 10:14
+Generated: 2026-03-30 10:24
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 39 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'mcp_auth_completed' still lack semantic l | 15397ms |
-| 39 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are still partially occluded where  | 12053ms |
-| 39 | tim-blazytko | node-detail | 8 | PASS | Parameter types for emitted RPCs (e.g., 'add_mcp_server') ar | 14381ms |
-| 39 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 10258ms |
-| 39 | tim-blazytko | table-view | 5 | FAIL | CWE and ATT&CK columns are truncated (e.g., 'CWE-393, CWE-44 | 7116ms |
-| 39 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE tags are absent from the feature table (left panel) and  | 11869ms |
-| 39 | tim-blazytko | code-view | 8 | PASS | No visual indicator in the detail panel or graph that Python | 7022ms |
-| 39 | tim-blazytko | chat-analysis | 8 | PASS | Suggested query buttons remain visually disconnected from th | 8609ms |
-| 39 | tim-blazytko | automation | 8 | PASS | No authentication headers (e.g., Authorization: Bearer) are  | 8727ms |
-| 39 | tim-blazytko | perspective-views | 7 | PASS | Graph lacks visual clustering — 'daemon', 'schema', and 'mcp | 10618ms |
-| 39 | tim-blazytko | scene-management | 7 | PASS | No visual highlight on the graph node 'mcp_auth_completed' — | 11243ms |
-| 39 | tim-blazytko | investigation-journal | 7 | PASS | No visible UI element to add manual notes or annotations to  | 9493ms |
+| 40 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'mcp_auth_completed' still lack semantic l | 17705ms |
+| 40 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 12929ms |
+| 40 | tim-blazytko | node-detail | 8 | PASS | Parameter types for emitted RPCs (e.g., 'add_mcp_server') ar | 12274ms |
+| 40 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 14540ms |
+| 40 | tim-blazytko | table-view | 5 | FAIL | CWE and ATT&CK columns remain truncated (e.g., 'CWE-393, CWE | 7848ms |
+| 40 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE tags are absent from the feature table (left panel) and  | 8324ms |
+| 40 | tim-blazytko | code-view | 8 | PASS | No visual indicator in the detail panel or graph that Python | 13122ms |
+| 40 | tim-blazytko | chat-analysis | 8 | PASS | Suggested query buttons remain visually disconnected from th | 7488ms |
+| 40 | tim-blazytko | automation | 8 | PASS | No authentication headers (e.g., Authorization: Bearer) are  | 11335ms |
+| 40 | tim-blazytko | perspective-views | 7 | PASS | Graph lacks visual clustering — 'daemon', 'schema', and 'mcp | 10155ms |
+| 40 | tim-blazytko | scene-management | 7 | PASS | No visual highlight on the graph node 'mcp_auth_completed' — | 8118ms |
+| 40 | tim-blazytko | investigation-journal | 7 | PASS | No visible UI element to add manual notes or annotations to  | 9380ms |
 | 39 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges lack directional arrows — orange lines from 'mcp | 8955ms |
 | 39 | gynvael-coldwind | data-structures | 4 | FAIL | AST / Fields tab in detail panel is empty with 'No AST extra | 9025ms |
 | 39 | gynvael-coldwind | graph-exploration | 5 | FAIL | Node labels are truncated (e.g., 'add_mcp_server' → 'add_mcp | 17146ms |
