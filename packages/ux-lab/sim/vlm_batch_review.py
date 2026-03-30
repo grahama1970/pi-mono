@@ -83,136 +83,14 @@ def build_prompt(template: str, persona: str, criteria: str,
     )
 
 
-def crop_region(data: bytes, region: str, viewport: tuple[int, int] = (1440, 900)) -> bytes | None:
-    """Crop a known UI region from a full-page screenshot at native resolution.
-
-    Regions based on Binary Explorer's 3-pane layout at 1440x900:
-      - sidebar: left 220px
-      - graph: center area (220 to ~65% of width), full height
-      - detail: below graph (220 to ~65%, bottom ~40%)
-      - toolbar: graph pane top bar (220 to ~65%, top 40px)
-      - right: right pane (~65% to 100%, full height)
-      - table: detail panel area when table tab is active
-      - cwe_badges: lower portion of detail panel where CWE tags render
-    """
-    from PIL import Image
-    import io
-
-    img = Image.open(io.BytesIO(data))
-    w, h = img.size
-
-    # Scale factors if viewport differs from expected
-    sx, sy = w / viewport[0], h / viewport[1]
-
-    # Sidebar is ~220px, graph pane is ~65% of remaining, right pane is rest
-    sidebar_w = int(220 * sx)
-    graph_end = int(w * 0.65)
-    detail_top = int(h * 0.55)  # Detail panel starts ~55% down
-    toolbar_h = int(45 * sy)
-
-    regions = {
-        "graph": (sidebar_w, 0, graph_end, h),
-        "detail": (sidebar_w, detail_top, graph_end, h),
-        "toolbar": (sidebar_w, 0, graph_end, toolbar_h),
-        "right": (graph_end, 0, w, h),
-        "table": (sidebar_w, detail_top + int(30 * sy), graph_end, h),
-        "cwe_badges": (sidebar_w, int(h * 0.75), graph_end, h),
-        "full": (0, 0, w, h),
-    }
-
-    box = regions.get(region)
-    if not box:
-        return None
-
-    cropped = img.crop(box)
-    # Upscale to at least 1200px wide for text readability
-    if cropped.width < 1200 and cropped.width > 50:
-        scale = 1200 / cropped.width
-        cropped = cropped.resize((1200, int(cropped.height * scale)), Image.LANCZOS)
-
-    from PIL import ImageFilter
-    cropped = cropped.filter(ImageFilter.SHARPEN)
-
-    out = io.BytesIO()
-    cropped.save(out, format="PNG", optimize=True)
-    return out.getvalue()
-
-
-# Map group → which regions to crop and send (in addition to or instead of raw screenshots)
-GROUP_REGIONS: dict[str, list[str]] = {
-    "node-detail": ["full", "detail"],
-    "taxonomy-integration": ["graph", "detail"],
-    "code-view": ["full", "detail"],
-    "table-view": ["full", "table"],
-    "chat-analysis": ["full", "right"],
-    "scene-management": ["graph", "toolbar"],
-    "investigation-journal": ["full", "right"],
-}
-
-
-def preprocess_screenshot(data: bytes, target_width: int = 1400) -> bytes:
-    """Intelligently crop, resize, and sharpen screenshots for VLM readability.
-
-    1. Auto-crop: trim black borders (common in headless Chrome captures)
-    2. Upscale: if image is small (panel closeup), resize to target_width
-    3. Sharpen: enhance text edges for better VLM OCR
-    4. Compress: convert to optimized PNG
-    """
-    from PIL import Image, ImageFilter, ImageOps
-    import io
-
-    img = Image.open(io.BytesIO(data))
-
-    # Auto-crop black borders (threshold: pixel brightness > 15)
-    # Convert to grayscale for border detection
-    gray = img.convert("L")
-    bbox = gray.point(lambda x: 255 if x > 15 else 0).getbbox()
-    if bbox:
-        # Add small padding back (4px)
-        pad = 4
-        bbox = (
-            max(0, bbox[0] - pad),
-            max(0, bbox[1] - pad),
-            min(img.width, bbox[2] + pad),
-            min(img.height, bbox[3] + pad),
-        )
-        img = img.crop(bbox)
-
-    # Upscale small images (panel closeups are often 400-600px wide)
-    if img.width < target_width and img.width > 100:
-        scale = target_width / img.width
-        new_h = int(img.height * scale)
-        img = img.resize((target_width, new_h), Image.LANCZOS)
-
-    # Sharpen text for better VLM readability
-    img = img.filter(ImageFilter.SHARPEN)
-
-    # Cap height at 2000px to avoid huge payloads
-    if img.height > 2000:
-        scale = 2000 / img.height
-        img = img.resize((int(img.width * scale), 2000), Image.LANCZOS)
-
-    # Export as optimized PNG
-    out = io.BytesIO()
-    img.save(out, format="PNG", optimize=True)
-    return out.getvalue()
-
-
-def compress_if_needed(data: bytes, max_bytes: int = 500_000) -> bytes:
-    """Compress image to JPEG if PNG exceeds max_bytes. VLMs handle JPEG fine."""
-    if len(data) <= max_bytes:
-        return data
-    from PIL import Image
-    import io
-    img = Image.open(io.BytesIO(data))
-    # Try PNG with reduced colors first
-    out = io.BytesIO()
-    img = img.convert("RGB")  # Drop alpha if present
-    img.save(out, format="JPEG", quality=85, optimize=True)
-    return out.getvalue()
+# Import shared VLM image preprocessing from common/
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[3] / ".pi" / "skills"))
+from common.vlm_image import prepare_for_vlm, stitch_vertical, compress, smart_crop  # noqa: E402
 
 
 def load_screenshots(group: str) -> list[tuple[str, bytes]]:
+    """Load and preprocess screenshots for VLM review using common/vlm_image."""
     group_dir = CAPTURES_ROOT / group
     if not group_dir.exists():
         return []
@@ -221,63 +99,23 @@ def load_screenshots(group: str) -> list[tuple[str, bytes]]:
         return []
 
     # For taxonomy-integration: zoom into graph area to show CWE node coloring
-    if group == 'taxonomy-integration' and raw:
-        try:
-            from PIL import Image, ImageFilter
-            import io
-            result = []
-            for name, data in raw:
-                img = Image.open(io.BytesIO(data))
-                if 'security-graph' in name or 'initial' in name:
-                    # Crop just the node cluster area and upscale 3x for node visibility
-                    # Nodes cluster in the right 60% of the graph pane
-                    graph_crop = img.crop((500, 80, 950, 480))
-                    # Upscale 2x for node detail visibility
-                    graph_crop = graph_crop.resize((graph_crop.width * 2, graph_crop.height * 2), Image.LANCZOS)
-                    graph_crop = graph_crop.filter(ImageFilter.SHARPEN)
-                    out = io.BytesIO()
-                    graph_crop.save(out, format="PNG", optimize=True)
-                    result.append((name, compress_if_needed(out.getvalue())))
-                else:
-                    result.append((name, compress_if_needed(preprocess_screenshot(data))))
-            if result:
-                return result
-        except Exception as e:
-            logger.debug("Taxonomy graph zoom failed: {}", e)
+    if group == "taxonomy-integration":
+        result = []
+        for name, data in raw:
+            if "security-graph" in name or "initial" in name:
+                result.append((name, smart_crop(data, region="graph", upscale_to=1600)))
+            else:
+                result.append((name, prepare_for_vlm(data)))
+        return result
 
-    # Preprocess raw screenshots (auto-crop, sharpen, upscale, compress)
-    processed = [(name, compress_if_needed(preprocess_screenshot(data))) for name, data in raw]
+    # Preprocess all screenshots
+    processed = [(name, prepare_for_vlm(data)) for name, data in raw]
 
-    # If >2 screenshots, stitch into single tall image
+    # If >2 screenshots, stitch into single image so VLM sees all context
     if len(processed) > 2:
-        try:
-            from PIL import Image
-            import io
-            images = [Image.open(io.BytesIO(data)) for _, data in processed]
-            max_w = max(img.width for img in images)
-            normalized = []
-            for img in images:
-                if img.width < max_w:
-                    scale = max_w / img.width
-                    img = img.resize((max_w, int(img.height * scale)), Image.LANCZOS)
-                normalized.append(img)
-            sep = 4
-            total_h = sum(img.height for img in normalized) + sep * (len(normalized) - 1)
-            if total_h > 3000:
-                scale = 3000 / total_h
-                normalized = [img.resize((int(img.width * scale), int(img.height * scale)), Image.LANCZOS) for img in normalized]
-                total_h = sum(img.height for img in normalized) + sep * (len(normalized) - 1)
-                max_w = max(img.width for img in normalized)
-            stitched = Image.new("RGB", (max_w, total_h), (20, 20, 20))
-            y = 0
-            for img in normalized:
-                stitched.paste(img, (0, y))
-                y += img.height + sep
-            out = io.BytesIO()
-            stitched.save(out, format="PNG", optimize=True)
-            return [("stitched_all.png", compress_if_needed(out.getvalue()))]
-        except Exception as e:
-            logger.debug("Stitching failed: {}", e)
+        stitched = stitch_vertical([data for _, data in processed])
+        if stitched:
+            return [("stitched_all.png", compress(stitched))]
 
     return processed
 
