@@ -155,6 +155,34 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     }
   }, [selectedNodeId, visitedNodeIds, nodes])
 
+  // Re-color nodes when taxonomy data arrives (CWE-tagged nodes turn red)
+  const taxonomySize = taxonomyMap?.size ?? 0
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!svg || !taxonomyMap || taxonomyMap.size === 0) return
+    const d3svg = d3.select(svg)
+    d3svg.selectAll<SVGPathElement, SimNode>('.node-shape')
+      .attr('fill', (nd) => {
+        const tax = taxonomyMap.get(nd.id)
+        return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? '#ef4444' : (NODE_TYPE_COLORS[nd.nodeType] ?? EMBRY.dim)
+      })
+      .attr('fill-opacity', (nd) => {
+        const tax = taxonomyMap.get(nd.id)
+        return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? 0.9 : 0.7
+      })
+      .attr('stroke', (nd) => {
+        const tax = taxonomyMap.get(nd.id)
+        if (nd.id === selectedNodeIdRef.current) return EMBRY.white
+        return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? '#fca5a5' : (NODE_TYPE_COLORS[nd.nodeType] ?? EMBRY.dim)
+      })
+      .attr('stroke-width', (nd) => {
+        const tax = taxonomyMap.get(nd.id)
+        if (nd.id === selectedNodeIdRef.current) return 2.5
+        return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? 2 : 1
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taxonomySize])
+
   // Only change this key when data shape changes, not on every render
   const dataKey = `${nodes.length}:${edges.length}`
 
@@ -869,7 +897,12 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     })
 
     // ── Node shapes: logarithmic size-by-degree with entrance animation on `r` ──
-    const r = (d: SimNode) => nodeRadius(d.nodeType, degree.get(d.id) ?? 0)
+    const r = (d: SimNode) => {
+      const base = nodeRadius(d.nodeType, degree.get(d.id) ?? 0)
+      // CWE-tagged nodes get +30% size boost for visual triage
+      const tax = taxonomyRef.current?.get(d.id)
+      return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? base * 1.3 : base
+    }
     const nodeImportance = (d: SimNode): number => {
       const deg = degree.get(d.id) ?? 0
       if (d.nodeType === 'namespace') return 1.0
@@ -891,13 +924,18 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .style('cursor', 'pointer')
 
     // Main node shape — path so each type gets a distinct visual shape (circle/diamond/square/triangle)
+    // Nodes with CWE tags get a red-tinted fill for security visual triage
+    const hasCwe = (id: string) => {
+      const tax = taxonomyRef.current?.get(id)
+      return tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)
+    }
     nodeGs.append('path')
       .attr('class', 'node-shape')
       .attr('d', 'M0,0') // start collapsed for entrance animation
-      .attr('fill', (d) => NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim)
-      .attr('fill-opacity', (d) => nodeImportance(d))
-      .attr('stroke', (d) => d.id === selectedNodeIdRef.current ? EMBRY.white : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
-      .attr('stroke-width', (d) => d.id === selectedNodeIdRef.current ? 2.5 : 1)
+      .attr('fill', (d) => hasCwe(d.id) ? '#ef4444' : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
+      .attr('fill-opacity', (d) => hasCwe(d.id) ? 0.9 : nodeImportance(d))
+      .attr('stroke', (d) => d.id === selectedNodeIdRef.current ? EMBRY.white : hasCwe(d.id) ? '#fca5a5' : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
+      .attr('stroke-width', (d) => d.id === selectedNodeIdRef.current ? 2.5 : hasCwe(d.id) ? 2 : 1)
       .attr('stroke-dasharray', (d) => d.tier === 'T1' ? '4,2' : d.tier === 'T2' ? '1,2' : 'none')
       .attr('stroke-opacity', (d) => nodeImportance(d) * 0.6)
       .transition()

@@ -190,10 +190,12 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
-  'taxonomy-integration':  [...PRE,
-    // Switch to Security perspective to show security-focused graph
+  'taxonomy-integration':  [
+    // Skip PRE (01-initial, 02-with-selection show "All Features" which confuses VLM)
+    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    // Switch to Security perspective
     {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
-    // Full page with graph (CWE rings visible) + security perspective
+    // Full page with security perspective graph + CWE rings
     {a:'ss',n:'01-security-graph'},
     // Then expand detail panel to show CWE badges closeup
     {a:'eval',s:clickTab('summary')},{a:'wait',ms:300},

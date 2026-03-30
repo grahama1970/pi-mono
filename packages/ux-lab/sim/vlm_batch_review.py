@@ -220,6 +220,49 @@ def load_screenshots(group: str) -> list[tuple[str, bytes]]:
     if not raw:
         return []
 
+    # For taxonomy-integration: zoom into graph area to show CWE node coloring
+    if group == 'taxonomy-integration' and raw:
+        try:
+            from PIL import Image, ImageFilter
+            import io
+            result = []
+            for name, data in raw:
+                img = Image.open(io.BytesIO(data))
+                if 'security-graph' in name or 'initial' in name:
+                    # Auto-detect node cluster: find bounding box of non-dark pixels in graph area
+                    # This is deterministic — same screenshot always produces same crop
+                    import numpy as np
+                    arr = np.array(img)
+                    # Graph area: skip sidebar (220px), skip bottom detail panel (~55% down)
+                    graph_area = arr[50:500, 220:1000]
+                    # Find bright pixels (nodes are colored, background is dark ~10-20)
+                    bright_mask = np.any(graph_area > 60, axis=2)
+                    rows = np.any(bright_mask, axis=1)
+                    cols = np.any(bright_mask, axis=0)
+                    if rows.any() and cols.any():
+                        y1 = np.argmax(rows) + 50 - 20
+                        y2 = len(rows) - np.argmax(rows[::-1]) + 50 + 20
+                        x1 = np.argmax(cols) + 220 - 20
+                        x2 = len(cols) - np.argmax(cols[::-1]) + 220 + 20
+                        # Ensure minimum size
+                        if (x2 - x1) < 200: x1, x2 = max(0, x1-100), min(img.width, x2+100)
+                        if (y2 - y1) < 150: y1, y2 = max(0, y1-50), min(img.height, y2+50)
+                        graph_crop = img.crop((x1, y1, x2, y2))
+                    else:
+                        graph_crop = img.crop((300, 50, 1050, 550))
+                    # Upscale 2x for node detail visibility
+                    graph_crop = graph_crop.resize((graph_crop.width * 2, graph_crop.height * 2), Image.LANCZOS)
+                    graph_crop = graph_crop.filter(ImageFilter.SHARPEN)
+                    out = io.BytesIO()
+                    graph_crop.save(out, format="PNG", optimize=True)
+                    result.append((name, compress_if_needed(out.getvalue())))
+                else:
+                    result.append((name, compress_if_needed(preprocess_screenshot(data))))
+            if result:
+                return result
+        except Exception as e:
+            logger.debug("Taxonomy graph zoom failed: {}", e)
+
     # Preprocess raw screenshots (auto-crop, sharpen, upscale, compress)
     processed = [(name, compress_if_needed(preprocess_screenshot(data))) for name, data in raw]
 
