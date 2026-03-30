@@ -2181,6 +2181,127 @@ app.get('/api/projects/classifier-lab/model-card/:id', async (req, res) => {
   }
 })
 
+// ── Eval test suite CRUD ────────────────────────────────────────────
+const EVAL_QUESTIONS_FILE = 'eval-questions.json'
+
+// GET — list all eval questions
+app.get('/api/projects/classifier-lab/eval-questions/:id', async (req, res) => {
+  try {
+    const path = resolve(CLASSIFIER_DIR, req.params.id, EVAL_QUESTIONS_FILE)
+    if (existsSync(path)) {
+      const data = JSON.parse(await readFile(path, 'utf-8'))
+      res.json(data)
+    } else {
+      res.json({ questions: [], results: null })
+    }
+  } catch {
+    res.json({ questions: [], results: null })
+  }
+})
+
+// POST — save questions (full replace)
+app.post('/api/projects/classifier-lab/eval-questions/:id', async (req, res) => {
+  try {
+    const path = resolve(CLASSIFIER_DIR, req.params.id, EVAL_QUESTIONS_FILE)
+    const body = req.body as { questions: Array<{ text: string; expected: string; id?: string }> }
+    const questions = (body.questions || []).map((q, i) => ({
+      id: q.id || `q_${Date.now()}_${i}`,
+      text: (q.text || '').trim(),
+      expected: (q.expected || '').trim(),
+    })).filter(q => q.text && q.expected)
+    await writeFile(path, JSON.stringify({ questions, results: null, updated: new Date().toISOString() }, null, 2), 'utf-8')
+    res.json({ ok: true, count: questions.length })
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
+// POST — import questions from CSV/JSONL body
+app.post('/api/projects/classifier-lab/eval-questions/:id/import', async (req, res) => {
+  try {
+    const path = resolve(CLASSIFIER_DIR, req.params.id, EVAL_QUESTIONS_FILE)
+    const existing = existsSync(path) ? JSON.parse(await readFile(path, 'utf-8')) : { questions: [] }
+    const body = req.body as { format: string; data: string }
+    const newQuestions: Array<{ id: string; text: string; expected: string }> = []
+
+    if (body.format === 'jsonl') {
+      for (const line of (body.data || '').split('\n')) {
+        const trimmed = line.trim()
+        if (!trimmed) continue
+        try {
+          const row = JSON.parse(trimmed)
+          const text = (row.text || row.question || row.input || '').trim()
+          const expected = (row.expected || row.class || row.label || row.className || '').trim()
+          if (text && expected) newQuestions.push({ id: `q_${Date.now()}_${newQuestions.length}`, text, expected })
+        } catch { /* skip bad lines */ }
+      }
+    } else {
+      // CSV: first line is header, columns: text,expected
+      const lines = (body.data || '').split('\n').filter(l => l.trim())
+      for (let i = 1; i < lines.length; i++) {
+        const parts = lines[i].split(',').map(s => s.trim().replace(/^"|"$/g, ''))
+        if (parts.length >= 2 && parts[0] && parts[1]) {
+          newQuestions.push({ id: `q_${Date.now()}_${i}`, text: parts[0], expected: parts[1] })
+        }
+      }
+    }
+
+    const merged = [...(existing.questions || []), ...newQuestions]
+    await writeFile(path, JSON.stringify({ questions: merged, results: null, updated: new Date().toISOString() }, null, 2), 'utf-8')
+    res.json({ ok: true, imported: newQuestions.length, total: merged.length })
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
+// POST — run eval: takes questions, returns predictions (stub — real inference requires model loaded)
+app.post('/api/projects/classifier-lab/eval-questions/:id/run', async (req, res) => {
+  try {
+    const projDir = resolve(CLASSIFIER_DIR, req.params.id)
+    const qPath = resolve(projDir, EVAL_QUESTIONS_FILE)
+    if (!existsSync(qPath)) return res.status(404).json({ error: 'No eval questions' })
+
+    const data = JSON.parse(await readFile(qPath, 'utf-8'))
+    const questions: Array<{ id: string; text: string; expected: string }> = data.questions || []
+    if (!questions.length) return res.json({ error: 'No questions to evaluate' })
+
+    // Try to run inference via classifier-lab skill
+    const scriptPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'run_eval_questions.py')
+    if (existsSync(scriptPath)) {
+      const execFileAsync = promisify(execFile)
+      try {
+        const { stdout } = await execFileAsync('python3', [scriptPath, projDir], { timeout: 120_000 })
+        const results = JSON.parse(stdout)
+        // Save results alongside questions
+        data.results = results
+        data.evaluated_at = new Date().toISOString()
+        await writeFile(qPath, JSON.stringify(data, null, 2), 'utf-8')
+        res.json(results)
+        return
+      } catch (e) {
+        // Fall through to stub
+      }
+    }
+
+    // Stub: if no inference script, use eval-results.json confusion patterns to simulate
+    // This is a fallback — real inference is better
+    const evalPath = resolve(projDir, 'eval-results.json')
+    const evalData = existsSync(evalPath) ? JSON.parse(await readFile(evalPath, 'utf-8')) : null
+
+    const results = questions.map(q => {
+      // Without real inference, mark as "not run"
+      return { id: q.id, text: q.text, expected: q.expected, predicted: null, passed: null }
+    })
+
+    data.results = results
+    data.evaluated_at = null
+    await writeFile(qPath, JSON.stringify(data, null, 2), 'utf-8')
+    res.json({ results, note: 'Inference not available — install run_eval_questions.py to run predictions' })
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
 app.post('/api/projects/classifier-lab/rerun/:id', async (req, res) => {
   const projectId = req.params.id
   const body = req.body as Partial<ClassifierRerunBody>

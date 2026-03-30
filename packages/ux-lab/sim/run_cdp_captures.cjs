@@ -200,15 +200,17 @@ const GROUPS = {
     {a:'ss',n:'01-table-full'},
     ...detailCloseup('02-table-closeup')],
   'taxonomy-integration':  [
-    // Click security-relevant node, switch to Security perspective
+    // Click node, switch to Security perspective, show table with CWE filter ACTIVE
     {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
     {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
-    // Show table with CWE/ATT&CK columns (clearest proof of taxonomy integration)
     {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
-    ...detailCloseup('01-table-with-cwe'),
-    // Then show detail panel with CWE badges
-    {a:'eval',s:clickTab('summary')},{a:'wait',ms:300},
-    ...detailCloseup('02-cwe-badges')],
+    // Type "CWE" in the table filter to show taxonomy-driven filtering
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'CWE');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered CWE'}return 'no filter'})()`},
+    {a:'wait',ms:1000},
+    // Full page showing: graph with highlighted CWE nodes + table filtered to CWE rows
+    {a:'ss',n:'01-cwe-filter-active'},
+    // Detail closeup showing filtered table with CWE column data
+    ...detailCloseup('02-cwe-table-closeup')],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
