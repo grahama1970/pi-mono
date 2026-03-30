@@ -310,78 +310,111 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
 
 
 async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
-    """Delegate to /code-runner skill — deterministic run-and-debug loop."""
+    """Delegate to /code-runner skill with blind eval retry loop.
+
+    Flow per attempt:
+      1. Build code-runner spec (with blind feedback from prior attempt if any)
+      2. Run code-runner
+      3. If DoD passed AND blind_tests exist → call test-lab
+      4. If blind eval fails → inject sanitized feedback → retry (up to max_blind_retries)
+      5. If blind eval passes or no blind_tests → done
+    """
     code_runner = SKILLS_DIR / "code-runner" / "run.sh"
     if not code_runner.exists():
         raise RuntimeError(f"/code-runner skill not found at {code_runner}")
 
-    # Write task spec as JSON for /code-runner to consume
-    spec: dict = {
-        "task_id": task.task_id,
-        "title": task.title,
-        "prompt": task.prompt,
-        "backend": task.backend or "codex",
-        "cwd": str(task.cwd),
-        "output_dir": str(session_dir),
-    }
-    if task.definition_of_done:
-        spec["definition_of_done"] = task.definition_of_done
-    if task.allowlist is not None:
-        spec["allowlist"] = task.allowlist
-    # NOTE: blind_tests deliberately NOT passed to code-runner spec.
-    # Information barrier: only orchestrate sends blind_tests to test-lab.
-    if task.max_rounds != 5:
-        spec["max_rounds"] = task.max_rounds
+    max_blind_retries = 3  # total attempts including the first
+    blind_feedback_prompt = ""  # accumulated blind failure feedback for retry prompts
 
-    spec_file = session_dir / f"{task.task_id}.code-runner-spec.json"
-    spec_file.write_text(json.dumps(spec, indent=2))
+    for attempt in range(1, max_blind_retries + 1):
+        # Build spec — blind_tests NEVER included (information barrier)
+        attempt_suffix = f"-attempt{attempt}" if attempt > 1 else ""
+        spec: dict = {
+            "task_id": f"{task.task_id}{attempt_suffix}",
+            "title": task.title,
+            "prompt": task.prompt + blind_feedback_prompt,
+            "backend": task.backend or "codex",
+            "cwd": str(task.cwd),
+            "output_dir": str(session_dir),
+        }
+        if task.definition_of_done:
+            spec["definition_of_done"] = task.definition_of_done
+        if task.allowlist is not None:
+            spec["allowlist"] = task.allowlist
+        if task.max_rounds != 5:
+            spec["max_rounds"] = task.max_rounds
 
-    proc = await asyncio.create_subprocess_exec(
-        "bash", str(code_runner), "run", str(spec_file),
-        f"--max-rounds={task.max_rounds}",
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-        cwd=str(task.cwd),
-    )
-    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1800)
+        spec_file = session_dir / f"{task.task_id}{attempt_suffix}.code-runner-spec.json"
+        spec_file.write_text(json.dumps(spec, indent=2))
 
-    output_path = session_dir / f"{task.task_id}.response.txt"
-    output_path.write_text(stdout.decode(errors="replace"))
-    task.output_path = output_path
-
-    # Read result.json for structured review data
-    result_file = session_dir / f"{task.task_id}.result.json"
-    if result_file.exists():
-        try:
-            result = json.loads(result_file.read_text())
-            task.review_status = "pass" if result.get("dod_passed") else "fail"
-            task.review_output = (
-                f"score={result.get('best_score', 0):.3f} "
-                f"rounds={result.get('rounds', 0)} "
-                f"dod={'PASS' if result.get('dod_passed') else 'FAIL'}"
-            )
-        except (json.JSONDecodeError, KeyError):
-            task.review_status = "code-runner"
-    else:
-        task.review_status = "code-runner"
-
-    if proc.returncode != 0:
-        raise RuntimeError(
-            f"/code-runner failed (exit {proc.returncode}): {stderr.decode(errors='replace')[:500]}"
+        proc = await asyncio.create_subprocess_exec(
+            "bash", str(code_runner), "run", str(spec_file),
+            f"--max-rounds={task.max_rounds}",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=str(task.cwd),
         )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1800)
 
-    # Blind eval gate: if task has blind_tests, call test-lab AFTER code-runner passes
-    # Code-runner never sees blind_tests — information barrier enforced here
-    if task.review_status == "pass" and task.blind_tests:
-        blind_result = await _run_blind_eval(task, session_dir)
-        if blind_result and blind_result.get("status") == "fail":
-            blind_feedback = "\n".join(
-                f"  BLIND FAIL: {c['message']}" for c in blind_result.get("checks", []) if not c["passed"]
+        output_path = session_dir / f"{task.task_id}.response.txt"
+        output_path.write_text(stdout.decode(errors="replace"))
+        task.output_path = output_path
+
+        # Read result.json
+        result_file = session_dir / f"{task.task_id}{attempt_suffix}.result.json"
+        if result_file.exists():
+            try:
+                result = json.loads(result_file.read_text())
+                task.review_status = "pass" if result.get("dod_passed") else "fail"
+                task.review_output = (
+                    f"attempt={attempt}/{max_blind_retries} "
+                    f"score={result.get('best_score', 0):.3f} "
+                    f"rounds={result.get('rounds', 0)} "
+                    f"dod={'PASS' if result.get('dod_passed') else 'FAIL'}"
+                )
+            except (json.JSONDecodeError, KeyError):
+                task.review_status = "code-runner"
+        else:
+            task.review_status = "code-runner"
+
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"/code-runner failed (exit {proc.returncode}): {stderr.decode(errors='replace')[:500]}"
             )
+
+        # No blind tests → done after first code-runner pass
+        if not task.blind_tests or task.review_status != "pass":
+            break
+
+        # Blind eval gate — code-runner never sees these tests
+        blind_result = await _run_blind_eval(task, session_dir)
+        if not blind_result or blind_result.get("status") == "pass":
+            # Blind eval passed (or test-lab unreachable — graceful degradation)
+            break
+
+        # Blind eval failed — build sanitized feedback for retry
+        blind_feedback = "\n".join(
+            f"  - Hidden test {c['index']}: {c['message']}"
+            for c in blind_result.get("checks", []) if not c["passed"]
+        )
+        logger.warning("Blind eval FAILED for {} attempt {}/{} ({}/{})",
+                       task.task_id, attempt, max_blind_retries,
+                       blind_result["failed"], blind_result["total"])
+
+        if attempt < max_blind_retries:
+            # Inject sanitized feedback — no test source, only failure messages
+            blind_feedback_prompt = (
+                f"\n\n--- Hidden evaluation feedback (attempt {attempt}/{max_blind_retries}) ---\n"
+                f"Your code passed the visible tests but failed hidden quality checks:\n"
+                f"{blind_feedback}\n"
+                f"Fix the issues described above. You cannot see the hidden tests.\n"
+            )
+            logger.info("Retrying code-runner with blind feedback for {}", task.task_id)
+        else:
             task.review_status = "fail"
-            task.review_output += f"\n--- blind eval: FAIL ({blind_result['failed']}/{blind_result['total']}) ---\n{blind_feedback}"
-            logger.warning("Blind eval FAILED for {} ({}/{})",
-                           task.task_id, blind_result["failed"], blind_result["total"])
+            task.review_output += (
+                f"\n--- blind eval: EXHAUSTED after {max_blind_retries} attempts ---\n{blind_feedback}"
+            )
 
     # T2 gate: auto-review via /review-code if available and code-runner passed
     if task.review_status == "pass":
