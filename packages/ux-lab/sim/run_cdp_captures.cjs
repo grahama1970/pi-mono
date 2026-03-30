@@ -274,6 +274,12 @@ async function run() {
 
   for (const g of groups) {
     const dir = path.join(CAPTURES, g);
+    // Clean old screenshots to prevent stale files confusing VLM (which takes first+last)
+    if (fs.existsSync(dir)) {
+      for (const f of fs.readdirSync(dir)) {
+        if (f.endsWith('.png')) fs.unlinkSync(path.join(dir, f));
+      }
+    }
     fs.mkdirSync(dir, { recursive: true });
     const steps = GROUPS[g] || PRE;
     let shots = 0;
