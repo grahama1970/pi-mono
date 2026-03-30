@@ -3038,13 +3038,22 @@ function PromoteTab({ project }: { project: Project }) {
   const [loading, setLoading] = useState(true)
   const [promoting, setPromoting] = useState(false)
   const [promoteStatus, setPromoteStatus] = useState<{ kind: 'idle' | 'success' | 'warn' | 'error'; text: string }>({ kind: 'idle', text: '' })
+  const [modelCardMd, setModelCardMd] = useState('')
+  const [exportFormat, setExportFormat] = useState('safetensors')
+  const [pushToHf, setPushToHf] = useState(false)
+  const [showModelCard, setShowModelCard] = useState(false)
 
   useEffect(() => {
     setLoading(true)
     setPromoteStatus({ kind: 'idle', text: '' })
-    fetch(`${API}/projects/classifier-lab/eval-results/${project.id}`)
-      .then(r => r.json()).then(d => { setEvalData(d); setLoading(false) })
-      .catch(() => { setEvalData(null); setLoading(false) })
+    Promise.all([
+      fetch(`${API}/projects/classifier-lab/eval-results/${project.id}`).then(r => r.json()),
+      fetch(`${API}/projects/classifier-lab/model-card/${project.id}`).then(r => r.json()).catch(() => ({ markdown: '' })),
+    ]).then(([evalD, cardD]) => {
+      setEvalData(evalD)
+      setModelCardMd(cardD.markdown || '')
+      setLoading(false)
+    }).catch(() => { setEvalData(null); setLoading(false) })
   }, [project.id])
 
   if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading promotion data...</div>
@@ -3109,7 +3118,7 @@ function PromoteTab({ project }: { project: Project }) {
       const response = await fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: modelName, macro_f1: macroF1, accuracy }),
+        body: JSON.stringify({ model: modelName, macro_f1: macroF1, accuracy, format: exportFormat, pushToHf }),
       })
       let payload: Record<string, unknown> = {}
       try {
@@ -3209,6 +3218,74 @@ function PromoteTab({ project }: { project: Project }) {
                 }}>{cls}</span>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Export settings */}
+        {holdoutPassed && (
+          <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
+            <div style={{ ...label, marginBottom: 12 }}>EXPORT SETTINGS</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div>
+                <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 4 }}>FORMAT</div>
+                <select
+                  value={exportFormat}
+                  onChange={e => setExportFormat(e.target.value)}
+                  style={filterSelect}
+                >
+                  <option value="safetensors">SafeTensors (.safetensors)</option>
+                  <option value="onnx">ONNX (.onnx)</option>
+                  <option value="gguf">GGUF (.gguf)</option>
+                  <option value="torchscript">TorchScript (.pt)</option>
+                </select>
+              </div>
+              <div>
+                <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 4 }}>HUGGING FACE</div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={pushToHf}
+                    onChange={e => setPushToHf(e.target.checked)}
+                    style={{ accentColor: EMBRY.accent }}
+                  />
+                  <span style={{ fontSize: 10, color: EMBRY.white }}>
+                    Push to HuggingFace Hub
+                  </span>
+                </label>
+                {pushToHf && (
+                  <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 4, fontFamily: MONO }}>
+                    Requires HF_TOKEN in environment
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Model card preview */}
+        {holdoutPassed && modelCardMd && (
+          <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showModelCard ? 12 : 0 }}>
+              <button
+                onClick={() => setShowModelCard(!showModelCard)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, padding: 0 }}
+              >
+                {showModelCard ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
+                <span style={label}>MODEL CARD</span>
+                <span style={{ fontSize: 9, color: EMBRY.muted }}>— auto-generated from eval results</span>
+              </button>
+              <button
+                onClick={() => navigator.clipboard?.writeText(modelCardMd)}
+                style={{ ...btnOutline, fontSize: 8, padding: '2px 8px' }}
+              >COPY</button>
+            </div>
+            {showModelCard && (
+              <div
+                className="clf-markdown"
+                style={{ fontSize: 11, lineHeight: 1.6, maxHeight: 500, overflow: 'auto' }}
+                dangerouslySetInnerHTML={{ __html: marked(modelCardMd) as string }}
+              />
+            )}
           </div>
         )}
 

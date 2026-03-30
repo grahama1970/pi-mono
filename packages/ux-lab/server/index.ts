@@ -2163,6 +2163,24 @@ app.post('/api/projects/classifier-lab/promote/:id', async (req, res) => {
   }
 })
 
+// Model card — generated from eval data via huggingface_hub
+app.get('/api/projects/classifier-lab/model-card/:id', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    if (!existsSync(projDir)) return res.json({ markdown: '', error: 'Project not found' })
+
+    const scriptPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'generate_model_card.py')
+    if (!existsSync(scriptPath)) return res.json({ markdown: '', error: 'generate_model_card.py not found' })
+
+    const execFileAsync = promisify(execFile)
+    const { stdout } = await execFileAsync('python3', [scriptPath, projDir], { timeout: 15_000 })
+    res.json({ markdown: stdout })
+  } catch (e) {
+    res.json({ markdown: '', error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
 app.post('/api/projects/classifier-lab/rerun/:id', async (req, res) => {
   const projectId = req.params.id
   const body = req.body as Partial<ClassifierRerunBody>
