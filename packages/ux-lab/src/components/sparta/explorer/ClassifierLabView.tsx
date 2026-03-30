@@ -2724,323 +2724,292 @@ function EvaluateTab({ project }: { project: Project }) {
   const [importFormat, setImportFormat] = useState<'csv' | 'jsonl'>('jsonl')
   const [saving, setSaving] = useState(false)
 
+  // Fetch existing questions
   useEffect(() => {
     setLoading(true)
-    fetch(`${API}/projects/classifier-lab/eval-results/${project.id}`)
-      .then(r => r.json()).then(d => { setEvalData(d); setLoading(false) })
+    fetch(`${API}/projects/classifier-lab/eval-questions/${project.id}`)
+      .then(r => r.json())
+      .then(d => {
+        setQuestions(d.questions || [])
+        if (d.results && Array.isArray(d.results)) setResults(d.results)
+        setLoading(false)
+      })
       .catch(() => setLoading(false))
   }, [project.id])
 
-  if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading evaluation results...</div>
-  if (!evalData || evalData.error) return (
-    <div style={{ ...card, maxWidth: 600, margin: '60px auto', textAlign: 'center', padding: 40 }}>
-      <AlertTriangle size={32} color={EMBRY.amber} style={{ marginBottom: 12 }} />
-      <div style={{ ...heading, color: EMBRY.amber, marginBottom: 8 }}>NO EVALUATION DATA</div>
-      <div style={{ ...body, fontSize: 12, color: EMBRY.dim }}>
-        Run evaluation on held-out test set to see results here.<br />
-        Training validation metrics are NOT evaluation.
-      </div>
-    </div>
-  )
+  // Get classes from meta for the expected dropdown
+  const [classes, setClasses] = useState<string[]>([])
+  useEffect(() => {
+    fetch(`${API}/projects/classifier-lab/eval-results/${project.id}`)
+      .then(r => r.json())
+      .then(d => { if (d.classes) setClasses(d.classes) })
+      .catch(() => {})
+  }, [project.id])
 
-  const toFiniteNumber = (value: unknown): number => (
-    typeof value === 'number' && Number.isFinite(value) ? value : 0
-  )
-  const toMetric = (value: unknown): { precision: number; recall: number; f1: number; support: number } => {
-    const record = value && typeof value === 'object' && !Array.isArray(value)
-      ? value as Record<string, unknown>
-      : {}
-    return {
-      precision: toFiniteNumber(record.precision),
-      recall: toFiniteNumber(record.recall),
-      f1: toFiniteNumber(record.f1),
-      support: toFiniteNumber(record.support),
-    }
+  const saveQuestions = async (qs: EvalQuestion[]) => {
+    setSaving(true)
+    setQuestions(qs)
+    await fetch(`${API}/projects/classifier-lab/eval-questions/${project.id}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questions: qs }),
+    }).catch(() => {})
+    setSaving(false)
   }
 
-  const modelName = typeof evalData.model === 'string' && evalData.model.trim().length > 0
-    ? evalData.model
-    : (typeof evalData.winner === 'string' ? evalData.winner : 'unknown')
-  const gateThreshold = toFiniteNumber(evalData.gate_threshold ?? evalData.holdout_gate_f1) || 0.90
-  const macroF1 = toFiniteNumber(evalData.macro_f1 ?? evalData.f1)
-  const accuracy = toFiniteNumber(evalData.accuracy)
+  const addQuestion = () => {
+    if (!newText.trim() || !newExpected.trim()) return
+    const q: EvalQuestion = { id: `q_${Date.now()}`, text: newText.trim(), expected: newExpected.trim() }
+    saveQuestions([...questions, q])
+    setNewText('')
+    setNewExpected('')
+  }
 
-  const rawPerClass = evalData.per_class && typeof evalData.per_class === 'object' && !Array.isArray(evalData.per_class)
-    ? evalData.per_class as Record<string, unknown>
-    : {}
-  const fallbackClasses = Object.keys(rawPerClass)
-  const classes: string[] = Array.isArray(evalData.classes)
-    ? evalData.classes.filter((value: unknown): value is string => typeof value === 'string')
-    : fallbackClasses
-  const perClass = classes.map((cls) => toMetric(rawPerClass[cls]))
+  const deleteQuestion = (id: string) => saveQuestions(questions.filter(q => q.id !== id))
 
-  const rawMatrix = Array.isArray(evalData.confusion_matrix) ? evalData.confusion_matrix : []
-  const matrix: number[][] = rawMatrix.length > 0
-    ? rawMatrix
-      .filter((row: unknown): row is unknown[] => Array.isArray(row))
-      .slice(0, classes.length)
-      .map((row: unknown[]) => {
-        const normalizedRow = row.map((value) => toFiniteNumber(value)).slice(0, classes.length)
-        while (normalizedRow.length < classes.length) normalizedRow.push(0)
-        return normalizedRow
-      })
-    : classes.map(() => classes.map(() => 0))
-  while (matrix.length < classes.length) matrix.push(classes.map(() => 0))
-  const inferredTestSamples = matrix.flat().reduce((sum, value) => sum + value, 0)
-  const testSamples = toFiniteNumber(evalData.test_samples) || inferredTestSamples
+  const saveEdit = (id: string) => {
+    saveQuestions(questions.map(q => q.id === id ? { ...q, text: editText, expected: editExpected } : q))
+    setEditingId(null)
+  }
 
-  const passed = typeof evalData.holdout_passed === 'boolean'
-    ? evalData.holdout_passed
-    : (evalData.gate_passed === true || macroF1 >= gateThreshold)
-  const gateColor = passed ? EMBRY.green : EMBRY.red
-  const maxCmVal = Math.max(...matrix.flat().map(Math.abs), 1)
+  const importQuestions = async () => {
+    if (!importData.trim()) return
+    setSaving(true)
+    const resp = await fetch(`${API}/projects/classifier-lab/eval-questions/${project.id}/import`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ format: importFormat, data: importData }),
+    }).then(r => r.json()).catch(() => null)
+    if (resp?.ok) {
+      // Reload
+      const d = await fetch(`${API}/projects/classifier-lab/eval-questions/${project.id}`).then(r => r.json())
+      setQuestions(d.questions || [])
+      setImportData('')
+      setShowImport(false)
+    }
+    setSaving(false)
+  }
 
-  const weakClasses = classes.filter((_, i) => perClass[i] && perClass[i].f1 < 0.80)
+  const runEval = async () => {
+    setRunning(true)
+    const resp = await fetch(`${API}/projects/classifier-lab/eval-questions/${project.id}/run`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+    }).then(r => r.json()).catch(() => null)
+    if (resp?.results) {
+      setResults(resp.results)
+    }
+    setRunning(false)
+  }
 
-  // ── Evaluation checklist — expected vs actual, pass/fail per row ──
-  const offDiagonalTotal = matrix.reduce((sum, row, i) => sum + row.reduce((s, v, j) => s + (j !== i ? v : 0), 0), 0)
-  const totalPredictions = matrix.flat().reduce((s, v) => s + v, 0)
+  // Compute summary from results
+  const evaluated = results && results.some(r => r.predicted !== null && r.predicted !== undefined)
+  const passCount = evaluated ? results!.filter(r => r.passed).length : 0
+  const failCount = evaluated ? results!.filter(r => r.passed === false).length : 0
+  const totalQ = questions.length
 
-  // Per-class eval results — straight from the dataset, no invented thresholds
-  const classResults = classes.map((cls, i) => {
-    const m = perClass[i]
-    const row = matrix[i] || []
-    const correct = row[i] || 0
-    const total = m.support
-    const wrong = total - correct
-    const topMistake = row
-      .map((count, j) => ({ cls: classes[j], count }))
-      .filter((_, j) => j !== i)
-      .sort((a, b) => b.count - a.count)[0]
-    return { cls, ...m, correct, wrong, total, topMistake, meetsGate: m.f1 >= gateThreshold }
-  })
-
-  const classesPassingGate = classResults.filter(c => c.meetsGate).length
-  const classesFailing = classResults.filter(c => !c.meetsGate)
+  if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading test suite...</div>
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Evaluate gate card */}
+      {/* Gate card — derived from test suite results */}
       <div style={{ marginBottom: 20 }}>
         <GateCard
           name="EVAL GATE"
-          passed={passed}
+          passed={evaluated ? failCount === 0 : false}
           metrics={[
-            { label: 'HOLDOUT F1', value: macroF1.toFixed(3), color: passed ? EMBRY.green : EMBRY.red },
-            { label: 'ACCURACY', value: accuracy.toFixed(3) },
-            { label: 'TEST SAMPLES', value: String(testSamples) },
+            { label: 'QUESTIONS', value: String(totalQ) },
+            { label: 'PASSED', value: evaluated ? String(passCount) : '—', color: passCount > 0 ? EMBRY.green : EMBRY.dim },
+            { label: 'FAILED', value: evaluated ? String(failCount) : '—', color: failCount > 0 ? EMBRY.red : EMBRY.dim },
           ]}
           checks={[
-            { label: `F1 ≥ ${gateThreshold.toFixed(2)} on holdout`, ok: passed, detail: macroF1.toFixed(3) },
-            { label: 'All classes F1 ≥ 0.80', ok: weakClasses.length === 0, detail: weakClasses.length > 0 ? `${weakClasses.length} weak` : 'Yes' },
-            { label: 'Confusion matrix diagonal-dominant', ok: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)), detail: matrix.every((row, i) => row[i] >= Math.max(...row.filter((_, j) => j !== i), 0)) ? 'Clean' : 'Off-diagonal' },
-            { label: `All classes meet ${gateThreshold.toFixed(2)} target`, ok: classesFailing.length === 0, detail: classesFailing.length > 0 ? `${classesFailing.map(c => c.cls).join(', ')} below` : `${classes.length}/${classes.length}` },
+            { label: 'Test suite has questions', ok: totalQ > 0, detail: `${totalQ} questions` },
+            { label: 'Evaluation run', ok: !!evaluated, detail: evaluated ? 'Yes' : 'Not yet' },
+            { label: 'All questions passed', ok: evaluated ? failCount === 0 : false, detail: evaluated ? (failCount === 0 ? 'Yes' : `${failCount} failed`) : '—' },
           ]}
         />
       </div>
 
-      {/* ── Per-class results from the test set ────────────── */}
-      <div style={{ ...card, marginBottom: 24, border: `1px solid ${classesFailing.length > 0 ? EMBRY.red : EMBRY.green}22` }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <div style={{ ...label, fontSize: 11 }}>
-            RESULTS BY CLASS — {testSamples} test samples, target F1 ≥ {gateThreshold.toFixed(2)}
+      {/* Actions bar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ ...label, fontSize: 11 }}>TEST SUITE — {totalQ} questions</div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={() => setShowImport(!showImport)} style={{ ...btnOutline, fontSize: 9, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Upload size={10} /> IMPORT
+          </button>
+          <button
+            onClick={runEval}
+            disabled={running || totalQ === 0}
+            style={{
+              background: totalQ > 0 ? EMBRY.accent : 'transparent',
+              border: `1px solid ${totalQ > 0 ? EMBRY.accent : EMBRY.border}`,
+              color: totalQ > 0 ? '#000' : EMBRY.dim,
+              padding: '4px 14px', borderRadius: 6, fontSize: 10, fontWeight: 900, cursor: totalQ > 0 ? 'pointer' : 'default',
+              display: 'flex', alignItems: 'center', gap: 4,
+            }}
+          >
+            <Play size={10} /> {running ? 'RUNNING...' : 'RUN EVALUATION'}
+          </button>
+        </div>
+      </div>
+
+      {/* Import panel */}
+      {showImport && (
+        <div style={{ ...card, marginBottom: 16, padding: 16 }}>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 10, alignItems: 'center' }}>
+            <div style={label}>IMPORT QUESTIONS</div>
+            <select value={importFormat} onChange={e => setImportFormat(e.target.value as 'csv' | 'jsonl')} style={filterSelect}>
+              <option value="jsonl">JSONL (one JSON per line)</option>
+              <option value="csv">CSV (text,expected)</option>
+            </select>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <span style={{ ...gateBadge, color: EMBRY.green, borderColor: EMBRY.green + '44', background: EMBRY.green + '0A', fontSize: 8 }}>
-              {classesPassingGate}/{classes.length} PASS
-            </span>
-            {classesFailing.length > 0 && (
-              <span style={{ ...gateBadge, color: EMBRY.red, borderColor: EMBRY.red + '44', background: EMBRY.red + '0A', fontSize: 8 }}>
-                {classesFailing.length} BELOW TARGET
-              </span>
-            )}
+          <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 8 }}>
+            {importFormat === 'jsonl'
+              ? 'Each line: {"text": "...", "expected": "Business"} — also accepts "class", "label", "question", "input" field names'
+              : 'First row is header. Columns: text,expected'}
+          </div>
+          <textarea
+            value={importData}
+            onChange={e => setImportData(e.target.value)}
+            placeholder={importFormat === 'jsonl'
+              ? '{"text": "Apple stock rises 5%", "expected": "Business"}\n{"text": "Lakers win championship", "expected": "Sports"}'
+              : 'text,expected\n"Apple stock rises 5%",Business\n"Lakers win championship",Sports'}
+            style={{
+              width: '100%', minHeight: 120, resize: 'vertical',
+              background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4,
+              color: EMBRY.white, fontFamily: MONO, fontSize: 10, lineHeight: 1.5,
+              padding: 10, outline: 'none', boxSizing: 'border-box',
+            }}
+          />
+          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+            <button onClick={importQuestions} disabled={saving || !importData.trim()} style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px' }}>
+              {saving ? 'IMPORTING...' : 'IMPORT'}
+            </button>
+            <button onClick={() => setShowImport(false)} style={{ ...btnOutline, fontSize: 9, padding: '4px 12px' }}>CANCEL</button>
           </div>
         </div>
+      )}
 
+      {/* Questions table */}
+      <div style={{ ...card, padding: 0, overflow: 'hidden', marginBottom: 16 }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
-              <th style={thStyle}>CLASS</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>SAMPLES</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>CORRECT</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>WRONG</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>PRECISION</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>RECALL</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>F1</th>
-              <th style={{ ...thStyle, textAlign: 'right' }}>TARGET</th>
-              <th style={{ ...thStyle, textAlign: 'center', width: 50 }} />
-              <th style={thStyle}>TOP MISTAKE</th>
+              <th style={{ ...thStyle, width: 40 }}>#</th>
+              <th style={thStyle}>INPUT TEXT</th>
+              <th style={{ ...thStyle, width: 120 }}>EXPECTED</th>
+              {evaluated && <th style={{ ...thStyle, width: 120 }}>PREDICTED</th>}
+              {evaluated && <th style={{ ...thStyle, width: 60, textAlign: 'center' }}>RESULT</th>}
+              <th style={{ ...thStyle, width: 60 }} />
             </tr>
           </thead>
           <tbody>
-            {classResults.map(r => {
-              const isExpanded = expandedClass === r.cls
-              const cmRow = matrix[classes.indexOf(r.cls)] || []
-              const allConfusions = cmRow
-                .map((count, j) => ({ cls: classes[j], count }))
-                .filter((_, j) => j !== classes.indexOf(r.cls) && cmRow[j] > 0)
-                .sort((a, b) => b.count - a.count)
+            {questions.map((q, i) => {
+              const r = results?.find(r => r.id === q.id)
+              const isEditing = editingId === q.id
               return (
-                <Fragment key={r.cls}>
-                  <tr
-                    onClick={() => setExpandedClass(isExpanded ? null : r.cls)}
-                    style={{
-                      borderBottom: isExpanded ? 'none' : `1px solid ${EMBRY.border}`,
-                      background: r.meetsGate ? 'transparent' : 'rgba(255,68,68,0.03)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <td style={{ ...tdStyle, fontWeight: 700 }}>
-                      {isExpanded ? <ChevronDown size={9} color={EMBRY.dim} style={{ marginRight: 4 }} /> : <ChevronRight size={9} color={EMBRY.dim} style={{ marginRight: 4 }} />}
-                      {r.cls}
+                <tr key={q.id} style={{ borderBottom: `1px solid ${EMBRY.border}`, background: r?.passed === false ? 'rgba(255,68,68,0.03)' : 'transparent' }}>
+                  <td style={{ ...tdStyle, color: EMBRY.muted, width: 40 }}>{i + 1}</td>
+                  <td style={tdStyle}>
+                    {isEditing ? (
+                      <input value={editText} onChange={e => setEditText(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveEdit(q.id)}
+                        style={{ ...rerunInputStyle, fontSize: 10, padding: '4px 8px' }} autoFocus />
+                    ) : (
+                      <span style={{ fontSize: 10 }}>{q.text}</span>
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, width: 120 }}>
+                    {isEditing ? (
+                      classes.length > 0 ? (
+                        <select value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...filterSelect, fontSize: 10 }}>
+                          {classes.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      ) : (
+                        <input value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...rerunInputStyle, fontSize: 10, padding: '4px 8px' }} />
+                      )
+                    ) : (
+                      <span style={{ fontSize: 10, fontFamily: MONO }}>{q.expected}</span>
+                    )}
+                  </td>
+                  {evaluated && (
+                    <td style={{ ...tdStyle, width: 120, fontFamily: MONO, fontSize: 10, color: r?.predicted ? (r.passed ? EMBRY.green : EMBRY.red) : EMBRY.muted }}>
+                      {r?.predicted || '—'}
                     </td>
-                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.total}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green }}>{r.correct}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right', color: r.wrong > 0 ? EMBRY.red : EMBRY.dim }}>{r.wrong}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.precision.toFixed(3)}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right' }}>{r.recall.toFixed(3)}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700, color: r.meetsGate ? EMBRY.green : EMBRY.red }}>{r.f1.toFixed(3)}</td>
-                    <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
-                    <td style={{ textAlign: 'center', padding: '8px 4px' }}>
-                      <span style={{
-                        ...statusBadge, fontSize: 8,
-                        background: r.meetsGate ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
-                        color: r.meetsGate ? EMBRY.green : EMBRY.red,
-                      }}>
-                        {r.meetsGate ? 'PASS' : 'FAIL'}
-                      </span>
-                    </td>
-                    <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
-                      {r.topMistake && r.topMistake.count > 0
-                        ? `${r.topMistake.count}× confused with "${r.topMistake.cls}"`
-                        : '—'
-                      }
-                    </td>
-                  </tr>
-                  {isExpanded && (
-                    <tr style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
-                      <td colSpan={10} style={{ padding: '0 14px 14px 14px' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                          <div style={{ ...panel, padding: 10 }}>
-                            <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>MISCLASSIFICATION BREAKDOWN</div>
-                            {allConfusions.length > 0 ? allConfusions.map(c => (
-                              <div key={c.cls} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                                <div style={{ flex: 1, height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
-                                  <div style={{ height: '100%', width: `${(c.count / (r.total || 1)) * 100}%`, background: EMBRY.red, borderRadius: 2 }} />
-                                </div>
-                                <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.red, minWidth: 20, textAlign: 'right' }}>{c.count}</span>
-                                <span style={{ fontSize: 9, fontFamily: MONO, color: EMBRY.dim }}>→ {c.cls}</span>
-                              </div>
-                            )) : (
-                              <div style={{ fontSize: 9, color: EMBRY.green }}>No misclassifications</div>
-                            )}
-                          </div>
-                          <div style={{ ...panel, padding: 10 }}>
-                            <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.muted, marginBottom: 6 }}>
-                              {!r.meetsGate ? 'WHY THIS CLASS FAILED' : 'CLASS STATUS'}
-                            </div>
-                            {!r.meetsGate ? (
-                              <div style={{ fontSize: 9, color: EMBRY.dim, lineHeight: 1.6 }}>
-                                <div style={{ color: EMBRY.amber, marginBottom: 4 }}>
-                                  F1 {r.f1.toFixed(3)} is {(gateThreshold - r.f1).toFixed(3)} below your {gateThreshold.toFixed(2)} target
-                                </div>
-                                {r.recall < r.precision ? (
-                                  <>
-                                    <div>→ Low recall ({r.recall.toFixed(2)}) — {r.wrong} of {r.total} "{r.cls}" samples were missed</div>
-                                    <div style={{ marginTop: 4 }}>• Data tab → add more "{r.cls}" training examples</div>
-                                    <div>• Tune tab → try class-weighted loss</div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div>→ Low precision ({r.precision.toFixed(2)}) — other classes are being labeled "{r.cls}"</div>
-                                    <div style={{ marginTop: 4 }}>• Check if "{r.cls}" overlaps with "{allConfusions[0]?.cls || 'other classes'}"</div>
-                                    <div>• Data tab → add examples that distinguish "{r.cls}"</div>
-                                  </>
-                                )}
-                              </div>
-                            ) : (
-                              <div style={{ fontSize: 9, color: EMBRY.green }}>
-                                ✓ Meets {gateThreshold.toFixed(2)} target (F1 {r.f1.toFixed(3)})
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
                   )}
-                </Fragment>
+                  {evaluated && (
+                    <td style={{ textAlign: 'center', padding: '8px 4px' }}>
+                      {r?.passed !== null && r?.passed !== undefined ? (
+                        <span style={{ ...statusBadge, fontSize: 8, background: r.passed ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)', color: r.passed ? EMBRY.green : EMBRY.red }}>
+                          {r.passed ? 'PASS' : 'FAIL'}
+                        </span>
+                      ) : <span style={{ fontSize: 8, color: EMBRY.muted }}>—</span>}
+                    </td>
+                  )}
+                  <td style={{ ...tdStyle, width: 60 }}>
+                    <div style={{ display: 'flex', gap: 4 }}>
+                      {isEditing ? (
+                        <button onClick={() => saveEdit(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: EMBRY.green, fontSize: 10, fontWeight: 700 }}>SAVE</button>
+                      ) : (
+                        <>
+                          <button onClick={() => { setEditingId(q.id); setEditText(q.text); setEditExpected(q.expected) }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
+                            <Pencil size={10} color={EMBRY.dim} />
+                          </button>
+                          <button onClick={() => deleteQuestion(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
+                            <Trash2 size={10} color={EMBRY.dim} />
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               )
             })}
-            {/* Overall row */}
-            <tr style={{ borderTop: `2px solid ${EMBRY.border}`, background: 'rgba(255,255,255,0.02)' }}>
-              <td style={{ ...tdStyle, fontWeight: 900 }}>OVERALL</td>
-              <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 700 }}>{testSamples}</td>
-              <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.green, fontWeight: 700 }}>{totalPredictions - offDiagonalTotal}</td>
-              <td style={{ ...tdStyle, textAlign: 'right', color: offDiagonalTotal > 0 ? EMBRY.red : EMBRY.dim, fontWeight: 700 }}>{offDiagonalTotal}</td>
-              <td style={{ ...tdStyle, textAlign: 'right' }}>—</td>
-              <td style={{ ...tdStyle, textAlign: 'right' }}>—</td>
-              <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 900, color: passed ? EMBRY.green : EMBRY.red }}>{macroF1.toFixed(3)}</td>
-              <td style={{ ...tdStyle, textAlign: 'right', color: EMBRY.muted }}>{gateThreshold.toFixed(2)}</td>
-              <td style={{ textAlign: 'center', padding: '8px 4px' }}>
-                <span style={{
-                  ...statusBadge, fontSize: 8,
-                  background: passed ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
-                  color: passed ? EMBRY.green : EMBRY.red,
-                }}>
-                  {passed ? 'PASS' : 'FAIL'}
-                </span>
-              </td>
-              <td style={{ ...tdStyle, fontSize: 9, color: EMBRY.dim }}>
-                {offDiagonalTotal > 0 ? `${offDiagonalTotal} total errors` : ''}
-              </td>
-            </tr>
+            {/* Empty state */}
+            {questions.length === 0 && (
+              <tr>
+                <td colSpan={evaluated ? 6 : 4} style={{ padding: 32, textAlign: 'center', color: EMBRY.dim, fontSize: 11 }}>
+                  No evaluation questions yet. Add them below or import a batch.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* Result banner */}
-      <div style={{ ...panel, border: `1px solid ${gateColor}33`, background: `${gateColor}08`, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={glowDot(gateColor, 10)} />
-        <span style={{ fontFamily: MONO, fontWeight: 700, fontSize: 14 }}>
-          {modelName} — F1 {macroF1.toFixed(3)} — HOLDOUT {passed ? 'PASSED' : 'FAILED'}
-        </span>
-        <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 'auto' }}>
-          {testSamples} test samples
-        </span>
-      </div>
-
-      <div style={{ maxWidth: 600, marginBottom: 28 }}>
-        {/* Confusion matrix — real counts */}
-        <div style={card}>
-          <div style={{ ...heading, marginBottom: 16 }}>Confusion Matrix (Test Set)</div>
-          <div style={{ display: 'grid', gridTemplateColumns: `80px repeat(${classes.length}, 1fr)`, gap: 3, marginBottom: 3 }}>
-            <div />
-            {classes.map(c => (
-              <div key={c} style={{ textAlign: 'center', fontSize: 7, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase' }}>{c}</div>
-            ))}
-          </div>
-          {matrix.map((row, ri) => (
-            <div key={ri} style={{ display: 'grid', gridTemplateColumns: `80px repeat(${classes.length}, 1fr)`, gap: 3, marginBottom: 3 }}>
-              <div style={{ fontSize: 7, fontWeight: 700, color: EMBRY.dim, display: 'flex', alignItems: 'center', textTransform: 'uppercase' }}>{classes[ri]}</div>
-              {row.map((count, ci) => {
-                const isDiag = ri === ci
-                const intensity = count / maxCmVal
-                const bgColor = isDiag
-                  ? `rgba(0,255,136,${0.15 + intensity * 0.5})`
-                  : count > 0 ? `rgba(255,68,68,${0.1 + intensity * 0.6})` : 'rgba(255,255,255,0.02)'
-                return (
-                  <div key={ci} style={{
-                    height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: bgColor, borderRadius: 4,
-                    color: isDiag ? (intensity > 0.5 ? '#000' : EMBRY.green) : (count > 0 ? EMBRY.red : EMBRY.muted),
-                    fontWeight: 900, fontSize: 14, fontFamily: MONO,
-                  }}>{count}</div>
-                )
-              })}
-            </div>
-          ))}
+      {/* Add question inline */}
+      <div style={{ ...card, padding: 12, display: 'flex', gap: 10, alignItems: 'end' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 4 }}>INPUT TEXT</div>
+          <input
+            value={newText}
+            onChange={e => setNewText(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && addQuestion()}
+            placeholder="Type a test input for the classifier..."
+            style={rerunInputStyle}
+          />
         </div>
-
+        <div style={{ width: 150 }}>
+          <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 4 }}>EXPECTED CLASS</div>
+          {classes.length > 0 ? (
+            <select value={newExpected} onChange={e => setNewExpected(e.target.value)} style={{ ...filterSelect, width: '100%', padding: '8px 10px' }}>
+              <option value="">Select...</option>
+              {classes.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          ) : (
+            <input
+              value={newExpected}
+              onChange={e => setNewExpected(e.target.value)}
+              placeholder="Class name"
+              style={rerunInputStyle}
+            />
+          )}
+        </div>
+        <button onClick={addQuestion} disabled={!newText.trim() || !newExpected.trim()} style={{
+          background: newText.trim() && newExpected.trim() ? EMBRY.accent : 'transparent',
+          border: `1px solid ${newText.trim() && newExpected.trim() ? EMBRY.accent : EMBRY.border}`,
+          color: newText.trim() && newExpected.trim() ? '#000' : EMBRY.dim,
+          padding: '8px 16px', borderRadius: 6, fontSize: 10, fontWeight: 900, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap',
+        }}>
+          <Plus size={12} /> ADD
+        </button>
       </div>
     </div>
   )
