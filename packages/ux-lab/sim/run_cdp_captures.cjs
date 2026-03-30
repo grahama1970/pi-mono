@@ -250,8 +250,9 @@ const GROUPS = {
   'graph-navigation':      [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[2]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-expanded'}],
   'node-detail':           [
     {a:'wait',ms:500},{a:'ss',n:'01-initial'},
-    // Click hub node for rich metadata
-    {a:'eval',s:CLICK_HUB},{a:'wait',ms:1500},
+    // Click mcp_auth_required — has BOTH CWE and ATT&CK tags
+    {a:'eval',s:`(()=>{const n=[...document.querySelectorAll('g.nodes g')].find(g=>g.querySelector('text')?.textContent?.includes('mcp_auth_required'));if(n){n.querySelector('circle,rect,polygon,path')?.dispatchEvent(new MouseEvent('click',{bubbles:true}));return 'clicked mcp_auth_required'}return 'miss'})()`},
+    {a:'wait',ms:2000},
     {a:'eval',s:clickTab('summary')},{a:'wait',ms:500},{a:'ss',n:'02-summary'},
     ...detailCloseup('03-summary-closeup'),
     // Show connections tab with edge type grouping
@@ -349,15 +350,19 @@ const GROUPS = {
     // Use the TABLE filter (not left pane) to trigger graph highlighting
     {a:'eval',s:clickTab('table')},{a:'wait',ms:500},
     {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth via table'}return 'no table filter'})()`},
-    {a:'wait',ms:1000},{a:'ss',n:'02-search-active'},
-    // Graph closeup showing green neon highlights on matched nodes
+    {a:'wait',ms:1500},
+    // Full page screenshot shows graph dimming (non-matches at 0.12 opacity) + table filtered
+    {a:'ss',n:'02-search-active'},
+    // Graph closeup — wait extra for D3 to apply matched node highlighting
+    {a:'wait',ms:500},
     ...graphCloseup('03-search-graph'),
     ...detailCloseup('04-search-table-closeup')],
   'context-menu':          [...PRE, {a:'eval',s:`(()=>{const n=document.querySelector('g.nodes circle');if(!n)return;const r=n.getBoundingClientRect();n.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,clientX:r.x+5,clientY:r.y+5}))})()`},{a:'wait',ms:500},{a:'ss',n:'03-ctx'}],
   'cross-references':      [
     {a:'wait',ms:500},{a:'ss',n:'01-initial'},
-    // Click hub node for maximum edge type diversity
-    {a:'eval',s:CLICK_HUB},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    // Click kill_worker_session — has 4 edge types (contains, emits, has_parameter, payload)
+    {a:'eval',s:`(()=>{const nodes=[...document.querySelectorAll('g.nodes g')];const match=nodes.find(g=>{const t=g.querySelector('text');return t&&/kill_worker|session_notification|update_session/i.test(t.textContent)});const target=match||nodes.find(g=>g.querySelector('.hub-badge'))||nodes[0];if(target){target.querySelector('circle,rect,polygon,path')?.dispatchEvent(new MouseEvent('click',{bubbles:true}));return 'clicked:'+target.querySelector('text')?.textContent}return 'none'})()`},
+    {a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
     {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'},
     ...detailCloseup('04-connections-closeup')],
   'state-machines':        [
