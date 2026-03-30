@@ -3042,6 +3042,8 @@ function PromoteTab({ project }: { project: Project }) {
   const [exportFormat, setExportFormat] = useState('safetensors')
   const [pushToHf, setPushToHf] = useState(false)
   const [showModelCard, setShowModelCard] = useState(false)
+  const [editingCard, setEditingCard] = useState(false)
+  const [cardDraft, setCardDraft] = useState('')
 
   useEffect(() => {
     setLoading(true)
@@ -3262,32 +3264,72 @@ function PromoteTab({ project }: { project: Project }) {
           </div>
         )}
 
-        {/* Model card preview */}
-        {holdoutPassed && modelCardMd && (
-          <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showModelCard ? 12 : 0 }}>
-              <button
-                onClick={() => setShowModelCard(!showModelCard)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, padding: 0 }}
-              >
-                {showModelCard ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
-                <span style={label}>MODEL CARD</span>
-                <span style={{ fontSize: 9, color: EMBRY.muted }}>— auto-generated from eval results</span>
-              </button>
-              <button
-                onClick={() => navigator.clipboard?.writeText(modelCardMd)}
-                style={{ ...btnOutline, fontSize: 8, padding: '2px 8px' }}
-              >COPY</button>
+        {/* Model card — editable with preview */}
+        {holdoutPassed && modelCardMd && (() => {
+          // Strip YAML frontmatter for markdown rendering
+          const stripFrontmatter = (md: string) => {
+            const match = md.match(/^---\n[\s\S]*?\n---\n/)
+            return match ? md.slice(match[0].length) : md
+          }
+          const currentMd = editingCard ? cardDraft : modelCardMd
+          return (
+            <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showModelCard ? 12 : 0 }}>
+                <button
+                  onClick={() => setShowModelCard(!showModelCard)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, padding: 0 }}
+                >
+                  {showModelCard ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
+                  <span style={label}>MODEL CARD</span>
+                  <span style={{ fontSize: 9, color: EMBRY.muted }}>— auto-generated, editable before push</span>
+                </button>
+                {showModelCard && (
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button
+                      onClick={() => {
+                        if (editingCard) {
+                          setEditingCard(false)
+                          setModelCardMd(cardDraft)
+                        } else {
+                          setCardDraft(modelCardMd)
+                          setEditingCard(true)
+                        }
+                      }}
+                      style={{ ...btnOutline, fontSize: 8, padding: '2px 8px', borderColor: editingCard ? EMBRY.accent + '66' : EMBRY.border, color: editingCard ? EMBRY.accent : EMBRY.dim }}
+                    >{editingCard ? 'PREVIEW' : 'EDIT'}</button>
+                    <button
+                      onClick={() => navigator.clipboard?.writeText(currentMd)}
+                      style={{ ...btnOutline, fontSize: 8, padding: '2px 8px' }}
+                    >COPY</button>
+                  </div>
+                )}
+              </div>
+              {showModelCard && (
+                editingCard ? (
+                  <textarea
+                    value={cardDraft}
+                    onChange={e => setCardDraft(e.target.value)}
+                    style={{
+                      width: '100%', minHeight: 400, maxHeight: 600, resize: 'vertical',
+                      background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4,
+                      color: EMBRY.white, fontFamily: MONO, fontSize: 11, lineHeight: 1.6,
+                      padding: 12, outline: 'none', boxSizing: 'border-box',
+                    }}
+                  />
+                ) : (
+                  <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
+                    <style>{MD_CSS}</style>
+                    <div
+                      className="clf-markdown"
+                      style={{ fontSize: 11, lineHeight: 1.6, maxHeight: 500, overflow: 'auto' }}
+                      dangerouslySetInnerHTML={{ __html: marked(stripFrontmatter(currentMd)) as string }}
+                    />
+                  </div>
+                )
+              )}
             </div>
-            {showModelCard && (
-              <div
-                className="clf-markdown"
-                style={{ fontSize: 11, lineHeight: 1.6, maxHeight: 500, overflow: 'auto' }}
-                dangerouslySetInnerHTML={{ __html: marked(modelCardMd) as string }}
-              />
-            )}
-          </div>
-        )}
+          )
+        })()}
 
         {holdoutPassed && (() => {
           const exportReady = exportStatus !== 'Not exported'

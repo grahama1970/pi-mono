@@ -177,6 +177,13 @@ const clickTab = (tabId) => `(()=>{const t=document.getElementById('be-tab-${tab
 const switchPerspective = (val) => `(()=>{const sel=document.getElementById('be-perspective');if(sel){sel.value='${val}';sel.dispatchEvent(new Event('change',{bubbles:true}));return 'perspective:${val}'}return 'no #be-perspective'})()`;
 const clickJournal = `(()=>{const j=document.getElementById('be-journal-tab');if(j){j.click();return 'journal'}return 'no #be-journal-tab'})()`;
 
+// Reusable expand-capture sequences for panel closeups
+const expandPanel = (id, w, h) => ({a:'eval',s:`(()=>{const el=document.getElementById('${id}');if(el){el.style.position='fixed';el.style.left='0';el.style.top='0';el.style.width='${w}px';el.style.height='${h}px';el.style.zIndex='9999';return 'expanded'}return 'no #${id}'})()`});
+const restorePanel = (id) => ({a:'eval',s:`(()=>{const el=document.getElementById('${id}');if(el){el.style.position='';el.style.left='';el.style.top='';el.style.width='';el.style.height='';el.style.zIndex=''}})()`});
+const detailCloseup = (name) => [expandPanel('be-detail-panel',800,900),{a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:name},restorePanel('be-detail-panel')];
+const rightPaneCloseup = (name) => [expandPanel('be-right-pane',600,900),{a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:name},restorePanel('be-right-pane')];
+const graphCloseup = (name) => [expandPanel('be-graph-pane',900,900),{a:'wait',ms:300},{a:'ssClip',sel:'#be-graph-pane',n:name},restorePanel('be-graph-pane')];
+
 const GROUPS = {
   // Tim: each group gets unique interaction showing relevant feature
   'first-impressions':     [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:500},{a:'ss',n:'03-feature-table'}],
@@ -214,7 +221,7 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'02-chat-closeup'},
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
-  'chat-exploration':      [...PRE],
+  'chat-exploration':      [...PRE, ...rightPaneCloseup('03-chat-closeup')],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
   'scene-management':      [
@@ -235,21 +242,27 @@ const GROUPS = {
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-journal-closeup'},
     // Restore
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
-  'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'}],
-  'graph-exploration':     [...PRE],
-  'search-and-filter':     [...PRE],
+  // Gynvael groups — expanded closeups for detail/graph readability
+  'data-structures':       [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'},...detailCloseup('04-ast-closeup')],
+  'graph-exploration':     [...PRE, ...graphCloseup('03-graph-closeup')],
+  'search-and-filter':     [...PRE,
+    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Filter"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth'}return 'no filter'})()`},
+    {a:'wait',ms:1000},{a:'ss',n:'03-search-active'},...graphCloseup('04-search-closeup')],
   'context-menu':          [...PRE, {a:'eval',s:`(()=>{const n=document.querySelector('g.nodes circle');if(!n)return;const r=n.getBoundingClientRect();n.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,clientX:r.x+5,clientY:r.y+5}))})()`},{a:'wait',ms:500},{a:'ss',n:'03-ctx'}],
-  'cross-references':      [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'}],
-  'state-machines':        [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-states'}],
-  'performance':           [...PRE],
-  'progressive-disclosure':[{a:'wait',ms:500},{a:'ss',n:'01-seeded-graph'}],
+  'cross-references':      [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections'},...detailCloseup('04-connections-closeup')],
+  'state-machines':        [...PRE, {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-states'},...detailCloseup('04-states-closeup')],
+  'performance':           [...PRE, ...graphCloseup('03-perf-closeup')],
+  // LiveOverflow groups — right pane + graph closeups
+  'progressive-disclosure':[{a:'wait',ms:500},{a:'ss',n:'01-seeded-graph'},...graphCloseup('02-graph-closeup')],
   'learning-path':         [...PRE],
-  'vulnerability-hunting': [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security-view'}],
-  'visual-design':         [...PRE],
-  'ctf-workflow':          [...PRE, {a:'eval',s:clickJournal},{a:'wait',ms:500},{a:'ss',n:'03-journal'}],
-  'graph-interaction':     [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[3]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-dblclick-expand'}],
-  'accessibility':         [...PRE],
-  'error-states':          [...PRE, {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Filter"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'error');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'searched error'}return 'no filter'})()`},{a:'wait',ms:500},{a:'ss',n:'03-search-error'}],
+  'vulnerability-hunting': [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security-view'},...detailCloseup('04-security-closeup')],
+  'visual-design':         [...PRE, ...graphCloseup('03-legend-closeup')],
+  'ctf-workflow':          [...PRE, {a:'eval',s:clickJournal},{a:'wait',ms:500},{a:'ss',n:'03-journal'},...rightPaneCloseup('04-journal-closeup')],
+  'graph-interaction':     [...PRE, {a:'eval',s:`document.querySelectorAll('g.nodes g')[3]?.querySelector('circle,rect')?.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}))`},{a:'wait',ms:1500},{a:'ss',n:'03-dblclick-expand'},...graphCloseup('04-interaction-closeup')],
+  'accessibility':         [...PRE, ...graphCloseup('03-keyboard-help')],
+  'error-states':          [...PRE,
+    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Filter"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'error');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'searched error'}return 'no filter'})()`},
+    {a:'wait',ms:500},{a:'ss',n:'03-search-error'},...graphCloseup('04-error-closeup')],
 };
 
 async function run() {
