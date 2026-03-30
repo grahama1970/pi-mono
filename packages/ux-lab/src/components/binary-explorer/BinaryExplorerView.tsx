@@ -229,6 +229,14 @@ export function BinaryExplorerView() {
     gateTrace: Array<{ gate: string; passed: boolean; detail?: string }>
     reasoning?: string; lean4?: string; elapsed_s?: number
   } | null>(null)
+  // Taxonomy chain state — cross-framework control chain from CWE badge
+  const [chainLoading, setChainLoading] = useState<string | null>(null)
+  const [chainResult, setChainResult] = useState<{
+    root: string; rootName: string
+    chain: { cwe: string[]; attack: string[]; capec: string[]; nist: string[]; d3fend: string[]; sparta_mind: string[]; cwe_pillar?: string }
+    edges: Array<{ source: string; target: string; type: string; framework: string }>
+    totalNodes: number
+  } | null>(null)
   const [pseudocodeLoading, setPseudocodeLoading] = useState(false)
   const [leftPaneWidth, setLeftPaneWidth] = useState(65)
 
@@ -370,6 +378,31 @@ export function BinaryExplorerView() {
   }, [selectedNode?.id, codeViewTab, dataTab])
 
   // --- Evidence Case (deterministic CWE proof chains) ---
+  // Fetch taxonomy chain — lightweight, <1s, shows cross-framework control mapping
+  const fetchTaxonomyChain = useCallback(async (controlId: string) => {
+    setChainLoading(controlId)
+    setChainResult(null)
+    try {
+      const res = await fetch(`${API}/api/memory/taxonomy/chain`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ control_id: controlId, depth: 2 }),
+      })
+      const d = await res.json()
+      setChainResult({
+        root: d.root,
+        rootName: d.root_name || controlId,
+        chain: d.chain || {},
+        edges: d.edges || [],
+        totalNodes: d.total_nodes || 0,
+      })
+    } catch {
+      setChainResult(null)
+    } finally {
+      setChainLoading(null)
+    }
+  }, [])
+
   const runEvidenceCase = useCallback(async (cweId: string) => {
     if (!selectedNode) return
     setEvidenceCaseLoading(cweId)
@@ -2058,7 +2091,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div>
                             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 4 }}>
                               {cweList.map(c => (
-                                <span key={c} id={`be-cwe-${c}`} onClick={() => runEvidenceCase(c)}
+                                <span key={c} id={`be-cwe-${c}`} onClick={() => fetchTaxonomyChain(c)}
                                   title={`Run evidence case for ${c}`}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#991b1b')}
@@ -2066,7 +2099,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 >{evidenceCaseLoading === c ? '⏳ ' : '🔍 '}{c}</span>
                               ))}
                               {attackList.map(a => (
-                                <span key={a} id={`be-attack-${a}`} onClick={() => runEvidenceCase(a)}
+                                <span key={a} id={`be-attack-${a}`} onClick={() => fetchTaxonomyChain(a)}
                                   title={`Run evidence case for ${a}`}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#92400e')}
@@ -2074,6 +2107,39 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 >{evidenceCaseLoading === a ? '⏳ ' : '🔍 '}{a}</span>
                               ))}
                             </div>
+                            {/* Taxonomy Chain — cross-framework control mapping (SPARTA threat matrix) */}
+                            {chainLoading && <div style={{ fontSize: 8, color: EMBRY.accent, marginTop: 4 }}>Loading control chain...</div>}
+                            {chainResult && (
+                              <div id="be-taxonomy-chain" style={{ background: '#0a0a12', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: 8, marginTop: 4 }}>
+                                <div style={{ fontSize: 8, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+                                  THREAT MATRIX — {chainResult.root} ({chainResult.totalNodes} controls)
+                                </div>
+                                {/* Chain rows by framework */}
+                                {([
+                                  ['CWE', chainResult.chain.cwe, '#ef4444', '#7f1d1d'],
+                                  ['ATT&CK', chainResult.chain.attack, '#f97316', '#713f12'],
+                                  ['CAPEC', chainResult.chain.capec, '#a78bfa', '#3b0764'],
+                                  ['NIST', chainResult.chain.nist, '#22d3ee', '#0c4a6e'],
+                                  ['D3FEND', chainResult.chain.d3fend, '#4ade80', '#14532d'],
+                                  ['SPARTA', chainResult.chain.sparta_mind, '#c084fc', '#4c1d95'],
+                                ] as const).map(([label, items, color, bg]) => (
+                                  items && items.length > 0 ? (
+                                    <div key={label} style={{ marginBottom: 4 }}>
+                                      <span style={{ fontSize: 7, fontWeight: 700, color, textTransform: 'uppercase', marginRight: 6 }}>{label}</span>
+                                      <span style={{ display: 'inline-flex', gap: 2, flexWrap: 'wrap' }}>
+                                        {items.slice(0, 8).map(id => (
+                                          <span key={id} style={{ fontSize: 7, padding: '0px 3px', background: bg, border: `1px solid ${color}44`, color, borderRadius: 2 }}>{id}</span>
+                                        ))}
+                                        {items.length > 8 && <span style={{ fontSize: 7, color: EMBRY.muted }}>+{items.length - 8}</span>}
+                                      </span>
+                                    </div>
+                                  ) : null
+                                ))}
+                                {chainResult.chain.cwe_pillar && (
+                                  <div style={{ fontSize: 7, color: EMBRY.muted, marginTop: 2 }}>Pillar: {chainResult.chain.cwe_pillar}</div>
+                                )}
+                              </div>
+                            )}
                             {/* Evidence Case Gate Trace — inline pipeline visualization */}
                             {evidenceCaseResult && (
                               <div id="be-evidence-case" style={{ background: '#0a0a12', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: 8, marginTop: 4 }}>
@@ -2371,8 +2437,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             style={{ fontSize: 8, padding: '2px 6px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer', fontWeight: 600 }}
                           >EXPORT CSV</button>
                         </div>
-                        <div style={{ maxHeight: 300, overflow: 'auto' }}>
-                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+                        <div style={{ maxHeight: 400, overflow: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace', tableLayout: 'fixed' }}>
                             <thead><tr>
                               {sortHeader('label', 'Name')}
                               {sortHeader('nodeType', 'Type')}
@@ -2403,8 +2469,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                       {n.connections > 10 && <span style={{ width: Math.min(n.connections / 2, 50), height: 4, background: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : '#4CAF50', borderRadius: 1, display: 'inline-block' }} />}
                                     </span>
                                   </td>
-                                  <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8 }}>{n.cwe}</td>
-                                  <td style={{ padding: '3px 6px', color: '#f97316', fontSize: 8 }}>{n.attack}</td>
+                                  <td style={{ padding: '3px 6px', maxWidth: 160 }}>
+                                    <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                                      {n.cwe ? n.cwe.split(', ').filter(Boolean).map(c => (
+                                        <span key={c} title={c} style={{ fontSize: 7, padding: '0px 3px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer' }}
+                                          onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}
+                                        >{c}</span>
+                                      )) : null}
+                                    </div>
+                                  </td>
+                                  <td style={{ padding: '3px 6px', maxWidth: 140 }}>
+                                    <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                                      {n.attack ? n.attack.split(', ').filter(Boolean).map(a => (
+                                        <span key={a} title={a} style={{ fontSize: 7, padding: '0px 3px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, whiteSpace: 'nowrap' }}>{a}</span>
+                                      )) : null}
+                                    </div>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
