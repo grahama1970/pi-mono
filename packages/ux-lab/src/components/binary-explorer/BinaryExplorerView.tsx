@@ -2419,8 +2419,15 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     return (
                       <div>
                         <div style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'center' }}>
-                          <input id="be-table-filter" value={tableSearch} onChange={e => { setTableSearch(e.target.value); data.setSearchQuery(e.target.value) }}
-                            placeholder="Filter features, CWE, ATT&CK..." style={{ flex: 1, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
+                          <div style={{ flex: 1, position: 'relative' }}>
+                            <input id="be-table-filter" value={tableSearch} onChange={e => { setTableSearch(e.target.value); data.setSearchQuery(e.target.value) }}
+                              placeholder="Filter: name, type, CWE-xxx, T1xxx..." style={{ width: '100%', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', paddingRight: 22, color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace', boxSizing: 'border-box' }} />
+                            {tableSearch && (
+                              <span onClick={() => { setTableSearch(''); data.setSearchQuery('') }}
+                                style={{ position: 'absolute', right: 4, top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: '#ef4444', fontSize: 8, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', padding: '1px 4px', background: '#7f1d1d', borderRadius: 2, letterSpacing: '0.02em' }}
+                                title="Clear filter">CLEAR</span>
+                            )}
+                          </div>
                           <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
                           {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
                           <button
@@ -2435,10 +2442,18 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               a.click()
                             }}
                             style={{ fontSize: 8, padding: '2px 6px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer', fontWeight: 600 }}
-                          >EXPORT CSV</button>
+                          >CSV ({filtered.length})</button>
                         </div>
                         <div style={{ maxHeight: 400, overflow: 'auto' }}>
-                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace', tableLayout: 'fixed' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+                            <colgroup>
+                              <col style={{ width: '22%' }} />
+                              <col style={{ width: '12%' }} />
+                              <col style={{ width: '12%' }} />
+                              <col style={{ width: '8%' }} />
+                              <col style={{ width: '23%' }} />
+                              <col style={{ width: '23%' }} />
+                            </colgroup>
                             <thead><tr>
                               {sortHeader('label', 'Name')}
                               {sortHeader('nodeType', 'Type')}
@@ -2469,20 +2484,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                       {n.connections > 10 && <span style={{ width: Math.min(n.connections / 2, 50), height: 4, background: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : '#4CAF50', borderRadius: 1, display: 'inline-block' }} />}
                                     </span>
                                   </td>
-                                  <td style={{ padding: '3px 6px', maxWidth: 160 }}>
+                                  <td style={{ padding: '3px 6px' }}>
                                     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                       {n.cwe ? n.cwe.split(', ').filter(Boolean).map(c => (
-                                        <span key={c} title={c} style={{ fontSize: 7, padding: '0px 3px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer' }}
+                                        <span key={c} title={c} style={{ fontSize: 8, padding: '1px 4px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600 }}
                                           onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}
                                         >{c}</span>
-                                      )) : null}
+                                      )) : <span style={{ fontSize: 7, color: EMBRY.border }}>—</span>}
                                     </div>
                                   </td>
-                                  <td style={{ padding: '3px 6px', maxWidth: 140 }}>
+                                  <td style={{ padding: '3px 6px' }}>
                                     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                       {n.attack ? n.attack.split(', ').filter(Boolean).map(a => (
-                                        <span key={a} title={a} style={{ fontSize: 7, padding: '0px 3px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, whiteSpace: 'nowrap' }}>{a}</span>
-                                      )) : null}
+                                        <span key={a} title={a} style={{ fontSize: 8, padding: '1px 4px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, whiteSpace: 'nowrap', fontWeight: 600 }}>{a}</span>
+                                      )) : <span style={{ fontSize: 7, color: EMBRY.border }}>—</span>}
                                     </div>
                                   </td>
                                 </tr>

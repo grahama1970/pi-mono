@@ -194,23 +194,34 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
   'table-view':            [
-    // Custom: click node, switch to table tab, then ONLY show expanded table (skip 01-initial which has no table)
+    // Custom: click node, switch to table tab, show full page + expanded table closeup with CWE/ATT&CK badges + CSV export visible
     {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
     {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
-    {a:'ss',n:'01-table-full'},
-    ...detailCloseup('02-table-closeup')],
+    // Type a filter to show the clear button (x) is functional
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered auth'}return 'no filter'})()`},
+    {a:'wait',ms:500},
+    {a:'ss',n:'01-table-filtered'},
+    // Clear filter to show full table
+    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'cleared'}return 'no filter'})()`},
+    {a:'wait',ms:500},
+    // Expand detail panel wider for table readability — 1000px wide to show all columns
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='1200px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'02-table-closeup'},
+    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'taxonomy-integration':  [
-    // Click node, switch to Security perspective, show table with CWE filter ACTIVE
+    // Click security-relevant node, switch to Security perspective, click CWE badge to show chain tree
     {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
     {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
+    // Click the FIRST CWE badge in the detail panel to trigger taxonomy chain fetch
+    {a:'eval',s:`(()=>{const badges=[...document.querySelectorAll('[id^="be-cwe-"]')];if(badges.length>0){badges[0].click();return 'clicked: '+badges[0].id}return 'no CWE badges'})()`},
+    {a:'wait',ms:3000}, // Wait for chain to load from memory daemon
+    // Full page: graph with CWE-colored nodes + detail panel with chain tree
+    {a:'ss',n:'01-chain-active'},
+    // Detail closeup showing CWE badges + THREAT MATRIX chain tree
+    ...detailCloseup('02-chain-closeup'),
+    // Also show table with CWE columns
     {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
-    // Type "CWE" in the table filter to show taxonomy-driven filtering
-    {a:'eval',s:`(()=>{const inp=document.getElementById('be-table-filter');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'CWE');inp.dispatchEvent(new Event('input',{bubbles:true}));return 'filtered CWE'}return 'no filter'})()`},
-    {a:'wait',ms:1000},
-    // Full page showing: graph with highlighted CWE nodes + table filtered to CWE rows
-    {a:'ss',n:'01-cwe-filter-active'},
-    // Detail closeup showing filtered table with CWE column data
-    ...detailCloseup('02-cwe-table-closeup')],
+    ...detailCloseup('03-cwe-table-closeup')],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},

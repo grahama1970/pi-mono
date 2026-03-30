@@ -1,6 +1,6 @@
 # Persona Review Report
 
-Generated: 2026-03-30 10:55
+Generated: 2026-03-30 11:45
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
@@ -8,7 +8,7 @@ Generated: 2026-03-30 10:55
 | 43 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' remain partially occluded near 'mcp | 14722ms |
 | 43 | tim-blazytko | node-detail | 7 | PASS | No visual affordance (hover state, cursor change, icon) on g | 22283ms |
 | 43 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 17974ms |
-| 43 | tim-blazytko | table-view | 5 | FAIL | CWE and ATT&CK columns remain truncated — full values are no | 10412ms |
+| 45 | tim-blazytko | table-view | 9 | PASS | The 'CONN' column uses a progress bar but lacks a numeric la | 5919ms |
 | 43 | tim-blazytko | taxonomy-integration | 5 | FAIL | No visual evidence that CWE/ATT&CK tags influence graph node | 10266ms |
 | 43 | tim-blazytko | code-view | 9 | PASS | No visual indicator in detail panel or graph that Python vie | 10439ms |
 | 43 | tim-blazytko | chat-analysis | 8 | PASS | The suggested query button 'What features in this binary rel | 12964ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-30 10:55
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.2/10
-- Passed (>=8): 13/34
+- Average score: 6.4/10
+- Passed (>=8): 14/34
 - Gate: FAIL (target: 8.0)

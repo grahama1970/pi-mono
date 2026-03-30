@@ -118,29 +118,26 @@
       "group": "table-view",
       "source": "BinaryExplorerView.tsx:1800-2100",
       "criteria": "As someone who needs a flat view of all extracted features: Does the feature table show all binary features with sortable columns (name, type, cluster, connections, CWE, ATT&CK)? Is the search/filter functional? Can you click a row to navigate to that feature in the graph? Is the data density appropriate for scanning hundreds of features?",
-      "score": 5,
-      "verdict": "FAIL",
+      "score": 9,
+      "verdict": "PASS",
       "weaknesses": [
-        "CWE and ATT&CK columns remain truncated \u2014 full values are not visible without horizontal scrolling, breaking scanability for bulk analysis.",
-        "No visible column resizing or pinning controls \u2014 users cannot widen CWE/ATT&CK columns to see full values without losing context or scrolling horizontally.",
-        "Search/filter bar lacks visible clear/reset button or advanced filter syntax hints \u2014 usability is ambiguous and not self-explanatory.",
-        "No visible 'export to CSV' or 'copy all' button for the feature table \u2014 blocks pipeline integration for bulk analysis, despite the presence of an 'EXPORT CSV' button which appears to be for the entire scene, not the filtered table."
+        "The 'CONN' column uses a progress bar but lacks a numeric label next to it \u2014 forces visual estimation instead of precise comparison.",
+        "CWE and ATT&CK tags wrap awkwardly on some rows, creating uneven row heights that disrupt scanning rhythm."
       ],
       "status": "reviewed",
       "strengths": [
-        "Feature table displays all extracted features with sortable columns (name, type, cluster, connections, CWE, ATT&CK) as claimed.",
-        "Search/filter bar is present and functional for filtering features by name, CWE, or ATT&CK.",
-        "Clicking a row in the table appears to navigate to the corresponding node in the graph (e.g., 'mcp_auth_completed' is highlighted in both table and graph).",
-        "Data density is high and appropriate for scanning hundreds of features \u2014 compact rows, clear typography, and visual indicators (bars, tags) aid rapid triage."
+        "Feature table shows all 334 extracted features with sortable columns (NAME, TYPE, CLUSTER, CONN, CWE, ATT&CK) as required.",
+        "Search/filter bar is functional and visible with placeholder text indicating support for filtering by name, type, CWE, and ATT&CK.",
+        "Clickable rows are evident \u2014 the selected row 'mcp_auth_completed' is highlighted and corresponds to the node in the graph above, proving navigation works.",
+        "Data density is excellent for scanning hundreds of features: compact rows, color-coded types, inline connection bars, and multi-value CWE/ATT&CK tags fit without clutter."
       ],
       "changes": [
-        "Add column resize handles to CWE and ATT&CK columns to allow users to expand them without horizontal scrolling.",
-        "Add a clear/reset button (e.g., 'X' icon) to the search/filter bar and tooltip hinting at advanced syntax (e.g., 'CWE-123 OR T1546').",
-        "Add a dedicated 'EXPORT FILTERED TABLE CSV' button next to the existing 'EXPORT CSV' to enable pipeline integration for filtered results."
+        "Add numeric value next to the 'CONN' progress bar (e.g., '115') to enable precise sorting and comparison without visual estimation.",
+        "Force CWE/ATT&CK tags to truncate or use a compact chip layout with overflow indicator to maintain consistent row height for faster scanning."
       ],
-      "round": 43,
-      "latency_ms": 10412,
-      "reviewed_at": "2026-03-30T10:55:50"
+      "round": 45,
+      "latency_ms": 5919,
+      "reviewed_at": "2026-03-30T11:45:18"
     },
     {
       "persona": "tim-blazytko",
@@ -149,13 +146,8 @@
       "criteria": "As someone who uses semantic tagging for binary classification: Are CWE and ATT&CK tags visible in the feature table and detail panel? Can you filter features by security taxonomy? Do the tags influence the graph coloring or the security perspective view? Would the taxonomy help you prioritize which features to analyze first?",
       "score": 5,
       "verdict": "FAIL",
-      "weaknesses": [
-        "No visual evidence that CWE/ATT&CK tags influence graph node coloring, edge styling, or layout \u2014 the graph appears taxonomy-agnostic despite 'graph-first' claims.",
-        "The filter input field is empty and shows no active taxonomy filter; no visual feedback confirms filtering by CWE/ATT&CK alters the graph or table.",
-        "Security perspective toggle is inactive or unresponsive in the screenshot \u2014 no indication it modifies graph structure, node styling, or edge weight.",
-        "CWE/ATT&CK tags in the table lack hover tooltips or expandable context; triage requires scrolling or clicking, reducing efficiency for rapid prioritization."
-      ],
-      "status": "reviewed",
+      "weaknesses": [],
+      "status": "pending",
       "strengths": [
         "CWE and ATT&CK tags are visibly present in the feature table under dedicated columns, enabling manual triage.",
         "The table supports sorting by 'CONN' and has a search field for filtering features, which is useful for narrowing scope.",
