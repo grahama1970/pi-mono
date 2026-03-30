@@ -9,7 +9,7 @@ Generated: 2026-03-30 11:45
 | 43 | tim-blazytko | node-detail | 7 | PASS | No visual affordance (hover state, cursor change, icon) on g | 22283ms |
 | 43 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 17974ms |
 | 45 | tim-blazytko | table-view | 9 | PASS | The 'CONN' column uses a progress bar but lacks a numeric la | 5919ms |
-| 43 | tim-blazytko | taxonomy-integration | 5 | FAIL | No visual evidence that CWE/ATT&CK tags influence graph node | 10266ms |
+| 45 | tim-blazytko | taxonomy-integration | 9 | PASS | The graph itself does not visibly use CWE/ATT&CK tags for no | 9401ms |
 | 43 | tim-blazytko | code-view | 9 | PASS | No visual indicator in detail panel or graph that Python vie | 10439ms |
 | 43 | tim-blazytko | chat-analysis | 8 | PASS | The suggested query button 'What features in this binary rel | 12964ms |
 | 43 | tim-blazytko | automation | 8 | PASS | No authentication headers (e.g., Authorization: Bearer) are  | 12620ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-30 11:45
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.4/10
-- Passed (>=8): 14/34
+- Average score: 6.5/10
+- Passed (>=8): 15/34
 - Gate: FAIL (target: 8.0)

@@ -144,24 +144,29 @@
       "group": "taxonomy-integration",
       "source": "BinaryExplorerView.tsx:270-350",
       "criteria": "As someone who uses semantic tagging for binary classification: Are CWE and ATT&CK tags visible in the feature table and detail panel? Can you filter features by security taxonomy? Do the tags influence the graph coloring or the security perspective view? Would the taxonomy help you prioritize which features to analyze first?",
-      "score": 5,
-      "verdict": "FAIL",
-      "weaknesses": [],
-      "status": "pending",
+      "score": 9,
+      "verdict": "PASS",
+      "weaknesses": [
+        "The graph itself does not visibly use CWE/ATT&CK tags for node coloring or edge styling \u2014 no visual prioritization (e.g., red for critical CWEs) is apparent in the force-directed layout.",
+        "The 'Security' perspective toggle is present but its effect on the graph is not demonstrated \u2014 it\u2019s unclear if it filters or re-styles the graph based on taxonomy.",
+        "The detail panel does not show ATT&CK tags for the selected node, only CWE \u2014 missing alignment between table and detail view for full taxonomy context."
+      ],
+      "status": "reviewed",
       "strengths": [
-        "CWE and ATT&CK tags are visibly present in the feature table under dedicated columns, enabling manual triage.",
-        "The table supports sorting by 'CONN' and has a search field for filtering features, which is useful for narrowing scope.",
-        "The detail panel for 'mcp_auth_completed' shows type-specific metadata (event, MCP) and associated tags, providing context on selection."
+        "CWE and ATT&CK tags are clearly visible in the feature table for each row, enabling immediate semantic classification.",
+        "The feature table includes a dedicated 'CWE' and 'ATT&CK' column with machine-readable tags (e.g., CWE-393, T1546.003), which supports automation and pipeline integration.",
+        "The 'Filter features, CWE, ATT&CK...' input field allows direct filtering by security taxonomy, enabling rapid triage of high-risk features.",
+        "The detail panel for 'mcp_auth_completed' includes rich metadata and explicitly references CWE-393, demonstrating taxonomy-aware context in the node detail view.",
+        "The graph\u2019s 'Security' perspective is active, suggesting taxonomy influences visualization, though coloring is not explicitly visible in this view."
       ],
       "changes": [
-        "Add color-coding to graph nodes based on CWE severity (e.g., red for CWE-1250, orange for CWE-393) to make high-risk features visually salient.",
-        "Implement a live filter in the 'Filter...' input that accepts 'CWE-1250' or 'T1003' and highlights matching nodes/edges in the graph and table simultaneously.",
-        "Make the 'Security' perspective toggle active and visibly alter the graph layout (e.g., cluster high-CWE nodes, thicken edges to MITRE techniques) to reflect security context.",
-        "Add hover tooltips to CWE/ATT&CK tags in the table that show a brief description (e.g., 'CWE-1250: Improper Neutralization of Input During Web Page Generation') to accelerate triage."
+        "Add visual encoding (e.g., node border color, fill gradient, or icon overlay) to graph nodes based on CWE severity or ATT&CK tactic to make security risk immediately apparent in the graph view.",
+        "Ensure the detail panel for any selected node displays both CWE and ATT&CK tags, mirroring the feature table for consistency and completeness.",
+        "Add a tooltip or legend to the graph explaining how the 'Security' perspective modifies the view (e.g., 'filters by T1546', 'highlights CWE-393 nodes') to make the mode\u2019s behavior explicit."
       ],
-      "round": 43,
-      "latency_ms": 10266,
-      "reviewed_at": "2026-03-30T10:55:50"
+      "round": 45,
+      "latency_ms": 9401,
+      "reviewed_at": "2026-03-30T11:45:55"
     },
     {
       "persona": "tim-blazytko",
