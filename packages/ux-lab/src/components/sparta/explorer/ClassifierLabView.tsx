@@ -8,7 +8,7 @@
 import { useState, useEffect, useMemo, useCallback, Fragment } from 'react'
 import {
   AlertTriangle, Cpu, ShieldCheck, Rocket,
-  ChevronDown, ChevronRight, FileText, Search,
+  ChevronDown, ChevronRight, FileText, Search, Plus, Upload, Play, Trash2, Pencil,
 } from 'lucide-react'
 import { marked } from 'marked'
 import {
@@ -2702,12 +2702,27 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
   )
 }
 
-// ── Evaluate Tab ────────────────────────────────────────────────────
+// ── Evaluate Tab — Test Suite ───────────────────────────────────────
+
+interface EvalQuestion {
+  id: string; text: string; expected: string
+  predicted?: string | null; passed?: boolean | null
+}
 
 function EvaluateTab({ project }: { project: Project }) {
-  const [evalData, setEvalData] = useState<any>(null)
+  const [questions, setQuestions] = useState<EvalQuestion[]>([])
+  const [results, setResults] = useState<EvalQuestion[] | null>(null)
   const [loading, setLoading] = useState(true)
-  const [expandedClass, setExpandedClass] = useState<string | null>(null)
+  const [running, setRunning] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editText, setEditText] = useState('')
+  const [editExpected, setEditExpected] = useState('')
+  const [newText, setNewText] = useState('')
+  const [newExpected, setNewExpected] = useState('')
+  const [showImport, setShowImport] = useState(false)
+  const [importData, setImportData] = useState('')
+  const [importFormat, setImportFormat] = useState<'csv' | 'jsonl'>('jsonl')
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     setLoading(true)
