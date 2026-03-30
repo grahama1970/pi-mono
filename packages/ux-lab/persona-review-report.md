@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-30 08:30
+Generated: 2026-03-30 08:53
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 30 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'mcp_auth_completed' still lack semantic l | 8606ms |
-| 30 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 8071ms |
-| 30 | tim-blazytko | node-detail | 8 | PASS | No inferred parameter types (e.g., string, int) are shown fo | 8500ms |
-| 30 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 8376ms |
-| 30 | tim-blazytko | table-view | 5 | FAIL | No visual feedback links the selected table row 'mcp_auth_co | 8045ms |
-| 30 | tim-blazytko | taxonomy-integration | 5 | FAIL | The graph nodes (e.g., 'schema', 'daemon', 'mcp') are unifor | 9781ms |
-| 30 | tim-blazytko | code-view | 9 | PASS | The code view lacks syntax highlighting for keywords like 'f | 6584ms |
-| 30 | tim-blazytko | chat-analysis | 9 | PASS | The graph’s node labels (e.g., 'schema', 'daemon') are spars | 9680ms |
-| 30 | tim-blazytko | automation | 9 | PASS | No visible API documentation or schema for the endpoints bey | 6657ms |
-| 30 | tim-blazytko | perspective-views | 8 | PASS | Graph lacks visual hierarchy or clustering for large scenes  | 9556ms |
-| 30 | tim-blazytko | scene-management | 8 | PASS | The graph layout appears sparse in some areas (e.g., large e | 9956ms |
-| 30 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI for adding manual notes to journal entries — o | 8201ms |
+| 34 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'mcp_auth_completed' still lack semantic l | 16261ms |
+| 34 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 12765ms |
+| 34 | tim-blazytko | node-detail | 8 | PASS | No visual affordance (underline, icon, hover state) on graph | 12862ms |
+| 34 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 7471ms |
+| 34 | tim-blazytko | table-view | 9 | PASS | No visible column resizing or pinning controls — may hinder  | 6910ms |
+| 34 | tim-blazytko | taxonomy-integration | 5 | FAIL | CWE tags are absent from the feature table (left panel) and  | 8128ms |
+| 34 | tim-blazytko | code-view | 8 | PASS | No visible toggle in the detail panel to switch between Pyth | 8514ms |
+| 34 | tim-blazytko | chat-analysis | 8 | PASS | The graph view is not visible in this screenshot, which is a | 8800ms |
+| 34 | tim-blazytko | automation | 8 | PASS | No visual indicators (icons, colors, tooltips) on graph node | 7372ms |
+| 34 | tim-blazytko | perspective-views | 7 | PASS | Graph lacks visual clustering — nodes like 'daemon', 'schema | 11744ms |
+| 34 | tim-blazytko | scene-management | 5 | FAIL | No visual indicator (e.g., highlight, border, glow) on the g | 7604ms |
+| 34 | tim-blazytko | investigation-journal | 9 | PASS | No visible UI element for adding manual notes to journal ent | 7291ms |
 | 18 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges still lack directional arrows — orange edges fro | 12892ms |
 | 18 | gynvael-coldwind | data-structures | 3 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 11854ms |
 | 18 | gynvael-coldwind | graph-exploration | 5 | FAIL | Legend is static and non-interactive — clicking 'event' or ' | 10137ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-30 08:30
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.4/10
-- Passed (>=8): 15/34
+- Average score: 6.3/10
+- Passed (>=8): 14/34
 - Gate: FAIL (target: 8.0)

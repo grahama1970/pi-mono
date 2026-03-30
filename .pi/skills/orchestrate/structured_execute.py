@@ -328,6 +328,8 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
         spec["definition_of_done"] = task.definition_of_done
     if task.allowlist is not None:
         spec["allowlist"] = task.allowlist
+    # NOTE: blind_tests deliberately NOT passed to code-runner spec.
+    # Information barrier: only orchestrate sends blind_tests to test-lab.
     if task.max_rounds != 5:
         spec["max_rounds"] = task.max_rounds
 
@@ -368,9 +370,59 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             f"/code-runner failed (exit {proc.returncode}): {stderr.decode(errors='replace')[:500]}"
         )
 
+    # Blind eval gate: if task has blind_tests, call test-lab AFTER code-runner passes
+    # Code-runner never sees blind_tests — information barrier enforced here
+    if task.review_status == "pass" and task.blind_tests:
+        blind_result = await _run_blind_eval(task, session_dir)
+        if blind_result and blind_result.get("status") == "fail":
+            blind_feedback = "\n".join(
+                f"  BLIND FAIL: {c['message']}" for c in blind_result.get("checks", []) if not c["passed"]
+            )
+            task.review_status = "fail"
+            task.review_output += f"\n--- blind eval: FAIL ({blind_result['failed']}/{blind_result['total']}) ---\n{blind_feedback}"
+            logger.warning("Blind eval FAILED for {} ({}/{})",
+                           task.task_id, blind_result["failed"], blind_result["total"])
+
     # T2 gate: auto-review via /review-code if available and code-runner passed
     if task.review_status == "pass":
         await _review_code_runner_output(task, session_dir)
+
+
+async def _run_blind_eval(task: TaskRuntime, session_dir: Path) -> dict | None:
+    """Call test-lab Docker service with blind tests. Returns result dict or None.
+
+    The information barrier: code-runner never sees blind_tests.
+    Only orchestrate has them (from the plan YAML) and sends them directly to test-lab.
+    Code-runner only gets sanitized failure messages if orchestrate retries the task.
+    """
+    test_lab_url = os.environ.get("TEST_LAB_URL", "http://127.0.0.1:8787")
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            resp = await client.post(
+                f"{test_lab_url.rstrip('/')}/evaluate",
+                json={
+                    "task_id": task.task_id,
+                    "target_dir": str(task.cwd),
+                    "blind_tests": task.blind_tests,
+                },
+            )
+            resp.raise_for_status()
+            result = resp.json()
+
+            # Save blind eval result (but NOT the test assertions — those stay hidden)
+            eval_file = session_dir / f"{task.task_id}.blind-eval.json"
+            # Strip assertions from saved result to maintain barrier
+            safe_result = {**result, "checks": [
+                {"passed": c["passed"], "message": c["message"]} for c in result.get("checks", [])
+            ]}
+            eval_file.write_text(json.dumps(safe_result, indent=2))
+            return result
+    except httpx.ConnectError:
+        logger.warning("test-lab not reachable at {} — skipping blind eval", test_lab_url)
+        return None
+    except Exception as e:
+        logger.warning("Blind eval failed (non-fatal): {}", e)
+        return None
 
 
 async def _review_code_runner_output(task: TaskRuntime, session_dir: Path) -> None:
