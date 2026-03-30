@@ -1,21 +1,21 @@
 # Persona Review Report
 
-Generated: 2026-03-29 18:20
+Generated: 2026-03-30 08:23
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
-| 25 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'add_mcp_server' to 'mcp_auth_completed' s | 8436ms |
-| 25 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 6925ms |
-| 25 | tim-blazytko | node-detail | 8 | PASS | No inferred parameter types (e.g., string, int) are shown fo | 7169ms |
-| 25 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 7623ms |
-| 25 | tim-blazytko | table-view | 5 | FAIL | The 'CONN' column still uses red/orange bars without display | 8306ms |
-| 25 | tim-blazytko | taxonomy-integration | 4 | FAIL | CWE and ATT&CK tags are absent from the detail panel for the | 7746ms |
-| 25 | tim-blazytko | code-view | 9 | PASS | The detail panel for 'mcp_auth_completed' (visible in the fi | 6642ms |
-| 25 | tim-blazytko | chat-analysis | 4 | FAIL | The 'SUGGESTED' queries in the chat panel are static and do  | 8647ms |
-| 25 | tim-blazytko | automation | 8 | PASS | No visible API authentication mechanism (e.g., API key, toke | 5497ms |
-| 25 | tim-blazytko | perspective-views | 7 | PASS | Edge labels ('emits', 'triggers') remain small and lack hove | 7500ms |
-| 25 | tim-blazytko | scene-management | 5 | FAIL | Selected node 'mcp_auth_completed' has no visual highlight ( | 8234ms |
-| 25 | tim-blazytko | investigation-journal | 7 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 5577ms |
+| 28 | tim-blazytko | first-impressions | 8 | PASS | Orange edges from 'mcp_auth_completed' to nodes like 'add_mc | 11227ms |
+| 28 | tim-blazytko | graph-navigation | 8 | PASS | Edge labels like 'emits' are partially occluded where multip | 7461ms |
+| 28 | tim-blazytko | node-detail | 8 | PASS | No inferred parameter types (e.g., string, int) are shown fo | 7575ms |
+| 28 | tim-blazytko | symbol-tree | 8 | PASS | No visual affordance (e.g., expand icon, hover state) on 'da | 9851ms |
+| 28 | tim-blazytko | table-view | 5 | FAIL | No visual feedback links the selected row 'mcp_auth_complete | 8538ms |
+| 28 | tim-blazytko | taxonomy-integration | 4 | FAIL | The graph view is completely missing from the screenshot, ma | 8859ms |
+| 28 | tim-blazytko | code-view | 8 | PASS | The detail panel for 'mcp_auth_completed' still does not dis | 7578ms |
+| 28 | tim-blazytko | chat-analysis | 7 | PASS | The graph view lacks a visible legend on the main canvas; us | 9424ms |
+| 28 | tim-blazytko | automation | 8 | PASS | No visible API authentication mechanism (e.g., API key, toke | 6318ms |
+| 28 | tim-blazytko | perspective-views | 7 | PASS | Edge labels ('emits', 'triggers') remain small and lack hove | 7483ms |
+| 28 | tim-blazytko | scene-management | 5 | FAIL | The selected node 'mcp_auth_completed' still lacks any visua | 9279ms |
+| 28 | tim-blazytko | investigation-journal | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 5583ms |
 | 18 | gynvael-coldwind | first-impressions | 8 | PASS | Graph edges still lack directional arrows — orange edges fro | 12892ms |
 | 18 | gynvael-coldwind | data-structures | 3 | FAIL | The 'AST / Fields' tab in the detail panel is empty with the | 11854ms |
 | 18 | gynvael-coldwind | graph-exploration | 5 | FAIL | Legend is static and non-interactive — clicking 'event' or ' | 10137ms |
@@ -41,6 +41,6 @@ Generated: 2026-03-29 18:20
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 6.0/10
-- Passed (>=8): 11/34
+- Average score: 6.1/10
+- Passed (>=8): 12/34
 - Gate: FAIL (target: 8.0)

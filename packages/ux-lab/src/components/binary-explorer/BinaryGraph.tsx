@@ -918,6 +918,35 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('stroke-opacity', 0.4)
       .attr('stroke-dasharray', '2,2')
 
+    // CWE hazard ring — red outer ring on nodes with CWE vulnerability tags
+    nodeGs.filter((d) => {
+      const tax = taxonomyRef.current?.get(d.id)
+      return tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)
+    })
+      .append('circle')
+      .attr('class', 'cwe-ring')
+      .attr('cx', 0).attr('cy', 0)
+      .attr('r', (d) => r(d) + 5)
+      .attr('fill', 'none')
+      .attr('stroke', '#ef4444')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-opacity', 0.7)
+      .attr('stroke-dasharray', '3,2')
+
+    // CWE badge — small red dot at bottom-right of nodes with CWE tags
+    nodeGs.filter((d) => {
+      const tax = taxonomyRef.current?.get(d.id)
+      return tax && tax.cwe?.length > 0
+    })
+      .append('circle')
+      .attr('class', 'cwe-badge')
+      .attr('cx', (d) => r(d) - 1)
+      .attr('cy', (d) => r(d) - 1)
+      .attr('r', 3)
+      .attr('fill', '#ef4444')
+      .attr('stroke', '#7f1d1d')
+      .attr('stroke-width', 0.5)
+
     // Tier badge — small colored dot at top-right of node
     nodeGs.append('circle')
       .attr('class', 'tier-badge')

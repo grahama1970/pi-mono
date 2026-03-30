@@ -2384,10 +2384,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                     </span>
                                   </td>
                                   <td style={{ padding: '3px 6px', color: EMBRY.dim }}>{n.cluster}</td>
-                                  <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : n.connections > 10 ? EMBRY.white : EMBRY.dim }}>
-                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                                      {n.connections}
-                                      {n.connections > 20 && <span style={{ width: Math.min(n.connections / 3, 40), height: 3, background: n.connections > 50 ? '#ef4444' : '#f97316', borderRadius: 1, display: 'inline-block' }} />}
+                                  <td style={{ padding: '3px 6px', fontWeight: 700, color: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : n.connections > 10 ? EMBRY.white : EMBRY.dim }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                      <span style={{ fontSize: 10, minWidth: 20 }}>{n.connections}</span>
+                                      {n.connections > 10 && <span style={{ width: Math.min(n.connections / 2, 50), height: 4, background: n.connections > 50 ? '#ef4444' : n.connections > 20 ? '#f97316' : '#4CAF50', borderRadius: 1, display: 'inline-block' }} />}
                                     </span>
                                   </td>
                                   <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8 }}>{n.cwe}</td>

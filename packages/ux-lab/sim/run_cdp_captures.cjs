@@ -190,30 +190,43 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
-  'taxonomy-integration':  [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:2000},{a:'ss',n:'03-taxonomy-table'},
+  'taxonomy-integration':  [...PRE,
+    // Switch to Security perspective to show security-focused graph
+    {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
+    // Full page with graph (CWE rings visible) + security perspective
+    {a:'ss',n:'01-security-graph'},
+    // Then expand detail panel to show CWE badges closeup
+    {a:'eval',s:clickTab('summary')},{a:'wait',ms:300},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
-    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'02-cwe-detail'},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
     {a:'wait',ms:500},{a:'ssClip',sel:'#be-detail-panel',n:'04-code-closeup'},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
-  'chat-analysis':         [...PRE, {a:'ss',n:'03-chat-with-suggestions'},
+  'chat-analysis':         [
+    // Skip 01-initial — VLM needs to see chat, not empty graph
+    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    {a:'ss',n:'01-graph-with-chat'},
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
-    {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'04-chat-closeup'},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-right-pane',n:'02-chat-closeup'},
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='';rp.style.left='';rp.style.top='';rp.style.width='';rp.style.height='';rp.style.zIndex=''}})()` }],
   'chat-exploration':      [...PRE],
   'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
-  'scene-management':      [...PRE,
-    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'initial-triage');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 1'}return 'no input'})()`},
-    {a:'wait',ms:1500},
-    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth-deep-dive');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 2'}return 'no input'})()`},
+  'scene-management':      [
+    // Custom PRE: click node, then save scenes, then show full page with scenes + closeup of toolbar
+    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
+    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="name"]')||document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'initial-triage');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 1'}return 'no input'})()`},
     {a:'wait',ms:2000},
-    {a:'eval',s:`(()=>{const sel=document.getElementById('be-scene-load');return sel?sel.outerHTML.substring(0,100):'no load'})()`,timeout:2000},
-    {a:'wait',ms:500},
-    {a:'ss',n:'03-scenes-saved'},{a:'ssClip',sel:'#be-graph-pane',n:'04-scenes-closeup'}],
+    {a:'eval',s:`(()=>{const inp=document.querySelector('input[placeholder*="name"]')||document.querySelector('input[placeholder*="Name"]');if(inp){const s=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;s.call(inp,'auth-deep-dive');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));const btn=document.getElementById('be-scene-save');if(btn)btn.click();return 'saved 2'}return 'no input'})()`},
+    {a:'wait',ms:2000},
+    {a:'ss',n:'01-scenes-saved'},
+    // Expand graph pane for toolbar closeup showing SCENE: label, SAVE, LOAD dropdown, EXPORT
+    {a:'eval',s:`(()=>{const gp=document.getElementById('be-graph-pane');if(gp){gp.style.position='fixed';gp.style.left='0';gp.style.top='0';gp.style.width='900px';gp.style.height='900px';gp.style.zIndex='9999';return 'expanded'}return 'no pane'})()`},
+    {a:'wait',ms:300},{a:'ssClip',sel:'#be-graph-pane',n:'02-toolbar-closeup'},
+    {a:'eval',s:`(()=>{const gp=document.getElementById('be-graph-pane');if(gp){gp.style.position='';gp.style.left='';gp.style.top='';gp.style.width='';gp.style.height='';gp.style.zIndex=''}})()`}],
   'investigation-journal': [...PRE, {a:'eval',s:clickJournal},{a:'waitId',id:'be-journal-export-writeup',timeout:3000},{a:'wait',ms:500},{a:'ss',n:'03-journal'},
     // Temporarily widen right pane for readable journal closeup
     {a:'eval',s:`(()=>{const rp=document.getElementById('be-right-pane');if(rp){rp.style.position='fixed';rp.style.left='0';rp.style.top='0';rp.style.width='600px';rp.style.height='900px';rp.style.zIndex='9999';return 'widened'}return 'no pane'})()`},
