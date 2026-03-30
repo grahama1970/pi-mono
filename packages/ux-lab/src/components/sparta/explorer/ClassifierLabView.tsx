@@ -3157,9 +3157,7 @@ function PromoteTab({ project }: { project: Project }) {
             { label: 'EXPORT', value: exportStatus },
           ]}
           checks={[
-            { label: 'Eval gate passed', ok: holdoutPassed, detail: holdoutPassed ? 'Yes' : 'No — run Evaluate first' },
-            { label: 'Model exported', ok: exportStatus !== 'Not exported', detail: exportStatus },
-            { label: 'Artifacts ready', ok: exportArtifacts.length > 0, detail: exportArtifacts.length > 0 ? `${exportArtifacts.length} files` : 'None' },
+            { label: 'Eval gate passed', ok: holdoutPassed, detail: holdoutPassed ? `F1 ${macroF1.toFixed(3)}` : 'Run Evaluate first' },
           ]}
         />
       </div>
@@ -3190,8 +3188,8 @@ function PromoteTab({ project }: { project: Project }) {
 
         {/* Winner stats */}
         <div style={{ display: 'grid', gridTemplateColumns: winningRound !== undefined ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
-          <StatPanel title="F1 SCORE" value={macroF1.toFixed(3)} color={macroF1 >= 0.90 ? EMBRY.green : EMBRY.red} />
-          <StatPanel title="ACCURACY" value={accuracy.toFixed(3)} color={accuracy >= 0.90 ? EMBRY.green : EMBRY.red} />
+          <StatPanel title="F1 SCORE" value={macroF1.toFixed(3)} color={holdoutPassed ? EMBRY.green : EMBRY.red} />
+          <StatPanel title="ACCURACY" value={accuracy.toFixed(3)} color={holdoutPassed ? EMBRY.green : EMBRY.white} />
           <StatPanel title="TEST SAMPLES" value={String(testSamples)} />
           {winningRound !== undefined && (
             <StatPanel title="WINNING ROUND" value={String(winningRound)} />
@@ -3215,15 +3213,21 @@ function PromoteTab({ project }: { project: Project }) {
         )}
 
         {holdoutPassed && (() => {
+          const exportReady = exportStatus !== 'Not exported'
+          const artifactsReady = exportArtifacts.length > 0
+          const registryReady = deploymentStatus !== 'Not deployed' && deploymentStatus !== 'Pending'
+          const deployed = deploymentStatus.toLowerCase().includes('complete') || deploymentStatus.toLowerCase().includes('deployed')
           const steps = [
             { id: 'eval', label: 'Holdout evaluation passed', detail: `F1 ${macroF1.toFixed(3)} ≥ ${gateThreshold.toFixed(2)}`, done: true },
-            { id: 'export', label: 'Model exported', detail: exportStatus, done: exportStatus !== 'Not exported' },
-            { id: 'artifacts', label: 'Artifacts generated', detail: exportArtifacts.length > 0 ? `${exportArtifacts.length} files` : 'None', done: exportArtifacts.length > 0 },
-            { id: 'registry', label: 'Registered in model registry', detail: deploymentStatus, done: deploymentStatus !== 'Not deployed' && deploymentStatus !== 'Pending' },
-            { id: 'deploy', label: 'Deployed to production', detail: deploymentStatus, done: deploymentStatus.toLowerCase().includes('complete') || deploymentStatus.toLowerCase().includes('deployed') },
+            { id: 'export', label: 'Export model', detail: exportReady ? exportStatus : 'Not exported', done: exportReady },
+            { id: 'artifacts', label: 'Generate artifacts', detail: artifactsReady ? `${exportArtifacts.length} files` : 'None yet', done: artifactsReady },
+            { id: 'registry', label: 'Register in model registry', detail: registryReady ? deploymentStatus : 'Not registered', done: registryReady },
+            { id: 'deploy', label: 'Deploy to production', detail: deployed ? deploymentStatus : 'Not deployed', done: deployed },
           ]
           const completedSteps = steps.filter(s => s.done).length
           const allDone = completedSteps === steps.length
+          // Find first incomplete step
+          const nextStep = steps.find(s => !s.done)
           return (
             <>
               {/* Workflow checklist */}
@@ -3238,29 +3242,50 @@ function PromoteTab({ project }: { project: Project }) {
                 <div style={{ height: 4, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden', marginBottom: 16 }}>
                   <div style={{ height: '100%', width: `${(completedSteps / steps.length) * 100}%`, background: allDone ? EMBRY.green : EMBRY.accent, borderRadius: 2, transition: 'width 0.3s' }} />
                 </div>
-                {steps.map((step, i) => (
-                  <div key={step.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: i < steps.length - 1 ? 12 : 0 }}>
-                    {/* Step indicator */}
-                    <div style={{
-                      width: 20, height: 20, borderRadius: '50%', flexShrink: 0, marginTop: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: step.done ? EMBRY.green : 'transparent',
-                      border: step.done ? 'none' : `2px solid ${EMBRY.border}`,
-                      fontSize: 10, fontWeight: 900,
-                      color: step.done ? '#000' : EMBRY.dim,
-                    }}>
-                      {step.done ? '✓' : i + 1}
+                {steps.map((step, i) => {
+                  const isNext = step.id === nextStep?.id
+                  return (
+                    <div key={step.id} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: i < steps.length - 1 ? 12 : 0 }}>
+                      <div style={{
+                        width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: step.done ? EMBRY.green : isNext ? EMBRY.accent + '22' : 'transparent',
+                        border: step.done ? 'none' : `2px solid ${isNext ? EMBRY.accent : EMBRY.border}`,
+                        fontSize: 10, fontWeight: 900,
+                        color: step.done ? '#000' : isNext ? EMBRY.accent : EMBRY.dim,
+                      }}>
+                        {step.done ? '✓' : i + 1}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: step.done ? EMBRY.white : isNext ? EMBRY.white : EMBRY.dim }}>{step.label}</div>
+                        <div style={{ fontSize: 9, fontFamily: MONO, color: step.done ? EMBRY.green : EMBRY.muted, marginTop: 2 }}>{step.detail}</div>
+                      </div>
+                      {/* Action button for the next incomplete step */}
+                      {isNext && step.id === 'export' && (
+                        <button
+                          onClick={() => {
+                            fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
+                              method: 'POST', headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ model: modelName, macro_f1: macroF1, accuracy, action: 'export' }),
+                            }).catch(() => {})
+                          }}
+                          style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px', whiteSpace: 'nowrap' }}
+                        >EXPORT MODEL</button>
+                      )}
+                      {isNext && step.id === 'registry' && (
+                        <button
+                          onClick={() => {
+                            fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
+                              method: 'POST', headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ model: modelName, macro_f1: macroF1, accuracy, action: 'register' }),
+                            }).catch(() => {})
+                          }}
+                          style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px', whiteSpace: 'nowrap' }}
+                        >REGISTER</button>
+                      )}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: step.done ? EMBRY.white : EMBRY.dim }}>{step.label}</div>
-                      <div style={{ fontSize: 9, fontFamily: MONO, color: step.done ? EMBRY.green : EMBRY.muted, marginTop: 2 }}>{step.detail}</div>
-                    </div>
-                    {/* Connector line */}
-                    {i < steps.length - 1 && (
-                      <div style={{ position: 'absolute', left: 9, top: 22, width: 2, height: 12, background: step.done ? EMBRY.green + '33' : EMBRY.border }} />
-                    )}
-                  </div>
-                ))}
+                  )
+                })}
               </div>
 
               {/* Artifacts list */}
@@ -3277,20 +3302,13 @@ function PromoteTab({ project }: { project: Project }) {
                 </div>
               )}
 
-              <RunButton onClick={promoteModel} disabled={promoting}>
-                {promoting ? 'PROMOTING...' : 'PROMOTE TO PRODUCTION'}
+              <RunButton onClick={promoteModel} disabled={promoting || !allDone}>
+                {promoting ? 'PROMOTING...' : allDone ? 'PROMOTE TO PRODUCTION' : 'COMPLETE STEPS ABOVE FIRST'}
               </RunButton>
-              <div style={{ marginTop: 12, fontSize: 10, color: EMBRY.dim }}>Promote endpoint: POST /api/projects/classifier-lab/promote/{project.id}</div>
               {promoteStatus.kind !== 'idle' && (
                 <div style={{
-                  marginTop: 10,
-                  fontSize: 10,
-                  color: promoteStatus.kind === 'success'
-                    ? EMBRY.green
-                    : promoteStatus.kind === 'error'
-                      ? EMBRY.red
-                      : EMBRY.amber,
-                  fontFamily: MONO,
+                  marginTop: 10, fontSize: 10, fontFamily: MONO,
+                  color: promoteStatus.kind === 'success' ? EMBRY.green : promoteStatus.kind === 'error' ? EMBRY.red : EMBRY.amber,
                 }}>
                   {promoteStatus.text}
                 </div>
@@ -3302,7 +3320,7 @@ function PromoteTab({ project }: { project: Project }) {
         {!holdoutPassed && (
           <div style={{ ...panel, marginTop: 12, border: `1px solid ${EMBRY.red}33`, background: `${EMBRY.red}08` }}>
             <div style={{ fontSize: 11, color: EMBRY.red, fontWeight: 700 }}>
-              Promotion blocked until holdout gate passes (F1 &ge; 0.90).
+              Promotion blocked until holdout gate passes (F1 ≥ {gateThreshold.toFixed(2)}).
             </div>
             <div style={{ fontSize: 10, color: EMBRY.dim, marginTop: 4 }}>
               Return to Train or Tune tabs to improve model performance, then re-evaluate.
