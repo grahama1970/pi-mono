@@ -1240,65 +1240,34 @@ export function BinaryExplorerView() {
         console.warn('Memory recall interceptor failed:', err)
       }
 
-      // B. Dynamic Intent API Fallback (LLM Reasoning)
+      // B. /memory intent — evidence-based pipeline (extract entities → recall definitions → LLM action)
+      // The memory daemon's IntentMapper handles the full 8-step cascade:
+      //   1. Self-correction  2. Recall grounding  3. Entity validation
+      //   4. Ambiguity gate   5. T0.5 classifier   6. LLM enrichment (scillm)
+      //   7. SFT fallback     8. Rule fallback      + Evidence gate verification
       if (!intentFound) {
         try {
           const intentRes = await fetch(`${API}/api/memory/intent`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ q: text, scope: 'sparta', fast: false }),
+            body: JSON.stringify({ q: text, scope: 'binary-explorer', fast: false }),
           })
           if (intentRes.ok) {
             intentData = await intentRes.json()
-            console.log('[DEBUG INTENT API]', intentData)
-            if (intentData && (intentData.action === 'UI_COMMAND' || intentData.action === 'SELECT_NODE')) {
+            console.log('[INTENT]', intentData)
+            if (intentData && intentData.action !== 'NO_MATCH') {
               intentFound = true
             }
           }
         } catch {
-          console.warn('Intent API unreachable, using local heuristic fallback')
-        }
-      }
-
-      // C. Local Heuristic Intercept (Instant fallback for obvious UI commands)
-      if (!intentFound) {
-        const cleanText = text.toLowerCase().replace(/[?.,!]/g, '')
-        const words = cleanText.split(/\s+/)
-        const lowText = cleanText
-
-        // "show all" only triggers VIEW_ALL if NO entity is mentioned
-        // "show all connected nodes to X" should route to SELECT_NODE + expand, not VIEW_ALL
-        const isShowAll = (lowText.includes('show all') || (lowText.includes('view') && lowText.includes('all')) || lowText.includes('show everything'))
-          && mentionedEntities.length === 0
-        if ((lowText.includes('zoom') && lowText.includes('out')) || lowText.includes('reset view') || isShowAll) {
-          intentData = { action: 'UI_COMMAND', ui_action: 'VIEW_ALL' }
-          intentFound = true
-        } else if (lowText.includes('zoom in') || lowText.includes('hop') || lowText.includes('focus') || lowText.includes('magnify')) {
-          intentData = { action: 'UI_COMMAND', ui_action: 'SELECT_NODE', target_node_id: words[words.length-1] }
-          intentFound = true
-        } else if ((lowText.includes('show') || lowText.includes('expand') || lowText.includes('connected') || lowText.includes('related') || lowText.includes('neighbors')) && mentionedEntities.length > 0) {
-          // "show connected nodes to X", "expand X", "what's related to X"
-          intentData = { action: 'UI_COMMAND', ui_action: 'SELECT_NODE', target_node_id: mentionedEntities[0].label, expand_hops: 1 }
-          intentFound = true
+          console.warn('/memory intent unreachable')
         }
       }
 
       if (intentFound && intentData) {
-        // CRITICAL: Entity extraction is ground truth. Recall matches by phrase similarity
-        // and often returns the wrong action (e.g. VIEW_ALL for "click on X and show related").
-        // If user mentioned a specific entity, override both target AND action.
-        if (mentionedEntities.length > 0) {
+        // Entity extraction from /extract-entities is ground truth for target node
+        if (mentionedEntities.length > 0 && !intentData.target_node_id) {
           intentData.target_node_id = mentionedEntities[0].label
-
-          // If user said "click on X" or "show related to X" but recall returned VIEW_ALL/ZOOM_OUT,
-          // override to SELECT_NODE — the user clearly wants a specific node, not a reset.
-          const hasNodeIntent = textLower.includes('click') || textLower.includes('select') ||
-            textLower.includes('show') || textLower.includes('related') || textLower.includes('connected') ||
-            textLower.includes('expand') || textLower.includes('neighbors')
-          if (hasNodeIntent && (intentData.ui_action === 'VIEW_ALL' || intentData.ui_action === 'ZOOM_OUT')) {
-            intentData.ui_action = 'SELECT_NODE'
-            intentData.expand_hops = (textLower.includes('related') || textLower.includes('connected') || textLower.includes('neighbors') || textLower.includes('expand')) ? 1 : 0
-          }
         }
         const { ui_action, target_node_id, expand_hops = 1, perspective: intentP } = intentData
         let executedMsg = ''
