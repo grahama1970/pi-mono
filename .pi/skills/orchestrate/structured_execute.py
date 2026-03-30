@@ -313,24 +313,36 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
     """Delegate to /code-runner skill with blind eval retry loop.
 
     Flow per attempt:
-      1. Build code-runner spec (with blind feedback from prior attempt if any)
+      1. Build code-runner spec (with accumulated blind feedback from prior attempts)
       2. Run code-runner
       3. If DoD passed AND blind_tests exist → call test-lab
-      4. If blind eval fails → inject sanitized feedback → retry (up to max_blind_retries)
+      4. If blind eval fails → accumulate sanitized feedback → retry
       5. If blind eval passes or no blind_tests → done
     """
     code_runner = SKILLS_DIR / "code-runner" / "run.sh"
     if not code_runner.exists():
         raise RuntimeError(f"/code-runner skill not found at {code_runner}")
 
-    max_blind_retries = 3  # total attempts including the first
-    blind_feedback_prompt = ""  # accumulated blind failure feedback for retry prompts
+    max_blind_attempts = 3
+    accumulated_feedback: list[str] = []  # accumulated across ALL attempts (#14 fix)
+    blind_passed = False  # explicit flag (#17 fix)
 
-    for attempt in range(1, max_blind_retries + 1):
+    for attempt in range(1, max_blind_attempts + 1):
+        attempt_tag = f"a{attempt}" if attempt > 1 else ""
+
+        # Build prompt with accumulated blind feedback from all prior attempts
+        blind_feedback_prompt = ""
+        if accumulated_feedback:
+            blind_feedback_prompt = (
+                f"\n\n--- Hidden evaluation feedback (attempt {attempt}/{max_blind_attempts}) ---\n"
+                f"Your code passed visible tests but failed hidden quality checks:\n"
+                + "\n".join(accumulated_feedback)
+                + "\nFix ALL issues above. You cannot see the hidden tests.\n"
+            )
+
         # Build spec — blind_tests NEVER included (information barrier)
-        attempt_suffix = f"-attempt{attempt}" if attempt > 1 else ""
         spec: dict = {
-            "task_id": f"{task.task_id}{attempt_suffix}",
+            "task_id": f"{task.task_id}{attempt_tag}",
             "title": task.title,
             "prompt": task.prompt + blind_feedback_prompt,
             "backend": task.backend or "codex",
@@ -344,7 +356,7 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
         if task.max_rounds != 5:
             spec["max_rounds"] = task.max_rounds
 
-        spec_file = session_dir / f"{task.task_id}{attempt_suffix}.code-runner-spec.json"
+        spec_file = session_dir / f"{task.task_id}{attempt_tag}.code-runner-spec.json"
         spec_file.write_text(json.dumps(spec, indent=2))
 
         proc = await asyncio.create_subprocess_exec(
@@ -356,26 +368,31 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
         )
         stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1800)
 
-        output_path = session_dir / f"{task.task_id}.response.txt"
+        # Per-attempt output files (#1, #2 fix — no overwrites)
+        output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
         output_path.write_text(stdout.decode(errors="replace"))
         task.output_path = output_path
 
-        # Read result.json
-        result_file = session_dir / f"{task.task_id}{attempt_suffix}.result.json"
+        # Read result.json (#6 fix — treat parse failure as error, not silent pass)
+        result_file = session_dir / f"{task.task_id}{attempt_tag}.result.json"
         if result_file.exists():
             try:
                 result = json.loads(result_file.read_text())
                 task.review_status = "pass" if result.get("dod_passed") else "fail"
                 task.review_output = (
-                    f"attempt={attempt}/{max_blind_retries} "
+                    f"attempt={attempt}/{max_blind_attempts} "
                     f"score={result.get('best_score', 0):.3f} "
                     f"rounds={result.get('rounds', 0)} "
                     f"dod={'PASS' if result.get('dod_passed') else 'FAIL'}"
                 )
-            except (json.JSONDecodeError, KeyError):
-                task.review_status = "code-runner"
+            except (json.JSONDecodeError, KeyError) as exc:
+                task.review_status = "fail"
+                task.error = f"result.json parse error: {exc}"
+                break
         else:
-            task.review_status = "code-runner"
+            task.review_status = "fail"
+            task.error = "result.json missing"
+            break
 
         if proc.returncode != 0:
             raise RuntimeError(
@@ -387,46 +404,53 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             break
 
         # Blind eval gate — code-runner never sees these tests
-        blind_result = await _run_blind_eval(task, session_dir)
-        if not blind_result or blind_result.get("status") == "pass":
-            # Blind eval passed (or test-lab unreachable — graceful degradation)
+        blind_result = await _run_blind_eval(task, session_dir, attempt_tag)
+
+        # #11 fix: test-lab unreachable with blind_tests = unverified, NOT pass
+        if blind_result is None:
+            task.review_status = "unverified"
+            task.review_output += "\n--- blind eval: SKIPPED (test-lab unreachable) ---"
             break
 
-        # Blind eval failed — build sanitized feedback for retry
-        blind_feedback = "\n".join(
-            f"  - Hidden test {c['index']}: {c['message']}"
+        if blind_result.get("status") == "pass":
+            blind_passed = True
+            break
+
+        # Blind eval failed — accumulate feedback (#14 fix — don't replace, accumulate)
+        new_failures = [
+            f"  - Check failed: {c['message']}"
             for c in blind_result.get("checks", []) if not c["passed"]
-        )
+        ]
+        accumulated_feedback.extend(new_failures)
+
         logger.warning("Blind eval FAILED for {} attempt {}/{} ({}/{})",
-                       task.task_id, attempt, max_blind_retries,
-                       blind_result["failed"], blind_result["total"])
+                       task.task_id, attempt, max_blind_attempts,
+                       blind_result.get("failed", 0), blind_result.get("total", 0))
 
-        if attempt < max_blind_retries:
-            # Inject sanitized feedback — no test source, only failure messages
-            blind_feedback_prompt = (
-                f"\n\n--- Hidden evaluation feedback (attempt {attempt}/{max_blind_retries}) ---\n"
-                f"Your code passed the visible tests but failed hidden quality checks:\n"
-                f"{blind_feedback}\n"
-                f"Fix the issues described above. You cannot see the hidden tests.\n"
-            )
-            logger.info("Retrying code-runner with blind feedback for {}", task.task_id)
-        else:
+        if attempt >= max_blind_attempts:
+            # #16 fix: explicit terminal state
             task.review_status = "fail"
+            task.error = f"blind eval exhausted after {max_blind_attempts} attempts"
             task.review_output += (
-                f"\n--- blind eval: EXHAUSTED after {max_blind_retries} attempts ---\n{blind_feedback}"
+                f"\n--- blind eval: EXHAUSTED ({max_blind_attempts} attempts) ---\n"
+                + "\n".join(new_failures)
             )
 
-    # T2 gate: auto-review via /review-code if available and code-runner passed
-    if task.review_status == "pass":
+    # #17 fix: T2 review only if BOTH DoD and blind eval passed (or no blind tests)
+    if task.review_status == "pass" and (blind_passed or not task.blind_tests):
         await _review_code_runner_output(task, session_dir)
 
 
-async def _run_blind_eval(task: TaskRuntime, session_dir: Path) -> dict | None:
+async def _run_blind_eval(task: TaskRuntime, session_dir: Path,
+                          attempt_tag: str = "") -> dict | None:
     """Call test-lab Docker service with blind tests. Returns result dict or None.
 
     The information barrier: code-runner never sees blind_tests.
     Only orchestrate has them (from the plan YAML) and sends them directly to test-lab.
     Code-runner only gets sanitized failure messages if orchestrate retries the task.
+
+    Returns None ONLY on connection failure (test-lab unreachable).
+    HTTP errors and malformed responses raise to caller.
     """
     test_lab_url = os.environ.get("TEST_LAB_URL", "http://127.0.0.1:8787")
     try:
@@ -442,19 +466,26 @@ async def _run_blind_eval(task: TaskRuntime, session_dir: Path) -> dict | None:
             resp.raise_for_status()
             result = resp.json()
 
-            # Save blind eval result (but NOT the test assertions — those stay hidden)
-            eval_file = session_dir / f"{task.task_id}.blind-eval.json"
-            # Strip assertions from saved result to maintain barrier
-            safe_result = {**result, "checks": [
-                {"passed": c["passed"], "message": c["message"]} for c in result.get("checks", [])
-            ]}
+            # Save per-attempt blind eval result — strip indices to prevent
+            # oracle-guided test reconstruction (#9 fix)
+            eval_file = session_dir / f"{task.task_id}{attempt_tag}.blind-eval.json"
+            safe_result = {
+                "status": result.get("status"),
+                "passed": result.get("passed"),
+                "failed": result.get("failed"),
+                "total": result.get("total"),
+                "checks": [
+                    {"passed": c["passed"], "message": c["message"]}
+                    for c in result.get("checks", [])
+                ],
+            }
             eval_file.write_text(json.dumps(safe_result, indent=2))
             return result
     except httpx.ConnectError:
-        logger.warning("test-lab not reachable at {} — skipping blind eval", test_lab_url)
+        logger.warning("test-lab not reachable at {} — blind eval skipped", test_lab_url)
         return None
     except Exception as e:
-        logger.warning("Blind eval failed (non-fatal): {}", e)
+        logger.error("Blind eval error (non-connection): {}", e)
         return None
 
 

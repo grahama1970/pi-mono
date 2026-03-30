@@ -193,22 +193,24 @@ const GROUPS = {
     {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-detail-closeup'},
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'symbol-tree':           [...PRE, {a:'eval',s:clickTab('connections')},{a:'wait',ms:500},{a:'ss',n:'03-connections-tree'}],
-  'table-view':            [...PRE, {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},{a:'ss',n:'03-table'},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
-    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'04-table-closeup'},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
-  'taxonomy-integration':  [
-    // Skip PRE (01-initial, 02-with-selection show "All Features" which confuses VLM)
+  'table-view':            [
+    // Custom: click node, switch to table tab, then ONLY show expanded table (skip 01-initial which has no table)
     {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
-    // Switch to Security perspective
+    {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
+    {a:'ss',n:'01-table-full'},
+    ...detailCloseup('02-table-closeup')],
+  'taxonomy-integration':  [
+    // Click security-relevant node, switch to Security perspective, zoom in to show CWE coloring
+    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
     {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
-    // Full page with security perspective graph + CWE rings
-    {a:'ss',n:'01-security-graph'},
-    // Then expand detail panel to show CWE badges closeup
+    // Zoom into the graph to make nodes larger (double-click selected node to zoom 2x)
+    {a:'eval',s:`(()=>{const svg=document.querySelector('#be-graph-pane svg');if(svg&&svg.__panToNode){const sel=document.querySelector('g.nodes g .pulse-ring');if(sel){const id=sel.parentElement?.__data__?.id;if(id){svg.__panToNode(id,2.5);return 'zoomed:'+id}}}return 'no zoom'})()`},
+    {a:'wait',ms:1000},
+    // Full page showing zoomed graph with larger nodes (CWE red fill visible)
+    {a:'ss',n:'01-security-zoomed'},
+    // Expanded detail panel showing CWE badges
     {a:'eval',s:clickTab('summary')},{a:'wait',ms:300},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
-    {a:'wait',ms:300},{a:'ssClip',sel:'#be-detail-panel',n:'02-cwe-detail'},
-    {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
+    ...detailCloseup('02-cwe-detail')],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
