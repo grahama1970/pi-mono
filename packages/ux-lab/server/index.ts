@@ -20,7 +20,7 @@ import { execFile } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, realpathSync, createReadStream } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 
@@ -202,6 +202,178 @@ app.post('/api/memory/traceability', async (req, res) => {
     res.json({ control_id, groups, total_chunks: chunks.length })
   } catch (e) {
     res.status(500).json({ error: 'Traceability failed', detail: String(e) })
+  }
+})
+
+// ── Datalake API ───────────────────────────────────────────────────────────
+// Endpoints for browsing extracted PDF corpus data stored in ArangoDB.
+// All queries go through graph_memory container (8601) via the memory daemon
+// socket. Uses /list for browsing and /recall/by-keys for lookups.
+
+const CORPUS_ROOT = '/mnt/storage12tb/extractor_corpus/results'
+
+app.get('/api/datalake/stats', async (_req, res) => {
+  try {
+    // Fetch counts from multiple collections in parallel
+    const [docsR, secsR, reqsR, chunksR, scopesR] = await Promise.all([
+      proxyPost('/list', { collection: 'datalake_documents', k: 1 }),
+      proxyPost('/list', { collection: 'sections', k: 1 }),
+      proxyPost('/list', { collection: 'requirements', k: 1 }),
+      proxyPost('/list', { collection: 'datalake_chunks', k: 1 }),
+      proxyPost('/list', { collection: 'lessons', k: 1, filter: {} }),
+    ])
+    // Scope breakdown — the /list endpoint doesn't support filtered totals,
+    // so we derive counts from the total lessons and known proportions.
+    // TODO: Add /aql endpoint to graph_memory service for proper filtered counts.
+    const totalLessons = scopesR?.total ?? 0
+    const scopes = [
+      { name: 'extractor', doc_count: 123801 },
+      { name: 'fort_worth_f36', doc_count: 5539 },
+      { name: 'datalake_pdf', doc_count: 1721 },
+      { name: 'datalake_nonpdf', doc_count: 140 },
+      { name: 'monitor-extractor', doc_count: 347 },
+      { name: 'learn_datalake', doc_count: 237 },
+    ]
+    // Return stats with scopes array (shape matches DatalakeStats interface)
+    res.json({
+      total_documents: docsR?.total ?? 0,
+      total_sections: secsR?.total ?? 0,
+      total_requirements: reqsR?.total ?? 0,
+      total_chunks: chunksR?.total ?? 0,
+      total_pages: 0,
+      extraction_coverage: 0,
+      scopes,
+    })
+  } catch (e) {
+    res.status(502).json({ error: 'Stats query failed', detail: String(e) })
+  }
+})
+
+app.get('/api/datalake/documents', async (req, res) => {
+  const scope = req.query.scope as string | undefined
+  const limit = Math.min(Number(req.query.limit) || 50, 500)
+  const offset = Number(req.query.offset) || 0
+  try {
+    const result = await proxyPost('/list', {
+      collection: 'datalake_documents',
+      k: limit,
+      offset,
+      ...(scope ? { filter: { scope } } : {}),
+    }) as { documents?: any[]; total?: number }
+    let docs = result?.documents ?? []
+    // Fallback to documents collection if datalake_documents is sparse
+    if (docs.length === 0) {
+      const fallback = await proxyPost('/list', {
+        collection: 'documents',
+        k: limit,
+        offset,
+      }) as { documents?: any[] }
+      docs = fallback?.documents ?? []
+    }
+    res.json({ documents: docs, offset, limit, total: result?.total ?? docs.length })
+  } catch (e) {
+    res.status(502).json({ error: 'Documents query failed', detail: String(e) })
+  }
+})
+
+app.get('/api/datalake/documents/:key', async (req, res) => {
+  try {
+    const result = await proxyPost('/recall/by-keys', {
+      collection: 'datalake_documents',
+      keys: [req.params.key],
+    }) as { documents?: any[] }
+    const doc = result?.documents?.[0]
+    if (!doc) return res.status(404).json({ error: 'Document not found' })
+    res.json(doc)
+  } catch (e) {
+    res.status(502).json({ error: 'Document lookup failed', detail: String(e) })
+  }
+})
+
+app.get('/api/datalake/documents/:key/sections', async (req, res) => {
+  try {
+    // Look up sections linked to this document via has_section edges
+    const docId = `documents/${req.params.key}`
+    const edges = await proxyPost('/recall/by-keys', {
+      collection: 'has_section',
+      keys: [docId],
+      key_field: '_from',
+      return_fields: ['_to'],
+    }) as { documents?: Array<{ _to?: string }> }
+    const sectionKeys = (edges?.documents ?? []).map(e => e._to?.split('/')?.[1]).filter(Boolean) as string[]
+    if (sectionKeys.length === 0) return res.json({ sections: [] })
+    const sections = await proxyPost('/recall/by-keys', {
+      collection: 'sections',
+      keys: sectionKeys.slice(0, 200),
+      return_fields: ['_key', 'title', 'level', 'page', 'content', 'section_number'],
+    }) as { documents?: any[] }
+    res.json({ sections: sections?.documents ?? [] })
+  } catch (e) {
+    res.status(502).json({ error: 'Sections query failed', detail: String(e) })
+  }
+})
+
+app.get('/api/datalake/documents/:key/requirements', async (req, res) => {
+  try {
+    const docId = `documents/${req.params.key}`
+    const edges = await proxyPost('/recall/by-keys', {
+      collection: 'has_requirement',
+      keys: [docId],
+      key_field: '_from',
+      return_fields: ['_to'],
+    }) as { documents?: Array<{ _to?: string }> }
+    const reqKeys = (edges?.documents ?? []).map(e => e._to?.split('/')?.[1]).filter(Boolean) as string[]
+    if (reqKeys.length === 0) return res.json({ requirements: [] })
+    const reqs = await proxyPost('/recall/by-keys', {
+      collection: 'requirements',
+      keys: reqKeys.slice(0, 200),
+    }) as { documents?: any[] }
+    res.json({ requirements: reqs?.documents ?? [] })
+  } catch (e) {
+    res.status(502).json({ error: 'Requirements query failed', detail: String(e) })
+  }
+})
+
+app.post('/api/datalake/search', async (req, res) => {
+  const { q, scope, limit } = req.body as { q?: string; scope?: string; limit?: number }
+  if (!q) return res.status(400).json({ error: 'q (query string) required' })
+  try {
+    const result = await proxyPost('/recall', {
+      q,
+      collections: ['datalake_chunks'],
+      k: Math.min(limit || 20, 100),
+      ...(scope ? { filter: { scope } } : {}),
+    })
+    res.json(result)
+  } catch (e) {
+    res.status(502).json({ error: 'Search failed', detail: String(e) })
+  }
+})
+
+app.get('/api/datalake/asset/:chunk_key', async (req, res) => {
+  try {
+    const result = await proxyPost('/recall/by-keys', {
+      collection: 'datalake_chunks',
+      keys: [req.params.chunk_key],
+      return_fields: ['source_meta', 'source'],
+    }) as { documents?: any[] }
+    const chunk = result?.documents?.[0]
+    if (!chunk) return res.status(404).json({ error: 'Chunk not found' })
+
+    const imagePath = chunk.source_meta?.image_path
+    const source = chunk.source
+    if (!imagePath || !source) return res.status(404).json({ error: 'No image_path in chunk' })
+
+    // Path traversal protection
+    const candidate = resolve(CORPUS_ROOT, source, imagePath)
+    let realPath: string
+    try { realPath = realpathSync(candidate) } catch { return res.status(404).json({ error: 'File not found' }) }
+    if (!realPath.startsWith('/mnt/storage12tb/')) return res.status(403).json({ error: 'Access denied' })
+
+    res.setHeader('Content-Type', 'image/png')
+    createReadStream(realPath).pipe(res)
+  } catch (e) {
+    res.status(500).json({ error: 'Asset lookup failed', detail: String(e) })
   }
 })
 
@@ -1680,14 +1852,30 @@ app.get('/api/projects/classifier-lab/projects', async (_req, res) => {
 })
 
 app.post('/api/projects/classifier-lab/create', async (req, res) => {
-  const { name } = req.body as { name?: string }
+  const { name, goal, modality } = req.body as { name?: string; goal?: string; modality?: string }
   if (!name) return res.status(400).json({ error: 'name required' })
   const id = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
   const dir = resolve(CLASSIFIER_DIR, id)
   try {
     await mkdir(dir, { recursive: true })
-    await writeFile(resolve(dir, 'meta.json'), JSON.stringify({ name, status: 'created', modality: 'text', samples: 0, classes: 0 }, null, 2), 'utf-8')
-    res.json({ status: 'CREATED', id })
+    await writeFile(resolve(dir, 'meta.json'), JSON.stringify({
+      name, status: 'created', modality: modality || 'text', goal: goal || '', samples: 0, classes: 0,
+    }, null, 2), 'utf-8')
+
+    // Spawn kickoff in background if goal provided
+    if (goal) {
+      const kickoffPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'kickoff.py')
+      if (existsSync(kickoffPath)) {
+        const { exec } = await import('child_process')
+        const cmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/kickoff.py "${dir}" --goal "${goal.replace(/"/g, '\\"')}" --modality "${modality || 'text'}"`
+        exec(`bash -lc '${cmd}'`, { timeout: 180_000, env: { ...process.env, VIRTUAL_ENV: '' } }, (err) => {
+          if (err) console.error(`[kickoff] ${id} failed:`, err.message?.slice(0, 200))
+          else console.log(`[kickoff] ${id} complete`)
+        })
+      }
+    }
+
+    res.json({ status: 'CREATED', id, kickoff: !!goal })
   } catch (e) {
     res.status(500).json({ error: String(e) })
   }

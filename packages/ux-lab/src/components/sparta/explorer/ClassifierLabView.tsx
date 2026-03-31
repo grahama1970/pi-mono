@@ -280,6 +280,8 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
   const [researchGateInfo, setResearchGateInfo] = useState<any>(null)
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newProjectName, setNewProjectName] = useState('')
+  const [newProjectGoal, setNewProjectGoal] = useState('')
+  const [newProjectModality, setNewProjectModality] = useState('text')
   const [creating, setCreating] = useState(false)
   const [filterModality, setFilterModality] = useState<string>('')
   const [mainDataInfo, setMainDataInfo] = useState<any>(null)
@@ -433,7 +435,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
 
   const { menuProps, triggerContextMenu } = useContextMenu(handleContextAction)
 
-  // Create new project
+  // Create new project with goal + modality → triggers kickoff
   const createProject = useCallback(async () => {
     const name = newProjectName.trim().replace(/[^a-z0-9-]/gi, '-').toLowerCase()
     if (!name) return
@@ -441,19 +443,21 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
     try {
       const res = await fetch(`${API}/projects/classifier-lab/create`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, goal: newProjectGoal.trim(), modality: newProjectModality }),
       })
       const data = await res.json()
       if (data.status === 'CREATED') {
         loadProjects()
-        setSelectedProjectId(name)
+        setSelectedProjectId(data.id || name)
         setActiveTab('research')
         setShowCreateDialog(false)
         setNewProjectName('')
+        setNewProjectGoal('')
+        setNewProjectModality('text')
       }
     } catch { /* */ }
     setCreating(false)
-  }, [newProjectName, loadProjects])
+  }, [newProjectName, newProjectGoal, newProjectModality, loadProjects])
 
   if (!projects.length && !showCreateDialog) return (
     <div style={{ background: EMBRY.bg, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
@@ -488,20 +492,39 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
       {showCreateDialog && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}
           onClick={() => setShowCreateDialog(false)}>
-          <div onClick={e => e.stopPropagation()} style={{ ...card, width: 400, padding: 32 }}>
+          <div onClick={e => e.stopPropagation()} style={{ ...card, width: 480, padding: 32 }}>
             <div style={{ ...heading, marginBottom: 16 }}>New Classifier Project</div>
             <div style={{ ...label, marginBottom: 6 }}>PROJECT NAME</div>
             <input value={newProjectName} onChange={e => setNewProjectName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && createProject()}
-              placeholder="e.g. leaf-disease, table-structure, intent-clf"
+              placeholder="e.g. email-spam-detection, sentiment-analysis"
               autoFocus
               style={{
                 width: '100%', background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`,
                 borderRadius: 4, padding: '10px 12px', color: EMBRY.white, fontSize: 12,
                 fontFamily: MONO, outline: 'none', boxSizing: 'border-box',
               }} />
-            <div style={{ fontSize: 9, color: EMBRY.muted, marginTop: 6 }}>
-              Alphanumeric and hyphens only. Data will be stored at /classifier-lab/data/{'{name}'}/
+            <div style={{ ...label, marginBottom: 6, marginTop: 14 }}>WHAT SHOULD THIS CLASSIFIER DO?</div>
+            <textarea value={newProjectGoal} onChange={e => setNewProjectGoal(e.target.value)}
+              placeholder="e.g. Classify customer emails as spam or not spam. Detect phishing attempts in incoming messages."
+              rows={3}
+              style={{
+                width: '100%', background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`,
+                borderRadius: 4, padding: '10px 12px', color: EMBRY.white, fontSize: 11,
+                fontFamily: MONO, outline: 'none', boxSizing: 'border-box', resize: 'vertical',
+              }} />
+            <div style={{ display: 'flex', gap: 12, marginTop: 14 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ ...label, marginBottom: 6 }}>MODALITY</div>
+                <select value={newProjectModality} onChange={e => setNewProjectModality(e.target.value)}
+                  style={{ ...filterSelect, width: '100%', padding: '10px 12px' }}>
+                  <option value="text">Text</option>
+                  <option value="vision">Vision (images)</option>
+                  <option value="tabular">Tabular (structured data)</option>
+                </select>
+              </div>
+            </div>
+            <div style={{ fontSize: 9, color: EMBRY.muted, marginTop: 8 }}>
+              The agent will run /dogpile to research backbones, search HuggingFace for training data, and seed the project.
             </div>
             <div style={{ display: 'flex', gap: 12, marginTop: 20, justifyContent: 'flex-end' }}>
               <button onClick={() => setShowCreateDialog(false)}
