@@ -175,6 +175,36 @@ app.get('/api/worksheets', async (_req, res) => {
 //   POST /learn     — store new lessons
 //   GET  /health    — daemon health check
 
+// ── Traceability: chunk_control_edges → datalake_chunks (BEFORE wildcard) ───
+app.post('/api/memory/traceability', async (req, res) => {
+  const { control_id } = req.body as { control_id: string }
+  if (!control_id) return res.status(400).json({ error: 'control_id required' })
+  try {
+    const toKey = `sparta_controls/ctrl__${control_id}`
+    const edgeResult = await proxyPost('/recall/by-keys', {
+      collection: 'chunk_control_edges', keys: [toKey], key_field: '_to',
+      return_fields: ['_from', 'control_id', 'confidence', 'tier'],
+    }) as { documents?: Array<{ _from?: string; control_id?: string }> }
+    const edges = edgeResult.documents ?? []
+    if (edges.length === 0) return res.json({ control_id, groups: {}, total_chunks: 0 })
+    const chunkKeys = edges.map(e => e._from?.split('/')?.[1]).filter(Boolean) as string[]
+    const chunkResult = await proxyPost('/recall/by-keys', {
+      collection: 'datalake_chunks', keys: chunkKeys.slice(0, 50),
+      return_fields: ['text', 'asset_type', 'doc_id', 'source', 'content_type'],
+    }) as { documents?: Array<Record<string, any>> }
+    const chunks = chunkResult.documents ?? []
+    const groups: Record<string, Array<Record<string, any>>> = {}
+    for (const c of chunks) {
+      const t = c.asset_type || 'Text'
+      if (!groups[t]) groups[t] = []
+      groups[t].push({ _key: c._key, text: (c.text || '').slice(0, 300), doc_id: c.doc_id, asset_type: t })
+    }
+    res.json({ control_id, groups, total_chunks: chunks.length })
+  } catch (e) {
+    res.status(500).json({ error: 'Traceability failed', detail: String(e) })
+  }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
@@ -2440,6 +2470,36 @@ app.post('/api/projects/classifier-lab/eval-questions/:id/run', async (req, res)
     data.evaluated_at = null
     await writeFile(qPath, JSON.stringify(data, null, 2), 'utf-8')
     res.json({ results, note: 'Inference not available — install run_eval_questions.py to run predictions' })
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
+// Full pipeline — data enrichment + training loop in one call
+app.post('/api/projects/classifier-lab/pipeline/:id', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    if (!existsSync(projDir)) return res.status(404).json({ error: 'Project not found' })
+
+    const scriptPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'pipeline.py')
+    if (!existsSync(scriptPath)) return res.status(500).json({ error: 'pipeline.py not found' })
+
+    const { gate_f1 = 0.90, max_rounds = 8, min_per_class = 50, max_length = 128 } = req.body as Record<string, number>
+    const execFileAsync = promisify(execFile)
+
+    const { stdout } = await execFileAsync(
+      'bash', ['-lc', `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/pipeline.py "${projDir}" --gate-f1 ${gate_f1} --max-training-rounds ${max_rounds} --min-per-class ${min_per_class} --max-length ${max_length}`],
+      { timeout: 1800_000, env: { ...process.env, VIRTUAL_ENV: '' } },
+    )
+
+    const lines = stdout.trim().split('\n')
+    const lastLine = lines[lines.length - 1]
+    try {
+      res.json(JSON.parse(lastLine))
+    } catch {
+      res.json({ status: 'completed', stdout: stdout.slice(-500) })
+    }
   } catch (e) {
     res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
   }
