@@ -2841,25 +2841,43 @@ app.post('/api/evidence-case/trace', async (req, res) => {
   if (!control_id) return res.status(400).json({ error: 'control_id required' })
 
   try {
-    const recallResult = await proxyPost('/recall', {
-      q: `${control_id} evidence case verdict`,
-      k: 20,
-      tags: ['sensai-cascade-label'],
-    }) as { items?: Array<Record<string, any>> }
+    // Query dedicated evidence_cases collection (not lessons)
+    const listResult = await proxyPost('/list', {
+      collection: 'evidence_cases', limit: 100,
+    }) as { documents?: Array<Record<string, any>> }
 
     const cases: Array<Record<string, any>> = []
-    for (const item of recallResult.items ?? []) {
-      let sol: Record<string, any> = {}
-      try { const raw = item.solution ?? ''; if (raw.startsWith('{')) sol = JSON.parse(raw) } catch { continue }
-      const cids: string[] = sol.control_ids ?? []
+    for (const doc of listResult.documents ?? []) {
+      const cids: string[] = doc.control_ids ?? []
       if (!cids.some((c: string) => c === control_id || control_id.startsWith(c) || c.startsWith(control_id))) continue
       cases.push({
-        verdict: sol.verdict ?? 'unknown', grade: sol.grade ?? '?',
-        question: sol.question ?? item.problem ?? '',
-        gates_passed: sol.gates_passed ?? 0, gates_total: sol.gates_total ?? 0,
-        gate_summary: sol.gate_summary ?? '', tier: sol.tier ?? 'T0', control_ids: cids,
+        verdict: doc.verdict ?? 'unknown', grade: doc.grade ?? '?',
+        question: doc.question ?? '',
+        gates_passed: doc.gates_passed ?? 0, gates_total: doc.gates_total ?? 0,
+        gate_summary: doc.gate_summary ?? '', tier: doc.tier ?? 'T0', control_ids: cids,
       })
     }
+
+    // Fallback: also check lessons for legacy cases not yet migrated
+    if (cases.length === 0) {
+      const recallResult = await proxyPost('/recall', {
+        q: `${control_id} evidence case verdict`, k: 20,
+        tags: ['sensai-cascade-label'],
+      }) as { items?: Array<Record<string, any>> }
+      for (const item of recallResult.items ?? []) {
+        let sol: Record<string, any> = {}
+        try { const raw = item.solution ?? ''; if (raw.startsWith('{')) sol = JSON.parse(raw) } catch { continue }
+        const cids: string[] = sol.control_ids ?? []
+        if (!cids.some((c: string) => c === control_id || control_id.startsWith(c) || c.startsWith(control_id))) continue
+        cases.push({
+          verdict: sol.verdict ?? 'unknown', grade: sol.grade ?? '?',
+          question: sol.question ?? item.problem ?? '',
+          gates_passed: sol.gates_passed ?? 0, gates_total: sol.gates_total ?? 0,
+          gate_summary: sol.gate_summary ?? '', tier: sol.tier ?? 'T0', control_ids: cids,
+        })
+      }
+    }
+
     res.json({ control_id, cases })
   } catch (e) {
     res.status(500).json({ error: 'Evidence trace failed', detail: String(e) })
@@ -2891,17 +2909,15 @@ app.post('/api/critical-path', async (req, res) => {
       }
     }
 
-    // Build verdict map from evidence cases
-    const evidenceResult = await proxyPost('/recall', {
-      q: 'sensai cascade label verdict evidence SPARTA', k: 200, tags: ['sensai-cascade-label'],
-    }) as { items?: Array<Record<string, any>> }
+    // Build verdict map from evidence_cases collection (dedicated, not lessons)
+    const evidenceResult = await proxyPost('/list', {
+      collection: 'evidence_cases', limit: 500,
+    }) as { documents?: Array<Record<string, any>> }
     const verdictMap = new Map<string, string>()
-    for (const item of evidenceResult.items ?? []) {
-      let sol: Record<string, any> = {}
-      try { const raw = item.solution ?? ''; if (raw.startsWith('{')) sol = JSON.parse(raw) } catch { continue }
-      for (const cid of (sol.control_ids ?? [])) {
+    for (const doc of evidenceResult.documents ?? []) {
+      for (const cid of (doc.control_ids ?? [])) {
         const existing = verdictMap.get(cid)
-        if (!existing || sol.verdict === 'satisfied') verdictMap.set(cid, sol.verdict ?? 'unknown')
+        if (!existing || doc.verdict === 'satisfied') verdictMap.set(cid, doc.verdict ?? 'unknown')
       }
     }
 

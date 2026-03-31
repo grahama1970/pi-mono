@@ -1,0 +1,358 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:3003",
+  "category": "persona-reviews",
+  "persona": "brandon-bailey",
+  "tests": [
+    {
+      "id": "bb_nav_01",
+      "group": "navigation-and-layout",
+      "label": "Brandon Bailey: Navigate to Embry Terminal and verify layout",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked final-site tab'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const el = document.querySelector('[data-qid=\"topbar:agent:select\"]'); return el ? 'agent picker found: ' + el.textContent.trim() : 'agent picker missing'; })()"
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const el = document.querySelector('[data-qid=\"topbar:connection:status\"]'); return el ? 'connection status: ' + el.textContent.trim() : 'connection status missing'; })()"
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const el = document.querySelector('[data-qid=\"input:compose\"]'); return el ? 'input bar found' : 'input bar missing'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "initial-layout",
+          "review_criteria": "As a Principal Director of Cyber Assessments at Aerospace Corporation who manages SPARTA assessments across multiple projects: Does this agent control surface present a clear, professional layout? Can you immediately identify: (1) which agent/model is active, (2) connection status, (3) how to send a command, (4) how to switch projects? Is the information hierarchy appropriate for someone managing 29+ security assessment projects? Does the NVIS dark theme feel appropriate for a defense/aerospace security tool?"
+        }
+      ]
+    },
+    {
+      "id": "bb_nav_02",
+      "group": "navigation-and-layout",
+      "label": "Brandon Bailey: Project sidebar and switching",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const toggle = document.querySelector('[data-qid=\"topbar:sidebar:toggle\"]'); if (toggle) { toggle.click(); return 'sidebar toggled'; } return 'sidebar toggle missing'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const projects = document.querySelectorAll('[data-qid^=\"sidebar:project:\"]'); return projects.length + ' projects in sidebar'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "project-sidebar",
+          "review_criteria": "As someone who manages 29 registered assessment projects (SPARTA, memory, extractors, etc.): Is the project sidebar efficient for switching between active assessments? Can you see project names, git branches, and paths at a glance? Is there a search/filter mechanism for when you have many projects? Would you trust this to quickly switch from a SPARTA assessment to a memory service debug session? Compare to how you'd switch projects in an IDE."
+        }
+      ]
+    },
+    {
+      "id": "bb_skills_01",
+      "group": "skill-system",
+      "label": "Brandon Bailey: Skill palette discovery and invocation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const input = document.querySelector('[data-qid=\"input:compose\"]'); if (!input) return 'input not found'; input.focus(); input.value = '/'; input.dispatchEvent(new Event('input', { bubbles: true })); return 'typed / in input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const palette = document.querySelector('[data-qid=\"skill-palette:dropdown\"]'); if (!palette) return 'skill palette not visible'; const items = palette.querySelectorAll('[data-qid^=\"skill-palette:skill:\"]'); return 'skill palette open with ' + items.length + ' skills visible'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "skill-palette",
+          "review_criteria": "As a SPARTA assessor who routinely uses /assess, /sparta-review, /dogpile, /memory recall, and /plan: Does the skill palette make it easy to discover and invoke skills? Is fuzzy search effective — if you type 'spar' does /sparta-review surface? Are skill descriptions visible so you know what each does? Does the /skill-name syntax feel natural in the input bar? Can you see how many skills are available (should be 100+)? Would this replace typing skill names from memory?"
+        }
+      ]
+    },
+    {
+      "id": "bb_skills_02",
+      "group": "skill-system",
+      "label": "Brandon Bailey: Skill highlighting in conversation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const tags = document.querySelectorAll('[data-qid^=\"skill:\"]'); return tags.length + ' skill references highlighted in conversation'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "skill-highlighting",
+          "review_criteria": "As someone who reads agent responses referencing multiple skills (/assess, /dogpile, /memory, /plan, /orchestrate): Are skill names visually distinct in the conversation? Can you quickly scan a response and identify which skills were invoked or recommended? Is the highlighting style consistent and not distracting? Would you be able to click a skill reference to see its documentation or invoke it?"
+        }
+      ]
+    },
+    {
+      "id": "bb_recall_01",
+      "group": "memory-and-recall",
+      "label": "Brandon Bailey: Memory recall display and trust",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const recall = document.querySelector('[data-qid=\"chat:recall-card\"]'); if (!recall) return 'no recall card in conversation'; const toggle = document.querySelector('[data-qid=\"chat:recall-card:toggle\"]'); if (toggle) { toggle.click(); return 'recall card found and expanded'; } return 'recall card present but no toggle'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 500
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('[data-qid^=\"chat:recall:item:\"]'); return items.length + ' recall items visible'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "memory-recall",
+          "review_criteria": "As a SPARTA assessor who depends on /memory recall for institutional knowledge (prior assessments, known issues, proven skill chains): Does the recall card clearly show what was found in memory? Are the score bars (BM25, Graph, Dense, Freshness) meaningful — can you judge whether the recall is trustworthy? Is the confidence percentage visible and interpretable? Can you expand individual results to see the full problem/solution? Would you trust this to surface relevant prior work before starting a new assessment? Compare to how recall results appear in Claude Code's terminal output."
+        }
+      ]
+    },
+    {
+      "id": "bb_reasoning_01",
+      "group": "reasoning-chain",
+      "label": "Brandon Bailey: Reasoning chain visibility and trust",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const chain = document.querySelector('[data-qid=\"reasoning-chain\"]'); if (!chain) return 'no reasoning chain in conversation'; const summary = document.querySelector('[data-qid=\"reasoning-chain-summary\"]'); if (summary) { summary.click(); return 'reasoning chain found and expanded'; } return 'reasoning chain present but no summary toggle'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 500
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "reasoning-chain",
+          "review_criteria": "As someone who needs to audit agent reasoning for CMMC compliance evidence cases and SPARTA assessments: Does the reasoning chain clearly show what the agent did step by step? Can you see which skills were invoked, their status (running/done/failed), duration, and confidence? Is the vertical timeline intuitive — does it read like a GitHub Actions workflow log? Can you expand individual steps for detail? For a multi-step operation like /create-evidence-case (recall → dogpile → extract-controls → scillm → memory learn), would you be able to follow the chain and identify where things went wrong? Is the two-level collapse (whole chain + individual steps) useful?"
+        }
+      ]
+    },
+    {
+      "id": "bb_agent_01",
+      "group": "agent-control",
+      "label": "Brandon Bailey: Multi-agent selection and model awareness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const picker = document.querySelector('[data-qid=\"topbar:agent:select\"]'); if (!picker) return 'agent picker missing'; picker.click(); return 'agent picker clicked: ' + picker.textContent.trim(); })()"
+        },
+        {
+          "action": "wait",
+          "ms": 500
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "agent-selection",
+          "review_criteria": "As someone who uses Claude (Opus for architecture, Sonnet for scaffolding), Pi, and Codex for different assessment tasks: Is the agent picker clear about which model/backend is active? Can you switch between Claude Code, Pi, and Codex easily? Is there indication of model capabilities (context window, cost tier)? When running a SPARTA assessment, would you know whether you're using Opus (expensive, high reasoning) vs Sonnet (cheaper, faster)? Does the UI communicate that skills route through different backends (scillm, skill run.sh, code-runner)?"
+        }
+      ]
+    },
+    {
+      "id": "bb_input_01",
+      "group": "input-and-interaction",
+      "label": "Brandon Bailey: Input bar ergonomics and touch readiness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const input = document.querySelector('[data-qid=\"input:compose\"]'); if (!input) return 'input missing'; const rect = input.getBoundingClientRect(); return 'input bar: ' + Math.round(rect.width) + 'x' + Math.round(rect.height) + ' at y=' + Math.round(rect.y) + ' (bottom: ' + Math.round(window.innerHeight - rect.bottom) + 'px from bottom)'; })()"
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const send = document.querySelector('[data-qid=\"input:send\"]'); if (!send) return 'send button missing'; const rect = send.getBoundingClientRect(); return 'send button: ' + Math.round(rect.width) + 'x' + Math.round(rect.height) + ' (min touch target: 44x44)'; })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "input-ergonomics",
+          "review_criteria": "As someone who will use this on an iPad Pro over Tailscale while reviewing SPARTA assessments away from the workstation: Is the input bar positioned correctly for thumb reach in landscape mode? Are touch targets large enough (minimum 44x44px)? Is the send button distinct and easy to tap? Can you attach files (evidence documents, PDFs)? Does the placeholder text guide you on what to type? Is there keyboard shortcut support (Enter to send, Shift+Enter for newline)? Would this feel natural coming from Claude Desktop or the Claude Code web interface?"
+        }
+      ]
+    },
+    {
+      "id": "bb_overall_01",
+      "group": "overall-assessment",
+      "label": "Brandon Bailey: Overall professional readiness assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#embry-terminal"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const qids = document.querySelectorAll('[data-qid]'); const types = {}; qids.forEach(el => { const prefix = el.getAttribute('data-qid').split(':')[0]; types[prefix] = (types[prefix] || 0) + 1; }); return 'QuerySpec elements: ' + qids.length + ' total — ' + JSON.stringify(types); })()"
+        },
+        {
+          "action": "persona_review",
+          "persona": "brandon-bailey",
+          "persona_scope": "brandon-bailey",
+          "name": "overall-readiness",
+          "review_criteria": "As the Principal Director of Cyber Assessments, give a holistic professional readiness assessment of Embry Terminal as an agent control surface for managing SPARTA and security assessment workflows: (1) Would you use this daily instead of SSH + Claude Code CLI? (2) Does it handle the full assessment lifecycle: project selection → skill invocation → memory recall → reasoning visibility → artifact review? (3) Is the NVIS theme appropriate for aerospace/defense audiences? (4) What are the top 3 things that would make this production-ready? (5) How does this compare to Claude Desktop, Cursor, and Warp Terminal for YOUR specific workflow of running /assess, /plan, /orchestrate across multiple SPARTA projects? Score 1-10 where 8+ means you'd deploy this to your team."
+        }
+      ]
+    }
+  ]
+}

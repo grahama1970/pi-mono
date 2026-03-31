@@ -136,27 +136,18 @@ export function ChatTab() {
     })
   }, [showSub, evidenceMap])
 
-  // Load evidence map — parse control_ids from solution JSON of evidence cases
+  // Load evidence map from dedicated evidence_cases collection
   useEffect(() => {
     if (!currentSystem) { setEvidenceMap(new Map()); return }
-    post('/recall', {
-      q: 'sensai cascade label verdict evidence case SPARTA technique',
-      collections: ['lessons'], k: 200,
+    post('/list', {
+      collection: 'evidence_cases', limit: 500,
     }).then(res => {
-      const items = (res.items ?? []) as any[]
+      const docs = (res.documents ?? []) as any[]
       const vmap = new Map<string, { verdict: string; grade: string; count: number }>()
-      for (const item of items) {
-        const tags = item.tags ?? []
-        if (!tags.includes('sensai-cascade-label') && !tags.includes('evidence_case')) continue
-        // Parse solution JSON for control_ids and verdict
-        let sol: any = {}
-        try {
-          const raw = item.solution ?? ''
-          if (raw.startsWith('{')) sol = JSON.parse(raw)
-        } catch { /* not JSON */ }
-        const cids: string[] = sol.control_ids ?? item.control_ids ?? []
-        const v = sol.verdict ?? item.verdict ?? 'not_satisfied'
-        const g = sol.grade ?? item.grade ?? 'F'
+      for (const doc of docs) {
+        const cids: string[] = doc.control_ids ?? []
+        const v = doc.verdict ?? 'not_satisfied'
+        const g = doc.grade ?? 'F'
         for (const cid of cids) {
           if (!SPARTA_TACTICS.some(t => cid.startsWith(t.prefix + '-'))) continue
           const existing = vmap.get(cid)

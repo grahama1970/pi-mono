@@ -6,7 +6,7 @@
  * Skills (/skill-name) are first-class citizens with inline highlighting.
  * Artifacts render inline by default, right panel on explicit request.
  */
-import { useState, useCallback, useRef, useEffect, memo } from 'react';
+import { useState, useCallback, useRef, useEffect, memo, useMemo } from 'react';
 import {
   Menu, Sparkles, Brain, Cpu, ChevronDown,
   Send, Plus, X, Code, Eye, FileText,
@@ -166,12 +166,13 @@ const ScoreBar = memo(function ScoreBar({ label, value, color }: { label: string
 const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }) {
   const [showItems, setShowItems] = useState(false);
   const [expandedItem, setExpandedItem] = useState(-1);
-  const confColor = recall.confidence > 0.7 ? '#00ff88' : recall.confidence > 0.4 ? '#ffaa00' : '#ff4444';
+  // ArangoDB confidence is a raw combined score (BM25+graph+dense), not 0-1.
+  // Normalize: if >1 treat as already-scaled score, clamp display to 0-100%.
+  const confDisplay = recall.confidence > 1 ? Math.min(Math.round(recall.confidence), 100) : Math.round(recall.confidence * 100);
+  const confColor = confDisplay > 70 ? '#00ff88' : confDisplay > 40 ? '#ffaa00' : '#ff4444';
 
-  // Collapsed: one-line summary like Claude's tool actions
   return (
     <div style={{ margin: '12px 0' }} data-qid="chat:recall-card">
-      {/* Summary line — collapsible */}
       <button
         onClick={() => setShowItems(v => !v)}
         style={{
@@ -182,7 +183,7 @@ const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }
         data-qid="chat:recall-card:toggle"
       >
         <span style={{ color: confColor, fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
-          {(recall.confidence * 100).toFixed(0)}%
+          {confDisplay}%
         </span>
         <span>Memory recall · {recall.items.length} results</span>
         <ChevronDown size={12} style={{
@@ -350,28 +351,36 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
 
 // ── Skill Palette ───────────────────────────────────────────────────────────
 
-function SkillPaletteDropdown({ filter, skills, onSelect, onClose }: {
+function SkillPaletteDropdown({ filter, skills, onSelect, onClose, onKeyNav }: {
   filter: string;
   skills: Skill[];
   onSelect: (name: string) => void;
   onClose: () => void;
+  onKeyNav?: (handler: (e: React.KeyboardEvent) => boolean) => void;
 }) {
   const [index, setIndex] = useState(0);
-  const fuse = new Fuse(skills, { keys: ['name', 'description', 'triggers'], threshold: 0.4 });
-  const filtered = filter ? fuse.search(filter).slice(0, 12).map(r => r.item) : skills.slice(0, 12);
+  // Deduplicate skills by name
+  const uniqueSkills = useMemo(() => {
+    const seen = new Set<string>();
+    return skills.filter(s => { if (seen.has(s.name)) return false; seen.add(s.name); return true; });
+  }, [skills]);
+  const fuse = useMemo(() => new Fuse(uniqueSkills, { keys: ['name', 'description', 'triggers'], threshold: 0.4 }), [uniqueSkills]);
+  const filtered = filter ? fuse.search(filter).slice(0, 12).map(r => r.item) : uniqueSkills.slice(0, 12);
 
   useEffect(() => setIndex(0), [filter]);
 
+  // Expose keyboard handler so textarea can forward arrow/enter/escape
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') { e.preventDefault(); setIndex(i => Math.min(i + 1, filtered.length - 1)); }
-      if (e.key === 'ArrowUp') { e.preventDefault(); setIndex(i => Math.max(i - 1, 0)); }
-      if (e.key === 'Enter' && filtered[index]) { e.preventDefault(); onSelect(filtered[index].name); }
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [filtered, index, onSelect, onClose]);
+    if (onKeyNav) {
+      onKeyNav((e: React.KeyboardEvent) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); setIndex(i => Math.min(i + 1, filtered.length - 1)); return true; }
+        if (e.key === 'ArrowUp') { e.preventDefault(); setIndex(i => Math.max(i - 1, 0)); return true; }
+        if (e.key === 'Enter' && filtered[index]) { e.preventDefault(); onSelect(filtered[index].name); return true; }
+        if (e.key === 'Escape') { onClose(); return true; }
+        return false;
+      });
+    }
+  }, [filtered, index, onSelect, onClose, onKeyNav]);
 
   if (filtered.length === 0) return null;
 
@@ -487,6 +496,7 @@ export function EmbryTerminalView() {
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const [input, setInput] = useState('');
   const [showPalette, setShowPalette] = useState(false);
+  const paletteKeyHandler = useRef<((e: React.KeyboardEvent) => boolean) | null>(null);
   const [skillFilter, setSkillFilter] = useState('');
   const [connection, setConnection] = useState<ConnectionState>('offline');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -729,20 +739,36 @@ export function EmbryTerminalView() {
           <div style={{ padding: '12px 16px 20px', borderTop: '1px solid rgba(255,255,255,0.06)', background: '#111111' }}>
             <div style={{ maxWidth: 760, margin: '0 auto' }}>
               <div style={{ position: 'relative' }}>
-                {showPalette && <SkillPaletteDropdown filter={skillFilter} skills={skills} onSelect={handleSkillSelect} onClose={() => setShowPalette(false)} />}
-                <div style={{ background: '#0b1220', border: '1px solid rgba(255,255,255,0.13)', borderRadius: 16, overflow: 'hidden' }}>
+                {showPalette && <SkillPaletteDropdown filter={skillFilter} skills={skills} onSelect={handleSkillSelect} onClose={() => setShowPalette(false)} onKeyNav={handler => { paletteKeyHandler.current = handler; }} />}
+                <div style={{ background: '#0b1220', border: '1px solid rgba(255,255,255,0.13)', borderRadius: 16, overflow: 'hidden', position: 'relative' }}>
+                  {/* Highlight overlay — renders colored skill names behind transparent textarea */}
+                  <div aria-hidden style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, pointerEvents: 'none',
+                    padding: '14px 16px 8px', fontFamily: 'var(--font-ui)', fontSize: 15, lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap', wordWrap: 'break-word',
+                  }}>
+                    {input ? input.split(/(\/[a-z][\w-]*)/g).map((part, i) =>
+                      /^\/[a-z][\w-]*$/.test(part)
+                        ? <span key={i} style={{ color: '#4a9eff', fontWeight: 600 }}>{part}</span>
+                        : <span key={i} style={{ color: '#e2e8f0' }}>{part}</span>
+                    ) : <span style={{ color: '#475569' }}>Message {agent.name}…</span>}
+                  </div>
                   <textarea
                     ref={inputRef}
                     value={input}
                     onChange={handleInputChange}
-                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !showPalette) { e.preventDefault(); sendMessage(); } }}
+                    onKeyDown={e => {
+                      if (showPalette && paletteKeyHandler.current?.(e)) return;
+                      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+                    }}
                     placeholder={`Message ${agent.name}…`}
                     rows={1}
                     style={{
                       width: '100%', border: 'none', outline: 'none', resize: 'none',
                       background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 15,
-                      color: '#e2e8f0', padding: '14px 16px 8px', lineHeight: 1.5,
-                      minHeight: 24, maxHeight: 200,
+                      color: 'transparent', padding: '14px 16px 8px', lineHeight: 1.5,
+                      minHeight: 24, maxHeight: 200, position: 'relative', zIndex: 1,
+                      caretColor: '#e2e8f0',
                     }}
                     data-qid="input:compose"
                   />
