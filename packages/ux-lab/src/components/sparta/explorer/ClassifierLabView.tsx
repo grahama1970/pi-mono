@@ -1613,6 +1613,8 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
   const [maxTrainSamplesInput, setMaxTrainSamplesInput] = useState('10000')
   const [trainSorting, setTrainSorting] = useState<SortingState>([{ id: 'f1', desc: true }])
   const [retrying, setRetrying] = useState<string | null>(null)
+  const [pipelineRunning, setPipelineRunning] = useState(false)
+  const [pipelineStatus, setPipelineStatus] = useState('')
   const best = rows.find(r => r.status === 'pass')
   const passCount = rows.filter(r => r.status === 'pass').length
   const totalCount = rows.length
@@ -1783,30 +1785,57 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </div>
           <button
             onClick={() => {
-              if (rerunBackbones.length === 0) return
-              fetch(`${API}/projects/classifier-lab/rerun/${project.id}`, {
+              if (rerunBackbones.length === 0 || pipelineRunning) return
+              setPipelineRunning(true)
+              setPipelineStatus('Starting pipeline...')
+              fetch(`${API}/projects/classifier-lab/pipeline/${project.id}`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  backbones: rerunBackbones, gate_f1: rerunGateF1,
-                  max_rounds: rerunMaxRounds, max_train_samples: rerunMaxTrainSamples,
-                  modality: project.modality, task: project.name,
+                  gate_f1: rerunGateF1,
+                  max_rounds: rerunMaxRounds,
+                  min_per_class: 50,
+                  max_length: 128,
                 }),
-              }).catch(() => {})
+              })
+                .then(r => r.json())
+                .then(result => {
+                  setPipelineRunning(false)
+                  if (result.passed) {
+                    setPipelineStatus(`PASSED — ${result.best_backbone} F1=${(result.best_f1 || 0).toFixed(3)}`)
+                  } else if (result.status === 'abandoned') {
+                    setPipelineStatus(`HALTED — data insufficient after enrichment`)
+                  } else {
+                    setPipelineStatus(`HALTED — best F1=${(result.best_f1 || 0).toFixed(3)} after ${result.total_rounds || 0} rounds`)
+                  }
+                })
+                .catch(() => { setPipelineRunning(false); setPipelineStatus('Pipeline failed — check server logs') })
             }}
-            disabled={rerunBackbones.length === 0}
+            disabled={rerunBackbones.length === 0 || pipelineRunning}
             style={{
-              background: rerunBackbones.length > 0 ? EMBRY.accent : 'transparent',
-              border: `1px solid ${rerunBackbones.length > 0 ? EMBRY.accent : EMBRY.border}`,
-              color: rerunBackbones.length > 0 ? '#000' : EMBRY.dim,
+              background: rerunBackbones.length > 0 && !pipelineRunning ? EMBRY.accent : 'transparent',
+              border: `1px solid ${rerunBackbones.length > 0 && !pipelineRunning ? EMBRY.accent : EMBRY.border}`,
+              color: rerunBackbones.length > 0 && !pipelineRunning ? '#000' : EMBRY.dim,
               padding: '10px 24px', borderRadius: 6, fontSize: 11, fontWeight: 900,
-              cursor: rerunBackbones.length > 0 ? 'pointer' : 'default',
+              cursor: rerunBackbones.length > 0 && !pipelineRunning ? 'pointer' : 'default',
               whiteSpace: 'nowrap',
             }}
           >
-            START TRAINING
+            {pipelineRunning ? 'RUNNING PIPELINE...' : 'RUN FULL PIPELINE'}
           </button>
         </div>
       </div>
+
+      {/* Pipeline status */}
+      {pipelineStatus && (
+        <div style={{
+          ...panel, marginBottom: 12, padding: '8px 14px', fontSize: 10, fontFamily: MONO,
+          color: pipelineStatus.includes('PASSED') ? EMBRY.green : pipelineStatus.includes('HALTED') || pipelineStatus.includes('failed') ? EMBRY.amber : EMBRY.dim,
+          border: `1px solid ${pipelineStatus.includes('PASSED') ? EMBRY.green : EMBRY.amber}22`,
+        }}>
+          {pipelineRunning && <span style={{ marginRight: 8 }}>⏳</span>}
+          {pipelineStatus}
+        </div>
+      )}
 
       {/* Sortable leaderboard */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
