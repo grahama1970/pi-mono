@@ -1742,6 +1742,38 @@ app.get('/api/projects/classifier-lab/data/:id', async (req, res) => {
   }
 })
 
+// POST — trigger data enrichment loop (search HuggingFace + GitHub until sufficient or exhausted)
+app.post('/api/projects/classifier-lab/data/:id/enrich', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    if (!existsSync(projDir)) return res.status(404).json({ error: 'Project not found' })
+
+    const scriptPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'data_enrichment.py')
+    if (!existsSync(scriptPath)) return res.status(500).json({ error: 'data_enrichment.py not found' })
+
+    const minPerClass = typeof req.body?.min_per_class === 'number' ? req.body.min_per_class : 100
+    const execFileAsync = promisify(execFile)
+
+    const { stdout, stderr } = await execFileAsync(
+      'bash', ['-lc', `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/data_enrichment.py "${projDir}" --min-per-class ${minPerClass}`],
+      { timeout: 300_000, env: { ...process.env, VIRTUAL_ENV: '' } },
+    )
+
+    // Parse the JSON output from the script
+    const lines = stdout.trim().split('\n')
+    const lastLine = lines[lines.length - 1]
+    try {
+      const result = JSON.parse(lastLine)
+      res.json(result)
+    } catch {
+      res.json({ status: 'completed', stdout: stdout.slice(-500), stderr: stderr?.slice(-500) })
+    }
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
 app.get('/api/projects/classifier-lab/data/:id/files', async (req, res) => {
   const { pageIndex = '0', pageSize = '50', split, class: cls, search, sortBy, sortDir } = req.query
   const projDir = resolve(CLASSIFIER_DIR, req.params.id)

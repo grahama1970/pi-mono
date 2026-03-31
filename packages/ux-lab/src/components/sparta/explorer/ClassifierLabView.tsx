@@ -761,6 +761,8 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
   const [dataInfo, setDataInfo] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [enriching, setEnriching] = useState(false)
+  const [enrichResult, setEnrichResult] = useState<any>(null)
 
   useEffect(() => {
     setLoading(true)
@@ -810,10 +812,72 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
           ]}
           halt={suff && !suff.sufficient ? {
             reason: `Need ${suff.required.toLocaleString()} training samples (${dataInfo.classCount} classes × ${suff.minRequired} per class). Have ${suff.available.toLocaleString()} — short by ${suff.deficit.toLocaleString()}.${suff.perClassDeficit && suff.perClassDeficit.length > 0 ? ` ${suff.perClassDeficit.length} classes below minimum.` : ''}`,
-            action: `The agent should search HuggingFace for additional training data, mine conversation transcripts via /episodic-archiver, or use /scillm for synthetic augmentation. Do NOT proceed to training until this deficit is resolved.`,
+            action: `Search HuggingFace and GitHub for additional training data, or mine conversation transcripts.`,
           } : null}
         />
       </div>
+
+      {/* Data enrichment — triggered when gate halts */}
+      {suff && !suff.sufficient && (
+        <div style={{ ...card, marginBottom: 20, padding: 16, border: `1px solid ${EMBRY.accent}33` }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: enrichResult ? 12 : 0 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: EMBRY.white }}>DATA ENRICHMENT</div>
+              <div style={{ fontSize: 9, color: EMBRY.dim, marginTop: 2 }}>
+                Searches HuggingFace → GitHub → conversation transcripts until sufficient or exhausted
+              </div>
+            </div>
+            <button
+              onClick={async () => {
+                setEnriching(true)
+                setEnrichResult(null)
+                try {
+                  const resp = await fetch(`${API}/projects/classifier-lab/data/${project.id}/enrich`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ min_per_class: suff.minRequired }),
+                  })
+                  const result = await resp.json()
+                  setEnrichResult(result)
+                  // Reload data info
+                  const d = await fetch(`${API}/projects/classifier-lab/data/${project.id}`).then(r => r.json())
+                  setDataInfo(d)
+                  onGateChange(d.gatePassed ?? false)
+                } catch (e) {
+                  setEnrichResult({ status: 'error', error: String(e) })
+                }
+                setEnriching(false)
+              }}
+              disabled={enriching}
+              style={{
+                background: EMBRY.accent, border: 'none', color: '#000',
+                padding: '8px 16px', borderRadius: 6, fontSize: 10, fontWeight: 900,
+                cursor: enriching ? 'default' : 'pointer', opacity: enriching ? 0.5 : 1,
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}
+            >
+              <Search size={12} />
+              {enriching ? 'SEARCHING...' : 'SEARCH FOR MORE DATA'}
+            </button>
+          </div>
+          {enrichResult && (
+            <div style={{ marginTop: 8, padding: '8px 12px', borderRadius: 4, fontSize: 10, fontFamily: MONO,
+              background: enrichResult.status === 'sufficient' ? 'rgba(0,255,136,0.06)' : enrichResult.status === 'abandoned' ? 'rgba(255,68,68,0.06)' : 'rgba(255,170,0,0.06)',
+              color: enrichResult.status === 'sufficient' ? EMBRY.green : enrichResult.status === 'abandoned' ? EMBRY.red : EMBRY.amber,
+              border: `1px solid ${enrichResult.status === 'sufficient' ? EMBRY.green : enrichResult.status === 'abandoned' ? EMBRY.red : EMBRY.amber}22`,
+            }}>
+              {enrichResult.status === 'sufficient' && `Data sufficient! ${enrichResult.total_train} samples now available (needed ${enrichResult.required}).`}
+              {enrichResult.status === 'abandoned' && `Enrichment exhausted. Searched HuggingFace + transcripts — not enough matching data found. ${enrichResult.total_train || 0} samples available.`}
+              {enrichResult.status === 'insufficient' && `Found some data but still insufficient. ${enrichResult.total_train || 0} / ${enrichResult.required || '?'} samples.`}
+              {enrichResult.error && `Error: ${enrichResult.error}`}
+              {enrichResult.attempts && (
+                <div style={{ marginTop: 4, fontSize: 9, color: EMBRY.dim }}>
+                  Strategies tried: {enrichResult.attempts.map((a: any) => `${a.strategy} (${a.new_samples || 0} found)`).join(', ')}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
