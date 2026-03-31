@@ -6,7 +6,7 @@
  * Skills (/skill-name) are first-class citizens with inline highlighting.
  * Artifacts render inline by default, right panel on explicit request.
  */
-import { useState, useCallback, useRef, useEffect, memo, useMemo } from 'react';
+import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import {
   Menu, Sparkles, Brain, Cpu, ChevronDown,
   Send, Plus, X, Code, Eye, FileText,
@@ -14,9 +14,8 @@ import {
 } from 'lucide-react';
 import ReasoningChain from './ReasoningChain';
 import DOMPurify from 'dompurify';
-import Fuse from 'fuse.js';
 import {
-  MarkdownRenderer, SkillPalette,
+  highlightEntities, MarkdownRenderer, SkillPalette,
   RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard,
 } from '../shared-chat';
 import type {
@@ -96,149 +95,7 @@ async function fetchSkills(): Promise<Skill[]> {
   return res.json();
 }
 
-// NOTE: These are duplicated from shared-chat/ — will be removed in cleanup pass.
-// Shared versions imported as: highlightEntities, SkillPalette, SharedRecallCard, etc.
-const ENTITY_PATTERN = new RegExp(
-  '(' + [
-    '\\/[a-z][\\w-]*',                      // Skills: /assess, /dogpile
-    '\\b[A-Z]{2}-\\d+(?:\\.\\d+)?\\b',      // NIST controls: AC-17, SC-28, AU-6.1
-    '\\bCWE-\\d+\\b',                        // CWEs: CWE-79, CWE-502
-    '\\b[TS]A?\\d{4}(?:\\.\\d{3})?\\b',     // ATT&CK: T1059, T1059.001, TA0005
-    '\\bCM-\\d{4}\\b',                       // SPARTA countermeasures: CM-0001
-    '\\bST-\\d{4}\\b',                       // SPARTA techniques: ST-0012
-    '\\bNIST (?:SP )?800-\\d+(?:[a-z])?(?:r\\d)?\\b', // NIST pubs: NIST 800-171, NIST SP 800-53r5
-    '\\bCMMC (?:Level )?[1-3]\\b',           // CMMC: CMMC Level 2
-    '\\bFedRAMP\\b',                         // FedRAMP
-    '\\bISO \\d{5}\\b',                      // ISO: ISO 27001
-    '\\bD3FEND\\b',                          // D3FEND
-    '\\bATT&CK\\b',                          // ATT&CK
-    '\\bSTIG\\b',                            // STIG
-  ].join('|') + ')',
-  'g'
-);
-
-const ENTITY_STYLES: Record<string, { color: string; bg: string }> = {
-  skill:     { color: '#4a9eff', bg: 'rgba(74,158,255,0.08)' },
-  control:   { color: '#00ff88', bg: 'rgba(0,255,136,0.08)' },
-  cwe:       { color: '#ff6b6b', bg: 'rgba(255,107,107,0.08)' },
-  attack:    { color: '#ffaa00', bg: 'rgba(255,170,0,0.08)' },
-  framework: { color: '#c084fc', bg: 'rgba(192,132,252,0.08)' },
-  sparta:    { color: '#22d3ee', bg: 'rgba(34,211,238,0.08)' },
-};
-
-function classifyEntity(token: string): keyof typeof ENTITY_STYLES {
-  if (token.startsWith('/')) return 'skill';
-  if (/^CWE-/.test(token)) return 'cwe';
-  if (/^[TS]A?\d{4}/.test(token)) return 'attack';
-  if (/^[A-Z]{2}-\d+/.test(token)) return 'control';
-  if (/^(?:CM|ST)-\d{4}$/.test(token)) return 'sparta';
-  return 'framework';
-}
-
-function highlightEntities(text: string): (string | JSX.Element)[] {
-  const parts = text.split(ENTITY_PATTERN);
-  return parts.map((part, i) => {
-    if (ENTITY_PATTERN.test(part)) {
-      // Reset regex lastIndex since it's global
-      ENTITY_PATTERN.lastIndex = 0;
-      const type = classifyEntity(part);
-      const style = ENTITY_STYLES[type];
-      return (
-        <span key={i} style={{
-          color: style.color, fontWeight: 600, fontSize: '0.92em',
-          background: style.bg, padding: '1px 5px', borderRadius: 3,
-          fontFamily: type === 'skill' ? 'var(--font-mono)' : 'inherit',
-        }} data-qid={type === 'skill' ? `skill:${part.slice(1)}:ref` : `entity:${part}`}>
-          {part}
-        </span>
-      );
-    }
-    return part;
-  });
-}
-
-// Backward compat alias
-const highlightSkills = highlightEntities;
-
-// ── Score Bar (from agent-web-ui.jsx) ───────────────────────────────────────
-
-const ScoreBar = memo(function ScoreBar({ label, value, color }: { label: string; value: number; color: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
-      <span style={{ color: '#64748b', width: 52, textAlign: 'right', fontFamily: 'var(--font-mono)' }}>{label}</span>
-      <div style={{ flex: 1, height: 4, background: '#27272a', borderRadius: 2, overflow: 'hidden' }}>
-        <div style={{ width: `${value * 100}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.4s ease' }} />
-      </div>
-      <span style={{ fontFamily: 'var(--font-mono)', color: '#a1a1aa', width: 30, fontSize: 10 }}>{value.toFixed(2)}</span>
-    </div>
-  );
-});
-
-// ── Recall Card ─────────────────────────────────────────────────────────────
-
-const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }) {
-  const [showItems, setShowItems] = useState(false);
-  const [expandedItem, setExpandedItem] = useState(-1);
-  // ArangoDB confidence is a raw combined score (BM25+graph+dense), not 0-1.
-  // Normalize: if >1 treat as already-scaled score, clamp display to 0-100%.
-  const confDisplay = recall.confidence > 1 ? Math.min(Math.round(recall.confidence), 100) : Math.round(recall.confidence * 100);
-  const confColor = confDisplay > 70 ? '#00ff88' : confDisplay > 40 ? '#ffaa00' : '#ff4444';
-
-  return (
-    <div style={{ margin: '12px 0' }} data-qid="chat:recall-card">
-      <button
-        onClick={() => setShowItems(v => !v)}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 6, width: '100%',
-          fontSize: 13, color: '#64748b', background: 'none', border: 'none',
-          cursor: 'pointer', padding: '6px 0', fontFamily: 'var(--font-ui)', textAlign: 'left',
-        }}
-        data-qid="chat:recall-card:toggle"
-      >
-        <span style={{ color: confColor, fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
-          {confDisplay}%
-        </span>
-        <span>Memory recall · {recall.items.length} results</span>
-        <ChevronDown size={12} style={{
-          color: '#334155', flexShrink: 0,
-          transform: showItems ? 'rotate(180deg)' : 'none',
-          transition: 'transform 0.15s',
-        }} />
-      </button>
-
-      {/* Expanded: items with score bars */}
-      {showItems && (
-        <div style={{
-          borderLeft: `3px solid ${confColor}`, marginLeft: 2, paddingLeft: 12, marginTop: 4,
-        }}>
-          {recall.items.map((item, i) => (
-            <button key={i}
-              onClick={() => setExpandedItem(expandedItem === i ? -1 : i)}
-              style={{
-                display: 'block', width: '100%', textAlign: 'left',
-                padding: '8px 0', cursor: 'pointer', border: 'none',
-                background: 'transparent', fontFamily: 'var(--font-ui)',
-                borderBottom: i < recall.items.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-              }}
-              data-qid={`chat:recall:item:${i}:toggle`}
-            >
-              <div style={{ fontSize: 13, color: '#e2e8f0', fontWeight: 500, marginBottom: 2 }}>{item.problem}</div>
-              <div style={{ fontSize: 12, color: '#00ff88', lineHeight: 1.5 }}>→ {item.solution}</div>
-              {expandedItem === i && (
-                <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <ScoreBar label="BM25" value={item.scores.bm25} color="#7c3aed" />
-                  <ScoreBar label="Graph" value={item.scores.graph} color="#4a9eff" />
-                  <ScoreBar label="Dense" value={item.scores.dense} color="#00ff88" />
-                  <ScoreBar label="Fresh" value={item.scores.freshness} color="#ffaa00" />
-                </div>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-});
+// Entity highlighting, RecallCard, ScoreBar, SkillPalette → all from shared-chat/
 
 // ── Tool Action Line (muted, collapsible — "Created 7 files >") ─────────────
 
@@ -280,7 +137,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
           background: '#1e1e24', fontSize: 15, lineHeight: 1.65, color: '#e2e8f0',
           fontFamily: 'var(--font-ui)',
         }}>
-          {highlightSkills(msg.content)}
+          {highlightEntities(msg.content, onEntityClick)}
         </div>
       </div>
     );
@@ -313,7 +170,15 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
           </div>
         )}
 
-        {msg.recall && <RecallCard recall={msg.recall} />}
+        {msg.recall && (
+          <SharedRecallCard
+            items={msg.recall.items.map(it => ({ problem: it.problem, solution: it.solution, scores: it.scores }))}
+            resultCount={msg.recall.items.length}
+            confidence={msg.recall.confidence > 1 ? msg.recall.confidence / 100 : msg.recall.confidence}
+          />
+        )}
+        {msg.verdict && <GateChain gates={msg.verdict.gates} verdict={msg.verdict.state} tier={msg.verdict.tier} />}
+        {msg.matrixSummary && <ThreatMatrixCard summary={msg.matrixSummary} />}
         {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
           <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
         )}
@@ -322,67 +187,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
   );
 });
 
-// ── Skill Palette ───────────────────────────────────────────────────────────
-
-function SkillPaletteDropdown({ filter, skills, onSelect, onClose, onKeyNav }: {
-  filter: string;
-  skills: Skill[];
-  onSelect: (name: string) => void;
-  onClose: () => void;
-  onKeyNav?: (handler: (e: React.KeyboardEvent) => boolean) => void;
-}) {
-  const [index, setIndex] = useState(0);
-  // Deduplicate skills by name
-  const uniqueSkills = useMemo(() => {
-    const seen = new Set<string>();
-    return skills.filter(s => { if (seen.has(s.name)) return false; seen.add(s.name); return true; });
-  }, [skills]);
-  const fuse = useMemo(() => new Fuse(uniqueSkills, { keys: ['name', 'description', 'triggers'], threshold: 0.4 }), [uniqueSkills]);
-  const filtered = filter ? fuse.search(filter).slice(0, 12).map(r => r.item) : uniqueSkills.slice(0, 12);
-
-  useEffect(() => setIndex(0), [filter]);
-
-  // Expose keyboard handler so textarea can forward arrow/enter/escape
-  useEffect(() => {
-    if (onKeyNav) {
-      onKeyNav((e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowDown') { e.preventDefault(); setIndex(i => Math.min(i + 1, filtered.length - 1)); return true; }
-        if (e.key === 'ArrowUp') { e.preventDefault(); setIndex(i => Math.max(i - 1, 0)); return true; }
-        if (e.key === 'Enter' && filtered[index]) { e.preventDefault(); onSelect(filtered[index].name); return true; }
-        if (e.key === 'Escape') { onClose(); return true; }
-        return false;
-      });
-    }
-  }, [filtered, index, onSelect, onClose, onKeyNav]);
-
-  if (filtered.length === 0) return null;
-
-  return (
-    <div style={{
-      position: 'absolute', bottom: '100%', left: 0, marginBottom: 8,
-      width: 320, background: '#1a1a1a', border: '1px solid var(--nvis-border)',
-      borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', zIndex: 100,
-      maxHeight: 280, overflow: 'auto',
-    }} data-qid="skill-palette:dropdown">
-      {filtered.map((skill, i) => (
-        <button key={skill.name} onClick={() => onSelect(skill.name)}
-          onMouseEnter={() => setIndex(i)}
-          style={{
-            display: 'block', width: '100%', textAlign: 'left', padding: '8px 14px',
-            background: i === index ? 'rgba(124,58,237,0.1)' : 'transparent',
-            borderLeft: i === index ? '2px solid #7c3aed' : '2px solid transparent',
-            border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)',
-            transition: 'background 0.1s',
-          }}
-          data-qid={`skill-palette:skill:${skill.name}:select`}
-        >
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: '#4a9eff' }}>/{skill.name}</span>
-          <div style={{ fontSize: 10, color: '#64748b', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.description}</div>
-        </button>
-      ))}
-    </div>
-  );
-}
+// SkillPalette → imported from shared-chat/
 
 // ── Artifact Panel ──────────────────────────────────────────────────────────
 
@@ -515,16 +320,7 @@ export function EmbryTerminalView() {
     inputRef.current?.focus();
   }, [input]);
 
-  // Entity click → skill invocation or memory recall
-  const handleEntityClick = useCallback((entity: string, type: EntityType) => {
-    if (type === 'skill') {
-      setInput(`${entity} `);
-      inputRef.current?.focus();
-    } else {
-      setInput(`/memory recall "${entity}"`);
-      setTimeout(() => sendMessage(), 100);
-    }
-  }, [sendMessage]);
+  const sendMessageRef = useRef<() => void>();
 
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
@@ -622,6 +418,19 @@ export function EmbryTerminalView() {
       ));
     }
   }, [input, agent, activeProject]);
+
+  sendMessageRef.current = sendMessage;
+
+  // Entity click → skill invocation or memory recall
+  const handleEntityClick = useCallback((entity: string, type: EntityType) => {
+    if (type === 'skill') {
+      setInput(`${entity} `);
+      inputRef.current?.focus();
+    } else {
+      setInput(`/memory recall "${entity}"`);
+      setTimeout(() => sendMessageRef.current?.(), 100);
+    }
+  }, []);
 
   const AgentIcon = agent.icon;
 
@@ -723,7 +532,7 @@ export function EmbryTerminalView() {
           <div style={{ padding: '12px 16px 20px', borderTop: '1px solid rgba(255,255,255,0.06)', background: '#111111' }}>
             <div style={{ maxWidth: 760, margin: '0 auto' }}>
               <div style={{ position: 'relative' }}>
-                {showPalette && <SkillPaletteDropdown filter={skillFilter} skills={skills} onSelect={handleSkillSelect} onClose={() => setShowPalette(false)} onKeyNav={handler => { paletteKeyHandler.current = handler; }} />}
+                {showPalette && <SkillPalette filter={skillFilter} skills={skills} onSelect={handleSkillSelect} onClose={() => setShowPalette(false)} onKeyNav={handler => { paletteKeyHandler.current = handler; }} />}
                 <div style={{ background: '#0b1220', border: '1px solid rgba(255,255,255,0.13)', borderRadius: 16, overflow: 'hidden', position: 'relative' }}>
                   {/* Highlight overlay — renders colored skill names behind transparent textarea */}
                   <div aria-hidden style={{

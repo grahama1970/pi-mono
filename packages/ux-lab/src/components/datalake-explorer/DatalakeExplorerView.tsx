@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Database, FileText, BarChart3, GitBranch, Shield, Layers } from 'lucide-react'
+import { TraceabilityView } from './TraceabilityView'
 import { EMBRY, label, card } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 
@@ -393,7 +394,7 @@ export function DatalakeExplorerView() {
           {activeTab === 'corpus' && <PlaceholderTab name="Corpus" />}
           {activeTab === 'extraction' && <PlaceholderTab name="Extraction" />}
           {activeTab === 'requirements' && <PlaceholderTab name="Requirements" />}
-          {activeTab === 'traceability' && <PlaceholderTab name="Traceability" />}
+          {activeTab === 'traceability' && <TraceabilityView docKey={selectedDocKey} />}
           {activeTab === 'cascade' && <PlaceholderTab name="Cascade" />}
         </div>
       </div>

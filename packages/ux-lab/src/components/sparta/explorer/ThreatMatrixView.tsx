@@ -153,63 +153,60 @@ export function ThreatMatrixView() {
     })
     .sort((a, b) => a.id.localeCompare(b.id))
 
-  // Select technique → fetch QRAs + relationships + traceability + evidence cases
-  const selectTechnique = useCallback((tech: ThreatTechnique) => {
+  // Select technique → fetch QRAs + relationships + traceability + evidence cases + discrepancies
+  const selectTechnique = useCallback(async (tech: ThreatTechnique) => {
     setLoadingDetail(true)
     setSelectedDetail({ technique: tech, qras: [], countermeasures: [], relationships: [] })
 
-    Promise.all([
+    const [qraRes, relRes, traceRes, evidenceRes, discResult] = await Promise.all([
       post('/recall', { q: `${tech.id} ${tech.name}`, collections: ['sparta_qra'], k: 10, entities: [tech.id] }),
       post('/recall', { q: tech.id, collections: ['sparta_relationships'], k: 20, entities: [tech.id] }),
       postExpress('/api/memory/traceability', { control_id: tech.id }),
       postExpress('/api/evidence-case/trace', { control_id: tech.id }),
-    ]).then(([qraRes, relRes, traceRes, evidenceRes]) => {
-      const rels = (relRes.items ?? []) as Array<Record<string, unknown>>
-      const cmIds = [...new Set(rels
-        .filter((r) => {
-          const tid = (r.target_control_id as string) ?? ''
-          return tid.startsWith('CM') || tid.startsWith('d3f:') || tid.startsWith('AC-') || tid.startsWith('SC-')
-        })
-        .map((r) => r.target_control_id as string)
-      )]
+      post('/list', { collection: 'evidence_cases', limit: 50, filters: { type: 'discrepancy' } }),
+    ])
 
-      // Traceability groups: { asset_type: chunk[] } dict from endpoint
-      const traceability: Record<string, TraceabilityChunk[]> = {}
-      const groups = traceRes.groups ?? {}
-      for (const [assetType, chunks] of Object.entries(groups)) {
-        traceability[assetType] = (chunks as TraceabilityChunk[]) ?? []
-      }
-
-      // Extract discrepancies from evidence cases with type: 'discrepancy'
-      const allEvCases = (evidenceRes.cases ?? []) as EvidenceCase[]
-
-      // Also check evidence_cases collection for discrepancy findings
-      const discResult = await post('/list', {
-        collection: 'evidence_cases', limit: 50,
-        filters: { type: 'discrepancy' },
+    const rels = (relRes.items ?? []) as Array<Record<string, unknown>>
+    const cmIds = [...new Set(rels
+      .filter((r) => {
+        const tid = (r.target_control_id as string) ?? ''
+        return tid.startsWith('CM') || tid.startsWith('d3f:') || tid.startsWith('AC-') || tid.startsWith('SC-')
       })
-      const discDocs = (discResult.documents ?? []) as Array<Record<string, unknown>>
-      const discrepancies = discDocs
-        .filter((d: any) => d.control_id === tech.id || (d.tags ?? []).includes(`control:${tech.id}`))
-        .map((d: any) => ({
-          severity: d.severity ?? 'low',
-          summary: d.summary ?? '',
-          requirement_claim: d.requirement_claim ?? '',
-          table_reality: d.table_reality ?? '',
-          recommendation: d.recommendation ?? '',
-        }))
+      .map((r) => r.target_control_id as string)
+    )]
 
-      setSelectedDetail({
-        technique: tech,
-        qras: qraRes.items ?? [],
-        relationships: rels as TechniqueDetail['relationships'],
-        countermeasures: cmIds.map((id) => ({ control_id: id, name: id })),
-        traceability,
-        evidenceCases: allEvCases,
-        discrepancies,
-      })
-      setLoadingDetail(false)
+    // Traceability groups: { asset_type: chunk[] } dict from endpoint
+    const traceability: Record<string, TraceabilityChunk[]> = {}
+    const groups = traceRes.groups ?? {}
+    for (const [assetType, chunks] of Object.entries(groups)) {
+      traceability[assetType] = (chunks as TraceabilityChunk[]) ?? []
+    }
+
+    // Evidence cases
+    const allEvCases = (evidenceRes.cases ?? []) as EvidenceCase[]
+
+    // Discrepancy findings for this control
+    const discDocs = (discResult.documents ?? []) as Array<Record<string, unknown>>
+    const discrepancies = discDocs
+      .filter((d: any) => d.control_id === tech.id || (d.tags ?? []).includes(`control:${tech.id}`))
+      .map((d: any) => ({
+        severity: d.severity ?? 'low',
+        summary: d.summary ?? '',
+        requirement_claim: d.requirement_claim ?? '',
+        table_reality: d.table_reality ?? '',
+        recommendation: d.recommendation ?? '',
+      }))
+
+    setSelectedDetail({
+      technique: tech,
+      qras: qraRes.items ?? [],
+      relationships: rels as TechniqueDetail['relationships'],
+      countermeasures: cmIds.map((id) => ({ control_id: id, name: id })),
+      traceability,
+      evidenceCases: allEvCases,
+      discrepancies,
     })
+    setLoadingDetail(false)
   }, [])
 
   const clearSelection = useCallback(() => setSelectedDetail(null), [])

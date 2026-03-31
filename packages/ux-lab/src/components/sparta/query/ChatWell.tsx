@@ -14,6 +14,7 @@ import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { RecallCard, type RecallItem } from './RecallCard'
 import { GateChain } from './GateChain'
 import { ThreatMatrixCard, type ThreatMatrixSummary } from './ThreatMatrixCard'
+import { highlightEntities, MarkdownRenderer } from '../../shared-chat'
 
 export interface EntityRef {
   id: string
@@ -112,7 +113,7 @@ function MessageItem({
           fontSize: 12, lineHeight: 1.6, color: EMBRY.white,
           fontFamily: msg.type === 'aql' ? 'monospace' : 'inherit',
         }}>
-          {msg.content}
+          {highlightEntities(msg.content)}
         </div>
       </div>
     )
@@ -142,13 +143,13 @@ function MessageItem({
         </div>
       )}
 
-      {/* Content */}
-      <div style={{
-        fontSize: 12, lineHeight: 1.6, color: EMBRY.white,
-        whiteSpace: 'pre-wrap',
-        fontFamily: msg.type === 'aql' ? 'monospace' : 'inherit',
-      }}>
-        {msg.content}
+      {/* Content — shared MarkdownRenderer with entity highlighting */}
+      <div style={{ fontSize: 12, lineHeight: 1.6, color: EMBRY.white }}>
+        {msg.type === 'aql' ? (
+          <pre style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', margin: 0 }}>{msg.content}</pre>
+        ) : (
+          <MarkdownRenderer content={msg.content} />
+        )}
       </div>
 
       {/* RecallCard — replaces raw "Found N results" text */}
