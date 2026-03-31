@@ -180,13 +180,33 @@ export function ThreatMatrixView() {
         traceability[assetType] = (chunks as TraceabilityChunk[]) ?? []
       }
 
+      // Extract discrepancies from evidence cases with type: 'discrepancy'
+      const allEvCases = (evidenceRes.cases ?? []) as EvidenceCase[]
+
+      // Also check evidence_cases collection for discrepancy findings
+      const discResult = await post('/list', {
+        collection: 'evidence_cases', limit: 50,
+        filters: { type: 'discrepancy' },
+      })
+      const discDocs = (discResult.documents ?? []) as Array<Record<string, unknown>>
+      const discrepancies = discDocs
+        .filter((d: any) => d.control_id === tech.id || (d.tags ?? []).includes(`control:${tech.id}`))
+        .map((d: any) => ({
+          severity: d.severity ?? 'low',
+          summary: d.summary ?? '',
+          requirement_claim: d.requirement_claim ?? '',
+          table_reality: d.table_reality ?? '',
+          recommendation: d.recommendation ?? '',
+        }))
+
       setSelectedDetail({
         technique: tech,
         qras: qraRes.items ?? [],
         relationships: rels as TechniqueDetail['relationships'],
         countermeasures: cmIds.map((id) => ({ control_id: id, name: id })),
         traceability,
-        evidenceCases: (evidenceRes.cases ?? []) as EvidenceCase[],
+        evidenceCases: allEvCases,
+        discrepancies,
       })
       setLoadingDetail(false)
     })

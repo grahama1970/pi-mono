@@ -13,8 +13,10 @@ import {
   Search, FolderOpen, GitBranch, Settings,
 } from 'lucide-react';
 import ReasoningChain from './ReasoningChain';
+import DOMPurify from 'dompurify';
+import Fuse from 'fuse.js';
 import {
-  highlightEntities, MarkdownRenderer, SkillPalette,
+  MarkdownRenderer, SkillPalette,
   RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard,
 } from '../shared-chat';
 import type {
@@ -265,7 +267,7 @@ const ToolAction = memo(function ToolAction({ label, qid }: { label: string; qid
 
 // ── Message Component ───────────────────────────────────────────────────────
 
-const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
+const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Message; onEntityClick?: (entity: string, type: EntityType) => void }) {
   const isUser = msg.role === 'user';
 
   // ── User message: right-aligned bubble (Claude Desktop pattern) ──
@@ -296,51 +298,9 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
         <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
       )}
 
-      {/* Content — plain text flush left, no container */}
+      {/* Content — shared MarkdownRenderer with entity highlighting */}
       <div style={{ fontSize: 15, lineHeight: 1.65, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{
-            p: ({ children }) => <p style={{ margin: '4px 0' }}>{typeof children === 'string' ? highlightEntities(children) : children}</p>,
-            strong: ({ children }) => <strong style={{ fontWeight: 700, color: '#f8fafc' }}>{typeof children === 'string' ? highlightEntities(children) : children}</strong>,
-            li: ({ children }) => <li style={{ margin: '2px 0' }}>{typeof children === 'string' ? highlightEntities(children) : children}</li>,
-            code: ({ className, children }) => {
-              const lang = className?.replace('language-', '') || '';
-              const text = String(children).replace(/\n$/, '');
-              if (!className) {
-                return <code style={{ fontFamily: 'var(--font-mono)', fontSize: 13, background: '#0b1220', padding: '2px 6px', borderRadius: 4, color: '#4a9eff' }}>{text}</code>;
-              }
-              let highlighted = text;
-              try {
-                highlighted = lang && hljs.getLanguage(lang) ? hljs.highlight(text, { language: lang }).value : hljs.highlightAuto(text).value;
-              } catch { /* fallback */ }
-              return (
-                <div className="nvis-card" style={{ margin: '12px 0', overflow: 'hidden' }}>
-                  {lang && <div style={{ padding: '6px 12px', borderBottom: '1px solid var(--nvis-border-subtle)', fontSize: 11, fontFamily: 'var(--font-mono)', color: '#64748b', textTransform: 'uppercase' }}>{lang}</div>}
-                  <pre style={{ margin: 0, padding: 12, fontFamily: 'var(--font-mono)', fontSize: 13, color: '#e2e8f0', overflowX: 'auto', lineHeight: 1.5, background: '#0b1220' }}>
-                    <code dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(highlighted) }} />
-                  </pre>
-                </div>
-              );
-            },
-            table: ({ children }) => (
-              <div className="nvis-card" style={{ margin: '12px 0', overflow: 'hidden' }}>
-                <table style={{ width: '100%', fontSize: 13, fontFamily: 'var(--font-mono)', borderCollapse: 'collapse' }}>{children}</table>
-              </div>
-            ),
-            th: ({ children }) => <th style={{ padding: '8px 12px', textAlign: 'left', fontSize: 10, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5, background: '#0b1220', borderBottom: '1px solid var(--nvis-border)' }}>{children}</th>,
-            td: ({ children }) => {
-              const text = String(children || '');
-              let color = '#e2e8f0';
-              if (text.includes('✅') || text.includes('Pass')) color = '#00ff88';
-              else if (text.includes('❌') || text.includes('Fail')) color = '#ff4444';
-              else if (text.includes('⚠️') || text.includes('Warn')) color = '#ffaa00';
-              return <td style={{ padding: '8px 12px', color, borderBottom: '1px solid var(--nvis-border-subtle)' }}>{children}</td>;
-            },
-          }}
-        >
-          {msg.content}
-        </ReactMarkdown>
+        <MarkdownRenderer content={msg.content} onEntityClick={onEntityClick} />
 
         {msg.codeBlock && (
           <div className="nvis-card" style={{ margin: '12px 0', overflow: 'hidden' }}>
@@ -555,6 +515,17 @@ export function EmbryTerminalView() {
     inputRef.current?.focus();
   }, [input]);
 
+  // Entity click → skill invocation or memory recall
+  const handleEntityClick = useCallback((entity: string, type: EntityType) => {
+    if (type === 'skill') {
+      setInput(`${entity} `);
+      inputRef.current?.focus();
+    } else {
+      setInput(`/memory recall "${entity}"`);
+      setTimeout(() => sendMessage(), 100);
+    }
+  }, [sendMessage]);
+
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
     const text = input.trim();
@@ -743,7 +714,7 @@ export function EmbryTerminalView() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
           <div style={{ flex: 1, overflow: 'auto', padding: '0 16px', WebkitOverflowScrolling: 'touch' }}>
             <div style={{ maxWidth: 760, margin: '0 auto' }}>
-              {messages.map(m => <MessageItem key={m.id} msg={m} />)}
+              {messages.map(m => <MessageItem key={m.id} msg={m} onEntityClick={handleEntityClick} />)}
               <div ref={chatEndRef} />
             </div>
           </div>

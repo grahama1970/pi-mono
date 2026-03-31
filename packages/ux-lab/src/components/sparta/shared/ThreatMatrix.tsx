@@ -75,6 +75,8 @@ export interface TechniqueDetail {
   traceability?: Record<string, TraceabilityChunk[]>
   /** Evidence cases with gate traces */
   evidenceCases?: EvidenceCase[]
+  /** Discrepancy findings (requirement vs table contradictions) */
+  discrepancies?: Array<{ severity: string; summary: string; requirement_claim: string; table_reality: string; recommendation: string }>
 }
 
 export interface ThreatMatrixState {
@@ -420,7 +422,7 @@ function Detail() {
 
   if (!selectedDetail) return null
 
-  const { technique: tech, qras, countermeasures, relationships, traceability, evidenceCases } = selectedDetail
+  const { technique: tech, qras, countermeasures, relationships, traceability, evidenceCases, discrepancies } = selectedDetail
   const traceTypes = traceability ? Object.keys(traceability).sort() : []
   const totalChunks = traceTypes.reduce((sum, t) => sum + (traceability?.[t]?.length ?? 0), 0)
 
@@ -496,6 +498,37 @@ function Detail() {
                         </div>
                       )
                     })}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Discrepancies — requirement vs table contradictions */}
+      {(discrepancies?.length ?? 0) > 0 && (
+        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ ...label, marginBottom: 6, color: EMBRY.red }}>
+            Discrepancies ({discrepancies!.length})
+          </div>
+          {discrepancies!.map((d, i) => {
+            const sevColor = d.severity === 'high' ? EMBRY.red : d.severity === 'medium' ? EMBRY.amber : EMBRY.dim
+            return (
+              <div key={`disc-${i}`} style={{ marginBottom: 8, borderRadius: 6, border: `1px solid ${sevColor}33`, padding: '8px 10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <span style={{ fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: sevColor, padding: '1px 5px', borderRadius: 3, backgroundColor: `${sevColor}15` }}>{d.severity}</span>
+                  <span style={{ fontSize: 11, color: EMBRY.white, fontWeight: 500 }}>{d.summary}</span>
+                </div>
+                <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.4, marginBottom: 2 }}>
+                  <span style={{ color: EMBRY.accent }}>Req: </span>{d.requirement_claim}
+                </div>
+                <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.4, marginBottom: 2 }}>
+                  <span style={{ color: EMBRY.red }}>Table: </span>{d.table_reality}
+                </div>
+                {d.recommendation && (
+                  <div style={{ fontSize: 10, color: EMBRY.green, lineHeight: 1.4, fontStyle: 'italic' }}>
+                    Fix: {d.recommendation}
                   </div>
                 )}
               </div>
