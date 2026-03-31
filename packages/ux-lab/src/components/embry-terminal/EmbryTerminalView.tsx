@@ -114,16 +114,19 @@ const BACKEND_URL = import.meta.env.DEV
   ? 'http://127.0.0.1:8640/api'
   : '/embry-terminal/api';
 
+const DEV_TOKEN = 'embry-dev-token';
+const AUTH_HEADERS: HeadersInit = { 'Authorization': `Bearer ${DEV_TOKEN}` };
+
 // ── API ─────────────────────────────────────────────────────────────────────
 
 async function fetchProjects(): Promise<Project[]> {
-  const res = await fetch(`${BACKEND_URL}/projects`);
+  const res = await fetch(`${BACKEND_URL}/projects`, { headers: AUTH_HEADERS });
   if (!res.ok) return [];
   return res.json();
 }
 
 async function fetchSkills(): Promise<Skill[]> {
-  const res = await fetch(`${BACKEND_URL}/skills`);
+  const res = await fetch(`${BACKEND_URL}/skills`, { headers: AUTH_HEADERS });
   if (!res.ok) return [];
   return res.json();
 }
@@ -517,7 +520,7 @@ export function EmbryTerminalView() {
     try {
       const recallRes = await fetch(`${BACKEND_URL}/agent/recall`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...AUTH_HEADERS, 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: text, project: activeProject?.name }),
       });
       if (recallRes.ok) {
@@ -549,7 +552,7 @@ export function EmbryTerminalView() {
         // SSE streaming for skill execution
         const res = await fetch(`${BACKEND_URL}/agent/message`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { ...AUTH_HEADERS, 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, backend: 'skill', skill: skillMatch![1], project: activeProject?.name }),
         });
         const reader = res.body?.getReader();
@@ -580,7 +583,7 @@ export function EmbryTerminalView() {
         // Non-streaming scillm call
         const res = await fetch(`${BACKEND_URL}/agent/message`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { ...AUTH_HEADERS, 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, backend: 'scillm', model: 'text', project: activeProject?.name }),
         });
         const data = await res.json();
