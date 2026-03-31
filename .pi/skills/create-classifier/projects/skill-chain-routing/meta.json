@@ -1,0 +1,11 @@
+{
+  "name": "skill-chain-routing",
+  "status": "evaluated",
+  "modality": "text_multilabel",
+  "samples": 1187,
+  "classes": 50,
+  "task": "multi-label skill chain classification",
+  "description": "Classify user prompts into which skills should be invoked. Replaces brittle regex trigger matching in skill-selector.ts.",
+  "backbone": "distilbert-base-uncased",
+  "f1": 0.3162898415140611
+}

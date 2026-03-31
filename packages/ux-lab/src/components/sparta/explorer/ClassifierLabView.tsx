@@ -116,7 +116,9 @@ const GLOSSARY: Record<string, string> = {
   'GGUF': 'A model format optimized for CPU inference. Used by llama.cpp and similar tools.',
 }
 
-/** Wraps a technical term with a hover tooltip from the glossary */
+/** Wraps a technical term with a hover tooltip from the glossary.
+ * Usage: <Term>F1</Term>, <Term>Backbone</Term> */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Term({ children }: { children: string }) {
   const tip = GLOSSARY[children]
   if (!tip) return <span>{children}</span>
@@ -1349,6 +1351,10 @@ function SortedProjectList({ projects, sortFn, selectedProjectId, setSelectedPro
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               {p.status === 'training' ? (
                 <span style={{ fontSize: 9, fontWeight: 900, color: EMBRY.amber }}>TRAINING</span>
+              ) : p.status === 'halted' ? (
+                <span style={{ fontSize: 9, fontWeight: 900, color: EMBRY.amber }}>HALTED</span>
+              ) : p.status === 'failed' ? (
+                <span style={{ fontSize: 9, fontWeight: 900, color: EMBRY.red }}>FAILED</span>
               ) : (
                 <span style={{ fontSize: 11, fontWeight: 900, fontFamily: MONO, color: f1Color }}>
                   {p.f1 ? `${p.f1.toFixed(2)}` : '—'}
@@ -1483,6 +1489,13 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
             { label: 'No crashed runs', ok: !rows.some(r => r.status === 'fail' && r.f1 === 0), detail: rows.filter(r => r.f1 === 0).length > 0 ? `${rows.filter(r => r.f1 === 0).length} crashed` : 'Clean' },
             { label: 'All runs complete', ok: !rows.some(r => r.status === 'training' || r.status === 'queued'), detail: rows.filter(r => r.status === 'training' || r.status === 'queued').length > 0 ? 'In progress' : 'Yes' },
           ]}
+          halt={passCount === 0 && totalCount > 0 && !rows.some(r => r.status === 'training' || r.status === 'queued') ? (() => {
+            const bestF1 = rows.length > 0 ? Math.max(...rows.map(r => r.f1)) : 0
+            const gap = rerunGateF1 - bestF1
+            if (gap > 0.3) return { reason: `Best F1 (${bestF1.toFixed(3)}) is ${gap.toFixed(3)} below gate — this is likely a data problem, not a model problem.`, action: 'Add more training data, especially for underperforming classes. Check the Data tab for class balance. Consider lowering the gate threshold if the task is inherently difficult.' }
+            if (gap > 0.1) return { reason: `Best F1 (${bestF1.toFixed(3)}) is ${gap.toFixed(3)} below gate — significant gap remaining after all backbones tried.`, action: 'Try a larger backbone model, increase epochs, or tune hyperparameters on the Tune tab. Check Failure Analysis below for specific /dogpile suggestions.' }
+            return { reason: `Best F1 (${bestF1.toFixed(3)}) is close but ${gap.toFixed(3)} below gate.`, action: 'Small gap — try label smoothing, learning rate warmup, or ensemble of top backbones on the Tune tab.' }
+          })() : null}
         />
       </div>
 
@@ -2575,6 +2588,12 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
             { label: '≥2 backbones compared', ok: data.length >= 2, detail: `${data.length} tested` },
             { label: 'Latency within budget', ok: bestLat > 0 && bestLat < 100, detail: bestLat > 0 ? `${bestLat}ms` : '—' },
           ]}
+          halt={!benchPassed && data.length > 0 ? (() => {
+            if (data.length < 2) return { reason: 'Only 1 backbone tested — not enough to compare.', action: 'Go to Train tab and add more backbone candidates.' }
+            const gap = 0.90 - bestF1
+            if (gap > 0.3) return { reason: `Best backbone F1 (${bestF1.toFixed(3)}) is far below target. No backbone is competitive for this task with current data.`, action: 'This is likely a data problem. Go to the Data tab to add more training samples, then retrain.' }
+            return { reason: `No backbone met the target. Best: ${winnerName} at F1 ${bestF1.toFixed(3)}.`, action: 'Try different backbones or tune hyperparameters. Check the Train tab failure analysis for specific suggestions.' }
+          })() : null}
         />
       </div>
 
@@ -2867,6 +2886,13 @@ function EvaluateTab({ project }: { project: Project }) {
             { label: 'Evaluation run', ok: !!evaluated, detail: evaluated ? 'Yes' : 'Not yet' },
             { label: 'All questions passed', ok: evaluated ? failCount === 0 : false, detail: evaluated ? (failCount === 0 ? 'Yes' : `${failCount} failed`) : '—' },
           ]}
+          halt={evaluated && failCount > 0 ? {
+            reason: `${failCount} of ${totalQ} test questions failed. The model is not classifying correctly for these inputs.`,
+            action: `Review the failed questions below. Either fix the model (retrain from Train tab) or fix the questions (edit expected class if the label was wrong).`,
+          } : totalQ === 0 ? {
+            reason: 'No evaluation questions defined. Cannot assess model quality without test cases.',
+            action: 'Add test questions below — type examples of each class and what the model should predict. Or import a batch from CSV/JSONL.',
+          } : null}
         />
       </div>
 
@@ -3197,6 +3223,10 @@ function PromoteTab({ project }: { project: Project }) {
           checks={[
             { label: 'Eval gate passed', ok: holdoutPassed, detail: holdoutPassed ? `F1 ${macroF1.toFixed(3)}` : 'Run Evaluate first' },
           ]}
+          halt={!holdoutPassed ? {
+            reason: `Model F1 (${macroF1.toFixed(3)}) did not pass the holdout gate (≥ ${gateThreshold.toFixed(2)}). Cannot promote.`,
+            action: 'Go back to the Train tab to improve the model, or lower the gate threshold if this performance is acceptable for your use case.',
+          } : null}
         />
       </div>
 
@@ -3490,22 +3520,39 @@ function StatPanel({ title, value, mono, color }: { title: string; value: string
 }
 
 /** Reusable gate status card — used in every tab beyond Research */
-function GateCard({ name, passed, metrics, checks, bars }: {
+function GateCard({ name, passed, metrics, checks, bars, halt }: {
   name: string
   passed: boolean
   metrics: Array<{ label: string; value: string | number; color?: string }>
   checks: Array<{ label: string; ok: boolean; detail?: string }>
   bars?: Array<{ label: string; value: number; total: number; color: string }>
+  halt?: { reason: string; action: string } | null
 }) {
-  const borderColor = passed ? EMBRY.green : EMBRY.red
+  const halted = !!halt && !passed
+  const borderColor = passed ? EMBRY.green : halted ? EMBRY.amber : EMBRY.red
+  const statusLabel = passed ? 'PASSED' : halted ? 'HALTED' : 'FAILED'
+  const statusIcon = passed
+    ? <ShieldCheck size={18} color={EMBRY.green} />
+    : halted
+      ? <AlertTriangle size={18} color={EMBRY.amber} />
+      : <AlertTriangle size={18} color={EMBRY.red} />
   return (
     <div style={{ ...card, border: `1px solid ${borderColor}33`, background: `${borderColor}04` }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-        {passed ? <ShieldCheck size={18} color={EMBRY.green} /> : <AlertTriangle size={18} color={EMBRY.red} />}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: halted ? 12 : 16 }}>
+        {statusIcon}
         <span style={{ fontSize: 12, fontWeight: 900, color: borderColor }}>
-          {name} {passed ? 'PASSED' : 'FAILED'}
+          {name} {statusLabel}
         </span>
       </div>
+      {/* Halt diagnosis — shown prominently when halted */}
+      {halted && halt && (
+        <div style={{ marginBottom: 16, padding: '10px 14px', borderRadius: 6, background: `${EMBRY.amber}08`, border: `1px solid ${EMBRY.amber}22` }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: EMBRY.amber, marginBottom: 6 }}>WHY THIS STEP HALTED</div>
+          <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.6, marginBottom: 8 }}>{halt.reason}</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: EMBRY.accent, marginBottom: 4 }}>WHAT WOULD UNBLOCK IT</div>
+          <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.6 }}>{halt.action}</div>
+        </div>
+      )}
       {/* Key metrics */}
       {metrics.length > 0 && (
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(metrics.length, 3)}, 1fr)`, gap: 12, marginBottom: 16 }}>

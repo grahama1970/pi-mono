@@ -1,0 +1,39 @@
+{
+  "selected_backbone": "distilbert-base-uncased",
+  "selected_metrics": {
+    "macro_f1": 0.3162898415140611,
+    "micro_f1": 0.32948929159802304
+  },
+  "results": [
+    {
+      "backbone": "distilbert-base-uncased",
+      "macro_f1": 0.3162898415140611,
+      "micro_f1": 0.32948929159802304,
+      "epochs": 10,
+      "train_samples": 949,
+      "val_samples": 119,
+      "labels": 50,
+      "gate_passed": false
+    },
+    {
+      "backbone": "sentence-transformers/all-MiniLM-L6-v2",
+      "macro_f1": 0.2930918254204585,
+      "micro_f1": 0.2517985611510791,
+      "epochs": 10,
+      "train_samples": 949,
+      "val_samples": 119,
+      "labels": 50,
+      "gate_passed": false
+    },
+    {
+      "backbone": "distilbert-base-uncased",
+      "macro_f1": 0.2878026279553853,
+      "micro_f1": 0.2664374731413838,
+      "epochs": 5,
+      "train_samples": 949,
+      "val_samples": 119,
+      "labels": 50,
+      "gate_passed": false
+    }
+  ]
+}
