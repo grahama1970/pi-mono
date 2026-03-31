@@ -223,17 +223,19 @@ function TacticStrip() {
         const s = stats[tactic.name] ?? { total: 0, covered: 0, partial: 0, gap: 0 }
         const pct = s.total > 0 ? Math.round((s.covered / s.total) * 100) : 0
         return (
-          <div key={tactic.id} style={{ flex: 1, minWidth: 100, padding: '8px 10px', borderRight: `1px solid ${EMBRY.border}`, textAlign: 'center' }}>
+          <div key={tactic.id} style={{ flex: 1, minWidth: 100, padding: '8px 10px', borderRight: `1px solid ${EMBRY.border}`, textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.white, marginBottom: 2 }}>{tactic.name}</div>
             <div style={{ fontSize: 8, color: EMBRY.dim }}>{tactic.prefix} · {s.total} tech</div>
-            <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden', marginTop: 4 }}>
-              {s.total > 0 && <>
-                <div style={{ width: `${(s.covered / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
-                <div style={{ width: `${(s.partial / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
-                <div style={{ width: `${(s.gap / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
-              </>}
+            <div style={{ marginTop: 'auto' }}>
+              <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden', marginTop: 4 }}>
+                {s.total > 0 && <>
+                  <div style={{ width: `${(s.covered / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
+                  <div style={{ width: `${(s.partial / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
+                  <div style={{ width: `${(s.gap / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
+                </>}
+              </div>
+              <div style={{ fontSize: 8, color: pct === 100 ? EMBRY.green : EMBRY.dim, marginTop: 2 }}>{pct}%</div>
             </div>
-            <div style={{ fontSize: 8, color: pct === 100 ? EMBRY.green : EMBRY.dim, marginTop: 2 }}>{pct}%</div>
           </div>
         )
       })}
@@ -345,8 +347,10 @@ function Detail() {
 
   return (
     <div style={{
-      width: 400, flexShrink: 0, backgroundColor: EMBRY.bgPanel,
+      position: 'absolute', top: 0, right: 0, bottom: 0,
+      width: 420, backgroundColor: EMBRY.bgPanel,
       borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', display: 'flex', flexDirection: 'column',
+      zIndex: 10, boxShadow: '-4px 0 20px rgba(0,0,0,0.4)',
     }}>
       {/* Header */}
       <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

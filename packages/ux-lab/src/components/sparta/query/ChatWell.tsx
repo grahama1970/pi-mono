@@ -13,6 +13,7 @@ import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { RecallCard, type RecallItem } from './RecallCard'
 import { GateChain } from './GateChain'
+import { ThreatMatrixCard, type ThreatMatrixSummary } from './ThreatMatrixCard'
 
 export interface EntityRef {
   id: string
@@ -46,7 +47,11 @@ export interface ChatMessage {
   recallItems?: RecallItem[]
   /** Skill that was invoked (shown as collapsible tool action) */
   skillUsed?: string
+  /** Inline threat matrix summary card */
+  matrixSummary?: ThreatMatrixSummary
 }
+
+export type { ThreatMatrixSummary }
 
 export interface ChatWellProps {
   messages: ChatMessage[]
@@ -56,6 +61,7 @@ export interface ChatWellProps {
   onFeedback?: (msgId: string, feedback: 'up' | 'down') => void
   onRunEvidenceCase?: (msg: ChatMessage) => void
   evidenceCaseLoading?: string | null
+  onNavigateMatrix?: () => void
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -83,7 +89,7 @@ function ToolAction({ label }: { label: string }) {
 // ── Message Component ────────────────────────────────────────────────────
 
 function MessageItem({
-  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras,
+  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras, onNavigateMatrix,
 }: {
   msg: ChatMessage
   onFeedback?: (id: string, fb: 'up' | 'down') => void
@@ -91,6 +97,7 @@ function MessageItem({
   onRunEvidenceCase?: (msg: ChatMessage) => void
   evidenceCaseLoading?: string | null
   renderExtras?: (msg: ChatMessage) => ReactNode
+  onNavigateMatrix?: () => void
 }) {
   const isUser = msg.role === 'user'
 
@@ -150,6 +157,11 @@ function MessageItem({
           items={msg.recallItems}
           resultCount={msg.resultCount ?? msg.recallItems.length}
         />
+      )}
+
+      {/* Inline threat matrix card */}
+      {msg.matrixSummary && (
+        <ThreatMatrixCard summary={msg.matrixSummary} onNavigate={onNavigateMatrix} />
       )}
 
       {/* Entity pills */}
@@ -252,7 +264,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'natural' | 'aql'>('natural')
   const chatEndRef = useRef<HTMLDivElement>(null)
@@ -304,6 +316,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             onRunEvidenceCase={onRunEvidenceCase}
             evidenceCaseLoading={evidenceCaseLoading}
             renderExtras={renderExtras}
+            onNavigateMatrix={onNavigateMatrix}
           />
         ))}
         <div ref={chatEndRef} />

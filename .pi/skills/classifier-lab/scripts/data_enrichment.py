@@ -180,7 +180,6 @@ def strategy_search_huggingface(project_dir: Path, meta: dict, existing_labels: 
                         new_samples.append({"text": text.strip()[:1000], "class": label_map[raw], "split": "train", "_source": ds_info["id"]})
                         count += 1
                 logger.info(f"  {ds_info['id']}: extracted {count} samples")
-
             except Exception as e:
                 logger.warning(f"  {ds_info['id']}: failed — {e}")
 

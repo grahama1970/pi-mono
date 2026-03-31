@@ -266,7 +266,7 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
           background: '#1e1e24', fontSize: 15, lineHeight: 1.65, color: '#e2e8f0',
           fontFamily: 'var(--font-ui)',
         }}>
-          {msg.content}
+          {highlightSkills(msg.content)}
         </div>
       </div>
     );

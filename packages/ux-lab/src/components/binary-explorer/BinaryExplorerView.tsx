@@ -1185,9 +1185,14 @@ export function BinaryExplorerView() {
     const pipelineStart = performance.now()
 
     // Timed fetch wrapper — enforces per-stage timeout + abort signal
+    // Per-stage timeout — each fetch gets its own AbortController so one timeout doesn't kill the pipeline
     const timedFetch = (url: string, init: RequestInit, budgetMs: number): Promise<Response> => {
-      const timeout = setTimeout(() => abortCtl.abort(), budgetMs)
-      return fetch(url, { ...init, signal }).finally(() => clearTimeout(timeout))
+      const stageCtl = new AbortController()
+      const onPipelineAbort = () => stageCtl.abort()
+      signal.addEventListener('abort', onPipelineAbort, { once: true })
+      const timeout = setTimeout(() => stageCtl.abort(), budgetMs)
+      return fetch(url, { ...init, signal: stageCtl.signal })
+        .finally(() => { clearTimeout(timeout); signal.removeEventListener('abort', onPipelineAbort) })
     }
 
     try {
@@ -1199,7 +1204,7 @@ export function BinaryExplorerView() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text, collection: 'binary_features' }),
-        }, 500)
+        }, 3000)
         if (!res.ok) throw new Error(`extract-entities API returned ${res.status}`)
         const { entities } = await res.json()
         mentionedEntities.push(...(entities ?? []).map((e: { id: string; name: string; label: string; type: string }) => ({
@@ -3107,3 +3112,4 @@ if (styleInjector) {
 }
 
 export default BinaryExplorerView
+// force-hmr-1774972169

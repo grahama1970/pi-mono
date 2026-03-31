@@ -11,7 +11,7 @@
 import { useState, useCallback, useRef, useEffect, createContext, useContext } from 'react'
 import { EMBRY } from '../common/EmbryStyle'
 import { ChatWell } from '../query/ChatWell'
-import type { ChatMessage, EntityRef, EvidenceGate } from '../query/ChatWell'
+import type { ChatMessage, EntityRef, EvidenceGate, ThreatMatrixSummary } from '../query/ChatWell'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption } from '../shared/ThreatMatrix'
 import { LemmaGraph } from '../lemma-graph/LemmaGraph'
@@ -136,22 +136,30 @@ export function ChatTab() {
     })
   }, [showSub, evidenceMap])
 
-  // Load evidence map when system changes
+  // Load evidence map — parse control_ids from solution JSON of evidence cases
   useEffect(() => {
     if (!currentSystem) { setEvidenceMap(new Map()); return }
     post('/recall', {
-      q: 'evidence case SPARTA requirement compliance verdict',
-      collections: ['lessons'], k: 300,
+      q: 'sensai cascade label verdict evidence case SPARTA technique',
+      collections: ['lessons'], k: 200,
     }).then(res => {
       const items = (res.items ?? []) as any[]
       const vmap = new Map<string, { verdict: string; grade: string; count: number }>()
       for (const item of items) {
-        if (!(item.tags ?? []).includes('evidence_case')) continue
-        for (const cid of (item.control_ids ?? [])) {
+        const tags = item.tags ?? []
+        if (!tags.includes('sensai-cascade-label') && !tags.includes('evidence_case')) continue
+        // Parse solution JSON for control_ids and verdict
+        let sol: any = {}
+        try {
+          const raw = item.solution ?? ''
+          if (raw.startsWith('{')) sol = JSON.parse(raw)
+        } catch { /* not JSON */ }
+        const cids: string[] = sol.control_ids ?? item.control_ids ?? []
+        const v = sol.verdict ?? item.verdict ?? 'not_satisfied'
+        const g = sol.grade ?? item.grade ?? 'F'
+        for (const cid of cids) {
           if (!SPARTA_TACTICS.some(t => cid.startsWith(t.prefix + '-'))) continue
           const existing = vmap.get(cid)
-          const v = item.verdict ?? 'not_satisfied'
-          const g = item.grade ?? 'F'
           if (!existing) { vmap.set(cid, { verdict: v, grade: g, count: 1 }) }
           else {
             existing.count++
@@ -171,10 +179,31 @@ export function ChatTab() {
 
     // Detect intent for viz switching
     const qLower = query.toLowerCase()
-    if (qLower.includes('threat matrix') || qLower.includes('coverage') || qLower.includes('threat landscape')) {
+    const isMatrixIntent = qLower.includes('threat matrix') || qLower.includes('coverage') || qLower.includes('threat landscape') || qLower.includes('show me the matrix')
+    if (isMatrixIntent) {
       setVizMode('matrix')
     } else if (qLower.includes('proof') || qLower.includes('lemma') || qLower.includes('prove') || qLower.includes('chain')) {
       setVizMode('graph')
+    }
+
+    // For matrix queries, show inline summary card with navigate button
+    if (isMatrixIntent) {
+      const satisfied = [...evidenceMap.values()].filter(v => v.verdict === 'satisfied').length
+      const inconclusive = [...evidenceMap.values()].filter(v => v.verdict === 'inconclusive').length
+      const notSatisfied = [...evidenceMap.values()].filter(v => v.verdict === 'not_satisfied').length
+      const totalTech = techniques.length || 85
+      const noEvidence = totalTech - satisfied - inconclusive - notSatisfied
+      const dl = DATALAKES.find(d => d.id === currentSystem)
+      addMsg({
+        role: 'system', content: `Here's the current ${dl?.name ?? 'F-36'} threat posture.`, type: 'natural',
+        cascadeLayer: 'recall',
+        matrixSummary: {
+          totalTechniques: totalTech, totalTactics: SPARTA_TACTICS.length,
+          satisfied, inconclusive, notSatisfied, noEvidence,
+          datalake: dl?.name ?? 'F-36',
+        },
+      })
+      return
     }
 
     try {
@@ -341,18 +370,48 @@ export function ChatTab() {
     focusControl, setFocusControl, currentSystem, setCurrentSystem,
   }
 
+  // ── Resizable pane ──────────────────────────────────────────────────
+
+  const [chatWidth, setChatWidth] = useState(450)
+  const dragging = useRef(false)
+  const dragStartX = useRef(0)
+  const dragStartW = useRef(450)
+
+  const onDragStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    dragging.current = true
+    dragStartX.current = e.clientX
+    dragStartW.current = chatWidth
+
+    const onMove = (ev: MouseEvent) => {
+      if (!dragging.current) return
+      const delta = ev.clientX - dragStartX.current
+      setChatWidth(Math.max(280, Math.min(800, dragStartW.current + delta)))
+    }
+    const onUp = () => {
+      dragging.current = false
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+  }, [chatWidth])
+
   // ── Render ─────────────────────────────────────────────────────────
 
   return (
     <ChatTabContext.Provider value={ctxValue}>
       <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
 
-        {/* LEFT: Chat pane (450px) */}
+        {/* LEFT: Chat pane (resizable) */}
         <div style={{
-          width: 450, minWidth: 450, maxWidth: 450,
+          width: chatWidth, minWidth: 280, maxWidth: 800,
           display: 'flex', flexDirection: 'column',
-          borderRight: `1px solid ${EMBRY.border}`,
-          backgroundColor: EMBRY.bg,
+          backgroundColor: EMBRY.bg, flexShrink: 0,
         }}>
           {/* Scope + system selector */}
           <div style={{
@@ -387,12 +446,25 @@ export function ChatTab() {
               onClarifyClick={useCallback((q: string) => handleSend(q, 'natural'), [handleSend])}
               onRunEvidenceCase={handleRunEvidenceCase}
               evidenceCaseLoading={evidenceCaseLoading}
+              onNavigateMatrix={useCallback(() => setVizMode('matrix'), [])}
             />
           </div>
         </div>
 
+        {/* DRAG HANDLE */}
+        <div
+          onMouseDown={onDragStart}
+          style={{
+            width: 5, cursor: 'col-resize', flexShrink: 0,
+            background: dragging.current ? EMBRY.accent : EMBRY.border,
+            transition: dragging.current ? 'none' : 'background 0.15s',
+          }}
+          onMouseEnter={(e) => { if (!dragging.current) e.currentTarget.style.background = EMBRY.accent }}
+          onMouseLeave={(e) => { if (!dragging.current) e.currentTarget.style.background = EMBRY.border }}
+        />
+
         {/* RIGHT: Visualization workspace (flex) */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
 
           {/* Viz mode toggle */}
           <div style={{
@@ -428,13 +500,13 @@ export function ChatTab() {
           <div style={{ flex: 1, overflow: 'hidden' }}>
             {vizMode === 'matrix' ? (
               <ThreatMatrix.Provider state={matrixState} actions={matrixActions} meta={matrixMeta}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
                   <ThreatMatrix.Header />
                   <ThreatMatrix.TacticStrip />
-                  <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+                  <div style={{ flex: 1, overflow: 'hidden' }}>
                     <ThreatMatrix.Grid />
-                    <ThreatMatrix.Detail />
                   </div>
+                  <ThreatMatrix.Detail />
                 </div>
               </ThreatMatrix.Provider>
             ) : (

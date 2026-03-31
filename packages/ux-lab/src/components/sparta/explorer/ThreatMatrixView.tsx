@@ -218,13 +218,13 @@ export function ThreatMatrixView() {
   // Compose the shared compound component
   return (
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
         <ThreatMatrix.Header />
         <ThreatMatrix.TacticStrip />
-        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
           <ThreatMatrix.Grid />
-          <ThreatMatrix.Detail />
         </div>
+        <ThreatMatrix.Detail />
       </div>
     </ThreatMatrix.Provider>
   )
