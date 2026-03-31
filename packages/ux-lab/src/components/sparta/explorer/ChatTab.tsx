@@ -75,6 +75,7 @@ function post(path: string, body: Record<string, unknown>) {
 export function ChatTab() {
   // Shared state
   const [vizMode, setVizMode] = useState<VizMode>('matrix')
+  const [graphMode, setGraphMode] = useState<'full' | 'critical-path'>('full')
   const [focusTechnique, setFocusTechnique] = useState<string | null>(null)
   const [focusControl, setFocusControl] = useState<string | null>(null)
   const [currentSystem, setCurrentSystem] = useState('f36')
@@ -173,8 +174,12 @@ export function ChatTab() {
     const isMatrixIntent = qLower.includes('threat matrix') || qLower.includes('coverage') || qLower.includes('threat landscape') || qLower.includes('show me the matrix')
     if (isMatrixIntent) {
       setVizMode('matrix')
+    } else if (qLower.includes('critical path') || qLower.includes('attack chain') || qLower.includes('exploit chain') || qLower.includes('weakest chain') || qLower.includes('failing chain')) {
+      setVizMode('graph')
+      setGraphMode('critical-path')
     } else if (qLower.includes('proof') || qLower.includes('lemma') || qLower.includes('prove') || qLower.includes('chain')) {
       setVizMode('graph')
+      setGraphMode('full')
     }
 
     // For matrix queries: render full matrix in viz + narrated summary in chat
@@ -335,24 +340,52 @@ export function ChatTab() {
 
   useEffect(() => {
     if (vizMode !== 'graph') return
-    const controlId = focusControl ?? focusTechnique ?? 'CWE-119'
-    post('/recall', { q: controlId, collections: ['sparta_relationships'], k: 30, entities: [controlId] })
-      .then(res => {
-        const items = res.items ?? []
+
+    if (graphMode === 'critical-path') {
+      // Fetch failing attack chains from critical-path endpoint
+      const controlId = focusControl ?? focusTechnique ?? undefined
+      fetch('http://localhost:3001/api/critical-path', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ control_id: controlId }),
+      }).then(r => r.json()).then(res => {
+        const nodes: GraphNode[] = (res.chains ?? []).flatMap((c: any) =>
+          (c.nodes ?? []).map((n: any) => ({
+            id: n.id, label: n.label ?? n.id, framework: n.framework ?? 'SPARTA',
+            confidence: n.verdict === 'not_satisfied' ? 0.1 : n.verdict === 'inconclusive' ? 0.4 : 0.7,
+          }))
+        )
+        const edges: GraphEdge[] = (res.chains ?? []).flatMap((c: any) =>
+          (c.edges ?? []).map((e: any) => ({
+            source: e.source, target: e.target, method: e.method ?? 'related', validated: false,
+          }))
+        )
+        // Deduplicate nodes
         const nodeMap = new Map<string, GraphNode>()
-        const edges: GraphEdge[] = []
-        for (const r of items) {
-          const src = r.source_control_id ?? ''
-          const tgt = r.target_control_id ?? ''
-          if (!src || !tgt) continue
-          if (!nodeMap.has(src)) nodeMap.set(src, { id: src, label: src, framework: r.source_framework ?? '?' })
-          if (!nodeMap.has(tgt)) nodeMap.set(tgt, { id: tgt, label: tgt, framework: r.target_framework ?? '?' })
-          edges.push({ source: src, target: tgt, method: r.method ?? '?', validated: !!r.gate_evidence })
-        }
+        for (const n of nodes) if (!nodeMap.has(n.id)) nodeMap.set(n.id, n)
         setGraphNodes([...nodeMap.values()])
         setGraphEdges(edges)
-      })
-  }, [vizMode, focusControl, focusTechnique])
+      }).catch(() => { setGraphNodes([]); setGraphEdges([]) })
+    } else {
+      // Standard relationship graph
+      const controlId = focusControl ?? focusTechnique ?? 'CWE-119'
+      post('/recall', { q: controlId, collections: ['sparta_relationships'], k: 30, entities: [controlId] })
+        .then(res => {
+          const items = res.items ?? []
+          const nodeMap = new Map<string, GraphNode>()
+          const edges: GraphEdge[] = []
+          for (const r of items) {
+            const src = r.source_control_id ?? ''
+            const tgt = r.target_control_id ?? ''
+            if (!src || !tgt) continue
+            if (!nodeMap.has(src)) nodeMap.set(src, { id: src, label: src, framework: r.source_framework ?? '?' })
+            if (!nodeMap.has(tgt)) nodeMap.set(tgt, { id: tgt, label: tgt, framework: r.target_framework ?? '?' })
+            edges.push({ source: src, target: tgt, method: r.method ?? '?', validated: !!r.gate_evidence })
+          }
+          setGraphNodes([...nodeMap.values()])
+          setGraphEdges(edges)
+        })
+    }
+  }, [vizMode, graphMode, focusControl, focusTechnique])
 
   // ── Threat matrix state/actions/meta ───────────────────────────────
 
@@ -491,6 +524,7 @@ export function ChatTab() {
                 nodes={graphNodes}
                 edges={graphEdges}
                 onNodeClick={handleGraphNodeClick}
+                mode={graphMode}
               />
             )}
           </div>

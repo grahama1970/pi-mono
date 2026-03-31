@@ -15,7 +15,7 @@
  *     <ThreatMatrix.Detail />
  *   </ThreatMatrix.Provider>
  */
-import { createContext, use, useState, useMemo, type ReactNode } from 'react'
+import { createContext, use, useState, useMemo, useCallback, type ReactNode } from 'react'
 import { EMBRY, label, heading, glowDot, fwBadge } from '../common/EmbryStyle'
 
 // ── Context Interface ────────────────────────────────────────────────────────
@@ -45,11 +45,36 @@ export interface ThreatTactic {
   prefix: string
 }
 
+export interface TraceabilityChunk {
+  _key?: string
+  asset_type: string
+  doc_id?: string
+  page_num?: number
+  text?: string
+  content?: string
+  confidence?: number
+}
+
+export interface EvidenceCase {
+  verdict: string
+  grade: string
+  question: string
+  gates_passed: number
+  gates_total: number
+  gate_summary: string
+  tier: string
+  control_ids: string[]
+}
+
 export interface TechniqueDetail {
   technique: ThreatTechnique
   qras: Array<{ question?: string; answer?: string; reasoning?: string }>
   countermeasures: Array<{ control_id: string; name: string }>
   relationships: Array<{ source_control_id: string; target_control_id: string; combined_score?: number }>
+  /** Traceability: typed datalake chunks linked to this control */
+  traceability?: Record<string, TraceabilityChunk[]>
+  /** Evidence cases with gate traces */
+  evidenceCases?: EvidenceCase[]
 }
 
 export interface ThreatMatrixState {
@@ -366,12 +391,38 @@ function Grid() {
 
 // ── Detail Panel ─────────────────────────────────────────────────────────────
 
+// ── Asset type badge colors ──────────────────────────────────────────────────
+
+const ASSET_TYPE_COLORS: Record<string, string> = {
+  Requirement: EMBRY.accent,
+  Table: EMBRY.blue,
+  Figure: EMBRY.amber,
+  Text: EMBRY.dim,
+  Equation: EMBRY.green,
+  HTML: EMBRY.muted,
+}
+
+function assetBadge(type: string): React.CSSProperties {
+  const color = ASSET_TYPE_COLORS[type] ?? EMBRY.dim
+  return {
+    fontSize: 8, fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase' as const,
+    padding: '1px 6px', borderRadius: 3, letterSpacing: '0.05em',
+    color, backgroundColor: `${color}15`, border: `1px solid ${color}25`,
+  }
+}
+
+// ── Detail Panel ─────────────────────────────────────────────────────────────
+
 function Detail() {
   const { state, actions } = useThreatMatrix()
   const { selectedDetail, loadingDetail } = state
+  const [showEvidence, setShowEvidence] = useState(false)
+
   if (!selectedDetail) return null
 
-  const { technique: tech, qras, countermeasures, relationships } = selectedDetail
+  const { technique: tech, qras, countermeasures, relationships, traceability, evidenceCases } = selectedDetail
+  const traceTypes = traceability ? Object.keys(traceability).sort() : []
+  const totalChunks = traceTypes.reduce((sum, t) => sum + (traceability?.[t]?.length ?? 0), 0)
 
   return (
     <div style={{
@@ -395,6 +446,95 @@ function Detail() {
           color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer',
         }}>Close</button>
       </div>
+
+      {/* Evidence Cases — "Why" section */}
+      {(evidenceCases?.length ?? 0) > 0 && (
+        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+            <div style={{ ...label }}>Evidence ({evidenceCases!.length} case{evidenceCases!.length !== 1 ? 's' : ''})</div>
+            <button onClick={() => setShowEvidence(v => !v)} style={{
+              fontSize: 9, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+              border: `1px solid ${EMBRY.accent}44`, cursor: 'pointer',
+              backgroundColor: showEvidence ? `${EMBRY.accent}22` : 'transparent',
+              color: EMBRY.accent,
+            }}>
+              {showEvidence ? 'Hide Gates' : 'Show Evidence'}
+            </button>
+          </div>
+          {evidenceCases!.map((ec, i) => {
+            const vColor = ec.verdict === 'satisfied' ? EMBRY.green : ec.verdict === 'inconclusive' ? EMBRY.amber : EMBRY.red
+            return (
+              <div key={`ec-${i}`} style={{ marginBottom: 8, borderRadius: 6, border: `1px solid ${vColor}33`, overflow: 'hidden' }}>
+                <div style={{ padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={glowDot(vColor, 7)} />
+                  <span style={{ fontSize: 10, fontWeight: 700, color: vColor, textTransform: 'uppercase' }}>{ec.verdict.replace('_', ' ')}</span>
+                  <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'monospace' }}>{ec.grade}</span>
+                  <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: 'monospace', marginLeft: 'auto' }}>
+                    {ec.gates_passed}/{ec.gates_total} gates {ec.tier === 'T2' ? ' [LLM]' : ''}
+                  </span>
+                </div>
+                <div style={{ padding: '4px 10px 6px', fontSize: 11, color: EMBRY.dim, lineHeight: 1.4 }}>
+                  {ec.question.slice(0, 150)}{ec.question.length > 150 ? '...' : ''}
+                </div>
+                {showEvidence && ec.gate_summary && (
+                  <div style={{ padding: '6px 10px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: `${EMBRY.bgDeep}80` }}>
+                    {ec.gate_summary.split('; ').map((g, gi) => {
+                      const pass = g.startsWith('PASS')
+                      const gateName = g.replace(/^(PASS|FAIL): /, '')
+                      return (
+                        <div key={gi} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                          <div style={{
+                            width: 14, height: 14, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 8, fontWeight: 700, color: pass ? EMBRY.green : EMBRY.red,
+                            background: `${pass ? EMBRY.green : EMBRY.red}15`, border: `1px solid ${pass ? EMBRY.green : EMBRY.red}40`,
+                          }}>
+                            {pass ? '\u2713' : '\u2717'}
+                          </div>
+                          <span style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.blue }}>
+                            {gateName.replace(/^step_\d+_/, '')}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Traceability — typed source chunks from datalake */}
+      {totalChunks > 0 && (
+        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ ...label, marginBottom: 6 }}>
+            Source Traceability ({totalChunks} chunks)
+          </div>
+          {traceTypes.map((assetType) => {
+            const chunks = traceability![assetType]
+            if (!chunks?.length) return null
+            return (
+              <div key={assetType} style={{ marginBottom: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <span style={assetBadge(assetType)}>{assetType}</span>
+                  <span style={{ fontSize: 9, color: EMBRY.dim }}>{chunks.length}</span>
+                </div>
+                {chunks.slice(0, 3).map((chunk, ci) => (
+                  <div key={chunk._key ?? ci} style={{
+                    fontSize: 11, color: EMBRY.dim, lineHeight: 1.4, padding: '4px 8px', marginBottom: 2,
+                    borderRadius: 4, backgroundColor: `${ASSET_TYPE_COLORS[assetType] ?? EMBRY.dim}06`,
+                    borderLeft: `2px solid ${ASSET_TYPE_COLORS[assetType] ?? EMBRY.dim}40`,
+                  }}>
+                    {chunk.doc_id && <span style={{ fontSize: 9, fontFamily: 'monospace', color: EMBRY.muted, marginRight: 4 }}>{chunk.doc_id}{chunk.page_num ? `:p${chunk.page_num}` : ''}</span>}
+                    {(chunk.text ?? chunk.content ?? '').slice(0, 120)}{(chunk.text ?? chunk.content ?? '').length > 120 ? '...' : ''}
+                  </div>
+                ))}
+                {chunks.length > 3 && <div style={{ fontSize: 9, color: EMBRY.muted, paddingLeft: 8 }}>+ {chunks.length - 3} more</div>}
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       {/* Description */}
       {tech.description && (

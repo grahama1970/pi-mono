@@ -9,7 +9,7 @@
  */
 import { useState, useEffect, useCallback } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
-import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption } from '../shared/ThreatMatrix'
+import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase } from '../shared/ThreatMatrix'
 
 const DAEMON = 'http://localhost:3001/api/memory'
 
@@ -32,12 +32,22 @@ function tacticForTechnique(controlId: string): string | null {
   return null
 }
 
+const EXPRESS = 'http://localhost:3001'
+
 function post(path: string, body: Record<string, unknown>) {
   return fetch(`${DAEMON}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   }).then((r) => r.json()).catch(() => ({ documents: [], items: [] }))
+}
+
+function postExpress(path: string, body: Record<string, unknown>) {
+  return fetch(`${EXPRESS}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then((r) => r.json()).catch(() => ({}))
 }
 
 interface RawTechnique {
@@ -76,48 +86,33 @@ export function ThreatMatrixView() {
     })
   }, [])
 
-  // When datalake is selected, fetch /create-evidence-case verdicts from /recall.
-  // Evidence cases are stored as lessons with evidence_case tag.
-  // Each case has control_ids and a verdict (satisfied/inconclusive/not_satisfied).
-  // The Threat Matrix ONLY shows what /create-evidence-case has determined.
+  // Load evidence verdicts from dedicated evidence_cases collection
   useEffect(() => {
     if (!activeDatalake) {
       setEvidenceMap(new Map())
       return
     }
 
-    post('/recall', {
-      q: 'evidence case SPARTA requirement compliance verdict',
-      collections: ['lessons'],
-      k: 300,
-    }).then((res) => {
-      const items = (res.items ?? []) as Array<Record<string, unknown>>
+    post('/list', { collection: 'evidence_cases', limit: 500 }).then((res) => {
+      const docs = (res.documents ?? []) as Array<Record<string, unknown>>
       const verdictMap = new Map<string, { verdict: string; grade: string; count: number }>()
 
-      for (const item of items) {
-        const tags = (item.tags as string[]) ?? []
-        if (!tags.includes('evidence_case')) continue
-
-        const controlIds = (item.control_ids as string[]) ?? []
-        const verdict = (item.verdict as string) ?? 'not_satisfied'
-        const grade = (item.grade as string) ?? 'F'
+      for (const doc of docs) {
+        const controlIds = (doc.control_ids as string[]) ?? []
+        const verdict = (doc.verdict as string) ?? 'not_satisfied'
+        const grade = (doc.grade as string) ?? 'F'
 
         for (const cid of controlIds) {
-          // Only map to SPARTA techniques
           if (!SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) continue
-
           const existing = verdictMap.get(cid)
           if (!existing) {
             verdictMap.set(cid, { verdict, grade, count: 1 })
           } else {
             existing.count++
-            // Best verdict wins: satisfied > inconclusive > not_satisfied
             if (verdict === 'satisfied' && existing.verdict !== 'satisfied') {
-              existing.verdict = verdict
-              existing.grade = grade
+              existing.verdict = verdict; existing.grade = grade
             } else if (verdict === 'inconclusive' && existing.verdict === 'not_satisfied') {
-              existing.verdict = verdict
-              existing.grade = grade
+              existing.verdict = verdict; existing.grade = grade
             }
           }
         }
@@ -158,7 +153,7 @@ export function ThreatMatrixView() {
     })
     .sort((a, b) => a.id.localeCompare(b.id))
 
-  // Select technique → fetch QRAs + relationships from daemon
+  // Select technique → fetch QRAs + relationships + traceability + evidence cases
   const selectTechnique = useCallback((tech: ThreatTechnique) => {
     setLoadingDetail(true)
     setSelectedDetail({ technique: tech, qras: [], countermeasures: [], relationships: [] })
@@ -166,7 +161,9 @@ export function ThreatMatrixView() {
     Promise.all([
       post('/recall', { q: `${tech.id} ${tech.name}`, collections: ['sparta_qra'], k: 10, entities: [tech.id] }),
       post('/recall', { q: tech.id, collections: ['sparta_relationships'], k: 20, entities: [tech.id] }),
-    ]).then(([qraRes, relRes]) => {
+      postExpress('/api/memory/traceability', { control_id: tech.id }),
+      postExpress('/api/evidence-case/trace', { control_id: tech.id }),
+    ]).then(([qraRes, relRes, traceRes, evidenceRes]) => {
       const rels = (relRes.items ?? []) as Array<Record<string, unknown>>
       const cmIds = [...new Set(rels
         .filter((r) => {
@@ -176,11 +173,20 @@ export function ThreatMatrixView() {
         .map((r) => r.target_control_id as string)
       )]
 
+      // Traceability groups: { asset_type: chunk[] } dict from endpoint
+      const traceability: Record<string, TraceabilityChunk[]> = {}
+      const groups = traceRes.groups ?? {}
+      for (const [assetType, chunks] of Object.entries(groups)) {
+        traceability[assetType] = (chunks as TraceabilityChunk[]) ?? []
+      }
+
       setSelectedDetail({
         technique: tech,
         qras: qraRes.items ?? [],
         relationships: rels as TechniqueDetail['relationships'],
         countermeasures: cmIds.map((id) => ({ control_id: id, name: id })),
+        traceability,
+        evidenceCases: (evidenceRes.cases ?? []) as EvidenceCase[],
       })
       setLoadingDetail(false)
     })

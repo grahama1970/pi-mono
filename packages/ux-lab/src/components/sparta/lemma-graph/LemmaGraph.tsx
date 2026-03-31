@@ -28,6 +28,8 @@ export interface LemmaGraphProps {
   nodes: GraphNode[]
   edges: GraphEdge[]
   onNodeClick?: (node: GraphNode) => void
+  /** 'full' = all nodes, 'critical-path' = only failing chains (red/amber) */
+  mode?: 'full' | 'critical-path'
 }
 
 interface SimNode extends d3.SimulationNodeDatum {
@@ -48,7 +50,7 @@ interface SimEdge extends d3.SimulationLinkDatum<SimNode> {
   proofDepth: number
 }
 
-export function LemmaGraph({ nodes, edges, onNodeClick }: LemmaGraphProps) {
+export function LemmaGraph({ nodes, edges, onNodeClick, mode = 'full' }: LemmaGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState({ width: 600, height: 400 })
   const [activeFrameworks, setActiveFrameworks] = useState<Set<string>>(new Set())
@@ -365,7 +367,11 @@ export function LemmaGraph({ nodes, edges, onNodeClick }: LemmaGraphProps) {
       })
 
     // Proof status colors (Rob Armstrong requirements)
+    // In critical-path mode, everything is red/amber — these are failing chains
     const proofColor = (status: string) => {
+      if (mode === 'critical-path') {
+        return status === 'sorry' ? EMBRY.red : EMBRY.amber
+      }
       switch (status) {
         case 'proved': return EMBRY.green
         case 'sorry': return EMBRY.red
@@ -433,8 +439,11 @@ export function LemmaGraph({ nodes, edges, onNodeClick }: LemmaGraphProps) {
       .attr('stroke-opacity', 0.25)
 
     // R5: Node fill encodes proof status. Tainted uses distinct orange-red (#e85200)
-    // to disambiguate from partial (amber) per Rob's feedback.
+    // In critical-path mode, nodes are red (failing) or amber (inconclusive)
     const nodeFill = (d: SimNode) => {
+      if (mode === 'critical-path') {
+        return d.confidence < 0.3 ? `${EMBRY.red}22` : `${EMBRY.amber}18`
+      }
       if (d.proofStatus === 'sorry') return '#dc262622'
       if (d.sorryTainted) return '#e8520015' // R5: distinct orange-red, not amber
       if (d.proofStatus === 'proved') return `${EMBRY.green}18`

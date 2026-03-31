@@ -51,9 +51,7 @@ function sourceColor(src?: string): string {
 
 export const RecallCard = memo(function RecallCard({ items, resultCount, confidence }: RecallCardProps) {
   const [expanded, setExpanded] = useState(false)
-  const [expandedIdx, setExpandedIdx] = useState(-1)
-  const confValue = confidence ?? (items.length > 0 ? 0.5 : 0)
-  const confColor = confValue > 0.7 ? EMBRY.green : confValue > 0.4 ? EMBRY.amber : EMBRY.red
+  const [debugIdx, setDebugIdx] = useState(-1)
 
   return (
     <div style={{ margin: '6px 0' }}>
@@ -62,34 +60,35 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
         fontSize: 11, color: EMBRY.dim, background: 'none', border: 'none',
         cursor: 'pointer', padding: '4px 0', textAlign: 'left',
       }}>
-        <span style={{ color: confColor, fontWeight: 700, fontFamily: 'monospace', fontSize: 10 }}>
-          {(confValue * 100).toFixed(0)}%
-        </span>
         <span>Memory recall</span>
         <span style={{ color: EMBRY.muted }}>{'\u00B7'}</span>
         <span>{resultCount} results</span>
         <span style={{ marginLeft: 'auto', fontSize: 10, color: EMBRY.muted, transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>{'\u25BE'}</span>
       </button>
       {expanded && (
-        <div style={{ borderLeft: `2px solid ${confColor}40`, marginLeft: 4, paddingLeft: 10, marginTop: 4 }}>
+        <div style={{ borderLeft: `2px solid ${EMBRY.border}`, marginLeft: 4, paddingLeft: 10, marginTop: 4 }}>
           {items.slice(0, 8).map((item, i) => (
-            <button key={item._key ?? i} onClick={() => setExpandedIdx(expandedIdx === i ? -1 : i)} style={{
-              display: 'block', width: '100%', textAlign: 'left', padding: '6px 0', cursor: 'pointer', border: 'none', background: 'transparent',
+            <div key={item._key ?? i} style={{
+              padding: '6px 0',
               borderBottom: i < Math.min(items.length, 8) - 1 ? `1px solid ${EMBRY.border}` : 'none',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {item._source && <span style={{ fontSize: 8, fontWeight: 700, fontFamily: 'monospace', color: sourceColor(item._source), textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item._source.replace('sparta_', '')}</span>}
                 <span style={{ fontSize: 11, color: EMBRY.white, fontWeight: 500 }}>{itemLabel(item).slice(0, 80)}</span>
               </div>
-              {expandedIdx === i && item.scores && (
-                <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <ScoreBar label="BM25" value={item.scores.bm25 ?? 0} color={EMBRY.accent} />
-                  <ScoreBar label="Graph" value={item.scores.graph ?? 0} color={EMBRY.blue} />
-                  <ScoreBar label="Dense" value={item.scores.dense ?? 0} color={EMBRY.green} />
-                  <ScoreBar label="Fresh" value={item.scores.freshness ?? 0} color={EMBRY.amber} />
-                </div>
+              {/* Debug scores — collapsed by default */}
+              {item.scores && (
+                <details style={{ marginTop: 4 }} open={debugIdx === i} onToggle={(e) => setDebugIdx((e.currentTarget as HTMLDetailsElement).open ? i : -1)}>
+                  <summary style={{ fontSize: 9, color: EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>Debug scores</summary>
+                  <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <ScoreBar label="BM25" value={item.scores.bm25 ?? 0} color={EMBRY.accent} />
+                    <ScoreBar label="Graph" value={item.scores.graph ?? 0} color={EMBRY.blue} />
+                    <ScoreBar label="Dense" value={item.scores.dense ?? 0} color={EMBRY.green} />
+                    <ScoreBar label="Fresh" value={item.scores.freshness ?? 0} color={EMBRY.amber} />
+                  </div>
+                </details>
               )}
-            </button>
+            </div>
           ))}
         </div>
       )}
