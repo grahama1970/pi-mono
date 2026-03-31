@@ -66,6 +66,7 @@ const PromptLab = React.lazy(() => import('./components/sparta/explorer/PromptLa
 const ClassifierLab = React.lazy(() => import('./components/sparta/explorer/ClassifierLabView').then(m => ({ default: m.ClassifierLabView })));
 const LlmEvalLab = React.lazy(() => import('./components/sparta/explorer/LlmEvalLabView').then(m => ({ default: m.LlmEvalLabView })));
 const ArchitectureView = React.lazy(() => import('./components/architecture/ArchitectureView').then(m => ({ default: m.ArchitectureView })));
+const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -223,7 +224,8 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
           {projectId === 'classifier-lab' && <ClassifierLab initialTab={subpath || undefined} />}
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
+          {projectId === 'embry-terminal' && <EmbryTerminal />}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -860,6 +862,7 @@ const ProjectSidebar = ({
     { id: 'llm-eval-lab', title: 'LLM Eval Lab', subtitle: 'Model evaluation', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/llm-eval-lab/stitch/8f916e26f7894b119ce06a2743fe262a.png' },
     { id: 'classifier-lab', title: 'Classifier Lab', subtitle: 'ML classifier training pipeline', date: '2026-03-22', type: 'desktop' as const },
     { id: 'architecture', title: 'Architecture', subtitle: 'Visual collaboration diagrams', date: '2026-03-25', type: 'desktop' as const },
+    { id: 'embry-terminal', title: 'Embry Terminal', subtitle: 'Agent control surface (Claude/Pi/Codex)', date: '2026-03-31', type: 'desktop' as const },
   ];
 
   const filteredProjects = searchQuery
