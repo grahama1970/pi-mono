@@ -266,7 +266,6 @@ function MessageItem({
 
 export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix }: ChatWellProps) {
   const [input, setInput] = useState('')
-  const [mode, setMode] = useState<'natural' | 'aql'>('natural')
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom on new messages
@@ -276,9 +275,9 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
 
   const handleSend = useCallback(() => {
     if (!input.trim()) return
-    onSend?.(input.trim(), mode)
+    onSend?.(input.trim(), 'natural')
     setInput('')
-  }, [input, mode, onSend])
+  }, [input, onSend])
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -302,9 +301,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             color: EMBRY.muted, fontSize: 12, textAlign: 'center',
             padding: '48px 24px', lineHeight: 1.8,
           }}>
-            {mode === 'natural'
-              ? '"Show me SPARTA techniques with no D3FEND countermeasure"'
-              : 'FOR doc IN sparta_controls FILTER doc.framework == "SPARTA" RETURN doc'}
+            "Show me the F-36 threat matrix"
           </div>
         )}
         {messages.map((msg) => (
@@ -337,39 +334,19 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={mode === 'natural'
-              ? 'Ask about the SPARTA graph...'
-              : 'FOR doc IN sparta_controls ...'}
+            placeholder="Ask about the SPARTA graph..."
             style={{
               width: '100%', border: 'none', outline: 'none', resize: 'none',
               background: 'transparent', fontSize: 13, color: EMBRY.white,
               padding: '10px 14px 6px', lineHeight: 1.5,
-              fontFamily: mode === 'aql' ? 'monospace' : 'inherit',
               minHeight: 24, maxHeight: 120,
             }}
             rows={1}
           />
           <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
             padding: '2px 8px 6px',
           }}>
-            {/* Mode toggle */}
-            <div style={{ display: 'flex', gap: 2 }}>
-              {(['natural', 'aql'] as const).map((m) => (
-                <button key={m} onClick={() => setMode(m)} style={{
-                  fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
-                  letterSpacing: '0.08em', padding: '3px 8px', borderRadius: 4,
-                  border: 'none', cursor: 'pointer',
-                  backgroundColor: mode === m ? EMBRY.blue : 'transparent',
-                  color: mode === m ? '#fff' : EMBRY.muted,
-                  transition: 'all 0.12s',
-                }}>
-                  {m === 'natural' ? 'NL' : 'AQL'}
-                </button>
-              ))}
-            </div>
-
-            {/* Send button */}
             <button
               onClick={handleSend}
               disabled={!input.trim()}

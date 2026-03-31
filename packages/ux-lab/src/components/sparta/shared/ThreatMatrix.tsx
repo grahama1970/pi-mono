@@ -243,6 +243,31 @@ function TacticStrip() {
   )
 }
 
+function gradeTooltip(grade: string, verdict: string, caseCount: number, name: string): string {
+  const gradeDesc: Record<string, string> = {
+    'A+': 'All gates passed. Strong evidence.',
+    'A': 'Most gates passed. Good evidence.',
+    'B': 'Some gates passed. Moderate evidence.',
+    'C': 'Few gates passed. Weak evidence.',
+    'D': 'Minimal evidence support.',
+    'F': 'Evidence case failed. Gap in coverage.',
+  }
+  const desc = gradeDesc[grade] ?? `Grade: ${grade}`
+  const verdictLabel = verdict === 'satisfied' ? 'SATISFIED' : verdict === 'inconclusive' ? 'INCONCLUSIVE' : verdict === 'not_satisfied' ? 'NOT SATISFIED' : 'NO EVIDENCE'
+  return `${name}\n\nVerdict: ${verdictLabel}\nGrade: ${grade} — ${desc}\nEvidence cases: ${caseCount}`
+}
+
+function cellTooltip(tech: ThreatTechnique): string {
+  const verdict = tech.evidenceVerdict === 'satisfied' ? 'SATISFIED'
+    : tech.evidenceVerdict === 'inconclusive' ? 'INCONCLUSIVE'
+    : tech.evidenceVerdict === 'not_satisfied' ? 'NOT SATISFIED'
+    : 'NO EVIDENCE'
+  const grade = tech.evidenceGrade ? ` · Grade: ${tech.evidenceGrade}` : ''
+  const cases = tech.evidenceCaseCount > 0 ? ` · ${tech.evidenceCaseCount} case${tech.evidenceCaseCount !== 1 ? 's' : ''}` : ''
+  const mind = tech.mind?.length ? `\nTaxonomy: ${tech.mind.join(', ')}` : ''
+  return `${tech.id}: ${tech.name}\nTactic: ${tech.tactic}\nVerdict: ${verdict}${grade}${cases}${mind}`
+}
+
 // ── Grid ─────────────────────────────────────────────────────────────────────
 
 function Grid() {
@@ -289,6 +314,7 @@ function Grid() {
             return (
               <div
                 key={tech.id}
+                title={cellTooltip(tech)}
                 style={{
                   padding: '8px 10px',
                   borderRight: `1px solid ${EMBRY.border}`, borderBottom: `1px solid ${EMBRY.border}`,
@@ -313,11 +339,13 @@ function Grid() {
                     <span key={fw} style={fwBadge(fw)}>{fw}</span>
                   ))}
                   {tech.evidenceGrade && (
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 3,
-                      color: tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red,
-                      backgroundColor: `${tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red}12`,
-                    }}>
+                    <span
+                      title={gradeTooltip(tech.evidenceGrade, tech.evidenceVerdict, tech.evidenceCaseCount, tech.name)}
+                      style={{
+                        fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 3, cursor: 'help',
+                        color: tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red,
+                        backgroundColor: `${tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red}12`,
+                      }}>
                       {tech.evidenceGrade}
                     </span>
                   )}

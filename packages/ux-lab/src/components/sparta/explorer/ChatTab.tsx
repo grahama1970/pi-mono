@@ -186,7 +186,7 @@ export function ChatTab() {
       setVizMode('graph')
     }
 
-    // For matrix queries, show inline summary card with navigate button
+    // For matrix queries: render full matrix in viz + narrated summary in chat
     if (isMatrixIntent) {
       const satisfied = [...evidenceMap.values()].filter(v => v.verdict === 'satisfied').length
       const inconclusive = [...evidenceMap.values()].filter(v => v.verdict === 'inconclusive').length
@@ -194,8 +194,25 @@ export function ChatTab() {
       const totalTech = techniques.length || 85
       const noEvidence = totalTech - satisfied - inconclusive - notSatisfied
       const dl = DATALAKES.find(d => d.id === currentSystem)
+      const covPct = totalTech > 0 ? Math.round((satisfied / totalTech) * 100) : 0
+
+      // Find weakest tactic
+      const tacticGaps: Record<string, number> = {}
+      for (const t of SPARTA_TACTICS) {
+        const tacticTechs = techniques.filter(tech => tech.tactic === t.name)
+        const covered = tacticTechs.filter(tech => evidenceMap.has(tech.id) && evidenceMap.get(tech.id)!.verdict === 'satisfied').length
+        tacticGaps[t.name] = tacticTechs.length > 0 ? covered / tacticTechs.length : 0
+      }
+      const weakest = Object.entries(tacticGaps).sort((a, b) => a[1] - b[1]).slice(0, 2)
+
+      let narration = `The ${dl?.name ?? 'F-36'} threat matrix is shown in the visualization pane. Coverage: ${covPct}% of ${totalTech} techniques have evidence.`
+      if (weakest.length > 0 && weakest[0][1] < 0.5) {
+        narration += `\n\nGaps: ${weakest.map(([name, pct]) => `${name} (${Math.round(pct * 100)}%)`).join(', ')} — weakest tactics.`
+      }
+      narration += '\n\nAsk about specific techniques or tactics to drill down.'
+
       addMsg({
-        role: 'system', content: `Here's the current ${dl?.name ?? 'F-36'} threat posture.`, type: 'natural',
+        role: 'system', content: narration, type: 'natural',
         cascadeLayer: 'recall',
         matrixSummary: {
           totalTechniques: totalTech, totalTactics: SPARTA_TACTICS.length,
@@ -465,37 +482,6 @@ export function ChatTab() {
 
         {/* RIGHT: Visualization workspace (flex) */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
-
-          {/* Viz mode toggle */}
-          <div style={{
-            padding: '6px 12px',
-            borderBottom: `1px solid ${EMBRY.border}`,
-            display: 'flex', alignItems: 'center', gap: 8,
-            backgroundColor: EMBRY.bgDeep,
-          }}>
-            {(['matrix', 'graph'] as const).map(m => (
-              <button key={m} onClick={() => setVizMode(m)} style={{
-                fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
-                border: 'none', cursor: 'pointer',
-                backgroundColor: vizMode === m ? EMBRY.accent : 'transparent',
-                color: vizMode === m ? '#000' : EMBRY.dim,
-                textTransform: 'uppercase', letterSpacing: '0.08em',
-              }}>
-                {m === 'matrix' ? 'Threat Matrix' : 'Proof Graph'}
-              </button>
-            ))}
-            {focusTechnique && (
-              <span style={{ fontSize: 10, color: EMBRY.green, marginLeft: 'auto', fontWeight: 700 }}>
-                {focusTechnique}
-              </span>
-            )}
-            {focusControl && focusControl !== focusTechnique && (
-              <span style={{ fontSize: 10, color: EMBRY.blue, fontWeight: 700 }}>
-                {focusControl}
-              </span>
-            )}
-          </div>
-
           {/* Viz content */}
           <div style={{ flex: 1, overflow: 'hidden' }}>
             {vizMode === 'matrix' ? (

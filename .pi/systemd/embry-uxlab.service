@@ -1,0 +1,18 @@
+[Unit]
+Description=Embry OS UX Lab Dev Server (Vite + Express API)
+After=embry-memory.service
+PartOf=embry-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/workspace/experiments/pi-mono/packages/ux-lab
+ExecStart=/home/graham/.nvm/versions/node/v22.15.0/bin/npx concurrently "vite --port 3002" "tsx watch server/index.ts"
+EnvironmentFile=-%h/workspace/experiments/pi-mono/.env
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+Environment=NODE_ENV=development
+Environment=PATH=%h/.local/bin:%h/.nvm/versions/node/v22.15.0/bin:/usr/local/bin:/usr/bin:/bin
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=embry-session.target
