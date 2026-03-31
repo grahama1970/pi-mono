@@ -1,0 +1,154 @@
+{
+  "project": "embry-terminal",
+  "version": "2.0",
+  "generated": "2026-03-31",
+  "description": "QuerySpec manifest for Embry Terminal — all data-qid interactive elements",
+  "elements": [
+    {
+      "qid": "topbar:sidebar:toggle",
+      "component": "App/TopBar",
+      "action": "toggle_sidebar",
+      "voice": "open sidebar, close sidebar, show projects",
+      "touch": "tap hamburger menu"
+    },
+    {
+      "qid": "topbar:agent:select",
+      "component": "App/TopBar",
+      "action": "open_agent_picker",
+      "voice": "switch to Claude, use Pi, select Codex",
+      "touch": "tap agent pill"
+    },
+    {
+      "qid": "topbar:connection:status",
+      "component": "App/TopBar",
+      "action": "show_connection_detail",
+      "voice": "connection status, am I connected",
+      "touch": "tap status chip"
+    },
+    {
+      "qid": "topbar:detail:toggle",
+      "component": "App/TopBar",
+      "action": "toggle_artifact_panel",
+      "voice": "show artifact, hide panel, open detail",
+      "touch": "tap panel toggle"
+    },
+    {
+      "qid": "sidebar:project:{name}:select",
+      "component": "Sidebar/ProjectList",
+      "action": "switch_project",
+      "voice": "switch to sparta, open memory project, go to extractor",
+      "touch": "tap project row",
+      "parameterized": true
+    },
+    {
+      "qid": "input:compose",
+      "component": "InputBar/Textarea",
+      "action": "focus_input",
+      "voice": "type message, start typing",
+      "touch": "tap input field"
+    },
+    {
+      "qid": "input:send",
+      "component": "InputBar/SendButton",
+      "action": "send_message",
+      "voice": "send, submit, go",
+      "touch": "tap send button"
+    },
+    {
+      "qid": "input:attach",
+      "component": "InputBar/AttachButton",
+      "action": "attach_file",
+      "voice": "attach file, add attachment",
+      "touch": "tap plus button"
+    },
+    {
+      "qid": "skill-palette:dropdown",
+      "component": "SkillPaletteDropdown",
+      "action": "show_skill_palette",
+      "voice": "show skills, slash commands",
+      "touch": "type / in input"
+    },
+    {
+      "qid": "skill-palette:skill:{name}:select",
+      "component": "SkillPaletteDropdown/Item",
+      "action": "insert_skill",
+      "voice": "run assess, use dogpile, execute plan",
+      "touch": "tap skill row",
+      "parameterized": true
+    },
+    {
+      "qid": "chat:message:{id}",
+      "component": "MessageItem",
+      "action": "select_message",
+      "voice": "select message, show message",
+      "touch": "tap message",
+      "parameterized": true
+    },
+    {
+      "qid": "chat:recall-card:toggle",
+      "component": "RecallCard/Summary",
+      "action": "toggle_recall_results",
+      "voice": "show memory results, expand recall",
+      "touch": "tap recall summary line"
+    },
+    {
+      "qid": "chat:recall:item:{index}:toggle",
+      "component": "RecallCard/Item",
+      "action": "toggle_recall_detail",
+      "voice": "show scores, expand result",
+      "touch": "tap recall item",
+      "parameterized": true
+    },
+    {
+      "qid": "reasoning-chain-summary",
+      "component": "ReasoningChain/Summary",
+      "action": "toggle_reasoning_chain",
+      "voice": "show reasoning, expand chain, show steps",
+      "touch": "tap chain summary line"
+    },
+    {
+      "qid": "artifact:panel",
+      "component": "ArtifactPanel",
+      "action": "focus_artifact",
+      "voice": "show artifact, view code, preview",
+      "touch": "tap artifact panel"
+    },
+    {
+      "qid": "artifact:tab:{name}",
+      "component": "ArtifactPanel/Tab",
+      "action": "switch_artifact_tab",
+      "voice": "show code, show preview",
+      "touch": "tap tab",
+      "parameterized": true
+    },
+    {
+      "qid": "artifact:close",
+      "component": "ArtifactPanel/Close",
+      "action": "close_artifact",
+      "voice": "close artifact, hide panel",
+      "touch": "tap X button"
+    }
+  ],
+  "test_manifest": [
+    {
+      "view": "EmbryTerminal",
+      "interactions": ["topbar:sidebar:toggle", "topbar:agent:select", "input:compose", "input:send"],
+      "visual": "Conversation panel with agent response, sidebar open with projects"
+    },
+    {
+      "view": "SkillPalette",
+      "interactions": ["input:compose", "skill-palette:dropdown"],
+      "visual": "Skill palette dropdown with fuzzy search results"
+    },
+    {
+      "view": "ReasoningChain",
+      "interactions": ["reasoning-chain-summary"],
+      "visual": "Expanded reasoning chain with connected steps and status indicators"
+    },
+    {
+      "view": "RecallCard",
+      "interactions": ["chat:recall-card:toggle", "chat:recall:item:0:toggle"],
+      "visual": "Expanded recall with score bars (BM25, Graph, Dense, Fresh)"
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ff4444",
+                        "primary": "#00ff88",
+                        "on-surface": "#e2e8f0",
+                        "surface-container-high": "#1a1a1a",
+                        "tertiary": "#4a9eff",
+                        "warning": "#ffaa00",
+                        "background": "#141414",
+                        "surface": "#111111",
+                        "surface-variant": "#1a1a1a",
+                        "outline": "rgba(255,255,255,0.13)",
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pulse-glow {
+            animation: pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+        .spin-slow { animation: spin 8s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* Unified Timeline Styling */
+        .timeline-connector {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            bottom: 0;
+            width: 1px;
+            border-left: 1px dashed rgba(0, 255, 136, 0.25);
+        }
+        .timeline-step:last-child .timeline-connector {
+            display: none;
+        }
+        
+        details > summary { list-style: none; outline: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        
+        .ghost-border {
+            border: 1px solid rgba(255, 255, 255, 0.13);
+        }
+        
+        .selection-glow {
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .user-bubble {
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden selection:bg-primary/20">
+<!-- Header -->
+<header class="fixed top-0 w-full h-12 border-b border-white/10 bg-[#0b1220] z-50 flex justify-between items-center px-6">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-primary tracking-widest text-lg uppercase">EMBRY OS // TAC-HUD</span>
+<div class="h-4 w-px bg-white/10"></div>
+<span class="font-mono text-[10px] text-white/40 tracking-[0.2em]">PROJECT_ID: SPARTA_BETA_99</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<div class="flex items-center gap-2 text-primary border-b-2 border-primary pb-1 font-headline tracking-tighter uppercase font-bold text-sm">
+<span class="material-symbols-outlined text-[14px]">sensors</span>
+                STABLE: CONNECTION
+            </div>
+<div class="text-white/40 font-mono text-xs uppercase tracking-wider">SYS: ACTIVE</div>
+<div class="text-white/40 font-mono text-xs uppercase tracking-wider">V.09.42</div>
+</nav>
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary/10 transition-all p-1 rounded">settings_input_antenna</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary/10 transition-all p-1 rounded">shield_with_heart</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary/10 transition-all p-1 rounded">account_circle</span>
+</div>
+</header>
+<div class="flex pt-12 h-screen overflow-hidden">
+<!-- LEFT PANE: Session Archive -->
+<aside class="w-64 bg-[#111111] border-r border-white/10 flex flex-col shrink-0">
+<div class="p-6 border-b border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-[#1a1a1a] rounded-lg flex items-center justify-center ghost-border">
+<span class="material-symbols-outlined text-primary">history</span>
+</div>
+<div>
+<h2 class="font-headline text-primary font-bold text-xs tracking-widest uppercase">SESSION_LOGS</h2>
+<p class="font-mono text-[9px] text-white/40 uppercase">ARCHIVE_MGMT</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow py-4 overflow-y-auto">
+<div class="px-6 mb-4">
+<button class="w-full bg-primary/5 border border-primary/20 text-primary font-mono text-[10px] py-2 rounded uppercase tracking-widest hover:bg-primary/10 transition-all">
+                        + NEW_SESSION
+                    </button>
+</div>
+<div class="space-y-1">
+<a class="flex items-center gap-3 bg-[#1a1a1a] border-l-2 border-primary py-3 px-6 font-mono text-[10px] text-primary uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">chat_bubble</span> SESSION_12_CURRENT
+                    </a>
+<a class="flex items-center gap-3 text-white/40 py-3 px-6 hover:bg-white/5 transition-colors font-mono text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">folder</span> SESSION_11_STABLE
+                    </a>
+<a class="flex items-center gap-3 text-white/40 py-3 px-6 hover:bg-white/5 transition-colors font-mono text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">folder</span> SESSION_10_DELTA
+                    </a>
+</div>
+</nav>
+<div class="p-6 border-t border-white/5">
+<div class="flex items-center gap-4 text-error/70 py-2 font-mono text-[10px] uppercase cursor-pointer hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm">power_settings_new</span> DISCONNECT_LINK
+                </div>
+</div>
+</aside>
+<!-- CENTER PANE: Dialogue Interface -->
+<main class="flex-grow flex flex-col bg-background relative">
+<div class="p-4 border-b border-white/5 bg-[#141414] flex justify-between items-center shrink-0">
+<h3 class="font-headline font-bold text-primary tracking-tighter uppercase text-sm">DIALOGUE_INTERFACE</h3>
+<span class="font-mono text-[10px] text-white/40 uppercase">HUD_ACTIVE_LINK:SESSION_12</span>
+</div>
+<div class="flex-grow overflow-y-auto">
+<div class="max-w-3xl mx-auto w-full px-6 py-12 space-y-12">
+<!-- User Message: Right-aligned, Clean differentiation with background color updated per Image_5 -->
+<div class="flex justify-end w-full">
+<div class="max-w-[85%] user-bubble px-6 py-4 rounded-xl text-[#e2e8f0] text-[15px] leading-relaxed font-body">
+                            Analyze the NVIS protocol entropy in Sector 07. I'm seeing potential bottlenecks in the kernel overhead.
+                        </div>
+</div>
+<!-- Agent Message: Left-aligned with Unified Reasoning Chain -->
+<div class="flex flex-col gap-6 w-full">
+<!-- Unified Reasoning Chain (Collapsible) -->
+<details class="group w-full" open="">
+<summary class="flex items-center gap-3 cursor-pointer text-white/30 hover:text-white/50 transition-colors list-none mb-4">
+<span class="material-symbols-outlined text-sm group-open:rotate-90 transition-transform">chevron_right</span>
+<span class="font-mono text-[11px] uppercase tracking-[0.2em] font-medium">Internal Thought Process</span>
+</summary>
+<div class="relative pl-6 space-y-2">
+<!-- Timeline Line -->
+<div class="absolute left-[9px] top-4 bottom-4 w-px border-l border-dashed border-primary/20"></div>
+<!-- Step 1: Memory Recall -->
+<div class="relative timeline-step">
+<details class="group/step" open="">
+<summary class="flex items-center justify-between cursor-pointer list-none py-2 hover:bg-white/[0.02] rounded px-2 -ml-2 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40 z-10 bg-background">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] px-1.5 py-0.5 bg-tertiary/10 text-tertiary rounded uppercase">/memory recall</span>
+<span class="font-mono text-[9px] text-white/20 uppercase">✓ done (1.2s)</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[9px] text-primary/60 uppercase">84% confidence</span>
+<span class="material-symbols-outlined text-xs text-white/20 group-open/step:rotate-90 transition-transform">chevron_right</span>
+</div>
+</summary>
+<div class="mt-1 ml-6 pl-4 border-l-2 border-primary/10 py-2">
+<div class="text-xs text-white/40 font-mono italic bg-white/[0.02] p-3 rounded ghost-border">
+                                                Accessing long-term neural weights for pattern recognition on SPARTA-99 baseline. Cross-referencing previous kernel overhead anomalies.
+                                            </div>
+</div>
+</details>
+</div>
+<!-- Step 2: Pattern Match -->
+<div class="relative timeline-step">
+<details class="group/step" open="">
+<summary class="flex items-center justify-between cursor-pointer list-none py-2 hover:bg-white/[0.02] rounded px-2 -ml-2 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full bg-tertiary/20 flex items-center justify-center border border-tertiary/40 z-10 bg-background">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] px-1.5 py-0.5 bg-tertiary/10 text-tertiary rounded uppercase">/pattern match</span>
+<span class="font-mono text-[9px] text-white/20 uppercase">✓ done (0.8s)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-xs text-white/20 group-open/step:rotate-90 transition-transform">chevron_right</span>
+</summary>
+<div class="mt-1 ml-6 pl-4 border-l-2 border-primary/10 py-2">
+<div class="text-xs text-white/60 font-mono bg-white/[0.02] p-3 rounded ghost-border leading-relaxed">
+                                                Based on memory, we've hit this before in the Sector 07 deployment. The kernel overhead suggests a bottleneck in the NVIS protocol entropy.
+                                            </div>
+</div>
+</details>
+</div>
+<!-- Step 3: Entropy Check (Running) -->
+<div class="relative timeline-step">
+<details class="group/step">
+<summary class="flex items-center justify-between cursor-pointer list-none py-2 hover:bg-white/[0.02] rounded px-2 -ml-2 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full bg-warning/20 flex items-center justify-center border border-warning/40 z-10 bg-background">
+<div class="w-1.5 h-1.5 rounded-full bg-warning pulse-glow"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] px-1.5 py-0.5 bg-warning/10 text-warning rounded uppercase">/scillm entropy check</span>
+<span class="font-mono text-[9px] text-warning/60 uppercase">● running...</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-xs text-white/20 group-open/step:rotate-90 transition-transform">chevron_right</span>
+</summary>
+<div class="mt-1 ml-6 pl-4 border-l-2 border-primary/10 py-2">
+<div class="text-xs text-white/30 font-mono bg-white/[0.01] p-3 rounded border border-white/5">
+                                                EXECUTING CROSS-PROTOCOL ENTROPY VERIFICATION...<br/>
+                                                &gt; BLOCK_SCAN: 0x44A...0x55F<br/>
+                                                &gt; THREAD_POOL: ACTIVE [16/16]
+                                            </div>
+</div>
+</details>
+</div>
+</div>
+</details>
+<!-- Main Response Content -->
+<div class="text-[17px] text-white/90 leading-relaxed space-y-6 max-w-full font-body">
+<p>I have identified a critical entropy degradation in the NVIS protocol within Sector 07. The bottleneck originates from the <code class="font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded text-sm ghost-border">crypto/nvis/entropy.go</code> module.</p>
+<p>I am generating a real-time assessment and telemetry report in your artifacts pane for detailed inspection.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 border-t border-white/10 bg-[#141414]/80 backdrop-blur-sm shrink-0">
+<div class="relative flex items-center max-w-3xl mx-auto w-full">
+<button class="absolute left-4 text-white/30 hover:text-white transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<input class="w-full bg-[#0b1220] border-none text-[15px] px-12 py-4 rounded-xl focus:ring-1 focus:ring-primary/30 text-white placeholder-white/20 font-body outline-none" placeholder="Reply to Embry OS..." type="text"/>
+<button class="absolute right-4 text-white/30 hover:text-primary transition-colors">
+<span class="material-symbols-outlined font-bold">arrow_upward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- RIGHT PANE: Artifact Explorer -->
+<aside class="w-[450px] bg-[#0e0e0e] border-l border-white/10 flex flex-col overflow-y-auto shrink-0">
+<div class="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-[#0e0e0e]/95 backdrop-blur-xl z-10">
+<div>
+<h3 class="font-headline font-black text-white tracking-widest text-lg uppercase">ARTIFACT_EXPLORER</h3>
+<p class="font-mono text-[10px] text-white/40 uppercase tracking-widest">SPARTA_TELEMETRY_X99</p>
+</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container-high rounded ghost-border font-mono text-[10px] text-primary">LIVE</div>
+</div>
+</div>
+<div class="p-6 space-y-8">
+<!-- System Metrics -->
+<div class="space-y-4">
+<h4 class="font-headline text-[11px] font-bold text-white/60 tracking-[0.2em] uppercase">SYSTEM_METRICS</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-[#1a1a1a] p-4 rounded-lg border-l-4 border-primary ghost-border">
+<p class="font-mono text-[9px] text-white/40 uppercase mb-1">Coverage</p>
+<p class="font-mono text-2xl font-bold text-primary">86.4%</p>
+</div>
+<div class="bg-[#1a1a1a] p-4 rounded-lg border-l-4 border-error ghost-border">
+<p class="font-mono text-[9px] text-white/40 uppercase mb-1">Failed</p>
+<p class="font-mono text-2xl font-bold text-error">164</p>
+</div>
+</div>
+</div>
+<!-- Visualization -->
+<div class="aspect-video bg-[#0b1220] rounded-xl ghost-border relative overflow-hidden flex items-center justify-center">
+<div class="absolute inset-0 opacity-20 mix-blend-overlay">
+<img alt="HUD" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6QrQMYPgXhdTpFigiwRYI3ZWZIJQ9_jScwygiQRNnhDM0eMURwFqpl0d-go62U4ZCOj2b53BjgBiUl12WXDl3_JN82kLWONtx-Z0Z9_agxbg3gUsGfwG32t71U22VCr_UEzLC1dZiBXS3ILbPK2vVgHcCG1wWrIi1fxB_QyQ7rAZ9gaO7yZ8vOSWcGAYLDUQ_HquGjVWW8iFtmXgKRhWjCmZKA7QZV6uQg_E1FrS1WFBW3DDUy_-ugc1aW4EVCr2NNLHO3UxNi0bG"/>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-48 h-48 rounded-full border border-primary/10 flex items-center justify-center spin-slow">
+<div class="w-40 h-40 rounded-full border border-primary/20 flex items-center justify-center">
+<div class="w-32 h-32 rounded-full border-t-2 border-primary/60"></div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-3 left-3 font-mono text-[9px] text-primary bg-background/90 p-2 backdrop-blur ghost-border uppercase">
+                        SCAN_PROTO: NVIS_01 // COORDS: 40.7128N
+                    </div>
+</div>
+<!-- Module Status Table -->
+<div class="bg-[#1a1a1a] rounded-lg overflow-hidden ghost-border">
+<table class="w-full text-left font-mono text-[10px]">
+<thead class="bg-white/[0.03] border-b border-white/5">
+<tr>
+<th class="px-4 py-3 font-medium text-white/40 uppercase">Module</th>
+<th class="px-4 py-3 font-medium text-white/40 uppercase">Status</th>
+<th class="px-4 py-3 font-medium text-white/40 text-right uppercase">Cov</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 text-white/80">protocol.go</td>
+<td class="px-4 py-3 text-primary">VERIFIED</td>
+<td class="px-4 py-3 text-right text-primary">98%</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 text-white/80">worker.go</td>
+<td class="px-4 py-3 text-warning">UNSTABLE</td>
+<td class="px-4 py-3 text-right text-warning">72%</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 text-white/80">entropy.go</td>
+<td class="px-4 py-3 text-error">CRITICAL</td>
+<td class="px-4 py-3 text-right text-error">12%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Diagnostics Charts -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 rounded border border-white/5 bg-[#0b1220]">
+<div class="flex justify-between mb-2">
+<span class="font-mono text-[9px] text-white/40 uppercase">Latency</span>
+<span class="font-mono text-[10px] text-primary">12MS</span>
+</div>
+<div class="h-8 flex items-end gap-1">
+<div class="w-full bg-primary/20 h-[30%]"></div>
+<div class="w-full bg-primary/40 h-[60%]"></div>
+<div class="w-full bg-primary h-[80%]"></div>
+<div class="w-full bg-primary/60 h-[40%]"></div>
+</div>
+</div>
+<div class="p-4 rounded border border-white/5 bg-[#0b1220]">
+<div class="flex justify-between mb-2">
+<span class="font-mono text-[9px] text-white/40 uppercase">Throughput</span>
+<span class="font-mono text-[10px] text-primary">4.2 GB/S</span>
+</div>
+<div class="h-8 flex items-end gap-1">
+<div class="w-full bg-primary h-[90%]"></div>
+<div class="w-full bg-primary/60 h-[70%]"></div>
+<div class="w-full bg-primary/40 h-[40%]"></div>
+<div class="w-full bg-primary/80 h-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

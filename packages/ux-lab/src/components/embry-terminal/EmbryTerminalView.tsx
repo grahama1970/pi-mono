@@ -216,7 +216,9 @@ const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }
                 </div>
               )}
             </button>
-      ))}
+          ))}
+        </div>
+      )}
     </div>
   );
 });
