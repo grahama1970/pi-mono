@@ -13,7 +13,8 @@ import {
   Search, FolderOpen, GitBranch, Settings,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import ThinkingChain from './ThinkingChain';
+import ReasoningChain from './ReasoningChain';
+import type { ReasoningStep } from './ReasoningChain';
 import remarkGfm from 'remark-gfm';
 import DOMPurify from 'dompurify';
 import Fuse from 'fuse.js';
@@ -75,17 +76,6 @@ interface RecallResult {
   }>;
 }
 
-interface ThinkingStepData {
-  id: string;
-  skill: string;
-  status: 'running' | 'done' | 'failed';
-  duration?: number;
-  summary: string;
-  output?: string;
-  confidence?: number;
-  resultCount?: number;
-}
-
 interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -95,7 +85,8 @@ interface Message {
   codeBlock?: string;
   recall?: RecallResult;
   artifact?: Artifact;
-  thinkingSteps?: ThinkingStepData[];
+  reasoningSteps?: ReasoningStep[];
+  chainTitle?: string;
   timestamp: number;
 }
 
@@ -344,8 +335,8 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
         )}
 
         {msg.recall && <RecallCard recall={msg.recall} />}
-        {msg.thinkingSteps && msg.thinkingSteps.length > 0 && (
-          <ThinkingChain steps={msg.thinkingSteps} />
+        {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
+          <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
         )}
       </div>
     </div>
@@ -804,12 +795,14 @@ const SEED_MESSAGES: Message[] = [
     id: 'm5', role: 'assistant', agent: 'pi',
     skillUsed: 'create-evidence-case',
     content: 'Building evidence case for CMMC Level 2. Decomposing into sub-tasks and running skill chain...',
-    thinkingSteps: [
-      { id: 's1', skill: 'memory', status: 'done', summary: 'Searching prior evidence cases...', detail: 'Found 3 prior CMMC assessments in memory. Confidence: 0.84', duration: 1200, confidence: 0.84 },
-      { id: 's2', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 requirements...', detail: 'Searched Brave, ArXiv, GitHub. Found 12 relevant sources.', duration: 4800, resultCount: 12 },
-      { id: 's3', skill: 'extract-controls', status: 'done', summary: 'Extracting NIST 800-171 controls...', detail: 'Extracted 110 controls from SP 800-171 Rev 2. Mapped to 14 CMMC domains.', duration: 2100, resultCount: 110 },
-      { id: 's4', skill: 'scillm', status: 'running', summary: 'Synthesizing claims from evidence...', duration: undefined },
-      { id: 's5', skill: 'memory', status: 'pending', summary: 'Storing evidence case...', duration: undefined },
+    chainTitle: '/create-evidence-case for CMMC Level 2',
+    reasoningSteps: [
+      { id: 's1', type: 'recall', skill: 'memory', status: 'done', summary: 'Searching prior evidence cases...', detail: 'Found 3 prior CMMC assessments in memory.', duration: 1200, confidence: 0.84 },
+      { id: 's2', type: 'skill', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 requirements...', detail: 'Searched Brave, ArXiv, GitHub. Found 12 relevant sources.', duration: 4800 },
+      { id: 's3', type: 'skill', skill: 'extract-controls', status: 'done', summary: 'Extracting NIST 800-171 controls...', detail: 'Extracted 110 controls from SP 800-171 Rev 2. Mapped to 14 CMMC domains.', duration: 2100 },
+      { id: 's4', type: 'text', skill: undefined, status: 'done', summary: 'Cross-referencing controls against existing SPARTA graph coverage...' },
+      { id: 's5', type: 'skill', skill: 'scillm', status: 'running', summary: 'Synthesizing claims from evidence...' },
+      { id: 's6', type: 'pending', skill: 'memory', status: 'pending', summary: 'Storing evidence case...' },
     ],
     timestamp: Date.now() - 20000,
   },
