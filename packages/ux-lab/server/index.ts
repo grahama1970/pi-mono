@@ -20,7 +20,7 @@ import { execFile } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 
@@ -1652,14 +1652,93 @@ app.delete('/api/projects/classifier-lab/projects/:id', async (req, res) => {
 
 app.get('/api/projects/classifier-lab/data/:id', async (req, res) => {
   try {
-    const metaPath = resolve(CLASSIFIER_DIR, req.params.id, 'data.json')
+    const projDir = resolve(CLASSIFIER_DIR, req.params.id)
+
+    // Try data.json first (pre-computed)
+    const metaPath = resolve(projDir, 'data.json')
     if (existsSync(metaPath)) {
-      res.json(JSON.parse(await readFile(metaPath, 'utf-8')))
-    } else {
-      res.json({ gatePassed: false, classes: [], gateThreshold: 0.85 })
+      const data = JSON.parse(await readFile(metaPath, 'utf-8'))
+      // Augment with sufficiency check if missing
+      if (data.sufficiency === undefined && data.classes?.length) {
+        const numClasses = data.classes.length
+        const totalTrain = data.totalTrain ?? data.classes.reduce((s: number, c: any) => s + (c.train || 0), 0)
+        const minPerClass = data.minPerClass ?? Math.min(...data.classes.map((c: any) => c.train || 0))
+        const MIN_SAMPLES_PER_CLASS = 100
+        const required = numClasses * MIN_SAMPLES_PER_CLASS
+        data.sufficiency = {
+          required, available: totalTrain, sufficient: totalTrain >= required,
+          minPerClass, minRequired: MIN_SAMPLES_PER_CLASS,
+          deficit: Math.max(0, required - totalTrain),
+        }
+      }
+      return res.json(data)
     }
-  } catch {
-    res.json({ gatePassed: false, classes: [], gateThreshold: 0.85 })
+
+    // Compute from samples.jsonl if data.json doesn't exist
+    const samplesPath = resolve(projDir, 'samples.jsonl')
+    if (!existsSync(samplesPath)) {
+      return res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, sufficiency: null })
+    }
+
+    const lines = (await readFile(samplesPath, 'utf-8')).trim().split('\n').filter(Boolean)
+    const classCounts: Record<string, { train: number; val: number; test: number }> = {}
+    let isMultiLabel = false
+
+    for (const line of lines) {
+      try {
+        const row = JSON.parse(line)
+        const split = row.split || 'train'
+
+        // Handle multi-label (labels array) and single-label (class/className)
+        const labels: string[] = Array.isArray(row.labels) ? row.labels : [row.class || row.className || 'unknown']
+        if (Array.isArray(row.labels) && row.labels.length > 1) isMultiLabel = true
+
+        for (const lbl of labels) {
+          if (!classCounts[lbl]) classCounts[lbl] = { train: 0, val: 0, test: 0 }
+          if (split === 'train') classCounts[lbl].train++
+          else if (split === 'val') classCounts[lbl].val++
+          else if (split === 'test') classCounts[lbl].test++
+        }
+      } catch { /* skip bad lines */ }
+    }
+
+    const classes = Object.entries(classCounts)
+      .map(([name, counts]) => ({ name, ...counts }))
+      .sort((a, b) => b.train - a.train)
+
+    const numClasses = classes.length
+    const totalTrain = lines.filter(l => { try { return (JSON.parse(l).split || 'train') === 'train' } catch { return false } }).length
+    const totalSamples = lines.length
+    const minPerClass = classes.length > 0 ? Math.min(...classes.map(c => c.train)) : 0
+
+    // Data sufficiency: deterministic pre-flight check
+    const MIN_SAMPLES_PER_CLASS = isMultiLabel ? 100 : 50
+    const required = numClasses * MIN_SAMPLES_PER_CLASS
+    const sufficient = totalTrain >= required
+    const sufficiency = {
+      required, available: totalTrain, sufficient,
+      minPerClass, minRequired: MIN_SAMPLES_PER_CLASS,
+      deficit: Math.max(0, required - totalTrain),
+      isMultiLabel,
+      perClassDeficit: classes.filter(c => c.train < MIN_SAMPLES_PER_CLASS).map(c => ({
+        name: c.name, have: c.train, need: MIN_SAMPLES_PER_CLASS,
+      })),
+    }
+
+    const gateThreshold = MIN_SAMPLES_PER_CLASS
+    const gatePassed = sufficient && minPerClass >= Math.floor(MIN_SAMPLES_PER_CLASS * 0.5)
+
+    const modality = (() => {
+      try { const m = JSON.parse(readFileSync(resolve(projDir, 'meta.json'), 'utf-8')); return m.modality || 'unknown' } catch { return 'unknown' }
+    })()
+
+    res.json({
+      gatePassed, gateThreshold, classes, totalTrain, totalSamples, minPerClass,
+      classCount: numClasses, modality, isMultiLabel, sufficiency,
+      path: samplesPath,
+    })
+  } catch (e) {
+    res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, sufficiency: null, error: String(e) })
   }
 })
 

@@ -637,12 +637,36 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
   const maxCount = Math.max(...classes.map(c => c.train), 1)
   const failedClasses = classes.filter(c => c.train < dataInfo.gateThreshold)
   const passed = dataInfo.gatePassed
+  const suff = dataInfo.sufficiency as { required: number; available: number; sufficient: boolean; deficit: number; minPerClass: number; minRequired: number; isMultiLabel: boolean; perClassDeficit?: Array<{ name: string; have: number; need: number }> } | null
 
   // Color assignment per class
   const CLASS_COLORS = [EMBRY.green, EMBRY.blue, EMBRY.accent, '#22d3ee', EMBRY.amber, EMBRY.red]
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      {/* Data sufficiency gate — deterministic pre-flight check */}
+      <div style={{ marginBottom: 20 }}>
+        <GateCard
+          name="DATA GATE"
+          passed={passed}
+          metrics={[
+            { label: 'TRAIN SAMPLES', value: String(suff?.available ?? dataInfo.totalTrain ?? '—') },
+            { label: 'CLASSES', value: String(dataInfo.classCount ?? classes.length ?? '—') },
+            { label: 'MIN / CLASS', value: String(dataInfo.minPerClass ?? '—'), color: suff && suff.minPerClass < suff.minRequired ? EMBRY.red : EMBRY.green },
+          ]}
+          checks={[
+            { label: `≥ ${suff?.minRequired ?? 100} samples per class`, ok: suff ? suff.minPerClass >= suff.minRequired : passed, detail: suff ? `min: ${suff.minPerClass}` : '—' },
+            { label: `Total ≥ ${suff?.required ?? '?'} (${dataInfo.classCount ?? '?'} classes × ${suff?.minRequired ?? 100})`, ok: suff ? suff.sufficient : passed, detail: suff ? `${suff.available} / ${suff.required}` : '—' },
+            { label: 'Has validation split', ok: classes.some(c => c.val > 0), detail: classes.some(c => c.val > 0) ? 'Yes' : 'No val split' },
+            { label: 'Has test split', ok: classes.some(c => c.test > 0), detail: classes.some(c => c.test > 0) ? 'Yes' : 'No test split' },
+          ]}
+          halt={suff && !suff.sufficient ? {
+            reason: `Need ${suff.required.toLocaleString()} training samples (${dataInfo.classCount} classes × ${suff.minRequired} per class). Have ${suff.available.toLocaleString()} — short by ${suff.deficit.toLocaleString()}.${suff.perClassDeficit && suff.perClassDeficit.length > 0 ? ` ${suff.perClassDeficit.length} classes below minimum.` : ''}`,
+            action: `The agent should search HuggingFace for additional training data, mine conversation transcripts via /episodic-archiver, or use /scillm for synthetic augmentation. Do NOT proceed to training until this deficit is resolved.`,
+          } : null}
+        />
+      </div>
+
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
         <StatPanel title="SOURCE" value={dataInfo.path?.split('/').slice(-2).join('/') || project.id} mono />
