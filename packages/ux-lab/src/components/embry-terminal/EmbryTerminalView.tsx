@@ -13,6 +13,7 @@ import {
   Search, FolderOpen, GitBranch, Settings,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import ThinkingChain from './ThinkingChain';
 import remarkGfm from 'remark-gfm';
 import DOMPurify from 'dompurify';
 import Fuse from 'fuse.js';
@@ -74,6 +75,17 @@ interface RecallResult {
   }>;
 }
 
+interface ThinkingStepData {
+  id: string;
+  skill: string;
+  status: 'running' | 'done' | 'failed';
+  duration?: number;
+  summary: string;
+  output?: string;
+  confidence?: number;
+  resultCount?: number;
+}
+
 interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -82,6 +94,8 @@ interface Message {
   skillUsed?: string;
   codeBlock?: string;
   recall?: RecallResult;
+  artifact?: Artifact;
+  thinkingSteps?: ThinkingStepData[];
   timestamp: number;
 }
 

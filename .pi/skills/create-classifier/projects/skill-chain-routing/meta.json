@@ -1,11 +1,16 @@
 {
   "name": "skill-chain-routing",
-  "status": "evaluated",
+  "status": "data-filtered",
   "modality": "text_multilabel",
-  "samples": 1187,
+  "samples": 965,
   "classes": 50,
   "task": "multi-label skill chain classification",
   "description": "Classify user prompts into which skills should be invoked. Replaces brittle regex trigger matching in skill-selector.ts.",
   "backbone": "distilbert-base-uncased",
-  "f1": 0.3162898415140611
+  "f1": 0.3162898415140611,
+  "data_sources": [
+    "classifier_multilabel.jsonl",
+    "gpt_rationale.jsonl"
+  ],
+  "data_notes": "Filtered to 50 classes with \u226520 training samples. Dropped 72 rare labels."
 }
