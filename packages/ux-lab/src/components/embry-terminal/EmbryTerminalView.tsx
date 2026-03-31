@@ -455,7 +455,35 @@ export function EmbryTerminalView() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => [
+    {
+      id: 'seed-1', role: 'user', content: '/assess SPARTA posture for CMMC Level 2',
+      timestamp: Date.now() - 60000,
+    },
+    {
+      id: 'seed-2', role: 'assistant', agent: 'claude',
+      content: 'Based on memory recall and the SPARTA dataset, I\'ve assessed the current CMMC Level 2 posture. The extraction pipeline covers **110 of 171 NIST 800-171 controls** with verified QRAs. Key gaps remain in AC-17 (Remote Access) and SC-28 (Protection of Information at Rest).\n\nThe /dogpile research confirms these are the most commonly cited gaps across aerospace contractors. I recommend running /create-evidence-case for the 61 missing controls.',
+      skillUsed: 'assess',
+      recall: {
+        found: true, confidence: 0.89,
+        items: [
+          { problem: 'SPARTA extraction fails on nested control hierarchies', solution: 'Flatten hierarchy before QRA generation — applied in batch-quality v2', scores: { bm25: 0.92, graph: 0.70, dense: 0.45, freshness: 0.87 } },
+          { problem: 'CMMC Level 2 mapping incomplete for SC family', solution: 'Cross-reference NIST 800-171r3 Appendix D with SPARTA countermeasures', scores: { bm25: 0.85, graph: 0.82, dense: 0.38, freshness: 0.72 } },
+          { problem: 'Prior assessment session: SPARTA convergence pipeline', solution: 'Fixed grounding threshold bug, PASS rate now 78%. Skills: assess → dogpile → plan', scores: { bm25: 0.78, graph: 0.65, dense: 0.31, freshness: 0.95 } },
+        ],
+      },
+      reasoningSteps: [
+        { id: 'r1', type: 'recall', skill: 'memory', status: 'done', summary: 'Recalled 3 prior SPARTA assessments', duration: 1200, confidence: 0.89 },
+        { id: 'r2', type: 'text', status: 'done', summary: 'Based on memory, we\'ve addressed this control family before. Applying both patterns from prior sessions.' },
+        { id: 'r3', type: 'skill', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 aerospace requirements', duration: 4800 },
+        { id: 'r4', type: 'skill', skill: 'extract-controls', status: 'done', summary: 'Extracted 110 NIST 800-171 controls from SPARTA dataset', duration: 2100, confidence: 0.94 },
+        { id: 'r5', type: 'skill', skill: 'batch-quality', status: 'done', summary: 'Validated QRA quality for extracted controls', duration: 3200, confidence: 0.91 },
+        { id: 'r6', type: 'pending', status: 'pending', summary: 'Store assessment results to /memory' },
+      ],
+      chainTitle: 'CMMC Level 2 Assessment',
+      timestamp: Date.now() - 45000,
+    },
+  ]);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const [input, setInput] = useState('');
   const [showPalette, setShowPalette] = useState(false);

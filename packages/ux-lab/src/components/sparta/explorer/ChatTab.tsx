@@ -204,21 +204,16 @@ export function ChatTab() {
       })
       const items = recallRes.items ?? []
 
-      // Build response
-      const topResults = items.slice(0, 5).map((it: any) => {
-        const cid = it.control_id ?? ''
-        const q = it.question ?? it.name ?? it.problem ?? ''
-        return `- [${cid}] ${q.slice(0, 120)}`
-      }).join('\n')
-
+      // Build response with recall items for RecallCard
       const content = items.length > 0
-        ? `Found ${items.length} results:\n${topResults}`
+        ? `Found ${items.length} results across SPARTA corpus.`
         : 'No matching results in SPARTA corpus.'
 
       addMsg({
         role: 'system', content, type: 'natural',
         cascadeLayer: 'recall', resultCount: items.length,
         entities: entities.length > 0 ? entities : undefined,
+        recallItems: items.slice(0, 10),
       })
     } catch (err) {
       addMsg({ role: 'system', content: `Error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
@@ -280,16 +275,17 @@ export function ChatTab() {
       const data = await res.json()
       const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
         gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '',
+        duration: g.duration,
       }))
       const verdict = data.verdict?.state ?? data.verdict_state ?? 'unknown'
       const tier = data.tier ?? 'T0'
-      const tierLabel = tier === 'T2' ? ' [LLM Adjudicated]' : ''
       addMsg({
         role: 'system',
-        content: `Evidence Case: ${verdict.toUpperCase()}${tierLabel}\n${data.answer ?? ''}`,
+        content: data.answer ?? '',
         type: 'natural', cascadeLayer: 'llm',
+        skillUsed: 'create-evidence-case',
         entities: msg.entities,
-        verdict: { state: verdict.toUpperCase(), gates },
+        verdict: { state: verdict.toUpperCase(), gates, tier },
       })
     } catch (err) {
       addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
