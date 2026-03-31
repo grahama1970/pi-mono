@@ -52,11 +52,13 @@ def check_sufficiency(samples: list[dict], min_per_class: int) -> dict:
     train = [s for s in samples if s.get("split", "train") == "train"]
     label_counts: Counter[str] = Counter()
     for s in train:
-        labels = s.get("labels", [])
-        if isinstance(labels, list):
+        labels = s.get("labels")
+        if isinstance(labels, list) and labels:
             label_counts.update(labels)
         else:
-            label_counts[s.get("class", s.get("className", "unknown"))] += 1
+            lbl = s.get("class", s.get("className", s.get("label", "")))
+            if lbl:
+                label_counts[str(lbl)] += 1
 
     num_classes = len(label_counts)
     total_train = len(train)
@@ -105,36 +107,82 @@ def strategy_search_huggingface(project_dir: Path, meta: dict, existing_labels: 
             logger.info("  No matching datasets found on HuggingFace")
             return []
 
-        # Try to load top dataset and check if labels map
-        new_samples: list[dict] = []
-        for ds_info in found_datasets[:3]:
-            try:
-                from datasets import load_dataset
-                ds = load_dataset(ds_info["id"], split="train", trust_remote_code=False)
-                # Check if it has text + labels that overlap with our labels
-                if "text" in ds.features and ("label" in ds.features or "labels" in ds.features):
-                    label_field = "labels" if "labels" in ds.features else "label"
-                    ds_labels = set()
-                    for row in ds:
-                        lbl = row[label_field]
-                        if isinstance(lbl, list):
-                            ds_labels.update(lbl)
-                        else:
-                            ds_labels.add(str(lbl))
+        # Try to load datasets, map labels, extract samples
+        from datasets import load_dataset
 
-                    overlap = ds_labels & existing_labels
-                    if overlap:
-                        logger.info(f"  {ds_info['id']}: {len(overlap)} overlapping labels")
-                        for row in ds:
-                            lbl = row[label_field]
-                            labels = lbl if isinstance(lbl, list) else [str(lbl)]
-                            mapped = [l for l in labels if l in existing_labels]
-                            if mapped:
-                                new_samples.append({"text": row["text"], "labels": mapped, "split": "train", "_source": ds_info["id"]})
-                    else:
-                        logger.info(f"  {ds_info['id']}: 0 overlapping labels — skipping")
+        hf_token = os.environ.get("HF_TOKEN", "")
+        existing_lower = {l.lower(): l for l in existing_labels}
+        new_samples: list[dict] = []
+
+        for ds_info in found_datasets[:8]:
+            if new_samples:
+                break  # got data, stop
+            try:
+                # Try multiple splits
+                loaded = None
+                for try_split in ["train", "validation", "test"]:
+                    try:
+                        loaded = load_dataset(ds_info["id"], split=try_split, token=hf_token or None, trust_remote_code=False)
+                        logger.info(f"  {ds_info['id']}: loaded {try_split} ({len(loaded)} rows)")
+                        break
+                    except Exception:
+                        continue
+                if loaded is None:
+                    continue
+
+                # Find text field
+                text_field = None
+                for f in ["text", "sms", "sentence", "content", "reviewText", "review", "message", "input"]:
+                    if f in loaded.features:
+                        text_field = f
+                        break
+
+                # Find label field — prefer string fields over integers
+                label_field = None
+                for f in ["sentiment", "class", "category", "label", "labels"]:
+                    if f in loaded.features:
+                        label_field = f
+                        break
+
+                if not text_field or not label_field:
+                    logger.info(f"  {ds_info['id']}: no text/label fields — {list(loaded.features.keys())}")
+                    continue
+
+                # Map labels — handle ClassLabel (int→name) and direct strings
+                label_map: dict[str, str] = {}
+                feat = loaded.features.get(label_field)
+                if hasattr(feat, "names"):
+                    for i, name in enumerate(feat.names):
+                        if name.lower() in existing_lower:
+                            label_map[str(i)] = existing_lower[name.lower()]
+                    if label_map:
+                        logger.info(f"  {ds_info['id']}: ClassLabel map: {label_map}")
+                else:
+                    sample_labels = {str(row[label_field]) for row in loaded.select(range(min(100, len(loaded))))}
+                    for sl in sample_labels:
+                        if sl.lower() in existing_lower:
+                            label_map[sl] = existing_lower[sl.lower()]
+                    if label_map:
+                        logger.info(f"  {ds_info['id']}: string label map: {label_map}")
+
+                if not label_map:
+                    logger.info(f"  {ds_info['id']}: no label match")
+                    continue
+
+                # Extract
+                count = 0
+                for row in loaded:
+                    text = row[text_field]
+                    if not isinstance(text, str) or len(text.strip()) < 5:
+                        continue
+                    raw = str(row[label_field])
+                    if raw in label_map:
+                        new_samples.append({"text": text.strip()[:1000], "class": label_map[raw], "split": "train", "_source": ds_info["id"]})
+                        count += 1
+                logger.info(f"  {ds_info['id']}: extracted {count} samples")
+
             except Exception as e:
-                logger.warning(f"  Failed to load {ds_info['id']}: {e}")
+                logger.warning(f"  {ds_info['id']}: failed — {e}")
 
         logger.info(f"  HuggingFace enrichment: {len(new_samples)} new samples")
         return new_samples
@@ -218,9 +266,13 @@ def enrich(
     # Get existing labels
     existing_labels: set[str] = set()
     for s in samples:
-        labels = s.get("labels", [])
-        if isinstance(labels, list):
+        labels = s.get("labels")
+        if isinstance(labels, list) and labels:
             existing_labels.update(labels)
+        else:
+            lbl = s.get("class", s.get("className", s.get("label", "")))
+            if lbl:
+                existing_labels.add(str(lbl))
 
     # Pre-check
     status = check_sufficiency(samples, min_per_class)

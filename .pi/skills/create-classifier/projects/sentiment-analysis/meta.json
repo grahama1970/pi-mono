@@ -1,0 +1,15 @@
+{
+  "name": "sentiment-analysis",
+  "status": "data-enriched",
+  "modality": "text",
+  "samples": 15,
+  "classes": 3,
+  "enrichment_attempts": [
+    {
+      "strategy": "huggingface",
+      "tried": true,
+      "new_samples": 31155,
+      "iteration": 1
+    }
+  ]
+}
