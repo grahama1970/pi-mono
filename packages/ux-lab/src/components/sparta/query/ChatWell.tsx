@@ -14,7 +14,8 @@ import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { RecallCard, type RecallItem } from './RecallCard'
 import { GateChain } from './GateChain'
 import { ThreatMatrixCard, type ThreatMatrixSummary } from './ThreatMatrixCard'
-import { highlightEntities, MarkdownRenderer } from '../../shared-chat'
+import { highlightEntities, MarkdownRenderer, SkillPalette } from '../../shared-chat'
+import type { Skill } from '../../shared-chat'
 
 export interface EntityRef {
   id: string
@@ -63,6 +64,8 @@ export interface ChatWellProps {
   onRunEvidenceCase?: (msg: ChatMessage) => void
   evidenceCaseLoading?: string | null
   onNavigateMatrix?: () => void
+  /** Skills list for / palette — if provided, typing / triggers skill autocomplete */
+  skills?: Skill[]
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -265,8 +268,11 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills }: ChatWellProps) {
   const [input, setInput] = useState('')
+  const [showPalette, setShowPalette] = useState(false)
+  const [skillFilter, setSkillFilter] = useState('')
+  const paletteKeyHandler = useRef<((e: React.KeyboardEvent) => boolean) | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom on new messages
@@ -278,14 +284,35 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
     if (!input.trim()) return
     onSend?.(input.trim(), 'natural')
     setInput('')
+    setShowPalette(false)
   }, [input, onSend])
 
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value
+    setInput(val)
+    const lastWord = val.split(/\s+/).pop() || ''
+    if (lastWord.startsWith('/') && lastWord.length > 1) {
+      setShowPalette(true)
+      setSkillFilter(lastWord.slice(1))
+    } else {
+      setShowPalette(false)
+    }
+  }, [])
+
+  const handleSkillSelect = useCallback((name: string) => {
+    const words = input.split(/\s+/)
+    words[words.length - 1] = `/${name} `
+    setInput(words.join(' '))
+    setShowPalette(false)
+  }, [input])
+
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (showPalette && paletteKeyHandler.current?.(e)) return
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
     }
-  }, [handleSend])
+  }, [handleSend, showPalette])
 
   return (
     <div style={{
@@ -320,7 +347,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
         <div ref={chatEndRef} />
       </div>
 
-      {/* Composer — Embry Terminal style */}
+      {/* Composer — with skill palette */}
       <div style={{
         padding: '8px 12px 12px',
         borderTop: `1px solid ${EMBRY.border}`,
@@ -330,12 +357,22 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
           background: EMBRY.bgDeep,
           border: `1px solid ${EMBRY.border}`,
           borderRadius: 12, overflow: 'hidden',
+          position: 'relative',
         }}>
+          {showPalette && skills && skills.length > 0 && (
+            <SkillPalette
+              filter={skillFilter}
+              skills={skills}
+              onSelect={handleSkillSelect}
+              onClose={() => setShowPalette(false)}
+              onKeyNav={handler => { paletteKeyHandler.current = handler }}
+            />
+          )}
           <textarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about the SPARTA graph..."
+            placeholder="Ask about the SPARTA graph... (/ for skills)"
             style={{
               width: '100%', border: 'none', outline: 'none', resize: 'none',
               background: 'transparent', fontSize: 13, color: EMBRY.white,
