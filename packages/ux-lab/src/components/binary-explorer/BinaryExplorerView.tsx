@@ -1209,7 +1209,7 @@ export function BinaryExplorerView() {
     }
 
     try {
-      // ── ENTITY EXTRACTION via /extract-entities API (FlashText longest-match, server-side) ──
+      // ── ENTITY EXTRACTION via /extract-entities API (BM25 against binary_features_search view) ──
       const textLower = text.toLowerCase()
       const mentionedEntities: { id: string; label: string; nodeType: string }[] = []
       try {
@@ -1262,17 +1262,17 @@ export function BinaryExplorerView() {
       let intentData: QuerySpec | null = null
       const trace: PipelineTrace = { entities: mentionedEntities, candidates: [], source: 'none', reason: '' }
 
-      // Step 1: Recall candidate actions from app_actions (works with or without entities)
+      // Step 1: Recall candidate actions from app_actions via /search-collection (BM25 only, no cross-collection blending)
       type CandidateAction = { _key: string, ui_action: string, params: Record<string, string>, description: string, score: number }
       const candidates: CandidateAction[] = []
       try {
-        const actionsRes = await timedFetch(`${API}/api/memory/recall`, {
+        const actionsRes = await timedFetch(`${API}/api/memory/search-collection`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             q: entityCtx ? `${text} ${entityCtx}` : text,
-            k: 5, scope: 'binary-explorer',
-            collections: ['app_actions'], tags: ['queryspec-action'],
+            collection: 'app_actions',
+            k: 5,
           }),
         }, 500)
         if (actionsRes.ok) {
@@ -1287,7 +1287,7 @@ export function BinaryExplorerView() {
                   ui_action: parsed.ui_action,
                   params: parsed.params ?? {},
                   description: item.problem ?? '',
-                  score: item.scores?.bm25 ?? 0,
+                  score: item._score ?? 0,
                 })
               }
             } catch {

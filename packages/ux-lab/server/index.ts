@@ -1016,9 +1016,10 @@ app.post('/api/projects/:projectId/test-interactions', async (req, res) => {
 })
 
 // ── Entity extraction ────────────────────────────────────────────────────────
-// Two modes:
+// Three modes:
 //   1. delimiter provided: split text on delimiters, look up each ID via /list
-//   2. no delimiter: proxy to memory daemon /taxonomy/extract for NLP extraction
+//   2. binary_features/app_actions: BM25 via daemon /search-collection endpoint
+//   3. other collections (sparta): proxy to daemon /extract-entities (FlashText)
 
 app.post('/api/extract-entities', async (req, res) => {
   try {
@@ -1058,20 +1059,43 @@ app.post('/api/extract-entities', async (req, res) => {
       return
     }
 
-    // Mode 2: NLP extraction via daemon
-    try {
-      const result = await proxyPost('/taxonomy/extract', { text, collection: col })
-      if (result.entities) {
-        res.json(result)
-      } else {
-        const entities = (result.tags?.mind || []).map((t: string, i: number) => ({
-          id: `entity_${i}`, name: t, label: t, type: 'taxonomy'
-        }))
-        res.json({ entities })
+    // Mode 2: BM25 search for app-scoped collections (binary_features, app_actions)
+    if (col === 'binary_features' || col === 'app_actions') {
+      try {
+        const searchResult = await proxyPost('/search-collection', {
+          q: text, collection: col, k: 5,
+          return_fields: ['label', 'name', 'description', 'node_type', 'nodeType', 'cluster'],
+        }) as { items?: Array<{ _key?: string; label?: string; name?: string; description?: string; node_type?: string; nodeType?: string; cluster?: string; _score?: number }> }
+        const entities = (searchResult.items ?? [])
+          .filter(item => (item._score ?? 0) > 1.0)
+          .map(item => ({
+            id: `${col}/${item._key ?? ''}`,
+            name: item.name ?? item.label ?? '',
+            label: item.label ?? item.name ?? '',
+            type: item.node_type ?? item.nodeType ?? 'unknown',
+            description: item.description ?? '',
+            cluster: item.cluster ?? '',
+            score: item._score ?? 0,
+            exists: true,
+          }))
+        res.json({ entities, mode: 'bm25_search' })
+      } catch (searchErr) {
+        console.warn(`[extract-entities] BM25 search failed for ${col}:`, searchErr)
+        res.json({ entities: [], mode: 'bm25_search', error: 'search failed' })
       }
+      return
+    }
+
+    // Mode 3: SPARTA entity extraction via daemon (FlashText Aho-Corasick)
+    try {
+      const result = await proxyPost('/extract-entities', { text, include_taxonomy: false })
+      const entities = (result.control_ids ?? []).map((cid: string, i: number) => {
+        const meta = (result.control_metadata ?? [])[i] ?? {}
+        return { id: cid, name: meta.name ?? cid, label: cid, type: 'control', framework: meta.framework ?? '', exists: true }
+      })
+      res.json({ entities, mode: 'flashtext' })
     } catch {
-      // Daemon taxonomy/extract not available — return empty
-      res.json({ entities: [], error: 'taxonomy/extract not available' })
+      res.json({ entities: [], error: 'extract-entities daemon not available' })
     }
   } catch (e) {
     res.status(502).json({ error: 'Entity extraction failed', detail: String(e) })
@@ -2848,13 +2872,29 @@ app.post('/api/critical-path', async (req, res) => {
   const { control_id } = req.body as { control_id?: string }
 
   try {
-    const q = control_id
-      ? `${control_id} relationship vulnerability attack chain`
-      : 'SPARTA attack chain vulnerability failing not_satisfied'
-    const relResult = await proxyPost('/recall', { q, collections: ['sparta_relationships'], k: 50 }) as { items?: Array<Record<string, any>> }
-    const rels = relResult.items ?? []
+    // Get actual relationships from sparta_relationships via /list (not /recall which returns lessons)
+    const filters: Record<string, string> = {}
+    if (control_id) filters.source_control_id = control_id
+    const relResult = await proxyPost('/list', {
+      collection: 'sparta_relationships', limit: 200, ...(control_id ? { filters } : {}),
+    }) as { documents?: Array<Record<string, any>> }
+    let rels = relResult.documents ?? []
 
-    const evidenceResult = await proxyPost('/recall', { q: 'sensai cascade label verdict evidence SPARTA', k: 200, tags: ['sensai-cascade-label'] }) as { items?: Array<Record<string, any>> }
+    // If filtering by source didn't find enough, also search by target
+    if (control_id && rels.length < 10) {
+      const tgtResult = await proxyPost('/list', {
+        collection: 'sparta_relationships', limit: 200, filters: { target_control_id: control_id },
+      }) as { documents?: Array<Record<string, any>> }
+      const seen = new Set(rels.map(r => r._key))
+      for (const r of tgtResult.documents ?? []) {
+        if (!seen.has(r._key)) rels.push(r)
+      }
+    }
+
+    // Build verdict map from evidence cases
+    const evidenceResult = await proxyPost('/recall', {
+      q: 'sensai cascade label verdict evidence SPARTA', k: 200, tags: ['sensai-cascade-label'],
+    }) as { items?: Array<Record<string, any>> }
     const verdictMap = new Map<string, string>()
     for (const item of evidenceResult.items ?? []) {
       let sol: Record<string, any> = {}
@@ -2865,6 +2905,7 @@ app.post('/api/critical-path', async (req, res) => {
       }
     }
 
+    // Filter to edges where at least one endpoint lacks satisfied verdict
     const failingEdges = rels.filter((r: any) => {
       const sv = verdictMap.get(r.source_control_id) ?? 'none'
       const tv = verdictMap.get(r.target_control_id) ?? 'none'
