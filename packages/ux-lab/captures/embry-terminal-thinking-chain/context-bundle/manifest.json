@@ -1,0 +1,22 @@
+{
+  "target": "embry-terminal-thinking-chain",
+  "stitch_project_id": "14053463581115336829",
+  "timestamp": "2026-03-31T09:00:00Z",
+  "prompt": "See PROMPT.md",
+  "images": [
+    {"file": "ref-claude-desktop-chat.png", "label": "Claude Desktop chat flow — tool actions as muted lines"},
+    {"file": "ref-claude-desktop-annotated.png", "label": "Annotated: user bubble right, agent text left, tool actions muted"},
+    {"file": "ref-atomic-ops-stitch.png", "label": "ATOMIC_OPS Stitch design — NVIS visual language"},
+    {"file": "ref-embry-mockup.png", "label": "Embry Terminal approved mockup"},
+    {"file": "DESIGN.md", "label": "NVIS MIL-STD-3009 design system"}
+  ],
+  "instructions_for_human": [
+    "1. Open https://stitch.withgoogle.com/projects/14053463581115336829",
+    "2. Create a new screen",
+    "3. Upload all 4 reference images from this bundle as context",
+    "4. Paste the prompt from PROMPT.md",
+    "5. Ask for 3 variations: MINIMAL, CARD, TIMELINE",
+    "6. Pick the best one and iterate",
+    "7. Agent will pull the result via: /mockup-lab pull --project 14053463581115336829 --screen <new-screen-id>"
+  ]
+}

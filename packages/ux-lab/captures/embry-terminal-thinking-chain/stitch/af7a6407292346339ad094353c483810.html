@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NVIS_TERMINAL_V4 | AGENT_PROMETHEUS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#1c1b1b",
+                        "secondary": "#aec6ff",
+                        "outline": "#84967e",
+                        "tertiary": "#fff8f2",
+                        "on-secondary-fixed-variant": "#004396",
+                        "surface-container-highest": "#353534",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#ffddaf",
+                        "surface-variant": "#353534",
+                        "secondary-fixed": "#d8e2ff",
+                        "primary": "#ebffe2",
+                        "on-secondary-fixed": "#001a42",
+                        "on-primary-fixed-variant": "#00530e",
+                        "background": "#131313",
+                        "tertiary-container": "#ffd69b",
+                        "on-secondary-container": "#f2f4ff",
+                        "on-error": "#690005",
+                        "outline-variant": "#3b4b37",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#281800",
+                        "secondary-fixed-dim": "#aec6ff",
+                        "primary-fixed-dim": "#00e639",
+                        "primary-fixed": "#72ff70",
+                        "on-surface-variant": "#b9ccb2",
+                        "surface-tint": "#00e639",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container": "#201f1f",
+                        "tertiary-fixed-dim": "#ffba43",
+                        "surface": "#131313",
+                        "secondary-container": "#016ae5",
+                        "on-tertiary-container": "#835800",
+                        "on-background": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary": "#002e6a",
+                        "on-primary-container": "#007117",
+                        "on-primary": "#003907",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-container": "#00ff41",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#006e16",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary": "#432c00",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed": "#002203",
+                        "error-container": "#93000a"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["IBM Plex Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 1.25rem;
+        }
+        .thinking-path {
+            position: relative;
+        }
+        .thinking-path::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: 0;
+            width: 1px;
+            background: repeating-linear-gradient(to bottom, #00FF41 0, #00FF41 4px, transparent 4px, transparent 8px);
+            opacity: 0.3;
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00FF41;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 h-12 w-full fixed top-0 z-50 bg-[#131313] dark:bg-zinc-950 bg-zinc-900 shadow-none border-none">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-bold text-[#EBFFE2] tracking-widest text-sm">NVIS_TERMINAL_V4</span>
+<div class="hidden md:flex gap-6 ml-8">
+<a class="font-['Space_Grotesk'] tracking-tight uppercase text-xs text-zinc-500 hover:bg-zinc-800/50 hover:text-[#00FF41] transition-all duration-200" href="#">SESSION_LOG</a>
+<a class="font-['Space_Grotesk'] tracking-tight uppercase text-xs text-zinc-500 hover:bg-zinc-800/50 hover:text-[#00FF41] transition-all duration-200" href="#">SYSTEM_METRICS</a>
+<a class="font-['Space_Grotesk'] tracking-tight uppercase text-xs text-[#EBFFE2] border-b-2 border-[#00FF41] transition-all duration-200" href="#">UPLINK</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low px-3 py-1 rounded-sm flex items-center gap-2 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-container text-xs" style="font-variation-settings: 'FILL' 1;">sensors</span>
+<span class="font-mono text-[10px] text-primary-container uppercase tracking-widest">Latency: 24ms</span>
+</div>
+<div class="flex items-center gap-2 text-zinc-500">
+<button class="p-2 hover:bg-zinc-800/50 hover:text-[#00FF41] transition-all duration-200"><span class="material-symbols-outlined">settings</span></button>
+<button class="p-2 hover:bg-zinc-800/50 hover:text-[#00FF41] transition-all duration-200"><span class="material-symbols-outlined">terminal</span></button>
+<button class="p-2 hover:bg-zinc-800/50 hover:text-[#00FF41] transition-all duration-200"><span class="material-symbols-outlined">power_settings_new</span></button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="flex flex-col h-full fixed left-0 top-0 pt-16 pb-4 w-64 border-none bg-[#1C1B1B] dark:bg-zinc-900 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 bg-surface-container-high rounded-lg border border-primary-container/10">
+<div class="w-10 h-10 bg-primary-container/20 flex items-center justify-center rounded overflow-hidden">
+<img alt="AI_CORE" class="w-full h-full object-cover opacity-80" data-alt="Abstract neural network visualization with glowing green nodes and dark cybernetic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALim6Qn56-vsoguUxs6C8mI6lhCf61b-dLqWsuWdMGlaq3EFc1KuTSBbDDV5ffm1JBxkltuAE_Zad4sTz6hAITgri3jc9Ri0-Wf-UKM31NVsyVmS7qVjl07DZCHtUwDOKr81M1-i2X-BI1jkVqRos51OqDc3kt3i_8QSW_QO0pqZG1FqmC93CkYHvWV_qM5ZRgS2LDrhN0R4MGmRBqdNTrgVEG3U42BkZAg6ltAoGyjr1tJGxNU7PNxjdsl8FaB543lidRN99rlhiq"/>
+</div>
+<div>
+<div class="font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold text-[#00FF41]">AGENT_PROMETHEUS</div>
+<div class="text-[9px] text-zinc-500 uppercase font-mono">STATUS: OPERATIONAL</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="flex items-center gap-3 px-3 py-2 bg-zinc-800 text-[#EBFFE2] border-r-2 border-[#00FF41] font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span>KERNEL_01</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+<span>ARCHIVES</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">query_stats</span>
+<span>DATA_STREAMS</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">psychology</span>
+<span>NEURAL_NET</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">list_alt</span>
+<span>PROCESS_LOG</span>
+</div>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full py-3 bg-primary-container text-on-primary font-bold text-[10px] tracking-widest uppercase rounded-sm hover:brightness-110 transition-all shadow-[0_0_20px_rgba(0,255,65,0.15)]">
+            INITIATE_NEW_SHELL
+        </button>
+<div class="space-y-1">
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">description</span>
+<span>DOCUMENTATION</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-zinc-400 opacity-70 hover:bg-zinc-800 transition-colors duration-200 font-['Inter'] text-[10px] tracking-[0.05em] uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-sm">help_outline</span>
+<span>SUPPORT</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-12 h-screen flex flex-col bg-background relative overflow-hidden">
+<!-- Decoration Background -->
+<div class="absolute inset-0 pointer-events-none opacity-5 overflow-hidden">
+<div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-container rounded-full blur-[200px] -mr-96 -mt-96"></div>
+</div>
+<!-- Chat Interaction Area -->
+<div class="flex-1 overflow-y-auto px-6 py-12 flex flex-col gap-10 max-w-4xl mx-auto w-full scroll-smooth">
+<!-- User Prompt Block (Right Aligned) -->
+<div class="flex flex-col gap-2 items-end">
+<div class="bg-[#1C1B1B] px-5 py-4 rounded-2xl max-w-[85%] border border-zinc-800/50" style="background-color: #0B0B0B; border: none; box-shadow: none;"><p class="text-on-surface font-body leading-relaxed text-sm font-mono" style="color: #e2e8f0;">Analyze the recent deployment failure in the `production-west-v4` cluster. Correlate kernel panic logs with the memory leak observed in the `api-gateway` pod during the 14:00 peak.</p></div>
+<div class="font-['Space_Grotesk'] text-[9px] tracking-[0.1em] text-zinc-600 uppercase px-1">OPERATOR_UPLINK // 14:02:44</div>
+</div>
+<!-- AI Response (Left Aligned, Plain Text) -->
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-4">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-[0.15em] text-primary-container uppercase font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+                    AGENT_PROMETHEUS_OUTPUT
+                </div>
+<div class="prose prose-invert prose-green max-w-none">
+<p class="text-on-surface font-body leading-relaxed">Acknowledged. Initiating deep-layer analysis of the cluster state and pod lifecycle logs. Cross-referencing 14:00 peak telemetry with kernel event streams.</p>
+</div>
+<!-- Reasoning Chain (Nested and Connected) -->
+<div class="border border-outline-variant/10 rounded-xl overflow-hidden shadow-2xl mt-2 ml-2" style="background-color: #0b1220; border: 1px solid rgba(255, 255, 255, 0.1);">
+<!-- Thinking Header -->
+<div class="bg-surface-container-high px-5 py-3 flex items-center justify-between cursor-pointer group hover:bg-surface-bright transition-colors font-mono" style="background-color: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05);">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">psychology</span>
+<span class="font-headline text-xs font-bold tracking-widest text-primary">REASONING_CHAIN</span>
+<span class="bg-secondary-container/20 text-secondary text-[9px] px-2 py-0.5 rounded-full font-mono">COMPLETE: 4.8s</span>
+</div>
+<span class="material-symbols-outlined text-zinc-500 group-hover:text-primary transition-colors">expand_more</span>
+</div>
+<!-- Chain Contents -->
+<div class="p-6 thinking-path space-y-6">
+<!-- Step 1 -->
+<div class="flex gap-4 relative z-10">
+<div class="mt-1 w-6 h-6 rounded-full bg-primary-container/20 flex items-center justify-center border border-primary-container/40">
+<span class="material-symbols-outlined text-primary-container text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-[10px] bg-secondary/10 text-secondary px-2 py-0.5 rounded-sm font-mono border border-secondary/20 uppercase tracking-tighter">/archives</span>
+<span class="text-[10px] font-headline text-on-surface/60 font-medium uppercase tracking-widest">Querying historical deployment logs...</span>
+<span class="text-[9px] font-mono text-zinc-600">0.4s</span>
+</div>
+<div class="text-xs text-zinc-400 font-mono bg-surface-container-low/50 p-2 rounded border border-outline-variant/5">
+                                    MATCH FOUND: `prod-deploy-log-v4.221`. Filtering for error code 0x7E3...
+                                </div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-4 relative z-10">
+<div class="mt-1 w-6 h-6 rounded-full bg-primary-container/20 flex items-center justify-center border border-primary-container/40">
+<span class="material-symbols-outlined text-primary-container text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-[10px] bg-secondary/10 text-secondary px-2 py-0.5 rounded-sm font-mono border border-secondary/20 uppercase tracking-tighter">/memory</span>
+<span class="text-[10px] font-headline text-on-surface/60 font-medium uppercase tracking-widest">Cross-referencing memory dump patterns...</span>
+<span class="text-[9px] font-mono text-zinc-600">1.2s</span>
+</div>
+<div class="text-xs text-zinc-400 font-mono bg-surface-container-low/50 p-2 rounded border border-outline-variant/5">
+                                    IDENTIFIED: Cyclic reference in `auth-provider.cpp` during session pruning. Memory usage spike from 2GB to 32GB in 400ms.
+                                </div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-4 relative z-10">
+<div class="mt-1 w-6 h-6 rounded-full bg-primary-container/20 flex items-center justify-center border border-primary-container/40">
+<span class="material-symbols-outlined text-primary-container text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-[10px] bg-secondary/10 text-secondary px-2 py-0.5 rounded-sm font-mono border border-secondary/20 uppercase tracking-tighter">/neural_net</span>
+<span class="text-[10px] font-headline text-on-surface/60 font-medium uppercase tracking-widest">Synthesizing causal relationship...</span>
+<span class="text-[9px] font-mono text-zinc-600">3.2s</span>
+</div>
+<div class="text-xs text-zinc-400 font-mono bg-surface-container-low/50 p-2 rounded border border-outline-variant/5">
+                                    CORRELATION: Gateway pod exhaustion triggered OOM killer, causing cascading failover instability in cluster-west. Kernel panic was a byproduct of the subsequent race condition during node recovery.
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Final Response Block (Actionable Output) -->
+<div class="bg-surface-container-high rounded-xl p-8 shadow-2xl relative border-t-2 border-primary-container mt-4">
+<div class="prose prose-invert prose-green max-w-none">
+<p class="text-primary text-lg font-headline font-semibold mb-4 leading-tight">DIAGNOSIS COMPLETE: Cascading failure confirmed at 14:00:12 UTC.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[#ffaa00]">warning</span>
+<span class="font-headline text-[10px] uppercase tracking-widest text-[#ffaa00]">Primary Root Cause</span>
+</div>
+<p class="text-xs text-on-surface/80 font-mono">Heap exhaustion in `api-gateway` due to unpruned session metadata buffer overflow during peak traffic influx.</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container">bolt</span>
+<span class="font-headline text-[10px] uppercase tracking-widest text-primary-container">Impact Vector</span>
+</div>
+<p class="text-xs text-on-surface/80 font-mono">Cluster-wide quorum loss in `production-west-v4` resulting in 14 minutes of total service degradation.</p>
+</div>
+</div>
+<h4 class="font-headline text-xs font-bold uppercase tracking-widest text-secondary mt-8 mb-3">RECOMMENDED REMEDIATION:</h4>
+<ol class="list-decimal list-inside text-sm space-y-2 text-on-surface/90 ml-2">
+<li>Patch `auth-provider.cpp` line 442 to implement strict buffer sizing.</li>
+<li>Increase OOM score adjust for gateway pods to prevent immediate killing.</li>
+<li>Deploy emergency hotfix `HF-004-99` to secondary regions before next traffic peak.</li>
+</ol>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10 flex gap-3">
+<button class="px-4 py-2 bg-primary-container/10 border border-primary-container/20 text-primary-container text-[10px] font-bold uppercase tracking-widest hover:bg-primary-container/20 transition-all rounded-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Patch Code
+                        </button>
+<button class="px-4 py-2 bg-secondary/10 border border-secondary/20 text-secondary text-[10px] font-bold uppercase tracking-widest hover:bg-secondary/20 transition-all rounded-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">play_arrow</span> Execute Sandbox Test
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Command Input Dock -->
+<div class="w-full bg-surface-container-low border-t border-outline-variant/10 px-8 py-6 z-40 backdrop-blur-md">
+<div class="max-w-5xl mx-auto relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-primary-container transition-transform group-focus-within:scale-110">terminal</span>
+<input class="w-full bg-surface-container-highest border-none focus:ring-1 focus:ring-primary-container/40 rounded-xl py-4 pl-14 pr-24 font-mono text-sm text-on-surface placeholder:text-zinc-600 shadow-inner" placeholder="Enter command or analysis parameters..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4">
+<span class="text-[10px] font-mono text-zinc-600 hidden md:block">CMD + ENTER TO EXECUTE</span>
+<button class="w-8 h-8 bg-primary-container text-on-primary flex items-center justify-center rounded hover:brightness-110 shadow-lg">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating HUD Elements -->
+<div class="fixed bottom-24 right-8 flex flex-col gap-4 pointer-events-none">
+<div class="bg-surface-container-high/80 backdrop-blur-xl border border-primary-container/10 p-4 rounded-xl shadow-2xl flex flex-col gap-3 pointer-events-auto w-48 transition-all hover:border-primary-container/30">
+<div class="text-[9px] font-headline font-bold text-zinc-500 uppercase tracking-widest">Process Statistics</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-mono text-on-surface/60">VRAM_USE</span>
+<span class="text-[10px] font-mono text-primary-container">4.2 GB</span>
+</div>
+<div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[42%]"></div>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-[10px] font-mono text-on-surface/60">NODE_TEMP</span>
+<span class="text-[10px] font-mono text-[#ffaa00]">44.1°C</span>
+</div>
+<div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-[#ffaa00] w-[64%]"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-high/80 backdrop-blur-xl border border-secondary/10 p-4 rounded-xl shadow-2xl flex items-center gap-3 pointer-events-auto transition-all hover:border-secondary/30">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00FF41]"></div>
+<span class="text-[9px] font-mono font-bold text-on-surface uppercase tracking-tighter">UPLINK_STABLE // 5.2Gbps</span>
+</div>
+</div>
+</body></html>

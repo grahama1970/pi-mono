@@ -328,6 +328,9 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
         )}
 
         {msg.recall && <RecallCard recall={msg.recall} />}
+        {msg.thinkingSteps && msg.thinkingSteps.length > 0 && (
+          <ThinkingChain steps={msg.thinkingSteps} />
+        )}
       </div>
     </div>
   );
@@ -750,5 +753,23 @@ const SEED_MESSAGES: Message[] = [
     id: 'm3', role: 'assistant', agent: 'pi',
     content: "Based on memory, we've hit this before. The extraction fails when controls have nested sub-controls — the fix is to flatten the hierarchy using a recursive CTE in AQL before running the extraction pipeline.\n\nThe second hit is also relevant: for large worksheets (>200 controls), batch into chunks of 50 and use deterministic `_key` values so re-runs merge via `/upsert` instead of creating duplicates.\n\nShould I apply both patterns to the current batch, or do you want to investigate further?",
     timestamp: Date.now() - 40000,
+  },
+  {
+    id: 'm4', role: 'user',
+    content: '/create-evidence-case for CMMC Level 2 compliance',
+    timestamp: Date.now() - 30000,
+  },
+  {
+    id: 'm5', role: 'assistant', agent: 'pi',
+    skillUsed: 'create-evidence-case',
+    content: 'Building evidence case for CMMC Level 2. Decomposing into sub-tasks and running skill chain...',
+    thinkingSteps: [
+      { id: 's1', skill: 'memory', status: 'done', summary: 'Searching prior evidence cases...', detail: 'Found 3 prior CMMC assessments in memory. Confidence: 0.84', duration: 1200, confidence: 0.84 },
+      { id: 's2', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 requirements...', detail: 'Searched Brave, ArXiv, GitHub. Found 12 relevant sources.', duration: 4800, resultCount: 12 },
+      { id: 's3', skill: 'extract-controls', status: 'done', summary: 'Extracting NIST 800-171 controls...', detail: 'Extracted 110 controls from SP 800-171 Rev 2. Mapped to 14 CMMC domains.', duration: 2100, resultCount: 110 },
+      { id: 's4', skill: 'scillm', status: 'running', summary: 'Synthesizing claims from evidence...', duration: undefined },
+      { id: 's5', skill: 'memory', status: 'pending', summary: 'Storing evidence case...', duration: undefined },
+    ],
+    timestamp: Date.now() - 20000,
   },
 ];
