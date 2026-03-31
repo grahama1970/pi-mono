@@ -257,6 +257,46 @@ The compose file is the canonical spec. `run.sh` handles dynamic lifecycle (port
 
 ---
 
+## No Silent Fallbacks in Exception Handlers (NON-NEGOTIABLE)
+
+**Every `except` block MUST log at `logger.error`, NOT `logger.debug`.** `logger.debug` is invisible in production — failures silently disappear.
+
+### Rule: `correctness-no-silent-fallback`
+
+```python
+# WRONG — silent in production, hides failures
+except Exception as exc:
+    logger.debug("search failed: {}", exc)
+    return []
+
+# WRONG — bare except with no logging at all
+except Exception:
+    pass
+
+# RIGHT — visible in production logs
+except Exception as exc:
+    logger.error("search failed: {}", exc)
+    return []
+```
+
+**Exceptions:**
+- `dotenv` imports at module top (line 1-10) — genuinely optional
+- Optional dependency imports (`sentence_transformers`, `torch`) — log at WARNING
+- Health check retry loops — `continue` is acceptable
+
+**Everything else MUST use `logger.error`.** This includes:
+- ArangoDB queries, view searches, collection operations
+- Embedding service calls
+- Entity extraction, taxonomy lookups
+- Graph traversal, relationship scoring
+- Edge creation, document upserts
+
+Cross-ref: `/best-practices-arangodb` rule `arango-no-silent-fallback`.
+
+Enforced by: `/monitor-codebase` scanner and `/codex` review gate.
+
+---
+
 ## No sync subprocess in async code
 
 **If a Python file uses `asyncio`, it MUST NOT import `subprocess` or call `subprocess.run()`.** Use `asyncio.create_subprocess_exec()` or `asyncio.create_subprocess_shell()` instead.
