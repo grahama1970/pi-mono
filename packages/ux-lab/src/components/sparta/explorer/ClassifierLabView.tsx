@@ -184,10 +184,10 @@ function computePreflights(
       blocker: 'Fix data issues in Data tab first',
     })
     checks.push({
-      check: 'Tune config exists',
-      passed: !!tuneConfig && Object.keys(tuneConfig).length > 1,
-      detail: tuneConfig?.lr ? `LR=${tuneConfig.lr}, epochs=${tuneConfig.epochs}` : 'No config',
-      blocker: 'Configure hyperparameters in Tune tab',
+      check: 'Tune config set by agent or human (not defaults)',
+      passed: !!tuneConfig && tuneConfig._source && tuneConfig._source !== 'default' && !tuneConfig._source?.startsWith('default-'),
+      detail: tuneConfig?._source ? `Source: ${tuneConfig._source}` : 'Not configured',
+      blocker: 'Run /dogpile research first — it sets initial HP recommendations. Or configure manually in Tune tab.',
     })
   }
 

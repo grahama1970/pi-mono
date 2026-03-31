@@ -1677,7 +1677,7 @@ app.get('/api/projects/classifier-lab/data/:id', async (req, res) => {
     // Compute from samples.jsonl if data.json doesn't exist
     const samplesPath = resolve(projDir, 'samples.jsonl')
     if (!existsSync(samplesPath)) {
-      return res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, sufficiency: null })
+      return res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, classCount: 0, totalTrain: 0, sufficiency: { required: 0, available: 0, sufficient: false, deficit: 0, minPerClass: 0, minRequired: 100 } })
     }
 
     const lines = (await readFile(samplesPath, 'utf-8')).trim().split('\n').filter(Boolean)
@@ -1738,7 +1738,7 @@ app.get('/api/projects/classifier-lab/data/:id', async (req, res) => {
       path: samplesPath,
     })
   } catch (e) {
-    res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, sufficiency: null, error: String(e) })
+    res.json({ gatePassed: false, classes: [], gateThreshold: 0.85, classCount: 0, totalTrain: 0, sufficiency: { required: 0, available: 0, sufficient: false, deficit: 0, minPerClass: 0, minRequired: 100 }, error: String(e) })
   }
 })
 
@@ -1974,9 +1974,16 @@ app.get('/api/projects/classifier-lab/research/:id', async (req, res) => {
       } catch { /* skip */ }
     }
 
+    // If no research exists, provide a starting prompt
+    if (!markdown && timeline.length === 0) {
+      const meta = existsSync(resolve(CLASSIFIER_DIR, projectId, 'meta.json'))
+        ? JSON.parse(await readFile(resolve(CLASSIFIER_DIR, projectId, 'meta.json'), 'utf-8'))
+        : {}
+      markdown = `# ${meta.name || projectId}\n\n**No research yet.** The project agent needs to run /dogpile to research:\n\n- What backbone models work for this task?\n- What datasets are available?\n- What hyperparameters are recommended?\n- What F1 should we target?\n\nThis will populate the Research tab with findings and seed the Tune tab with initial settings.`
+    }
     res.json({ markdown, source: markdown ? 'disk' : null, timeline, nextStepsQuery })
   } catch {
-    res.json({ markdown: null, timeline: [], nextStepsQuery: null })
+    res.json({ markdown: '# Research\n\nNo research data available. Run /dogpile to start.', timeline: [], nextStepsQuery: null })
   }
 })
 
@@ -2017,6 +2024,31 @@ app.get('/api/projects/classifier-lab/gpu-info', async (_req, res) => {
     res.json({ gpus })
   } catch {
     res.json({ gpus: [] })
+  }
+})
+
+// Train results — reads from benchmark.json results array
+app.get('/api/projects/classifier-lab/train-results/:id', async (req, res) => {
+  try {
+    const benchPath = resolve(CLASSIFIER_DIR, req.params.id, 'benchmark.json')
+    if (existsSync(benchPath)) {
+      const bench = JSON.parse(await readFile(benchPath, 'utf-8'))
+      const results = (bench.results || []).map((r: any, i: number) => ({
+        rank: i + 1,
+        backbone: r.backbone || 'unknown',
+        lr: r.lr || '—',
+        bs: r.batch_size || 0,
+        f1: r.macro_f1 || r.f1 || 0,
+        acc: r.accuracy || 0,
+        latency: r.latency || '—',
+        cost: r.cost || 'FREE',
+        status: (r.macro_f1 || r.f1 || 0) >= (bench.gate_f1 || 0.90) ? 'pass' as const : 'fail' as const,
+      }))
+      return res.json(results)
+    }
+    res.json([])
+  } catch {
+    res.json([])
   }
 })
 
