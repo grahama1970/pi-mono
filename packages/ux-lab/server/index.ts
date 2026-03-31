@@ -1301,30 +1301,37 @@ app.post('/api/extract-entities', async (req, res) => {
       return
     }
 
-    // Mode 2: BM25 search for app-scoped collections (binary_features, app_actions)
+    // Mode 2: /recall with collections filter for app-scoped collections
+    // Standard path: BM25 + semantic + graph scoring, filtered to one collection
     if (col === 'binary_features' || col === 'app_actions') {
+      const scope = col === 'binary_features' ? 'binary-explorer' : ''
       try {
-        const searchResult = await proxyPost('/search-collection', {
-          q: text, collection: col, k: 5,
-          return_fields: ['label', 'name', 'description', 'node_type', 'nodeType', 'cluster'],
-        }) as { items?: Array<{ _key?: string; label?: string; name?: string; description?: string; node_type?: string; nodeType?: string; cluster?: string; _score?: number }> }
-        const entities = (searchResult.items ?? [])
-          .filter(item => (item._score ?? 0) > 1.0)
+        const recallResult = await proxyPost('/recall', {
+          q: text, k: 5, scope, collections: [col],
+        }) as { items?: Array<{ _key?: string; _source?: string; problem?: string; solution?: string; nodeType?: string; node_type?: string; cluster?: string; scores?: { bm25?: number } }> }
+        if (!recallResult.items) {
+          console.error(`[extract-entities] /recall returned no items field for ${col}`)
+          res.status(502).json({ error: `/recall returned invalid response for ${col}`, entities: [] })
+          return
+        }
+        const entities = recallResult.items
           .map(item => ({
             id: `${col}/${item._key ?? ''}`,
-            name: item.name ?? item.label ?? '',
-            label: item.label ?? item.name ?? '',
-            type: item.node_type ?? item.nodeType ?? 'unknown',
-            description: item.description ?? '',
+            name: item.problem ?? '',
+            label: item.problem ?? '',
+            type: item.nodeType ?? item.node_type ?? 'unknown',
             cluster: item.cluster ?? '',
-            score: item._score ?? 0,
+            score: item.scores?.bm25 ?? 0,
             exists: true,
           }))
-        res.json({ entities, mode: 'bm25_search' })
-      } catch (searchErr) {
-        const detail = searchErr instanceof Error ? searchErr.message : String(searchErr)
-        console.error(`[extract-entities] BM25 search FAILED for ${col}: ${detail}`)
-        res.status(502).json({ error: `BM25 search failed for ${col}`, detail, entities: [] })
+        if (entities.length === 0) {
+          console.warn(`[extract-entities] /recall returned 0 ${col} items for: "${text}"`)
+        }
+        res.json({ entities, mode: 'recall' })
+      } catch (recallErr) {
+        const detail = recallErr instanceof Error ? recallErr.message : String(recallErr)
+        console.error(`[extract-entities] /recall FAILED for ${col}: ${detail}`)
+        res.status(502).json({ error: `/recall failed for ${col}`, detail, entities: [] })
       }
       return
     }
