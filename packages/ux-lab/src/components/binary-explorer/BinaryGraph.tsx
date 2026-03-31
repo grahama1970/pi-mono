@@ -258,43 +258,71 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     root.call(zoom)
     // dblclick.zoom is set after fitToGraph is defined (see below)
 
-    // ── Minimap (D3-managed, updates on zoom + tick) ──
-    const MM_W = 120, MM_H = 80, MM_PAD = 10
+    // ── Minimap (always visible, click-to-navigate, selected node highlight) ──
+    const MM_W = 160, MM_H = 100, MM_PAD = 10
     const mmG = root.append('g').attr('class', 'minimap')
       .attr('transform', `translate(${width - MM_W - MM_PAD}, ${height - MM_H - MM_PAD})`)
+      .style('opacity', 0.7)
+      .style('transition', 'opacity 0.2s')
+    // Hover to increase opacity
+    mmG.on('mouseenter', function () { d3.select(this).style('opacity', 1) })
+    mmG.on('mouseleave', function () { d3.select(this).style('opacity', 0.7) })
+    // Background
     mmG.append('rect').attr('width', MM_W).attr('height', MM_H)
-      .attr('fill', EMBRY.bgDeep).attr('stroke', EMBRY.muted).attr('stroke-width', 1).attr('rx', 2)
+      .attr('fill', EMBRY.bgDeep).attr('stroke', EMBRY.border).attr('stroke-width', 1).attr('rx', 3)
+      .attr('fill-opacity', 0.9)
     const mmNodesG = mmG.append('g').attr('class', 'mm-nodes')
+    const mmSelectedG = mmG.append('g').attr('class', 'mm-selected')
     const mmViewport = mmG.append('rect').attr('class', 'mm-viewport')
-      .attr('fill', 'none').attr('stroke', EMBRY.accent).attr('stroke-width', 1.5)
-      .attr('stroke-dasharray', '3,2').attr('stroke-opacity', 0.6).attr('rx', 1)
+      .attr('fill', 'rgba(0,255,136,0.04)').attr('stroke', EMBRY.accent).attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '3,2').attr('stroke-opacity', 0.7).attr('rx', 1)
+    // Node count badge
+    const mmBadge = mmG.append('text')
+      .attr('x', MM_W - 4).attr('y', 12)
+      .attr('text-anchor', 'end').attr('fill', EMBRY.muted)
+      .attr('font-size', 9).attr('font-family', 'monospace')
 
     // Minimap state — updated by tick and zoom
     let mmScaleX = 1, mmScaleY = 1, mmOffX = 0, mmOffY = 0
 
-    const updateMinimapNodes = (nodes: { x: number; y: number; nodeType: string }[]) => {
-      if (nodes.length === 0) return
+    const updateMinimapNodes = (nodes: { id: string; x: number; y: number; nodeType: string; deg: number }[]) => {
+      if (nodes.length === 0) { mmBadge.text(''); return }
       const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y)
       const xMin = Math.min(...xs) - 30, xMax = Math.max(...xs) + 30
       const yMin = Math.min(...ys) - 30, yMax = Math.max(...ys) + 30
       const gW = xMax - xMin || 1, gH = yMax - yMin || 1
-      mmScaleX = MM_W / gW; mmScaleY = MM_H / gH
-      const sc = Math.min(mmScaleX, mmScaleY)
+      const sc = Math.min(MM_W / gW, MM_H / gH)
       mmScaleX = sc; mmScaleY = sc
       mmOffX = (MM_W - gW * sc) / 2 - xMin * sc
       mmOffY = (MM_H - gH * sc) / 2 - yMin * sc
 
-      const sel = mmNodesG.selectAll<SVGCircleElement, typeof nodes[0]>('circle').data(nodes)
+      // Dots sized by degree (hubs are bigger)
+      const sel = mmNodesG.selectAll<SVGCircleElement, typeof nodes[0]>('circle').data(nodes, d => d.id)
       sel.join('circle')
         .attr('cx', d => d.x * mmScaleX + mmOffX)
         .attr('cy', d => d.y * mmScaleY + mmOffY)
-        .attr('r', 1.5)
+        .attr('r', d => d.deg > 10 ? 3 : d.deg > 3 ? 2 : 1.2)
         .attr('fill', d => NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim)
-        .attr('opacity', 0.8)
+        .attr('opacity', 0.85)
+
+      // Selected node ring
+      const selId = clickedRef.current
+      mmSelectedG.selectAll('circle').remove()
+      if (selId) {
+        const selNode = nodes.find(n => n.id === selId)
+        if (selNode) {
+          mmSelectedG.append('circle')
+            .attr('cx', selNode.x * mmScaleX + mmOffX)
+            .attr('cy', selNode.y * mmScaleY + mmOffY)
+            .attr('r', 5).attr('fill', 'none')
+            .attr('stroke', '#fff').attr('stroke-width', 1.5).attr('stroke-opacity', 0.9)
+        }
+      }
+
+      mmBadge.text(`${nodes.length}`)
     }
 
     const updateMinimapViewport = (transform: d3.ZoomTransform) => {
-      // Map the visible viewport into minimap coordinates
       const vx = -transform.x / transform.k
       const vy = -transform.y / transform.k
       const vw = width / transform.k
@@ -309,7 +337,6 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     // Click minimap to pan main graph
     mmG.on('click', function (event) {
       const [mx, my] = d3.pointer(event)
-      // Convert minimap coords to graph coords
       const gx = (mx - mmOffX) / mmScaleX
       const gy = (my - mmOffY) / mmScaleY
       const currentTransform = d3.zoomTransform(svg)
@@ -1172,10 +1199,9 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
           .attr('y', ([, ns]) => ns.reduce((s, n) => s + (n.y ?? 0), 0) / ns.length)
       }
 
-      // Update minimap nodes every 10 ticks (hide minimap when <15 nodes — not useful)
+      // Update minimap nodes every 10 ticks (always visible)
       if (tickCount % 10 === 0) {
-        mmG.attr('display', simNodes.length < 15 ? 'none' : 'block')
-        updateMinimapNodes(simNodes.map(n => ({ x: n.x!, y: n.y!, nodeType: n.nodeType })))
+        updateMinimapNodes(simNodes.map(n => ({ id: n.id, x: n.x!, y: n.y!, nodeType: n.nodeType, deg: degree.get(n.id) ?? 0 })))
         updateMinimapViewport(d3.zoomTransform(svg))
       }
 
