@@ -1218,15 +1218,22 @@ export function BinaryExplorerView() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text, collection: 'binary_features' }),
         }, 3000)
-        if (!res.ok) throw new Error(`extract-entities API returned ${res.status}`)
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}))
+          console.error(`[extract-entities] API returned ${res.status}: ${errBody.error || errBody.detail || 'unknown'}`)
+          throw new Error(`extract-entities returned ${res.status}: ${errBody.error || 'unknown'}`)
+        }
         const { entities } = await res.json()
+        if (!entities || entities.length === 0) {
+          console.warn('[extract-entities] returned 0 entities for:', text)
+        }
         mentionedEntities.push(...(entities ?? []).map((e: { id: string; name: string; label: string; type: string }) => ({
           id: e.id,
-          label: e.label || e.name,  // label is the short display name, name includes namespace
+          label: e.label || e.name,
           nodeType: e.type
         })))
       } catch (err) {
-        console.warn('[extract-entities] API failed, falling back to exact match:', err)
+        console.error('[extract-entities] FAILED:', err instanceof Error ? err.message : err)
         // Fallback: simple exact match against graph nodes (no sorting/substring loop)
         for (const node of data.graphNodes) {
           const nameLower = node.label.toLowerCase()
@@ -1291,13 +1298,18 @@ export function BinaryExplorerView() {
                 })
               }
             } catch {
-              console.warn('[PIPELINE] bad solution JSON in app_actions:', item._key)
+              console.error('[PIPELINE] bad solution JSON in app_actions:', item._key, 'solution:', item.solution?.substring(0, 100))
             }
           }
+          if (candidates.length === 0) {
+            console.warn('[PIPELINE] /recall returned items but 0 had valid ui_action — check app_actions solution field format')
+          }
           trace.candidates = candidates.map(c => ({ _key: c._key, ui_action: c.ui_action, score: c.score }))
+        } else {
+          console.error(`[PIPELINE] /recall returned HTTP ${actionsRes.status} for app_actions`)
         }
       } catch (err) {
-        console.warn('[PIPELINE] app_actions recall failed:', err)
+        console.error('[PIPELINE] app_actions /recall FAILED:', err instanceof Error ? err.message : err)
         trace.reason = 'recall-failed'
       }
 

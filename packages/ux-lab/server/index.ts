@@ -377,6 +377,76 @@ app.get('/api/datalake/asset/:chunk_key', async (req, res) => {
   }
 })
 
+app.post('/api/datalake/traceability', async (req, res) => {
+  const { doc_key } = req.body as { doc_key?: string }
+  if (!doc_key) return res.status(400).json({ error: 'doc_key required' })
+  try {
+    // 1. Look up the document
+    const docResult = await proxyPost('/recall/by-keys', {
+      collection: 'datalake_documents',
+      keys: [doc_key],
+    }) as { documents?: any[] }
+    let document = docResult?.documents?.[0] ?? null
+    if (!document) {
+      const fallback = await proxyPost('/recall/by-keys', {
+        collection: 'documents',
+        keys: [doc_key],
+      }) as { documents?: any[] }
+      document = fallback?.documents?.[0] ?? null
+    }
+
+    // 2-5. Find linked edges in parallel
+    const docId = `documents/${doc_key}`
+    const edgeCollections = ['has_section', 'has_requirement', 'has_table', 'has_figure'] as const
+    const edgeResults = await Promise.all(
+      edgeCollections.map(col =>
+        proxyPost('/recall/by-keys', {
+          collection: col,
+          keys: [docId],
+          key_field: '_from',
+          return_fields: ['_to'],
+        }).catch(() => ({ documents: [] }))
+      )
+    ) as Array<{ documents?: Array<{ _to?: string }> }>
+
+    // Extract target keys per edge type
+    const targetCollections = ['sections', 'requirements', 'tables', 'figures'] as const
+    const targetKeysByType = edgeResults.map(r =>
+      (r?.documents ?? []).map(e => e._to?.split('/')?.[1]).filter(Boolean) as string[]
+    )
+
+    // 6. Batch-fetch targets in parallel
+    const targetResults = await Promise.all(
+      targetKeysByType.map((keys, i) =>
+        keys.length > 0
+          ? proxyPost('/recall/by-keys', {
+              collection: targetCollections[i],
+              keys: keys.slice(0, 500),
+            }).catch(() => ({ documents: [] }))
+          : Promise.resolve({ documents: [] })
+      )
+    ) as Array<{ documents?: any[] }>
+
+    // 7. Assemble response
+    res.json({
+      doc_key,
+      document,
+      sections: targetResults[0]?.documents ?? [],
+      requirements: targetResults[1]?.documents ?? [],
+      tables: targetResults[2]?.documents ?? [],
+      figures: targetResults[3]?.documents ?? [],
+      edges: {
+        has_section: targetKeysByType[0].length,
+        has_requirement: targetKeysByType[1].length,
+        has_table: targetKeysByType[2].length,
+        has_figure: targetKeysByType[3].length,
+      },
+    })
+  } catch (e) {
+    res.status(502).json({ error: 'Traceability query failed', detail: String(e) })
+  }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
@@ -1252,8 +1322,9 @@ app.post('/api/extract-entities', async (req, res) => {
           }))
         res.json({ entities, mode: 'bm25_search' })
       } catch (searchErr) {
-        console.warn(`[extract-entities] BM25 search failed for ${col}:`, searchErr)
-        res.json({ entities: [], mode: 'bm25_search', error: 'search failed' })
+        const detail = searchErr instanceof Error ? searchErr.message : String(searchErr)
+        console.error(`[extract-entities] BM25 search FAILED for ${col}: ${detail}`)
+        res.status(502).json({ error: `BM25 search failed for ${col}`, detail, entities: [] })
       }
       return
     }
@@ -1266,8 +1337,10 @@ app.post('/api/extract-entities', async (req, res) => {
         return { id: cid, name: meta.name ?? cid, label: cid, type: 'control', framework: meta.framework ?? '', exists: true }
       })
       res.json({ entities, mode: 'flashtext' })
-    } catch {
-      res.json({ entities: [], error: 'extract-entities daemon not available' })
+    } catch (daemonErr) {
+      const detail = daemonErr instanceof Error ? daemonErr.message : String(daemonErr)
+      console.error(`[extract-entities] daemon /extract-entities FAILED: ${detail}`)
+      res.status(502).json({ error: 'Memory daemon /extract-entities unreachable', detail, entities: [] })
     }
   } catch (e) {
     res.status(502).json({ error: 'Entity extraction failed', detail: String(e) })
