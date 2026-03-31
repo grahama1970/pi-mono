@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fix-graph-sparse",
+    "title": "graph-sparse: The central graph area is nearly empty \u2014 only 3 isolated namespace nodes are visible despite 334 fea",
+    "count": 35,
+    "groups": [
+      "vulnerability-hunting",
+      "first-impressions",
+      "automation",
+      "ctf-workflow",
+      "learning-path"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-layout-issues",
+    "title": "layout-issues: The bottom panel\u2019s 'TOP FEATURES BY CONNECTIONS' list is dense and lacks visual hierarchy or filteri",
+    "count": 14,
+    "groups": [
+      "visual-design",
+      "first-impressions",
+      "data-structures",
+      "graph-navigation",
+      "graph-exploration"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-code-view",
+    "title": "no-code-view: No implementation functions for RPC endpoints are visible or linked in the graph or detail panel \u2014 c",
+    "count": 9,
+    "groups": [
+      "node-detail",
+      "first-impressions",
+      "code-view",
+      "perspective-views",
+      "taxonomy-integration"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-labels",
+    "title": "no-labels: No visual feedback or tooltip explains what the graph view buttons (FORCE, DAG, etc.) do; their func",
+    "count": 7,
+    "groups": [
+      "visual-design",
+      "state-machines",
+      "first-impressions",
+      "error-states",
+      "learning-path"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-xrefs",
+    "title": "no-xrefs: No options for rename, annotate, show xrefs, or copy address \u2014 critical for binary analysis.",
+    "count": 3,
+    "groups": [
+      "cross-references",
+      "context-menu"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-context-menu",
+    "title": "no-context-menu: No UI controls (buttons, context menus, tag input fields) visible for adding, removing, or editing t",
+    "count": 2,
+    "groups": [
+      "performance",
+      "taxonomy-integration"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-legend",
+    "title": "no-legend: Node types in graph are not visually indicated by icons on nodes themselves \u2014 only in legend",
+    "count": 2,
+    "groups": [
+      "node-detail",
+      "symbol-tree"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-ux-clarity",
+    "title": "ux-clarity: The 'SUGGESTED QUERIES' in the right panel are not visually linked to the graph \u2014 it\u2019s unclear if cl",
+    "count": 2,
+    "groups": [
+      "first-impressions",
+      "chat-analysis"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-detail-panel",
+    "title": "no-detail-panel: The bottom panel's 'CONTAINS' list shows RPC names but provides no metadata (e.g., function signatur",
+    "count": 1,
+    "groups": [
+      "node-detail"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  },
+  {
+    "id": "fix-no-search",
+    "title": "no-search: No visual indication of search results, match highlighting, or relevance ranking",
+    "count": 1,
+    "groups": [
+      "search-and-filter"
+    ],
+    "dod_command": "npx tsc --noEmit",
+    "max_rounds": 5
+  }
+]

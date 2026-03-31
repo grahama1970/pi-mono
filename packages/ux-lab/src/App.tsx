@@ -71,6 +71,7 @@ import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
 
 // SPARTA sub-views
+const ChatTabView = React.lazy(() => import('./components/sparta/explorer/ChatTab').then(m => ({ default: m.ChatTab })));
 const OverviewView = React.lazy(() => import('./components/sparta/explorer/OverviewView').then(m => ({ default: m.OverviewView })));
 const SourcesView = React.lazy(() => import('./components/sparta/explorer/SourcesView').then(m => ({ default: m.SourcesView })));
 const ControlsView = React.lazy(() => import('./components/sparta/explorer/ControlsView').then(m => ({ default: m.ControlsView })));
@@ -204,6 +205,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
             <SpartaExplorerView views={{
+              Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
               Overview: <React.Suspense fallback={null}><OverviewView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
               Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
@@ -1556,6 +1558,7 @@ export default function App() {
                     <div className="flex-1 flex flex-col overflow-hidden">
                       <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
                         <SpartaExplorerView views={{
+                          Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
                           Overview: <React.Suspense fallback={null}><OverviewView /></React.Suspense>,
                           Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
                           Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,

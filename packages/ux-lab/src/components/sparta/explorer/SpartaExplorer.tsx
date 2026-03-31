@@ -13,7 +13,7 @@ const API = 'http://localhost:3001'
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
 const TABS = [
-  'Overview', 'Sources', 'Controls', 'URLs',
+  'Chat', 'Overview', 'Sources', 'Controls', 'URLs',
   'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
 ] as const
 
@@ -41,6 +41,7 @@ export function useSpartaNav(): SpartaNavContextValue {
 
 // Lucide icons for the global nav strip
 const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
+  'Chat': MessageSquare,
   'Overview': Zap,
   'Sources': FileSpreadsheet,
   'Controls': Shield,
@@ -67,7 +68,7 @@ export interface SpartaExplorerProps {
 }
 
 export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerProps) {
-  const [activeTab, setActiveTab] = useState<TabName>('Overview')
+  const [activeTab, setActiveTab] = useState<TabName>('Chat')
   const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>({})
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
 
