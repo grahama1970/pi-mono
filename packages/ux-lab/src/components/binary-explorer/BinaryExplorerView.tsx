@@ -1209,43 +1209,169 @@ export function BinaryExplorerView() {
         ? mentionedEntities.map(e => `[${e.nodeType}] ${e.label}`).join(', ')
         : ''
 
-      let intentFound = false
-      let intentData: { action: string, ui_action?: string, target_node_id?: string, expand_hops?: number, perspective?: string } | null = null
+      // ── COMMAND PIPELINE: BM25 recall → deterministic scorer → confidence gate → execute ──
+      // Opus only escalated when confidence is low (ambiguous command).
+      // Works with OR without entities — "zoom out" has no entity but is a valid command.
 
-      // A. Memory Recall Interceptor (Semantic Similarity to common interactions)
-      // Enriched with extracted entity names for better matching
+      const VALID_ACTIONS = new Set(['SELECT_NODE', 'VIEW_ALL', 'ZOOM_OUT', 'ZOOM_IN', 'SET_PERSPECTIVE', 'TOGGLE_PROGRESSIVE', 'EXPAND', 'DISMISS_NODE', 'FOCUS_CLUSTER'])
+      const VALID_PERSPECTIVES = new Set(Object.keys(PERSPECTIVE_TYPES))
+      // Actions that require a target entity to execute
+      const REQUIRES_ENTITY = new Set(['SELECT_NODE', 'EXPAND', 'ZOOM_IN', 'DISMISS_NODE', 'FOCUS_CLUSTER'])
+      const CONFIDENCE_THRESHOLD = 3.0
+      const AMBIGUITY_MARGIN = 1.5
+      const clamp = (n: unknown, lo: number, hi: number): number => { const v = Number(n); return Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : lo }
+
+      type QuerySpec = { action: string, ui_action?: string, target_node_id?: string, expand_hops?: number, perspective?: string, zoom?: number }
+      type PipelineTrace = { entities: typeof mentionedEntities, candidates: { _key: string, ui_action: string, score: number }[], source: string, reason: string }
+
+      let intentData: QuerySpec | null = null
+      const trace: PipelineTrace = { entities: mentionedEntities, candidates: [], source: 'none', reason: '' }
+
+      // Step 1: Recall candidate actions from app_actions (works with or without entities)
+      type CandidateAction = { _key: string, ui_action: string, params: Record<string, string>, description: string, score: number }
+      const candidates: CandidateAction[] = []
       try {
-        const recallRes = await fetch(`${API}/api/memory/recall`, {
+        const actionsRes = await fetch(`${API}/api/memory/recall`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ q: entityCtx ? `${text} ${entityCtx}` : text, k: 3, labels: ['intent-training-v2'] })
+          body: JSON.stringify({
+            q: entityCtx ? `${text} ${entityCtx}` : text,
+            k: 5, scope: 'binary-explorer',
+            collections: ['app_actions'], tags: ['queryspec-action'],
+          }),
         })
-        if (recallRes.ok) {
-          const recallData = await recallRes.json()
-          if (recallData.found && recallData.items?.length > 0) {
-            const bestMatch = recallData.items[0]
-            // If similarity is very high (>0.85), trust the solution directly
-            if (bestMatch.similarity > 0.85) {
-              try {
-                intentData = typeof bestMatch.solution === 'string' ? JSON.parse(bestMatch.solution) : bestMatch.solution
-                intentFound = true
-                console.log('[DEBUG RECALL MATCH]', { query: text, match: bestMatch.problem, intent: intentData })
-              } catch (e) {
-                console.error('Failed to parse recall solution:', e)
+        if (actionsRes.ok) {
+          const actionsData = await actionsRes.json()
+          for (const item of actionsData.items ?? []) {
+            if (!item.solution) continue
+            try {
+              const parsed = JSON.parse(item.solution)
+              if (parsed.ui_action && VALID_ACTIONS.has(parsed.ui_action)) {
+                candidates.push({
+                  _key: item._key ?? '',
+                  ui_action: parsed.ui_action,
+                  params: parsed.params ?? {},
+                  description: item.problem ?? '',
+                  score: item.scores?.bm25 ?? 0,
+                })
               }
+            } catch {
+              console.warn('[PIPELINE] bad solution JSON in app_actions:', item._key)
             }
           }
+          trace.candidates = candidates.map(c => ({ _key: c._key, ui_action: c.ui_action, score: c.score }))
         }
       } catch (err) {
-        console.warn('Memory recall interceptor failed:', err)
+        console.warn('[PIPELINE] app_actions recall failed:', err)
+        trace.reason = 'recall-failed'
       }
 
-      // B. /memory intent — evidence-based pipeline (extract entities → recall definitions → LLM action)
-      // The memory daemon's IntentMapper handles the full 8-step cascade:
-      //   1. Self-correction  2. Recall grounding  3. Entity validation
-      //   4. Ambiguity gate   5. T0.5 classifier   6. LLM enrichment (scillm)
-      //   7. SFT fallback     8. Rule fallback      + Evidence gate verification
-      if (!intentFound) {
+      // Step 2: Sort by score, deterministic scoring, confidence gate
+      candidates.sort((a, b) => b.score - a.score)
+      if (candidates.length > 0) {
+        const top = candidates[0]
+        const second = candidates[1]
+        const margin = second ? top.score - second.score : top.score
+        const isConfident = top.score >= CONFIDENCE_THRESHOLD && margin >= AMBIGUITY_MARGIN
+        // Action precondition: if action requires entity but none extracted, skip
+        const entityAvailable = mentionedEntities.length > 0
+        const topNeedsEntity = REQUIRES_ENTITY.has(top.ui_action)
+
+        if (isConfident && (!topNeedsEntity || entityAvailable)) {
+          // High confidence — execute directly, no LLM needed
+          // Resolve target: entity ID (ground truth) > entity label > undefined
+          const targetId = entityAvailable ? mentionedEntities[0].id : undefined
+          const targetLabel = entityAvailable ? mentionedEntities[0].label : undefined
+          intentData = {
+            action: 'UI_COMMAND',
+            ui_action: top.ui_action,
+            target_node_id: targetLabel,
+            // Merge recalled action params as defaults
+            expand_hops: top.params.expand_hops != null ? clamp(top.params.expand_hops, 0, 3) : (topNeedsEntity ? 1 : undefined),
+            zoom: top.params.zoom != null ? clamp(top.params.zoom, 0.5, 5) : undefined,
+            perspective: top.params.perspective ?? undefined,
+          }
+          // Store resolved entity ID for execution
+          if (targetId) (intentData as Record<string, unknown>)._resolvedEntityId = targetId
+          trace.source = 'bm25-confident'
+          trace.reason = `top=${top.ui_action}(${top.score.toFixed(1)}) margin=${margin.toFixed(1)}`
+          console.log('[PIPELINE]', trace.reason)
+        } else if (candidates.length >= 2 || (candidates.length === 1 && top.score < CONFIDENCE_THRESHOLD)) {
+          // Low confidence / ambiguous — escalate to Opus
+          try {
+            const opusRes = await fetch(`${API}/api/scillm`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: 'text-claude-opus',
+                messages: [{
+                  role: 'user',
+                  content: [
+                    'Pick the ONE best UI action for this command. Return ONLY a JSON object.',
+                    `Command: "${text}"`,
+                    mentionedEntities.length > 0 ? `Entities: ${mentionedEntities.map(e => `${e.label} (${e.nodeType})`).join(', ')}` : '',
+                    'Actions (pick one by ID):',
+                    ...candidates.slice(0, 4).map((c, i) => `  ${i + 1}. ${c.ui_action}: ${c.description}`),
+                    '',
+                    'Return: {"choice": <1-based index>, "target_node_id": "..." or null, "expand_hops": N or null, "perspective": "..." or null, "zoom": N or null}',
+                  ].filter(Boolean).join('\n'),
+                }],
+                temperature: 0, max_tokens: 128,
+                response_format: { type: 'json_object' },
+              }),
+            })
+            if (opusRes.ok) {
+              const opusData = await opusRes.json()
+              const content = opusData.choices?.[0]?.message?.content
+              if (content) {
+                const parsed = JSON.parse(content)
+                // Validate choice: must be 1-based integer within candidates range
+                const rawChoice = Number(parsed.choice)
+                const choiceIdx = (Number.isInteger(rawChoice) && rawChoice >= 1 && rawChoice <= candidates.length) ? rawChoice - 1 : 0
+                const chosen = candidates[choiceIdx]
+                if (chosen && VALID_ACTIONS.has(chosen.ui_action)) {
+                  const chosenNeedsEntity = REQUIRES_ENTITY.has(chosen.ui_action)
+                  const resolvedTarget = parsed.target_node_id ?? mentionedEntities[0]?.label
+                  // Skip if action requires entity but none available
+                  if (!chosenNeedsEntity || resolvedTarget) {
+                    intentData = {
+                      action: 'UI_COMMAND',
+                      ui_action: chosen.ui_action,
+                      target_node_id: resolvedTarget,
+                      expand_hops: clamp(parsed.expand_hops, 0, 3),
+                      perspective: typeof parsed.perspective === 'string' && VALID_PERSPECTIVES.has(parsed.perspective.toLowerCase()) ? parsed.perspective.toLowerCase() : undefined,
+                      zoom: clamp(parsed.zoom, 0.5, 5),
+                    }
+                    trace.source = 'opus-disambiguate'
+                    trace.reason = `ambiguous(margin=${margin.toFixed(1)}) opus→${chosen.ui_action}`
+                  }
+                }
+              }
+            }
+          } catch (err) {
+            console.warn('[PIPELINE] opus disambiguation failed:', err)
+            // Fall through to top BM25 pick
+          }
+        }
+
+        // If Opus failed or wasn't needed — use top BM25 pick if it passes preconditions
+        if (!intentData && top.score > 1.0) {
+          const topNeedsEntity2 = REQUIRES_ENTITY.has(top.ui_action)
+          if (!topNeedsEntity2 || entityAvailable) {
+            intentData = {
+              action: 'UI_COMMAND',
+              ui_action: top.ui_action,
+              target_node_id: entityAvailable ? mentionedEntities[0].label : undefined,
+              expand_hops: topNeedsEntity2 ? clamp(top.params.expand_hops, 0, 3) || 1 : undefined,
+            }
+            trace.source = 'bm25-low-confidence'
+            trace.reason = `top=${top.ui_action}(${top.score.toFixed(1)}) below threshold, best effort`
+          }
+        }
+      }
+
+      // Step 3: Fallback — /memory intent (only if no candidates matched at all)
+      if (!intentData) {
         try {
           const intentRes = await fetch(`${API}/api/memory/intent`, {
             method: 'POST',
@@ -1253,91 +1379,116 @@ export function BinaryExplorerView() {
             body: JSON.stringify({ q: text, scope: 'binary-explorer', fast: false }),
           })
           if (intentRes.ok) {
-            intentData = await intentRes.json()
-            console.log('[INTENT]', intentData)
-            if (intentData && intentData.action !== 'NO_MATCH') {
-              intentFound = true
+            const raw = await intentRes.json()
+            if (raw && raw.action !== 'NO_MATCH' && raw.ui_action && VALID_ACTIONS.has(raw.ui_action)) {
+              intentData = { action: 'UI_COMMAND', ui_action: raw.ui_action, target_node_id: raw.target_node_id, expand_hops: raw.expand_hops, perspective: raw.perspective }
+              trace.source = 'memory-intent'
+              trace.reason = `fallback→${raw.ui_action}`
             }
           }
-        } catch {
-          console.warn('/memory intent unreachable')
+        } catch (err) {
+          console.warn('[PIPELINE] /memory intent failed:', err)
         }
       }
 
-      if (intentFound && intentData) {
-        // Entity extraction from /extract-entities is ground truth for target node
+      // Step 4: Schema validation — only execute if intentData has a valid action
+      if (intentData?.ui_action && VALID_ACTIONS.has(intentData.ui_action)) {
+        // Fill target from entities if missing
         if (mentionedEntities.length > 0 && !intentData.target_node_id) {
           intentData.target_node_id = mentionedEntities[0].label
         }
-        const { ui_action, target_node_id, expand_hops = 1, perspective: intentP } = intentData
+        // Clamp all numeric params
+        if (intentData.expand_hops != null) intentData.expand_hops = clamp(intentData.expand_hops, 0, 3)
+        if (intentData.zoom != null) intentData.zoom = clamp(intentData.zoom, 0.5, 5)
+        // Validate perspective
+        if (intentData.perspective && !VALID_PERSPECTIVES.has(intentData.perspective.toLowerCase())) intentData.perspective = undefined
+        // Precondition check: entity-requiring actions without entity → skip
+        if (REQUIRES_ENTITY.has(intentData.ui_action) && !intentData.target_node_id) { intentData = null }
+        const { ui_action, target_node_id, expand_hops = 1, perspective: intentP, zoom: intentZoom } = intentData
         let executedMsg = ''
 
-        if (ui_action === 'SELECT_NODE' || (target_node_id && !ui_action)) {
-          // Use entity ID from /extract-entities (ground truth), fall back to label match
-          const entityId = mentionedEntities.length > 0 ? mentionedEntities[0].id : null
-          const targetLabel = String(target_node_id).toLowerCase()
-          const node =
-            (entityId && data.graphNodes.find(n => n.id === entityId)) ||
-            data.graphNodes.find(n => n.label.toLowerCase() === targetLabel) ||
-            data.graphNodes.find(n => n.label.toLowerCase().includes(targetLabel)) ||
-            null
+        // ── Resolve target: entity ID (from /extract-entities) > label exact > label substring ──
+        const resolvedEntityId = (intentData as Record<string, unknown>)?._resolvedEntityId as string | undefined
+        const resolveNode = (target: string | undefined) => {
+          if (!target) return null
+          const label = target.toLowerCase()
+          return (resolvedEntityId && data.graphNodes.find(n => n.id === resolvedEntityId))
+            || (mentionedEntities.length > 0 && data.graphNodes.find(n => n.id === mentionedEntities[0].id))
+            || data.graphNodes.find(n => n.label.toLowerCase() === label)
+            || data.graphNodes.find(n => n.label.toLowerCase().includes(label))
+            || null
+        }
+
+        // ── Execute by action type ──
+        if (ui_action === 'SELECT_NODE' || ui_action === 'EXPAND') {
+          const node = resolveNode(target_node_id)
 
           if (node) {
-            // Materialize node + neighbors into scene
             addNodeWithNeighbors(node.id, expand_hops)
             setSelectedNode(node)
-            executedMsg = `Focused on ${node.label}`
-
-            if (expand_hops > 1) {
-              executedMsg += ` and expanded ${expand_hops} hops.`
-            } else if (expand_hops > 0) {
-              executedMsg += ` and expanded neighbors.`
-            }
-
-            // Physically zoom the camera if requested
-            const requestedZoom = parseFloat(intentP || '1.0')
-            if (requestedZoom > 1.0) {
+            executedMsg = `Selected ${node.label}`
+            if (expand_hops > 0) executedMsg += ` + ${expand_hops}-hop neighbors`
+            // Zoom if requested
+            const zoomLevel = intentZoom ?? (intentP ? parseFloat(intentP) : 0)
+            if (zoomLevel > 1.0) {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const svgEl = graphSvgRef.current as any
-              if (svgEl?.__panToNode) {
-                svgEl.__panToNode(node.id, requestedZoom)
-                executedMsg = `Zoomed in on ${node.label}`
-              }
+              if (svgEl?.__panToNode) { svgEl.__panToNode(node.id, zoomLevel); executedMsg += ` @ ${zoomLevel}x zoom` }
             }
           } else {
-            executedMsg = `Could not find node matching "${target_node_id}"`
+            executedMsg = `Node not found: "${target_node_id}"`
+          }
+        } else if (ui_action === 'ZOOM_IN' && target_node_id) {
+          const node = resolveNode(target_node_id)
+          if (node) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const svgEl = graphSvgRef.current as any
+            if (svgEl?.__panToNode) { svgEl.__panToNode(node.id, intentZoom ?? 2.0); executedMsg = `Zoomed to ${node.label} @ ${intentZoom ?? 2}x` }
           }
         } else if (ui_action === 'VIEW_ALL' || ui_action === 'ZOOM_OUT') {
-          // Don't dump all nodes — just deselect and fit graph
           setSelectedNode(null)
-          executedMsg = 'Deselected. Double-click graph to fit view.'
-        } else if (ui_action === 'SET_PERSPECTIVE' && intentP) {
-          const pStr = String(intentP).toLowerCase()
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const svgEl = graphSvgRef.current as any
+          if (svgEl?.__fitToGraph) svgEl.__fitToGraph()
+          executedMsg = 'Reset view — fit to graph'
+        } else if (ui_action === 'SET_PERSPECTIVE') {
+          const pStr = String(intentP ?? intentData.perspective ?? '').toLowerCase()
           if (Object.keys(PERSPECTIVE_TYPES).includes(pStr)) {
             setPerspective(pStr as Perspective)
-            executedMsg = `Switched perspective to ${intentP}.`
+            executedMsg = `Perspective: ${pStr}`
           }
         } else if (ui_action === 'TOGGLE_PROGRESSIVE') {
           clearScene()
-          executedMsg = 'Cleared scene.'
+          executedMsg = 'Scene cleared'
+        } else if (ui_action === 'DISMISS_NODE' && target_node_id) {
+          // Remove node from scene
+          const nodeId = mentionedEntities[0]?.id
+          if (nodeId) { removeFromScene(nodeId); executedMsg = `Dismissed ${target_node_id}` }
         }
 
         if (executedMsg) {
           skipNextExplanationRef.current = true
-          const qs = intentData
-          // Evidence chain: show what /extract-entities found and what QuerySpec was produced
-          const entityLine = mentionedEntities.length > 0
-            ? `**Entities**: ${mentionedEntities.map(e => `\`${e.label}\` (${e.nodeType})`).join(', ')}`
-            : '**Entities**: none extracted'
-          const qsLine = `**QuerySpec**: \`${qs?.ui_action || qs?.action || '?'}\` → \`${qs?.target_node_id || 'none'}\`${qs?.expand_hops ? ` (${qs.expand_hops} hop)` : ''}`
-          const sourceLine = `**Source**: ${qs?.classifier_source || 'intent-pipeline'}`
+          // Show evidence chain: entities → candidates → executed action → source
+          const parts = [executedMsg]
+          if (trace.entities.length > 0) parts.push(`**Entities**: ${trace.entities.map(e => `\`${e.label}\``).join(', ')}`)
+          if (trace.candidates.length > 0) parts.push(`**Matched**: ${trace.candidates.slice(0, 3).map(c => `${c.ui_action}(${c.score.toFixed(1)})`).join(' > ')}`)
+          parts.push(`**via** ${trace.source}`)
           setChatMessages((prev) => [...prev, {
-            role: 'assistant',
-            content: `${executedMsg}\n\n${entityLine}\n${qsLine}\n${sourceLine}`,
-            isExplanation: true,
-            _querySpec: qs,
+            role: 'assistant', content: parts.join('\n'), isExplanation: true, _querySpec: intentData,
           } as ChatMessage & { _querySpec?: unknown }])
-          recordStep('chat', `UI command: ${executedMsg}`)
+          // Store training pair — only successful executions (not "not found" errors)
+          if (!executedMsg.includes('not found') && !executedMsg.includes('Not found')) {
+            fetch(`${API}/api/memory/learn`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                problem: text,
+                solution: JSON.stringify({ ui_action, target_node_id, expand_hops, perspective: intentP, zoom: intentZoom }),
+                tags: ['queryspec-training', 'binary-explorer', `action:${ui_action}`, 'intent-training-v2'],
+                scope: 'binary-explorer',
+              }),
+            }).catch(() => {})
+          }
+          recordStep('chat', executedMsg)
           setChatLoading(false)
           return
         }

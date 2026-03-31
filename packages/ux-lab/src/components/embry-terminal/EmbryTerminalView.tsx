@@ -196,6 +196,31 @@ const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }
   );
 });
 
+// ── Tool Action Line (muted, collapsible — "Created 7 files >") ─────────────
+
+const ToolAction = memo(function ToolAction({ label, qid }: { label: string; qid: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <button
+      onClick={() => setExpanded(v => !v)}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 4,
+        fontSize: 13, color: '#64748b', background: 'none', border: 'none',
+        cursor: 'pointer', padding: '4px 0', marginBottom: 8,
+        fontFamily: 'var(--font-ui)', transition: 'color 0.15s',
+      }}
+      data-qid={qid}
+    >
+      {label}
+      <ChevronDown size={12} style={{
+        color: '#334155',
+        transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+        transition: 'transform 0.15s',
+      }} />
+    </button>
+  );
+});
+
 // ── Message Component ───────────────────────────────────────────────────────
 
 const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
@@ -217,22 +242,19 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
     );
   }
 
-  // ── Agent message: left-aligned, NO bubble, just flowing text ──
+  // ── Agent message: left-aligned, plain text, no bubble/avatar ──
   return (
-    <div style={{ padding: '24px 0', animation: 'msgIn 0.25s ease' }}
+    <div style={{ padding: '16px 0', animation: 'msgIn 0.25s ease' }}
          data-qid={`chat:message:${msg.id}`}>
-      {/* Collapsible tool-use action (like "Created 7 files >") */}
+      {/* Tool-use action line (muted, collapsible — like "Created 7 files >") */}
       {msg.skillUsed && (
-        <div style={{
-          fontSize: 13, color: '#64748b', marginBottom: 8, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: 4,
-        }} data-qid={`chat:message:${msg.id}:skill`}>
-          <span className="skill-tag">/{msg.skillUsed}</span>
-          <ChevronDown size={12} style={{ color: '#334155' }} />
-        </div>
+        <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:message:${msg.id}:skill`} />
+      )}
+      {msg.codeBlock && (
+        <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
       )}
 
-      {/* Content — plain text on background, no container */}
+      {/* Content — plain text flush left, no container */}
       <div style={{ fontSize: 15, lineHeight: 1.65, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
