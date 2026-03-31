@@ -17,13 +17,14 @@ import { PromptLabView } from './sparta/explorer/PromptLabView'
 import { MusicLabWorkbench } from './music-lab/MusicLabWorkbench'
 import { ChatWell } from './ChatWell'
 
-type ProjectId = 'sparta' | 'music-lab' | 'prompt-lab'
+type ProjectId = 'sparta' | 'music-lab' | 'prompt-lab' | 'datalake-explorer'
 type TabId = 'mockups' | 'components' | 'design-board' | 'reviews'
 
 const PROJECTS = [
   { id: 'sparta' as ProjectId, label: 'SPARTA Explorer', icon: 'query_stats' },
   { id: 'music-lab' as ProjectId, label: 'Music Lab Pipeline', icon: 'settings_input_component' },
   { id: 'prompt-lab' as ProjectId, label: 'Prompt Lab', icon: 'terminal' },
+  { id: 'datalake-explorer' as ProjectId, label: 'Datalake Explorer', icon: 'description' },
 ]
 
 const TABS: { id: TabId; label: string }[] = [

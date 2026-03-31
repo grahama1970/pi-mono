@@ -12,41 +12,27 @@ import {
   Send, Plus, X, Code, Eye, FileText,
   Search, FolderOpen, GitBranch, Settings,
 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 import ReasoningChain from './ReasoningChain';
-import type { ReasoningStep } from './ReasoningChain';
-import remarkGfm from 'remark-gfm';
-import DOMPurify from 'dompurify';
-import Fuse from 'fuse.js';
-import hljs from 'highlight.js/lib/core';
-import go from 'highlight.js/lib/languages/go';
-import python from 'highlight.js/lib/languages/python';
-import typescript from 'highlight.js/lib/languages/typescript';
-import javascript from 'highlight.js/lib/languages/javascript';
-import bash from 'highlight.js/lib/languages/bash';
-import json from 'highlight.js/lib/languages/json';
-import yaml from 'highlight.js/lib/languages/yaml';
-import rust from 'highlight.js/lib/languages/rust';
-
-// Register highlight.js languages
-hljs.registerLanguage('go', go);
-hljs.registerLanguage('python', python);
-hljs.registerLanguage('typescript', typescript);
-hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('bash', bash);
-hljs.registerLanguage('shell', bash);
-hljs.registerLanguage('json', json);
-hljs.registerLanguage('yaml', yaml);
-hljs.registerLanguage('rust', rust);
-hljs.registerLanguage('tsx', typescript);
-hljs.registerLanguage('ts', typescript);
-hljs.registerLanguage('js', javascript);
-hljs.registerLanguage('py', python);
-hljs.registerLanguage('sh', bash);
+import {
+  highlightEntities, MarkdownRenderer, SkillPalette,
+  RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard,
+} from '../shared-chat';
+import type {
+  RecallItem, RecallResult, ReasoningStep, Artifact, Skill,
+  ThreatMatrixSummary, EntityType,
+} from '../shared-chat';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
-interface Agent {
+interface Project {
+  name: string;
+  path: string;
+  branch: string;
+  exists: boolean;
+}
+
+// Local types (extend shared types)
+interface AgentConfig {
   id: string;
   name: string;
   icon: typeof Sparkles;
@@ -60,22 +46,6 @@ interface Project {
   exists: boolean;
 }
 
-interface Skill {
-  name: string;
-  description: string;
-  triggers: string[];
-}
-
-interface RecallResult {
-  found: boolean;
-  confidence: number;
-  items: Array<{
-    problem: string;
-    solution: string;
-    scores: { bm25: number; graph: number; dense: number; freshness: number };
-  }>;
-}
-
 interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -87,22 +57,15 @@ interface Message {
   artifact?: Artifact;
   reasoningSteps?: ReasoningStep[];
   chainTitle?: string;
+  matrixSummary?: ThreatMatrixSummary;
   timestamp: number;
-}
-
-interface Artifact {
-  id: string;
-  title: string;
-  type: 'code' | 'html' | 'svg' | 'markdown';
-  content: string;
-  language?: string;
 }
 
 type ConnectionState = 'connected' | 'degraded' | 'reconnecting' | 'offline';
 
 // ── Constants ───────────────────────────────────────────────────────────────
 
-const AGENTS: Agent[] = [
+const AGENTS: AgentConfig[] = [
   { id: 'claude', name: 'Claude Code', icon: Sparkles, color: '#7c3aed' },
   { id: 'codex', name: 'Codex', icon: Cpu, color: '#4a9eff' },
   { id: 'pi', name: 'Pi', icon: Brain, color: '#00ff88' },
@@ -131,14 +94,59 @@ async function fetchSkills(): Promise<Skill[]> {
   return res.json();
 }
 
-// ── Skill Highlighting ──────────────────────────────────────────────────────
+// NOTE: These are duplicated from shared-chat/ — will be removed in cleanup pass.
+// Shared versions imported as: highlightEntities, SkillPalette, SharedRecallCard, etc.
+const ENTITY_PATTERN = new RegExp(
+  '(' + [
+    '\\/[a-z][\\w-]*',                      // Skills: /assess, /dogpile
+    '\\b[A-Z]{2}-\\d+(?:\\.\\d+)?\\b',      // NIST controls: AC-17, SC-28, AU-6.1
+    '\\bCWE-\\d+\\b',                        // CWEs: CWE-79, CWE-502
+    '\\b[TS]A?\\d{4}(?:\\.\\d{3})?\\b',     // ATT&CK: T1059, T1059.001, TA0005
+    '\\bCM-\\d{4}\\b',                       // SPARTA countermeasures: CM-0001
+    '\\bST-\\d{4}\\b',                       // SPARTA techniques: ST-0012
+    '\\bNIST (?:SP )?800-\\d+(?:[a-z])?(?:r\\d)?\\b', // NIST pubs: NIST 800-171, NIST SP 800-53r5
+    '\\bCMMC (?:Level )?[1-3]\\b',           // CMMC: CMMC Level 2
+    '\\bFedRAMP\\b',                         // FedRAMP
+    '\\bISO \\d{5}\\b',                      // ISO: ISO 27001
+    '\\bD3FEND\\b',                          // D3FEND
+    '\\bATT&CK\\b',                          // ATT&CK
+    '\\bSTIG\\b',                            // STIG
+  ].join('|') + ')',
+  'g'
+);
 
-function highlightSkills(text: string): (string | JSX.Element)[] {
-  const parts = text.split(/(\/[a-z][\w-]*)/g);
+const ENTITY_STYLES: Record<string, { color: string; bg: string }> = {
+  skill:     { color: '#4a9eff', bg: 'rgba(74,158,255,0.08)' },
+  control:   { color: '#00ff88', bg: 'rgba(0,255,136,0.08)' },
+  cwe:       { color: '#ff6b6b', bg: 'rgba(255,107,107,0.08)' },
+  attack:    { color: '#ffaa00', bg: 'rgba(255,170,0,0.08)' },
+  framework: { color: '#c084fc', bg: 'rgba(192,132,252,0.08)' },
+  sparta:    { color: '#22d3ee', bg: 'rgba(34,211,238,0.08)' },
+};
+
+function classifyEntity(token: string): keyof typeof ENTITY_STYLES {
+  if (token.startsWith('/')) return 'skill';
+  if (/^CWE-/.test(token)) return 'cwe';
+  if (/^[TS]A?\d{4}/.test(token)) return 'attack';
+  if (/^[A-Z]{2}-\d+/.test(token)) return 'control';
+  if (/^(?:CM|ST)-\d{4}$/.test(token)) return 'sparta';
+  return 'framework';
+}
+
+function highlightEntities(text: string): (string | JSX.Element)[] {
+  const parts = text.split(ENTITY_PATTERN);
   return parts.map((part, i) => {
-    if (/^\/[a-z][\w-]*$/.test(part)) {
+    if (ENTITY_PATTERN.test(part)) {
+      // Reset regex lastIndex since it's global
+      ENTITY_PATTERN.lastIndex = 0;
+      const type = classifyEntity(part);
+      const style = ENTITY_STYLES[type];
       return (
-        <span key={i} className="skill-tag" data-qid={`skill:${part.slice(1)}:ref`}>
+        <span key={i} style={{
+          color: style.color, fontWeight: 600, fontSize: '0.92em',
+          background: style.bg, padding: '1px 5px', borderRadius: 3,
+          fontFamily: type === 'skill' ? 'var(--font-mono)' : 'inherit',
+        }} data-qid={type === 'skill' ? `skill:${part.slice(1)}:ref` : `entity:${part}`}>
           {part}
         </span>
       );
@@ -146,6 +154,9 @@ function highlightSkills(text: string): (string | JSX.Element)[] {
     return part;
   });
 }
+
+// Backward compat alias
+const highlightSkills = highlightEntities;
 
 // ── Score Bar (from agent-web-ui.jsx) ───────────────────────────────────────
 
@@ -290,7 +301,9 @@ const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            p: ({ children }) => <p style={{ margin: '4px 0' }}>{typeof children === 'string' ? highlightSkills(children) : children}</p>,
+            p: ({ children }) => <p style={{ margin: '4px 0' }}>{typeof children === 'string' ? highlightEntities(children) : children}</p>,
+            strong: ({ children }) => <strong style={{ fontWeight: 700, color: '#f8fafc' }}>{typeof children === 'string' ? highlightEntities(children) : children}</strong>,
+            li: ({ children }) => <li style={{ margin: '2px 0' }}>{typeof children === 'string' ? highlightEntities(children) : children}</li>,
             code: ({ className, children }) => {
               const lang = className?.replace('language-', '') || '';
               const text = String(children).replace(/\n$/, '');
@@ -747,11 +760,7 @@ export function EmbryTerminalView() {
                     padding: '14px 16px 8px', fontFamily: 'var(--font-ui)', fontSize: 15, lineHeight: 1.5,
                     whiteSpace: 'pre-wrap', wordWrap: 'break-word',
                   }}>
-                    {input ? input.split(/(\/[a-z][\w-]*)/g).map((part, i) =>
-                      /^\/[a-z][\w-]*$/.test(part)
-                        ? <span key={i} style={{ color: '#4a9eff', fontWeight: 600 }}>{part}</span>
-                        : <span key={i} style={{ color: '#e2e8f0' }}>{part}</span>
-                    ) : <span style={{ color: '#475569' }}>Message {agent.name}…</span>}
+                    {input ? highlightEntities(input) : <span style={{ color: '#475569' }}>Message {agent.name}…</span>}
                   </div>
                   <textarea
                     ref={inputRef}

@@ -67,6 +67,7 @@ const ClassifierLab = React.lazy(() => import('./components/sparta/explorer/Clas
 const LlmEvalLab = React.lazy(() => import('./components/sparta/explorer/LlmEvalLabView').then(m => ({ default: m.LlmEvalLabView })));
 const ArchitectureView = React.lazy(() => import('./components/architecture/ArchitectureView').then(m => ({ default: m.ArchitectureView })));
 const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })).catch(() => ({ default: () => React.createElement('div', { style: { padding: 20, color: '#f44' } }, 'Embry Terminal failed to load — check console') })));
+const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -225,7 +226,8 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'classifier-lab' && <ClassifierLab initialTab={subpath || undefined} />}
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {projectId === 'embry-terminal' && <EmbryTerminal />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal'].includes(projectId) && (
+          {projectId === 'datalake-explorer' && <DatalakeExplorer />}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -863,6 +865,7 @@ const ProjectSidebar = ({
     { id: 'classifier-lab', title: 'Classifier Lab', subtitle: 'ML classifier training pipeline', date: '2026-03-22', type: 'desktop' as const },
     { id: 'architecture', title: 'Architecture', subtitle: 'Visual collaboration diagrams', date: '2026-03-25', type: 'desktop' as const },
     { id: 'embry-terminal', title: 'Embry Terminal', subtitle: 'Agent control surface (Claude/Pi/Codex)', date: '2026-03-31', type: 'desktop' as const },
+    { id: 'datalake-explorer', title: 'Datalake Explorer', subtitle: 'PDF extraction QA', date: '2026-03-31', type: 'desktop' as const, thumbnail: '' },
   ];
 
   const filteredProjects = searchQuery
