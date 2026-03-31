@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Shield, Workflow, Trash2, Code, Layers, MessageSquare, Network, Search, History, Table2, Undo, Redo, GitGraph, List } from 'lucide-react'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { EMBRY } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 import { ContextMenu } from '../common/ContextMenu'
@@ -199,6 +200,18 @@ export function BinaryExplorerView() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
+
+  // --- Register UI actions for QuerySpec pipeline (voice/chat → deterministic execution) ---
+  const APP = 'binary-explorer'
+  useRegisterAction('be-select-node', { app: APP, action: 'SELECT_NODE', label: 'Select Node', description: 'Click a node to select it and show its details', params: { requires_entity: true } })
+  useRegisterAction('be-expand-node', { app: APP, action: 'EXPAND', label: 'Expand Node', description: 'Expand a node to show its neighbors', params: { requires_entity: true, hops: 1 } })
+  useRegisterAction('be-zoom-in', { app: APP, action: 'ZOOM_IN', label: 'Zoom In', description: 'Zoom into the graph to see more detail' })
+  useRegisterAction('be-zoom-out', { app: APP, action: 'ZOOM_OUT', label: 'Zoom Out', description: 'Zoom out of the graph to see the full picture' })
+  useRegisterAction('be-view-all', { app: APP, action: 'VIEW_ALL', label: 'Show All Nodes', description: 'Show all nodes in the binary, view all features' })
+  useRegisterAction('be-set-perspective', { app: APP, action: 'SET_PERSPECTIVE', label: 'Set Perspective', description: 'Switch graph perspective view filter', params: { perspective: 'security' } })
+  useRegisterAction('be-dismiss-node', { app: APP, action: 'DISMISS_NODE', label: 'Dismiss Node', description: 'Remove a node from the scene', params: { requires_entity: true } })
+  useRegisterAction('be-toggle-progressive', { app: APP, action: 'TOGGLE_PROGRESSIVE', label: 'Toggle Progressive', description: 'Toggle progressive disclosure mode on or off' })
+  useRegisterAction('be-focus-cluster', { app: APP, action: 'FOCUS_CLUSTER', label: 'Focus Cluster', description: 'Focus on a cluster of related nodes', params: { requires_entity: true } })
 
   // --- Graph Visual State ---
   const [viewMode, setViewMode] = useState<'graph' | 'tree'>('graph')

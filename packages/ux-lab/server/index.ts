@@ -2750,6 +2750,84 @@ app.post('/api/evidence-case/run', async (req, res) => {
   }
 })
 
+// ── Evidence Case Trace: gate chain per control ─────────────────────────────
+
+app.post('/api/evidence-case/trace', async (req, res) => {
+  const { control_id } = req.body as { control_id: string }
+  if (!control_id) return res.status(400).json({ error: 'control_id required' })
+
+  try {
+    const recallResult = await proxyPost('/recall', {
+      q: `${control_id} evidence case verdict`,
+      k: 20,
+      tags: ['sensai-cascade-label'],
+    }) as { items?: Array<Record<string, any>> }
+
+    const cases: Array<Record<string, any>> = []
+    for (const item of recallResult.items ?? []) {
+      let sol: Record<string, any> = {}
+      try { const raw = item.solution ?? ''; if (raw.startsWith('{')) sol = JSON.parse(raw) } catch { continue }
+      const cids: string[] = sol.control_ids ?? []
+      if (!cids.some((c: string) => c === control_id || control_id.startsWith(c) || c.startsWith(control_id))) continue
+      cases.push({
+        verdict: sol.verdict ?? 'unknown', grade: sol.grade ?? '?',
+        question: sol.question ?? item.problem ?? '',
+        gates_passed: sol.gates_passed ?? 0, gates_total: sol.gates_total ?? 0,
+        gate_summary: sol.gate_summary ?? '', tier: sol.tier ?? 'T0', control_ids: cids,
+      })
+    }
+    res.json({ control_id, cases })
+  } catch (e) {
+    res.status(500).json({ error: 'Evidence trace failed', detail: String(e) })
+  }
+})
+
+// ── Critical Path: failing attack chains ────────────────────────────────────
+
+app.post('/api/critical-path', async (req, res) => {
+  const { control_id } = req.body as { control_id?: string }
+
+  try {
+    const q = control_id
+      ? `${control_id} relationship vulnerability attack chain`
+      : 'SPARTA attack chain vulnerability failing not_satisfied'
+    const relResult = await proxyPost('/recall', { q, collections: ['sparta_relationships'], k: 50 }) as { items?: Array<Record<string, any>> }
+    const rels = relResult.items ?? []
+
+    const evidenceResult = await proxyPost('/recall', { q: 'sensai cascade label verdict evidence SPARTA', k: 200, tags: ['sensai-cascade-label'] }) as { items?: Array<Record<string, any>> }
+    const verdictMap = new Map<string, string>()
+    for (const item of evidenceResult.items ?? []) {
+      let sol: Record<string, any> = {}
+      try { const raw = item.solution ?? ''; if (raw.startsWith('{')) sol = JSON.parse(raw) } catch { continue }
+      for (const cid of (sol.control_ids ?? [])) {
+        const existing = verdictMap.get(cid)
+        if (!existing || sol.verdict === 'satisfied') verdictMap.set(cid, sol.verdict ?? 'unknown')
+      }
+    }
+
+    const failingEdges = rels.filter((r: any) => {
+      const sv = verdictMap.get(r.source_control_id) ?? 'none'
+      const tv = verdictMap.get(r.target_control_id) ?? 'none'
+      return sv !== 'satisfied' || tv !== 'satisfied'
+    })
+
+    const nodeMap = new Map<string, { id: string; verdict: string; framework: string }>()
+    const edges: Array<{ source: string; target: string; method: string; score: number }> = []
+    for (const r of failingEdges.slice(0, 30)) {
+      const src = r.source_control_id ?? '', tgt = r.target_control_id ?? ''
+      if (!src || !tgt) continue
+      if (!nodeMap.has(src)) nodeMap.set(src, { id: src, verdict: verdictMap.get(src) ?? 'none', framework: r.source_framework ?? '?' })
+      if (!nodeMap.has(tgt)) nodeMap.set(tgt, { id: tgt, verdict: verdictMap.get(tgt) ?? 'none', framework: r.target_framework ?? '?' })
+      edges.push({ source: src, target: tgt, method: r.method ?? '?', score: r.combined_score ?? 0 })
+    }
+
+    const chains = edges.length > 0 ? [{ nodes: [...nodeMap.values()], edges, severity: edges.length }] : []
+    res.json({ chains, total_failing_edges: failingEdges.length })
+  } catch (e) {
+    res.status(500).json({ error: 'Critical path query failed', detail: String(e) })
+  }
+})
+
 // ── Static file serving for captures/screenshots ────────────────────────────
 app.use('/captures', express.static(CAPTURES_DIR))
 app.use('/screenshots', express.static(SCREENSHOTS_DIR))
