@@ -534,6 +534,21 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     // the screenshot is captured.
     simulation.alpha(alphaMinVal * 2)
 
+    // ── Node radius function (defined early so event handlers can capture it) ──
+    const r = (d: SimNode) => {
+      const base = nodeRadius(d.nodeType, degree.get(d.id) ?? 0)
+      const tax = taxonomyRef.current?.get(d.id)
+      return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? base * 1.3 : base
+    }
+    const nodeImportance = (d: SimNode): number => {
+      const deg = degree.get(d.id) ?? 0
+      if (d.nodeType === 'namespace') return 1.0
+      if (deg > 20) return 1.0
+      if (deg > 10) return 0.85
+      if (deg > 5) return 0.6
+      return 0.4
+    }
+
     // ── Grouping Hulls (behind edges and nodes) ──
     const hullGroup = zoomG.append('g').attr('class', 'hulls')
     const clusterGroups = new Map<string, SimNode[]>()
@@ -940,21 +955,8 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       d3.select(this).select('.hover-ring').remove()
     })
 
-    // ── Node shapes: logarithmic size-by-degree with entrance animation on `r` ──
-    const r = (d: SimNode) => {
-      const base = nodeRadius(d.nodeType, degree.get(d.id) ?? 0)
-      // CWE-tagged nodes get +30% size boost for visual triage
-      const tax = taxonomyRef.current?.get(d.id)
-      return (tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)) ? base * 1.3 : base
-    }
-    const nodeImportance = (d: SimNode): number => {
-      const deg = degree.get(d.id) ?? 0
-      if (d.nodeType === 'namespace') return 1.0
-      if (deg > 20) return 1.0
-      if (deg > 10) return 0.85
-      if (deg > 5) return 0.6
-      return 0.4
-    }
+    // ── Node shapes: logarithmic size-by-degree with entrance animation ──
+    // (r and nodeImportance defined earlier, before event handlers)
 
     // Tier badge colors
     const TIER_COLORS: Record<string, string> = { '0': '#00ff88', '1': '#4a9eff', '2': '#ffaa00' }
