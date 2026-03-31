@@ -1,6 +1,6 @@
 {
   "name": "sentiment-analysis",
-  "status": "data-enriched",
+  "status": "halted-training",
   "modality": "text",
   "samples": 15,
   "classes": 3,
@@ -11,5 +11,7 @@
       "new_samples": 31155,
       "iteration": 1
     }
-  ]
+  ],
+  "f1": 0.770255526948596,
+  "backbone": "sentence-transformers/all-MiniLM-L6-v2"
 }
