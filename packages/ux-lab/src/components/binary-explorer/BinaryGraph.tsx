@@ -594,10 +594,17 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
 
     // ── Nodes ──
     const nodeGroup = zoomG.append('g').attr('class', 'nodes')
+      .attr('role', 'list')
+      .attr('aria-label', `Graph nodes: ${simNodes.length} features`)
     const nodeGs = nodeGroup.selectAll('g')
       .data(simNodes).join('g')
       .style('cursor', 'pointer')
       .attr('opacity', (d) => isMatched(d.id) ? 1 : 0.12)
+      .attr('tabindex', 0)
+      .attr('role', 'listitem')
+      .attr('aria-label', (d) => `${d.label} (${d.nodeType}, ${degree.get(d.id) ?? 0} connections)`)
+      .on('focus', function () { d3.select(this).select('.node-shape').attr('stroke', '#fff').attr('stroke-width', 2.5).attr('stroke-opacity', 1) })
+      .on('blur', function () { d3.select(this).select('.node-shape').attr('stroke', 'none').attr('stroke-width', 0) })
 
     // ── Auto-Fit Camera ──
     const fitToGraph = () => {
@@ -636,6 +643,17 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     const _applySelection = (targetId: string | null) => {
       clickedRef.current = targetId
       const visited = visitedRef.current
+      // Announce selection to screen readers
+      const announceEl = document.getElementById('be-graph-announce')
+      if (announceEl) {
+        if (targetId) {
+          const node = simNodes.find(n => n.id === targetId)
+          const deg = degree.get(targetId) ?? 0
+          announceEl.textContent = node ? `Selected ${node.label}, ${node.nodeType}, ${deg} connections` : ''
+        } else {
+          announceEl.textContent = 'Selection cleared'
+        }
+      }
 
       if (!targetId) {
         // Deselect: edges nearly invisible until a node is selected — prevents hairball
@@ -802,6 +820,32 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       if (onNodeClickRef.current) {
         const original = nodes.find((n) => n.id === d.id)
         if (original) onNodeClickRef.current(original)
+      }
+    })
+
+    // Keyboard navigation — Enter to select, arrow keys to move between nodes
+    nodeGs.on('keydown', function (event: KeyboardEvent, d) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
+        const original = nodes.find((n) => n.id === d.id)
+        if (original && onNodeClickRef.current) onNodeClickRef.current(original)
+      } else if (event.key === 'Escape') {
+        event.preventDefault()
+        applySelection(null)
+        // Return focus to SVG container
+        svg.focus()
+      } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        event.preventDefault()
+        const allGs = nodeGroup.selectAll<SVGGElement, SimNode>('g').nodes()
+        const idx = allGs.indexOf(this as SVGGElement)
+        const next = allGs[(idx + 1) % allGs.length]
+        if (next) (next as HTMLElement).focus()
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        event.preventDefault()
+        const allGs = nodeGroup.selectAll<SVGGElement, SimNode>('g').nodes()
+        const idx = allGs.indexOf(this as SVGGElement)
+        const prev = allGs[(idx - 1 + allGs.length) % allGs.length]
+        if (prev) (prev as HTMLElement).focus()
       }
     })
 
@@ -1348,12 +1392,19 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         <span style={{ color: EMBRY.muted }}>
           {nodes.length} nodes
         </span>
-        <span style={{ color: EMBRY.muted, fontSize: 8, opacity: 0.5 }}>F=fit Esc=desel dblclick=fit</span>
+        <span style={{ color: EMBRY.muted, fontSize: 8, opacity: 0.7 }}>
+          <kbd style={{ padding: '0 3px', background: '#1a1a1a', border: `1px solid ${EMBRY.border}`, borderRadius: 1, fontSize: 7 }}>F</kbd> fit
+          {' '}<kbd style={{ padding: '0 3px', background: '#1a1a1a', border: `1px solid ${EMBRY.border}`, borderRadius: 1, fontSize: 7 }}>Esc</kbd> desel
+          {' '}<kbd style={{ padding: '0 3px', background: '#1a1a1a', border: `1px solid ${EMBRY.border}`, borderRadius: 1, fontSize: 7 }}>←→</kbd> nav
+          {' '}<kbd style={{ padding: '0 3px', background: '#1a1a1a', border: `1px solid ${EMBRY.border}`, borderRadius: 1, fontSize: 7 }}>Enter</kbd> select
+        </span>
       </div>
 
       {/* SVG Container */}
       <div style={{ backgroundColor: EMBRY.bgDeep, position: 'relative', overflow: 'hidden', flex: '1 1 0%', minHeight: 0 }}>
-        <svg ref={svgRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+        <svg ref={svgRef} role="img" aria-label={`Interactive graph: ${nodes.length} nodes. Arrow keys to navigate, Enter to select, Escape to deselect.`} style={{ width: '100%', height: '100%', display: 'block' }} />
+        {/* Screen reader announcements for state changes */}
+        <div id="be-graph-announce" aria-live="polite" aria-atomic="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }} />
 
         {/* Tooltip (D3 managed) */}
         <div id="graph-tooltip" style={{

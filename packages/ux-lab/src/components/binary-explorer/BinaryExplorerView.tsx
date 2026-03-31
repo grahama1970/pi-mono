@@ -1324,17 +1324,17 @@ export function BinaryExplorerView() {
 
         if (executedMsg) {
           skipNextExplanationRef.current = true
-          // Compact QuerySpec: action + target only, full JSON in collapsible
           const qs = intentData
-          const summary = `${qs?.ui_action || qs?.action || '?'} → ${qs?.target_node_id || 'none'} (${qs?.classifier_source || 'heuristic'})`
-          const entityInfo = mentionedEntities.length > 0
-            ? `\n\`Entities: ${mentionedEntities.map(e => e.label).join(', ')}\``
-            : ''
+          // Evidence chain: show what /extract-entities found and what QuerySpec was produced
+          const entityLine = mentionedEntities.length > 0
+            ? `**Entities**: ${mentionedEntities.map(e => `\`${e.label}\` (${e.nodeType})`).join(', ')}`
+            : '**Entities**: none extracted'
+          const qsLine = `**QuerySpec**: \`${qs?.ui_action || qs?.action || '?'}\` → \`${qs?.target_node_id || 'none'}\`${qs?.expand_hops ? ` (${qs.expand_hops} hop)` : ''}`
+          const sourceLine = `**Source**: ${qs?.classifier_source || 'intent-pipeline'}`
           setChatMessages((prev) => [...prev, {
             role: 'assistant',
-            content: `_✨ ${executedMsg}_\n\n\`QuerySpec: ${summary}\`${entityInfo}`,
+            content: `${executedMsg}\n\n${entityLine}\n${qsLine}\n${sourceLine}`,
             isExplanation: true,
-            // Store full spec for collapsible display
             _querySpec: qs,
           } as ChatMessage & { _querySpec?: unknown }])
           recordStep('chat', `UI command: ${executedMsg}`)
