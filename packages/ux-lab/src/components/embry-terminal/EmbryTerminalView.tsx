@@ -170,45 +170,61 @@ const ScoreBar = memo(function ScoreBar({ label, value, color }: { label: string
 // ── Recall Card ─────────────────────────────────────────────────────────────
 
 const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }) {
-  const [expanded, setExpanded] = useState(0);
+  const [showItems, setShowItems] = useState(false);
+  const [expandedItem, setExpandedItem] = useState(-1);
   const confColor = recall.confidence > 0.7 ? '#00ff88' : recall.confidence > 0.4 ? '#ffaa00' : '#ff4444';
-  const confBg = recall.confidence > 0.7 ? 'rgba(0,255,136,0.08)' : recall.confidence > 0.4 ? 'rgba(255,170,0,0.08)' : 'rgba(255,68,68,0.08)';
 
+  // Collapsed: one-line summary like Claude's tool actions
   return (
-    <div className="nvis-card" style={{ margin: '14px 0', borderLeft: `3px solid ${confColor}`, overflow: 'hidden' }}
-         data-qid="chat:recall-card">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', borderBottom: '1px solid var(--nvis-border-subtle)' }}>
-        <Brain size={14} style={{ color: '#7c3aed' }} />
-        <span style={{ fontSize: 11, fontWeight: 700, color: '#7c3aed', letterSpacing: 0.8, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-          Memory Recall
-        </span>
-        <span style={{ marginLeft: 'auto', fontSize: 11, fontWeight: 700, color: confColor, background: confBg, padding: '2px 9px', borderRadius: 8 }}>
+    <div style={{ margin: '12px 0' }} data-qid="chat:recall-card">
+      {/* Summary line — collapsible */}
+      <button
+        onClick={() => setShowItems(v => !v)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 6, width: '100%',
+          fontSize: 13, color: '#64748b', background: 'none', border: 'none',
+          cursor: 'pointer', padding: '6px 0', fontFamily: 'var(--font-ui)', textAlign: 'left',
+        }}
+        data-qid="chat:recall-card:toggle"
+      >
+        <span style={{ color: confColor, fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
           {(recall.confidence * 100).toFixed(0)}%
         </span>
-      </div>
-      {recall.items.map((item, i) => (
-        <button key={i}
-          onClick={() => setExpanded(expanded === i ? -1 : i)}
-          style={{
-            display: 'block', width: '100%', textAlign: 'left',
-            padding: '10px 14px', cursor: 'pointer', border: 'none',
-            borderBottom: i < recall.items.length - 1 ? '1px solid var(--nvis-border-subtle)' : 'none',
-            background: expanded === i ? 'rgba(124,58,237,0.05)' : 'transparent',
-            transition: 'background 0.15s', fontFamily: 'var(--font-ui)',
-          }}
-          data-qid={`chat:recall:item:${i}:toggle`}
-        >
-          <div style={{ fontSize: 13, color: '#e2e8f0', fontWeight: 500, marginBottom: 4 }}>{item.problem}</div>
-          <div style={{ fontSize: 12, color: '#00ff88', lineHeight: 1.5 }}>→ {item.solution}</div>
-          {expanded === i && (
-            <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <ScoreBar label="BM25" value={item.scores.bm25} color="#7c3aed" />
-              <ScoreBar label="Graph" value={item.scores.graph} color="#4a9eff" />
-              <ScoreBar label="Dense" value={item.scores.dense} color="#00ff88" />
-              <ScoreBar label="Fresh" value={item.scores.freshness} color="#ffaa00" />
-            </div>
-          )}
-        </button>
+        <span>Memory recall · {recall.items.length} results</span>
+        <ChevronDown size={12} style={{
+          color: '#334155', flexShrink: 0,
+          transform: showItems ? 'rotate(180deg)' : 'none',
+          transition: 'transform 0.15s',
+        }} />
+      </button>
+
+      {/* Expanded: items with score bars */}
+      {showItems && (
+        <div style={{
+          borderLeft: `3px solid ${confColor}`, marginLeft: 2, paddingLeft: 12, marginTop: 4,
+        }}>
+          {recall.items.map((item, i) => (
+            <button key={i}
+              onClick={() => setExpandedItem(expandedItem === i ? -1 : i)}
+              style={{
+                display: 'block', width: '100%', textAlign: 'left',
+                padding: '8px 0', cursor: 'pointer', border: 'none',
+                background: 'transparent', fontFamily: 'var(--font-ui)',
+                borderBottom: i < recall.items.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+              }}
+              data-qid={`chat:recall:item:${i}:toggle`}
+            >
+              <div style={{ fontSize: 13, color: '#e2e8f0', fontWeight: 500, marginBottom: 2 }}>{item.problem}</div>
+              <div style={{ fontSize: 12, color: '#00ff88', lineHeight: 1.5 }}>→ {item.solution}</div>
+              {expandedItem === i && (
+                <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <ScoreBar label="BM25" value={item.scores.bm25} color="#7c3aed" />
+                  <ScoreBar label="Graph" value={item.scores.graph} color="#4a9eff" />
+                  <ScoreBar label="Dense" value={item.scores.dense} color="#00ff88" />
+                  <ScoreBar label="Fresh" value={item.scores.freshness} color="#ffaa00" />
+                </div>
+              )}
+            </button>
       ))}
     </div>
   );
@@ -443,7 +459,7 @@ export function EmbryTerminalView() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [messages, setMessages] = useState<Message[]>(SEED_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const [input, setInput] = useState('');
   const [showPalette, setShowPalette] = useState(false);
@@ -503,10 +519,35 @@ export function EmbryTerminalView() {
     const skillMatch = text.match(/^\/([a-z][\w-]*)/);
     const isSkill = !!skillMatch;
 
+    // Memory-first: recall before agent call (real ArangoDB data)
+    let recallData: RecallResult | undefined;
+    try {
+      const recallRes = await fetch(`${BACKEND_URL}/agent/recall`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: text, project: activeProject?.name }),
+      });
+      if (recallRes.ok) {
+        const raw = await recallRes.json();
+        if (raw.found && raw.items?.length > 0) {
+          recallData = {
+            found: true,
+            confidence: raw.confidence || 0,
+            items: raw.items.slice(0, 3).map((item: { problem?: string; solution?: string; _key?: string; content?: string; scores?: Record<string, number> }) => ({
+              problem: item.problem || item._key || 'Unknown',
+              solution: item.solution || item.content || '',
+              scores: item.scores || { bm25: 0, graph: 0, dense: 0, freshness: 0 },
+            })),
+          };
+        }
+      }
+    } catch { /* memory unavailable, proceed without recall */ }
+
     const agentId = `a${Date.now()}`;
     setMessages(m => [...m, {
       id: agentId, role: 'assistant', agent: agent.id,
       content: '', skillUsed: skillMatch?.[1],
+      recall: recallData,
       timestamp: Date.now(),
     }]);
 
