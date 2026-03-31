@@ -200,40 +200,40 @@ const RecallCard = memo(function RecallCard({ recall }: { recall: RecallResult }
 
 const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
   const isUser = msg.role === 'user';
-  const agent = AGENTS.find(a => a.id === msg.agent);
-  const AgentIcon = agent?.icon;
 
-  return (
-    <div style={{ padding: '20px 0', animation: 'msgIn 0.25s ease' }} data-qid={`chat:message:${msg.id}`}>
-      {/* Avatar + name row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-        {isUser ? (
-          <div style={{
-            width: 28, height: 28, borderRadius: '50%', background: '#27272a',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 13, fontWeight: 700, color: '#a1a1aa',
-          }}>G</div>
-        ) : (
-          <div style={{
-            width: 28, height: 28, borderRadius: '50%',
-            background: agent ? `${agent.color}22` : 'rgba(124,58,237,0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            {AgentIcon && <AgentIcon size={15} style={{ color: agent?.color }} />}
-          </div>
-        )}
-        <span style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
-          {isUser ? 'You' : agent?.name || 'Assistant'}
-        </span>
-        {msg.skillUsed && (
-          <span className="skill-tag" data-qid={`chat:message:${msg.id}:skill`}>
-            /{msg.skillUsed}
-          </span>
-        )}
+  // ── User message: right-aligned bubble (Claude Desktop pattern) ──
+  if (isUser) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '24px 0' }}
+           data-qid={`chat:message:${msg.id}`}>
+        <div style={{
+          maxWidth: '85%', padding: '14px 18px', borderRadius: '18px 18px 4px 18px',
+          background: '#1e1e24', fontSize: 15, lineHeight: 1.65, color: '#e2e8f0',
+          fontFamily: 'var(--font-ui)',
+        }}>
+          {msg.content}
+        </div>
       </div>
+    );
+  }
 
-      {/* Content */}
-      <div style={{ paddingLeft: 38, fontSize: 15, lineHeight: 1.65, color: '#e2e8f0' }}>
+  // ── Agent message: left-aligned, NO bubble, just flowing text ──
+  return (
+    <div style={{ padding: '24px 0', animation: 'msgIn 0.25s ease' }}
+         data-qid={`chat:message:${msg.id}`}>
+      {/* Collapsible tool-use action (like "Created 7 files >") */}
+      {msg.skillUsed && (
+        <div style={{
+          fontSize: 13, color: '#64748b', marginBottom: 8, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', gap: 4,
+        }} data-qid={`chat:message:${msg.id}:skill`}>
+          <span className="skill-tag">/{msg.skillUsed}</span>
+          <ChevronDown size={12} style={{ color: '#334155' }} />
+        </div>
+      )}
+
+      {/* Content — plain text on background, no container */}
+      <div style={{ fontSize: 15, lineHeight: 1.65, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
