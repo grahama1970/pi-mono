@@ -129,6 +129,142 @@ function Term({ children }: { children: string }) {
   )
 }
 
+// ── Pre-flight checks — deterministic "should we even attempt this?" ──
+
+interface PreflightResult {
+  check: string       // what we're checking
+  passed: boolean     // did it pass
+  detail: string      // what we found
+  blocker?: string    // what to do if it failed
+}
+
+/** Deterministic pre-flight for each pipeline step.
+ *  Each step checks whether the prerequisites from previous steps exist.
+ *  No ML needed — just "does the required input exist?" */
+function computePreflights(
+  tab: Tab,
+  project: Project,
+  dataInfo: any,
+  tuneConfig: any,
+  trainRows: TrainingRow[],
+  benchData: any,
+  evalData: any,
+): PreflightResult[] {
+  const checks: PreflightResult[] = []
+
+  if (tab === 'research') {
+    checks.push({
+      check: 'Task description defined',
+      passed: !!project.name && project.name !== project.id,
+      detail: project.name || 'No name',
+      blocker: 'Define what this classifier is for',
+    })
+  }
+
+  if (tab === 'data') {
+    // Data sufficiency is handled inside DataTab's GateCard — no extra preflight needed
+    return []
+  }
+
+  if (tab === 'tune') {
+    const suff = dataInfo?.sufficiency
+    checks.push({
+      check: 'Data gate passed',
+      passed: !!dataInfo?.gatePassed,
+      detail: suff ? `${suff.available} samples (need ${suff.required})` : dataInfo?.gatePassed ? 'Yes' : 'No data',
+      blocker: suff && !suff.sufficient ? `Need ${suff.deficit} more samples` : 'Add training data in Data tab',
+    })
+  }
+
+  if (tab === 'train') {
+    checks.push({
+      check: 'Data sufficient for training',
+      passed: !!dataInfo?.gatePassed,
+      detail: dataInfo?.gatePassed ? 'Yes' : 'Data gate not passed',
+      blocker: 'Fix data issues in Data tab first',
+    })
+    checks.push({
+      check: 'Tune config exists',
+      passed: !!tuneConfig && Object.keys(tuneConfig).length > 1,
+      detail: tuneConfig?.lr ? `LR=${tuneConfig.lr}, epochs=${tuneConfig.epochs}` : 'No config',
+      blocker: 'Configure hyperparameters in Tune tab',
+    })
+  }
+
+  if (tab === 'benchmark') {
+    const hasResults = trainRows.length > 0 || (benchData?.results?.length > 0)
+    checks.push({
+      check: 'Trained models exist to compare',
+      passed: hasResults,
+      detail: hasResults ? `${trainRows.length || benchData?.results?.length || 0} backbones` : 'No models trained',
+      blocker: 'Run training in Train tab first',
+    })
+  }
+
+  if (tab === 'evaluate') {
+    const hasModel = !!benchData?.selected_backbone || trainRows.some(r => r.status === 'pass')
+    checks.push({
+      check: 'Trained model available',
+      passed: hasModel,
+      detail: hasModel ? (benchData?.selected_backbone || 'Model available') : 'No model',
+      blocker: 'Train a model first in Train tab',
+    })
+  }
+
+  if (tab === 'promote') {
+    checks.push({
+      check: 'Evaluation completed',
+      passed: !!evalData && !evalData.error,
+      detail: evalData?.macro_f1 ? `F1 ${evalData.macro_f1.toFixed(3)}` : 'No eval results',
+      blocker: 'Run evaluation in Evaluate tab first',
+    })
+    if (evalData?.macro_f1) {
+      const gate = evalData.gate_threshold ?? evalData.holdout_gate_f1 ?? 0.90
+      checks.push({
+        check: 'Holdout gate passed',
+        passed: evalData.holdout_passed ?? evalData.macro_f1 >= gate,
+        detail: `F1 ${evalData.macro_f1.toFixed(3)} vs ${gate.toFixed(2)} target`,
+        blocker: 'Improve model performance — go to Train tab',
+      })
+    }
+  }
+
+  return checks
+}
+
+/** Renders pre-flight checks as a compact bar above the tab content */
+function PreflightBar({ checks }: { checks: PreflightResult[] }) {
+  if (!checks.length) return null
+  const allPassed = checks.every(c => c.passed)
+  const blockers = checks.filter(c => !c.passed)
+
+  if (allPassed) return null  // Don't show anything if all pre-flights pass
+
+  return (
+    <div style={{
+      ...card, marginBottom: 16, padding: '12px 16px',
+      border: `1px solid ${EMBRY.amber}33`, background: `${EMBRY.amber}04`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: blockers.length > 0 ? 10 : 0 }}>
+        <AlertTriangle size={14} color={EMBRY.amber} />
+        <span style={{ fontSize: 11, fontWeight: 900, color: EMBRY.amber }}>
+          PRE-FLIGHT: {blockers.length} blocker{blockers.length === 1 ? '' : 's'}
+        </span>
+      </div>
+      {blockers.map((c, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: i < blockers.length - 1 ? 6 : 0 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: EMBRY.amber, marginTop: 5, flexShrink: 0 }} />
+          <div>
+            <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.white }}>{c.check}</span>
+            <span style={{ fontSize: 10, color: EMBRY.dim }}> — {c.detail}</span>
+            {c.blocker && <div style={{ fontSize: 9, color: EMBRY.amber, marginTop: 2 }}>→ {c.blocker}</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ── Main View ───────────────────────────────────────────────────────
 
 export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) {
@@ -146,6 +282,9 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
   const [newProjectName, setNewProjectName] = useState('')
   const [creating, setCreating] = useState(false)
   const [filterModality, setFilterModality] = useState<string>('')
+  const [mainDataInfo, setMainDataInfo] = useState<any>(null)
+  const [mainTuneConfig, setMainTuneConfig] = useState<any>(null)
+  const [mainEvalData, setMainEvalData] = useState<any>(null)
 
   // Sync tab from parent subpath (browser back/forward)
   useEffect(() => {
@@ -183,12 +322,18 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
     return false
   }
 
-  // Check data gate on project change
+  // Check data gate + fetch preflight data on project change
   useEffect(() => {
     if (!selectedProjectId) return
     fetch(`${API}/projects/classifier-lab/data/${selectedProjectId}`)
-      .then(r => r.json()).then(d => setDataGatePassed(d.gatePassed ?? false))
-      .catch(() => setDataGatePassed(false))
+      .then(r => r.json()).then(d => { setDataGatePassed(d.gatePassed ?? false); setMainDataInfo(d) })
+      .catch(() => { setDataGatePassed(false); setMainDataInfo(null) })
+    fetch(`${API}/projects/classifier-lab/tune-config/${selectedProjectId}`)
+      .then(r => r.json()).then(setMainTuneConfig)
+      .catch(() => setMainTuneConfig(null))
+    fetch(`${API}/projects/classifier-lab/eval-results/${selectedProjectId}`)
+      .then(r => r.json()).then(d => { if (d && !d.error) setMainEvalData(d); else setMainEvalData(null) })
+      .catch(() => setMainEvalData(null))
   }, [selectedProjectId])
 
   // Check research gate on project change
@@ -412,8 +557,11 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
           </div>
         </header>
 
-        {/* Tab content */}
+        {/* Tab content — each tab gets a pre-flight check */}
         <main data-testid="clf-main" style={{ flex: 1, overflowY: 'auto', padding: 28 }}>
+          {activeTab !== 'research' && activeTab !== 'data' && (
+            <PreflightBar checks={computePreflights(activeTab, activeProject, mainDataInfo, mainTuneConfig, displayRows, benchmarkData, mainEvalData)} />
+          )}
           {activeTab === 'research' && <ResearchTab projectId={selectedProjectId} gateInfo={researchGateInfo} />}
           {activeTab === 'data' && <DataTab project={activeProject} onGateChange={setDataGatePassed} />}
           {activeTab === 'train' && <TrainTab project={activeProject} rows={displayRows} />}
