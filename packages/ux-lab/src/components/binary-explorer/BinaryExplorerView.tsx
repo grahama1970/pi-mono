@@ -1262,19 +1262,19 @@ export function BinaryExplorerView() {
       let intentData: QuerySpec | null = null
       const trace: PipelineTrace = { entities: mentionedEntities, candidates: [], source: 'none', reason: '' }
 
-      // Step 1: Recall candidate actions from app_actions via /search-collection (BM25 only, no cross-collection blending)
+      // Step 1: Recall candidate actions from app_actions via /memory recall (BM25 + semantic + graph, collection-filtered)
       type CandidateAction = { _key: string, ui_action: string, params: Record<string, string>, description: string, score: number }
       const candidates: CandidateAction[] = []
       try {
-        const actionsRes = await timedFetch(`${API}/api/memory/search-collection`, {
+        const actionsRes = await timedFetch(`${API}/api/memory/recall`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             q: entityCtx ? `${text} ${entityCtx}` : text,
-            collection: 'app_actions',
-            k: 5,
+            k: 5, scope: 'binary-explorer',
+            collections: ['app_actions'],
           }),
-        }, 500)
+        }, 1500)
         if (actionsRes.ok) {
           const actionsData = await actionsRes.json()
           for (const item of actionsData.items ?? []) {
@@ -1287,7 +1287,7 @@ export function BinaryExplorerView() {
                   ui_action: parsed.ui_action,
                   params: parsed.params ?? {},
                   description: item.problem ?? '',
-                  score: item._score ?? 0,
+                  score: item.scores?.bm25 ?? 0,
                 })
               }
             } catch {
