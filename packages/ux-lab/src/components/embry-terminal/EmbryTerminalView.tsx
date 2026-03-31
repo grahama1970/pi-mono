@@ -103,7 +103,11 @@ const AGENTS: Agent[] = [
   { id: 'pi', name: 'Pi', icon: Brain, color: '#00ff88' },
 ];
 
-const BACKEND_URL = '/api'; // Proxied to embry-terminal Express server
+// Embry Terminal backend runs on its own port
+// In dev: direct to localhost:8640. In prod: via tailscale serve path.
+const BACKEND_URL = import.meta.env.DEV
+  ? 'http://127.0.0.1:8640/api'
+  : '/embry-terminal/api';
 
 // ── API ─────────────────────────────────────────────────────────────────────
 
@@ -471,21 +475,77 @@ export function EmbryTerminalView() {
     inputRef.current?.focus();
   }, [input]);
 
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
-    setMessages(m => [...m, { id: `u${Date.now()}`, role: 'user', content: input.trim(), timestamp: Date.now() }]);
+    const text = input.trim();
+    setMessages(m => [...m, { id: `u${Date.now()}`, role: 'user', content: text, timestamp: Date.now() }]);
     setInput('');
     setShowPalette(false);
-    // TODO: Wire to real agent backend via /code-runner, /subagent-service, /scillm
-    setTimeout(() => {
-      setMessages(m => [...m, {
-        id: `a${Date.now()}`, role: 'assistant', agent: agent.id,
-        content: "I'll check memory first, then proceed with the task…",
-        skillUsed: 'memory',
-        timestamp: Date.now(),
-      }]);
-    }, 800);
-  }, [input, agent]);
+
+    // Detect if this is a /skill invocation
+    const skillMatch = text.match(/^\/([a-z][\w-]*)/);
+    const isSkill = !!skillMatch;
+
+    const agentId = `a${Date.now()}`;
+    setMessages(m => [...m, {
+      id: agentId, role: 'assistant', agent: agent.id,
+      content: '', skillUsed: skillMatch?.[1],
+      timestamp: Date.now(),
+    }]);
+
+    try {
+      if (isSkill) {
+        // SSE streaming for skill execution
+        const res = await fetch(`${BACKEND_URL}/agent/message`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, backend: 'skill', skill: skillMatch![1], project: activeProject?.name }),
+        });
+        const reader = res.body?.getReader();
+        if (!reader) throw new Error('No response body');
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            try {
+              const event = JSON.parse(line.slice(6));
+              if (event.type === 'text' && event.content) {
+                setMessages(prev => prev.map(m => m.id === agentId
+                  ? { ...m, content: m.content + event.content }
+                  : m
+                ));
+              }
+            } catch { /* partial JSON */ }
+          }
+        }
+      } else {
+        // Non-streaming scillm call
+        const res = await fetch(`${BACKEND_URL}/agent/message`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, backend: 'scillm', model: 'text', project: activeProject?.name }),
+        });
+        const data = await res.json();
+        setMessages(prev => prev.map(m => m.id === agentId
+          ? { ...m, content: data.content || data.error || 'No response' }
+          : m
+        ));
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Request failed';
+      setMessages(prev => prev.map(m => m.id === agentId
+        ? { ...m, content: `**Error:** ${msg}` }
+        : m
+      ));
+    }
+  }, [input, agent, activeProject]);
 
   const AgentIcon = agent.icon;
 
