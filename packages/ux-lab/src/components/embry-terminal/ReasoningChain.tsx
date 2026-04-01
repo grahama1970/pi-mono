@@ -24,6 +24,7 @@ export interface ReasoningStep {
     solution: string;
     scores: { bm25: number; graph: number; dense: number; freshness: number };
   }>;
+  children?: ReasoningStep[];
 }
 
 interface ReasoningChainProps {
@@ -126,6 +127,59 @@ const StatusDot = memo(({ status }: { status: ReasoningStep['status'] }) => {
   );
 });
 
+const ChildSteps = memo(({ children, parentId }: { children: ReasoningStep[]; parentId: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div style={{ marginLeft: 24, paddingTop: 4 }}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        data-qid={`step-children-toggle:${parentId}`}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 4,
+          background: 'none', border: 'none', color: NVIS.muted,
+          fontSize: 10, fontFamily: FONTS.mono, cursor: 'pointer', padding: '4px 0', minHeight: 28,
+        }}
+      >
+        {isOpen ? '▾' : '▸'} {children.length} sub-step{children.length > 1 ? 's' : ''}
+      </button>
+      {isOpen && (
+        <div style={{ position: 'relative', borderLeft: `0.5px dashed ${NVIS.green}30`, paddingLeft: 12 }}>
+          {children.map((child, idx) => (
+            <div key={child.id} style={{
+              display: 'flex', alignItems: 'center', gap: 8, padding: '3px 0',
+              animation: `nvis-fade-in 200ms ease-out ${idx * 50}ms both`,
+            }}>
+              <div style={{
+                width: 16, height: 16, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 8, fontWeight: 700, flexShrink: 0,
+                color: child.status === 'done' ? NVIS.green : child.status === 'running' ? NVIS.blue : child.status === 'failed' ? NVIS.red : NVIS.muted,
+                background: `${child.status === 'done' ? NVIS.green : child.status === 'running' ? NVIS.blue : NVIS.muted}15`,
+                border: `1px solid ${child.status === 'done' ? NVIS.green : child.status === 'running' ? NVIS.blue : NVIS.muted}40`,
+                animation: child.status === 'running' ? 'nvis-pulse 1.2s infinite' : 'none',
+              }}>
+                {child.status === 'done' ? '✓' : child.status === 'running' ? '●' : child.status === 'failed' ? '✗' : '○'}
+              </div>
+              {child.skill && (
+                <span style={{
+                  fontSize: 9, fontFamily: FONTS.mono, fontWeight: 600,
+                  background: `${NVIS.blue}15`, color: NVIS.blue,
+                  padding: '1px 4px', borderRadius: 2, border: `1px solid ${NVIS.blue}30`,
+                }}>/{child.skill}</span>
+              )}
+              <span style={{ fontSize: 11, color: NVIS.dim, fontFamily: FONTS.ui }}>{child.summary}</span>
+              {child.duration && (
+                <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto' }}>
+                  {child.duration < 1000 ? `${child.duration}ms` : `${(child.duration / 1000).toFixed(1)}s`}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+});
+
 const StepContent = memo(({ step }: { step: ReasoningStep }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -218,12 +272,12 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
           animation: 'nvis-fade-in 0.2s ease-out'
         }}>
           {step.detail && <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{step.detail}</div>}
-          
+
           {step.recallItems && step.recallItems.map((item, idx) => (
-            <div key={idx} style={{ 
-              marginTop: idx > 0 ? 12 : 0, 
-              paddingTop: idx > 0 ? 12 : 0, 
-              borderTop: idx > 0 ? `1px solid ${NVIS.borderSubtle}` : 'none' 
+            <div key={idx} style={{
+              marginTop: idx > 0 ? 12 : 0,
+              paddingTop: idx > 0 ? 12 : 0,
+              borderTop: idx > 0 ? `1px solid ${NVIS.borderSubtle}` : 'none'
             }}>
               <div style={{ color: NVIS.blue, marginBottom: 4 }}>→ {item.problem}</div>
               <div style={{ color: NVIS.dim, marginBottom: 8 }}>{item.solution}</div>
@@ -235,6 +289,11 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Nested children (sub-steps) — collapsible independently */}
+      {step.children && step.children.length > 0 && (
+        <ChildSteps children={step.children} parentId={step.id} />
       )}
     </div>
   );
@@ -299,10 +358,10 @@ const ReasoningChain = ({ steps, chainTitle }: ReasoningChainProps) => {
         
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: NVIS.white, fontFamily: FONTS.ui }}>
-            {chainTitle || (stats.isRunning ? 'Processing request...' : 'Process complete')}
+            {chainTitle || (stats.isRunning ? 'Thinking...' : 'Thinking')}
           </span>
           <span style={{ fontSize: 10, color: NVIS.dim, fontFamily: FONTS.mono, textTransform: 'uppercase', marginTop: 2 }}>
-            {stats.done} steps verified · {steps.length} total
+            {stats.isRunning ? `${stats.done}/${steps.length} steps` : `${stats.done} steps · ${steps.reduce((sum, s) => sum + (s.duration || 0), 0) < 1000 ? `${steps.reduce((sum, s) => sum + (s.duration || 0), 0)}ms` : `${(steps.reduce((sum, s) => sum + (s.duration || 0), 0) / 1000).toFixed(1)}s`}`}
           </span>
         </div>
 

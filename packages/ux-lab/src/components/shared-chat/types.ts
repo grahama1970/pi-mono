@@ -58,14 +58,16 @@ export interface ReasoningStep {
 	duration?: number;
 	confidence?: number;
 	recallItems?: RecallItem[];
+	children?: ReasoningStep[];
 }
 
 export interface Artifact {
 	id: string;
 	title: string;
-	type: "code" | "html" | "svg" | "markdown";
+	type: "code" | "html" | "svg" | "markdown" | "react-table" | "graph";
 	content: string;
 	language?: string;
+	data?: unknown;
 }
 
 export interface Skill {
@@ -91,6 +93,7 @@ export interface ChatMessage {
 	reasoningSteps?: ReasoningStep[];
 	chainTitle?: string;
 	artifact?: Artifact;
+	artifacts?: Artifact[];
 	verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
 	matrixSummary?: ThreatMatrixSummary;
 	entities?: EntityRef[];

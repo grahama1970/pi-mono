@@ -15,6 +15,7 @@ export { DeltaReportCard } from "./DeltaReportCard";
 // Entity highlighting
 export { classifyEntity, ENTITY_PATTERN, ENTITY_STYLES, getEntityStyle, highlightEntities } from "./highlightEntities";
 // Shared components
+export { InlineArtifact } from "./InlineArtifact";
 export { MarkdownRenderer } from "./MarkdownRenderer";
 export type { SkillPaletteProps } from "./SkillPalette";
 export { SkillPalette } from "./SkillPalette";
