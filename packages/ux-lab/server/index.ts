@@ -16,7 +16,7 @@ import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
-import { execFile } from 'child_process'
+import { execFile, exec } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
@@ -41,6 +41,7 @@ type WorksheetConfig = { description_source?: string } & Record<string, unknown>
 
 let worksheetsCache: { expiresAt: number; worksheets: Record<string, WorksheetConfig> } | null = null
 const execFileAsync = promisify(execFile)
+const execAsync = promisify(exec)
 
 interface ArchitectureMetadata {
   attachments: string[]
@@ -444,6 +445,78 @@ app.post('/api/datalake/traceability', async (req, res) => {
     })
   } catch (e) {
     res.status(502).json({ error: 'Traceability query failed', detail: String(e) })
+  }
+})
+
+function parseLastJsonObjectFromStdout(stdout: string): unknown {
+  const lines = stdout.split('\n')
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (!lines[i].trimStart().startsWith('{')) continue
+    const candidate = lines.slice(i).join('\n').trim()
+    if (!candidate) continue
+    try {
+      return JSON.parse(candidate)
+    } catch {
+      // keep scanning for earlier candidate starts
+    }
+  }
+
+  const start = stdout.lastIndexOf('{')
+  const end = stdout.lastIndexOf('}')
+  if (start >= 0 && end > start) {
+    return JSON.parse(stdout.slice(start, end + 1))
+  }
+  throw new Error('No JSON object found in command output')
+}
+
+app.post('/api/evidence-case/drift', async (req, res) => {
+  const { control_ids } = req.body as { control_ids?: string[] }
+  const ids = Array.isArray(control_ids) ? control_ids : []
+  if (ids.some((id) => typeof id !== 'string' || !/^[A-Za-z0-9._:-]+$/.test(id))) {
+    return res.status(400).json({ error: 'control_ids must contain only [A-Za-z0-9._:-]' })
+  }
+
+  const suffix = ids.length > 0
+    ? ` --control-ids ${ids.join(',')}`
+    : ' --all-recent'
+  const cmd = `unset VIRTUAL_ENV && cd .pi/skills/create-evidence-case && .venv/bin/python tools/compute_threat_delta.py${suffix}`
+
+  try {
+    const { stdout } = await execAsync(cmd, {
+      cwd: PI_MONO,
+      timeout: 120_000,
+      maxBuffer: 10 * 1024 * 1024,
+    })
+    const parsed = parseLastJsonObjectFromStdout(stdout)
+    res.json(parsed)
+  } catch (error) {
+    const err = error as Error & { stderr?: string }
+    const message = err.stderr?.trim() || err.message || 'compute_threat_delta failed'
+    res.status(502).json({ error: message })
+  }
+})
+
+app.post('/api/evidence-case/stress-test', async (req, res) => {
+  const { question_bank } = req.body as { question_bank?: string }
+  const questionBank = typeof question_bank === 'string' && question_bank.trim().length > 0
+    ? question_bank.trim()
+    : 'batch_50_f36'
+
+  try {
+    const { stdout } = await execFileAsync(
+      '.pi/skills/create-evidence-case/run.sh',
+      ['stress-test', '--question-bank', questionBank, '--json'],
+      {
+        cwd: PI_MONO,
+        timeout: 300_000,
+        maxBuffer: 10 * 1024 * 1024,
+      },
+    )
+    res.json(JSON.parse(stdout))
+  } catch (error) {
+    const err = error as Error & { stderr?: string }
+    const message = err.stderr?.trim() || err.message || 'stress-test failed'
+    res.status(502).json({ error: message })
   }
 })
 
