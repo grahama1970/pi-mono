@@ -34,7 +34,7 @@ def query_scillm(prompt: str) -> str:
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": 1000,
             "temperature": 0.3,
-        }, headers={"Authorization": SCILLM_KEY}, timeout=15.0)
+        }, headers={"Authorization": SCILLM_KEY}, timeout=30.0)
         data = resp.json()
         return data.get("choices", [{}])[0].get("message", {}).get("content", "")
     except Exception as e:
