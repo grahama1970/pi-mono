@@ -164,7 +164,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
             <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
           )}
           {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
-            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} agent={msg.agent} />
+            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} agent={msg.agent} sessionId={msg.id} user="graham" />
           )}
         </div>
       ) : null}
@@ -280,12 +280,19 @@ export function EmbryTerminalView() {
         ],
       },
       reasoningSteps: [
-        { id: 'r1', type: 'recall', skill: 'memory', status: 'done', summary: 'Recalled 3 prior SPARTA assessments', duration: 1200, confidence: 0.89 },
-        { id: 'r2', type: 'text', status: 'done', summary: 'Based on memory, we\'ve addressed this control family before. Applying both patterns from prior sessions.' },
-        { id: 'r3', type: 'skill', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 aerospace requirements', duration: 4800 },
-        { id: 'r4', type: 'skill', skill: 'extract-controls', status: 'done', summary: 'Extracted 110 NIST 800-171 controls from SPARTA dataset', duration: 2100, confidence: 0.94 },
-        { id: 'r5', type: 'skill', skill: 'batch-quality', status: 'done', summary: 'Validated QRA quality for extracted controls', duration: 3200, confidence: 0.91 },
-        { id: 'r6', type: 'pending', status: 'pending', summary: 'Store assessment results to /memory' },
+        { id: 'r1', type: 'recall' as const, skill: 'memory', status: 'done' as const, summary: 'Recalled 3 prior SPARTA assessments', duration: 1200, startedAt: Date.now() - 56000, confidence: 0.89, recallItems: [
+          { _key: '308496826412', _source: 'lessons', problem: 'CMMC Level 2 posture gap in AC-17', solution: 'Remote access policy required per NIST 800-171 3.1.12', scores: { bm25: 0.92, graph: 0.4, dense: 0.87, freshness: 0.8 } },
+          { _key: '308496824167', _source: 'sparta_controls', problem: 'SC-28 encryption at rest', solution: 'FIPS 140-2 validated module required', scores: { bm25: 0.88, graph: 0.3, dense: 0.79, freshness: 0.7 } },
+        ] },
+        { id: 'r2', type: 'text' as const, status: 'done' as const, summary: 'Based on memory, we\'ve addressed this control family before. Applying both patterns from prior sessions.' },
+        { id: 'r3', type: 'skill' as const, skill: 'dogpile', status: 'done' as const, summary: 'Researching CMMC Level 2 aerospace requirements', duration: 4800, startedAt: Date.now() - 51000, children: [
+          { id: 'r3a', type: 'skill' as const, skill: 'brave', status: 'done' as const, summary: '3 aerospace contractor CMMC reports', duration: 1200 },
+          { id: 'r3b', type: 'skill' as const, skill: 'arxiv', status: 'done' as const, summary: '1 NIST compliance automation paper', duration: 2100 },
+          { id: 'r3c', type: 'skill' as const, skill: 'github', status: 'done' as const, summary: 'wazuh/wazuh — open-source SIEM for 800-171', duration: 1500 },
+        ] },
+        { id: 'r4', type: 'skill' as const, skill: 'extract-controls', status: 'done' as const, summary: 'Extracted 110 NIST 800-171 controls from SPARTA dataset', duration: 2100, startedAt: Date.now() - 46000, confidence: 0.94 },
+        { id: 'r5', type: 'skill' as const, skill: 'batch-quality', status: 'done' as const, summary: 'Validated QRA quality for extracted controls', duration: 3200, startedAt: Date.now() - 44000, confidence: 0.91 },
+        { id: 'r6', type: 'pending' as const, status: 'pending' as const, summary: 'Store assessment results to /memory' },
       ],
       chainTitle: 'CMMC Level 2 Assessment',
       timestamp: Date.now() - 45000,

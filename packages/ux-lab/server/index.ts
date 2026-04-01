@@ -223,18 +223,16 @@ app.get('/api/datalake/stats', async (_req, res) => {
       proxyPost('/list', { collection: 'datalake_chunks', k: 1 }),
       proxyPost('/list', { collection: 'lessons', k: 1, filter: {} }),
     ])
-    // Scope breakdown — the /list endpoint doesn't support filtered totals,
-    // so we derive counts from the total lessons and known proportions.
-    // TODO: Add /aql endpoint to graph_memory service for proper filtered counts.
-    const totalLessons = scopesR?.total ?? 0
-    const scopes = [
-      { name: 'extractor', doc_count: 123801 },
-      { name: 'fort_worth_f36', doc_count: 5539 },
-      { name: 'datalake_pdf', doc_count: 1721 },
-      { name: 'datalake_nonpdf', doc_count: 140 },
-      { name: 'monitor-extractor', doc_count: 347 },
-      { name: 'learn_datalake', doc_count: 237 },
-    ]
+    // Scope breakdown — /list with filters now returns correct filtered totals
+    const scopeNames = ['extractor', 'fort_worth_f36', 'datalake_pdf', 'datalake_nonpdf', 'monitor-extractor', 'learn_datalake']
+    const scopes = await Promise.all(
+      scopeNames.map(async name => {
+        try {
+          const r = await proxyPost('/list', { collection: 'lessons', k: 1, filters: { scope: name } }) as any
+          return { name, doc_count: r?.total ?? 0 }
+        } catch { return { name, doc_count: 0 } }
+      })
+    )
     // Return stats with scopes array (shape matches DatalakeStats interface)
     res.json({
       total_documents: docsR?.total ?? 0,
@@ -259,7 +257,7 @@ app.get('/api/datalake/documents', async (req, res) => {
       collection: 'datalake_documents',
       k: limit,
       offset,
-      ...(scope ? { filter: { scope } } : {}),
+      ...(scope ? { filters: { scope } } : {}),
     }) as { documents?: any[]; total?: number }
     let docs = result?.documents ?? []
     // Fallback to documents collection if datalake_documents is sparse

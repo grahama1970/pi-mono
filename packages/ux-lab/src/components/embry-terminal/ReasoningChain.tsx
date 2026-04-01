@@ -18,8 +18,11 @@ export interface ReasoningStep {
   summary: string;
   detail?: string;
   duration?: number;
+  startedAt?: number;
   confidence?: number;
   recallItems?: Array<{
+    _key?: string;
+    _source?: string;
     problem: string;
     solution: string;
     scores: { bm25: number; graph: number; dense: number; freshness: number };
@@ -32,6 +35,10 @@ interface ReasoningChainProps {
   chainTitle?: string;
   /** Which LLM agent ran this chain (shown as badge in header) */
   agent?: string;
+  /** Session ID for audit trail */
+  sessionId?: string;
+  /** User who initiated this chain */
+  user?: string;
 }
 
 // --- Constants & Styles ---
@@ -232,9 +239,10 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
             {(step.confidence * 100).toFixed(0)}%
           </span>
         )}
-        {step.duration && (
-          <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto' }}>
-            {step.duration < 1000 ? `${step.duration}ms` : `${(step.duration / 1000).toFixed(1)}s`}
+        {(step.duration || step.startedAt) && (
+          <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto', display: 'flex', gap: 6 }}>
+            {step.startedAt && <span title="Wall-clock start time">{new Date(step.startedAt).toLocaleTimeString()}</span>}
+            {step.duration && <span>{step.duration < 1000 ? `${step.duration}ms` : `${(step.duration / 1000).toFixed(1)}s`}</span>}
           </span>
         )}
       </div>
@@ -281,7 +289,10 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
               paddingTop: idx > 0 ? 12 : 0,
               borderTop: idx > 0 ? `1px solid ${NVIS.borderSubtle}` : 'none'
             }}>
-              <div style={{ color: NVIS.blue, marginBottom: 4 }}>→ {item.problem}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                <span style={{ color: NVIS.blue }}>→ {item.problem}</span>
+                {item._key && <span style={{ fontSize: 8, color: NVIS.muted }} title={`Document key: ${item._key}${item._source ? ` (${item._source})` : ''}`}>🔗 {item._key.slice(0, 8)}</span>}
+              </div>
               <div style={{ color: NVIS.dim, marginBottom: 8 }}>{item.solution}</div>
               <div style={{ maxWidth: 200 }}>
                 <ScoreBar label="BM25" value={item.scores.bm25} />
@@ -303,7 +314,7 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
 
 // --- Main Component ---
 
-const ReasoningChain = ({ steps, chainTitle, agent }: ReasoningChainProps) => {
+const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: ReasoningChainProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const stats = useMemo(() => {
@@ -443,6 +454,18 @@ const ReasoningChain = ({ steps, chainTitle, agent }: ReasoningChainProps) => {
         )}
       </button>
 
+      {/* Audit metadata bar — visible when expanded */}
+      {isExpanded && (sessionId || user) && (
+        <div style={{
+          display: 'flex', gap: 12, padding: '4px 16px 6px', borderBottom: `1px solid ${NVIS.borderSubtle}`,
+          fontSize: 10, fontFamily: FONTS.mono, color: NVIS.muted,
+        }}>
+          {user && <span title="User who initiated this chain">user: {user}</span>}
+          {sessionId && <span title="Session ID for audit trail">session: {sessionId}</span>}
+          <span title="Chain start time">{new Date().toISOString().slice(0, 19)}Z</span>
+        </div>
+      )}
+
       {/* Expanded Chain (Vertical Timeline) */}
       {isExpanded && (
         <div 
@@ -466,13 +489,16 @@ const ReasoningChain = ({ steps, chainTitle, agent }: ReasoningChainProps) => {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {steps.map((step, idx) => (
-              <div 
-                key={step.id} 
-                style={{ 
-                  display: 'flex', 
-                  gap: 16, 
+              <div
+                key={step.id}
+                style={{
+                  display: 'flex',
+                  gap: 16,
                   position: 'relative',
-                  animation: `nvis-fade-in 250ms ease-out ${idx * 50}ms both`
+                  animation: `nvis-fade-in 250ms ease-out ${idx * 50}ms both`,
+                  borderBottom: idx < steps.length - 1 ? `1px solid ${NVIS.borderSubtle}` : 'none',
+                  paddingBottom: idx < steps.length - 1 ? 4 : 0,
+                  marginBottom: idx < steps.length - 1 ? 4 : 0,
                 }}
               >
                 {/* Visual Marker Column */}

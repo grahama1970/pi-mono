@@ -56,6 +56,7 @@ export interface ReasoningStep {
 	summary: string;
 	detail?: string;
 	duration?: number;
+	startedAt?: number;
 	confidence?: number;
 	recallItems?: RecallItem[];
 	children?: ReasoningStep[];
