@@ -2714,12 +2714,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div>
                         {/* API endpoints for automation */}
                         <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>REST API</div>
-                        <div style={{ fontSize: 8, color: '#94a3b8', background: '#050505', padding: 6, border: `1px solid ${EMBRY.border}`, borderRadius: 2, marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>
-                          <div><span style={{ color: '#4CAF50' }}>GET</span> {API}/api/binary/{binaryName}/features</div>
-                          <div><span style={{ color: '#2196F3' }}>GET</span> {API}/api/binary/{binaryName}/edges</div>
-                          <div><span style={{ color: '#FF9800' }}>POST</span> {API}/api/memory/recall {`{query: "${selectedNode.label}"}`}</div>
-                          <div style={{ color: EMBRY.dim, marginTop: 4 }}>curl {API}/api/binary/{binaryName}/features | jq '.[] | select(.name=="{selectedNode.label}")'</div>
-                        </div>
+                        {(() => {
+                          const endpoints = [
+                            { method: 'GET', color: '#4CAF50', path: `${API}/api/binary/${binaryName}/features`, curl: `curl -s ${API || 'http://localhost:3001'}/api/binary/${binaryName}/features | jq .` },
+                            { method: 'GET', color: '#2196F3', path: `${API}/api/binary/${binaryName}/edges`, curl: `curl -s ${API || 'http://localhost:3001'}/api/binary/${binaryName}/edges | jq .` },
+                            { method: 'POST', color: '#FF9800', path: `${API}/api/memory/recall`, curl: `curl -s -X POST ${API || 'http://localhost:3001'}/api/memory/recall -H 'Content-Type: application/json' -d '{"q":"${selectedNode.label}","scope":"binary-explorer","collections":["binary_features"],"k":5}' | jq .items` },
+                          ]
+                          return (
+                            <div style={{ fontSize: 8, color: '#94a3b8', background: '#050505', padding: 6, border: `1px solid ${EMBRY.border}`, borderRadius: 2, marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>
+                              {endpoints.map((ep, i) => (
+                                <div key={i} style={{ marginBottom: i < endpoints.length - 1 ? 6 : 0 }}>
+                                  <div><span style={{ color: ep.color, fontWeight: 700 }}>{ep.method}</span> {ep.path}</div>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                                    <code style={{ color: EMBRY.dim, fontSize: 7, flex: 1 }}>{ep.curl}</code>
+                                    <button onClick={() => navigator.clipboard.writeText(ep.curl)} style={{ fontSize: 7, padding: '1px 4px', background: '#1a1a2e', border: `1px solid ${EMBRY.border}`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}>copy</button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )
+                        })()}
                         <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>RAW DOCUMENT</div>
                         <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
                           {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
@@ -2904,7 +2918,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       </div>
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
                       {suggestions.map((s, si) => (
-                        <div key={si} onClick={() => setChatInput(s.raw)} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4 }}>
+                        <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4 }}>
                           {s.segments.map((seg, j) => seg.entity
                             ? <code key={j} style={{ color: '#22d3ee', background: '#0a1628', padding: '1px 4px', borderRadius: 3, fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{seg.text}</code>
                             : <span key={j} style={{ color: EMBRY.accent }}>{seg.text}</span>
