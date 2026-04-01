@@ -15,19 +15,27 @@ export { DeltaReportCard } from "./DeltaReportCard";
 // Entity highlighting
 export { classifyEntity, ENTITY_PATTERN, ENTITY_STYLES, getEntityStyle, highlightEntities } from "./highlightEntities";
 // Shared components
+export { ActivityFeed } from "./ActivityFeed";
 export { InlineArtifact } from "./InlineArtifact";
 export { MarkdownRenderer } from "./MarkdownRenderer";
+export { PresenceBar } from "./PresenceBar";
 export type { SkillPaletteProps } from "./SkillPalette";
 export { SkillPalette } from "./SkillPalette";
+export { SuggestionCard } from "./SuggestionCard";
+// Hooks
+export { useActivityFeed } from "./useActivityFeed";
 // Types
 export type {
+	ActivityEvent,
 	Agent,
+	AgentSuggestion,
 	Artifact,
 	CascadeLayer,
 	ChatMessage,
 	EntityRef,
 	EntityType,
 	EvidenceGate,
+	PresenceEntry,
 	ReasoningStep,
 	RecallItem,
 	RecallResult,

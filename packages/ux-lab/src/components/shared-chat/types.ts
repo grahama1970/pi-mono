@@ -100,3 +100,48 @@ export interface ChatMessage {
 	feedback?: "up" | "down" | null;
 	cascadeLayer?: CascadeLayer;
 }
+
+// ── Activity Feed Types ─────────────────────────────────────────────────
+
+export interface ActivityEvent {
+	type:
+		| "agent_started"
+		| "agent_completed"
+		| "agent_finding"
+		| "presence_update"
+		| "suggestion"
+		| "suggestion_resolved";
+	agent?: string;
+	project?: string;
+	summary?: string;
+	entity?: string;
+	entityType?: EntityType;
+	controlId?: string;
+	finding?: string;
+	confidence?: number;
+	id?: string;
+	status?: string;
+	timestamp: number;
+}
+
+export interface PresenceEntry {
+	userId: string;
+	displayName: string;
+	project?: string;
+	status: "active" | "idle" | "offline";
+	lastSeen: number;
+	isAgent: boolean;
+	agentType?: string;
+}
+
+export interface AgentSuggestion {
+	id: string;
+	agent: string;
+	controlId: string;
+	finding: string;
+	evidence: string;
+	confidence: number;
+	status: "pending" | "accepted" | "rejected";
+	resolvedBy?: string;
+	resolvedAt?: number;
+}

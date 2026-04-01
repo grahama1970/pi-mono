@@ -151,18 +151,18 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
          data-qid={`chat:message:${msg.id}`}>
 
       {/* 1. ReasoningChain (collapsed by default) — "here is what I did"
-             ToolAction only shows when no reasoning steps (dedup) */}
-      {msg.reasoningSteps && msg.reasoningSteps.length > 0 ? (
+             ToolAction lines live here; skill ToolAction suppressed when
+             reasoning steps exist (skill is already visible inside the chain) */}
+      {(msg.reasoningSteps && msg.reasoningSteps.length > 0) || msg.skillUsed || msg.codeBlock ? (
         <div style={{ marginBottom: 8 }}>
-          <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
-        </div>
-      ) : (msg.skillUsed || msg.codeBlock) ? (
-        <div style={{ marginBottom: 8 }}>
-          {msg.skillUsed && (
+          {msg.skillUsed && !msg.reasoningSteps?.length && (
             <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:message:${msg.id}:skill`} />
           )}
           {msg.codeBlock && (
             <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
+          )}
+          {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
+            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
           )}
         </div>
       ) : null}
@@ -176,8 +176,8 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
         />
       )}
 
-      {/* 3. Visual separator — shows when any "process" block exists above the answer */}
-      {((msg.reasoningSteps && msg.reasoningSteps.length > 0) || msg.recall || msg.skillUsed) && msg.content && (
+      {/* 3. Visual separator between reasoning/evidence and answer */}
+      {(msg.recall || (msg.reasoningSteps && msg.reasoningSteps.length > 0)) && (
         <div style={{ borderTop: '1px dashed rgba(255,255,255,0.08)', margin: '12px 0' }} />
       )}
 
@@ -280,11 +280,7 @@ export function EmbryTerminalView() {
       reasoningSteps: [
         { id: 'r1', type: 'recall', skill: 'memory', status: 'done', summary: 'Recalled 3 prior SPARTA assessments', duration: 1200, confidence: 0.89 },
         { id: 'r2', type: 'text', status: 'done', summary: 'Based on memory, we\'ve addressed this control family before. Applying both patterns from prior sessions.' },
-        { id: 'r3', type: 'skill', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 aerospace requirements', duration: 4800, children: [
-          { id: 'r3a', type: 'skill', skill: 'brave', status: 'done', summary: '3 aerospace contractor CMMC reports', duration: 1200 },
-          { id: 'r3b', type: 'skill', skill: 'arxiv', status: 'done', summary: '1 NIST compliance automation paper', duration: 2100 },
-          { id: 'r3c', type: 'skill', skill: 'github', status: 'done', summary: 'wazuh/wazuh — open-source SIEM for 800-171', duration: 1500 },
-        ] },
+        { id: 'r3', type: 'skill', skill: 'dogpile', status: 'done', summary: 'Researching CMMC Level 2 aerospace requirements', duration: 4800 },
         { id: 'r4', type: 'skill', skill: 'extract-controls', status: 'done', summary: 'Extracted 110 NIST 800-171 controls from SPARTA dataset', duration: 2100, confidence: 0.94 },
         { id: 'r5', type: 'skill', skill: 'batch-quality', status: 'done', summary: 'Validated QRA quality for extracted controls', duration: 3200, confidence: 0.91 },
         { id: 'r6', type: 'pending', status: 'pending', summary: 'Store assessment results to /memory' },

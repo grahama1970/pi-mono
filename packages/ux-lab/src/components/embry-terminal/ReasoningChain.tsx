@@ -335,44 +335,87 @@ const ReasoningChain = ({ steps, chainTitle }: ReasoningChainProps) => {
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
-          padding: '12px 16px',
+          gap: 8,
+          padding: '10px 16px',
           background: 'none',
           border: 'none',
           textAlign: 'left',
           cursor: 'pointer',
-          minHeight: 44,
+          minHeight: 40,
           transition: 'background 0.2s',
         }}
         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
       >
-        <div style={{ 
-          width: 8, 
-          height: 8, 
-          borderRadius: '50%', 
-          background: stats.isRunning ? NVIS.blue : NVIS.green,
-          animation: stats.isRunning ? 'nvis-pulse 1.2s infinite' : 'none',
-          boxShadow: stats.isRunning ? `0 0 8px ${NVIS.blue}` : 'none'
-        }} />
-        
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: NVIS.white, fontFamily: FONTS.ui }}>
-            {chainTitle || (stats.isRunning ? 'Thinking...' : 'Thinking')}
+        {stats.isRunning ? (
+          // Running state: "● Thinking... · 3/6"
+          <span style={{
+            fontSize: 13,
+            fontFamily: FONTS.ui,
+            color: NVIS.dim,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0,
+            flex: 1,
+          }}>
+            <span style={{
+              color: NVIS.blue,
+              animation: 'nvis-pulse 1.2s infinite',
+              marginRight: 6,
+              fontSize: 10,
+            }}>●</span>
+            <span style={{ color: NVIS.white, fontWeight: 600 }}>
+              {chainTitle || 'Thinking...'}
+            </span>
+            <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
+            <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+              {stats.done}/{steps.length}
+            </span>
           </span>
-          <span style={{ fontSize: 10, color: NVIS.dim, fontFamily: FONTS.mono, textTransform: 'uppercase', marginTop: 2 }}>
-            {stats.isRunning ? `${stats.done}/${steps.length} steps` : `${stats.done} steps · ${steps.reduce((sum, s) => sum + (s.duration || 0), 0) < 1000 ? `${steps.reduce((sum, s) => sum + (s.duration || 0), 0)}ms` : `${(steps.reduce((sum, s) => sum + (s.duration || 0), 0) / 1000).toFixed(1)}s`}`}
+        ) : (
+          // Collapsed/done state: "▸ Thinking · 6 steps · 12s"
+          <span style={{
+            fontSize: 13,
+            fontFamily: FONTS.ui,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0,
+            flex: 1,
+          }}>
+            <span style={{ color: NVIS.muted, marginRight: 6, fontSize: 10 }}>
+              {isExpanded ? '▾' : '▸'}
+            </span>
+            <span style={{ color: NVIS.white, fontWeight: 600 }}>
+              {chainTitle || 'Thinking'}
+            </span>
+            <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
+            <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+              {stats.done} steps
+            </span>
+            {steps.reduce((sum, s) => sum + (s.duration || 0), 0) > 0 && (
+              <>
+                <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
+                <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+                  {steps.reduce((sum, s) => sum + (s.duration || 0), 0) < 1000
+                    ? `${steps.reduce((sum, s) => sum + (s.duration || 0), 0)}ms`
+                    : `${(steps.reduce((sum, s) => sum + (s.duration || 0), 0) / 1000).toFixed(1)}s`}
+                </span>
+              </>
+            )}
           </span>
-        </div>
+        )}
 
-        <ChevronDown 
-          size={16} 
-          style={{ 
-            color: NVIS.muted, 
-            transform: isExpanded ? 'rotate(180deg)' : 'none',
-            transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-          }} 
-        />
+        {!stats.isRunning && (
+          <ChevronDown
+            size={14}
+            style={{
+              color: NVIS.muted,
+              transform: isExpanded ? 'rotate(180deg)' : 'none',
+              transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              flexShrink: 0,
+            }}
+          />
+        )}
       </button>
 
       {/* Expanded Chain (Vertical Timeline) */}

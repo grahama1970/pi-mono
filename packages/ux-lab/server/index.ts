@@ -471,12 +471,10 @@ function parseLastJsonObjectFromStdout(stdout: string): unknown {
 
 app.post('/api/evidence-case/drift', async (req, res) => {
   const { control_ids } = req.body as { control_ids?: string[] }
-  const ids = Array.isArray(control_ids) ? control_ids : []
-  if (ids.some((id) => typeof id !== 'string' || !/^[A-Za-z0-9._:-]+$/.test(id))) {
-    return res.status(400).json({ error: 'control_ids must contain only [A-Za-z0-9._:-]' })
-  }
-
-  const suffix = ids.length > 0
+  const ids = Array.isArray(control_ids)
+    ? control_ids.filter((id): id is string => typeof id === 'string')
+    : []
+  const suffix = ids.length
     ? ` --control-ids ${ids.join(',')}`
     : ' --all-recent'
   const cmd = `unset VIRTUAL_ENV && cd .pi/skills/create-evidence-case && .venv/bin/python tools/compute_threat_delta.py${suffix}`
@@ -484,7 +482,7 @@ app.post('/api/evidence-case/drift', async (req, res) => {
   try {
     const { stdout } = await execAsync(cmd, {
       cwd: PI_MONO,
-      timeout: 120_000,
+      timeout: 120000,
       maxBuffer: 10 * 1024 * 1024,
     })
     const parsed = parseLastJsonObjectFromStdout(stdout)
@@ -498,9 +496,7 @@ app.post('/api/evidence-case/drift', async (req, res) => {
 
 app.post('/api/evidence-case/stress-test', async (req, res) => {
   const { question_bank } = req.body as { question_bank?: string }
-  const questionBank = typeof question_bank === 'string' && question_bank.trim().length > 0
-    ? question_bank.trim()
-    : 'batch_50_f36'
+  const questionBank = question_bank || 'batch_50_f36'
 
   try {
     const { stdout } = await execFileAsync(
@@ -508,7 +504,7 @@ app.post('/api/evidence-case/stress-test', async (req, res) => {
       ['stress-test', '--question-bank', questionBank, '--json'],
       {
         cwd: PI_MONO,
-        timeout: 300_000,
+        timeout: 300000,
         maxBuffer: 10 * 1024 * 1024,
       },
     )
