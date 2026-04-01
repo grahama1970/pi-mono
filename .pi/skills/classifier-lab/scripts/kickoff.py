@@ -14,28 +14,45 @@ import subprocess
 import sys
 from pathlib import Path
 
+import httpx
 import typer
 from loguru import logger
 
 app = typer.Typer(no_args_is_help=True)
 
 SKILLS_DIR = Path(__file__).resolve().parent.parent.parent
-DOGPILE = SKILLS_DIR / "dogpile"
+SCILLM_URL = "http://localhost:4001/v1/chat/completions"
+SCILLM_KEY = "Bearer sk-dev-proxy-123"
+BRAVE_SCRIPT = SKILLS_DIR / "brave-search" / "brave_search.py"
 
 
-def run_dogpile(query: str) -> str:
-    """Run /dogpile search and return output."""
-    cmd = f'cd "{DOGPILE}" && ./run.sh search "{query}"'
+def query_scillm(prompt: str) -> str:
+    """Fast LLM call for backbone + HP recommendations."""
+    try:
+        resp = httpx.post(SCILLM_URL, json={
+            "model": "text",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 1000,
+            "temperature": 0.3,
+        }, headers={"Authorization": SCILLM_KEY}, timeout=15.0)
+        data = resp.json()
+        return data.get("choices", [{}])[0].get("message", {}).get("content", "")
+    except Exception as e:
+        logger.warning(f"scillm failed: {e}")
+        return ""
+
+
+def brave_search(query: str) -> str:
+    """Fast web search for dataset discovery."""
     try:
         result = subprocess.run(
-            ["bash", "-lc", cmd], capture_output=True, text=True, timeout=120,
-            env={**os.environ, "VIRTUAL_ENV": ""},
+            [sys.executable, str(BRAVE_SCRIPT), "web", query, "--count", "5", "--no-json"],
+            capture_output=True, text=True, timeout=15,
         )
-        return result.stdout + result.stderr
-    except subprocess.TimeoutExpired:
-        return "Dogpile timed out"
+        return result.stdout
     except Exception as e:
-        return f"Dogpile failed: {e}"
+        logger.warning(f"brave-search failed: {e}")
+        return ""
 
 
 @app.command()
@@ -64,14 +81,27 @@ def kickoff(
     })
     meta_path.write_text(json.dumps(meta, indent=2))
 
-    # ── Step 1: Run /dogpile ──────────────────────────────────
-    logger.info("[1/3] Running /dogpile research...")
-    dogpile_query = (
-        f"{modality} classifier for: {goal}. "
-        f"What HuggingFace datasets exist? What backbone models work best? "
-        f"Recommended hyperparameters for fine-tuning?"
-    )
-    dogpile_output = run_dogpile(dogpile_query)
+    # ── Step 1: Research via /scillm + /brave-search (parallel, ~4s) ──
+    logger.info("[1/3] Researching via /scillm + /brave-search...")
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        scillm_future = pool.submit(query_scillm, (
+            f"I need to build a {modality} classifier for: {goal}\n\n"
+            f"Give me:\n"
+            f"1. Top 2-3 backbone models (with HuggingFace model names)\n"
+            f"2. Recommended hyperparameters (learning rate, epochs, batch size)\n"
+            f"3. Minimum training samples needed\n"
+            f"4. Any specific HuggingFace datasets for this task\n\n"
+            f"Be specific — give exact model names and numbers."
+        ))
+        brave_future = pool.submit(brave_search, f"HuggingFace dataset {goal} {modality} classification")
+
+    scillm_output = scillm_future.result()
+    brave_output = brave_future.result()
+
+    logger.info(f"  scillm: {len(scillm_output)} chars")
+    logger.info(f"  brave: {len(brave_output)} chars")
 
     # Write research.md
     research = f"""# {project_name}
@@ -82,9 +112,13 @@ def kickoff(
 ## Modality
 {modality}
 
-## Research (from /dogpile)
+## Backbone & HP Recommendations (from /scillm)
 
-{dogpile_output[:3000] if dogpile_output else "No dogpile results available."}
+{scillm_output[:2000] if scillm_output else "No LLM recommendations available."}
+
+## Dataset Search (from /brave-search)
+
+{brave_output[:1000] if brave_output else "No web search results."}
 """
     (pdir / "research.md").write_text(research)
     logger.info(f"Written research.md ({len(research)} chars)")
