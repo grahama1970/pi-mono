@@ -152,28 +152,32 @@ def kickoff(
     # ── Step 3: Search for data ───────────────────────────────
     logger.info("[3/3] Searching HuggingFace for training data...")
     try:
-        from data_enrichment import strategy_search_huggingface
-        existing_labels: set[str] = set()  # empty — we'll accept whatever labels the dataset has
-        # For kickoff, we need to discover labels from HF datasets
-        # This is different from enrichment — we don't have existing labels yet
-        # So we search by task name and take whatever we find
-
+        import re as _re
         from huggingface_hub import HfApi
         api = HfApi()
         hf_token = os.environ.get("HF_TOKEN", "")
 
-        # Search for datasets matching the goal
-        queries = [goal.lower(), f"{modality} {goal.split()[0].lower()} classification"]
         found: list[dict] = []
-        for q in queries[:2]:
-            try:
-                datasets = api.list_datasets(search=q, sort="downloads", limit=3)
-                for ds in datasets:
-                    if ds.id not in [f["id"] for f in found]:
-                        found.append({"id": ds.id, "downloads": ds.downloads})
-                        logger.info(f"  Found: {ds.id} ({ds.downloads:,} downloads)")
-            except Exception:
-                pass
+
+        # First: parse Brave results for HuggingFace dataset URLs
+        if brave_output:
+            hf_urls = _re.findall(r"huggingface\.co/datasets/([a-zA-Z0-9_-]+/[a-zA-Z0-9_.-]+)", brave_output)
+            for ds_id in dict.fromkeys(hf_urls):  # deduplicate preserving order
+                found.append({"id": ds_id, "downloads": 0, "source": "brave"})
+                logger.info(f"  From Brave: {ds_id}")
+
+        # Second: search HuggingFace API as fallback
+        if not found:
+            queries = [goal.lower(), f"{modality} {goal.split()[0].lower()} classification"]
+            for q in queries[:2]:
+                try:
+                    datasets = api.list_datasets(search=q, sort="downloads", limit=3)
+                    for ds in datasets:
+                        if ds.id not in [f["id"] for f in found]:
+                            found.append({"id": ds.id, "downloads": ds.downloads, "source": "hf-api"})
+                            logger.info(f"  From HF API: {ds.id} ({ds.downloads:,} downloads)")
+                except Exception:
+                    pass
 
         if found:
             from datasets import load_dataset
@@ -185,34 +189,70 @@ def kickoff(
                             ds = load_dataset(ds_info["id"], split=split, token=hf_token or None, trust_remote_code=False)
                             logger.info(f"  {ds_info['id']}: loaded {split} ({len(ds)} rows)")
 
-                            # Find text and label fields
+                            # Find text field
                             text_field = None
-                            for f in ["text", "sms", "sentence", "content", "reviewText", "review", "message", "input"]:
+                            for f in ["text", "comment_text", "sms", "sentence", "content", "reviewText", "review", "message", "input", "question", "body"]:
                                 if f in ds.features:
                                     text_field = f
                                     break
+
+                            # Find label field — prefer string labels, then ClassLabel, then binary columns
                             label_field = None
+                            binary_label = None
                             for f in ["sentiment", "class", "category", "label", "labels"]:
                                 if f in ds.features:
                                     label_field = f
                                     break
+                            # Check for binary classification columns (e.g., "toxic": 0/1)
+                            if not label_field:
+                                goal_words = set(goal.lower().split())
+                                for f in ds.features:
+                                    if f.lower() in goal_words or any(w in f.lower() for w in goal_words):
+                                        # Check if it's binary (0/1 values)
+                                        sample_vals = {str(row[f]) for row in ds.select(range(min(20, len(ds))))}
+                                        if sample_vals <= {"0", "1", "True", "False", "true", "false"}:
+                                            binary_label = f
+                                            logger.info(f"  {ds_info['id']}: using binary column '{f}' as label")
+                                            break
 
-                            if text_field and label_field:
-                                # Get label names
+                            if not text_field:
+                                logger.info(f"  {ds_info['id']}: no text field — {list(ds.features.keys())[:8]}")
+                                continue
+
+                            # Write samples
+                            samples = []
+                            if label_field:
                                 feat = ds.features.get(label_field)
-                                label_names = feat.names if hasattr(feat, "names") else list({str(row[label_field]) for row in ds.select(range(min(50, len(ds))))})
-
-                                # Write samples
-                                samples = []
                                 for row in ds:
                                     text = row[text_field]
                                     if not isinstance(text, str) or len(text.strip()) < 5:
                                         continue
                                     raw = row[label_field]
                                     label = feat.names[raw] if hasattr(feat, "names") and isinstance(raw, int) else str(raw)
-                                    samples.append({"text": text.strip()[:1000], "class": label, "split": "train"})
+                                    samples.append({"text": text.strip()[:500], "class": label, "split": "train"})
+                            elif binary_label:
+                                # Binary column → "positive"/"negative" style labels
+                                pos_name = binary_label  # e.g., "toxic"
+                                neg_name = f"not_{binary_label}"  # e.g., "not_toxic"
+                                for row in ds:
+                                    text = row[text_field]
+                                    if not isinstance(text, str) or len(text.strip()) < 5:
+                                        continue
+                                    val = str(row[binary_label])
+                                    label = pos_name if val in ("1", "True", "true") else neg_name
+                                    samples.append({"text": text.strip()[:500], "class": label, "split": "train"})
+                            else:
+                                logger.info(f"  {ds_info['id']}: no label field — {list(ds.features.keys())[:8]}")
+                                continue
 
-                                if samples:
+                            # Cap at 10K samples for kickoff (full enrichment can get more)
+                            if len(samples) > 10000:
+                                import random as _rand
+                                _rand.seed(42)
+                                _rand.shuffle(samples)
+                                samples = samples[:10000]
+
+                            if samples:
                                     with open(pdir / "samples.jsonl", "w") as f:
                                         for s in samples:
                                             f.write(json.dumps(s) + "\n")

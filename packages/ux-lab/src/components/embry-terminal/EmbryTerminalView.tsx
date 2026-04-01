@@ -488,15 +488,15 @@ export function EmbryTerminalView() {
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#141414', color: '#e2e8f0', overflow: 'hidden' }}>
       {/* Top bar */}
       <header style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderBottom: '1px solid rgba(255,255,255,0.13)', background: '#111111', minHeight: 48 }}>
-        <button onClick={() => setSidebarOpen(v => !v)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 6 }} data-qid="topbar:sidebar:toggle">
+        <button onClick={() => setSidebarOpen(v => !v)} title="Toggle project sidebar" aria-label="Toggle sidebar" style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 12, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }} data-qid="topbar:sidebar:toggle">
           <Menu size={18} />
         </button>
 
         {/* Agent picker */}
-        <button style={{
-          display: 'flex', alignItems: 'center', gap: 7, padding: '6px 12px',
+        <button title={`Active agent: ${agent.name}. Click to switch between Claude Code, Pi, and Codex.`} aria-label={`Agent: ${agent.name}`} style={{
+          display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px', minHeight: 44,
           background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.13)', borderRadius: 8,
-          cursor: 'pointer', fontSize: 13, fontWeight: 500, color: '#e2e8f0', fontFamily: 'var(--font-ui)',
+          cursor: 'pointer', fontSize: 14, fontWeight: 500, color: '#e2e8f0', fontFamily: 'var(--font-ui)',
         }} data-qid="topbar:agent:select">
           <AgentIcon size={15} style={{ color: agent.color }} />
           {agent.name}
@@ -517,11 +517,11 @@ export function EmbryTerminalView() {
           ].map(s => (
             <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 3 }} title={`${s.label}: ${s.up ? 'connected' : 'down'}`}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.up ? '#00ff88' : '#ff4444', boxShadow: s.up ? '0 0 4px #00ff8866' : 'none' }} />
-              <span style={{ fontSize: 9, fontFamily: 'var(--font-mono)', color: s.up ? '#64748b' : '#ff4444' }}>{s.label}</span>
+              <span style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: s.up ? '#94a3b8' : '#ff4444' }}>{s.label}</span>
             </div>
           ))}
           {health.latencyMs && (
-            <span style={{ fontSize: 9, color: '#475569', fontFamily: 'var(--font-mono)', marginLeft: 2 }}>
+            <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'var(--font-mono)', marginLeft: 2 }}>
               {health.latencyMs}ms
             </span>
           )}
@@ -561,7 +561,7 @@ export function EmbryTerminalView() {
         </div>
 
         {/* Detail toggle */}
-        <button onClick={() => setDetailOpen(v => !v)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 6, minWidth: 32, minHeight: 32 }}
+        <button onClick={() => setDetailOpen(v => !v)} title="Toggle artifact panel" aria-label="Toggle artifact panel" style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 10, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           data-qid="topbar:detail:toggle"
         >
           {detailOpen ? '✕' : '▣'}
@@ -689,10 +689,10 @@ export function EmbryTerminalView() {
                     data-qid="input:compose"
                   />
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 10px 8px' }}>
-                    <button style={{ background: 'none', border: 'none', color: '#334155', cursor: 'pointer', padding: 6 }} data-qid="input:attach">
+                    <button title="Attach file or evidence document" aria-label="Attach file" style={{ background: 'none', border: 'none', color: '#334155', cursor: 'pointer', padding: 10, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }} data-qid="input:attach">
                       <Plus size={18} />
                     </button>
-                    <button onClick={sendMessage} disabled={!input.trim()}
+                    <button onClick={sendMessage} disabled={!input.trim()} title="Send message (Enter)" aria-label="Send message"
                       style={{
                         width: 44, height: 44, borderRadius: '50%', border: 'none',
                         cursor: input.trim() ? 'pointer' : 'default',

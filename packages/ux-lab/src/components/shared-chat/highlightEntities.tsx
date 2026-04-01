@@ -68,6 +68,7 @@ export function highlightEntities(
             cursor: onEntityClick ? 'pointer' : 'inherit',
           }}
           data-qid={type === 'skill' ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
+          title={type === 'skill' ? `Skill: ${part} — click to invoke` : type === 'control' ? `NIST control: ${part} — click for threat matrix` : type === 'cwe' ? `Common Weakness: ${part} — click for analysis` : type === 'framework' ? `Framework: ${part} — click for details` : `${type}: ${part}`}
         >
           {part}
         </span>

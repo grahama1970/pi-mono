@@ -323,7 +323,7 @@ export function SourcesView() {
             style={{ padding: '6px 12px', fontSize: 9, fontWeight: 700, color: EMBRY.muted, textTransform: 'uppercase', letterSpacing: '0.05em', backgroundColor: EMBRY.bgDeep, borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
           >
             <span style={{ fontSize: 8 }}>{urlsExpanded ? '▼' : '▶'}</span>
-            Fetched URLs ({urlsLoading ? '...' : urlTotal.toLocaleString()})
+            Fetched URLs ({urlsLoading ? '...' : (urlTotal ?? 0).toLocaleString()})
           </div>
           {urlsExpanded && urlDomains.slice(0, 20).map((dg) => {
             const isSelected = view?.type === 'domain' && view.domain === dg.domain
@@ -691,7 +691,7 @@ function SourceRow({ name, tooltip, health, count, loading, isSelected, onClick,
         <span style={{ fontSize: 11, fontWeight: isSelected ? 700 : 500, color: isSelected ? EMBRY.white : EMBRY.dim, flex: 1, fontFamily: mono ? 'monospace' : 'inherit', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {name}
         </span>
-        <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.accent, flexShrink: 0 }}>{loading ? '...' : count.toLocaleString()}</span>
+        <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.accent, flexShrink: 0 }}>{loading ? '...' : (count ?? 0).toLocaleString()}</span>
       </div>
     </div>
   )

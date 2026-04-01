@@ -109,7 +109,7 @@ function skillTooltip(skill: string, type: string): string {
 
 const ScoreBar = memo(({ label, value }: { label: string; value: number }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-    <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.dim, width: 45, textAlign: 'right' }}>{label}</span>
+    <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.dim, width: 45, textAlign: 'right' }}>{label}</span>
     <div style={{ flex: 1, height: 4, background: NVIS.bgDeep, borderRadius: 2, overflow: 'hidden', position: 'relative' }}>
       <div 
         style={{ 
@@ -120,7 +120,7 @@ const ScoreBar = memo(({ label, value }: { label: string; value: number }) => (
         }} 
       />
     </div>
-    <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.white, width: 25 }}>{value.toFixed(2)}</span>
+    <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.white, width: 25 }}>{value.toFixed(2)}</span>
   </div>
 ));
 
@@ -143,7 +143,7 @@ const StatusDot = memo(({ status }: { status: ReasoningStep['status'] }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: 700,
       color,
       background: `${color}15`,
@@ -165,10 +165,11 @@ const ChildSteps = memo(({ children, parentId }: { children: ReasoningStep[]; pa
       <button
         onClick={() => setIsOpen(!isOpen)}
         data-qid={`step-children-toggle:${parentId}`}
+        title={`${isOpen ? 'Collapse' : 'Expand'} ${children.length} nested sub-operations`}
         style={{
           display: 'flex', alignItems: 'center', gap: 4,
           background: 'none', border: 'none', color: NVIS.muted,
-          fontSize: 10, fontFamily: FONTS.mono, cursor: 'pointer', padding: '4px 0', minHeight: 28,
+          fontSize: 12, fontFamily: FONTS.mono, cursor: 'pointer', padding: '8px 4px', minHeight: 44,
         }}
       >
         {isOpen ? '▾' : '▸'} {children.length} sub-step{children.length > 1 ? 's' : ''}
@@ -192,14 +193,14 @@ const ChildSteps = memo(({ children, parentId }: { children: ReasoningStep[]; pa
               </div>
               {child.skill && (
                 <span style={{
-                  fontSize: 9, fontFamily: FONTS.mono, fontWeight: 600,
+                  fontSize: 12, fontFamily: FONTS.mono, fontWeight: 600,
                   background: `${NVIS.blue}15`, color: NVIS.blue,
                   padding: '1px 4px', borderRadius: 2, border: `1px solid ${NVIS.blue}30`,
                 }}>/{child.skill}</span>
               )}
-              <span style={{ fontSize: 11, color: NVIS.dim, fontFamily: FONTS.ui }}>{child.summary}</span>
+              <span style={{ fontSize: 12, color: NVIS.dim, fontFamily: FONTS.ui }}>{child.summary}</span>
               {child.duration && (
-                <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto' }}>
+                <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto' }}>
                   {child.duration < 1000 ? `${child.duration}ms` : `${(child.duration / 1000).toFixed(1)}s`}
                 </span>
               )}
@@ -235,7 +236,7 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
           <span
             title={skillTooltip(step.skill, step.type)}
             style={{
-              fontSize: 11,
+              fontSize: 12,
               fontFamily: FONTS.mono,
               fontWeight: 600,
               background: `${NVIS.blue}15`,
@@ -256,14 +257,14 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
           <button
             title="Retry this step"
             style={{
-              fontSize: 10, fontFamily: FONTS.mono, color: NVIS.red, background: `${NVIS.red}10`,
+              fontSize: 12, fontFamily: FONTS.mono, color: NVIS.red, background: `${NVIS.red}10`,
               border: `1px solid ${NVIS.red}30`, borderRadius: 4, padding: '2px 8px', cursor: 'pointer',
             }}
           >retry</button>
         )}
         {step.confidence !== undefined && (
           <span style={{ 
-            fontSize: 10, 
+            fontSize: 12, 
             fontFamily: FONTS.mono, 
             color: step.confidence > 0.8 ? NVIS.green : NVIS.amber,
             background: `${step.confidence > 0.8 ? NVIS.green : NVIS.amber}10`,
@@ -274,7 +275,7 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
           </span>
         )}
         {(step.duration || step.startedAt) && (
-          <span style={{ fontSize: 9, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto', display: 'flex', gap: 6 }}>
+          <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.muted, marginLeft: 'auto', display: 'flex', gap: 6 }}>
             {step.startedAt && <span title="Wall-clock start time">{new Date(step.startedAt).toLocaleTimeString()}</span>}
             {step.duration && <span>{step.duration < 1000 ? `${step.duration}ms` : `${(step.duration / 1000).toFixed(1)}s`}</span>}
           </span>
@@ -285,6 +286,7 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           data-qid={`step-detail-toggle:${step.id}`}
+          title={isOpen ? 'Hide step details' : 'Show step details (recall items, raw output)'}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -292,11 +294,11 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
             background: 'none',
             border: 'none',
             color: NVIS.muted,
-            fontSize: 10,
+            fontSize: 12,
             fontFamily: FONTS.mono,
             cursor: 'pointer',
-            padding: '6px 0',
-            minHeight: 32,
+            padding: '8px 4px',
+            minHeight: 44,
           }}
         >
           {isOpen ? '▾ HIDE' : '▸ DETAIL'}
@@ -310,7 +312,7 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
           background: NVIS.bgDeep,
           borderRadius: 6,
           border: `1px solid ${NVIS.borderSubtle}`,
-          fontSize: 11,
+          fontSize: 12,
           fontFamily: FONTS.mono,
           color: NVIS.white,
           animation: 'nvis-fade-in 0.2s ease-out'
@@ -363,13 +365,13 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
 
   // Agent badge element (reused in running + collapsed states)
   const agentBadge = agent ? (
-    <span title={`Agent: ${agent} — LLM backend processing this chain`} style={{ fontSize: 10, fontFamily: FONTS.mono, color: NVIS.accent, marginLeft: 6, padding: '0 4px', background: `${NVIS.accent}15`, borderRadius: 3, cursor: 'help' }}>{agent}</span>
+    <span title={`Agent: ${agent} — LLM backend processing this chain`} style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.accent, marginLeft: 6, padding: '2px 6px', background: `${NVIS.accent}15`, borderRadius: 3, cursor: 'help' }}>{agent}</span>
   ) : null;
 
   // Confidence badge element
   const confBadge = stats.avgConf !== null ? (
     <span title="Average confidence across all steps (BM25 + cosine + graph combined score)" style={{
-      fontSize: 10, fontFamily: FONTS.mono, padding: '0 4px', borderRadius: 3, cursor: 'help',
+      fontSize: 12, fontFamily: FONTS.mono, padding: '2px 6px', borderRadius: 3, cursor: 'help',
       background: stats.avgConf > 0.8 ? `${NVIS.green}15` : stats.avgConf > 0.5 ? `${NVIS.amber}15` : `${NVIS.red}15`,
       color: stats.avgConf > 0.8 ? NVIS.green : stats.avgConf > 0.5 ? NVIS.amber : NVIS.red,
     }}>conf {Math.round(stats.avgConf * 100)}%</span>
@@ -395,6 +397,7 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         data-qid="reasoning-chain-summary"
+        title={isExpanded ? 'Collapse reasoning chain' : 'Expand reasoning chain to see agent steps, evidence, and audit trail'}
         style={{
           width: '100%',
           display: 'flex',
@@ -426,14 +429,14 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
               color: NVIS.blue,
               animation: 'nvis-pulse 1.2s infinite',
               marginRight: 6,
-              fontSize: 10,
+              fontSize: 12,
             }}>●</span>
             <span style={{ color: NVIS.white, fontWeight: 600 }}>
               {chainTitle || 'Thinking...'}
             </span>
             {agentBadge}
             <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
-            <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+            <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.dim }}>
               {stats.done}/{steps.length}
             </span>
           </span>
@@ -461,7 +464,7 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
             {stats.totalMs > 0 && (
               <>
                 <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
-                <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+                <span style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.dim }}>
                   {stats.totalMs < 1000 ? `${stats.totalMs}ms` : `${(stats.totalMs / 1000).toFixed(1)}s`}
                 </span>
               </>
@@ -490,21 +493,24 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
 
       {/* Audit metadata + legend — visible when expanded */}
       {isExpanded && (
-        <div style={{ borderBottom: `1px solid ${NVIS.borderSubtle}`, padding: '4px 16px 6px', fontSize: 10, fontFamily: FONTS.mono, color: NVIS.muted }}>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ borderBottom: `1px solid ${NVIS.borderSubtle}`, padding: '6px 16px 8px', fontSize: 12, fontFamily: FONTS.mono, color: NVIS.muted }}>
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', lineHeight: 1.6 }}>
             {user && <span>user: {user}</span>}
             {sessionId && <span>session: {sessionId}</span>}
             <span>{new Date().toISOString().slice(0, 19)}Z</span>
             {agent && <span>agent: {agent}</span>}
           </div>
-          <div style={{ display: 'flex', gap: 10, marginTop: 3, fontSize: 9, color: NVIS.muted, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 12, marginTop: 4, fontSize: 12, color: NVIS.muted, flexWrap: 'wrap', lineHeight: 1.6 }}>
             <span><span style={{ color: NVIS.green }}>✓</span> done</span>
             <span><span style={{ color: NVIS.blue }}>●</span> running</span>
             <span><span style={{ color: NVIS.red }}>✗</span> failed</span>
             <span><span style={{ color: NVIS.muted }}>○</span> pending</span>
             <span>conf = retrieval confidence (BM25+cosine+graph)</span>
+          </div>
+          <div style={{ display: 'flex', gap: 12, fontSize: 12, color: NVIS.muted, flexWrap: 'wrap', lineHeight: 1.6 }}>
             <span>QRA = Question/Reasoning/Answer triple</span>
             <span>SPARTA = Space Attack Research & Tactic Analysis</span>
+            <span>CMMC = Cybersecurity Maturity Model Certification</span>
           </div>
         </div>
       )}
