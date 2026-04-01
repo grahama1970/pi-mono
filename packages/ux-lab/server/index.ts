@@ -20,7 +20,7 @@ import { execFile, exec } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
-import { existsSync, readFileSync, realpathSync, createReadStream } from 'fs'
+import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 
@@ -2015,10 +2015,17 @@ app.post('/api/projects/classifier-lab/create', async (req, res) => {
     if (goal) {
       const kickoffPath = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'kickoff.py')
       if (existsSync(kickoffPath)) {
-        const { exec } = await import('child_process')
-        const cmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/kickoff.py "${dir}" --goal "${goal.replace(/"/g, '\\"')}" --modality "${modality || 'text'}"`
-        exec(`bash -lc '${cmd}'`, { timeout: 180_000, env: { ...process.env, VIRTUAL_ENV: '' } }, (err) => {
-          if (err) console.error(`[kickoff] ${id} failed:`, err.message?.slice(0, 200))
+        const { spawn } = await import('child_process')
+        const env = { ...process.env }
+        delete env.VIRTUAL_ENV  // Must DELETE, not set to empty — uv still reads empty string
+        const child = spawn('bash', ['-c', [
+          `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}"`,
+          `unset VIRTUAL_ENV`,
+          `uv run python scripts/kickoff.py "${dir}" --goal "${goal.replace(/"/g, '\\"')}" --modality "${modality || 'text'}"`,
+        ].join(' && ')], { env, timeout: 300_000, stdio: 'ignore', detached: true })
+        child.unref()
+        child.on('exit', (code) => {
+          if (code !== 0) console.error(`[kickoff] ${id} exited with code ${code}`)
           else console.log(`[kickoff] ${id} complete`)
         })
       }
@@ -2859,17 +2866,23 @@ app.post('/api/projects/classifier-lab/pipeline/:id', async (req, res) => {
     }
 
     // Spawn pipeline in background — don't await
-    const { exec } = await import('child_process')
-    const cmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/pipeline.py "${projDir}" --gate-f1 ${gate_f1} --max-training-rounds ${max_rounds} --min-per-class ${min_per_class} --max-length ${max_length}`
-    exec(`bash -lc '${cmd}'`, { timeout: 1800_000, env: { ...process.env, VIRTUAL_ENV: '' } }, (err, stdout) => {
-      if (err) {
-        console.error(`[pipeline] ${projectId} failed:`, err.message?.slice(0, 200))
-        // Write error to meta
+    const { spawn } = await import('child_process')
+    const pipelineEnv = { ...process.env }
+    delete pipelineEnv.VIRTUAL_ENV
+    const pipelineCmd = [
+      `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}"`,
+      'unset VIRTUAL_ENV',
+      `uv run python scripts/pipeline.py "${projDir}" --gate-f1 ${gate_f1} --max-training-rounds ${max_rounds} --min-per-class ${min_per_class} --max-length ${max_length}`,
+    ].join(' && ')
+    const pipelineChild = spawn('bash', ['-c', pipelineCmd], { env: pipelineEnv, timeout: 1800_000, stdio: 'pipe' })
+    pipelineChild.on('exit', (code) => {
+      if (code !== 0) {
+        console.error(`[pipeline] ${projectId} failed with code ${code}`)
         try {
           const meta = JSON.parse(readFileSync(metaPath, 'utf-8'))
           meta.status = 'pipeline-failed'
-          meta.pipeline_error = err.message?.slice(0, 500)
-          require('fs').writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+          meta.pipeline_error = `exit code ${code}`
+          writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
         } catch { /* */ }
       } else {
         console.log(`[pipeline] ${projectId} complete`)
