@@ -1,0 +1,335 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "Datalake Explorer — ux-lab Integration"
+  goal: "Move /learn-datalake viewer into ux-lab as 'Datalake Explorer' alongside SPARTA/Binary/Music views, wire to ArangoDB, debug integrated view"
+  plan_type: hybrid
+  created: "2026-03-31"
+  primary_persona:
+    name: "Nico Bailon"
+    role: "Extraction QA Engineer"
+    source: ".pi/agents/nico-bailon/AGENTS.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/memory recall 'datalake explorer' — no prior integration exists; learn-datalake viewer is standalone on :5181"
+  - "/ux-lab EXTEND: target host — add datalake-explorer component directory alongside binary-explorer"
+  - "/learn-datalake REUSE: 25 TSX files (12.8K LOC) — CorpusView, ExtractionReviewModal, PdfCanvas, 10 views, shared components"
+  - "ux-lab server index.ts already has /api/memory/* proxy to ArangoDB via memory daemon socket — REUSE, no new backend needed"
+  - "/api/memory/traceability endpoint already exists (control→chunk→doc graph traversal) — EXTEND for REQ→Section→Table→Figure"
+  - "App.tsx uses React.lazy + projectId routing — follow same pattern as binary-explorer registration"
+  - "CREATE justification: Tasks 3,6,9 create DatalakeExplorerView, Overview tab, TraceabilityView — these are new compositions of existing components, not reimplementations. No existing skill provides these specific views."
+
+questions_blockers: []
+
+test_manifest:
+  - tab: Overview
+    collection: datalake_documents
+    min_rows: 1
+    interactions: [load_stats, verify_scope_breakdown]
+    visual: "MetricCard tiles show total documents, sections, chunks; scope breakdown lists extractor/fort_worth_f36/datalake_pdf"
+  - tab: Corpus
+    collection: datalake_chunks
+    min_rows: 10
+    interactions: [click_document, expand_collection, filter_scope]
+    visual: "Document list in LeftPane, detail pane shows extraction quality badges, fixture status"
+  - tab: Traceability
+    collection: sections
+    min_rows: 5
+    interactions: [select_document, expand_requirement, click_show_evidence]
+    visual: "Collapsible tree: Document → Requirements → Sections → Tables/Figures with page numbers"
+  - tab: Asset Viewer
+    collection: datalake_chunks
+    min_rows: 1
+    interactions: [expand_table_node, view_inline_image]
+    visual: "Table/figure PNG from 12TB rendered inline below the traceability tree node"
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Copy + Register"
+  - id: "1"
+    label: "Wave 1: ArangoDB Data Layer"
+  - id: "2"
+    label: "Wave 2: Wire Views + Debug"
+  - id: "3"
+    label: "Wave 3: Traceability + Evidence"
+
+tasks:
+  # === WAVE 0: Verify infrastructure ===
+  - id: "0"
+    title: "Verify ux-lab dev server + API + memory daemon are running"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    command: |
+      curl -sf http://localhost:3002/ | head -1 | grep -q doctype && echo "Vite OK" || { echo "FAIL: ux-lab Vite not running on 3002"; exit 1; }
+      curl -sf http://localhost:3001/api/health | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['memory_daemon']=='connected', 'memory daemon not connected'" && echo "API+Memory OK" || { echo "FAIL: API or memory daemon down"; exit 1; }
+      echo "Infrastructure ready"
+    definition_of_done:
+      command: "curl -sf http://localhost:3001/api/health | python3 -c \"import sys,json; d=json.load(sys.stdin); assert d['status']=='ok'\" && echo OK"
+      assertion: "API health returns ok with memory daemon connected"
+
+  # === WAVE 0: Copy files and register the view ===
+  - id: "1"
+    title: "Copy datalake viewer components into ux-lab"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    command: |
+      DEST=/home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer
+      SRC=/home/graham/workspace/experiments/pi-mono/.pi/skills/learn-datalake/viewer/src
+      mkdir -p "$DEST/views" "$DEST/api"
+      # Copy components
+      cp "$SRC/components/CorpusView.tsx" "$DEST/" 2>/dev/null || true
+      cp "$SRC/views/CorpusView.tsx" "$DEST/views/" 2>/dev/null || true
+      cp "$SRC/components/ExtractionReviewModal.tsx" "$DEST/"
+      cp "$SRC/components/PdfCanvas.tsx" "$DEST/"
+      cp "$SRC/components/StatusBadge.tsx" "$DEST/"
+      cp "$SRC/components/TaxonomyChip.tsx" "$DEST/"
+      cp "$SRC/components/MetricCard.tsx" "$DEST/"
+      cp "$SRC/components/RequirementsBlock.tsx" "$DEST/"
+      cp "$SRC/components/MonitorStrip.tsx" "$DEST/"
+      cp "$SRC/components/EvidenceCasePanel.tsx" "$DEST/"
+      cp "$SRC/components/ChatFAB.tsx" "$DEST/"
+      cp "$SRC/components/SpotReextract.tsx" "$DEST/"
+      # Copy views
+      for v in CascadeView MonitorView QualityView QuarantineView RequirementsView SupervisorView ThreatMatrixView LemmaGraphView ProvidersView; do
+        cp "$SRC/views/${v}.tsx" "$DEST/views/" 2>/dev/null || true
+      done
+      # Copy types and theme
+      cp "$SRC/types.ts" "$DEST/"
+      cp "$SRC/theme.ts" "$DEST/"
+      cp "$SRC/api/client.ts" "$DEST/api/"
+      cp "$SRC/api/mock.ts" "$DEST/api/" 2>/dev/null || true
+      ls "$DEST"/*.tsx "$DEST/views/"*.tsx 2>/dev/null | wc -l
+    definition_of_done:
+      command: "ls /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/*.tsx 2>/dev/null | wc -l"
+      assertion: "At least 5 TSX files copied"
+
+  - id: "2"
+    title: "Register Datalake Explorer in App.tsx + UxLabShell.tsx"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["1"]
+    implementation:
+      - "Read App.tsx — find the React.lazy import pattern (line 63 for BinaryExplorer)"
+      - "Add: const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })))"
+      - "Add case in FinalSite render: {projectId === 'datalake-explorer' && <DatalakeExplorer />}"
+      - "Add project entry to the projects array: { id: 'datalake-explorer', title: 'Datalake Explorer', subtitle: 'PDF extraction QA', ... }"
+      - "Read UxLabShell.tsx — add to PROJECTS array: { id: 'datalake-explorer' as ProjectId, label: 'Datalake Explorer', icon: 'description' }"
+      - "Update ProjectId type union to include 'datalake-explorer'"
+    definition_of_done:
+      command: "grep -c 'datalake-explorer' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/App.tsx"
+      assertion: "At least 2 matches (import + render case)"
+
+  - id: "3"
+    title: "Create DatalakeExplorerView.tsx shell with tab navigation"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1"]
+    implementation:
+      - "Follow BinaryExplorerView.tsx pattern: LeftPane + main content area"
+      - "LeftPane sections: Documents (from ArangoDB), Collections (by scope), Quality (pass/warn/fail)"
+      - "Tab bar across top: Overview | Corpus | Extraction | Requirements | Traceability | Cascade"
+      - "Use ux-lab shared components: LeftPane, LeftPaneSection, paneItemStyle, EMBRY"
+      - "Import views from copied files: CorpusView, RequirementsView, CascadeView, etc."
+      - "Wire tab state, document selection state"
+      - "Fetch document list from /api/memory/recall with scope filter on mount"
+    tests:
+      - "npx tsc --noEmit 2>&1 | grep -c 'error' | grep '^0$'"
+    definition_of_done:
+      command: "test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/DatalakeExplorerView.tsx && echo OK"
+      assertion: "File exists"
+
+  # === WAVE 1: ArangoDB Data Layer ===
+  - id: "4"
+    title: "Add /api/datalake/* endpoints to ux-lab server"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1"]
+    implementation:
+      - "Read server/index.ts — understand the proxyPost/proxyGet pattern for memory daemon"
+      - "Add these endpoints that proxy through the memory daemon:"
+      - "  GET /api/datalake/documents — list datalake_documents collection (paginated)"
+      - "  GET /api/datalake/documents/:key — get single document with edges"
+      - "  GET /api/datalake/documents/:key/sections — traverse has_section edges"
+      - "  GET /api/datalake/documents/:key/requirements — traverse has_requirement edges"
+      - "  GET /api/datalake/documents/:key/tables — traverse has_table edges"
+      - "  GET /api/datalake/documents/:key/figures — traverse has_figure edges"
+      - "  GET /api/datalake/stats — aggregate counts (documents, sections, chunks, by scope)"
+      - "  POST /api/datalake/search — BM25 search across datalake_chunks"
+      - "All queries go through the existing proxyPost('/recall/by-keys' or '/aql') pattern"
+      - "Add scope parameter to filter by datalake_pdf, fort_worth_f36, extractor, etc."
+    definition_of_done:
+      command: "grep -c '/api/datalake' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts"
+      assertion: "At least 5 endpoint registrations"
+
+  - id: "5"
+    title: "Replace filesystem fetches with ArangoDB API calls in copied components"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "opus"
+    mode: "iterative"
+    depends_on: ["3", "4"]
+    implementation:
+      - "Read the copied api/client.ts — it currently fetches from localhost:8601 or filesystem JSON"
+      - "Rewrite client.ts to use the ux-lab server at /api/datalake/* endpoints"
+      - "Replace all direct filesystem fetches in CorpusView.tsx:"
+      - "  manifest.jsonl fetch → /api/datalake/documents"
+      - "  pattern_registry.json fetch → /api/datalake/stats or inline in document response"
+      - "  fix_registry.json fetch → /api/datalake/documents/:key (convergence data as field)"
+      - "Replace PDF file serving: /corpus-pdf/* → /api/datalake/pdf/:key (add to server)"
+      - "Update ExtractionReviewModal.tsx: blocks JSON fetch → /api/datalake/documents/:key/sections"
+      - "Keep PdfCanvas.tsx unchanged — it takes a URL prop, just change what URL is passed"
+      - "Fix any TypeScript errors from the migration"
+    tests:
+      - "npx tsc --noEmit 2>&1 | grep -c 'error TS'"
+    definition_of_done:
+      command: "grep -c 'localhost:8601\\|localhost:5181\\|/corpus-pdf\\|/corpus-metadata' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/*.tsx 2>/dev/null"
+      assertion: "Returns 0 (no old filesystem references)"
+
+  # === WAVE 2: Wire Views + Debug ===
+  - id: "6"
+    title: "Build Overview tab — stats dashboard from ArangoDB"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["5"]
+    implementation:
+      - "Overview tab shows aggregate stats from /api/datalake/stats:"
+      - "  Total documents, sections, requirements, chunks"
+      - "  Breakdown by scope: extractor (123K), fort_worth_f36 (5.5K), datalake_pdf (1.7K)"
+      - "  Quality distribution: pass/warn/fail counts"
+      - "Use MetricCard.tsx for the stat tiles"
+      - "Follow EMBRY design tokens (NVIS colors, monospace, no decorative elements)"
+    definition_of_done:
+      command: "grep -c 'datalake/stats' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/DatalakeExplorerView.tsx"
+      assertion: "At least 1 API call to stats endpoint"
+
+  - id: "7"
+    title: "Debug: verify DatalakeExplorer renders in ux-lab at localhost:3002"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["6"]
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | tail -5 &&
+      curl -sf http://localhost:3002/ | grep -q 'doctype' && echo "ux-lab serving" || echo "ux-lab not responding"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error TS'"
+      assertion: "Returns 0 (zero TS errors)"
+
+  # === WAVE 3: Traceability + Evidence (scratch.md goals) ===
+  - id: "8"
+    title: "Add /api/datalake/traceability endpoint — REQ→Section→Table→Figure graph walk"
+    lane: "3"
+    runner: "subagent-service"
+    backend: "opus"
+    mode: "iterative"
+    depends_on: ["4"]
+    implementation:
+      - "Extend server/index.ts with POST /api/datalake/traceability"
+      - "Input: { doc_key: string, requirement_key?: string }"
+      - "Graph walk: doc → has_requirement → requirements → has_section → sections"
+      - "Also: doc → has_table → tables, doc → has_figure → figures"
+      - "Return: { requirements: [...], sections: [...], tables: [...], figures: [...], edges: [...] }"
+      - "This enables the scratch.md 'Technical Traceability' view:"
+      - "  REQ-772 → Table 12.4 Row 3 → Figure 4.1 → Agent Verdict"
+      - "Use AQL graph traversal: FOR v, e IN 1..2 OUTBOUND doc_id GRAPH 'datalake_graph'"
+      - "If no named graph exists, use individual edge collection traversals"
+    definition_of_done:
+      command: "grep -c 'datalake/traceability' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts"
+      assertion: "At least 1 endpoint registration"
+
+  - id: "9"
+    title: "Build Traceability tab — REQ→Section→Table→Figure tree view"
+    lane: "3"
+    runner: "subagent-service"
+    backend: "opus"
+    mode: "iterative"
+    depends_on: ["7", "8"]
+    implementation:
+      - "New component: datalake-explorer/TraceabilityView.tsx"
+      - "When a document is selected in LeftPane, fetch /api/datalake/traceability"
+      - "Render as collapsible tree: Document → Requirements → Sections → Tables/Figures"
+      - "Each node shows: title, page number, confidence score"
+      - "Click any node → 'Show Evidence' button opens ExtractionReviewModal at that page"
+      - "Color code: green-700 (satisfied), red-600 (contradiction), amber-700 (unverified)"
+      - "This is the scratch.md 'Show Evidence' button and traceability link"
+      - "Follow EMBRY design tokens, use LeftPane tree expansion pattern"
+    definition_of_done:
+      command: "test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/TraceabilityView.tsx && echo OK"
+      assertion: "File exists"
+
+  - id: "10"
+    title: "Add /api/datalake/asset/:chunk_key endpoint — serve table/figure PNGs from 12TB"
+    lane: "3"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["4"]
+    implementation:
+      - "Add GET /api/datalake/asset/:chunk_key to server/index.ts"
+      - "Lookup chunk in datalake_chunks by _key"
+      - "Read source_meta.image_path (e.g. '05_table_extractor/visual_output/page_21_table_6.png')"
+      - "Read source field to find the results directory under /mnt/storage12tb/extractor_corpus/results/"
+      - "Resolve: results_dir = /mnt/storage12tb/extractor_corpus/results/{source}/"
+      - "Full path = results_dir + source_meta.image_path"
+      - "Validate path stays under /mnt/storage12tb/ (path traversal protection with realpath)"
+      - "Stream the PNG with Content-Type: image/png"
+      - "Return 404 if image_path is null or file doesn't exist"
+      - "This enables inline table/figure images in the Datalake Explorer without a new collection"
+    definition_of_done:
+      command: "grep -c '/api/datalake/asset' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts"
+      assertion: "At least 1 endpoint registration"
+
+  - id: "11"
+    title: "Wire asset images into TraceabilityView — inline table/figure PNGs"
+    lane: "3"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["9", "10"]
+    implementation:
+      - "In TraceabilityView.tsx, when a Table or Figure node is expanded:"
+      - "  Fetch /api/datalake/asset/{chunk_key} and show the PNG inline"
+      - "  Show below the text: the actual image from extraction"
+      - "  This is the scratch.md 'Show Evidence' — the expert sees the real table image"
+      - "  Add a subtle border: green-700 if extraction matches, red-600 if discrepancy"
+      - "Also show in ExtractionReviewModal when viewing a page with tables"
+    definition_of_done:
+      command: "grep -c 'datalake/asset' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/datalake-explorer/TraceabilityView.tsx"
+      assertion: "At least 1 fetch to asset endpoint in TraceabilityView"
+
+  - id: "12"
+    title: "End-to-end: navigate to Datalake Explorer, select F36 doc, view traceability + assets"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["11"]
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | grep -c 'error TS' | grep '^0$' &&
+      curl -sf http://localhost:3002/ | grep -q 'doctype' &&
+      curl -sf http://localhost:3001/api/datalake/stats | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'docs={d.get(\"total_documents\",0)} sections={d.get(\"total_sections\",0)}')" &&
+      echo "DATALAKE EXPLORER INTEGRATED"
+    definition_of_done:
+      command: "curl -sf http://localhost:3001/api/datalake/stats 2>/dev/null | python3 -c \"import sys,json; d=json.load(sys.stdin); assert d.get('total_documents',0) > 0\" && echo OK"
+      assertion: "Stats endpoint returns document count > 0"
