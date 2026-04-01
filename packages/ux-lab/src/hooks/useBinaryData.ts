@@ -95,6 +95,9 @@ export const NODE_TYPE_COLORS: Record<string, string> = {
 	cli_command: "#FF5722",
 	namespace: "#e2e8f0",
 	parameter: "#94a3b8",
+	string_ref: "#FFEB3B",
+	import: "#00BCD4",
+	export: "#8BC34A",
 };
 
 // ── List response shape ──
