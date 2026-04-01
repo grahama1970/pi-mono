@@ -1964,7 +1964,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     visitedNodeIds={visitedNodeIds}
                     perspective={perspective}
                     layoutMode={layoutMode}
-                    matchedNodeIds={llmMentionedIds}
+                    matchedNodeIds={data.matchedNodeIds.size > 0 ? data.matchedNodeIds : llmMentionedIds}
                     onNodeClick={onNodeClick}
                     onContextMenu={(n, x, y) => setContextMenu({ x, y, node: n })}
                     graphSvgRef={graphSvgRef}

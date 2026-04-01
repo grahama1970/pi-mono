@@ -44,24 +44,23 @@ export function useActivityFeed(wsUrl: string, token: string): UseActivityFeedRe
 
 	// ── Helpers ──────────────────────────────────────────────────────────
 
-	const clearHeartbeat = () => {
+	const clearHeartbeat = useCallback(() => {
 		if (heartbeatRef.current !== null) {
 			clearInterval(heartbeatRef.current);
 			heartbeatRef.current = null;
 		}
-	};
+	}, []);
 
-	const clearReconnect = () => {
+	const clearReconnect = useCallback(() => {
 		if (reconnectRef.current !== null) {
 			clearTimeout(reconnectRef.current);
 			reconnectRef.current = null;
 		}
-	};
+	}, []);
 
-	const closeSocket = () => {
+	const closeSocket = useCallback(() => {
 		clearHeartbeat();
 		if (wsRef.current) {
-			// Remove listeners before closing to prevent reconnect loop on intentional close
 			wsRef.current.onopen = null;
 			wsRef.current.onmessage = null;
 			wsRef.current.onerror = null;
@@ -69,7 +68,7 @@ export function useActivityFeed(wsUrl: string, token: string): UseActivityFeedRe
 			wsRef.current.close();
 			wsRef.current = null;
 		}
-	};
+	}, [clearHeartbeat]);
 
 	// ── Connection ───────────────────────────────────────────────────────
 
@@ -136,7 +135,7 @@ export function useActivityFeed(wsUrl: string, token: string): UseActivityFeedRe
 			clearReconnect();
 			reconnectRef.current = setTimeout(connect, delay);
 		};
-	}, [wsUrl, token]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [wsUrl, token, clearHeartbeat, clearReconnect]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// ── Lifecycle ────────────────────────────────────────────────────────
 
@@ -149,7 +148,7 @@ export function useActivityFeed(wsUrl: string, token: string): UseActivityFeedRe
 			clearReconnect();
 			closeSocket();
 		};
-	}, [connect]);
+	}, [connect, clearReconnect, closeSocket]);
 
 	// ── sendPresence ─────────────────────────────────────────────────────
 
