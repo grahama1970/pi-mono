@@ -1822,12 +1822,41 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
               })
                 .then(r => r.json())
                 .then(result => {
-                  setPipelineRunning(false)
-                  if (result.passed) {
+                  if (result.status === 'started') {
+                    // Poll for status every 10s
+                    setPipelineStatus('Pipeline running — checking data sufficiency...')
+                    const pollId = setInterval(() => {
+                      fetch(`${API}/projects/classifier-lab/pipeline-status/${project.id}`)
+                        .then(r => r.json())
+                        .then(s => {
+                          if (s.status === 'pipeline-running') {
+                            setPipelineStatus(`Pipeline running... ${s.f1 ? `best F1 so far: ${s.f1.toFixed(3)}` : 'training in progress'}`)
+                          } else if (s.status === 'passed') {
+                            setPipelineRunning(false)
+                            setPipelineStatus(`PASSED — ${s.backbone || '?'} F1=${(s.f1 || 0).toFixed(3)}`)
+                            clearInterval(pollId)
+                          } else if (s.status?.startsWith('halted') || s.status === 'abandoned' || s.status === 'pipeline-failed') {
+                            setPipelineRunning(false)
+                            setPipelineStatus(`${s.status.toUpperCase()} — ${s.f1 ? `best F1=${s.f1.toFixed(3)}` : 'see details below'}`)
+                            clearInterval(pollId)
+                          } else if (s.status === 'evaluated' || s.status === 'data-enriched' || s.status === 'researched') {
+                            setPipelineRunning(false)
+                            setPipelineStatus(`COMPLETE — ${s.backbone || '?'} F1=${(s.f1 || 0).toFixed(3)}`)
+                            clearInterval(pollId)
+                          }
+                        })
+                        .catch(() => {})
+                    }, 10_000)
+                    // Stop polling after 30 min
+                    setTimeout(() => { clearInterval(pollId); setPipelineRunning(false) }, 1800_000)
+                  } else if (result.passed) {
+                    setPipelineRunning(false)
                     setPipelineStatus(`PASSED — ${result.best_backbone} F1=${(result.best_f1 || 0).toFixed(3)}`)
                   } else if (result.status === 'abandoned') {
+                    setPipelineRunning(false)
                     setPipelineStatus(`HALTED — data insufficient after enrichment`)
                   } else {
+                    setPipelineRunning(false)
                     setPipelineStatus(`HALTED — best F1=${(result.best_f1 || 0).toFixed(3)} after ${result.total_rounds || 0} rounds`)
                   }
                 })

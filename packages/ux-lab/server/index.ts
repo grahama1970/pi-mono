@@ -2768,6 +2768,7 @@ app.post('/api/projects/classifier-lab/eval-questions/:id/run', async (req, res)
 })
 
 // Full pipeline — data enrichment + training loop in one call
+// Full pipeline — runs in background, returns immediately. Poll GET /data/:id for status.
 app.post('/api/projects/classifier-lab/pipeline/:id', async (req, res) => {
   const projectId = req.params.id
   try {
@@ -2778,22 +2779,52 @@ app.post('/api/projects/classifier-lab/pipeline/:id', async (req, res) => {
     if (!existsSync(scriptPath)) return res.status(500).json({ error: 'pipeline.py not found' })
 
     const { gate_f1 = 0.90, max_rounds = 8, min_per_class = 50, max_length = 128 } = req.body as Record<string, number>
-    const execFileAsync = promisify(execFile)
 
-    const { stdout } = await execFileAsync(
-      'bash', ['-lc', `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/pipeline.py "${projDir}" --gate-f1 ${gate_f1} --max-training-rounds ${max_rounds} --min-per-class ${min_per_class} --max-length ${max_length}`],
-      { timeout: 1800_000, env: { ...process.env, VIRTUAL_ENV: '' } },
-    )
-
-    const lines = stdout.trim().split('\n')
-    const lastLine = lines[lines.length - 1]
-    try {
-      res.json(JSON.parse(lastLine))
-    } catch {
-      res.json({ status: 'completed', stdout: stdout.slice(-500) })
+    // Update meta to "running" immediately
+    const metaPath = resolve(projDir, 'meta.json')
+    if (existsSync(metaPath)) {
+      const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+      meta.status = 'pipeline-running'
+      meta.pipeline_started = new Date().toISOString()
+      await writeFile(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
     }
+
+    // Spawn pipeline in background — don't await
+    const { exec } = await import('child_process')
+    const cmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && uv run python scripts/pipeline.py "${projDir}" --gate-f1 ${gate_f1} --max-training-rounds ${max_rounds} --min-per-class ${min_per_class} --max-length ${max_length}`
+    exec(`bash -lc '${cmd}'`, { timeout: 1800_000, env: { ...process.env, VIRTUAL_ENV: '' } }, (err, stdout) => {
+      if (err) {
+        console.error(`[pipeline] ${projectId} failed:`, err.message?.slice(0, 200))
+        // Write error to meta
+        try {
+          const meta = JSON.parse(readFileSync(metaPath, 'utf-8'))
+          meta.status = 'pipeline-failed'
+          meta.pipeline_error = err.message?.slice(0, 500)
+          require('fs').writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+        } catch { /* */ }
+      } else {
+        console.log(`[pipeline] ${projectId} complete`)
+      }
+    })
+
+    res.json({ status: 'started', message: 'Pipeline running in background. Poll meta.json for status.' })
   } catch (e) {
     res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
+  }
+})
+
+// Pipeline status — check meta.json for current status
+app.get('/api/projects/classifier-lab/pipeline-status/:id', async (req, res) => {
+  try {
+    const metaPath = resolve(CLASSIFIER_DIR, req.params.id, 'meta.json')
+    if (existsSync(metaPath)) {
+      const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+      res.json({ status: meta.status, f1: meta.f1, backbone: meta.backbone, started: meta.pipeline_started })
+    } else {
+      res.json({ status: 'unknown' })
+    }
+  } catch {
+    res.json({ status: 'unknown' })
   }
 })
 
