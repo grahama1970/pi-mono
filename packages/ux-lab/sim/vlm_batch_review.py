@@ -35,10 +35,9 @@ MANIFEST_PATH = UX_LAB / "persona-review-manifest.json"
 CAPTURES_ROOT = UX_LAB / "captures" / "persona-reviews"
 REPORT_PATH = UX_LAB / "persona-review-report.md"
 COMPONENTS_ROOT = UX_LAB / "src" / "components" / "binary-explorer"
-PROMPT_TEMPLATE_PATH = (
-    Path(os.environ.get("SKILLS_DIR", str(Path(__file__).resolve().parents[3] / ".pi" / "skills")))
-    / "prompt-lab" / "prompts" / "persona_review_vlm_v1.txt"
-)
+_SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", str(Path(__file__).resolve().parents[3] / ".pi" / "skills")))
+PROMPT_TEMPLATE_PATH = _SKILLS_DIR / "prompt-lab" / "prompts" / "persona_review_vlm_v1.txt"
+PROMPT_CODE_TEMPLATE_PATH = _SKILLS_DIR / "prompt-lab" / "prompts" / "persona_review_code_vlm_v1.txt"
 
 SCILLM_URL = os.environ.get("SCILLM_API_BASE", "http://localhost:4001") + "/v1/chat/completions"
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
@@ -359,20 +358,22 @@ def review(
                 logger.info("  {} / {} — {} screenshots", r["persona"], r["group"], len(ss))
         raise typer.Exit(0)
 
-    template = load_prompt_template()
+    screenshot_template = load_prompt_template()
+    code_template = PROMPT_CODE_TEMPLATE_PATH.read_text() if PROMPT_CODE_TEMPLATE_PATH.exists() else screenshot_template
 
     async def run_all():
         sem = asyncio.Semaphore(concurrency)
         async def bounded(r):
+            tpl = code_template if r.get("mode") == "code" else screenshot_template
             async with sem:
                 if votes <= 1:
                     return await review_single(client, r, r["persona"], r["group"],
-                        r["criteria"], r.get("weaknesses", []), template)
+                        r["criteria"], r.get("weaknesses", []), tpl)
                 # Median voting: run N times, take median score
                 results_list = []
                 for v in range(votes):
                     res = await review_single(client, r, r["persona"], r["group"],
-                        r["criteria"], r.get("weaknesses", []), template)
+                        r["criteria"], r.get("weaknesses", []), tpl)
                     if res.get("score", 0) > 0:
                         results_list.append(res)
                 if not results_list:

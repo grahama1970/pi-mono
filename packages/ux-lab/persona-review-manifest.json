@@ -229,32 +229,18 @@
     {
       "persona": "tim-blazytko",
       "group": "automation",
-      "source": "server/index.ts",
+      "source": "BinaryExplorerView.tsx:100-300",
       "criteria": "As someone who scripts everything: Are REST API endpoints visible in the UI? Can you see curl examples for accessing features and edges? Is the raw JSON view showing the actual ArangoDB document structure? Could you build a headless client from what you see? Does the tool show enough about its API to integrate into an automated pipeline?",
-      "score": 8,
-      "verdict": "PASS",
-      "weaknesses": [
-        "No authentication headers (e.g., Authorization: Bearer) are visible in the curl examples \u2014 critical for secure pipeline integration but missing.",
-        "Rate limits, error codes, or retry policies are not displayed anywhere in the UI, forcing users to guess or consult external docs.",
-        "The 'Raw JSON' tab is not visually prominent \u2014 users must actively click to reveal it, reducing discoverability for automation-focused workflows.",
-        "No visual indicators (icons, colors, tooltips) on graph nodes to denote API accessibility \u2014 users must open the detail panel to discover endpoints."
-      ],
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
       "status": "reviewed",
-      "strengths": [
-        "REST API endpoints are clearly visible in the 'REST API' section of the detail panel, including GET, POST, and curl examples with full query syntax.",
-        "Raw JSON view is present and shows actual ArangoDB document structure with _key, _id, node_type, and embedding fields \u2014 sufficient for building a headless client.",
-        "The API examples include concrete paths like /api/binary/droid/features and /api/memory/recall, enabling immediate script integration.",
-        "Graph nodes (e.g., 'mcp_auth_completed') are linked to API-accessible entities, and the detail panel exposes their programmatic identifiers (e.g., 'droid:event:mcp_auth_completed')."
-      ],
-      "changes": [
-        "Add a small lock icon or 'API' badge on graph nodes that expose endpoints, visible at a glance without opening the detail panel.",
-        "Include a sample Authorization header in every curl example in the REST API section, even if placeholder (e.g., 'Authorization: Bearer <token>').",
-        "Add a collapsible 'API Metadata' section in the detail panel showing rate limits, common error codes (401, 429, 500), and retry policy suggestions.",
-        "Make the 'Raw JSON' tab visually prominent \u2014 e.g., highlight it with a color accent or move it to the top of the detail panel tabs."
-      ],
-      "round": 50,
-      "latency_ms": 8096,
-      "reviewed_at": "2026-04-01T10:26:56"
+      "strengths": [],
+      "changes": [],
+      "round": 51,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-01T11:06:55",
+      "mode": "code"
     },
     {
       "persona": "tim-blazytko",
@@ -536,7 +522,7 @@
     {
       "persona": "gynvael-coldwind",
       "group": "state-machines",
-      "source": "BinaryExplorerView.tsx:2700-2900",
+      "source": "BinaryExplorerView.tsx:2200-2500",
       "criteria": "As someone who reverse engineers protocols: If a feature has states, are they listed in the detail panel? Can you see state transitions via graph edges? Does the AST/Fields tab show state machine structure? Would the graph view help you understand protocol flow better than a flat state table?",
       "score": 0,
       "verdict": null,
@@ -544,9 +530,10 @@
       "status": "reviewed",
       "strengths": [],
       "changes": [],
-      "round": 50,
+      "round": 51,
       "latency_ms": null,
-      "reviewed_at": "2026-04-01T10:26:56"
+      "reviewed_at": "2026-04-01T11:39:12",
+      "mode": "code"
     },
     {
       "persona": "gynvael-coldwind",
@@ -622,30 +609,18 @@
     {
       "persona": "liveoverflow",
       "group": "progressive-disclosure",
-      "source": "BinaryExplorerView.tsx:550-650",
+      "source": "BinaryExplorerView.tsx:400-700",
       "criteria": "As someone who believes UI should tell a story: Does the graph start with a manageable number of nodes that expand through interaction? Is the transition from overview to detail smooth? Is it clear that clicking/double-clicking reveals more? Does the scene counter help users understand what's loaded?",
-      "score": 8,
-      "verdict": "PASS",
-      "weaknesses": [
-        "No visual affordance (cursor change, glow, or animation) on graph nodes to indicate clickability \u2014 users may not discover expansion without trial.",
-        "Graph edges lack directional arrows or hover tooltips \u2014 relationships are visible but not immediately interpretable as flow or dependency.",
-        "The 'G:Connection' overlay in the middle screenshot partially obscures graph nodes \u2014 appears as a debug artifact, not intentional UI."
-      ],
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
       "status": "reviewed",
-      "strengths": [
-        "Graph starts sparse with a central node (mcp_auth_completed) and radiating edges \u2014 excellent progressive disclosure that invites exploration.",
-        "Detail panel clearly shows event metadata, emits/triggers, and CVEs \u2014 type-specific view enhances context without cluttering graph.",
-        "Chat suggestions (e.g., 'What does mcp_auth_completed do?') directly map to graph nodes \u2014 reinforces chat-as-primary-interface design.",
-        "Scene counter (LOAD (3)) and perspective selector (Security) give users situational awareness of what\u2019s loaded and filtered."
-      ],
-      "changes": [
-        "Add subtle glow or cursor change on hover over graph nodes to signal interactivity \u2014 reduces discovery friction.",
-        "Add directional arrows to edges and hover tooltips showing relationship type (e.g., 'triggers', 'emits') \u2014 clarifies flow without clutter.",
-        "Remove or reposition 'G:Connection' overlay to avoid node occlusion \u2014 ensure graph remains visually unobstructed."
-      ],
-      "round": 50,
-      "latency_ms": 9566,
-      "reviewed_at": "2026-04-01T10:26:56"
+      "strengths": [],
+      "changes": [],
+      "round": 51,
+      "latency_ms": 184019,
+      "reviewed_at": "2026-04-01T11:10:00",
+      "mode": "code"
     },
     {
       "persona": "liveoverflow",
@@ -852,61 +827,34 @@
     {
       "persona": "liveoverflow",
       "group": "accessibility",
-      "source": "BinaryExplorerView.tsx (global)",
+      "source": "BinaryGraph.tsx:800-1000,BinaryExplorerView.tsx:2900-3100",
       "criteria": "As someone who advocates for inclusive tools: Are keyboard shortcuts visible in the UI? Can you use the layout buttons and perspective selector? Are interactive elements labeled? Is the contrast ratio adequate for readability? Would someone with limited mouse dexterity be able to use the graph via keyboard?",
-      "score": 5,
-      "verdict": "FAIL",
-      "weaknesses": [
-        "No visible keyboard shortcuts for graph pan/zoom, node selection, or perspective switching \u2014 critical for accessibility and power users.",
-        "Graph node labels (e.g., 'schema', 'daemon') lack tooltips or hover states, obscuring meaning for new users.",
-        "Investigation Journal action icons (e.g., 'click' mouse pointer) have no text labels or keyboard equivalents.",
-        "Detail panel action icons (bookmark, share, code view) lack text labels or tooltips, reducing clarity for first-time users.",
-        "No visual focus indicator for interactive elements \u2014 makes keyboard navigation ambiguous or impossible."
-      ],
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
       "status": "reviewed",
-      "strengths": [
-        "Graph visually reveals relationships between MCP events, RPCs, and daemons \u2014 superior to cross-reference tables for high-level understanding.",
-        "Detail panel provides rich, type-specific metadata (emits, triggers, CWEs) for selected nodes, supporting deep analysis.",
-        "Perspective selector (Security) and layout buttons (Force, Hierarchy) are visible and labeled, enabling view switching."
-      ],
-      "changes": [
-        "Add keyboard shortcut legends (e.g., 'WASD to pan, +/- to zoom, Tab to cycle nodes') near graph or in help menu.",
-        "Add tooltips to all graph nodes and action icons \u2014 hover or focus should reveal purpose (e.g., 'schema: data structure definition').",
-        "Replace icon-only buttons in Journal and Detail panel with text labels (e.g., 'Bookmark', 'Share', 'Code View') or add aria-labels.",
-        "Implement visible focus rings on all interactive elements (buttons, nodes, dropdowns) to support keyboard navigation."
-      ],
-      "round": 50,
-      "latency_ms": 10910,
-      "reviewed_at": "2026-04-01T10:26:56"
+      "strengths": [],
+      "changes": [],
+      "round": 51,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-01T11:20:47",
+      "mode": "code"
     },
     {
       "persona": "liveoverflow",
       "group": "error-states",
-      "source": "BinaryExplorerView.tsx:1550-1600",
+      "source": "BinaryExplorerView.tsx:1100-1600",
       "criteria": "As someone who demos tools live: What happens if you search for something that doesn't exist? Is the empty state handled gracefully? Is there a clear 'no results' message? Does the tool recover smoothly from edge cases? Would this embarrass you in a live demo?",
-      "score": 4,
-      "verdict": "FAIL",
-      "weaknesses": [
-        "Search for 'zzz_nonexistent' shows empty table with 'CSV (0)' but no explicit 'No results found' message \u2014 confusing during live demo",
-        "Graph contains ambiguous nodes like 'other' and 'schema' without hover tooltips or context \u2014 appears broken to new users",
-        "Floating nodes like 'p3H (add_mcp_server)' in lower graph view lack visible connections \u2014 looks like rendering error",
-        "Empty graph areas (e.g., right side of lower graph) show no loading state or explanation \u2014 appears incomplete"
-      ],
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
       "status": "reviewed",
-      "strengths": [
-        "Graph visually reveals relationships between MCP-related functions and events via directional edges",
-        "Detail panel for 'mcp_auth_completed' provides rich metadata including purpose, triggers, and CVEs",
-        "Chat-driven exploration is visually integrated \u2014 search term 'zzz_nonexistent' appears in context"
-      ],
-      "changes": [
-        "Add explicit 'No results found for \"zzz_nonexistent\"' message above empty table \u2014 prevents confusion in live demos",
-        "Add hover tooltips to ambiguous nodes ('other', 'schema') showing their type and purpose \u2014 clarifies intent",
-        "Render faint placeholder edges or add 'No connections' label for floating nodes \u2014 eliminates perception of rendering bug",
-        "Display 'Loading...' or 'No data for this view' in empty graph regions \u2014 manages user expectations"
-      ],
-      "round": 50,
-      "latency_ms": 5380,
-      "reviewed_at": "2026-04-01T10:26:56"
+      "strengths": [],
+      "changes": [],
+      "round": 51,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-01T11:29:59",
+      "mode": "code"
     }
   ]
 }
