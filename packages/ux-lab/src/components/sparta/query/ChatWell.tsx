@@ -60,6 +60,7 @@ export interface ChatMessage {
     gates_passed: number
     gates_total: number
     gate_summary: string
+    gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>
     control_ids: string[]
     tier: string
     drift?: { old_verdict: string; new_verdict: string; timestamp: string }

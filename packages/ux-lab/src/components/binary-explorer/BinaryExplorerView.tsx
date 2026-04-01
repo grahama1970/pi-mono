@@ -2448,10 +2448,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                       {selectedNode.fields && selectedNode.fields.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>PARAMETERS ({selectedNode.fields.length})</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {selectedNode.fields.map(f => (
-                              <code key={f} onClick={() => onFeatureClick(f)} style={{ fontSize: 9, padding: '1px 4px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#22d3ee', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', borderBottom: '1px dotted rgba(34,211,238,0.3)' }}>{f}</code>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>FIELDS ({selectedNode.fields.length})</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            {(selectedNode.typed_fields || selectedNode.fields.map(f => ({ name: f, type: 'unknown' }))).map((f, i) => (
+                              <div key={`${f.name}-${i}`} onClick={() => onFeatureClick(f.name)} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: '2px 6px', borderRadius: 2, background: '#0d0d0d', border: `1px solid ${EMBRY.border}` }}>
+                                <code style={{ fontSize: 9, color: '#22d3ee', fontFamily: 'JetBrains Mono, monospace', minWidth: 80 }}>{f.name}</code>
+                                <span style={{ fontSize: 8, color: f.type === 'unknown' ? EMBRY.dim : '#a78bfa', fontFamily: 'JetBrains Mono, monospace' }}>{f.type}</span>
+                              </div>
                             ))}
                           </div>
                         </div>

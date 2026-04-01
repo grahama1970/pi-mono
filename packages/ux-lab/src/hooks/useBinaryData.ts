@@ -74,6 +74,7 @@ export interface BinaryGraphNode {
 	description?: string;
 	/** Extra data for detail panel */
 	fields?: string[];
+	typed_fields?: Array<{ name: string; type: string }>;
 	states?: string[];
 	source_pattern?: string;
 }
@@ -411,6 +412,7 @@ ${schemaDescriptions.map((s) => `- ${s.name}: fields=[${s.fields.join(", ")}] co
 		confidence: n.confidence,
 		description: n.description,
 		fields: n.fields,
+		typed_fields: n.typed_fields,
 		states: n.states,
 		source_pattern: n.source_pattern,
 	}));

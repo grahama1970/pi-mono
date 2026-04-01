@@ -418,6 +418,7 @@ export function ChatTab() {
           gates_passed: gates.filter(g => g.passed).length,
           gates_total: gates.length,
           gate_summary: gateSummary,
+          gate_trace: gates,
           control_ids: controlIds,
           tier,
           drift,

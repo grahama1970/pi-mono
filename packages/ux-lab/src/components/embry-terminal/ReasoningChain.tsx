@@ -83,6 +83,28 @@ const ANIM = `
 }
 `;
 
+// --- Glossary (tooltips for skill names and acronyms) ---
+
+const SKILL_GLOSSARY: Record<string, string> = {
+  memory: 'Memory recall — semantic search across ArangoDB knowledge graph (BM25 + cosine + graph traversal)',
+  dogpile: 'Deep research aggregator — parallel search across Brave, ArXiv, GitHub, Perplexity, YouTube',
+  'extract-controls': 'NIST control extractor — maps documents to 800-171/CMMC controls',
+  'batch-quality': 'QRA quality validator — checks Question/Reasoning/Answer triples for accuracy',
+  assess: 'Security posture assessment — evaluates compliance against CMMC/NIST frameworks',
+  plan: 'Task planner — creates YAML execution plans for /orchestrate',
+  'create-evidence-case': 'Evidence case builder — collects proof of control satisfaction',
+  brave: 'Brave Search — web search for documentation and reports',
+  arxiv: 'ArXiv — academic paper search for research citations',
+  github: 'GitHub — repository and code search',
+  scillm: 'LLM proxy — routes to Claude, Gemini, Codex, or DeepSeek',
+};
+
+function skillTooltip(skill: string, type: string): string {
+  const desc = SKILL_GLOSSARY[skill] || `Skill: /${skill}`;
+  const category = type === 'recall' ? 'Memory retrieval' : type === 'skill' ? 'Tool invocation' : 'Processing';
+  return `${desc}\nCategory: ${category}`;
+}
+
 // --- Sub-components ---
 
 const ScoreBar = memo(({ label, value }: { label: string; value: number }) => (
@@ -210,23 +232,35 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
     <div style={{ paddingBottom: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
         {step.skill && (
-          <span style={{
-            fontSize: 10,
-            fontFamily: FONTS.mono,
-            fontWeight: 600,
-            background: `${NVIS.blue}15`,
-            color: NVIS.blue,
-            padding: '2px 6px',
-            borderRadius: 3,
-            border: `1px solid ${NVIS.blue}30`,
-            textTransform: 'uppercase'
-          }}>
+          <span
+            title={skillTooltip(step.skill, step.type)}
+            style={{
+              fontSize: 11,
+              fontFamily: FONTS.mono,
+              fontWeight: 600,
+              background: `${NVIS.blue}15`,
+              color: NVIS.blue,
+              padding: '2px 8px',
+              borderRadius: 3,
+              border: `1px solid ${NVIS.blue}30`,
+              textTransform: 'uppercase',
+              cursor: 'help',
+            }}>
             /{step.skill}
           </span>
         )}
-        <span style={{ fontSize: 13, color: step.status === 'pending' ? NVIS.muted : NVIS.dim, fontFamily: FONTS.ui }}>
+        <span style={{ fontSize: 14, color: step.status === 'pending' ? NVIS.muted : step.status === 'failed' ? NVIS.red : NVIS.dim, fontFamily: FONTS.ui }}>
           {step.summary}
         </span>
+        {step.status === 'failed' && (
+          <button
+            title="Retry this step"
+            style={{
+              fontSize: 10, fontFamily: FONTS.mono, color: NVIS.red, background: `${NVIS.red}10`,
+              border: `1px solid ${NVIS.red}30`, borderRadius: 4, padding: '2px 8px', cursor: 'pointer',
+            }}
+          >retry</button>
+        )}
         {step.confidence !== undefined && (
           <span style={{ 
             fontSize: 10, 
@@ -366,12 +400,12 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          padding: '10px 16px',
+          padding: '12px 16px',
           background: 'none',
           border: 'none',
           textAlign: 'left',
           cursor: 'pointer',
-          minHeight: 40,
+          minHeight: 48,
           transition: 'background 0.2s',
         }}
         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
@@ -380,7 +414,7 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
         {stats.isRunning ? (
           // Running state: "● Thinking... · 3/6"
           <span style={{
-            fontSize: 13,
+            fontSize: 14,
             fontFamily: FONTS.ui,
             color: NVIS.dim,
             display: 'flex',
@@ -421,7 +455,7 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
             </span>
             {agentBadge}
             <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
-            <span title="Tool invocations: memory recall, skill execution, LLM inference" style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim, cursor: 'help' }}>
+            <span title="Tool invocations: memory recall, skill execution, LLM inference" style={{ fontSize: 12, fontFamily: FONTS.mono, color: NVIS.dim, cursor: 'help' }}>
               {stats.done} steps
             </span>
             {stats.totalMs > 0 && (
@@ -454,15 +488,24 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
         )}
       </button>
 
-      {/* Audit metadata bar — visible when expanded */}
-      {isExpanded && (sessionId || user) && (
-        <div style={{
-          display: 'flex', gap: 12, padding: '4px 16px 6px', borderBottom: `1px solid ${NVIS.borderSubtle}`,
-          fontSize: 10, fontFamily: FONTS.mono, color: NVIS.muted,
-        }}>
-          {user && <span title="User who initiated this chain">user: {user}</span>}
-          {sessionId && <span title="Session ID for audit trail">session: {sessionId}</span>}
-          <span title="Chain start time">{new Date().toISOString().slice(0, 19)}Z</span>
+      {/* Audit metadata + legend — visible when expanded */}
+      {isExpanded && (
+        <div style={{ borderBottom: `1px solid ${NVIS.borderSubtle}`, padding: '4px 16px 6px', fontSize: 10, fontFamily: FONTS.mono, color: NVIS.muted }}>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            {user && <span>user: {user}</span>}
+            {sessionId && <span>session: {sessionId}</span>}
+            <span>{new Date().toISOString().slice(0, 19)}Z</span>
+            {agent && <span>agent: {agent}</span>}
+          </div>
+          <div style={{ display: 'flex', gap: 10, marginTop: 3, fontSize: 9, color: NVIS.muted, flexWrap: 'wrap' }}>
+            <span><span style={{ color: NVIS.green }}>✓</span> done</span>
+            <span><span style={{ color: NVIS.blue }}>●</span> running</span>
+            <span><span style={{ color: NVIS.red }}>✗</span> failed</span>
+            <span><span style={{ color: NVIS.muted }}>○</span> pending</span>
+            <span>conf = retrieval confidence (BM25+cosine+graph)</span>
+            <span>QRA = Question/Reasoning/Answer triple</span>
+            <span>SPARTA = Space Attack Research & Tactic Analysis</span>
+          </div>
         </div>
       )}
 

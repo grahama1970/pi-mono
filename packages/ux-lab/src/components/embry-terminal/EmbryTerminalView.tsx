@@ -677,7 +677,7 @@ export function EmbryTerminalView() {
                         if (next !== null) { e.preventDefault(); setInput(next); }
                       }
                     }}
-                    placeholder={`Message ${agent.name}…`}
+                    placeholder={`Message ${agent.name}… (/ for skills, ↑↓ for history)`}
                     rows={1}
                     style={{
                       width: '100%', border: 'none', outline: 'none', resize: 'none',
@@ -707,8 +707,12 @@ export function EmbryTerminalView() {
                     </button>
                   </div>
                 </div>
-                <div style={{ textAlign: 'center', fontSize: 11, color: '#334155', marginTop: 8, fontFamily: 'var(--font-mono)' }}>
-                  {agent.name} on {activeProject?.name || 'no project'} · {skills.length} skills · ⌘K skills · ↑↓ history · Tailscale · {messages.filter(m => m.role === 'user').length} queries logged
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 12, fontSize: 11, color: '#475569', marginTop: 8, fontFamily: 'var(--font-mono)', flexWrap: 'wrap' }}>
+                  <span>{agent.name} on {activeProject?.name || 'no project'}</span>
+                  <span title="Type / to open skill palette">⌘K or / — {skills.length} skills</span>
+                  <span title="Arrow up/down to browse command history">↑↓ — history</span>
+                  <span title="Enter to send, Shift+Enter for newline">⏎ send</span>
+                  <span>{messages.filter(m => m.role === 'user').length} queries</span>
                 </div>
               </div>
             </div>

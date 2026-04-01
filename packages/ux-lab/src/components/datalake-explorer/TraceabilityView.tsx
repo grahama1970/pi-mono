@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ChevronRight, ChevronDown } from 'lucide-react'
+import { ChevronRight, ChevronDown, Image } from 'lucide-react'
 import { EMBRY, label } from '../common/EmbryStyle'
 
 const API = 'http://localhost:3001'
@@ -7,6 +7,7 @@ const MONO = '"JetBrains Mono", "SF Mono", monospace'
 
 interface TraceItem {
   id?: string
+  _key?: string
   title?: string
   text?: string
   page?: number
@@ -31,10 +32,20 @@ function truncate(s: string, max = 80): string {
   return s.length > max ? s.slice(0, max) + '...' : s
 }
 
-function GroupSection({ groupLabel, color, items }: { groupLabel: string; color: string; items: TraceItem[] }) {
+function GroupSection({ groupLabel, color, items, hasAssets }: { groupLabel: string; color: string; items: TraceItem[]; hasAssets?: boolean }) {
   const [open, setOpen] = useState(true)
+  const [imgMap, setImgMap] = useState<Record<string, string | null>>({})
   const toggle = useCallback(() => setOpen(v => !v), [])
   const Icon = open ? ChevronDown : ChevronRight
+
+  const toggleImg = useCallback((key: string) => {
+    if (key in imgMap) { setImgMap(m => { const n = { ...m }; delete n[key]; return n }); return }
+    setImgMap(m => ({ ...m, [key]: '' }))
+    fetch(`${API}/api/datalake/asset/${key}`)
+      .then(r => { if (!r.ok) throw new Error(); return r.blob() })
+      .then(b => setImgMap(m => ({ ...m, [key]: URL.createObjectURL(b) })))
+      .catch(() => setImgMap(m => ({ ...m, [key]: null })))
+  }, [imgMap])
 
   return (
     <div style={{ marginBottom: 4 }}>
@@ -61,33 +72,52 @@ function GroupSection({ groupLabel, color, items }: { groupLabel: string; color:
           )}
           {items.map((item, i) => {
             const display = item.title || item.text || item.id || `Item ${i + 1}`
+            const key = item._key || item.id
             return (
-              <div
-                key={item.id ?? i}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '5px 12px', borderBottom: `1px solid ${EMBRY.border}`,
-                  fontSize: 11, fontFamily: MONO, color: EMBRY.white,
-                }}
-              >
-                <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {truncate(display)}
-                </span>
-                {item.page != null && (
-                  <span style={{ fontSize: 9, color: EMBRY.dim, flexShrink: 0 }}>
-                    p.{item.page}
-                  </span>
-                )}
-                <button
+              <div key={item.id ?? i}>
+                <div
                   style={{
-                    fontSize: 8, fontWeight: 700, fontFamily: MONO,
-                    padding: '2px 6px', borderRadius: 3, cursor: 'pointer',
-                    color: EMBRY.accent, background: `${EMBRY.accent}12`,
-                    border: `1px solid ${EMBRY.accent}33`, flexShrink: 0,
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '5px 12px', borderBottom: `1px solid ${EMBRY.border}`,
+                    fontSize: 11, fontFamily: MONO, color: EMBRY.white,
                   }}
                 >
-                  Evidence
-                </button>
+                  <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {truncate(display)}
+                  </span>
+                  {item.page != null && (
+                    <span style={{ fontSize: 9, color: EMBRY.dim, flexShrink: 0 }}>
+                      p.{item.page}
+                    </span>
+                  )}
+                  {hasAssets && key && (
+                    <button onClick={() => toggleImg(key)} title="Toggle image preview" style={{
+                      display: 'flex', alignItems: 'center', padding: '2px 4px', borderRadius: 3, cursor: 'pointer',
+                      color: key in imgMap ? color : EMBRY.dim, background: 'transparent',
+                      border: `1px solid ${key in imgMap ? color : EMBRY.border}`, flexShrink: 0,
+                    }}><Image size={10} /></button>
+                  )}
+                  <button
+                    onClick={() => console.log('[Evidence]', groupLabel, item)}
+                    style={{
+                      fontSize: 8, fontWeight: 700, fontFamily: MONO,
+                      padding: '2px 6px', borderRadius: 3, cursor: 'pointer',
+                      color: EMBRY.accent, background: `${EMBRY.accent}12`,
+                      border: `1px solid ${EMBRY.accent}33`, flexShrink: 0,
+                    }}
+                  >
+                    Evidence
+                  </button>
+                </div>
+                {key && key in imgMap && (
+                  <div style={{ padding: '6px 12px 8px 12px', borderBottom: `1px solid ${EMBRY.border}` }}>
+                    {imgMap[key] === '' && <span style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>Loading...</span>}
+                    {imgMap[key] === null && <span style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>No image available</span>}
+                    {imgMap[key] && imgMap[key] !== '' && (
+                      <img src={imgMap[key]!} style={{ maxWidth: '100%', maxHeight: 300, border: `1px solid ${EMBRY.border}`, borderRadius: 4 }} />
+                    )}
+                  </div>
+                )}
               </div>
             )
           })}
@@ -169,7 +199,7 @@ export function TraceabilityView({ docKey }: { docKey: string | null }) {
       )}
       {GROUPS.map(g => {
         const items = Array.isArray(data[g.key]) ? data[g.key]! : []
-        return <GroupSection key={g.key} groupLabel={g.label} color={g.color} items={items} />
+        return <GroupSection key={g.key} groupLabel={g.label} color={g.color} items={items} hasAssets={g.key === 'tables' || g.key === 'figures'} />
       })}
     </div>
   )

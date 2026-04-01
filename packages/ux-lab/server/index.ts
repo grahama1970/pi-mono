@@ -253,23 +253,27 @@ app.get('/api/datalake/documents', async (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 50, 500)
   const offset = Number(req.query.offset) || 0
   try {
-    const result = await proxyPost('/list', {
-      collection: 'datalake_documents',
-      k: limit,
-      offset,
-      ...(scope ? { filters: { scope } } : {}),
-    }) as { documents?: any[]; total?: number }
-    let docs = result?.documents ?? []
-    // Fallback to documents collection if datalake_documents is sparse
-    if (docs.length === 0) {
-      const fallback = await proxyPost('/list', {
-        collection: 'documents',
-        k: limit,
-        offset,
-      }) as { documents?: any[] }
-      docs = fallback?.documents ?? []
+    // Primary: 'documents' collection (15K+ real extracted docs with graph edges)
+    // Secondary: 'datalake_documents' (ingestion metadata)
+    // When scope is requested, search lessons by scope and return linked doc IDs
+    if (scope) {
+      // Get lessons matching this scope to find doc references
+      const lessons = await proxyPost('/list', {
+        collection: 'lessons', k: limit, offset,
+        filters: { scope },
+        return_fields: ['_key', 'title', 'problem', 'tags', 'scope'],
+      }) as any
+      const docs = (lessons?.documents ?? []).map((d: any) => ({
+        ...d, filename: d.title || d._key, scope: d.scope,
+      }))
+      res.json({ documents: docs, offset, limit, total: lessons?.total ?? docs.length })
+    } else {
+      // No scope filter — list from documents collection (has graph edges)
+      const result = await proxyPost('/list', {
+        collection: 'documents', k: limit, offset,
+      }) as { documents?: any[]; total?: number }
+      res.json({ documents: result?.documents ?? [], offset, limit, total: result?.total ?? 0 })
     }
-    res.json({ documents: docs, offset, limit, total: result?.total ?? docs.length })
   } catch (e) {
     res.status(502).json({ error: 'Documents query failed', detail: String(e) })
   }

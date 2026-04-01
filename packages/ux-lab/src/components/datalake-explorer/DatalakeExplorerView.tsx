@@ -18,10 +18,12 @@ interface DatalakeStats {
 
 interface DatalakeDoc {
   _key: string
-  filename: string
-  scope: string
-  page_count: number
+  filename?: string
+  title?: string
+  scope?: string
+  page_count?: number
   extraction_status?: string
+  tags?: string[]
 }
 
 type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade'
@@ -66,8 +68,9 @@ function DatalakeLeftPane({
   const filteredScopes = scopes.filter(
     s => !search || s.name.toLowerCase().includes(search),
   )
+  const docLabel = (d: DatalakeDoc) => d.filename || d.title || d._key
   const filteredDocs = documents.filter(
-    d => !search || d.filename.toLowerCase().includes(search),
+    d => !search || docLabel(d).toLowerCase().includes(search),
   )
 
   return (
@@ -136,7 +139,7 @@ function DatalakeLeftPane({
                 whiteSpace: 'nowrap',
               }}
             >
-              {d.filename}
+              {docLabel(d)}
             </span>
             <span
               style={{
@@ -145,10 +148,7 @@ function DatalakeLeftPane({
                 fontFamily: MONO,
               }}
             >
-              {d.scope} · {d.page_count ?? '?'}p
-              {d.extraction_status
-                ? ` · ${d.extraction_status}`
-                : ''}
+              {d.scope ? `${d.scope} · ` : ''}{d.page_count ? `${d.page_count}p` : d._key.slice(0, 12)}
             </span>
           </div>
         ))}
@@ -239,6 +239,84 @@ function OverviewTab({ stats }: { stats: DatalakeStats }) {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+/* ── Corpus Tab — document detail with chunk breakdown ────── */
+
+function CorpusTab({ docKey }: { docKey: string | null }) {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!docKey) { setData(null); return }
+    setLoading(true)
+    // Fetch traceability to get section/req/table/figure counts
+    fetch(`${API}/api/datalake/traceability`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc_key: docKey }),
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => setData(d))
+      .catch(() => setData(null))
+      .finally(() => setLoading(false))
+  }, [docKey])
+
+  if (!docKey) return (
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: EMBRY.dim, fontFamily: MONO, fontSize: 12 }}>
+      Select a document to view corpus details
+    </div>
+  )
+  if (loading) return (
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: EMBRY.dim, fontFamily: MONO, fontSize: 12 }}>
+      Loading...
+    </div>
+  )
+
+  const doc = data?.document ?? {}
+  const sections = data?.sections ?? []
+  const requirements = data?.requirements ?? []
+  const tables = data?.tables ?? []
+  const figures = data?.figures ?? []
+  const edges = data?.edges ?? {}
+
+  const rows = [
+    { label: 'Document Key', value: docKey },
+    { label: 'Filename', value: doc.filename || doc.title || doc._key || '—' },
+    { label: 'Sections', value: `${sections.length} (${edges.has_section ?? 0} edges)`, color: '#4CAF50' },
+    { label: 'Requirements', value: `${requirements.length} (${edges.has_requirement ?? 0} edges)`, color: '#FF9800' },
+    { label: 'Tables', value: `${tables.length} (${edges.has_table ?? 0} edges)`, color: '#2196F3' },
+    { label: 'Figures', value: `${figures.length} (${edges.has_figure ?? 0} edges)`, color: '#9C27B0' },
+  ]
+
+  return (
+    <div style={{ padding: 20, overflow: 'auto' }}>
+      <div style={{ ...label, marginBottom: 16 }}>Document Detail</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {rows.map(r => (
+          <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 12px', ...card }}>
+            <span style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>{r.label}</span>
+            <span style={{ fontSize: 11, color: (r as any).color ?? EMBRY.white, fontFamily: MONO, fontWeight: 600 }}>{r.value}</span>
+          </div>
+        ))}
+      </div>
+
+      {sections.length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <div style={{ ...label, marginBottom: 8, color: '#4CAF50' }}>Sections ({sections.length})</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {sections.slice(0, 50).map((s: any, i: number) => (
+              <div key={s._key ?? i} style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.white, padding: '4px 8px', borderLeft: '2px solid #4CAF50' }}>
+                {s.title || s.content?.slice(0, 80) || s._key}
+                {s.page != null && <span style={{ color: EMBRY.dim, marginLeft: 8 }}>p.{s.page}</span>}
+              </div>
+            ))}
+            {sections.length > 50 && <div style={{ fontSize: 9, color: EMBRY.dim, fontFamily: MONO }}>...and {sections.length - 50} more</div>}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -391,7 +469,7 @@ export function DatalakeExplorerView() {
         {/* Tab content */}
         <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
           {activeTab === 'overview' && <OverviewTab stats={stats} />}
-          {activeTab === 'corpus' && <PlaceholderTab name="Corpus" />}
+          {activeTab === 'corpus' && <CorpusTab docKey={selectedDocKey} />}
           {activeTab === 'extraction' && <PlaceholderTab name="Extraction" />}
           {activeTab === 'requirements' && <PlaceholderTab name="Requirements" />}
           {activeTab === 'traceability' && <TraceabilityView docKey={selectedDocKey} />}

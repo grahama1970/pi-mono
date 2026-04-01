@@ -1008,7 +1008,16 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('fill', (d) => hasCwe(d.id) ? '#ef4444' : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
       .attr('fill-opacity', (d) => hasCwe(d.id) ? 0.9 : nodeImportance(d))
       .attr('stroke', (d) => d.id === selectedNodeIdRef.current ? EMBRY.white : hasCwe(d.id) ? '#fca5a5' : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
-      .attr('stroke-width', (d) => d.id === selectedNodeIdRef.current ? 2.5 : hasCwe(d.id) ? 2 : 1)
+      .attr('stroke-width', (d) => {
+        if (d.id === selectedNodeIdRef.current) return 2.5
+        if (hasCwe(d.id)) return 2
+        // Gemini R4: degree-based stroke width for visual hierarchy
+        const deg = degree.get(d.id) ?? 0
+        if (deg > 15) return 2.5
+        if (deg > 8) return 2.0
+        if (deg > 4) return 1.5
+        return 1
+      })
       .attr('stroke-dasharray', (d) => d.tier === 'T1' ? '4,2' : d.tier === 'T2' ? '1,2' : 'none')
       .attr('stroke-opacity', (d) => nodeImportance(d) * 0.6)
       .transition()
@@ -1096,19 +1105,25 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('font-family', 'JetBrains Mono, monospace')
       .text((d) => `${degree.get(d.id)}`)
 
-    // Node label (with text shadow for contrast)
+    // Node label — Gemini R4: double text-shadow + bright fill + background pill effect
     nodeGs.append('text')
       .attr('class', 'node-label')
       .attr('dy', (d) => r(d) + 10)
       .attr('text-anchor', 'middle')
-      .attr('fill', EMBRY.dim)
-      .attr('font-size', 9)
+      .attr('fill', '#e2e8f0')
+      .attr('font-size', (d) => {
+        // Gemini R4: scale label size by degree for visual hierarchy
+        const deg = degree.get(d.id) ?? 0
+        if (deg > 15) return 12
+        if (deg > 8) return 11
+        return 9
+      })
       .attr('font-weight', 600)
       .attr('font-family', 'JetBrains Mono, monospace')
       .style('paint-order', 'stroke fill')
-      .attr('stroke', EMBRY.bgDeep)
-      .attr('stroke-width', 3)
-      .style('filter', 'drop-shadow(0 0 2px rgba(0,0,0,0.6))')
+      .attr('stroke', 'rgba(20,20,25,0.85)')
+      .attr('stroke-width', 4)
+      .style('filter', 'drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000)')
       .attr('opacity', (d) => {
         if (d.nodeType === 'namespace') return 1
         if ((degree.get(d.id) ?? 0) > 5) return 0.7
@@ -1433,6 +1448,29 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         <svg ref={svgRef} role="img" aria-label={`Interactive graph: ${nodes.length} nodes. Arrow keys to navigate, Enter to select, Escape to deselect.`} style={{ width: '100%', height: '100%', display: 'block' }} />
         {/* Screen reader announcements for state changes */}
         <div id="be-graph-announce" aria-live="polite" aria-atomic="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }} />
+
+        {/* Edge Type Legend — Gemini R4: bottom-left, compact */}
+        <div style={{
+          position: 'absolute', bottom: 10, left: 10, zIndex: 10,
+          background: 'rgba(16,16,20,0.85)', border: `1px solid ${EMBRY.border}`,
+          borderRadius: 4, padding: '6px 10px', backdropFilter: 'blur(8px)',
+          fontSize: 11, fontFamily: 'JetBrains Mono, monospace', color: '#94a3b8',
+          display: 'flex', flexDirection: 'column', gap: 3, pointerEvents: 'none',
+        }}>
+          <div style={{ fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: EMBRY.dim, marginBottom: 2 }}>Edges</div>
+          {([
+            ['contains', '#64748b', 'none'],
+            ['payload', '#2196F3', 'none'],
+            ['emits', '#FF9800', 'none'],
+            ['triggers', '#4CAF50', 'none'],
+            ['has_parameter', '#9C27B0', '3,2'],
+          ] as const).map(([label, color, dash]) => (
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg width="20" height="6"><line x1="0" y1="3" x2="20" y2="3" stroke={color} strokeWidth={label === 'triggers' ? 2.5 : 1.5} strokeDasharray={dash} /></svg>
+              <span style={{ fontSize: 9 }}>{label.replace('_', ' ')}</span>
+            </div>
+          ))}
+        </div>
 
         {/* Tooltip (D3 managed) */}
         <div id="graph-tooltip" style={{
