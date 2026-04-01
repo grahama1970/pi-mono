@@ -85,6 +85,11 @@ class Task:
     command: str = ""
     prompt: str = ""
     context_boundary: str = ""
+    # code-runner specific fields
+    read_context: list[str] = field(default_factory=list)
+    blind_tests: list[str] = field(default_factory=list)
+    max_rounds: int = 5
+    allowlist: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         d: dict[str, Any] = {
@@ -106,6 +111,14 @@ class Task:
             d["prompt"] = self.prompt
         if self.context_boundary:
             d["context_boundary"] = self.context_boundary
+        if self.read_context:
+            d["read_context"] = self.read_context
+        if self.blind_tests:
+            d["blind_tests"] = self.blind_tests
+        if self.max_rounds != 5:
+            d["max_rounds"] = self.max_rounds
+        if self.allowlist:
+            d["allowlist"] = self.allowlist
         return d
 
 
