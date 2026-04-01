@@ -53,6 +53,13 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
   const [expanded, setExpanded] = useState(false)
   const [debugIdx, setDebugIdx] = useState(-1)
 
+  // Calibrate confidence display with context
+  const confNorm = confidence != null ? (confidence > 1 ? Math.min(confidence / 100, 1) : confidence) : null
+  const confPct = confNorm != null ? Math.round(confNorm * 100) : null
+  const confColor = confPct != null ? (confPct > 70 ? EMBRY.green : confPct > 40 ? EMBRY.amber : EMBRY.red) : EMBRY.muted
+  const confLabel = confPct != null ? (confPct > 80 ? 'High confidence' : confPct > 50 ? 'Moderate confidence' : 'Low confidence') : ''
+  const confTooltip = confPct != null ? `${confLabel}: BM25 lexical + cosine semantic + graph traversal combined score. >${'70'}%=strong match, 40-70%=partial, <40%=weak` : ''
+
   return (
     <div style={{ margin: '6px 0' }}>
       <button onClick={() => setExpanded(v => !v)} style={{
@@ -60,9 +67,15 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
         fontSize: 11, color: EMBRY.dim, background: 'none', border: 'none',
         cursor: 'pointer', padding: '4px 0', textAlign: 'left',
       }}>
+        {confPct != null && (
+          <span style={{ color: confColor, fontWeight: 700, fontFamily: 'monospace', fontSize: 10 }} title={confTooltip}>
+            {confPct}%
+          </span>
+        )}
         <span>Memory recall</span>
         <span style={{ color: EMBRY.muted }}>{'\u00B7'}</span>
         <span>{resultCount} results</span>
+        {confLabel && <span style={{ fontSize: 9, color: confColor, opacity: 0.7 }}>{confLabel}</span>}
         <span style={{ marginLeft: 'auto', fontSize: 10, color: EMBRY.muted, transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>{'\u25BE'}</span>
       </button>
       {expanded && (
@@ -79,7 +92,7 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
               {/* Debug scores — collapsed by default */}
               {item.scores && (
                 <details style={{ marginTop: 4 }} open={debugIdx === i} onToggle={(e) => setDebugIdx((e.currentTarget as HTMLDetailsElement).open ? i : -1)}>
-                  <summary style={{ fontSize: 9, color: EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>Debug scores</summary>
+                  <summary style={{ fontSize: 9, color: EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>Retrieval scores (BM25 lexical · Graph traversal · Dense semantic · Freshness)</summary>
                   <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <ScoreBar label="BM25" value={item.scores.bm25 ?? 0} color={EMBRY.accent} />
                     <ScoreBar label="Graph" value={item.scores.graph ?? 0} color={EMBRY.blue} />

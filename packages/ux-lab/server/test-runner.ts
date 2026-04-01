@@ -118,7 +118,8 @@ class CDPClient {
       '--headless=new', '--no-sandbox', '--disable-gpu',
       '--remote-debugging-port=' + CDP_HEADLESS_PORT,
       '--window-size=1920,1080',
-      'about:blank',
+      '--disable-features=TranslateUI',
+      'http://localhost:3002/#embry-terminal',
     ], { stdio: 'ignore', detached: false });
   }
 }
@@ -1016,13 +1017,13 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
         case 'persona_review': {
           const personaSlug = step.persona || 'unknown';
           const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface.';
-          const sourceFile = step.source_file || 'src/components/binary-explorer/BinaryExplorerView.tsx';
+          const sourceFile = step.source_file; // undefined → VLM visual review path
 
           // Load AGENTS.md for persona context
           const prAgentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
           const prAgentProfile = existsSync(prAgentPath) ? readFileSync(prAgentPath, 'utf-8').slice(0, 1500) : '';
 
-          // Load prior round weaknesses for this test (stored in runHistory)
+          // Load prior round weaknesses
           const priorKey = `${personaSlug}:${step.name || step.persona_scope || 'default'}`;
           const priorWeaknesses: string[] = (globalThis as any).__priorWeaknesses?.[priorKey] || [];
           let priorBlock = '';
@@ -1030,6 +1031,83 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
             priorBlock = `\n## Prior Round Weaknesses (verify if these were fixed)\n${priorWeaknesses.map((w: string, i: number) => `${i + 1}. ${w}`).join('\n')}\n`;
           }
 
+          // ── VLM Visual Review Path (no source_file → screenshot → VLM) ──
+          if (!sourceFile) {
+            try {
+              const prScreenDir = join(RESULTS_DIR, runId, 'screenshots');
+              mkdirSync(prScreenDir, { recursive: true });
+              const prScreenName = `persona_${personaSlug}_${step.name || 'review'}_${Date.now()}.png`;
+              const prScreenPath = join(prScreenDir, prScreenName);
+              await cdp.screenshot(prScreenPath);
+              console.log(`[PERSONA_REVIEW] VLM screenshot: ${prScreenName}`);
+
+              const imgBase64 = readFileSync(prScreenPath).toString('base64');
+
+              const vlmPrompt = `You are ${personaSlug.replace(/-/g, ' ')}.
+
+${prAgentProfile}
+
+## Task: Visual Review of "${step.name || step.persona_scope || 'feature'}"
+
+You are looking at a screenshot of a web application. Evaluate it from your professional perspective.
+
+## Review Criteria
+${reviewCriteria}
+${priorBlock}
+## Response Format
+
+Return ONLY JSON:
+{"verdict":"PASS" or "FAIL","score":1-10,"strengths":["..."],"weaknesses":["..."],"changes":["..."],"professional_impact":"..."}
+
+9-10=production-ready, 7-8=usable, 5-6=promising, 3-4=needs work, 1-2=broken.
+Be specific about what you see in the screenshot.`;
+
+              const vlmRes = await fetch('http://localhost:4001/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer sk-dev-proxy-123', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  model: 'vlm',
+                  messages: [{ role: 'user', content: [
+                    { type: 'image_url', image_url: { url: `data:image/png;base64,${imgBase64}` } },
+                    { type: 'text', text: vlmPrompt },
+                  ]}],
+                  max_tokens: 2048, temperature: 0.1,
+                }),
+              });
+
+              const vlmData = await vlmRes.json() as any;
+              const vlmText = vlmData.choices?.[0]?.message?.content || '';
+              console.log(`[PERSONA_REVIEW] VLM response: ${vlmText.length} chars`);
+
+              // Parse JSON (3-level fallback)
+              let parsed: any = null;
+              try { parsed = JSON.parse(vlmText); } catch {}
+              if (!parsed) { const m = vlmText.match(/```(?:json)?\s*\n([\s\S]*?)\n```/); if (m) try { parsed = JSON.parse(m[1]); } catch {} }
+              if (!parsed) { let d = 0, s = -1; for (let i = 0; i < vlmText.length; i++) { if (vlmText[i] === '{') { if (d === 0) s = i; d++; } else if (vlmText[i] === '}') { d--; if (d === 0 && s >= 0) { try { parsed = JSON.parse(vlmText.slice(s, i + 1)); break; } catch { s = -1; } } } } }
+
+              const score = parsed?.score || 0;
+              const verdict = (parsed?.verdict || 'FAIL').toUpperCase();
+              const weaknesses = Array.isArray(parsed?.weaknesses) ? parsed.weaknesses : [];
+
+              if (!(globalThis as any).__priorWeaknesses) (globalThis as any).__priorWeaknesses = {};
+              (globalThis as any).__priorWeaknesses[priorKey] = weaknesses.slice(0, 3);
+
+              return {
+                status: verdict === 'PASS' ? 'PASSED' : 'FAILED',
+                expected: `${personaSlug}: ${reviewCriteria}`,
+                actual: vlmText || 'No VLM response',
+                score, verdict, weaknesses,
+                changes: Array.isArray(parsed?.changes) ? parsed.changes : [],
+                screenshot: `/test-results/${runId}/screenshots/${prScreenName}`,
+                reviewMode: 'visual-vlm',
+              };
+            } catch (vlmErr: any) {
+              console.error(`[PERSONA_REVIEW] VLM failed:`, vlmErr.message);
+              return { status: 'FAILED', detail: `VLM error: ${vlmErr.message}`, expected: `${personaSlug}`, actual: vlmErr.message };
+            }
+          }
+
+          // ── Source Code Review Path (original subagent flow) ──
           const personaPrompt = `You are ${personaSlug.replace(/-/g, ' ')}, reverse engineering expert.
 
 ${prAgentProfile}

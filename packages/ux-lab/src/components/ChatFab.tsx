@@ -32,6 +32,14 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [lastLayer, setLastLayer] = useState<CascadeLayer | null>(null)
+  const [skills, setSkills] = useState<Array<{ name: string; description: string; triggers: string[] }>>([])
+
+  // Fetch skills once on first open
+  const skillsFetched = useRef(false)
+  if (open && !skillsFetched.current) {
+    skillsFetched.current = true
+    fetch(`${API}/api/skills`).then(r => r.ok ? r.json() : []).then(setSkills).catch(() => {})
+  }
   const sessionId = useRef(crypto.randomUUID())
 
   const addMessage = useCallback((msg: Omit<ChatMessage, 'id' | 'timestamp'>) => {
@@ -411,6 +419,11 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
           onSend={handleSend}
           onFeedback={handleFeedback}
           onClarifyClick={handleClarify}
+          skills={skills}
+          onEntityClick={useCallback((entity: string, type: string) => {
+            if (type === 'skill') handleSend(entity, 'natural')
+            else handleSend(`/memory recall "${entity}"`, 'natural')
+          }, [handleSend])}
         />
       </div>
     </div>

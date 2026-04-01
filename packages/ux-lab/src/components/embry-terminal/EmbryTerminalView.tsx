@@ -10,17 +10,17 @@ import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import {
   Menu, Sparkles, Brain, Cpu, ChevronDown,
   Send, Plus, X, Code, Eye, FileText,
-  Search, FolderOpen, GitBranch, Settings,
+  Search, FolderOpen, GitBranch, Settings, Download,
 } from 'lucide-react';
 import ReasoningChain from './ReasoningChain';
 import DOMPurify from 'dompurify';
 import {
   highlightEntities, MarkdownRenderer, SkillPalette,
-  RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard,
+  RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard, DeltaReportCard,
 } from '../shared-chat';
 import type {
   RecallItem, RecallResult, ReasoningStep, Artifact, Skill,
-  ThreatMatrixSummary, EntityType,
+  ThreatMatrixSummary, EntityType, DeltaReport,
 } from '../shared-chat';
 
 // ── Types ───────────────────────────────────────────────────────────────────
@@ -32,7 +32,6 @@ interface Project {
   exists: boolean;
 }
 
-// Local types (extend shared types)
 interface AgentConfig {
   id: string;
   name: string;
@@ -40,11 +39,11 @@ interface AgentConfig {
   color: string;
 }
 
-interface Project {
-  name: string;
-  path: string;
-  branch: string;
-  exists: boolean;
+interface HealthStatus {
+  expressUp: boolean;
+  memoryUp: boolean;
+  scillmUp: boolean;
+  latencyMs?: number;
 }
 
 interface Message {
@@ -59,6 +58,7 @@ interface Message {
   reasoningSteps?: ReasoningStep[];
   chainTitle?: string;
   matrixSummary?: ThreatMatrixSummary;
+  deltaReport?: DeltaReport;
   timestamp: number;
 }
 
@@ -133,8 +133,8 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '24px 0' }}
            data-qid={`chat:message:${msg.id}`}>
         <div style={{
-          maxWidth: '85%', padding: '14px 18px', borderRadius: '18px 18px 4px 18px',
-          background: '#1e1e24', fontSize: 15, lineHeight: 1.65, color: '#e2e8f0',
+          maxWidth: '85%', padding: '16px 20px', borderRadius: '18px 18px 4px 18px',
+          background: '#1e1e24', fontSize: 16, lineHeight: 1.7, color: '#e2e8f0',
           fontFamily: 'var(--font-ui)',
         }}>
           {highlightEntities(msg.content, onEntityClick)}
@@ -156,7 +156,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
       )}
 
       {/* Content — shared MarkdownRenderer with entity highlighting */}
-      <div style={{ fontSize: 15, lineHeight: 1.65, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
+      <div style={{ fontSize: 16, lineHeight: 1.7, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
         <MarkdownRenderer content={msg.content} onEntityClick={onEntityClick} />
 
         {msg.codeBlock && (
@@ -179,6 +179,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
         )}
         {msg.verdict && <GateChain gates={msg.verdict.gates} verdict={msg.verdict.state} tier={msg.verdict.tier} />}
         {msg.matrixSummary && <ThreatMatrixCard summary={msg.matrixSummary} />}
+        {msg.deltaReport && <DeltaReportCard report={msg.deltaReport} onEntityClick={onEntityClick} />}
         {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
           <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
         )}
@@ -279,19 +280,35 @@ export function EmbryTerminalView() {
   const [connection, setConnection] = useState<ConnectionState>('offline');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [showExport, setShowExport] = useState(false);
+  const [health, setHealth] = useState<HealthStatus>({ expressUp: false, memoryUp: false, scillmUp: false });
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIdx, setHistoryIdx] = useState(-1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Fetch real data
+  // Fetch real data + health check
   useEffect(() => {
+    const t0 = Date.now();
     Promise.all([fetchProjects(), fetchSkills()])
       .then(([p, s]) => {
         setProjects(p);
         setSkills(s);
         if (p.length > 0) setActiveProject(p[0]);
         setConnection('connected');
+        setHealth(h => ({ ...h, expressUp: true, latencyMs: Date.now() - t0 }));
       })
       .catch(() => setConnection('offline'));
+    // Check memory daemon
+    fetch(`${BACKEND_URL}/agent/recall`, {
+      method: 'POST', headers: { ...AUTH_HEADERS, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: 'health', project: 'test' }),
+    }).then(r => r.ok && setHealth(h => ({ ...h, memoryUp: true }))).catch(() => {});
+    // Check scillm via Express proxy (avoids CORS)
+    fetch(`${BACKEND_URL}/health`, { headers: AUTH_HEADERS })
+      .then(r => r.json())
+      .then(d => { if (d.status === 'ok') setHealth(h => ({ ...h, scillmUp: true })); })
+      .catch(() => {});
   }, []);
 
   // Scroll to bottom
@@ -325,6 +342,8 @@ export function EmbryTerminalView() {
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
     const text = input.trim();
+    setCommandHistory(prev => [text, ...prev].slice(0, 50));
+    setHistoryIdx(-1);
     setMessages(m => [...m, { id: `u${Date.now()}`, role: 'user', content: text, timestamp: Date.now() }]);
     setInput('');
     setShowPalette(false);
@@ -421,12 +440,19 @@ export function EmbryTerminalView() {
 
   sendMessageRef.current = sendMessage;
 
-  // Entity click → skill invocation or memory recall
+  // Entity click → navigate to the right UX Lab project for that entity type
   const handleEntityClick = useCallback((entity: string, type: EntityType) => {
     if (type === 'skill') {
       setInput(`${entity} `);
       inputRef.current?.focus();
+    } else if (type === 'control' || type === 'attack' || type === 'sparta') {
+      // NIST controls, ATT&CK techniques, SPARTA IDs → full-screen threat matrix
+      window.location.hash = `sparta-explorer/threat-matrix?focus=${encodeURIComponent(entity)}`;
+    } else if (type === 'cwe') {
+      // CWE → Binary Explorer (our IDA Pro equivalent)
+      window.location.hash = `binary-explorer?cwe=${encodeURIComponent(entity)}`;
     } else {
+      // Framework references (NIST 800-171, CMMC, FedRAMP) → memory recall
       setInput(`/memory recall "${entity}"`);
       setTimeout(() => sendMessageRef.current?.(), 100);
     }
@@ -457,14 +483,84 @@ export function EmbryTerminalView() {
 
         <div style={{ flex: 1 }} />
 
-        {/* Connection status */}
+        {/* Health status — per-service indicators with labels */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} data-qid="topbar:connection:status">
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: connectionColor, boxShadow: connection === 'connected' ? `0 0 4px ${connectionColor}` : 'none' }} />
-          <span style={{ fontSize: 11, color: '#64748b', fontFamily: 'var(--font-mono)' }}>{connection === 'connected' ? 'Connected' : 'Offline'}</span>
+          {[
+            { label: 'API', up: health.expressUp },
+            { label: 'MEM', up: health.memoryUp },
+            { label: 'LLM', up: health.scillmUp },
+          ].map(s => (
+            <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 3 }} title={`${s.label}: ${s.up ? 'connected' : 'down'}`}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.up ? '#00ff88' : '#ff4444', boxShadow: s.up ? '0 0 4px #00ff8866' : 'none' }} />
+              <span style={{ fontSize: 9, fontFamily: 'var(--font-mono)', color: s.up ? '#64748b' : '#ff4444' }}>{s.label}</span>
+            </div>
+          ))}
+          {health.latencyMs && (
+            <span style={{ fontSize: 9, color: '#475569', fontFamily: 'var(--font-mono)', marginLeft: 2 }}>
+              {health.latencyMs}ms
+            </span>
+          )}
+        </div>
+
+        {/* Export conversation — dropdown with format options */}
+        <div style={{ position: 'relative' }}>
+          <button onClick={() => setShowExport(v => !v)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 6 }} title="Export session">
+            <Download size={16} />
+          </button>
+          {showExport && (
+            <div style={{
+              position: 'absolute', top: '100%', right: 0, marginTop: 4, zIndex: 50,
+              background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.13)', borderRadius: 8,
+              padding: 4, minWidth: 160, boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+            }}>
+              {(['markdown', 'html', 'pdf'] as const).map(fmt => (
+                <button key={fmt} onClick={() => {
+                  const header = `# Embry Terminal Session\n\nProject: ${activeProject?.name || 'none'}\nAgent: ${agent.name}\nDate: ${new Date().toISOString()}\nAudit: /memory recall "session:${Date.now()}" for full evidence trail\n\n---\n\n`;
+                  const md = messages.map(m => {
+                    let block = m.role === 'user' ? `**User:** ${m.content}` : `**Agent (${m.agent || 'claude'}):**\n${m.content}`;
+                    if (m.recall) block += `\n\n> Memory recall: ${m.recall.confidence > 1 ? Math.min(Math.round(m.recall.confidence), 100) : Math.round(m.recall.confidence * 100)}% confidence, ${m.recall.items.length} results`;
+                    if (m.skillUsed) block += `\n\n> Skill: /${m.skillUsed}`;
+                    return block;
+                  }).join('\n\n---\n\n');
+                  const content = header + md;
+
+                  if (fmt === 'markdown') {
+                    const blob = new Blob([content], { type: 'text/markdown' });
+                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `embry-session-${Date.now()}.md`; a.click();
+                  } else if (fmt === 'html') {
+                    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Embry Session</title><style>body{background:#141414;color:#e2e8f0;font-family:system-ui;max-width:800px;margin:0 auto;padding:40px;line-height:1.7}h1{color:#00ff88}hr{border:none;border-top:1px solid #333}code{background:#0b1220;padding:2px 6px;border-radius:4px;color:#4a9eff}</style></head><body><pre>${content.replace(/</g, '&lt;')}</pre></body></html>`;
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `embry-session-${Date.now()}.html`; a.click();
+                  } else {
+                    // PDF: open print dialog on HTML
+                    const win = window.open('', '_blank');
+                    if (win) {
+                      win.document.write(`<html><head><title>Embry Session</title><style>body{font-family:system-ui;max-width:700px;margin:0 auto;padding:40px;line-height:1.6;font-size:12px}h1{font-size:18px}hr{border:none;border-top:1px solid #ccc}code{background:#f0f0f0;padding:1px 4px;border-radius:3px}</style></head><body><pre>${content.replace(/</g, '&lt;')}</pre></body></html>`);
+                      win.document.close();
+                      win.print();
+                    }
+                  }
+                  setShowExport(false);
+                }} style={{
+                  display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', width: '100%',
+                  background: 'none', border: 'none', borderRadius: 6, cursor: 'pointer',
+                  color: '#e2e8f0', fontSize: 12, fontFamily: 'var(--font-ui)', textAlign: 'left',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'none'}
+                >
+                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#64748b', width: 20 }}>
+                    {fmt === 'markdown' ? '.md' : fmt === 'html' ? '.html' : '.pdf'}
+                  </span>
+                  Export as {fmt.charAt(0).toUpperCase() + fmt.slice(1)}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Detail toggle */}
-        <button onClick={() => setDetailOpen(v => !v)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 6, fontSize: 16 }}
+        <button onClick={() => setDetailOpen(v => !v)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 6, minWidth: 32, minHeight: 32 }}
           data-qid="topbar:detail:toggle"
         >
           {detailOpen ? '✕' : '▣'}
@@ -537,7 +633,7 @@ export function EmbryTerminalView() {
                   {/* Highlight overlay — renders colored skill names behind transparent textarea */}
                   <div aria-hidden style={{
                     position: 'absolute', top: 0, left: 0, right: 0, pointerEvents: 'none',
-                    padding: '14px 16px 8px', fontFamily: 'var(--font-ui)', fontSize: 15, lineHeight: 1.5,
+                    padding: '16px 18px 8px', fontFamily: 'var(--font-ui)', fontSize: 16, lineHeight: 1.5,
                     whiteSpace: 'pre-wrap', wordWrap: 'break-word',
                   }}>
                     {input ? highlightEntities(input) : <span style={{ color: '#475569' }}>Message {agent.name}…</span>}
@@ -549,13 +645,28 @@ export function EmbryTerminalView() {
                     onKeyDown={e => {
                       if (showPalette && paletteKeyHandler.current?.(e)) return;
                       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+                      // Ctrl+K → open skill palette
+                      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setInput('/'); setShowPalette(true); setSkillFilter(''); }
+                      // ↑/↓ command history (only when input is empty or browsing history)
+                      if (e.key === 'ArrowUp' && !showPalette && (input === '' || historyIdx >= 0)) {
+                        e.preventDefault();
+                        const newIdx = Math.min(historyIdx + 1, commandHistory.length - 1);
+                        setHistoryIdx(newIdx);
+                        if (commandHistory[newIdx]) setInput(commandHistory[newIdx]);
+                      }
+                      if (e.key === 'ArrowDown' && !showPalette && historyIdx >= 0) {
+                        e.preventDefault();
+                        const newIdx = historyIdx - 1;
+                        setHistoryIdx(newIdx);
+                        setInput(newIdx >= 0 ? commandHistory[newIdx] : '');
+                      }
                     }}
                     placeholder={`Message ${agent.name}…`}
                     rows={1}
                     style={{
                       width: '100%', border: 'none', outline: 'none', resize: 'none',
-                      background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 15,
-                      color: 'transparent', padding: '14px 16px 8px', lineHeight: 1.5,
+                      background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 16,
+                      color: 'transparent', padding: '16px 18px 8px', lineHeight: 1.5,
                       minHeight: 24, maxHeight: 200, position: 'relative', zIndex: 1,
                       caretColor: '#e2e8f0',
                     }}
@@ -567,7 +678,7 @@ export function EmbryTerminalView() {
                     </button>
                     <button onClick={sendMessage} disabled={!input.trim()}
                       style={{
-                        width: 32, height: 32, borderRadius: '50%', border: 'none',
+                        width: 44, height: 44, borderRadius: '50%', border: 'none',
                         cursor: input.trim() ? 'pointer' : 'default',
                         background: input.trim() ? '#7c3aed' : '#27272a',
                         color: input.trim() ? '#141414' : '#64748b',
@@ -581,7 +692,7 @@ export function EmbryTerminalView() {
                   </div>
                 </div>
                 <div style={{ textAlign: 'center', fontSize: 11, color: '#334155', marginTop: 8, fontFamily: 'var(--font-mono)' }}>
-                  {agent.name} on {activeProject?.name || 'no project'} · {skills.length} skills · via Tailscale
+                  {agent.name} on {activeProject?.name || 'no project'} · {skills.length} skills · ⌘K skills · ↑↓ history · Tailscale · {messages.filter(m => m.role === 'user').length} queries logged
                 </div>
               </div>
             </div>

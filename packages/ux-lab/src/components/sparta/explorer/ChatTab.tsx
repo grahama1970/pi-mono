@@ -70,6 +70,26 @@ function post(path: string, body: Record<string, unknown>) {
   }).then(r => r.json()).catch(() => ({ documents: [], items: [] }))
 }
 
+interface ThreatDeltaDoc {
+  type?: string
+  control_id?: string
+  old_verdict?: string
+  new_verdict?: string
+  reason?: string
+  timestamp?: string | number
+}
+
+function toTimestampMs(timestamp: string | number | undefined): number | null {
+  if (typeof timestamp === 'number') {
+    return timestamp > 1_000_000_000_000 ? timestamp : timestamp * 1000
+  }
+  if (typeof timestamp === 'string') {
+    const parsed = Date.parse(timestamp)
+    return Number.isNaN(parsed) ? null : parsed
+  }
+  return null
+}
+
 // ── Main component ───────────────────────────────────────────────────────
 
 export function ChatTab() {
@@ -83,7 +103,13 @@ export function ChatTab() {
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
+  const [skills, setSkills] = useState<Array<{ name: string; description: string; triggers: string[] }>>([])
   const msgIdRef = useRef(0)
+
+  // Fetch skills for palette
+  useEffect(() => {
+    fetch(`${API}/api/skills`).then(r => r.ok ? r.json() : []).then(setSkills).catch(() => {})
+  }, [])
 
   // Threat matrix data
   const [techniques, setTechniques] = useState<ThreatTechnique[]>([])
@@ -92,6 +118,8 @@ export function ChatTab() {
   const [selectedDetail, setSelectedDetail] = useState<TechniqueDetail | null>(null)
   const [detailLoading, setDetailLoading] = useState(false)
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
+  const [evidenceMapLoaded, setEvidenceMapLoaded] = useState(false)
+  const threatDeltaLoadedRef = useRef(false)
 
   // Lemma graph data
   const [graphNodes, setGraphNodes] = useState<GraphNode[]>([])
@@ -140,6 +168,7 @@ export function ChatTab() {
   // Load evidence map from dedicated evidence_cases collection
   useEffect(() => {
     if (!currentSystem) { setEvidenceMap(new Map()); return }
+    setEvidenceMapLoaded(false)
     post('/list', {
       collection: 'evidence_cases', limit: 500,
     }).then(res => {
@@ -161,8 +190,39 @@ export function ChatTab() {
         }
       }
       setEvidenceMap(vmap)
+    }).finally(() => {
+      setEvidenceMapLoaded(true)
     })
   }, [currentSystem])
+
+  // Add threat-delta alerts on mount after evidence map is loaded
+  useEffect(() => {
+    if (!evidenceMapLoaded || threatDeltaLoadedRef.current) return
+    threatDeltaLoadedRef.current = true
+    const minTimestamp = Date.now() - (7 * 24 * 60 * 60 * 1000)
+
+    post('/list', {
+      collection: 'evidence_cases',
+      limit: 20,
+      filters: { type: 'threat-delta' },
+    }).then(res => {
+      const docs = (res.documents ?? []) as ThreatDeltaDoc[]
+      for (const doc of docs) {
+        const ts = toTimestampMs(doc.timestamp)
+        if (ts === null || ts < minTimestamp) continue
+        if (!doc.old_verdict || !doc.new_verdict || doc.old_verdict === doc.new_verdict) continue
+
+        const controlId = doc.control_id ?? 'unknown-control'
+        const reason = doc.reason ? ` ${doc.reason}` : ''
+        addMsg({
+          role: 'system',
+          type: 'natural',
+          alertType: 'threat-delta',
+          content: `SECURITY DRIFT DETECTED: ${controlId} verdict changed from ${doc.old_verdict} to ${doc.new_verdict}.${reason}`,
+        })
+      }
+    })
+  }, [addMsg, evidenceMapLoaded])
 
   // ── Chat send handler ────────────────────────────────────────────────
 
@@ -488,6 +548,22 @@ export function ChatTab() {
               onRunEvidenceCase={handleRunEvidenceCase}
               evidenceCaseLoading={evidenceCaseLoading}
               onNavigateMatrix={useCallback(() => setVizMode('matrix'), [])}
+              skills={skills}
+              onEntityClick={useCallback((entity: string, type: string) => {
+                if (type === 'skill') {
+                  // Populate input with skill
+                  handleSend(entity, 'natural')
+                } else {
+                  // Recall the entity and focus it in viz
+                  handleSend(`/memory recall "${entity}"`, 'natural')
+                  if (type === 'attack' || type === 'sparta') {
+                    setFocusTechnique(entity)
+                    setVizMode('matrix')
+                  } else if (type === 'control') {
+                    setFocusControl(entity)
+                  }
+                }
+              }, [handleSend])}
             />
           </div>
         </div>

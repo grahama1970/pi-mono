@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "baseUrl": "http://localhost:3003",
+  "baseUrl": "http://localhost:3002",
   "category": "persona-reviews",
   "persona": "brandon-bailey",
   "tests": [
@@ -11,7 +11,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -23,7 +23,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -53,7 +53,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -65,7 +65,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -95,7 +95,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -107,7 +107,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -137,7 +137,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -149,7 +149,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -171,7 +171,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -183,7 +183,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -213,7 +213,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -225,7 +225,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -251,7 +251,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -263,7 +263,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -289,7 +289,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -301,7 +301,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",
@@ -327,7 +327,7 @@
       "steps": [
         {
           "action": "navigate",
-          "url": "http://localhost:3003/#embry-terminal"
+          "url": "http://localhost:3002/#embry-terminal"
         },
         {
           "action": "wait",
@@ -339,7 +339,7 @@
         },
         {
           "action": "wait",
-          "ms": 4000
+          "ms": 8000
         },
         {
           "action": "evaluate",

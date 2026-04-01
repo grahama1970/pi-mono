@@ -34,6 +34,7 @@ UX_LAB = Path(__file__).resolve().parent.parent
 MANIFEST_PATH = UX_LAB / "persona-review-manifest.json"
 CAPTURES_ROOT = UX_LAB / "captures" / "persona-reviews"
 REPORT_PATH = UX_LAB / "persona-review-report.md"
+COMPONENTS_ROOT = UX_LAB / "src" / "components" / "binary-explorer"
 PROMPT_TEMPLATE_PATH = (
     Path(os.environ.get("SKILLS_DIR", str(Path(__file__).resolve().parents[3] / ".pi" / "skills")))
     / "prompt-lab" / "prompts" / "persona_review_vlm_v1.txt"
@@ -120,6 +121,51 @@ def load_screenshots(group: str) -> list[tuple[str, bytes]]:
     return processed
 
 
+def load_source_code(source_spec: str) -> str:
+    sections: list[str] = []
+    for raw_spec in source_spec.split(","):
+        spec = raw_spec.strip()
+        if not spec:
+            continue
+
+        filename = spec
+        start_line: int | None = None
+        end_line: int | None = None
+        range_match = re.match(r"^(.*?):(\d+)-(\d+)$", spec)
+        if range_match:
+            filename = range_match.group(1)
+            start_line = int(range_match.group(2))
+            end_line = int(range_match.group(3))
+
+        file_path = (COMPONENTS_ROOT / filename).resolve()
+        try:
+            file_path.relative_to(COMPONENTS_ROOT.resolve())
+        except ValueError:
+            logger.warning("Skipping source outside component directory: {}", spec)
+            continue
+
+        if not file_path.exists() or not file_path.is_file():
+            logger.warning("Source file not found: {}", file_path)
+            continue
+
+        lines = file_path.read_text().splitlines()
+        total_lines = len(lines)
+        if start_line is None or end_line is None:
+            selected_start = 1
+            selected_end = total_lines
+        else:
+            selected_start = max(1, min(start_line, total_lines))
+            selected_end = max(selected_start, min(end_line, total_lines))
+
+        selected_lines = lines[selected_start - 1:selected_end]
+        header = f"# FILE: {filename} (lines {selected_start}-{selected_end})"
+        sections.append(header)
+        sections.append("\n".join(selected_lines))
+
+    combined = "\n\n".join(sections)
+    return combined[:50000]
+
+
 def extract_json(text: str) -> dict | None:
     """3-level JSON extraction: whole text -> markdown fence -> brace match."""
     try:
@@ -143,26 +189,40 @@ def extract_json(text: str) -> dict | None:
 
 async def review_single(
     client: httpx.AsyncClient,
+    entry: dict,
     persona: str, group: str, criteria: str,
     prior_weaknesses: list[str], template: str,
 ) -> dict:
-    screenshots = load_screenshots(group)
-    if not screenshots:
-        return {"error": f"No screenshots for group {group}", "score": 0}
-    # Cap at 2 screenshots to avoid Gemini payload limits
-    if len(screenshots) > 2:
-        screenshots = [screenshots[0], screenshots[-1]]
-
     prompt = build_prompt(template, persona, criteria, prior_weaknesses)
+    mode = entry.get("mode", "screenshot")
+    screenshot_count = 0
 
-    # Build content: text prompt + all screenshots as base64
-    content: list[dict] = [{"type": "text", "text": prompt}]
-    for name, data in screenshots:
-        b64 = base64.b64encode(data).decode()
-        content.append({
-            "type": "image_url",
-            "image_url": {"url": f"data:image/png;base64,{b64}"},
-        })
+    if mode == "code":
+        source_spec = entry.get("source", "")
+        source_code = load_source_code(source_spec)
+        if not source_code:
+            return {"error": f"No source loaded for spec {source_spec}", "score": 0}
+        content: list[dict] = [
+            {"type": "text", "text": prompt},
+            {"type": "text", "text": f"```tsx\n{source_code}\n```"},
+        ]
+    else:
+        screenshots = load_screenshots(group)
+        if not screenshots:
+            return {"error": f"No screenshots for group {group}", "score": 0}
+        # Cap at 2 screenshots to avoid Gemini payload limits
+        if len(screenshots) > 2:
+            screenshots = [screenshots[0], screenshots[-1]]
+        screenshot_count = len(screenshots)
+
+        # Build content: text prompt + all screenshots as base64
+        content = [{"type": "text", "text": prompt}]
+        for name, data in screenshots:
+            b64 = base64.b64encode(data).decode()
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:image/png;base64,{b64}"},
+            })
 
     t0 = time.time()
     payload = {
@@ -203,7 +263,7 @@ async def review_single(
         return {"error": "JSON parse failure", "raw_text": raw_text[:500], "score": 0, "latency_ms": latency_ms}
 
     parsed["latency_ms"] = latency_ms
-    parsed["screenshot_count"] = len(screenshots)
+    parsed["screenshot_count"] = screenshot_count
     return parsed
 
 
@@ -279,7 +339,10 @@ def review(
         target_reviews = [r for r in target_reviews if r["group"] == group]
 
     available = {d.name for d in CAPTURES_ROOT.iterdir() if d.is_dir()} if CAPTURES_ROOT.exists() else set()
-    target_reviews = [r for r in target_reviews if r["group"] in available]
+    target_reviews = [
+        r for r in target_reviews
+        if r.get("mode", "screenshot") == "code" or r["group"] in available
+    ]
 
     if not target_reviews:
         logger.error("No reviews with captures"); raise typer.Exit(1)
@@ -288,8 +351,12 @@ def review(
 
     if dry_run:
         for r in target_reviews:
-            ss = load_screenshots(r["group"])
-            logger.info("  {} / {} — {} screenshots", r["persona"], r["group"], len(ss))
+            if r.get("mode", "screenshot") == "code":
+                source_code = load_source_code(r.get("source", ""))
+                logger.info("  {} / {} — code mode, {} chars", r["persona"], r["group"], len(source_code))
+            else:
+                ss = load_screenshots(r["group"])
+                logger.info("  {} / {} — {} screenshots", r["persona"], r["group"], len(ss))
         raise typer.Exit(0)
 
     template = load_prompt_template()
@@ -299,12 +366,12 @@ def review(
         async def bounded(r):
             async with sem:
                 if votes <= 1:
-                    return await review_single(client, r["persona"], r["group"],
+                    return await review_single(client, r, r["persona"], r["group"],
                         r["criteria"], r.get("weaknesses", []), template)
                 # Median voting: run N times, take median score
                 results_list = []
                 for v in range(votes):
-                    res = await review_single(client, r["persona"], r["group"],
+                    res = await review_single(client, r, r["persona"], r["group"],
                         r["criteria"], r.get("weaknesses", []), template)
                     if res.get("score", 0) > 0:
                         results_list.append(res)

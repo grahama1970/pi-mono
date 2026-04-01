@@ -37,6 +37,7 @@ export interface ChatMessage {
   role: 'user' | 'system'
   content: string
   type: 'natural' | 'aql'
+  alertType?: 'threat-delta'
   timestamp: number
   resultCount?: number
   _querySpec?: Record<string, unknown>
@@ -66,6 +67,8 @@ export interface ChatWellProps {
   onNavigateMatrix?: () => void
   /** Skills list for / palette — if provided, typing / triggers skill autocomplete */
   skills?: Skill[]
+  /** Entity click handler — clicking AC-17, CWE-79, /assess triggers this */
+  onEntityClick?: (entity: string, type: string) => void
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -93,7 +96,7 @@ function ToolAction({ label }: { label: string }) {
 // ── Message Component ────────────────────────────────────────────────────
 
 function MessageItem({
-  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras, onNavigateMatrix,
+  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras, onNavigateMatrix, onEntityClick,
 }: {
   msg: ChatMessage
   onFeedback?: (id: string, fb: 'up' | 'down') => void
@@ -102,6 +105,7 @@ function MessageItem({
   evidenceCaseLoading?: string | null
   renderExtras?: (msg: ChatMessage) => ReactNode
   onNavigateMatrix?: () => void
+  onEntityClick?: (entity: string, type: string) => void
 }) {
   const isUser = msg.role === 'user'
 
@@ -151,7 +155,7 @@ function MessageItem({
         {msg.type === 'aql' ? (
           <pre style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', margin: 0 }}>{msg.content}</pre>
         ) : (
-          <MarkdownRenderer content={msg.content} />
+          <MarkdownRenderer content={msg.content} onEntityClick={onEntityClick} />
         )}
       </div>
 
@@ -268,7 +272,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [showPalette, setShowPalette] = useState(false)
   const [skillFilter, setSkillFilter] = useState('')
@@ -342,6 +346,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             evidenceCaseLoading={evidenceCaseLoading}
             renderExtras={renderExtras}
             onNavigateMatrix={onNavigateMatrix}
+            onEntityClick={onEntityClick}
           />
         ))}
         <div ref={chatEndRef} />
