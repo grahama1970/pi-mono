@@ -110,8 +110,17 @@ def scan(
 
     # ── Scan Python files for if/elif classification chains ──
     logger.info("Scanning Python files for classification patterns...")
+    skip_patterns = {"__pycache__", ".venv", "node_modules", "unsloth_compiled_cache", ".worktrees", "dist", "build", ".data", ".artifacts", "tmp"}
     for py_file in SKILLS_DIR.rglob("*.py"):
-        if "__pycache__" in str(py_file) or ".venv" in str(py_file):
+        path_str = str(py_file)
+        if any(s in path_str for s in skip_patterns):
+            continue
+        # Skip files > 500 lines (likely libraries, not routing logic)
+        try:
+            line_count = len(py_file.read_text(errors="ignore").split("\n"))
+            if line_count > 500:
+                continue
+        except Exception:
             continue
         result = scan_for_regex_classification(py_file)
         if result and result["total_indicators"] >= min_branches:
@@ -123,8 +132,14 @@ def scan(
                 "suggested_task": f"classifier for routing logic in {py_file.name}",
             })
 
+    # Filter: only show trigger-routing and extension-routing by default
+    # Python file hits are too noisy — regex in code != classification routing
+    actionable = [c for c in candidates if c["type"] in ("trigger-routing", "extension-routing")]
+    python_hits = [c for c in candidates if c["type"] == "python-classification"]
+
     # Sort by severity and indicator count
-    candidates.sort(key=lambda c: (-1 if c["severity"] == "high" else 0, -c.get("total_indicators", c.get("trigger_count", 0))))
+    actionable.sort(key=lambda c: (-1 if c["severity"] == "high" else 0, -c.get("total_indicators", c.get("trigger_count", 0))))
+    candidates = actionable  # only show actionable by default
 
     logger.info(f"\nFound {len(candidates)} candidates")
 
