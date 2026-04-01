@@ -307,9 +307,9 @@ export function EmbryTerminalView() {
 
   // Activity feed (real-time agent events + presence)
   const activityWsUrl = BACKEND_URL.replace(/^http/, 'ws').replace(/\/api$/, '') + '/api/activity';
-  const { events: activityEvents, presence, connectionState: activityState } = useActivityFeed(
-    activityWsUrl, 'embry-dev-token',
-  );
+  const activityFeed = useActivityFeed(activityWsUrl, 'embry-dev-token');
+  const activityEvents = activityFeed?.events ?? [];
+  const presence = activityFeed?.presence ?? [];
 
   // Suggestion accept/reject handlers
   const handleAcceptSuggestion = useCallback(async (id: string) => {
