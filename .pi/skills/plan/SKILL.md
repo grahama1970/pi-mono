@@ -61,7 +61,39 @@ when the user says `/plan`. The user only needs to say `/plan` once.
 11. If human approves → /orchestrate run 0N_TASKS.yaml
 ```
 
-### Step 2: Skill Discovery (BLOCKING — do NOT skip)
+### Step 2: Runner Selection (which tasks get /code-runner)
+
+Not every task should use `/code-runner`. Code-runner is a **bounded executor** — it keeps
+the project agent from getting lost in implementation context. Use it for tasks that have
+a clear input, a clear output, and a verifiable DoD.
+
+| Runner | When to use | Example |
+|--------|-------------|---------|
+| `local` | Deterministic shell command, no LLM needed | `docker compose up`, `pytest`, `npm install` |
+| `code-runner` | Bounded code task: write/fix ONE module with verifiable DoD | Fix auth.py bug, create new utility module |
+| `subagent-service` | Open-ended tasks requiring exploration, design, or judgment | Research best approach, review code quality |
+| `scillm` | Single LLM call for text generation (no code execution) | Generate docstring, summarize, classify |
+
+**Use code-runner when:**
+- The task writes/edits 1-3 specific files (use `allowlist`)
+- There's a runnable DoD command that verifies correctness
+- The LLM doesn't need to make architecture decisions
+- Dependencies are known and can be listed in `read_context`
+
+**Do NOT use code-runner when:**
+- The task requires choosing between approaches ("pick the best DB") — that's a project agent decision
+- The task is an integration test exercising 4+ modules — write it as `blind_tests` instead
+- The DoD depends on external APIs/network — use mock DoD + real API in `blind_tests`
+- The task is vague ("make it better") — decompose into specific bounded tasks first
+- The task requires reading/understanding a large codebase — use `subagent-service` with iterative mode
+
+**code-runner fields the project agent must provide:**
+- `allowlist` — files the LLM can write (scope boundary)
+- `read_context` — files the LLM should read for interface context (NOT write)
+- `definition_of_done` — runnable verification command with assertions
+- `blind_tests` — hidden assertions in `/test-lab` (optional, for adversarial verification)
+
+### Step 3: Skill Discovery (BLOCKING — do NOT skip)
 
 Before writing ANY task, check if an existing skill already does it. The agent MUST NOT
 write bespoke code when a skill exists. This is the #1 source of architectural debt.

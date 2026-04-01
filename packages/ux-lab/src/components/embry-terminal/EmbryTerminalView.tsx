@@ -149,15 +149,38 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
   return (
     <div style={{ padding: '16px 0', animation: 'msgIn 0.25s ease' }}
          data-qid={`chat:message:${msg.id}`}>
-      {/* Tool-use action line (muted, collapsible — like "Created 7 files >") */}
-      {msg.skillUsed && (
-        <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:message:${msg.id}:skill`} />
-      )}
-      {msg.codeBlock && (
-        <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
+
+      {/* 1. ReasoningChain (collapsed by default) — "here is what I did"
+             ToolAction lines live here, not standalone above content */}
+      {(msg.reasoningSteps && msg.reasoningSteps.length > 0) || msg.skillUsed || msg.codeBlock ? (
+        <div style={{ marginBottom: 8 }}>
+          {msg.skillUsed && (
+            <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:message:${msg.id}:skill`} />
+          )}
+          {msg.codeBlock && (
+            <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
+          )}
+          {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
+            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
+          )}
+        </div>
+      ) : null}
+
+      {/* 2. RecallCard — "here is the evidence I found" */}
+      {msg.recall && (
+        <SharedRecallCard
+          items={msg.recall.items.map(it => ({ problem: it.problem, solution: it.solution, scores: it.scores }))}
+          resultCount={msg.recall.items.length}
+          confidence={msg.recall.confidence > 1 ? msg.recall.confidence / 100 : msg.recall.confidence}
+        />
       )}
 
-      {/* Content — shared MarkdownRenderer with entity highlighting */}
+      {/* 3. Visual separator between evidence and answer */}
+      {msg.recall && (
+        <div style={{ borderTop: '1px dashed rgba(255,255,255,0.08)', margin: '12px 0' }} />
+      )}
+
+      {/* 4 & 5. Answer content + inline artifacts (MarkdownRenderer + codeBlock) */}
       <div style={{ fontSize: 16, lineHeight: 1.7, color: '#e2e8f0', fontFamily: 'var(--font-ui)' }}>
         <MarkdownRenderer content={msg.content} onEntityClick={onEntityClick} />
 
@@ -171,21 +194,12 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
             </pre>
           </div>
         )}
-
-        {msg.recall && (
-          <SharedRecallCard
-            items={msg.recall.items.map(it => ({ problem: it.problem, solution: it.solution, scores: it.scores }))}
-            resultCount={msg.recall.items.length}
-            confidence={msg.recall.confidence > 1 ? msg.recall.confidence / 100 : msg.recall.confidence}
-          />
-        )}
-        {msg.verdict && <GateChain gates={msg.verdict.gates} verdict={msg.verdict.state} tier={msg.verdict.tier} />}
-        {msg.matrixSummary && <ThreatMatrixCard summary={msg.matrixSummary} />}
-        {msg.deltaReport && <DeltaReportCard report={msg.deltaReport} onEntityClick={onEntityClick} />}
-        {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
-          <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
-        )}
       </div>
+
+      {/* 6. Structured cards — GateChain / ThreatMatrixCard / DeltaReportCard */}
+      {msg.verdict && <GateChain gates={msg.verdict.gates} verdict={msg.verdict.state} tier={msg.verdict.tier} />}
+      {msg.matrixSummary && <ThreatMatrixCard summary={msg.matrixSummary} />}
+      {msg.deltaReport && <DeltaReportCard report={msg.deltaReport} onEntityClick={onEntityClick} />}
     </div>
   );
 });
