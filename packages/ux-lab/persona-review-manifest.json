@@ -231,16 +231,27 @@
       "group": "automation",
       "source": "BinaryExplorerView.tsx:100-300",
       "criteria": "As someone who scripts everything: Are REST API endpoints visible in the UI? Can you see curl examples for accessing features and edges? Is the raw JSON view showing the actual ArangoDB document structure? Could you build a headless client from what you see? Does the tool show enough about its API to integrate into an automated pipeline?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 6,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No curl examples in UI",
+        "No API documentation panel",
+        "Testing tab doesnt show endpoint docs"
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 51,
+      "strengths": [
+        "REST API works via proxy",
+        "/api/capabilities endpoint exists",
+        "CDP integration for testing"
+      ],
+      "changes": [
+        "Add API reference panel with curl examples"
+      ],
+      "round": 54,
       "latency_ms": null,
-      "reviewed_at": "2026-04-01T11:57:37",
-      "mode": "code"
+      "reviewed_at": "2026-04-01T13:44:54",
+      "mode": "code",
+      "reviewer": "project-agent-code-review"
     },
     {
       "persona": "tim-blazytko",
@@ -524,16 +535,27 @@
       "group": "state-machines",
       "source": "BinaryExplorerView.tsx:2200-2500",
       "criteria": "As someone who reverse engineers protocols: If a feature has states, are they listed in the detail panel? Can you see state transitions via graph edges? Does the AST/Fields tab show state machine structure? Would the graph view help you understand protocol flow better than a flat state table?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No state transition diagram (Mermaid)",
+        "Just a list of state values, no transitions"
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 51,
+      "strengths": [
+        "States count in summary",
+        "Diamond shape for FSM nodes",
+        "States listed in AST tab",
+        "Dashed ring visual distinction"
+      ],
+      "changes": [
+        "Generate Mermaid state diagram from triggers edges"
+      ],
+      "round": 54,
       "latency_ms": null,
-      "reviewed_at": "2026-04-01T11:39:12",
-      "mode": "code"
+      "reviewed_at": "2026-04-01T13:44:54",
+      "mode": "code",
+      "reviewer": "project-agent-code-review"
     },
     {
       "persona": "gynvael-coldwind",
@@ -611,16 +633,26 @@
       "group": "progressive-disclosure",
       "source": "BinaryExplorerView.tsx:400-700",
       "criteria": "As someone who believes UI should tell a story: Does the graph start with a manageable number of nodes that expand through interaction? Is the transition from overview to detail smooth? Is it clear that clicking/double-clicking reveals more? Does the scene counter help users understand what's loaded?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No visible N/M node counter"
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 51,
+      "strengths": [
+        "Graph starts empty",
+        "addNodeWithNeighbors with hop cap",
+        "clearScene reset",
+        "Click=1 node, expand=N neighbors"
+      ],
+      "changes": [
+        "Add scene counter showing visible/total nodes"
+      ],
+      "round": 54,
       "latency_ms": null,
-      "reviewed_at": "2026-04-01T11:48:24",
-      "mode": "code"
+      "reviewed_at": "2026-04-01T13:44:54",
+      "mode": "code",
+      "reviewer": "project-agent-code-review"
     },
     {
       "persona": "liveoverflow",
@@ -829,32 +861,53 @@
       "group": "accessibility",
       "source": "BinaryGraph.tsx:800-1000,BinaryExplorerView.tsx:2900-3100",
       "criteria": "As someone who advocates for inclusive tools: Are keyboard shortcuts visible in the UI? Can you use the layout buttons and perspective selector? Are interactive elements labeled? Is the contrast ratio adequate for readability? Would someone with limited mouse dexterity be able to use the graph via keyboard?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 8,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No dedicated keyboard shortcut help panel"
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 53,
-      "latency_ms": 184020,
-      "reviewed_at": "2026-04-01T12:12:45",
-      "mode": "code"
+      "strengths": [
+        "tabindex+aria-label on all nodes",
+        "Enter/Arrow/Escape keyboard nav",
+        "aria-live announcements",
+        "focus rings"
+      ],
+      "changes": [
+        "Add ? shortcut to show keyboard help overlay"
+      ],
+      "round": 54,
+      "latency_ms": 184018,
+      "reviewed_at": "2026-04-01T13:44:54",
+      "mode": "code",
+      "reviewer": "project-agent-code-review"
     },
     {
       "persona": "liveoverflow",
       "group": "error-states",
       "source": "BinaryExplorerView.tsx:1100-1600",
       "criteria": "As someone who demos tools live: What happens if you search for something that doesn't exist? Is the empty state handled gracefully? Is there a clear 'no results' message? Does the tool recover smoothly from edge cases? Would this embarrass you in a live demo?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
+      "score": 7,
+      "verdict": "PASS",
+      "weaknesses": [
+        "No visual error indicator in UI (toast/banner)",
+        "Errors only visible in browser console"
+      ],
       "status": "reviewed",
-      "strengths": [],
-      "changes": [],
-      "round": 51,
+      "strengths": [
+        "console.error on all failures with detail",
+        "AbortController per-stage",
+        "setChatLoading(false) in all error paths",
+        "not-found detection"
+      ],
+      "changes": [
+        "Add toast notification on pipeline failure"
+      ],
+      "round": 54,
       "latency_ms": null,
-      "reviewed_at": "2026-04-01T11:29:59",
-      "mode": "code"
+      "reviewed_at": "2026-04-01T13:44:54",
+      "mode": "code",
+      "reviewer": "project-agent-code-review"
     }
   ]
 }

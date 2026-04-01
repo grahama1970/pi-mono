@@ -1,6 +1,6 @@
 # Persona Review Report
 
-Generated: 2026-04-01 12:12
+Generated: 2026-04-01 13:42
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
@@ -36,7 +36,7 @@ Generated: 2026-04-01 12:12
 | 50 | liveoverflow | visual-design | 5 | FAIL | No visible legend explaining node color meanings — green, bl | 17452ms |
 | 50 | liveoverflow | ctf-workflow | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 11042ms |
 | 50 | liveoverflow | graph-interaction | 8 | PASS | Node labels like 'schema', 'daemon', 'mission' remain small  | 12158ms |
-| 53 | liveoverflow | accessibility | 0 | None | --- | 184020ms |
+| 54 | liveoverflow | accessibility | 0 | None | --- | 184018ms |
 | 51 | liveoverflow | error-states | 0 | None | --- | Nonems |
 
 ## Summary
