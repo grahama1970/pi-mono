@@ -1,6 +1,6 @@
 # Persona Review Report
 
-Generated: 2026-04-01 10:26
+Generated: 2026-04-01 11:57
 
 | Round | Persona | Group | Score | Verdict | Top Weakness | Latency |
 |-------|---------|-------|-------|---------|-------------|---------|
@@ -12,7 +12,7 @@ Generated: 2026-04-01 10:26
 | 50 | tim-blazytko | taxonomy-integration | 5 | FAIL | Graph nodes and edges show no visual indication (color, size | 23916ms |
 | 50 | tim-blazytko | code-view | 8 | PASS | No visual indicator in detail panel or graph that Python vie | 10795ms |
 | 50 | tim-blazytko | chat-analysis | 5 | FAIL | The suggested query 'What does mcp_auth_completed do?' is vi | 14798ms |
-| 50 | tim-blazytko | automation | 8 | PASS | No authentication headers (e.g., Authorization: Bearer) are  | 8096ms |
+| 51 | tim-blazytko | automation | 0 | None | --- | Nonems |
 | 50 | tim-blazytko | perspective-views | 8 | PASS | No legend for node/edge colors or shapes — user must infer g | 10990ms |
 | 50 | tim-blazytko | scene-management | 0 | None | --- | Nonems |
 | 50 | tim-blazytko | investigation-journal | 0 | None | --- | Nonems |
@@ -24,11 +24,11 @@ Generated: 2026-04-01 10:26
 | 50 | gynvael-coldwind | search-and-filter | 5 | FAIL | Filter input lacks placeholder text or examples (e.g., 'CWE- | 10305ms |
 | 50 | gynvael-coldwind | context-menu | 0 | None | --- | Nonems |
 | 50 | gynvael-coldwind | cross-references | 8 | PASS | No visible legend or edge-type key in the graph — user must  | 10889ms |
-| 50 | gynvael-coldwind | state-machines | 0 | None | --- | Nonems |
+| 51 | gynvael-coldwind | state-machines | 0 | None | --- | Nonems |
 | 50 | gynvael-coldwind | performance | 0 | None | --- | Nonems |
 | 50 | gynvael-coldwind | chat-analysis | 8 | PASS | Graph nodes ('daemon', 'schema', 'event') still lack type ic | 10143ms |
 | 50 | liveoverflow | first-impressions | 8 | PASS | No visual cue (tooltip, animation, or onboarding hint) in th | 10273ms |
-| 50 | liveoverflow | progressive-disclosure | 8 | PASS | No visual affordance (cursor change, glow, or animation) on  | 9566ms |
+| 51 | liveoverflow | progressive-disclosure | 0 | None | --- | Nonems |
 | 50 | liveoverflow | learning-path | 8 | PASS | Node labels like 'schema', 'mission', and 'daemon' still lac | 10346ms |
 | 50 | liveoverflow | vulnerability-hunting | 8 | PASS | No visual highlighting (color, icon, badge) in the graph to  | 10439ms |
 | 50 | liveoverflow | code-view | 8 | PASS | No line numbers in the Python pseudocode panel — makes refer | 9642ms |
@@ -36,11 +36,11 @@ Generated: 2026-04-01 10:26
 | 50 | liveoverflow | visual-design | 5 | FAIL | No visible legend explaining node color meanings — green, bl | 17452ms |
 | 50 | liveoverflow | ctf-workflow | 8 | PASS | No visible UI element (text box, pencil icon, or 'Add Note'  | 11042ms |
 | 50 | liveoverflow | graph-interaction | 8 | PASS | Node labels like 'schema', 'daemon', 'mission' remain small  | 12158ms |
-| 50 | liveoverflow | accessibility | 5 | FAIL | No visible keyboard shortcuts for graph pan/zoom, node selec | 10910ms |
-| 50 | liveoverflow | error-states | 4 | FAIL | Search for 'zzz_nonexistent' shows empty table with 'CSV (0) | 5380ms |
+| 51 | liveoverflow | accessibility | 0 | None | --- | Nonems |
+| 51 | liveoverflow | error-states | 0 | None | --- | Nonems |
 
 ## Summary
 - Reviewed: 34/34
-- Average score: 7.2/10
-- Passed (>=8): 21/29
+- Average score: 7.3/10
+- Passed (>=8): 19/25
 - Gate: FAIL (target: 8.0)

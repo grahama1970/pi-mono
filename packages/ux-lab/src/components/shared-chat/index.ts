@@ -8,6 +8,8 @@ export type { RecallCardProps } from "../sparta/query/RecallCard";
 // Re-export SPARTA query components (no move — just unified access)
 export { RecallCard } from "../sparta/query/RecallCard";
 export { ThreatMatrixCard } from "../sparta/query/ThreatMatrixCard";
+export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
+export { configureDeepLinks, executePrimaryAction, resolveEntityActions } from "./DeepLinks";
 export type { DeltaItem, DeltaReport } from "./DeltaReportCard";
 export { DeltaReportCard } from "./DeltaReportCard";
 // Entity highlighting

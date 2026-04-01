@@ -16,12 +16,13 @@ import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption } from '../shared/ThreatMatrix'
 import { LemmaGraph } from '../lemma-graph/LemmaGraph'
 import type { GraphNode, GraphEdge } from '../lemma-graph/LemmaGraph'
+import PostureDashboard from '../dashboard/PostureDashboard'
 
 const API = 'http://localhost:3001'
 
 // ── Shared state between chat + viz ──────────────────────────────────────
 
-type VizMode = 'matrix' | 'graph'
+type VizMode = 'matrix' | 'graph' | 'dashboard'
 
 interface ChatTabContextValue {
   vizMode: VizMode
@@ -231,6 +232,10 @@ export function ChatTab() {
 
     // Detect intent for viz switching
     const qLower = query.toLowerCase()
+    const isDashboardIntent = qLower.includes('posture') || qLower.includes('dashboard') || qLower.includes('overview') || qLower.includes('status report')
+    if (isDashboardIntent) {
+      setVizMode('dashboard')
+    }
     const isMatrixIntent = qLower.includes('threat matrix') || qLower.includes('coverage') || qLower.includes('threat landscape') || qLower.includes('show me the matrix')
     if (isMatrixIntent) {
       setVizMode('matrix')
@@ -584,7 +589,9 @@ export function ChatTab() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
           {/* Viz content */}
           <div style={{ flex: 1, overflow: 'hidden' }}>
-            {vizMode === 'matrix' ? (
+            {vizMode === 'dashboard' ? (
+              <PostureDashboard onNavigateToControl={(id) => { setFocusTechnique(id); setVizMode('matrix') }} />
+            ) : vizMode === 'matrix' ? (
               <ThreatMatrix.Provider state={matrixState} actions={matrixActions} meta={matrixMeta}>
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
                   <ThreatMatrix.Header />
@@ -596,12 +603,7 @@ export function ChatTab() {
                 </div>
               </ThreatMatrix.Provider>
             ) : (
-              <LemmaGraph
-                nodes={graphNodes}
-                edges={graphEdges}
-                onNodeClick={handleGraphNodeClick}
-                mode={graphMode}
-              />
+              <LemmaGraph nodes={graphNodes} edges={graphEdges} onNodeClick={handleGraphNodeClick} mode={graphMode} />
             )}
           </div>
         </div>

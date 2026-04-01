@@ -353,6 +353,8 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             spec["definition_of_done"] = task.definition_of_done
         if task.allowlist is not None:
             spec["allowlist"] = task.allowlist
+        if task.read_context:
+            spec["read_context"] = task.read_context
         if task.max_rounds != 5:
             spec["max_rounds"] = task.max_rounds
 

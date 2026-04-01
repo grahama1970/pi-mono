@@ -13,15 +13,22 @@ import {
   Search, FolderOpen, GitBranch, Settings, Download,
 } from 'lucide-react';
 import ReasoningChain from './ReasoningChain';
+import { useCommandHistory, useHealthMonitor, exportSession } from './useEmbryFeatures';
 import DOMPurify from 'dompurify';
 import {
   highlightEntities, MarkdownRenderer, SkillPalette,
   RecallCard as SharedRecallCard, GateChain, ThreatMatrixCard, DeltaReportCard,
+  executePrimaryAction, configureDeepLinks,
 } from '../shared-chat';
 import type {
   RecallItem, RecallResult, ReasoningStep, Artifact, Skill,
   ThreatMatrixSummary, EntityType, DeltaReport,
 } from '../shared-chat';
+
+configureDeepLinks({
+  // ida: 'ida://open?address={entity}',
+  // splunk: 'https://splunk.internal/search?q={entity}',
+});
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -39,12 +46,7 @@ interface AgentConfig {
   color: string;
 }
 
-interface HealthStatus {
-  expressUp: boolean;
-  memoryUp: boolean;
-  scillmUp: boolean;
-  latencyMs?: number;
-}
+// HealthStatus imported from useEmbryFeatures
 
 interface Message {
   id: string;
@@ -281,34 +283,21 @@ export function EmbryTerminalView() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const [showExport, setShowExport] = useState(false);
-  const [health, setHealth] = useState<HealthStatus>({ expressUp: false, memoryUp: false, scillmUp: false });
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [historyIdx, setHistoryIdx] = useState(-1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const cmdHistory = useCommandHistory();
+  const health = useHealthMonitor(BACKEND_URL, AUTH_HEADERS);
 
-  // Fetch real data + health check
+  // Fetch real data (health handled by useHealthMonitor hook)
   useEffect(() => {
-    const t0 = Date.now();
     Promise.all([fetchProjects(), fetchSkills()])
       .then(([p, s]) => {
         setProjects(p);
         setSkills(s);
         if (p.length > 0) setActiveProject(p[0]);
         setConnection('connected');
-        setHealth(h => ({ ...h, expressUp: true, latencyMs: Date.now() - t0 }));
       })
       .catch(() => setConnection('offline'));
-    // Check memory daemon
-    fetch(`${BACKEND_URL}/agent/recall`, {
-      method: 'POST', headers: { ...AUTH_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: 'health', project: 'test' }),
-    }).then(r => r.ok && setHealth(h => ({ ...h, memoryUp: true }))).catch(() => {});
-    // Check scillm via Express proxy (avoids CORS)
-    fetch(`${BACKEND_URL}/health`, { headers: AUTH_HEADERS })
-      .then(r => r.json())
-      .then(d => { if (d.status === 'ok') setHealth(h => ({ ...h, scillmUp: true })); })
-      .catch(() => {});
   }, []);
 
   // Scroll to bottom
@@ -341,6 +330,7 @@ export function EmbryTerminalView() {
 
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
+    cmdHistory.push(input.trim());
     const text = input.trim();
     setCommandHistory(prev => [text, ...prev].slice(0, 50));
     setHistoryIdx(-1);
@@ -440,22 +430,9 @@ export function EmbryTerminalView() {
 
   sendMessageRef.current = sendMessage;
 
-  // Entity click → navigate to the right UX Lab project for that entity type
+  // Entity click → deep-link system (SPARTA Explorer, Binary Explorer, IDA Pro, Splunk, etc.)
   const handleEntityClick = useCallback((entity: string, type: EntityType) => {
-    if (type === 'skill') {
-      setInput(`${entity} `);
-      inputRef.current?.focus();
-    } else if (type === 'control' || type === 'attack' || type === 'sparta') {
-      // NIST controls, ATT&CK techniques, SPARTA IDs → full-screen threat matrix
-      window.location.hash = `sparta-explorer/threat-matrix?focus=${encodeURIComponent(entity)}`;
-    } else if (type === 'cwe') {
-      // CWE → Binary Explorer (our IDA Pro equivalent)
-      window.location.hash = `binary-explorer?cwe=${encodeURIComponent(entity)}`;
-    } else {
-      // Framework references (NIST 800-171, CMMC, FedRAMP) → memory recall
-      setInput(`/memory recall "${entity}"`);
-      setTimeout(() => sendMessageRef.current?.(), 100);
-    }
+    executePrimaryAction(entity, type, setInput, () => sendMessageRef.current?.(), () => inputRef.current?.focus());
   }, []);
 
   const AgentIcon = agent.icon;
@@ -515,31 +492,7 @@ export function EmbryTerminalView() {
             }}>
               {(['markdown', 'html', 'pdf'] as const).map(fmt => (
                 <button key={fmt} onClick={() => {
-                  const header = `# Embry Terminal Session\n\nProject: ${activeProject?.name || 'none'}\nAgent: ${agent.name}\nDate: ${new Date().toISOString()}\nAudit: /memory recall "session:${Date.now()}" for full evidence trail\n\n---\n\n`;
-                  const md = messages.map(m => {
-                    let block = m.role === 'user' ? `**User:** ${m.content}` : `**Agent (${m.agent || 'claude'}):**\n${m.content}`;
-                    if (m.recall) block += `\n\n> Memory recall: ${m.recall.confidence > 1 ? Math.min(Math.round(m.recall.confidence), 100) : Math.round(m.recall.confidence * 100)}% confidence, ${m.recall.items.length} results`;
-                    if (m.skillUsed) block += `\n\n> Skill: /${m.skillUsed}`;
-                    return block;
-                  }).join('\n\n---\n\n');
-                  const content = header + md;
-
-                  if (fmt === 'markdown') {
-                    const blob = new Blob([content], { type: 'text/markdown' });
-                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `embry-session-${Date.now()}.md`; a.click();
-                  } else if (fmt === 'html') {
-                    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Embry Session</title><style>body{background:#141414;color:#e2e8f0;font-family:system-ui;max-width:800px;margin:0 auto;padding:40px;line-height:1.7}h1{color:#00ff88}hr{border:none;border-top:1px solid #333}code{background:#0b1220;padding:2px 6px;border-radius:4px;color:#4a9eff}</style></head><body><pre>${content.replace(/</g, '&lt;')}</pre></body></html>`;
-                    const blob = new Blob([html], { type: 'text/html' });
-                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `embry-session-${Date.now()}.html`; a.click();
-                  } else {
-                    // PDF: open print dialog on HTML
-                    const win = window.open('', '_blank');
-                    if (win) {
-                      win.document.write(`<html><head><title>Embry Session</title><style>body{font-family:system-ui;max-width:700px;margin:0 auto;padding:40px;line-height:1.6;font-size:12px}h1{font-size:18px}hr{border:none;border-top:1px solid #ccc}code{background:#f0f0f0;padding:1px 4px;border-radius:3px}</style></head><body><pre>${content.replace(/</g, '&lt;')}</pre></body></html>`);
-                      win.document.close();
-                      win.print();
-                    }
-                  }
+                  exportSession(messages, fmt, activeProject?.name || 'none', agent.name);
                   setShowExport(false);
                 }} style={{
                   display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', width: '100%',
@@ -645,20 +598,14 @@ export function EmbryTerminalView() {
                     onKeyDown={e => {
                       if (showPalette && paletteKeyHandler.current?.(e)) return;
                       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-                      // Ctrl+K → open skill palette
                       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setInput('/'); setShowPalette(true); setSkillFilter(''); }
-                      // ↑/↓ command history (only when input is empty or browsing history)
-                      if (e.key === 'ArrowUp' && !showPalette && (input === '' || historyIdx >= 0)) {
-                        e.preventDefault();
-                        const newIdx = Math.min(historyIdx + 1, commandHistory.length - 1);
-                        setHistoryIdx(newIdx);
-                        if (commandHistory[newIdx]) setInput(commandHistory[newIdx]);
+                      if (e.key === 'ArrowUp' && !showPalette) {
+                        const prev = cmdHistory.up(input);
+                        if (prev !== null) { e.preventDefault(); setInput(prev); }
                       }
-                      if (e.key === 'ArrowDown' && !showPalette && historyIdx >= 0) {
-                        e.preventDefault();
-                        const newIdx = historyIdx - 1;
-                        setHistoryIdx(newIdx);
-                        setInput(newIdx >= 0 ? commandHistory[newIdx] : '');
+                      if (e.key === 'ArrowDown' && !showPalette) {
+                        const next = cmdHistory.down();
+                        if (next !== null) { e.preventDefault(); setInput(next); }
                       }
                     }}
                     placeholder={`Message ${agent.name}…`}
