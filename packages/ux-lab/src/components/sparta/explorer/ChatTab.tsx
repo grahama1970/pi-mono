@@ -386,6 +386,25 @@ export function ChatTab() {
       }))
       const verdict = data.verdict?.state ?? data.verdict_state ?? 'unknown'
       const tier = data.tier ?? 'T0'
+      // Build evidenceCase for ReasoningBlock
+      const gateSummary = gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; ')
+      const controlIds: string[] = data.control_ids ?? data.verdict?.control_ids ?? msg.entities?.filter(e => e.exists).map(e => e.id) ?? []
+
+      // Check for drift
+      let drift: { old_verdict: string; new_verdict: string; timestamp: string } | undefined
+      if (controlIds.length > 0) {
+        try {
+          const driftRes = await fetch(`${API}/api/memory/list`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ collection: 'evidence_cases', limit: 5, filters: { type: 'threat-delta' } }),
+          }).then(r => r.json())
+          const deltas = (driftRes.documents ?? []).filter((d: any) => controlIds.includes(d.control_id))
+          if (deltas.length > 0) {
+            drift = { old_verdict: deltas[0].old_verdict, new_verdict: deltas[0].new_verdict, timestamp: deltas[0].timestamp }
+          }
+        } catch { /* non-critical */ }
+      }
+
       addMsg({
         role: 'system',
         content: data.answer ?? '',
@@ -393,6 +412,18 @@ export function ChatTab() {
         skillUsed: 'create-evidence-case',
         entities: msg.entities,
         verdict: { state: verdict.toUpperCase(), gates, tier },
+        evidenceCase: {
+          verdict: verdict.toLowerCase(),
+          grade: data.verdict?.grade ?? data.grade ?? '?',
+          gates_passed: gates.filter(g => g.passed).length,
+          gates_total: gates.length,
+          gate_summary: gateSummary,
+          control_ids: controlIds,
+          tier,
+          drift,
+          recall_count: data.recall_count ?? data.evidence?.length ?? 0,
+          source_traceability: data.source_traceability,
+        },
       })
     } catch (err) {
       addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })

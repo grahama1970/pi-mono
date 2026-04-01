@@ -14,6 +14,7 @@ import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { RecallCard, type RecallItem } from './RecallCard'
 import { GateChain } from './GateChain'
 import { ThreatMatrixCard, type ThreatMatrixSummary } from './ThreatMatrixCard'
+import ReasoningBlock from '../../shared-chat/ReasoningBlock'
 import { highlightEntities, MarkdownRenderer, SkillPalette } from '../../shared-chat'
 import type { Skill } from '../../shared-chat'
 
@@ -52,6 +53,20 @@ export interface ChatMessage {
   skillUsed?: string
   /** Inline threat matrix summary card */
   matrixSummary?: ThreatMatrixSummary
+  /** Evidence case reasoning block data */
+  evidenceCase?: {
+    verdict: string
+    grade: string
+    gates_passed: number
+    gates_total: number
+    gate_summary: string
+    control_ids: string[]
+    tier: string
+    drift?: { old_verdict: string; new_verdict: string; timestamp: string }
+    recall_count?: number
+    recall_breakdown?: Record<string, number>
+    source_traceability?: Record<string, number>
+  }
 }
 
 export type { ThreatMatrixSummary }
@@ -159,8 +174,13 @@ function MessageItem({
         )}
       </div>
 
-      {/* RecallCard — replaces raw "Found N results" text */}
-      {msg.recallItems && msg.recallItems.length > 0 && (
+      {/* Reasoning Block — unified evidence case display (replaces separate GateChain + RecallCard) */}
+      {msg.evidenceCase && (
+        <ReasoningBlock data={msg.evidenceCase} onNavigateToControl={onEntityClick ? (id) => onEntityClick(id, 'control') : undefined} />
+      )}
+
+      {/* RecallCard — only when no evidenceCase (fallback for non-evidence messages) */}
+      {!msg.evidenceCase && msg.recallItems && msg.recallItems.length > 0 && (
         <RecallCard
           items={msg.recallItems}
           resultCount={msg.resultCount ?? msg.recallItems.length}
@@ -187,8 +207,8 @@ function MessageItem({
         </div>
       )}
 
-      {/* GateChain — replaces inline gate dots */}
-      {msg.verdict && (
+      {/* GateChain — only when no evidenceCase (fallback for legacy verdict format) */}
+      {!msg.evidenceCase && msg.verdict && (
         <GateChain
           gates={msg.verdict.gates}
           verdict={msg.verdict.state}

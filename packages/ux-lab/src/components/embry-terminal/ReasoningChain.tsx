@@ -30,6 +30,8 @@ export interface ReasoningStep {
 interface ReasoningChainProps {
   steps: ReasoningStep[];
   chainTitle?: string;
+  /** Which LLM agent ran this chain (shown as badge in header) */
+  agent?: string;
 }
 
 // --- Constants & Styles ---
@@ -38,8 +40,8 @@ const NVIS = {
   green: 'var(--nvis-green, #00ff88)',
   red: 'var(--nvis-red, #ff4444)',
   amber: 'var(--nvis-amber, #ffaa00)',
-  blue: 'var(--nvis-blue, #4a9eff)',
-  accent: 'var(--nvis-accent, #7c3aed)',
+  blue: 'var(--nvis-blue, #60a5fa)',
+  accent: 'var(--nvis-accent, #a78bfa)',
   white: 'var(--nvis-text, #e2e8f0)',
   dim: 'var(--nvis-dim, #64748b)',
   muted: 'var(--nvis-muted, #334155)',
@@ -301,15 +303,32 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
 
 // --- Main Component ---
 
-const ReasoningChain = ({ steps, chainTitle }: ReasoningChainProps) => {
+const ReasoningChain = ({ steps, chainTitle, agent }: ReasoningChainProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const stats = useMemo(() => {
     const done = steps.filter(s => s.status === 'done').length;
     const isRunning = steps.some(s => s.status === 'running');
     const lastActive = steps.findLast(s => s.status === 'done' || s.status === 'running');
-    return { done, isRunning, summary: lastActive?.summary || 'Initializing...' };
+    const confSteps = steps.filter(s => s.confidence !== undefined);
+    const avgConf = confSteps.length > 0 ? confSteps.reduce((sum, s) => sum + (s.confidence || 0), 0) / confSteps.length : null;
+    const totalMs = steps.reduce((sum, s) => sum + (s.duration || 0), 0);
+    return { done, isRunning, summary: lastActive?.summary || 'Initializing...', avgConf, totalMs };
   }, [steps]);
+
+  // Agent badge element (reused in running + collapsed states)
+  const agentBadge = agent ? (
+    <span title={`Agent: ${agent} — LLM backend processing this chain`} style={{ fontSize: 10, fontFamily: FONTS.mono, color: NVIS.accent, marginLeft: 6, padding: '0 4px', background: `${NVIS.accent}15`, borderRadius: 3, cursor: 'help' }}>{agent}</span>
+  ) : null;
+
+  // Confidence badge element
+  const confBadge = stats.avgConf !== null ? (
+    <span title="Average confidence across all steps (BM25 + cosine + graph combined score)" style={{
+      fontSize: 10, fontFamily: FONTS.mono, padding: '0 4px', borderRadius: 3, cursor: 'help',
+      background: stats.avgConf > 0.8 ? `${NVIS.green}15` : stats.avgConf > 0.5 ? `${NVIS.amber}15` : `${NVIS.red}15`,
+      color: stats.avgConf > 0.8 ? NVIS.green : stats.avgConf > 0.5 ? NVIS.amber : NVIS.red,
+    }}>conf {Math.round(stats.avgConf * 100)}%</span>
+  ) : null;
 
   return (
     <div 
@@ -367,13 +386,14 @@ const ReasoningChain = ({ steps, chainTitle }: ReasoningChainProps) => {
             <span style={{ color: NVIS.white, fontWeight: 600 }}>
               {chainTitle || 'Thinking...'}
             </span>
+            {agentBadge}
             <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
             <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
               {stats.done}/{steps.length}
             </span>
           </span>
         ) : (
-          // Collapsed/done state: "▸ Thinking · 6 steps · 12s"
+          // Collapsed/done state: "▸ Thinking · claude · 6 steps · 12s · conf 91%"
           <span style={{
             fontSize: 13,
             fontFamily: FONTS.ui,
@@ -388,18 +408,23 @@ const ReasoningChain = ({ steps, chainTitle }: ReasoningChainProps) => {
             <span style={{ color: NVIS.white, fontWeight: 600 }}>
               {chainTitle || 'Thinking'}
             </span>
+            {agentBadge}
             <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
-            <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
+            <span title="Tool invocations: memory recall, skill execution, LLM inference" style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim, cursor: 'help' }}>
               {stats.done} steps
             </span>
-            {steps.reduce((sum, s) => sum + (s.duration || 0), 0) > 0 && (
+            {stats.totalMs > 0 && (
               <>
                 <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
                 <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: NVIS.dim }}>
-                  {steps.reduce((sum, s) => sum + (s.duration || 0), 0) < 1000
-                    ? `${steps.reduce((sum, s) => sum + (s.duration || 0), 0)}ms`
-                    : `${(steps.reduce((sum, s) => sum + (s.duration || 0), 0) / 1000).toFixed(1)}s`}
+                  {stats.totalMs < 1000 ? `${stats.totalMs}ms` : `${(stats.totalMs / 1000).toFixed(1)}s`}
                 </span>
+              </>
+            )}
+            {confBadge && (
+              <>
+                <span style={{ color: NVIS.dim, margin: '0 4px' }}>·</span>
+                {confBadge}
               </>
             )}
           </span>

@@ -164,7 +164,7 @@ const MessageItem = memo(function MessageItem({ msg, onEntityClick }: { msg: Mes
             <ToolAction label="Ran a command" qid={`chat:message:${msg.id}:cmd`} />
           )}
           {msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
-            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} />
+            <ReasoningChain steps={msg.reasoningSteps} chainTitle={msg.chainTitle} agent={msg.agent} />
           )}
         </div>
       ) : null}
