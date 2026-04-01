@@ -588,7 +588,7 @@ export function ChatTab() {
         {/* RIGHT: Visualization workspace (flex) */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
           {/* Viz content */}
-          <div style={{ flex: 1, overflow: 'hidden' }}>
+          <div style={{ flex: 1, overflow: vizMode === 'dashboard' ? 'auto' : 'hidden' }}>
             {vizMode === 'dashboard' ? (
               <PostureDashboard onNavigateToControl={(id) => { setFocusTechnique(id); setVizMode('matrix') }} />
             ) : vizMode === 'matrix' ? (
