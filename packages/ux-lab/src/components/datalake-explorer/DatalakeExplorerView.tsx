@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Database, FileText, BarChart3, GitBranch, Shield, Layers } from 'lucide-react'
+import { Database, FileText, BarChart3, GitBranch, Shield, Layers, Activity } from 'lucide-react'
 import { TraceabilityView } from './TraceabilityView'
 import { EMBRY, label, card } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
@@ -26,7 +26,7 @@ interface DatalakeDoc {
   tags?: string[]
 }
 
-type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade'
+type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade' | 'metrics'
 
 const TABS: { key: Tab; label: string; icon: typeof Database }[] = [
   { key: 'overview', label: 'Overview', icon: BarChart3 },
@@ -35,6 +35,7 @@ const TABS: { key: Tab; label: string; icon: typeof Database }[] = [
   { key: 'requirements', label: 'Requirements', icon: Shield },
   { key: 'traceability', label: 'Traceability', icon: GitBranch },
   { key: 'cascade', label: 'Cascade', icon: Layers },
+  { key: 'metrics', label: 'Metrics', icon: Activity },
 ]
 
 const FALLBACK_SCOPES = [
@@ -339,6 +340,136 @@ function PlaceholderTab({ name }: { name: string }) {
   )
 }
 
+/* ── Metrics Tab ─────────────────────────────────────────── */
+
+interface MetricsReport {
+  coverage_text?: number
+  coverage_visual?: number
+  documents_count?: number
+  sections_count?: number
+  integrity_summary?: { edge_count?: number; orphan_count?: number }
+  issues?: { severity: string; code: string; message: string }[]
+  retrieval_metrics?: { k: number; recall: number; ndcg: number; mrr: number }[]
+  timestamp?: string
+}
+
+function coverageColor(v: number): string {
+  if (v >= 0.99) return '#15803d' // green-700
+  if (v >= 0.95) return '#b45309' // amber-700
+  return '#dc2626' // red-600
+}
+
+function severityIcon(s: string): string {
+  if (s === 'error') return '[!]'
+  if (s === 'warn') return '[~]'
+  return '[i]'
+}
+
+function MetricsTab() {
+  const [report, setReport] = useState<MetricsReport | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    fetch(`${API}/api/datalake/metrics`)
+      .then(r => { if (!r.ok) throw new Error(`${r.status}`); return r.json() })
+      .then(d => { setReport(d); setError(false) })
+      .catch(() => { setReport(null); setError(true) })
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return (
+    <div style={{ padding: 20, fontSize: 11, fontFamily: MONO, color: EMBRY.dim }}>Loading metrics...</div>
+  )
+  if (error || !report) return (
+    <div style={{ padding: 20, fontSize: 11, fontFamily: MONO, color: EMBRY.dim }}>
+      No metrics reports yet. Run: <span style={{ color: EMBRY.white }}>pdf_lab.py metrics</span>
+    </div>
+  )
+
+  const covText = report.coverage_text ?? 0
+  const covVisual = report.coverage_visual ?? 0
+  const issues = (report.issues ?? []).slice(0, 20)
+  const integrity = report.integrity_summary ?? {}
+  const retrieval = report.retrieval_metrics ?? []
+
+  const gaugeStyle = (pct: number): React.CSSProperties => ({
+    height: 14, borderRadius: 2, background: coverageColor(pct),
+    width: `${Math.min(pct * 100, 100)}%`, transition: 'width 0.3s',
+  })
+  const gaugeTrack: React.CSSProperties = {
+    height: 14, borderRadius: 2, background: 'rgba(255,255,255,0.06)', width: '100%',
+  }
+
+  return (
+    <div style={{ padding: 20, overflow: 'auto', fontFamily: MONO, fontSize: 11 }}>
+      <div style={{ ...label, marginBottom: 12 }}>Embedding Coverage</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+        <div>
+          <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Text embedding (384d) — {(covText * 100).toFixed(1)}%</div>
+          <div style={gaugeTrack}><div style={gaugeStyle(covText)} /></div>
+        </div>
+        <div>
+          <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Visual embedding (2048d) — {(covVisual * 100).toFixed(1)}%</div>
+          <div style={gaugeTrack}><div style={gaugeStyle(covVisual)} /></div>
+        </div>
+      </div>
+
+      <div style={{ ...label, marginBottom: 8 }}>Stats</div>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+        {[
+          { k: 'Documents', v: report.documents_count ?? 0 },
+          { k: 'Sections', v: report.sections_count ?? 0 },
+          { k: 'Edges', v: integrity.edge_count ?? 0 },
+          { k: 'Orphans', v: integrity.orphan_count ?? 0 },
+        ].map(s => (
+          <div key={s.k} style={{ ...card, minWidth: 100, padding: '6px 10px' }}>
+            <div style={{ fontSize: 9, color: EMBRY.dim }}>{s.k}</div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white }}>{s.v.toLocaleString()}</div>
+          </div>
+        ))}
+      </div>
+
+      {issues.length > 0 && (<>
+        <div style={{ ...label, marginBottom: 8 }}>Issues ({issues.length})</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginBottom: 20 }}>
+          {issues.map((iss, i) => (
+            <div key={i} style={{ fontSize: 10, color: iss.severity === 'error' ? '#dc2626' : iss.severity === 'warn' ? '#b45309' : EMBRY.dim }}>
+              <span style={{ fontWeight: 700 }}>{severityIcon(iss.severity)} {iss.code}</span> {iss.message}
+            </div>
+          ))}
+        </div>
+      </>)}
+
+      {retrieval.length > 0 && (<>
+        <div style={{ ...label, marginBottom: 8 }}>Retrieval Metrics</div>
+        <table style={{ borderCollapse: 'collapse', fontSize: 10 }}>
+          <thead>
+            <tr>{['K', 'Recall', 'nDCG', 'MRR'].map(h => (
+              <th key={h} style={{ padding: '3px 10px', borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.dim, fontWeight: 600, textAlign: 'left' }}>{h}</th>
+            ))}</tr>
+          </thead>
+          <tbody>
+            {retrieval.map(r => (
+              <tr key={r.k}>
+                <td style={{ padding: '3px 10px', color: EMBRY.white }}>{r.k}</td>
+                <td style={{ padding: '3px 10px', color: EMBRY.white }}>{r.recall.toFixed(3)}</td>
+                <td style={{ padding: '3px 10px', color: EMBRY.white }}>{r.ndcg.toFixed(3)}</td>
+                <td style={{ padding: '3px 10px', color: EMBRY.white }}>{r.mrr.toFixed(3)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>)}
+
+      {report.timestamp && (
+        <div style={{ marginTop: 16, fontSize: 9, color: EMBRY.dim }}>Report: {report.timestamp}</div>
+      )}
+    </div>
+  )
+}
+
 /* ── Main View ────────────────────────────────────────────── */
 
 const EMPTY_STATS: DatalakeStats = {
@@ -474,6 +605,7 @@ export function DatalakeExplorerView() {
           {activeTab === 'requirements' && <PlaceholderTab name="Requirements" />}
           {activeTab === 'traceability' && <TraceabilityView docKey={selectedDocKey} />}
           {activeTab === 'cascade' && <PlaceholderTab name="Cascade" />}
+          {activeTab === 'metrics' && <MetricsTab />}
         </div>
       </div>
     </div>
