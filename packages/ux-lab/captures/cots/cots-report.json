@@ -1,0 +1,138 @@
+{
+  "url": "http://localhost:3002/#embry-terminal",
+  "date": "2026-04-01T23:09:25.863Z",
+  "results": {
+    "C01": {
+      "id": "C01",
+      "name": "All text >= 12px",
+      "standard": "MIL-STD-1472H",
+      "threshold": 12,
+      "unit": "px",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    },
+    "C02": {
+      "id": "C02",
+      "name": "Touch targets >= 44x44px",
+      "standard": "WCAG 2.1",
+      "threshold": 44,
+      "unit": "px",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    },
+    "C03": {
+      "id": "C03",
+      "name": "Color contrast >= 4.5:1",
+      "standard": "WCAG 2.1 AA",
+      "threshold": 4.5,
+      "unit": ":1",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    },
+    "C04": {
+      "id": "C04",
+      "name": "Color not sole information carrier",
+      "standard": "WCAG 2.1",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    },
+    "C05": {
+      "id": "C05",
+      "name": "Keyboard navigable (no tabindex=-1 on visible interactive)",
+      "standard": "Section 508",
+      "status": "WARN",
+      "count": 1,
+      "detail": "24/25 reachable via Tab"
+    },
+    "C07": {
+      "id": "C07",
+      "name": "Acronyms expanded or defined",
+      "standard": "MIL-STD-1472H",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    },
+    "C08": {
+      "id": "C08",
+      "name": "Metrics labeled with units/definition",
+      "standard": "MIL-STD-1472H",
+      "status": "WARN",
+      "count": 8,
+      "violations": [
+        {
+          "qid": "topbar:connection:status",
+          "value": "42ms",
+          "context": "API MEM LLM 42ms"
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "89%",
+          "context": "/memory Recalled 3 prior SPARTA assessments 89% 7:03:27 PM1."
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "1.2s",
+          "context": "7:03:27 PM 1.2s"
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "4.8s",
+          "context": "7:03:32 PM 4.8s"
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "94%",
+          "context": "/extract-controls Extracted 110 NIST 800-171 controls from S"
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "2.1s",
+          "context": "7:03:37 PM 2.1s"
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "91%",
+          "context": "/batch-quality Validated QRA quality for extracted controls "
+        },
+        {
+          "qid": "reasoning-chain",
+          "value": "3.2s",
+          "context": "7:03:39 PM 3.2s"
+        }
+      ]
+    },
+    "C12": {
+      "id": "C12",
+      "name": "Audit trail: user, session, timestamp, agent",
+      "standard": "NIST 800-53 AU-2",
+      "status": "PASS",
+      "count": 0,
+      "violations": [],
+      "checks": {
+        "user": true,
+        "session": true,
+        "timestamp": true,
+        "agent": true
+      }
+    },
+    "C14": {
+      "id": "C14",
+      "name": "Tooltips on all interactive elements",
+      "standard": "MIL-STD-1472H",
+      "status": "PASS",
+      "count": 0,
+      "violations": []
+    }
+  },
+  "summary": {
+    "PASS": 7,
+    "WARN": 2,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "compliant": true
+}

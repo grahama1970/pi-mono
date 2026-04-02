@@ -1,0 +1,14 @@
+{
+  "task_id": "ecl-express-endpoints",
+  "title": "Add /api/evidence-case/drift and /api/evidence-case/stress-test endpoints",
+  "prompt": "Edit packages/ux-lab/server/index.ts to add 2 new POST endpoints BEFORE the wildcard proxy.\n\n1. POST /api/evidence-case/drift\n   Input: { control_ids?: string[] }\n   Calls: child_process.exec('unset VIRTUAL_ENV && cd .pi/skills/create-evidence-case && .venv/bin/python tools/compute_threat_delta.py' + (control_ids ? ' --control-ids ' + control_ids.join(',') : ' --all-recent'))\n   Capture stdout, parse last JSON object (stdout has log lines mixed in — find last line starting with '{' or use rfind trick).\n   Timeout: 120000ms\n   Return: parsed JSON or { error: string } with 502\n\n2. POST /api/evidence-case/stress-test\n   Input: { question_bank?: string }\n   Calls: child_process.execFile('.pi/skills/create-evidence-case/run.sh', ['stress-test', '--question-bank', question_bank || 'batch_50_f36', '--json'])\n   Timeout: 300000ms\n   Return: parsed JSON stdout or { error: string } with 502\n\nBoth use const { execFile, exec } = require('child_process') and promisify.\nPlace endpoints BEFORE the app.all('/api/memory/*') wildcard proxy line.",
+  "backend": "codex",
+  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "output_dir": "/tmp/code-runner-ecl-endpoints",
+  "allowlist": ["packages/ux-lab/server/index.ts"],
+  "definition_of_done": {
+    "command": "cd /home/graham/workspace/experiments/pi-mono && grep -c 'evidence-case/drift\\|evidence-case/stress-test' packages/ux-lab/server/index.ts",
+    "assertion": "2"
+  },
+  "max_rounds": 3
+}

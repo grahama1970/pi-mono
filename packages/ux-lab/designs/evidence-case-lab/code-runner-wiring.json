@@ -1,0 +1,14 @@
+{
+  "task_id": "ecl-app-wiring",
+  "title": "Wire EvidenceCaseLab into App.tsx",
+  "prompt": "Edit packages/ux-lab/src/App.tsx to add Evidence Case Lab as a project.\n\n1. Add lazy import near line 63 (where BinaryExplorer is imported):\n   const EvidenceCaseLab = React.lazy(() => import('./components/evidence-case-lab/EvidenceCaseLab'))\n\n2. Add to the projects array (near line 866):\n   { id: 'evidence-case-lab', title: 'Evidence Case Lab', subtitle: 'Evidence pipeline testing', date: '2026-04-01', type: 'desktop' as const }\n\n3. Add conditional render (near line 222, where binary-explorer renders):\n   {projectId === 'evidence-case-lab' && <EvidenceCaseLab />}\n\n4. Add 'evidence-case-lab' to the exclusion list in the fallback render (near line 230).\n\nDO NOT modify ANY other code. Only add these 4 lines.",
+  "backend": "codex",
+  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "output_dir": "/tmp/code-runner-ecl-wiring",
+  "allowlist": ["packages/ux-lab/src/App.tsx"],
+  "definition_of_done": {
+    "command": "cd /home/graham/workspace/experiments/pi-mono && grep -c 'evidence-case-lab' packages/ux-lab/src/App.tsx",
+    "assertion": "3"
+  },
+  "max_rounds": 3
+}

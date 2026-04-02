@@ -2061,3 +2061,265 @@ steps:
 # Phase 12: Error Handling (5 tests)       — empty, invalid, large offset, rapid switch, concurrent
 # Phase 13: Known Bugs (4 tests)           — health endpoint, regression guards
 # Phase 14: Visual Consistency (7 tests)   — EMBRY tokens, colors, fonts
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 15: EVIDENCE CASES COLLECTION
+# Dedicated collection (moved from lessons). Verdicts, discrepancies, deltas.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "evidence_cases collection exists with data"
+    id: evidence_collection_exists
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 1 }
+    assert:
+      status: 200
+      body.total: "> 50"
+    tags: [data, evidence, blocking]
+
+  - name: "evidence_cases has verdict documents"
+    id: evidence_verdicts
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 5 }
+    assert:
+      status: 200
+      body.documents[0].verdict: "!= null"
+    tags: [data, evidence]
+
+  - name: "evidence_cases has discrepancy documents"
+    id: evidence_discrepancies
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 10, filters: { type: "discrepancy" } }
+    assert:
+      status: 200
+      body.documents.length: ">= 1"
+    tags: [data, evidence, discrepancy]
+
+  - name: "evidence_cases has threat-delta documents"
+    id: evidence_deltas
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 5, filters: { type: "threat-delta" } }
+    assert:
+      status: 200
+      body.documents.length: ">= 1"
+    tags: [data, evidence, drift]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 16: TRACEABILITY + EVIDENCE TRACE ENDPOINTS
+# Typed chunks linked to controls, evidence case gate traces.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Traceability endpoint returns typed chunks"
+    id: traceability_chunks
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/traceability"
+    body: { control_id: "DE-0007" }
+    assert:
+      status: 200
+      body.total_chunks: "> 0"
+    tags: [api, traceability]
+
+  - name: "Evidence trace returns cases for known control"
+    id: evidence_trace_de0007
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/evidence-case/trace"
+    body: { control_id: "DE-0007" }
+    assert:
+      status: 200
+      body.cases.length: ">= 1"
+      body.cases[0].verdict: "!= null"
+    tags: [api, evidence]
+
+  - name: "Critical path returns failing chains"
+    id: critical_path_chains
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/critical-path"
+    body: {}
+    assert:
+      status: 200
+      body.total_failing_edges: "> 0"
+    tags: [api, critical-path]
+
+  - name: "Evidence case run endpoint responds"
+    id: evidence_run_endpoint
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/evidence-case/run"
+    body: { question: "How does SPARTA address GPS spoofing?", controlId: "DE-0007" }
+    timeout: 90000
+    assert:
+      status: 200
+      body.verdict: "!= null"
+      body.gate_trace.length: ">= 1"
+    tags: [api, evidence, slow]
+
+  - name: "Drift endpoint responds"
+    id: drift_endpoint
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/evidence-case/drift"
+    body: { control_ids: ["DE-0007"] }
+    timeout: 120000
+    assert:
+      status: 200
+    tags: [api, drift, slow]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 17: REASONING BLOCK (ReasoningBlock.tsx)
+# 3-level progressive disclosure in chat messages.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "ReasoningBlock renders Level 0 verdict line"
+    id: reasoning_level0
+    action: navigate
+    url: "http://localhost:3002/#sparta-explorer"
+    interactions:
+      - type: "chat_send"
+        query: "How does SPARTA address GPS spoofing for DE-0007?"
+        wait: 90000
+      - type: "screenshot"
+        output: "/tmp/test-reasoning-level0.png"
+    assert:
+      visual: "Chat shows system message with verdict badge (SATISFIED/INCONCLUSIVE/NOT_SATISFIED)"
+    tags: [ui, reasoning, chat, slow]
+
+  - name: "ReasoningBlock expands to Level 1 gate pills"
+    id: reasoning_level1
+    action: navigate
+    url: "http://localhost:3002/#sparta-explorer"
+    depends_on: reasoning_level0
+    interactions:
+      - type: "click"
+        selector: "[aria-label*='Toggle reasoning']"
+      - type: "screenshot"
+        output: "/tmp/test-reasoning-level1.png"
+    assert:
+      visual: "Reasoning block shows horizontal gate pills (pass/fail), recall count, drift status, source trace"
+    tags: [ui, reasoning, chat]
+
+  - name: "ReasoningBlock expands to Level 2 GateChain"
+    id: reasoning_level2
+    action: navigate
+    url: "http://localhost:3002/#sparta-explorer"
+    depends_on: reasoning_level1
+    interactions:
+      - type: "click"
+        selector: "[aria-label*='Toggle reasoning']"
+      - type: "screenshot"
+        output: "/tmp/test-reasoning-level2.png"
+    assert:
+      visual: "Reasoning block shows full vertical GateChain with pass/fail detail per gate"
+    tags: [ui, reasoning, chat]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 18: POSTURE DASHBOARD (PostureDashboard.tsx)
+# Coverage ring, drift alerts, discrepancies, critical path, timeline.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "PostureDashboard renders on 'show dashboard' intent"
+    id: dashboard_renders
+    action: navigate
+    url: "http://localhost:3002/#sparta-explorer"
+    interactions:
+      - type: "chat_send"
+        query: "show me the posture dashboard"
+        wait: 5000
+      - type: "screenshot"
+        output: "/tmp/test-posture-dashboard.png"
+    assert:
+      visual: "Viz workspace switches to PostureDashboard with posture score, coverage ring, drift alerts"
+    tags: [ui, dashboard]
+
+  - name: "PostureDashboard shows correct technique count"
+    id: dashboard_technique_count
+    depends_on: dashboard_renders
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "sparta_controls", limit: 1, filters: { source_framework: "SPARTA", control_type: "technique" } }
+    assert:
+      status: 200
+      body.total: "> 100"
+    tags: [data, dashboard]
+
+  - name: "PostureDashboard drift alerts section populated"
+    id: dashboard_drift_alerts
+    depends_on: dashboard_renders
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 5, filters: { type: "threat-delta" } }
+    assert:
+      status: 200
+      body.documents.length: ">= 1"
+    tags: [data, dashboard, drift]
+
+  - name: "PostureDashboard discrepancies section populated"
+    id: dashboard_discrepancies
+    depends_on: dashboard_renders
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body: { collection: "evidence_cases", limit: 10, filters: { type: "discrepancy" } }
+    assert:
+      status: 200
+      body.documents.length: ">= 1"
+    tags: [data, dashboard, discrepancy]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 19: EVIDENCE CASE LAB
+# Evaluate, Drift, Stress Test modes.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Evidence Case Lab renders in sidebar"
+    id: ecl_renders
+    action: navigate
+    url: "http://localhost:3002/#evidence-case-lab"
+    interactions:
+      - type: "wait"
+        duration: 3000
+      - type: "screenshot"
+        output: "/tmp/test-ecl-renders.png"
+    assert:
+      visual: "Evidence Case Lab shows in sidebar, chat pane left, workspace right, mode tabs visible"
+    tags: [ui, ecl]
+
+  - name: "Evidence Case Lab Evaluate tab active by default"
+    id: ecl_evaluate_tab
+    depends_on: ecl_renders
+    action: navigate
+    url: "http://localhost:3002/#evidence-case-lab"
+    assert:
+      visual: "Evaluate tab is highlighted, workspace shows question input and results table"
+    tags: [ui, ecl]
+
+  - name: "Evidence Case Lab Drift tab switches view"
+    id: ecl_drift_tab
+    depends_on: ecl_renders
+    action: navigate
+    url: "http://localhost:3002/#evidence-case-lab"
+    interactions:
+      - type: "click"
+        selector: "button:has-text('Drift')"
+      - type: "screenshot"
+        output: "/tmp/test-ecl-drift.png"
+    assert:
+      visual: "Drift view shows control selector and comparison layout"
+    tags: [ui, ecl]
+
+# Phase summary appended:
+# Phase 15: Evidence Cases Collection (4 tests) — collection, verdicts, discrepancies, deltas
+# Phase 16: Traceability + Evidence Trace (5 tests) — traceability, trace, critical-path, run, drift
+# Phase 17: Reasoning Block (3 tests) — Level 0, Level 1, Level 2 progressive disclosure
+# Phase 18: Posture Dashboard (4 tests) — renders, technique count, drift alerts, discrepancies
+# Phase 19: Evidence Case Lab (3 tests) — renders, evaluate tab, drift tab

@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "orchestrate-plan",
+  "metadata": {
+    "title": "COTS Compliance Fixes",
+    "goal": "Fix 6 violations",
+    "plan_type": "code",
+    "created": "2026-04-01"
+  },
+  "repo_root": "/home/graham/workspace/experiments/pi-mono/.pi",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Fix C01: Font sizes ≥ 16px body / ≥ 12px metadata",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "Fix C01 violation"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C01 --json | jq '.results.C01.status'",
+        "assertion": "Returns PASS"
+      }
+    },
+    {
+      "id": "2",
+      "title": "Fix C02: Touch targets ≥ 44x44px",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "Fix C02 violation"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C02 --json | jq '.results.C02.status'",
+        "assertion": "Returns PASS"
+      }
+    },
+    {
+      "id": "3",
+      "title": "Fix C14: Tooltips on non-obvious elements",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "Fix C14 violation"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C14 --json | jq '.results.C14.status'",
+        "assertion": "Returns PASS"
+      }
+    },
+    {
+      "id": "4",
+      "title": "Fix C07: Acronyms expanded on first use",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "No screenshot available"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C07 --json | jq '.results.C07.status'",
+        "assertion": "Returns PASS"
+      }
+    },
+    {
+      "id": "5",
+      "title": "Fix C08: Metrics labeled with units/definition",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "No screenshot available"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C08 --json | jq '.results.C08.status'",
+        "assertion": "Returns PASS"
+      }
+    },
+    {
+      "id": "6",
+      "title": "Fix C12: Audit trail visible: user, time, session",
+      "lane": "0",
+      "runner": "subagent-service",
+      "backend": "sonnet",
+      "mode": "iterative",
+      "executor": "Project agent",
+      "depends_on": [],
+      "implementation": [
+        "No screenshot available"
+      ],
+      "definition_of_done": {
+        "command": "./run.sh scan http://localhost:3002/#embry-terminal --rules C12 --json | jq '.results.C12.status'",
+        "assertion": "Returns PASS"
+      }
+    }
+  ]
+}

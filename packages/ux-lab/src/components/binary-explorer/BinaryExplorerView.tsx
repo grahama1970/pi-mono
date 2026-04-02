@@ -2919,9 +2919,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 12 }}>
                         {data.stats.totalNodes} features · {namespaces.length} namespaces · {stateMachines.length} state machines
                       </div>
-                      <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
+                      <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES <span style={{ fontWeight: 400, opacity: 0.6 }}>— click to ask</span></div>
                       {suggestions.map((s, si) => (
-                        <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4 }}>
+                        <div key={si} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} onClick={() => { setChatInput(s.raw); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
+                          <span style={{ color: EMBRY.accent, marginRight: 4, fontSize: 12 }}>→</span>
                           {s.segments.map((seg, j) => seg.entity
                             ? <code key={j} style={{ color: '#22d3ee', background: '#0a1628', padding: '1px 4px', borderRadius: 3, fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{seg.text}</code>
                             : <span key={j} style={{ color: EMBRY.accent }}>{seg.text}</span>
@@ -2961,8 +2962,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         queries.push(`What is the security impact of ${selectedNode.label}?`)
                       return queries
                     })().map((q, i) => (
-                      <div key={i} onClick={() => setChatInput(q)} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3 }}>
-                        {q}
+                      <div key={i} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} onClick={() => { setChatInput(q); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
+                        <span style={{ marginRight: 4, fontSize: 12 }}>→</span>{q}
                       </div>
                     ))}
                   </div>

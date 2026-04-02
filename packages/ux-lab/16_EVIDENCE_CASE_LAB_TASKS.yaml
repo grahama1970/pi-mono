@@ -1,0 +1,193 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "Evidence Case Lab — UX Lab Integration"
+  goal: "Add Evidence Case Lab as a UX Lab project with Evaluate, Drift, and Stress Test modes"
+  plan_type: hybrid
+  created: "2026-04-01"
+  primary_persona:
+    name: "Brandon Bailey"
+    role: "SPARTA cybersecurity analyst"
+    source: ".pi/agents/brandon-bailey/AGENTS.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/checkpoint recall: Unified Lab UX design research found — tabs pattern, React/Tailwind via ux-lab. CALL pattern."
+  - "GateChain.tsx exists (84 lines) — CALL for gate timeline rendering"
+  - "RecallCard.tsx exists (103 lines) — CALL for recall results"
+  - "EvidenceCasePanel.tsx exists (183 lines) — EXTEND for evaluate mode"
+  - "PostureDashboard.tsx exists (524 lines) — CALL for drift overview"
+  - "/api/evidence-case/run endpoint exists in server/index.ts — CALL"
+  - "/api/evidence-case/trace endpoint exists — CALL"
+  - "/api/memory/list endpoint exists — CALL for evidence_cases queries"
+  - "compute_threat_delta.py exists and works — CALL via new Express endpoint"
+  - "App.tsx project registration pattern: { id, title, subtitle, date, type } + lazy import + conditional render"
+  - "ops-stitch skill exists for Stitch design download — CALL"
+  - "Codex 5.3 via scillm for React code gen — proven pipeline from PostureDashboard"
+  - "CREATE justified: EvidenceCaseLab.tsx (new project shell), DriftView.tsx (new), StressTestView.tsx (new), 2 Express endpoints"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Design (Stitch)"
+  - id: "1"
+    label: "Wave 1: Backend (Express endpoints)"
+  - id: "2"
+    label: "Wave 2: Frontend (React components)"
+  - id: "3"
+    label: "Wave 3: Integration + Visual QA"
+
+tasks:
+  - id: "1"
+    title: "Create Stitch design brief for Evidence Case Lab (3 screens)"
+    lane: "0"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: []
+    command: >
+      mkdir -p packages/ux-lab/designs/evidence-case-lab &&
+      timeout 20 google-chrome --headless --disable-gpu --screenshot=packages/ux-lab/designs/evidence-case-lab/current-state.png --window-size=1920,1080 --virtual-time-budget=10000 'http://localhost:3002/#sparta-explorer' 2>/dev/null &&
+      echo 'Screenshot captured' &&
+      test -f packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md && echo 'Brief already exists' ||
+      echo 'DESIGN_BRIEF.md must be created by project agent before orchestrate'
+    implementation:
+      - "Create packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md"
+      - "Three screens: Evaluate mode, Drift mode, Stress Test mode"
+      - "Same EMBRY NVIS dark theme as PostureDashboard (bg #141414, green #00ff88, red #ff4444, amber #ffaa00, accent #7c3aed)"
+      - "Layout: chat pane (left, 320px) + workspace (right, flex) — same as SPARTA Explorer ChatTab"
+      - "Workspace header: 3 mode tabs (Evaluate | Drift | Stress Test) with active indicator"
+      - "Evaluate screen: question input in chat, workspace shows GateChain + RecallCard + verdict badge + source chunks"
+      - "Drift screen: control selector (dropdown or 'All'), side-by-side before/after GateChain, diff highlighting (green=still pass, red=flipped to fail, amber=flipped to pass), affected requirements list"
+      - "Stress Test screen: question bank selector, run button, results grid (question, expected, actual, correct?, gate_failed), accuracy bar chart, confusion matrix heatmap"
+      - "Include real data counts: 55 verdict cases, 5 discrepancies, 1 drift alert, 216 SPARTA techniques"
+      - "Use Lucide icons throughout, system monospace for IDs"
+      - "Take headless Chrome screenshot of current SPARTA Explorer for reference"
+      - "Copy to ops-stitch captures directory"
+      - "This is a /create-design-board prerequisite task"
+    tests:
+      - "test-lab/run.sh verify-task 1 packages/ux-lab/designs/evidence-case-lab/ --domain docs"
+      - "test -f packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md && wc -l packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md | awk '{if ($1 > 50) print \"PASS\"; else print \"FAIL: too short\"}'"
+    definition_of_done:
+      command: "test -f packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md && wc -l packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md | awk '{print $1}'"
+      assertion: "Design brief exists with more than 50 lines covering 3 screens"
+
+  - id: "2"
+    title: "Generate Stitch mockups and download via ops-stitch"
+    lane: "0"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["1"]
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/ops-stitch &&
+      STITCH_API_KEY="$(grep STITCH_API_KEY /home/graham/workspace/experiments/pi-mono/.env | head -1 | cut -d= -f2 | tr -d '\"')"
+      .venv/bin/python bundle.py bundle
+      --target evidence-case-lab
+      --url "http://localhost:3002/#sparta-explorer"
+      --hash sparta-explorer
+      --prompt "$(head -20 /home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/evidence-case-lab/DESIGN_BRIEF.md)" &&
+      echo 'Bundle created'
+    implementation:
+      - "Use ops-stitch stitch.ts to generate 3 screens in a Stitch project"
+      - "Upload DESIGN_BRIEF.md content as prompt + reference screenshot"
+      - "Download all screens (HTML + PNG) via: STITCH_API_KEY from .env, npx tsx stitch.ts download <project-id>"
+      - "Save to .pi/skills/ops-stitch/captures/evidence-case-lab/stitch-output/"
+      - "Review each screen against design brief — list adjustments needed"
+      - "If adjustments needed, use stitch.ts edit to iterate, then re-download"
+    definition_of_done:
+      command: "ls .pi/skills/ops-stitch/captures/evidence-case-lab/stitch-output/*.png 2>/dev/null | wc -l"
+      assertion: "At least 3 PNG mockup files downloaded"
+
+  - id: "3"
+    title: "Add Express endpoints for drift and stress-test via /code-runner"
+    lane: "1"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: []
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/code-runner &&
+      unset VIRTUAL_ENV &&
+      ./run.sh run /home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/evidence-case-lab/code-runner-endpoints.json --backend codex --max-rounds 3
+    implementation:
+      - "/code-runner with task spec code-runner-endpoints.json (created during Task 1 alongside design brief)"
+      - "Edits packages/ux-lab/server/index.ts — adds 2 endpoints BEFORE the wildcard proxy"
+      - "POST /api/evidence-case/drift — calls compute_threat_delta.py via child_process.exec"
+      - "POST /api/evidence-case/stress-test — calls run.sh stress-test via child_process.execFile"
+      - "Both return JSON, handle errors with 502, timeout 120s/300s respectively"
+      - "allowlist: ['packages/ux-lab/server/index.ts']"
+      - "definition_of_done in spec: curl test returns HTTP 200"
+    tests:
+      - "curl -s -X POST http://localhost:3001/api/evidence-case/drift -H 'Content-Type: application/json' -d '{\"control_ids\":[\"DE-0007\"]}' | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.keys())'"
+    definition_of_done:
+      command: "curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:3001/api/evidence-case/drift -H 'Content-Type: application/json' -d '{\"control_ids\":[\"DE-0007\"]}'"
+      assertion: "Returns HTTP 200"
+
+  - id: "4"
+    title: "Generate EvidenceCaseLab React components via /code-runner"
+    lane: "2"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["2", "3"]
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/code-runner &&
+      unset VIRTUAL_ENV &&
+      ./run.sh run /home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/evidence-case-lab/code-runner-task.json --backend codex --max-rounds 5
+    implementation:
+      - "/code-runner runs the self-improvement loop: Codex proposes → apply → tsc --noEmit → commit/revert → fix → repeat"
+      - "Task spec JSON (code-runner-task.json) must be created by Task 2 after Stitch mockups are downloaded"
+      - "Task spec includes: prompt with Stitch HTML + EMBRY tokens + data shapes + endpoint spec"
+      - "allowlist: ['packages/ux-lab/src/components/evidence-case-lab/EvidenceCaseLab.tsx', 'packages/ux-lab/src/components/evidence-case-lab/DriftView.tsx', 'packages/ux-lab/src/components/evidence-case-lab/StressTestView.tsx']"
+      - "definition_of_done: 'cd packages/ux-lab && npx tsc --noEmit' assertion: 'passed'"
+      - "Prerequisite: /create-design-board from Task 2 (Stitch mockup PNGs)"
+      - "3 files: EvidenceCaseLab.tsx (main shell with tabs), DriftView.tsx (before/after gate diff), StressTestView.tsx (results grid + metrics)"
+      - "All import { EMBRY } from '../../common/EmbryStyle', use Lucide icons, NVIS dark theme"
+    tests:
+      - "test-lab/run.sh verify-task 4 packages/ux-lab/src/components/evidence-case-lab/ --domain react"
+      - "cd packages/ux-lab && npx tsc --noEmit"
+      - "test -f packages/ux-lab/src/components/evidence-case-lab/EvidenceCaseLab.tsx && test -f packages/ux-lab/src/components/evidence-case-lab/DriftView.tsx && test -f packages/ux-lab/src/components/evidence-case-lab/StressTestView.tsx && echo PASS"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+      assertion: "TypeScript compiles with zero errors and all 3 component files exist"
+
+  - id: "5"
+    title: "Wire EvidenceCaseLab into App.tsx via /code-runner"
+    lane: "3"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["4"]
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/code-runner &&
+      unset VIRTUAL_ENV &&
+      ./run.sh run /home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/evidence-case-lab/code-runner-wiring.json --backend codex --max-rounds 3
+    implementation:
+      - "/code-runner with task spec code-runner-wiring.json"
+      - "Edits packages/ux-lab/src/App.tsx — adds lazy import, project entry, conditional render"
+      - "allowlist: ['packages/ux-lab/src/App.tsx']"
+      - "DO NOT modify any other project entries or remove any existing code"
+      - "Wiring task — /create-design-board prerequisite satisfied by Task 2 Stitch mockups"
+    tests:
+      - "grep -q 'evidence-case-lab' packages/ux-lab/src/App.tsx"
+      - "cd packages/ux-lab && npx tsc --noEmit"
+      - "timeout 20 google-chrome --headless --disable-gpu --screenshot=/tmp/ecl-wired-qa.png --window-size=1920,1080 --virtual-time-budget=10000 'http://localhost:3002/#evidence-case-lab' 2>/dev/null && test -f /tmp/ecl-wired-qa.png && echo 'PNG evidence: wired project renders'"
+    definition_of_done:
+      command: "grep -c 'evidence-case-lab' /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/App.tsx"
+      assertion: "At least 3 occurrences (import, project entry, render condition)"
+
+  - id: "6"
+    title: "Visual QA: screenshot Evidence Case Lab in browser"
+    lane: "3"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["5"]
+    command: >
+      timeout 20 google-chrome --headless --disable-gpu
+      --screenshot=/tmp/evidence-case-lab-qa.png --window-size=1920,1080
+      --virtual-time-budget=10000 'http://localhost:3002/#evidence-case-lab' 2>/dev/null &&
+      ls -la /tmp/evidence-case-lab-qa.png
+    definition_of_done:
+      command: "test -f /tmp/evidence-case-lab-qa.png && echo 'Screenshot exists'"
+      assertion: "Screenshot file exists"

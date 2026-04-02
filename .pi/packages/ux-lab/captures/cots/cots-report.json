@@ -1,0 +1,310 @@
+{
+  "url": "http://localhost:3002/#embry-terminal",
+  "date": "2026-04-01T21:42:53.105Z",
+  "results": {
+    "C01": {
+      "id": "C01",
+      "name": "Font sizes ≥ 16px body / ≥ 12px metadata",
+      "standard": "MIL-STD-1472H",
+      "method": "programmatic",
+      "status": "FAIL",
+      "violations": [
+        {
+          "qid": "topbar:connection:status",
+          "fontSize": 9,
+          "text": "API"
+        },
+        {
+          "qid": "topbar:connection:status",
+          "fontSize": 9,
+          "text": "MEM"
+        },
+        {
+          "qid": "topbar:connection:status",
+          "fontSize": 9,
+          "text": "LLM"
+        },
+        {
+          "qid": "topbar:connection:status",
+          "fontSize": 9,
+          "text": "38ms"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "fontSize": 10,
+          "text": "▸"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "fontSize": 10,
+          "text": "claude"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "fontSize": 11,
+          "text": "11.3s"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "fontSize": 10,
+          "text": "conf 91%"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 10,
+          "text": "89%"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 11,
+          "text": "Memory recall"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 11,
+          "text": "·"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 11,
+          "text": "3 results"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 9,
+          "text": "High confidence"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "fontSize": 10,
+          "text": "▾"
+        }
+      ]
+    },
+    "C02": {
+      "id": "C02",
+      "name": "Touch targets ≥ 44x44px",
+      "standard": "WCAG 2.1",
+      "method": "programmatic",
+      "status": "FAIL",
+      "violations": [
+        {
+          "qid": "button",
+          "width": 28,
+          "height": 28,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "width": 122,
+          "height": 27,
+          "text": "My Projects"
+        },
+        {
+          "qid": "button",
+          "width": 122,
+          "height": 27,
+          "text": "Shared"
+        },
+        {
+          "qid": "input",
+          "width": 251,
+          "height": 35,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "width": 275,
+          "height": 28,
+          "text": "New Project"
+        },
+        {
+          "qid": "button",
+          "width": 16,
+          "height": 16,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "width": 16,
+          "height": 16,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "width": 96,
+          "height": 27,
+          "text": "Deploy"
+        },
+        {
+          "qid": "topbar:sidebar:toggle",
+          "width": 30,
+          "height": 30,
+          "text": ""
+        },
+        {
+          "qid": "topbar:agent:select",
+          "width": 148,
+          "height": 34,
+          "text": "Claude Code"
+        },
+        {
+          "qid": "topbar:connection:status",
+          "width": 117,
+          "height": 14,
+          "text": "APIMEMLLM38ms"
+        },
+        {
+          "qid": "button",
+          "width": 28,
+          "height": 28,
+          "text": ""
+        },
+        {
+          "qid": "topbar:detail:toggle",
+          "width": 32,
+          "height": 36,
+          "text": "▣"
+        },
+        {
+          "qid": "skill:assess:ref",
+          "width": 72,
+          "height": 21,
+          "text": "/assess"
+        },
+        {
+          "qid": "entity:CMMC Level 2",
+          "width": 113,
+          "height": 20,
+          "text": "CMMC Level 2"
+        },
+        {
+          "qid": "button",
+          "width": 760,
+          "height": 25,
+          "text": "89%Memory recall·3 resultsHigh"
+        },
+        {
+          "qid": "entity:NIST 800-171",
+          "width": 105,
+          "height": 20,
+          "text": "NIST 800-171"
+        },
+        {
+          "qid": "skill:dogpile:ref",
+          "width": 81,
+          "height": 21,
+          "text": "/dogpile"
+        },
+        {
+          "qid": "skill:create-evidence-case:ref",
+          "width": 195,
+          "height": 21,
+          "text": "/create-evidence-case"
+        },
+        {
+          "qid": "input:attach",
+          "width": 30,
+          "height": 30,
+          "text": ""
+        }
+      ]
+    },
+    "C14": {
+      "id": "C14",
+      "name": "Tooltips on non-obvious elements",
+      "standard": "MIL-STD-1472H",
+      "method": "programmatic",
+      "status": "FAIL",
+      "violations": [
+        {
+          "qid": "topbar:sidebar:toggle",
+          "tag": "button",
+          "text": ""
+        },
+        {
+          "qid": "topbar:agent:select",
+          "tag": "button",
+          "text": "Claude Code"
+        },
+        {
+          "qid": "topbar:detail:toggle",
+          "tag": "button",
+          "text": "▣"
+        },
+        {
+          "qid": "skill:assess:ref",
+          "tag": "span",
+          "text": "/assess"
+        },
+        {
+          "qid": "entity:CMMC Level 2",
+          "tag": "span",
+          "text": "CMMC Level 2"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "tag": "button",
+          "text": "▸CMMC Level 2 Assessmentclaude"
+        },
+        {
+          "qid": "entity:NIST 800-171",
+          "tag": "span",
+          "text": "NIST 800-171"
+        },
+        {
+          "qid": "skill:dogpile:ref",
+          "tag": "span",
+          "text": "/dogpile"
+        },
+        {
+          "qid": "skill:create-evidence-case:ref",
+          "tag": "span",
+          "text": "/create-evidence-case"
+        },
+        {
+          "qid": "input:attach",
+          "tag": "button",
+          "text": ""
+        },
+        {
+          "qid": "input:send",
+          "tag": "button",
+          "text": ""
+        }
+      ]
+    },
+    "C07": {
+      "id": "C07",
+      "name": "Acronyms expanded on first use",
+      "standard": "MIL-STD-1472H",
+      "method": "visual",
+      "status": "FAIL",
+      "detail": "No screenshot available",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/.pi/packages/ux-lab/captures/cots/C07-acronyms.png"
+    },
+    "C08": {
+      "id": "C08",
+      "name": "Metrics labeled with units/definition",
+      "standard": "MIL-STD-1472H",
+      "method": "visual",
+      "status": "WARN",
+      "detail": "No screenshot available",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/.pi/packages/ux-lab/captures/cots/C08-metrics.png"
+    },
+    "C12": {
+      "id": "C12",
+      "name": "Audit trail visible: user, time, session",
+      "standard": "NIST 800-53 AU-2",
+      "method": "visual",
+      "status": "FAIL",
+      "detail": "No screenshot available",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/.pi/packages/ux-lab/captures/cots/C12-audit.png"
+    }
+  },
+  "summary": {
+    "PASS": 0,
+    "WARN": 1,
+    "FAIL": 5
+  }
+}

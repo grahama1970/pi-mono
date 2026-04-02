@@ -50,8 +50,8 @@ const NVIS = {
   blue: 'var(--nvis-blue, #60a5fa)',
   accent: 'var(--nvis-accent, #a78bfa)',
   white: 'var(--nvis-text, #e2e8f0)',
-  dim: 'var(--nvis-dim, #64748b)',
-  muted: 'var(--nvis-muted, #334155)',
+  dim: 'var(--nvis-dim, #94a3b8)',
+  muted: 'var(--nvis-muted, #94a3b8)',
   bgCard: 'var(--nvis-bg-card, #1a1a1a)',
   bgDeep: 'var(--nvis-bg-deep, #0b1220)',
   border: 'var(--nvis-border, rgba(255, 255, 255, 0.13))',
@@ -443,14 +443,14 @@ const ReasoningChain = ({ steps, chainTitle, agent, sessionId, user }: Reasoning
         ) : (
           // Collapsed/done state: "▸ Thinking · claude · 6 steps · 12s · conf 91%"
           <span style={{
-            fontSize: 13,
+            fontSize: 14,
             fontFamily: FONTS.ui,
             display: 'flex',
             alignItems: 'center',
             gap: 0,
             flex: 1,
           }}>
-            <span style={{ color: NVIS.muted, marginRight: 6, fontSize: 10 }}>
+            <span style={{ color: NVIS.muted, marginRight: 6, fontSize: 14 }}>
               {isExpanded ? '▾' : '▸'}
             </span>
             <span style={{ color: NVIS.white, fontWeight: 600 }}>

@@ -1,0 +1,18 @@
+{
+  "task_id": "ecl-react-components",
+  "title": "Create Evidence Case Lab React components from Stitch design",
+  "prompt": "Create 3 React 19 + TypeScript components for Evidence Case Lab in packages/ux-lab/src/components/evidence-case-lab/.\n\n1. EvidenceCaseLab.tsx (default export)\n   - Main shell: chat pane (left, 320px) + workspace (right)\n   - Mode tabs in workspace header: Evaluate | Drift | Stress Test\n   - Chat pane: input field, send button, message list\n   - Import and render DriftView/StressTestView based on active tab\n   - Evaluate mode: call POST http://localhost:3001/api/evidence-case/run {question}, render gate trace\n   - Import { EMBRY } from '../../common/EmbryStyle'\n   - Use Lucide icons: Shield, AlertTriangle, TrendingDown, Activity, FlaskConical, RefreshCw\n\n2. DriftView.tsx (named export)\n   - Fetch POST http://localhost:3001/api/evidence-case/drift {control_ids}\n   - Two-column layout: Previous verdict (left) vs Current verdict (right)\n   - Each column shows: verdict badge, gates_passed/total, gate_summary parsed into pass/fail dots\n   - Diff highlighting: gates that changed get red or green border\n   - Below: list of affected control_ids\n   - Loading/error states\n\n3. StressTestView.tsx (named export)\n   - Fetch POST http://localhost:3001/api/evidence-case/stress-test {question_bank}\n   - Header: accuracy bar, total/correct/wrong counts\n   - Results table: question | expected | actual | correct? | gate_failed\n   - Expandable rows for detail\n   - Question bank dropdown selector\n\nAll components: NVIS dark theme (bg #141414, cards #1a1a1a), system monospace for IDs, EMBRY tokens.\nDo NOT import from any charting library. Use inline SVG for any charts.",
+  "backend": "codex",
+  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "output_dir": "/tmp/code-runner-ecl-components",
+  "allowlist": [
+    "packages/ux-lab/src/components/evidence-case-lab/EvidenceCaseLab.tsx",
+    "packages/ux-lab/src/components/evidence-case-lab/DriftView.tsx",
+    "packages/ux-lab/src/components/evidence-case-lab/StressTestView.tsx"
+  ],
+  "definition_of_done": {
+    "command": "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | tail -1",
+    "assertion": "passed"
+  },
+  "max_rounds": 5
+}

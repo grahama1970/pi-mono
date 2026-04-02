@@ -289,7 +289,7 @@ ${schemaDescriptions.map((s) => `- ${s.name}: fields=[${s.fields.join(", ")}] co
 			try {
 				const pat = rawQ.slice(1, lastSlash);
 				const fl = rawQ.slice(lastSlash + 1).replace(/[^gimsuy]/g, "");
-				regex = new RegExp(pat, fl.includes("i") ? fl : "i" + fl);
+				regex = new RegExp(pat, fl.includes("i") ? fl : `i${fl}`);
 			} catch {
 				/* invalid regex — fall through to literal */
 			}

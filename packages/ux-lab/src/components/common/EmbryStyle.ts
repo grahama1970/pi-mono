@@ -19,8 +19,8 @@ export const EMBRY = {
 	blue: "#4a9eff",
 	accent: "#7c3aed",
 	white: "#e2e8f0", // slate-200
-	dim: "#64748b", // slate-500
-	muted: "#334155", // slate-700
+	dim: "#94a3b8", // slate-500
+	muted: "#94a3b8", // slate-400 (COTS: ≥4.5:1 on dark bg)
 
 	// Framework colors
 	fw: {

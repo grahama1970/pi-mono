@@ -1,35 +1,8 @@
 {
-  "captured": 0,
-  "failed": 179,
+  "captured": 3,
+  "failed": 0,
   "groups": {
-    "first-impressions": 0,
-    "graph-navigation": 0,
-    "node-detail": 0,
-    "symbol-tree": 0,
-    "table-view": 0,
-    "taxonomy-integration": 0,
-    "code-view": 0,
-    "chat-analysis": 0,
-    "automation": 0,
-    "perspective-views": 0,
-    "scene-management": 0,
-    "investigation-journal": 0,
-    "data-structures": 0,
-    "graph-exploration": 0,
-    "search-and-filter": 0,
-    "context-menu": 0,
-    "cross-references": 0,
-    "state-machines": 0,
-    "performance": 0,
-    "progressive-disclosure": 0,
-    "learning-path": 0,
-    "vulnerability-hunting": 0,
-    "chat-exploration": 0,
-    "visual-design": 0,
-    "ctf-workflow": 0,
-    "graph-interaction": 0,
-    "accessibility": 0,
-    "error-states": 0
+    "performance": 3
   },
-  "completed_at": "2026-04-01T15:12:05.426Z"
+  "completed_at": "2026-04-01T23:51:44.782Z"
 }

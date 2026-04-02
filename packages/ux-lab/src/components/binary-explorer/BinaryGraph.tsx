@@ -1038,7 +1038,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('stroke-opacity', 0.4)
       .attr('stroke-dasharray', '2,2')
 
-    // CWE hazard ring — red outer ring on nodes with CWE vulnerability tags
+    // CWE hazard ring — prominent red outer ring on CWE-tagged nodes
     nodeGs.filter((d) => {
       const tax = taxonomyRef.current?.get(d.id)
       return tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)
@@ -1046,12 +1046,25 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .append('circle')
       .attr('class', 'cwe-ring')
       .attr('cx', 0).attr('cy', 0)
-      .attr('r', (d) => r(d) + 5)
+      .attr('r', (d) => r(d) + 8)
       .attr('fill', 'none')
       .attr('stroke', '#ef4444')
-      .attr('stroke-width', 1.5)
-      .attr('stroke-opacity', 0.7)
-      .attr('stroke-dasharray', '3,2')
+      .attr('stroke-width', 3)
+      .attr('stroke-opacity', 0.85)
+      .attr('stroke-dasharray', '4,2')
+    // Second glow ring for CWE — softer, larger
+    nodeGs.filter((d) => {
+      const tax = taxonomyRef.current?.get(d.id)
+      return tax && (tax.cwe?.length > 0 || tax.attack?.length > 0)
+    })
+      .append('circle')
+      .attr('class', 'cwe-glow')
+      .attr('cx', 0).attr('cy', 0)
+      .attr('r', (d) => r(d) + 14)
+      .attr('fill', 'none')
+      .attr('stroke', '#ef4444')
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0.25)
 
     // CWE badge — small red dot at bottom-right of nodes with CWE tags
     nodeGs.filter((d) => {

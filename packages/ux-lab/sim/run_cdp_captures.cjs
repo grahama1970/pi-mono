@@ -279,18 +279,17 @@ const GROUPS = {
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='';dp.style.left='';dp.style.top='';dp.style.width='';dp.style.height='';dp.style.zIndex=''}})()`}],
   'taxonomy-integration':  [
     // Click security-relevant node, switch to Security perspective, click CWE badge to show chain tree
-    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:1500},
-    {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},
+    {a:'wait',ms:500},{a:'eval',s:CLICK_NODE},{a:'wait',ms:2000},
+    {a:'eval',s:switchPerspective('security')},{a:'wait',ms:2000},
     // Click the FIRST CWE badge in the detail panel to trigger taxonomy chain fetch
     {a:'eval',s:`(()=>{const badges=[...document.querySelectorAll('[id^="be-cwe-"]')];if(badges.length>0){badges[0].click();return 'clicked: '+badges[0].id}return 'no CWE badges'})()`},
-    {a:'wait',ms:3000}, // Wait for chain to load from memory daemon
+    {a:'wait',ms:4000}, // Wait for chain to load + taxonomy coloring to propagate to graph
+    // Graph closeup showing CWE-tagged nodes (red tint) vs normal nodes
+    ...graphCloseup('01-cwe-graph-closeup'),
     // Full page: graph with CWE-colored nodes + detail panel with chain tree
-    {a:'ss',n:'01-chain-active'},
+    {a:'ss',n:'02-chain-active'},
     // Detail closeup showing CWE badges + THREAT MATRIX chain tree
-    ...detailCloseup('02-chain-closeup'),
-    // Also show table with CWE columns
-    {a:'eval',s:clickTab('table')},{a:'wait',ms:1000},
-    ...detailCloseup('03-cwe-table-closeup')],
+    ...detailCloseup('03-chain-closeup')],
   'code-view':             [...PRE, {a:'eval',s:clickTab('code')},{a:'waitSel',sel:'[data-testid="code-pane"]',timeout:4000},{a:'wait',ms:500},{a:'ss',n:'03-code-view'},
     // Expand detail panel to full height for code closeup, then capture
     {a:'eval',s:`(()=>{const dp=document.getElementById('be-detail-panel');if(dp){dp.style.position='fixed';dp.style.left='0';dp.style.top='0';dp.style.width='800px';dp.style.height='900px';dp.style.zIndex='9999';return 'expanded'}return 'no panel'})()`},
@@ -309,7 +308,12 @@ const GROUPS = {
     // Show the Analysis/chat tab (not journal) — this is where suggested queries appear
     {a:'eval',s:clickAnalysis},{a:'wait',ms:500},
     ...rightPaneCloseup('03-chat-closeup')],
-  'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'03-raw-api'}],
+  'automation':            [...PRE, {a:'eval',s:clickTab('raw')},{a:'wait',ms:500},{a:'ss',n:'01-raw-api'},
+    // Detail closeup showing API endpoints + curl examples at top of Raw tab
+    ...detailCloseup('02-api-closeup'),
+    // Also show the chat pane with suggested queries (API discoverability)
+    {a:'eval',s:clickAnalysis},{a:'wait',ms:500},
+    ...rightPaneCloseup('03-chat-closeup')],
   'perspective-views':     [...PRE, {a:'eval',s:switchPerspective('security')},{a:'wait',ms:1500},{a:'ss',n:'03-security'}],
   'scene-management':      [
     // Custom PRE: click node, then save scenes, then show full page with scenes + closeup of toolbar
@@ -332,7 +336,26 @@ const GROUPS = {
   // Gynvael groups — targeted node clicks + relevant tab closeups
   'data-structures':       [
     {a:'wait',ms:500},{a:'ss',n:'01-initial'},
-    {a:'eval',s:CLICK_TYPE('schema')},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
+    // Click ax0 (ConnectionInfo) — 12 fields, all typed (string/literal), 0 unknown
+    {a:'eval',s:`(()=>{
+      const nodes = [...document.querySelectorAll('g.nodes g')];
+      const match = nodes.find(g => {
+        const d = g.__data__ || g.querySelector('path')?.__data__;
+        return d && d.id && d.id.includes(':ax0');
+      }) || nodes.find(g => {
+        const d = g.__data__ || g.querySelector('path')?.__data__;
+        return d && d.id && d.id.includes(':Gy0');
+      }) || nodes.find(g => {
+        const d = g.__data__ || g.querySelector('path')?.__data__;
+        return d && d.nodeType === 'schema';
+      });
+      if (match) {
+        const shape = match.querySelector('circle,rect,polygon,path');
+        if (shape) shape.dispatchEvent(new MouseEvent('click', {bubbles:true}));
+        return 'clicked:' + (match.querySelector('text')?.textContent || '?');
+      }
+      return 'no schema node found';
+    })()`},{a:'wait',ms:1500},{a:'ss',n:'02-with-selection'},
     {a:'eval',s:clickTab('ast')},{a:'wait',ms:500},{a:'ss',n:'03-ast-fields'},
     ...detailCloseup('04-ast-closeup')],
   'graph-exploration':     [
@@ -376,6 +399,9 @@ const GROUPS = {
     // Expand 2 hub nodes to get more nodes in graph (triggers minimap at >15)
     {a:'eval',s:EXPAND_HUB(0)},{a:'wait',ms:2000},
     {a:'eval',s:EXPAND_HUB(1)},{a:'wait',ms:2000},
+    // Fit-to-graph to show minimap with full graph visible
+    {a:'eval',s:`(()=>{const svgs=[...document.querySelectorAll('svg')];const svg=svgs.find(s=>s.__fitToGraph);if(svg){svg.__fitToGraph();return 'fit:'+svgs.indexOf(svg)}return 'no fitToGraph found'})()`},
+    {a:'wait',ms:1000},
     {a:'ss',n:'01-expanded-graph'},
     {a:'eval',s:CLICK_NODE},{a:'wait',ms:1000},{a:'ss',n:'02-with-selection'},
     ...graphCloseup('03-perf-closeup')],

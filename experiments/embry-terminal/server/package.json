@@ -1,0 +1,21 @@
+{
+  "name": "@embry/terminal-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/pty-server.ts",
+    "start": "tsx src/pty-server.ts"
+  },
+  "dependencies": {
+    "express": "*",
+    "ws": "*"
+  },
+  "devDependencies": {
+    "@types/express": "*",
+    "@types/node": "*",
+    "@types/ws": "*",
+    "tsx": "*",
+    "typescript": "*"
+  }
+}

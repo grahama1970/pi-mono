@@ -300,10 +300,18 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
             await _run_code_runner(task, session_dir)
         else:
             raise RuntimeError(f"Unsupported runner: {task.runner}")
+        # code-runner sets review_status + error but doesn't raise.
+        # If review_status is "fail" or error is set, the task FAILED.
+        if task.review_status == "fail" or (task.error and task.runner == "code-runner"):
+            task.status = "failed"
+            if not task.error:
+                task.error = f"code-runner review_status=fail: {task.review_output[:200]}"
+            raise RuntimeError(task.error)
         task.status = "completed"
     except Exception as exc:
         task.status = "failed"
-        task.error = str(exc)
+        if not task.error:
+            task.error = str(exc)
         raise
     finally:
         task.finished_at = time.time()

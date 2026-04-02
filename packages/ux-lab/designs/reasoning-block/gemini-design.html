@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIS Reasoning Block - Design Spec</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-main: #08090b;
+            --bg-chat: #0f1218;
+            --bg-card: #1a1a1a;
+            --accent-purple: #7c3aed;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --text-primary: #e2e8f0;
+            --text-secondary: #64748b;
+            --status-green: #00ff88;
+            --status-amber: #ffaa00;
+            --status-red: #ff4444;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Chat Container Layout */
+        .chat-viewport {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 1. User Message */
+        .message-user {
+            align-self: flex-end;
+            background: var(--bg-card);
+            padding: 12px 16px;
+            border-radius: 12px 12px 2px 12px;
+            border: 1px solid var(--border-subtle);
+            max-width: 70%;
+            font-size: 14px;
+        }
+
+        /* 2. Reasoning Block (The Task) */
+        .reasoning-block {
+            width: 100%;
+            background: var(--bg-chat);
+            border-left: 3px solid var(--accent-purple);
+            border-top: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Level 0: Verdict Line */
+        .level-0 {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(124, 58, 237, 0.03);
+        }
+
+        .verdict-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--status-amber);
+            box-shadow: 0 0 8px var(--status-amber);
+        }
+
+        .verdict-text {
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            color: var(--status-amber);
+        }
+
+        .verdict-meta {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .drift-tag {
+            background: rgba(255, 170, 0, 0.1);
+            color: var(--status-amber);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Level 1: Summary Chain */
+        .level-1 {
+            padding: 16px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .gate-chain-horizontal {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .gate-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.03);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .gate-pill.pass i { color: var(--status-green); }
+        .gate-pill.fail i { color: var(--status-red); }
+
+        .summary-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .metric-item {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .metric-label { display: block; font-size: 10px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.6; }
+        .metric-value { color: var(--text-primary); font-family: var(--font-mono); }
+
+        /* Level 2: Detail Accordion */
+        .level-2 {
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .detail-section {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-header {
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .section-content {
+            padding: 0 16px 16px 16px;
+        }
+
+        /* Gate Detail (Vertical) */
+        .gate-row {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 12px;
+            border-left: 1px solid var(--border-subtle);
+            margin-left: 6px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .gate-row::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 12px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--bg-chat);
+            border: 1px solid var(--text-secondary);
+        }
+
+        .gate-row.pass::before { background: var(--status-green); border-color: var(--status-green); }
+        .gate-row.fail::before { background: var(--status-red); border-color: var(--status-red); }
+
+        .gate-name { font-family: var(--font-mono); font-weight: bold; width: 100px; }
+        .gate-desc { color: var(--text-secondary); flex: 1; }
+
+        /* Drift Comparison */
+        .drift-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .drift-box { text-align: center; }
+        .drift-box .v-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; }
+        .drift-box .v-val { font-family: var(--font-mono); font-weight: bold; }
+        .drift-box.old { color: var(--status-green); opacity: 0.6; }
+        .drift-box.new { color: var(--status-amber); }
+
+        /* Source Chunks */
+        .source-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .source-meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            margin-bottom: 6px;
+            color: var(--accent-purple);
+        }
+
+        .source-text {
+            font-size: 12px;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* 3. Agent Message */
+        .message-agent {
+            align-self: flex-start;
+            max-width: 85%;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            padding-left: 4px;
+        }
+
+        .id-link {
+            color: var(--status-green);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+        }
+
+        .chevron { transition: transform 0.2s; }
+        .expanded .chevron { transform: rotate(180deg); }
+
+    </style>
+</head>
+<body>
+
+<div class="chat-viewport">
+    
+    <!-- User Question -->
+    <div class="message-user">
+        Why did DE-0007 fail the recent evaluation?
+    </div>
+
+    <!-- Reasoning Block (Level 0, 1, and 2 shown expanded) -->
+    <div class="reasoning-block">
+        
+        <!-- Level 0 -->
+        <div class="level-0 expanded">
+            <div class="verdict-dot"></div>
+            <div class="verdict-text">INCONCLUSIVE (C)</div>
+            <div class="verdict-meta">
+                <span>5/7 gates</span>
+                <span>·</span>
+                <span class="id-link">DE-0007</span>
+                <span>·</span>
+                <span>8 sources</span>
+            </div>
+            <div class="drift-tag">
+                <i data-lucide="alert-triangle" size="12"></i>
+                DRIFT DETECTED
+            </div>
+            <div style="flex:1"></div>
+            <i data-lucide="chevron-down" class="chevron" size="16"></i>
+        </div>
+
+        <!-- Level 1 -->
+        <div class="level-1">
+            <div class="gate-chain-horizontal">
+                <div class="gate-pill pass"><i data-lucide="check-circle-2" size="12"></i> topic</div>
+                <div class="gate-pill pass"><i data-lucide="check-circle-2" size="12"></i> recall</div>
+                <div class="gate-pill pass"><i data-lucide="check-circle-2" size="12"></i> ground</div>
+                <div class="gate-pill pass"><i data-lucide="check-circle-2" size="12"></i> bridge</div>
+                <div class="gate-pill fail"><i data-lucide="x-circle" size="12"></i> semantic</div>
+                <div class="gate-pill fail"><i data-lucide="x-circle" size="12"></i> decompose</div>
+                <div class="gate-pill pass"><i data-lucide="check-circle-2" size="12"></i> lean4</div>
+            </div>
+
+            <div class="summary-metrics">
+                <div class="metric-item">
+                    <span class="metric-label">Recall Breakdown</span>
+                    <span class="metric-value">3 Ctrl / 5 QRA / 4 Chunk</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Drift Status</span>
+                    <span class="metric-value">Satisfied → Inconclusive</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Source Trace</span>
+                    <span class="metric-value">2 Req / 1 Tab / 1 Fig</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 2 (Accordion Sections) -->
+        <div class="level-2">
+            
+            <!-- Gates Detail -->
+            <div class="detail-section">
+                <div class="section-header">
+                    <span>Gate Pipeline Detail</span>
+                    <i data-lucide="chevron-up" size="14"></i>
+                </div>
+                <div class="section-content">
+                    <div class="gate-row pass">
+                        <div class="gate-name">BRIDGE</div>
+                        <div class="gate-desc">Technique bridge dominant=Harden (19/20 QRAs, 95% coherence).</div>
+                    </div>
+                    <div class="gate-row fail">
+                        <div class="gate-name">SEMANTIC</div>
+                        <div class="gate-desc">No semantic relation judgment recorded. Single explicit control or no pairwise comparison needed.</div>
+                    </div>
+                    <div class="gate-row fail">
+                        <div class="gate-name">DECOMPOSE</div>
+                        <div class="gate-desc">Primary state: INCONCLUSIVE. Evidence insufficient for disposition.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drift Detail -->
+            <div class="detail-section">
+                <div class="section-header">
+                    <span>Drift Analysis (Last 24h)</span>
+                    <i data-lucide="chevron-down" size="14"></i>
+                </div>
+                <div class="section-content">
+                    <div class="drift-grid">
+                        <div class="drift-box old">
+                            <div class="v-label">PREVIOUS</div>
+                            <div class="v-val">SATISFIED (A)</div>
+                        </div>
+                        <i data-lucide="arrow-right" size="16" style="color: var(--text-secondary)"></i>
+                        <div class="drift-box new">
+                            <div class="v-label">CURRENT</div>
+                            <div class="v-val">INCONCLUSIVE (C)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sources Detail -->
+            <div class="detail-section">
+                <div class="section-header">
+                    <span>Source Traceability</span>
+                    <i data-lucide="chevron-down" size="14"></i>
+                </div>
+                <div class="section-content">
+                    <div class="source-item">
+                        <div class="source-meta">
+                            <span>REQ-F36-FIRMWARE-09</span>
+                            <span>p. 142</span>
+                        </div>
+                        <div class="source-text">"...system shall implement rootkit detection via kernel-level integrity checks..."</div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-meta">
+                            <span>TABLE-SEC-004</span>
+                            <span>p. 12</span>
+                        </div>
+                        <div class="source-text">Mapping of CWE-300 to Defense Evasion controls (Incomplete).</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Agent Response -->
+    <div class="message-agent">
+        DE-0007 (Defense Evasion: Rootkit Detection) is currently <strong>INCONCLUSIVE</strong> because the semantic relation and decomposition gates failed. 
+        <br><br>
+        While the F-36 firmware spec references <span class="id-link">CWE-300</span>, the requirement text doesn't explicitly address rootkit detection mechanisms in the current corpus. This represents a drift from the previous evaluation where the grounding was satisfied by a now-deprecated technical manual.
+    </div>
+
+</div>
+
+<script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>
+</body>
+</html>

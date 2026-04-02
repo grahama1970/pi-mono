@@ -1,0 +1,147 @@
+{
+  "fixes": [
+    {
+      "id": "1",
+      "title": "Fix C01: All text >= 12px",
+      "violations": [
+        {
+          "qid": "reasoning-chain-summary",
+          "size": 10,
+          "text": "▾"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "size": 10,
+          "text": "89%"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "size": 11,
+          "text": "Memory recall"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "size": 11,
+          "text": "·"
+        },
+        {
+          "qid": "chat:message:seed-2",
+          "size": 11,
+          "text": "3 results"
+        }
+      ],
+      "definition_of_done": "./run.sh scan http://localhost:3002/#embry-terminal --rules C01 → PASS"
+    },
+    {
+      "id": "2",
+      "title": "Fix C02: Touch targets >= 44x44px",
+      "violations": [
+        {
+          "qid": "button",
+          "w": 28,
+          "h": 28,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "w": 122,
+          "h": 27,
+          "text": "My Projects"
+        },
+        {
+          "qid": "button",
+          "w": 122,
+          "h": 27,
+          "text": "Shared"
+        },
+        {
+          "qid": "input",
+          "w": 251,
+          "h": 35,
+          "text": ""
+        },
+        {
+          "qid": "button",
+          "w": 275,
+          "h": 28,
+          "text": "New Project"
+        }
+      ],
+      "definition_of_done": "./run.sh scan http://localhost:3002/#embry-terminal --rules C02 → PASS"
+    },
+    {
+      "id": "3",
+      "title": "Fix C03: Color contrast >= 4.5:1",
+      "violations": [
+        {
+          "qid": "skill:assess:ref",
+          "ratio": 1,
+          "fg": "rgb(74, 158, 255)",
+          "bg": "rgba(74, 158, 255, 0.08)",
+          "text": "/assess"
+        },
+        {
+          "qid": "entity:CMMC Level 2",
+          "ratio": 1,
+          "fg": "rgb(192, 132, 252)",
+          "bg": "rgba(192, 132, 252, 0.08)",
+          "text": "CMMC Level 2"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "ratio": 2,
+          "fg": "rgb(51, 65, 85)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "text": "▾"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "ratio": 4.4,
+          "fg": "rgb(100, 116, 139)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "text": "·"
+        },
+        {
+          "qid": "reasoning-chain-summary",
+          "ratio": 4.4,
+          "fg": "rgb(100, 116, 139)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "text": "5 steps"
+        }
+      ],
+      "definition_of_done": "./run.sh scan http://localhost:3002/#embry-terminal --rules C03 → PASS"
+    },
+    {
+      "id": "4",
+      "title": "Fix C14: Tooltips on all interactive elements",
+      "violations": [
+        {
+          "qid": "?",
+          "tag": "button",
+          "text": ""
+        },
+        {
+          "qid": "?",
+          "tag": "button",
+          "text": "My Projects"
+        },
+        {
+          "qid": "?",
+          "tag": "button",
+          "text": "Shared"
+        },
+        {
+          "qid": "?",
+          "tag": "button",
+          "text": "New Project"
+        },
+        {
+          "qid": "?",
+          "tag": "button",
+          "text": "Mockups"
+        }
+      ],
+      "definition_of_done": "./run.sh scan http://localhost:3002/#embry-terminal --rules C14 → PASS"
+    }
+  ]
+}
