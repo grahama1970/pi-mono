@@ -90,6 +90,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useAgentBus } from './lib/useAgentBus';
 import type { AgentBusMessage } from './lib/useAgentBus';
+import { useRegisterAction } from './hooks/useRegisterAction';
 
 // --- Types ---
 
@@ -125,6 +126,8 @@ const Mockups = ({ projectId }: { projectId: string }) => {
     '[INIT] CDP_SESSION_START: 0x7FF821',
     '[INFO] SOCKET_CONNECTED: ws://localhost:3001/ws',
   ]);
+  useRegisterAction('mockups:button:refresh', { app: 'ux-lab', action: 'MOCKUPS_REFRESH', label: 'Refresh Mockups', description: 'Reload mockup assets for the current project' });
+  useRegisterAction('mockups:button:download', { app: 'ux-lab', action: 'MOCKUPS_DOWNLOAD', label: 'Download Mockups', description: 'Download all mockup assets for the current project' });
 
   useEffect(() => {
     const fetchMockups = async () => {
@@ -149,8 +152,8 @@ const Mockups = ({ projectId }: { projectId: string }) => {
       <div className="p-4 border-b border-white/10 flex items-center justify-between bg-surface-low">
         <h2 className="text-xs font-mono text-slate-400 uppercase tracking-widest">Project Mockups: {projectId}</h2>
         <div className="flex gap-2">
-          <button className="p-2 hover:bg-white/5 rounded text-slate-400"><RefreshCcw className="w-4 h-4" /></button>
-          <button className="p-2 hover:bg-white/5 rounded text-slate-400"><Download className="w-4 h-4" /></button>
+          <button data-qid="mockups:button:refresh" title="Refresh mockup assets" className="p-2 hover:bg-white/5 rounded text-slate-400"><RefreshCcw className="w-4 h-4" /></button>
+          <button data-qid="mockups:button:download" title="Download mockup assets" className="p-2 hover:bg-white/5 rounded text-slate-400"><Download className="w-4 h-4" /></button>
         </div>
       </div>
       
@@ -253,6 +256,11 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [activeHtml, setActiveHtml] = useState<string | null>(null);
+  useRegisterAction('design-board:button:back-html', { app: 'ux-lab', action: 'DESIGN_BOARD_BACK_HTML', label: 'Back from HTML Board', description: 'Close HTML design board and return to design board gallery' });
+  useRegisterAction('design-board:button:back-image', { app: 'ux-lab', action: 'DESIGN_BOARD_BACK_IMAGE', label: 'Back from Image', description: 'Close image lightbox and return to design board gallery' });
+  useRegisterAction('design-board:button:open-round', { app: 'ux-lab', action: 'DESIGN_BOARD_OPEN_ROUND', label: 'Open Design Round', description: 'Open a design round composite image in lightbox' });
+  useRegisterAction('design-board:button:open-html', { app: 'ux-lab', action: 'DESIGN_BOARD_OPEN_HTML', label: 'Open HTML Board', description: 'Open an HTML design board in iframe view' });
+  useRegisterAction('design-board:button:open-stitch', { app: 'ux-lab', action: 'DESIGN_BOARD_OPEN_STITCH', label: 'Open Stitch Mockup', description: 'Open a Stitch mockup image in lightbox' });
 
   useEffect(() => {
     setLoading(true);
@@ -290,7 +298,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
     return (
       <div className="w-full h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 bg-surface-lowest border-b border-white/10">
-          <button onClick={() => setActiveHtml(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+          <button data-qid="design-board:button:back-html" title="Back to design board gallery" onClick={() => setActiveHtml(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
             <ChevronLeft className="w-3 h-3" /> BACK
           </button>
           <span className="text-[10px] font-mono text-tactical-primary">{activeHtml.split('/').pop()}</span>
@@ -304,7 +312,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
     return (
       <div className="w-full h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 bg-surface-lowest border-b border-white/10">
-          <button onClick={() => setSelectedImage(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+          <button data-qid="design-board:button:back-image" title="Back to design board gallery" onClick={() => setSelectedImage(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
             <ChevronLeft className="w-3 h-3" /> BACK
           </button>
           <span className="text-[10px] font-mono text-tactical-primary">{selectedImage.split('/').pop()}</span>
@@ -324,7 +332,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Design Rounds</h3>
           <div className="grid grid-cols-2 gap-4">
             {data!.rounds.map(r => (
-              <button key={r.src} onClick={() => setSelectedImage(r.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
+              <button key={r.src} data-qid="design-board:button:open-round" title={`Open design round: ${r.name}`} onClick={() => setSelectedImage(r.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
                 <img src={r.src} alt={r.name} className="w-full object-cover" />
                 <div className="px-3 py-2 text-[10px] font-mono text-slate-400 group-hover:text-tactical-primary transition-colors truncate">{r.name}</div>
               </button>
@@ -339,7 +347,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Design Board HTML</h3>
           <div className="space-y-2">
             {data!.htmlBoards.map(h => (
-              <button key={h.src} onClick={() => setActiveHtml(h.src)} className="w-full flex items-center gap-3 px-3 py-2.5 bg-surface-lowest border border-white/5 hover:border-tactical-primary/30 transition-all group text-left">
+              <button key={h.src} data-qid="design-board:button:open-html" title={`Open HTML board: ${h.name}`} onClick={() => setActiveHtml(h.src)} className="w-full flex items-center gap-3 px-3 py-2.5 bg-surface-lowest border border-white/5 hover:border-tactical-primary/30 transition-all group text-left">
                 <Code2 className="w-4 h-4 text-slate-500 group-hover:text-tactical-primary flex-shrink-0" />
                 <span className="text-[11px] font-mono text-slate-300 group-hover:text-white truncate">{h.name}</span>
                 <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-tactical-primary ml-auto flex-shrink-0" />
@@ -355,7 +363,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Stitch Mockups</h3>
           <div className="grid grid-cols-3 gap-3">
             {data!.stitchImages.map(s => (
-              <button key={s.src} onClick={() => setSelectedImage(s.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
+              <button key={s.src} data-qid="design-board:button:open-stitch" title={`Open stitch mockup: ${s.name}`} onClick={() => setSelectedImage(s.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
                 <img src={s.src} alt={s.name} className="w-full aspect-video object-cover" />
                 <div className="px-2 py-1.5 text-[9px] font-mono text-slate-500 group-hover:text-tactical-primary truncate">{s.name}</div>
               </button>
@@ -371,6 +379,9 @@ const Reviews = ({ projectId }: { projectId: string }) => {
   const [diffPosition, setDiffPosition] = useState(50);
   const [analysis, setAnalysis] = useState<string>('INITIALIZING_VLM_ANALYSIS...');
   const [isComparing, setIsComparing] = useState(false);
+  useRegisterAction('reviews:button:rerun-vlm', { app: 'ux-lab', action: 'REVIEWS_RERUN_VLM', label: 'Rerun VLM Diff', description: 'Re-run VLM visual diff analysis comparing mockup to implementation' });
+  useRegisterAction('reviews:button:approve', { app: 'ux-lab', action: 'REVIEWS_APPROVE', label: 'Approve Visual Diff', description: 'Approve the visual diff result and mark review as passed' });
+  useRegisterAction('reviews:input:diff-slider', { app: 'ux-lab', action: 'REVIEWS_DIFF_SLIDER', label: 'Diff Slider', description: 'Adjust the split position to compare mockup vs implementation' });
 
   const runComparison = async () => {
     setIsComparing(true);
@@ -414,14 +425,16 @@ const Reviews = ({ projectId }: { projectId: string }) => {
           </div>
         </div>
         <div className="flex gap-2">
-          <button 
+          <button
+            data-qid="reviews:button:rerun-vlm"
+            title="Rerun VLM visual diff analysis"
             onClick={runComparison}
             disabled={isComparing}
             className="px-3 py-1 bg-surface-high border border-white/10 text-[10px] font-mono hover:bg-white/5 transition-colors disabled:opacity-50"
           >
             {isComparing ? 'ANALYZING...' : 'RERUN_VLM_DIFF'}
           </button>
-          <button className="px-3 py-1 bg-tactical-primary text-white text-[10px] font-mono hover:opacity-90 transition-all">APPROVE</button>
+          <button data-qid="reviews:button:approve" title="Approve visual diff result" className="px-3 py-1 bg-tactical-primary text-white text-[10px] font-mono hover:opacity-90 transition-all">APPROVE</button>
         </div>
       </div>
 
@@ -465,11 +478,13 @@ const Reviews = ({ projectId }: { projectId: string }) => {
         </div>
 
         {/* Invisible Slider Input */}
-        <input 
-          type="range" 
-          min="0" 
-          max="100" 
-          value={diffPosition} 
+        <input
+          data-qid="reviews:input:diff-slider"
+          title="Drag to compare mockup vs implementation"
+          type="range"
+          min="0"
+          max="100"
+          value={diffPosition}
           onChange={(e) => setDiffPosition(parseInt(e.target.value))}
           className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
         />
@@ -518,6 +533,13 @@ const Components = ({
   const [previewViewport, setPreviewViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [realComponents, setRealComponents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  useRegisterAction('components:button:back', { app: 'ux-lab', action: 'COMPONENTS_BACK', label: 'Back to Component List', description: 'Return to the component library list view' });
+  useRegisterAction('components:button:viewport', { app: 'ux-lab', action: 'COMPONENTS_SET_VIEWPORT', label: 'Set Preview Viewport', description: 'Switch preview viewport between desktop, tablet, and mobile' });
+  useRegisterAction('components:button:share', { app: 'ux-lab', action: 'COMPONENTS_SHARE', label: 'Share Component', description: 'Share the selected component with a link' });
+  useRegisterAction('components:button:deploy', { app: 'ux-lab', action: 'COMPONENTS_DEPLOY', label: 'Deploy to Registry', description: 'Deploy the selected component to the internal NPM registry' });
+  useRegisterAction('components:button:copy-code', { app: 'ux-lab', action: 'COMPONENTS_COPY_CODE', label: 'Copy Source Code', description: 'Copy component source code to clipboard' });
+  useRegisterAction('components:input:search', { app: 'ux-lab', action: 'COMPONENTS_SEARCH', label: 'Search Components', description: 'Filter the component library by name or description' });
+  useRegisterAction('components:card:select', { app: 'ux-lab', action: 'COMPONENTS_SELECT', label: 'Select Component', description: 'Open a component for detailed inspection and preview' });
 
   useEffect(() => {
     const fetchComponents = async () => {
@@ -645,7 +667,9 @@ const Components = ({
       <div className="h-full flex flex-col">
         <div className="p-6 border-b border-white/10 flex items-center justify-between bg-surface-low">
           <div className="flex items-center gap-4">
-            <button 
+            <button
+              data-qid="components:button:back"
+              title="Back to component library"
               onClick={() => setSelectedComponent(null)}
               className="p-2 hover:bg-white/5 rounded-full transition-colors text-slate-400 hover:text-white"
             >
@@ -668,6 +692,8 @@ const Components = ({
               {(['desktop', 'tablet', 'mobile'] as const).map((v) => (
                 <button
                   key={v}
+                  data-qid={`components:button:viewport-${v}`}
+                  title={`Switch to ${v} preview`}
                   onClick={() => setPreviewViewport(v)}
                   className={cn(
                     "px-3 py-1 text-[10px] font-mono uppercase transition-all rounded",
@@ -679,10 +705,10 @@ const Components = ({
               ))}
             </div>
             <div className="flex gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 bg-surface-high border border-white/10 text-[10px] font-mono text-white hover:bg-white/5 transition-all">
+              <button data-qid="components:button:share" title="Share component link" className="flex items-center gap-2 px-4 py-2 bg-surface-high border border-white/10 text-[10px] font-mono text-white hover:bg-white/5 transition-all">
                 <Share2 className="w-3 h-3" /> SHARE_COMPONENT
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-tactical-primary text-white text-[10px] font-mono font-bold hover:opacity-90 transition-all">
+              <button data-qid="components:button:deploy" title="Deploy component to internal registry" className="flex items-center gap-2 px-4 py-2 bg-tactical-primary text-white text-[10px] font-mono font-bold hover:opacity-90 transition-all">
                 <Rocket className="w-3 h-3" /> DEPLOY_TO_REGISTRY
               </button>
             </div>
@@ -721,7 +747,9 @@ const Components = ({
           <div className="w-[450px] bg-surface-low border-l border-white/10 flex flex-col">
             <div className="p-4 border-b border-white/5 flex items-center justify-between">
               <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Source Code</span>
-              <button 
+              <button
+                data-qid="components:button:copy-code"
+                title="Copy component source code to clipboard"
                 onClick={() => {
                   navigator.clipboard.writeText(selectedComponent.code);
                   setToast({ message: 'CODE_COPIED_TO_CLIPBOARD', type: 'success' });
@@ -781,8 +809,10 @@ const Components = ({
         
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-          <input 
-            type="text" 
+          <input
+            data-qid="components:input:search"
+            title="Filter components by name or description"
+            type="text"
             placeholder="FILTER_COMPONENTS (NAME OR DESC)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -793,8 +823,10 @@ const Components = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredComponents.map((comp) => (
-          <div 
-            key={comp.name} 
+          <div
+            key={comp.name}
+            data-qid="components:card:select"
+            title={`Open component: ${comp.name}`}
             onClick={() => setSelectedComponent(comp)}
             className="glass-hud p-6 group hover:border-tactical-primary/50 transition-all cursor-pointer relative overflow-hidden"
           >
@@ -856,6 +888,12 @@ const ProjectSidebar = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'my' | 'shared'>('my');
   const [searchQuery, setSidebarSearch] = useState('');
+  useRegisterAction('sidebar:button:toggle', { app: 'ux-lab', action: 'SIDEBAR_TOGGLE', label: 'Toggle Sidebar', description: 'Collapse or expand the project sidebar' });
+  useRegisterAction('sidebar:tab:my-projects', { app: 'ux-lab', action: 'SIDEBAR_TAB_MY', label: 'My Projects Tab', description: 'Switch to My Projects list in the sidebar' });
+  useRegisterAction('sidebar:tab:shared', { app: 'ux-lab', action: 'SIDEBAR_TAB_SHARED', label: 'Shared Tab', description: 'Switch to Shared projects list in the sidebar' });
+  useRegisterAction('sidebar:input:search', { app: 'ux-lab', action: 'SIDEBAR_SEARCH', label: 'Search Projects', description: 'Filter the project list by name or subtitle' });
+  useRegisterAction('sidebar:button:new-project', { app: 'ux-lab', action: 'SIDEBAR_NEW_PROJECT', label: 'New Project', description: 'Create a new UX Lab project' });
+  useRegisterAction('sidebar:item:project', { app: 'ux-lab', action: 'SIDEBAR_SELECT_PROJECT', label: 'Select Project', description: 'Open a project and load it in the main workspace' });
 
   // Real projects with working component routing
   const projects: Project[] = [
@@ -886,6 +924,8 @@ const ProjectSidebar = ({
   const ProjectItem = ({ project }: { project: Project }) => (
     <div
       data-testid={`project-${project.id}`}
+      data-qid="sidebar:item:project"
+      title={`Open project: ${project.title}`}
       onClick={() => onProjectSelect(project.id)}
       onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, projectId: project.id }); }}
       className={cn(
@@ -946,6 +986,8 @@ const ProjectSidebar = ({
             </div>
           )}
           <button
+            data-qid="sidebar:button:toggle"
+            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             onClick={onToggle}
             className="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-500 hover:text-white"
           >
@@ -957,7 +999,9 @@ const ProjectSidebar = ({
           <>
             {/* Tabs */}
             <div className="flex bg-surface-lowest p-1 rounded-lg mb-4">
-              <button 
+              <button
+                data-qid="sidebar:tab:my-projects"
+                title="View my projects"
                 onClick={() => setActiveTab('my')}
                 className={cn(
                   "flex-1 flex items-center justify-center gap-2 py-1.5 text-[10px] font-headline font-bold rounded-md transition-all",
@@ -966,7 +1010,9 @@ const ProjectSidebar = ({
               >
                 <Grid className="w-3 h-3" /> My Projects
               </button>
-              <button 
+              <button
+                data-qid="sidebar:tab:shared"
+                title="View shared projects"
                 onClick={() => setActiveTab('shared')}
                 className={cn(
                   "flex-1 flex items-center justify-center gap-2 py-1.5 text-[10px] font-headline font-bold rounded-md transition-all",
@@ -981,6 +1027,8 @@ const ProjectSidebar = ({
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500" />
               <input
+                data-qid="sidebar:input:search"
+                title="Search projects by name or description"
                 type="text"
                 placeholder="Search projects"
                 value={searchQuery}
@@ -999,10 +1047,13 @@ const ProjectSidebar = ({
 
       {/* Create New Project — compact, no separate background */}
       <div className={cn("px-3 py-2 border-t border-white/10", isCollapsed && "px-1")}>
-        <button className={cn(
-          "w-full flex items-center justify-center gap-1.5 py-1.5 border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
-          isCollapsed && "p-1.5"
-        )}>
+        <button
+          data-qid="sidebar:button:new-project"
+          title="Create a new project"
+          className={cn(
+            "w-full flex items-center justify-center gap-1.5 py-1.5 border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
+            isCollapsed && "p-1.5"
+          )}>
           <Plus className="w-3 h-3" /> {!isCollapsed && "New Project"}
         </button>
       </div>
@@ -1032,11 +1083,15 @@ const ProjectSidebar = ({
   );
 };
 
-const ViewHeader = ({ activeView, onViewChange, systemHealth }: { 
-  activeView: View, 
+const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
+  activeView: View,
   onViewChange: (view: View) => void,
   systemHealth: { health: 'NOMINAL' | 'DEGRADED' | 'OFFLINE', details: string }
 }) => {
+  useRegisterAction('header:tab:view', { app: 'ux-lab', action: 'HEADER_SWITCH_VIEW', label: 'Switch View Tab', description: 'Switch between Mockups, Components, Design Board, Reviews, Testing, and Final Site views' });
+  useRegisterAction('header:button:history', { app: 'ux-lab', action: 'HEADER_HISTORY', label: 'History', description: 'View project history and recent changes' });
+  useRegisterAction('header:button:notifications', { app: 'ux-lab', action: 'HEADER_NOTIFICATIONS', label: 'Notifications', description: 'View system notifications and alerts' });
+  useRegisterAction('header:button:deploy', { app: 'ux-lab', action: 'HEADER_DEPLOY', label: 'Deploy', description: 'Deploy the current project to production' });
   return (
     <header className="h-14 bg-black border-b border-tactical-primary/20 flex items-center justify-between px-6 z-40">
       <div className="flex h-full items-center space-x-8">
@@ -1047,6 +1102,8 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
             <button
               key={label}
               data-testid={`tab-${id}`}
+              data-qid={`header:tab:${id}`}
+              title={`Switch to ${label} view`}
               onClick={() => onViewChange(id)}
               className={cn(
                 "h-full flex flex-col items-center justify-center px-4 font-headline font-medium uppercase text-[10px] tracking-[0.2em] transition-all relative group",
@@ -1091,12 +1148,12 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
           </span>
         </div>
         <div className="w-px h-6 bg-tactical-primary/20 mx-2" />
-        <button className="text-slate-500 hover:text-tactical-primary transition-all"><History className="w-4 h-4" /></button>
-        <button className="text-slate-500 hover:text-tactical-primary transition-all relative">
+        <button data-qid="header:button:history" title="View project history" className="text-slate-500 hover:text-tactical-primary transition-all"><History className="w-4 h-4" /></button>
+        <button data-qid="header:button:notifications" title="View notifications" className="text-slate-500 hover:text-tactical-primary transition-all relative">
           <Bell className="w-4 h-4" />
           <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-tactical-danger rounded-full" />
         </button>
-        <button className="bg-tactical-primary text-black px-4 py-1.5 text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 hover:bg-tactical-success transition-all">
+        <button data-qid="header:button:deploy" title="Deploy project to production" className="bg-tactical-primary text-black px-4 py-1.5 text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 hover:bg-tactical-success transition-all">
           <Rocket className="w-3.5 h-3.5" />
           Deploy
         </button>
@@ -1116,6 +1173,12 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [testStatus, setTestStatus] = useState<'IDLE' | 'RUNNING' | 'PASSED' | 'FAILED' | 'INCONCLUSIVE'>('IDLE');
   const [activeNodeId, setActiveNodeId] = useState<string | null>('crd_03');
+  useRegisterAction('testing:button:import-manifest', { app: 'ux-lab', action: 'TESTING_IMPORT_MANIFEST', label: 'Import Test Manifest', description: 'Import a JSON test manifest to populate the node list' });
+  useRegisterAction('testing:button:add-node', { app: 'ux-lab', action: 'TESTING_ADD_NODE', label: 'Add Test Node', description: 'Add a new interactive node to the test manifest' });
+  useRegisterAction('testing:button:execute', { app: 'ux-lab', action: 'TESTING_EXECUTE', label: 'Execute Manifest', description: 'Run the full test manifest against the current project' });
+  useRegisterAction('testing:button:approve-result', { app: 'ux-lab', action: 'TESTING_APPROVE_RESULT', label: 'Approve Test Result', description: 'Approve an inconclusive test result as passing' });
+  useRegisterAction('testing:button:reject-result', { app: 'ux-lab', action: 'TESTING_REJECT_RESULT', label: 'Reject Test Result', description: 'Reject an inconclusive test result as failing' });
+  useRegisterAction('testing:item:node', { app: 'ux-lab', action: 'TESTING_SELECT_NODE', label: 'Select Test Node', description: 'Select a test node to inspect its expected and actual results' });
 
   const [nodes, setNodes] = useState([
     { id: 'btn_01', type: 'Button', label: 'Deploy Action', path: 'Header > ActionGroup', status: 'PASSED', expectedTarget: "Button#deploy_btn.state == 'hover'" },
@@ -1196,10 +1259,11 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
             <Cpu className="w-4 h-4" /> Node Manifest
           </span>
           <div className="flex items-center gap-2">
-            <button 
+            <button
+              data-qid="testing:button:import-manifest"
+              title="Import test manifest from JSON"
               onClick={handleImportManifest}
               className="p-1 hover:text-tactical-primary transition-colors"
-              title="Import Manifest"
             >
               <Upload className="w-3.5 h-3.5" />
             </button>
@@ -1208,13 +1272,15 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
         </div>
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {nodes.map((node) => (
-            <div 
-              key={node.id} 
+            <div
+              key={node.id}
+              data-qid="testing:item:node"
+              title={`Inspect test node: ${node.label}`}
               onClick={() => setActiveNodeId(node.id)}
               className={cn(
                 "p-3 border transition-all cursor-pointer group relative",
-                activeNodeId === node.id 
-                  ? "border-tactical-primary/50 bg-tactical-primary/10 shadow-[inset_0_0_10px_rgba(0,255,102,0.1)]" 
+                activeNodeId === node.id
+                  ? "border-tactical-primary/50 bg-tactical-primary/10 shadow-[inset_0_0_10px_rgba(0,255,102,0.1)]"
                   : "border-white/5 hover:border-tactical-primary/30 hover:bg-tactical-primary/5"
               )}
             >
@@ -1246,7 +1312,9 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
             </div>
           ))}
           
-          <button 
+          <button
+            data-qid="testing:button:add-node"
+            title="Add a new test node to the manifest"
             onClick={handleAddNode}
             className="w-full p-2 border border-dashed border-tactical-primary/20 text-slate-500 hover:text-tactical-primary hover:border-tactical-primary/40 transition-all flex items-center justify-center gap-2 mt-2"
           >
@@ -1273,7 +1341,9 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
               )}>{testStatus}</span>
             </div>
           </div>
-          <button 
+          <button
+            data-qid="testing:button:execute"
+            title="Execute test manifest against current project"
             onClick={runTest}
             disabled={isRunning}
             className={cn(
@@ -1400,10 +1470,10 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
                 LLM agent detected a visual variance of 8%. Automated threshold is 5%. Please verify if this change is intentional.
               </p>
               <div className="grid grid-cols-2 gap-2">
-                <button className="py-2 bg-tactical-success/20 border border-tactical-success/30 text-tactical-success hover:bg-tactical-success hover:text-black transition-all font-bold uppercase text-[9px]">
+                <button data-qid="testing:button:approve-result" title="Approve inconclusive test result as passing" className="py-2 bg-tactical-success/20 border border-tactical-success/30 text-tactical-success hover:bg-tactical-success hover:text-black transition-all font-bold uppercase text-[9px]">
                   APPROVE
                 </button>
-                <button className="py-2 bg-tactical-danger/20 border border-tactical-danger/30 text-tactical-danger hover:bg-tactical-danger hover:text-black transition-all font-bold uppercase text-[9px]">
+                <button data-qid="testing:button:reject-result" title="Reject inconclusive test result as failing" className="py-2 bg-tactical-danger/20 border border-tactical-danger/30 text-tactical-danger hover:bg-tactical-danger hover:text-black transition-all font-bold uppercase text-[9px]">
                   REJECT
                 </button>
               </div>

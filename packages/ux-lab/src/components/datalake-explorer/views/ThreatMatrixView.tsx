@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { NVIS } from '../theme'
 import { listDocuments, storeDocument } from '../api/client'
-import EvidenceCasePanel from '../components/EvidenceCasePanel'
+import EvidenceCasePanel from '../EvidenceCasePanel'
 import type { ThreatCell, ThreatDrillthrough, EvidenceCase } from '../types'
-import { useRegisterAction } from '../../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // --- Framework filter ---
 type Framework = 'SPARTA' | 'ATT&CK' | 'D3FEND'
@@ -65,8 +65,8 @@ function FilterSection({ title, items, selected, onToggle }: FilterSectionProps)
             <input
               type="checkbox"
               checked={isChecked}
-                data-qid="threatmatrix:item-1" data-qs-action="THREAT_TOGGLE_FRAMEWORK_FILTER"
-                title="Toggle framework filter"
+                data-qid="threatmatrix:item-1" data-qs-action="THREATMATRIX_ITEM_1"
+                title="Item 1"
               onChange={() => onToggle(item)}
               style={{ accentColor: NVIS.accent }}
             />
@@ -145,7 +145,7 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
           </div>
         </div>
         <button
-                data-qid="threatmatrix:close-drillthrough" data-qs-action="THREAT_CLOSE_DRILLTHROUGH"
+                data-qid="threatmatrix:close-drillthrough" data-qs-action="THREATMATRIX_CLOSE_DRILLTHROUGH"
                 title="Close Drillthrough"
           onClick={onClose}
           aria-label="Close drillthrough"
@@ -219,8 +219,8 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
               {editingCaseId === ec.id ? (
                 <input
                   value={editText}
-                data-qid="threatmatrix:item-3" data-qs-action="THREAT_EDIT_CLAIM"
-                title="Edit evidence claim"
+                data-qid="threatmatrix:item-3" data-qs-action="THREATMATRIX_ITEM_3"
+                title="Item 3"
                   onChange={(e) => setEditText(e.target.value)}
                   onBlur={() => commitEdit(ec)}
                   onKeyDown={(e) => {
@@ -245,8 +245,8 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
               ) : (
                 <div
                   style={{ fontSize: 11, color: NVIS.white, marginBottom: 4, lineHeight: 1.4, cursor: 'pointer' }}
-                data-qid="threatmatrix:item-4" data-qs-action="THREAT_START_EDIT"
-                title="Start editing evidence"
+                data-qid="threatmatrix:item-4" data-qs-action="THREATMATRIX_ITEM_4"
+                title="Item 4"
                   onClick={() => startEdit(ec)}
                   title="Click to edit"
                 >
@@ -315,8 +315,8 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
         flexShrink: 0,
       }}>
         <button
-                data-qid="threatmatrix:item-5" data-qs-action="THREAT_CREATE_EVIDENCE"
-                title="Create evidence case"
+                data-qid="threatmatrix:item-5" data-qs-action="THREATMATRIX_ITEM_5"
+                title="Item 5"
           onClick={() => onCreateEvidence(cell)}
           style={{
             width: '100%',
@@ -340,17 +340,6 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
 
 // --- Main view ---
 export default function ThreatMatrixView() {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('threatmatrix:item-1', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle framework filter', description: 'Toggle framework filter' })
-  useRegisterAction('threatmatrix:close-drillthrough', { app: 'datalake-explorer', action: 'CLOSE_DRILLTHROUGH', label: 'Close Drillthrough', description: 'Close Drillthrough in cellBg' })
-  useRegisterAction('threatmatrix:item-3', { app: 'datalake-explorer', action: 'EDIT_CLAIM', label: 'Edit evidence claim', description: 'Edit evidence claim' })
-  useRegisterAction('threatmatrix:item-4', { app: 'datalake-explorer', action: 'START_EDIT', label: 'Start editing evidence', description: 'Start editing evidence' })
-  useRegisterAction('threatmatrix:item-5', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
-  useRegisterAction('threatmatrix:dyn-6', { app: 'datalake-explorer', action: 'TOGGLE_MODE', label: 'Toggle verification mode', description: 'Toggle verification mode' })
-  useRegisterAction('threatmatrix:dyn-7', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_CHIP', label: 'Toggle framework chip', description: 'Toggle framework chip' })
-  useRegisterAction('threatmatrix:dyn-8', { app: 'datalake-explorer', action: 'SELECT_CELL', label: 'Select threat matrix cell', description: 'Select threat matrix cell' })
-
-
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [coverageInfo, setCoverageInfo] = useState<string | null>(null)
@@ -637,8 +626,8 @@ export default function ThreatMatrixView() {
             {(['documents', 'verified'] as const).map((m) => (
               <button
                 key={m}
-                data-qid="threatmatrix:dyn-6" data-qs-action="THREAT_TOGGLE_MODE"
-                title="Toggle verification mode"
+                data-qid="threatmatrix:dyn-6" data-qs-action="THREATMATRIX_DYN_6"
+                title="Dyn 6"
                 onClick={() => setMode(m)}
                 style={{
                   padding: '3px 10px',
@@ -662,8 +651,8 @@ export default function ThreatMatrixView() {
           {FRAMEWORKS.map((fw) => (
             <button
               key={fw}
-                data-qid="threatmatrix:dyn-7" data-qs-action="THREAT_TOGGLE_FRAMEWORK_CHIP"
-                title="Toggle framework chip"
+                data-qid="threatmatrix:dyn-7" data-qs-action="THREATMATRIX_DYN_7"
+                title="Dyn 7"
               onClick={() => toggleFramework(fw)}
               aria-pressed={activeFrameworks.has(fw)}
               style={{
@@ -767,12 +756,21 @@ export default function ThreatMatrixView() {
                     }
                     const isSelected = selectedCell?.controlId === cell.controlId && selectedCell?.sector === cell.sector
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('threatmatrix:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in cellBg' })
+  useRegisterAction('threatmatrix:close-drillthrough', { app: 'datalake-explorer', action: 'CLOSE_DRILLTHROUGH', label: 'Close Drillthrough', description: 'Close Drillthrough in cellBg' })
+  useRegisterAction('threatmatrix:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in cellBg' })
+  useRegisterAction('threatmatrix:item-4', { app: 'datalake-explorer', action: 'ITEM_4', label: 'Item 4', description: 'Item 4 in cellBg' })
+  useRegisterAction('threatmatrix:item-5', { app: 'datalake-explorer', action: 'ITEM_5', label: 'Item 5', description: 'Item 5 in cellBg' })
+  useRegisterAction('threatmatrix:dyn-6', { app: 'datalake-explorer', action: 'DYN_6', label: 'Dyn 6', description: 'Dyn 6 in cellBg' })
+  useRegisterAction('threatmatrix:dyn-7', { app: 'datalake-explorer', action: 'DYN_7', label: 'Dyn 7', description: 'Dyn 7 in cellBg' })
+  useRegisterAction('threatmatrix:dyn-8', { app: 'datalake-explorer', action: 'DYN_8', label: 'Dyn 8', description: 'Dyn 8 in cellBg' })
 
                     return (
                       <button
                         key={sector}
-                data-qid="threatmatrix:dyn-8" data-qs-action="THREAT_SELECT_CELL"
-                title="Select threat matrix cell"
+                data-qid="threatmatrix:dyn-8" data-qs-action="THREATMATRIX_DYN_8"
+                title="Dyn 8"
                         onClick={() => handleCellClick(cell)}
                         title={`${cell.controlId} / ${cell.sector}: ${cell.status} (${Math.round(cell.coverageScore * 100)}%)`}
                         style={{

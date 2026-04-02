@@ -1,4 +1,4 @@
-import { NVIS } from '../theme'
+import { NVIS } from './theme'
 
 type Status = 'running' | 'stopped' | 'error' | 'timeout' | 'success' | 'warning'
 

@@ -41,12 +41,6 @@ function scoreBadge(score: number) {
 }
 
 function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLabel: string; color: string; items: TraceItem[]; hasAssets?: boolean; scores?: VerifyResult | null }) {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('trace:item-1', { app: 'datalake-explorer', action: 'TOGGLE_GROUP', label: 'Toggle verification group', description: 'Toggle verification group' })
-  useRegisterAction('trace:item-2', { app: 'datalake-explorer', action: 'TOGGLE_IMAGE', label: 'Toggle image preview', description: 'Toggle image preview' })
-  useRegisterAction('trace:item-3', { app: 'datalake-explorer', action: 'LOG_EVIDENCE', label: 'Log evidence details', description: 'Log evidence details' })
-  useRegisterAction('trace:item-4', { app: 'datalake-explorer', action: 'RUN_VERIFY', label: 'Run verification', description: 'Run verification' })
-
   const [open, setOpen] = useState(true)
   const [imgMap, setImgMap] = useState<Record<string, string | null>>({})
   const toggle = useCallback(() => setOpen(v => !v), [])
@@ -64,8 +58,8 @@ function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLa
   return (
     <div style={{ marginBottom: 4 }}>
       <button
-                data-qid="trace:item-1" data-qs-action="TRACE_TOGGLE_GROUP"
-                title="Toggle verification group"
+                data-qid="trace:item-1" data-qs-action="TRACE_ITEM_1"
+                title="Item 1"
         onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', gap: 6,
@@ -109,16 +103,16 @@ function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLa
                   {scores && (item.id || item._key) && scores[item.id || item._key!] != null && scoreBadge(scores[item.id || item._key!])}
                   {hasAssets && key && (
                     <button
-                data-qid="trace:item-2" data-qs-action="TRACE_TOGGLE_IMAGE"
-                title="Toggle image preview" onClick={() => toggleImg(key)} title="Toggle image preview" style={{
+                data-qid="trace:item-2" data-qs-action="TRACE_ITEM_2"
+                title="Item 2" onClick={() => toggleImg(key)} title="Toggle image preview" style={{
                       display: 'flex', alignItems: 'center', padding: '2px 4px', borderRadius: 3, cursor: 'pointer',
                       color: key in imgMap ? color : EMBRY.dim, background: 'transparent',
                       border: `1px solid ${key in imgMap ? color : EMBRY.border}`, flexShrink: 0,
                     }}><Image size={10} /></button>
                   )}
                   <button
-                data-qid="trace:item-3" data-qs-action="TRACE_LOG_EVIDENCE"
-                title="Log evidence details"
+                data-qid="trace:item-3" data-qs-action="TRACE_ITEM_3"
+                title="Item 3"
                     onClick={() => console.log('[Evidence]', groupLabel, item)}
                     style={{
                       fontSize: 8, fontWeight: 700, fontFamily: MONO,
@@ -149,7 +143,6 @@ function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLa
 }
 
 export function TraceabilityView({ docKey }: { docKey: string | null }) {
-
   const [data, setData] = useState<TraceData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -236,8 +229,8 @@ export function TraceabilityView({ docKey }: { docKey: string | null }) {
           {meanScore != null && scoreBadge(meanScore)}
           {verifyMsg && <span style={{ fontSize: 9, color: EMBRY.amber, fontFamily: MONO }}>{verifyMsg}</span>}
           <button
-                data-qid="trace:item-4" data-qs-action="TRACE_RUN_VERIFY"
-                title="Run verification" onClick={runVerify} disabled={verifying} style={{
+                data-qid="trace:item-4" data-qs-action="TRACE_ITEM_4"
+                title="Item 4" onClick={runVerify} disabled={verifying} style={{
             fontSize: 9, fontWeight: 700, fontFamily: MONO, padding: '2px 8px', borderRadius: 3, cursor: 'pointer',
             color: EMBRY.accent, background: `${EMBRY.accent}12`, border: `1px solid ${EMBRY.accent}33`, flexShrink: 0,
           }}>{verifying ? 'Verifying...' : 'Verify'}</button>
@@ -246,6 +239,11 @@ export function TraceabilityView({ docKey }: { docKey: string | null }) {
       {GROUPS.map(g => {
         const items = Array.isArray(data[g.key]) ? data[g.key]! : []
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('trace:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in truncate' })
+  useRegisterAction('trace:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in truncate' })
+  useRegisterAction('trace:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in truncate' })
+  useRegisterAction('trace:item-4', { app: 'datalake-explorer', action: 'ITEM_4', label: 'Item 4', description: 'Item 4 in truncate' })
 
         return <GroupSection key={g.key} groupLabel={g.label} color={g.color} items={items} hasAssets={g.key === 'tables' || g.key === 'figures'} scores={verifyScores} />
       })}

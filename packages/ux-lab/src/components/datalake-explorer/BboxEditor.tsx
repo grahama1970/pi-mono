@@ -63,7 +63,6 @@ interface BboxEditorProps {
 // ---------------------------------------------------------------------------
 
 export default function BboxEditor({
-
   block,
   onReclassify,
   onBboxChange,
@@ -71,12 +70,11 @@ export default function BboxEditor({
   onSplit,
   onMerge,
 }: BboxEditorProps) {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('bbox-editor:item-1', { app: 'datalake-explorer', action: 'EDIT_COORDINATE', label: 'Edit bbox coordinate', description: 'Edit bbox coordinate' })
+  // QuerySpec action registrations
+  useRegisterAction('bbox-editor:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in logShadowReclassify' })
   useRegisterAction('bbox:type:select', { app: 'datalake-explorer', action: 'TYPE_SELECT', label: 'Type Select', description: 'Type Select in logShadowReclassify' })
-  useRegisterAction('bbox-editor:dyn-2', { app: 'datalake-explorer', action: 'RECLASSIFY_TYPE', label: 'Reclassify block type', description: 'Reclassify block type' })
-  useRegisterAction('bbox-editor:type-dropdown-list', { app: 'datalake-explorer', action: 'ACTION_BUTTONS', label: 'Block action buttons', description: 'Block action buttons' })
-
+  useRegisterAction('bbox-editor:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in logShadowReclassify' })
+  useRegisterAction('bbox-editor:type-dropdown-list', { app: 'datalake-explorer', action: 'TYPE_DROPDOWN_LIST', label: 'Type Dropdown List', description: 'Type Dropdown List in logShadowReclassify' })
   const [localBbox, setLocalBbox] = useState<[number, number, number, number]>(block.bbox)
   const [showTypeDropdown, setShowTypeDropdown] = useState(false)
   const [undoStack, setUndoStack] = useState<[number, number, number, number][]>([])
@@ -240,8 +238,8 @@ export default function BboxEditor({
               min="0"
               max="1"
               value={localBbox[i].toFixed(4)}
-                data-qid="bbox-editor:item-1" data-qs-action="BBOX_EDIT_COORDINATE"
-                title="Edit bbox coordinate"
+                data-qid="bbox-editor:item-1" data-qs-action="BBOX-EDITOR_ITEM_1"
+                title="Item 1"
               onChange={(e) => handleCoordChange(i, e.target.value)}
               style={{
                 flex: 1,
@@ -323,8 +321,8 @@ export default function BboxEditor({
               return (
                 <button
                   key={t}
-                data-qid="bbox-editor:dyn-2" data-qs-action="BBOX_RECLASSIFY_TYPE"
-                title="Reclassify block type"
+                data-qid="bbox-editor:dyn-2" data-qs-action="BBOX-EDITOR_DYN_2"
+                title="Dyn 2"
                   onClick={() => {
                     logShadowReclassify(block, t)
                     onReclassify(t)
@@ -366,7 +364,7 @@ export default function BboxEditor({
       </div>
 
       {/* Action buttons */}
-      <div data-qid="bbox-editor:type-dropdown-list" data-qs-action="BBOX_ACTION_BUTTONS" title="Block action buttons" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+      <div data-qid="bbox-editor:type-dropdown-list" data-qs-action="BBOX-EDITOR_TYPE_DROPDOWN_LIST" title="Type Dropdown List" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
         <EditorButton label="Apply" color="#15803d" onClick={handleApply} />
         <EditorButton
           label="Split"
@@ -414,8 +412,6 @@ export default function BboxEditor({
 // ---------------------------------------------------------------------------
 
 function EditorButton({
-
-
   label,
   color,
   onClick,

@@ -10,12 +10,12 @@ export { RecallCard } from "../sparta/query/RecallCard";
 export { ThreatMatrixCard } from "../sparta/query/ThreatMatrixCard";
 // Shared components
 export { ActivityFeed } from "./ActivityFeed";
-export { ChatErrorBoundary } from "./ErrorBoundary";
 export { ChatInput } from "./ChatInput";
 export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
 export { configureDeepLinks, executePrimaryAction, resolveEntityActions } from "./DeepLinks";
 export type { DeltaItem, DeltaReport } from "./DeltaReportCard";
 export { DeltaReportCard } from "./DeltaReportCard";
+export { ChatErrorBoundary } from "./ErrorBoundary";
 // Entity highlighting
 export { classifyEntity, ENTITY_PATTERN, ENTITY_STYLES, getEntityStyle, highlightEntities } from "./highlightEntities";
 export { InlineArtifact } from "./InlineArtifact";

@@ -2203,11 +2203,26 @@ app.post('/api/projects/classifier-lab/create', async (req, res) => {
           `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}"`,
           `unset VIRTUAL_ENV`,
           `uv run python scripts/kickoff.py "${dir}" --goal "${goal.replace(/"/g, '\\"')}" --modality "${modality || 'text'}"`,
-        ].join(' && ')], { env, timeout: 300_000, stdio: 'ignore', detached: true })
+        ].join(' && ')], { env, timeout: 300_000, stdio: ['ignore', 'pipe', 'pipe'], detached: true })
         child.unref()
-        child.on('exit', (code) => {
-          if (code !== 0) console.error(`[kickoff] ${id} exited with code ${code}`)
-          else console.log(`[kickoff] ${id} complete`)
+        // Capture stderr for error reporting
+        let stderrBuf = ''
+        if (child.stderr) child.stderr.on('data', (d: Buffer) => { stderrBuf += d.toString().slice(-500) })
+        child.on('exit', async (code) => {
+          const metaPath = resolve(dir, 'meta.json')
+          try {
+            const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+            if (code !== 0) {
+              console.error(`[kickoff] ${id} exited with code ${code}: ${stderrBuf.slice(-200)}`)
+              meta.status = 'kickoff-failed'
+              meta.kickoff_error = stderrBuf.slice(-500) || `exit code ${code}`
+            } else {
+              console.log(`[kickoff] ${id} complete`)
+              // Don't overwrite status if kickoff.py already set it to 'researched'
+              if (meta.status === 'created') meta.status = 'researched'
+            }
+            await writeFile(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+          } catch { /* meta.json may not exist yet */ }
         })
       }
     }
@@ -2855,14 +2870,18 @@ app.post('/api/projects/classifier-lab/promote/:id', async (req, res) => {
     const bench = existsSync(benchPath) ? JSON.parse(await readFile(benchPath, 'utf-8')) : {}
     const winner = bench.selected_backbone ?? 'unknown'
 
-    // Trigger promotion via classifier-lab skill
-    const { format = 'onnx', pushToHf = false } = req.body as { format?: string; pushToHf?: boolean }
-    const skillDir = resolve(CLASSIFIER_LAB_SKILL_DIR)
-    const cmd = `cd "${skillDir}" && ./run.sh export --model "${winner}" --format ${format}`
+    // Trigger promotion via export.py directly (not run.sh which may not route correctly)
+    const { format = 'safetensors', pushToHf = false } = req.body as { format?: string; pushToHf?: boolean }
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    const exportScript = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'export.py')
+    if (!existsSync(exportScript)) return res.status(500).json({ error: 'export.py not found' })
+
+    const pushFlag = pushToHf ? ' --push-to-hf' : ''
+    const cmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && unset VIRTUAL_ENV && uv run python scripts/export.py "${projDir}" --model "${winner}" --format ${format}${pushFlag}`
 
     const execFileAsync = promisify(execFile)
     try {
-      const { stdout } = await execFileAsync('bash', ['-lc', cmd], { timeout: 300_000 })
+      const { stdout } = await execFileAsync('bash', ['-c', cmd], { timeout: 300_000, env: (() => { const e = { ...process.env }; delete e.VIRTUAL_ENV; return e })() })
 
       // Write promotion status
       const promotePath = resolve(CLASSIFIER_DIR, projectId, 'promote-status.json')
@@ -2992,7 +3011,10 @@ app.post('/api/projects/classifier-lab/eval-questions/:id/run', async (req, res)
     if (existsSync(scriptPath)) {
       const execFileAsync = promisify(execFile)
       try {
-        const { stdout } = await execFileAsync('python3', [scriptPath, projDir], { timeout: 120_000 })
+        const evalCmd = `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && unset VIRTUAL_ENV && uv run python scripts/run_eval_questions.py "${projDir}"`
+        const evalEnv = { ...process.env }
+        delete evalEnv.VIRTUAL_ENV
+        const { stdout } = await execFileAsync('bash', ['-c', evalCmd], { timeout: 120_000, env: evalEnv })
         const results = JSON.parse(stdout)
         // Save results alongside questions
         data.results = results
@@ -3001,24 +3023,14 @@ app.post('/api/projects/classifier-lab/eval-questions/:id/run', async (req, res)
         res.json(results)
         return
       } catch (e) {
-        // Fall through to stub
+        const errMsg = e instanceof Error ? e.message : String(e)
+        console.error(`[eval] inference failed for ${req.params.id}: ${errMsg}`)
+        return res.status(500).json({ error: `Inference failed: ${errMsg}`, hint: 'Check that a trained model exists. Run the pipeline from the Train tab first.' })
       }
     }
 
-    // Stub: if no inference script, use eval-results.json confusion patterns to simulate
-    // This is a fallback — real inference is better
-    const evalPath = resolve(projDir, 'eval-results.json')
-    const evalData = existsSync(evalPath) ? JSON.parse(await readFile(evalPath, 'utf-8')) : null
-
-    const results = questions.map(q => {
-      // Without real inference, mark as "not run"
-      return { id: q.id, text: q.text, expected: q.expected, predicted: null, passed: null }
-    })
-
-    data.results = results
-    data.evaluated_at = null
-    await writeFile(qPath, JSON.stringify(data, null, 2), 'utf-8')
-    res.json({ results, note: 'Inference not available — install run_eval_questions.py to run predictions' })
+    // No inference script — return clear error, not silent stub
+    return res.status(500).json({ error: 'No inference script (run_eval_questions.py) found', hint: 'The evaluation script is missing. This is a configuration error.' })
   } catch (e) {
     res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
   }
@@ -3088,6 +3100,68 @@ app.get('/api/projects/classifier-lab/pipeline-status/:id', async (req, res) => 
     }
   } catch {
     res.json({ status: 'unknown' })
+  }
+})
+
+// Thunderdome — concurrent backbone tournament via generate_manifest.py + thunderdome run
+app.post('/api/projects/classifier-lab/pipeline/:id/thunderdome', async (req, res) => {
+  const projectId = req.params.id
+  try {
+    const projDir = resolve(CLASSIFIER_DIR, projectId)
+    if (!existsSync(projDir)) return res.status(404).json({ error: 'Project not found' })
+
+    const manifestScript = resolve(CLASSIFIER_LAB_SKILL_DIR, 'scripts', 'generate_manifest.py')
+    if (!existsSync(manifestScript)) return res.status(500).json({ error: 'generate_manifest.py not found' })
+
+    const thunderdomeDir = resolve(PI_MONO, '.pi/skills/thunderdome')
+    if (!existsSync(resolve(thunderdomeDir, 'run.sh'))) return res.status(500).json({ error: 'thunderdome skill not found' })
+
+    // Update meta to running
+    const metaPath = resolve(projDir, 'meta.json')
+    if (existsSync(metaPath)) {
+      const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+      meta.status = 'thunderdome-running'
+      meta.pipeline_started = new Date().toISOString()
+      await writeFile(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+    }
+
+    // Step 1: Generate manifest, Step 2: Run thunderdome — background
+    const { spawn } = await import('child_process')
+    const env = { ...process.env }
+    delete env.VIRTUAL_ENV
+    const manifestPath = resolve(projDir, 'thunderdome-manifest.yaml')
+    const cmd = [
+      `cd "${resolve(CLASSIFIER_LAB_SKILL_DIR)}" && unset VIRTUAL_ENV && uv run python scripts/generate_manifest.py "${projDir}" --output "${manifestPath}"`,
+      `cd "${thunderdomeDir}" && unset VIRTUAL_ENV && uv run python -m scripts.thunderdome run "${manifestPath}"`,
+    ].join(' && ')
+
+    const child = spawn('bash', ['-c', cmd], { env, timeout: 1800_000, stdio: 'pipe' })
+    child.on('exit', async (code) => {
+      try {
+        const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
+        if (code !== 0) {
+          console.error(`[thunderdome] ${projectId} failed with code ${code}`)
+          meta.status = 'thunderdome-failed'
+        } else {
+          console.log(`[thunderdome] ${projectId} complete`)
+          // Read thunderdome output to update meta with results
+          const benchPath = resolve(projDir, 'benchmark.json')
+          if (existsSync(benchPath)) {
+            const bench = JSON.parse(await readFile(benchPath, 'utf-8'))
+            meta.f1 = bench.selected_metrics?.macro_f1 ?? meta.f1
+            meta.backbone = bench.selected_backbone ?? meta.backbone
+            meta.status = (meta.f1 ?? 0) >= (bench.gate_f1 ?? 0.90) ? 'trained' : 'halted-training'
+          } else {
+            meta.status = 'thunderdome-complete'
+          }
+        }
+        await writeFile(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+      } catch { /* */ }
+    })
+
+    res.json({ status: 'started', mode: 'thunderdome', message: 'Concurrent backbone tournament running. Poll pipeline-status for updates.' })
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) })
   }
 })
 

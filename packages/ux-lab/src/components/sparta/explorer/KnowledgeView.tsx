@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { EMBRY, card, label, heading, body } from '../common/EmbryStyle'
 import { useKnowledge } from '../../../hooks/useSpartaCollections'
 import type { SpartaURLKnowledge } from '../../../hooks/useSpartaCollections'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 type QualityFilter = 'all' | 'ok' | 'empty' | 'error'
 
@@ -17,6 +18,10 @@ export function KnowledgeView() {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null)
   const [qualityFilter, setQualityFilter] = useState<QualityFilter>('all')
   const [search, setSearch] = useState('')
+
+  useRegisterAction('knowledge:search:url', { app: 'sparta-explorer', action: 'SEARCH_URL', label: 'Search Knowledge URLs', description: 'Filter knowledge sources by URL string' })
+  useRegisterAction('knowledge:filter:quality', { app: 'sparta-explorer', action: 'FILTER_QUALITY', label: 'Filter by Quality', description: 'Filter knowledge sources by data quality (all/ok/empty/error)' })
+  useRegisterAction('knowledge:select:url', { app: 'sparta-explorer', action: 'SELECT_URL', label: 'Select Knowledge Source', description: 'Select a knowledge source URL to view its chunks' })
 
   // Group chunks by url_id, extract URL string from first chunk that has it
   const urlGroups = useMemo(() => {
@@ -76,6 +81,8 @@ export function KnowledgeView() {
         <div style={{ padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={heading}>Knowledge Sources</div>
           <input
+            data-qid="knowledge:search:url"
+            title="Search knowledge sources by URL"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search URLs..."
@@ -88,6 +95,8 @@ export function KnowledgeView() {
             {(['all', 'ok', 'empty', 'error'] as QualityFilter[]).map((f) => (
               <button
                 key={f}
+                data-qid={`knowledge:filter:quality:${f}`}
+                title={`Show ${f === 'all' ? 'all knowledge sources' : `knowledge sources with quality: ${f}`}`}
                 onClick={() => setQualityFilter(f)}
                 style={{
                   fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 4,
@@ -111,6 +120,8 @@ export function KnowledgeView() {
             urlList.map((item) => (
               <div
                 key={item.urlId}
+                data-qid={`knowledge:select:url:${item.urlId}`}
+                title={`View ${item.chunks.length} chunks from: ${item.url}`}
                 onClick={() => setSelectedUrl(item.urlId)}
                 style={{
                   padding: '10px 16px',

@@ -14,6 +14,7 @@ import { ModelPicker, type ModelConfig } from '../common/ModelPicker'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 import { EditModal } from '../common/EditModal'
 import { Plus, Copy, Pencil, Trash2 } from 'lucide-react'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 const API = 'http://localhost:3001/api'
 const MONO = '"JetBrains Mono", "SF Mono", monospace'
@@ -74,6 +75,29 @@ export function PromptLabView() {
   const [autoFixing, setAutoFixing] = useState(false)
   const [selectedModels, setSelectedModels] = useState<string[]>([])
   const [allModels, setAllModels] = useState<Record<string, ModelConfig>>({})
+
+  // Register actions for QuerySpec training
+  useRegisterAction('prompt-lab:action:save-prompt', { app: 'prompt-lab', action: 'SAVE_PROMPT', label: 'Save Prompt', description: 'Save edited system prompt to disk' })
+  useRegisterAction('prompt-lab:action:optimize-prompt', { app: 'prompt-lab', action: 'OPTIMIZE_PROMPT', label: 'Optimize Prompt', description: 'Run multi-round prompt optimization against ground truth cases' })
+  useRegisterAction('prompt-lab:action:review-prompt', { app: 'prompt-lab', action: 'REVIEW_PROMPT', label: 'Review Prompt', description: 'LLM review of prompt for duplicates, contradictions, and vague language' })
+  useRegisterAction('prompt-lab:action:auto-fix-prompt', { app: 'prompt-lab', action: 'AUTO_FIX_PROMPT', label: 'Auto-Fix Prompt', description: 'Rewrite prompt instructions to resolve all flagged review issues' })
+  useRegisterAction('prompt-lab:action:dismiss-review', { app: 'prompt-lab', action: 'DISMISS_REVIEW', label: 'Dismiss Review', description: 'Dismiss the prompt review feedback panel' })
+  useRegisterAction('prompt-lab:action:toggle-schema', { app: 'prompt-lab', action: 'TOGGLE_SCHEMA', label: 'Toggle JSON Schema', description: 'Expand or collapse the response JSON schema editor' })
+  useRegisterAction('prompt-lab:action:edit-schema', { app: 'prompt-lab', action: 'EDIT_SCHEMA', label: 'Edit JSON Schema', description: 'Edit the response JSON schema that is appended to the system prompt' })
+  useRegisterAction('prompt-lab:action:edit-prompt-text', { app: 'prompt-lab', action: 'EDIT_PROMPT_TEXT', label: 'Edit Prompt Text', description: 'Edit the system prompt instructions in the main textarea' })
+  useRegisterAction('prompt-lab:action:edit-test-case', { app: 'prompt-lab', action: 'EDIT_TEST_CASE', label: 'Edit Test Case', description: 'Open a test case for editing in the modal' })
+  useRegisterAction('prompt-lab:action:add-test-case', { app: 'prompt-lab', action: 'ADD_TEST_CASE', label: 'Add Test Case', description: 'Open the modal to create a new test case' })
+  useRegisterAction('prompt-lab:action:save-test-case', { app: 'prompt-lab', action: 'SAVE_TEST_CASE', label: 'Save Test Case', description: 'Save new or updated test case to ground truth file' })
+  useRegisterAction('prompt-lab:action:delete-test-case', { app: 'prompt-lab', action: 'DELETE_TEST_CASE', label: 'Delete Test Case', description: 'Permanently remove a test case from the ground truth file' })
+  useRegisterAction('prompt-lab:action:cancel-edit-case', { app: 'prompt-lab', action: 'CANCEL_EDIT_CASE', label: 'Cancel Edit', description: 'Close the test case edit modal without saving' })
+  useRegisterAction('prompt-lab:action:edit-case-id', { app: 'prompt-lab', action: 'EDIT_CASE_ID', label: 'Edit Case ID', description: 'Change the unique identifier of a test case' })
+  useRegisterAction('prompt-lab:action:edit-case-short-name', { app: 'prompt-lab', action: 'EDIT_CASE_SHORT_NAME', label: 'Edit Case Short Name', description: 'Edit the short display name of a test case' })
+  useRegisterAction('prompt-lab:action:edit-case-question', { app: 'prompt-lab', action: 'EDIT_CASE_QUESTION', label: 'Edit Case Question', description: 'Edit the full question text sent to the model' })
+  useRegisterAction('prompt-lab:action:edit-case-expected', { app: 'prompt-lab', action: 'EDIT_CASE_EXPECTED', label: 'Edit Expected Answer', description: 'Edit the expected JSON response for evaluating model output' })
+  useRegisterAction('prompt-lab:action:edit-case-notes', { app: 'prompt-lab', action: 'EDIT_CASE_NOTES', label: 'Edit Case Notes', description: 'Add optional notes describing the test case intent' })
+  useRegisterAction('prompt-lab:action:approve-prompt', { app: 'prompt-lab', action: 'APPROVE_PROMPT', label: 'Approve & Save', description: 'Approve optimized prompt and save as the new version' })
+  useRegisterAction('prompt-lab:action:reject-prompt', { app: 'prompt-lab', action: 'REJECT_PROMPT', label: 'Reject Prompt', description: 'Reject the optimized prompt and discard changes' })
+  useRegisterAction('prompt-lab:action:send-to-eval-lab', { app: 'prompt-lab', action: 'SEND_TO_EVAL_LAB', label: 'Test Across Models', description: 'Export prompt and questions to LLM Eval Lab for multi-model comparison' })
 
   // Agent bus for streaming optimization events
   const { send: agentSend } = useAgentBus((msg) => {
@@ -359,6 +383,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               {isDirty && (
                 <button onClick={savePrompt} aria-label="Save prompt"
+                  data-qid="prompt-lab:button:save-prompt"
+                  title="Save the current prompt to disk"
                   style={{ padding: '4px 14px', borderRadius: 4, border: 'none', cursor: 'pointer', background: EMBRY.blue, color: '#fff', fontSize: 10, fontWeight: 700 }}>
                   SAVE
                 </button>
@@ -367,7 +393,9 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                 {selectedModels.length > 0 ? selectedModels[0] : 'no model'}
               </span>
               <RunButton onClick={runOptimize} disabled={running || !selectedPrompt || selectedModels.length === 0}
-                ariaLabel="Optimize prompt">
+                ariaLabel="Optimize prompt"
+                data-qid="prompt-lab:button:optimize"
+                title="Run multi-round prompt optimization against ground truth cases">
                 {running ? 'Optimizing...' : 'Optimize'}
               </RunButton>
             </div>
@@ -383,6 +411,10 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
           {/* JSON Schema field */}
           <div style={{ borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
             <div onClick={() => setSchemaOpen(p => !p)}
+              role="button" tabIndex={0}
+              data-qid="prompt-lab:toggle:json-schema"
+              title="Expand or collapse the JSON schema editor"
+              aria-label="Toggle JSON schema editor"
               style={{ padding: '8px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, background: jsonSchema.trim() ? 'rgba(0,255,136,0.03)' : 'transparent' }}>
               <span style={{ fontSize: 10, color: EMBRY.dim }}>{schemaOpen ? '▾' : '▸'}</span>
               <span style={label}>Response JSON Schema</span>
@@ -393,6 +425,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
               <textarea value={jsonSchema} onChange={e => setJsonSchema(e.target.value)}
                 placeholder='{"conceptual": ["tag1"], "tactical": ["tag1"], "confidence": 0.8}'
                 aria-label="JSON response schema" rows={4}
+                data-qid="prompt-lab:textarea:json-schema"
+                title="Define the JSON schema that will be appended to the system prompt"
                 style={{
                   width: '100%', resize: 'vertical', background: EMBRY.bgDeep, color: EMBRY.green,
                   border: 'none', outline: 'none', padding: '12px 20px',
@@ -422,6 +456,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
             }}
             onBlur={() => { if (isDirty && !running) savePrompt() }}
             spellCheck={false} aria-label="System prompt editor"
+            data-qid="prompt-lab:textarea:prompt-editor"
+            title="Edit the system prompt instructions (auto-saved on blur)"
             style={{
               width: '100%', minHeight: 120, maxHeight: 600, resize: 'vertical',
               opacity: running ? 0.7 : 1,
@@ -435,6 +471,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
           <div style={{ padding: '8px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, background: EMBRY.bgCard }}>
             <button onClick={reviewPrompt} disabled={reviewing || !fullPrompt.trim()}
               aria-label="Review prompt for issues"
+              data-qid="prompt-lab:button:review-prompt"
+              title="LLM review: check for duplicates, contradictions, vague language, and missing constraints"
               style={{
                 padding: '6px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 11, fontWeight: 700,
                 background: reviewing ? EMBRY.muted : 'transparent',
@@ -453,6 +491,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                 <div style={{ ...label, color: EMBRY.amber }}>Prompt Review</div>
                 <button onClick={() => setReviewFeedback(null)} aria-label="Dismiss review"
+                  data-qid="prompt-lab:button:dismiss-review"
+                  title="Dismiss the prompt review feedback"
                   style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>dismiss</button>
               </div>
               <div className="prompt-review-md"
@@ -462,7 +502,9 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
               {!reviewFeedback.includes('READY') && (
                 <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 12, borderTop: `1px solid ${EMBRY.border}` }}>
                   <RunButton onClick={autoFixPrompt} disabled={autoFixing}
-                    ariaLabel="Auto-fix prompt based on review">
+                    ariaLabel="Auto-fix prompt based on review"
+                    data-qid="prompt-lab:button:auto-fix"
+                    title="Rewrite prompt instructions to resolve all issues flagged in the review">
                     {autoFixing ? 'Fixing...' : 'Auto-fix Prompt'}
                   </RunButton>
                   <span style={{ fontSize: 10, color: EMBRY.muted, alignSelf: 'center' }}>
@@ -502,6 +544,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                   <Fragment key={tc.id}>
                     <tr onClick={() => setEditingCase({ ...tc })}
                       role="button" tabIndex={0} aria-label={`Edit test case ${tc.id}`}
+                      data-qid={`prompt-lab:row:test-case-${tc.id}`}
+                      title={`Edit test case: ${tc.id}`}
                       style={{ borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', background: expandedCase === tc.id ? 'rgba(124,58,237,0.05)' : 'transparent' }}
                       className="eval-hover-row">
                       <td style={tdStyle}><span style={{ color: EMBRY.dim, fontFamily: MONO, fontSize: 11 }}>{i + 1}</span></td>
@@ -537,6 +581,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
             {groundTruth && (
               <div onClick={() => setEditingCase({ id: `q_${(groundTruth?.cases.length ?? 0) + 1}`, input: '', expected: {} })}
                 role="button" tabIndex={0} aria-label="Add test case"
+                data-qid="prompt-lab:button:add-test-case"
+                title="Add a new test case to the ground truth file"
                 style={{ padding: '14px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, color: EMBRY.dim, fontSize: 12, borderTop: `1px solid ${EMBRY.border}` }}
                 className="eval-hover-row">
                 + Add question...
@@ -559,13 +605,19 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                     <div style={label}>ID</div>
                     <input value={editingCase.id}
                       onChange={e => setEditingCase(p => p ? { ...p, id: e.target.value } : p)}
-                      aria-label="Question ID" style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
+                      aria-label="Question ID"
+                      data-qid="prompt-lab:input:case-id"
+                      title="Unique identifier for this test case (e.g. q_1)"
+                      style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={label}>Short Name</div>
                     <input value={getShortName(editingCase)}
                       onChange={e => setEditingCase(p => p ? setShortName(p, e.target.value) : p)}
-                      aria-label="Short name" autoFocus style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
+                      aria-label="Short name" autoFocus
+                      data-qid="prompt-lab:input:case-short-name"
+                      title="Short display name shown in the test case table"
+                      style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
                   </div>
                 </div>
                 <div>
@@ -574,6 +626,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                     onChange={e => setEditingCase(p => p ? setQuestion(p, e.target.value) : p)}
                     aria-label="Question text" rows={4}
                     placeholder="The question that will be sent to the model as the user message..."
+                    data-qid="prompt-lab:textarea:case-question"
+                    title="The full question text that will be sent to the model during evaluation"
                     style={{ ...inputStyle, width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MONO, fontSize: 12, lineHeight: 1.6 }} />
                 </div>
                 <div>
@@ -581,6 +635,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                   <textarea value={JSON.stringify(editingCase.expected, null, 2)}
                     onChange={e => { try { setEditingCase(p => p ? { ...p, expected: JSON.parse(e.target.value) } : p) } catch { /* invalid JSON — let user keep typing */ } }}
                     aria-label="Expected JSON response" rows={4}
+                    data-qid="prompt-lab:textarea:case-expected"
+                    title="Expected JSON response from the model — used to compute F1 score during evaluation"
                     style={{ ...inputStyle, width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MONO, fontSize: 12, lineHeight: 1.5, color: EMBRY.green }} />
                 </div>
                 <div>
@@ -588,11 +644,17 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                   <input value={editingCase.notes ?? ''}
                     onChange={e => setEditingCase(p => p ? { ...p, notes: e.target.value || undefined } : p)}
                     placeholder="e.g. Tests edge case with ambiguous input"
-                    aria-label="Notes" style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
+                    aria-label="Notes"
+                    data-qid="prompt-lab:input:case-notes"
+                    title="Optional notes describing the intent or edge case this question tests"
+                    style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {groundTruth?.cases.some(c => c.id === editingCase.id) && (
                     <button onClick={() => { removeTestCase(editingCase.id); setEditingCase(null) }}
+                      data-qid="prompt-lab:button:delete-test-case"
+                      title={`Permanently delete test case ${editingCase.id}`}
+                      aria-label={`Delete test case ${editingCase.id}`}
                       style={{ padding: '6px 16px', borderRadius: 4, border: `1px solid ${EMBRY.red}44`, background: 'transparent', color: EMBRY.red, cursor: 'pointer', fontSize: 10, fontWeight: 700 }}>
                       DELETE
                     </button>
@@ -600,11 +662,17 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                   <div style={{ flex: 1 }} />
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={() => setEditingCase(null)}
+                      data-qid="prompt-lab:button:cancel-edit-case"
+                      title="Close the edit modal without saving changes"
+                      aria-label="Cancel editing test case"
                       style={{ padding: '6px 16px', borderRadius: 4, border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim, cursor: 'pointer', fontSize: 10, fontWeight: 700 }}>
                       CANCEL
                     </button>
                     <button onClick={() => saveTestCase(editingCase)}
                       disabled={!editingCase.id || !getQuestion(editingCase).trim()}
+                      data-qid="prompt-lab:button:save-test-case"
+                      title={groundTruth?.cases.some(c => c.id === editingCase.id) ? 'Save changes to this test case' : 'Add this new test case to the ground truth file'}
+                      aria-label={groundTruth?.cases.some(c => c.id === editingCase.id) ? 'Update test case' : 'Add test case'}
                       style={{
                         padding: '6px 20px', borderRadius: 4, border: 'none', cursor: 'pointer',
                         background: editingCase.id && getQuestion(editingCase).trim() ? EMBRY.green : EMBRY.muted,
@@ -645,10 +713,15 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
               {done && (
                 <div style={{ padding: '12px 20px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8 }}>
                   <RunButton onClick={() => agentSend({ type: 'user-action', payload: { action: 'approve', prompt: selectedPrompt } })}
-                    ariaLabel="Approve and save prompt">
+                    ariaLabel="Approve and save prompt"
+                    data-qid="prompt-lab:button:approve-prompt"
+                    title="Approve the optimized prompt and save it as the new version">
                     Approve & Save
                   </RunButton>
                   <button onClick={() => agentSend({ type: 'user-action', payload: { action: 'reject', prompt: selectedPrompt } })}
+                    data-qid="prompt-lab:button:reject-prompt"
+                    title="Reject the optimized prompt and discard changes"
+                    aria-label="Reject optimized prompt"
                     style={{ padding: '8px 24px', borderRadius: 6, border: `1px solid ${EMBRY.border}`, cursor: 'pointer', background: 'transparent', color: EMBRY.dim, fontSize: 12, fontWeight: 700 }}>
                     Reject
                   </button>
@@ -683,6 +756,8 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                     window.location.hash = 'llm-eval-lab'
                   }}
                     aria-label="Send prompt and questions to LLM Eval Lab"
+                    data-qid="prompt-lab:button:send-to-eval-lab"
+                    title="Export this prompt and test cases to LLM Eval Lab for multi-model comparison"
                     style={{
                       padding: '8px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 11, fontWeight: 700,
                       background: 'transparent', color: EMBRY.blue,
@@ -774,13 +849,20 @@ function PromptLabPaneContent({ prompts, groundTruthFiles, selectedPrompt, selec
       <LeftPaneSection title={
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <span>Prompts ({filtered.length + filteredOrphanGT.length})</span>
-          <Plus size={14} color={EMBRY.muted} style={{ cursor: 'pointer' }} onClick={handleAdd} />
+          <Plus size={14} color={EMBRY.muted} style={{ cursor: 'pointer' }} onClick={handleAdd}
+            data-qid="prompt-lab:button:add-prompt"
+            title="Create a new prompt version"
+            aria-label="Add new prompt" />
         </div>
       }>
         {filtered.map(p => (
           <div key={p.name}
             onClick={() => { onSelectPrompt(p.name); if (p.hasGT) onSelectGT(p.name) }}
             onContextMenu={e => handleContextMenu(e, p.name, 'prompt')}
+            role="button" tabIndex={0}
+            data-qid={`prompt-lab:item:prompt-${p.name}`}
+            title={`Select prompt: ${p.name}${p.hasGT ? ' (has ground truth)' : ''}`}
+            aria-label={`Select prompt ${p.name}`}
             style={{ ...paneItemStyle(selectedPrompt === p.name), display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
             {p.hasGT && <span title="Has ground truth" style={{ fontSize: 8, color: EMBRY.green, flexShrink: 0 }}>GT</span>}
@@ -790,6 +872,10 @@ function PromptLabPaneContent({ prompts, groundTruthFiles, selectedPrompt, selec
           <div key={`gt-${f.name}`}
             onClick={() => onSelectGT(f.name)}
             onContextMenu={e => handleContextMenu(e, f.name, 'gt')}
+            role="button" tabIndex={0}
+            data-qid={`prompt-lab:item:gt-${f.name}`}
+            title={`Select ground truth file: ${f.name} (no matching prompt)`}
+            aria-label={`Select ground truth file ${f.name}`}
             style={{ ...paneItemStyle(selectedGT === f.name), display: 'flex', alignItems: 'center', gap: 6, opacity: 0.6 }}>
             <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>{f.name}</span>
             <span title="Ground truth only (no prompt)" style={{ fontSize: 8, color: '#facc15', flexShrink: 0 }}>GT</span>
@@ -805,18 +891,22 @@ function PromptLabPaneContent({ prompts, groundTruthFiles, selectedPrompt, selec
       {/* Context menu */}
       {contextMenu && (
         <>
-          <div style={{ position: 'fixed', inset: 0, zIndex: 999 }} onClick={() => setContextMenu(null)} />
+          <div style={{ position: 'fixed', inset: 0, zIndex: 999 }} onClick={() => setContextMenu(null)} data-qid="prompt-lab:overlay:context-close" title="Close context menu" />
           <div style={{
             position: 'fixed', left: contextMenu.x, top: contextMenu.y, zIndex: 1000,
             background: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 6,
             padding: 4, minWidth: 140, boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
           }}>
             {[
-              { action: 'rename', icon: <Pencil size={12} />, label: 'Rename' },
-              { action: 'duplicate', icon: <Copy size={12} />, label: 'Duplicate' },
-              { action: 'delete', icon: <Trash2 size={12} />, label: 'Delete' },
-            ].map(({ action, icon, label }) => (
+              { action: 'rename', icon: <Pencil size={12} />, label: 'Rename', titleText: `Rename "${contextMenu.name}"` },
+              { action: 'duplicate', icon: <Copy size={12} />, label: 'Duplicate', titleText: `Duplicate "${contextMenu.name}"` },
+              { action: 'delete', icon: <Trash2 size={12} />, label: 'Delete', titleText: `Delete "${contextMenu.name}"` },
+            ].map(({ action, icon, label, titleText }) => (
               <div key={action} onClick={() => handleAction(action)}
+                role="menuitem" tabIndex={0}
+                data-qid={`prompt-lab:context-menu:${action}`}
+                title={titleText}
+                aria-label={titleText}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px',
                   fontSize: 11, color: action === 'delete' ? '#f87171' : EMBRY.dim,

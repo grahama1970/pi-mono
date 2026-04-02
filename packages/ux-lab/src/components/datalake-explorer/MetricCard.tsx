@@ -1,4 +1,4 @@
-import { NVIS } from '../theme'
+import { NVIS } from './theme'
 
 interface MetricCardProps {
   label: string

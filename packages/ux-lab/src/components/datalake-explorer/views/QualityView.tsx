@@ -13,7 +13,7 @@ import { NVIS } from '../theme'
 import { loadQualityTrends, loadQualityPresetBreakdown } from '../loader'
 import { runAnalytics } from '../api/client'
 import type { QualityTrendPoint, QualityPresetBreakdown } from '../types'
-import { useRegisterAction } from '../../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // --- Metric definitions ---
 
@@ -450,12 +450,6 @@ function generateMockTrendData(days: number): QualityTrendPoint[] {
 // --- Main View ---
 
 export default function QualityView() {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('quality:dyn-1', { app: 'datalake-explorer', action: 'SELECT_TIME_RANGE', label: 'Select time range', description: 'Select time range' })
-  useRegisterAction('quality:item-2', { app: 'datalake-explorer', action: 'TOGGLE_PRESETS', label: 'Toggle preset breakdown', description: 'Toggle preset breakdown' })
-  useRegisterAction('quality:dyn-3', { app: 'datalake-explorer', action: 'TOGGLE_METRIC', label: 'Toggle metric series', description: 'Toggle metric series' })
-
-
   const [data, setData] = useState<QualityTrendPoint[]>([])
   const [presetData, setPresetData] = useState<QualityPresetBreakdown[]>([])
   const [loading, setLoading] = useState(true)
@@ -571,8 +565,8 @@ export default function QualityView() {
               key={tr.value}
               role="radio"
               aria-checked={range === tr.value}
-                data-qid="quality:dyn-1" data-qs-action="QUALITY_SELECT_TIME_RANGE"
-                title="Select time range"
+                data-qid="quality:dyn-1" data-qs-action="QUALITY_DYN_1"
+                title="Dyn 1"
               onClick={() => setRange(tr.value)}
               style={{
                 padding: '4px 14px',
@@ -672,8 +666,8 @@ export default function QualityView() {
               </div>
             </div>
             <button
-                data-qid="quality:item-2" data-qs-action="QUALITY_TOGGLE_PRESETS"
-                title="Toggle preset breakdown"
+                data-qid="quality:item-2" data-qs-action="QUALITY_ITEM_2"
+                title="Item 2"
               onClick={() => setShowPresets((v) => !v)}
               aria-pressed={showPresets}
               style={{
@@ -803,13 +797,17 @@ export default function QualityView() {
             {METRICS.map((m) => {
               const isActive = enabledMetrics.has(m.key)
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('quality:dyn-1', { app: 'datalake-explorer', action: 'DYN_1', label: 'Dyn 1', description: 'Dyn 1 in getMetricValue' })
+  useRegisterAction('quality:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in getMetricValue' })
+  useRegisterAction('quality:dyn-3', { app: 'datalake-explorer', action: 'DYN_3', label: 'Dyn 3', description: 'Dyn 3 in getMetricValue' })
 
               return (
                 <button
                   key={m.key}
                   aria-pressed={isActive}
-                data-qid="quality:dyn-3" data-qs-action="QUALITY_TOGGLE_METRIC"
-                title="Toggle metric series"
+                data-qid="quality:dyn-3" data-qs-action="QUALITY_DYN_3"
+                title="Dyn 3"
                   onClick={() => toggleMetric(m.key)}
                   style={{
                     display: 'flex',

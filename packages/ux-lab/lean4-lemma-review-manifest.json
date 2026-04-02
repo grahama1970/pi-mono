@@ -5,6 +5,16 @@
   "total": 30,
   "captures_dir": "captures/lean4-lemma-reviews",
   "components_root": "src/components/lean4-lemma",
+  "queryspec_coverage": {
+    "view": "lean4-lemma",
+    "audit_method": "CDP Runtime.evaluate",
+    "audit_date": "2026-04-02",
+    "total_interactive": 8,
+    "with_data_qs": 7,
+    "without_data_qs": 1,
+    "voice_ready": false,
+    "notes": "1 missing: empty button in LemmaGraph (framework filter, data-driven). Shell elements excluded (sidebar, header)."
+  },
   "vlm_image_processor": ".pi/skills/common/vlm_image.py",
   "vlm_preprocessing": {
     "auto_crop": true,

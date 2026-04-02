@@ -23,6 +23,10 @@ export function TuneTab({ project }: { project: Project }) {
   useRegisterAction('clf-tune:btn', { app: APP, action: 'CLF_TUNE_SAVE_HP', label: 'Save HP Overrides', description: 'Save hyperparameter configuration for next training run' })
   useRegisterAction('clf-tune:reset', { app: APP, action: 'CLF_TUNE_RESET_HP', label: 'Reset HP', description: 'Reset hyperparameters to active configuration' })
   useRegisterAction('clf-tune-hp:input', { app: APP, action: 'CLF_TUNE_SET_HP', label: 'Set Hyperparameter', description: 'Adjust a hyperparameter value (learning rate, epochs, dropout, etc.)', params: { key: { type: 'string' }, value: { type: 'number' } } })
+  useRegisterAction('clf-tune:round-circle', { app: APP, action: 'CLF_TUNE_VIEW_ROUND', label: 'View Round', description: 'Click a training round circle to scroll to HP controls for that round', params: { round: { type: 'number' } } })
+  useRegisterAction('clf-tune:expand-row', { app: APP, action: 'CLF_TUNE_EXPAND_ROUND', label: 'Expand Round Row', description: 'Expand a training round row to see HP delta changes from previous round' })
+  useRegisterAction('clf-tune:load-round', { app: APP, action: 'CLF_TUNE_LOAD_ROUND', label: 'Load Round HPs', description: 'Load hyperparameters from a specific self-improvement round', params: { round: { type: 'number' } } })
+  useRegisterAction('clf-tune:load-active', { app: APP, action: 'CLF_TUNE_LOAD_ACTIVE', label: 'Load Active HPs', description: 'Reset HP controls to the currently active configuration' })
 
   if (loading) return <div style={{ color: EMBRY.dim, padding: 40 }}>Loading tune results...</div>
 
@@ -471,7 +475,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
           <div style={{ marginBottom: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 8, color: EMBRY.muted, fontWeight: 700 }}>LOAD FROM ROUND:</span>
-              <button data-qid="clf-tune:btn" data-qs-action="CLF_TUNE_LOAD_ACTIVE" title="Load active HP configuration"
+              <button data-qid="clf-tune:load-active" data-qs-action="CLF_TUNE_LOAD_ACTIVE" title="Load active HP configuration"
                 onClick={loadActive}
                 style={{
                   ...roundPillStyle,
@@ -483,7 +487,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                 ACTIVE
               </button>
               {rounds.map(r => (
-                <button data-qid="clf-tune:btn" data-qs-action="CLF_TUNE_LOAD_ROUND"
+                <button data-qid="clf-tune:load-round" data-qs-action="CLF_TUNE_LOAD_ROUND"
                   key={r.round}
                   onClick={() => loadRound(r)}
                   title={`Strategy: ${r.strategy} | F1: ${r.f1.toFixed(3)}`}
@@ -535,6 +539,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                         <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)' }}>{k.label}</span>
                         <input data-qid="clf-tune-hp:input" data-qs-action="CLF_TUNE_SET_HP"
+                          title={`Set ${k.label} value`}
                           type="text"
                           value={k.log && val > 0 ? val.toExponential(1) : val % 1 === 0 ? String(val) : val.toFixed(4)}
                           onChange={e => {
@@ -551,6 +556,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                         />
                       </div>
                       <input data-qid="clf-tune-hp:input" data-qs-action="CLF_TUNE_SET_HP"
+                        title={`Drag to adjust ${k.label}`}
                         type="range"
                         min={k.min} max={k.max} step={k.step}
                         value={val}

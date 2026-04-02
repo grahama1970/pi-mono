@@ -12,6 +12,7 @@ import { LeftPane, paneItemStyle } from '../common/LeftPane'
 import { ModelPicker, type ModelConfig } from '../common/ModelPicker'
 import { RunButton } from '../common/RunButton'
 import { EditModal } from '../common/EditModal'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 const API = 'http://localhost:3001/api'
 const MONO = '"JetBrains Mono", "SF Mono", monospace'
@@ -42,6 +43,10 @@ export function LlmEvalLabView() {
   const [activeTab, setActiveTab] = useState<Tab>('playground')
   const [pendingResultFile, setPendingResultFile] = useState<string | null>(null)
 
+  useRegisterAction('eval-lab:tab:playground', { app: 'sparta-explorer', action: 'SWITCH_TAB_PLAYGROUND', label: 'Playground Tab', description: 'Switch to the Playground tab for side-by-side model testing' })
+  useRegisterAction('eval-lab:tab:library', { app: 'sparta-explorer', action: 'SWITCH_TAB_LIBRARY', label: 'Library Tab', description: 'Switch to the Library tab to manage evaluation question sets' })
+  useRegisterAction('eval-lab:tab:results', { app: 'sparta-explorer', action: 'SWITCH_TAB_RESULTS', label: 'Results Tab', description: 'Switch to the Results tab to view grid-eval output' })
+
   // Shared: models registry
   const [allModels, setAllModels] = useState<Record<string, ModelConfig>>({})
   const loadModels = useCallback(() => {
@@ -65,6 +70,8 @@ export function LlmEvalLabView() {
       <div role="tablist" aria-label="LLM Eval Lab tabs" style={{ height: 52, borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', paddingLeft: 20, gap: 32, background: EMBRY.bgHeader, flexShrink: 0, position: 'sticky', top: 0, zIndex: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
         {(['playground', 'library', 'results'] as const).map(t => (
           <button key={t} role="tab" aria-selected={activeTab === t} aria-controls={`tabpanel-${t}`}
+            data-qid={`eval-lab:tab:${t}`}
+            title={`Switch to ${t} tab`}
             onClick={() => setActiveTab(t)}
             style={{
               height: '100%', background: 'none', border: 'none', padding: '0 12px',
@@ -96,6 +103,10 @@ function PlaygroundTab({ allModels, onModelsChanged }: { allModels: Record<strin
   const [prompt, setPrompt] = useState('')
   const [systemPrompt, setSystemPrompt] = useState('')
   const [outputs, setOutputs] = useState<Record<string, { content: string; loading: boolean; latency?: number }>>({})
+
+  useRegisterAction('eval-lab:playground:system-prompt', { app: 'sparta-explorer', action: 'SET_SYSTEM_PROMPT', label: 'System Prompt', description: 'Set the system prompt used for all models in the playground' })
+  useRegisterAction('eval-lab:playground:prompt', { app: 'sparta-explorer', action: 'SET_PROMPT', label: 'Prompt Input', description: 'Enter a prompt to test across all selected models side-by-side' })
+  useRegisterAction('eval-lab:playground:run', { app: 'sparta-explorer', action: 'RUN_PROMPT', label: 'Run Prompt', description: 'Run the current prompt against all selected models concurrently' })
 
   // Auto-select first 2 local models
   useEffect(() => {
@@ -155,6 +166,8 @@ function PlaygroundTab({ allModels, onModelsChanged }: { allModels: Record<strin
         <textarea value={systemPrompt} onChange={e => setSystemPrompt(e.target.value)}
           placeholder="You are a helpful assistant..."
           aria-label="System prompt"
+          data-qid="eval-lab:playground:system-prompt"
+          title="System prompt applied to all models"
           rows={2}
           style={{ ...inputStyle, width: '100%', marginTop: 8, resize: 'vertical', fontFamily: MONO, fontSize: 11 }} />
       </div>
@@ -167,10 +180,12 @@ function PlaygroundTab({ allModels, onModelsChanged }: { allModels: Record<strin
         <textarea value={prompt} onChange={e => setPrompt(e.target.value)}
           placeholder="Enter a prompt to test across models..."
           aria-label="Prompt input"
+          data-qid="eval-lab:playground:prompt"
+          title="Prompt to test across selected models (Cmd+Enter to run)"
           rows={3}
           onKeyDown={e => { if (e.key === 'Enter' && e.metaKey) runPrompt() }}
           style={{ ...inputStyle, flex: 1, resize: 'vertical', fontSize: 13 }} />
-        <div style={{ alignSelf: 'flex-end' }}>
+        <div style={{ alignSelf: 'flex-end' }} data-qid="eval-lab:playground:run" title="Run prompt against all selected models (Cmd+Enter)">
           <RunButton onClick={runPrompt} disabled={!prompt.trim() || selectedModels.length === 0} ariaLabel="Run prompt">
             RUN
           </RunButton>
@@ -214,6 +229,28 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
   const [gt, setGt] = useState<GroundTruth>({ title: 'New Evaluation', models: [], questions: [] })
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
+
+  useRegisterAction('eval-lab:library:select-gt-file', { app: 'sparta-explorer', action: 'SELECT_GT_FILE', label: 'Select Ground Truth File', description: 'Load a ground truth evaluation file from the left panel' })
+  useRegisterAction('eval-lab:library:title', { app: 'sparta-explorer', action: 'SET_EVAL_TITLE', label: 'Evaluation Title', description: 'Set the title for the current evaluation set' })
+  useRegisterAction('eval-lab:library:save', { app: 'sparta-explorer', action: 'SAVE_GT', label: 'Save Ground Truth', description: 'Save the current ground truth evaluation set to disk' })
+  useRegisterAction('eval-lab:library:add-import', { app: 'sparta-explorer', action: 'OPEN_ADD_QUESTION_MODAL', label: 'Add / Import Questions', description: 'Open the modal to add a single question or import a batch from JSON' })
+  useRegisterAction('eval-lab:library:clear', { app: 'sparta-explorer', action: 'CLEAR_QUESTIONS', label: 'Clear All Questions', description: 'Remove all questions from the current evaluation set' })
+  useRegisterAction('eval-lab:library:run-eval', { app: 'sparta-explorer', action: 'RUN_EVAL', label: 'Run Evaluation', description: 'Save the evaluation set and trigger a full grid evaluation run' })
+  useRegisterAction('eval-lab:library:edit-question-row', { app: 'sparta-explorer', action: 'EDIT_QUESTION', label: 'Edit Question', description: 'Open the edit modal for an existing question' })
+  useRegisterAction('eval-lab:library:remove-question', { app: 'sparta-explorer', action: 'REMOVE_QUESTION', label: 'Remove Question', description: 'Delete a question from the evaluation set' })
+  useRegisterAction('eval-lab:library:add-question-row', { app: 'sparta-explorer', action: 'ADD_QUESTION_ROW', label: 'Add Question Row', description: 'Open the add question modal from the table footer' })
+  useRegisterAction('eval-lab:library:modal-mode-single', { app: 'sparta-explorer', action: 'MODAL_MODE_SINGLE', label: 'Single Question Mode', description: 'Switch add modal to single question entry form' })
+  useRegisterAction('eval-lab:library:modal-mode-import', { app: 'sparta-explorer', action: 'MODAL_MODE_IMPORT', label: 'Import Mode', description: 'Switch add modal to batch JSON import mode' })
+  useRegisterAction('eval-lab:library:modal-close', { app: 'sparta-explorer', action: 'CLOSE_QUESTION_MODAL', label: 'Close Modal', description: 'Close the add/edit question modal without saving' })
+  useRegisterAction('eval-lab:library:modal-cancel', { app: 'sparta-explorer', action: 'CANCEL_QUESTION_EDIT', label: 'Cancel Edit', description: 'Cancel the question add or edit and close the modal' })
+  useRegisterAction('eval-lab:library:modal-save', { app: 'sparta-explorer', action: 'SAVE_QUESTION', label: 'Save Question', description: 'Save the new or edited question to the evaluation set' })
+  useRegisterAction('eval-lab:library:modal-import', { app: 'sparta-explorer', action: 'IMPORT_BATCH', label: 'Import Batch', description: 'Import the pasted JSON batch of questions into the evaluation set' })
+  useRegisterAction('eval-lab:library:modal-short-name', { app: 'sparta-explorer', action: 'SET_QUESTION_SHORT_NAME', label: 'Short Name', description: 'Set the short identifier for the question' })
+  useRegisterAction('eval-lab:library:modal-question-input', { app: 'sparta-explorer', action: 'SET_QUESTION_INPUT', label: 'Question Input', description: 'Set the question text sent to the model' })
+  useRegisterAction('eval-lab:library:modal-expected', { app: 'sparta-explorer', action: 'SET_EXPECTED_ANSWER', label: 'Expected Answer', description: 'Set the expected answer used for evaluation scoring' })
+  useRegisterAction('eval-lab:library:modal-eval-mode', { app: 'sparta-explorer', action: 'SET_EVAL_MODE', label: 'Eval Mode', description: 'Choose the evaluation comparison method (contains, exact, regex, etc.)' })
+  useRegisterAction('eval-lab:library:modal-max-tries', { app: 'sparta-explorer', action: 'SET_MAX_TRIES', label: 'Max Tries', description: 'Set the maximum number of retry attempts for this question' })
+  useRegisterAction('eval-lab:library:modal-import-text', { app: 'sparta-explorer', action: 'SET_IMPORT_TEXT', label: 'Batch Import JSON', description: 'Paste a JSON array of questions to import in bulk' })
 
   // Load ground truth file list
   useEffect(() => {
@@ -355,6 +392,10 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
       <LeftPane title="Ground Truth Files">
         {gtFiles.map(f => (
           <div key={f} onClick={() => setSelectedGtFile(f)}
+            data-qid="eval-lab:library:select-gt-file"
+            title={`Load ground truth file: ${f}`}
+            role="button" tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter') setSelectedGtFile(f) }}
             style={{
               padding: '8px 16px', cursor: 'pointer', fontSize: 11, fontFamily: MONO,
               color: selectedGtFile === f ? EMBRY.accent : EMBRY.dim,
@@ -377,9 +418,13 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
           <div style={label}>Title</div>
           <input value={gt.title} onChange={e => updateGt(prev => ({ ...prev, title: e.target.value }))}
             aria-label="Evaluation title"
+            data-qid="eval-lab:library:title"
+            title="Evaluation set title"
             style={{ ...inputStyle, width: '100%', marginTop: 6, fontSize: 13 }} />
         </div>
         <button onClick={save} disabled={!dirty || saving} aria-label="Save ground truth"
+          data-qid="eval-lab:library:save"
+          title="Save the current evaluation set to disk"
           style={{
             padding: '8px 20px', borderRadius: 6, border: 'none', cursor: dirty ? 'pointer' : 'default',
             background: dirty ? EMBRY.blue : EMBRY.muted, color: dirty ? '#fff' : EMBRY.dim,
@@ -389,20 +434,26 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
         </button>
         <button onClick={() => { setAddModalMode('single'); setEditingQ({ id: (gt.questions.length > 0 ? Math.max(...gt.questions.map(q => q.id)) + 1 : 1), short: '', input: '', expected: '', eval: 'contains' }) }}
           aria-label="Add or import questions"
+          data-qid="eval-lab:library:add-import"
+          title="Add a single question or import a batch from JSON"
           style={{ ...actionBtn, color: EMBRY.accent, borderColor: EMBRY.accent + '44' }}>
           + ADD / IMPORT
         </button>
         <button onClick={clearAllQuestions} aria-label="Clear all questions"
           disabled={gt.questions.length === 0}
+          data-qid="eval-lab:library:clear"
+          title="Remove all questions from this evaluation set"
           style={{ ...actionBtn, color: gt.questions.length > 0 ? EMBRY.red : EMBRY.muted, borderColor: EMBRY.border }}>
           CLEAR
         </button>
         <div style={{ flex: 1 }} />
-        <RunButton onClick={runEval}
-          disabled={runningEval || gt.questions.length === 0 || gt.models.length === 0}
-          ariaLabel="Run evaluation">
-          {runningEval ? 'RUNNING...' : 'RUN EVAL'}
-        </RunButton>
+        <div data-qid="eval-lab:library:run-eval" title="Save and run the full grid evaluation across all selected models">
+          <RunButton onClick={runEval}
+            disabled={runningEval || gt.questions.length === 0 || gt.models.length === 0}
+            ariaLabel="Run evaluation">
+            {runningEval ? 'RUNNING...' : 'RUN EVAL'}
+          </RunButton>
+        </div>
       </div>
 
       {/* Model picker for this eval set */}
@@ -434,6 +485,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
             {gt.questions.map(q => (
               <tr key={q.id} onClick={() => setEditingQ({ ...q })}
                 role="button" tabIndex={0} aria-label={`Edit question ${q.id}: ${q.short}`}
+                data-qid="eval-lab:library:edit-question-row"
+                title={`Edit question ${q.id}: ${q.short}`}
                 onKeyDown={e => { if (e.key === 'Enter') setEditingQ({ ...q }) }}
                 style={{ borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', transition: 'background 0.15s' }}
                 className="eval-hover-row">
@@ -448,6 +501,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                 <td style={tdStyle}>
                   <button onClick={e => { e.stopPropagation(); removeQuestion(q.id) }}
                     aria-label={`Remove question ${q.id}`}
+                    data-qid="eval-lab:library:remove-question"
+                    title={`Remove question ${q.id}: ${q.short}`}
                     style={{ background: 'none', border: 'none', color: EMBRY.red, cursor: 'pointer', fontSize: 14, padding: 4 }}>
                     ×
                   </button>
@@ -459,6 +514,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
         {/* Add row at bottom of table */}
         <div onClick={() => { setAddModalMode('single'); setEditingQ({ id: (gt.questions.length > 0 ? Math.max(...gt.questions.map(q => q.id)) + 1 : 1), short: '', input: '', expected: '', eval: 'contains' }) }}
           role="button" tabIndex={0} aria-label="Add new question"
+          data-qid="eval-lab:library:add-question-row"
+          title="Add a new question to the evaluation set"
           onKeyDown={e => { if (e.key === 'Enter') { setAddModalMode('single'); setEditingQ({ id: (gt.questions.length > 0 ? Math.max(...gt.questions.map(q => q.id)) + 1 : 1), short: '', input: '', expected: '', eval: 'contains' }) } }}
           style={{
             padding: '14px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
@@ -493,6 +550,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                   <div style={{ display: 'flex', gap: 4 }}>
                     {(['single', 'import'] as const).map(m => (
                       <button key={m} onClick={() => setAddModalMode(m)}
+                        data-qid={`eval-lab:library:modal-mode-${m}`}
+                        title={m === 'single' ? 'Add a single question' : 'Batch import questions from JSON'}
                         style={{
                           padding: '4px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 10,
                           fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
@@ -507,6 +566,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                 )}
               </div>
               <button onClick={() => { setEditingQ(null); setImportText('') }} aria-label="Close"
+                data-qid="eval-lab:library:modal-close"
+                title="Close the question modal without saving"
                 style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer' }}>
                 <X size={18} />
               </button>
@@ -520,6 +581,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                   <input value={editingQ.short}
                     onChange={e => setEditingQ(p => p ? { ...p, short: e.target.value } : p)}
                     aria-label="Short name" autoFocus
+                    data-qid="eval-lab:library:modal-short-name"
+                    title="Short identifier for this question"
                     style={{ ...inputStyle, width: '100%', marginTop: 6 }} />
                 </div>
                 <div>
@@ -527,6 +590,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                   <textarea value={editingQ.input}
                     onChange={e => setEditingQ(p => p ? { ...p, input: e.target.value } : p)}
                     aria-label="Question input text" rows={4}
+                    data-qid="eval-lab:library:modal-question-input"
+                    title="The question text that will be sent to the model"
                     style={{ ...inputStyle, width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MONO, fontSize: 12, lineHeight: 1.6 }} />
                 </div>
                 <div style={{ display: 'flex', gap: 16 }}>
@@ -535,6 +600,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                     <input value={editingQ.expected}
                       onChange={e => setEditingQ(p => p ? { ...p, expected: e.target.value } : p)}
                       aria-label="Expected answer"
+                      data-qid="eval-lab:library:modal-expected"
+                      title="Expected answer used for evaluation scoring"
                       style={{ ...inputStyle, width: '100%', marginTop: 6, color: EMBRY.green }} />
                   </div>
                   <div style={{ width: 130 }}>
@@ -542,6 +609,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                     <select value={editingQ.eval}
                       onChange={e => setEditingQ(p => p ? { ...p, eval: e.target.value as EvalMode } : p)}
                       aria-label="Eval mode"
+                      data-qid="eval-lab:library:modal-eval-mode"
+                      title="Evaluation comparison method for this question"
                       style={{ ...selectStyle, width: '100%', marginTop: 6 }}>
                       {EVAL_MODES.map(m => <option key={m} value={m}>{m}</option>)}
                     </select>
@@ -552,14 +621,20 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                       value={editingQ.max_tries ?? ''}
                       onChange={e => setEditingQ(p => p ? { ...p, max_tries: e.target.value ? parseInt(e.target.value) : undefined } : p)}
                       placeholder="def" aria-label="Max tries"
+                      data-qid="eval-lab:library:modal-max-tries"
+                      title="Maximum retry attempts for this question (default: global setting)"
                       style={{ ...inputStyle, width: '100%', marginTop: 6, fontFamily: MONO }} />
                   </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
                   <button onClick={() => { setEditingQ(null); setImportText('') }}
+                    data-qid="eval-lab:library:modal-cancel"
+                    title="Cancel and close the question modal"
                     style={{ ...actionBtn, color: EMBRY.dim }}>Cancel</button>
                   <button onClick={saveEditingQ}
                     disabled={!editingQ.short.trim() || !editingQ.input.trim()}
+                    data-qid="eval-lab:library:modal-save"
+                    title={gt.questions.some(q => q.id === editingQ.id) ? 'Update the existing question' : 'Add this question to the evaluation set'}
                     style={{
                       padding: '8px 24px', borderRadius: 6, border: 'none', cursor: 'pointer',
                       background: editingQ.short.trim() && editingQ.input.trim() ? EMBRY.green : EMBRY.muted,
@@ -579,6 +654,8 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                 </div>
                 <textarea value={importText} onChange={e => setImportText(e.target.value)}
                   aria-label="Batch import JSON" autoFocus rows={10}
+                  data-qid="eval-lab:library:modal-import-text"
+                  title="Paste a JSON array of questions to import in bulk"
                   placeholder={'[\n  {"short": "Math", "input": "What is 2+2?", "expected": "4", "eval": "contains"},\n  {"short": "Coding", "input": "Write fizzbuzz", "expected": "def fizzbuzz", "eval": "contains"}\n]'}
                   style={{ ...inputStyle, width: '100%', fontFamily: MONO, fontSize: 11, resize: 'vertical', lineHeight: 1.6 }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -587,9 +664,13 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={() => { setEditingQ(null); setImportText('') }}
+                      data-qid="eval-lab:library:modal-cancel"
+                      title="Cancel and close the import modal"
                       style={{ ...actionBtn, color: EMBRY.dim }}>Cancel</button>
                     <button onClick={() => { importBatch(); setEditingQ(null) }}
                       disabled={!importText.trim()}
+                      data-qid="eval-lab:library:modal-import"
+                      title="Import pasted JSON questions into the evaluation set"
                       style={{
                         padding: '8px 24px', borderRadius: 6, border: 'none', cursor: 'pointer',
                         background: importText.trim() ? EMBRY.green : EMBRY.muted,
@@ -622,6 +703,10 @@ function ResultsTab({ allModels: _allModels, pendingFile, onFileConsumed }: {
   const [threshold, setThreshold] = useState(0.8)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useRegisterAction('eval-lab:results:select-file', { app: 'sparta-explorer', action: 'SELECT_RESULT_FILE', label: 'Select Result File', description: 'Load a grid evaluation result file from the left panel' })
+  useRegisterAction('eval-lab:results:threshold', { app: 'sparta-explorer', action: 'SET_THRESHOLD', label: 'Accuracy Threshold', description: 'Set the minimum pass-rate threshold for model viability recommendations' })
+  useRegisterAction('eval-lab:results:expand-row', { app: 'sparta-explorer', action: 'EXPAND_RESULT_ROW', label: 'Expand Result Row', description: 'Expand a question row to see per-model outputs and full question text' })
 
   const loadFiles = useCallback(() => {
     fetch(`${API}/projects/llm-eval-lab/results`).then(r => r.json())
@@ -664,6 +749,10 @@ function ResultsTab({ allModels: _allModels, pendingFile, onFileConsumed }: {
       <LeftPane title="Eval Runs">
         {files.map(f => (
           <div key={f} onClick={() => setSelectedFile(f)}
+            data-qid="eval-lab:results:select-file"
+            title={`Load result file: ${f}`}
+            role="button" tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter') setSelectedFile(f) }}
             style={{
               padding: '8px 16px', cursor: 'pointer', fontSize: 10, fontFamily: MONO,
               color: selectedFile === f ? EMBRY.accent : EMBRY.dim,
@@ -692,6 +781,8 @@ function ResultsTab({ allModels: _allModels, pendingFile, onFileConsumed }: {
           <input type="range" min={50} max={100} value={threshold * 100}
             onChange={e => setThreshold(Number(e.target.value) / 100)}
             aria-label="Accuracy threshold"
+            data-qid="eval-lab:results:threshold"
+            title="Minimum pass-rate threshold for model viability (currently shown above)"
             style={{ marginTop: 10, width: 200, accentColor: EMBRY.accent }} />
         </div>
         {gridData && (
@@ -722,6 +813,8 @@ function ResultsTab({ allModels: _allModels, pendingFile, onFileConsumed }: {
                     <tr onClick={() => setExpandedId(expandedId === id ? null : id)}
                       role="button" tabIndex={0} aria-expanded={expandedId === id}
                       aria-label={`Question ${id}: ${row.short}`}
+                      data-qid="eval-lab:results:expand-row"
+                      title={`${expandedId === id ? 'Collapse' : 'Expand'} question ${id}: ${row.short}`}
                       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedId(expandedId === id ? null : id) } }}
                       style={{
                         borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer',

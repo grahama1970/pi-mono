@@ -1,4 +1,4 @@
-import { NVIS } from '../theme'
+import { NVIS } from './theme'
 
 interface ProgressBarProps {
   value: number // 0-100

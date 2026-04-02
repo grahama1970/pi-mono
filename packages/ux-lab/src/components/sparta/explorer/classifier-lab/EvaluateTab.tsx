@@ -97,9 +97,14 @@ export function EvaluateTab({ project }: { project: Project }) {
   const APP = 'classifier-lab'
   useRegisterAction('clf-eval:btn', { app: APP, action: 'CLF_EVAL_RUN', label: 'Run Evaluation', description: 'Run inference on all test questions and compare predicted vs expected classes' })
   useRegisterAction('clf-eval:import', { app: APP, action: 'CLF_EVAL_IMPORT', label: 'Import Questions', description: 'Import evaluation questions from CSV or JSONL' })
+  useRegisterAction('clf-eval:import-format', { app: APP, action: 'CLF_EVAL_SET_FORMAT', label: 'Set Import Format', description: 'Select import format: JSONL or CSV', params: { format: { type: 'string' } } })
+  useRegisterAction('clf-eval:import-data', { app: APP, action: 'CLF_EVAL_SET_IMPORT_DATA', label: 'Set Import Data', description: 'Paste evaluation questions in JSONL or CSV format', params: { data: { type: 'string' } } })
+  useRegisterAction('clf-eval:confirm-import', { app: APP, action: 'CLF_EVAL_CONFIRM_IMPORT', label: 'Confirm Import', description: 'Submit pasted questions and import them into the test suite' })
+  useRegisterAction('clf-eval:cancel', { app: APP, action: 'CLF_EVAL_CANCEL_IMPORT', label: 'Cancel Import', description: 'Cancel the import dialog' })
   useRegisterAction('clf-eval:new-question-text', { app: APP, action: 'CLF_EVAL_SET_QUESTION_TEXT', label: 'Set Question Text', description: 'Type a test input for the classifier', params: { text: { type: 'string' } } })
   useRegisterAction('clf-eval:expected-class', { app: APP, action: 'CLF_EVAL_SET_EXPECTED_CLASS', label: 'Set Expected Class', description: 'Set the expected classification result', params: { class: { type: 'string' } } })
   useRegisterAction('clf-eval:edit-row', { app: APP, action: 'CLF_EVAL_EDIT_QUESTION', label: 'Edit Question', description: 'Edit or delete an evaluation question' })
+  useRegisterAction('clf-eval:edit-text', { app: APP, action: 'CLF_EVAL_EDIT_TEXT', label: 'Edit Question Text', description: 'Edit the input text of an evaluation question', params: { text: { type: 'string' } } })
   useRegisterAction('clf-eval:save', { app: APP, action: 'CLF_EVAL_SAVE_EDIT', label: 'Save Edit', description: 'Save changes to evaluation question' })
 
   const evaluated = results && results.some(r => r.predicted !== null && r.predicted !== undefined)
@@ -185,7 +190,7 @@ export function EvaluateTab({ project }: { project: Project }) {
             }}
           />
           <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <button data-qid="clf-eval:cancel" data-qs-action="CLF_EVAL_CONFIRM_IMPORT" title="Confirm and import questions" onClick={importQuestions} disabled={saving || !importData.trim()} style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px' }}>
+            <button data-qid="clf-eval:confirm-import" data-qs-action="CLF_EVAL_CONFIRM_IMPORT" title="Confirm and import questions" onClick={importQuestions} disabled={saving || !importData.trim()} style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px' }}>
               {saving ? 'IMPORTING...' : 'IMPORT'}
             </button>
             <button data-qid="clf-eval:cancel" data-qs-action="CLF_EVAL_CANCEL_IMPORT" title="Cancel import" onClick={() => setShowImport(false)} style={{ ...btnOutline, fontSize: 9, padding: '4px 12px' }}>CANCEL</button>

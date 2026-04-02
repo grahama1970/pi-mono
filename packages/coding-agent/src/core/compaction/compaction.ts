@@ -241,13 +241,15 @@ export function estimateTokens(message: AgentMessage): number {
 		}
 		case "assistant": {
 			const assistant = message as AssistantMessage;
-			for (const block of assistant.content) {
-				if (block.type === "text") {
-					chars += block.text.length;
-				} else if (block.type === "thinking") {
-					chars += block.thinking.length;
-				} else if (block.type === "toolCall") {
-					chars += block.name.length + JSON.stringify(block.arguments).length;
+			if (Array.isArray(assistant.content)) {
+				for (const block of assistant.content) {
+					if (block.type === "text") {
+						chars += block.text.length;
+					} else if (block.type === "thinking") {
+						chars += block.thinking.length;
+					} else if (block.type === "toolCall") {
+						chars += block.name.length + JSON.stringify(block.arguments).length;
+					}
 				}
 			}
 			return Math.ceil(chars / 4);
@@ -256,7 +258,7 @@ export function estimateTokens(message: AgentMessage): number {
 		case "toolResult": {
 			if (typeof message.content === "string") {
 				chars = message.content.length;
-			} else {
+			} else if (Array.isArray(message.content)) {
 				for (const block of message.content) {
 					if (block.type === "text" && block.text) {
 						chars += block.text.length;

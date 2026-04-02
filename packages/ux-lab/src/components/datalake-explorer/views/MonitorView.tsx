@@ -3,7 +3,7 @@ import { NVIS } from '../theme'
 import { checkHealth } from '../api/client'
 // Mock data from ../api/mock available but using local MOCK_SERVICES/MOCK_EVENTS for richer detail
 import type { MonitorService, MonitorEvent } from '../types'
-import { useRegisterAction } from '../../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // --- Mock data (V10 spec: 4-6 service cards + event log) ---
 
@@ -377,8 +377,8 @@ function EventRow({
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
-                data-qid="monitor:item-1" data-qs-action="MONITOR_SELECT_SOURCE"
-                title="Select event source"
+                data-qid="monitor:item-1" data-qs-action="MONITOR_ITEM_1"
+                title="Item 1"
         onClick={() => onSourceClick?.(event.source)}
         title={event.source}
       >
@@ -396,11 +396,6 @@ function EventRow({
 // --- Main Component ---
 
 export default function MonitorView() {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'SELECT_SOURCE', label: 'Select event source', description: 'Select event source' })
-  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'FILTER_LEVEL', label: 'Filter events by level', description: 'Filter events by level' })
-
-
   const [services, setServices] = useState<MonitorService[]>(MOCK_SERVICES)
   const [events, setEvents] = useState<MonitorEvent[]>(MOCK_EVENTS)
   const [loading, setLoading] = useState(true)
@@ -470,6 +465,9 @@ export default function MonitorView() {
   const warnCt = events.filter((e) => e.level === 'warn').length
   const errorCt = events.filter((e) => e.level === 'error').length
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in formatTimeAgo' })
+  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in formatTimeAgo' })
 
 
   return (
@@ -607,8 +605,8 @@ export default function MonitorView() {
                   key={f.value}
                   role="radio"
                   aria-checked={levelFilter === f.value}
-                data-qid="monitor:dyn-2" data-qs-action="MONITOR_FILTER_LEVEL"
-                title="Filter events by level"
+                data-qid="monitor:dyn-2" data-qs-action="MONITOR_DYN_2"
+                title="Dyn 2"
                   onClick={() => setLevelFilter(f.value)}
                   style={{
                     padding: '2px 10px',

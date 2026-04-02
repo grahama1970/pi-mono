@@ -4,9 +4,9 @@ import type { SimulationNodeDatum, SimulationLinkDatum } from 'd3-force'
 import { NVIS } from '../theme'
 import { MOCK_LEMMA_NODES, MOCK_LEMMA_EDGES } from '../api/mock'
 import { recallDocuments } from '../api/client'
-import EvidenceCasePanel from '../components/EvidenceCasePanel'
+import EvidenceCasePanel from '../EvidenceCasePanel'
 import type { LemmaNode, LemmaEdge, ProofStatus } from '../types'
-import { useRegisterAction } from '../../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // --- Layout modes (V9.7) ---
 type LayoutMode = 'force' | 'radial' | 'hierarchy'
@@ -51,13 +51,13 @@ function FilterChip({ label, color, active, onToggle }: FilterChipProps) {
   const [hovered, setHovered] = useState(false)
   return (
     <button
-                data-qid="lemma:item-1" data-qs-action="LEMMA_TOGGLE_PROOF_FILTER"
-                title="Toggle proof status filter"
+                data-qid="lemma:item-1" data-qs-action="LEMMA_ITEM_1"
+                title="Item 1"
       onClick={onToggle}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-pressed={active}
-      data-qid="lemma-graph:filter-chip:toggle" data-qs-action="LEMMA_TOGGLE_PROOF_FILTER"
+      data-qid="lemma-graph:filter-chip:toggle" data-qs-action="LEMMA-GRAPH_TOGGLE"
       title={`Toggle ${label} filter`}
       style={{
         padding: '4px 10px',
@@ -115,7 +115,7 @@ function DetailPanel({ node, onClose, onCreateEvidence }: DetailPanelProps) {
           <div style={{ fontSize: 10, color: NVIS.dim, marginTop: 2 }}>ID: {node.id}</div>
         </div>
         <button
-                data-qid="lemma:close-detail-panel" data-qs-action="LEMMA_CLOSE_DETAIL"
+                data-qid="lemma:close-detail-panel" data-qs-action="LEMMA_CLOSE_DETAIL_PANEL"
                 title="Close Detail Panel"
           onClick={onClose}
           aria-label="Close detail panel"
@@ -269,8 +269,8 @@ function DetailPanel({ node, onClose, onCreateEvidence }: DetailPanelProps) {
         flexShrink: 0,
       }}>
         <button
-                data-qid="lemma:item-3" data-qs-action="LEMMA_CREATE_EVIDENCE"
-                title="Create evidence from node"
+                data-qid="lemma:item-3" data-qs-action="LEMMA_ITEM_3"
+                title="Item 3"
           onClick={() => onCreateEvidence(node)}
           style={{
             width: '100%',
@@ -294,19 +294,6 @@ function DetailPanel({ node, onClose, onCreateEvidence }: DetailPanelProps) {
 
 // --- Main view ---
 export default function LemmaGraphView() {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('lemma:item-1', { app: 'datalake-explorer', action: 'TOGGLE_PROOF_FILTER', label: 'Toggle proof status filter', description: 'Toggle proof status filter' })
-  useRegisterAction('lemma-graph:filter-chip:toggle', { app: 'datalake-explorer', action: 'FILTER_CHIP_TOGGLE', label: 'Filter Chip Toggle', description: 'Filter Chip Toggle in FilterChip' })
-  useRegisterAction('lemma:close-detail-panel', { app: 'datalake-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail Panel', description: 'Close Detail Panel in FilterChip' })
-  useRegisterAction('lemma:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence from node', description: 'Create evidence from node' })
-  useRegisterAction('lemma:dyn-4', { app: 'datalake-explorer', action: 'SET_LAYOUT_MODE', label: 'Set graph layout mode', description: 'Set graph layout mode' })
-  useRegisterAction('lemma:item-5', { app: 'datalake-explorer', action: 'TOGGLE_WHAT_IF', label: 'Toggle what-if analysis', description: 'Toggle what-if analysis' })
-  useRegisterAction('lemma:item-6', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in graph', description: 'Zoom in graph' })
-  useRegisterAction('lemma:item-7', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out graph', description: 'Zoom out graph' })
-  useRegisterAction('lemma:item-8', { app: 'datalake-explorer', action: 'RESET_LAYOUT', label: 'Reset graph layout', description: 'Reset graph layout' })
-  useRegisterAction('lemma:graph-container', { app: 'datalake-explorer', action: 'GRAPH_CANVAS', label: 'Graph Container', description: 'Graph Container in FilterChip' })
-
-
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
@@ -651,8 +638,8 @@ export default function LemmaGraphView() {
             {(['force', 'radial', 'hierarchy'] as LayoutMode[]).map((m) => (
               <button
                 key={m}
-                data-qid="lemma:dyn-4" data-qs-action="LEMMA_SET_LAYOUT_MODE"
-                title="Set graph layout mode"
+                data-qid="lemma:dyn-4" data-qs-action="LEMMA_DYN_4"
+                title="Dyn 4"
                 onClick={() => setLayoutMode(m)}
                 style={{
                   padding: '3px 10px',
@@ -674,8 +661,8 @@ export default function LemmaGraphView() {
 
           {/* V9.9: What-If toggle */}
           <button
-                data-qid="lemma:item-5" data-qs-action="LEMMA_TOGGLE_WHAT_IF"
-                title="Toggle what-if analysis"
+                data-qid="lemma:item-5" data-qs-action="LEMMA_ITEM_5"
+                title="Item 5"
             onClick={() => {
               setWhatIfActive((prev) => !prev)
               if (whatIfActive) { setFailedNodes(new Set()); setCascadedNodes(new Set()) }
@@ -700,8 +687,8 @@ export default function LemmaGraphView() {
 
           {/* Zoom controls */}
           <button
-                data-qid="lemma:item-6" data-qs-action="LEMMA_ZOOM_IN"
-                title="Zoom in graph"
+                data-qid="lemma:item-6" data-qs-action="LEMMA_ITEM_6"
+                title="Item 6"
             onClick={() => setZoom((z) => Math.min(z + 0.2, 3))}
             aria-label="Zoom in"
             style={{
@@ -718,8 +705,8 @@ export default function LemmaGraphView() {
             +
           </button>
           <button
-                data-qid="lemma:item-7" data-qs-action="LEMMA_ZOOM_OUT"
-                title="Zoom out graph"
+                data-qid="lemma:item-7" data-qs-action="LEMMA_ITEM_7"
+                title="Item 7"
             onClick={() => setZoom((z) => Math.max(z - 0.2, 0.2))}
             aria-label="Zoom out"
             style={{
@@ -739,8 +726,8 @@ export default function LemmaGraphView() {
             {Math.round(zoom * 100)}%
           </span>
           <button
-                data-qid="lemma:item-8" data-qs-action="LEMMA_RESET_LAYOUT"
-                title="Reset graph layout"
+                data-qid="lemma:item-8" data-qs-action="LEMMA_ITEM_8"
+                title="Item 8"
             onClick={resetLayout}
             style={{
               padding: '4px 10px',
@@ -759,7 +746,7 @@ export default function LemmaGraphView() {
 
         {/* SVG graph */}
         <div
-          data-qid="lemma:graph-container" data-qs-action="LEMMA_GRAPH_CANVAS" title="Graph Container"
+          data-qid="lemma:graph-container" data-qs-action="LEMMA_GRAPH_CONTAINER" title="Graph Container"
           ref={containerRef}
           style={{ flex: 1, overflow: 'hidden', background: NVIS.bg }}
         >
@@ -849,6 +836,17 @@ export default function LemmaGraphView() {
                 const isCascaded = cascadedNodes.has(node.id)
                 const displayColor = isFailed ? '#ff4444' : isCascaded ? '#ffaa00' : color
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('lemma:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in FilterChip' })
+  useRegisterAction('lemma-graph:filter-chip:toggle', { app: 'datalake-explorer', action: 'FILTER_CHIP_TOGGLE', label: 'Filter Chip Toggle', description: 'Filter Chip Toggle in FilterChip' })
+  useRegisterAction('lemma:close-detail-panel', { app: 'datalake-explorer', action: 'CLOSE_DETAIL_PANEL', label: 'Close Detail Panel', description: 'Close Detail Panel in FilterChip' })
+  useRegisterAction('lemma:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in FilterChip' })
+  useRegisterAction('lemma:dyn-4', { app: 'datalake-explorer', action: 'DYN_4', label: 'Dyn 4', description: 'Dyn 4 in FilterChip' })
+  useRegisterAction('lemma:item-5', { app: 'datalake-explorer', action: 'ITEM_5', label: 'Item 5', description: 'Item 5 in FilterChip' })
+  useRegisterAction('lemma:item-6', { app: 'datalake-explorer', action: 'ITEM_6', label: 'Item 6', description: 'Item 6 in FilterChip' })
+  useRegisterAction('lemma:item-7', { app: 'datalake-explorer', action: 'ITEM_7', label: 'Item 7', description: 'Item 7 in FilterChip' })
+  useRegisterAction('lemma:item-8', { app: 'datalake-explorer', action: 'ITEM_8', label: 'Item 8', description: 'Item 8 in FilterChip' })
+  useRegisterAction('lemma:graph-container', { app: 'datalake-explorer', action: 'GRAPH_CONTAINER', label: 'Graph Container', description: 'Graph Container in FilterChip' })
 
 
                 return (

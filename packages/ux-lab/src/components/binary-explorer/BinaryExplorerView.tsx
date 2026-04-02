@@ -2742,7 +2742,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                       {n.cwe ? n.cwe.split(', ').filter(Boolean).map(c => (
                                         <span key={c} title={c} style={{ fontSize: 8, padding: '1px 4px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600 }}
-                                          data-qid={`be:evidence:${c}`} data-qs-action="RUN_EVIDENCE_CASE" title="Run evidence case" onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}}
+                                          data-qid={`be:evidence:${c}`} data-qs-action="RUN_EVIDENCE_CASE" title="Run evidence case" onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}
                                         >{c}</span>
                                       )) : <span style={{ fontSize: 7, color: EMBRY.border }}>—</span>}
                                     </div>
