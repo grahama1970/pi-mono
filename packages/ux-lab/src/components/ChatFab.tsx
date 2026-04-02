@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import { EMBRY, glowDot } from './sparta/common/EmbryStyle'
 import { ChatWell } from './sparta/query/ChatWell'
-import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from './sparta/query/ChatWell'
+import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from './shared-chat'
 import type { Scope, GateDepth } from './sparta/explorer/SpartaExplorer'
 import type { TabName } from './sparta/explorer/SpartaExplorer'
 

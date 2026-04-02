@@ -1,6 +1,6 @@
 {
   "url": "http://localhost:3002/#embry-terminal",
-  "date": "2026-04-01T23:09:25.863Z",
+  "date": "2026-04-02T11:45:15.376Z",
   "results": {
     "C01": {
       "id": "C01",
@@ -65,23 +65,23 @@
       "violations": [
         {
           "qid": "topbar:connection:status",
-          "value": "42ms",
-          "context": "API MEM LLM 42ms"
+          "value": "20ms",
+          "context": "API MEM LLM 20ms"
         },
         {
           "qid": "reasoning-chain",
           "value": "89%",
-          "context": "/memory Recalled 3 prior SPARTA assessments 89% 7:03:27 PM1."
+          "context": "/memory Recalled 3 prior SPARTA assessments 89% 7:42:07 AM1."
         },
         {
           "qid": "reasoning-chain",
           "value": "1.2s",
-          "context": "7:03:27 PM 1.2s"
+          "context": "7:42:07 AM 1.2s"
         },
         {
           "qid": "reasoning-chain",
           "value": "4.8s",
-          "context": "7:03:32 PM 4.8s"
+          "context": "7:42:12 AM 4.8s"
         },
         {
           "qid": "reasoning-chain",
@@ -91,7 +91,7 @@
         {
           "qid": "reasoning-chain",
           "value": "2.1s",
-          "context": "7:03:37 PM 2.1s"
+          "context": "7:42:17 AM 2.1s"
         },
         {
           "qid": "reasoning-chain",
@@ -101,7 +101,7 @@
         {
           "qid": "reasoning-chain",
           "value": "3.2s",
-          "context": "7:03:39 PM 3.2s"
+          "context": "7:42:19 AM 3.2s"
         }
       ]
     },

@@ -23,12 +23,12 @@ export interface RecallCardProps {
 
 const ScoreBar = memo(function ScoreBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10 }}>
-      <span style={{ color: EMBRY.dim, width: 42, textAlign: 'right', fontFamily: 'monospace', fontSize: 9 }}>{label}</span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
+      <span style={{ color: EMBRY.dim, width: 42, textAlign: 'right', fontFamily: 'monospace', fontSize: 12 }}>{label}</span>
       <div style={{ flex: 1, height: 3, background: EMBRY.bgDeep, borderRadius: 2, overflow: 'hidden' }}>
         <div style={{ width: `${Math.min(100, value * 100)}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.4s ease' }} />
       </div>
-      <span style={{ fontFamily: 'monospace', color: EMBRY.dim, width: 28, fontSize: 9 }}>{value.toFixed(2)}</span>
+      <span style={{ fontFamily: 'monospace', color: EMBRY.dim, width: 28, fontSize: 12 }}>{value.toFixed(2)}</span>
     </div>
   )
 })
@@ -62,21 +62,21 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
 
   return (
     <div style={{ margin: '6px 0' }}>
-      <button onClick={() => setExpanded(v => !v)} style={{
+      <button onClick={() => setExpanded(v => !v)} title="Memory recall results — click to expand" style={{
         display: 'flex', alignItems: 'center', gap: 6, width: '100%',
-        fontSize: 11, color: EMBRY.dim, background: 'none', border: 'none',
+        fontSize: 13, color: EMBRY.dim, background: 'none', border: 'none',
         cursor: 'pointer', padding: '4px 0', textAlign: 'left',
       }}>
         {confPct != null && (
-          <span style={{ color: confColor, fontWeight: 700, fontFamily: 'monospace', fontSize: 10 }} title={confTooltip}>
+          <span style={{ color: confColor, fontWeight: 700, fontFamily: 'monospace', fontSize: 12 }} title={confTooltip}>
             {confPct}%
           </span>
         )}
         <span>Memory recall</span>
         <span style={{ color: EMBRY.muted }}>{'\u00B7'}</span>
         <span>{resultCount} results</span>
-        {confLabel && <span style={{ fontSize: 9, color: confColor, opacity: 0.7 }}>{confLabel}</span>}
-        <span style={{ marginLeft: 'auto', fontSize: 10, color: EMBRY.muted, transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>{'\u25BE'}</span>
+        {confLabel && <span style={{ fontSize: 12, color: confColor, opacity: 0.7 }}>{confLabel}</span>}
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: EMBRY.muted, transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>{'\u25BE'}</span>
       </button>
       {expanded && (
         <div style={{ borderLeft: `2px solid ${EMBRY.border}`, marginLeft: 4, paddingLeft: 10, marginTop: 4 }}>
@@ -86,13 +86,13 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
               borderBottom: i < Math.min(items.length, 8) - 1 ? `1px solid ${EMBRY.border}` : 'none',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                {item._source && <span style={{ fontSize: 8, fontWeight: 700, fontFamily: 'monospace', color: sourceColor(item._source), textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item._source.replace('sparta_', '')}</span>}
-                <span style={{ fontSize: 11, color: EMBRY.white, fontWeight: 500 }}>{itemLabel(item).slice(0, 80)}</span>
+                {item._source && <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'monospace', color: sourceColor(item._source), textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item._source.replace('sparta_', '')}</span>}
+                <span style={{ fontSize: 13, color: EMBRY.white, fontWeight: 500 }}>{itemLabel(item).slice(0, 80)}</span>
               </div>
               {/* Debug scores — collapsed by default */}
               {item.scores && (
                 <details style={{ marginTop: 4 }} open={debugIdx === i} onToggle={(e) => setDebugIdx((e.currentTarget as HTMLDetailsElement).open ? i : -1)}>
-                  <summary style={{ fontSize: 9, color: EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>Retrieval scores (BM25 lexical · Graph traversal · Dense semantic · Freshness)</summary>
+                  <summary style={{ fontSize: 12, color: EMBRY.muted, cursor: 'pointer', userSelect: 'none' }}>Retrieval scores (BM25 lexical · Graph traversal · Dense semantic · Freshness)</summary>
                   <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <ScoreBar label="BM25" value={item.scores.bm25 ?? 0} color={EMBRY.accent} />
                     <ScoreBar label="Graph" value={item.scores.graph ?? 0} color={EMBRY.blue} />

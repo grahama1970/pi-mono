@@ -52,20 +52,23 @@ def generate(
     max_length = tune.get("max_length", 128)
 
     # Build strategies — one per backbone
+    # Strategies match thunderdome's Strategy dataclass fields exactly
     strategies = []
     for backbone in backbones:
         safe_name = backbone.replace("/", "-").replace(".", "-")
         strategies.append({
             "name": safe_name,
-            "skill": "classifier-lab",
-            "timeout_s": 600,
-            "prompt": (
-                f"Train {backbone} on {{{{ data_dir }}}}/train.jsonl "
-                f"with lr={lr} epochs={epochs} batch_size={batch_size} max_length={max_length}. "
-                f"Use /classifier-lab benchmark --modality {modality} --backbones {backbone} "
-                f"--data-dir {{{{ data_dir }}}}. "
-                f"Output JSON with selected_metrics.macro_f1."
-            ),
+            "modality": modality,
+            "backbones": backbone,
+            "epochs": epochs,
+            "lr": lr,
+            "batch_size": batch_size,
+            "dropout": 0.1,
+            "weight_decay": 0.01,
+            "label_smoothing": 0.0,
+            "mixup_alpha": 0.0,
+            "cutmix_alpha": 0.0,
+            "random_erasing": 0.0,
         })
 
     manifest = {

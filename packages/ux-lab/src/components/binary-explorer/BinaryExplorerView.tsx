@@ -156,7 +156,8 @@ function renderInline(text: string, onFeatureClick: (name: string) => void): Rea
 }
 
 
-interface ChatMessage { role: 'user' | 'assistant'; content: string; isExplanation?: boolean; feedback?: 'up' | 'down' | null; _querySpec?: Record<string, unknown> }
+// ChatMessage imported from shared-chat (unified type across all UX Lab projects)
+import type { ChatMessage } from '../shared-chat'
 
 type Perspective = 'all' | 'security' | 'data_flow' | 'protocol'
 const PERSPECTIVE_LABELS: Record<Perspective, string> = {

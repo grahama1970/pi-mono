@@ -11,66 +11,19 @@
  */
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
-import { RecallCard, type RecallItem } from './RecallCard'
-import { GateChain } from './GateChain'
-import { ThreatMatrixCard, type ThreatMatrixSummary } from './ThreatMatrixCard'
 import ReasoningBlock from '../../shared-chat/ReasoningBlock'
-import { highlightEntities, MarkdownRenderer, SkillPalette } from '../../shared-chat'
-import type { Skill } from '../../shared-chat'
+import {
+  highlightEntities, MarkdownRenderer, SkillPalette,
+  RecallCard, GateChain, ThreatMatrixCard, ToolAction,
+} from '../../shared-chat'
+import type {
+  ChatMessage, Skill, EntityRef, EvidenceGate, CascadeLayer,
+  ThreatMatrixSummary, RecallItem,
+} from '../../shared-chat'
 
-export interface EntityRef {
-  id: string
-  label: string
-  exists: boolean
-}
-
-export interface EvidenceGate {
-  gate: string
-  passed: boolean
-  detail: string
-  duration?: number
-}
-
-export type CascadeLayer = 'recall' | 'intent' | 'llm' | 'aql'
-
-export interface ChatMessage {
-  id: string
-  role: 'user' | 'system'
-  content: string
-  type: 'natural' | 'aql'
-  alertType?: 'threat-delta'
-  timestamp: number
-  resultCount?: number
-  _querySpec?: Record<string, unknown>
-  feedback?: 'up' | 'down' | null
-  cascadeLayer?: CascadeLayer
-  entities?: EntityRef[]
-  verdict?: { state: string; gates: EvidenceGate[]; tier?: string }
-  clarifyOptions?: Array<{ question: string }>
-  /** Recall items with scores for RecallCard */
-  recallItems?: RecallItem[]
-  /** Skill that was invoked (shown as collapsible tool action) */
-  skillUsed?: string
-  /** Inline threat matrix summary card */
-  matrixSummary?: ThreatMatrixSummary
-  /** Evidence case reasoning block data */
-  evidenceCase?: {
-    verdict: string
-    grade: string
-    gates_passed: number
-    gates_total: number
-    gate_summary: string
-    gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>
-    control_ids: string[]
-    tier: string
-    drift?: { old_verdict: string; new_verdict: string; timestamp: string }
-    recall_count?: number
-    recall_breakdown?: Record<string, number>
-    source_traceability?: Record<string, number>
-  }
-}
-
-export type { ThreatMatrixSummary }
+// ChatMessage, EntityRef, EvidenceGate, CascadeLayer, ThreatMatrixSummary, RecallItem
+// are all imported from shared-chat — no local definitions needed.
+export type { ChatMessage, ThreatMatrixSummary, EntityRef, EvidenceGate, CascadeLayer } from '../../shared-chat'
 
 export interface ChatWellProps {
   messages: ChatMessage[]
@@ -94,20 +47,7 @@ const LAYER_COLORS: Record<CascadeLayer, string> = {
   aql: EMBRY.accent,
 }
 
-// ── Tool Action (muted, collapsible — from Embry Terminal) ───────────────
-
-function ToolAction({ label }: { label: string }) {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 4,
-      fontSize: 11, color: EMBRY.muted, padding: '2px 0 4px',
-    }}>
-      <span style={{ color: EMBRY.blue, fontFamily: 'monospace', fontWeight: 600, fontSize: 10 }}>
-        {label}
-      </span>
-    </div>
-  )
-}
+// ToolAction imported from shared-chat (COTS compliant: 44px touch, 13px font, tooltip)
 
 // ── Message Component ────────────────────────────────────────────────────
 
@@ -146,7 +86,7 @@ function MessageItem({
   return (
     <div style={{ padding: '8px 0' }}>
       {/* Tool action line */}
-      {msg.skillUsed && <ToolAction label={`/${msg.skillUsed}`} />}
+      {msg.skillUsed && <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:skill:${msg.skillUsed}`} />}
 
       {/* Cascade layer indicator */}
       {msg.cascadeLayer && (
@@ -157,7 +97,7 @@ function MessageItem({
             boxShadow: `0 0 4px ${LAYER_COLORS[msg.cascadeLayer]}`,
           }} />
           <span style={{
-            fontSize: 9, color: LAYER_COLORS[msg.cascadeLayer],
+            fontSize: 12, color: LAYER_COLORS[msg.cascadeLayer],
             fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
             fontFamily: 'monospace',
           }}>
@@ -223,7 +163,7 @@ function MessageItem({
           onClick={() => onRunEvidenceCase(msg)}
           disabled={evidenceCaseLoading === msg.id}
           style={{
-            marginTop: 6, fontSize: 10, fontWeight: 700,
+            marginTop: 6, fontSize: 12, fontWeight: 700,
             padding: '4px 12px', borderRadius: 12,
             border: `1px solid ${EMBRY.accent}66`,
             backgroundColor: evidenceCaseLoading === msg.id ? `${EMBRY.accent}08` : `${EMBRY.accent}18`,
@@ -242,7 +182,7 @@ function MessageItem({
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
           {msg.clarifyOptions.map((c, i) => (
             <button key={i} onClick={() => onClarifyClick?.(c.question)} style={{
-              fontSize: 10, padding: '3px 8px', borderRadius: 12,
+              fontSize: 12, padding: '3px 8px', borderRadius: 12,
               border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`,
               color: EMBRY.accent, cursor: 'pointer',
             }}>
@@ -257,7 +197,7 @@ function MessageItem({
         <details style={{ marginTop: 6, fontSize: 10 }}>
           <summary style={{ color: EMBRY.dim, cursor: 'pointer' }}>QuerySpec</summary>
           <pre style={{
-            color: EMBRY.dim, fontSize: 9, whiteSpace: 'pre-wrap',
+            color: EMBRY.dim, fontSize: 12, whiteSpace: 'pre-wrap',
             marginTop: 4, padding: 6, backgroundColor: EMBRY.bgDeep,
             borderRadius: 4, overflow: 'auto', maxHeight: 150,
           }}>
@@ -414,8 +354,10 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             <button
               onClick={handleSend}
               disabled={!input.trim()}
+              title="Send message (Enter)"
+              aria-label="Send message"
               style={{
-                width: 28, height: 28, borderRadius: '50%', border: 'none',
+                width: 44, height: 44, borderRadius: '50%', border: 'none',
                 cursor: input.trim() ? 'pointer' : 'default',
                 background: input.trim() ? EMBRY.green : EMBRY.muted,
                 color: input.trim() ? '#000' : EMBRY.dim,

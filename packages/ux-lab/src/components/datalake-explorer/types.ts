@@ -348,13 +348,8 @@ export interface MonitorStripEvent {
 	message: string;
 }
 
-// --- Chat FAB types ---
-export interface ChatMessage {
-	id: string;
-	role: "user" | "agent";
-	text: string;
-	timestamp: string;
-}
+// ChatMessage now imported from shared-chat — see shared-chat/types.ts
+export type { ChatMessage } from "../shared-chat";
 
 // --- V8 ThreatMatrixView ---
 export interface ThreatCell {
