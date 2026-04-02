@@ -67,7 +67,7 @@ export function highlightEntities(
             fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
             cursor: onEntityClick ? 'pointer' : 'inherit',
           }}
-          data-qid={type === 'skill' ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
+          data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`} data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
           title={type === 'skill' ? `Skill: ${part} — click to invoke` : type === 'control' ? `NIST control: ${part} — click for threat matrix` : type === 'cwe' ? `Common Weakness: ${part} — click for analysis` : type === 'framework' ? `Framework: ${part} — click for details` : `${type}: ${part}`}
         >
           {part}

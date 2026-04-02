@@ -1,0 +1,153 @@
+version: 1
+kind: test-interactions-manifest
+metadata:
+  title: "QuerySpec E2E — NL → Action → DOM Click"
+  app: datalake-explorer
+  url: "http://localhost:3002/#datalake-explorer"
+  created: "2026-04-02"
+
+tests:
+  # === Quarantine Actions (4) ===
+  - id: qs-quarantine-approve
+    input: "approve this entry"
+    tab_context: quarantine
+    expected_action: QUARANTINE_APPROVE_ENTRY
+    expected_behavior: "Resolver returns resolved=true, ChatFAB executes click on approve button"
+    category: direct_command
+
+  - id: qs-quarantine-reject
+    input: "reject the selected document"
+    tab_context: quarantine
+    expected_action: QUARANTINE_REJECT_ENTRY
+    expected_behavior: "Resolver resolves to reject action and clicks"
+    category: direct_command
+
+  - id: qs-quarantine-reextract
+    input: "re-extract this PDF"
+    tab_context: quarantine
+    expected_action: QUARANTINE_SELECT_STRATEGY
+    expected_behavior: "Opens re-extraction strategy selector"
+    category: direct_command
+
+  - id: qs-quarantine-select-all
+    input: "select all visible documents"
+    tab_context: quarantine
+    expected_action: QUARANTINE_SELECT_ALL
+    expected_behavior: "Selects all visible quarantine entries"
+    category: direct_command
+
+  # === Review Actions (4) ===
+  - id: qs-review-toggle
+    input: "switch to compare mode"
+    tab_context: extraction
+    expected_action: REVIEW_TOGGLE_VIEW_MODE
+    expected_behavior: "Toggles between review and compare mode"
+    category: direct_command
+
+  - id: qs-review-fixture
+    input: "generate a test fixture"
+    tab_context: extraction
+    expected_action: REVIEW_GENERATE_FIXTURE
+    expected_behavior: "Triggers fixture generation"
+    category: direct_command
+
+  - id: qs-review-accept
+    input: "accept this extraction"
+    tab_context: extraction
+    expected_action: REVIEW_ACCEPT_EXTRACTION
+    expected_behavior: "Accepts the current extraction result"
+    category: direct_command
+
+  - id: qs-review-next
+    input: "go to next page"
+    tab_context: extraction
+    expected_action: REVIEW_NEXT_PAGE
+    expected_behavior: "Navigates to next page in review"
+    category: direct_command
+
+  # === Corpus Actions (4) ===
+  - id: qs-corpus-clear-filter
+    input: "clear the filters"
+    tab_context: corpus
+    expected_action: CORPUS_CLEAR_SECTOR_FILTER
+    expected_behavior: "Clears all active sector filters"
+    category: direct_command
+
+  - id: qs-corpus-sort
+    input: "sort by column"
+    tab_context: corpus
+    expected_action: CORPUS_SORT_COLUMN
+    expected_behavior: "Triggers column sort"
+    category: direct_command
+
+  - id: qs-corpus-close-detail
+    input: "close the detail pane"
+    tab_context: corpus
+    expected_action: CORPUS_CLOSE_DETAIL
+    expected_behavior: "Closes the detail/inspector pane"
+    category: direct_command
+
+  - id: qs-corpus-review
+    input: "review this extraction"
+    tab_context: corpus
+    expected_action: CORPUS_REVIEW_EXTRACTION
+    expected_behavior: "Opens extraction review modal"
+    category: direct_command
+
+  # === Navigation Actions (4) ===
+  - id: qs-nav-quarantine
+    input: "go to quarantine tab"
+    tab_context: any
+    expected_action: DATALAKE_TAB_QUARANTINE
+    expected_behavior: "Switches to quarantine tab"
+    category: navigation
+
+  - id: qs-nav-corpus
+    input: "show me the corpus"
+    tab_context: any
+    expected_action: DATALAKE_TAB_CORPUS
+    expected_behavior: "Switches to corpus tab"
+    category: navigation
+
+  - id: qs-nav-metrics
+    input: "open metrics"
+    tab_context: any
+    expected_action: DATALAKE_TAB_METRICS
+    expected_behavior: "Switches to metrics tab"
+    category: navigation
+
+  - id: qs-nav-traceability
+    input: "switch to traceability"
+    tab_context: any
+    expected_action: DATALAKE_TAB_TRACEABILITY
+    expected_behavior: "Switches to traceability tab"
+    category: navigation
+
+  # === Edge Cases (4) ===
+  - id: qs-abbreviated
+    input: "approve"
+    tab_context: quarantine
+    expected_action: QUARANTINE_APPROVE_ENTRY
+    expected_behavior: "Single-word command resolves to approve action"
+    category: abbreviated
+
+  - id: qs-out-of-scope
+    input: "what's the weather"
+    tab_context: any
+    expected_action: null
+    expected_behavior: "Falls through to LLM prose — no action executed"
+    category: out_of_scope
+
+  - id: qs-ambiguous
+    input: "click that button"
+    tab_context: any
+    expected_action: null
+    expected_behavior: "Shows disambiguation: 'Did you mean: ...' with candidate list"
+    category: ambiguous
+
+  - id: qs-graph-zoom
+    input: "zoom in the graph"
+    tab_context: traceability
+    expected_action: LEMMA_ZOOM_IN
+    expected_behavior: "Zooms into the lemma graph"
+    category: direct_command

@@ -4,6 +4,7 @@
  * "Expand" opens in right-pane ArtifactPanel.
  */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
 import DOMPurify from "dompurify";
 import type { Artifact, EntityType } from "./types";
 import { MarkdownRenderer } from "./MarkdownRenderer";
@@ -54,7 +55,7 @@ const InlineTable = memo(function InlineTable({ data, onEntityClick }: { data: T
 	return (
 		<div>
 			<div style={{ padding: "0 12px 8px" }}>
-				<input type="text" placeholder="Filter rows..." data-qid="artifact:table:filter" title="Filter table rows" value={filter} onChange={e => setFilter(e.target.value)}
+				<input type="text" placeholder="Filter rows..." data-qs-action="ARTIFACT_TABLE_FILTER" data-qid="artifact:table:filter" title="Filter table rows" value={filter} onChange={e => setFilter(e.target.value)}
 					style={{ width: "100%", padding: "6px 10px", fontSize: 12, background: "#0b1220", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 4, color: "#e2e8f0", fontFamily: "var(--font-mono)", outline: "none" }} />
 			</div>
 			<div style={{ overflowX: "auto" }}>
@@ -62,7 +63,7 @@ const InlineTable = memo(function InlineTable({ data, onEntityClick }: { data: T
 					<thead>
 						<tr>
 							{data.columns.map(col => (
-								<th key={col.key} data-qid={`artifact:table:sort:${col.key}`} title={`Sort by ${col.label}`} onClick={col.sortable !== false ? () => handleSort(col.key) : undefined}
+								<th key={col.key} data-qs-action={`ARTIFACT_TABLE_SORT_${col.key.toUpperCase()}`} data-qid={`artifact:table:sort:${col.key}`} title={`Sort by ${col.label}`} onClick={col.sortable !== false ? () => handleSort(col.key) : undefined}
 									style={{ padding: "8px 12px", textAlign: "left", color: "#94a3b8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "sticky", top: 0, background: "#18181b", cursor: col.sortable !== false ? "pointer" : "default", userSelect: "none" }}>
 									{col.label}{sortKey === col.key && <span style={{ marginLeft: 4 }}>{sortAsc ? "↑" : "↓"}</span>}
 								</th>
@@ -195,6 +196,8 @@ export const InlineArtifact = memo(function InlineArtifact({ artifact, onExpand,
 		setCopied(true);
 	}, [artifact]);
 
+	useRegisterAction(`artifact:copy:${artifact.id}`, { app: "shared-chat", action: "ARTIFACT_COPY", label: "Copy", description: `Copy ${artifact.title} content` });
+	useRegisterAction(`artifact:expand:${artifact.id}`, { app: "shared-chat", action: "ARTIFACT_EXPAND", label: "Expand", description: `Expand ${artifact.title} to full panel` });
 	const handleExpand = useCallback(() => onExpand?.(artifact), [artifact, onExpand]);
 
 	return (
@@ -208,10 +211,10 @@ export const InlineArtifact = memo(function InlineArtifact({ artifact, onExpand,
 			<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px", borderBottom: "1px solid var(--nvis-border-subtle, rgba(255,255,255,0.06))", gap: 10 }}>
 				<span style={{ fontSize: 12, fontWeight: 600, color: "#e2e8f0", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{artifact.title}</span>
 				<span style={{ fontSize: 10, color: "#64748b", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>{artifact.type}</span>
-				<button onClick={handleCopy} data-qid={`artifact:copy:${artifact.id}`} title="Copy artifact content" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: copied ? "#00ff88" : "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>
+				<button onClick={handleCopy} data-qs-action="ARTIFACT_COPY" data-qid={`artifact:copy:${artifact.id}`} title="Copy artifact content" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: copied ? "#00ff88" : "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>
 					{copied ? "Copied" : "Copy"}
 				</button>
-				{onExpand && <button onClick={handleExpand} data-qid={`artifact:expand:${artifact.id}`} title="Open in full panel" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>Expand</button>}
+				{onExpand && <button onClick={handleExpand} data-qs-action="ARTIFACT_EXPAND" data-qid={`artifact:expand:${artifact.id}`} title="Open in full panel" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>Expand</button>}
 			</div>
 			{/* Body */}
 			<div style={{ maxHeight: 400, overflow: "auto" }}>

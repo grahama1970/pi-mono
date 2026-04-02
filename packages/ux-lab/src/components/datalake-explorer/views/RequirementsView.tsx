@@ -126,7 +126,7 @@ function SectionNode({ section, depth, selectedId, expandedIds, onSelect, onTogg
 
   return (
     <>
-      <div data-qid="requirements:el-1" data-qs-action="REQUIREMENTS_EL_1" title="El 1"
+      <div data-qid="requirements:el-1" data-qs-action="REQUIREMENTS_SELECT_SECTION" title="Select requirement section"
         role="treeitem"
         aria-selected={isSelected}
         aria-expanded={hasChildren ? isExpanded : undefined}
@@ -389,7 +389,7 @@ export default function RequirementsView() {
           </div>
         </div>
 
-        <div data-qid="requirements:detail" data-qs-action="REQUIREMENTS_DETAIL" title="Requirements Detail" style={{ flex: 1, overflowY: 'auto' }}>
+        <div data-qid="requirements:detail" data-qs-action="REQUIREMENTS_TABLE_AREA" title="Requirements Detail" style={{ flex: 1, overflowY: 'auto' }}>
           <table
             aria-label="Requirements list"
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}
@@ -420,8 +420,8 @@ export default function RequirementsView() {
                 const pBadge = proofBadge(req.proofStatus)
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('requirements:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in evidenceBadge' })
-  useRegisterAction('requirements:detail', { app: 'datalake-explorer', action: 'DETAIL', label: 'Detail', description: 'Detail in evidenceBadge' })
+  useRegisterAction('requirements:el-1', { app: 'datalake-explorer', action: 'SELECT_SECTION', label: 'Select requirement section', description: 'Select requirement section' })
+  useRegisterAction('requirements:detail', { app: 'datalake-explorer', action: 'TABLE_AREA', label: 'Detail', description: 'Detail in evidenceBadge' })
 
                 return (
                   <tr

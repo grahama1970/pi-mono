@@ -377,8 +377,8 @@ function EventRow({
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
-                data-qid="monitor:item-1" data-qs-action="MONITOR_ITEM_1"
-                title="Item 1"
+                data-qid="monitor:item-1" data-qs-action="MONITOR_SELECT_SOURCE"
+                title="Select event source"
         onClick={() => onSourceClick?.(event.source)}
         title={event.source}
       >
@@ -466,8 +466,8 @@ export default function MonitorView() {
   const errorCt = events.filter((e) => e.level === 'error').length
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in formatTimeAgo' })
-  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in formatTimeAgo' })
+  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'SELECT_SOURCE', label: 'Select event source', description: 'Select event source' })
+  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'FILTER_LEVEL', label: 'Filter events by level', description: 'Filter events by level' })
 
 
   return (
@@ -605,8 +605,8 @@ export default function MonitorView() {
                   key={f.value}
                   role="radio"
                   aria-checked={levelFilter === f.value}
-                data-qid="monitor:dyn-2" data-qs-action="MONITOR_DYN_2"
-                title="Dyn 2"
+                data-qid="monitor:dyn-2" data-qs-action="MONITOR_FILTER_LEVEL"
+                title="Filter events by level"
                   onClick={() => setLevelFilter(f.value)}
                   style={{
                     padding: '2px 10px',

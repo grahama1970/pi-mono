@@ -1,0 +1,681 @@
+version: 1
+kind: orchestrate-plan
+
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "QuerySpec NL Intent → Action → DOM Click Resolver"
+  goal: "Wire the last-mile: NL prompt in ChatFAB → resolve to data-qs-action → execute DOM click → store training pair"
+  plan_type: code
+  created: "2026-04-02"
+  primary_persona:
+    name: "Nico Bailon"
+    role: "Extraction QA Engineer"
+    source: ".pi/agents/nico-bailon/AGENTS.md"
+
+execution:
+  max_concurrency: 3
+
+capability_overlap:
+  - "/memory recall returned: intent-mapper skill is skeleton (hello world stub), create-intent-map has GRPO pipeline but SPARTA-focused"
+  - "Checked /intent-mapper — skeleton, needs full implementation for UI commands. Decision: EXTEND /create-intent-map training data, CREATE resolver in /intent-mapper"
+  - "Checked /surf — CALL for E2E browser testing"
+  - "Checked /test-interactions — CALL for interaction manifest testing"
+  - "Checked /embedding — CALL to fill dense=0.00 gap on app_actions"
+  - "Checked /create-intent-map — CALL existing GRPO pipeline with new datalake-explorer training data"
+  - "Checked /prompt-lab — CALL for system prompt validation (create-intent-map NON-NEGOTIABLE rule)"
+  - "Checked /llm-eval-lab — CALL for model comparison"
+  - "useRegisterAction hook already built and working — 129 actions registered to app_actions on mount"
+  - "QUERYSPEC_WALKTHROUGH.md (2026-03-31) identifies exactly 5 failure points and says 'items 1-4 are ~80 lines'"
+  - "Memory daemon intent_mapper.py exists but is SPARTA-only (returns QUERY not UI_COMMAND)"
+  - "model_registry.json has sparta-intent + canvas-intent classifiers but no datalake-explorer entry"
+  - "Anti-silo: NOT creating new intent mapper — extending existing /create-intent-map pipeline with new action type + training data"
+
+questions_blockers:
+  - "None"
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Infrastructure — Embeddings + Training Data"
+  - id: "1"
+    label: "Wave 1: Tier 0 Deterministic Resolver (no LLM, BM25 + heuristic)"
+  - id: "2"
+    label: "Wave 2: Model Eval + Prompt Engineering"
+  - id: "3"
+    label: "Wave 3: Fine-Tuned Model Training (Tier 0.5)"
+  - id: "4"
+    label: "Wave 4: Last-Mile Wiring (ChatFAB → action → DOM click)"
+  - id: "5"
+    label: "Wave 5: E2E Validation + Cascade Registration"
+
+tasks:
+  # =========================================================================
+  # Wave 0: Infrastructure — fill the gaps identified in QUERYSPEC_WALKTHROUGH
+  # =========================================================================
+
+  - id: "0.1"
+    title: "Generate embeddings for app_actions collection (dense=0.00 → 384d)"
+    lane: "0"
+    depends_on: []
+    runner: "local"
+    command: |
+      cd ~/.pi/skills/embedding && ./run.sh embed-collection app_actions --field problem --backend text 2>&1 | tail -20
+    definition_of_done:
+      command: |
+        curl -s --unix-socket /run/user/1000/embry-memory.sock http://localhost/list \
+          -H 'Content-Type: application/json' \
+          -d '{"collection": "app_actions", "limit": 1}' | python3 -c "
+        import json,sys; d=json.load(sys.stdin)
+        docs=d.get('documents',d.get('items',[]))
+        assert len(docs)>0, 'no docs'
+        emb=docs[0].get('embedding',[])
+        assert len(emb)>=384, f'embedding dim {len(emb)} < 384'
+        print(f'OK: {len(emb)}d embeddings present')
+        "
+      assertion: "app_actions documents have 384d text embeddings (was dense=0.00)"
+
+  - id: "0.2"
+    title: "Generate datalake-explorer training data from app_actions (129 actions → NL variations)"
+    lane: "0"
+    depends_on: []
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create a training data generator script at .pi/skills/create-intent-map/data/generate_datalake_actions.py that:
+
+      1. Reads all 129 app_actions from ArangoDB via httpx to /run/user/1000/embry-memory.sock
+         - GET /list with collection=app_actions, limit=200
+      2. For each action, generates 8-12 NL variations that a user might say:
+         - Direct command: "approve this entry"
+         - Question form: "can you approve the selected entry?"
+         - Imperative: "click approve"
+         - Context-heavy: "this extraction looks good, approve it"
+         - Abbreviated: "approve" / "ok approve"
+         - Negative: "don't approve" → maps to NO_MATCH with note
+         - Compound: "approve and go to next" → maps to multi-action
+      3. Output schema (JSONL, one per line):
+         {
+           "input": "approve this quarantine entry",
+           "output": {
+             "action": "UI_COMMAND",
+             "ui_action": "QUARANTINE_APPROVE_ENTRY",
+             "dom_selector": "[data-qs-action=\"QUARANTINE_APPROVE_ENTRY\"]",
+             "entities": [],
+             "confidence": 0.95
+           },
+           "type": "UI_COMMAND",
+           "app": "datalake-explorer"
+         }
+      4. Also generates CLARIFY examples (ambiguous commands like "click that button") and
+         NO_MATCH examples (out-of-scope like "what's the weather")
+      5. Uses /scillm (localhost:4001) for variation generation — POST /v1/chat/completions
+         with model "deepseek-v3" to generate diverse phrasings
+      6. Writes to .pi/skills/create-intent-map/data/sft/datalake_actions.jsonl
+      7. Target: ~1500 training examples (129 actions × ~10 variations + 100 CLARIFY + 50 NO_MATCH)
+
+      Use httpx for all HTTP calls. Use loguru for logging. Use typer for CLI.
+    allowlist:
+      - ".pi/skills/create-intent-map/data/generate_datalake_actions.py"
+    read_context:
+      - "packages/ux-lab/src/hooks/useRegisterAction.ts"
+      - ".pi/skills/create-intent-map/SKILL.md"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono && \
+        python3 .pi/skills/create-intent-map/data/generate_datalake_actions.py --dry-run --limit 5 2>&1 | tail -20
+      assertion: "Generates 5 sample training examples with UI_COMMAND action type and dom_selector field"
+    tests:
+      - "test-lab/run.sh verify-task 0.2 .pi/skills/create-intent-map/data/ --domain python"
+
+  - id: "0.3"
+    title: "Verify app_actions populated on Datalake Explorer load (129 actions registered)"
+    lane: "0"
+    depends_on: []
+    runner: "local"
+    command: |
+      curl -s --unix-socket /run/user/1000/embry-memory.sock http://localhost/list \
+        -H 'Content-Type: application/json' \
+        -d '{"collection": "app_actions", "limit": 200}' | python3 -c "
+      import json, sys
+      d = json.load(sys.stdin)
+      docs = d.get('documents', d.get('items', []))
+      actions = [doc.get('action','') for doc in docs if doc.get('action')]
+      print(f'app_actions count: {len(docs)}')
+      print(f'Unique actions: {len(set(actions))}')
+      # Check for key datalake-explorer actions
+      required = ['QUARANTINE_APPROVE_ENTRY', 'REVIEW_TOGGLE_VIEW_MODE', 'CORPUS_SELECT_ENTRY']
+      for r in required:
+        found = any(r == a for a in actions)
+        print(f'  {r}: {\"FOUND\" if found else \"MISSING\"} ')
+      assert len(docs) >= 100, f'Expected >= 100 actions, got {len(docs)}'
+      "
+    definition_of_done:
+      command: "echo 'Verified in command above'"
+      assertion: "At least 100 actions in app_actions collection with datalake-explorer semantic names"
+
+  # =========================================================================
+  # Wave 1: Tier 0 Deterministic Resolver (works TODAY, no LLM needed)
+  # =========================================================================
+
+  - id: "1.1"
+    title: "Build Tier 0 deterministic action resolver (BM25 + FlashText + fuzzy match)"
+    lane: "1"
+    depends_on: ["0.1", "0.3"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/resolver.py — a deterministic
+      Tier 0 action resolver that maps NL text to app_actions WITHOUT an LLM.
+
+      Architecture (3-layer cascade, first match wins):
+
+      Layer 1: Exact action name match
+        - Input "QUARANTINE_APPROVE_ENTRY" → direct lookup by action field
+        - Input "approve entry" → normalize to UPPER_SNAKE → lookup
+
+      Layer 2: BM25 recall from app_actions
+        - POST to /run/user/1000/embry-memory.sock → /recall
+        - body: {q: text, k: 5, collections: ["app_actions"], min_score: 0.5}
+        - If top result score > 0.85 → return it
+        - If top result score > 0.65 → return with confidence=score
+
+      Layer 3: Token overlap scoring
+        - Tokenize input, compare against action labels/descriptions
+        - Score = |intersection| / |union| (Jaccard)
+        - If score > 0.6 → return match
+
+      Return schema:
+      {
+        "resolved": true/false,
+        "action": "QUARANTINE_APPROVE_ENTRY",
+        "dom_selector": "[data-qs-action=\"QUARANTINE_APPROVE_ENTRY\"]",
+        "confidence": 0.92,
+        "tier": "T0",
+        "method": "bm25" | "exact" | "token_overlap",
+        "candidates": [...top 3 if ambiguous...]
+      }
+
+      If no match above threshold → {"resolved": false, "candidates": [...top 3...], "tier": "T0"}
+
+      Use httpx (Unix socket) for ArangoDB queries. Use loguru. Include a CLI via typer:
+        python resolver.py resolve "approve this entry"
+        python resolver.py resolve "approve this entry" --verbose
+
+      Also expose as a function: resolve_action(text: str, app: str = "datalake-explorer") -> dict
+    allowlist:
+      - ".pi/skills/intent-mapper/resolver.py"
+    read_context:
+      - "packages/ux-lab/src/hooks/useRegisterAction.ts"
+      - ".pi/skills/memory/intent_mapper.py"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono && \
+        python3 .pi/skills/intent-mapper/resolver.py resolve "approve this entry" 2>&1
+      assertion: "Returns resolved=true with action containing APPROVE and confidence > 0.5"
+    tests:
+      - "test-lab/run.sh verify-task 1.1 .pi/skills/intent-mapper/ --domain python"
+
+  - id: "1.2"
+    title: "Add /api/queryspec/resolve endpoint to UX Lab server"
+    lane: "1"
+    depends_on: ["1.1"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Add a POST /api/queryspec/resolve endpoint to packages/ux-lab/server/index.ts that:
+
+      1. Accepts: { text: string, app?: string }
+      2. Calls the Python resolver via subprocess:
+         python3 /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/resolver.py resolve "<text>" --json
+      3. Returns the resolver JSON response directly
+      4. On error, returns { resolved: false, error: "..." }
+      5. Timeout: 5 seconds (this is Tier 0, no LLM, should be <500ms)
+
+      Follow the existing proxyPost pattern in the server for error handling.
+      Add after the existing /api/extract-entities endpoint.
+    allowlist:
+      - "packages/ux-lab/server/index.ts"
+    read_context:
+      - ".pi/skills/intent-mapper/resolver.py"
+    definition_of_done:
+      command: |
+        curl -s http://localhost:3002/api/queryspec/resolve \
+          -H 'Content-Type: application/json' \
+          -d '{"text": "approve this entry"}' | python3 -c "
+        import json,sys; d=json.load(sys.stdin)
+        print(json.dumps(d, indent=2))
+        assert 'resolved' in d or 'action' in d, 'missing resolved field'
+        "
+      assertion: "Endpoint returns JSON with resolved field"
+    tests:
+      - "test-lab/run.sh verify-task 1.2 packages/ux-lab/server/ --domain typescript"
+
+  - id: "1.3"
+    title: "Build Tier 0 eval harness — measure BM25 resolver accuracy on 50 hand-labeled examples"
+    lane: "1"
+    depends_on: ["1.1"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create .pi/skills/intent-mapper/eval_resolver.py that:
+
+      1. Has a GROUND_TRUTH list of 50 (input_text, expected_action) pairs covering:
+         - 30 direct commands: "approve this entry" → QUARANTINE_APPROVE_ENTRY
+         - 5 ambiguous commands: "click the button" → should return resolved=false or multiple candidates
+         - 5 out-of-scope: "what's the weather" → should return resolved=false
+         - 5 compound: "approve and go to next" → should resolve the primary action
+         - 5 abbreviated: "approve" → QUARANTINE_APPROVE_ENTRY (context-free)
+      2. Runs each through resolve_action() from resolver.py
+      3. Computes: accuracy, precision, recall, F1, mean confidence for correct matches
+      4. Outputs a summary table and writes results to .pi/skills/intent-mapper/eval_results.json
+      5. CLI: python eval_resolver.py [--verbose]
+
+      The 30 direct commands should cover diverse actions across components:
+      quarantine (approve, reject, re-extract), review (toggle view, generate fixture),
+      corpus (select entry, sort column, filter), bbox (toggle edit, zoom), trace (toggle group),
+      chat (toggle), monitor (select source), etc.
+    allowlist:
+      - ".pi/skills/intent-mapper/eval_resolver.py"
+    read_context:
+      - ".pi/skills/intent-mapper/resolver.py"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono && \
+        python3 .pi/skills/intent-mapper/eval_resolver.py 2>&1 | tail -15
+      assertion: "Prints accuracy metrics; accuracy >= 0.50 for Tier 0 (no LLM baseline)"
+    tests:
+      - "test-lab/run.sh verify-task 1.3 .pi/skills/intent-mapper/ --domain python"
+
+  # =========================================================================
+  # Wave 2: Model Eval + Prompt Engineering (find best model for UI_COMMAND)
+  # =========================================================================
+
+  - id: "2.1"
+    title: "Run training data generator to produce ~1500 datalake action training examples"
+    lane: "2"
+    depends_on: ["0.2"]
+    runner: "local"
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono && \
+      python3 .pi/skills/create-intent-map/data/generate_datalake_actions.py \
+        --output .pi/skills/create-intent-map/data/sft/datalake_actions.jsonl 2>&1 | tail -20
+    definition_of_done:
+      command: |
+        wc -l /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map/data/sft/datalake_actions.jsonl
+      assertion: "At least 500 training examples generated"
+
+  - id: "2.2"
+    title: "Validate system prompt via /prompt-lab before any model training"
+    lane: "2"
+    depends_on: ["2.1"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create .pi/skills/intent-mapper/queryspec_ui_prompt.md — the system prompt for UI_COMMAND intent classification.
+      This prompt will be used for both zero-shot inference and SFT training data.
+
+      The prompt must:
+      1. Define the UI_COMMAND action type (distinct from QUERY/CLARIFY/NO_MATCH)
+      2. Include the QuerySpec schema with dom_selector field
+      3. Have 6+ few-shot examples covering: direct commands, abbreviated, question-form, compound
+      4. Reference the app_actions schema (action, label, description, dom_selector)
+      5. Handle edge cases: ambiguous ("click that"), compound ("approve and next"), negation ("don't approve")
+
+      Then validate it via /prompt-lab:
+        cd ~/.pi/skills/prompt-lab && ./run.sh eval \
+          --prompt .pi/skills/intent-mapper/queryspec_ui_prompt.md \
+          --ground-truth .pi/skills/create-intent-map/data/sft/datalake_actions.jsonl \
+          --model qwen2.5-coder:7b-instruct \
+          --limit 20
+
+      Iterate until accuracy >= 0.70 on the 20-example eval set.
+    allowlist:
+      - ".pi/skills/intent-mapper/queryspec_ui_prompt.md"
+    read_context:
+      - ".pi/skills/memory/intent_mapper.py"
+      - ".pi/skills/create-intent-map/SKILL.md"
+    definition_of_done:
+      command: |
+        test -f /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/queryspec_ui_prompt.md && \
+        wc -l /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/queryspec_ui_prompt.md
+      assertion: "System prompt file exists with > 30 lines"
+    tests:
+      - "test-lab/run.sh verify-task 2.2 .pi/skills/intent-mapper/ --domain python"
+
+  - id: "2.3"
+    title: "Zero-shot model comparison: qwen2.5-7b vs qwen2.5-3b vs deepseek-r1-7b on UI_COMMAND"
+    lane: "2"
+    depends_on: ["2.1", "2.2"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create .pi/skills/intent-mapper/eval_models.py that benchmarks 3 Ollama models on UI_COMMAND classification:
+
+      1. Load 100 random examples from datalake_actions.jsonl as eval set
+      2. For each model (qwen2.5-coder:7b-instruct, qwen2.5-coder:3b-instruct, deepseek-r1-distill-qwen-7b):
+         a. Send each example through the model with the queryspec_ui_prompt.md system prompt
+         b. Measure: action accuracy, ui_action exact match, dom_selector presence, latency, JSON validity
+      3. Output comparison table:
+         | Model | Action Acc | UI_Action Match | JSON Valid | Median Latency |
+      4. Write results to .pi/skills/intent-mapper/model_comparison.json
+
+      Use httpx to call Ollama at localhost:11434/api/generate.
+      Use the system prompt from queryspec_ui_prompt.md.
+      Timeout 30s per query (skip on timeout, count as failure).
+    allowlist:
+      - ".pi/skills/intent-mapper/eval_models.py"
+    read_context:
+      - ".pi/skills/intent-mapper/queryspec_ui_prompt.md"
+      - ".pi/skills/memory/intent_mapper.py"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono && \
+        python3 .pi/skills/intent-mapper/eval_models.py --limit 10 --models qwen2.5-coder:7b-instruct 2>&1 | tail -15
+      assertion: "Prints accuracy metrics for at least 1 model with >= 5 evaluated examples"
+    tests:
+      - "test-lab/run.sh verify-task 2.3 .pi/skills/intent-mapper/ --domain python"
+
+  # =========================================================================
+  # Wave 3: Fine-Tuned Model (Tier 0.5 classifier via /create-intent-map)
+  # =========================================================================
+
+  - id: "3.1"
+    title: "Split training data into train/eval and convert to SFT chat format"
+    lane: "3"
+    depends_on: ["2.1"]
+    runner: "local"
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map && \
+      ./run.sh split --input data/sft/datalake_actions.jsonl --train-ratio 0.85 2>&1 | tail -10
+    definition_of_done:
+      command: |
+        wc -l /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map/data/sft/train.jsonl && \
+        wc -l /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map/data/eval/test.jsonl
+      assertion: "Train and eval files both exist with > 0 lines"
+
+  - id: "3.2"
+    title: "SFT warmup training on datalake UI_COMMAND data"
+    lane: "3"
+    depends_on: ["3.1", "2.2"]
+    runner: "local"
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map && \
+      ./run.sh warmup \
+        --train-file data/sft/train.jsonl \
+        --system-prompt /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/queryspec_ui_prompt.md \
+        --epochs 1 \
+        --batch-size 4 2>&1 | tail -30
+    definition_of_done:
+      command: |
+        ls -la /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map/models/intent-mapper-lora/adapter_config.json 2>&1
+      assertion: "LoRA adapter files exist after warmup training"
+    timeout: 600000
+
+  - id: "3.3"
+    title: "Evaluate fine-tuned model on holdout set — target 80% action accuracy"
+    lane: "3"
+    depends_on: ["3.2"]
+    runner: "local"
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono/.pi/skills/create-intent-map && \
+      ./run.sh evaluate \
+        --eval-file data/eval/test.jsonl \
+        --model-path models/intent-mapper-lora 2>&1 | tail -20
+    definition_of_done:
+      command: "echo 'Evaluation ran — check accuracy in output above'"
+      assertion: "Evaluation completes without error; target accuracy >= 0.80"
+
+  - id: "3.4"
+    title: "Register datalake-intent model in model_registry.json"
+    lane: "3"
+    depends_on: ["3.3"]
+    runner: "scillm"
+    backend: "claude"
+    mode: "one_shot"
+    prompt: |
+      Add a "datalake-intent" entry to .pi/skills/assistant/model_registry.json following the existing
+      sparta-intent pattern. Fields:
+      - task_spec: "datalake-intent"
+      - model_path: path to the trained LoRA adapter
+      - confidence_threshold: 0.80
+      - input_signature: { required_fields: ["text", "app"] }
+      - shadow_mode: true (start in shadow to collect agreement data)
+      - fallback: "T0_resolver" (falls back to the BM25 deterministic resolver)
+    definition_of_done:
+      command: |
+        grep -c "datalake-intent" /home/graham/workspace/experiments/pi-mono/.pi/skills/assistant/model_registry.json
+      assertion: "datalake-intent entry exists in model_registry.json"
+    tests:
+      - "test-lab/run.sh verify-task 3.4 .pi/skills/assistant/ --domain json"
+
+  # =========================================================================
+  # Wave 4: Last-Mile Wiring (the ~80 lines from QUERYSPEC_WALKTHROUGH.md)
+  # =========================================================================
+
+  - id: "4.1"
+    title: "Wire ChatFAB sendMessage to query /api/queryspec/resolve BEFORE /memory intent"
+    lane: "4"
+    depends_on: ["1.2"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    review_plan_waiver: "design-board/png-evidence: This adds ~30 lines of resolver wiring to existing ChatFAB, not a new UI component. No visual change."
+    prompt: |
+      Modify packages/ux-lab/src/components/datalake-explorer/ChatFAB.tsx to wire the QuerySpec resolver
+      into the chat pipeline. This is the critical "last 80 lines" identified in QUERYSPEC_WALKTHROUGH.md.
+
+      Current flow: user types → pipeline.send() → LLM prose response
+      New flow: user types → /api/queryspec/resolve → if resolved, execute DOM action → else fall through to LLM
+
+      Implementation:
+      1. Before sending to pipeline.send(), POST to /api/queryspec/resolve with { text: userMessage, app: "datalake-explorer" }
+      2. If response.resolved && response.confidence >= 0.75:
+         a. Find DOM element: document.querySelector(response.dom_selector)
+         b. If element found: element.click() or element.focus() (depending on element type)
+         c. Add chat message: "Executed: {response.action} (confidence: {response.confidence})"
+         d. Store training pair via POST /api/memory/learn with:
+            { problem: userMessage, solution: JSON.stringify(response), tags: ["queryspec-training", "datalake-explorer"], scope: "datalake-explorer" }
+         e. Return (don't fall through to LLM)
+      3. If response.resolved && response.confidence < 0.75 && response.candidates.length > 0:
+         a. Show disambiguation: "Did you mean: {candidates.map(c => c.label).join(', ')}?"
+         b. Each candidate is a clickable chip that executes the action on click
+      4. If !response.resolved: fall through to existing pipeline.send() for LLM prose
+
+      IMPORTANT: Do NOT rewrite ChatFAB. Add ~30 lines inside the existing sendMessage handler.
+      The resolver call goes BEFORE pipeline.send(), not replacing it.
+
+      For the DOM execution, use:
+        const el = document.querySelector(`[data-qs-action="${action}"]`) as HTMLElement
+        if (el) { el.click(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }) }
+    allowlist:
+      - "packages/ux-lab/src/components/datalake-explorer/ChatFAB.tsx"
+    read_context:
+      - "packages/ux-lab/src/hooks/useRegisterAction.ts"
+      - "packages/ux-lab/QUERYSPEC_WALKTHROUGH.md"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | tail -5
+      assertion: "TypeScript compiles with zero errors"
+    tests:
+      - "test-lab/run.sh verify-task 4.1 packages/ux-lab/src/components/datalake-explorer/ --domain typescript"
+
+  - id: "4.2"
+    title: "Add training pair storage — every successful execution → /memory learn"
+    lane: "4"
+    depends_on: ["4.1"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    review_plan_waiver: "design-board/png-evidence: Adds API endpoint + 3 lines to ChatFAB for training pair storage. No visual change."
+    prompt: |
+      Add a POST /api/queryspec/learn endpoint to packages/ux-lab/server/index.ts that:
+
+      1. Accepts: { text: string, action: string, dom_selector: string, confidence: number, app: string, success: boolean }
+      2. Proxies to memory daemon /learn:
+         {
+           problem: text,
+           solution: JSON.stringify({ action, dom_selector, confidence }),
+           tags: ["queryspec-training", app, "ui-command", success ? "executed" : "failed"],
+           scope: app,
+           collection: "app_actions_training"
+         }
+      3. Returns { stored: true }
+
+      Also wire this into ChatFAB.tsx — after a successful DOM click execution,
+      call POST /api/queryspec/learn with the execution details.
+      After a disambiguation selection, also call /api/queryspec/learn.
+    allowlist:
+      - "packages/ux-lab/server/index.ts"
+      - "packages/ux-lab/src/components/datalake-explorer/ChatFAB.tsx"
+    read_context:
+      - "packages/ux-lab/src/hooks/useRegisterAction.ts"
+    definition_of_done:
+      command: |
+        cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | tail -5
+      assertion: "TypeScript compiles clean; /api/queryspec/learn endpoint exists"
+    tests:
+      - "test-lab/run.sh verify-task 4.2 packages/ux-lab/ --domain typescript"
+
+  # =========================================================================
+  # Wave 5: E2E Validation + Cascade Registration
+  # =========================================================================
+
+  - id: "5.1"
+    title: "E2E test: surf CDP → type NL command → verify DOM click → screenshot evidence"
+    lane: "5"
+    depends_on: ["4.1"]
+    runner: "local"
+    command: |
+      cd ~/.pi/skills/surf && \
+      ./run.sh cdp start 2>&1; sleep 2; \
+      ./run.sh go "http://localhost:3002/#datalake-explorer" 2>&1; sleep 3; \
+      ./run.sh snap --output /tmp/queryspec_e2e_before.png 2>&1; \
+      echo "E2E test setup complete — manual verification needed"
+    definition_of_done:
+      command: "test -f /tmp/queryspec_e2e_before.png && echo 'Screenshot captured'"
+      assertion: "Screenshot of Datalake Explorer captured before command execution"
+
+  - id: "5.2"
+    title: "Build /test-interactions manifest for QuerySpec E2E (20 action tests)"
+    lane: "5"
+    depends_on: ["4.1"]
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    prompt: |
+      Create packages/ux-lab/test-manifests/queryspec_e2e.yaml — a /test-interactions manifest
+      for testing the NL → action → DOM click pipeline E2E via surf.
+
+      Include 20 test cases across 5 categories:
+
+      1. Quarantine actions (4 tests):
+         - "approve this entry" → QUARANTINE_APPROVE_ENTRY click
+         - "reject the selected document" → QUARANTINE_REJECT_ENTRY click
+         - "re-extract this PDF" → QUARANTINE_SELECT_STRATEGY click
+         - "select all visible documents" → QUARANTINE_SELECT_ALL click
+
+      2. Review actions (4 tests):
+         - "switch to compare mode" → REVIEW_TOGGLE_VIEW_MODE click
+         - "generate a test fixture" → REVIEW_GENERATE_FIXTURE click
+         - "accept this extraction" → REVIEW_ACCEPT_EXTRACTION click
+         - "go to next page" → REVIEW_NEXT_PAGE click
+
+      3. Corpus actions (4 tests):
+         - "clear the filters" → CORPUS_CLEAR_SECTOR_FILTER click
+         - "sort by column" → CORPUS_SORT_COLUMN click
+         - "close the detail pane" → CORPUS_CLOSE_DETAIL click
+         - "review this extraction" → CORPUS_REVIEW_EXTRACTION click
+
+      4. Navigation actions (4 tests):
+         - "go to quarantine tab" → DATALAKE_TAB_QUARANTINE click
+         - "show me the corpus" → DATALAKE_TAB_CORPUS click
+         - "open metrics" → DATALAKE_TAB_METRICS click
+         - "switch to traceability" → DATALAKE_TAB_TRACEABILITY click
+
+      5. Edge cases (4 tests):
+         - "approve" (abbreviated) → QUARANTINE_APPROVE_ENTRY
+         - "what's the weather" (out of scope) → no action, LLM response
+         - "click that button" (ambiguous) → disambiguation shown
+         - "zoom in the graph" → LEMMA_ZOOM_IN click
+
+      Each test case: { input, expected_action, expected_behavior, tab_context }
+
+      Format as YAML compatible with /test-interactions manifest schema.
+    allowlist:
+      - "packages/ux-lab/test-manifests/queryspec_e2e.yaml"
+    read_context:
+      - "packages/ux-lab/src/components/datalake-explorer/ChatFAB.tsx"
+    definition_of_done:
+      command: |
+        python3 -c "
+        import yaml
+        with open('/home/graham/workspace/experiments/pi-mono/packages/ux-lab/test-manifests/queryspec_e2e.yaml') as f:
+            d = yaml.safe_load(f)
+        tests = d.get('tests', d.get('interactions', []))
+        print(f'Test count: {len(tests)}')
+        assert len(tests) >= 15, f'Expected >= 15 tests, got {len(tests)}'
+        "
+      assertion: "Manifest has >= 15 E2E test cases"
+    tests:
+      - "test-lab/run.sh verify-task 5.2 packages/ux-lab/test-manifests/ --domain yaml"
+
+  - id: "5.3"
+    title: "Register resolver as cascade decision point in /assistant model_registry"
+    lane: "5"
+    depends_on: ["3.4", "1.1"]
+    runner: "scillm"
+    backend: "claude"
+    mode: "one_shot"
+    prompt: |
+      Add a cascade decision point entry for "datalake-action-resolver" in
+      .pi/skills/assistant/model_registry.json following the existing cascade pattern:
+
+      {
+        "datalake-action-resolver": {
+          "task_spec": "datalake-action-resolver",
+          "tiers": {
+            "T0": { "type": "deterministic", "module": "intent-mapper/resolver.py", "method": "resolve_action" },
+            "T0.5": { "type": "classifier", "model_path": "create-intent-map/models/intent-mapper-lora", "confidence_threshold": 0.80 },
+            "T2": { "type": "llm", "provider": "scillm", "model": "deepseek-v3", "prompt_path": "intent-mapper/queryspec_ui_prompt.md" }
+          },
+          "shadow_mode": true,
+          "promotion_threshold": 0.90,
+          "min_shadow_samples": 200
+        }
+      }
+
+      This enables the Shadow-LEGO cascade: T0 deterministic resolver handles easy cases,
+      T0.5 fine-tuned model handles medium cases, T2 LLM handles hard cases.
+      Shadow mode logs all tier decisions for future promotion analysis.
+    definition_of_done:
+      command: |
+        grep -c "datalake-action-resolver" /home/graham/workspace/experiments/pi-mono/.pi/skills/assistant/model_registry.json
+      assertion: "datalake-action-resolver cascade entry exists in model_registry.json"
+    tests:
+      - "test-lab/run.sh verify-task 5.3 .pi/skills/assistant/ --domain json"
+
+  - id: "5.4"
+    title: "Run Tier 0 eval harness and report baseline accuracy"
+    lane: "5"
+    depends_on: ["1.3", "0.1"]
+    runner: "local"
+    command: |
+      cd /home/graham/workspace/experiments/pi-mono && \
+      python3 .pi/skills/intent-mapper/eval_resolver.py --verbose 2>&1
+    definition_of_done:
+      command: |
+        test -f /home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/eval_results.json && \
+        python3 -c "
+        import json
+        with open('/home/graham/workspace/experiments/pi-mono/.pi/skills/intent-mapper/eval_results.json') as f:
+            d = json.load(f)
+        print(f'Accuracy: {d.get(\"accuracy\", 0):.2%}')
+        print(f'F1: {d.get(\"f1\", 0):.2%}')
+        "
+      assertion: "eval_results.json exists with accuracy and F1 metrics"

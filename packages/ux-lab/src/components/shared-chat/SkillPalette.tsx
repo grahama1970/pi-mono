@@ -56,7 +56,7 @@ export const SkillPalette = memo(function SkillPalette({ filter, skills, onSelec
       width: 320, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.13)',
       borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', zIndex: 100,
       maxHeight: 280, overflow: 'auto',
-    }} data-qid="skill-palette:dropdown">
+    }} data-qs-action="SKILL_PALETTE_OPEN" data-qid="skill-palette:dropdown">
       {filtered.map((skill, i) => (
         <button key={skill.name} onClick={() => onSelect(skill.name)}
           onMouseEnter={() => setIndex(i)}

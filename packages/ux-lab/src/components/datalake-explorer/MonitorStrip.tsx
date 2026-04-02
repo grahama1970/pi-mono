@@ -218,7 +218,7 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
   useRegisterAction('monitor-strip:expand-monitor-strip', { app: 'datalake-explorer', action: 'EXPAND_MONITOR_STRIP', label: 'Expand Monitor Strip', description: 'Expand Monitor Strip in MonitorChip' })
   useRegisterAction('monitor-strip:collapse-monitor-strip', { app: 'datalake-explorer', action: 'COLLAPSE_MONITOR_STRIP', label: 'Collapse Monitor Strip', description: 'Collapse Monitor Strip in MonitorChip' })
-  useRegisterAction('monitor-strip:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in MonitorChip' })
+  useRegisterAction('monitor-strip:item-3', { app: 'datalake-explorer', action: 'STRIP_NAVIGATE_SOURCE', label: 'Navigate to event source', description: 'Navigate to event source' })
 
           return (
             <div
@@ -247,8 +247,8 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
               </span>
               <button
                 aria-label={`Navigate to ${ev.source}`}
-                data-qid="monitor-strip:item-3" data-qs-action="MONITOR-STRIP_ITEM_3"
-                title="Item 3"
+                data-qid="monitor-strip:item-3" data-qs-action="MONITOR_STRIP_NAVIGATE_SOURCE"
+                title="Navigate to event source"
                 onClick={() => onNavigate?.(ev.source)}
                 style={{
                   color: NVIS.accent, minWidth: 140, flexShrink: 0,

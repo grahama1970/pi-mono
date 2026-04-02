@@ -1566,6 +1566,44 @@ app.post('/api/extract-entities', async (req, res) => {
   }
 })
 
+// ── QuerySpec Resolver ──────────────────────────────────────────────────────
+
+app.post('/api/queryspec/resolve', async (req, res) => {
+  try {
+    const { text, app: appName } = req.body as { text: string; app?: string }
+    if (!text) { res.status(400).json({ resolved: false, error: 'text is required' }); return }
+
+    const { execSync } = await import('child_process')
+    const escaped = text.replace(/'/g, "'\\''")
+    const appArg = appName ? `--app '${appName.replace(/'/g, "'\\''")}'` : ''
+    const cmd = `python3 ${process.env.HOME}/.pi/skills/intent-mapper/resolver.py '${escaped}' ${appArg} --json`
+    const output = execSync(cmd, { timeout: 5000, encoding: 'utf-8' })
+    res.json(JSON.parse(output))
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e)
+    console.error(`[queryspec/resolve] FAILED: ${detail}`)
+    res.status(500).json({ resolved: false, error: 'Resolver failed', detail })
+  }
+})
+
+app.post('/api/queryspec/learn', async (req, res) => {
+  try {
+    const { text, action, dom_selector, confidence, app: appName, success } = req.body as {
+      text: string; action: string; dom_selector: string; confidence: number; app: string; success: boolean
+    }
+    const result = await proxyPost('/learn', {
+      problem: text,
+      solution: JSON.stringify({ action, dom_selector, confidence }),
+      tags: ['queryspec-training', appName || 'datalake-explorer', 'ui-command', success ? 'executed' : 'failed'],
+      scope: appName || 'datalake-explorer',
+      collection: 'app_actions_training',
+    })
+    res.json({ stored: true, key: result?._key })
+  } catch (e) {
+    res.status(500).json({ stored: false, error: String(e) })
+  }
+})
+
 // ── Binary Explorer CRUD ────────────────────────────────────────────────────
 
 app.post('/api/binary-explorer/:name/rename', async (req, res) => {

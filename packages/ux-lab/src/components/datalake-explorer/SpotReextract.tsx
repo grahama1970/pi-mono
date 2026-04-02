@@ -116,9 +116,9 @@ export default function SpotReextract({
       const errSteps = newSteps.map((s, i) => ({
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in stepStatusIcon' })
-  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in stepStatusIcon' })
-  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in stepStatusIcon' })
+  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close re-extract modal', description: 'Close re-extract modal' })
+  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'SELECT_SCOPE', label: 'Select re-extraction scope', description: 'Select re-extraction scope' })
+  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'RUN_PIPELINE', label: 'Run re-extraction pipeline', description: 'Run re-extraction pipeline' })
   useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
   useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
 
@@ -141,8 +141,8 @@ export default function SpotReextract({
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
       }}
-                data-qid="reextract:item-1" data-qs-action="REEXTRACT_ITEM_1"
-                title="Item 1"
+                data-qid="reextract:item-1" data-qs-action="REEXTRACT_CLOSE_MODAL"
+                title="Close re-extract modal"
       onClick={(e) => {
         if (e.target === e.currentTarget && !running) onCancel()
       }}
@@ -213,8 +213,8 @@ export default function SpotReextract({
               {(['section', 'page'] as const).map((s) => (
                 <button
                   key={s}
-                data-qid="reextract:dyn-2" data-qs-action="REEXTRACT_DYN_2"
-                title="Dyn 2"
+                data-qid="reextract:dyn-2" data-qs-action="REEXTRACT_SELECT_SCOPE"
+                title="Select re-extraction scope"
                   onClick={() => setScope(s)}
                   disabled={running}
                   style={{
@@ -402,8 +402,8 @@ export default function SpotReextract({
         >
           {!running && !result && (
             <button
-                data-qid="reextract:item-3" data-qs-action="REEXTRACT_ITEM_3"
-                title="Item 3"
+                data-qid="reextract:item-3" data-qs-action="REEXTRACT_RUN_PIPELINE"
+                title="Run re-extraction pipeline"
               onClick={runPipeline}
               style={{
                 fontFamily: 'monospace',

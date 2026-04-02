@@ -262,8 +262,8 @@ export default function PdfCanvas({
         backgroundColor: '#0f1216',
       }}
     >
-      <div data-qid="pdf:page-wrapper" data-qs-action="PDF_PAGE_WRAPPER" title="Page Wrapper" style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
-        <canvas ref={canvasRef} data-qid="pdf:canvas" data-qs-action="PDF_CANVAS" title="PDF page canvas" style={{ display: 'block' }} />
+      <div data-qid="pdf:page-wrapper" data-qs-action="PDF_PAGE_CONTAINER" title="Page Wrapper" style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
+        <canvas ref={canvasRef} data-qid="pdf:canvas" data-qs-action="PDF_RENDER_CANVAS" title="PDF page canvas" style={{ display: 'block' }} />
         <canvas
           ref={overlayRef}
           onClick={handleOverlayClick}
@@ -341,8 +341,8 @@ const centerStyle: React.CSSProperties = {
 function Spinner() {
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_WRAPPER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
-  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
+  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_CONTAINER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
+  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'RENDER_CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
 
   return (
     <div

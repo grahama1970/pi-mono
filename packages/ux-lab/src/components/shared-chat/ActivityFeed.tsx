@@ -3,6 +3,7 @@
  * NVIS dark theme with colored left borders per event type.
  */
 import { memo, useEffect, useRef } from "react";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
 import type { ActivityEvent, EntityType } from "./types";
 import { getEntityStyle } from "./highlightEntities";
 
@@ -95,7 +96,7 @@ export const ActivityFeed = memo(function ActivityFeed({
 								{ev.type === "agent_finding" && (<>
 									{ev.entity && entityStyle ? (
 										<span onClick={() => ev.entity && ev.entityType && onEntityClick?.(ev.entity, ev.entityType)}
-											data-qid={`activity:entity:${ev.entity}`} title={`Click to navigate to ${ev.entity}`}
+											data-qs-action="ACTIVITY_NAVIGATE_ENTITY" data-qid={`activity:entity:${ev.entity}`} title={`Click to navigate to ${ev.entity}`}
 											style={{ color: entityStyle.color, cursor: "pointer", fontFamily: "var(--font-mono)" }}>{ev.entity}</span>
 									) : null}{" "}{ev.finding || ev.summary}
 								</>)}
@@ -103,8 +104,8 @@ export const ActivityFeed = memo(function ActivityFeed({
 									Suggestion: <span style={{ color: "#7c3aed" }}>{ev.controlId}</span>{" — "}{ev.finding?.slice(0, 60)}
 									{onAcceptSuggestion && ev.id && (
 										<span style={{ marginLeft: 8 }}>
-											<button onClick={() => onAcceptSuggestion(ev.id!)} data-qid={`activity:accept:${ev.id}`} title="Accept suggestion" style={feedBtnStyle("#00ff88")}>✓</button>
-											<button onClick={() => onRejectSuggestion?.(ev.id!)} data-qid={`activity:reject:${ev.id}`} title="Reject suggestion" style={feedBtnStyle("#ff4444")}>✗</button>
+											<button onClick={() => onAcceptSuggestion(ev.id!)} data-qs-action="ACTIVITY_ACCEPT_SUGGESTION" data-qid={`activity:accept:${ev.id}`} title="Accept suggestion" style={feedBtnStyle("#00ff88")}>✓</button>
+											<button onClick={() => onRejectSuggestion?.(ev.id!)} data-qs-action="ACTIVITY_REJECT_SUGGESTION" data-qid={`activity:reject:${ev.id}`} title="Reject suggestion" style={feedBtnStyle("#ff4444")}>✗</button>
 										</span>
 									)}
 								</>)}

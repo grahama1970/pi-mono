@@ -380,7 +380,7 @@ export default function BboxWorkspace({
           }}
         >
           {/* Edit mode toggle */}
-          <button data-qid="bbox:el-1" data-qs-action="BBOX_EL_1" title="El 1"
+          <button data-qid="bbox:el-1" data-qs-action="BBOX_TOGGLE_EDIT_MODE" title="Toggle edit mode"
             onClick={() => setEditMode((p) => !p)}
             style={{
               fontFamily: 'monospace',
@@ -441,7 +441,7 @@ export default function BboxWorkspace({
           <div style={{ width: '1px', height: '18px', backgroundColor: NVIS.borderSolid }} />
 
           {/* Zoom controls */}
-          <button data-qid="bbox:el-2" data-qs-action="BBOX_EL_2" title="El 2"
+          <button data-qid="bbox:el-2" data-qs-action="BBOX_ZOOM_OUT" title="Zoom out"
             onClick={() => setZoom((z) => Math.max(0.25, z - 0.25))}
             style={{
               fontFamily: 'monospace',
@@ -467,7 +467,7 @@ export default function BboxWorkspace({
           >
             {Math.round(zoom * 100)}%
           </span>
-          <button data-qid="bbox:el-3" data-qs-action="BBOX_EL_3" title="El 3"
+          <button data-qid="bbox:el-3" data-qs-action="BBOX_ZOOM_IN" title="Zoom in"
             onClick={() => setZoom((z) => Math.min(4, z + 0.25))}
             style={{
               fontFamily: 'monospace',
@@ -612,7 +612,7 @@ export default function BboxWorkspace({
               {/* Inline reclassify dropdown (non-edit mode, triggered by `t`) */}
               {!editMode && (
                 <div style={{ position: 'relative' }}>
-                  <button data-qid="bbox:el-4" data-qs-action="BBOX_EL_4" title="El 4"
+                  <button data-qid="bbox:el-4" data-qs-action="BBOX_TOGGLE_RECLASSIFY" title="Toggle reclassify dropdown"
                     onClick={() => setInspectorTypeDropdown((p) => !p)}
                     style={{
                       width: '100%',
@@ -651,7 +651,7 @@ export default function BboxWorkspace({
                       {ALL_BLOCK_TYPES.map((t, i) => {
                         const isActive = t === selectedBlock.blockType
                         return (
-                          <button data-qid="bbox:t" data-qs-action="BBOX_T" title="T"
+                          <button data-qid="bbox:t" data-qs-action="BBOX_SELECT_BLOCK_TYPE" title="Select block type"
                             key={t}
                             onClick={() => {
                               handleReclassify(selectedBlock.id, t)
@@ -741,7 +741,7 @@ export default function BboxWorkspace({
                 }}
               >
                 <span style={{ color: NVIS.dim }}>Section</span>
-                <select data-qid="bbox:el-6" data-qs-action="BBOX_EL_6" title="El 6"
+                <select data-qid="bbox:el-6" data-qs-action="BBOX_CHANGE_SECTION" title="Change block section assignment"
                   value={selectedBlock.sectionId ?? ''}
                   onChange={(e) => {
                     if (onBlockUpdate) {
@@ -943,16 +943,16 @@ function InspectorSection({
 function MetaRow({ label, value }: { label: string; value: string }) {
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('bbox:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in truncate' })
-  useRegisterAction('bbox:el-2', { app: 'datalake-explorer', action: 'EL_2', label: 'El 2', description: 'El 2 in truncate' })
-  useRegisterAction('bbox:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in truncate' })
+  useRegisterAction('bbox:el-1', { app: 'datalake-explorer', action: 'TOGGLE_EDIT_MODE', label: 'Toggle edit mode', description: 'Toggle edit mode' })
+  useRegisterAction('bbox:el-2', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out', description: 'Zoom out' })
+  useRegisterAction('bbox:el-3', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in', description: 'Zoom in' })
   useRegisterAction('bbox:save', { app: 'datalake-explorer', action: 'SAVE', label: 'Save', description: 'Save in truncate' })
   useRegisterAction('bbox:page:prev', { app: 'datalake-explorer', action: 'PAGE_PREV', label: 'Page Prev', description: 'Page Prev in truncate' })
   useRegisterAction('bbox:page:number', { app: 'datalake-explorer', action: 'PAGE_NUMBER', label: 'Page Number', description: 'Page Number in truncate' })
   useRegisterAction('bbox:page:next', { app: 'datalake-explorer', action: 'PAGE_NEXT', label: 'Page Next', description: 'Page Next in truncate' })
-  useRegisterAction('bbox:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in truncate' })
-  useRegisterAction('bbox:t', { app: 'datalake-explorer', action: 'T', label: 'T', description: 'T in truncate' })
-  useRegisterAction('bbox:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in truncate' })
+  useRegisterAction('bbox:el-4', { app: 'datalake-explorer', action: 'TOGGLE_RECLASSIFY', label: 'Toggle reclassify dropdown', description: 'Toggle reclassify dropdown' })
+  useRegisterAction('bbox:t', { app: 'datalake-explorer', action: 'SELECT_BLOCK_TYPE', label: 'Select block type', description: 'Select block type' })
+  useRegisterAction('bbox:el-6', { app: 'datalake-explorer', action: 'CHANGE_SECTION', label: 'Change block section assignment', description: 'Change block section assignment' })
   useRegisterAction('bbox:block-info', { app: 'datalake-explorer', action: 'BLOCK_INFO', label: 'Block Info', description: 'Block Info in truncate' })
 
   return (

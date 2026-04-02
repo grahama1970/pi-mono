@@ -698,7 +698,7 @@ export default function QuarantineView() {
 
     return (
       <div key={idx}>
-        <div data-qid="quarantine:el-1" data-qs-action="QUARANTINE_EL_1" title="El 1"
+        <div data-qid="quarantine:el-1" data-qs-action="QUARANTINE_TOGGLE_SECTION" title="Toggle section expand"
           data-section-idx={idx}
           role="treeitem"
           aria-selected={isSelected}
@@ -734,7 +734,7 @@ export default function QuarantineView() {
           }}
         >
           {/* Toggle */}
-          <span data-qid="quarantine:el-2" data-qs-action="QUARANTINE_EL_2" title="El 2"
+          <span data-qid="quarantine:el-2" data-qs-action="QUARANTINE_SECTION_ICON" title="Section collapse icon"
             style={{
               fontSize: '9px',
               color: NVIS.dim,
@@ -968,7 +968,7 @@ export default function QuarantineView() {
 
         {/* Chat toggle (L.7) */}
         <button
-          data-qid="quarantine:layout:chat" data-qs-action="QUARANTINE_CHAT"
+          data-qid="quarantine:layout:chat" data-qs-action="QUARANTINE_TOGGLE_CHAT"
           title="Layout: Chat"
           onClick={() => setChatOpen((p) => !p)}
           style={{
@@ -1256,7 +1256,7 @@ export default function QuarantineView() {
               fontSize: '11px',
             }}
           >
-            <button data-qid="quarantine:select-all-visible-docume" data-qs-action="QUARANTINE_SELECT_ALL_VISIBLE_DOCUME" title="Select All Visible Docume"
+            <button data-qid="quarantine:select-all-visible-docume" data-qs-action="QUARANTINE_SELECT_ALL" title="Select all visible documents"
               onClick={selectAllVisible}
               aria-label="Select all visible documents"
               style={{
@@ -1653,7 +1653,7 @@ export default function QuarantineView() {
                 }}
               >
                 {/* L.5: Approve/Reject are dominant buttons */}
-                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_EL_4" title="El 4"
+                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_APPROVE_ENTRY" title="Approve quarantine entry"
                   onClick={() => handleAction(selected.id, 'approve')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:approve" data-qs-action="QUARANTINE_APPROVE"
@@ -1676,7 +1676,7 @@ export default function QuarantineView() {
                 >
                   Approve (a)
                 </button>
-                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_EL_5" title="El 5"
+                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_REJECT_ENTRY" title="Reject quarantine entry"
                   onClick={() => handleAction(selected.id, 'reject')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:reject" data-qs-action="QUARANTINE_REJECT"
@@ -1701,7 +1701,7 @@ export default function QuarantineView() {
                 </button>
 
                 {/* Separator */}
-                <div data-qid="quarantine:sep-1" data-qs-action="QUARANTINE_SEP_1" title="Separator"
+                <div data-qid="quarantine:sep-1" data-qs-action="QUARANTINE_ACTION_SEP_1" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1719,10 +1719,10 @@ export default function QuarantineView() {
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 're-extract')}
                 />
-                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_EL_6" title="El 6"
+                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_SELECT_STRATEGY" title="Select re-extraction strategy"
                   value={reExtractStrategy}
                   onChange={(e) => setReExtractStrategy(e.target.value)}
-                  data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_SELECT"
+                  data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_CHOOSE_METHOD"
                   title="Re-extraction strategy"
                   aria-label="Re-extraction strategy"
                   style={{
@@ -1744,7 +1744,7 @@ export default function QuarantineView() {
                   ))}
                 </select>
 
-                <div data-qid="quarantine:sep-2" data-qs-action="QUARANTINE_SEP_2" title="Separator"
+                <div data-qid="quarantine:sep-2" data-qs-action="QUARANTINE_ACTION_SEP_2" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1833,7 +1833,7 @@ export default function QuarantineView() {
               >
                 Interview Chat
               </span>
-              <button data-qid="quarantine:el-7" data-qs-action="QUARANTINE_EL_7" title="El 7"
+              <button data-qid="quarantine:el-7" data-qs-action="QUARANTINE_CLOSE_CHAT" title="Close interview chat"
                 onClick={() => setChatOpen(false)}
                 style={{
                   fontFamily: 'monospace',
@@ -1926,21 +1926,21 @@ function DiagCard({
 function MetaItem({
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('quarantine:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in qualityScoreColor' })
-  useRegisterAction('quarantine:el-2', { app: 'datalake-explorer', action: 'EL_2', label: 'El 2', description: 'El 2 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-1', { app: 'datalake-explorer', action: 'TOGGLE_SECTION', label: 'Toggle section expand', description: 'Toggle section expand' })
+  useRegisterAction('quarantine:el-2', { app: 'datalake-explorer', action: 'SECTION_ICON', label: 'Section collapse icon', description: 'Section collapse icon' })
   useRegisterAction('quarantine:entry-count', { app: 'datalake-explorer', action: 'ENTRY_COUNT', label: 'Entry Count', description: 'Entry Count in qualityScoreColor' })
   useRegisterAction('quarantine:layout:chat', { app: 'datalake-explorer', action: 'LAYOUT_CHAT', label: 'Layout Chat', description: 'Layout Chat in qualityScoreColor' })
   useRegisterAction('quarantine:search', { app: 'datalake-explorer', action: 'SEARCH', label: 'Search', description: 'Search in qualityScoreColor' })
-  useRegisterAction('quarantine:select-all-visible-docume', { app: 'datalake-explorer', action: 'SELECT_ALL_VISIBLE_DOCUME', label: 'Select All Visible Docume', description: 'Select All Visible Docume in qualityScoreColor' })
+  useRegisterAction('quarantine:select-all-visible-docume', { app: 'datalake-explorer', action: 'SELECT_ALL', label: 'Select all visible documents', description: 'Select all visible documents' })
   useRegisterAction('quarantine:batch:approve', { app: 'datalake-explorer', action: 'BATCH_APPROVE', label: 'Batch Approve', description: 'Batch Approve in qualityScoreColor' })
-  useRegisterAction('quarantine:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in qualityScoreColor' })
-  useRegisterAction('quarantine:el-5', { app: 'datalake-explorer', action: 'EL_5', label: 'El 5', description: 'El 5 in qualityScoreColor' })
-  useRegisterAction('quarantine:sep-1', { app: 'datalake-explorer', action: 'SEP_1', label: 'Sep 1', description: 'Sep 1 in qualityScoreColor' })
-  useRegisterAction('quarantine:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-4', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve quarantine entry', description: 'Approve quarantine entry' })
+  useRegisterAction('quarantine:el-5', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject quarantine entry', description: 'Reject quarantine entry' })
+  useRegisterAction('quarantine:sep-1', { app: 'datalake-explorer', action: 'ACTION_SEP_1', label: 'Sep 1', description: 'Sep 1 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-6', { app: 'datalake-explorer', action: 'SELECT_STRATEGY', label: 'Select re-extraction strategy', description: 'Select re-extraction strategy' })
   useRegisterAction('quarantine:strategy:select', { app: 'datalake-explorer', action: 'STRATEGY_SELECT', label: 'Strategy Select', description: 'Strategy Select in qualityScoreColor' })
-  useRegisterAction('quarantine:sep-2', { app: 'datalake-explorer', action: 'SEP_2', label: 'Sep 2', description: 'Sep 2 in qualityScoreColor' })
+  useRegisterAction('quarantine:sep-2', { app: 'datalake-explorer', action: 'ACTION_SEP_2', label: 'Sep 2', description: 'Sep 2 in qualityScoreColor' })
   useRegisterAction('quarantine:action:interview', { app: 'datalake-explorer', action: 'ACTION_INTERVIEW', label: 'Action Interview', description: 'Action Interview in qualityScoreColor' })
-  useRegisterAction('quarantine:el-7', { app: 'datalake-explorer', action: 'EL_7', label: 'El 7', description: 'El 7 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-7', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close interview chat', description: 'Close interview chat' })
 
   label,
   value,

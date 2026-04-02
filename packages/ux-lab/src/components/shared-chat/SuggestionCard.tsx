@@ -5,6 +5,7 @@
 import { memo, useCallback } from "react";
 import type { AgentSuggestion, EntityType } from "./types";
 import { highlightEntities } from "./highlightEntities";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
 
 interface SuggestionCardProps {
 	suggestion: AgentSuggestion;
@@ -33,6 +34,10 @@ export const SuggestionCard = memo(function SuggestionCard({
 	const handleReject = useCallback(() => onReject?.(suggestion.id), [onReject, suggestion.id]);
 	const handleDiscuss = useCallback(() => onDiscuss?.(suggestion.controlId), [onDiscuss, suggestion.controlId]);
 
+	useRegisterAction(`suggestion:accept:${suggestion.id}`, { app: "shared-chat", action: "SUGGESTION_ACCEPT", label: "Accept Suggestion", description: `Accept agent suggestion for ${suggestion.controlId}` });
+	useRegisterAction(`suggestion:reject:${suggestion.id}`, { app: "shared-chat", action: "SUGGESTION_REJECT", label: "Reject Suggestion", description: `Reject agent suggestion for ${suggestion.controlId}` });
+	useRegisterAction(`suggestion:discuss:${suggestion.id}`, { app: "shared-chat", action: "SUGGESTION_DISCUSS", label: "Discuss Suggestion", description: `Open discussion about ${suggestion.controlId}` });
+
 	const confPct = suggestion.confidence > 1 ? Math.min(Math.round(suggestion.confidence), 100) : Math.round(suggestion.confidence * 100);
 
 	return (
@@ -58,9 +63,9 @@ export const SuggestionCard = memo(function SuggestionCard({
 			)}
 			{isPending && (
 				<div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-					{onAccept && <button onClick={handleAccept} data-qid={`suggestion:accept:${suggestion.id}`} title={`Accept suggestion for ${suggestion.controlId}`} style={btnStyle("#00ff88")}>Accept</button>}
-					{onReject && <button onClick={handleReject} data-qid={`suggestion:reject:${suggestion.id}`} title={`Reject suggestion for ${suggestion.controlId}`} style={btnStyle("#ff4444")}>Reject</button>}
-					{onDiscuss && <button onClick={handleDiscuss} data-qid={`suggestion:discuss:${suggestion.id}`} title={`Discuss ${suggestion.controlId} in chat`} style={btnStyle("#4a9eff")}>Discuss</button>}
+					{onAccept && <button onClick={handleAccept} data-qs-action="SUGGESTION_ACCEPT" data-qid={`suggestion:accept:${suggestion.id}`} title={`Accept suggestion for ${suggestion.controlId}`} style={btnStyle("#00ff88")}>Accept</button>}
+					{onReject && <button onClick={handleReject} data-qs-action="SUGGESTION_REJECT" data-qid={`suggestion:reject:${suggestion.id}`} title={`Reject suggestion for ${suggestion.controlId}`} style={btnStyle("#ff4444")}>Reject</button>}
+					{onDiscuss && <button onClick={handleDiscuss} data-qs-action="SUGGESTION_DISCUSS" data-qid={`suggestion:discuss:${suggestion.id}`} title={`Discuss ${suggestion.controlId} in chat`} style={btnStyle("#4a9eff")}>Discuss</button>}
 				</div>
 			)}
 			{isResolved && (

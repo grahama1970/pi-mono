@@ -83,6 +83,45 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 		const userMsg: ChatMessage = { id: `u${Date.now()}`, role: "user", content: text, timestamp: Date.now() };
 		setMessages((prev) => [...prev, userMsg]);
 
+		// ── QuerySpec resolver: try to resolve NL → action → DOM click before LLM ──
+		if (!text.startsWith("/")) {
+			try {
+				const resolveRes = await fetch("/api/queryspec/resolve", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ text, app: "datalake-explorer" }),
+				});
+				if (resolveRes.ok) {
+					const resolved = await resolveRes.json();
+					if (resolved.resolved && resolved.confidence >= 0.25) {
+						const el = document.querySelector(`[data-qs-action="${resolved.action}"]`) as HTMLElement;
+						if (el) {
+							el.click();
+							el.scrollIntoView({ behavior: "smooth", block: "center" });
+							setMessages((prev) => [...prev, {
+								id: `a${Date.now()}`, role: "assistant", timestamp: Date.now(),
+								content: `Executed **${resolved.label || resolved.action}** (${Math.round(resolved.confidence * 100)}% confidence, ${resolved.method})`,
+							}]);
+							// Store training pair
+							fetch("/api/queryspec/learn", {
+								method: "POST",
+								headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ text, action: resolved.action, dom_selector: resolved.dom_selector, confidence: resolved.confidence, app: "datalake-explorer", success: true }),
+							}).catch(() => {});
+							return;
+						}
+					} else if (resolved.candidates?.length > 0 && !resolved.resolved) {
+						const labels = resolved.candidates.slice(0, 3).map((c: { label?: string; action: string }) => c.label || c.action).join(", ");
+						setMessages((prev) => [...prev, {
+							id: `a${Date.now()}`, role: "assistant", timestamp: Date.now(),
+							content: `I'm not sure what you mean. Did you mean: **${labels}**?`,
+						}]);
+						return;
+					}
+				}
+			} catch { /* resolver unavailable — fall through to LLM */ }
+		}
+
 		const skillMatch = text.match(/^\/([a-z][\w-]*)/);
 		const result = await pipeline.send(text, { skill: skillMatch?.[1] });
 
@@ -155,7 +194,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
   useRegisterAction('chat:close-chat', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Chat in ChatFAB' })
   useRegisterAction('chat:input-row', { app: 'datalake-explorer', action: 'INPUT_ROW', label: 'Input Row', description: 'Input Row in ChatFAB' })
   useRegisterAction('chat:send-message', { app: 'datalake-explorer', action: 'SEND_MESSAGE', label: 'Send Message', description: 'Send Message in ChatFAB' })
-  useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in ChatFAB' })
+  useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'TOGGLE_FAB', label: 'Toggle chat', description: 'Toggle chat' })
 
 							return (
 								<div key={msg.id} style={{ display: "flex", flexDirection: "column", alignItems: isUser ? "flex-end" : "flex-start" }}>
@@ -224,7 +263,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 			)}
 
 			{/* FAB button */}
-			<button data-qid="chat:el-3" data-qs-action="CHAT_EL_3" title="El 3"
+			<button data-qid="chat:el-3" data-qs-action="CHAT_TOGGLE_FAB" title="Toggle chat"
 				aria-label={open ? "Close Embry Agent" : "Open Embry Agent (press ? to toggle)"}
 				aria-expanded={open}
 				title={open ? "Close Embry Agent" : "Open Embry Agent chat"}

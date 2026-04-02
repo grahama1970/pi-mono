@@ -612,36 +612,124 @@ def _check_unset_virtual_env(skill_dir: Path) -> List[Violation]:
 #   - WORKFLOW: encodes a process → always relevant
 # Format: skill_name → (native_capability, category, reason)
 # Run Claude Skills 2.0 A/B benchmark to confirm before deprecating.
-_NATIVE_OVERLAP: dict[str, tuple[str, str, str]] = {
-    "fetcher": ("WebFetch tool", "capability", "Claude Code has built-in WebFetch for URL retrieval"),
-    "perplexity": ("WebSearch tool", "capability", "Claude Code has built-in WebSearch; Perplexity adds premium features only"),
-    "github-search": ("WebSearch + gh CLI", "capability", "Claude Code can search GitHub natively via gh CLI"),
-    "brave-search": ("WebSearch tool", "capability", "Claude Code has built-in WebSearch; Brave adds premium features only"),
-    "create-code": ("Claude Code itself", "capability", "Claude Code's core purpose is code generation"),
-    "surf": ("WebFetch tool", "capability", "Claude Code has built-in WebFetch for web content"),
-    "context7": ("WebFetch tool", "capability", "Claude Code can fetch library docs directly via WebFetch"),
-}
+# Claude Code native capabilities with their ACTUAL limits.
+# Each entry: (tool_name, what_it_can_do, what_it_CANNOT_do)
+_CLAUDE_NATIVE: list[tuple[str, list[str], list[str]]] = [
+    ("WebFetch", [
+        "fetch single URL", "return raw HTML/text",
+    ], [
+        "JavaScript rendering", "SPA pages", "proxy rotation",
+        "PDF extraction", "batch/manifest fetching", "HTTP caching",
+        "content extraction pipeline", "rolling window chunking",
+        "structured output (JSONL/markdown)", "retry with fallback URLs",
+        "rate limit handling", "crawling multiple pages",
+    ]),
+    ("WebSearch", [
+        "web search", "return snippets",
+    ], [
+        "structured API results", "citation metadata",
+        "academic/research-grade search", "premium search features",
+        "filtered domain search", "time-range filtering",
+        "local search", "business search", "near me",
+        "webhook", "monitor", "keyword alert", "notification",
+        "memory integration", "graph-memory", "persist",
+        "API key", "brave", "perplexity",
+    ]),
+    ("Bash(gh)", [
+        "github search code", "github search issues", "github search PRs",
+        "github repo operations", "github API via gh",
+    ], [
+        "bulk search across orgs", "saved search monitoring",
+        "structured result aggregation",
+        "multi-strategy", "symbol search", "treesitter", "taxonomy",
+        "README extraction", "language breakdown", "repo analysis",
+        "path-filtered search", "filename search",
+    ]),
+]
+
+
+def _skill_has_capability_beyond_native(
+    skill_text: str,
+    native_cannot: list[str],
+) -> list[str]:
+    """Check if the SKILL.md text mentions capabilities the native tool lacks.
+
+    Returns list of beyond-native capabilities found in the skill text.
+    """
+    text_lower = skill_text.lower()
+    found = []
+    for capability in native_cannot:
+        # Check for the capability or related terms in the full skill text
+        terms = capability.lower().split("/")
+        for term in terms:
+            # Split multi-word capabilities and check for key terms
+            key_words = [w for w in term.split() if len(w) > 3]
+            if all(w in text_lower for w in key_words):
+                found.append(capability)
+                break
+    return found
 
 
 def _check_native_overlap(skill_dir: Path) -> List[Violation]:
-    """Flag skills that overlap with Claude Code native capabilities.
+    """Evaluate whether a skill is redundant with Claude Code native tools.
 
-    These are candidates for deprecation — not automatic removals.
-    The skill may still provide value beyond the native capability
-    (domain-specific prompting, caching, structured output, etc.).
+    Reads the FULL SKILL.md and compares the skill's actual capabilities
+    against what Claude Code native tools can and cannot do. Only flags
+    skills where the native tool covers ALL the skill's functionality.
+
+    A skill with ANY capability beyond the native tool is NOT flagged.
     """
     violations: List[Violation] = []
     skill_name = skill_dir.name
+    skill_md = skill_dir / "SKILL.md"
+    if not skill_md.exists():
+        return violations
 
-    if skill_name in _NATIVE_OVERLAP:
-        native, category, reason = _NATIVE_OVERLAP[skill_name]
+    try:
+        text = skill_md.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return violations
+
+    if "deprecated" in text.lower()[:500]:
+        return violations
+
+    fm = parse_frontmatter(text)
+    if fm is None:
+        return violations
+    if fm.get("internal"):
+        return violations
+
+    # Check each native tool for overlap
+    triggers = fm.get("triggers", [])
+    description = str(fm.get("description", ""))
+    trigger_text = " ".join(str(t) for t in triggers).lower()
+
+    for tool_name, can_do, cannot_do in _CLAUDE_NATIVE:
+        # First: does this skill's triggers/description overlap with what the native tool CAN do?
+        has_overlap = any(
+            all(w in trigger_text or w in description.lower() for w in phrase.split() if len(w) > 2)
+            for phrase in can_do
+        )
+        if not has_overlap:
+            continue
+
+        # Second: does the skill have capabilities BEYOND what the native tool can do?
+        beyond = _skill_has_capability_beyond_native(text, cannot_do)
+
+        if beyond:
+            # Skill adds value — not redundant. No violation.
+            continue
+
+        # The skill's full SKILL.md doesn't mention any capability beyond the native tool.
         violations.append(Violation(
             rule="runtime.native_overlap",
             severity="warn",
             skill=skill_name,
-            path=str(skill_dir / "SKILL.md"),
-            message=f"[{category} uplift] Overlaps with Claude Code native '{native}'. "
-                    f"{reason}. Run Claude Skills 2.0 A/B benchmark to confirm before deprecating.",
+            path=str(skill_md),
+            message=f"All capabilities appear covered by Claude Code native '{tool_name}'. "
+                    f"No beyond-native features found in SKILL.md. "
+                    f"Candidate for deprecation — confirm with Claude Skills 2.0 A/B benchmark.",
         ))
+        break  # one overlap finding is enough
 
     return violations
