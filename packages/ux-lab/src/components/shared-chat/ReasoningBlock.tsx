@@ -113,7 +113,7 @@ export default function ReasoningBlock({
             {verdictMeta.label}
           </span>
           <span style={{ ...bodyStyle, color: EMBRY.textMuted }}>
-            · Grade {data.grade}
+            · {data.gates_passed}/{data.gates_total} gates
           </span>
 
           {data.drift && (

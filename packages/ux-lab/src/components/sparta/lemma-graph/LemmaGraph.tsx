@@ -8,6 +8,7 @@ import { useCallback, useMemo, useState } from 'react'
 import * as d3 from 'd3'
 import { EMBRY, card, label, heading, glowDot } from '../common/EmbryStyle'
 import { GraphExplorer } from '../../graph-explorer'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // ── Domain types (preserved interface for SpartaExplorer.tsx) ────────────
 
@@ -77,6 +78,9 @@ function computeSorryContamination(nodes: GraphNode[], edges: GraphEdge[]): Map<
 // ── Component ───────────────────────────────────────────────────────────
 
 export function LemmaGraph({ nodes, edges, onNodeClick, mode = 'full' }: LemmaGraphProps) {
+  useRegisterAction('sparta-show-critical-path', { app: 'sparta-explorer', action: 'SHOW_CRITICAL_PATH', label: 'Show Critical Path', description: 'Display failing attack chains in the proof graph' })
+  useRegisterAction('sparta-show-proof-graph', { app: 'sparta-explorer', action: 'SHOW_PROOF_GRAPH', label: 'Show Proof Graph', description: 'Display the full proof graph with lemma verification status' })
+
   const [activeFrameworks, setActiveFrameworks] = useState<Set<string>>(new Set())
   const allFrameworks = [...new Set(nodes.map((n) => n.framework))]
 

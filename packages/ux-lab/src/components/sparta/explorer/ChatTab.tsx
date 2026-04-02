@@ -230,77 +230,24 @@ export function ChatTab() {
   const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
     addMsg({ role: 'user', content: query, type })
 
-    // Detect intent for viz switching
-    const qLower = query.toLowerCase()
-    const isDashboardIntent = qLower.includes('posture') || qLower.includes('dashboard') || qLower.includes('overview') || qLower.includes('status report')
-    if (isDashboardIntent) {
-      setVizMode('dashboard')
-    }
-    const isMatrixIntent = qLower.includes('threat matrix') || qLower.includes('coverage') || qLower.includes('threat landscape') || qLower.includes('show me the matrix')
-    if (isMatrixIntent) {
-      setVizMode('matrix')
-    } else if (qLower.includes('critical path') || qLower.includes('attack chain') || qLower.includes('exploit chain') || qLower.includes('weakest chain') || qLower.includes('failing chain')) {
-      setVizMode('graph')
-      setGraphMode('critical-path')
-    } else if (qLower.includes('proof') || qLower.includes('lemma') || qLower.includes('prove') || qLower.includes('chain')) {
-      setVizMode('graph')
-      setGraphMode('full')
-    }
-
-    // For matrix queries: render full matrix in viz + narrated summary in chat
-    if (isMatrixIntent) {
-      const satisfied = [...evidenceMap.values()].filter(v => v.verdict === 'satisfied').length
-      const inconclusive = [...evidenceMap.values()].filter(v => v.verdict === 'inconclusive').length
-      const notSatisfied = [...evidenceMap.values()].filter(v => v.verdict === 'not_satisfied').length
-      const totalTech = techniques.length || 85
-      const noEvidence = totalTech - satisfied - inconclusive - notSatisfied
-      const dl = DATALAKES.find(d => d.id === currentSystem)
-      const covPct = totalTech > 0 ? Math.round((satisfied / totalTech) * 100) : 0
-
-      // Find weakest tactic
-      const tacticGaps: Record<string, number> = {}
-      for (const t of SPARTA_TACTICS) {
-        const tacticTechs = techniques.filter(tech => tech.tactic === t.name)
-        const covered = tacticTechs.filter(tech => evidenceMap.has(tech.id) && evidenceMap.get(tech.id)!.verdict === 'satisfied').length
-        tacticGaps[t.name] = tacticTechs.length > 0 ? covered / tacticTechs.length : 0
-      }
-      const weakest = Object.entries(tacticGaps).sort((a, b) => a[1] - b[1]).slice(0, 2)
-
-      let narration = `The ${dl?.name ?? 'F-36'} threat matrix is shown in the visualization pane. Coverage: ${covPct}% of ${totalTech} techniques have evidence.`
-      if (weakest.length > 0 && weakest[0][1] < 0.5) {
-        narration += `\n\nGaps: ${weakest.map(([name, pct]) => `${name} (${Math.round(pct * 100)}%)`).join(', ')} — weakest tactics.`
-      }
-      narration += '\n\nAsk about specific techniques or tactics to drill down.'
-
-      addMsg({
-        role: 'system', content: narration, type: 'natural',
-        cascadeLayer: 'recall',
-        matrixSummary: {
-          totalTechniques: totalTech, totalTactics: SPARTA_TACTICS.length,
-          satisfied, inconclusive, notSatisfied, noEvidence,
-          datalake: dl?.name ?? 'F-36',
-        },
-      })
-      return
-    }
-
     try {
-      // Entity extraction
-      const entRes = await fetch(`${API}/api/extract-entities`, {
+      // Step 1: Intent classification via /memory intent
+      const intentRes = await fetch(`${API}/api/memory/intent`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: query }),
-      }).then(r => r.json()).catch(() => ({}))
+        body: JSON.stringify({ q: query, scope: 'sparta' }),
+      }).then(r => r.json()).catch(() => ({ action: 'NO_MATCH' }))
 
-      const entities: EntityRef[] = (entRes.entities ?? []).map((e: any) => ({
-        id: e.control_id ?? e.id,
-        label: e.name ?? e.control_id ?? e.id,
+      const action: string = intentRes.action ?? 'NO_MATCH'
+      const intentEntities: EntityRef[] = (intentRes.entities ?? []).map((e: any) => ({
+        id: e.control_id ?? e.id ?? e,
+        label: e.name ?? e.control_id ?? e.id ?? String(e),
         type: e.type ?? 'control',
         exists: e.exists !== false,
       }))
 
       // Focus first entity in viz
-      if (entities.length > 0 && entities[0].exists) {
-        const eid = entities[0].id
+      if (intentEntities.length > 0 && intentEntities[0].exists) {
+        const eid = intentEntities[0].id
         if (SPARTA_TACTICS.some(t => eid.startsWith(t.prefix + '-'))) {
           setFocusTechnique(eid)
         } else {
@@ -308,21 +255,147 @@ export function ChatTab() {
         }
       }
 
-      // Recall
+      // Step 2: Route based on intent action
+      if (action === 'APP_COMMAND') {
+        const rq = (intentRes.rewritten_query ?? query).toLowerCase()
+        if (rq.includes('matrix') || rq.includes('coverage') || rq.includes('threat landscape')) {
+          setVizMode('matrix')
+          // Matrix narration (preserved existing block)
+          const satisfied = [...evidenceMap.values()].filter(v => v.verdict === 'satisfied').length
+          const inconclusive = [...evidenceMap.values()].filter(v => v.verdict === 'inconclusive').length
+          const notSatisfied = [...evidenceMap.values()].filter(v => v.verdict === 'not_satisfied').length
+          const totalTech = techniques.length || 85
+          const noEvidence = totalTech - satisfied - inconclusive - notSatisfied
+          const dl = DATALAKES.find(d => d.id === currentSystem)
+          const covPct = totalTech > 0 ? Math.round((satisfied / totalTech) * 100) : 0
+          const tacticGaps: Record<string, number> = {}
+          for (const t of SPARTA_TACTICS) {
+            const tacticTechs = techniques.filter(tech => tech.tactic === t.name)
+            const covered = tacticTechs.filter(tech => evidenceMap.has(tech.id) && evidenceMap.get(tech.id)!.verdict === 'satisfied').length
+            tacticGaps[t.name] = tacticTechs.length > 0 ? covered / tacticTechs.length : 0
+          }
+          const weakest = Object.entries(tacticGaps).sort((a, b) => a[1] - b[1]).slice(0, 2)
+          let narration = `The ${dl?.name ?? 'F-36'} threat matrix is shown in the visualization pane. Coverage: ${covPct}% of ${totalTech} techniques have evidence.`
+          if (weakest.length > 0 && weakest[0][1] < 0.5) {
+            narration += `\n\nGaps: ${weakest.map(([name, pct]) => `${name} (${Math.round(pct * 100)}%)`).join(', ')} — weakest tactics.`
+          }
+          narration += '\n\nAsk about specific techniques or tactics to drill down.'
+          addMsg({
+            role: 'system', content: narration, type: 'natural',
+            cascadeLayer: 'recall',
+            matrixSummary: { totalTechniques: totalTech, totalTactics: SPARTA_TACTICS.length, satisfied, inconclusive, notSatisfied, noEvidence, datalake: dl?.name ?? 'F-36' },
+          })
+          return
+        } else if (rq.includes('dashboard') || rq.includes('posture') || rq.includes('overview') || rq.includes('status report')) {
+          setVizMode('dashboard')
+          addMsg({ role: 'system', content: 'Switching to Posture Dashboard.', type: 'natural', cascadeLayer: 'recall' })
+          return
+        } else if (rq.includes('critical path') || rq.includes('attack chain') || rq.includes('exploit chain')) {
+          setVizMode('graph')
+          setGraphMode('critical-path')
+          addMsg({ role: 'system', content: 'Showing critical path — failing attack chains in the proof graph.', type: 'natural', cascadeLayer: 'recall' })
+          return
+        } else if (rq.includes('proof') || rq.includes('lemma') || rq.includes('graph')) {
+          setVizMode('graph')
+          setGraphMode('full')
+          addMsg({ role: 'system', content: 'Showing full proof graph.', type: 'natural', cascadeLayer: 'recall' })
+          return
+        }
+        // Unknown APP_COMMAND — fall through to QUERY handling
+      }
+
+      if (action === 'QUERY') {
+        // Run evidence case pipeline
+        const controlId = intentEntities.find(e => e.exists)?.id
+        const ecRes = await fetch(`${API}/api/evidence-case/run`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: query, controlId }),
+          signal: AbortSignal.timeout(90_000),
+        }).then(r => r.json())
+
+        const gates: EvidenceGate[] = (ecRes.gates ?? ecRes.gate_trace ?? []).map((g: any) => ({
+          gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '', duration: g.duration,
+        }))
+        const gatesPassed = gates.filter(g => g.passed).length
+        const verdict = ecRes.verdict?.state ?? ecRes.verdict_state ?? 'unknown'
+        const tier = ecRes.tier ?? 'T0'
+        const gateSummary = gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; ')
+        const controlIds: string[] = ecRes.control_ids ?? ecRes.verdict?.control_ids ?? intentEntities.filter(e => e.exists).map(e => e.id)
+
+        // Check drift
+        let drift: { old_verdict: string; new_verdict: string; timestamp: string } | undefined
+        if (controlIds.length > 0) {
+          try {
+            const driftRes = await fetch(`${API}/api/memory/list`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ collection: 'evidence_cases', limit: 5, filters: { type: 'threat-delta' } }),
+            }).then(r => r.json())
+            const deltas = (driftRes.documents ?? []).filter((d: any) => controlIds.includes(d.control_id))
+            if (deltas.length > 0) {
+              drift = { old_verdict: deltas[0].old_verdict, new_verdict: deltas[0].new_verdict, timestamp: deltas[0].timestamp }
+            }
+          } catch { /* non-critical */ }
+        }
+
+        if (gatesPassed >= 5) {
+          // PASS — show ReasoningBlock with evidence
+          addMsg({
+            role: 'system', content: ecRes.answer ?? '', type: 'natural', cascadeLayer: 'llm',
+            skillUsed: 'create-evidence-case',
+            entities: intentEntities.length > 0 ? intentEntities : undefined,
+            verdict: { state: verdict.toUpperCase(), gates, tier },
+            evidenceCase: {
+              verdict: verdict.toLowerCase(), grade: '—',
+              gates_passed: gatesPassed, gates_total: gates.length,
+              gate_summary: gateSummary, gate_trace: gates,
+              control_ids: controlIds, tier, drift,
+              recall_count: ecRes.recall_count ?? ecRes.evidence?.length ?? 0,
+              source_traceability: ecRes.source_traceability,
+            },
+          })
+        } else {
+          // FAIL — call /memory clarify for structured narrowing questions
+          let clarifyOptions: string[] | undefined
+          try {
+            const firstFailed = gates.find(g => !g.passed)
+            const clarifyRes = await fetch(`${API}/api/memory/clarify`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                q: query, scope: 'sparta',
+                context: { failed_gate: firstFailed?.gate, entities: intentEntities.filter(e => e.exists).map(e => e.id) },
+              }),
+            }).then(r => r.json())
+            const questions = clarifyRes.clarifications ?? clarifyRes.questions ?? []
+            clarifyOptions = questions.length > 0 ? questions.map((c: any) => typeof c === 'string' ? c : c.question ?? c.text ?? String(c)) : ['Could you be more specific about which control or technique?']
+          } catch {
+            clarifyOptions = ['Could you be more specific about which control or technique?']
+          }
+
+          addMsg({
+            role: 'system',
+            content: `Evidence case returned ${gatesPassed}/${gates.length} gates passed — insufficient confidence. Please refine your question.`,
+            type: 'natural', cascadeLayer: 'llm',
+            skillUsed: 'create-evidence-case',
+            entities: intentEntities.length > 0 ? intentEntities : undefined,
+            verdict: { state: verdict.toUpperCase(), gates, tier },
+            clarifyOptions,
+          })
+        }
+        return
+      }
+
+      // NO_MATCH or unknown action — fallback to /memory recall
       const recallRes = await post('/recall', {
         q: query, collections: ['sparta_controls', 'sparta_qra'], k: 10,
       })
       const items = recallRes.items ?? []
-
-      // Build response with recall items for RecallCard
       const content = items.length > 0
         ? `Found ${items.length} results across SPARTA corpus.`
         : 'No matching results in SPARTA corpus.'
-
       addMsg({
         role: 'system', content, type: 'natural',
         cascadeLayer: 'recall', resultCount: items.length,
-        entities: entities.length > 0 ? entities : undefined,
+        entities: intentEntities.length > 0 ? intentEntities : undefined,
         recallItems: items.slice(0, 10),
       })
     } catch (err) {

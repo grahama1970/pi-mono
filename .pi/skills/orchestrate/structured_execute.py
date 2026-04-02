@@ -237,7 +237,7 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             stderr=asyncio.subprocess.PIPE,
             cwd=str(task.cwd),
         )
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1800)
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
 
         # Per-attempt output files (#1, #2 fix — no overwrites)
         output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
@@ -277,10 +277,12 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
         # Blind eval gate — code-runner never sees these tests
         blind_result = await _run_blind_eval(task, session_dir, attempt_tag)
 
-        # #11 fix: test-lab unreachable with blind_tests = unverified, NOT pass
+        # #11 fix: test-lab unreachable with blind_tests = FAIL, not silent pass
+        # If blind_tests are declared, they MUST run. Unreachable test-lab = hard failure.
         if blind_result is None:
-            task.review_status = "unverified"
-            task.review_output += "\n--- blind eval: SKIPPED (test-lab unreachable) ---"
+            task.review_status = "fail"
+            task.error = "blind eval FAILED: test-lab unreachable but blind_tests declared"
+            task.review_output += "\n--- blind eval: FAILED (test-lab unreachable) ---"
             break
 
         if blind_result.get("status") == "pass":
@@ -353,11 +355,13 @@ async def _run_blind_eval(task: TaskRuntime, session_dir: Path,
             eval_file.write_text(json.dumps(safe_result, indent=2))
             return result
     except httpx.ConnectError:
-        logger.warning("test-lab not reachable at {} — blind eval skipped", test_lab_url)
+        logger.warning("test-lab not reachable at {} — blind eval FAILED", test_lab_url)
         return None
     except Exception as e:
-        logger.error("Blind eval error (non-connection): {}", e)
-        return None
+        # Non-connection errors (HTTP 500, parse failure) → return failure, not None
+        logger.error("Blind eval error: {}", e)
+        return {"status": "fail", "passed": 0, "failed": 1, "total": 1,
+                "checks": [{"passed": False, "message": f"blind eval error: {e}"}]}
 
 
 async def _review_code_runner_output(task: TaskRuntime, session_dir: Path) -> None:
@@ -458,7 +462,10 @@ async def _review_code_runner_output(task: TaskRuntime, session_dir: Path) -> No
             logger.info("T2 code-review-runner completed for {}", task.task_id)
             return
         except asyncio.TimeoutError:
-            logger.warning("T2 code-review-runner timed out for {} (falling back)", task.task_id)
+            logger.error("T2 code-review-runner timed out for {} — marking fail", task.task_id)
+            task.review_status = "fail"
+            task.error = "T2 review timed out (180s)"
+            return
         except Exception as exc:
             logger.warning("T2 code-review-runner failed for {} (falling back): {}", task.task_id, exc)
 

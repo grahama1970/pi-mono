@@ -353,6 +353,14 @@ export default function QuarantineView() {
       .catch(() => null)
       .then((data: QuarantineDetail | null) => {
         if (!cancelled) {
+          // Normalize: ensure arrays exist (metrics-based entries may lack them)
+          if (data) {
+            data.sections = data.sections ?? []
+            data.tables = data.tables ?? []
+            data.figures = data.figures ?? []
+            data.blocks = data.blocks ?? []
+            data.cascade_log = data.cascade_log ?? []
+          }
           setDetail(data)
           setDetailLoading(false)
           setSelectedSectionIdx(null)
