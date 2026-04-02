@@ -56,82 +56,72 @@
       "id": "q1",
       "text": "FREE PRIZE! Click here to claim your $1000 gift card NOW!!!",
       "expected": "spam",
-      "predicted": "spam",
-      "passed": true,
-      "confidence": 0.9956
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q2",
       "text": "Hey, are we still on for dinner tonight?",
       "expected": "ham",
-      "predicted": "ham",
-      "passed": true,
-      "confidence": 0.999
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q3",
       "text": "URGENT: Your account has been compromised. Click link to verify.",
       "expected": "spam",
-      "predicted": "spam",
-      "passed": true,
-      "confidence": 0.9179
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q4",
       "text": "Can you pick up milk on the way home?",
       "expected": "ham",
-      "predicted": "ham",
-      "passed": true,
-      "confidence": 0.9982
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q5",
       "text": "Congratulations! You've won a cruise. Call 1-800-FREE now!",
       "expected": "spam",
-      "predicted": "spam",
-      "passed": true,
-      "confidence": 0.994
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q6",
       "text": "Meeting moved to 3pm tomorrow. Same room.",
       "expected": "ham",
-      "predicted": "ham",
-      "passed": true,
-      "confidence": 0.999
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q7",
       "text": "SPECIAL OFFER: Buy 2 get 3 free! Limited time only!",
       "expected": "spam",
-      "predicted": "spam",
-      "passed": true,
-      "confidence": 0.9965
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q8",
       "text": "Thanks for letting me know about the schedule change",
       "expected": "ham",
-      "predicted": "ham",
-      "passed": true,
-      "confidence": 0.9977
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q9",
       "text": "You have been selected for a $500 Walmart gift card",
       "expected": "spam",
-      "predicted": "spam",
-      "passed": true,
-      "confidence": 0.9904
+      "predicted": null,
+      "passed": null
     },
     {
       "id": "q10",
       "text": "Running late, be there in 10 minutes",
       "expected": "ham",
-      "predicted": "ham",
-      "passed": true,
-      "confidence": 0.9992
+      "predicted": null,
+      "passed": null
     }
   ],
-  "evaluated_at": "2026-03-31T19:07:56.246Z"
+  "evaluated_at": null
 }

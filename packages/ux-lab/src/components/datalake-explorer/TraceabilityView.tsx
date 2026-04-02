@@ -32,7 +32,14 @@ function truncate(s: string, max = 80): string {
   return s.length > max ? s.slice(0, max) + '...' : s
 }
 
-function GroupSection({ groupLabel, color, items, hasAssets }: { groupLabel: string; color: string; items: TraceItem[]; hasAssets?: boolean }) {
+type VerifyResult = Record<string, number>
+
+function scoreBadge(score: number) {
+  const [bg, text] = score >= 0.8 ? ['#15803d', 'MATCH'] : score >= 0.5 ? ['#b45309', 'PARTIAL'] : ['#dc2626', 'MISMATCH']
+  return <span style={{ fontSize: 8, fontFamily: MONO, fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: bg, color: '#fff' }}>{text}</span>
+}
+
+function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLabel: string; color: string; items: TraceItem[]; hasAssets?: boolean; scores?: VerifyResult | null }) {
   const [open, setOpen] = useState(true)
   const [imgMap, setImgMap] = useState<Record<string, string | null>>({})
   const toggle = useCallback(() => setOpen(v => !v), [])
@@ -90,6 +97,7 @@ function GroupSection({ groupLabel, color, items, hasAssets }: { groupLabel: str
                       p.{item.page}
                     </span>
                   )}
+                  {scores && (item.id || item._key) && scores[item.id || item._key!] != null && scoreBadge(scores[item.id || item._key!])}
                   {hasAssets && key && (
                     <button onClick={() => toggleImg(key)} title="Toggle image preview" style={{
                       display: 'flex', alignItems: 'center', padding: '2px 4px', borderRadius: 3, cursor: 'pointer',
@@ -131,6 +139,22 @@ export function TraceabilityView({ docKey }: { docKey: string | null }) {
   const [data, setData] = useState<TraceData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const [verifyScores, setVerifyScores] = useState<VerifyResult | null>(null)
+  const [verifyMsg, setVerifyMsg] = useState<string | null>(null)
+
+  const runVerify = useCallback(() => {
+    const pdfPath = (data as any)?.pdf_path
+    if (!pdfPath) { setVerifyMsg('PDF path required'); return }
+    setVerifying(true); setVerifyMsg(null); setVerifyScores(null)
+    fetch(`${API}/api/datalake/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pdf_path: pdfPath }) })
+      .then(r => { if (!r.ok) throw new Error(); return r.json() })
+      .then((d: any) => setVerifyScores(d?.scores ?? {}))
+      .catch(() => setVerifyMsg('Verification failed'))
+      .finally(() => setVerifying(false))
+  }, [data])
+
+  const meanScore = verifyScores ? Object.values(verifyScores).reduce((a, b) => a + b, 0) / (Object.values(verifyScores).length || 1) : null
 
   useEffect(() => {
     if (!docKey) { setData(null); return }
@@ -189,17 +213,23 @@ export function TraceabilityView({ docKey }: { docKey: string | null }) {
       <div style={{ ...label, marginBottom: 12 }}>Traceability</div>
       {data.document && (
         <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
           fontFamily: MONO, fontSize: 12, fontWeight: 700, color: EMBRY.white,
           padding: '8px 12px', marginBottom: 12,
           background: EMBRY.bgCard, border: `1px solid ${EMBRY.border}`, borderRadius: 6,
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
-          {data.document}
+          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{data.document}</span>
+          {meanScore != null && scoreBadge(meanScore)}
+          {verifyMsg && <span style={{ fontSize: 9, color: EMBRY.amber, fontFamily: MONO }}>{verifyMsg}</span>}
+          <button onClick={runVerify} disabled={verifying} style={{
+            fontSize: 9, fontWeight: 700, fontFamily: MONO, padding: '2px 8px', borderRadius: 3, cursor: 'pointer',
+            color: EMBRY.accent, background: `${EMBRY.accent}12`, border: `1px solid ${EMBRY.accent}33`, flexShrink: 0,
+          }}>{verifying ? 'Verifying...' : 'Verify'}</button>
         </div>
       )}
       {GROUPS.map(g => {
         const items = Array.isArray(data[g.key]) ? data[g.key]! : []
-        return <GroupSection key={g.key} groupLabel={g.label} color={g.color} items={items} hasAssets={g.key === 'tables' || g.key === 'figures'} />
+        return <GroupSection key={g.key} groupLabel={g.label} color={g.color} items={items} hasAssets={g.key === 'tables' || g.key === 'figures'} scores={verifyScores} />
       })}
     </div>
   )

@@ -83,23 +83,52 @@ export interface Agent {
 	color: string;
 }
 
+export interface EvidenceCaseData {
+	verdict: string;
+	grade: string;
+	gates_passed: number;
+	gates_total: number;
+	gate_summary: string;
+	gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>;
+	control_ids: string[];
+	tier: string;
+	drift?: { old_verdict: string; new_verdict: string; timestamp: string };
+	recall_count?: number;
+	recall_breakdown?: Record<string, number>;
+	source_traceability?: Record<string, number>;
+}
+
 export interface ChatMessage {
 	id: string;
-	role: "user" | "assistant" | "system";
+	role: "user" | "assistant" | "system" | "agent";
 	content: string;
 	timestamp: number;
+	// Agent metadata
 	agent?: string;
 	skillUsed?: string;
-	recall?: RecallResult;
-	reasoningSteps?: ReasoningStep[];
 	chainTitle?: string;
+	// Recall + reasoning
+	recall?: RecallResult;
+	recallItems?: RecallItem[];
+	reasoningSteps?: ReasoningStep[];
+	// Artifacts
 	artifact?: Artifact;
 	artifacts?: Artifact[];
+	// Structured results
 	verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
 	matrixSummary?: ThreatMatrixSummary;
+	evidenceCase?: EvidenceCaseData;
+	// Entity + classification
 	entities?: EntityRef[];
-	feedback?: "up" | "down" | null;
 	cascadeLayer?: CascadeLayer;
+	// SPARTA-specific
+	type?: "natural" | "aql";
+	alertType?: "threat-delta";
+	_querySpec?: Record<string, unknown>;
+	clarifyOptions?: Array<{ question: string }>;
+	resultCount?: number;
+	// Interaction
+	feedback?: "up" | "down" | null;
 }
 
 // ── Activity Feed Types ─────────────────────────────────────────────────

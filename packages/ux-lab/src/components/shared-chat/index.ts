@@ -22,6 +22,7 @@ export { PresenceBar } from "./PresenceBar";
 export type { SkillPaletteProps } from "./SkillPalette";
 export { SkillPalette } from "./SkillPalette";
 export { SuggestionCard } from "./SuggestionCard";
+export { ToolAction } from "./ToolAction";
 // Types
 export type {
 	ActivityEvent,
@@ -32,6 +33,7 @@ export type {
 	ChatMessage,
 	EntityRef,
 	EntityType,
+	EvidenceCaseData,
 	EvidenceGate,
 	PresenceEntry,
 	ReasoningStep,
@@ -42,3 +44,5 @@ export type {
 } from "./types";
 // Hooks
 export { useActivityFeed } from "./useActivityFeed";
+export type { CascadeConfig, CascadePipeline, CascadeResult } from "./useCascadePipeline";
+export { useCascadePipeline } from "./useCascadePipeline";

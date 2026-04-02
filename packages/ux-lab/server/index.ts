@@ -518,6 +518,30 @@ app.post('/api/evidence-case/stress-test', async (req, res) => {
   }
 })
 
+app.post('/api/datalake/verify', async (req, res) => {
+  const { pdf_path, max_pages = 3 } = req.body as { pdf_path?: string; max_pages?: number }
+  if (!pdf_path) return res.status(400).json({ error: 'pdf_path required' })
+
+  try {
+    const { execFileSync } = await import('child_process')
+    const result = execFileSync('python3', ['-c', `
+import json, sys
+sys.path.insert(0, "/home/graham/workspace/experiments/pdf_oxide/.venv/lib/python3.12/site-packages")
+from pathlib import Path
+import pdf_oxide
+doc = pdf_oxide.PdfDocument("${pdf_path}")
+ext = doc.extract_document(max_pages=${max_pages})
+sys.path.insert(0, "/home/graham/workspace/experiments/pi-mono/.pi/skills/pdf-lab")
+from lib.visual_score import verify_document
+result = verify_document(Path("${pdf_path}"), ext, max_pages=${max_pages})
+print(json.dumps(result))
+`], { timeout: 60000, encoding: 'utf-8', cwd: '/home/graham/workspace/experiments/pi-mono/.pi/skills/pdf-lab' })
+    res.json(JSON.parse(result.trim().split('\n').pop() || '{}'))
+  } catch (e: any) {
+    res.status(502).json({ error: 'Verification failed', detail: String(e.stderr || e.message).slice(0, 500) })
+  }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
