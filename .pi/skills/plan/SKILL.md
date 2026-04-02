@@ -25,6 +25,9 @@ composes:
   - assess
   - task-monitor
   - best-practices-plan
+  - review-plan
+  - recommend-skill-chain
+  - orchestrate
 read_before_use:
   - plan.py
   - design_pipeline.py

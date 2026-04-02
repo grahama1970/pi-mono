@@ -1,0 +1,472 @@
+## Datalake Explorer — Comprehensive Test Manifest
+## Mix of: VLM visual checks (screenshot), DOM checks (surf read), API checks (curl)
+## VLM uses text-gemini-3 via vlm_image.py preprocessing
+
+config:
+  base_url: "http://localhost:3002/#datalake-explorer"
+  vlm_endpoint: "http://localhost:4001/v1/chat/completions"
+  vlm_model: "text-gemini-3"
+  vlm_auth: "Bearer sk-dev-proxy-123"
+  viewport: [1366, 885]
+  screenshot_dir: "/tmp/datalake-explorer-tests"
+
+tests:
+
+# ═══════════════════════════════════════════════════════════════════
+# 1. TAB NAVIGATION (DOM checks — no screenshots needed)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: tabs_all_present
+    type: dom
+    action: read
+    assert: 'buttons contain ["Overview","Corpus","Extraction","Requirements","Traceability","Cascade","Metrics","Quarantine"]'
+
+  - id: tab_click_overview
+    type: dom
+    action: click "Overview"
+    assert: 'page contains "Datalake Overview" or stat cards'
+
+  - id: tab_click_corpus
+    type: dom
+    action: click "Corpus"
+    assert: 'page contains "Documents" or scope list'
+
+  - id: tab_click_extraction
+    type: dom
+    action: click "Extraction"
+    assert: 'page renders without crash'
+
+  - id: tab_click_requirements
+    type: dom
+    action: click "Requirements"
+    assert: 'page renders without crash'
+
+  - id: tab_click_traceability
+    type: dom
+    action: click "Traceability"
+    assert: 'page contains "Select a document"'
+
+  - id: tab_click_cascade
+    type: dom
+    action: click "Cascade"
+    assert: 'page renders without crash'
+
+  - id: tab_click_metrics
+    type: dom
+    action: click "Metrics"
+    assert: 'page contains coverage or metrics content'
+
+  - id: tab_click_quarantine
+    type: dom
+    action: click "Quarantine"
+    assert: 'page contains filter radios and entry list'
+
+  - id: tab_roundtrip
+    type: dom
+    action: [click "Quarantine", click "Overview", click "Quarantine"]
+    assert: 'quarantine entries still visible after switching away and back'
+
+# ═══════════════════════════════════════════════════════════════════
+# 2. OVERVIEW TAB (1 VLM + DOM checks)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: overview_visual
+    type: vlm
+    tab: overview
+    vlm_prompt: >
+      This is the Overview tab. Return JSON:
+      {"stat_cards": [{"label": "...", "value": "..."}], "scope_count": N, "scope_names": [...]}
+    expected: 'stat_cards length >= 4, scope_count == 6'
+
+  - id: overview_stat_values_nonzero
+    type: dom
+    tab: overview
+    assert: 'page text contains at least one number > 1000 (documents/sections counts)'
+
+  - id: overview_scopes_clickable
+    type: dom
+    tab: overview
+    action: read --filter all
+    assert: 'scope items have cursor=pointer'
+
+# ═══════════════════════════════════════════════════════════════════
+# 3. METRICS TAB (1 VLM + API checks)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: metrics_visual
+    type: vlm
+    tab: metrics
+    vlm_prompt: >
+      This is a Metrics tab. Return JSON:
+      {"has_embedding_coverage": bool, "has_edge_counts": bool, "has_quarantine_button": bool, "quarantine_button_text": "..."}
+    expected: 'has_embedding_coverage && has_quarantine_button'
+
+  - id: metrics_coverage_section
+    type: dom
+    tab: metrics
+    assert: 'page contains "Embedding Coverage" or "coverage"'
+
+  - id: metrics_quarantine_button_present
+    type: dom
+    tab: metrics
+    assert: 'button with text matching "Quarantine" exists'
+
+# ═══════════════════════════════════════════════════════════════════
+# 4. QUARANTINE TAB — List & Filters (DOM + 1 VLM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: quarantine_visual
+    type: vlm
+    tab: quarantine
+    vlm_prompt: >
+      This is the Quarantine tab. Return JSON:
+      {"entry_count": N, "filter_labels": [...], "layout": "one_pane|two_pane|three_pane",
+       "has_search": bool, "has_checkboxes": bool, "has_layout_presets": bool}
+    expected: 'entry_count >= 1, layout == "three_pane"'
+
+  - id: quarantine_filter_all
+    type: dom
+    tab: quarantine
+    assert: 'radio "All" is checked'
+
+  - id: quarantine_filter_lowconf
+    type: dom
+    action: click radio "LowConf"
+    assert: 'list updates, entries still visible'
+
+  - id: quarantine_filter_exterr
+    type: dom
+    action: click radio "ExtErr"
+    assert: 'list shows 0 entries or empty state'
+
+  - id: quarantine_filter_novel
+    type: dom
+    action: click radio "Novel"
+    assert: 'list shows 0 entries or empty state'
+
+  - id: quarantine_filter_timeout
+    type: dom
+    action: click radio "Timeout"
+    assert: 'list shows 0 entries or empty state'
+
+  - id: quarantine_filter_back_to_all
+    type: dom
+    action: click radio "All"
+    assert: 'all entries reappear'
+
+  - id: quarantine_search_filter
+    type: dom
+    action: type "0001" in search box
+    assert: 'entry list filters to show only matching IDs'
+
+  - id: quarantine_search_clear
+    type: dom
+    action: clear search box
+    assert: 'all entries reappear'
+
+  - id: quarantine_entry_checkboxes
+    type: dom
+    assert: 'each entry row has an unchecked checkbox'
+
+# ═══════════════════════════════════════════════════════════════════
+# 5. QUARANTINE — Entry Selection & Detail Panel (DOM + VLM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: quarantine_select_first
+    type: dom
+    tab: quarantine
+    action: click first entry option
+    assert: 'entry becomes selected, detail panel appears on right'
+
+  - id: quarantine_detail_panel
+    type: vlm
+    tab: quarantine
+    prereq: select first entry
+    vlm_prompt: >
+      An entry is selected in the quarantine view. Look at the right detail panel. Return JSON:
+      {"has_filename": bool, "has_diagnostic_cards": bool, "diagnostic_labels": [...],
+       "has_action_buttons": bool, "action_button_labels": [...]}
+    expected: 'has_filename && has_action_buttons'
+
+  - id: quarantine_detail_shows_id
+    type: dom
+    prereq: select first entry
+    assert: 'detail panel text contains a hex document ID'
+
+# ═══════════════════════════════════════════════════════════════════
+# 6. QUARANTINE — Action Buttons (DOM checks)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: quarantine_approve_button
+    type: dom
+    prereq: select entry
+    assert: 'button "Approve" exists and is not disabled'
+
+  - id: quarantine_reject_button
+    type: dom
+    prereq: select entry
+    assert: 'button "Reject" exists and is not disabled'
+
+  - id: quarantine_reextract_button
+    type: dom
+    prereq: select entry
+    assert: 'button or element with "Re-extract" or "re-extract" text exists'
+
+  - id: quarantine_interview_button
+    type: dom
+    prereq: select entry
+    assert: 'button "Interview" exists'
+
+  - id: quarantine_converge_button
+    type: dom
+    prereq: select entry
+    assert: 'button "Converge" exists'
+
+  - id: quarantine_diagnose_button
+    type: dom
+    prereq: select entry
+    assert: 'button "Diagnose" exists'
+
+  - id: quarantine_batch_approve_disabled
+    type: dom
+    assert: 'batch approve button shows "0 selected" and is disabled when no checkboxes checked'
+
+# ═══════════════════════════════════════════════════════════════════
+# 7. QUARANTINE — Layout Presets (DOM checks)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: layout_balanced
+    type: dom
+    tab: quarantine
+    assert: 'button "Balanced" exists and is clickable'
+
+  - id: layout_review
+    type: dom
+    action: click "Review"
+    assert: 'layout changes (panel widths shift)'
+
+  - id: layout_inspect
+    type: dom
+    action: click "Inspect"
+    assert: 'layout changes'
+
+  - id: layout_wide
+    type: dom
+    action: click "Wide Content"
+    assert: 'layout changes'
+
+  - id: layout_chat
+    type: dom
+    action: click "Chat"
+    assert: 'chat panel opens or layout changes'
+
+  - id: layout_reset_balanced
+    type: dom
+    action: click "Balanced"
+    assert: 'returns to default layout'
+
+# ═══════════════════════════════════════════════════════════════════
+# 8. QUARANTINE — Keyboard Shortcuts (DOM checks)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: keyboard_j_next
+    type: dom
+    prereq: quarantine tab active, entry selected
+    action: keypress j
+    assert: 'selection moves to next entry in queue'
+
+  - id: keyboard_k_prev
+    type: dom
+    action: keypress k
+    assert: 'selection moves to previous entry'
+
+  - id: keyboard_esc_deselect
+    type: dom
+    action: keypress Escape
+    assert: 'entry is deselected, detail panel shows placeholder'
+
+# ═══════════════════════════════════════════════════════════════════
+# 9. CORPUS TAB (DOM + 1 VLM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: corpus_visual
+    type: vlm
+    tab: corpus
+    vlm_prompt: >
+      This is the Corpus tab. Return JSON:
+      {"has_scope_list": bool, "has_document_list": bool, "has_search": bool,
+       "scope_names": [...], "is_loading": bool}
+    expected: 'has_scope_list'
+
+  - id: corpus_scope_counts
+    type: dom
+    tab: corpus
+    assert: 'scope items show document counts as numbers'
+
+# ═══════════════════════════════════════════════════════════════════
+# 10. TRACEABILITY TAB (DOM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: traceability_placeholder
+    type: dom
+    tab: traceability
+    assert: 'shows "Select a document" prompt'
+
+# ═══════════════════════════════════════════════════════════════════
+# 11. CROSS-TAB FLOWS (DOM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: flow_metrics_to_quarantine
+    type: dom
+    action: [click "Metrics", click quarantine button, verify quarantine tab activates]
+    assert: 'clicking Quarantine Issues button on Metrics navigates to Quarantine tab or creates entries'
+
+  - id: flow_quarantine_approve_removes
+    type: api
+    action: POST /api/quarantine/{id}/action {"action":"approve"}
+    assert: 'entry status changes, entry removed from pending list on refresh'
+
+# ═══════════════════════════════════════════════════════════════════
+# 12. ERROR / EDGE CASES (DOM + API)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: quarantine_empty_after_filter
+    type: dom
+    tab: quarantine
+    action: click radio "ExtErr"
+    assert: 'empty state message shown when 0 entries match filter'
+
+  - id: quarantine_no_crash_rapid_tab_switch
+    type: dom
+    action: [click "Overview", click "Quarantine", click "Metrics", click "Quarantine", click "Overview"]
+    assert: 'no crash log appears, each tab renders'
+
+  - id: quarantine_no_crash_select_deselect
+    type: dom
+    tab: quarantine
+    action: [click entry, press Esc, click entry, press Esc]
+    assert: 'no crash, state resets cleanly'
+
+# ═══════════════════════════════════════════════════════════════════
+# 13. API BACKEND (curl — no screenshots)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: api_quarantine_list
+    type: api
+    method: GET
+    url: /api/quarantine
+    assert: 'returns array, length >= 1'
+
+  - id: api_quarantine_list_filtered
+    type: api
+    method: GET
+    url: /api/quarantine?status=pending
+    assert: 'returns array of pending entries'
+
+  - id: api_quarantine_detail
+    type: api
+    method: GET
+    url: /api/quarantine/{first_entry_key}
+    assert: 'returns object with _key, filename, reason, status'
+
+  - id: api_quarantine_action_approve
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/action
+    body: {"action": "approve"}
+    assert: 'status 200, entry status changes to approve'
+
+  - id: api_quarantine_action_reject
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/action
+    body: {"action": "reject"}
+    assert: 'status 200, entry status changes to reject'
+
+  - id: api_quarantine_from_metrics
+    type: api
+    method: POST
+    url: /api/quarantine/from-metrics
+    body: {"issues": [{"entity_id": "test123", "entity_type": "section", "code": "missing_embedding_text", "message": "test"}], "source": "test"}
+    assert: 'status 200, created count >= 1'
+
+  - id: api_reextract
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/reextract
+    body: {"pdf_path": "/mnt/storage12tb/extractor_corpus/defense/arxiv_1703.10873v1.pdf"}
+    assert: 'status 200, status=complete, extraction.pages > 0'
+
+  - id: api_reextract_path_validation
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/reextract
+    body: {"pdf_path": "/etc/passwd"}
+    assert: 'status 400, error mentions /mnt/storage12tb'
+
+  - id: api_diagnose
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/diagnose
+    body: {"pdf_path": "/mnt/storage12tb/extractor_corpus/nist/nist_fips_140_3.pdf"}
+    assert: 'status 200, toc.count > 0, extraction.count > 0, delta is integer'
+
+  - id: api_diagnose_path_validation
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/diagnose
+    body: {"pdf_path": "/tmp/evil.pdf"}
+    assert: 'status 400'
+
+  - id: api_convergence_validation
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/convergence
+    body: {}
+    assert: 'status 400, error about pdf_path'
+
+  - id: api_bbox_save
+    type: api
+    method: POST
+    url: /api/quarantine/{entry}/bbox-save
+    body: {"blocks": [{"id": "test_block", "blockType": "Table", "label": "Test", "bbox": {"x":0,"y":0,"w":100,"h":50}}], "doc_key": "test_doc"}
+    assert: 'status 200, saved count == 1'
+
+  - id: api_metrics_report
+    type: api
+    method: GET
+    url: /api/datalake/metrics
+    assert: 'status 200'
+
+  - id: api_metrics_post
+    type: api
+    method: POST
+    url: /api/datalake/metrics
+    assert: 'status 200, returns metrics report or list'
+
+# ═══════════════════════════════════════════════════════════════════
+# 14. VISUAL REGRESSION — Key Screenshots (VLM)
+# ═══════════════════════════════════════════════════════════════════
+
+  - id: visual_overview_full
+    type: vlm
+    tab: overview
+    vlm_prompt: >
+      Full screenshot of Overview tab. Verify EMBRY design system:
+      1. Dark background (near black)?
+      2. Monospace font for data values?
+      3. Green (#15803d) accent on active elements?
+      4. No bright colors outside green/amber/red status indicators?
+      Return JSON: {"dark_bg": bool, "monospace_values": bool, "green_accent": bool, "no_bright_noise": bool}
+    expected: 'all true'
+
+  - id: visual_quarantine_three_pane
+    type: vlm
+    tab: quarantine
+    vlm_prompt: >
+      Verify the three-pane quarantine layout:
+      1. Left pane: scrollable entry queue with checkboxes
+      2. Center pane: section tree or content area
+      3. Right pane: inspector/detail panel
+      Are all three panes visible? Return JSON: {"left_pane": bool, "center_pane": bool, "right_pane": bool}
+    expected: 'all true'

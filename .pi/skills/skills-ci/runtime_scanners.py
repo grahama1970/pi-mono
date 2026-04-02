@@ -139,26 +139,36 @@ def _parse_triggers_from_skill_md(text: str) -> List[str]:
     return triggers
 
 
-def _check_triggers(skill_dir: Path) -> List[Violation]:
-    """Check that SKILL.md frontmatter has a non-empty triggers list.
+# Words too generic to be useful as trigger vocabulary.
+# Triggers containing ONLY these words will be flagged.
+_STOP_WORDS = {
+    "run", "do", "make", "this", "that", "it", "the", "a", "an",
+    "please", "help", "go", "start", "execute", "use", "get",
+}
 
-    Skills with ``internal: true`` in frontmatter are exempt — they are
-    infrastructure/build-time tools not invoked by humans, so triggers
-    (which power Tier 2/3 implicit discovery) are irrelevant.
+
+def _check_triggers(skill_dir: Path) -> List[Violation]:
+    """Check that SKILL.md frontmatter has non-empty, high-quality triggers.
+
+    Validates:
+    1. Triggers exist (not empty)
+    2. Trigger quality: each trigger should be >= 3 words with domain vocabulary
+    3. No duplicate triggers across the trigger list
+
+    Skills with ``internal: true`` in frontmatter are exempt.
     """
     violations: List[Violation] = []
     skill_name = skill_dir.name
     skill_md = skill_dir / "SKILL.md"
 
     if not skill_md.exists():
-        return violations  # Missing SKILL.md is caught by other scanners
+        return violations
 
     try:
         text = skill_md.read_text(encoding="utf-8", errors="ignore")
     except Exception:
         return violations
 
-    # Skip trigger check for internal skills
     if is_internal_skill(text):
         return violations
 
@@ -170,7 +180,51 @@ def _check_triggers(skill_dir: Path) -> List[Violation]:
             severity="warn",
             skill=skill_name,
             path=str(skill_md),
-            message="SKILL.md frontmatter has no triggers — skill is invisible to Tier 2/3 discovery. Add triggers or set internal: true if this is infrastructure.",
+            message="SKILL.md frontmatter has no triggers — skill is invisible to "
+                    "Tier 2/3 discovery and voice control. Add triggers or set "
+                    "internal: true if this is infrastructure.",
+        ))
+        return violations
+
+    # Check trigger quality
+    vague_triggers = []
+    for trigger in triggers:
+        words = trigger.lower().split()
+        # Too short — won't disambiguate from other skills
+        if len(words) < 3:
+            vague_triggers.append(trigger)
+            continue
+        # All words are stop words — no domain vocabulary
+        meaningful = [w for w in words if w not in _STOP_WORDS]
+        if not meaningful:
+            vague_triggers.append(trigger)
+
+    if vague_triggers:
+        violations.append(Violation(
+            rule="runtime.vague_triggers",
+            severity="warn",
+            skill=skill_name,
+            path=str(skill_md),
+            message=f"Vague triggers will cause false matches in voice/intent "
+                    f"pipeline: {vague_triggers}. Each trigger should be >= 3 words "
+                    f"with domain-specific vocabulary.",
+        ))
+
+    # Check for duplicates
+    seen = set()
+    dupes = []
+    for trigger in triggers:
+        normalized = trigger.lower().strip()
+        if normalized in seen:
+            dupes.append(trigger)
+        seen.add(normalized)
+    if dupes:
+        violations.append(Violation(
+            rule="runtime.duplicate_triggers",
+            severity="warn",
+            skill=skill_name,
+            path=str(skill_md),
+            message=f"Duplicate triggers waste voice/intent search space: {dupes}",
         ))
 
     return violations

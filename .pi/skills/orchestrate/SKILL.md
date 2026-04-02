@@ -1,11 +1,11 @@
 ---
 name: orchestrate
 description: >
-  Task execution with quality gates. Executes tasks from YAML/JSON plan files (0N_TASKS.yaml)
-  or legacy markdown task files (0N_TASKS.md) with preflight checks, per-task quality gates,
-  pause/resume, and multi-backend support (Pi, Claude Code, Codex). YAML is preferred —
-  no parsing ambiguity. Use when user says "run these tasks", "execute the plan",
-  "orchestrate this". Supports `with <model>` syntax for per-run and per-step model routing.
+  Async DAG task executor with quality gates. Dispatches plan YAML tasks to code-runner
+  (iterative code), scillm (one-shot LLM), or local (shell commands). Features: blind eval
+  with information barrier, per-task timeout, T2 code review gate, pause/resume/cancel
+  via file-based intervention. Use when user says "run these tasks", "execute the plan",
+  "orchestrate this".
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Task, AskUserQuestion
 triggers:
   - orchestrate this
@@ -26,11 +26,13 @@ provides:
   - task-execution
   - orchestration
 composes:
+  - code-runner
+  - scillm
   - memory
   - plan
+  - review-plan
   - task-monitor
-  - scheduler
-  - best-practices-agent
+  - test-lab
 read_before_use:
   - structured_execute.py
   - run.sh

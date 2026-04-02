@@ -121,7 +121,8 @@ def load_screenshots(group: str) -> list[tuple[str, bytes]]:
     return processed
 
 
-def load_source_code(source_spec: str) -> str:
+def load_source_code(source_spec: str, components_root: Path | None = None) -> str:
+    root = components_root or COMPONENTS_ROOT
     sections: list[str] = []
     for raw_spec in source_spec.split(","):
         spec = raw_spec.strip()
@@ -137,9 +138,9 @@ def load_source_code(source_spec: str) -> str:
             start_line = int(range_match.group(2))
             end_line = int(range_match.group(3))
 
-        file_path = (COMPONENTS_ROOT / filename).resolve()
+        file_path = (root / filename).resolve()
         try:
-            file_path.relative_to(COMPONENTS_ROOT.resolve())
+            file_path.relative_to(root.resolve())
         except ValueError:
             logger.warning("Skipping source outside component directory: {}", spec)
             continue
@@ -334,6 +335,10 @@ def review(
         raise typer.Exit(1)
 
     manifest = json.loads(manifest_path.read_text())
+    # Set components_root from manifest (allows Lean4 files in lean4-lemma/ instead of binary-explorer/)
+    global COMPONENTS_ROOT
+    if "components_root" in manifest:
+        COMPONENTS_ROOT = UX_LAB / manifest["components_root"]
     target_reviews = manifest["reviews"]
     if persona:
         target_reviews = [r for r in target_reviews if r["persona"] == persona]

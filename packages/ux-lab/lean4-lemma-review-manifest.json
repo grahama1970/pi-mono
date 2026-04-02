@@ -4,6 +4,7 @@
   "app": "lean4-lemma",
   "total": 30,
   "captures_dir": "captures/lean4-lemma-reviews",
+  "components_root": "src/components/lean4-lemma",
   "vlm_image_processor": ".pi/skills/common/vlm_image.py",
   "vlm_preprocessing": {
     "auto_crop": true,
@@ -14,9 +15,9 @@
     "stitch_mode": "vertical"
   },
   "personas": {
-    "rob-armstrong": "Rob Armstrong — Formal methods expert (Sandia/Draper background). Evaluates proof soundness, sorry contamination, tactic selection, and whether the graph correctly represents logical dependencies. Cares about: can I trust this proof? What assumptions does it make? Where are the sorry gaps?",
-    "brandon-bailey": "Brandon Bailey — SPARTA security architect. Evaluates compliance coverage, CMMC control mapping, evidence tiers, and whether the tool helps prepare for a DFARS audit. Cares about: which controls have formal proofs? What's our compliance posture? What fails if this requirement changes?",
-    "denis-gopan": "Denis Gopan — GrammaTech static analysis researcher. Evaluates tool usability for a verification engineer: is the proof graph navigable? Can I trace dependencies? Does the what-if analysis reveal real attack surfaces? Cares about: compositionality, abstraction levels, scalability."
+    "rob-armstrong": "Rob Armstrong \u2014 Formal methods expert (Sandia/Draper background). Evaluates proof soundness, sorry contamination, tactic selection, and whether the graph correctly represents logical dependencies. Cares about: can I trust this proof? What assumptions does it make? Where are the sorry gaps?",
+    "brandon-bailey": "Brandon Bailey \u2014 SPARTA security architect. Evaluates compliance coverage, CMMC control mapping, evidence tiers, and whether the tool helps prepare for a DFARS audit. Cares about: which controls have formal proofs? What's our compliance posture? What fails if this requirement changes?",
+    "denis-gopan": "Denis Gopan \u2014 GrammaTech static analysis researcher. Evaluates tool usability for a verification engineer: is the proof graph navigable? Can I trace dependencies? Does the what-if analysis reveal real attack surfaces? Cares about: compositionality, abstraction levels, scalability."
   },
   "reviews": [
     {
@@ -48,7 +49,16 @@
       "group": "tactic-analysis",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-100,ProofDetail.tsx:1-150",
-      "criteria": "As a Lean4 expert: Does the tactic display help you understand proof strategy? Can you click a tactic to ask the chat about it? Are the most common tactics across the library visible? Does the suggested query 'What tactics work for [theorem]?' actually help understand proof construction?"
+      "criteria": "As a Lean4 expert: Does the tactic display help you understand proof strategy? Can you click a tactic to ask the chat about it? Are the most common tactics across the library visible? Does the suggested query 'What tactics work for [theorem]?' actually help understand proof construction?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "rob-armstrong",
@@ -73,14 +83,32 @@
       "group": "live-compilation",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:100-130,useLean4Data.ts:50-90",
-      "criteria": "As someone monitoring autonomous proof generation: Does the Live Status section show active compilations? Is the polling interval reasonable (not too aggressive)? Can you see when a proof attempt succeeds or fails? Does the re-prove button connect to the lean4-prove service? Is error handling graceful when the service is down?"
+      "criteria": "As someone monitoring autonomous proof generation: Does the Live Status section show active compilations? Is the polling interval reasonable (not too aggressive)? Can you see when a proof attempt succeeds or fails? Does the re-prove button connect to the lean4-prove service? Is error handling graceful when the service is down?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "rob-armstrong",
       "group": "re-prove-workflow",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:130-170",
-      "criteria": "As someone triggering re-proofs: Does the 'Trigger Autonomous Re-Proof' button send the right data to lean4-prove? Does it include the original tactics and problem description? Is the result displayed in the chat? Can you re-prove multiple sorry lemmas at once (from what-if cascade)? Is feedback immediate?"
+      "criteria": "As someone triggering re-proofs: Does the 'Trigger Autonomous Re-Proof' button send the right data to lean4-prove? Does it include the original tactics and problem description? Is the result displayed in the chat? Can you re-prove multiple sorry lemmas at once (from what-if cascade)? Is feedback immediate?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "brandon-bailey",
@@ -92,21 +120,39 @@
       "persona": "brandon-bailey",
       "group": "cmmc-impact-analysis",
       "mode": "screenshot",
-      "criteria": "As someone preparing for a DFARS audit: When you run a what-if cascade, does the Impact tab show specific CMMC control IDs that lose formal assurance? Does it explain the evidence downgrade (T1→T3)? Can you present this to an auditor as 'here are the controls at risk if requirement X changes'? Is the language compliance-oriented, not just technical?"
+      "criteria": "As someone preparing for a DFARS audit: When you run a what-if cascade, does the Impact tab show specific CMMC control IDs that lose formal assurance? Does it explain the evidence downgrade (T1\u2192T3)? Can you present this to an auditor as 'here are the controls at risk if requirement X changes'? Is the language compliance-oriented, not just technical?"
     },
     {
       "persona": "brandon-bailey",
       "group": "control-mapping",
       "mode": "code",
       "source": "useLean4Data.ts:80-130",
-      "criteria": "As someone who needs NIST-to-proof traceability: Do proof-requirement edges correctly link lean4_proofs to sparta_controls? Can you trace from a CMMC control to its formal proof? Are requirement nodes visually distinct from proof nodes in the graph? Does the data model support the compliance chain: CMMC → NIST 800-171 → SPARTA control → formal proof?"
+      "criteria": "As someone who needs NIST-to-proof traceability: Do proof-requirement edges correctly link lean4_proofs to sparta_controls? Can you trace from a CMMC control to its formal proof? Are requirement nodes visually distinct from proof nodes in the graph? Does the data model support the compliance chain: CMMC \u2192 NIST 800-171 \u2192 SPARTA control \u2192 formal proof?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "brandon-bailey",
       "group": "threat-matrix-handoff",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-50",
-      "criteria": "As someone who switches between Threat Matrix and Lemma Viewer: Are the same SPARTA controls visible in both views? Can you navigate from a control in the Lemma Viewer to the same control in the Threat Matrix? Does the shared data model (ArangoDB) ensure consistency? Would a compliance officer understand the relationship between these two views?"
+      "criteria": "As someone who switches between Threat Matrix and Lemma Viewer: Are the same SPARTA controls visible in both views? Can you navigate from a control in the Lemma Viewer to the same control in the Threat Matrix? Does the shared data model (ArangoDB) ensure consistency? Would a compliance officer understand the relationship between these two views?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "brandon-bailey",
@@ -137,14 +183,32 @@
       "group": "supply-chain-risk",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:80-120",
-      "criteria": "As someone assessing supply chain risk in defense manufacturing: Does the cascade analysis show how a change in one subsystem's proof affects downstream systems? Can you model 'what if our vendor's authentication module proof is invalid?' and see plant-floor impact? Does the tool help with CMMC supply chain risk assessment (SC.L2-3.13.1)?"
+      "criteria": "As someone assessing supply chain risk in defense manufacturing: Does the cascade analysis show how a change in one subsystem's proof affects downstream systems? Can you model 'what if our vendor's authentication module proof is invalid?' and see plant-floor impact? Does the tool help with CMMC supply chain risk assessment (SC.L2-3.13.1)?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "brandon-bailey",
       "group": "shared-components",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-30",
-      "criteria": "As someone who uses both Binary Explorer and Lemma Viewer: Do they share the same graph engine (GraphExplorer)? Is the LeftPane consistent between views? Are chat interactions similar in style and capability? Does switching between views feel like the same product? Are design tokens (EmbryStyle) consistent?"
+      "criteria": "As someone who uses both Binary Explorer and Lemma Viewer: Do they share the same graph engine (GraphExplorer)? Is the LeftPane consistent between views? Are chat interactions similar in style and capability? Does switching between views feel like the same product? Are design tokens (EmbryStyle) consistent?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
@@ -157,14 +221,32 @@
       "group": "compositionality",
       "mode": "code",
       "source": "useLean4Data.ts:80-150",
-      "criteria": "As someone who cares about compositional verification: Does the data model support hierarchical proof composition (proofs of sub-components compose into system-level proofs)? Can you see which proofs are 'leaf' proofs vs 'composite' proofs? Does the graph layout reveal compositional structure? Is the BFS cascade algorithm correct for compositional dependency?"
+      "criteria": "As someone who cares about compositional verification: Does the data model support hierarchical proof composition (proofs of sub-components compose into system-level proofs)? Can you see which proofs are 'leaf' proofs vs 'composite' proofs? Does the graph layout reveal compositional structure? Is the BFS cascade algorithm correct for compositional dependency?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
       "group": "scalability",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:60-100,useLean4Data.ts:50-70",
-      "criteria": "As someone who works with large proof libraries (94K+ theorems): Does the data fetching paginate or limit to prevent UI freeze? Is the graph renderer optimized for large node counts (LOD, collision toggling)? Can the what-if BFS handle 1000+ node cascades without lag? Does the LeftPane handle 500+ theorems with search?"
+      "criteria": "As someone who works with large proof libraries (94K+ theorems): Does the data fetching paginate or limit to prevent UI freeze? Is the graph renderer optimized for large node counts (LOD, collision toggling)? Can the what-if BFS handle 1000+ node cascades without lag? Does the LeftPane handle 500+ theorems with search?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
@@ -177,21 +259,48 @@
       "group": "what-if-correctness",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:70-100",
-      "criteria": "As a verification expert evaluating the what-if algorithm: Is the BFS cascade correct (forward propagation through dependency edges)? Does it handle cycles gracefully? Does toggling a node to sorry correctly mark all downstream as tainted (not upstream)? Is the cascade result computed efficiently (memoized)? Does resetting clear all state correctly?"
+      "criteria": "As a verification expert evaluating the what-if algorithm: Is the BFS cascade correct (forward propagation through dependency edges)? Does it handle cycles gracefully? Does toggling a node to sorry correctly mark all downstream as tainted (not upstream)? Is the cascade result computed efficiently (memoized)? Does resetting clear all state correctly?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
       "group": "data-integrity",
       "mode": "code",
       "source": "useLean4Data.ts:1-150",
-      "criteria": "As someone who cares about data correctness: Does useLean4Data correctly map ArangoDB documents to GraphNode/GraphEdge? Are proof statuses derived accurately from lean_code content? Is the sorry detection reliable (checking for 'sorry' in code)? Are edge directions correct (proof → requirement, not reversed)? Is the data refresh handled on mount with cleanup?"
+      "criteria": "As someone who cares about data correctness: Does useLean4Data correctly map ArangoDB documents to GraphNode/GraphEdge? Are proof statuses derived accurately from lean_code content? Is the sorry detection reliable (checking for 'sorry' in code)? Are edge directions correct (proof \u2192 requirement, not reversed)? Is the data refresh handled on mount with cleanup?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
       "group": "accessibility",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:200-300",
-      "criteria": "As someone building tools for diverse teams: Do interactive elements have role='button' and tabIndex? Are keyboard shortcuts documented in the UI? Is the what-if toggle keyboard-accessible? Do suggested queries have proper ARIA labels? Is the color scheme accessible for color-blind users (not relying solely on red/green)?"
+      "criteria": "As someone building tools for diverse teams: Do interactive elements have role='button' and tabIndex? Are keyboard shortcuts documented in the UI? Is the what-if toggle keyboard-accessible? Do suggested queries have proper ARIA labels? Is the color scheme accessible for color-blind users (not relying solely on red/green)?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
@@ -204,14 +313,32 @@
       "group": "integration-with-lean4-prove",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:130-170",
-      "criteria": "As someone who runs the lean4-prove service: Does the re-prove workflow send correct payloads to :8604? Does it handle service-down gracefully? Does it pass tactics from the original proof for retrieval-augmented generation? Is the retry logic (max_retries) configurable? Does the result update the graph in real-time?"
+      "criteria": "As someone who runs the lean4-prove service: Does the re-prove workflow send correct payloads to :8604? Does it handle service-down gracefully? Does it pass tactics from the original proof for retrieval-augmented generation? Is the retry logic (max_retries) configurable? Does the result update the graph in real-time?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     },
     {
       "persona": "denis-gopan",
       "group": "error-handling",
       "mode": "code",
       "source": "Lean4LemmaView.tsx:100-200,useLean4Data.ts:50-90",
-      "criteria": "As a developer concerned about robustness: What happens when ArangoDB is down? When lean4-prove service is unavailable? When proof data is malformed? Are errors displayed to the user (not silently swallowed)? Is the loading state communicated? Does the component degrade gracefully (show what it can, error on what it can't)?"
+      "criteria": "As a developer concerned about robustness: What happens when ArangoDB is down? When lean4-prove service is unavailable? When proof data is malformed? Are errors displayed to the user (not silently swallowed)? Is the loading state communicated? Does the component degrade gracefully (show what it can, error on what it can't)?",
+      "score": 0,
+      "verdict": null,
+      "weaknesses": [],
+      "strengths": [],
+      "changes": [],
+      "status": "reviewed",
+      "round": 1,
+      "latency_ms": null,
+      "reviewed_at": "2026-04-02T12:18:23"
     }
   ]
 }

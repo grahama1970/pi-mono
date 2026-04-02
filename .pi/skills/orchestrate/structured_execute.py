@@ -138,9 +138,10 @@ async def _run_scillm(task: TaskRuntime, session_dir: Path) -> str:
 async def _wait_for_cancel(task: TaskRuntime) -> None:
     """Block until cancel event is set, then kill the task's subprocess."""
     await task._cancel_event.wait()
-    if task._proc and task._proc.returncode is None:
+    proc = task._proc  # local ref — avoids race if _proc set to None concurrently
+    if proc and proc.returncode is None:
         try:
-            task._proc.kill()
+            proc.kill()
         except ProcessLookupError:
             pass
 
@@ -303,6 +304,9 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             for c in blind_result.get("checks", []) if not c["passed"]
         ]
         accumulated_feedback.extend(new_failures)
+        # Cap to last 20 failure messages to prevent unbounded memory growth
+        if len(accumulated_feedback) > 20:
+            accumulated_feedback = accumulated_feedback[-20:]
 
         logger.warning("Blind eval FAILED for {} attempt {}/{} ({}/{})",
                        task.task_id, attempt, max_blind_attempts,
