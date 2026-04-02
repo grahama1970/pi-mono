@@ -340,6 +340,16 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
 
 // --- Main view ---
 export default function ThreatMatrixView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('threatmatrix:item-1', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle framework filter', description: 'Toggle framework filter' })
+  useRegisterAction('threatmatrix:close-drillthrough', { app: 'datalake-explorer', action: 'CLOSE_DRILLTHROUGH', label: 'Close Drillthrough', description: 'Close Drillthrough in cellBg' })
+  useRegisterAction('threatmatrix:item-3', { app: 'datalake-explorer', action: 'EDIT_CLAIM', label: 'Edit evidence claim', description: 'Edit evidence claim' })
+  useRegisterAction('threatmatrix:item-4', { app: 'datalake-explorer', action: 'START_EDIT', label: 'Start editing evidence', description: 'Start editing evidence' })
+  useRegisterAction('threatmatrix:item-5', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
+  useRegisterAction('threatmatrix:dyn-6', { app: 'datalake-explorer', action: 'TOGGLE_MODE', label: 'Toggle verification mode', description: 'Toggle verification mode' })
+  useRegisterAction('threatmatrix:dyn-7', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_CHIP', label: 'Toggle framework chip', description: 'Toggle framework chip' })
+  useRegisterAction('threatmatrix:dyn-8', { app: 'datalake-explorer', action: 'SELECT_CELL', label: 'Select threat matrix cell', description: 'Select threat matrix cell' })
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [coverageInfo, setCoverageInfo] = useState<string | null>(null)
@@ -756,15 +766,6 @@ export default function ThreatMatrixView() {
                     }
                     const isSelected = selectedCell?.controlId === cell.controlId && selectedCell?.sector === cell.sector
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('threatmatrix:item-1', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle framework filter', description: 'Toggle framework filter' })
-  useRegisterAction('threatmatrix:close-drillthrough', { app: 'datalake-explorer', action: 'CLOSE_DRILLTHROUGH', label: 'Close Drillthrough', description: 'Close Drillthrough in cellBg' })
-  useRegisterAction('threatmatrix:item-3', { app: 'datalake-explorer', action: 'EDIT_CLAIM', label: 'Edit evidence claim', description: 'Edit evidence claim' })
-  useRegisterAction('threatmatrix:item-4', { app: 'datalake-explorer', action: 'START_EDIT', label: 'Start editing evidence', description: 'Start editing evidence' })
-  useRegisterAction('threatmatrix:item-5', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
-  useRegisterAction('threatmatrix:dyn-6', { app: 'datalake-explorer', action: 'TOGGLE_MODE', label: 'Toggle verification mode', description: 'Toggle verification mode' })
-  useRegisterAction('threatmatrix:dyn-7', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_CHIP', label: 'Toggle framework chip', description: 'Toggle framework chip' })
-  useRegisterAction('threatmatrix:dyn-8', { app: 'datalake-explorer', action: 'SELECT_CELL', label: 'Select threat matrix cell', description: 'Select threat matrix cell' })
 
                     return (
                       <button

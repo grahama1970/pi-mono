@@ -93,6 +93,22 @@ function severityColor(s: Severity): string {
 }
 
 export default function CorpusView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('corpus:sort-asc', { app: 'datalake-explorer', action: 'SORT_ASC', label: 'Sort Asc', description: 'Sort Asc in cleanError' })
+  useRegisterAction('corpus:severity-filter:retry', { app: 'datalake-explorer', action: 'SEVERITY_FILTER_RETRY', label: 'Severity Filter Retry', description: 'Severity Filter Retry in cleanError' })
+  useRegisterAction('corpus:sort-desc', { app: 'datalake-explorer', action: 'SORT_DESC', label: 'Sort Desc', description: 'Sort Desc in cleanError' })
+  useRegisterAction('corpus:el-1', { app: 'datalake-explorer', action: 'CLEAR_SECTOR_FILTER', label: 'Clear sector filters', description: 'Clear sector filters' })
+  useRegisterAction('corpus:table-header', { app: 'datalake-explorer', action: 'TABLE_HEADER', label: 'Table Header', description: 'Table Header in cleanError' })
+  useRegisterAction('corpus:entry.filename', { app: 'datalake-explorer', action: 'SELECT_ENTRY', label: 'Select corpus entry', description: 'Select corpus entry' })
+  useRegisterAction('corpus:el-3', { app: 'datalake-explorer', action: 'TOGGLE_COLLECTION', label: 'Toggle collection section', description: 'Toggle collection section' })
+  useRegisterAction('corpus:el-4', { app: 'datalake-explorer', action: 'COLLECTION_PREV_PAGE', label: 'Previous collection page', description: 'Previous collection page' })
+  useRegisterAction('corpus:el-5', { app: 'datalake-explorer', action: 'COLLECTION_NEXT_PAGE', label: 'Next collection page', description: 'Next collection page' })
+  useRegisterAction('corpus:el-6', { app: 'datalake-explorer', action: 'CLOSE_ERROR_PANE', label: 'Close error pane', description: 'Close error pane' })
+  useRegisterAction('corpus:el-7', { app: 'datalake-explorer', action: 'CLOSE_DETAIL', label: 'Close detail pane', description: 'Close detail pane' })
+  useRegisterAction('corpus:el-8', { app: 'datalake-explorer', action: 'REVIEW_EXTRACTION', label: 'Review extraction', description: 'Review extraction' })
+  useRegisterAction('corpus:el-9', { app: 'datalake-explorer', action: 'TOGGLE_FILTER_CHIP', label: 'Toggle filter chip', description: 'Toggle filter chip' })
+  useRegisterAction('corpus:el-10', { app: 'datalake-explorer', action: 'SORT_COLUMN', label: 'Sort by column', description: 'Sort by column' })
+
   const [rows, setRows] = useState<CollectionRow[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -782,21 +798,6 @@ function collectionDisplayFields(collection: string, doc: Record<string, unknown
       const gs = num('grounding_score')
       const gsColor = gs !== undefined ? (gs >= 0.82 ? NVIS.green : gs >= 0.70 ? NVIS.amber : NVIS.red) : NVIS.dim
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('corpus:sort-asc', { app: 'datalake-explorer', action: 'SORT_ASC', label: 'Sort Asc', description: 'Sort Asc in cleanError' })
-  useRegisterAction('corpus:severity-filter:retry', { app: 'datalake-explorer', action: 'SEVERITY_FILTER_RETRY', label: 'Severity Filter Retry', description: 'Severity Filter Retry in cleanError' })
-  useRegisterAction('corpus:sort-desc', { app: 'datalake-explorer', action: 'SORT_DESC', label: 'Sort Desc', description: 'Sort Desc in cleanError' })
-  useRegisterAction('corpus:el-1', { app: 'datalake-explorer', action: 'CLEAR_SECTOR_FILTER', label: 'Clear sector filters', description: 'Clear sector filters' })
-  useRegisterAction('corpus:table-header', { app: 'datalake-explorer', action: 'TABLE_HEADER', label: 'Table Header', description: 'Table Header in cleanError' })
-  useRegisterAction('corpus:entry.filename', { app: 'datalake-explorer', action: 'SELECT_ENTRY', label: 'Select corpus entry', description: 'Select corpus entry' })
-  useRegisterAction('corpus:el-3', { app: 'datalake-explorer', action: 'TOGGLE_COLLECTION', label: 'Toggle collection section', description: 'Toggle collection section' })
-  useRegisterAction('corpus:el-4', { app: 'datalake-explorer', action: 'COLLECTION_PREV_PAGE', label: 'Previous collection page', description: 'Previous collection page' })
-  useRegisterAction('corpus:el-5', { app: 'datalake-explorer', action: 'COLLECTION_NEXT_PAGE', label: 'Next collection page', description: 'Next collection page' })
-  useRegisterAction('corpus:el-6', { app: 'datalake-explorer', action: 'CLOSE_ERROR_PANE', label: 'Close error pane', description: 'Close error pane' })
-  useRegisterAction('corpus:el-7', { app: 'datalake-explorer', action: 'CLOSE_DETAIL', label: 'Close detail pane', description: 'Close detail pane' })
-  useRegisterAction('corpus:el-8', { app: 'datalake-explorer', action: 'REVIEW_EXTRACTION', label: 'Review extraction', description: 'Review extraction' })
-  useRegisterAction('corpus:el-9', { app: 'datalake-explorer', action: 'TOGGLE_FILTER_CHIP', label: 'Toggle filter chip', description: 'Toggle filter chip' })
-  useRegisterAction('corpus:el-10', { app: 'datalake-explorer', action: 'SORT_COLUMN', label: 'Sort by column', description: 'Sort by column' })
 
       return <span>
         {gs !== undefined && <span style={{ color: gsColor, marginRight: 8 }}>{(gs * 100).toFixed(0)}%</span>}

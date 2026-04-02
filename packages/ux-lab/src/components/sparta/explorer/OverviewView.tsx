@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { EMBRY, card, label, heading, glowDot } from '../common/EmbryStyle'
 import { useCollectionCounts, useFrameworkCounts } from '../../../hooks/useSpartaCollections'
 import type { TabName } from './SpartaExplorer'
@@ -8,6 +9,7 @@ interface OverviewProps {
 }
 
 export function OverviewView({ onNavigate }: OverviewProps) {
+  useRegisterAction('overview:issue:navigate', { app: 'sparta-explorer', action: 'NAVIGATE_TO_ISSUE', label: 'Navigate to Issue', description: 'Jump to the tab with an outstanding pipeline issue' })
   const counts = useCollectionCounts()
   const { data: fwCounts } = useFrameworkCounts()
 
@@ -68,7 +70,9 @@ export function OverviewView({ onNavigate }: OverviewProps) {
                 <div
                   key={`${issue.severity}-${issue.tab}`}
                   onClick={() => onNavigate?.(issue.tab)}
+                  data-qid={`overview:issue:${issue.tab.toLowerCase().replace(/\s+/g, '-')}`}
                   data-qs-action="NAVIGATE_TO_ISSUE"
+                  title={`Navigate to ${issue.tab}: ${issue.text}`}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     padding: '8px 12px', borderRadius: 6, cursor: 'pointer',

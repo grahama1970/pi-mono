@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { NVIS } from '../theme'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 interface EvidenceCasePanelProps {
   open: boolean
@@ -21,6 +21,22 @@ const VERDICT_OPTIONS: { value: Verdict; label: string; color: string }[] = [
 ]
 
 export default function EvidenceCasePanel({ open, onClose, prefillContext }: EvidenceCasePanelProps) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('evidence-case:backdrop:close', { app: 'datalake-explorer', action: 'BACKDROP_CLOSE', label: 'Backdrop Close', description: 'Backdrop Close in EvidenceCasePanel' })
+  useRegisterAction('evidence-case:close-btn:header', { app: 'datalake-explorer', action: 'CLOSE_BTN_HEADER', label: 'Close Btn Header', description: 'Close Btn Header in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:opt.value', { app: 'datalake-explorer', action: 'SELECT_VERDICT', label: 'Select verdict', description: 'Select verdict' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-2', { app: 'datalake-explorer', action: 'CONFIDENCE_SLIDER', label: 'Adjust confidence', description: 'Adjust confidence' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-3', { app: 'datalake-explorer', action: 'REMOVE_SOURCE', label: 'Remove source reference', description: 'Remove source reference' })
+  useRegisterAction('evidence:el-4', { app: 'datalake-explorer', action: 'SOURCE_INPUT', label: 'Enter source reference', description: 'Enter source reference' })
+  useRegisterAction('evidence:el-5', { app: 'datalake-explorer', action: 'ADD_SOURCE', label: 'Add source reference', description: 'Add source reference' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-6', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel evidence case', description: 'Cancel evidence case' })
+  useRegisterAction('evidence:el-7', { app: 'datalake-explorer', action: 'CREATE_CASE', label: 'Create evidence case', description: 'Create evidence case' })
+
   const [claim, setClaim] = useState('')
   const [verdict, setVerdict] = useState<Verdict>('insufficient')
   const [confidence, setConfidence] = useState(50)
@@ -191,21 +207,6 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
               {VERDICT_OPTIONS.map((opt) => {
                 const isSelected = verdict === opt.value
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('evidence-case:backdrop:close', { app: 'datalake-explorer', action: 'BACKDROP_CLOSE', label: 'Backdrop Close', description: 'Backdrop Close in EvidenceCasePanel' })
-  useRegisterAction('evidence-case:close-btn:header', { app: 'datalake-explorer', action: 'CLOSE_BTN_HEADER', label: 'Close Btn Header', description: 'Close Btn Header in EvidenceCasePanel' })
-  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
-  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
-  useRegisterAction('evidence:opt.value', { app: 'datalake-explorer', action: 'SELECT_VERDICT', label: 'Select verdict', description: 'Select verdict' })
-  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
-  useRegisterAction('evidence:el-2', { app: 'datalake-explorer', action: 'CONFIDENCE_SLIDER', label: 'Adjust confidence', description: 'Adjust confidence' })
-  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
-  useRegisterAction('evidence:el-3', { app: 'datalake-explorer', action: 'REMOVE_SOURCE', label: 'Remove source reference', description: 'Remove source reference' })
-  useRegisterAction('evidence:el-4', { app: 'datalake-explorer', action: 'SOURCE_INPUT', label: 'Enter source reference', description: 'Enter source reference' })
-  useRegisterAction('evidence:el-5', { app: 'datalake-explorer', action: 'ADD_SOURCE', label: 'Add source reference', description: 'Add source reference' })
-  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'FORM_LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
-  useRegisterAction('evidence:el-6', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel evidence case', description: 'Cancel evidence case' })
-  useRegisterAction('evidence:el-7', { app: 'datalake-explorer', action: 'CREATE_CASE', label: 'Create evidence case', description: 'Create evidence case' })
 
                 return (
                   <button data-qid="evidence:opt.value" data-qs-action="EVIDENCE_SELECT_VERDICT" title="Select verdict"

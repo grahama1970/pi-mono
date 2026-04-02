@@ -255,6 +255,14 @@ function savePreset(p: LayoutPreset) {
 }
 
 export default function QuarantineView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('quarantine:action:approve', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve', description: 'Approve quarantined entry and remove from queue', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reject', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject', description: 'Reject quarantined entry', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
+  useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
+  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
+
   // -- Queue state --
   const [entries, setEntries] = useState<QuarantineEntry[]>([])
   const [loading, setLoading] = useState(true)
@@ -306,12 +314,6 @@ export default function QuarantineView() {
   const layoutWidths = LAYOUT_PRESETS[layoutPreset]
 
   // -- Register actions for state-changing operations --
-  useRegisterAction('quarantine:action:approve', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve', description: 'Approve quarantined entry and remove from queue', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:reject', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject', description: 'Reject quarantined entry', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
-  useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
-  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
 
   const handlePresetChange = useCallback((p: LayoutPreset) => {
     setLayoutPreset(p)
@@ -1924,24 +1926,6 @@ function DiagCard({
 }
 
 function MetaItem({
-
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('quarantine:el-1', { app: 'datalake-explorer', action: 'TOGGLE_SECTION', label: 'Toggle section expand', description: 'Toggle section expand' })
-  useRegisterAction('quarantine:el-2', { app: 'datalake-explorer', action: 'SECTION_ICON', label: 'Section collapse icon', description: 'Section collapse icon' })
-  useRegisterAction('quarantine:entry-count', { app: 'datalake-explorer', action: 'ENTRY_COUNT', label: 'Entry Count', description: 'Entry Count in qualityScoreColor' })
-  useRegisterAction('quarantine:layout:chat', { app: 'datalake-explorer', action: 'LAYOUT_CHAT', label: 'Layout Chat', description: 'Layout Chat in qualityScoreColor' })
-  useRegisterAction('quarantine:search', { app: 'datalake-explorer', action: 'SEARCH', label: 'Search', description: 'Search in qualityScoreColor' })
-  useRegisterAction('quarantine:select-all-visible-docume', { app: 'datalake-explorer', action: 'SELECT_ALL', label: 'Select all visible documents', description: 'Select all visible documents' })
-  useRegisterAction('quarantine:batch:approve', { app: 'datalake-explorer', action: 'BATCH_APPROVE', label: 'Batch Approve', description: 'Batch Approve in qualityScoreColor' })
-  useRegisterAction('quarantine:el-4', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve quarantine entry', description: 'Approve quarantine entry' })
-  useRegisterAction('quarantine:el-5', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject quarantine entry', description: 'Reject quarantine entry' })
-  useRegisterAction('quarantine:sep-1', { app: 'datalake-explorer', action: 'ACTION_SEP_1', label: 'Sep 1', description: 'Sep 1 in qualityScoreColor' })
-  useRegisterAction('quarantine:el-6', { app: 'datalake-explorer', action: 'SELECT_STRATEGY', label: 'Select re-extraction strategy', description: 'Select re-extraction strategy' })
-  useRegisterAction('quarantine:strategy:select', { app: 'datalake-explorer', action: 'STRATEGY_SELECT', label: 'Strategy Select', description: 'Strategy Select in qualityScoreColor' })
-  useRegisterAction('quarantine:sep-2', { app: 'datalake-explorer', action: 'ACTION_SEP_2', label: 'Sep 2', description: 'Sep 2 in qualityScoreColor' })
-  useRegisterAction('quarantine:action:interview', { app: 'datalake-explorer', action: 'ACTION_INTERVIEW', label: 'Action Interview', description: 'Action Interview in qualityScoreColor' })
-  useRegisterAction('quarantine:el-7', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close interview chat', description: 'Close interview chat' })
-
   label,
   value,
   valueColor,

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
 import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
 import { useToast } from '../common/Toast'
@@ -18,6 +19,13 @@ export function RelationshipsView() {
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState<SpartaRelationship | null>(null)
   const [toast, showToast] = useToast()
+
+  // ── Action registrations ──
+  useRegisterAction('relationships:row:select', { app: 'sparta-explorer', action: 'SELECT_RELATIONSHIP', label: 'Select Relationship', description: 'Select a relationship edge to view details' })
+  useRegisterAction('relationships:detail:close', { app: 'sparta-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail', description: 'Close the edge detail panel' })
+  useRegisterAction('relationships:detail:explain', { app: 'sparta-explorer', action: 'LOAD_RATIONALE', label: 'Explain Relationship', description: 'Generate an LLM explanation for this relationship' })
+  useRegisterAction('relationships:page:prev', { app: 'sparta-explorer', action: 'PAGE_PREV', label: 'Previous Page', description: 'Navigate to previous page of relationships' })
+  useRegisterAction('relationships:page:next', { app: 'sparta-explorer', action: 'PAGE_NEXT', label: 'Next Page', description: 'Navigate to next page of relationships' })
 
   const { data: relationships, total, loading, error } = useRelationshipsPaginated(page, PAGE_SIZE)
   const totalPages = Math.ceil(total / PAGE_SIZE)
@@ -107,7 +115,9 @@ export function RelationshipsView() {
                     <tr
                       key={r._key}
                       onClick={() => setSelected(r)}
+                      data-qid={`relationships:row:${r._key}`}
                       data-qs-action="SELECT_RELATIONSHIP"
+                      title={`${r.source_control_id} → ${r.target_control_id}`}
                       style={{ cursor: 'pointer', ...magneticRow, ...(isSelected ? magneticRowSelected : {}) }}
                       onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
                       onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isSelected)}
@@ -131,9 +141,9 @@ export function RelationshipsView() {
 
           {/* Pagination */}
           <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" style={paginationBtn(page > 0)}>Prev</button>
+            <button data-qid="relationships:page:prev" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" title="Previous page" style={paginationBtn(page > 0)}>Prev</button>
             <span style={{ fontSize: 12, color: EMBRY.dim }}>Page {page + 1} of {totalPages || 1}</span>
-            <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" style={paginationBtn(page < totalPages - 1)}>Next</button>
+            <button data-qid="relationships:page:next" onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" title="Next page" style={paginationBtn(page < totalPages - 1)}>Next</button>
             <span style={{ fontSize: 11, color: EMBRY.muted, marginLeft: 'auto' }}>
               {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total.toLocaleString()}
             </span>
@@ -205,7 +215,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
     <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)' }}>
       <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={heading}>Edge Detail</div>
-        <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+        <button data-qid="relationships:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close edge detail" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
           Close
         </button>
       </div>
@@ -279,7 +289,9 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
           ) : (
             <button
               disabled={rationaleLoading}
+              data-qid="relationships:detail:explain"
               data-qs-action="LOAD_RATIONALE"
+              title="Generate LLM explanation for this relationship"
               onClick={async () => {
                 setRationaleLoading(true)
                 try {

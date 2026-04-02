@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import PdfCanvas from './PdfCanvas'
 import { NVIS } from '../theme'
 import type { BboxBlock, CascadeStep } from '../types'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 const CORPUS_SOURCE = '/mnt/storage12tb/extractor_corpus/source/'
 const FIXTURES_DIR = '/mnt/storage12tb/extractor_corpus/fixtures/generated/'
@@ -31,6 +31,19 @@ function pdfUrl(originalPath: string): string {
 }
 
 export default function ExtractionReviewModal({
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('review:dyn-1', { app: 'datalake-explorer', action: 'TOGGLE_VIEW_MODE', label: 'Toggle review/compare mode', description: 'Toggle review/compare mode' })
+  useRegisterAction('review:item-2', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE', label: 'Generate test fixture', description: 'Generate test fixture' })
+  useRegisterAction('review:item-3', { app: 'datalake-explorer', action: 'RE_EXTRACT', label: 'Re-extract PDF', description: 'Re-extract PDF' })
+  useRegisterAction('review:item-4', { app: 'datalake-explorer', action: 'ACCEPT_EXTRACTION', label: 'Accept extraction', description: 'Accept extraction' })
+  useRegisterAction('review:item-5', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close review modal', description: 'Close review modal' })
+  useRegisterAction('review:item-6', { app: 'datalake-explorer', action: 'PREV_PAGE', label: 'Previous page', description: 'Previous page' })
+  useRegisterAction('review:item-7', { app: 'datalake-explorer', action: 'NEXT_PAGE', label: 'Next page', description: 'Next page' })
+  useRegisterAction('review:item-8', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out', description: 'Zoom out' })
+  useRegisterAction('review:item-9', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in', description: 'Zoom in' })
+  useRegisterAction('review:dyn-10', { app: 'datalake-explorer', action: 'TOGGLE_BLOCK', label: 'Toggle block selection', description: 'Toggle block selection' })
+  useRegisterAction('review:item-11', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE_SPEC', label: 'Generate fixture specification', description: 'Generate fixture specification' })
+
   filename, originalPath, resultsDir, pageCount, reasons, debugPatterns,
   s00Estimated, s04Actual, onClose, onReExtract, onAccept,
 }: ExtractionReviewModalProps) {
@@ -543,16 +556,4 @@ function mapBlockType(t: string): BboxBlock['blockType'] {
 
 function sleep(ms: number): Promise<void> { return new Promise((r) => setTimeout(r, ms)) }
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('review:dyn-1', { app: 'datalake-explorer', action: 'TOGGLE_VIEW_MODE', label: 'Toggle review/compare mode', description: 'Toggle review/compare mode' })
-  useRegisterAction('review:item-2', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE', label: 'Generate test fixture', description: 'Generate test fixture' })
-  useRegisterAction('review:item-3', { app: 'datalake-explorer', action: 'RE_EXTRACT', label: 'Re-extract PDF', description: 'Re-extract PDF' })
-  useRegisterAction('review:item-4', { app: 'datalake-explorer', action: 'ACCEPT_EXTRACTION', label: 'Accept extraction', description: 'Accept extraction' })
-  useRegisterAction('review:item-5', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close review modal', description: 'Close review modal' })
-  useRegisterAction('review:item-6', { app: 'datalake-explorer', action: 'PREV_PAGE', label: 'Previous page', description: 'Previous page' })
-  useRegisterAction('review:item-7', { app: 'datalake-explorer', action: 'NEXT_PAGE', label: 'Next page', description: 'Next page' })
-  useRegisterAction('review:item-8', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out', description: 'Zoom out' })
-  useRegisterAction('review:item-9', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in', description: 'Zoom in' })
-  useRegisterAction('review:dyn-10', { app: 'datalake-explorer', action: 'TOGGLE_BLOCK', label: 'Toggle block selection', description: 'Toggle block selection' })
-  useRegisterAction('review:item-11', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE_SPEC', label: 'Generate fixture specification', description: 'Generate fixture specification' })
 

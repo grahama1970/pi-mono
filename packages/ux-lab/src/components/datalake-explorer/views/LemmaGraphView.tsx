@@ -294,6 +294,18 @@ function DetailPanel({ node, onClose, onCreateEvidence }: DetailPanelProps) {
 
 // --- Main view ---
 export default function LemmaGraphView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('lemma:item-1', { app: 'datalake-explorer', action: 'TOGGLE_PROOF_FILTER', label: 'Toggle proof status filter', description: 'Toggle proof status filter' })
+  useRegisterAction('lemma-graph:filter-chip:toggle', { app: 'datalake-explorer', action: 'FILTER_CHIP_TOGGLE', label: 'Filter Chip Toggle', description: 'Filter Chip Toggle in FilterChip' })
+  useRegisterAction('lemma:close-detail-panel', { app: 'datalake-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail Panel', description: 'Close Detail Panel in FilterChip' })
+  useRegisterAction('lemma:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence from node', description: 'Create evidence from node' })
+  useRegisterAction('lemma:dyn-4', { app: 'datalake-explorer', action: 'SET_LAYOUT_MODE', label: 'Set graph layout mode', description: 'Set graph layout mode' })
+  useRegisterAction('lemma:item-5', { app: 'datalake-explorer', action: 'TOGGLE_WHAT_IF', label: 'Toggle what-if analysis', description: 'Toggle what-if analysis' })
+  useRegisterAction('lemma:item-6', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in graph', description: 'Zoom in graph' })
+  useRegisterAction('lemma:item-7', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out graph', description: 'Zoom out graph' })
+  useRegisterAction('lemma:item-8', { app: 'datalake-explorer', action: 'RESET_LAYOUT', label: 'Reset graph layout', description: 'Reset graph layout' })
+  useRegisterAction('lemma:graph-container', { app: 'datalake-explorer', action: 'GRAPH_CANVAS', label: 'Graph Container', description: 'Graph Container in FilterChip' })
+
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
@@ -836,17 +848,6 @@ export default function LemmaGraphView() {
                 const isCascaded = cascadedNodes.has(node.id)
                 const displayColor = isFailed ? '#ff4444' : isCascaded ? '#ffaa00' : color
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('lemma:item-1', { app: 'datalake-explorer', action: 'TOGGLE_PROOF_FILTER', label: 'Toggle proof status filter', description: 'Toggle proof status filter' })
-  useRegisterAction('lemma-graph:filter-chip:toggle', { app: 'datalake-explorer', action: 'FILTER_CHIP_TOGGLE', label: 'Filter Chip Toggle', description: 'Filter Chip Toggle in FilterChip' })
-  useRegisterAction('lemma:close-detail-panel', { app: 'datalake-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail Panel', description: 'Close Detail Panel in FilterChip' })
-  useRegisterAction('lemma:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence from node', description: 'Create evidence from node' })
-  useRegisterAction('lemma:dyn-4', { app: 'datalake-explorer', action: 'SET_LAYOUT_MODE', label: 'Set graph layout mode', description: 'Set graph layout mode' })
-  useRegisterAction('lemma:item-5', { app: 'datalake-explorer', action: 'TOGGLE_WHAT_IF', label: 'Toggle what-if analysis', description: 'Toggle what-if analysis' })
-  useRegisterAction('lemma:item-6', { app: 'datalake-explorer', action: 'ZOOM_IN', label: 'Zoom in graph', description: 'Zoom in graph' })
-  useRegisterAction('lemma:item-7', { app: 'datalake-explorer', action: 'ZOOM_OUT', label: 'Zoom out graph', description: 'Zoom out graph' })
-  useRegisterAction('lemma:item-8', { app: 'datalake-explorer', action: 'RESET_LAYOUT', label: 'Reset graph layout', description: 'Reset graph layout' })
-  useRegisterAction('lemma:graph-container', { app: 'datalake-explorer', action: 'GRAPH_CANVAS', label: 'Graph Container', description: 'Graph Container in FilterChip' })
 
 
                 return (

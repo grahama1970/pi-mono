@@ -1,0 +1,62 @@
+backends:
+  claude:
+    cli: claude
+    prompt_flag: "-p"
+    output_flags: ["--output-format", "stream-json", "--verbose", "--dangerously-skip-permissions"]
+    max_turns_flag: "--max-turns"
+    model_flag: "--model"
+    system_prompt_flag: "--system-prompt"
+    image_flag: null  # Claude reads images from file paths in prompt text
+    auth_dir: .claude
+    env_strip: ["CLAUDECODE", "CLAUDE_CODE_SSE_PORT", "CLAUDE_CODE_ENTRYPOINT"]
+    default_model: sonnet
+    models:
+      - pattern: "opus*"
+        example: "opus-4.6"
+      - pattern: "sonnet*"
+        example: "sonnet-4.6"
+      - pattern: "haiku*"
+        example: "haiku-4.5"
+      - pattern: "claude-*"
+        example: "claude-opus-4-6"
+
+  codex:
+    cli: codex
+    subcommand: exec
+    prompt_flag: null  # prompt is positional
+    output_flags: ["--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox"]
+    max_turns_flag: null
+    model_flag: "--model"
+    system_prompt_flag: null
+    image_flag: null  # Codex reads images from file paths in prompt text
+    auth_dir: .codex
+    env_strip: []
+    default_model: gpt-5.3-codex
+    models:
+      - pattern: "gpt-*"
+        example: "gpt-5.3-codex"
+      - pattern: "codex*"
+        example: "codex"
+      - pattern: "o3*"
+        example: "o3-pro"
+      - pattern: "o4*"
+        example: "o4-mini"
+
+  gemini:
+    cli: gemini
+    prompt_flag: "-p"
+    output_flags: ["--sandbox", "false", "--yolo"]
+    max_turns_flag: null
+    model_flag: "--model"
+    system_prompt_flag: null
+    image_flag: null  # Gemini reads images from file paths in prompt text (no -f flag exists)
+    auth_dir: .gemini
+    env_strip: []
+    default_model: gemini-3-flash-preview
+    models:
+      - pattern: "gemini-3*"
+        example: "gemini-3-flash-preview"
+      - pattern: "gemini-2*"
+        example: "gemini-2.5-pro"
+      - pattern: "gemini*"
+        example: "gemini-3-flash-preview"

@@ -3,7 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
 import type { BboxBlock } from './types'
 import { BLOCK_TYPE_COLORS } from './BboxWorkspace'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
@@ -29,6 +29,10 @@ const SCALE = DEFAULT_DPI / 72 // pdf.js uses 72 DPI internally
 // ---------------------------------------------------------------------------
 
 export default function PdfCanvas({
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_CONTAINER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
+  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'RENDER_CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
+
   pdfUrl,
   pageNumber,
   bboxOverlays,
@@ -340,9 +344,6 @@ const centerStyle: React.CSSProperties = {
 
 function Spinner() {
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_CONTAINER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
-  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'RENDER_CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
 
   return (
     <div

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { NVIS } from './theme'
 import type { PipelineStep, ReextractResult } from './types'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -65,6 +65,13 @@ interface SpotReextractProps {
 // ---------------------------------------------------------------------------
 
 export default function SpotReextract({
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close re-extract modal', description: 'Close re-extract modal' })
+  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'SELECT_SCOPE', label: 'Select re-extraction scope', description: 'Select re-extraction scope' })
+  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'RUN_PIPELINE', label: 'Run re-extraction pipeline', description: 'Run re-extraction pipeline' })
+  useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
+  useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
+
   entryId,
   pdfPath,
   section: _section,
@@ -115,12 +122,6 @@ export default function SpotReextract({
     } catch {
       const errSteps = newSteps.map((s, i) => ({
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close re-extract modal', description: 'Close re-extract modal' })
-  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'SELECT_SCOPE', label: 'Select re-extraction scope', description: 'Select re-extraction scope' })
-  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'RUN_PIPELINE', label: 'Run re-extraction pipeline', description: 'Run re-extraction pipeline' })
-  useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
-  useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
 
         ...s, status: (i === newSteps.length - 1 ? 'error' : 'done') as PipelineStep['status'],
       }))

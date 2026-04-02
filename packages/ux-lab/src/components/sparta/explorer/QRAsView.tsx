@@ -3,6 +3,7 @@ import { EMBRY, card, label, heading, body, glowDot } from '../common/EmbryStyle
 import { useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 function groundingColor(score: number | undefined): string {
   if (score == null) return EMBRY.dim
@@ -33,6 +34,12 @@ export function QRAsView() {
   useEffect(() => { setCurrentIndex(0) }, [controlFilter])
   const [decisions, setDecisions] = useState<Map<string, 'accept' | 'reject'>>(new Map())
   const [undoTimer, setUndoTimer] = useState<{ key: string; timer: number } | null>(null)
+
+  // ── Action registrations ──
+  useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
+  useRegisterAction('qras:action:reject', { app: 'sparta-explorer', action: 'REJECT_QRA', label: 'Reject QRA', description: 'Mark the current QRA as rejected' })
+  useRegisterAction('qras:action:undo', { app: 'sparta-explorer', action: 'UNDO_DECISION', label: 'Undo Decision', description: 'Undo the last accept/reject decision' })
+  useRegisterAction('qras:filter:clear', { app: 'sparta-explorer', action: 'CLEAR_TAB_FILTER', label: 'Clear Filter', description: 'Remove the control filter from QRA view' })
 
   const current = qras[currentIndex] as SpartaQRA | undefined
 
@@ -114,7 +121,7 @@ export function QRAsView() {
           {controlFilter && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', backgroundColor: `${EMBRY.accent}12`, borderRadius: 4, border: `1px solid ${EMBRY.accent}33` }}>
               <span style={{ fontSize: 10, color: EMBRY.accent }}>Filtered: {controlFilter}</span>
-              <button onClick={() => nav.clearTabFilter('QRAs')} data-qs-action="CLEAR_TAB_FILTER" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
+              <button data-qid="qras:filter:clear" onClick={() => nav.clearTabFilter('QRAs')} data-qs-action="CLEAR_TAB_FILTER" title="Clear QRA filter" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
             </div>
           )}
           <div style={{ flex: 1 }} />
@@ -122,7 +129,7 @@ export function QRAsView() {
             A=Accept R=Reject E=Edit | ←→ navigate
           </span>
           {undoTimer && (
-            <button onClick={undoLast} data-qs-action="UNDO_DECISION" style={{
+            <button data-qid="qras:action:undo" onClick={undoLast} data-qs-action="UNDO_DECISION" title="Undo last decision" style={{
               fontSize: 10, padding: '3px 8px', borderRadius: 4, cursor: 'pointer',
               border: `1px solid ${EMBRY.amber}44`, backgroundColor: `${EMBRY.amber}12`, color: EMBRY.amber,
             }}>
@@ -230,8 +237,8 @@ export function QRAsView() {
 
               {/* Action buttons */}
               <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                <button onClick={() => handleDecision('accept')} data-qs-action="ACCEPT_QRA" style={acceptBtn}>Accept (A)</button>
-                <button onClick={() => handleDecision('reject')} data-qs-action="REJECT_QRA" style={rejectBtn}>Reject (R)</button>
+                <button data-qid="qras:action:accept" onClick={() => handleDecision('accept')} data-qs-action="ACCEPT_QRA" title="Accept this QRA" style={acceptBtn}>Accept (A)</button>
+                <button data-qid="qras:action:reject" onClick={() => handleDecision('reject')} data-qs-action="REJECT_QRA" title="Reject this QRA" style={rejectBtn}>Reject (R)</button>
               </div>
             </div>
           )}

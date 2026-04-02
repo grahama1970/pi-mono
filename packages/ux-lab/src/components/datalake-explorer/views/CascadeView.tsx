@@ -201,6 +201,11 @@ function HorizontalBar({
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function HistogramTooltip({
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('cascade:dyn-1', { app: 'datalake-explorer', action: 'SELECT_DATAPOINT', label: 'Select cascade data point', description: 'Select cascade data point' })
+  useRegisterAction('cascade:dyn-2', { app: 'datalake-explorer', action: 'SET_BIN_COUNT', label: 'Set histogram bin count', description: 'Set histogram bin count' })
+  useRegisterAction('cascade:dyn-3', { app: 'datalake-explorer', action: 'FILTER_DISPOSITION', label: 'Filter by disposition', description: 'Filter by disposition' })
+
   active,
   payload,
   label,
@@ -994,10 +999,6 @@ export default function CascadeView() {
                 filteredEscalations.map((esc, i) => {
                   const disagree =
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('cascade:dyn-1', { app: 'datalake-explorer', action: 'SELECT_DATAPOINT', label: 'Select cascade data point', description: 'Select cascade data point' })
-  useRegisterAction('cascade:dyn-2', { app: 'datalake-explorer', action: 'SET_BIN_COUNT', label: 'Set histogram bin count', description: 'Set histogram bin count' })
-  useRegisterAction('cascade:dyn-3', { app: 'datalake-explorer', action: 'FILTER_DISPOSITION', label: 'Filter by disposition', description: 'Filter by disposition' })
 
                     esc.classifier_disposition &&
                     esc.classifier_disposition !== esc.rust_guess

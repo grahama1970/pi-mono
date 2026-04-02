@@ -6,6 +6,7 @@ import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelect
 import { UtilityBar } from '../common/UtilityBar'
 import { useToast } from '../common/Toast'
 import { ControlIdPills } from '../common/ControlIdPills'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 const API = 'http://localhost:3001/api/memory'
 const PAGE_SIZE = 100
@@ -142,7 +143,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
               </a>
             )}
           </div>
-          <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+          <button data-qid="controls:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close control detail" style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
             Close
           </button>
         </div>
@@ -253,7 +254,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {qras.map((qra, i) => (
-              <div key={`qra-${control.control_id}-${i}`} onClick={() => setModalQra(qra)} data-qs-action="OPEN_QRA_MODAL" style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', cursor: 'pointer' }}
+              <div key={`qra-${control.control_id}-${i}`} data-qid={`controls:qra:${control.control_id}-${i}`} onClick={() => setModalQra(qra)} data-qs-action="OPEN_QRA_MODAL" title="Open QRA detail" style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', cursor: 'pointer' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.accent }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.border }}>
                 <div style={{ padding: '8px 10px', fontSize: 12, lineHeight: 1.5 }}>
@@ -306,7 +307,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                       const ctrl = (d.documents ?? [])[0] as SpartaControl | undefined
                       if (ctrl) onNavigate(ctrl)
                     }).catch(() => {})
-                  }} data-qs-action="NAVIGATE_RELATIONSHIP" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
+                  }} data-qid={`controls:rel:${other}`} data-qs-action="NAVIGATE_RELATIONSHIP" title={`Navigate to ${other}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
                   onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}15` }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = EMBRY.bgDeep }}>
                   <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.blue }}>{other}</span>
@@ -361,7 +362,7 @@ function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; c
   const parts = source.split(':')
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose} data-qs-action="CLOSE_QRA_MODAL">
+    <div data-qid="controls:qra-modal:overlay" style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" title="Close QRA modal">
       <div style={{ width: '80%', maxWidth: 900, maxHeight: '90vh', overflow: 'auto', backgroundColor: EMBRY.bgPanel, borderRadius: 12, border: `1px solid ${EMBRY.border}` }} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -372,9 +373,9 @@ function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; c
             </span>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <button onClick={() => grade('PASS')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"PASS"}' style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
-            <button onClick={() => grade('FAIL')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"FAIL"}' style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
-            <button onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
+            <button data-qid="controls:qra-modal:accept" onClick={() => grade('PASS')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"PASS"}' title="Accept QRA" style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
+            <button data-qid="controls:qra-modal:reject" onClick={() => grade('FAIL')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"FAIL"}' title="Reject QRA" style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
+            <button data-qid="controls:qra-modal:close" onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" title="Close QRA modal" style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
           </div>
         </div>
 
@@ -437,7 +438,9 @@ function QRASourceInfo({ qra }: { qra: Record<string, unknown> }) {
     <div style={{ borderTop: `1px solid ${EMBRY.border}` }}>
       <div
         onClick={() => setExpanded(!expanded)}
+        data-qid="controls:qra:toggle-source"
         data-qs-action="TOGGLE_SECTION"
+        title="Toggle source details"
         style={{ padding: '4px 10px', fontSize: 10, color: EMBRY.muted, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
       >
         <span style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.1s' }}>▸</span>
@@ -474,6 +477,17 @@ export function ControlsView() {
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<SpartaControl | null>(null)
   const [toast, showToast] = useToast()
+
+  // ── Action registrations ──
+  useRegisterAction('controls:row:select', { app: 'sparta-explorer', action: 'SELECT_CONTROL', label: 'Select Control', description: 'Select a control to view its detail pane' })
+  useRegisterAction('controls:detail:close', { app: 'sparta-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail', description: 'Close the control detail flyout' })
+  useRegisterAction('controls:qra:open', { app: 'sparta-explorer', action: 'OPEN_QRA_MODAL', label: 'Open QRA', description: 'Open QRA detail modal' })
+  useRegisterAction('controls:qra-modal:close', { app: 'sparta-explorer', action: 'CLOSE_QRA_MODAL', label: 'Close QRA Modal', description: 'Close the QRA review modal' })
+  useRegisterAction('controls:qra-modal:grade', { app: 'sparta-explorer', action: 'GRADE_QRA', label: 'Grade QRA', description: 'Accept or reject a QRA' })
+  useRegisterAction('controls:rel:navigate', { app: 'sparta-explorer', action: 'NAVIGATE_RELATIONSHIP', label: 'Navigate Relationship', description: 'Navigate to a related control' })
+  useRegisterAction('controls:filter:framework', { app: 'sparta-explorer', action: 'SET_FRAMEWORK_FILTER', label: 'Filter Framework', description: 'Filter controls by framework' })
+  useRegisterAction('controls:page:prev', { app: 'sparta-explorer', action: 'PAGE_PREV', label: 'Previous Page', description: 'Navigate to previous page of controls' })
+  useRegisterAction('controls:page:next', { app: 'sparta-explorer', action: 'PAGE_NEXT', label: 'Next Page', description: 'Navigate to next page of controls' })
 
   const rawFw = fwFilter ? FW_TO_RAW[fwFilter] : undefined
   const { data: controls, total, loading, error } = useControlsPaginated(page, PAGE_SIZE, rawFw)
@@ -513,7 +527,9 @@ export function ControlsView() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            data-qid="controls:search:input"
             data-qs-input="controls-search"
+            title="Search controls on this page"
             placeholder="Search this page..."
             style={{
               backgroundColor: EMBRY.bgDeep,
@@ -536,9 +552,11 @@ export function ControlsView() {
             return (
               <button
                 key={fw}
+                data-qid={`controls:filter:${fw.toLowerCase()}`}
                 onClick={() => setFwFilter(fw === 'ALL' ? undefined : fw)}
                 data-qs-action="SET_FRAMEWORK_FILTER"
                 data-qs-params={JSON.stringify({ framework: fw })}
+                title={`Filter by ${fw}`}
                 style={{
                   fontSize: 10,
                   fontWeight: 700,
@@ -587,8 +605,10 @@ export function ControlsView() {
                     <tr
                       key={ctrl.control_id}
                       onClick={() => setSelected(ctrl)}
+                      data-qid={`controls:row:${ctrl.control_id}`}
                       data-qs-action="SELECT_CONTROL"
                       data-qs-params={JSON.stringify({ controlId: ctrl.control_id, framework: fw })}
+                      title={`${ctrl.control_id}: ${ctrl.name}`}
                       style={{
                         ...magneticRow,
                         ...(isSelected ? magneticRowSelected : {}),
@@ -628,7 +648,9 @@ export function ControlsView() {
           <button
             onClick={() => setPage(Math.max(0, page - 1))}
             disabled={page === 0}
+            data-qid="controls:page:prev"
             data-qs-action="PAGE_PREV"
+            title="Previous page"
             style={paginationBtn(page > 0)}
           >
             Prev
@@ -639,7 +661,9 @@ export function ControlsView() {
           <button
             onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
             disabled={page >= totalPages - 1}
+            data-qid="controls:page:next"
             data-qs-action="PAGE_NEXT"
+            title="Next page"
             style={paginationBtn(page < totalPages - 1)}
           >
             Next

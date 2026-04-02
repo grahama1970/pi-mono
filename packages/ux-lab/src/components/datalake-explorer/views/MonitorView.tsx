@@ -396,6 +396,10 @@ function EventRow({
 // --- Main Component ---
 
 export default function MonitorView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'SELECT_SOURCE', label: 'Select event source', description: 'Select event source' })
+  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'FILTER_LEVEL', label: 'Filter events by level', description: 'Filter events by level' })
+
   const [services, setServices] = useState<MonitorService[]>(MOCK_SERVICES)
   const [events, setEvents] = useState<MonitorEvent[]>(MOCK_EVENTS)
   const [loading, setLoading] = useState(true)
@@ -465,9 +469,6 @@ export default function MonitorView() {
   const warnCt = events.filter((e) => e.level === 'warn').length
   const errorCt = events.filter((e) => e.level === 'error').length
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'SELECT_SOURCE', label: 'Select event source', description: 'Select event source' })
-  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'FILTER_LEVEL', label: 'Filter events by level', description: 'Filter events by level' })
 
 
   return (

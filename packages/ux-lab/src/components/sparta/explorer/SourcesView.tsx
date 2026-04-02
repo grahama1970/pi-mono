@@ -7,6 +7,7 @@ import { useSpartaNav } from './SpartaExplorer'
 import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
 import { UtilityBar } from '../common/UtilityBar'
 import { useToast } from '../common/Toast'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { useWorksheets, worksheetToSourceDef } from '../../../hooks/useWorksheets'
 import type { SourceDef } from '../../../hooks/useWorksheets'
 
@@ -118,6 +119,18 @@ type ViewMode = { type: 'source'; idx: number } | { type: 'domain'; domain: stri
 const API_MEM = 'http://localhost:3001/api/memory'
 
 export function SourcesView() {
+  // ── Action registrations ──
+  useRegisterAction('sources:source:select', { app: 'sparta-explorer', action: 'SELECT_SOURCE', label: 'Select Source', description: 'Select a pipeline source to view its controls' })
+  useRegisterAction('sources:domain:select', { app: 'sparta-explorer', action: 'SELECT_DOMAIN', label: 'Select Domain', description: 'Select a URL domain to view its URLs' })
+  useRegisterAction('sources:section:urls', { app: 'sparta-explorer', action: 'TOGGLE_URLS', label: 'Toggle URLs', description: 'Expand/collapse the URL domains section' })
+  useRegisterAction('sources:control:select', { app: 'sparta-explorer', action: 'SELECT_CONTROL', label: 'Select Control', description: 'Select a control in the sources table' })
+  useRegisterAction('sources:url:select', { app: 'sparta-explorer', action: 'SELECT_URL', label: 'Select URL', description: 'Select a URL in the domain table' })
+  useRegisterAction('sources:detail:close', { app: 'sparta-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail', description: 'Close the detail flyout' })
+  useRegisterAction('sources:page:prev', { app: 'sparta-explorer', action: 'PAGE_PREV', label: 'Previous Page', description: 'Navigate to previous page' })
+  useRegisterAction('sources:page:next', { app: 'sparta-explorer', action: 'PAGE_NEXT', label: 'Next Page', description: 'Navigate to next page' })
+  useRegisterAction('sources:detail:nav-qras', { app: 'sparta-explorer', action: 'NAVIGATE_TO_QRAS', label: 'View QRAs', description: 'Navigate to QRAs tab filtered by this control' })
+  useRegisterAction('sources:detail:nav-rels', { app: 'sparta-explorer', action: 'NAVIGATE_TO_RELATIONSHIPS', label: 'View Relationships', description: 'Navigate to Relationships tab filtered by this control' })
+
   const { data: fwCounts, loading: fwLoading } = useRawFrameworkCounts()
   const { domains: urlDomains, total: urlTotal, loading: urlsLoading } = useURLDomains()
   const { worksheets, loading: wsLoading } = useWorksheets()
@@ -300,7 +313,7 @@ export function SourcesView() {
             const health = sourceHealth(count, src.minExpected)
             return (
               <SourceRow key={src.name} name={src.name} tooltip={src.tooltip} health={health}
-                count={count} loading={fwLoading} isSelected={isSelected} onClick={() => selectSource(idx)} data-qs-action="SELECT_SOURCE" />
+                count={count} loading={fwLoading} isSelected={isSelected} onClick={() => selectSource(idx)} data-qid={`sources:source:${src.name.toLowerCase().replace(/\s+/g, '-')}`} data-qs-action="SELECT_SOURCE" />
             )
           })}
 
@@ -313,14 +326,16 @@ export function SourcesView() {
             const health = sourceHealth(count, src.minExpected)
             return (
               <SourceRow key={src.name} name={src.name} tooltip={src.tooltip} health={health}
-                count={count} loading={fwLoading} isSelected={isSelected} onClick={() => selectSource(idx)} data-qs-action="SELECT_SOURCE" />
+                count={count} loading={fwLoading} isSelected={isSelected} onClick={() => selectSource(idx)} data-qid={`sources:source:${src.name.toLowerCase().replace(/\s+/g, '-')}`} data-qs-action="SELECT_SOURCE" />
             )
           })}
 
           {/* URLs by domain — collapsible */}
           <div
+            data-qid="sources:section:urls-toggle"
             onClick={() => setUrlsExpanded(!urlsExpanded)}
             data-qs-action="TOGGLE_URLS"
+            title="Toggle URL domains list"
             style={{ padding: '6px 12px', fontSize: 9, fontWeight: 700, color: EMBRY.muted, textTransform: 'uppercase', letterSpacing: '0.05em', backgroundColor: EMBRY.bgDeep, borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
           >
             <span style={{ fontSize: 8 }}>{urlsExpanded ? '▼' : '▶'}</span>
@@ -331,7 +346,7 @@ export function SourcesView() {
             return (
               <SourceRow key={dg.domain} name={dg.domain} tooltip={`${dg.count} URLs fetched from ${dg.domain}`}
                 health={{ color: EMBRY.green, label: 'ok' }} count={dg.count} loading={urlsLoading}
-                isSelected={isSelected} onClick={() => selectDomain(dg.domain)} mono data-qs-action="SELECT_DOMAIN" />
+                isSelected={isSelected} onClick={() => selectDomain(dg.domain)} mono data-qid={`sources:domain:${dg.domain}`} data-qs-action="SELECT_DOMAIN" />
             )
           })}
           {urlsExpanded && urlDomains.length > 20 && (
@@ -358,13 +373,13 @@ export function SourcesView() {
                   {source.controlType && <span style={{ marginLeft: 6, fontSize: 9, color: typeColor(source.controlType) }}>type: {source.controlType}</span>}
                 </div>
               </div>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter..." data-qs-input="sources-search"
+              <input data-qid="sources:search:controls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter..." data-qs-input="sources-search" title="Filter controls"
                 style={{ width: 200, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
               {totalPages > 1 && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
-                  <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" style={{ ...btn, opacity: page === 0 ? 0.3 : 1 }}>←</button>
+                  <button data-qid="sources:page:prev" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" title="Previous page" style={{ ...btn, opacity: page === 0 ? 0.3 : 1 }}>←</button>
                   <span style={{ fontSize: 9, color: EMBRY.dim }}>{page + 1}/{totalPages}</span>
-                  <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" style={{ ...btn, opacity: page >= totalPages - 1 ? 0.3 : 1 }}>→</button>
+                  <button data-qid="sources:page:next" onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" title="Next page" style={{ ...btn, opacity: page >= totalPages - 1 ? 0.3 : 1 }}>→</button>
                 </div>
               )}
             </div>
@@ -381,7 +396,9 @@ export function SourcesView() {
                       const isActive = selectedControl?._key === ctrl._key
                       return (
                         <tr key={ctrl._key} onClick={() => { setSelectedControl(isActive ? null : ctrl); setSelectedUrl(null) }}
+                          data-qid={`sources:control:${ctrl.control_id}`}
                           data-qs-action="SELECT_CONTROL"
+                          title={`${ctrl.control_id}: ${ctrl.name}`}
                           style={{ borderBottom: `1px solid ${EMBRY.border}`, ...magneticRow, ...(isActive ? magneticRowSelected : {}) }}
                           onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isActive)}
                           onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isActive)}>
@@ -409,7 +426,7 @@ export function SourcesView() {
                 <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>{domainFilter}</div>
                 <div style={{ fontSize: 10, color: EMBRY.dim }}>{urlLoading ? 'Loading...' : `${filteredUrls.length} URLs`}</div>
               </div>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter URLs..." data-qs-input="sources-search"
+              <input data-qid="sources:search:urls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter URLs..." data-qs-input="sources-search" title="Filter URLs"
                 style={{ width: 200, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
             </div>
             {urlLoading ? <div style={{ padding: 16, color: EMBRY.dim }}>Loading...</div> : (
@@ -433,7 +450,9 @@ export function SourcesView() {
                       const dotColor = !info ? EMBRY.dim : ok ? EMBRY.green : partial ? EMBRY.amber : EMBRY.red
                       return (
                         <tr key={u._key} onClick={() => { setSelectedUrl(isActive ? null : u); setSelectedControl(null) }}
+                          data-qid={`sources:url:${u._key}`}
                           data-qs-action="SELECT_URL"
+                          title={u.url}
                           style={{ ...magneticRow, ...(isActive ? magneticRowSelected : {}) }}
                           onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isActive)}
                           onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isActive)}>
@@ -524,7 +543,7 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
     <div style={{ padding: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <span style={{ fontSize: 14, fontWeight: 900, color: EMBRY.blue, fontFamily: 'monospace' }}>{control.control_id}</span>
-        <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ ...btn, fontSize: 14 }}>×</button>
+        <button data-qid="sources:detail:close-control" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close control detail" style={{ ...btn, fontSize: 14 }}>×</button>
       </div>
       <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white, marginBottom: 6 }}>{control.name}</div>
       <UtilityBar controlId={control.control_id} name={control.name} framework={control.source_framework} description={control.description ?? ''} onToast={onToast} />
@@ -634,7 +653,7 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ ...label }}>QRAs {qraLoading ? '...' : `(${qras.length})`}</div>
           {!qraLoading && qras.length > 0 && (
-            <button onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_QRAS" style={{
+            <button data-qid="sources:detail:nav-qras" onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_QRAS" title="View QRAs for this control" style={{
               background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
               padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
             }}>
@@ -650,7 +669,7 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ ...label }}>Relationships {relLoading ? '...' : `(${rels.length})`}</div>
           {!relLoading && rels.length > 0 && (
-            <button onClick={() => nav.navigateToTabWithFilter('Relationships', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_RELATIONSHIPS" style={{
+            <button data-qid="sources:detail:nav-rels" onClick={() => nav.navigateToTabWithFilter('Relationships', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_RELATIONSHIPS" title="View relationships for this control" style={{
               background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
               padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
             }}>
@@ -675,12 +694,13 @@ function SectionHeader({ title }: { title: string }) {
 }
 
 function SourceRow({ name, tooltip, health, count, loading, isSelected, onClick, mono, ...rest }: {
-  name: string; tooltip: string; health: { color: string; label: string }; count: number; loading: boolean; isSelected: boolean; onClick: () => void; mono?: boolean; 'data-qs-action'?: string
+  name: string; tooltip: string; health: { color: string; label: string }; count: number; loading: boolean; isSelected: boolean; onClick: () => void; mono?: boolean; 'data-qs-action'?: string; 'data-qid'?: string
 }) {
   return (
     <div
       onClick={onClick}
       title={tooltip}
+      data-qid={rest['data-qid']}
       data-qs-action={rest['data-qs-action']}
       style={{
         padding: '5px 12px', cursor: 'pointer',
@@ -752,7 +772,7 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>URL Pipeline Status</span>
-        <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ ...btn, fontSize: 14 }}>×</button>
+        <button data-qid="sources:detail:close-url" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close URL detail" style={{ ...btn, fontSize: 14 }}>×</button>
       </div>
 
       {/* URL */}

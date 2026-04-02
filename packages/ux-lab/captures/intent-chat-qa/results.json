@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-04-02T16:15:32.445Z",
+  "results": [
+    {
+      "name": "SPARTA Explorer loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "System message appears after QUERY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ReasoningBlock renders (Level 0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ReasoningBlock Level 0 cropped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ReasoningBlock Level 1 (gate pills)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ReasoningBlock Level 2 (GateChain)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Verdict text visible",
+      "pass": true,
+      "detail": "SATISFIED"
+    },
+    {
+      "name": "Dashboard renders on APP_COMMAND",
+      "pass": true,
+      "detail": "Posture Dashboard (coming soon)"
+    },
+    {
+      "name": "Matrix narration appears",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Critical path graph renders",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "RecallCard or fallback message appears",
+      "pass": true,
+      "detail": "0 recall items"
+    }
+  ],
+  "captures": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/intent-chat-qa"
+}

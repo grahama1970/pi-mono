@@ -5,6 +5,7 @@ import { ChatWell } from '../query/ChatWell'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
 import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare } from 'lucide-react'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
@@ -89,6 +90,15 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const sessionId = useState(() => crypto.randomUUID())[0]
   const msgIdRef = useRef(0)
+
+  // ── Action registrations (ArangoDB app_actions) ──
+  useRegisterAction('sparta:nav:tab', { app: 'sparta-explorer', action: 'NAVIGATE_TAB', label: 'Navigate Tab', description: 'Switch between SPARTA Explorer tabs' })
+  useRegisterAction('sparta:pane:close-left', { app: 'sparta-explorer', action: 'CLOSE_LEFT_PANE', label: 'Close Left Pane', description: 'Close the explorer side panel' })
+  useRegisterAction('sparta:pane:close-right', { app: 'sparta-explorer', action: 'CLOSE_RIGHT_PANE', label: 'Close Query Pane', description: 'Close the query flyout drawer' })
+  useRegisterAction('sparta:settings:overlay', { app: 'sparta-explorer', action: 'CLOSE_SETTINGS', label: 'Close Settings', description: 'Close the query settings modal' })
+  useRegisterAction('sparta:settings:scope', { app: 'sparta-explorer', action: 'SET_SCOPE', label: 'Set Scope', description: 'Set query scope (SPARTA, F-36, or Both)' })
+  useRegisterAction('sparta:settings:depth', { app: 'sparta-explorer', action: 'SET_GATE_DEPTH', label: 'Set Gate Depth', description: 'Set evidence gate depth (fast, medium, accurate)' })
+  useRegisterAction('sparta:settings:framework', { app: 'sparta-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle Framework', description: 'Enable/disable a framework filter' })
 
   const toggleFramework = useCallback((fw: string) => {
     setFrameworkFilters(prev => ({ ...prev, [fw]: !prev[fw] }))
@@ -374,6 +384,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           {TABS.map((tab, i) => (
               <button
                 key={tab}
+                data-qid={`sparta:nav:${tab.toLowerCase().replace(/\s+/g, '-')}`}
                 data-qs-action="NAVIGATE_TAB"
                 data-qs-params={JSON.stringify({ tab })}
                 onClick={() => navigateToTab(tab)}
@@ -389,11 +400,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           {/* Spacer */}
           <div style={{ flex: 1 }} />
           {/* Settings */}
-          <button onClick={() => setSettingsOpen(true)} title="Query settings" style={S.navBtn}>
+          <button data-qid="sparta:nav:settings" onClick={() => setSettingsOpen(true)} title="Query settings" style={S.navBtn}>
             <Settings size={16} />
           </button>
           {/* Query toggle */}
           <button
+            data-qid="sparta:nav:query-pane"
             onClick={() => setRightOpen(!rightOpen)}
             title="Toggle query pane"
             style={{ ...S.navBtn, ...(rightOpen ? S.navBtnActive : {}) }}
@@ -407,11 +419,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           <aside style={S.sourcesPane}>
             <div style={S.paneHeader}>
               <span>SPARTA Explorer</span>
-              <button onClick={() => setLeftOpen(false)} style={S.paneClose} data-qs-action="CLOSE_LEFT_PANE">{'\u00D7'}</button>
+              <button data-qid="sparta:pane:close-left" onClick={() => setLeftOpen(false)} style={S.paneClose} data-qs-action="CLOSE_LEFT_PANE" title="Close explorer pane">{'\u00D7'}</button>
             </div>
             {/* View navigation with counts */}
               {TABS.map((tab) => (
-                <button key={tab} onClick={() => { navigateToTab(tab); setLeftOpen(false) }} data-qs-action="NAVIGATE_TAB" data-qs-params={JSON.stringify({ tab })} style={{
+                <button key={tab} data-qid={`sparta:left-nav:${tab.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => { navigateToTab(tab); setLeftOpen(false) }} data-qs-action="NAVIGATE_TAB" data-qs-params={JSON.stringify({ tab })} title={`Navigate to ${tab}`} style={{
                   ...S.sourceItem,
                   ...(activeTab === tab ? S.sourceItemActive : {}),
                 }}>
@@ -454,20 +466,20 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
         <div style={S.drawerHead}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: 13, fontWeight: 900, color: EMBRY.white }}>Query</span>
-            <button onClick={() => setRightOpen(false)} data-qs-action="CLOSE_RIGHT_PANE" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
+            <button data-qid="sparta:pane:close-right" onClick={() => setRightOpen(false)} data-qs-action="CLOSE_RIGHT_PANE" title="Close query pane" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
           </div>
           {/* Compact scope + gate */}
           <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
             <div style={{ display: 'flex', gap: 1, flex: 1 }}>
               {(['sparta', 'f36', 'both'] as const).map(s => (
-                <button key={s} onClick={() => setScope(s)} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
+                <button key={s} data-qid={`sparta:drawer:scope-${s}`} onClick={() => setScope(s)} title={`Set scope to ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
                   {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
                 </button>
               ))}
             </div>
             <div style={{ display: 'flex', gap: 1 }}>
               {(['fast', 'medium', 'accurate'] as const).map(g => (
-                <button key={g} onClick={() => setGateDepth(g)} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
+                <button key={g} data-qid={`sparta:drawer:depth-${g}`} onClick={() => setGateDepth(g)} title={`Set depth to ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
                   {g === 'fast' ? 'F' : g === 'medium' ? 'M' : 'A'}
                 </button>
               ))}
@@ -501,17 +513,17 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
 
       {/* Settings modal */}
       {settingsOpen && (
-        <div style={S.modalOverlay} onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS">
+        <div data-qid="sparta:settings:overlay" style={S.modalOverlay} onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings">
           <div style={S.modal} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white }}>Query Settings</span>
-              <button onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
+              <button data-qid="sparta:settings:close" onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
             </div>
             <div style={{ marginBottom: 16 }}>
               <div style={S.modalLabel}>Scope</div>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['sparta', 'f36', 'both'] as const).map(s => (
-                  <button key={s} onClick={() => setScope(s)} data-qs-action="SET_SCOPE" data-qs-params={JSON.stringify({ scope: s })} style={{ ...toggleMd, ...(scope === s ? toggleActive : {}) }}>
+                  <button key={s} data-qid={`sparta:settings:scope-${s}`} onClick={() => setScope(s)} data-qs-action="SET_SCOPE" data-qs-params={JSON.stringify({ scope: s })} title={`Set scope to ${s}`} style={{ ...toggleMd, ...(scope === s ? toggleActive : {}) }}>
                     {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
                   </button>
                 ))}
@@ -521,7 +533,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
               <div style={S.modalLabel}>Gate Depth</div>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['fast', 'medium', 'accurate'] as const).map(g => (
-                  <button key={g} onClick={() => setGateDepth(g)} data-qs-action="SET_GATE_DEPTH" data-qs-params={JSON.stringify({ depth: g })} style={{ ...toggleMd, ...(gateDepth === g ? toggleActive : {}) }}>
+                  <button key={g} data-qid={`sparta:settings:depth-${g}`} onClick={() => setGateDepth(g)} data-qs-action="SET_GATE_DEPTH" data-qs-params={JSON.stringify({ depth: g })} title={`Set gate depth to ${g}`} style={{ ...toggleMd, ...(gateDepth === g ? toggleActive : {}) }}>
                     {g.charAt(0).toUpperCase() + g.slice(1)}
                   </button>
                 ))}
@@ -532,7 +544,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 16px' }}>
                 {FRAMEWORKS.map(fw => (
                   <label key={fw} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                    <input type="checkbox" checked={frameworkFilters[fw] ?? true} onChange={() => toggleFramework(fw)} data-qs-action="TOGGLE_FRAMEWORK_FILTER" data-qs-params={JSON.stringify({ framework: fw })} style={{ accentColor: EMBRY.fw[fw] ?? EMBRY.accent, width: 14, height: 14 }} />
+                    <input type="checkbox" data-qid={`sparta:settings:fw-${fw.toLowerCase()}`} checked={frameworkFilters[fw] ?? true} onChange={() => toggleFramework(fw)} data-qs-action="TOGGLE_FRAMEWORK_FILTER" data-qs-params={JSON.stringify({ framework: fw })} title={`Toggle ${fw} framework filter`} style={{ accentColor: EMBRY.fw[fw] ?? EMBRY.accent, width: 14, height: 14 }} />
                     <span style={{ ...fwBadge(fw), fontSize: 10 }}>{fw}</span>
                   </label>
                 ))}

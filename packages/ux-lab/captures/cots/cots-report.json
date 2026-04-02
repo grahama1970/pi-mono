@@ -1,6 +1,6 @@
 {
-  "url": "http://localhost:3002/#embry-terminal",
-  "date": "2026-04-02T11:45:15.376Z",
+  "url": "http://localhost:3002/#binary-explorer",
+  "date": "2026-04-02T18:28:16.548Z",
   "results": {
     "C01": {
       "id": "C01",
@@ -44,9 +44,9 @@
       "id": "C05",
       "name": "Keyboard navigable (no tabindex=-1 on visible interactive)",
       "standard": "Section 508",
-      "status": "WARN",
-      "count": 1,
-      "detail": "24/25 reachable via Tab"
+      "status": "PASS",
+      "count": 0,
+      "detail": "0/0 reachable via Tab"
     },
     "C07": {
       "id": "C07",
@@ -60,50 +60,9 @@
       "id": "C08",
       "name": "Metrics labeled with units/definition",
       "standard": "MIL-STD-1472H",
-      "status": "WARN",
-      "count": 8,
-      "violations": [
-        {
-          "qid": "topbar:connection:status",
-          "value": "20ms",
-          "context": "API MEM LLM 20ms"
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "89%",
-          "context": "/memory Recalled 3 prior SPARTA assessments 89% 7:42:07 AM1."
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "1.2s",
-          "context": "7:42:07 AM 1.2s"
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "4.8s",
-          "context": "7:42:12 AM 4.8s"
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "94%",
-          "context": "/extract-controls Extracted 110 NIST 800-171 controls from S"
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "2.1s",
-          "context": "7:42:17 AM 2.1s"
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "91%",
-          "context": "/batch-quality Validated QRA quality for extracted controls "
-        },
-        {
-          "qid": "reasoning-chain",
-          "value": "3.2s",
-          "context": "7:42:19 AM 3.2s"
-        }
-      ]
+      "status": "PASS",
+      "count": 0,
+      "violations": []
     },
     "C12": {
       "id": "C12",
@@ -113,10 +72,10 @@
       "count": 0,
       "violations": [],
       "checks": {
-        "user": true,
-        "session": true,
-        "timestamp": true,
-        "agent": true
+        "user": false,
+        "session": false,
+        "timestamp": false,
+        "agent": false
       }
     },
     "C14": {
@@ -129,8 +88,8 @@
     }
   },
   "summary": {
-    "PASS": 7,
-    "WARN": 2,
+    "PASS": 9,
+    "WARN": 0,
     "FAIL": 0,
     "SKIP": 0
   },

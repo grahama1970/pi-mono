@@ -3,7 +3,7 @@ import { NVIS } from './theme'
 import type { BboxBlock } from './types'
 import { BLOCK_TYPE_COLORS, BLOCK_TYPE_LABELS } from './BboxWorkspace'
 import type { BlockType } from './BboxWorkspace'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -63,6 +63,12 @@ interface BboxEditorProps {
 // ---------------------------------------------------------------------------
 
 export default function BboxEditor({
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('bbox-editor:item-1', { app: 'datalake-explorer', action: 'EDIT_COORDINATE', label: 'Edit bbox coordinate', description: 'Edit bbox coordinate' })
+  useRegisterAction('bbox:type:select', { app: 'datalake-explorer', action: 'TYPE_SELECT', label: 'Type Select', description: 'Type Select in logShadowReclassify' })
+  useRegisterAction('bbox-editor:dyn-2', { app: 'datalake-explorer', action: 'RECLASSIFY_TYPE', label: 'Reclassify block type', description: 'Reclassify block type' })
+  useRegisterAction('bbox-editor:type-dropdown-list', { app: 'datalake-explorer', action: 'ACTION_BUTTONS', label: 'Block action buttons', description: 'Block action buttons' })
+
   block,
   onReclassify,
   onBboxChange,
@@ -408,11 +414,6 @@ export default function BboxEditor({
 
 function EditorButton({
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('bbox-editor:item-1', { app: 'datalake-explorer', action: 'EDIT_COORDINATE', label: 'Edit bbox coordinate', description: 'Edit bbox coordinate' })
-  useRegisterAction('bbox:type:select', { app: 'datalake-explorer', action: 'TYPE_SELECT', label: 'Type Select', description: 'Type Select in logShadowReclassify' })
-  useRegisterAction('bbox-editor:dyn-2', { app: 'datalake-explorer', action: 'RECLASSIFY_TYPE', label: 'Reclassify block type', description: 'Reclassify block type' })
-  useRegisterAction('bbox-editor:type-dropdown-list', { app: 'datalake-explorer', action: 'ACTION_BUTTONS', label: 'Block action buttons', description: 'Block action buttons' })
 
   label,
   color,

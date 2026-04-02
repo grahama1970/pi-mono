@@ -1,0 +1,191 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "SPARTA Chat: Intent-first handleSend rewrite"
+  goal: "Replace regex intent detection with /memory intent → /create-evidence-case → /memory clarify flow"
+  plan_type: code
+  created: "2026-04-02"
+  primary_persona:
+    name: "Brandon Bailey"
+    role: "SPARTA cybersecurity analyst"
+    source: ".pi/agents/brandon-bailey/AGENTS.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/memory intent endpoint exists (200) — CALL, returns {action, query_type, confidence, entities}"
+  - "/memory clarify endpoint exists (200) — CALL, returns structured clarification questions"
+  - "/create-evidence-case pipeline working (7/7 gates) — CALL via /api/evidence-case/run"
+  - "useRegisterAction hook exists in hooks/useRegisterAction — CALL (used by Binary Explorer)"
+  - "/sparta-intent skill exists — local intent mapper, CALL"
+  - "ReasoningBlock.tsx wired in ChatWell — CALL (renders on msg.evidenceCase)"
+  - "ChatWell clarify chips already render from msg.clarifyOptions — CALL"
+  - "CREATE justified: handleSend rewrite (replacing ~100 lines of regex), useRegisterAction calls in PostureDashboard/LemmaGraph"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Core rewrite + Action registration (parallel)"
+  - id: "1"
+    label: "Wave 1: Clarify wiring + Cleanup"
+  - id: "2"
+    label: "Wave 2: Validation"
+
+tasks:
+  - id: "1"
+    title: "Rewrite handleSend with /memory intent routing"
+    lane: "0"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: []
+    visual: false
+    gate: "tsc --noEmit compiles clean + grep confirms /api/memory/intent call"
+    code_runner: "/code-runner with scillm gpt-5.3-codex"
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | grep -v tui; echo "EXIT: $?"
+    implementation:
+      - "Edit packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx"
+      - "Replace handleSend lines 233-340 with intent-first flow:"
+      - "  1. POST /api/memory/intent {q: query, scope: 'sparta'} → get {action, query_type, confidence, entities, ui_action, rewritten_query}"
+      - "  2. Switch on action:"
+      - "     APP_COMMAND → derive vizMode from rewritten_query keywords (matrix/dashboard/graph/critical-path)"
+      - "       Keep existing matrix narration logic for matrix intent"
+      - "       Keep existing dashboard/graph viz switching"
+      - "     QUERY → POST /api/evidence-case/run {question: query, controlId: entities[0]?.id}"
+      - "       Parse response: gate_trace, verdict, control_ids, evidence, answer"
+      - "       If gates_passed >= 5 → populate msg.evidenceCase → ReasoningBlock renders"
+      - "       If gates_passed < 5 → call /memory clarify (Task 3 wires this)"
+      - "       Entity extraction from intent response entities field, NOT separate /extract-entities call"
+      - "     NO_MATCH → POST /api/memory/recall {q: query, collections: ['sparta_controls','sparta_qra'], k: 10}"
+      - "       Show RecallCard with results"
+      - "  3. Always populate msg.entities from intent response"
+      - "  4. Focus first entity in viz (existing logic, line 302-308)"
+      - "DO NOT change anything outside handleSend"
+      - "/create-design-board not needed — logic/routing change only, no visual changes. ReasoningBlock + ChatWell + clarify chips already designed."
+      - "DO NOT remove matrix narration or viz switching — just route via intent instead of regex"
+    tests:
+      - "grep -q '/api/memory/intent' packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx"
+      - "grep -v 'qLower.includes' packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx | grep -c 'includes' | head -1"
+      - "cd packages/ux-lab && npx tsc --noEmit"
+      - "timeout 20 google-chrome --headless --disable-gpu --screenshot=/tmp/test-intent-chat.png --window-size=1920,1080 --virtual-time-budget=12000 http://localhost:3002/#sparta-explorer 2>/dev/null && test -f /tmp/test-intent-chat.png && echo PNG_EVIDENCE"
+    definition_of_done:
+      command: >
+        cd /home/graham/workspace/experiments/pi-mono &&
+        grep -c '/api/memory/intent' packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx &&
+        cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -cv tui
+      assertion: "At least 1 /api/memory/intent call and tsc compiles clean"
+
+  - id: "2"
+    title: "Register app actions in PostureDashboard and LemmaGraph"
+    lane: "0"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: []
+    visual: false
+    gate: "grep confirms useRegisterAction in both files + tsc compiles"
+    code_runner: "trivial — 4 lines each, project agent can apply directly"
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | grep -v tui; echo "EXIT: $?"
+    implementation:
+      - "Edit packages/ux-lab/src/components/sparta/dashboard/PostureDashboard.tsx"
+      - "  import { useRegisterAction } from '../../../hooks/useRegisterAction'"
+      - "  Add at top of component: useRegisterAction('sparta-show-dashboard', { app: 'sparta-explorer', action: 'SHOW_DASHBOARD', label: 'Show Posture Dashboard', description: 'Display the security posture dashboard with coverage ring, drift alerts, and discrepancies' })"
+      - "Edit packages/ux-lab/src/components/sparta/lemma-graph/LemmaGraph.tsx"
+      - "  import { useRegisterAction } from '../../../hooks/useRegisterAction'"
+      - "  Add at top of component: useRegisterAction('sparta-show-critical-path', { app: 'sparta-explorer', action: 'SHOW_CRITICAL_PATH', label: 'Show Critical Path', description: 'Display failing attack chains in the proof graph' })"
+      - "  Add: useRegisterAction('sparta-show-proof-graph', { app: 'sparta-explorer', action: 'SHOW_PROOF_GRAPH', label: 'Show Proof Graph', description: 'Display the full proof graph with lemma verification status' })"
+      - "Pattern: same as Binary Explorer useRegisterAction calls"
+      - "/create-design-board not needed — hook registration only, no visual changes"
+    tests:
+      - "grep -q 'useRegisterAction' packages/ux-lab/src/components/sparta/dashboard/PostureDashboard.tsx"
+      - "grep -q 'useRegisterAction' packages/ux-lab/src/components/sparta/lemma-graph/LemmaGraph.tsx"
+      - "cd packages/ux-lab && npx tsc --noEmit"
+    definition_of_done:
+      command: >
+        cd /home/graham/workspace/experiments/pi-mono &&
+        grep -c 'useRegisterAction' packages/ux-lab/src/components/sparta/dashboard/PostureDashboard.tsx
+      assertion: "At least 1 useRegisterAction in PostureDashboard"
+
+  - id: "3"
+    title: "Wire /memory clarify into failed evidence cases"
+    lane: "1"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["1"]
+    visual: false
+    gate: "grep confirms /api/memory/clarify call + msg.clarifyOptions population + tsc compiles"
+    code_runner: "/code-runner with scillm gpt-5.3-codex"
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | grep -v tui; echo "EXIT: $?"
+    implementation:
+      - "Edit packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx"
+      - "In the QUERY branch of handleSend (from Task 1), after evidence case returns with <5 gates passed:"
+      - "  POST /api/memory/clarify {q: query, scope: 'sparta', context: {failed_gate: first_failed_gate.gate, entities: resolved_entities}}"
+      - "  Parse response: clarifications array"
+      - "  Populate msg.clarifyOptions from clarifications"
+      - "  ChatWell already renders clarify chips — they fire onClarifyClick which re-runs handleSend with the refined question"
+      - "/create-design-board not needed — data wiring only, clarify chips already designed in ChatWell"
+      - "If /memory clarify returns 0 questions, show generic 'Could you be more specific about which control or technique?' chip"
+    tests:
+      - "grep -q '/api/memory/clarify\\|/clarify' packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx"
+      - "cd packages/ux-lab && npx tsc --noEmit"
+    definition_of_done:
+      command: >
+        cd /home/graham/workspace/experiments/pi-mono &&
+        grep -c 'clarify' packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx
+      assertion: "At least 2 references to clarify (endpoint call + msg population)"
+
+  - id: "4"
+    title: "Remove grade from evidence case flow"
+    lane: "1"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: []
+    visual: false
+    gate: "tsc compiles + grade badge no longer rendered in ReasoningBlock"
+    code_runner: "trivial — remove render line + stop extracting grade, project agent can apply"
+    command: >
+      cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab &&
+      npx tsc --noEmit 2>&1 | grep -v tui; echo "EXIT: $?"
+    implementation:
+      - "Edit packages/ux-lab/src/components/shared-chat/ReasoningBlock.tsx"
+      - "Remove the grade badge from Level 0 verdict line"
+      - "Replace with gate fraction: '7/7 gates' is the quality signal, not 'A+'"
+      - "The grade field can stay in the data type (backward compat) but should not render"
+      - "In ChatTab.tsx handleRunEvidenceCase: stop extracting grade from response"
+      - "/create-design-board not needed — removing UI element, not adding"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npx tsc --noEmit 2>&1 | grep -cv tui"
+      assertion: "tsc compiles clean"
+
+  - id: "5"
+    title: "End-to-end test: type question in chat, verify intent routing"
+    lane: "2"
+    runner: "local"
+    mode: "one_shot"
+    depends_on: ["1", "2", "3", "4"]
+    visual: false
+    gate: "/memory intent returns QUERY or APP_COMMAND for SPARTA questions"
+    command: >
+      curl -s --max-time 10 -X POST http://localhost:3001/api/memory/intent
+      -H 'Content-Type: application/json'
+      -d '{"q":"How does SPARTA address GPS spoofing for DE-0007?","scope":"sparta"}'
+      | python3 -c "import json,sys; d=json.load(sys.stdin); print(f'action={d.get(\"action\")} type={d.get(\"query_type\")} conf={d.get(\"confidence\")}')"
+    tests:
+      - "curl -s -X POST http://localhost:3001/api/memory/intent -H 'Content-Type: application/json' -d '{\"q\":\"show posture dashboard\",\"scope\":\"sparta\"}' | python3 -c \"import json,sys; d=json.load(sys.stdin); assert d.get('action')=='APP_COMMAND', f'Expected APP_COMMAND got {d.get(\"action\")}'\""
+    definition_of_done:
+      command: >
+        curl -s --max-time 10 -X POST http://localhost:3001/api/memory/intent
+        -H 'Content-Type: application/json'
+        -d '{"q":"How does SPARTA address GPS spoofing?","scope":"sparta"}'
+        | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('action')); assert d.get('action') in ('QUERY','APP_COMMAND')"
+      assertion: "Intent endpoint returns QUERY or APP_COMMAND for SPARTA question"

@@ -521,6 +521,9 @@ function CountdownBadge({ refreshMs }: { refreshMs: number }) {
 // ── main component ────────────────────────────────────────────
 
 export default function SupervisorView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('supervisor:dyn-1', { app: 'datalake-explorer', action: 'SELECT_AGENT', label: 'Select supervisor agent', description: 'Select supervisor agent' })
+
   const [supervisors, setSupervisors] = useState<SupervisorState[]>([])
   const [selected, setSelected] = useState<SupervisorState | null>(null)
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null)
@@ -601,8 +604,6 @@ export default function SupervisorView() {
 
   const pipelineRunning = supervisors.some((s) => s.status === 'running')
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('supervisor:dyn-1', { app: 'datalake-explorer', action: 'SELECT_AGENT', label: 'Select supervisor agent', description: 'Select supervisor agent' })
 
 
   return (

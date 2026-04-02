@@ -1,0 +1,54 @@
+# Subagent Service — Multi-backend agent containers
+#
+# Default instance (port 8620):
+#   docker compose up -d
+#
+# Named instance with workspace:
+#   SUBAGENT_PORT=8621 SUBAGENT_NAME=orchestrate-0 WORKSPACE=/path/to/repo \
+#     docker compose up -d
+#
+# run.sh still manages multi-instance lifecycle (port allocation, health checks,
+# instance naming). This compose file captures the container spec declaratively
+# so it's not buried in 10 lines of docker run flags.
+#
+# Note: Workspace volume is optional. When WORKSPACE is unset, the volume line
+# mounts nothing (empty string mapped to empty target is a Docker no-op).
+# For explicit workspace control, run.sh passes -v directly.
+
+services:
+  subagent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: subagent-service:latest
+    container_name: embry-subagent-${SUBAGENT_NAME:-default}
+    network_mode: host
+    restart: unless-stopped
+
+    labels:
+      embry.skill: subagent-service
+      embry.port: "${SUBAGENT_PORT:-8620}"
+      embry.instance: "${SUBAGENT_NAME:-default}"
+
+    environment:
+      SUBAGENT_PORT: "${SUBAGENT_PORT:-8620}"
+      CLAUDE_CODE_MAX_OUTPUT_TOKENS: "128000"
+      EMBEDDING_SERVICE_URL: "${EMBEDDING_SERVICE_URL:-http://127.0.0.1:8602}"
+      MEMORY_ARANGO_URL: "${MEMORY_ARANGO_URL:-http://127.0.0.1:8529}"
+
+    volumes:
+      # Auth credentials (required — Claude OAuth)
+      - ${HOME}/.claude:/home/node/.claude
+      # Optional backend auth
+      - ${HOME}/.codex:/home/node/.codex
+      - ${HOME}/.gemini:/home/node/.gemini
+      # Skills + agents (read-only — all 225+ skills visible to subagent)
+      - ${SKILLS_DIR:-/home/graham/workspace/experiments/pi-mono/.pi/skills}:/home/node/skills:ro
+      - ${AGENTS_DIR:-/home/graham/workspace/experiments/pi-mono/.pi/agents}:/home/node/agents:ro
+
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:${SUBAGENT_PORT:-8620}/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

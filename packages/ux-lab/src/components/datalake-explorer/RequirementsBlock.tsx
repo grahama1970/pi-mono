@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { NVIS } from './theme'
 import type { BboxBlock, ProofStatus } from './types'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -80,6 +80,11 @@ interface RequirementsBlockProps {
 // ---------------------------------------------------------------------------
 
 export default function RequirementsBlock({ block }: RequirementsBlockProps) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('req-block:item-1', { app: 'datalake-explorer', action: 'TOGGLE_FLAG', label: 'Toggle requirement flag', description: 'Toggle requirement flag' })
+  useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'SELECT_CONTROL', label: 'Select NIST control mapping', description: 'Select NIST control mapping' })
+  useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
+
   const [flagged, setFlagged] = useState(true)
   const [selectedControl, setSelectedControl] = useState('')
   const [proofStatus] = useState<ProofStatus>('unproven')
@@ -253,10 +258,6 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
               const isCurrent = i === currentStage
               const color = isDone
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('req-block:item-1', { app: 'datalake-explorer', action: 'TOGGLE_FLAG', label: 'Toggle requirement flag', description: 'Toggle requirement flag' })
-  useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'SELECT_CONTROL', label: 'Select NIST control mapping', description: 'Select NIST control mapping' })
-  useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
 
                 ? '#15803d'
                 : isCurrent

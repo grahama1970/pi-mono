@@ -450,6 +450,11 @@ function generateMockTrendData(days: number): QualityTrendPoint[] {
 // --- Main View ---
 
 export default function QualityView() {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('quality:dyn-1', { app: 'datalake-explorer', action: 'SELECT_TIME_RANGE', label: 'Select time range', description: 'Select time range' })
+  useRegisterAction('quality:item-2', { app: 'datalake-explorer', action: 'TOGGLE_PRESETS', label: 'Toggle preset breakdown', description: 'Toggle preset breakdown' })
+  useRegisterAction('quality:dyn-3', { app: 'datalake-explorer', action: 'TOGGLE_METRIC', label: 'Toggle metric series', description: 'Toggle metric series' })
+
   const [data, setData] = useState<QualityTrendPoint[]>([])
   const [presetData, setPresetData] = useState<QualityPresetBreakdown[]>([])
   const [loading, setLoading] = useState(true)
@@ -797,10 +802,6 @@ export default function QualityView() {
             {METRICS.map((m) => {
               const isActive = enabledMetrics.has(m.key)
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('quality:dyn-1', { app: 'datalake-explorer', action: 'SELECT_TIME_RANGE', label: 'Select time range', description: 'Select time range' })
-  useRegisterAction('quality:item-2', { app: 'datalake-explorer', action: 'TOGGLE_PRESETS', label: 'Toggle preset breakdown', description: 'Toggle preset breakdown' })
-  useRegisterAction('quality:dyn-3', { app: 'datalake-explorer', action: 'TOGGLE_METRIC', label: 'Toggle metric series', description: 'Toggle metric series' })
 
               return (
                 <button

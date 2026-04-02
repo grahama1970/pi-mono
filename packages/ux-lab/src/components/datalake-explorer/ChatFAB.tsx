@@ -13,7 +13,7 @@ import {
 	useCascadePipeline,
 } from "../shared-chat";
 import type { ChatMessage, Skill } from "../shared-chat";
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 interface ChatFABProps {
 	currentView: string;
@@ -26,6 +26,12 @@ const BACKEND = "/api";
 const AUTH: Record<string, string> = {};
 
 export default function ChatFAB({ currentView, selectedDocId, selectedSection, backendUrl }: ChatFABProps) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('chat:close-chat', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Chat in ChatFAB' })
+  useRegisterAction('chat:input-row', { app: 'datalake-explorer', action: 'INPUT_ROW', label: 'Input Row', description: 'Input Row in ChatFAB' })
+  useRegisterAction('chat:send-message', { app: 'datalake-explorer', action: 'SEND_MESSAGE', label: 'Send Message', description: 'Send Message in ChatFAB' })
+  useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'TOGGLE_FAB', label: 'Toggle chat', description: 'Toggle chat' })
+
 	const [open, setOpen] = useState(false);
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -190,11 +196,6 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 						{messages.map((msg) => {
 							const isUser = msg.role === "user";
 
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('chat:close-chat', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Chat in ChatFAB' })
-  useRegisterAction('chat:input-row', { app: 'datalake-explorer', action: 'INPUT_ROW', label: 'Input Row', description: 'Input Row in ChatFAB' })
-  useRegisterAction('chat:send-message', { app: 'datalake-explorer', action: 'SEND_MESSAGE', label: 'Send Message', description: 'Send Message in ChatFAB' })
-  useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'TOGGLE_FAB', label: 'Toggle chat', description: 'Toggle chat' })
 
 							return (
 								<div key={msg.id} style={{ display: "flex", flexDirection: "column", alignItems: isUser ? "flex-end" : "flex-start" }}>

@@ -1,0 +1,383 @@
+## Datalake Explorer — Comprehensive Test Manifest
+## Covers all 9 tabs, quarantine workflow, metrics, bbox editing, and agent chat
+## Tests run via CDP (Chrome DevTools Protocol) — navigate to localhost:3002/#datalake-explorer
+
+# ═══════════════════════════════════════════════════════════════════
+# SIDEBAR — Project Selection
+# ═══════════════════════════════════════════════════════════════════
+
+- id: sidebar_select_datalake
+  element: "Datalake Explorer project item"
+  action: click
+  expected: "Datalake Explorer highlighted with green accent, Components tab shows DatalakeExplorerView"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# TABS — Navigation between 9 tabs
+# ═══════════════════════════════════════════════════════════════════
+
+- id: tab_overview
+  element: "[data-tab='overview']"
+  action: click
+  expected: "Overview tab active, stat cards show Documents/Sections/Requirements/Chunks counts"
+  status: UNTESTED
+  screenshot: true
+  zoom: "main content area"
+
+- id: tab_corpus
+  element: "[data-tab='corpus']"
+  action: click
+  expected: "Corpus tab active, document list loads from /api/datalake/documents"
+  status: UNTESTED
+  screenshot: true
+  zoom: "document list"
+
+- id: tab_extraction
+  element: "[data-tab='extraction']"
+  action: click
+  expected: "Extraction tab renders (placeholder or content)"
+  status: UNTESTED
+
+- id: tab_requirements
+  element: "[data-tab='requirements']"
+  action: click
+  expected: "Requirements tab renders"
+  status: UNTESTED
+
+- id: tab_traceability
+  element: "[data-tab='traceability']"
+  action: click
+  expected: "Traceability tree renders with Document → Sections → Tables → Figures hierarchy"
+  status: UNTESTED
+  screenshot: true
+  zoom: "traceability tree"
+
+- id: tab_cascade
+  element: "[data-tab='cascade']"
+  action: click
+  expected: "Cascade tab renders"
+  status: UNTESTED
+
+- id: tab_metrics
+  element: "[data-tab='metrics']"
+  action: click
+  expected: "Metrics tab shows coverage gauges (text 0%, visual 0%), edge counts, integrity issues list"
+  status: UNTESTED
+  screenshot: true
+  zoom: "metrics panel"
+
+- id: tab_quarantine
+  element: "[data-tab='quarantine']"
+  action: click
+  expected: "Quarantine tab renders with pending count badge (if >0)"
+  status: UNTESTED
+  screenshot: true
+  zoom: "quarantine view"
+
+# ═══════════════════════════════════════════════════════════════════
+# METRICS TAB — Coverage + Integrity
+# ═══════════════════════════════════════════════════════════════════
+
+- id: metrics_coverage_text
+  element: "Text embedding coverage gauge"
+  action: visual_check
+  expected: "Horizontal bar showing text embedding coverage percentage, red/amber/green based on value"
+  status: UNTESTED
+  screenshot: true
+  zoom: "coverage gauges"
+
+- id: metrics_coverage_visual
+  element: "Visual embedding coverage gauge"
+  action: visual_check
+  expected: "Horizontal bar showing visual embedding coverage percentage"
+  status: UNTESTED
+
+- id: metrics_edge_counts
+  element: "Edge count stats"
+  action: visual_check
+  expected: "Shows has_section: 4.7M, has_table: 271K, has_figure: 8K, has_requirement: 70K"
+  status: UNTESTED
+
+- id: metrics_issues_list
+  element: "Integrity issues list"
+  action: visual_check
+  expected: "List of severity icons + issue codes (missing_embedding_text, missing_embedding_visual)"
+  status: UNTESTED
+  screenshot: true
+  zoom: "issues list"
+
+- id: metrics_quarantine_button
+  element: "Quarantine Issues button"
+  action: click
+  expected: "Red button 'Quarantine N Issues' triggers POST /api/quarantine/from-metrics, creates entries"
+  status: UNTESTED
+
+- id: metrics_report_timestamp
+  element: "Report timestamp footer"
+  action: visual_check
+  expected: "Shows 'Generated at: 2026-04-02T...' timestamp"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# QUARANTINE TAB — Issue Resolution Workflow
+# ═══════════════════════════════════════════════════════════════════
+
+- id: quarantine_list_loads
+  element: "Quarantine entry list"
+  action: visual_check
+  expected: "List of quarantined entries with filename, reason badge, status, score"
+  status: UNTESTED
+  screenshot: true
+  zoom: "quarantine list"
+
+- id: quarantine_filter_reason
+  element: "Reason filter chips (All, LowConf, ExtErr, Novel, Timeout)"
+  action: "click 'LowConf'"
+  expected: "List filters to show only low-confidence entries"
+  status: UNTESTED
+
+- id: quarantine_select_entry
+  element: "First quarantine entry"
+  action: click
+  expected: "Entry selected, detail panel shows blocks/sections tree and metadata"
+  status: UNTESTED
+  screenshot: true
+  zoom: "entry detail"
+
+- id: quarantine_action_approve
+  element: "Approve action button"
+  action: click
+  expected: "Entry status changes to 'approve', removed from pending list"
+  status: UNTESTED
+
+- id: quarantine_action_reject
+  element: "Reject action button"
+  action: click
+  expected: "Entry status changes to 'reject'"
+  status: UNTESTED
+
+- id: quarantine_action_reextract
+  element: "Re-extract action button"
+  action: click
+  expected: "SpotReextract modal opens with pipeline step visualization"
+  status: UNTESTED
+  screenshot: true
+  zoom: "reextract modal"
+
+- id: quarantine_action_interview
+  element: "Interview action button"
+  action: click
+  expected: "ChatFAB opens with quarantine context pre-filled"
+  status: UNTESTED
+
+- id: quarantine_action_convergence
+  element: "Converge action button"
+  action: click
+  expected: "Convergence loop triggered, status updates to 'convergence'"
+  status: UNTESTED
+
+- id: quarantine_badge_count
+  element: "Quarantine tab badge"
+  action: visual_check
+  expected: "Red circle badge on Quarantine tab showing pending entry count"
+  status: UNTESTED
+  screenshot: true
+  zoom: "tab bar"
+
+# ═══════════════════════════════════════════════════════════════════
+# SPOT REEXTRACT — Pipeline Execution
+# ═══════════════════════════════════════════════════════════════════
+
+- id: reextract_pipeline_steps
+  element: "Pipeline step list (Extract Spans, Classify Blocks, Rebuild Sections, Extract Tables, Upsert)"
+  action: visual_check
+  expected: "5 steps shown with status indicators (pending → running → done)"
+  status: UNTESTED
+  screenshot: true
+  zoom: "pipeline steps"
+
+- id: reextract_diff_preview
+  element: "Diff preview panel"
+  action: visual_check
+  expected: "Shows blocks added/removed/modified counts and confidence delta"
+  status: UNTESTED
+
+- id: reextract_accept
+  element: "Accept button"
+  action: click
+  expected: "Result accepted, quarantine entry updated, modal closes"
+  status: UNTESTED
+
+- id: reextract_cancel
+  element: "Cancel button"
+  action: click
+  expected: "Modal closes without applying changes"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# BBOX WORKSPACE — Interactive Block Editing
+# ═══════════════════════════════════════════════════════════════════
+
+- id: bbox_block_list
+  element: "Block list panel (left)"
+  action: visual_check
+  expected: "List of blocks with type badges (Table, Header, Text, Figure), confidence colors"
+  status: UNTESTED
+  screenshot: true
+  zoom: "block list panel"
+
+- id: bbox_type_filter
+  element: "Type filter chips (table, header, figure, text, equation)"
+  action: "click 'table'"
+  expected: "Only Table-type blocks visible in list and on canvas"
+  status: UNTESTED
+
+- id: bbox_canvas_render
+  element: "PDF canvas center panel"
+  action: visual_check
+  expected: "PDF page rendered with colored bbox overlays per block type"
+  status: UNTESTED
+  screenshot: true
+  zoom: "pdf canvas"
+
+- id: bbox_select_block
+  element: "Click a block in the list"
+  action: click
+  expected: "Block highlighted on canvas, inspector shows metadata"
+  status: UNTESTED
+
+- id: bbox_keyboard_tab
+  element: "Press Tab key"
+  action: keypress_tab
+  expected: "Selection cycles to next visible block"
+  status: UNTESTED
+
+- id: bbox_keyboard_select_mode
+  element: "Press S key"
+  action: keypress_s
+  expected: "Select mode activated (no drag)"
+  status: UNTESTED
+
+- id: bbox_keyboard_draw_mode
+  element: "Press D key"
+  action: keypress_d
+  expected: "Draw/edit mode activated (drag to resize)"
+  status: UNTESTED
+
+- id: bbox_reclassify
+  element: "Press T key or type dropdown"
+  action: keypress_t
+  expected: "Reclassify dropdown opens (Table, Header, Text, Figure, etc)"
+  status: UNTESTED
+
+- id: bbox_inspector_panel
+  element: "Inspector panel (right)"
+  action: visual_check
+  expected: "Shows block type, confidence, bbox coords, cascade trail, notes"
+  status: UNTESTED
+  screenshot: true
+  zoom: "inspector panel"
+
+- id: bbox_dirty_indicator
+  element: "Dirty indicator / save button"
+  action: visual_check
+  expected: "Amber 'Save N changes' button appears when blocks modified"
+  status: UNTESTED
+
+- id: bbox_save_changes
+  element: "Save button"
+  action: click
+  expected: "POST /api/quarantine/:id/bbox-save, dirty count resets to 0"
+  status: UNTESTED
+
+- id: bbox_ctrl_s
+  element: "Ctrl+S keyboard shortcut"
+  action: "keypress Ctrl+S"
+  expected: "Same as save button — persists bbox edits to ArangoDB"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# TRACEABILITY VIEW — Document Tree
+# ═══════════════════════════════════════════════════════════════════
+
+- id: traceability_tree_renders
+  element: "Traceability tree"
+  action: visual_check
+  expected: "Document → Requirements → Sections → Tables → Figures collapsible tree"
+  status: UNTESTED
+  screenshot: true
+  zoom: "traceability tree full"
+
+- id: traceability_verify_button
+  element: "Verify button"
+  action: click
+  expected: "Visual verification runs, elements get MATCH/PARTIAL/MISMATCH badges"
+  status: UNTESTED
+
+- id: traceability_match_badge
+  element: "MATCH badge (green-700)"
+  action: visual_check
+  expected: "Green 'MATCH' text on elements with visual score >= 0.8"
+  status: UNTESTED
+
+- id: traceability_mismatch_badge
+  element: "MISMATCH badge (red-600)"
+  action: visual_check
+  expected: "Red 'MISMATCH' text on elements with visual score < 0.5"
+  status: UNTESTED
+
+- id: traceability_asset_image
+  element: "Inline table/figure image"
+  action: visual_check
+  expected: "Table/figure PNGs rendered inline from /api/datalake/asset/:chunk_key"
+  status: UNTESTED
+  screenshot: true
+  zoom: "asset image"
+
+# ═══════════════════════════════════════════════════════════════════
+# CHAT FAB — Agent Communication
+# ═══════════════════════════════════════════════════════════════════
+
+- id: chat_fab_toggle
+  element: "? key or chat bubble button"
+  action: "keypress ?"
+  expected: "Chat panel opens/closes"
+  status: UNTESTED
+  screenshot: true
+  zoom: "chat panel"
+
+- id: chat_skill_palette
+  element: "Type '/pdf-lab' in chat input"
+  action: "type '/pdf-lab'"
+  expected: "Skill autocomplete palette shows matching skills"
+  status: UNTESTED
+
+- id: chat_send_message
+  element: "Send button or Enter key"
+  action: click
+  expected: "Message sent to agent pipeline, response rendered as markdown"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# OVERVIEW TAB — Stat Cards
+# ═══════════════════════════════════════════════════════════════════
+
+- id: overview_stat_documents
+  element: "Documents stat card"
+  action: visual_check
+  expected: "Shows 15,846 documents count"
+  status: UNTESTED
+  screenshot: true
+  zoom: "stat cards row"
+
+- id: overview_stat_sections
+  element: "Sections stat card"
+  action: visual_check
+  expected: "Shows 1,221,405 sections count"
+  status: UNTESTED
+
+- id: overview_stat_scopes
+  element: "Scopes stat card"
+  action: visual_check
+  expected: "Shows scope names with per-scope document counts"
+  status: UNTESTED
