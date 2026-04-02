@@ -1,4 +1,4 @@
-# SPARTA Explorer — Project State (2026-04-01)
+es# SPARTA Explorer — Project State (2026-04-01)
 
 ## Overview
 SPARTA Explorer is a cybersecurity threat posture tool inside UX Lab. It maps SPARTA techniques to F-36 datalake evidence, runs evidence case pipelines, detects requirement drift, and surfaces discrepancies between requirements and design tables.

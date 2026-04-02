@@ -292,7 +292,10 @@ export function ChatTab() {
       }).then(r => r.json()).catch(() => ({}))
 
       const entities: EntityRef[] = (entRes.entities ?? []).map((e: any) => ({
-        id: e.control_id ?? e.id, label: e.name ?? e.control_id ?? e.id, exists: e.exists !== false,
+        id: e.control_id ?? e.id,
+        label: e.name ?? e.control_id ?? e.id,
+        type: e.type ?? 'control',
+        exists: e.exists !== false,
       }))
 
       // Focus first entity in viz

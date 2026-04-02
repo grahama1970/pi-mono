@@ -27,7 +27,7 @@ export interface RecallResult {
 export interface EntityRef {
 	id: string;
 	label: string;
-	type: EntityType;
+	type?: EntityType;
 	exists: boolean;
 }
 

@@ -542,6 +542,20 @@ print(json.dumps(result))
   }
 })
 
+app.get('/api/datalake/metrics', async (_req, res) => {
+  try {
+    const r = await proxyPost('/list', { collection: 'metrics_reports', k: 1 }) as any
+    res.json(r?.documents?.[0] ?? { status: 'no_reports' })
+  } catch (e) { res.status(502).json({ error: 'Metrics query failed', detail: String(e) }) }
+})
+
+app.get('/api/datalake/metrics/:scope', async (req, res) => {
+  try {
+    const r = await proxyPost('/list', { collection: 'metrics_reports', k: 1, filters: { scope: req.params.scope } }) as any
+    res.json(r?.documents?.[0] ?? { status: 'no_reports' })
+  } catch (e) { res.status(502).json({ error: 'Metrics query failed', detail: String(e) }) }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
@@ -3223,7 +3237,7 @@ app.post('/api/evidence-case/run', async (req, res) => {
     // Fallback: return a basic recall-based evidence case
     console.error('[evidence-case/run] Skill execution failed:', e.message)
     try {
-      const recall = await proxyPost('/recall', { query: `${controlId || ''} ${nodeLabel || ''} vulnerability`, collection: 'sparta_qra', limit: 5 })
+      const recall = await proxyPost('/recall', { q: `${controlId || ''} ${nodeLabel || ''} vulnerability`, collections: ['sparta_qra'], k: 5 })
       const items = recall.results || recall.items || []
       res.json({
         verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
