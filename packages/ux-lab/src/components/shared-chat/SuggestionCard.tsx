@@ -58,9 +58,9 @@ export const SuggestionCard = memo(function SuggestionCard({
 			)}
 			{isPending && (
 				<div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-					{onAccept && <button onClick={handleAccept} style={btnStyle("#00ff88")}>Accept</button>}
-					{onReject && <button onClick={handleReject} style={btnStyle("#ff4444")}>Reject</button>}
-					{onDiscuss && <button onClick={handleDiscuss} style={btnStyle("#4a9eff")}>Discuss</button>}
+					{onAccept && <button onClick={handleAccept} data-qid={`suggestion:accept:${suggestion.id}`} title={`Accept suggestion for ${suggestion.controlId}`} style={btnStyle("#00ff88")}>Accept</button>}
+					{onReject && <button onClick={handleReject} data-qid={`suggestion:reject:${suggestion.id}`} title={`Reject suggestion for ${suggestion.controlId}`} style={btnStyle("#ff4444")}>Reject</button>}
+					{onDiscuss && <button onClick={handleDiscuss} data-qid={`suggestion:discuss:${suggestion.id}`} title={`Discuss ${suggestion.controlId} in chat`} style={btnStyle("#4a9eff")}>Discuss</button>}
 				</div>
 			)}
 			{isResolved && (

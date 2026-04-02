@@ -101,7 +101,8 @@ export function ProofDetail({ proof, onTacticClick }: ProofDetailProps) {
 					{proof.tactics.map((t) => (
 						<code
 							key={t}
-							onClick={() => onTacticClick?.(t)}
+							data-qid={`lean4-tactic-${t}`}
+						onClick={() => onTacticClick?.(t)}
 							style={{
 								fontSize: 9,
 								padding: "1px 5px",

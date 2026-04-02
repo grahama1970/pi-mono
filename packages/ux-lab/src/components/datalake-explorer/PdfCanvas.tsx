@@ -262,7 +262,7 @@ export default function PdfCanvas({
       }}
     >
       <div style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
-        <canvas ref={canvasRef} style={{ display: 'block' }} />
+        <canvas ref={canvasRef} data-qid="pdf:canvas" title="PDF page canvas" style={{ display: 'block' }} />
         <canvas
           ref={overlayRef}
           onClick={handleOverlayClick}

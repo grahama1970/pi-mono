@@ -265,6 +265,8 @@ export default function BboxEditor({
       {/* Reclassify dropdown */}
       <div style={{ marginBottom: '8px' }}>
         <button
+          data-qid="bbox:type:select"
+          title="Reclassify block type"
           onClick={() => setShowTypeDropdown((p) => !p)}
           style={{
             width: '100%',
@@ -364,7 +366,7 @@ export default function BboxEditor({
           color={NVIS.accent}
           onClick={onMerge ?? (() => console.log('Merge:', block.id))}
         />
-        <EditorButton label="Delete" color="#dc2626" onClick={onDelete} />
+        <EditorButton label="Delete" color="#dc2626" onClick={onDelete} qid="bbox:delete" title="Delete block" />
       </div>
 
       {/* Keyboard shortcut bar */}
@@ -403,13 +405,19 @@ function EditorButton({
   label,
   color,
   onClick,
+  qid,
+  title: titleProp,
 }: {
   label: string
   color: string
   onClick: () => void
+  qid?: string
+  title?: string
 }) {
   return (
     <button
+      data-qid={qid}
+      title={titleProp}
       onClick={onClick}
       style={{
         fontFamily: 'monospace',

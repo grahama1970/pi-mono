@@ -263,6 +263,8 @@ export default function BboxWorkspace({
             return (
               <div
                 key={block.id}
+                data-qid={`bbox:block:${block.id}`}
+                title={`Block ${block.id}`}
                 onClick={() => setSelectedBlockId(block.id)}
                 onMouseEnter={() => setHoveredBlockIdx(bIdx)}
                 onMouseLeave={() => setHoveredBlockIdx(null)}
@@ -409,6 +411,8 @@ export default function BboxWorkspace({
             return (
               <button
                 key={t}
+                data-qid={`bbox:filter:${t}`}
+                title={`Filter: ${BLOCK_TYPE_LABELS[t]}`}
                 onClick={() => toggleTypeFilter(t)}
                 style={{
                   fontFamily: 'monospace',
@@ -480,7 +484,7 @@ export default function BboxWorkspace({
 
           {/* Save button */}
           {dirtyBlockIds.size > 0 && (
-            <button onClick={handleSave} disabled={saving} style={{ fontFamily: 'monospace', fontSize: '11px', padding: '2px 8px', borderRadius: '3px', border: 'none', background: '#b45309', color: '#fff', cursor: saving ? 'wait' : 'pointer' }}>
+            <button data-qid="bbox:save" title="Save block changes" onClick={handleSave} disabled={saving} style={{ fontFamily: 'monospace', fontSize: '11px', padding: '2px 8px', borderRadius: '3px', border: 'none', background: '#b45309', color: '#fff', cursor: saving ? 'wait' : 'pointer' }}>
               {saving ? 'Saving...' : `Save ${dirtyBlockIds.size} changes`}
             </button>
           )}
@@ -490,6 +494,8 @@ export default function BboxWorkspace({
 
           {/* Page navigation */}
           <button
+            data-qid="bbox:page:prev"
+            title="Previous page"
             onClick={() => onPageChange(Math.max(0, currentPage - 1))}
             disabled={currentPage === 0}
             style={{
@@ -507,6 +513,8 @@ export default function BboxWorkspace({
             Prev
           </button>
           <span
+            data-qid="bbox:page:number"
+            title="Current page number"
             style={{
               fontSize: '10px',
               color: NVIS.dim,
@@ -516,6 +524,8 @@ export default function BboxWorkspace({
             {currentPage + 1} / {pageCount}
           </span>
           <button
+            data-qid="bbox:page:next"
+            title="Next page"
             onClick={() => onPageChange(Math.min(pageCount - 1, currentPage + 1))}
             disabled={currentPage >= pageCount - 1}
             style={{

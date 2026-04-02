@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { NVIS } from '../theme.ts'
 // quarantine data now fetched from /api/quarantine proxy
 import type {
@@ -163,18 +164,24 @@ function ActionButton({
   disabled,
   onClick,
   'aria-label': ariaLabel,
+  'data-qid': dataQid,
+  title: titleProp,
 }: {
   label: string
   color: string
   disabled: boolean
   onClick: () => void
   'aria-label'?: string
+  'data-qid'?: string
+  title?: string
 }) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
+      data-qid={dataQid}
+      title={titleProp}
       style={{
         padding: '5px 12px',
         fontSize: '11px',
@@ -297,6 +304,14 @@ export default function QuarantineView() {
   const [layoutPreset, setLayoutPreset] = useState<LayoutPreset>(loadPreset)
   const [chatOpen, setChatOpen] = useState(false)
   const layoutWidths = LAYOUT_PRESETS[layoutPreset]
+
+  // -- Register actions for state-changing operations --
+  useRegisterAction('quarantine:action:approve', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve', description: 'Approve quarantined entry and remove from queue', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reject', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject', description: 'Reject quarantined entry', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
+  useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
+  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
 
   const handlePresetChange = useCallback((p: LayoutPreset) => {
     setLayoutPreset(p)
@@ -915,7 +930,7 @@ export default function QuarantineView() {
           fontSize: '11px',
         }}
       >
-        <span style={{ color: NVIS.dim }}>
+        <span data-qid="quarantine:entry-count" title="Entry count" style={{ color: NVIS.dim }}>
           {filtered.length} doc{filtered.length !== 1 ? 's' : ''}
         </span>
         {checkedIds.size > 0 && (
@@ -928,6 +943,8 @@ export default function QuarantineView() {
           {(Object.keys(LAYOUT_PRESETS) as LayoutPreset[]).map((p) => (
             <button
               key={p}
+              data-qid={`quarantine:layout:${p === 'wide-content' ? 'wide' : p}`}
+              title={`Layout: ${LAYOUT_PRESETS[p].label}`}
               onClick={() => handlePresetChange(p)}
               style={{
                 fontFamily: 'monospace',
@@ -951,6 +968,8 @@ export default function QuarantineView() {
 
         {/* Chat toggle (L.7) */}
         <button
+          data-qid="quarantine:layout:chat"
+          title="Layout: Chat"
           onClick={() => setChatOpen((p) => !p)}
           style={{
             fontFamily: 'monospace',
@@ -1029,6 +1048,14 @@ export default function QuarantineView() {
                     key={chip.value}
                     role="radio"
                     aria-checked={isActive}
+                    data-qid={`quarantine:filter:${{
+                      'all': 'all',
+                      'low-confidence': 'lowconf',
+                      'extraction-error': 'exterr',
+                      'novel-layout': 'novel',
+                      'timeout': 'timeout',
+                    }[chip.value] ?? chip.value}`}
+                    title={`Filter: ${chip.label === 'All' ? 'show all entries' : chip.label === 'LowConf' ? 'low confidence' : chip.label === 'ExtErr' ? 'extraction errors' : chip.label === 'Novel' ? 'novel layouts' : 'timeouts'}`}
                     onClick={() => setReasonFilter(chip.value)}
                     style={{
                       padding: '2px 6px',
@@ -1055,6 +1082,8 @@ export default function QuarantineView() {
             <input
               type="text"
               placeholder="Search..."
+              data-qid="quarantine:search"
+              title="Search quarantine queue"
               aria-label="Search quarantine queue by filename"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -1102,6 +1131,8 @@ export default function QuarantineView() {
                   <div
                     key={entry.id}
                     data-entry-id={entry.id}
+                    data-qid={`quarantine:entry:${entry.id}`}
+                    title={`Select entry ${entry.id}`}
                     role="option"
                     aria-selected={isSelected}
                     tabIndex={0}
@@ -1139,6 +1170,7 @@ export default function QuarantineView() {
                     <input
                       type="checkbox"
                       checked={isChecked}
+                      data-qid={`quarantine:checkbox:${entry.id}`}
                       onChange={(e) => {
                         e.stopPropagation()
                         toggleChecked(entry.id)
@@ -1243,6 +1275,8 @@ export default function QuarantineView() {
             <button
               onClick={handleBatchApprove}
               disabled={checkedIds.size === 0 || actionInFlight !== null}
+              data-qid="quarantine:batch:approve"
+              title="Approve all checked entries"
               aria-label={`Approve ${checkedIds.size} selected documents`}
               style={{
                 fontSize: '10px',
@@ -1622,6 +1656,8 @@ export default function QuarantineView() {
                 <button
                   onClick={() => handleAction(selected.id, 'approve')}
                   disabled={actionInFlight !== null}
+                  data-qid="quarantine:action:approve"
+                  title="Approve selected entry"
                   aria-label={`Approve ${selected.filename}`}
                   style={{
                     padding: '6px 18px',
@@ -1643,6 +1679,8 @@ export default function QuarantineView() {
                 <button
                   onClick={() => handleAction(selected.id, 'reject')}
                   disabled={actionInFlight !== null}
+                  data-qid="quarantine:action:reject"
+                  title="Reject selected entry"
                   aria-label={`Reject ${selected.filename}`}
                   style={{
                     padding: '6px 18px',
@@ -1675,6 +1713,8 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Re-extract (x)"
                   aria-label={`Re-extract ${selected.filename}`}
+                  data-qid="quarantine:action:reextract"
+                  title="Re-extract selected entry"
                   color={NVIS.accent}
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 're-extract')}
@@ -1682,6 +1722,8 @@ export default function QuarantineView() {
                 <select
                   value={reExtractStrategy}
                   onChange={(e) => setReExtractStrategy(e.target.value)}
+                  data-qid="quarantine:strategy:select"
+                  title="Re-extraction strategy"
                   aria-label="Re-extraction strategy"
                   style={{
                     fontFamily: 'monospace',
@@ -1714,6 +1756,8 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Interview (i)"
                   aria-label={`Interview about ${selected.filename}`}
+                  data-qid="quarantine:action:interview"
+                  title="Interview about selected entry"
                   color="#b45309"
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 'interview')}
@@ -1722,6 +1766,8 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Converge"
                   aria-label={`Run convergence loop on ${selected.filename}`}
+                  data-qid="quarantine:action:converge"
+                  title="Run convergence loop"
                   color={NVIS.blue}
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 'convergence')}
@@ -1730,6 +1776,8 @@ export default function QuarantineView() {
                 <ActionButton
                   label={diagnosing ? 'Diagnosing...' : 'Diagnose'}
                   aria-label={`Compare TOC vs extraction for ${selected.filename}`}
+                  data-qid="quarantine:action:diagnose"
+                  title="Compare TOC vs extraction"
                   color="#8b5cf6"
                   disabled={diagnosing || !selected.path}
                   onClick={() => selected.path && handleDiagnose(selected.path)}

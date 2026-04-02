@@ -77,11 +77,13 @@ function DatalakeLeftPane({
   )
 
   return (
-    <LeftPane title="Datalake Explorer" searchable>
+    <LeftPane title="Datalake Explorer" searchable searchTestId="datalake:search">
       <LeftPaneSection title={`Scopes (${filteredScopes.length})`}>
         {filteredScopes.map(s => (
           <div
             key={s.name}
+            data-qid={`datalake:scope:${s.name}`}
+            title={`Scope: ${s.name}`}
             style={{
               ...paneItemStyle(s.name === activeScope),
               display: 'flex',
@@ -127,6 +129,8 @@ function DatalakeLeftPane({
         {filteredDocs.slice(0, 200).map(d => (
           <div
             key={d._key}
+            data-qid={`datalake:doc:${d._key}`}
+            title={`Document: ${d._key}`}
             style={{
               ...paneItemStyle(d._key === selectedDocKey),
               display: 'flex',
@@ -188,6 +192,8 @@ function TabBar({
         return (
           <button
             key={t.key}
+            data-qid={`datalake:tab:${t.key}`}
+            title={`Tab: ${t.label}`}
             onClick={() => onSelectTab(t.key)}
             style={{
               display: 'flex',
@@ -411,11 +417,11 @@ function MetricsTab({ setQuarantineCount }: { setQuarantineCount: React.Dispatch
     <div style={{ padding: 20, overflow: 'auto', fontFamily: MONO, fontSize: 11 }}>
       <div style={{ ...label, marginBottom: 12 }}>Embedding Coverage</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
-        <div>
+        <div data-qid="metrics:coverage:text" title="Text embedding coverage">
           <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Text embedding (384d) — {(covText * 100).toFixed(1)}%</div>
           <div style={gaugeTrack}><div style={gaugeStyle(covText)} /></div>
         </div>
-        <div>
+        <div data-qid="metrics:coverage:visual" title="Visual embedding coverage">
           <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Visual embedding (2048d) — {(covVisual * 100).toFixed(1)}%</div>
           <div style={gaugeTrack}><div style={gaugeStyle(covVisual)} /></div>
         </div>
@@ -445,7 +451,7 @@ function MetricsTab({ setQuarantineCount }: { setQuarantineCount: React.Dispatch
             </div>
           ))}
         </div>
-        <button onClick={async () => {
+        <button data-qid="metrics:quarantine-button" title="Quarantine flagged issues" onClick={async () => {
           const r = await fetch('/api/quarantine/from-metrics', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({issues: report.issues?.slice(0,50) || [], source:'metrics'})})
           const d = await r.json()
           setQuarantineCount(prev => prev + (d?.created || 0))

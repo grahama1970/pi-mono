@@ -139,6 +139,7 @@ export default function ReasoningBlock({
 
           <button
             aria-label={`Toggle reasoning detail level (currently level ${level})`}
+            data-qid="reasoning:level-toggle" title="Toggle evidence detail level"
             onClick={() => setLevel((prev) => (prev === 2 ? 0 : ((prev + 1) as 0 | 1 | 2)))}
             style={{
               marginLeft: 'auto',
@@ -168,6 +169,7 @@ export default function ReasoningBlock({
                 {data.control_ids.map((id) => (
                   <button
                     key={id}
+                    data-qid={`reasoning:control:${id}`} title={`Navigate to control ${id}`}
                     onClick={() => onNavigateToControl?.(id)}
                     style={{
                       border: `1px solid ${EMBRY.border}`,

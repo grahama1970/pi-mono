@@ -34,6 +34,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export const DeltaReportCard = memo(function DeltaReportCard({ report, onEntityClick }: DeltaReportCardProps) {
+	// data-qid on container below
 	return (
 		<div style={{
 			border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10,

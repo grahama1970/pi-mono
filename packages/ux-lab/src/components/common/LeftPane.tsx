@@ -98,11 +98,13 @@ const SORT_ICONS: { mode: SortMode; Icon: typeof Clock; title: string }[] = [
   { mode: 'alpha', Icon: ArrowDownAZ, title: 'Sort A-Z' },
 ]
 
-export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter }: {
+export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId }: {
   title: string
   children: React.ReactNode
   width?: number
   searchable?: boolean
+  /** data-qid for the search input */
+  searchTestId?: string
   /** Show sort chips below the filter input */
   sortable?: boolean
   /** Custom sort modes (default: recent, score, alpha) */
@@ -154,6 +156,7 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', background: EMBRY.bgDeep, borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
                 <Search size={12} color={EMBRY.dim} />
                 <input value={search} onChange={e => setSearch(e.target.value)}
+                  data-qid={searchTestId}
                   placeholder="Filter..." aria-label={`Search ${title}`}
                   style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
                 {sortable && (

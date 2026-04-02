@@ -265,6 +265,8 @@ export default function SpotReextract({
             {steps.map((step, i) => (
               <div
                 key={i}
+                data-qid={`reextract:step:${i}`}
+                title={`Pipeline step: ${step.name}`}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -405,6 +407,8 @@ export default function SpotReextract({
           )}
           {result && (
             <button
+              data-qid="reextract:accept"
+              title="Accept re-extraction result"
               onClick={() => onAccept(result)}
               style={{
                 fontFamily: 'monospace',
@@ -422,6 +426,8 @@ export default function SpotReextract({
             </button>
           )}
           <button
+            data-qid="reextract:cancel"
+            title="Cancel re-extraction"
             onClick={onCancel}
             disabled={running}
             style={{

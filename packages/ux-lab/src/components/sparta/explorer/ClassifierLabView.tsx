@@ -549,7 +549,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
             {TABS.map(t => {
               const blocked = isTabBlocked(t)
               return (
-                <button key={t} data-testid={`clf-tab-${t}`}
+                <button data-qid="clf:tab" key={t} data-testid={`clf-tab-${t}`}
                   onClick={() => { if (!blocked) { setActiveTab(t); window.location.hash = `classifier-lab/${t}` } }}
                   title={blocked ? (!researchGatePassed ? 'Research gate: run /dogpile first' : 'Data gate: need ≥200 samples per class') : ''}
                   style={{
@@ -1766,7 +1766,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
         <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr 1fr 1fr auto', gap: 10, alignItems: 'end' }}>
           <div>
             <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Comma-separated list of pre-trained model architectures to race against each other">BACKBONES</div>
-            <input
+            <input data-qid="clf-train:backbones-input"
               value={backbonesInput}
               onChange={(e) => setBackbonesInput(e.target.value)}
               placeholder="resnet50, efficientnet_b0, convnext_tiny"
@@ -1775,7 +1775,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </div>
           <div>
             <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Minimum macro F1 score on held-out test set to pass the quality gate">TARGET F1</div>
-            <input
+            <input data-qid="clf-train:gate-f1-input"
               type="number"
               min={0}
               step="0.01"
@@ -1786,7 +1786,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </div>
           <div>
             <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Maximum self-improvement iterations per backbone before escalating to next strategy">MAX ROUNDS</div>
-            <input
+            <input data-qid="clf-train:max-rounds-input"
               type="number"
               min={1}
               step={1}
@@ -1797,7 +1797,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </div>
           <div>
             <div style={{ ...label, fontSize: 8, marginBottom: 6, cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)', display: 'inline-block' }} title="Cap training samples per class to speed up experimentation">MAX SAMPLES</div>
-            <input
+            <input data-qid="clf-train:max-samples-input"
               type="number"
               min={1}
               step={1}
@@ -2751,7 +2751,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                         <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'help', borderBottom: '1px dotted rgba(100,116,139,0.4)' }}>{k.label}</span>
                         {/* Fix 1: Direct numeric input */}
-                        <input
+                        <input data-qid="clf-tune-hp:input"
                           type="text"
                           value={k.log && val > 0 ? val.toExponential(1) : val % 1 === 0 ? String(val) : val.toFixed(4)}
                           onChange={e => {
@@ -2767,7 +2767,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                           onBlur={e => { e.target.style.borderColor = EMBRY.border }}
                         />
                       </div>
-                      <input
+                      <input data-qid="clf-tune-hp:input"
                         type="range"
                         min={k.min} max={k.max} step={k.step}
                         value={val}
@@ -3363,7 +3363,7 @@ function EvaluateTab({ project }: { project: Project }) {
       <div style={{ ...card, padding: 12, display: 'flex', gap: 10, alignItems: 'end' }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 4 }}>INPUT TEXT</div>
-          <input
+          <input data-qid="clf-eval:new-question-text"
             value={newText}
             onChange={e => setNewText(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && addQuestion()}
@@ -3379,7 +3379,7 @@ function EvaluateTab({ project }: { project: Project }) {
               {classes.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           ) : (
-            <input
+            <input data-qid="clf-eval:new-question-expected"
               value={newExpected}
               onChange={e => setNewExpected(e.target.value)}
               placeholder="Class name"
@@ -3618,7 +3618,7 @@ function PromoteTab({ project }: { project: Project }) {
               <div>
                 <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 4 }}>HUGGING FACE</div>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input
+                  <input data-qid="clf-promote:hf-push-checkbox"
                     type="checkbox"
                     checked={pushToHf}
                     onChange={e => setPushToHf(e.target.checked)}

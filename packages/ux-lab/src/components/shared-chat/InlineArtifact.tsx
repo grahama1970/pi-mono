@@ -54,7 +54,7 @@ const InlineTable = memo(function InlineTable({ data, onEntityClick }: { data: T
 	return (
 		<div>
 			<div style={{ padding: "0 12px 8px" }}>
-				<input type="text" placeholder="Filter rows..." value={filter} onChange={e => setFilter(e.target.value)}
+				<input type="text" placeholder="Filter rows..." data-qid="artifact:table:filter" title="Filter table rows" value={filter} onChange={e => setFilter(e.target.value)}
 					style={{ width: "100%", padding: "6px 10px", fontSize: 12, background: "#0b1220", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 4, color: "#e2e8f0", fontFamily: "var(--font-mono)", outline: "none" }} />
 			</div>
 			<div style={{ overflowX: "auto" }}>
@@ -208,10 +208,10 @@ export const InlineArtifact = memo(function InlineArtifact({ artifact, onExpand,
 			<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px", borderBottom: "1px solid var(--nvis-border-subtle, rgba(255,255,255,0.06))", gap: 10 }}>
 				<span style={{ fontSize: 12, fontWeight: 600, color: "#e2e8f0", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{artifact.title}</span>
 				<span style={{ fontSize: 10, color: "#64748b", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>{artifact.type}</span>
-				<button onClick={handleCopy} style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: copied ? "#00ff88" : "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>
+				<button onClick={handleCopy} data-qid={`artifact:copy:${artifact.id}`} title="Copy artifact content" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: copied ? "#00ff88" : "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>
 					{copied ? "Copied" : "Copy"}
 				</button>
-				{onExpand && <button onClick={handleExpand} style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>Expand</button>}
+				{onExpand && <button onClick={handleExpand} data-qid={`artifact:expand:${artifact.id}`} title="Open in full panel" style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", fontSize: 10, padding: "3px 8px", borderRadius: 4, cursor: "pointer", fontFamily: "var(--font-mono)" }}>Expand</button>}
 			</div>
 			{/* Body */}
 			<div style={{ maxHeight: 400, overflow: "auto" }}>
