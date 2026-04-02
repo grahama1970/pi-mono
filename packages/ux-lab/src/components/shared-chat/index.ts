@@ -10,6 +10,8 @@ export { RecallCard } from "../sparta/query/RecallCard";
 export { ThreatMatrixCard } from "../sparta/query/ThreatMatrixCard";
 // Shared components
 export { ActivityFeed } from "./ActivityFeed";
+export { ChatErrorBoundary } from "./ErrorBoundary";
+export { ChatInput } from "./ChatInput";
 export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
 export { configureDeepLinks, executePrimaryAction, resolveEntityActions } from "./DeepLinks";
 export type { DeltaItem, DeltaReport } from "./DeltaReportCard";
