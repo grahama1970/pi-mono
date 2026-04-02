@@ -221,7 +221,7 @@ export function Lean4LemmaView() {
             const tier = getEvidenceTier(proof);
             const isForced = forcedSorry.has(proof._id ?? `lean4_proofs/${proof._key}`);
             return (
-              <div key={proof._key} data-qid={`lean4:proof:${proof._key} data:qs:action="SELECT_PROOF"`} title="Select proof" onClick={() => { setSelectedProofKey(proof._key); setDetailTab("proof") }}
+              <div key={proof._key} data-qid={`lean4:proof:${proof._key}`} data-qs-action="SELECT_PROOF" title="Select proof" onClick={() => { setSelectedProofKey(proof._key); setDetailTab("proof") }}
                 style={{ ...paneItemStyle, background: isSelected ? `${EMBRY.accent}15` : isForced ? '#dc262615' : 'transparent', borderLeft: isSelected ? `2px solid ${EMBRY.accent}` : isForced ? '2px solid #ef4444' : '2px solid transparent' }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <div style={glowDot(TIER_COLORS[tier], 5)} />
@@ -285,7 +285,7 @@ export function Lean4LemmaView() {
         <div style={{ flex: "1 1 50%", borderTop: `1px solid ${EMBRY.border}`, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div style={{ display: "flex", borderBottom: `1px solid ${EMBRY.border}`, fontSize: 10 }}>
             {(["proof", "chat", "cascade"] as const).map(tab => (
-              <button key={tab} data-qid={`lean4:tab:${tab} data:qs:action="SET_TAB"`} title="Switch tab" onClick={() => setDetailTab(tab)}
+              <button key={tab} data-qid={`lean4:tab:${tab}`} data-qs-action="SET_TAB" title="Switch tab" onClick={() => setDetailTab(tab)}
                 style={{ padding: "6px 16px", cursor: "pointer", border: "none", borderBottom: detailTab === tab ? `2px solid ${EMBRY.accent}` : "2px solid transparent", background: "transparent", color: detailTab === tab ? EMBRY.white : EMBRY.dim, fontWeight: detailTab === tab ? 700 : 400, fontFamily: "JetBrains Mono, monospace", textTransform: "uppercase" }}>
                 {tab === 'cascade' ? `Impact (${cascadeResult.impactedControls.length})` : tab === 'proof' ? 'Proof Detail' : 'Chat'}
               </button>
@@ -352,7 +352,7 @@ export function Lean4LemmaView() {
                       </div>
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES <span style={{ fontWeight: 400, opacity: 0.6 }}>— click to ask</span></div>
                       {suggestedQueries.map((q, i) => (
-                        <div key={i} data-qid={`lean4:suggest:${i} data:qs:action="SUBMIT_QUERY"`} title="Submit query" role="button" tabIndex={0}
+                        <div key={i} data-qid={`lean4:suggest:${i}`} data-qs-action="SUBMIT_QUERY" title="Submit query" role="button" tabIndex={0}
                           onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }}
                           onClick={() => { setChatInput(q); setTimeout(() => { const form = document.querySelector('#lean4-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }}
                           style={{ fontSize: 10, color: EMBRY.accent, padding: '5px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }}

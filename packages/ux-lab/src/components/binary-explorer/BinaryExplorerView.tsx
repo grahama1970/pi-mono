@@ -137,7 +137,7 @@ function renderInline(text: string, onFeatureClick: (name: string) => void): Rea
       const name = token.slice(1, -1)
       parts.push(
         <code key={i++}
-          data-qid={`be:feature:${name} data:qs:action="SELECT_FEATURE"`} title="Navigate to feature in graph" onClick={() => onFeatureClick(name)}
+          data-qid={`be:feature:${name}`} data-qs-action="SELECT_FEATURE" title="Navigate to feature in graph" onClick={() => onFeatureClick(name)}
           style={{
             background: '#0a0a0a', padding: '1px 4px', borderRadius: 3, fontSize: 10,
             color: '#22d3ee', fontFamily: 'JetBrains Mono, monospace',
@@ -2123,7 +2123,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {data.graphNodes.filter(n => n.nodeType === 'namespace').map(n => {
                     const deg = data.allEdges.filter(e => e._from === n.id || e._to === n.id).length
                     return (
-                      <span key={n.id} data-qid={`be:breadcrumb:${n.id} data:qs:action="SELECT_FEATURE"`} title="Navigate to breadcrumb node" onClick={() => onFeatureClick(n.label)}
+                      <span key={n.id} data-qid={`be:breadcrumb:${n.id}`} data-qs-action="SELECT_FEATURE" title="Navigate to breadcrumb node" onClick={() => onFeatureClick(n.label)}
                         style={{ fontSize: 9, padding: '2px 6px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace' }}>
                         {n.label} <span style={{ color: EMBRY.muted }}>({deg})</span>
                       </span>
@@ -2140,7 +2140,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     .sort((a, b) => b.deg - a.deg)
                     .slice(0, 10)
                     .map(n => (
-                      <span key={n.id} data-qid={`be:visited:${n.id} data:qs:action="SELECT_FEATURE"`} title="Navigate to visited node" onClick={() => onFeatureClick(n.label)}
+                      <span key={n.id} data-qid={`be:visited:${n.id}`} data-qs-action="SELECT_FEATURE" title="Navigate to visited node" onClick={() => onFeatureClick(n.label)}
                         style={{ fontSize: 9, padding: '2px 6px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#22d3ee', cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', borderBottom: '1px dotted rgba(34,211,238,0.3)' }}>
                         {n.label} <span style={{ color: EMBRY.muted }}>({n.deg})</span>
                       </span>
@@ -2167,7 +2167,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     { id: 'raw' as const, title: 'Raw JSON', icon: <Code size={14} /> },
                   ]).map(tab => (
                     <button key={tab.id} id={`be-tab-${tab.id}`} title={tab.title}
-                      data-qid={`be:detail:tab:${tab.id} data:qs:action="SET_DETAIL_TAB"`} title="Switch detail panel tab" onClick={() => setDataTab(tab.id)}
+                      data-qid={`be:detail:tab:${tab.id}`} data-qs-action="SET_DETAIL_TAB" title="Switch detail panel tab" onClick={() => setDataTab(tab.id)}
                       style={{
                         padding: '4px 6px', cursor: 'pointer', border: 'none', borderRadius: 2,
                         background: dataTab === tab.id ? `${EMBRY.accent}20` : 'transparent',
@@ -2233,7 +2233,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                               <span style={{ fontSize: 8, color: EDGE_COLORS[type] || EMBRY.dim, fontWeight: 800, textTransform: 'uppercase', minWidth: 65, paddingTop: 2, flexShrink: 0 }}>{type}</span>
                               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                                 {targets.slice(0, 8).map(t => (
-                                  <code key={t} data-qid={`be:tag:${t} data:qs:action="SELECT_FEATURE"`} title="Navigate to tagged feature" onClick={() => onFeatureClick(t)} style={{
+                                  <code key={t} data-qid={`be:tag:${t}`} data-qs-action="SELECT_FEATURE" title="Navigate to tagged feature" onClick={() => onFeatureClick(t)} style={{
                                     fontSize: 9, padding: '1px 4px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`,
                                     color: '#22d3ee', cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace',
                                   }}>{t.split('/').pop()}</code>
@@ -2253,7 +2253,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           </div>
                           <div style={{ background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: 4, fontFamily: 'JetBrains Mono, monospace', fontSize: 8 }}>
                             {selectedNode.fields.slice(0, 16).map((f, i) => (
-                              <div key={f} data-qid={`be:field:${f} data:qs:action="SELECT_FEATURE"`} title="Navigate to field" onClick={() => onFeatureClick(f)} style={{ display: 'flex', gap: 8, padding: '1px 0', cursor: 'pointer', borderBottom: i < Math.min(selectedNode.fields!.length, 16) - 1 ? `1px solid ${EMBRY.border}22` : 'none' }}>
+                              <div key={f} data-qid={`be:field:${f}`} data-qs-action="SELECT_FEATURE" title="Navigate to field" onClick={() => onFeatureClick(f)} style={{ display: 'flex', gap: 8, padding: '1px 0', cursor: 'pointer', borderBottom: i < Math.min(selectedNode.fields!.length, 16) - 1 ? `1px solid ${EMBRY.border}22` : 'none' }}>
                                 <span style={{ color: EMBRY.dim, minWidth: 16 }}>{i}</span>
                                 <span style={{ color: '#22d3ee' }}>{f}</span>
                                 <span style={{ color: '#6b7280', marginLeft: 'auto' }}>{f.includes('id') || f.includes('key') ? 'string' : f.includes('count') || f.includes('size') || f.includes('port') ? 'uint32' : f.includes('flag') || f.includes('enabled') ? 'bool' : f.includes('data') || f.includes('payload') ? 'bytes' : 'any'}</span>
@@ -2286,7 +2286,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div>
                             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 4 }}>
                               {cweList.map(c => (
-                                <span key={c} id={`be-cwe-${c}`} data-qid={`be:cwe:tag:${c} data:qs:action="SHOW_TAXONOMY_CHAIN"`} title="Show CWE taxonomy chain" onClick={() => fetchTaxonomyChain(c)}
+                                <span key={c} id={`be-cwe-${c}`} data-qid={`be:cwe:tag:${c}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title="Show CWE taxonomy chain" onClick={() => fetchTaxonomyChain(c)}
                                   title={`Run evidence case for ${c}`}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#991b1b')}
@@ -2294,7 +2294,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                 >{evidenceCaseLoading === c ? '⏳ ' : '🔍 '}{c}</span>
                               ))}
                               {attackList.map(a => (
-                                <span key={a} id={`be-attack-${a}`} data-qid={`be:attack:tag:${a} data:qs:action="SHOW_TAXONOMY_CHAIN"`} title="Show ATT&CK taxonomy chain" onClick={() => fetchTaxonomyChain(a)}
+                                <span key={a} id={`be-attack-${a}`} data-qid={`be:attack:tag:${a}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title="Show ATT&CK taxonomy chain" onClick={() => fetchTaxonomyChain(a)}
                                   title={`Run evidence case for ${a}`}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#92400e')}
@@ -2434,7 +2434,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div style={{ fontSize: 8, color: EDGE_COLORS[type] || EMBRY.dim, fontWeight: 800, textTransform: 'uppercase', marginBottom: 4 }}>{type} ({targets.length})</div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                             {targets.map(t => (
-                              <code key={t} data-qid={`be:ast:tag:${t} data:qs:action="SELECT_FEATURE"`} title="Navigate to AST tag" onClick={() => onFeatureClick(t)} style={{
+                              <code key={t} data-qid={`be:ast:tag:${t}`} data-qs-action="SELECT_FEATURE" title="Navigate to AST tag" onClick={() => onFeatureClick(t)} style={{
                                 fontSize: 9, padding: '1px 4px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`,
                                 color: '#22d3ee', cursor: 'pointer', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace',
                               }}>{t.split('/').pop()}</code>
@@ -2452,7 +2452,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>FIELDS ({selectedNode.fields.length})</div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                             {(selectedNode.typed_fields || selectedNode.fields.map(f => ({ name: f, type: 'unknown' }))).map((f, i) => (
-                              <div key={`${f.name}-${i}`} data-qid={`be:ast:field:${f.name} data:qs:action="SELECT_FEATURE"`} title="Navigate to AST field" onClick={() => onFeatureClick(f.name)} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: '2px 6px', borderRadius: 2, background: '#0d0d0d', border: `1px solid ${EMBRY.border}` }}>
+                              <div key={`${f.name}-${i}`} data-qid={`be:ast:field:${f.name}`} data-qs-action="SELECT_FEATURE" title="Navigate to AST field" onClick={() => onFeatureClick(f.name)} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: '2px 6px', borderRadius: 2, background: '#0d0d0d', border: `1px solid ${EMBRY.border}` }}>
                                 <code style={{ fontSize: 9, color: '#22d3ee', fontFamily: 'JetBrains Mono, monospace', minWidth: 80 }}>{f.name}</code>
                                 <span style={{ fontSize: 8, color: f.type === 'unknown' ? EMBRY.dim : '#a78bfa', fontFamily: 'JetBrains Mono, monospace' }}>{f.type}</span>
                               </div>
@@ -2516,7 +2516,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           {/* Flat list below for clickability */}
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, marginTop: 6 }}>
                             {selectedNode.states.map(s => (
-                              <code key={s} data-qid={`be:state:${s} data:qs:action="SELECT_FEATURE"`} title="Navigate to state" onClick={() => onFeatureClick(s)} style={{ fontSize: 8, padding: '1px 3px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#9C27B0', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer' }}>{s}</code>
+                              <code key={s} data-qid={`be:state:${s}`} data-qs-action="SELECT_FEATURE" title="Navigate to state" onClick={() => onFeatureClick(s)} style={{ fontSize: 8, padding: '1px 3px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#9C27B0', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer' }}>{s}</code>
                             ))}
                           </div>
                         </div>
@@ -2553,7 +2553,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       {/* Three-level code view: Assembly → Decompiled C → Python pseudocode */}
                       <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
                         {(['assembly', 'decompiled', 'pseudocode'] as const).map(t => (
-                          <button key={t} data-qid={`be:code:tab:${t} data:qs:action="SET_CODE_TAB"`} title="Switch code view tab" onClick={() => setCodeViewTab(t)}
+                          <button key={t} data-qid={`be:code:tab:${t}`} data-qs-action="SET_CODE_TAB" title="Switch code view tab" onClick={() => setCodeViewTab(t)}
                             style={{
                               fontSize: 9, padding: '3px 10px', border: `1px solid ${codeViewTab === t ? EMBRY.accent + '66' : EMBRY.border}`,
                               background: codeViewTab === t ? `${EMBRY.accent}15` : 'transparent',
@@ -2665,7 +2665,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         return tableSortAsc ? cmp : -cmp
                       })
                     const sortHeader = (key: typeof tableSortKey, label: string) => (
-                      <th key={key} data-qid={`be:sort:${key} data:qs:action="SORT_TABLE"`} title="Sort table by column" onClick={() => { if (tableSortKey === key) setTableSortAsc(!tableSortAsc); else { setTableSortKey(key); setTableSortAsc(true) } }}
+                      <th key={key} data-qid={`be:sort:${key}`} data-qs-action="SORT_TABLE" title="Sort table by column" onClick={() => { if (tableSortKey === key) setTableSortAsc(!tableSortAsc); else { setTableSortKey(key); setTableSortAsc(true) } }}
                         style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: tableSortKey === key ? EMBRY.accent : EMBRY.dim, cursor: 'pointer', textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap' }}>
                         {label} {tableSortKey === key ? (tableSortAsc ? '▲' : '▼') : '⇅'}
                       </th>
@@ -2686,7 +2686,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
                           <button
                             id="be-table-export-csv"
-                            data-qid={`be:table:row:${n.id} data:qs:action="SELECT_NODE"`} title="Select feature in table" onClick={() => {
+                            data-qid={`be:table:row:${n.id}`} data-qs-action="SELECT_NODE" title="Select feature in table" onClick={() => {
                               const header = 'Name,Type,Cluster,Connections,CWE,ATT&CK\n'
                               const rows = filtered.map(n => `"${n.label}","${n.nodeType}","${n.cluster}",${n.connections},"${n.cwe}","${n.attack}"`).join('\n')
                               const blob = new Blob([header + rows], { type: 'text/csv' })
@@ -2719,7 +2719,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             <tbody>
                               {filtered.slice(0, 100).map(n => (
                                 <tr key={n.id}
-                                  data-qid={`be:table:feature:${n.id} data:qs:action="SELECT_FEATURE"`} title="Navigate to feature" onClick={() => onFeatureClick(n.label)}
+                                  data-qid={`be:table:feature:${n.id}`} data-qs-action="SELECT_FEATURE" title="Navigate to feature" onClick={() => onFeatureClick(n.label)}
                                   style={{ cursor: 'pointer', borderBottom: `1px solid ${EMBRY.border}`, background: n.id === selectedNode?.id ? `${EMBRY.accent}25` : 'transparent', borderLeft: n.id === selectedNode?.id ? `3px solid ${EMBRY.accent}` : '3px solid transparent' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
                                   onMouseLeave={e => (e.currentTarget.style.background = n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent')}
@@ -2742,7 +2742,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                       {n.cwe ? n.cwe.split(', ').filter(Boolean).map(c => (
                                         <span key={c} title={c} style={{ fontSize: 8, padding: '1px 4px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600 }}
-                                          data-qid={`be:evidence:${c} data:qs:action="RUN_EVIDENCE_CASE"`} title="Run evidence case" onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}}
+                                          data-qid={`be:evidence:${c}`} data-qs-action="RUN_EVIDENCE_CASE" title="Run evidence case" onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}}
                                         >{c}</span>
                                       )) : <span style={{ fontSize: 7, color: EMBRY.border }}>—</span>}
                                     </div>
@@ -2782,7 +2782,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                   <div><span style={{ color: ep.color, fontWeight: 700 }}>{ep.method}</span> {ep.path}</div>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                                     <code style={{ color: EMBRY.dim, fontSize: 7, flex: 1 }}>{ep.curl}</code>
-                                    <button data-qid={`be:api:copy:${i} data:qs:action="COPY_CURL"`} title="Copy curl command" onClick={() => navigator.clipboard.writeText(ep.curl)} style={{ fontSize: 7, padding: '1px 4px', background: '#1a1a2e', border: `1px solid ${EMBRY.border}`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}>copy</button>
+                                    <button data-qid={`be:api:copy:${i}`} data-qs-action="COPY_CURL" title="Copy curl command" onClick={() => navigator.clipboard.writeText(ep.curl)} style={{ fontSize: 7, padding: '1px 4px', background: '#1a1a2e', border: `1px solid ${EMBRY.border}`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}>copy</button>
                                   </div>
                                 </div>
                               ))}
@@ -2929,7 +2929,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {breadcrumbs.slice(-6).map((b, i, arr) => (
                     <div key={`${b.id}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                       <span
-                        data-qid={`be:node:suggest:${b.id} data:qs:action="SELECT_NODE"`} title="Explore suggested node" onClick={() => onNodeClick(b)}
+                        data-qid={`be:node:suggest:${b.id}`} data-qs-action="SELECT_NODE" title="Explore suggested node" onClick={() => onNodeClick(b)}
                         style={{
                           fontSize: 9, cursor: 'pointer', whiteSpace: 'nowrap',
                           color: b.id === selectedNode?.id ? EMBRY.accent : EMBRY.white,
@@ -2973,7 +2973,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       </div>
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES <span style={{ fontWeight: 400, opacity: 0.6 }}>— click to ask</span></div>
                       {suggestions.map((s, si) => (
-                        <div key={si} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} data-qid={`be:suggest:${si} data:qs:action="SUBMIT_QUERY"`} title="Submit suggested query" onClick={() => { setChatInput(s.raw); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
+                        <div key={si} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} data-qid={`be:suggest:${si}`} data-qs-action="SUBMIT_QUERY" title="Submit suggested query" onClick={() => { setChatInput(s.raw); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
                           <span style={{ color: EMBRY.accent, marginRight: 4, fontSize: 12 }}>→</span>
                           {s.segments.map((seg, j) => seg.entity
                             ? <code key={j} style={{ color: '#22d3ee', background: '#0a1628', padding: '1px 4px', borderRadius: 3, fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{seg.text}</code>
@@ -3014,7 +3014,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         queries.push(`What is the security impact of ${selectedNode.label}?`)
                       return queries
                     })().map((q, i) => (
-                      <div key={i} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} data-qid={`be:suggest:node:${i} data:qs:action="SUBMIT_QUERY"`} title="Submit suggested query" onClick={() => { setChatInput(q); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
+                      <div key={i} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.click() }} data-qid={`be:suggest:node:${i}`} data-qs-action="SUBMIT_QUERY" title="Submit suggested query" onClick={() => { setChatInput(q); setTimeout(() => { const form = document.querySelector('#be-chat-input')?.closest('form'); if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })) }, 100) }} style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 8px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 3, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
                         <span style={{ marginRight: 4, fontSize: 12 }}>→</span>{q}
                       </div>
                     ))}
@@ -3038,7 +3038,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     {m.role === 'assistant' && (
                       <div style={{ display: 'flex', gap: 4, marginTop: 3, paddingLeft: 4 }}>
                         <button
-                          data-qid={`be:thumb:up:${i} data:qs:action="THUMBS_UP"`} title="Mark as helpful" onClick={() => {
+                          data-qid={`be:thumb:up:${i}`} data-qs-action="THUMBS_UP" title="Mark as helpful" onClick={() => {
                             const newFb = m.feedback === 'up' ? null : 'up'
                             setChatMessages(prev => prev.map((msg, j) => j === i ? { ...msg, feedback: newFb } : msg))
                             if (newFb === 'up') {
@@ -3065,7 +3065,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           }}
                         >&#9650;</button>
                         <button
-                          data-qid={`be:thumb:down:${i} data:qs:action="THUMBS_DOWN"`} title="Mark as unhelpful" onClick={() => {
+                          data-qid={`be:thumb:down:${i}`} data-qs-action="THUMBS_DOWN" title="Mark as unhelpful" onClick={() => {
                             const newFb = m.feedback === 'down' ? null : 'down'
                             setChatMessages(prev => prev.map((msg, j) => j === i ? { ...msg, feedback: newFb } : msg))
                             if (newFb === 'down') {
