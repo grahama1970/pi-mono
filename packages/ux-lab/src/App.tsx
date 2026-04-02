@@ -68,6 +68,7 @@ const LlmEvalLab = React.lazy(() => import('./components/sparta/explorer/LlmEval
 const ArchitectureView = React.lazy(() => import('./components/architecture/ArchitectureView').then(m => ({ default: m.ArchitectureView })));
 const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })).catch(() => ({ default: () => React.createElement('div', { style: { padding: 20, color: '#f44' } }, 'Embry Terminal failed to load — check console') })));
 const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })));
+const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaView').then(m => ({ default: m.Lean4LemmaView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -220,6 +221,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
             }} />
           )}
           {projectId === 'binary-explorer' && <BinaryExplorer />}
+          {projectId === 'lean4-lemma' && <React.Suspense fallback={null}><Lean4Lemma /></React.Suspense>}
           {projectId === 'music-lab-pipeline' && <MusicLab />}
           {projectId === 'prompt-lab' && <PromptLab />}
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
@@ -859,6 +861,7 @@ const ProjectSidebar = ({
   const projects: Project[] = [
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
+    { id: 'lean4-lemma', title: 'Lean4 Lemma Viewer', subtitle: 'Formal proof graph explorer', date: '2026-04-02', type: 'desktop' as const },
     { id: 'music-lab-pipeline', title: 'Music Lab Pipeline', subtitle: '10-stage creation pipeline', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/music-lab-pipeline/stitch/d81f2a555f73455098f59c16379d9517.png' },
     { id: 'prompt-lab', title: 'Prompt Lab', subtitle: 'LLM prompt iteration', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/prompt-lab-optimize/stitch/prompt-optimizer-v1.png' },
     { id: 'llm-eval-lab', title: 'LLM Eval Lab', subtitle: 'Model evaluation', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/llm-eval-lab/stitch/8f916e26f7894b119ce06a2743fe262a.png' },
