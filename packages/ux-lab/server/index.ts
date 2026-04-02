@@ -3216,13 +3216,22 @@ app.post('/api/evidence-case/run', async (req, res) => {
     const { promisify } = await import('util')
     const execFileAsync = promisify(execFile)
 
-    // Run with 60s timeout — evidence cases can take a while
-    const { stdout } = await execFileAsync(runSh, ['create', question, '--json'], {
-      timeout: 60000,
-      cwd: skillDir,
-      env: { ...process.env, PYTHONUNBUFFERED: '1' },
-      maxBuffer: 1024 * 1024,
-    })
+    // Run with 90s timeout — evidence cases take 30-60s
+    let stdout = ''
+    try {
+      const result = await execFileAsync(runSh, ['create', question, '--json'], {
+        timeout: 90000,
+        cwd: skillDir,
+        env: { ...process.env, PYTHONUNBUFFERED: '1' },
+        maxBuffer: 1024 * 1024,
+      })
+      stdout = result.stdout
+    } catch (execErr: any) {
+      // Skill may exit non-zero but still produce valid JSON on stdout
+      stdout = execErr.stdout || ''
+      if (!stdout) throw execErr
+      console.warn('[evidence-case/run] Skill exited non-zero but has stdout, attempting JSON parse')
+    }
 
     // Parse JSON from stdout (may have log lines before the JSON)
     const jsonStart = stdout.indexOf('{')
