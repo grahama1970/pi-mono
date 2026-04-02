@@ -50,15 +50,31 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-100,ProofDetail.tsx:1-150",
       "criteria": "As a Lean4 expert: Does the tactic display help you understand proof strategy? Can you click a tactic to ask the chat about it? Are the most common tactics across the library visible? Does the suggested query 'What tactics work for [theorem]?' actually help understand proof construction?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No implementation for showing most common tactics across library",
+        "Missing suggested query 'What tactics work for [theorem]?' feature",
+        "onTacticClick only passes tactic name, no context about theorem or proof strategy",
+        "No tactic frequency analysis or library-wide tactic statistics",
+        "Chat integration exists but doesn't specifically handle tactic queries"
+      ],
+      "strengths": [
+        "Tactic display is implemented with clickable elements and onTacticClick handler",
+        "Clean separation of concerns between ProofDetail and Lean4LemmaView",
+        "Proper TypeScript typing for proof data structures"
+      ],
+      "changes": [
+        "Add tacticFrequency computation in useLean4Data to analyze library-wide tactic usage",
+        "Implement suggested query button with 'What tactics work for {theorem_name}?' template",
+        "Pass full proof context to onTacticClick, not just tactic name",
+        "Add tactic popularity/frequency display in UI",
+        "Create specialized chat handler for tactic-related queries with proof context"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 25305,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 21041,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "rob-armstrong",
@@ -84,15 +100,29 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:100-130,useLean4Data.ts:50-90",
       "criteria": "As someone monitoring autonomous proof generation: Does the Live Status section show active compilations? Is the polling interval reasonable (not too aggressive)? Can you see when a proof attempt succeeds or fails? Does the re-prove button connect to the lean4-prove service? Is error handling graceful when the service is down?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No UI display of live proof status data",
+        "Missing re-prove button implementation",
+        "No visual feedback for compilation success/failure",
+        "liveProofStatus state is set but never rendered"
+      ],
+      "strengths": [
+        "Polling mechanism exists with 10-second interval",
+        "Graceful error handling with try-catch blocks",
+        "AbortSignal timeout prevents hanging requests"
+      ],
+      "changes": [
+        "Add JSX to render liveProofStatus with success/failure indicators",
+        "Implement re-prove button that calls lean4-prove service",
+        "Add status badges or progress bars for active compilations",
+        "Show error states when service is unreachable"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 27439,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 12289,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "rob-armstrong",
@@ -100,15 +130,31 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:130-170",
       "criteria": "As someone triggering re-proofs: Does the 'Trigger Autonomous Re-Proof' button send the right data to lean4-prove? Does it include the original tactics and problem description? Is the result displayed in the chat? Can you re-prove multiple sorry lemmas at once (from what-if cascade)? Is feedback immediate?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Code is incomplete - cuts off mid-fetch call",
+        "No request body construction visible to send tactics/problem description",
+        "No response handling or result display logic shown",
+        "No multi-lemma re-proof capability implemented",
+        "Missing error handling for the fetch operation"
+      ],
+      "strengths": [
+        "Function skeleton exists for triggerReprove",
+        "Chat feedback mechanism is in place for user notification",
+        "Proper async/await pattern started"
+      ],
+      "changes": [
+        "Complete the fetch request with proper body containing original tactics and problem description",
+        "Add response parsing and display logic to show results in chat",
+        "Implement batch re-proof for multiple sorry lemmas from cascade",
+        "Add try-catch error handling with user-friendly error messages",
+        "Add loading state management during re-proof operation"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 29084,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 17714,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "brandon-bailey",
@@ -128,15 +174,31 @@
       "mode": "code",
       "source": "useLean4Data.ts:80-130",
       "criteria": "As someone who needs NIST-to-proof traceability: Do proof-requirement edges correctly link lean4_proofs to sparta_controls? Can you trace from a CMMC control to its formal proof? Are requirement nodes visually distinct from proof nodes in the graph? Does the data model support the compliance chain: CMMC \u2192 NIST 800-171 \u2192 SPARTA control \u2192 formal proof?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visual distinction between requirement and proof nodes in the data model",
+        "Missing CMMC/NIST node types - only creates generic 'SPARTA' framework nodes",
+        "No compliance chain support - can't trace CMMC \u2192 NIST \u2192 SPARTA \u2192 proof",
+        "Hardcoded confidence values (0.5) for all requirement nodes",
+        "No node type field to distinguish requirements from proofs"
+      ],
+      "strengths": [
+        "Correctly maps proof nodes with status indicators (sorry/axiom/proved)",
+        "Attempts to create requirement nodes from edge targets",
+        "Handles edge filtering to ensure both endpoints exist"
+      ],
+      "changes": [
+        "Add 'nodeType: \"proof\" | \"requirement\" | \"control\"' to GraphNode interface",
+        "Parse control_id to determine if CMMC/NIST/SPARTA and set framework accordingly",
+        "Add visual properties like 'shape' or 'color' to distinguish node types",
+        "Create intermediate nodes for full compliance chain (CMMC-2.1.1 \u2192 NIST-AC-2 \u2192 SPARTA-AC-2 \u2192 proof)",
+        "Add 'complianceLevel' field to track position in requirement hierarchy"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 28326,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 19613,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "brandon-bailey",
@@ -144,15 +206,29 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-50",
       "criteria": "As someone who switches between Threat Matrix and Lemma Viewer: Are the same SPARTA controls visible in both views? Can you navigate from a control in the Lemma Viewer to the same control in the Threat Matrix? Does the shared data model (ArangoDB) ensure consistency? Would a compliance officer understand the relationship between these two views?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No visible SPARTA controls integration in the code shown",
+        "Missing navigation logic from Lemma Viewer to Threat Matrix",
+        "No ArangoDB data model references or consistency checks",
+        "Component appears incomplete (only first 50 lines shown)"
+      ],
+      "strengths": [
+        "Clear component structure with typed imports",
+        "Evidence tier system properly typed and implemented",
+        "Good separation of concerns with dedicated hooks (useLean4Data)"
+      ],
+      "changes": [
+        "Add SPARTA control references to the data model",
+        "Implement cross-view navigation handlers for control selection",
+        "Add ArangoDB query hooks to ensure data consistency between views",
+        "Include control mapping visualization in the LemmaGraph component"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 17203,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 18080,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "brandon-bailey",
@@ -184,15 +260,31 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:80-120",
       "criteria": "As someone assessing supply chain risk in defense manufacturing: Does the cascade analysis show how a change in one subsystem's proof affects downstream systems? Can you model 'what if our vendor's authentication module proof is invalid?' and see plant-floor impact? Does the tool help with CMMC supply chain risk assessment (SC.L2-3.13.1)?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No vendor/subsystem attribution in the data model",
+        "Missing supply chain context (no vendor names, module ownership)",
+        "No CMMC-specific risk scoring or compliance mapping",
+        "Cascade only shows binary impact, not risk levels or criticality",
+        "No export/reporting for supply chain assessments"
+      ],
+      "strengths": [
+        "Basic cascade propagation logic exists using graph traversal",
+        "Visual feedback changes node colors for impacted systems",
+        "Identifies SPARTA controls as distinct from proofs"
+      ],
+      "changes": [
+        "Add vendor/supplier fields to GraphNode type",
+        "Implement risk scoring based on cascade depth and criticality",
+        "Add CMMC control mapping (SC.L2-3.13.1) to impacted controls",
+        "Create supply chain view grouping nodes by vendor/subsystem",
+        "Add cascade impact report generation for compliance documentation"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 17604,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 19798,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "brandon-bailey",
@@ -200,15 +292,32 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:1-30",
       "criteria": "As someone who uses both Binary Explorer and Lemma Viewer: Do they share the same graph engine (GraphExplorer)? Is the LeftPane consistent between views? Are chat interactions similar in style and capability? Does switching between views feel like the same product? Are design tokens (EmbryStyle) consistent?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Only 30 lines shown - cannot verify complete implementation of described features",
+        "No actual implementation of what-if cascade, compliance impact, or evidence tiers visible",
+        "ChatMessage imported but no chat integration code shown",
+        "Cannot verify if switching between views feels consistent without seeing more code",
+        "No error handling or edge cases visible in this snippet"
+      ],
+      "strengths": [
+        "Clear imports showing shared components (GraphExplorer via LemmaGraph, LeftPane, EmbryStyle)",
+        "Well-documented feature list in header comments",
+        "Consistent use of shared design tokens (EMBRY, card, heading, label, glowDot)",
+        "Type imports suggest proper TypeScript usage"
+      ],
+      "changes": [
+        "Need to see full component implementation including state management for cascades",
+        "Show chat integration code to verify consistency with Binary Explorer",
+        "Include error boundaries and loading states for proof status",
+        "Demonstrate how GraphExplorer is actually used via LemmaGraph",
+        "Show evidence tier badge implementation mentioned in comments"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 18974,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 20840,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -222,15 +331,33 @@
       "mode": "code",
       "source": "useLean4Data.ts:80-150",
       "criteria": "As someone who cares about compositional verification: Does the data model support hierarchical proof composition (proofs of sub-components compose into system-level proofs)? Can you see which proofs are 'leaf' proofs vs 'composite' proofs? Does the graph layout reveal compositional structure? Is the BFS cascade algorithm correct for compositional dependency?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No hierarchical proof composition support - flat node structure only",
+        "Cannot distinguish leaf vs composite proofs - all treated equally",
+        "No compositional structure in graph layout - just generic nodes/edges",
+        "Missing BFS cascade algorithm entirely",
+        "No parent-child relationships or proof dependency trees",
+        "Confidence scores hardcoded (0.3/0.9) instead of compositional calculation"
+      ],
+      "strengths": [
+        "Basic graph structure exists with nodes and edges",
+        "Distinguishes between different proof statuses (sorry/axiom/proved)",
+        "Handles edge cases where requirement nodes don't exist in proof set"
+      ],
+      "changes": [
+        "Add 'proofType: \"leaf\" | \"composite\"' field to GraphNode interface",
+        "Implement proof dependency analysis to identify which proofs depend on others",
+        "Add 'dependencies: string[]' and 'dependents: string[]' to track composition",
+        "Create BFS traversal function to cascade confidence scores through dependency graph",
+        "Add 'compositionLevel: number' to indicate depth in proof hierarchy",
+        "Calculate composite proof confidence as min/product of sub-proof confidences"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 29063,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 17867,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -238,15 +365,31 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:60-100,useLean4Data.ts:50-70",
       "criteria": "As someone who works with large proof libraries (94K+ theorems): Does the data fetching paginate or limit to prevent UI freeze? Is the graph renderer optimized for large node counts (LOD, collision toggling)? Can the what-if BFS handle 1000+ node cascades without lag? Does the LeftPane handle 500+ theorems with search?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Hard-coded LIMIT 500 in query will miss theorems beyond that threshold",
+        "No virtualization or windowing for LeftPane theorem list",
+        "No LOD or collision optimization for D3 graph renderer",
+        "BFS runs synchronously without chunking for 1000+ nodes",
+        "No pagination controls or infinite scroll implementation"
+      ],
+      "strengths": [
+        "BFS cascade algorithm is correctly implemented with visited tracking",
+        "useMemo optimization for expensive graph computations",
+        "Clean separation of what-if mode logic from normal operations"
+      ],
+      "changes": [
+        "Replace 'LIMIT 500' with cursor-based pagination using OFFSET/LIMIT params",
+        "Add react-window or react-virtualized to LeftPane for 500+ theorem rendering",
+        "Implement requestAnimationFrame chunking in BFS loop for large cascades",
+        "Add graph LOD levels: show labels only when zoomed in past threshold",
+        "Add 'Load More' button or intersection observer for incremental data fetching"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 28333,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 17976,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -260,15 +403,32 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:70-100",
       "criteria": "As a verification expert evaluating the what-if algorithm: Is the BFS cascade correct (forward propagation through dependency edges)? Does it handle cycles gracefully? Does toggling a node to sorry correctly mark all downstream as tainted (not upstream)? Is the cascade result computed efficiently (memoized)? Does resetting clear all state correctly?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 5,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Edge type coercion logic is incomplete (src/tgt assignment identical)",
+        "No explicit cycle detection or reporting mechanism",
+        "Missing error handling for malformed graph data",
+        "Cascade visualization uses 'partial' status which may confuse taint semantics",
+        "No validation that graph edges exist or nodes are valid"
+      ],
+      "strengths": [
+        "BFS implementation correctly propagates downstream through dependency edges",
+        "Proper visited set prevents infinite loops in cyclic graphs",
+        "Clean separation between forced nodes and cascaded nodes",
+        "Efficient memoization with useMemo for cascade computation"
+      ],
+      "changes": [
+        "Fix edge extraction: const tgt = typeof edge.target === 'string' ? edge.target : edge.target.id",
+        "Add explicit cycle detection with Set to track back edges",
+        "Validate node existence before adding to cascade",
+        "Use 'tainted' or 'impacted' status instead of 'partial' for clarity",
+        "Add try-catch around BFS to handle malformed data gracefully"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 22997,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 16615,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -276,15 +436,33 @@
       "mode": "code",
       "source": "useLean4Data.ts:1-150",
       "criteria": "As someone who cares about data correctness: Does useLean4Data correctly map ArangoDB documents to GraphNode/GraphEdge? Are proof statuses derived accurately from lean_code content? Is the sorry detection reliable (checking for 'sorry' in code)? Are edge directions correct (proof \u2192 requirement, not reversed)? Is the data refresh handled on mount with cleanup?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 6,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Sorry detection is case-sensitive and won't catch 'Sorry' or 'SORRY' variants",
+        "No error handling for malformed ArangoDB responses or network timeouts",
+        "Missing null checks when accessing nested properties like e._from/e._to",
+        "Stats calculation at line 150 is cut off - incomplete implementation",
+        "No validation that _from/_to IDs actually exist before creating edges"
+      ],
+      "strengths": [
+        "Correctly maps ArangoDB documents to GraphNode/GraphEdge types with proper field extraction",
+        "Implements sorry detection by checking for 'sorry' in lean_code",
+        "Handles data refresh on mount with cleanup via useEffect return function",
+        "Edge directions are correct (proof._from \u2192 requirement._to)",
+        "Includes axiom detection alongside sorry detection for proof status"
+      ],
+      "changes": [
+        "Use case-insensitive regex: /\\bsorry\\b/i.test(p.lean_code) for reliable sorry detection",
+        "Add try-catch around JSON parsing with specific error messages",
+        "Validate edge endpoints exist: edges.filter(e => nodeMap.has(e._from) && nodeMap.has(e._to))",
+        "Add timeout handling: AbortController with 30s timeout for fetch operations",
+        "Complete the stats object calculation that's cut off at line 150"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 24244,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 22225,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -292,15 +470,34 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:200-300",
       "criteria": "As someone building tools for diverse teams: Do interactive elements have role='button' and tabIndex? Are keyboard shortcuts documented in the UI? Is the what-if toggle keyboard-accessible? Do suggested queries have proper ARIA labels? Is the color scheme accessible for color-blind users (not relying solely on red/green)?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "No role='button' on any clickable elements",
+        "No tabIndex attributes for keyboard navigation",
+        "No ARIA labels on interactive elements",
+        "Keyboard shortcuts not implemented or documented",
+        "Color scheme relies on red/green distinction (accessibility issue)",
+        "Suggested queries lack ARIA labels",
+        "No keyboard event handlers (only onClick)"
+      ],
+      "strengths": [
+        "What-if toggle has data-qid attribute for testing",
+        "Some buttons have onClick handlers defined",
+        "UI elements have visual feedback states"
+      ],
+      "changes": [
+        "Add role='button' tabIndex={0} to all button elements",
+        "Implement onKeyDown handlers for Enter/Space activation",
+        "Add aria-label to suggested query buttons",
+        "Replace red/green indicators with patterns/icons for colorblind users",
+        "Add keyboard shortcut overlay with '?' key trigger",
+        "Use semantic HTML <button> instead of styled divs"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 27102,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 21726,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -314,15 +511,31 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:130-170",
       "criteria": "As someone who runs the lean4-prove service: Does the re-prove workflow send correct payloads to :8604? Does it handle service-down gracefully? Does it pass tactics from the original proof for retrieval-augmented generation? Is the retry logic (max_retries) configurable? Does the result update the graph in real-time?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 3,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Code is incomplete - cuts off mid-implementation",
+        "No payload construction visible",
+        "No error handling for service-down",
+        "No retry logic implementation",
+        "No real-time graph update code",
+        "Missing tactics passing from original proof"
+      ],
+      "strengths": [
+        "Shows intent to implement re-prove with correct endpoint structure",
+        "Has basic chat integration for status updates"
+      ],
+      "changes": [
+        "Complete the fetch implementation with proper payload including original tactics",
+        "Add try-catch with specific handling for connection refused/service down",
+        "Implement configurable retry logic with exponential backoff",
+        "Add WebSocket or polling for real-time graph updates",
+        "Pass proof.tactics in the request body for RAG"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 32604,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 22884,
+      "reviewed_at": "2026-04-02T12:43:45"
     },
     {
       "persona": "denis-gopan",
@@ -330,15 +543,35 @@
       "mode": "code",
       "source": "Lean4LemmaView.tsx:100-200,useLean4Data.ts:50-90",
       "criteria": "As a developer concerned about robustness: What happens when ArangoDB is down? When lean4-prove service is unavailable? When proof data is malformed? Are errors displayed to the user (not silently swallowed)? Is the loading state communicated? Does the component degrade gracefully (show what it can, error on what it can't)?",
-      "score": 0,
-      "verdict": null,
-      "weaknesses": [],
-      "strengths": [],
-      "changes": [],
+      "score": 4,
+      "verdict": "FAIL",
+      "weaknesses": [
+        "Empty catch block in status polling silently swallows all errors",
+        "No user-visible indication when ArangoDB is down (error only in state, not rendered)",
+        "Missing validation of proof data structure before use",
+        "No retry logic for critical data fetches",
+        "Loading state not communicated in UI for initial data fetch",
+        "No fallback UI when core data fails to load"
+      ],
+      "strengths": [
+        "Implements try-catch blocks for all network requests",
+        "Shows loading states (chatLoading, loading from useLean4Data)",
+        "Gracefully handles lean4-prove service unavailability with empty catch block and error messages",
+        "Uses AbortSignal.timeout(2000) to prevent hanging requests",
+        "Displays specific error messages to user in chat interface"
+      ],
+      "changes": [
+        "Add error boundary component to catch render errors from malformed data",
+        "Display connection status indicator for ArangoDB and lean4-prove service",
+        "Validate API responses with schema before setting state",
+        "Add retry mechanism with exponential backoff for failed requests",
+        "Show skeleton UI or error message when initial data fetch fails",
+        "Log errors to console even when gracefully handling them"
+      ],
       "status": "reviewed",
-      "round": 3,
-      "latency_ms": 29532,
-      "reviewed_at": "2026-04-02T12:35:47"
+      "round": 5,
+      "latency_ms": 23108,
+      "reviewed_at": "2026-04-02T12:43:45"
     }
   ]
 }

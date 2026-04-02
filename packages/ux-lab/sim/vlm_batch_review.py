@@ -327,8 +327,12 @@ def review(
     votes: int = typer.Option(1, help="Number of VLM calls per review, take median score"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without calling VLM"),
     manifest_file: str = typer.Option(None, "--manifest", help="Path to manifest JSON (default: persona-review-manifest.json)"),
+    model: str = typer.Option(None, "--model", help="Override VLM model (e.g., claude-opus-4-6, text-gemini)"),
 ):
     """Run VLM batch review of all captured screenshots."""
+    global SCILLM_MODEL
+    if model:
+        SCILLM_MODEL = model
     manifest_path = Path(manifest_file) if manifest_file else MANIFEST_PATH
     if not manifest_path.exists():
         logger.error("Manifest not found: {}", manifest_path)
