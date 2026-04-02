@@ -3,6 +3,7 @@ import { NVIS } from '../theme'
 import { loadSupervisors, loadSupervisor, loadWorkers } from '../loader'
 import { recallDocuments } from '../api/client'
 import type { SupervisorState, WorkerState } from '../types'
+import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 
 const REFRESH_MS = 15_000
 
@@ -345,6 +346,8 @@ function SupervisorSelector({
         return (
           <button
             key={sup.label}
+                data-qid="supervisor:dyn-1" data-qs-action="SUPERVISOR_DYN_1"
+                title="Dyn 1"
             onClick={() => onSelect(sup.label)}
             aria-pressed={isActive}
             style={{
@@ -597,6 +600,10 @@ export default function SupervisorView() {
   const qualityGate = m?.quality_gate_action ?? ''
 
   const pipelineRunning = supervisors.some((s) => s.status === 'running')
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('supervisor:dyn-1', { app: 'datalake-explorer', action: 'DYN_1', label: 'Dyn 1', description: 'Dyn 1 in formatSeconds' })
+
 
   return (
     <div

@@ -3,6 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
 import type { BboxBlock } from './types'
 import { BLOCK_TYPE_COLORS } from './BboxWorkspace'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
@@ -261,8 +262,8 @@ export default function PdfCanvas({
         backgroundColor: '#0f1216',
       }}
     >
-      <div style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
-        <canvas ref={canvasRef} data-qid="pdf:canvas" title="PDF page canvas" style={{ display: 'block' }} />
+      <div data-qid="pdf:page-wrapper" data-qs-action="PDF_PAGE_WRAPPER" title="Page Wrapper" style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
+        <canvas ref={canvasRef} data-qid="pdf:canvas" data-qs-action="PDF_CANVAS" title="PDF page canvas" style={{ display: 'block' }} />
         <canvas
           ref={overlayRef}
           onClick={handleOverlayClick}
@@ -338,6 +339,11 @@ const centerStyle: React.CSSProperties = {
 }
 
 function Spinner() {
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_WRAPPER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
+  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
+
   return (
     <div
       style={{

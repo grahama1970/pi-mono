@@ -75,9 +75,9 @@ class Task:
     id: str
     title: str
     lane: str = "0"
-    runner: str = "code-runner"
-    backend: str = "codex"
-    mode: str = "iterative"
+    runner: str = ""  # auto-routed if empty — see _suggest_runner()
+    backend: str = ""
+    mode: str = ""
     agent: str = "general-purpose"
     depends_on: list[str] = field(default_factory=list)
     implementation: list[str] = field(default_factory=list)
@@ -94,13 +94,15 @@ class Task:
     skills: list[str] = field(default_factory=list)  # skill names compiled into context by /orchestrate
 
     def to_dict(self) -> dict[str, Any]:
+        # Auto-route runner/backend/mode if not explicitly set
+        runner, backend, mode = suggest_runner(self)
         d: dict[str, Any] = {
             "id": self.id,
             "title": self.title,
             "lane": self.lane,
-            "runner": self.runner,
-            "backend": self.backend,
-            "mode": self.mode,
+            "runner": runner,
+            "backend": backend,
+            "mode": mode,
             "agent": self.agent,
             "depends_on": self.depends_on,
             "implementation": self.implementation,
@@ -124,6 +126,58 @@ class Task:
         if self.skills:
             d["skills"] = self.skills
         return d
+
+
+def suggest_runner(task: Task) -> tuple[str, str, str]:
+    """Auto-route runner/backend/mode based on task characteristics.
+
+    Returns (runner, backend, mode). Only fills in empty fields.
+
+    Routing heuristic:
+      - Has command, no prompt → local (shell command)
+      - Has prompt, no allowlist, no DoD with assertion → scillm (one-shot text)
+      - Has prompt + allowlist + DoD → code-runner (bounded code task with verification)
+
+    code-runner is EXPENSIVE (worktree, git cycle, multi-round LLM, T0 scoring).
+    Only use it when the task genuinely needs iteration and verification.
+    """
+    runner = task.runner
+    backend = task.backend
+    mode = task.mode
+
+    if runner:
+        # Explicit runner — just fill missing backend/mode
+        if runner == "local":
+            return runner, "", ""
+        if runner == "scillm":
+            return runner, backend or "text", mode or "one_shot"
+        if runner == "code-runner":
+            return runner, backend or "codex", mode or "iterative"
+        return runner, backend, mode
+
+    # Auto-route based on task shape
+    has_command = bool(task.command)
+    has_prompt = bool(task.prompt or task.implementation)
+    has_allowlist = bool(task.allowlist)
+    has_dod_assertion = bool(task.definition_of_done.assertion) if task.definition_of_done else False
+
+    if has_command and not has_prompt:
+        # Pure shell command — local
+        return "local", "", ""
+
+    if has_prompt and has_allowlist and has_dod_assertion:
+        # Bounded code task with file scope + verification → code-runner
+        return "code-runner", backend or "codex", mode or "iterative"
+
+    if has_prompt:
+        # Text generation, simple edit, classification → scillm one-shot
+        return "scillm", backend or "text", mode or "one_shot"
+
+    # Fallback — command or unknown
+    if has_command:
+        return "local", "", ""
+
+    return "scillm", backend or "text", mode or "one_shot"
 
 
 @dataclass
@@ -651,9 +705,9 @@ def main(
             id=fields.get("id", ""),
             title=fields.get("title", "Untitled"),
             lane=fields.get("lane", "0"),
-            runner=fields.get("runner", "code-runner"),
-            backend=fields.get("backend", "sonnet"),
-            mode=fields.get("mode", "iterative"),
+            runner=fields.get("runner", ""),  # auto-routed by suggest_runner()
+            backend=fields.get("backend", ""),
+            mode=fields.get("mode", ""),
             agent=fields.get("agent", "general-purpose"),
             depends_on=[d.strip() for d in fields.get("depends_on", "").split(",") if d.strip()],
             implementation=[s.strip() for s in fields.get("implementation", "").split(";") if s.strip()],
@@ -792,10 +846,11 @@ def main(
     print(f"Detected plan type: {plan_type}")
     print(f"\nOutput YAML using the structured plan schema.")
     print(f"Required fields per task: id, title, lane, runner, backend, mode, depends_on, definition_of_done")
-    print(f"\nRunner types:")
-    print(f"  local           — deterministic shell commands (setup, tests)")
-    print(f"  scillm          — one-shot LLM inference (classification, extraction)")
-    print(f"  code-runner      — agent loops (coding, review, design)")
+    print(f"\nRunner routing (auto-routed if runner field is empty):")
+    print(f"  local       — shell commands (setup, tests, scripts). Has command, no prompt.")
+    print(f"  scillm      — one-shot LLM (simple edits, classification, extraction). Has prompt, no allowlist/DoD.")
+    print(f"  code-runner — ONLY for complex bounded code tasks with DoD verification. Has prompt + allowlist + DoD assertion.")
+    print(f"\n  code-runner is EXPENSIVE. Don't use it for mechanical edits, config changes, or simple text generation.")
     print(f"\nBackend models:")
     print(f"  sonnet  — boilerplate, scaffolding, monitoring (low cost)")
     print(f"  opus    — architecture, novel design, cross-skill composition (high cost)")

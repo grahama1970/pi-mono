@@ -636,7 +636,7 @@ export function ChatTab() {
             <span style={{ fontSize: 11, fontWeight: 900, color: EMBRY.white, letterSpacing: '0.05em' }}>SPARTA CHAT</span>
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
               {DATALAKES.map(dl => (
-                <button key={dl.id} onClick={() => setCurrentSystem(dl.id)} style={{
+                <button key={dl.id} data-qid={`chat:datalake:${dl.id}`} title={`Switch to ${dl.label} datalake`} onClick={() => setCurrentSystem(dl.id)} style={{
                   fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 4,
                   border: 'none', cursor: 'pointer',
                   backgroundColor: currentSystem === dl.id ? EMBRY.green : `${EMBRY.white}10`,

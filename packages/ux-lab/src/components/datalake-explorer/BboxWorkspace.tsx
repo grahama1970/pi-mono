@@ -6,6 +6,7 @@ import type {
 import BboxEditor from './BboxEditor'
 import RequirementsBlock from './RequirementsBlock'
 import PdfCanvas from './PdfCanvas'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -379,7 +380,7 @@ export default function BboxWorkspace({
           }}
         >
           {/* Edit mode toggle */}
-          <button
+          <button data-qid="bbox:el-1" data-qs-action="BBOX_EL_1" title="El 1"
             onClick={() => setEditMode((p) => !p)}
             style={{
               fontFamily: 'monospace',
@@ -440,7 +441,7 @@ export default function BboxWorkspace({
           <div style={{ width: '1px', height: '18px', backgroundColor: NVIS.borderSolid }} />
 
           {/* Zoom controls */}
-          <button
+          <button data-qid="bbox:el-2" data-qs-action="BBOX_EL_2" title="El 2"
             onClick={() => setZoom((z) => Math.max(0.25, z - 0.25))}
             style={{
               fontFamily: 'monospace',
@@ -466,7 +467,7 @@ export default function BboxWorkspace({
           >
             {Math.round(zoom * 100)}%
           </span>
-          <button
+          <button data-qid="bbox:el-3" data-qs-action="BBOX_EL_3" title="El 3"
             onClick={() => setZoom((z) => Math.min(4, z + 0.25))}
             style={{
               fontFamily: 'monospace',
@@ -484,7 +485,7 @@ export default function BboxWorkspace({
 
           {/* Save button */}
           {dirtyBlockIds.size > 0 && (
-            <button data-qid="bbox:save" title="Save block changes" onClick={handleSave} disabled={saving} style={{ fontFamily: 'monospace', fontSize: '11px', padding: '2px 8px', borderRadius: '3px', border: 'none', background: '#b45309', color: '#fff', cursor: saving ? 'wait' : 'pointer' }}>
+            <button data-qid="bbox:save" data-qs-action="BBOX_SAVE" title="Save block changes" onClick={handleSave} disabled={saving} style={{ fontFamily: 'monospace', fontSize: '11px', padding: '2px 8px', borderRadius: '3px', border: 'none', background: '#b45309', color: '#fff', cursor: saving ? 'wait' : 'pointer' }}>
               {saving ? 'Saving...' : `Save ${dirtyBlockIds.size} changes`}
             </button>
           )}
@@ -494,7 +495,7 @@ export default function BboxWorkspace({
 
           {/* Page navigation */}
           <button
-            data-qid="bbox:page:prev"
+            data-qid="bbox:page:prev" data-qs-action="BBOX_PREV"
             title="Previous page"
             onClick={() => onPageChange(Math.max(0, currentPage - 1))}
             disabled={currentPage === 0}
@@ -513,7 +514,7 @@ export default function BboxWorkspace({
             Prev
           </button>
           <span
-            data-qid="bbox:page:number"
+            data-qid="bbox:page:number" data-qs-action="BBOX_NUMBER"
             title="Current page number"
             style={{
               fontSize: '10px',
@@ -524,7 +525,7 @@ export default function BboxWorkspace({
             {currentPage + 1} / {pageCount}
           </span>
           <button
-            data-qid="bbox:page:next"
+            data-qid="bbox:page:next" data-qs-action="BBOX_NEXT"
             title="Next page"
             onClick={() => onPageChange(Math.min(pageCount - 1, currentPage + 1))}
             disabled={currentPage >= pageCount - 1}
@@ -611,7 +612,7 @@ export default function BboxWorkspace({
               {/* Inline reclassify dropdown (non-edit mode, triggered by `t`) */}
               {!editMode && (
                 <div style={{ position: 'relative' }}>
-                  <button
+                  <button data-qid="bbox:el-4" data-qs-action="BBOX_EL_4" title="El 4"
                     onClick={() => setInspectorTypeDropdown((p) => !p)}
                     style={{
                       width: '100%',
@@ -650,7 +651,7 @@ export default function BboxWorkspace({
                       {ALL_BLOCK_TYPES.map((t, i) => {
                         const isActive = t === selectedBlock.blockType
                         return (
-                          <button
+                          <button data-qid="bbox:t" data-qs-action="BBOX_T" title="T"
                             key={t}
                             onClick={() => {
                               handleReclassify(selectedBlock.id, t)
@@ -740,7 +741,7 @@ export default function BboxWorkspace({
                 }}
               >
                 <span style={{ color: NVIS.dim }}>Section</span>
-                <select
+                <select data-qid="bbox:el-6" data-qs-action="BBOX_EL_6" title="El 6"
                   value={selectedBlock.sectionId ?? ''}
                   onChange={(e) => {
                     if (onBlockUpdate) {
@@ -841,6 +842,7 @@ export default function BboxWorkspace({
             {/* Text Preview */}
             <InspectorSection title="Text">
               <div
+                data-qid="bbox:block-info" data-qs-action="BBOX_BLOCK_INFO" title="Block Info"
                 style={{
                   fontSize: '11px',
                   color: NVIS.white,
@@ -939,6 +941,20 @@ function InspectorSection({
 }
 
 function MetaRow({ label, value }: { label: string; value: string }) {
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('bbox:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in truncate' })
+  useRegisterAction('bbox:el-2', { app: 'datalake-explorer', action: 'EL_2', label: 'El 2', description: 'El 2 in truncate' })
+  useRegisterAction('bbox:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in truncate' })
+  useRegisterAction('bbox:save', { app: 'datalake-explorer', action: 'SAVE', label: 'Save', description: 'Save in truncate' })
+  useRegisterAction('bbox:page:prev', { app: 'datalake-explorer', action: 'PAGE_PREV', label: 'Page Prev', description: 'Page Prev in truncate' })
+  useRegisterAction('bbox:page:number', { app: 'datalake-explorer', action: 'PAGE_NUMBER', label: 'Page Number', description: 'Page Number in truncate' })
+  useRegisterAction('bbox:page:next', { app: 'datalake-explorer', action: 'PAGE_NEXT', label: 'Page Next', description: 'Page Next in truncate' })
+  useRegisterAction('bbox:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in truncate' })
+  useRegisterAction('bbox:t', { app: 'datalake-explorer', action: 'T', label: 'T', description: 'T in truncate' })
+  useRegisterAction('bbox:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in truncate' })
+  useRegisterAction('bbox:block-info', { app: 'datalake-explorer', action: 'BLOCK_INFO', label: 'Block Info', description: 'Block Info in truncate' })
+
   return (
     <div
       style={{

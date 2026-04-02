@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { NVIS } from './theme'
 import type { BboxBlock, ProofStatus } from './types'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -145,6 +146,8 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
         </span>
 
         <button
+                data-qid="req-block:item-1" data-qs-action="REQ-BLOCK_ITEM_1"
+                title="Item 1"
           onClick={() => setFlagged((p) => !p)}
           style={{
             marginLeft: 'auto',
@@ -178,6 +181,8 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
           </div>
           <select
             value={selectedControl}
+                data-qid="req-block:item-2" data-qs-action="REQ-BLOCK_ITEM_2"
+                title="Item 2"
             onChange={(e) => {
               setSelectedControl(e.target.value)
               if (e.target.value) setCurrentStage(Math.max(currentStage, 1))
@@ -205,6 +210,8 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
 
           {/* + Evidence Case button */}
           <button
+                data-qid="req-block:item-3" data-qs-action="REQ-BLOCK_ITEM_3"
+                title="Item 3"
             onClick={handleCreateEvidence}
             disabled={!selectedControl}
             style={{
@@ -245,6 +252,12 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
               const isDone = i < currentStage
               const isCurrent = i === currentStage
               const color = isDone
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('req-block:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in RequirementsBlock' })
+  useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in RequirementsBlock' })
+  useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in RequirementsBlock' })
+
                 ? '#15803d'
                 : isCurrent
                 ? STAGE_COLORS[stage]

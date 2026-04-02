@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import PdfCanvas from './PdfCanvas'
 import { NVIS } from '../theme'
 import type { BboxBlock, CascadeStep } from '../types'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 const CORPUS_SOURCE = '/mnt/storage12tb/extractor_corpus/source/'
 const FIXTURES_DIR = '/mnt/storage12tb/extractor_corpus/fixtures/generated/'
@@ -275,7 +276,9 @@ export default function ExtractionReviewModal({
           {/* Mode tabs */}
           <div style={{ display: 'flex', gap: 4, marginLeft: 12 }}>
             {(['review', 'compare'] as ModalMode[]).map((m) => (
-              <span key={m} onClick={() => setMode(m)} style={{
+              <span key={m}
+                data-qid="review:dyn-1" data-qs-action="REVIEW_DYN_1"
+                title="Dyn 1" onClick={() => setMode(m)} style={{
                 fontSize: 9, padding: '2px 8px', borderRadius: 3, cursor: 'pointer',
                 color: mode === m ? '#0f1216' : NVIS.dim,
                 background: mode === m ? NVIS.accent : 'transparent',
@@ -287,10 +290,18 @@ export default function ExtractionReviewModal({
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={handleGenerateFixture} style={btnStyle(NVIS.accent)}>Generate Fixture</button>
-          {onReExtract && <button onClick={onReExtract} style={btnStyle(NVIS.amber)}>Re-extract</button>}
-          {onAccept && <button onClick={onAccept} style={btnStyle(NVIS.green)}>Accept as-is</button>}
-          <button onClick={onClose} style={btnStyle(NVIS.dim)}>Close (Esc)</button>
+          <button
+                data-qid="review:item-2" data-qs-action="REVIEW_ITEM_2"
+                title="Item 2" onClick={handleGenerateFixture} style={btnStyle(NVIS.accent)}>Generate Fixture</button>
+          {onReExtract && <button
+                data-qid="review:item-3" data-qs-action="REVIEW_ITEM_3"
+                title="Item 3" onClick={onReExtract} style={btnStyle(NVIS.amber)}>Re-extract</button>}
+          {onAccept && <button
+                data-qid="review:item-4" data-qs-action="REVIEW_ITEM_4"
+                title="Item 4" onClick={onAccept} style={btnStyle(NVIS.green)}>Accept as-is</button>}
+          <button
+                data-qid="review:item-5" data-qs-action="REVIEW_ITEM_5"
+                title="Item 5" onClick={onClose} style={btnStyle(NVIS.dim)}>Close (Esc)</button>
         </div>
       </div>
 
@@ -372,16 +383,24 @@ export default function ExtractionReviewModal({
         background: 'rgba(15,18,22,0.9)', borderRadius: 4, border: `1px solid ${NVIS.border}`,
         zIndex: 10,
       }}>
-        <span onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
+        <span
+                data-qid="review:item-6" data-qs-action="REVIEW_ITEM_6"
+                title="Item 6" onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
           style={{ color: currentPage > 0 ? NVIS.accent : NVIS.dim, cursor: 'pointer', fontSize: 11 }}>← Prev</span>
         <span style={{ color: NVIS.white, fontSize: 10 }}>{currentPage + 1} / {pageCount}</span>
-        <span onClick={() => currentPage < pageCount - 1 && setCurrentPage(currentPage + 1)}
+        <span
+                data-qid="review:item-7" data-qs-action="REVIEW_ITEM_7"
+                title="Item 7" onClick={() => currentPage < pageCount - 1 && setCurrentPage(currentPage + 1)}
           style={{ color: currentPage < pageCount - 1 ? NVIS.accent : NVIS.dim, cursor: 'pointer', fontSize: 11 }}>Next →</span>
         <span style={{ color: NVIS.dim, fontSize: 9, marginLeft: 8 }}>|</span>
-        <span onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}
+        <span
+                data-qid="review:item-8" data-qs-action="REVIEW_ITEM_8"
+                title="Item 8" onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}
           style={{ color: NVIS.accent, cursor: 'pointer', fontSize: 11 }}>−</span>
         <span style={{ color: NVIS.dim, fontSize: 9 }}>{(zoom * 100).toFixed(0)}%</span>
-        <span onClick={() => setZoom((z) => Math.min(3, z + 0.25))}
+        <span
+                data-qid="review:item-9" data-qs-action="REVIEW_ITEM_9"
+                title="Item 9" onClick={() => setZoom((z) => Math.min(3, z + 0.25))}
           style={{ color: NVIS.accent, cursor: 'pointer', fontSize: 11 }}>+</span>
       </div>
     </div>
@@ -406,6 +425,8 @@ function BlockListSidebar({ blocks, selectedBlock, onSelect, currentPage, loadin
       )}
       {blocks.map((block) => (
         <div key={block.id}
+                data-qid="review:dyn-10" data-qs-action="REVIEW_DYN_10"
+                title="Dyn 10"
           onClick={() => onSelect(block.id === selectedBlock ? null : block.id)}
           style={{
             padding: '4px 6px', marginBottom: 2, fontSize: 9, cursor: 'pointer', borderRadius: 2,
@@ -463,7 +484,9 @@ function NoFixturePlaceholder({ fixtureStatus, fixtureSpec, onGenerate }: {
               </div>
             </div>
           ) : (
-            <button onClick={onGenerate} style={btnStyle(NVIS.accent)}>Generate Fixture</button>
+            <button
+                data-qid="review:item-11" data-qs-action="REVIEW_ITEM_11"
+                title="Item 11" onClick={onGenerate} style={btnStyle(NVIS.accent)}>Generate Fixture</button>
           )}
         </>
       )}
@@ -519,3 +542,17 @@ function mapBlockType(t: string): BboxBlock['blockType'] {
 }
 
 function sleep(ms: number): Promise<void> { return new Promise((r) => setTimeout(r, ms)) }
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('review:dyn-1', { app: 'datalake-explorer', action: 'DYN_1', label: 'Dyn 1', description: 'Dyn 1 in pdfUrl' })
+  useRegisterAction('review:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in pdfUrl' })
+  useRegisterAction('review:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in pdfUrl' })
+  useRegisterAction('review:item-4', { app: 'datalake-explorer', action: 'ITEM_4', label: 'Item 4', description: 'Item 4 in pdfUrl' })
+  useRegisterAction('review:item-5', { app: 'datalake-explorer', action: 'ITEM_5', label: 'Item 5', description: 'Item 5 in pdfUrl' })
+  useRegisterAction('review:item-6', { app: 'datalake-explorer', action: 'ITEM_6', label: 'Item 6', description: 'Item 6 in pdfUrl' })
+  useRegisterAction('review:item-7', { app: 'datalake-explorer', action: 'ITEM_7', label: 'Item 7', description: 'Item 7 in pdfUrl' })
+  useRegisterAction('review:item-8', { app: 'datalake-explorer', action: 'ITEM_8', label: 'Item 8', description: 'Item 8 in pdfUrl' })
+  useRegisterAction('review:item-9', { app: 'datalake-explorer', action: 'ITEM_9', label: 'Item 9', description: 'Item 9 in pdfUrl' })
+  useRegisterAction('review:dyn-10', { app: 'datalake-explorer', action: 'DYN_10', label: 'Dyn 10', description: 'Dyn 10 in pdfUrl' })
+  useRegisterAction('review:item-11', { app: 'datalake-explorer', action: 'ITEM_11', label: 'Item 11', description: 'Item 11 in pdfUrl' })
+

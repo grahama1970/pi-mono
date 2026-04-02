@@ -163,7 +163,6 @@ const ChildSteps = memo(({ children, parentId }: { children: ReasoningStep[]; pa
   return (
     <div style={{ marginLeft: 24, paddingTop: 4 }}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
         data-qid={`step-children-toggle:${parentId}`}
         title={`${isOpen ? 'Collapse' : 'Expand'} ${children.length} nested sub-operations`}
         style={{
@@ -284,7 +283,6 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
 
       {(step.detail || step.recallItems) && (
         <button
-          onClick={() => setIsOpen(!isOpen)}
           data-qid={`step-detail-toggle:${step.id}`}
           title={isOpen ? 'Hide step details' : 'Show step details (recall items, raw output)'}
           style={{

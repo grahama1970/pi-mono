@@ -4,6 +4,7 @@ import { TraceabilityView } from './TraceabilityView'
 import QuarantineView from './views/QuarantineView'
 import { EMBRY, label, card } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 /* ── Types ────────────────────────────────────────────────── */
 
@@ -417,11 +418,11 @@ function MetricsTab({ setQuarantineCount }: { setQuarantineCount: React.Dispatch
     <div style={{ padding: 20, overflow: 'auto', fontFamily: MONO, fontSize: 11 }}>
       <div style={{ ...label, marginBottom: 12 }}>Embedding Coverage</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
-        <div data-qid="metrics:coverage:text" title="Text embedding coverage">
+        <div data-qid="metrics:coverage:text" data-qs-action="METRICS_TEXT" title="Text embedding coverage">
           <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Text embedding (384d) — {(covText * 100).toFixed(1)}%</div>
           <div style={gaugeTrack}><div style={gaugeStyle(covText)} /></div>
         </div>
-        <div data-qid="metrics:coverage:visual" title="Visual embedding coverage">
+        <div data-qid="metrics:coverage:visual" data-qs-action="METRICS_VISUAL" title="Visual embedding coverage">
           <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 2 }}>Visual embedding (2048d) — {(covVisual * 100).toFixed(1)}%</div>
           <div style={gaugeTrack}><div style={gaugeStyle(covVisual)} /></div>
         </div>
@@ -451,7 +452,7 @@ function MetricsTab({ setQuarantineCount }: { setQuarantineCount: React.Dispatch
             </div>
           ))}
         </div>
-        <button data-qid="metrics:quarantine-button" title="Quarantine flagged issues" onClick={async () => {
+        <button data-qid="metrics:quarantine-button" data-qs-action="METRICS_QUARANTINE_BUTTON" title="Quarantine flagged issues" onClick={async () => {
           const r = await fetch('/api/quarantine/from-metrics', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({issues: report.issues?.slice(0,50) || [], source:'metrics'})})
           const d = await r.json()
           setQuarantineCount(prev => prev + (d?.created || 0))
@@ -563,6 +564,12 @@ export function DatalakeExplorerView() {
 
   // Visible documents filtered by scope
   const visibleDocs = activeScope
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('metrics:coverage:text', { app: 'datalake-explorer', action: 'COVERAGE_TEXT', label: 'Coverage Text', description: 'Coverage Text in DatalakeLeftPane' })
+  useRegisterAction('metrics:coverage:visual', { app: 'datalake-explorer', action: 'COVERAGE_VISUAL', label: 'Coverage Visual', description: 'Coverage Visual in DatalakeLeftPane' })
+  useRegisterAction('metrics:quarantine-button', { app: 'datalake-explorer', action: 'QUARANTINE_BUTTON', label: 'Quarantine Button', description: 'Quarantine Button in DatalakeLeftPane' })
+
     ? documents.filter(d => d.scope === activeScope)
     : documents
 

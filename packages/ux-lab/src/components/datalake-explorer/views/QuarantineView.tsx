@@ -698,7 +698,7 @@ export default function QuarantineView() {
 
     return (
       <div key={idx}>
-        <div
+        <div data-qid="quarantine:el-1" data-qs-action="QUARANTINE_EL_1" title="El 1"
           data-section-idx={idx}
           role="treeitem"
           aria-selected={isSelected}
@@ -734,7 +734,7 @@ export default function QuarantineView() {
           }}
         >
           {/* Toggle */}
-          <span
+          <span data-qid="quarantine:el-2" data-qs-action="QUARANTINE_EL_2" title="El 2"
             style={{
               fontSize: '9px',
               color: NVIS.dim,
@@ -930,7 +930,7 @@ export default function QuarantineView() {
           fontSize: '11px',
         }}
       >
-        <span data-qid="quarantine:entry-count" title="Entry count" style={{ color: NVIS.dim }}>
+        <span data-qid="quarantine:entry-count" data-qs-action="QUARANTINE_ENTRY_COUNT" title="Entry count" style={{ color: NVIS.dim }}>
           {filtered.length} doc{filtered.length !== 1 ? 's' : ''}
         </span>
         {checkedIds.size > 0 && (
@@ -968,7 +968,7 @@ export default function QuarantineView() {
 
         {/* Chat toggle (L.7) */}
         <button
-          data-qid="quarantine:layout:chat"
+          data-qid="quarantine:layout:chat" data-qs-action="QUARANTINE_CHAT"
           title="Layout: Chat"
           onClick={() => setChatOpen((p) => !p)}
           style={{
@@ -1082,7 +1082,7 @@ export default function QuarantineView() {
             <input
               type="text"
               placeholder="Search..."
-              data-qid="quarantine:search"
+              data-qid="quarantine:search" data-qs-action="QUARANTINE_SEARCH"
               title="Search quarantine queue"
               aria-label="Search quarantine queue by filename"
               value={search}
@@ -1256,7 +1256,7 @@ export default function QuarantineView() {
               fontSize: '11px',
             }}
           >
-            <button
+            <button data-qid="quarantine:select-all-visible-docume" data-qs-action="QUARANTINE_SELECT_ALL_VISIBLE_DOCUME" title="Select All Visible Docume"
               onClick={selectAllVisible}
               aria-label="Select all visible documents"
               style={{
@@ -1275,7 +1275,7 @@ export default function QuarantineView() {
             <button
               onClick={handleBatchApprove}
               disabled={checkedIds.size === 0 || actionInFlight !== null}
-              data-qid="quarantine:batch:approve"
+              data-qid="quarantine:batch:approve" data-qs-action="QUARANTINE_APPROVE"
               title="Approve all checked entries"
               aria-label={`Approve ${checkedIds.size} selected documents`}
               style={{
@@ -1653,10 +1653,10 @@ export default function QuarantineView() {
                 }}
               >
                 {/* L.5: Approve/Reject are dominant buttons */}
-                <button
+                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_EL_4" title="El 4"
                   onClick={() => handleAction(selected.id, 'approve')}
                   disabled={actionInFlight !== null}
-                  data-qid="quarantine:action:approve"
+                  data-qid="quarantine:action:approve" data-qs-action="QUARANTINE_APPROVE"
                   title="Approve selected entry"
                   aria-label={`Approve ${selected.filename}`}
                   style={{
@@ -1676,10 +1676,10 @@ export default function QuarantineView() {
                 >
                   Approve (a)
                 </button>
-                <button
+                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_EL_5" title="El 5"
                   onClick={() => handleAction(selected.id, 'reject')}
                   disabled={actionInFlight !== null}
-                  data-qid="quarantine:action:reject"
+                  data-qid="quarantine:action:reject" data-qs-action="QUARANTINE_REJECT"
                   title="Reject selected entry"
                   aria-label={`Reject ${selected.filename}`}
                   style={{
@@ -1701,7 +1701,7 @@ export default function QuarantineView() {
                 </button>
 
                 {/* Separator */}
-                <div
+                <div data-qid="quarantine:sep-1" data-qs-action="QUARANTINE_SEP_1" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1713,16 +1713,16 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Re-extract (x)"
                   aria-label={`Re-extract ${selected.filename}`}
-                  data-qid="quarantine:action:reextract"
+                  data-qid="quarantine:action:reextract" data-qs-action="QUARANTINE_REEXTRACT"
                   title="Re-extract selected entry"
                   color={NVIS.accent}
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 're-extract')}
                 />
-                <select
+                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_EL_6" title="El 6"
                   value={reExtractStrategy}
                   onChange={(e) => setReExtractStrategy(e.target.value)}
-                  data-qid="quarantine:strategy:select"
+                  data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_SELECT"
                   title="Re-extraction strategy"
                   aria-label="Re-extraction strategy"
                   style={{
@@ -1744,7 +1744,7 @@ export default function QuarantineView() {
                   ))}
                 </select>
 
-                <div
+                <div data-qid="quarantine:sep-2" data-qs-action="QUARANTINE_SEP_2" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1756,7 +1756,7 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Interview (i)"
                   aria-label={`Interview about ${selected.filename}`}
-                  data-qid="quarantine:action:interview"
+                  data-qid="quarantine:action:interview" data-qs-action="QUARANTINE_INTERVIEW"
                   title="Interview about selected entry"
                   color="#b45309"
                   disabled={actionInFlight !== null}
@@ -1766,7 +1766,7 @@ export default function QuarantineView() {
                 <ActionButton
                   label="Converge"
                   aria-label={`Run convergence loop on ${selected.filename}`}
-                  data-qid="quarantine:action:converge"
+                  data-qid="quarantine:action:converge" data-qs-action="QUARANTINE_CONVERGE"
                   title="Run convergence loop"
                   color={NVIS.blue}
                   disabled={actionInFlight !== null}
@@ -1776,7 +1776,7 @@ export default function QuarantineView() {
                 <ActionButton
                   label={diagnosing ? 'Diagnosing...' : 'Diagnose'}
                   aria-label={`Compare TOC vs extraction for ${selected.filename}`}
-                  data-qid="quarantine:action:diagnose"
+                  data-qid="quarantine:action:diagnose" data-qs-action="QUARANTINE_DIAGNOSE"
                   title="Compare TOC vs extraction"
                   color="#8b5cf6"
                   disabled={diagnosing || !selected.path}
@@ -1833,7 +1833,7 @@ export default function QuarantineView() {
               >
                 Interview Chat
               </span>
-              <button
+              <button data-qid="quarantine:el-7" data-qs-action="QUARANTINE_EL_7" title="El 7"
                 onClick={() => setChatOpen(false)}
                 style={{
                   fontFamily: 'monospace',
@@ -1924,6 +1924,24 @@ function DiagCard({
 }
 
 function MetaItem({
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('quarantine:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-2', { app: 'datalake-explorer', action: 'EL_2', label: 'El 2', description: 'El 2 in qualityScoreColor' })
+  useRegisterAction('quarantine:entry-count', { app: 'datalake-explorer', action: 'ENTRY_COUNT', label: 'Entry Count', description: 'Entry Count in qualityScoreColor' })
+  useRegisterAction('quarantine:layout:chat', { app: 'datalake-explorer', action: 'LAYOUT_CHAT', label: 'Layout Chat', description: 'Layout Chat in qualityScoreColor' })
+  useRegisterAction('quarantine:search', { app: 'datalake-explorer', action: 'SEARCH', label: 'Search', description: 'Search in qualityScoreColor' })
+  useRegisterAction('quarantine:select-all-visible-docume', { app: 'datalake-explorer', action: 'SELECT_ALL_VISIBLE_DOCUME', label: 'Select All Visible Docume', description: 'Select All Visible Docume in qualityScoreColor' })
+  useRegisterAction('quarantine:batch:approve', { app: 'datalake-explorer', action: 'BATCH_APPROVE', label: 'Batch Approve', description: 'Batch Approve in qualityScoreColor' })
+  useRegisterAction('quarantine:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-5', { app: 'datalake-explorer', action: 'EL_5', label: 'El 5', description: 'El 5 in qualityScoreColor' })
+  useRegisterAction('quarantine:sep-1', { app: 'datalake-explorer', action: 'SEP_1', label: 'Sep 1', description: 'Sep 1 in qualityScoreColor' })
+  useRegisterAction('quarantine:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in qualityScoreColor' })
+  useRegisterAction('quarantine:strategy:select', { app: 'datalake-explorer', action: 'STRATEGY_SELECT', label: 'Strategy Select', description: 'Strategy Select in qualityScoreColor' })
+  useRegisterAction('quarantine:sep-2', { app: 'datalake-explorer', action: 'SEP_2', label: 'Sep 2', description: 'Sep 2 in qualityScoreColor' })
+  useRegisterAction('quarantine:action:interview', { app: 'datalake-explorer', action: 'ACTION_INTERVIEW', label: 'Action Interview', description: 'Action Interview in qualityScoreColor' })
+  useRegisterAction('quarantine:el-7', { app: 'datalake-explorer', action: 'EL_7', label: 'El 7', description: 'El 7 in qualityScoreColor' })
+
   label,
   value,
   valueColor,

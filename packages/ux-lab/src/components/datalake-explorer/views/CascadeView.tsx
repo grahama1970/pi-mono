@@ -13,6 +13,7 @@ import { NVIS } from '../theme'
 import { loadCascade, loadCascadeEscalations } from '../loader'
 import { recallDocuments } from '../api/client'
 import type { CascadeDecisionPoint, CascadeEscalation } from '../types'
+import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 
 // --- Constants ---
 
@@ -428,6 +429,8 @@ export default function CascadeView() {
               role="tab"
               aria-selected={isActive}
               aria-controls={`panel-${dp}`}
+                data-qid="cascade:dyn-1" data-qs-action="CASCADE_DYN_1"
+                title="Dyn 1"
               onClick={() => setSelectedPoint(dp)}
               style={{
                 padding: '6px 16px',
@@ -620,6 +623,8 @@ export default function CascadeView() {
                     key={opt.value}
                     role="radio"
                     aria-checked={binCount === opt.value}
+                data-qid="cascade:dyn-2" data-qs-action="CASCADE_DYN_2"
+                title="Dyn 2"
                     onClick={() => setBinCount(opt.value)}
                     style={{
                       padding: '2px 10px',
@@ -873,6 +878,8 @@ export default function CascadeView() {
                   key={f}
                   role="radio"
                   aria-checked={dispositionFilter === f}
+                data-qid="cascade:dyn-3" data-qs-action="CASCADE_DYN_3"
+                title="Dyn 3"
                   onClick={() => setDispositionFilter(f)}
                   style={{
                     padding: '2px 10px',
@@ -986,6 +993,12 @@ export default function CascadeView() {
               ) : (
                 filteredEscalations.map((esc, i) => {
                   const disagree =
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('cascade:dyn-1', { app: 'datalake-explorer', action: 'DYN_1', label: 'Dyn 1', description: 'Dyn 1 in formatCount' })
+  useRegisterAction('cascade:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in formatCount' })
+  useRegisterAction('cascade:dyn-3', { app: 'datalake-explorer', action: 'DYN_3', label: 'Dyn 3', description: 'Dyn 3 in formatCount' })
+
                     esc.classifier_disposition &&
                     esc.classifier_disposition !== esc.rust_guess
                   return (

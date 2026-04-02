@@ -3,6 +3,7 @@ import { NVIS } from '../theme'
 import { checkHealth } from '../api/client'
 // Mock data from ../api/mock available but using local MOCK_SERVICES/MOCK_EVENTS for richer detail
 import type { MonitorService, MonitorEvent } from '../types'
+import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 
 // --- Mock data (V10 spec: 4-6 service cards + event log) ---
 
@@ -376,6 +377,8 @@ function EventRow({
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
+                data-qid="monitor:item-1" data-qs-action="MONITOR_ITEM_1"
+                title="Item 1"
         onClick={() => onSourceClick?.(event.source)}
         title={event.source}
       >
@@ -461,6 +464,11 @@ export default function MonitorView() {
   const infoCt = events.filter((e) => e.level === 'info').length
   const warnCt = events.filter((e) => e.level === 'warn').length
   const errorCt = events.filter((e) => e.level === 'error').length
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in formatTimeAgo' })
+  useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in formatTimeAgo' })
+
 
   return (
     <div
@@ -597,6 +605,8 @@ export default function MonitorView() {
                   key={f.value}
                   role="radio"
                   aria-checked={levelFilter === f.value}
+                data-qid="monitor:dyn-2" data-qs-action="MONITOR_DYN_2"
+                title="Dyn 2"
                   onClick={() => setLevelFilter(f.value)}
                   style={{
                     padding: '2px 10px',

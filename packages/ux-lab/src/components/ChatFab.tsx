@@ -348,8 +348,9 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
   if (!open) {
     return (
       <button
-        onClick={() => setOpen(true)}
+        data-qid="chat-fab:open" title="Open chat" onClick={() => setOpen(true)}
         title="Chat with Embry"
+        data-qs-action="OPEN_CHAT_FAB"
         style={{
           position: 'fixed',
           bottom: 20,
@@ -405,7 +406,8 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
           </span>
         </div>
         <button
-          onClick={() => setOpen(false)}
+          data-qid="chat-fab:close" title="Close chat" onClick={() => setOpen(false)}
+          data-qs-action="CLOSE_CHAT_FAB"
           style={{ background: 'none', border: 'none', color: EMBRY.dim, fontSize: 14, cursor: 'pointer', padding: '0 4px' }}
         >
           x

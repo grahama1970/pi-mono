@@ -62,7 +62,7 @@ const InlineTable = memo(function InlineTable({ data, onEntityClick }: { data: T
 					<thead>
 						<tr>
 							{data.columns.map(col => (
-								<th key={col.key} onClick={col.sortable !== false ? () => handleSort(col.key) : undefined}
+								<th key={col.key} data-qid={`artifact:table:sort:${col.key}`} title={`Sort by ${col.label}`} onClick={col.sortable !== false ? () => handleSort(col.key) : undefined}
 									style={{ padding: "8px 12px", textAlign: "left", color: "#94a3b8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "sticky", top: 0, background: "#18181b", cursor: col.sortable !== false ? "pointer" : "default", userSelect: "none" }}>
 									{col.label}{sortKey === col.key && <span style={{ marginLeft: 4 }}>{sortAsc ? "↑" : "↓"}</span>}
 								</th>

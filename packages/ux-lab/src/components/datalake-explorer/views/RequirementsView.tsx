@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { NVIS } from '../theme'
 import { queryTaxonomy, listDocuments } from '../api/client'
 import type { RequirementEntry, RequirementSection } from '../types'
+import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 
 // --- Sample data ---
 const SAMPLE_SECTIONS: RequirementSection[] = [
@@ -125,7 +126,7 @@ function SectionNode({ section, depth, selectedId, expandedIds, onSelect, onTogg
 
   return (
     <>
-      <div
+      <div data-qid="requirements:el-1" data-qs-action="REQUIREMENTS_EL_1" title="El 1"
         role="treeitem"
         aria-selected={isSelected}
         aria-expanded={hasChildren ? isExpanded : undefined}
@@ -388,7 +389,7 @@ export default function RequirementsView() {
           </div>
         </div>
 
-        <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div data-qid="requirements:detail" data-qs-action="REQUIREMENTS_DETAIL" title="Requirements Detail" style={{ flex: 1, overflowY: 'auto' }}>
           <table
             aria-label="Requirements list"
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}
@@ -417,6 +418,11 @@ export default function RequirementsView() {
                 const isActive = req.id === selectedReqId
                 const evBadge = evidenceBadge(req.evidence)
                 const pBadge = proofBadge(req.proofStatus)
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('requirements:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in evidenceBadge' })
+  useRegisterAction('requirements:detail', { app: 'datalake-explorer', action: 'DETAIL', label: 'Detail', description: 'Detail in evidenceBadge' })
+
                 return (
                   <tr
                     key={req.id}

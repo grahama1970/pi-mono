@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { NVIS } from './theme'
 import type { PipelineStep, ReextractResult } from './types'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -113,6 +114,14 @@ export default function SpotReextract({
       })
     } catch {
       const errSteps = newSteps.map((s, i) => ({
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in stepStatusIcon' })
+  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in stepStatusIcon' })
+  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in stepStatusIcon' })
+  useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
+  useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
+
         ...s, status: (i === newSteps.length - 1 ? 'error' : 'done') as PipelineStep['status'],
       }))
       setSteps(errSteps)
@@ -132,6 +141,8 @@ export default function SpotReextract({
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
       }}
+                data-qid="reextract:item-1" data-qs-action="REEXTRACT_ITEM_1"
+                title="Item 1"
       onClick={(e) => {
         if (e.target === e.currentTarget && !running) onCancel()
       }}
@@ -202,6 +213,8 @@ export default function SpotReextract({
               {(['section', 'page'] as const).map((s) => (
                 <button
                   key={s}
+                data-qid="reextract:dyn-2" data-qs-action="REEXTRACT_DYN_2"
+                title="Dyn 2"
                   onClick={() => setScope(s)}
                   disabled={running}
                   style={{
@@ -389,6 +402,8 @@ export default function SpotReextract({
         >
           {!running && !result && (
             <button
+                data-qid="reextract:item-3" data-qs-action="REEXTRACT_ITEM_3"
+                title="Item 3"
               onClick={runPipeline}
               style={{
                 fontFamily: 'monospace',
@@ -407,7 +422,7 @@ export default function SpotReextract({
           )}
           {result && (
             <button
-              data-qid="reextract:accept"
+              data-qid="reextract:accept" data-qs-action="REEXTRACT_ACCEPT"
               title="Accept re-extraction result"
               onClick={() => onAccept(result)}
               style={{
@@ -426,7 +441,7 @@ export default function SpotReextract({
             </button>
           )}
           <button
-            data-qid="reextract:cancel"
+            data-qid="reextract:cancel" data-qs-action="REEXTRACT_CANCEL"
             title="Cancel re-extraction"
             onClick={onCancel}
             disabled={running}

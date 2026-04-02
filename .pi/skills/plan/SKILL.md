@@ -66,29 +66,34 @@ when the user says `/plan`. The user only needs to say `/plan` once.
 
 ### Step 2: Runner Selection (which tasks get /code-runner)
 
-Not every task should use `/code-runner`. Code-runner is a **bounded executor** — it keeps
-the project agent from getting lost in implementation context. Use it for tasks that have
-a clear input, a clear output, and a verifiable DoD.
+Not every task needs `/code-runner`. **Code-runner is EXPENSIVE** — worktree isolation,
+git commit/revert cycle, multi-round LLM loop, T0 scoring, memory learning. Most tasks
+are simpler than that.
 
-| Runner | When to use | Example |
-|--------|-------------|---------|
-| `local` | Deterministic shell command, no LLM needed | `docker compose up`, `pytest`, `npm install` |
-| `code-runner` | Bounded code task: write/fix ONE module with verifiable DoD | Fix auth.py bug, create new utility module |
-| `code-runner` | Iterative code task with self-improvement loop and DoD verification | Fix auth.py bug, implement feature, refactor |
-| `scillm` | Single LLM call for text generation (no code execution) | Generate docstring, summarize, classify |
+**Runner is auto-routed if left empty.** Set it explicitly only when the heuristic is wrong.
 
-**Use code-runner when:**
+| Runner | When to use | Auto-routed when | Example |
+|--------|-------------|------------------|---------|
+| `local` | Shell command, no LLM needed | Has `command`, no `prompt` | `pytest`, `npm install`, `ruff check --fix` |
+| `scillm` | One-shot LLM call, simple edit | Has `prompt`, no `allowlist`+DoD assertion | Add a field, rename variable, generate docstring, classify |
+| `code-runner` | Complex bounded code task with verification | Has `prompt` + `allowlist` + DoD `assertion` | Fix multi-file bug, implement feature with test suite |
+
+**Use code-runner ONLY when ALL of these are true:**
 - The task writes/edits 1-3 specific files (use `allowlist`)
-- There's a runnable DoD command that verifies correctness
-- The LLM doesn't need to make architecture decisions
-- Dependencies are known and can be listed in `read_context`
+- There's a runnable DoD command with a verifiable assertion
+- The fix may need multiple attempts (not a mechanical edit)
+- Dependencies are known and listed in `read_context`
 
-**Do NOT use code-runner when:**
-- The task requires choosing between approaches ("pick the best DB") — that's a project agent decision
-- The task is an integration test exercising 4+ modules — write it as `blind_tests` instead
-- The DoD depends on external APIs/network — use mock DoD + real API in `blind_tests`
-- The task is vague ("make it better") — decompose into specific bounded tasks first
-- The task requires reading/understanding a large codebase — add key files to `read_context`
+**Use scillm (not code-runner) for:**
+- Mechanical edits: add a field, update an import, rename a variable
+- Config changes: update YAML, add an entry to a list
+- Text generation: docstrings, summaries, classifications
+- Any task where "just do it once, correctly" is sufficient
+
+**Use local for:**
+- Running tests, linters, formatters, build commands
+- File operations: copy, move, create directories
+- Anything that's a shell command, not LLM reasoning
 
 **code-runner fields the project agent must provide:**
 - `allowlist` — files the LLM can write (scope boundary)
@@ -252,11 +257,13 @@ tasks:
 
 ### Runner (how the task executes)
 
-| Runner | Use For | Required Fields |
-|--------|---------|-----------------|
-| `local` | Shell commands (setup, tests, sanity scripts) | `command` |
-| `scillm` | One-shot LLM inference (classification, extraction) | `backend`, `mode: one_shot` |
-| `code-runner` | Iterative code tasks with DoD verification | `backend`, `mode`, `implementation`, `allowlist` |
+**Leave `runner` empty** — `plan.py` auto-routes based on task shape. Set explicitly only to override.
+
+| Runner | Auto-routed when | Required Fields |
+|--------|------------------|-----------------|
+| `local` | Has `command`, no `prompt` | `command` |
+| `scillm` | Has `prompt`, no `allowlist` + DoD assertion | `prompt` (backend/mode auto-filled) |
+| `code-runner` | Has `prompt` + `allowlist` + DoD assertion | `prompt`, `allowlist`, `definition_of_done.assertion` |
 
 ### Backend (which LLM model)
 

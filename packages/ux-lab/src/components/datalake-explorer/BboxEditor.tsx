@@ -3,6 +3,7 @@ import { NVIS } from './theme'
 import type { BboxBlock } from './types'
 import { BLOCK_TYPE_COLORS, BLOCK_TYPE_LABELS } from './BboxWorkspace'
 import type { BlockType } from './BboxWorkspace'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -232,6 +233,8 @@ export default function BboxEditor({
               min="0"
               max="1"
               value={localBbox[i].toFixed(4)}
+                data-qid="bbox-editor:item-1" data-qs-action="BBOX-EDITOR_ITEM_1"
+                title="Item 1"
               onChange={(e) => handleCoordChange(i, e.target.value)}
               style={{
                 flex: 1,
@@ -265,7 +268,7 @@ export default function BboxEditor({
       {/* Reclassify dropdown */}
       <div style={{ marginBottom: '8px' }}>
         <button
-          data-qid="bbox:type:select"
+          data-qid="bbox:type:select" data-qs-action="BBOX_SELECT"
           title="Reclassify block type"
           onClick={() => setShowTypeDropdown((p) => !p)}
           style={{
@@ -313,6 +316,8 @@ export default function BboxEditor({
               return (
                 <button
                   key={t}
+                data-qid="bbox-editor:dyn-2" data-qs-action="BBOX-EDITOR_DYN_2"
+                title="Dyn 2"
                   onClick={() => {
                     logShadowReclassify(block, t)
                     onReclassify(t)
@@ -354,7 +359,7 @@ export default function BboxEditor({
       </div>
 
       {/* Action buttons */}
-      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+      <div data-qid="bbox-editor:type-dropdown-list" data-qs-action="BBOX-EDITOR_TYPE_DROPDOWN_LIST" title="Type Dropdown List" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
         <EditorButton label="Apply" color="#15803d" onClick={handleApply} />
         <EditorButton
           label="Split"
@@ -402,6 +407,13 @@ export default function BboxEditor({
 // ---------------------------------------------------------------------------
 
 function EditorButton({
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('bbox-editor:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in logShadowReclassify' })
+  useRegisterAction('bbox:type:select', { app: 'datalake-explorer', action: 'TYPE_SELECT', label: 'Type Select', description: 'Type Select in logShadowReclassify' })
+  useRegisterAction('bbox-editor:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in logShadowReclassify' })
+  useRegisterAction('bbox-editor:type-dropdown-list', { app: 'datalake-explorer', action: 'TYPE_DROPDOWN_LIST', label: 'Type Dropdown List', description: 'Type Dropdown List in logShadowReclassify' })
+
   label,
   color,
   onClick,

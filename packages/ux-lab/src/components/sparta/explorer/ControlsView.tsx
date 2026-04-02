@@ -142,7 +142,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
               </a>
             )}
           </div>
-          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+          <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
             Close
           </button>
         </div>
@@ -253,7 +253,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {qras.map((qra, i) => (
-              <div key={`qra-${control.control_id}-${i}`} onClick={() => setModalQra(qra)} style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', cursor: 'pointer' }}
+              <div key={`qra-${control.control_id}-${i}`} onClick={() => setModalQra(qra)} data-qs-action="OPEN_QRA_MODAL" style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', cursor: 'pointer' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.accent }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.border }}>
                 <div style={{ padding: '8px 10px', fontSize: 12, lineHeight: 1.5 }}>
@@ -306,7 +306,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                       const ctrl = (d.documents ?? [])[0] as SpartaControl | undefined
                       if (ctrl) onNavigate(ctrl)
                     }).catch(() => {})
-                  }} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
+                  }} data-qs-action="NAVIGATE_RELATIONSHIP" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
                   onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}15` }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = EMBRY.bgDeep }}>
                   <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.blue }}>{other}</span>
@@ -361,7 +361,7 @@ function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; c
   const parts = source.split(':')
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose}>
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose} data-qs-action="CLOSE_QRA_MODAL">
       <div style={{ width: '80%', maxWidth: 900, maxHeight: '90vh', overflow: 'auto', backgroundColor: EMBRY.bgPanel, borderRadius: 12, border: `1px solid ${EMBRY.border}` }} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -372,9 +372,9 @@ function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; c
             </span>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <button onClick={() => grade('PASS')} disabled={grading} style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
-            <button onClick={() => grade('FAIL')} disabled={grading} style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
-            <button onClick={onClose} style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
+            <button onClick={() => grade('PASS')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"PASS"}' style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
+            <button onClick={() => grade('FAIL')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"FAIL"}' style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
+            <button onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
           </div>
         </div>
 
@@ -437,6 +437,7 @@ function QRASourceInfo({ qra }: { qra: Record<string, unknown> }) {
     <div style={{ borderTop: `1px solid ${EMBRY.border}` }}>
       <div
         onClick={() => setExpanded(!expanded)}
+        data-qs-action="TOGGLE_SECTION"
         style={{ padding: '4px 10px', fontSize: 10, color: EMBRY.muted, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
       >
         <span style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.1s' }}>▸</span>
@@ -512,6 +513,7 @@ export function ControlsView() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            data-qs-input="controls-search"
             placeholder="Search this page..."
             style={{
               backgroundColor: EMBRY.bgDeep,
@@ -535,6 +537,8 @@ export function ControlsView() {
               <button
                 key={fw}
                 onClick={() => setFwFilter(fw === 'ALL' ? undefined : fw)}
+                data-qs-action="SET_FRAMEWORK_FILTER"
+                data-qs-params={JSON.stringify({ framework: fw })}
                 style={{
                   fontSize: 10,
                   fontWeight: 700,
@@ -583,6 +587,8 @@ export function ControlsView() {
                     <tr
                       key={ctrl.control_id}
                       onClick={() => setSelected(ctrl)}
+                      data-qs-action="SELECT_CONTROL"
+                      data-qs-params={JSON.stringify({ controlId: ctrl.control_id, framework: fw })}
                       style={{
                         ...magneticRow,
                         ...(isSelected ? magneticRowSelected : {}),
@@ -622,6 +628,7 @@ export function ControlsView() {
           <button
             onClick={() => setPage(Math.max(0, page - 1))}
             disabled={page === 0}
+            data-qs-action="PAGE_PREV"
             style={paginationBtn(page > 0)}
           >
             Prev
@@ -632,6 +639,7 @@ export function ControlsView() {
           <button
             onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
             disabled={page >= totalPages - 1}
+            data-qs-action="PAGE_NEXT"
             style={paginationBtn(page < totalPages - 1)}
           >
             Next

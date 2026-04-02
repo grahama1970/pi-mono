@@ -428,4 +428,220 @@ def scan_runtime_readiness(skill_dir: Path) -> List[Violation]:
     # 6. Docker compose check
     violations.extend(_check_docker_compose(skill_dir))
 
+    # 7. Python version pin
+    violations.extend(_check_python_version_pin(skill_dir))
+
+    # 8. Loguru version pin
+    violations.extend(_check_loguru_version_pin(skill_dir))
+
+    # 9. Venv Python version
+    violations.extend(_check_venv_python_version(skill_dir))
+
+    # 10. Venv corruption
+    violations.extend(_check_venv_corruption(skill_dir))
+
+    # 11. unset VIRTUAL_ENV
+    violations.extend(_check_unset_virtual_env(skill_dir))
+
+    # 12. Claude Code native overlap
+    violations.extend(_check_native_overlap(skill_dir))
+
+    return violations
+
+
+# ---------------------------------------------------------------------------
+# Environment health checks (7-11)
+# ---------------------------------------------------------------------------
+
+
+def _check_python_version_pin(skill_dir: Path) -> List[Violation]:
+    """Check that pyproject.toml pins Python <3.13."""
+    violations: List[Violation] = []
+    pyproject = skill_dir / "pyproject.toml"
+    if not pyproject.exists():
+        return violations
+    text = pyproject.read_text()
+    match = re.search(r'requires-python\s*=\s*"([^"]+)"', text)
+    if not match:
+        return violations
+    spec = match.group(1)
+    if "<3.13" not in spec and "<3.12" not in spec:
+        violations.append(Violation(
+            rule="runtime.python_version_unbounded",
+            severity="error",
+            skill=skill_dir.name,
+            path=str(pyproject),
+            message=f'requires-python = "{spec}" has no upper bound. '
+                    f"Pin to <3.13 to avoid loguru/3.13 circular import bugs.",
+            fixable=True,
+        ))
+    return violations
+
+
+def _check_loguru_version_pin(skill_dir: Path) -> List[Violation]:
+    """Check that loguru dependency is pinned <0.7.3."""
+    violations: List[Violation] = []
+    pyproject = skill_dir / "pyproject.toml"
+    if not pyproject.exists():
+        return violations
+    text = pyproject.read_text()
+    if '"loguru' not in text:
+        return violations
+    if "<0.7.3" not in text:
+        violations.append(Violation(
+            rule="runtime.loguru_version_unbounded",
+            severity="error",
+            skill=skill_dir.name,
+            path=str(pyproject),
+            message="loguru dependency has no upper bound. "
+                    "Pin to <0.7.3 to avoid circular import on Python 3.13.",
+            fixable=True,
+        ))
+    return violations
+
+
+def _check_venv_python_version(skill_dir: Path) -> List[Violation]:
+    """Check that the actual venv Python version matches the pin."""
+    violations: List[Violation] = []
+    venv_python = skill_dir / ".venv" / "bin" / "python"
+    if not venv_python.exists():
+        return violations
+    try:
+        result = subprocess.run(
+            [str(venv_python), "--version"],
+            capture_output=True, text=True, timeout=5,
+        )
+        version = result.stdout.strip()
+        if "3.13" in version:
+            violations.append(Violation(
+                rule="runtime.venv_python_313",
+                severity="error",
+                skill=skill_dir.name,
+                path=str(venv_python),
+                message=f"Venv uses {version} — rebuild with <3.13 pin. "
+                        f"Run: rm -rf {skill_dir}/.venv && uv sync",
+                fixable=True,
+            ))
+    except (subprocess.TimeoutExpired, OSError):
+        pass
+    return violations
+
+
+_CORRUPTION_SIGS = [b"Auto-generated module docstring"]
+_CORRUPTION_LOGURU = b"from loguru import logger"
+_LOGURU_LEGITIMATE = {"loguru", "sentry_sdk"}
+
+
+def _check_venv_corruption(skill_dir: Path) -> List[Violation]:
+    """Spot-check venv site-packages for corruption signatures."""
+    violations: List[Violation] = []
+    for venv_dir in skill_dir.iterdir():
+        if not venv_dir.is_dir() or not venv_dir.name.startswith(".venv"):
+            continue
+        for sp_dir in venv_dir.rglob("site-packages"):
+            if not sp_dir.is_dir():
+                continue
+            checked = 0
+            for pyfile in sp_dir.rglob("*.py"):
+                if checked >= 20 or "__pycache__" in str(pyfile):
+                    continue
+                try:
+                    content = pyfile.read_bytes()
+                except (OSError, PermissionError):
+                    continue
+                checked += 1
+                for sig in _CORRUPTION_SIGS:
+                    if sig in content:
+                        violations.append(Violation(
+                            rule="runtime.venv_corrupted",
+                            severity="error",
+                            skill=skill_dir.name,
+                            path=str(pyfile),
+                            message=f"Corruption in site-packages: {sig.decode()!r}. "
+                                    f"Run: rm -rf {venv_dir} && uv sync",
+                        ))
+                        return violations
+                if _CORRUPTION_LOGURU in content:
+                    pkg = ""
+                    try:
+                        rel = pyfile.relative_to(sp_dir)
+                        pkg = rel.parts[0].split("-")[0].lower() if rel.parts else ""
+                    except ValueError:
+                        pass
+                    if pkg and pkg not in _LOGURU_LEGITIMATE:
+                        violations.append(Violation(
+                            rule="runtime.venv_corrupted",
+                            severity="error",
+                            skill=skill_dir.name,
+                            path=str(pyfile),
+                            message=f"Loguru import in third-party package '{pkg}'. "
+                                    f"Run: rm -rf {venv_dir} && uv sync",
+                        ))
+                        return violations
+    return violations
+
+
+def _check_unset_virtual_env(skill_dir: Path) -> List[Violation]:
+    """Check that run.sh starts with 'unset VIRTUAL_ENV'."""
+    violations: List[Violation] = []
+    run_sh = skill_dir / "run.sh"
+    pyproject = skill_dir / "pyproject.toml"
+    if not run_sh.exists() or not pyproject.exists():
+        return violations
+    text = run_sh.read_text()
+    if "unset VIRTUAL_ENV" not in text:
+        violations.append(Violation(
+            rule="runtime.missing_unset_virtual_env",
+            severity="error",
+            skill=skill_dir.name,
+            path=str(run_sh),
+            message="run.sh uses Python but doesn't 'unset VIRTUAL_ENV'. "
+                    "Inherited VIRTUAL_ENV causes uv to resolve the wrong venv.",
+            fixable=True,
+        ))
+    return violations
+
+
+# ---------------------------------------------------------------------------
+# Deprecation detection (12)
+# ---------------------------------------------------------------------------
+
+# Skills that may overlap with Claude Code native capabilities.
+# Two categories (per Anthropic Claude Skills 2.0 framework):
+#   - CAPABILITY UPLIFT: patches a model gap → deprecated when model improves
+#   - WORKFLOW: encodes a process → always relevant
+# Format: skill_name → (native_capability, category, reason)
+# Run Claude Skills 2.0 A/B benchmark to confirm before deprecating.
+_NATIVE_OVERLAP: dict[str, tuple[str, str, str]] = {
+    "fetcher": ("WebFetch tool", "capability", "Claude Code has built-in WebFetch for URL retrieval"),
+    "perplexity": ("WebSearch tool", "capability", "Claude Code has built-in WebSearch; Perplexity adds premium features only"),
+    "github-search": ("WebSearch + gh CLI", "capability", "Claude Code can search GitHub natively via gh CLI"),
+    "brave-search": ("WebSearch tool", "capability", "Claude Code has built-in WebSearch; Brave adds premium features only"),
+    "create-code": ("Claude Code itself", "capability", "Claude Code's core purpose is code generation"),
+    "surf": ("WebFetch tool", "capability", "Claude Code has built-in WebFetch for web content"),
+    "context7": ("WebFetch tool", "capability", "Claude Code can fetch library docs directly via WebFetch"),
+}
+
+
+def _check_native_overlap(skill_dir: Path) -> List[Violation]:
+    """Flag skills that overlap with Claude Code native capabilities.
+
+    These are candidates for deprecation — not automatic removals.
+    The skill may still provide value beyond the native capability
+    (domain-specific prompting, caching, structured output, etc.).
+    """
+    violations: List[Violation] = []
+    skill_name = skill_dir.name
+
+    if skill_name in _NATIVE_OVERLAP:
+        native, category, reason = _NATIVE_OVERLAP[skill_name]
+        violations.append(Violation(
+            rule="runtime.native_overlap",
+            severity="warn",
+            skill=skill_name,
+            path=str(skill_dir / "SKILL.md"),
+            message=f"[{category} uplift] Overlaps with Claude Code native '{native}'. "
+                    f"{reason}. Run Claude Skills 2.0 A/B benchmark to confirm before deprecating.",
+        ))
+
     return violations

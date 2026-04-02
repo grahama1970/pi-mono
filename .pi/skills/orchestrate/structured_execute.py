@@ -186,149 +186,237 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
         task.finished_at = time.time()
 
 
-async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
-    """Delegate to /code-runner skill with blind eval retry loop.
+async def _setup_worktree(task_cwd: Path, task_id: str) -> tuple[Path, str]:
+    """Create a git worktree for isolated parallel code-runner execution."""
+    import tempfile
+    branch = f"cr-{task_id}-{int(time.time())}"
+    worktree_dir = Path(tempfile.mkdtemp(prefix=f"cr-wt-{task_id}-"))
 
-    Flow per attempt:
-      1. Build code-runner spec (with accumulated blind feedback from prior attempts)
-      2. Run code-runner
-      3. If DoD passed AND blind_tests exist → call test-lab
-      4. If blind eval fails → accumulate sanitized feedback → retry
-      5. If blind eval passes or no blind_tests → done
+    proc = await asyncio.create_subprocess_exec(
+        "git", "worktree", "add", "-b", branch, str(worktree_dir),
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+        cwd=str(task_cwd),
+    )
+    _, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        raise RuntimeError(f"git worktree add failed: {stderr.decode()[:300]}")
+    logger.info("  Worktree: {} (branch: {})", worktree_dir, branch)
+    return worktree_dir, branch
+
+
+async def _merge_worktree(task_cwd: Path, branch: str, task_id: str) -> bool:
+    """Merge worktree branch back to the original branch. Returns True on success."""
+    proc = await asyncio.create_subprocess_exec(
+        "git", "merge", "--no-edit", branch,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+        cwd=str(task_cwd),
+    )
+    _, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        logger.error("  Merge failed for {}: {}", task_id, stderr.decode()[:300])
+        abort = await asyncio.create_subprocess_exec(
+            "git", "merge", "--abort",
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            cwd=str(task_cwd),
+        )
+        await abort.communicate()
+        return False
+    logger.info("  Merged {} back", branch)
+    return True
+
+
+async def _cleanup_worktree(task_cwd: Path, worktree_dir: Path, branch: str) -> None:
+    """Remove worktree and its branch."""
+    import shutil
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "git", "worktree", "remove", "--force", str(worktree_dir),
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            cwd=str(task_cwd),
+        )
+        await proc.communicate()
+    except Exception:
+        pass
+    if worktree_dir.exists():
+        shutil.rmtree(worktree_dir, ignore_errors=True)
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "git", "branch", "-D", branch,
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            cwd=str(task_cwd),
+        )
+        await proc.communicate()
+    except Exception:
+        pass
+
+
+async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
+    """Delegate to /code-runner with worktree isolation + blind eval retry loop.
+
+    Each code-runner task runs in its own git worktree, enabling parallel execution
+    across tasks targeting the same repo. Changes merge back on success.
     """
     code_runner = SKILLS_DIR / "code-runner" / "run.sh"
     if not code_runner.exists():
         raise RuntimeError(f"/code-runner skill not found at {code_runner}")
 
+    # Worktree isolation — enables parallel code-runner tasks on same repo
+    original_cwd = task.cwd
+    worktree_dir: Path | None = None
+    worktree_branch = ""
+    try:
+        worktree_dir, worktree_branch = await _setup_worktree(original_cwd, task.task_id)
+        work_cwd = worktree_dir
+    except Exception as exc:
+        logger.warning("Worktree setup failed ({}), running in-place", exc)
+        work_cwd = original_cwd
+
+    # Clean env: strip .venv paths so DoD/commands use system Python
+    clean_env = {k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"}
+    clean_env["PATH"] = os.pathsep.join(
+        p for p in clean_env.get("PATH", "").split(os.pathsep)
+        if ".venv" not in p
+    )
+
     max_blind_attempts = 3
-    accumulated_feedback: list[str] = []  # accumulated across ALL attempts (#14 fix)
-    blind_passed = False  # explicit flag (#17 fix)
+    accumulated_feedback: list[str] = []
+    blind_passed = False
 
-    for attempt in range(1, max_blind_attempts + 1):
-        attempt_tag = f"a{attempt}" if attempt > 1 else ""
+    try:
+        for attempt in range(1, max_blind_attempts + 1):
+            attempt_tag = f"a{attempt}" if attempt > 1 else ""
 
-        # Build prompt with accumulated blind feedback from all prior attempts
-        blind_feedback_prompt = ""
-        if accumulated_feedback:
-            blind_feedback_prompt = (
-                f"\n\n--- Hidden evaluation feedback (attempt {attempt}/{max_blind_attempts}) ---\n"
-                f"Your code passed visible tests but failed hidden quality checks:\n"
-                + "\n".join(accumulated_feedback)
-                + "\nFix ALL issues above. You cannot see the hidden tests.\n"
-            )
-
-        # Build spec — blind_tests NEVER included (information barrier)
-        spec: dict = {
-            "task_id": f"{task.task_id}{attempt_tag}",
-            "title": task.title,
-            "prompt": task.prompt + blind_feedback_prompt,
-            "backend": task.backend or "codex",
-            "cwd": str(task.cwd),
-            "output_dir": str(session_dir),
-        }
-        if task.definition_of_done:
-            spec["definition_of_done"] = task.definition_of_done
-        if task.allowlist is not None:
-            spec["allowlist"] = task.allowlist
-        if task.read_context:
-            spec["read_context"] = task.read_context
-        if task.max_rounds != 5:
-            spec["max_rounds"] = task.max_rounds
-
-        spec_file = session_dir / f"{task.task_id}{attempt_tag}.code-runner-spec.json"
-        spec_file.write_text(json.dumps(spec, indent=2))
-
-        proc = await asyncio.create_subprocess_exec(
-            "bash", str(code_runner), "run", str(spec_file),
-            f"--max-rounds={task.max_rounds}",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            cwd=str(task.cwd),
-        )
-        try:
-            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
-        except asyncio.TimeoutError:
-            # Kill orphaned process to prevent zombie code-runner
-            proc.kill()
-            await proc.wait()
-            task.review_status = "fail"
-            task.error = f"code-runner timed out after {task.timeout_seconds}s"
-            break
-
-        # Per-attempt output files (#1, #2 fix — no overwrites)
-        output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
-        output_path.write_text(stdout.decode(errors="replace"))
-        task.output_path = output_path
-
-        # Read result.json (#6 fix — treat parse failure as error, not silent pass)
-        result_file = session_dir / f"{task.task_id}{attempt_tag}.result.json"
-        if result_file.exists():
-            try:
-                result = json.loads(result_file.read_text())
-                task.review_status = "pass" if result.get("dod_passed") else "fail"
-                task.review_output = (
-                    f"attempt={attempt}/{max_blind_attempts} "
-                    f"score={result.get('best_score', 0):.3f} "
-                    f"rounds={result.get('rounds', 0)} "
-                    f"dod={'PASS' if result.get('dod_passed') else 'FAIL'}"
+            blind_feedback_prompt = ""
+            if accumulated_feedback:
+                blind_feedback_prompt = (
+                    f"\n\n--- Hidden evaluation feedback (attempt {attempt}/{max_blind_attempts}) ---\n"
+                    f"Your code passed visible tests but failed hidden quality checks:\n"
+                    + "\n".join(accumulated_feedback)
+                    + "\nFix ALL issues above. You cannot see the hidden tests.\n"
                 )
-            except (json.JSONDecodeError, KeyError) as exc:
+
+            spec: dict = {
+                "task_id": f"{task.task_id}{attempt_tag}",
+                "title": task.title,
+                "prompt": task.prompt + blind_feedback_prompt,
+                "backend": task.backend or "codex",
+                "cwd": str(work_cwd),
+                "output_dir": str(session_dir),
+            }
+            if task.definition_of_done:
+                spec["definition_of_done"] = task.definition_of_done
+            if task.allowlist is not None:
+                spec["allowlist"] = task.allowlist
+            if task.read_context:
+                spec["read_context"] = task.read_context
+            if task.max_rounds != 5:
+                spec["max_rounds"] = task.max_rounds
+
+            spec_file = session_dir / f"{task.task_id}{attempt_tag}.code-runner-spec.json"
+            spec_file.write_text(json.dumps(spec, indent=2))
+
+            proc = await asyncio.create_subprocess_exec(
+                "bash", str(code_runner), "run", str(spec_file),
+                f"--max-rounds={task.max_rounds}",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                cwd=str(work_cwd),
+                env=clean_env,
+            )
+            try:
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
+            except asyncio.TimeoutError:
+                proc.kill()
+                await proc.wait()
                 task.review_status = "fail"
-                task.error = f"result.json parse error: {exc}"
+                task.error = f"code-runner timed out after {task.timeout_seconds}s"
                 break
-        else:
-            task.review_status = "fail"
-            task.error = "result.json missing"
-            break
 
-        if proc.returncode != 0:
-            raise RuntimeError(
-                f"/code-runner failed (exit {proc.returncode}): {stderr.decode(errors='replace')[:500]}"
-            )
+            stdout_text = stdout.decode(errors="replace")
+            stderr_text = stderr.decode(errors="replace")
 
-        # No blind tests → done after first code-runner pass
-        if not task.blind_tests or task.review_status != "pass":
-            break
+            output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
+            output_path.write_text(stdout_text)
+            task.output_path = output_path
 
-        # Blind eval gate — code-runner never sees these tests
-        blind_result = await _run_blind_eval(task, session_dir, attempt_tag)
+            if stderr_text.strip():
+                (session_dir / f"{task.task_id}{attempt_tag}.stderr.txt").write_text(stderr_text)
 
-        # #11 fix: test-lab unreachable with blind_tests = FAIL, not silent pass
-        # If blind_tests are declared, they MUST run. Unreachable test-lab = hard failure.
-        if blind_result is None:
-            task.review_status = "fail"
-            task.error = "blind eval FAILED: test-lab unreachable but blind_tests declared"
-            task.review_output += "\n--- blind eval: FAILED (test-lab unreachable) ---"
-            break
+            # Check returncode FIRST — if code-runner crashed, result.json won't exist
+            if proc.returncode != 0:
+                task.review_status = "fail"
+                task.error = f"/code-runner exit {proc.returncode}: {stderr_text[:500]}"
+                logger.error("code-runner failed for {}: {}", task.task_id, task.error[:200])
+                break
 
-        if blind_result.get("status") == "pass":
-            blind_passed = True
-            break
+            result_file = session_dir / f"{task.task_id}{attempt_tag}.result.json"
+            if result_file.exists():
+                try:
+                    result = json.loads(result_file.read_text())
+                    task.review_status = "pass" if result.get("dod_passed") else "fail"
+                    task.review_output = (
+                        f"attempt={attempt}/{max_blind_attempts} "
+                        f"score={result.get('best_score', 0):.3f} "
+                        f"rounds={result.get('rounds', 0)} "
+                        f"dod={'PASS' if result.get('dod_passed') else 'FAIL'}"
+                    )
+                except (json.JSONDecodeError, KeyError) as exc:
+                    task.review_status = "fail"
+                    task.error = f"result.json parse error: {exc}"
+                    break
+            else:
+                task.review_status = "fail"
+                task.error = f"result.json missing. stderr: {stderr_text[:300]}"
+                break
 
-        # Blind eval failed — accumulate feedback (#14 fix — don't replace, accumulate)
-        new_failures = [
-            f"  - Check failed: {c['message']}"
-            for c in blind_result.get("checks", []) if not c["passed"]
-        ]
-        accumulated_feedback.extend(new_failures)
-        # Cap to last 20 failure messages to prevent unbounded memory growth
-        if len(accumulated_feedback) > 20:
-            accumulated_feedback = accumulated_feedback[-20:]
+            if not task.blind_tests or task.review_status != "pass":
+                break
 
-        logger.warning("Blind eval FAILED for {} attempt {}/{} ({}/{})",
-                       task.task_id, attempt, max_blind_attempts,
-                       blind_result.get("failed", 0), blind_result.get("total", 0))
+            blind_result = await _run_blind_eval(task, session_dir, attempt_tag)
 
-        if attempt >= max_blind_attempts:
-            # #16 fix: explicit terminal state
-            task.review_status = "fail"
-            task.error = f"blind eval exhausted after {max_blind_attempts} attempts"
-            task.review_output += (
-                f"\n--- blind eval: EXHAUSTED ({max_blind_attempts} attempts) ---\n"
-                + "\n".join(new_failures)
-            )
+            if blind_result is None:
+                task.review_status = "fail"
+                task.error = "blind eval FAILED: test-lab unreachable but blind_tests declared"
+                task.review_output += "\n--- blind eval: FAILED (test-lab unreachable) ---"
+                break
 
-    # #17 fix: T2 review only if BOTH DoD and blind eval passed (or no blind tests)
+            if blind_result.get("status") == "pass":
+                blind_passed = True
+                break
+
+            new_failures = [
+                f"  - Check failed: {c['message']}"
+                for c in blind_result.get("checks", []) if not c["passed"]
+            ]
+            accumulated_feedback.extend(new_failures)
+            if len(accumulated_feedback) > 20:
+                accumulated_feedback = accumulated_feedback[-20:]
+
+            logger.warning("Blind eval FAILED for {} attempt {}/{} ({}/{})",
+                           task.task_id, attempt, max_blind_attempts,
+                           blind_result.get("failed", 0), blind_result.get("total", 0))
+
+            if attempt >= max_blind_attempts:
+                task.review_status = "fail"
+                task.error = f"blind eval exhausted after {max_blind_attempts} attempts"
+                task.review_output += (
+                    f"\n--- blind eval: EXHAUSTED ({max_blind_attempts} attempts) ---\n"
+                    + "\n".join(new_failures)
+                )
+
+        # Merge worktree back on success
+        if worktree_dir and task.review_status == "pass":
+            merged = await _merge_worktree(original_cwd, worktree_branch, task.task_id)
+            if not merged:
+                task.review_status = "fail"
+                task.error = "merge conflict merging worktree back to main branch"
+
+    finally:
+        # Always clean up worktree
+        if worktree_dir:
+            await _cleanup_worktree(original_cwd, worktree_dir, worktree_branch)
+
+    # T2 review only if BOTH DoD and blind eval passed (or no blind tests)
     if task.review_status == "pass" and (blind_passed or not task.blind_tests):
         await _review_code_runner_output(task, session_dir)
 

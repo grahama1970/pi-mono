@@ -160,7 +160,7 @@ function MessageItem({
       {/* Run Evidence Case button */}
       {onRunEvidenceCase && msg.entities && msg.entities.some(e => e.exists) && !msg.verdict && (
         <button
-          onClick={() => onRunEvidenceCase(msg)}
+          data-qid={`chat:evidence-case:${msg.id}`} title="Run evidence case for this message" onClick={() => onRunEvidenceCase(msg)}
           disabled={evidenceCaseLoading === msg.id}
           style={{
             marginTop: 6, fontSize: 12, fontWeight: 700,
@@ -181,7 +181,7 @@ function MessageItem({
       {msg.clarifyOptions && msg.clarifyOptions.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
           {msg.clarifyOptions.map((c, i) => (
-            <button key={i} onClick={() => onClarifyClick?.(c.question)} style={{
+            <button key={i} data-qid={`chat:clarify:${i}`} title={c.question} onClick={() => onClarifyClick?.(c.question)} style={{
               fontSize: 12, padding: '3px 8px', borderRadius: 12,
               border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`,
               color: EMBRY.accent, cursor: 'pointer',
@@ -209,14 +209,14 @@ function MessageItem({
       {/* Thumbs */}
       {onFeedback && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
-          <button onClick={() => onFeedback(msg.id, 'up')} style={{
+          <button data-qid={`chat:feedback-up:${msg.id}`} title="Helpful response" onClick={() => onFeedback(msg.id, 'up')} style={{
             background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
             opacity: msg.feedback === 'up' ? 1 : 0.3,
             filter: msg.feedback === 'up' ? `drop-shadow(0 0 4px ${EMBRY.green})` : 'none',
           }}>
             {'\u25B2'}
           </button>
-          <button onClick={() => onFeedback(msg.id, 'down')} style={{
+          <button data-qid={`chat:feedback-down:${msg.id}`} title="Not helpful" onClick={() => onFeedback(msg.id, 'down')} style={{
             background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
             opacity: msg.feedback === 'down' ? 1 : 0.3,
             filter: msg.feedback === 'down' ? `drop-shadow(0 0 4px ${EMBRY.red})` : 'none',
@@ -338,7 +338,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about the SPARTA graph... (/ for skills)"
+            data-qid="chat:input" title="Type a message or /skill-name" placeholder="Ask about the SPARTA graph... (/ for skills)"
             style={{
               width: '100%', border: 'none', outline: 'none', resize: 'none',
               background: 'transparent', fontSize: 13, color: EMBRY.white,
@@ -354,7 +354,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             <button
               onClick={handleSend}
               disabled={!input.trim()}
-              title="Send message (Enter)"
+              data-qid="chat:send" title="Send message (Enter)"
               aria-label="Send message"
               style={{
                 width: 44, height: 44, borderRadius: '50%', border: 'none',

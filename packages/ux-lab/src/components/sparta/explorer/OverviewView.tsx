@@ -68,6 +68,7 @@ export function OverviewView({ onNavigate }: OverviewProps) {
                 <div
                   key={`${issue.severity}-${issue.tab}`}
                   onClick={() => onNavigate?.(issue.tab)}
+                  data-qs-action="NAVIGATE_TO_ISSUE"
                   style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     padding: '8px 12px', borderRadius: 6, cursor: 'pointer',

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { BarChart, Bar, Cell, ResponsiveContainer } from 'recharts'
 import { listDocuments, recallDocuments } from '../api/client'
 import { NVIS } from '../theme'
+import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 
 const ExtractionReviewModal = lazy(() => import('../components/ExtractionReviewModal'))
 
@@ -272,19 +273,19 @@ export default function CorpusView() {
 
       {/* === FILTER BAR === */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderBottom: `1px solid ${NVIS.border}`, flexShrink: 0, flexWrap: 'wrap' }}>
-        <span style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginRight: 4 }}>Severity</span>
+        <span data-qid="corpus:sort-asc" data-qs-action="CORPUS_SORT_ASC" title="Sort Asc" style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginRight: 4 }}>Severity</span>
         {(['fail', 'warn', 'pass'] as Severity[]).map((s) => (
           <FilterChip key={s} label={s.toUpperCase()} active={severityFilter.has(s)} color={severityColor(s)} onClick={() => toggleSeverity(s)} data-qid={`corpus:severity-filter:${s}`} title={`Toggle ${s} severity filter`} />
         ))}
         {counts.retry > 0 && (
-          <FilterChip label={`RETRY (${counts.retry})`} active={severityFilter.has('retry')} color="#666" onClick={() => toggleSeverity('retry')} data-qid="corpus:severity-filter:retry" title="Toggle retry severity filter" />
+          <FilterChip label={`RETRY (${counts.retry})`} active={severityFilter.has('retry')} color="#666" onClick={() => toggleSeverity('retry')} data-qid="corpus:severity-filter:retry" data-qs-action="CORPUS_RETRY" title="Toggle retry severity filter" />
         )}
-        <span style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginLeft: 12, marginRight: 4 }}>Sector</span>
+        <span data-qid="corpus:sort-desc" data-qs-action="CORPUS_SORT_DESC" title="Sort Desc" style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginLeft: 12, marginRight: 4 }}>Sector</span>
         {allSectors.map((s) => (
           <FilterChip key={s} label={s} active={sectorFilter.has(s)} color={NVIS.accent} onClick={() => toggleSector(s)} />
         ))}
         {sectorFilter.size > 0 && (
-          <span style={{ fontSize: 9, color: NVIS.accent, cursor: 'pointer', marginLeft: 4 }} onClick={() => setSectorFilter(new Set())}>clear</span>
+          <span data-qid="corpus:el-1" data-qs-action="CORPUS_EL_1" title="El 1" style={{ fontSize: 9, color: NVIS.accent, cursor: 'pointer', marginLeft: 4 }} onClick={() => setSectorFilter(new Set())}>clear</span>
         )}
         <div style={{ flex: 1 }} />
         <span style={{ fontSize: 9, color: NVIS.dim }}>{tableRows.length} shown</span>
@@ -296,7 +297,7 @@ export default function CorpusView() {
         {/* TABLE */}
         <div style={{ flex: 1, overflow: 'auto', minWidth: 0 }}>
           {/* Table header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '280px 55px 45px 65px 55px 45px 1fr', gap: 4, padding: '4px 12px', fontSize: 9, color: NVIS.dim, borderBottom: `1px solid ${NVIS.border}`, position: 'sticky', top: 0, background: '#0f1216', zIndex: 1 }}>
+          <div data-qid="corpus:table-header" data-qs-action="CORPUS_TABLE_HEADER" title="Corpus Table Header" style={{ display: 'grid', gridTemplateColumns: '280px 55px 45px 65px 55px 45px 1fr', gap: 4, padding: '4px 12px', fontSize: 9, color: NVIS.dim, borderBottom: `1px solid ${NVIS.border}`, position: 'sticky', top: 0, background: '#0f1216', zIndex: 1 }}>
             <SortHeader label="Filename" sortKey="filename" current={sortKey} dir={sortDir} onClick={handleSort} />
             <SortHeader label="Status" sortKey="status" current={sortKey} dir={sortDir} onClick={handleSort} />
             <SortHeader label="Pages" sortKey="page_count" current={sortKey} dir={sortDir} onClick={handleSort} />
@@ -311,7 +312,7 @@ export default function CorpusView() {
             const sev = severityOf(entry)
             const isSelected = selected?.filename === entry.filename
             return (
-              <div
+              <div data-qid="corpus:entry.filename" data-qs-action="CORPUS_ENTRY.FILENAME" title="Entry.Filename"
                 key={entry.filename}
                 onClick={() => setSelected(entry)}
                 style={{
@@ -350,7 +351,7 @@ export default function CorpusView() {
               const isExpanded = expandedCollection === row.name
               return (
                 <div key={row.name}>
-                  <div
+                  <div data-qid="corpus:el-3" data-qs-action="CORPUS_EL_3" title="El 3"
                     onClick={() => {
                       if (isExpanded) { setExpandedCollection(null); setCollectionDocs([]) }
                       else { setExpandedCollection(row.name); setCollectionPage(0); loadCollectionDocs(row.name, 0) }
@@ -385,13 +386,13 @@ export default function CorpusView() {
                           })}
                           <div style={{ display: 'flex', gap: 12, marginTop: 4, fontSize: 10 }}>
                             {collectionPage > 0 && (
-                              <span style={{ color: NVIS.accent, cursor: 'pointer' }} onClick={(ev) => {
+                              <span data-qid="corpus:el-4" data-qs-action="CORPUS_EL_4" title="El 4" style={{ color: NVIS.accent, cursor: 'pointer' }} onClick={(ev) => {
                                 ev.stopPropagation(); const p = collectionPage - 1; setCollectionPage(p); loadCollectionDocs(row.name, p)
                               }}>← Prev</span>
                             )}
                             <span style={{ color: NVIS.dim }}>Page {collectionPage + 1}</span>
                             {collectionDocs.length >= 20 && (
-                              <span style={{ color: NVIS.accent, cursor: 'pointer' }} onClick={(ev) => {
+                              <span data-qid="corpus:el-5" data-qs-action="CORPUS_EL_5" title="El 5" style={{ color: NVIS.accent, cursor: 'pointer' }} onClick={(ev) => {
                                 ev.stopPropagation(); const p = collectionPage + 1; setCollectionPage(p); loadCollectionDocs(row.name, p)
                               }}>Next →</span>
                             )}
@@ -496,7 +497,7 @@ function DetailPane({ entry, onClose, onReview }: { entry: ManifestEntry; onClos
     return (
       <div style={{ width: 380, flexShrink: 0, borderLeft: `1px solid ${NVIS.border}`, padding: 12, background: NVIS.surface }}>
         <div style={{ color: NVIS.red, fontSize: 10 }}>Error: {paneError}</div>
-        <span onClick={onClose} style={{ color: NVIS.dim, fontSize: 10, cursor: 'pointer' }}>Close</span>
+        <span data-qid="corpus:el-6" data-qs-action="CORPUS_EL_6" title="El 6" onClick={onClose} style={{ color: NVIS.dim, fontSize: 10, cursor: 'pointer' }}>Close</span>
       </div>
     )
   }
@@ -530,7 +531,7 @@ function DetailPane({ entry, onClose, onReview }: { entry: ManifestEntry; onClos
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <span style={{ fontSize: 12, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.filename}</span>
-        <span style={{ fontSize: 10, color: NVIS.dim, cursor: 'pointer', flexShrink: 0, marginLeft: 8 }} onClick={onClose}>✕</span>
+        <span data-qid="corpus:el-7" data-qs-action="CORPUS_EL_7" title="El 7" style={{ fontSize: 10, color: NVIS.dim, cursor: 'pointer', flexShrink: 0, marginLeft: 8 }} onClick={onClose}>✕</span>
       </div>
 
       {/* Actions */}
@@ -538,7 +539,7 @@ function DetailPane({ entry, onClose, onReview }: { entry: ManifestEntry; onClos
         <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 3, color: '#0f1216', background: severityColor(sev) }}>
           {sev.toUpperCase()}
         </span>
-        <span
+        <span data-qid="corpus:el-8" data-qs-action="CORPUS_EL_8" title="El 8"
           onClick={() => onReview(entry)}
           style={{ fontSize: 9, color: NVIS.accent, padding: '2px 8px', border: `1px solid ${NVIS.accent}`, borderRadius: 3, cursor: 'pointer' }}>
           Review Extraction
@@ -730,7 +731,7 @@ function MetricChip({ label, count, color }: { label: string; count: number; col
 
 function FilterChip({ label, active, color, onClick }: { label: string; active: boolean; color: string; onClick: () => void }) {
   return (
-    <span
+    <span data-qid="corpus:el-9" data-qs-action="CORPUS_EL_9" title="El 9"
       onClick={onClick}
       style={{
         fontSize: 9, cursor: 'pointer', padding: '1px 6px', borderRadius: 2,
@@ -750,7 +751,7 @@ function SortHeader({ label, sortKey: key, current, dir, onClick }: {
 }) {
   const isActive = current === key
   return (
-    <span
+    <span data-qid="corpus:el-10" data-qs-action="CORPUS_EL_10" title="El 10"
       onClick={() => onClick(key)}
       style={{ cursor: 'pointer', color: isActive ? NVIS.white : NVIS.dim, fontWeight: isActive ? 600 : 400 }}
     >
@@ -780,6 +781,23 @@ function collectionDisplayFields(collection: string, doc: Record<string, unknown
     case 'sparta_qra': {
       const gs = num('grounding_score')
       const gsColor = gs !== undefined ? (gs >= 0.82 ? NVIS.green : gs >= 0.70 ? NVIS.amber : NVIS.red) : NVIS.dim
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('corpus:sort-asc', { app: 'datalake-explorer', action: 'SORT_ASC', label: 'Sort Asc', description: 'Sort Asc in cleanError' })
+  useRegisterAction('corpus:severity-filter:retry', { app: 'datalake-explorer', action: 'SEVERITY_FILTER_RETRY', label: 'Severity Filter Retry', description: 'Severity Filter Retry in cleanError' })
+  useRegisterAction('corpus:sort-desc', { app: 'datalake-explorer', action: 'SORT_DESC', label: 'Sort Desc', description: 'Sort Desc in cleanError' })
+  useRegisterAction('corpus:el-1', { app: 'datalake-explorer', action: 'EL_1', label: 'El 1', description: 'El 1 in cleanError' })
+  useRegisterAction('corpus:table-header', { app: 'datalake-explorer', action: 'TABLE_HEADER', label: 'Table Header', description: 'Table Header in cleanError' })
+  useRegisterAction('corpus:entry.filename', { app: 'datalake-explorer', action: 'ENTRY.FILENAME', label: 'Entry.Filename', description: 'Entry.Filename in cleanError' })
+  useRegisterAction('corpus:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in cleanError' })
+  useRegisterAction('corpus:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in cleanError' })
+  useRegisterAction('corpus:el-5', { app: 'datalake-explorer', action: 'EL_5', label: 'El 5', description: 'El 5 in cleanError' })
+  useRegisterAction('corpus:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in cleanError' })
+  useRegisterAction('corpus:el-7', { app: 'datalake-explorer', action: 'EL_7', label: 'El 7', description: 'El 7 in cleanError' })
+  useRegisterAction('corpus:el-8', { app: 'datalake-explorer', action: 'EL_8', label: 'El 8', description: 'El 8 in cleanError' })
+  useRegisterAction('corpus:el-9', { app: 'datalake-explorer', action: 'EL_9', label: 'El 9', description: 'El 9 in cleanError' })
+  useRegisterAction('corpus:el-10', { app: 'datalake-explorer', action: 'EL_10', label: 'El 10', description: 'El 10 in cleanError' })
+
       return <span>
         {gs !== undefined && <span style={{ color: gsColor, marginRight: 8 }}>{(gs * 100).toFixed(0)}%</span>}
         <span style={{ color: NVIS.white }}>{(str('question') || str('problem')).slice(0, 80)}</span>

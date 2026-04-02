@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { NVIS } from '../theme'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 interface EvidenceCasePanelProps {
   open: boolean
@@ -103,7 +104,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
     <>
       {/* Backdrop */}
       <div
-        data-qid="evidence-case:backdrop:close"
+        data-qid="evidence-case:backdrop:close" data-qs-action="EVIDENCE-CASE_CLOSE"
         title="Close evidence case panel"
         onClick={onClose}
         style={{
@@ -151,7 +152,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
             )}
           </div>
           <button
-            data-qid="evidence-case:close-btn:header"
+            data-qid="evidence-case:close-btn:header" data-qs-action="EVIDENCE-CASE_HEADER"
             title="Close evidence case panel"
             onClick={onClose}
             aria-label="Close panel"
@@ -173,7 +174,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
         <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Claim */}
           <div>
-            <label style={labelStyle}>Claim</label>
+            <label data-qid="evidence:label" data-qs-action="EVIDENCE_LABEL" title="Evidence label" style={labelStyle}>Claim</label>
             <textarea
               value={claim}
               onChange={(e) => setClaim(e.target.value)}
@@ -185,12 +186,29 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
 
           {/* Verdict */}
           <div>
-            <label style={labelStyle}>Verdict</label>
+            <label data-qid="evidence:label" data-qs-action="EVIDENCE_LABEL" title="Evidence label" style={labelStyle}>Verdict</label>
             <div style={{ display: 'flex', gap: 8 }}>
               {VERDICT_OPTIONS.map((opt) => {
                 const isSelected = verdict === opt.value
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('evidence-case:backdrop:close', { app: 'datalake-explorer', action: 'BACKDROP_CLOSE', label: 'Backdrop Close', description: 'Backdrop Close in EvidenceCasePanel' })
+  useRegisterAction('evidence-case:close-btn:header', { app: 'datalake-explorer', action: 'CLOSE_BTN_HEADER', label: 'Close Btn Header', description: 'Close Btn Header in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:opt.value', { app: 'datalake-explorer', action: 'OPT.VALUE', label: 'Opt.Value', description: 'Opt.Value in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-2', { app: 'datalake-explorer', action: 'EL_2', label: 'El 2', description: 'El 2 in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-4', { app: 'datalake-explorer', action: 'EL_4', label: 'El 4', description: 'El 4 in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-5', { app: 'datalake-explorer', action: 'EL_5', label: 'El 5', description: 'El 5 in EvidenceCasePanel' })
+  useRegisterAction('evidence:label', { app: 'datalake-explorer', action: 'LABEL', label: 'Label', description: 'Label in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-6', { app: 'datalake-explorer', action: 'EL_6', label: 'El 6', description: 'El 6 in EvidenceCasePanel' })
+  useRegisterAction('evidence:el-7', { app: 'datalake-explorer', action: 'EL_7', label: 'El 7', description: 'El 7 in EvidenceCasePanel' })
+
                 return (
-                  <button
+                  <button data-qid="evidence:opt.value" data-qs-action="EVIDENCE_OPT.VALUE" title="Opt.Value"
                     key={opt.value}
                     onClick={() => setVerdict(opt.value)}
                     style={{
@@ -215,10 +233,10 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
 
           {/* Confidence */}
           <div>
-            <label style={labelStyle}>
+            <label data-qid="evidence:label" data-qs-action="EVIDENCE_LABEL" title="Evidence label" style={labelStyle}>
               Confidence: <span style={{ color: NVIS.white }}>{confidence}%</span>
             </label>
-            <input
+            <input data-qid="evidence:el-2" data-qs-action="EVIDENCE_EL_2" title="El 2"
               type="range"
               min={0}
               max={100}
@@ -234,7 +252,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
 
           {/* Sources */}
           <div>
-            <label style={labelStyle}>Source References</label>
+            <label data-qid="evidence:label" data-qs-action="EVIDENCE_LABEL" title="Evidence label" style={labelStyle}>Source References</label>
             {sources.length > 0 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 8 }}>
                 {sources.map((src, idx) => (
@@ -254,7 +272,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
                     <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {src}
                     </span>
-                    <button
+                    <button data-qid="evidence:el-3" data-qs-action="EVIDENCE_EL_3" title="El 3"
                       onClick={() => removeSource(idx)}
                       aria-label={`Remove source: ${src}`}
                       style={{
@@ -274,7 +292,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
               </div>
             )}
             <div style={{ display: 'flex', gap: 6 }}>
-              <input
+              <input data-qid="evidence:el-4" data-qs-action="EVIDENCE_EL_4" title="El 4"
                 type="text"
                 value={newSource}
                 onChange={(e) => setNewSource(e.target.value)}
@@ -282,7 +300,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
                 placeholder="Add source reference..."
                 style={{ ...inputStyle, flex: 1 }}
               />
-              <button
+              <button data-qid="evidence:el-5" data-qs-action="EVIDENCE_EL_5" title="El 5"
                 onClick={addSource}
                 style={{
                   padding: '6px 12px',
@@ -303,7 +321,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
 
           {/* Notes */}
           <div>
-            <label style={labelStyle}>Notes</label>
+            <label data-qid="evidence:label" data-qs-action="EVIDENCE_LABEL" title="Evidence label" style={labelStyle}>Notes</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -323,7 +341,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
           justifyContent: 'flex-end',
           flexShrink: 0,
         }}>
-          <button
+          <button data-qid="evidence:el-6" data-qs-action="EVIDENCE_EL_6" title="El 6"
             onClick={onClose}
             style={{
               padding: '8px 16px',
@@ -338,7 +356,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
           >
             Cancel
           </button>
-          <button
+          <button data-qid="evidence:el-7" data-qs-action="EVIDENCE_EL_7" title="El 7"
             onClick={handleCreate}
             style={{
               padding: '8px 16px',

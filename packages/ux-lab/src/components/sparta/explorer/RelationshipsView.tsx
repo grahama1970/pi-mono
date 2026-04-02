@@ -107,6 +107,7 @@ export function RelationshipsView() {
                     <tr
                       key={r._key}
                       onClick={() => setSelected(r)}
+                      data-qs-action="SELECT_RELATIONSHIP"
                       style={{ cursor: 'pointer', ...magneticRow, ...(isSelected ? magneticRowSelected : {}) }}
                       onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
                       onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isSelected)}
@@ -130,9 +131,9 @@ export function RelationshipsView() {
 
           {/* Pagination */}
           <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} style={paginationBtn(page > 0)}>Prev</button>
+            <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" style={paginationBtn(page > 0)}>Prev</button>
             <span style={{ fontSize: 12, color: EMBRY.dim }}>Page {page + 1} of {totalPages || 1}</span>
-            <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} style={paginationBtn(page < totalPages - 1)}>Next</button>
+            <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" style={paginationBtn(page < totalPages - 1)}>Next</button>
             <span style={{ fontSize: 11, color: EMBRY.muted, marginLeft: 'auto' }}>
               {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total.toLocaleString()}
             </span>
@@ -204,7 +205,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
     <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)' }}>
       <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={heading}>Edge Detail</div>
-        <button onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+        <button onClick={onClose} data-qs-action="CLOSE_DETAIL" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
           Close
         </button>
       </div>
@@ -278,6 +279,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
           ) : (
             <button
               disabled={rationaleLoading}
+              data-qs-action="LOAD_RATIONALE"
               onClick={async () => {
                 setRationaleLoading(true)
                 try {

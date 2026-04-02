@@ -47,7 +47,7 @@ export const GateChain = memo(function GateChain({ gates, verdict, tier }: GateC
 
   return (
     <div style={{ margin: '6px 0', background: EMBRY.bgCard, border: `1px solid ${color}33`, borderRadius: 8, overflow: 'hidden' }}>
-      <button onClick={() => setExpanded(v => !v)} style={{
+      <button data-qid="gate-chain:toggle" title="Toggle evidence gates" onClick={() => setExpanded(v => !v)} style={{
         width: '100%', display: 'flex', alignItems: 'center', gap: 10,
         padding: '8px 12px', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer',
       }}>

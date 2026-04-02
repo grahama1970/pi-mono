@@ -139,6 +139,7 @@ export function URLsView() {
           </div>
           <div style={{ flex: 1 }} />
           <input
+            data-qs-input="urls-search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search URLs or control IDs..."
@@ -148,9 +149,9 @@ export function URLsView() {
 
         {/* Domain pills */}
         <div style={{ display: 'flex', gap: 4, padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexWrap: 'wrap', flexShrink: 0 }}>
-          <button onClick={() => setDomainFilter(null)} style={{ ...pillStyle, color: !domainFilter ? EMBRY.white : EMBRY.dim, backgroundColor: !domainFilter ? EMBRY.muted : 'transparent' }}>ALL</button>
+          <button data-qs-action="SET_DOMAIN_FILTER" data-qs-params='{"domain":null}' onClick={() => setDomainFilter(null)} style={{ ...pillStyle, color: !domainFilter ? EMBRY.white : EMBRY.dim, backgroundColor: !domainFilter ? EMBRY.muted : 'transparent' }}>ALL</button>
           {domains.map(([domain, count]) => (
-            <button key={domain} onClick={() => setDomainFilter(domainFilter === domain ? null : domain)} style={{ ...pillStyle, color: domainFilter === domain ? EMBRY.white : EMBRY.dim, backgroundColor: domainFilter === domain ? `${EMBRY.blue}22` : 'transparent' }}>
+            <button key={domain} data-qs-action="SET_DOMAIN_FILTER" data-qs-params={JSON.stringify({ domain })} onClick={() => setDomainFilter(domainFilter === domain ? null : domain)} style={{ ...pillStyle, color: domainFilter === domain ? EMBRY.white : EMBRY.dim, backgroundColor: domainFilter === domain ? `${EMBRY.blue}22` : 'transparent' }}>
               {domain} ({count})
             </button>
           ))}
@@ -179,6 +180,7 @@ export function URLsView() {
                   return (
                     <tr
                       key={u._key}
+                      data-qs-action="SELECT_URL"
                       onClick={() => setSelected(u)}
                       style={{ cursor: 'pointer', ...magneticRow, ...(isSelected ? magneticRowSelected : {}) }}
                       onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
@@ -220,9 +222,9 @@ export function URLsView() {
 
         {/* Pagination */}
         <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-          <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} style={paginationBtn(page > 0)}>Prev</button>
+          <button data-qs-action="PAGE_PREV" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} style={paginationBtn(page > 0)}>Prev</button>
           <span style={{ fontSize: 12, color: EMBRY.dim }}>Page {page + 1} of {totalPages || 1}</span>
-          <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} style={paginationBtn(page < totalPages - 1)}>Next</button>
+          <button data-qs-action="PAGE_NEXT" onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} style={paginationBtn(page < totalPages - 1)}>Next</button>
           <span style={{ fontSize: 11, color: EMBRY.muted, marginLeft: 'auto' }}>
             {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total.toLocaleString()}
           </span>
@@ -299,7 +301,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
             {allGood ? 'COMPLETE' : 'INCOMPLETE'}
           </div>
         </div>
-        <button onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>Close</button>
+        <button data-qs-action="CLOSE_DETAIL" onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>Close</button>
       </div>
 
       {/* URL */}

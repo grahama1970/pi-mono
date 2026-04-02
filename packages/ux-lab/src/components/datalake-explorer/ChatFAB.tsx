@@ -13,6 +13,7 @@ import {
 	useCascadePipeline,
 } from "../shared-chat";
 import type { ChatMessage, Skill } from "../shared-chat";
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 interface ChatFABProps {
 	currentView: string;
@@ -135,7 +136,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 						<span style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0" }}>Embry Agent</span>
 						<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
 							{contextStr && <span style={{ fontSize: 12, color: "#94a3b8", background: "#1a1a1a", padding: "2px 8px", borderRadius: 4 }}>{contextStr}</span>}
-							<button aria-label="Close chat" title="Close chat (Esc)" onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 18, padding: 8, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
+							<button data-qid="chat:close-chat" data-qs-action="CHAT_CLOSE_CHAT" title="Close Chat" aria-label="Close chat" title="Close chat (Esc)" onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 18, padding: 8, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
 						</div>
 					</div>
 
@@ -149,6 +150,13 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 						)}
 						{messages.map((msg) => {
 							const isUser = msg.role === "user";
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('chat:close-chat', { app: 'datalake-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Chat in ChatFAB' })
+  useRegisterAction('chat:input-row', { app: 'datalake-explorer', action: 'INPUT_ROW', label: 'Input Row', description: 'Input Row in ChatFAB' })
+  useRegisterAction('chat:send-message', { app: 'datalake-explorer', action: 'SEND_MESSAGE', label: 'Send Message', description: 'Send Message in ChatFAB' })
+  useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'EL_3', label: 'El 3', description: 'El 3 in ChatFAB' })
+
 							return (
 								<div key={msg.id} style={{ display: "flex", flexDirection: "column", alignItems: isUser ? "flex-end" : "flex-start" }}>
 									<div style={{
@@ -178,10 +186,10 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 								<SkillPalette filter={skillFilter} skills={skills} onSelect={handleSkillSelect} onClose={() => setShowPalette(false)} onKeyNav={(handler) => { paletteKeyHandler.current = handler; }} />
 							</div>
 						)}
-						<div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+						<div data-qid="chat:input-row" data-qs-action="CHAT_INPUT_ROW" title="Chat Input Row" style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
 							<textarea
 								ref={inputRef}
-								aria-label="Chat message input"
+								data-qid="datalake-chat:input" data-qs-action="DATALAKE-CHAT_INPUT" title="Chat message input" aria-label="Chat message input"
 								value={input}
 								onChange={handleInputChange}
 								onKeyDown={handleKeyDown}
@@ -193,7 +201,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 									fontFamily: "var(--font-ui)", resize: "none", outline: "none",
 								}}
 							/>
-							<button
+							<button data-qid="chat:send-message" data-qs-action="CHAT_SEND_MESSAGE" title="Send Message"
 								aria-label="Send message"
 								title="Send message (Enter)"
 								onClick={sendMessage}
@@ -216,7 +224,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 			)}
 
 			{/* FAB button */}
-			<button
+			<button data-qid="chat:el-3" data-qs-action="CHAT_EL_3" title="El 3"
 				aria-label={open ? "Close Embry Agent" : "Open Embry Agent (press ? to toggle)"}
 				aria-expanded={open}
 				title={open ? "Close Embry Agent" : "Open Embry Agent chat"}

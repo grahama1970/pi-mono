@@ -114,7 +114,7 @@ export function QRAsView() {
           {controlFilter && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', backgroundColor: `${EMBRY.accent}12`, borderRadius: 4, border: `1px solid ${EMBRY.accent}33` }}>
               <span style={{ fontSize: 10, color: EMBRY.accent }}>Filtered: {controlFilter}</span>
-              <button onClick={() => nav.clearTabFilter('QRAs')} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
+              <button onClick={() => nav.clearTabFilter('QRAs')} data-qs-action="CLEAR_TAB_FILTER" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
             </div>
           )}
           <div style={{ flex: 1 }} />
@@ -122,7 +122,7 @@ export function QRAsView() {
             A=Accept R=Reject E=Edit | ←→ navigate
           </span>
           {undoTimer && (
-            <button onClick={undoLast} style={{
+            <button onClick={undoLast} data-qs-action="UNDO_DECISION" style={{
               fontSize: 10, padding: '3px 8px', borderRadius: 4, cursor: 'pointer',
               border: `1px solid ${EMBRY.amber}44`, backgroundColor: `${EMBRY.amber}12`, color: EMBRY.amber,
             }}>
@@ -230,8 +230,8 @@ export function QRAsView() {
 
               {/* Action buttons */}
               <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                <button onClick={() => handleDecision('accept')} style={acceptBtn}>Accept (A)</button>
-                <button onClick={() => handleDecision('reject')} style={rejectBtn}>Reject (R)</button>
+                <button onClick={() => handleDecision('accept')} data-qs-action="ACCEPT_QRA" style={acceptBtn}>Accept (A)</button>
+                <button onClick={() => handleDecision('reject')} data-qs-action="REJECT_QRA" style={rejectBtn}>Reject (R)</button>
               </div>
             </div>
           )}

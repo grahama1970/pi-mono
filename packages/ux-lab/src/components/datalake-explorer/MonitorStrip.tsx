@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NVIS } from '../theme'
 import type { MonitorStripEvent } from '../types'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // --- Sample data ---
 const SAMPLE_EVENTS: MonitorStripEvent[] = [
@@ -151,6 +152,8 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
         <button
           aria-label="Expand monitor strip"
           aria-expanded={false}
+                data-qid="monitor-strip:expand-monitor-strip" data-qs-action="MONITOR-STRIP_EXPAND_MONITOR_STRIP"
+                title="Expand Monitor Strip"
           onClick={() => setExpanded(true)}
           style={{
             width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -183,6 +186,8 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
         <button
           aria-label="Collapse monitor strip"
           aria-expanded={true}
+                data-qid="monitor-strip:collapse-monitor-strip" data-qs-action="MONITOR-STRIP_COLLAPSE_MONITOR_STRIP"
+                title="Collapse Monitor Strip"
           onClick={() => setExpanded(false)}
           style={{
             width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -209,6 +214,12 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
         {SAMPLE_EVENTS.map((ev) => {
           const dotColor = DOT_COLOR[ev.status as keyof typeof DOT_COLOR] ?? NVIS.dim
           const statusIcon = STATUS_ICON[ev.status as keyof typeof STATUS_ICON] ?? ''
+
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('monitor-strip:expand-monitor-strip', { app: 'datalake-explorer', action: 'EXPAND_MONITOR_STRIP', label: 'Expand Monitor Strip', description: 'Expand Monitor Strip in MonitorChip' })
+  useRegisterAction('monitor-strip:collapse-monitor-strip', { app: 'datalake-explorer', action: 'COLLAPSE_MONITOR_STRIP', label: 'Collapse Monitor Strip', description: 'Collapse Monitor Strip in MonitorChip' })
+  useRegisterAction('monitor-strip:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in MonitorChip' })
+
           return (
             <div
               key={ev.id}
@@ -236,6 +247,8 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
               </span>
               <button
                 aria-label={`Navigate to ${ev.source}`}
+                data-qid="monitor-strip:item-3" data-qs-action="MONITOR-STRIP_ITEM_3"
+                title="Item 3"
                 onClick={() => onNavigate?.(ev.source)}
                 style={{
                   color: NVIS.accent, minWidth: 140, flexShrink: 0,
