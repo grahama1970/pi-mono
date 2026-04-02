@@ -66,16 +66,17 @@ class Task:
     """A single task in the structured plan.
 
     Matches the schema that structured_execute.py consumes:
-    - runner: how the task runs (local, scillm, subagent-service)
+    - runner: how the task runs (local, code-runner, scillm)
     - backend: which LLM model (sonnet, opus, codex, gemini)
     - mode: execution style (iterative, one_shot, review)
     - lane: parallel group (tasks in same lane run sequentially)
+    - skills: skill names whose SKILL.md gets compiled into code-runner context
     """
     id: str
     title: str
     lane: str = "0"
-    runner: str = "subagent-service"
-    backend: str = "sonnet"
+    runner: str = "code-runner"
+    backend: str = "codex"
     mode: str = "iterative"
     agent: str = "general-purpose"
     depends_on: list[str] = field(default_factory=list)
@@ -90,6 +91,7 @@ class Task:
     blind_tests: list[str] = field(default_factory=list)
     max_rounds: int = 5
     allowlist: list[str] = field(default_factory=list)
+    skills: list[str] = field(default_factory=list)  # skill names compiled into context by /orchestrate
 
     def to_dict(self) -> dict[str, Any]:
         d: dict[str, Any] = {
@@ -119,6 +121,8 @@ class Task:
             d["max_rounds"] = self.max_rounds
         if self.allowlist:
             d["allowlist"] = self.allowlist
+        if self.skills:
+            d["skills"] = self.skills
         return d
 
 
@@ -204,6 +208,65 @@ class PlanFile:
         """Write plan to a YAML file."""
         path.write_text(self.to_yaml())
         logger.info("Plan written to {}", path)
+
+
+def _discover_skills(task_title: str, task_body: str) -> list[str]:
+    """Auto-discover relevant skills for a task via /recommend-skill-chain.
+
+    Primary: calls recommend-skill-chain with 4-tier cascade.
+    Fallback: keyword search in skills-manifest.json.
+    """
+    recommend_run = SKILLS_DIR / "recommend-skill-chain" / "run.sh"
+    task_text = f"{task_title}: {task_body}".strip().rstrip(":")
+
+    if recommend_run.exists() and task_text:
+        try:
+            result = subprocess.run(
+                [str(recommend_run), "recommend", "--task", task_text, "--json", "--limit", "5"],
+                capture_output=True, text=True, timeout=30,
+                env={k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"},
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                payload = json.loads(result.stdout)
+                candidates: list[dict] = []
+                if isinstance(payload, list):
+                    candidates = [c for c in payload if isinstance(c, dict)]
+                elif isinstance(payload, dict):
+                    for key in ("recommendations", "skills", "results", "chains"):
+                        v = payload.get(key)
+                        if isinstance(v, list):
+                            candidates = [c for c in v if isinstance(c, dict)]
+                            if candidates:
+                                break
+                discovered: list[str] = []
+                for c in candidates:
+                    conf = float(c.get("confidence", c.get("score", 0)) or 0)
+                    if conf <= 0.5:
+                        continue
+                    name = c.get("skill") or c.get("name") or ""
+                    if isinstance(name, str) and name and name not in discovered:
+                        discovered.append(name)
+                if discovered:
+                    return discovered
+        except Exception:
+            pass
+
+    # Fallback: keyword search in manifest
+    manifest_path = SKILLS_DIR.parent / "skills-manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text())
+        skills_list = manifest.get("skills", []) if isinstance(manifest, dict) else []
+        haystack = f"{task_title} {task_body}".lower()
+        found: list[str] = []
+        for s in skills_list:
+            if not isinstance(s, dict):
+                continue
+            name = str(s.get("name", "")).strip()
+            if name and name.lower() in haystack and name not in found:
+                found.append(name)
+        return found[:5]
+    except Exception:
+        return []
 
 
 # ---------------------------------------------------------------------------
