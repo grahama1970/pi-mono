@@ -60,7 +60,7 @@ export function useLean4Data(): Lean4DataResult {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						query: "FOR d IN lean4_proofs LIMIT 500 RETURN {_key: d._key, _id: d._id, theorem_name: d.theorem_name, lean_code: d.lean_code, tactics: d.tactics, imports: d.imports, needs_mathlib: d.needs_mathlib, problem_description: d.problem_description}",
+						aql: "FOR d IN lean4_proofs LIMIT 500 RETURN {_key: d._key, _id: d._id, theorem_name: d.theorem_name, lean_code: d.lean_code, tactics: d.tactics, imports: d.imports, needs_mathlib: d.needs_mathlib, problem_description: d.problem_description}",
 					}),
 				});
 				const proofData = await proofRes.json();
@@ -70,15 +70,15 @@ export function useLean4Data(): Lean4DataResult {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						query: "FOR e IN proof_requirement_edges LIMIT 500 RETURN {_key: e._key, _from: e._from, _to: e._to, edge_type: e.edge_type, proof_code: e.proof_code, tactics: e.tactics, framework: e.framework, control_id: e.control_id}",
+						aql: "FOR e IN proof_requirement_edges LIMIT 500 RETURN {_key: e._key, _from: e._from, _to: e._to, edge_type: e.edge_type, proof_code: e.proof_code, tactics: e.tactics, framework: e.framework, control_id: e.control_id}",
 					}),
 				});
 				const edgeData = await edgeRes.json();
 
 				if (cancelled) return;
 
-				const fetchedProofs: Lean4Proof[] = proofData.result ?? proofData ?? [];
-				const fetchedEdges: ProofRequirementEdge[] = edgeData.result ?? edgeData ?? [];
+				const fetchedProofs: Lean4Proof[] = proofData.documents ?? proofData.result ?? [];
+				const fetchedEdges: ProofRequirementEdge[] = edgeData.documents ?? edgeData.result ?? [];
 
 				setProofs(fetchedProofs);
 				setEdges(fetchedEdges);

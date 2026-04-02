@@ -255,15 +255,6 @@ function savePreset(p: LayoutPreset) {
 }
 
 export default function QuarantineView() {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('quarantine:action:approve', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve', description: 'Approve quarantined entry and remove from queue', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:reject', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject', description: 'Reject quarantined entry', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
-  useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
-  useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
-  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
-
-
   // -- Queue state --
   const [entries, setEntries] = useState<QuarantineEntry[]>([])
   const [loading, setLoading] = useState(true)
@@ -315,6 +306,12 @@ export default function QuarantineView() {
   const layoutWidths = LAYOUT_PRESETS[layoutPreset]
 
   // -- Register actions for state-changing operations --
+  useRegisterAction('quarantine:action:approve', { app: 'datalake-explorer', action: 'APPROVE_ENTRY', label: 'Approve', description: 'Approve quarantined entry and remove from queue', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reject', { app: 'datalake-explorer', action: 'REJECT_ENTRY', label: 'Reject', description: 'Reject quarantined entry', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
+  useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
+  useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
+  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
 
   const handlePresetChange = useCallback((p: LayoutPreset) => {
     setLayoutPreset(p)
@@ -701,7 +698,7 @@ export default function QuarantineView() {
 
     return (
       <div key={idx}>
-        <div data-qid="quarantine:el-1" data-qs-action="QUARANTINE_TOGGLE_SECTION" title="Toggle section expand"
+        <div data-qid="quarantine:el-1" data-qs-action="QUARANTINE_EL_1" title="El 1"
           data-section-idx={idx}
           role="treeitem"
           aria-selected={isSelected}
@@ -737,7 +734,7 @@ export default function QuarantineView() {
           }}
         >
           {/* Toggle */}
-          <span data-qid="quarantine:el-2" data-qs-action="QUARANTINE_SECTION_ICON" title="Section collapse icon"
+          <span data-qid="quarantine:el-2" data-qs-action="QUARANTINE_EL_2" title="El 2"
             style={{
               fontSize: '9px',
               color: NVIS.dim,
@@ -971,7 +968,7 @@ export default function QuarantineView() {
 
         {/* Chat toggle (L.7) */}
         <button
-          data-qid="quarantine:layout:chat" data-qs-action="QUARANTINE_TOGGLE_CHAT"
+          data-qid="quarantine:layout:chat" data-qs-action="QUARANTINE_CHAT"
           title="Layout: Chat"
           onClick={() => setChatOpen((p) => !p)}
           style={{
@@ -1259,7 +1256,7 @@ export default function QuarantineView() {
               fontSize: '11px',
             }}
           >
-            <button data-qid="quarantine:select-all-visible-docume" data-qs-action="QUARANTINE_SELECT_ALL" title="Select all visible documents"
+            <button data-qid="quarantine:select-all-visible-docume" data-qs-action="QUARANTINE_SELECT_ALL_VISIBLE_DOCUME" title="Select All Visible Docume"
               onClick={selectAllVisible}
               aria-label="Select all visible documents"
               style={{
@@ -1656,7 +1653,7 @@ export default function QuarantineView() {
                 }}
               >
                 {/* L.5: Approve/Reject are dominant buttons */}
-                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_APPROVE_ENTRY" title="Approve quarantine entry"
+                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_EL_4" title="El 4"
                   onClick={() => handleAction(selected.id, 'approve')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:approve" data-qs-action="QUARANTINE_APPROVE"
@@ -1679,7 +1676,7 @@ export default function QuarantineView() {
                 >
                   Approve (a)
                 </button>
-                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_REJECT_ENTRY" title="Reject quarantine entry"
+                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_EL_5" title="El 5"
                   onClick={() => handleAction(selected.id, 'reject')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:reject" data-qs-action="QUARANTINE_REJECT"
@@ -1704,7 +1701,7 @@ export default function QuarantineView() {
                 </button>
 
                 {/* Separator */}
-                <div data-qid="quarantine:sep-1" data-qs-action="QUARANTINE_ACTION_SEP_1" title="Separator"
+                <div data-qid="quarantine:sep-1" data-qs-action="QUARANTINE_SEP_1" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1722,10 +1719,10 @@ export default function QuarantineView() {
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 're-extract')}
                 />
-                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_SELECT_STRATEGY" title="Select re-extraction strategy"
+                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_EL_6" title="El 6"
                   value={reExtractStrategy}
                   onChange={(e) => setReExtractStrategy(e.target.value)}
-                  data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_CHOOSE_METHOD"
+                  data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_SELECT"
                   title="Re-extraction strategy"
                   aria-label="Re-extraction strategy"
                   style={{
@@ -1747,7 +1744,7 @@ export default function QuarantineView() {
                   ))}
                 </select>
 
-                <div data-qid="quarantine:sep-2" data-qs-action="QUARANTINE_ACTION_SEP_2" title="Separator"
+                <div data-qid="quarantine:sep-2" data-qs-action="QUARANTINE_SEP_2" title="Separator"
                   style={{
                     width: '1px',
                     height: '22px',
@@ -1836,7 +1833,7 @@ export default function QuarantineView() {
               >
                 Interview Chat
               </span>
-              <button data-qid="quarantine:el-7" data-qs-action="QUARANTINE_CLOSE_CHAT" title="Close interview chat"
+              <button data-qid="quarantine:el-7" data-qs-action="QUARANTINE_EL_7" title="El 7"
                 onClick={() => setChatOpen(false)}
                 style={{
                   fontFamily: 'monospace',

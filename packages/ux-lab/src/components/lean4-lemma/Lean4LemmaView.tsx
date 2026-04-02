@@ -16,7 +16,7 @@
  */
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { EMBRY, card, heading, label, glowDot } from "../common/EmbryStyle";
-import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from "../common/LeftPane";
+import { LeftPane, LeftPaneSection, paneItemStyle } from "../common/LeftPane";
 import { LemmaGraph } from "../sparta/lemma-graph/LemmaGraph";
 import type { GraphNode, GraphEdge } from "../sparta/lemma-graph/LemmaGraph";
 import { ProofDetail } from "./ProofDetail";
@@ -54,12 +54,19 @@ export function Lean4LemmaView() {
   const [whatIfActive, setWhatIfActive] = useState(false);
   const [forcedSorry, setForcedSorry] = useState<Set<string>>(new Set());
   const [liveProofStatus, setLiveProofStatus] = useState<Record<string, string>>({});
+  const [lpQuery, setLpQuery] = useState("");
 
-  const { query: lpQuery, setQuery: setLpQuery, matches: lpMatches } = useLeftPaneSearch(
-    data.proofs.map((p) => ({ id: p._key, label: p.theorem_name, searchText: `${p.theorem_name} ${p.problem_description ?? ""} ${(p.tactics ?? []).join(" ")}` })),
-  );
+  const filteredProofs = useMemo(() => {
+    if (!lpQuery.trim()) return data.proofs ?? [];
+    const q = lpQuery.toLowerCase();
+    return (data.proofs ?? []).filter(p =>
+      (p.theorem_name ?? '').toLowerCase().includes(q) ||
+      (p.problem_description ?? '').toLowerCase().includes(q) ||
+      (p.tactics ?? []).some(t => t.toLowerCase().includes(q))
+    );
+  }, [data.proofs, lpQuery]);
 
-  const selectedProof = data.proofs.find((p) => p._key === selectedProofKey) ?? null;
+  const selectedProof = (data.proofs ?? []).find((p) => p._key === selectedProofKey) ?? null;
 
   // ── What-if BFS cascade computation ─────────────────────────────────
   const cascadeResult = useMemo(() => {
@@ -208,13 +215,14 @@ export function Lean4LemmaView() {
 
   if (data.loading) return <div style={{ padding: 40, color: EMBRY.muted, fontSize: 12 }}>Loading Lean4 proofs from ArangoDB...</div>
   if (data.error) return <div style={{ padding: 40, color: EMBRY.red, fontSize: 12 }}>Error: {data.error}</div>
+  if (!Array.isArray(data.proofs)) return <div style={{ padding: 40, color: EMBRY.red, fontSize: 12 }}>Error: proofs data is not an array (got {typeof data.proofs})</div>
 
   return (
     <div style={{ display: "flex", height: "100%", background: EMBRY.bgDeep, color: EMBRY.white, fontFamily: "JetBrains Mono, monospace" }}>
       {/* Left Pane */}
       <LeftPane search={lpQuery} onSearchChange={setLpQuery} searchPlaceholder="Filter theorems...">
         <LeftPaneSection title={`Proofs (${data.proofs.length})`} defaultOpen>
-          {(lpMatches.length > 0 ? lpMatches : data.proofs).slice(0, 100).map((p) => {
+          {filteredProofs.slice(0, 100).map((p) => {
             const proof = "theorem_name" in p ? p : data.proofs.find(pr => pr._key === p.id);
             if (!proof || !("theorem_name" in proof)) return null;
             const isSelected = proof._key === selectedProofKey;
