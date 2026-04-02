@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "type": "persona-review-manifest",
+  "app": "lean4-lemma",
+  "total": 30,
+  "captures_dir": "captures/lean4-lemma-reviews",
+  "vlm_image_processor": ".pi/skills/common/vlm_image.py",
+  "vlm_preprocessing": {
+    "auto_crop": true,
+    "sharpen_text": true,
+    "min_width": 1200,
+    "max_height": 2000,
+    "max_bytes": 500000,
+    "stitch_mode": "vertical"
+  },
+  "personas": {
+    "rob-armstrong": "Rob Armstrong — Formal methods expert (Sandia/Draper background). Evaluates proof soundness, sorry contamination, tactic selection, and whether the graph correctly represents logical dependencies. Cares about: can I trust this proof? What assumptions does it make? Where are the sorry gaps?",
+    "brandon-bailey": "Brandon Bailey — SPARTA security architect. Evaluates compliance coverage, CMMC control mapping, evidence tiers, and whether the tool helps prepare for a DFARS audit. Cares about: which controls have formal proofs? What's our compliance posture? What fails if this requirement changes?",
+    "denis-gopan": "Denis Gopan — GrammaTech static analysis researcher. Evaluates tool usability for a verification engineer: is the proof graph navigable? Can I trace dependencies? Does the what-if analysis reveal real attack surfaces? Cares about: compositionality, abstraction levels, scalability."
+  },
+  "reviews": [
+    {
+      "persona": "rob-armstrong",
+      "group": "proof-graph-overview",
+      "mode": "screenshot",
+      "criteria": "As a formal methods expert: Does the proof graph clearly show which lemmas are proved vs sorry vs axiom? Is the sorry contamination (tainted nodes) visually distinct from genuinely sorry nodes? Can you identify the proof DAG structure (which lemmas depend on which)? Is the minimap useful for navigating large proof graphs?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "sorry-contamination",
+      "mode": "screenshot",
+      "criteria": "As someone who cares about proof soundness: When a lemma has sorry, can you visually trace which downstream lemmas are tainted? Is the BFS contamination visualized with distinct colors/patterns (not just the same red as sorry)? Does the hatching/pulse animation distinguish tainted from sorry? Can you tell at a glance which proofs are sound end-to-end?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "what-if-cascade",
+      "mode": "screenshot",
+      "criteria": "As a verification engineer running what-if analysis: Can you toggle a proved lemma to sorry and see the cascade? Does the toolbar clearly show how many nodes are forced, cascaded, and how many controls are impacted? Is the cascade visualization immediate and understandable? Can you reset and try different scenarios?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "proof-detail-view",
+      "mode": "screenshot",
+      "criteria": "As someone reading Lean4 code: Does the proof detail show the full Lean4 code with readable formatting? Are tactics listed as chips you can click to learn about? Is the compilation status clear (compiled vs sorry)? Can you see imports and Mathlib dependencies? Is the evidence tier badge visible and meaningful?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "tactic-analysis",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:1-100,ProofDetail.tsx:1-150",
+      "criteria": "As a Lean4 expert: Does the tactic display help you understand proof strategy? Can you click a tactic to ask the chat about it? Are the most common tactics across the library visible? Does the suggested query 'What tactics work for [theorem]?' actually help understand proof construction?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "dependency-tracing",
+      "mode": "screenshot",
+      "criteria": "As someone verifying proof completeness: Can you trace which lemmas a given proof depends on? Are edges directional (showing dependency direction)? When you click a node, do connected edges highlight? Can you follow a chain from axiom to final theorem? Does the graph layout (force/hierarchy) help reveal the dependency tree?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "chat-proof-queries",
+      "mode": "screenshot",
+      "criteria": "As a formal methods expert asking questions: Are the suggested queries relevant to proof analysis (tactics, dependencies, soundness)? When a proof is selected, do queries adapt to that specific theorem? Can you ask 'why does this proof have sorry gaps?' and get useful analysis? Does the chat understand Lean4-specific concepts?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "evidence-tiers",
+      "mode": "screenshot",
+      "criteria": "As someone assessing proof quality: Are evidence tiers clearly visible (T1=formal, T2=test, T3=attestation)? Can you distinguish between a genuine formal proof and a trivial 'True' proof? Does the LeftPane show tier badges next to each theorem? Is there a summary of tier distribution? Can you filter by tier?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "live-compilation",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:100-130,useLean4Data.ts:50-90",
+      "criteria": "As someone monitoring autonomous proof generation: Does the Live Status section show active compilations? Is the polling interval reasonable (not too aggressive)? Can you see when a proof attempt succeeds or fails? Does the re-prove button connect to the lean4-prove service? Is error handling graceful when the service is down?"
+    },
+    {
+      "persona": "rob-armstrong",
+      "group": "re-prove-workflow",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:130-170",
+      "criteria": "As someone triggering re-proofs: Does the 'Trigger Autonomous Re-Proof' button send the right data to lean4-prove? Does it include the original tactics and problem description? Is the result displayed in the chat? Can you re-prove multiple sorry lemmas at once (from what-if cascade)? Is feedback immediate?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "compliance-overview",
+      "mode": "screenshot",
+      "criteria": "As a CMMC assessor: Can you see at a glance what percentage of controls have formal proofs? Is the evidence tier distribution visible (how many T1 vs T3)? Does the tool communicate compliance posture in terms an auditor understands? Can you generate a compliance report from the what-if analysis?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "cmmc-impact-analysis",
+      "mode": "screenshot",
+      "criteria": "As someone preparing for a DFARS audit: When you run a what-if cascade, does the Impact tab show specific CMMC control IDs that lose formal assurance? Does it explain the evidence downgrade (T1→T3)? Can you present this to an auditor as 'here are the controls at risk if requirement X changes'? Is the language compliance-oriented, not just technical?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "control-mapping",
+      "mode": "code",
+      "source": "useLean4Data.ts:80-130",
+      "criteria": "As someone who needs NIST-to-proof traceability: Do proof-requirement edges correctly link lean4_proofs to sparta_controls? Can you trace from a CMMC control to its formal proof? Are requirement nodes visually distinct from proof nodes in the graph? Does the data model support the compliance chain: CMMC → NIST 800-171 → SPARTA control → formal proof?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "threat-matrix-handoff",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:1-50",
+      "criteria": "As someone who switches between Threat Matrix and Lemma Viewer: Are the same SPARTA controls visible in both views? Can you navigate from a control in the Lemma Viewer to the same control in the Threat Matrix? Does the shared data model (ArangoDB) ensure consistency? Would a compliance officer understand the relationship between these two views?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "audit-readiness",
+      "mode": "screenshot",
+      "criteria": "As someone presenting to a CMMC Level 3 assessor: Does the Lemma Viewer produce artifacts an assessor would accept as evidence? Can you export proof status summaries? Are evidence tiers clearly explained for non-technical stakeholders? Does the compliance impact summary use language from NIST SP 800-171 (not just Lean4 jargon)?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "what-if-for-auditors",
+      "mode": "screenshot",
+      "criteria": "As a security architect explaining risk to management: Can you demonstrate 'if we change this network segmentation requirement, these 4 controls lose formal assurance'? Is the what-if cascade understandable to a non-technical stakeholder? Does the Impact tab provide a clear, printable summary? Are control IDs linked to their full descriptions?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "evidence-quality",
+      "mode": "screenshot",
+      "criteria": "As someone who evaluates evidence quality: Is there a clear distinction between a mathematically verified proof (T1) and a self-attestation (T3)? Can you see which controls rely on weak evidence? Does the tool help prioritize which proofs need strengthening? Is the evidence tier system consistent with CMMC assessment methodology?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "chat-compliance-queries",
+      "mode": "screenshot",
+      "criteria": "As a compliance officer asking questions: Are suggested queries relevant to compliance (not just proof theory)? Can you ask 'What percentage of CMMC Level 3 controls have formal proofs?' and get a useful answer? Does the chat understand NIST/CMMC terminology? Can you ask about specific control families (AC, IA, SC)?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "supply-chain-risk",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:80-120",
+      "criteria": "As someone assessing supply chain risk in defense manufacturing: Does the cascade analysis show how a change in one subsystem's proof affects downstream systems? Can you model 'what if our vendor's authentication module proof is invalid?' and see plant-floor impact? Does the tool help with CMMC supply chain risk assessment (SC.L2-3.13.1)?"
+    },
+    {
+      "persona": "brandon-bailey",
+      "group": "shared-components",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:1-30",
+      "criteria": "As someone who uses both Binary Explorer and Lemma Viewer: Do they share the same graph engine (GraphExplorer)? Is the LeftPane consistent between views? Are chat interactions similar in style and capability? Does switching between views feel like the same product? Are design tokens (EmbryStyle) consistent?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "graph-navigation",
+      "mode": "screenshot",
+      "criteria": "As a verification engineer exploring proof graphs: Is the D3 force-directed layout readable for 100+ nodes? Can you zoom, pan, and fit-to-graph? Does the minimap help orient in large graphs? Are node labels readable at different zoom levels? Does double-click zoom to a node? Are keyboard shortcuts available (F=fit, Esc=deselect)?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "compositionality",
+      "mode": "code",
+      "source": "useLean4Data.ts:80-150",
+      "criteria": "As someone who cares about compositional verification: Does the data model support hierarchical proof composition (proofs of sub-components compose into system-level proofs)? Can you see which proofs are 'leaf' proofs vs 'composite' proofs? Does the graph layout reveal compositional structure? Is the BFS cascade algorithm correct for compositional dependency?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "scalability",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:60-100,useLean4Data.ts:50-70",
+      "criteria": "As someone who works with large proof libraries (94K+ theorems): Does the data fetching paginate or limit to prevent UI freeze? Is the graph renderer optimized for large node counts (LOD, collision toggling)? Can the what-if BFS handle 1000+ node cascades without lag? Does the LeftPane handle 500+ theorems with search?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "lean4-code-display",
+      "mode": "screenshot",
+      "criteria": "As someone who reads Lean4 code daily: Is the proof code displayed with proper indentation and monospace font? Are Lean4 keywords visually distinct? Is the code scrollable for long proofs? Can you copy code for pasting into an editor? Are line numbers shown? Is there syntax highlighting for Lean4-specific constructs?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "what-if-correctness",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:70-100",
+      "criteria": "As a verification expert evaluating the what-if algorithm: Is the BFS cascade correct (forward propagation through dependency edges)? Does it handle cycles gracefully? Does toggling a node to sorry correctly mark all downstream as tainted (not upstream)? Is the cascade result computed efficiently (memoized)? Does resetting clear all state correctly?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "data-integrity",
+      "mode": "code",
+      "source": "useLean4Data.ts:1-150",
+      "criteria": "As someone who cares about data correctness: Does useLean4Data correctly map ArangoDB documents to GraphNode/GraphEdge? Are proof statuses derived accurately from lean_code content? Is the sorry detection reliable (checking for 'sorry' in code)? Are edge directions correct (proof → requirement, not reversed)? Is the data refresh handled on mount with cleanup?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "accessibility",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:200-300",
+      "criteria": "As someone building tools for diverse teams: Do interactive elements have role='button' and tabIndex? Are keyboard shortcuts documented in the UI? Is the what-if toggle keyboard-accessible? Do suggested queries have proper ARIA labels? Is the color scheme accessible for color-blind users (not relying solely on red/green)?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "chat-technical-depth",
+      "mode": "screenshot",
+      "criteria": "As a verification engineer asking deep questions: Can the chat explain Lean4 tactics (simp, ring_nf, omega)? Does it understand proof strategy questions like 'why induction vs cases here?' When you ask about a specific theorem, does it reference the actual code? Are suggested queries technically sophisticated enough for an expert?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "integration-with-lean4-prove",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:130-170",
+      "criteria": "As someone who runs the lean4-prove service: Does the re-prove workflow send correct payloads to :8604? Does it handle service-down gracefully? Does it pass tactics from the original proof for retrieval-augmented generation? Is the retry logic (max_retries) configurable? Does the result update the graph in real-time?"
+    },
+    {
+      "persona": "denis-gopan",
+      "group": "error-handling",
+      "mode": "code",
+      "source": "Lean4LemmaView.tsx:100-200,useLean4Data.ts:50-90",
+      "criteria": "As a developer concerned about robustness: What happens when ArangoDB is down? When lean4-prove service is unavailable? When proof data is malformed? Are errors displayed to the user (not silently swallowed)? Is the loading state communicated? Does the component degrade gracefully (show what it can, error on what it can't)?"
+    }
+  ]
+}
