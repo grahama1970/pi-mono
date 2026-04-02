@@ -11,6 +11,9 @@ export { ThreatMatrixCard } from "../sparta/query/ThreatMatrixCard";
 // Shared components
 export { ActivityFeed } from "./ActivityFeed";
 export { ChatInput } from "./ChatInput";
+export type { ChatWellProps } from "./ChatWell";
+// ChatWell — the shared chat interface component
+export { ChatWell } from "./ChatWell";
 export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
 export { configureDeepLinks, executePrimaryAction, resolveEntityActions } from "./DeepLinks";
 export type { DeltaItem, DeltaReport } from "./DeltaReportCard";

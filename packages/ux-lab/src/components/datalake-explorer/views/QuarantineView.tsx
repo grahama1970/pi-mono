@@ -871,33 +871,9 @@ export default function QuarantineView() {
       : null
 
   // ---------------------------------------------------------------------------
-  // Empty state
-  // ---------------------------------------------------------------------------
-  if (!loading && entries.length === 0) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '400px',
-          color: NVIS.dim,
-          fontFamily: 'monospace',
-        }}
-      >
-        <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>
-          &#10003;
-        </div>
-        <div style={{ fontSize: '16px', marginBottom: '8px', color: '#15803d' }}>
-          Quarantine queue is empty
-        </div>
-        <div style={{ fontSize: '12px' }}>
-          No documents require manual review at this time.
-        </div>
-      </div>
-    )
-  }
+  // Empty state flag — rendered inline in the entry list, NOT as early return
+  // (filter/layout controls must stay visible so user can switch filters)
+  const showEmptyState = !loading && entries.length === 0
 
   // ---------------------------------------------------------------------------
   // Render
@@ -1118,7 +1094,13 @@ export default function QuarantineView() {
               </div>
             ) : filtered.length === 0 ? (
               <div style={{ padding: '24px', color: NVIS.dim, textAlign: 'center' }}>
-                No matches.
+                {showEmptyState ? (
+                  <>
+                    <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.3 }}>&#10003;</div>
+                    <div style={{ fontSize: '13px', color: '#15803d', marginBottom: '4px' }}>Queue empty for this filter</div>
+                    <div style={{ fontSize: '11px' }}>Try selecting a different filter above.</div>
+                  </>
+                ) : 'No matches.'}
               </div>
             ) : (
               filtered.map((entry, qIdx) => {

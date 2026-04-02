@@ -10,8 +10,8 @@
  */
 import { useState, useCallback, useRef, useEffect, createContext, useContext } from 'react'
 import { EMBRY } from '../common/EmbryStyle'
-import { ChatWell } from '../query/ChatWell'
-import type { ChatMessage, EntityRef, EvidenceGate, ThreatMatrixSummary } from '../query/ChatWell'
+import { ChatWell } from '../../shared-chat'
+import type { ChatMessage, EntityRef, EvidenceGate, ThreatMatrixSummary } from '../../shared-chat'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption } from '../shared/ThreatMatrix'
 import { LemmaGraph } from '../lemma-graph/LemmaGraph'

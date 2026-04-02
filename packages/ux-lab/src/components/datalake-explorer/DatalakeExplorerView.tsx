@@ -124,7 +124,7 @@ function DatalakeLeftPane({
               fontFamily: MONO,
             }}
           >
-            {documents.length === 0 ? 'Loading...' : 'No matches'}
+            {!documents || documents.length === 0 ? 'Loading...' : 'No matches'}
           </div>
         )}
         {filteredDocs.slice(0, 200).map(d => (
@@ -588,10 +588,10 @@ export function DatalakeExplorerView() {
     >
       {/* Left Pane */}
       <DatalakeLeftPane
-        scopes={stats.scopes}
+        scopes={stats.scopes ?? []}
         activeScope={activeScope}
         onSelectScope={handleSelectScope}
-        documents={visibleDocs}
+        documents={visibleDocs ?? []}
         selectedDocKey={selectedDocKey}
         onSelectDoc={handleSelectDoc}
       />
