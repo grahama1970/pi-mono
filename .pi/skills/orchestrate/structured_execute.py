@@ -3,12 +3,15 @@
 Executes JSON/YAML orchestration plans explicitly by runner type:
 - local: deterministic shell command
 - scillm: one-shot HTTP completion
-- subagent-service: iterative or review tasks through a named subagent lane
+- code-runner: iterative run-and-debug loop via /code-runner skill
+
+Note: subagent-service is deprecated. Tasks with runner=subagent-service are
+auto-migrated to code-runner or scillm by structured_execute_helpers._build_runtimes().
+Any remaining subagent-service tasks fall back to scillm at execution time.
 
 Fully async — all runners use asyncio so the event loop can:
 - Kill any task mid-stream via cancel events
 - React to PAUSE/KILL/ABORT files within 2 seconds
-- Stream SSE events from subagents without blocking
 
 Intervention (Factory Droid pattern):
 - Touch PAUSE in session dir → halts after current task OR mid-stream
@@ -42,7 +45,6 @@ from structured_execute_helpers import (  # noqa: E402
     SCILLM_URL,
     SKILLS_DIR,
     STATE_ROOT,
-    SUBAGENT_RUN,
     WATCHDOG_POLL_S,
     TaskRuntime,
     _build_runtimes,
@@ -59,53 +61,16 @@ app = typer.Typer(add_completion=False)
 # Async runners
 # ---------------------------------------------------------------------------
 
-async def _ensure_subagent_instance(instance: str, cwd: Path) -> int:
-    """Start a subagent Docker container and return its port."""
-    proc = await asyncio.create_subprocess_exec(
-        str(SUBAGENT_RUN), "start", "--name", instance, "--workspace", str(cwd), "--with-memory",
-        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+async def _run_subagent_via_scillm(task: TaskRuntime, session_dir: Path) -> str:
+    """Fallback for deprecated subagent-service tasks -- routes through scillm."""
+    logger.warning(
+        "Task {} uses deprecated runner 'subagent-service' — falling back to scillm",
+        task.task_id,
     )
-    stdout_start, stderr_start = await proc.communicate()
-    if proc.returncode != 0:
-        err = (stderr_start or stdout_start or b"").decode()[:300]
-        raise RuntimeError(f"subagent-service start failed for {instance}: {err}")
-    container = f"embry-subagent-{instance}"
-    proc2 = await asyncio.create_subprocess_exec(
-        "docker", "inspect", "--format", '{{index .Config.Labels "embry.port"}}', container,
-        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
-    )
-    stdout, stderr = await proc2.communicate()
-    if proc2.returncode != 0:
-        err = (stderr or stdout or b"").decode()[:300]
-        raise RuntimeError(f"docker inspect failed for {container}: {err}")
-    port_str = stdout.decode().strip()
-    if not port_str.isdigit():
-        raise RuntimeError(f"Invalid port from docker inspect for {container}: {port_str!r}")
-    return int(port_str)
+    # Delegate to _run_scillm which handles the HTTP completion
+    return await _run_scillm(task, session_dir)
 
 
-async def _cancel_subagent(port: int, subagent_task_id: str) -> bool:
-    """Kill a subagent subprocess via the cancel endpoint."""
-    if not port:
-        return False
-    try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            if subagent_task_id:
-                resp = await client.post(f"http://localhost:{port}/tasks/{subagent_task_id}/cancel")
-                return resp.status_code == 200
-            # Fallback: cancel most recent running task on this port
-            resp = await client.get(f"http://localhost:{port}/tasks?status=running")
-            if resp.status_code == 200:
-                tasks = resp.json().get("tasks", [])
-                if tasks:
-                    tid = tasks[-1].get("task_id", "")
-                    if tid:
-                        r = await client.post(f"http://localhost:{port}/tasks/{tid}/cancel")
-                        return r.status_code == 200
-        return False
-    except Exception as exc:
-        logger.warning("Cancel failed for subagent {}: {}", subagent_task_id, exc)
-        return False
 
 
 async def _run_local(task: TaskRuntime, session_dir: Path) -> str:
@@ -170,109 +135,6 @@ async def _run_scillm(task: TaskRuntime, session_dir: Path) -> str:
     return content
 
 
-# Track workspace per lane to detect cwd mismatches within a single run.
-_lane_workspace: dict[str, Path] = {}
-
-
-async def _run_subagent(task: TaskRuntime, session_dir: Path) -> str:
-    """Stream SSE from a subagent container with per-line cancel checks."""
-    if not task.prompt:
-        raise RuntimeError("subagent task has no prompt")
-    instance = f"orchestrate-{task.lane}"
-
-    # Warn (and restart) if this lane's container was started with a different workspace.
-    prev_cwd = _lane_workspace.get(task.lane)
-    if prev_cwd is not None and prev_cwd != task.cwd:
-        logger.warning(
-            "Lane '{}' workspace changed ({} → {}); subagent container will restart",
-            task.lane, prev_cwd, task.cwd,
-        )
-    _lane_workspace[task.lane] = task.cwd
-
-    port = await _ensure_subagent_instance(instance, task.cwd)
-    task._subagent_port = port
-
-    content_chunks: list[str] = []
-    events_log = session_dir / f"{task.task_id}.events.jsonl"
-    system_prompt = _build_system_prompt(task)
-    request_body: dict[str, Any] = {
-        "prompt": task.prompt,
-        "model": task.backend or "sonnet",
-        "max_turns": {"iterative": 15, "one_shot": 8, "review": 5}.get(task.mode, 8),
-        "system_prompt": system_prompt,
-        "idle_timeout": 300,  # Claude may go silent 2-3 min while thinking on complex tasks
-    }
-    stream_timeout = httpx.Timeout(connect=10.0, read=300.0, write=10.0, pool=10.0)
-    try:
-        async with httpx.AsyncClient(timeout=stream_timeout) as client:
-            async with client.stream("POST", f"http://localhost:{port}/chat/stream",
-                                     json=request_body) as response:
-                response.raise_for_status()
-                # Batch writes to avoid blocking the event loop per-line
-                log_buffer: list[str] = []
-                sse_event_type = ""
-                async for line in response.aiter_lines():
-                    # Check cancel on every line — sub-second response
-                    if task._cancel_event.is_set():
-                        await _cancel_subagent(port, task._subagent_task_id)
-                        raise RuntimeError(f"Task {task.task_id} cancelled by operator")
-
-                    if not line:
-                        sse_event_type = ""
-                        continue
-                    if line.startswith("event: "):
-                        sse_event_type = line[7:].strip()
-                        continue
-                    if line.startswith("event:"):
-                        sse_event_type = line[6:].strip()
-                        continue
-                    if line.startswith("data: "):
-                        data_str = line[6:]
-                    elif line.startswith("data:"):
-                        data_str = line[5:]
-                    else:
-                        continue
-                    log_buffer.append(data_str)
-
-                    try:
-                        event = json.loads(data_str)
-                        event_type = sse_event_type or event.get("type", "")
-                        if event_type == "meta":
-                            task._subagent_task_id = event.get("task_id", "")
-                        elif event_type in ("assistant", "text"):
-                            text = event.get("content", event.get("message", ""))
-                            if text:
-                                content_chunks.append(str(text) if not isinstance(text, str) else text)
-                        elif event_type == "result":
-                            text = event.get("result", event.get("response", ""))
-                            if text:
-                                content_chunks.append(str(text) if not isinstance(text, str) else text)
-                        elif event_type == "done" and event.get("cancelled"):
-                            raise RuntimeError(f"Task {task.task_id} cancelled by operator")
-                    except json.JSONDecodeError:
-                        content_chunks.append(data_str)
-                # Flush log buffer to disk off the hot path (single write)
-                if log_buffer:
-                    await asyncio.to_thread(
-                        events_log.write_text,
-                        "\n".join(log_buffer) + "\n",
-                    )
-    except (httpx.ReadTimeout, httpx.ConnectError) as exc:
-        logger.warning("SSE failed for task {}, falling back to /chat: {}", task.task_id, exc)
-        async with httpx.AsyncClient(timeout=300.0) as client:
-            resp = await client.post(f"http://localhost:{port}/chat", json=request_body)
-            resp.raise_for_status()
-            data = resp.json()
-        resp_val = data.get("response") or ""
-        content_chunks.append(str(resp_val) if not isinstance(resp_val, str) else resp_val)
-
-    content = "\n".join(content_chunks)
-    output_path = session_dir / f"{task.task_id}.response.txt"
-    output_path.write_text(content)
-    task.output_path = output_path
-    return content
-
-
 async def _wait_for_cancel(task: TaskRuntime) -> None:
     """Block until cancel event is set, then kill the task's subprocess."""
     await task._cancel_event.wait()
@@ -281,8 +143,6 @@ async def _wait_for_cancel(task: TaskRuntime) -> None:
             task._proc.kill()
         except ProcessLookupError:
             pass
-    if task._subagent_port:
-        await _cancel_subagent(task._subagent_port, task._subagent_task_id)
 
 
 async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
@@ -294,7 +154,8 @@ async def _execute_task(task: TaskRuntime, session_dir: Path) -> None:
         elif task.runner == "scillm":
             await _run_scillm(task, session_dir)
         elif task.runner == "subagent-service":
-            await _run_subagent(task, session_dir)
+            # Deprecated: fall back to scillm
+            await _run_subagent_via_scillm(task, session_dir)
         elif task.runner == "code-runner":
             # Deterministic run-and-debug loop via /code-runner skill
             await _run_code_runner(task, session_dir)

@@ -126,14 +126,9 @@ route_to_model() {
         pi)
             pi -p "$prompt"
             ;;
-        claude)
-            "$SCRIPT_DIR/../subagent-service/run.sh" claude "$prompt" --timeout 600 --max-turns 50 --stream
-            ;;
-        codex)
-            "$SCRIPT_DIR/../subagent-service/run.sh" codex "$prompt" --timeout 600 --max-turns 50 --stream
-            ;;
-        gemini)
-            "$SCRIPT_DIR/../subagent-service/run.sh" gemini "$prompt" --timeout 600 --max-turns 50 --stream
+        claude|codex|gemini)
+            echo "Warning: subagent-service is deprecated. Falling back to scillm for model '$model'." >&2
+            "$SCRIPT_DIR/../scillm/run.sh" complete --model "$model" "$prompt"
             ;;
         deepseek)
             "$SCRIPT_DIR/../scillm/run.sh" complete --model "deepseek-ai/DeepSeek-V3" "$prompt"
@@ -482,10 +477,10 @@ sys.path.insert(0, os.path.dirname('$SHARED_PLAN_PY'))
 from structured_plan import markdown_to_structured
 
 plan = markdown_to_structured(Path('$task_file'))
-# Default all tasks without a runner to subagent-service
+# Default all tasks without a runner to code-runner
 for task in plan.get('tasks', []):
     if not task.get('runner'):
-        task['runner'] = 'subagent-service'
+        task['runner'] = 'code-runner'
     # If no backend specified, use command-level model or claude
     if not task.get('backend'):
         task['backend'] = '${cmd_model:-claude}'

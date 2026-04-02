@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { NVIS } from '../theme'
-import type { BboxBlock } from '../types'
+import { NVIS } from './theme'
+import type { BboxBlock } from './types'
 import { BLOCK_TYPE_COLORS, BLOCK_TYPE_LABELS } from './BboxWorkspace'
 import type { BlockType } from './BboxWorkspace'
 

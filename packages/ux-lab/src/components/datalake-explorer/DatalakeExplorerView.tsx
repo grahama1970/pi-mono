@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Database, FileText, BarChart3, GitBranch, Shield, Layers, Activity, AlertTriangle } from 'lucide-react'
 import { TraceabilityView } from './TraceabilityView'
-import { lazy, Suspense } from 'react'
-const QuarantineView = lazy(() => import('./views/QuarantineView'))
+import QuarantineView from './views/QuarantineView'
 import { EMBRY, label, card } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 
@@ -622,7 +621,7 @@ export function DatalakeExplorerView() {
           {activeTab === 'traceability' && <TraceabilityView docKey={selectedDocKey} />}
           {activeTab === 'cascade' && <PlaceholderTab name="Cascade" />}
           {activeTab === 'metrics' && <MetricsTab setQuarantineCount={setQuarantineCount} />}
-          {activeTab === 'quarantine' && <Suspense fallback={<PlaceholderTab name="Loading Quarantine..." />}><QuarantineView /></Suspense>}
+          {activeTab === 'quarantine' && <QuarantineView />}
         </div>
       </div>
     </div>

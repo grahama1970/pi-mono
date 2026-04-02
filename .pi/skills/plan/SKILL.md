@@ -71,7 +71,7 @@ a clear input, a clear output, and a verifiable DoD.
 |--------|-------------|---------|
 | `local` | Deterministic shell command, no LLM needed | `docker compose up`, `pytest`, `npm install` |
 | `code-runner` | Bounded code task: write/fix ONE module with verifiable DoD | Fix auth.py bug, create new utility module |
-| `subagent-service` | Open-ended tasks requiring exploration, design, or judgment | Research best approach, review code quality |
+| `code-runner` | Iterative code task with self-improvement loop and DoD verification | Fix auth.py bug, implement feature, refactor |
 | `scillm` | Single LLM call for text generation (no code execution) | Generate docstring, summarize, classify |
 
 **Use code-runner when:**
@@ -85,7 +85,7 @@ a clear input, a clear output, and a verifiable DoD.
 - The task is an integration test exercising 4+ modules — write it as `blind_tests` instead
 - The DoD depends on external APIs/network — use mock DoD + real API in `blind_tests`
 - The task is vague ("make it better") — decompose into specific bounded tasks first
-- The task requires reading/understanding a large codebase — use `subagent-service` with iterative mode
+- The task requires reading/understanding a large codebase — add key files to `read_context`
 
 **code-runner fields the project agent must provide:**
 - `allowlist` — files the LLM can write (scope boundary)
@@ -155,7 +155,7 @@ Auto-detected from goal text. All types use the same YAML schema.
 
 | Type | Detected When | Pattern |
 |------|---------------|---------|
-| **code** | No UI keywords | `local` for setup, `subagent-service` for implementation |
+| **code** | No UI keywords | `local` for setup, `code-runner` for implementation |
 | **design** | views, components, TSX, dashboard, UI, React | `/mockup-lab` (Stitch) → `/ux-lab` (code) → `/mockup-lab review` (VLM verify) → `/test-interactions` |
 | **hybrid** | Both UI and code keywords | Stitch pipeline for UI views, code tasks in later waves |
 
@@ -230,10 +230,9 @@ tasks:
   - id: "2"
     title: "Create cache utility module"
     lane: "1"
-    runner: "subagent-service"  # agent loop
-    backend: "sonnet"           # which LLM
+    runner: "code-runner"       # self-improvement loop
+    backend: "codex"            # which LLM
     mode: "iterative"           # iterative/one_shot/review
-    agent: "general-purpose"
     depends_on: ["1"]
     implementation:
       - "Create src/cache.py with get/set/invalidate"
@@ -254,7 +253,7 @@ tasks:
 |--------|---------|-----------------|
 | `local` | Shell commands (setup, tests, sanity scripts) | `command` |
 | `scillm` | One-shot LLM inference (classification, extraction) | `backend`, `mode: one_shot` |
-| `subagent-service` | Agent loops (coding, review, design) | `backend`, `mode`, `implementation` or `prompt` |
+| `code-runner` | Iterative code tasks with DoD verification | `backend`, `mode`, `implementation`, `allowlist` |
 
 ### Backend (which LLM model)
 
@@ -343,7 +342,7 @@ For design plans, the execution pipeline inside `/orchestrate` is:
 tasks:
   - id: "1"
     title: "Implement PDF extraction"
-    runner: "subagent-service"
+    runner: "code-runner"
     # A /extractor skill already does this!
 ```
 

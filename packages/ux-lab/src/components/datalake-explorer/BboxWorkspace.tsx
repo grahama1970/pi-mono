@@ -1,8 +1,8 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { NVIS } from '../theme'
+import { NVIS } from './theme'
 import type {
   BboxBlock,
-} from '../types'
+} from './types'
 import BboxEditor from './BboxEditor'
 import RequirementsBlock from './RequirementsBlock'
 import PdfCanvas from './PdfCanvas'

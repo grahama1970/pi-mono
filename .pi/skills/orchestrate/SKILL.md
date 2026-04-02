@@ -158,8 +158,8 @@ tasks:
   - id: "1"
     title: "Task description"
     lane: "0"
-    runner: "subagent-service"  # or "local" or "scillm"
-    backend: "sonnet"
+    runner: "code-runner"  # or "local" or "scillm"
+    backend: "codex"
     mode: "iterative"
     depends_on: []
     implementation:
@@ -188,17 +188,13 @@ tasks:
 - **Review-plan**: Auto-runs `/review-plan check` on structured YAML plans (advisory)
 - **Per-task**: `quality-gate.sh` runs after each task (tests, lint, etc.)
 
-## Architecture Note: D-Bus vs subagent-service
+## Architecture Note: Task Runners
 
-Task execution uses **subagent-service** (Docker containers), NOT D-Bus workers.
-
-| Dispatch | Skills Available | Use Case |
-|----------|-----------------|----------|
-| `subagent-service` | Yes (225+ mounted) | Task execution (current) |
-| D-Bus workers | No (`--no-skills` flag) | Low-latency RPC (Ping, GetState) |
-
-If orchestrate ever routes through D-Bus, tasks would lose skill context. This is
-intentional for D-Bus (latency) but means D-Bus is NOT suitable for task execution.
+| Runner | Backend | Use Case |
+|--------|---------|----------|
+| `code-runner` | /scillm | Iterative code tasks with DoD verification (default) |
+| `scillm` | /scillm | One-shot LLM inference (classification, extraction) |
+| `local` | shell | Deterministic commands (setup, tests, scripts) |
 
 ## Path Resolution
 
@@ -206,4 +202,4 @@ All sibling skill references use `SKILLS_DIR` env var with fallback to `$SCRIPT_
 - `SKILLS_DIR` — override for non-standard skill locations
 - `_shared/structured_plan.py` — YAML loader/validator
 - `review-plan/review_plan.py` — domain validation
-- `subagent-service/run.sh` — Docker container lifecycle
+- `code-runner/run.sh` — self-improvement loop executor

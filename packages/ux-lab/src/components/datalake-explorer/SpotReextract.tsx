@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { NVIS } from '../theme'
-import type { PipelineStep, ReextractResult } from '../types'
+import { NVIS } from './theme'
+import type { PipelineStep, ReextractResult } from './types'
 
 // ---------------------------------------------------------------------------
 // Constants

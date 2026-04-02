@@ -66,7 +66,7 @@ class Task:
     """A single task in the structured plan.
 
     Matches the schema that structured_execute.py consumes:
-    - runner: how the task runs (local, code-runner, scillm)
+    - runner: how the task runs (local, code-runner, scillm). subagent-service is deprecated.
     - backend: which LLM model (sonnet, opus, codex, gemini)
     - mode: execution style (iterative, one_shot, review)
     - lane: parallel group (tasks in same lane run sequentially)
@@ -141,7 +141,7 @@ class PlanFile:
     """A complete orchestration plan that outputs YAML.
 
     Supports three plan types:
-    - code: standard task decomposition (local + subagent-service)
+    - code: standard task decomposition (local + code-runner)
     - design: UI pipeline (/ux-lab → /review-design → /test-interactions → write)
     - hybrid: both code and design tasks
     """
@@ -434,7 +434,7 @@ def visualize_dag(filepath: Path) -> None:
             lane = t.get("lane") or ""
             deps = t.get("dependencies") or []
             title_str = t.get("title") or ""
-            icon = {"local": "sh", "scillm": "llm", "subagent-service": "agent", "code-runner": "cr"}.get(runner, "?")
+            icon = {"local": "sh", "scillm": "llm", "code-runner": "cr"}.get(runner, "?")
             dep_str = f" ← [{', '.join(deps)}]" if deps else ""
             model_str = f" ({backend})" if backend else ""
             lane_str = f" L{lane}" if lane else ""
@@ -518,7 +518,7 @@ def visualize_mermaid(filepath: Path) -> None:
     # Apply classes
     for t in tasks:
         runner = t.get("runner") or ""
-        cls = {"local": "sh", "scillm": "llm", "subagent-service": "agent", "code-runner": "cr"}.get(runner)
+        cls = {"local": "sh", "scillm": "llm", "code-runner": "cr"}.get(runner)
         if cls:
             node_id = f"T{t['id'].replace('.', '_')}"
             lines.append(f"    class {node_id} {cls}")
@@ -651,7 +651,7 @@ def main(
             id=fields.get("id", ""),
             title=fields.get("title", "Untitled"),
             lane=fields.get("lane", "0"),
-            runner=fields.get("runner", "subagent-service"),
+            runner=fields.get("runner", "code-runner"),
             backend=fields.get("backend", "sonnet"),
             mode=fields.get("mode", "iterative"),
             agent=fields.get("agent", "general-purpose"),
@@ -767,8 +767,8 @@ def main(
                     id="2",
                     title="<Implementation task>",
                     lane="1",
-                    runner="subagent-service",
-                    backend="sonnet",
+                    runner="code-runner",
+                    backend="codex",
                     mode="iterative",
                     depends_on=["1"],
                     implementation=["Step 1", "Step 2"],
@@ -795,7 +795,7 @@ def main(
     print(f"\nRunner types:")
     print(f"  local           — deterministic shell commands (setup, tests)")
     print(f"  scillm          — one-shot LLM inference (classification, extraction)")
-    print(f"  subagent-service — agent loops (coding, review, design)")
+    print(f"  code-runner      — agent loops (coding, review, design)")
     print(f"\nBackend models:")
     print(f"  sonnet  — boilerplate, scaffolding, monitoring (low cost)")
     print(f"  opus    — architecture, novel design, cross-skill composition (high cost)")

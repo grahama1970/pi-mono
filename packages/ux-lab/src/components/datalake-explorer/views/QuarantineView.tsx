@@ -140,20 +140,17 @@ function toBboxBlocks(blocks: QuarantineBlock[]): BboxBlock[] {
 
 function parseHash(): { doc?: string; section?: string } {
   const hash = window.location.hash
-  if (!hash.startsWith('#quarantine')) return {}
-  const params = new URLSearchParams(hash.replace('#quarantine', '').replace('?', ''))
+  // Support both #datalake-explorer?tab=quarantine&doc=X and legacy #quarantine?doc=X
+  const params = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '')
   return {
     doc: params.get('doc') ?? undefined,
     section: params.get('section') ?? undefined,
   }
 }
 
-function setHash(doc?: string, section?: string) {
-  const parts: string[] = []
-  if (doc) parts.push(`doc=${encodeURIComponent(doc)}`)
-  if (section) parts.push(`section=${encodeURIComponent(section)}`)
-  // Always preserve 'quarantine' in hash so the App tab stays on Quarantine
-  window.location.hash = parts.length > 0 ? `quarantine?${parts.join('&')}` : 'quarantine'
+function setHash(_doc?: string, _section?: string) {
+  // No-op: hash is owned by App shell (datalake-explorer project routing).
+  // Tab state is managed by React state in DatalakeExplorerView.
 }
 
 // ---------------------------------------------------------------------------

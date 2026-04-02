@@ -17,7 +17,7 @@ composes:
   - test-interactions
   - best-practices-react
   - memory
-  - subagent-service
+  - scillm
 allowed-tools: Bash, Read, Edit, Write, Glob, Grep
 metadata:
   short-description: React component workbench with Vite HMR for SPARTA Explorer
