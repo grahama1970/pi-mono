@@ -1,0 +1,413 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "Shared Chat Convergence V2: All UX Lab Projects on shared-chat"
+  goal: "Converge SPARTA Explorer, Datalake Explorer, Binary Explorer, and ChatFab onto the shared-chat component library. Embry Terminal is the reference. All projects must pass /best-practices-cots scanner."
+  plan_type: code
+  created: "2026-04-02"
+  primary_persona:
+    name: "Brandon Bailey"
+    role: "CMMC Lead Assessor"
+    source: ".pi/agents/brandon-bailey/AGENTS.md"
+
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+execution:
+  max_concurrency: 3
+
+capability_overlap:
+  - "/memory recall: Prior shared-chat convergence session (0N_SHARED_CHAT_CONVERGENCE.yaml) moved 5 components in Waves 0-1. This is V2 completing the job."
+  - "EXISTING: shared-chat/ has 12 components — EXTEND with moved SPARTA components + new useCascadePipeline hook"
+  - "EXISTING: Embry Terminal fully uses shared-chat — REFERENCE implementation, no changes needed"
+  - "EXISTING: /best-practices-cots scanner — CALL for compliance verification per project"
+  - "EXISTING: SPARTA RecallCard, GateChain, ThreatMatrixCard — MOVE into shared-chat (currently re-exported, need actual move)"
+  - "CREATE: useCascadePipeline hook (recall → intent → LLM pattern used by 3+ projects)"
+  - "CREATE: Binary Explorer chat panel (new, using shared-chat from day 1)"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Unify types + move SPARTA components into shared-chat"
+  - id: "1"
+    label: "Wave 1: Migrate SPARTA Explorer ChatWell"
+  - id: "2"
+    label: "Wave 2: Migrate Datalake + ChatFab + Binary Explorer"
+  - id: "3"
+    label: "Wave 3: COTS compliance scan all projects"
+
+tasks:
+  # ═══════════════════════════════════════════════════════════════════════
+  # WAVE 0: Unify types + move components into shared-chat
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - id: "1"
+    title: "Unify ChatMessage type in shared-chat/types.ts"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — type unification, read 3 local ChatMessage definitions and merge"
+    depends_on: []
+    implementation:
+      - "Read shared-chat/types.ts — current ChatMessage type"
+      - "Read sparta/query/ChatWell.tsx — local ChatMessage with extra fields: type, alertType, _querySpec, clarifyOptions, resultCount, skillUsed, matrixSummary, evidenceCase"
+      - "Read ChatFab.tsx — local ChatMessage with cascade fields"
+      - "Read datalake-explorer/ChatFAB.tsx — local message type: { id, role, text, timestamp }"
+      - "Merge ALL fields into shared-chat/types.ts ChatMessage — use optional fields for project-specific ones"
+      - "Add missing fields: _querySpec?: Record<string,unknown>, clarifyOptions?: string[], evidenceCase?: unknown, alertType?: string, resultCount?: number"
+      - "Remove duplicate CascadeLayer and EntityRef definitions from ChatWell.tsx (already in shared-chat/types.ts)"
+      - "Export unified ChatMessage from shared-chat/index.ts"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "TypeScript compiles with unified ChatMessage type"
+
+  - id: "2"
+    title: "Move RecallCard from sparta/query/ to shared-chat/ (actual move, not re-export)"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — file move + import updates"
+    depends_on: []
+    implementation:
+      - "Read packages/ux-lab/src/components/sparta/query/RecallCard.tsx (full file)"
+      - "Move file to packages/ux-lab/src/components/shared-chat/RecallCard.tsx"
+      - "Update all EMBRY style references to use shared NVIS tokens (or import EMBRY from common/EmbryStyle)"
+      - "Apply COTS font fixes: all fontSize values must be >= 12px"
+      - "Add title attribute to the main RecallCard button (COTS C14 compliance)"
+      - "Set minHeight: 44 on the button (COTS C02 compliance)"
+      - "Update shared-chat/index.ts — change re-export to direct export"
+      - "Update all imports across ux-lab: ChatWell.tsx, ChatTab.tsx, ChatFab.tsx, EmbryTerminalView.tsx"
+      - "Leave a re-export stub at old location: export { RecallCard } from '../../shared-chat'"
+      - "Verify: grep -r 'RecallCard' packages/ux-lab/src/ — all imports resolve"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "TypeScript compiles, RecallCard lives in shared-chat/"
+
+  - id: "3"
+    title: "Move GateChain from sparta/query/ to shared-chat/"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — file move + import updates"
+    depends_on: []
+    implementation:
+      - "Read packages/ux-lab/src/components/sparta/query/GateChain.tsx (full file)"
+      - "Move to packages/ux-lab/src/components/shared-chat/GateChain.tsx"
+      - "Apply COTS font fixes (fontSize >= 12px, touch targets >= 44px, tooltips)"
+      - "Update shared-chat/index.ts"
+      - "Update all imports: ChatWell.tsx, EmbryTerminalView.tsx, etc."
+      - "Leave re-export stub at old location"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "TypeScript compiles, GateChain lives in shared-chat/"
+
+  - id: "4"
+    title: "Move ThreatMatrixCard from sparta/query/ to shared-chat/"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — file move + import updates"
+    depends_on: []
+    implementation:
+      - "Read packages/ux-lab/src/components/sparta/query/ThreatMatrixCard.tsx (full file)"
+      - "Move to packages/ux-lab/src/components/shared-chat/ThreatMatrixCard.tsx"
+      - "Apply COTS compliance fixes"
+      - "Update shared-chat/index.ts"
+      - "Update all imports"
+      - "Leave re-export stub"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "TypeScript compiles, ThreatMatrixCard lives in shared-chat/"
+
+  - id: "5"
+    title: "Create ToolAction component in shared-chat/"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — extract from ChatWell local code"
+    depends_on: []
+    implementation:
+      - "Read ChatWell.tsx — find the ToolAction component (small muted line showing 'Ran /skill-name')"
+      - "Extract to shared-chat/ToolAction.tsx as a shared component"
+      - "Apply COTS: fontSize >= 12px, minHeight >= 44px, title tooltip"
+      - "Export from shared-chat/index.ts"
+      - "Already used by EmbryTerminalView — update its import"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "ToolAction is a shared component"
+
+  - id: "6"
+    title: "Create useCascadePipeline hook in shared-chat/"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — extract pattern from ChatFab.tsx and ChatWell.tsx"
+    depends_on: ["1"]
+    implementation:
+      - "Read ChatFab.tsx — find the cascade pipeline: /memory recall → intent detection → /scillm LLM call"
+      - "Read sparta/explorer/ChatTab.tsx — find its cascade pipeline (similar pattern)"
+      - "Read embry-terminal server pty-server.ts — its recall → context → scillm pattern"
+      - "Create shared-chat/useCascadePipeline.ts with:"
+      - "  useCascadePipeline(config: { backendUrl, authHeaders, project?, scope? }) hook"
+      - "  Returns: { send(message, options?): Promise<CascadeResult>, isLoading, error }"
+      - "  CascadeResult: { recallResult?, intentResult?, llmContent, grounded, usage? }"
+      - "  Pipeline: recall(query) → detectIntent(message) → llm(message, context) → return"
+      - "  Each step fires onStepComplete callback for ReasoningChain integration"
+      - "Export from shared-chat/index.ts"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "useCascadePipeline hook compiles and exports"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # WAVE 1: Migrate SPARTA Explorer ChatWell to shared-chat imports
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - id: "7"
+    title: "Rewrite SPARTA ChatWell.tsx to import ALL components from shared-chat"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — rewrite imports, remove local duplicates"
+    depends_on: ["1", "2", "3", "4", "5", "6"]
+    implementation:
+      - "Read ChatWell.tsx (full file, ~407 lines)"
+      - "Replace ALL local imports with shared-chat imports:"
+      - "  import { ChatMessage, RecallResult, ReasoningStep, Artifact, Skill, EntityType, CascadeLayer } from '../shared-chat/types'"
+      - "  import { MarkdownRenderer, SkillPalette, RecallCard, GateChain, ThreatMatrixCard, ToolAction, highlightEntities } from '../shared-chat'"
+      - "Remove local type definitions: ChatMessage, CascadeLayer, EntityRef (now in shared-chat)"
+      - "Remove local ToolAction component (now in shared-chat)"
+      - "Keep ChatWell-specific logic: message list state, textarea handling, skill palette state"
+      - "Wire useCascadePipeline hook for the send flow (replace inline fetch logic)"
+      - "Apply COTS fixes: font sizes, touch targets, tooltips on all interactive elements"
+      - "Target: ChatWell.tsx should be ~250 lines (from 407) — pure composition of shared components"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "ChatWell imports everything from shared-chat, no local duplicates"
+
+  - id: "8"
+    title: "Update ChatTab.tsx to use shared-chat types"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — update type imports"
+    depends_on: ["7"]
+    implementation:
+      - "Read ChatTab.tsx — find all type imports from ChatWell"
+      - "Replace with imports from shared-chat: ChatMessage, CascadeLayer, EntityRef"
+      - "Keep ChatTab's domain-specific logic (SPARTA_TACTICS, DATALAKES, evidence case pipeline)"
+      - "No structural changes — just import path updates"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "ChatTab uses shared-chat types"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # WAVE 2: Migrate Datalake + ChatFab + Binary Explorer
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - id: "9"
+    title: "Rewrite Datalake ChatFAB with shared-chat components"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — rewrite full reimplementation to use shared components"
+    depends_on: ["6", "7"]
+    implementation:
+      - "Read datalake-explorer/ChatFAB.tsx (full file — complete reimplementation)"
+      - "Rewrite to use shared-chat components:"
+      - "  import { ChatMessage, Skill } from '../shared-chat/types'"
+      - "  import { MarkdownRenderer, SkillPalette, highlightEntities, RecallCard, useCascadePipeline } from '../shared-chat'"
+      - "Replace local message rendering with MarkdownRenderer"
+      - "Replace local textarea with shared input pattern (with skill palette)"
+      - "Replace local fetch logic with useCascadePipeline hook"
+      - "Keep: FAB toggle state, datalake-specific scope (collections filter)"
+      - "Apply COTS: font >= 12px, touch >= 44px, tooltips, contrast"
+      - "Target: ChatFAB.tsx should be ~150 lines (composition of shared components)"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "Datalake ChatFAB uses shared-chat, no local rendering code"
+
+  - id: "10"
+    title: "Migrate global ChatFab.tsx to shared-chat"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — update imports and cascade pipeline"
+    depends_on: ["6", "7"]
+    implementation:
+      - "Read ChatFab.tsx (full file)"
+      - "Replace local ChatMessage/CascadeLayer/EntityRef types with shared-chat imports"
+      - "Replace inline cascade pipeline (recall → intent → LLM) with useCascadePipeline hook"
+      - "Replace local skill fetching with shared pattern"
+      - "Keep: FAB UI (floating dialog), scope routing (sparta/f36/both)"
+      - "Apply COTS fixes"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "ChatFab uses shared-chat types and useCascadePipeline"
+
+  - id: "11"
+    title: "Create Binary Explorer chat panel using shared-chat"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    agent: "general-purpose"
+    executor: "Project agent — new component built entirely from shared-chat"
+    depends_on: ["6", "7"]
+    implementation:
+      - "Read EmbryTerminalView.tsx as reference for shared-chat usage pattern"
+      - "Read binary-explorer/ to understand existing layout (right pane = journal/chat area)"
+      - "Create binary-explorer/ChatPanel.tsx using ONLY shared-chat components:"
+      - "  import { ChatMessage, Skill, RecallResult } from '../shared-chat/types'"
+      - "  import { MarkdownRenderer, SkillPalette, RecallCard, InlineArtifact, highlightEntities, useCascadePipeline } from '../shared-chat'"
+      - "Chat panel replaces the existing journal panel in the right pane"
+      - "Scope: binary analysis — /analyze-elf, /extract, CWE entities, decompiler output"
+      - "Support InlineArtifact for showing decompiler output, graphs, tables inline"
+      - "Apply COTS from day 1: all font >= 12px, touch >= 44px, tooltips, contrast"
+      - "Wire into BinaryExplorerView.tsx as a tab or panel option"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c 'error' || echo 0"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit -p tsconfig.json 2>&1 | tail -1"
+      assertion: "Binary Explorer has chat panel using shared-chat"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # WAVE 3: COTS compliance scan + visual verification
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - id: "12"
+    title: "Run COTS scanner on SPARTA Explorer chat"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: "one_shot"
+    executor: "Project agent — run scanner, fix violations"
+    depends_on: ["8"]
+    command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#sparta-explorer' --scope 'chat:,skill:,entity:,recall'"
+    tests:
+      - ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#sparta-explorer' --scope 'chat:,skill:,entity:,recall' 2>&1 | grep COMPLIANT"
+    definition_of_done:
+      command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#sparta-explorer' --scope 'chat:,skill:,entity:,recall'"
+      assertion: "Exit code 0 — COMPLIANT"
+
+  - id: "13"
+    title: "Run COTS scanner on Datalake Explorer chat"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: "one_shot"
+    executor: "Project agent — run scanner, fix violations"
+    depends_on: ["9"]
+    command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#datalake-explorer' --scope 'chat:,skill:,entity:,recall'"
+    tests:
+      - ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#datalake-explorer' --scope 'chat:,skill:,entity:,recall' 2>&1 | grep COMPLIANT"
+    definition_of_done:
+      command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#datalake-explorer' --scope 'chat:,skill:,entity:,recall'"
+      assertion: "Exit code 0 — COMPLIANT"
+
+  - id: "14"
+    title: "Run COTS scanner on Binary Explorer chat"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: "one_shot"
+    executor: "Project agent — run scanner, fix violations"
+    depends_on: ["11"]
+    command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#binary-explorer' --scope 'chat:,skill:,entity:,recall'"
+    tests:
+      - ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#binary-explorer' --scope 'chat:,skill:,entity:,recall' 2>&1 | grep COMPLIANT"
+    definition_of_done:
+      command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#binary-explorer' --scope 'chat:,skill:,entity:,recall'"
+      assertion: "Exit code 0 — COMPLIANT"
+
+  - id: "15"
+    title: "Run COTS scanner on Embry Terminal (regression check)"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: "one_shot"
+    executor: "Project agent — verify no regressions"
+    depends_on: ["7"]
+    command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#embry-terminal' --scope 'reasoning,chat:,topbar:,input:,sidebar:,skill:,entity:,step-'"
+    tests:
+      - ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#embry-terminal' --scope 'reasoning,chat:,topbar:,input:,sidebar:,skill:,entity:,step-' 2>&1 | grep COMPLIANT"
+    definition_of_done:
+      command: ".pi/skills/best-practices-cots/run.sh scan 'http://localhost:3002/#embry-terminal' --scope 'reasoning,chat:,topbar:,input:,sidebar:,skill:,entity:,step-'"
+      assertion: "Exit code 0 — COMPLIANT (no regressions)"
+
+  - id: "16"
+    title: "Verify shared-chat component count and exports"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: "one_shot"
+    executor: "Project agent — verify barrel exports"
+    depends_on: ["7", "9", "10", "11"]
+    command: "grep -c 'export' packages/ux-lab/src/components/shared-chat/index.ts"
+    tests:
+      - "test $(grep -c 'export' packages/ux-lab/src/components/shared-chat/index.ts) -ge 20"
+    definition_of_done:
+      command: "grep -c 'export' packages/ux-lab/src/components/shared-chat/index.ts"
+      assertion: ">= 20 exports (components + types + hooks)"
+
+test_manifest:
+  - tab: "SPARTA Explorer Chat"
+    collection: sparta_controls
+    min_rows: 10
+    interactions: ["send_message", "skill_palette", "recall_card_expand", "entity_click"]
+    visual: "Chat uses shared-chat MarkdownRenderer, RecallCard, GateChain, SkillPalette. No local duplicates."
+  - tab: "Datalake Explorer Chat"
+    collection: lessons
+    min_rows: 5
+    interactions: ["send_message", "skill_palette", "recall_display"]
+    visual: "Chat FAB uses shared-chat components. No full reimplementation."
+  - tab: "Binary Explorer Chat"
+    collection: null
+    min_rows: 0
+    interactions: ["send_message", "inline_artifact", "entity_click_cwe"]
+    visual: "Chat panel renders inline artifacts (decompiler output), CWE entity chips."
+  - tab: "Embry Terminal"
+    collection: null
+    min_rows: 0
+    interactions: ["verify_no_regression"]
+    visual: "Still COTS compliant after shared-chat changes."
