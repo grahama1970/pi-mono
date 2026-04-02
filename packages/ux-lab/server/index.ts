@@ -556,6 +556,70 @@ app.get('/api/datalake/metrics/:scope', async (req, res) => {
   } catch (e) { res.status(502).json({ error: 'Metrics query failed', detail: String(e) }) }
 })
 
+// ── Quarantine CRUD ────────────────────────────────────────────────────────
+
+app.get('/api/quarantine', async (req, res) => {
+  try {
+    const payload: any = { collection: 'quarantine_entries', k: 100, return_fields: ['_key','filename','reason','status','score','created_at','source_doc_key','issue_code'] }
+    const { reason, status } = req.query
+    if (reason || status) payload.filters = { ...(reason && { reason }), ...(status && { status }) }
+    const r = await proxyPost('/list', payload) as any
+    res.json(r?.documents ?? [])
+  } catch (e) { res.status(502).json({ error: 'Quarantine list failed', detail: String(e) }) }
+})
+
+app.get('/api/quarantine/:id', async (req, res) => {
+  try {
+    const r = await proxyPost('/recall/by-keys', { collection: 'quarantine_entries', keys: [req.params.id] }) as any
+    const doc = r?.documents?.[0]
+    if (!doc) return res.status(404).json({ error: 'Not found' })
+    res.json(doc)
+  } catch (e) { res.status(502).json({ error: 'Quarantine lookup failed', detail: String(e) }) }
+})
+
+app.post('/api/quarantine/:id/action', async (req, res) => {
+  try {
+    await proxyPost('/upsert', { collection: 'quarantine_entries', documents: [{ _key: req.params.id, status: req.body.action, resolved_at: new Date().toISOString(), strategy: req.body.strategy }] })
+    res.json({ status: 'ok', action: req.body.action })
+  } catch (e) { res.status(502).json({ error: 'Quarantine action failed', detail: String(e) }) }
+})
+
+app.post('/api/quarantine/from-metrics', async (req, res) => {
+  try {
+    const { issues, source } = req.body
+    for (const issue of issues) {
+      await proxyPost('/upsert', { collection: 'quarantine_entries', documents: [{ _key: `q_${issue.entity_id}`, filename: issue.entity_id, reason: issue.code.includes('embedding') ? 'low-confidence' : 'extraction-error', status: 'pending', score: 0, created_at: new Date().toISOString(), source, issue_code: issue.code, message: issue.message }] })
+    }
+    res.json({ created: issues.length })
+  } catch (e) { res.status(502).json({ error: 'Quarantine creation failed', detail: String(e) }) }
+})
+
+app.post('/api/quarantine/:id/bbox-save', async (req, res) => {
+  try {
+    const { blocks, doc_key } = req.body as { blocks: Array<{id: string, blockType: string, label?: string, bbox: {x: number, y: number, w: number, h: number}}>, doc_key: string }
+    for (const b of blocks) {
+      await proxyPost('/upsert', { collection: 'sections', documents: [{ _key: b.id, block_type: b.blockType, title: b.label || '', bbox: b.bbox }] })
+    }
+    await proxyPost('/upsert', { collection: 'quarantine_entries', documents: [{ _key: req.params.id, status: 'bbox-edited', edited_at: new Date().toISOString() }] })
+    res.json({ saved: blocks.length, quarantine_updated: true })
+  } catch (e: any) { res.status(500).json({ error: e.message, saved: 0 }) }
+})
+
+app.post('/api/quarantine/:id/reextract', async (req, res) => {
+  try {
+    const { pdf_path, overrides } = req.body as { pdf_path: string; overrides?: Record<string, number> }
+    if (!pdf_path || !pdf_path.startsWith('/mnt/storage12tb/')) return res.status(400).json({ error: 'pdf_path must start with /mnt/storage12tb/' })
+    const sanitizedPath = pdf_path.replace(/'/g, "\\'")
+    const overrideArgs = overrides ? Object.entries(overrides).filter(([, v]) => v != null).map(([k, v]) => `${k}=${v}`).join(', ') : ''
+    const script = `import pdf_oxide, json; doc=pdf_oxide.PdfDocument('${sanitizedPath}'); r=doc.extract_document(${overrideArgs}); print(json.dumps({'profile': r.get('profile',{}), 'pages': len(r.get('pages',[])), 'sections': len(r.get('sections',[])), 'figures': len(r.get('figures',[]))}, default=str))`
+    const { execSync } = await import('child_process')
+    const result = execSync(`/home/graham/workspace/experiments/pdf_oxide/.venv/bin/python3 -c "${script}"`, { timeout: 30000 })
+    res.json({ id: req.params.id, status: 'complete', extraction: JSON.parse(result.toString()) })
+  } catch (e: any) {
+    res.status(500).json({ id: req.params.id, error: String(e.stderr || e.message).slice(0, 1000), status: 'failed' })
+  }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
@@ -3233,11 +3297,23 @@ app.post('/api/evidence-case/run', async (req, res) => {
       console.warn('[evidence-case/run] Skill exited non-zero but has stdout, attempting JSON parse')
     }
 
-    // Parse JSON from stdout (may have log lines before the JSON)
-    const jsonStart = stdout.indexOf('{')
-    const jsonEnd = stdout.lastIndexOf('}')
-    if (jsonStart >= 0 && jsonEnd > jsonStart) {
-      const parsed = JSON.parse(stdout.substring(jsonStart, jsonEnd + 1))
+    // Parse JSON from stdout — find the outermost JSON object by trying from each { position
+    let parsed: any = null
+    const lines = stdout.split('\n')
+    // Try to find a line that starts with { and parse from there to the end
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim().startsWith('{')) {
+        const candidate = lines.slice(i).join('\n')
+        const lastBrace = candidate.lastIndexOf('}')
+        if (lastBrace > 0) {
+          try {
+            parsed = JSON.parse(candidate.substring(0, lastBrace + 1))
+            break
+          } catch { /* try next line */ }
+        }
+      }
+    }
+    if (parsed) {
       res.json(parsed)
     } else {
       res.json({ verdict: { state: 'error', grade: '?', score: 0 }, gate_trace: [], raw: stdout.substring(0, 500) })

@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { NVIS } from '../theme.ts'
-import { loadQuarantine } from '../loader.ts'
-import { recallDocuments } from '../api/client.ts'
+// quarantine data now fetched from /api/quarantine proxy
 import type {
   QuarantineEntry,
   QuarantineDetail,
@@ -18,12 +17,9 @@ import SpotReextract from '../components/SpotReextract.tsx'
 // Constants
 // ---------------------------------------------------------------------------
 
-const API_BASE =
-  (import.meta.env.VITE_API_URL as string | undefined) || 'http://localhost:8004'
-
 type ReasonFilter = 'all' | 'low-confidence' | 'extraction-error' | 'novel-layout' | 'timeout'
 type SortMode = 'newest' | 'oldest' | 'worst-score'
-type ActionType = 'approve' | 'reject' | 're-extract' | 'interview'
+type ActionType = 'approve' | 'reject' | 're-extract' | 'interview' | 'convergence'
 const REASON_COLORS: Record<QuarantineEntry['reason'], { border: string; text: string }> = {
   'low-confidence': { border: '#b45309', text: '#b45309' },
   'extraction-error': { border: '#dc2626', text: '#dc2626' },
@@ -312,40 +308,30 @@ export default function QuarantineView() {
   const fetchEntries = useCallback(async () => {
     setLoading(true)
     setError(null)
-    // Load initial data from loader (real sample data)
-    const filter = reasonFilter === 'all' ? undefined : { reason: reasonFilter }
-    const data = await loadQuarantine(filter)
-    setEntries(data)
-    setLoading(false)
-    // Try embry-memory to replace with live data
     try {
-      const memoryResult = await recallDocuments('quarantine', 'quarantine')
-      if (memoryResult.results && memoryResult.results.length > 0) {
-        const mapped: QuarantineEntry[] = memoryResult.results.map((r) => {
-          const meta = r.metadata as Record<string, unknown>
-          return {
-            id: r.key,
-            filename: (meta.filename as string) ?? r.key,
-            path: (meta.path as string) ?? '',
-            category: (meta.category as string) ?? 'unknown',
-            reason: ((meta.reason as string) ?? 'low-confidence') as QuarantineEntry['reason'],
-            timestamp: (meta.timestamp as string) ?? new Date().toISOString(),
-            pages: (meta.pages as number) ?? undefined,
-            extraction_time_ms: (meta.extraction_time_ms as number) ?? undefined,
-            fail_rate: (meta.fail_rate as number) ?? undefined,
-            cascade_tier: (meta.cascade_tier as number) ?? undefined,
-            scores: (meta.scores as Record<string, number>) ?? undefined,
-            error: (meta.error as string) ?? undefined,
-          }
-        })
-        const reasonFilter_ = reasonFilter === 'all' ? undefined : reasonFilter
-        const filtered = reasonFilter_ ? mapped.filter((e) => e.reason === reasonFilter_) : mapped
-        if (filtered.length > 0) {
-          setEntries(filtered)
-        }
-      }
+      const status = reasonFilter === 'all' ? 'pending' : reasonFilter
+      const res = await fetch(`/api/quarantine?status=${status}`)
+      const data = await res.json()
+      const mapped: QuarantineEntry[] = ((data.documents || []) as any[]).map((d: any) => ({
+        id: d._key,
+        filename: d.filename || d._key,
+        path: d.path ?? '',
+        category: d.category ?? 'unknown',
+        reason: (d.reason || 'extraction-error') as QuarantineEntry['reason'],
+        timestamp: d.created_at || d.timestamp || '',
+        pages: d.pages,
+        extraction_time_ms: d.extraction_time_ms,
+        fail_rate: d.fail_rate,
+        cascade_tier: d.cascade_tier,
+        scores: d.scores,
+        error: d.error,
+        ...d,
+      }))
+      setEntries(mapped)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Memory service unreachable')
+      setError(e instanceof Error ? e.message : 'Quarantine API unreachable')
+    } finally {
+      setLoading(false)
     }
   }, [reasonFilter])
 
@@ -364,7 +350,7 @@ export default function QuarantineView() {
     }
     let cancelled = false
     setDetailLoading(true)
-    fetch(`${API_BASE}/api/quarantine/${encodeURIComponent(selectedId)}/detail`)
+    fetch(`/api/quarantine/${encodeURIComponent(selectedId)}`)
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null)
       .then((data: QuarantineDetail | null) => {
@@ -582,7 +568,7 @@ export default function QuarantineView() {
     try {
       const body: Record<string, string> = { action }
       if (action === 're-extract') body.strategy = reExtractStrategy
-      await fetch(`${API_BASE}/api/quarantine/${encodeURIComponent(id)}/action`, {
+      await fetch(`/api/quarantine/${encodeURIComponent(id)}/action`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -601,7 +587,7 @@ export default function QuarantineView() {
     for (const id of ids) {
       setEntries((prev) => prev.filter((e) => e.id !== id))
       try {
-        await fetch(`${API_BASE}/api/quarantine/${encodeURIComponent(id)}/action`, {
+        await fetch(`/api/quarantine/${encodeURIComponent(id)}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'approve' }),
@@ -1550,6 +1536,8 @@ export default function QuarantineView() {
               {/* SpotReextract dialog */}
               {showSpotReextract && (
                 <SpotReextract
+                  entryId={selectedId ?? ''}
+                  pdfPath={detail?.pdf_path ?? ''}
                   section={selectedSection ?? undefined}
                   sectionId={selectedSection?.section_number ?? undefined}
                   blockCount={sectionBlocks.length}
@@ -1674,6 +1662,14 @@ export default function QuarantineView() {
                   color="#b45309"
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 'interview')}
+                />
+
+                <ActionButton
+                  label="Converge"
+                  aria-label={`Run convergence loop on ${selected.filename}`}
+                  color={NVIS.blue}
+                  disabled={actionInFlight !== null}
+                  onClick={() => handleAction(selected.id, 'convergence')}
                 />
 
                 {/* Spacer + section scope indicator */}

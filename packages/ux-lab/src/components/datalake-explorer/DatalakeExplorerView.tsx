@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Database, FileText, BarChart3, GitBranch, Shield, Layers, Activity } from 'lucide-react'
+import { Database, FileText, BarChart3, GitBranch, Shield, Layers, Activity, AlertTriangle } from 'lucide-react'
 import { TraceabilityView } from './TraceabilityView'
 import { EMBRY, label, card } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
@@ -26,7 +26,7 @@ interface DatalakeDoc {
   tags?: string[]
 }
 
-type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade' | 'metrics'
+type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade' | 'metrics' | 'quarantine'
 
 const TABS: { key: Tab; label: string; icon: typeof Database }[] = [
   { key: 'overview', label: 'Overview', icon: BarChart3 },
@@ -36,6 +36,7 @@ const TABS: { key: Tab; label: string; icon: typeof Database }[] = [
   { key: 'traceability', label: 'Traceability', icon: GitBranch },
   { key: 'cascade', label: 'Cascade', icon: Layers },
   { key: 'metrics', label: 'Metrics', icon: Activity },
+  { key: 'quarantine', label: 'Quarantine', icon: AlertTriangle },
 ]
 
 const FALLBACK_SCOPES = [
@@ -163,9 +164,11 @@ function DatalakeLeftPane({
 function TabBar({
   activeTab,
   onSelectTab,
+  quarantineCount = 0,
 }: {
   activeTab: Tab
   onSelectTab: (tab: Tab) => void
+  quarantineCount?: number
 }) {
   return (
     <div
@@ -206,6 +209,7 @@ function TabBar({
           >
             <t.icon size={12} />
             {t.label}
+            {t.key === 'quarantine' && quarantineCount > 0 && <span style={{background:'#dc2626',color:'#fff',borderRadius:'50%',fontSize:9,padding:'1px 5px',marginLeft:4}}>{quarantineCount}</span>}
           </button>
         )
       })}
@@ -365,7 +369,7 @@ function severityIcon(s: string): string {
   return '[i]'
 }
 
-function MetricsTab() {
+function MetricsTab({ setQuarantineCount }: { setQuarantineCount: React.Dispatch<React.SetStateAction<number>> }) {
   const [report, setReport] = useState<MetricsReport | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -440,6 +444,13 @@ function MetricsTab() {
             </div>
           ))}
         </div>
+        <button onClick={async () => {
+          const r = await fetch('/api/quarantine/from-metrics', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({issues: report.issues?.slice(0,50) || [], source:'metrics'})})
+          const d = await r.json()
+          setQuarantineCount(prev => prev + (d?.created || 0))
+        }} style={{background:'#dc2626',color:'#fff',padding:'4px 12px',fontFamily:'monospace',fontSize:11,border:'none',cursor:'pointer',marginTop:8}}>
+          Quarantine {report?.issues?.length || 0} Issues
+        </button>
       </>)}
 
       {retrieval.length > 0 && (<>
@@ -489,6 +500,9 @@ export function DatalakeExplorerView() {
   const [documents, setDocuments] = useState<DatalakeDoc[]>([])
   const [stats, setStats] = useState<DatalakeStats>(EMPTY_STATS)
   const [loading, setLoading] = useState(true)
+  const [quarantineCount, setQuarantineCount] = useState(0)
+
+  useEffect(() => { fetch('/api/quarantine?status=pending').then(r=>r.json()).then(d => setQuarantineCount(d?.documents?.length || d?.total || 0)).catch(()=>{}) }, [])
 
   // Fetch stats on mount (gracefully handles 404)
   useEffect(() => {
@@ -578,7 +592,7 @@ export function DatalakeExplorerView() {
           minWidth: 0,
         }}
       >
-        <TabBar activeTab={activeTab} onSelectTab={setActiveTab} />
+        <TabBar activeTab={activeTab} onSelectTab={setActiveTab} quarantineCount={quarantineCount} />
 
         {/* Loading indicator */}
         {loading && (
@@ -605,7 +619,8 @@ export function DatalakeExplorerView() {
           {activeTab === 'requirements' && <PlaceholderTab name="Requirements" />}
           {activeTab === 'traceability' && <TraceabilityView docKey={selectedDocKey} />}
           {activeTab === 'cascade' && <PlaceholderTab name="Cascade" />}
-          {activeTab === 'metrics' && <MetricsTab />}
+          {activeTab === 'metrics' && <MetricsTab setQuarantineCount={setQuarantineCount} />}
+          {activeTab === 'quarantine' && <PlaceholderTab name="Quarantine" />}
         </div>
       </div>
     </div>

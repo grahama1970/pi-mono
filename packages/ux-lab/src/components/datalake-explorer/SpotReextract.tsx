@@ -49,6 +49,8 @@ function stepStatusColor(status: PipelineStep['status']): string {
 // ---------------------------------------------------------------------------
 
 interface SpotReextractProps {
+  entryId: string
+  pdfPath: string
   section?: unknown
   sectionId?: string
   blockCount: number
@@ -62,6 +64,8 @@ interface SpotReextractProps {
 // ---------------------------------------------------------------------------
 
 export default function SpotReextract({
+  entryId,
+  pdfPath,
   section: _section,
   sectionId,
   blockCount,
@@ -79,44 +83,43 @@ export default function SpotReextract({
   // Estimated impact
   const estimatedTime = (blockCount * 0.15 + tableCount * 0.8).toFixed(1)
 
-  // Simulate pipeline execution
+  // Run real re-extraction via quarantine API
   const runPipeline = useCallback(async () => {
     setRunning(true)
     setResult(null)
-
     const newSteps: PipelineStep[] = PIPELINE_STEPS.map((name) => ({
-      name,
-      status: 'pending' as const,
+      name, status: 'running' as const,
     }))
-    setSteps(newSteps)
+    setSteps([...newSteps])
 
-    for (let i = 0; i < PIPELINE_STEPS.length; i++) {
-      // Set current step to running
-      newSteps[i] = { ...newSteps[i], status: 'running' }
-      setSteps([...newSteps])
-
-      // Simulate delay
-      await new Promise((resolve) => setTimeout(resolve, 300 + Math.random() * 400))
-
-      // Set step to done
-      const duration = Math.round(200 + Math.random() * 600)
-      newSteps[i] = { ...newSteps[i], status: 'done', durationMs: duration }
-      setSteps([...newSteps])
+    try {
+      const res = await fetch(`/api/quarantine/${encodeURIComponent(entryId)}/reextract`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdf_path: pdfPath, overrides: {} }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`)
+      const doneSteps = newSteps.map((s) => ({ ...s, status: 'done' as const, durationMs: data.duration_ms }))
+      setSteps(doneSteps)
+      setResult({
+        scope,
+        targetId: sectionId ?? 'unknown',
+        blocksAdded: data.blocks_added ?? 0,
+        blocksRemoved: data.blocks_removed ?? 0,
+        blocksModified: data.blocks_modified ?? 0,
+        confidenceDelta: data.confidence_delta ?? 0,
+        pipelineSteps: doneSteps,
+      })
+    } catch {
+      const errSteps = newSteps.map((s, i) => ({
+        ...s, status: (i === newSteps.length - 1 ? 'error' : 'done') as PipelineStep['status'],
+      }))
+      setSteps(errSteps)
+    } finally {
+      setRunning(false)
     }
-
-    // Simulate result
-    const mockResult: ReextractResult = {
-      scope,
-      targetId: sectionId ?? 'unknown',
-      blocksAdded: Math.floor(Math.random() * 3),
-      blocksRemoved: Math.floor(Math.random() * 2),
-      blocksModified: Math.floor(Math.random() * 5) + 1,
-      confidenceDelta: parseFloat((Math.random() * 0.15 + 0.02).toFixed(3)),
-      pipelineSteps: newSteps,
-    }
-    setResult(mockResult)
-    setRunning(false)
-  }, [scope, sectionId])
+  }, [scope, sectionId, entryId, pdfPath])
 
   return (
     <div

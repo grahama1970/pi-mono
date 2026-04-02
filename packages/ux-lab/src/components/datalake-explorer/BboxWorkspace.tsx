@@ -65,6 +65,8 @@ interface BboxWorkspaceProps {
   onBlockUpdate?: (block: BboxBlock) => void
   onBlockDelete?: (blockId: string) => void
   pdfUrl?: string
+  entryId?: string
+  docKey?: string
 }
 
 // ---------------------------------------------------------------------------
@@ -81,9 +83,13 @@ export default function BboxWorkspace({
   onBlockUpdate,
   onBlockDelete,
   pdfUrl = '/sample.pdf',
+  entryId,
+  docKey,
 }: BboxWorkspaceProps) {
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
   const [editMode, setEditMode] = useState(false)
+  const [dirtyBlockIds, setDirtyBlockIds] = useState<Set<string>>(new Set())
+  const [saving, setSaving] = useState(false)
   const [typeFilters, setTypeFilters] = useState<Set<BlockType>>(new Set(ALL_BLOCK_TYPES))
   const [notes, setNotes] = useState<Record<string, string>>({})
   const [zoom, setZoom] = useState(1.0)
@@ -121,6 +127,7 @@ export default function BboxWorkspace({
       const block = blocks.find((b) => b.id === blockId)
       if (block && onBlockUpdate) {
         onBlockUpdate({ ...block, blockType: newType })
+        setDirtyBlockIds(prev => new Set(prev).add(blockId))
       }
     },
     [blocks, onBlockUpdate]
@@ -131,6 +138,7 @@ export default function BboxWorkspace({
       const block = blocks.find((b) => b.id === blockId)
       if (block && onBlockUpdate) {
         onBlockUpdate({ ...block, bbox })
+        setDirtyBlockIds(prev => new Set(prev).add(blockId))
       }
     },
     [blocks, onBlockUpdate]
@@ -177,6 +185,26 @@ export default function BboxWorkspace({
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [visibleBlocks, selectedBlockId, editMode])
+
+  async function handleSave() {
+    if (!entryId || dirtyBlockIds.size === 0) return
+    setSaving(true)
+    const dirtyBlocks = blocks.filter(b => dirtyBlockIds.has(b.id))
+    try {
+      await fetch(`/api/quarantine/${entryId}/bbox-save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ blocks: dirtyBlocks, doc_key: docKey || '' }),
+      })
+      setDirtyBlockIds(new Set())
+    } finally { setSaving(false) }
+  }
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); handleSave() } }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [dirtyBlockIds, entryId])
 
   return (
     <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
@@ -450,6 +478,13 @@ export default function BboxWorkspace({
             +
           </button>
 
+          {/* Save button */}
+          {dirtyBlockIds.size > 0 && (
+            <button onClick={handleSave} disabled={saving} style={{ fontFamily: 'monospace', fontSize: '11px', padding: '2px 8px', borderRadius: '3px', border: 'none', background: '#b45309', color: '#fff', cursor: saving ? 'wait' : 'pointer' }}>
+              {saving ? 'Saving...' : `Save ${dirtyBlockIds.size} changes`}
+            </button>
+          )}
+
           {/* Spacer */}
           <div style={{ flex: 1 }} />
 
@@ -700,6 +735,7 @@ export default function BboxWorkspace({
                   onChange={(e) => {
                     if (onBlockUpdate) {
                       onBlockUpdate({ ...selectedBlock, sectionId: e.target.value || undefined })
+                      setDirtyBlockIds(prev => new Set(prev).add(selectedBlock.id))
                     }
                   }}
                   style={{
