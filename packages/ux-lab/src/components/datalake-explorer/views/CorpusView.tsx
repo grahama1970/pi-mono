@@ -109,6 +109,7 @@ export default function CorpusView() {
   useRegisterAction('corpus:el-9', { app: 'datalake-explorer', action: 'TOGGLE_FILTER_CHIP', label: 'Toggle filter chip', description: 'Toggle filter chip' })
   useRegisterAction('corpus:el-10', { app: 'datalake-explorer', action: 'SORT_COLUMN', label: 'Sort by column', description: 'Sort by column' })
 
+
   const [rows, setRows] = useState<CollectionRow[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)

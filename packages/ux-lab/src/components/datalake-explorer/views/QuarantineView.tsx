@@ -263,6 +263,7 @@ export default function QuarantineView() {
   useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
   useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
 
+
   // -- Queue state --
   const [entries, setEntries] = useState<QuarantineEntry[]>([])
   const [loading, setLoading] = useState(true)

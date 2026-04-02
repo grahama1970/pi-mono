@@ -31,6 +31,10 @@ function pdfUrl(originalPath: string): string {
 }
 
 export default function ExtractionReviewModal({
+
+  filename, originalPath, resultsDir, pageCount, reasons, debugPatterns,
+  s00Estimated, s04Actual, onClose, onReExtract, onAccept,
+}: ExtractionReviewModalProps) {
   // QuerySpec action registrations (data-qid -> voice/NL/agent control)
   useRegisterAction('review:dyn-1', { app: 'datalake-explorer', action: 'TOGGLE_VIEW_MODE', label: 'Toggle review/compare mode', description: 'Toggle review/compare mode' })
   useRegisterAction('review:item-2', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE', label: 'Generate test fixture', description: 'Generate test fixture' })
@@ -44,9 +48,6 @@ export default function ExtractionReviewModal({
   useRegisterAction('review:dyn-10', { app: 'datalake-explorer', action: 'TOGGLE_BLOCK', label: 'Toggle block selection', description: 'Toggle block selection' })
   useRegisterAction('review:item-11', { app: 'datalake-explorer', action: 'GENERATE_FIXTURE_SPEC', label: 'Generate fixture specification', description: 'Generate fixture specification' })
 
-  filename, originalPath, resultsDir, pageCount, reasons, debugPatterns,
-  s00Estimated, s04Actual, onClose, onReExtract, onAccept,
-}: ExtractionReviewModalProps) {
   const [mode, setMode] = useState<ModalMode>('review')
   const [currentPage, setCurrentPage] = useState(0)
   const [blocks, setBlocks] = useState<BboxBlock[]>([])

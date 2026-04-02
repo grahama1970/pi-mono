@@ -185,6 +185,7 @@ export default function RequirementsView() {
   useRegisterAction('requirements:el-1', { app: 'datalake-explorer', action: 'SELECT_SECTION', label: 'Select requirement section', description: 'Select requirement section' })
   useRegisterAction('requirements:detail', { app: 'datalake-explorer', action: 'TABLE_AREA', label: 'Detail', description: 'Detail in evidenceBadge' })
 
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [requirements, setRequirements] = useState<RequirementEntry[]>(SAMPLE_REQUIREMENTS)

@@ -29,9 +29,6 @@ const SCALE = DEFAULT_DPI / 72 // pdf.js uses 72 DPI internally
 // ---------------------------------------------------------------------------
 
 export default function PdfCanvas({
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_CONTAINER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
-  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'RENDER_CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
 
   pdfUrl,
   pageNumber,
@@ -41,6 +38,10 @@ export default function PdfCanvas({
   zoom,
   editMode = false,
 }: PdfCanvasProps) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_CONTAINER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
+  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'RENDER_CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)

@@ -41,6 +41,12 @@ function scoreBadge(score: number) {
 }
 
 function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLabel: string; color: string; items: TraceItem[]; hasAssets?: boolean; scores?: VerifyResult | null }) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('trace:item-1', { app: 'datalake-explorer', action: 'TOGGLE_GROUP', label: 'Toggle verification group', description: 'Toggle verification group' })
+  useRegisterAction('trace:item-2', { app: 'datalake-explorer', action: 'TOGGLE_IMAGE', label: 'Toggle image preview', description: 'Toggle image preview' })
+  useRegisterAction('trace:item-3', { app: 'datalake-explorer', action: 'LOG_EVIDENCE', label: 'Log evidence details', description: 'Log evidence details' })
+  useRegisterAction('trace:item-4', { app: 'datalake-explorer', action: 'RUN_VERIFY', label: 'Run verification', description: 'Run verification' })
+
   const [open, setOpen] = useState(true)
   const [imgMap, setImgMap] = useState<Record<string, string | null>>({})
   const toggle = useCallback(() => setOpen(v => !v), [])
@@ -143,11 +149,6 @@ function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLa
 }
 
 export function TraceabilityView({ docKey }: { docKey: string | null }) {
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('trace:item-1', { app: 'datalake-explorer', action: 'TOGGLE_GROUP', label: 'Toggle verification group', description: 'Toggle verification group' })
-  useRegisterAction('trace:item-2', { app: 'datalake-explorer', action: 'TOGGLE_IMAGE', label: 'Toggle image preview', description: 'Toggle image preview' })
-  useRegisterAction('trace:item-3', { app: 'datalake-explorer', action: 'LOG_EVIDENCE', label: 'Log evidence details', description: 'Log evidence details' })
-  useRegisterAction('trace:item-4', { app: 'datalake-explorer', action: 'RUN_VERIFY', label: 'Run verification', description: 'Run verification' })
 
   const [data, setData] = useState<TraceData | null>(null)
   const [loading, setLoading] = useState(false)

@@ -65,12 +65,6 @@ interface SpotReextractProps {
 // ---------------------------------------------------------------------------
 
 export default function SpotReextract({
-  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
-  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close re-extract modal', description: 'Close re-extract modal' })
-  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'SELECT_SCOPE', label: 'Select re-extraction scope', description: 'Select re-extraction scope' })
-  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'RUN_PIPELINE', label: 'Run re-extraction pipeline', description: 'Run re-extraction pipeline' })
-  useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
-  useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
 
   entryId,
   pdfPath,
@@ -81,6 +75,13 @@ export default function SpotReextract({
   onAccept,
   onCancel,
 }: SpotReextractProps) {
+  // QuerySpec action registrations (data-qid -> voice/NL/agent control)
+  useRegisterAction('reextract:item-1', { app: 'datalake-explorer', action: 'CLOSE_MODAL', label: 'Close re-extract modal', description: 'Close re-extract modal' })
+  useRegisterAction('reextract:dyn-2', { app: 'datalake-explorer', action: 'SELECT_SCOPE', label: 'Select re-extraction scope', description: 'Select re-extraction scope' })
+  useRegisterAction('reextract:item-3', { app: 'datalake-explorer', action: 'RUN_PIPELINE', label: 'Run re-extraction pipeline', description: 'Run re-extraction pipeline' })
+  useRegisterAction('reextract:accept', { app: 'datalake-explorer', action: 'ACCEPT', label: 'Accept', description: 'Accept in stepStatusIcon' })
+  useRegisterAction('reextract:cancel', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel', description: 'Cancel in stepStatusIcon' })
+
   const [scope, setScope] = useState<'section' | 'page'>('section')
   const [running, setRunning] = useState(false)
   const [steps, setSteps] = useState<PipelineStep[]>(

@@ -400,6 +400,7 @@ export default function MonitorView() {
   useRegisterAction('monitor:item-1', { app: 'datalake-explorer', action: 'SELECT_SOURCE', label: 'Select event source', description: 'Select event source' })
   useRegisterAction('monitor:dyn-2', { app: 'datalake-explorer', action: 'FILTER_LEVEL', label: 'Filter events by level', description: 'Filter events by level' })
 
+
   const [services, setServices] = useState<MonitorService[]>(MOCK_SERVICES)
   const [events, setEvents] = useState<MonitorEvent[]>(MOCK_EVENTS)
   const [loading, setLoading] = useState(true)

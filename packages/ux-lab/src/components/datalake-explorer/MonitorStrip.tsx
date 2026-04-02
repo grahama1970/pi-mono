@@ -134,6 +134,7 @@ export default function MonitorStrip({ onNavigate }: MonitorStripProps) {
   useRegisterAction('monitor-strip:collapse-monitor-strip', { app: 'datalake-explorer', action: 'COLLAPSE_MONITOR_STRIP', label: 'Collapse Monitor Strip', description: 'Collapse Monitor Strip in MonitorChip' })
   useRegisterAction('monitor-strip:item-3', { app: 'datalake-explorer', action: 'STRIP_NAVIGATE_SOURCE', label: 'Navigate to event source', description: 'Navigate to event source' })
 
+
   const [expanded, setExpanded] = useState(false)
 
   const chipRow = (

@@ -350,6 +350,7 @@ export default function ThreatMatrixView() {
   useRegisterAction('threatmatrix:dyn-7', { app: 'datalake-explorer', action: 'TOGGLE_FRAMEWORK_CHIP', label: 'Toggle framework chip', description: 'Toggle framework chip' })
   useRegisterAction('threatmatrix:dyn-8', { app: 'datalake-explorer', action: 'SELECT_CELL', label: 'Select threat matrix cell', description: 'Select threat matrix cell' })
 
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [coverageInfo, setCoverageInfo] = useState<string | null>(null)

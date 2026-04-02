@@ -32,6 +32,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
   useRegisterAction('chat:send-message', { app: 'datalake-explorer', action: 'SEND_MESSAGE', label: 'Send Message', description: 'Send Message in ChatFAB' })
   useRegisterAction('chat:el-3', { app: 'datalake-explorer', action: 'TOGGLE_FAB', label: 'Toggle chat', description: 'Toggle chat' })
 
+
 	const [open, setOpen] = useState(false);
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState<ChatMessage[]>([]);

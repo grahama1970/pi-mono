@@ -37,6 +37,7 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
   useRegisterAction('evidence:el-6', { app: 'datalake-explorer', action: 'CANCEL', label: 'Cancel evidence case', description: 'Cancel evidence case' })
   useRegisterAction('evidence:el-7', { app: 'datalake-explorer', action: 'CREATE_CASE', label: 'Create evidence case', description: 'Create evidence case' })
 
+
   const [claim, setClaim] = useState('')
   const [verdict, setVerdict] = useState<Verdict>('insufficient')
   const [confidence, setConfidence] = useState(50)

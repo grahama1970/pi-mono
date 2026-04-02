@@ -306,6 +306,7 @@ export default function LemmaGraphView() {
   useRegisterAction('lemma:item-8', { app: 'datalake-explorer', action: 'RESET_LAYOUT', label: 'Reset graph layout', description: 'Reset graph layout' })
   useRegisterAction('lemma:graph-container', { app: 'datalake-explorer', action: 'GRAPH_CANVAS', label: 'Graph Container', description: 'Graph Container in FilterChip' })
 
+
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)

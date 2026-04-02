@@ -1,0 +1,87 @@
+/**
+ * Design Tokens — CSS Custom Properties for NVIS MIL-STD-3009 theme.
+ *
+ * Single source of truth for all colors, fonts, spacing, and sizing.
+ * Used by shared-chat and all UX Lab projects.
+ *
+ * COTS Compliance:
+ *   - All text colors meet WCAG 2.1 AA (≥4.5:1) against bg tokens
+ *   - Font sizes: --font-size-min = 12px (MIL-STD-1472H)
+ *   - Touch targets: --touch-min = 44px (WCAG 2.1)
+ *   - All changes here propagate to every component automatically
+ */
+:root {
+  /* ── Backgrounds ─────────────────────────────────────────────── */
+  --embry-bg: #141414;
+  --embry-bg-card: #1a1a1a;
+  --embry-bg-panel: #111111;
+  --embry-bg-deep: #0b1220;
+  --embry-bg-header: #0f172a;
+
+  /* ── Borders ─────────────────────────────────────────────────── */
+  --embry-border: rgba(255, 255, 255, 0.13);
+  --embry-border-hover: rgba(255, 255, 255, 0.25);
+  --embry-border-subtle: rgba(255, 255, 255, 0.06);
+
+  /* ── Text (COTS: all ≥4.5:1 contrast on --embry-bg) ─────────── */
+  --embry-white: #e2e8f0;    /* 13.5:1 — primary text */
+  --embry-dim: #94a3b8;      /* 7.1:1  — secondary text, labels */
+  --embry-muted: #94a3b8;    /* 7.1:1  — tertiary, metadata (COTS-safe) */
+
+  /* ── NVIS MIL-STD-3009 Accent Colors ─────────────────────────── */
+  --embry-green: #00ff88;     /* success, done, satisfied */
+  --embry-red: #ff4444;       /* error, failed, not satisfied */
+  --embry-amber: #ffaa00;     /* warning, inconclusive */
+  --embry-blue: #60a5fa;      /* info, active, running (Tailwind blue-400) */
+  --embry-accent: #a78bfa;    /* brand, agent badge (Tailwind violet-400) */
+
+  /* ── Entity Chip Colors (COTS: all ≥4.5:1 on dark bg) ───────── */
+  --entity-skill-color: #93c5fd;
+  --entity-skill-bg: #1e293b;
+  --entity-control-color: #6ee7b7;
+  --entity-control-bg: #1a2e2a;
+  --entity-cwe-color: #fca5a5;
+  --entity-cwe-bg: #2a1a1a;
+  --entity-attack-color: #fcd34d;
+  --entity-attack-bg: #2a2410;
+  --entity-framework-color: #d8b4fe;
+  --entity-framework-bg: #231a2e;
+  --entity-sparta-color: #67e8f9;
+  --entity-sparta-bg: #1a2a2e;
+
+  /* ── Framework Badge Colors ──────────────────────────────────── */
+  --fw-sparta: #7c3aed;
+  --fw-attack: #ff4444;
+  --fw-d3fend: #00ff88;
+  --fw-nist: #4a9eff;
+  --fw-cwe: #ffaa00;
+  --fw-iso: #22d3ee;
+  --fw-cmmc: #c084fc;
+  --fw-fedramp: #34d399;
+  --fw-stig: #f472b6;
+
+  /* ── Typography ──────────────────────────────────────────────── */
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* COTS minimums */
+  --font-size-min: 12px;       /* MIL-STD-1472H: minimum readable */
+  --font-size-body: 14px;      /* body text */
+  --font-size-sm: 12px;        /* metadata, labels */
+  --font-size-lg: 16px;        /* headings, primary content */
+
+  /* ── Spacing + Touch Targets ─────────────────────────────────── */
+  --touch-min: 44px;           /* WCAG 2.1 / Apple HIG minimum */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+
+  /* ── Z-Index Scale ───────────────────────────────────────────── */
+  --z-dropdown: 50;
+  --z-modal: 100;
+  --z-fab: 200;
+  --z-toast: 300;
+}

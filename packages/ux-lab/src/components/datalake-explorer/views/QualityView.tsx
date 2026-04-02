@@ -455,6 +455,7 @@ export default function QualityView() {
   useRegisterAction('quality:item-2', { app: 'datalake-explorer', action: 'TOGGLE_PRESETS', label: 'Toggle preset breakdown', description: 'Toggle preset breakdown' })
   useRegisterAction('quality:dyn-3', { app: 'datalake-explorer', action: 'TOGGLE_METRIC', label: 'Toggle metric series', description: 'Toggle metric series' })
 
+
   const [data, setData] = useState<QualityTrendPoint[]>([])
   const [presetData, setPresetData] = useState<QualityPresetBreakdown[]>([])
   const [loading, setLoading] = useState(true)

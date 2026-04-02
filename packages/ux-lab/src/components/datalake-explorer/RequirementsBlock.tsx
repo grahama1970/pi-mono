@@ -85,6 +85,7 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
   useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'SELECT_CONTROL', label: 'Select NIST control mapping', description: 'Select NIST control mapping' })
   useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'CREATE_EVIDENCE', label: 'Create evidence case', description: 'Create evidence case' })
 
+
   const [flagged, setFlagged] = useState(true)
   const [selectedControl, setSelectedControl] = useState('')
   const [proofStatus] = useState<ProofStatus>('unproven')
