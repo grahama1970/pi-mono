@@ -274,10 +274,10 @@ export default function CorpusView() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderBottom: `1px solid ${NVIS.border}`, flexShrink: 0, flexWrap: 'wrap' }}>
         <span style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginRight: 4 }}>Severity</span>
         {(['fail', 'warn', 'pass'] as Severity[]).map((s) => (
-          <FilterChip key={s} label={s.toUpperCase()} active={severityFilter.has(s)} color={severityColor(s)} onClick={() => toggleSeverity(s)} />
+          <FilterChip key={s} label={s.toUpperCase()} active={severityFilter.has(s)} color={severityColor(s)} onClick={() => toggleSeverity(s)} data-qid={`corpus:severity-filter:${s}`} title={`Toggle ${s} severity filter`} />
         ))}
         {counts.retry > 0 && (
-          <FilterChip label={`RETRY (${counts.retry})`} active={severityFilter.has('retry')} color="#666" onClick={() => toggleSeverity('retry')} />
+          <FilterChip label={`RETRY (${counts.retry})`} active={severityFilter.has('retry')} color="#666" onClick={() => toggleSeverity('retry')} data-qid="corpus:severity-filter:retry" title="Toggle retry severity filter" />
         )}
         <span style={{ fontSize: 9, color: NVIS.dim, textTransform: 'uppercase', marginLeft: 12, marginRight: 4 }}>Sector</span>
         {allSectors.map((s) => (

@@ -75,9 +75,16 @@ async def _run_subagent_via_scillm(task: TaskRuntime, session_dir: Path) -> str:
 
 async def _run_local(task: TaskRuntime, session_dir: Path) -> str:
     """Run a shell command with cancel support via process kill."""
+    # Strip .venv paths so local commands use system/project tools
+    clean_env = {k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"}
+    clean_env["PATH"] = os.pathsep.join(
+        p for p in clean_env.get("PATH", "").split(os.pathsep)
+        if ".venv" not in p
+    )
     proc = await asyncio.create_subprocess_shell(
         task.command, cwd=task.cwd,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+        env=clean_env,
     )
     task._proc = proc
 

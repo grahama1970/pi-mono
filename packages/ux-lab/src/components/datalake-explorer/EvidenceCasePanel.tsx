@@ -103,6 +103,8 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
     <>
       {/* Backdrop */}
       <div
+        data-qid="evidence-case:backdrop:close"
+        title="Close evidence case panel"
         onClick={onClose}
         style={{
           position: 'fixed',
@@ -149,6 +151,8 @@ export default function EvidenceCasePanel({ open, onClose, prefillContext }: Evi
             )}
           </div>
           <button
+            data-qid="evidence-case:close-btn:header"
+            title="Close evidence case panel"
             onClick={onClose}
             aria-label="Close panel"
             style={{

@@ -54,6 +54,8 @@ function FilterChip({ label, color, active, onToggle }: FilterChipProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-pressed={active}
+      data-qid="lemma-graph:filter-chip:toggle"
+      title={`Toggle ${label} filter`}
       style={{
         padding: '4px 10px',
         fontSize: 10,
