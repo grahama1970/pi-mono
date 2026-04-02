@@ -620,6 +620,23 @@ app.post('/api/quarantine/:id/reextract', async (req, res) => {
   }
 })
 
+app.post('/api/quarantine/:id/diagnose', async (req, res) => {
+  try {
+    const { pdf_path } = req.body as { pdf_path: string }
+    if (!pdf_path || !pdf_path.startsWith('/mnt/storage12tb/')) return res.status(400).json({ error: 'pdf_path must start with /mnt/storage12tb/' })
+    const sanitizedPath = pdf_path.replace(/'/g, "\\'")
+    const { execSync } = await import('child_process')
+    const { writeFileSync, unlinkSync } = await import('fs')
+    const tmpScript = `/tmp/_diagnose_${req.params.id}.py`
+    writeFileSync(tmpScript, `import pdf_oxide, json, sys\ndoc = pdf_oxide.PdfDocument('${sanitizedPath}')\ntoc = doc.get_section_map() or {'source': 'none', 'sections': []}\nresult = doc.extract_document()\next_s = result.get('sections', [])\ntoc_s = toc.get('sections', [])\nprint(json.dumps({'toc': {'source': toc.get('source','none'), 'count': len(toc_s), 'sections': toc_s}, 'extraction': {'count': len(ext_s), 'sections': [{'title': s.get('title',''), 'level': s.get('level',0), 'page_start': s.get('page_start'), 'display_title': s.get('display_title','')} for s in ext_s]}, 'delta': len(ext_s) - len(toc_s), 'profile': result.get('profile', {}), 'page_count': doc.page_count()}, default=str))`)
+    const result = execSync(`/home/graham/workspace/experiments/pdf_oxide/.venv/bin/python3 ${tmpScript}`, { timeout: 45000 })
+    try { unlinkSync(tmpScript) } catch {}
+    res.json({ id: req.params.id, ...JSON.parse(result.toString()) })
+  } catch (e: any) {
+    res.status(500).json({ id: req.params.id, error: String(e.stderr || e.message).slice(0, 2000), status: 'failed' })
+  }
+})
+
 app.post('/api/quarantine/:id/convergence', async (req, res) => {
   try {
     const { pdf_path, ground_truth_path, max_rounds, target_score } = req.body as { pdf_path: string; ground_truth_path?: string; max_rounds?: number; target_score?: number }

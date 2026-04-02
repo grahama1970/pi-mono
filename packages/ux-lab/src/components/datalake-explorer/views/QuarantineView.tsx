@@ -277,6 +277,22 @@ export default function QuarantineView() {
   const [showSpotReextract, setShowSpotReextract] = useState(false)
   const [bboxBlocks, setBboxBlocks] = useState<BboxBlock[]>([])
 
+  // -- TOC vs Extraction diagnosis --
+  const [diagnosis, setDiagnosis] = useState<{ toc: { source: string; count: number; sections: any[] }; extraction: { count: number; sections: any[] }; delta: number; page_count: number } | null>(null)
+  const [diagnosing, setDiagnosing] = useState(false)
+
+  async function handleDiagnose(pdfPath: string) {
+    if (!selected) return
+    setDiagnosing(true)
+    try {
+      const r = await fetch(`/api/quarantine/${encodeURIComponent(selected.id)}/diagnose`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdf_path: pdfPath }),
+      })
+      if (r.ok) setDiagnosis(await r.json())
+    } catch { /* ignore */ } finally { setDiagnosing(false) }
+  }
+
   // -- Layout state (L.2 + L.3) --
   const [layoutPreset, setLayoutPreset] = useState<LayoutPreset>(loadPreset)
   const [chatOpen, setChatOpen] = useState(false)
@@ -1420,6 +1436,39 @@ export default function QuarantineView() {
                 />
               </div>
 
+              {/* TOC vs Extraction Diagnosis */}
+              {diagnosis && (
+                <div style={{ marginBottom: '16px', border: `1px solid ${Math.abs(diagnosis.delta) > 2 ? '#dc2626' : diagnosis.delta === 0 ? '#15803d' : '#b45309'}33`, borderRadius: '4px', padding: '12px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', color: NVIS.white }}>TOC vs Extraction</span>
+                    <span style={{ fontSize: '11px', fontFamily: 'monospace', color: Math.abs(diagnosis.delta) > 2 ? '#dc2626' : diagnosis.delta === 0 ? '#15803d' : '#b45309' }}>
+                      {diagnosis.toc.source} | {diagnosis.toc.count} TOC → {diagnosis.extraction.count} ext ({diagnosis.delta >= 0 ? '+' : ''}{diagnosis.delta})
+                    </span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '10px', fontFamily: 'monospace' }}>
+                    <div>
+                      <div style={{ color: NVIS.dim, marginBottom: '4px', fontWeight: 700 }}>TOC ({diagnosis.toc.count})</div>
+                      {diagnosis.toc.sections.map((s: any, i: number) => (
+                        <div key={i} style={{ padding: '2px 0', color: '#94a3b8', borderBottom: '1px solid #1e293b' }}>
+                          <span style={{ color: '#64748b', marginRight: '4px' }}>p{s.start_page ?? '?'}</span>
+                          {s.title?.slice(0, 40) || '(untitled)'}
+                          {s.entry_type !== 'section' && <span style={{ color: '#8b5cf6', marginLeft: '4px' }}>[{s.entry_type}]</span>}
+                        </div>
+                      ))}
+                    </div>
+                    <div>
+                      <div style={{ color: NVIS.dim, marginBottom: '4px', fontWeight: 700 }}>Extraction ({diagnosis.extraction.count})</div>
+                      {diagnosis.extraction.sections.map((s: any, i: number) => (
+                        <div key={i} style={{ padding: '2px 0', color: '#94a3b8', borderBottom: '1px solid #1e293b' }}>
+                          <span style={{ color: '#64748b', marginRight: '4px' }}>L{s.level ?? '?'}</span>
+                          {(s.display_title || s.title)?.slice(0, 40) || '(untitled)'}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Error display */}
               {selected.error && (
                 <div
@@ -1676,6 +1725,14 @@ export default function QuarantineView() {
                   color={NVIS.blue}
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 'convergence')}
+                />
+
+                <ActionButton
+                  label={diagnosing ? 'Diagnosing...' : 'Diagnose'}
+                  aria-label={`Compare TOC vs extraction for ${selected.filename}`}
+                  color="#8b5cf6"
+                  disabled={diagnosing || !selected.path}
+                  onClick={() => selected.path && handleDiagnose(selected.path)}
                 />
 
                 {/* Spacer + section scope indicator */}

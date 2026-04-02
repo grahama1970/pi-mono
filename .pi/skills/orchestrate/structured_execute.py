@@ -237,7 +237,15 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
             stderr=asyncio.subprocess.PIPE,
             cwd=str(task.cwd),
         )
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
+        try:
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
+        except asyncio.TimeoutError:
+            # Kill orphaned process to prevent zombie code-runner
+            proc.kill()
+            await proc.wait()
+            task.review_status = "fail"
+            task.error = f"code-runner timed out after {task.timeout_seconds}s"
+            break
 
         # Per-attempt output files (#1, #2 fix — no overwrites)
         output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
@@ -774,11 +782,13 @@ async def _execute_loop(
                     _render_state(session_dir, runtimes, deps, failed=True)
                     return 1
                 task.finished_at = time.time()
-            # Release children (both completed and cancelled tasks)
-            for child in reverse.get(task_id, []):
-                indegree[child] -= 1
-                if indegree[child] == 0:
-                    ready.append(child)
+            # Release children ONLY when parent completed successfully.
+            # Cancelled/failed parents must NOT unblock dependents — missing prerequisites.
+            if task.status == "completed":
+                for child in reverse.get(task_id, []):
+                    indegree[child] -= 1
+                    if indegree[child] == 0:
+                        ready.append(child)
             _render_state(session_dir, runtimes, deps, failed=False)
 
     logger.info("Session written to {}", session_dir)
