@@ -2462,10 +2462,61 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       )}
                       {selectedNode.states && selectedNode.states.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>STATES ({selectedNode.states.length})</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>STATE DIAGRAM ({selectedNode.states.length} states)</div>
+                          {/* SVG state transition diagram */}
+                          {(() => {
+                            const states = selectedNode.states
+                            const cols = Math.min(4, Math.ceil(Math.sqrt(states.length)))
+                            const rows = Math.ceil(states.length / cols)
+                            const cellW = 130, cellH = 50, padX = 10, padY = 10
+                            const svgW = cols * cellW + padX * 2
+                            const svgH = rows * cellH + padY * 2
+                            return (
+                              <svg width="100%" viewBox={`0 0 ${svgW} ${svgH}`} style={{ background: '#050505', borderRadius: 4, border: `1px solid ${EMBRY.border}`, maxHeight: 260 }}>
+                                <defs>
+                                  <marker id="state-arrow" viewBox="0 -3 6 6" refX="6" refY="0" markerWidth="5" markerHeight="5" orient="auto">
+                                    <path d="M0,-3L6,0L0,3" fill="#9C27B0" opacity="0.6" />
+                                  </marker>
+                                </defs>
+                                {states.map((s, i) => {
+                                  const col = i % cols
+                                  const row = Math.floor(i / cols)
+                                  const cx = padX + col * cellW + cellW / 2
+                                  const cy = padY + row * cellH + cellH / 2
+                                  const isFirst = i === 0
+                                  const isLast = i === states.length - 1
+                                  // Transition arrow to next state
+                                  const hasNext = i < states.length - 1
+                                  const nextCol = (i + 1) % cols
+                                  const nextRow = Math.floor((i + 1) / cols)
+                                  const nx = padX + nextCol * cellW + cellW / 2
+                                  const ny = padY + nextRow * cellH + cellH / 2
+                                  return (
+                                    <g key={s}>
+                                      {/* State box */}
+                                      <rect x={cx - 55} y={cy - 14} width={110} height={28} rx={isFirst || isLast ? 14 : 4}
+                                        fill={isFirst ? '#1a472a' : isLast ? '#4a1a1a' : '#0d0d1a'}
+                                        stroke={isFirst ? '#4CAF50' : isLast ? '#ef4444' : '#9C27B0'}
+                                        strokeWidth={isFirst || isLast ? 2 : 1} strokeOpacity={0.7} />
+                                      <text x={cx} y={cy + 4} textAnchor="middle" fill={isFirst ? '#4CAF50' : isLast ? '#ef4444' : '#ce93d8'}
+                                        fontSize={9} fontWeight={700} fontFamily="JetBrains Mono, monospace">{s.length > 14 ? s.slice(0, 12) + '…' : s}</text>
+                                      {/* Arrow to next */}
+                                      {hasNext && (row === nextRow ? (
+                                        <line x1={cx + 56} y1={cy} x2={nx - 56} y2={ny} stroke="#9C27B0" strokeWidth={1.5} strokeOpacity={0.5} markerEnd="url(#state-arrow)" />
+                                      ) : (
+                                        <path d={`M${cx},${cy + 15} L${cx},${cy + cellH / 2 + 5} L${nx},${ny - cellH / 2 - 5} L${nx},${ny - 15}`}
+                                          fill="none" stroke="#9C27B0" strokeWidth={1.5} strokeOpacity={0.4} markerEnd="url(#state-arrow)" />
+                                      ))}
+                                    </g>
+                                  )
+                                })}
+                              </svg>
+                            )
+                          })()}
+                          {/* Flat list below for clickability */}
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, marginTop: 6 }}>
                             {selectedNode.states.map(s => (
-                              <code key={s} onClick={() => onFeatureClick(s)} style={{ fontSize: 9, padding: '1px 4px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#22d3ee', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', borderBottom: '1px dotted rgba(34,211,238,0.3)' }}>{s}</code>
+                              <code key={s} onClick={() => onFeatureClick(s)} style={{ fontSize: 8, padding: '1px 3px', background: '#0d0d0d', border: `1px solid ${EMBRY.border}`, color: '#9C27B0', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer' }}>{s}</code>
                             ))}
                           </div>
                         </div>
