@@ -620,6 +620,28 @@ app.post('/api/quarantine/:id/reextract', async (req, res) => {
   }
 })
 
+app.post('/api/quarantine/:id/convergence', async (req, res) => {
+  try {
+    const { pdf_path, ground_truth_path, max_rounds, target_score } = req.body as { pdf_path: string; ground_truth_path?: string; max_rounds?: number; target_score?: number }
+    if (!pdf_path || !pdf_path.startsWith('/mnt/storage12tb/')) return res.status(400).json({ error: 'pdf_path must start with /mnt/storage12tb/' })
+    const sanitizedPdf = pdf_path.replace(/'/g, "\\'")
+    const args = [`"${sanitizedPdf}"`]
+    if (ground_truth_path) args.push(`-g "${ground_truth_path.replace(/'/g, "\\'")}"`)
+    if (max_rounds) args.push(`--max-rounds ${Math.min(max_rounds, 10)}`)
+    if (target_score) args.push(`--target ${Math.min(target_score, 1.0)}`)
+    args.push('--json')
+    const cmd = `cd /home/graham/workspace/experiments/pi-mono/.pi/skills/pdf-lab && /home/graham/workspace/experiments/pi-mono/.pi/skills/pdf-lab/.venv/bin/python3 pdf_lab.py tune-gt ${args.join(' ')}`
+    const { execSync } = await import('child_process')
+    const result = execSync(cmd, { timeout: 120000 }).toString()
+    // Update quarantine entry with convergence result
+    const parsed = JSON.parse(result)
+    await proxyPost('/upsert', { collection: 'quarantine_entries', documents: [{ _key: req.params.id, status: parsed.converged ? 'converged' : 'convergence-halted', convergence_result: { converged: parsed.converged, best_score: parsed.best_score, rounds: parsed.rounds_run, preset_key: parsed.preset_key }, resolved_at: new Date().toISOString() }] })
+    res.json({ id: req.params.id, ...parsed })
+  } catch (e: any) {
+    res.status(500).json({ id: req.params.id, error: String(e.stderr || e.message).slice(0, 2000), status: 'failed' })
+  }
+})
+
 app.all('/api/memory/{*path}', (req, res) => {
   const memoryPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined

@@ -10,8 +10,8 @@ import type {
   BboxBlock,
   ReextractResult,
 } from '../types.ts'
-import BboxWorkspace from '../components/BboxWorkspace.tsx'
-import SpotReextract from '../components/SpotReextract.tsx'
+import BboxWorkspace from '../BboxWorkspace.tsx'
+import SpotReextract from '../SpotReextract.tsx'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -312,7 +312,8 @@ export default function QuarantineView() {
       const status = reasonFilter === 'all' ? 'pending' : reasonFilter
       const res = await fetch(`/api/quarantine?status=${status}`)
       const data = await res.json()
-      const mapped: QuarantineEntry[] = ((data.documents || []) as any[]).map((d: any) => ({
+      const docs = Array.isArray(data) ? data : (data.documents || [])
+      const mapped: QuarantineEntry[] = (docs as any[]).map((d: any) => ({
         id: d._key,
         filename: d.filename || d._key,
         path: d.path ?? '',
