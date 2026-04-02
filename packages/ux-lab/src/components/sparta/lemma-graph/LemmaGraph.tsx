@@ -208,9 +208,9 @@ export function LemmaGraph({ nodes, edges, onNodeClick, mode = 'full' }: LemmaGr
         <div style={{ display: 'flex', gap: 6 }}>
           {allFrameworks.map((fw) => {
             const color = EMBRY.fw[fw] ?? EMBRY.dim; const isActive = activeFrameworks.size === 0 || activeFrameworks.has(fw)
-            return <button key={fw} onClick={() => toggleFramework(fw)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', border: `1px solid ${isActive ? color : EMBRY.border}`, backgroundColor: isActive ? `${color}18` : 'transparent', opacity: isActive ? 1 : 0.4, transition: 'all 0.15s' }}><div style={glowDot(color, 6)} /><span style={{ fontSize: 9, color: isActive ? color : EMBRY.dim, fontWeight: 700 }}>{fw}</span></button>
+            return <button key={fw} data-qid={`lemma-fw-${fw}`} onClick={() => toggleFramework(fw)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', border: `1px solid ${isActive ? color : EMBRY.border}`, backgroundColor: isActive ? `${color}18` : 'transparent', opacity: isActive ? 1 : 0.4, transition: 'all 0.15s' }}><div style={glowDot(color, 6)} /><span style={{ fontSize: 9, color: isActive ? color : EMBRY.dim, fontWeight: 700 }}>{fw}</span></button>
           })}
-          {activeFrameworks.size > 0 && <button onClick={() => setActiveFrameworks(new Set())} style={{ fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, backgroundColor: 'transparent', color: EMBRY.dim }}>ALL</button>}
+          {activeFrameworks.size > 0 && <button data-qid="lemma-fw-reset" onClick={() => setActiveFrameworks(new Set())} style={{ fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, backgroundColor: 'transparent', color: EMBRY.dim }}>ALL</button>}
         </div>
       </div>
 
