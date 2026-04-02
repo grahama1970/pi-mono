@@ -129,24 +129,9 @@ def _run_via_code_runner(spec: dict) -> int:
     return proc.returncode
 
 
-def _run_direct(bench_cmd: str) -> int:
-    """Run benchmark directly as subprocess. Returns exit code."""
-    env = {**os.environ}
-    env.pop("VIRTUAL_ENV", None)  # DELETE not empty string
-    proc = subprocess.run(
-        ["bash", "-c", bench_cmd],
-        capture_output=True, text=True,
-        env=env,
-        timeout=600,
-    )
-    if proc.returncode != 0 and proc.stderr:
-        logger.warning(f"  stderr: {proc.stderr[-300:]}")
-    return proc.returncode
-
-
 async def _run_one(strategy: Strategy, data_dir: str, round_num: int,
                    use_code_runner: bool) -> StrategyResult:
-    """Run one strategy. Use /code-runner if available, else direct subprocess."""
+    """Run one strategy concurrently via async subprocess."""
     start = time.monotonic()
     result = StrategyResult(name=strategy.name)
     output_json = f"/tmp/thunderdome-{strategy.name}-r{round_num}.json"
@@ -157,16 +142,30 @@ async def _run_one(strategy: Strategy, data_dir: str, round_num: int,
         Path(output_json).unlink()
 
     bench_cmd = _build_benchmark_cmd(strategy, data_dir, output_json)
+    logger.info(f"[{strategy.name}] async: {bench_cmd[:120]}...")
 
-    if use_code_runner:
-        spec = _build_task_spec(strategy, data_dir, round_num)
-        logger.info(f"[{strategy.name}] via /code-runner (max 3 fix rounds)")
-        loop = asyncio.get_event_loop()
-        result.exit_code = await loop.run_in_executor(None, _run_via_code_runner, spec)
-    else:
-        logger.info(f"[{strategy.name}] direct: {bench_cmd[:120]}...")
-        loop = asyncio.get_event_loop()
-        result.exit_code = await loop.run_in_executor(None, _run_direct, bench_cmd)
+    env = {**os.environ}
+    env.pop("VIRTUAL_ENV", None)
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "bash", "-c", bench_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            env=env,
+        )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=600)
+        result.exit_code = proc.returncode or 0
+        if result.exit_code != 0 and stderr:
+            logger.warning(f"  [{strategy.name}] stderr: {stderr.decode()[-300:]}")
+    except asyncio.TimeoutError:
+        logger.warning(f"  [{strategy.name}] timed out after 600s")
+        result.exit_code = -1
+        result.error = "timeout"
+    except Exception as e:
+        logger.warning(f"  [{strategy.name}] failed: {e}")
+        result.exit_code = -1
+        result.error = str(e)
 
     result.duration_ms = int((time.monotonic() - start) * 1000)
 
@@ -191,16 +190,12 @@ def dispatch_strategies(
     round_num: int,
     use_code_runner: bool = False,
 ) -> list[StrategyResult]:
-    """Run N strategies concurrently. Direct subprocess by default — faster and more reliable."""
-    use_cr = use_code_runner and (CODE_RUNNER / "run.sh").exists()
-    if use_cr:
-        logger.info(f"Composing /code-runner for self-improvement loop")
-    else:
-        logger.info(f"Direct subprocess dispatch")
+    """Run N strategies concurrently via async subprocess. All backbones race in parallel."""
+    logger.info(f"Dispatching {len(strategies)} strategies concurrently (async subprocess)")
 
     async def _run_all():
         return await asyncio.gather(*[
-            _run_one(s, data_dir, round_num, use_cr) for s in strategies
+            _run_one(s, data_dir, round_num, False) for s in strategies
         ])
 
     results = asyncio.run(_run_all())
