@@ -462,7 +462,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
   if (!projects.length && !showCreateDialog) return (
     <div style={{ background: EMBRY.bg, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
       <div style={{ color: EMBRY.dim, fontSize: 13 }}>No classifier projects found.</div>
-      <button onClick={() => setShowCreateDialog(true)} style={{
+      <button data-qid="clf:create" onClick={() => setShowCreateDialog(true)} style={{
         background: EMBRY.accent, border: 'none', color: EMBRY.white,
         padding: '10px 24px', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer',
       }}>+ CREATE FIRST CLASSIFIER</button>
@@ -481,7 +481,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
           filterModality={filterModality} setFilterModality={setFilterModality}
           triggerContextMenu={triggerContextMenu} />
         <div style={{ padding: 12, borderTop: `1px solid ${EMBRY.border}`, marginTop: 'auto' }}>
-          <button style={{
+          <button data-qid="clf:btn" style={{
             width: '100%', background: 'rgba(255,255,255,0.03)', border: `1px dashed ${EMBRY.border}`,
             color: EMBRY.dim, padding: 8, borderRadius: 4, fontSize: 10, fontWeight: 700, cursor: 'pointer',
           }} onClick={() => setShowCreateDialog(true)}>+ NEW CLASSIFIER</button>
@@ -495,7 +495,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
           <div onClick={e => e.stopPropagation()} style={{ ...card, width: 480, padding: 32 }}>
             <div style={{ ...heading, marginBottom: 16 }}>New Classifier Project</div>
             <div style={{ ...label, marginBottom: 6 }}>PROJECT NAME</div>
-            <input value={newProjectName} onChange={e => setNewProjectName(e.target.value)}
+            <input data-qid="clf:project-name" value={newProjectName} onChange={e => setNewProjectName(e.target.value)}
               placeholder="e.g. email-spam-detection, sentiment-analysis"
               autoFocus
               style={{
@@ -504,7 +504,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
                 fontFamily: MONO, outline: 'none', boxSizing: 'border-box',
               }} />
             <div style={{ ...label, marginBottom: 6, marginTop: 14 }}>WHAT SHOULD THIS CLASSIFIER DO?</div>
-            <textarea value={newProjectGoal} onChange={e => setNewProjectGoal(e.target.value)}
+            <textarea data-qid="clf:project-goal" value={newProjectGoal} onChange={e => setNewProjectGoal(e.target.value)}
               placeholder="e.g. Classify customer emails as spam or not spam. Detect phishing attempts in incoming messages."
               rows={3}
               style={{
@@ -515,7 +515,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
             <div style={{ display: 'flex', gap: 12, marginTop: 14 }}>
               <div style={{ flex: 1 }}>
                 <div style={{ ...label, marginBottom: 6 }}>MODALITY</div>
-                <select value={newProjectModality} onChange={e => setNewProjectModality(e.target.value)}
+                <select data-qid="clf:modality" value={newProjectModality} onChange={e => setNewProjectModality(e.target.value)}
                   style={{ ...filterSelect, width: '100%', padding: '10px 12px' }}>
                   <option value="text">Text</option>
                   <option value="vision">Vision (images)</option>
@@ -527,9 +527,9 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
               The agent will run /dogpile to research backbones, search HuggingFace for training data, and seed the project.
             </div>
             <div style={{ display: 'flex', gap: 12, marginTop: 20, justifyContent: 'flex-end' }}>
-              <button onClick={() => setShowCreateDialog(false)}
+              <button data-qid="clf:cancel" onClick={() => setShowCreateDialog(false)}
                 style={{ ...btnOutline, padding: '8px 16px' }}>CANCEL</button>
-              <RunButton onClick={createProject} disabled={!newProjectName.trim() || creating}>
+              <RunButton data-qid="clf:create" onClick={createProject} disabled={!newProjectName.trim() || creating}>
                 {creating ? 'CREATING...' : 'CREATE PROJECT'}
               </RunButton>
             </div>
@@ -721,7 +721,7 @@ function ResearchTab({ projectId, gateInfo }: { projectId: string; gateInfo?: an
             {items.map(item => {
               const isActive = item.idx === selectedIdx
               return (
-                <button
+                <button data-qid="clf-research:btn"
                   key={item.idx}
                   onClick={() => setSelectedIdx(item.idx)}
                   style={{
@@ -850,7 +850,7 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
                 Searches HuggingFace → GitHub → conversation transcripts until sufficient or exhausted
               </div>
             </div>
-            <button
+            <button data-qid="clf-data:btn"
               onClick={async () => {
                 setEnriching(true)
                 setEnrichResult(null)
@@ -948,7 +948,7 @@ function DataTab({ project, onGateChange }: { project: Project; onGateChange: (p
             <div style={{ marginTop: 16, fontSize: 10, color: EMBRY.red, fontWeight: 700 }}>
               Tune and Train tabs are BLOCKED until data gate passes.
             </div>
-            <button style={{
+            <button data-qid="clf-data:btn" style={{
               marginTop: 16, background: 'none', border: `1px solid ${EMBRY.red}`,
               color: EMBRY.red, padding: '8px 16px', borderRadius: 4, fontWeight: 900, cursor: 'pointer', fontSize: 10,
             }}>AUGMENT DATASET</button>
@@ -1142,7 +1142,7 @@ function NextStepsTeaser({ projectId }: { projectId: string }) {
               dangerouslySetInnerHTML={{ __html: marked.parse(firstHypothesis) as string }}
             />
             {hasMore && (
-              <button
+              <button data-qid="clf-data:btn"
                 onClick={() => setShowModal(true)}
                 style={{
                   background: 'none', border: `1px solid ${EMBRY.accent}44`, borderRadius: 4,
@@ -1187,7 +1187,7 @@ function NextStepsTeaser({ projectId }: { projectId: string }) {
               <span style={{ fontSize: 9, color: EMBRY.dim, marginLeft: 'auto' }}>
                 {ns.strategies_exhausted.length} strategies exhausted | gap: {ns.gap.toFixed(3)}
               </span>
-              <button
+              <button data-qid="clf-data:btn"
                 onClick={() => setShowModal(false)}
                 style={{
                   background: 'none', border: 'none', color: EMBRY.dim,
@@ -1504,18 +1504,18 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: EMBRY.bgDeep, borderRadius: 4, border: `1px solid ${EMBRY.border}` }}>
             <Search size={11} color={EMBRY.dim} />
-            <input value={search} onChange={e => setSearch(e.target.value)}
+            <input data-qid="clf-data:search" value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search files..." aria-label="Search dataset files"
               style={{ background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 10, fontFamily: MONO, width: 120 }} />
           </div>
-          <select value={splitFilter} onChange={e => { setSplitFilter(e.target.value); setPagination(p => ({ ...p, pageIndex: 0 })) }}
+          <select data-qid="clf-data:split-filter" value={splitFilter} onChange={e => { setSplitFilter(e.target.value); setPagination(p => ({ ...p, pageIndex: 0 })) }}
             style={filterSelect}>
             <option value="">All splits</option>
             <option value="train">Train</option>
             <option value="val">Val</option>
             <option value="test">Test</option>
           </select>
-          <select value={classFilter} onChange={e => { setClassFilter(e.target.value); setPagination(p => ({ ...p, pageIndex: 0 })) }}
+          <select data-qid="clf-data:class-filter" value={classFilter} onChange={e => { setClassFilter(e.target.value); setPagination(p => ({ ...p, pageIndex: 0 })) }}
             style={filterSelect}>
             <option value="">All classes</option>
             {classes.map(c => <option key={c} value={c}>{c}</option>)}
@@ -1564,9 +1564,9 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
             Page {pagination.pageIndex + 1} of {totalPages}
           </span>
           <div style={{ display: 'flex', gap: 6 }}>
-            <button onClick={() => setPagination(p => ({ ...p, pageIndex: Math.max(0, p.pageIndex - 1) }))}
+            <button data-qid="clf-data:btn" onClick={() => setPagination(p => ({ ...p, pageIndex: Math.max(0, p.pageIndex - 1) }))}
               disabled={pagination.pageIndex === 0} style={paginationBtn}>← Prev</button>
-            <button onClick={() => setPagination(p => ({ ...p, pageIndex: Math.min(totalPages - 1, p.pageIndex + 1) }))}
+            <button data-qid="clf-data:btn" onClick={() => setPagination(p => ({ ...p, pageIndex: Math.min(totalPages - 1, p.pageIndex + 1) }))}
               disabled={pagination.pageIndex >= totalPages - 1} style={paginationBtn}>Next →</button>
           </div>
         </div>
@@ -1730,8 +1730,8 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
           </div>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <button style={{ ...btnOutline, borderColor: EMBRY.amber + '66', color: EMBRY.amber }}>CONTINUE SEARCH</button>
-          <RunButton onClick={() => {}} disabled={!best}>PROMOTE</RunButton>
+          <button data-qid="clf-train:btn" style={{ ...btnOutline, borderColor: EMBRY.amber + '66', color: EMBRY.amber }}>CONTINUE SEARCH</button>
+          <RunButton data-qid="clf-train:promote" onClick={() => {}} disabled={!best}>PROMOTE</RunButton>
         </div>
       </div>
 
@@ -1806,7 +1806,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
               style={rerunInputStyle}
             />
           </div>
-          <button
+          <button data-qid="clf-train:btn"
             onClick={() => {
               if (rerunBackbones.length === 0 || pipelineRunning) return
               setPipelineRunning(true)
@@ -1893,7 +1893,7 @@ function TrainTab({ project, rows }: { project: Project; rows: TrainingRow[] }) 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <div style={label}>LIVE TRAINING LEADERBOARD</div>
         {rows.some(r => r.status === 'fail') && (
-          <button
+          <button data-qid="clf-train:btn"
             onClick={() => {
               const failed = rows.filter(r => r.status === 'fail').map(r => r.backbone)
               if (!failed.length) return
@@ -2109,7 +2109,7 @@ function FailureAnalysisPanel({ project, autoExpand = false }: { project: Projec
   return (
     <div style={{ marginBottom: 28 }}>
       <style>{MD_CSS}</style>
-      <button
+      <button data-qid="clf-train:btn"
         onClick={() => setExpanded(!expanded)}
         style={{
           ...card, width: '100%', cursor: 'pointer', textAlign: 'left',
@@ -2684,7 +2684,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
           <div style={{ marginBottom: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 8, color: EMBRY.muted, fontWeight: 700 }}>LOAD FROM ROUND:</span>
-              <button
+              <button data-qid="clf-tune:btn"
                 onClick={loadActive}
                 style={{
                   ...roundPillStyle,
@@ -2696,7 +2696,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
                 ACTIVE
               </button>
               {rounds.map(r => (
-                <button
+                <button data-qid="clf-tune:btn"
                   key={r.round}
                   onClick={() => loadRound(r)}
                   title={`Strategy: ${r.strategy} | F1: ${r.f1.toFixed(3)}`}
@@ -2784,7 +2784,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
 
         {/* Action buttons */}
         <div style={{ display: 'flex', gap: 10, marginTop: 16, paddingTop: 12, borderTop: `1px solid ${EMBRY.border}` }}>
-          <button
+          <button data-qid="clf-tune:btn"
             onClick={save}
             disabled={!dirty || saving}
             style={{
@@ -2798,7 +2798,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
               ? viewingRound != null ? `APPLY R${viewingRound} AS NEXT RUN` : 'SAVE OVERRIDES'
               : 'NO CHANGES'}
           </button>
-          <button onClick={loadActive} style={{ ...btnOutline, fontSize: 10 }}>RESET</button>
+          <button data-qid="clf-tune:reset" onClick={loadActive} style={{ ...btnOutline, fontSize: 10 }}>RESET</button>
         </div>
       </div>
 
@@ -2923,9 +2923,9 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
             </span>
           )}
           {selected.size > 0 && (
-            <button style={{ ...btnOutline, fontSize: 9, padding: '4px 10px' }} onClick={() => setSelected(new Set())}>CLEAR</button>
+            <button data-qid="clf-benchmark:export" style={{ ...btnOutline, fontSize: 9, padding: '4px 10px' }} onClick={() => setSelected(new Set())}>CLEAR</button>
           )}
-          <button style={btnOutline}>EXPORT</button>
+          <button data-qid="clf-benchmark:btn" style={btnOutline}>EXPORT</button>
         </div>
       </div>
 
@@ -2935,7 +2935,7 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
           <thead>
             <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
               <th style={{ ...thStyle, width: 32 }}>
-                <input type="checkbox" checked={selected.size === data.length && data.length > 0}
+                <input data-qid="clf-benchmark:checkbox" type="checkbox" checked={selected.size === data.length && data.length > 0}
                   onChange={() => setSelected(prev => prev.size === data.length ? new Set() : new Set(data.map(d => d.name)))}
                   style={{ accentColor: EMBRY.accent }} />
               </th>
@@ -2967,7 +2967,7 @@ function BenchmarkTab({ project, data: propData }: { project: Project; data?: Be
                   transition: 'opacity 0.15s',
                 }}>
                   <td style={{ ...tdStyle, width: 32 }} onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={isSelected} onChange={() => toggleSelect(b.name)} style={{ accentColor: EMBRY.accent }} />
+                    <input data-qid="clf-benchmark:checkbox" type="checkbox" checked={isSelected} onChange={() => toggleSelect(b.name)} style={{ accentColor: EMBRY.accent }} />
                   </td>
                   <td style={{ ...tdStyle, fontWeight: 700, color: i === 0 ? EMBRY.green : EMBRY.white }}>
                     {i === 0 && '★ '}{b.name}
@@ -3217,10 +3217,10 @@ function EvaluateTab({ project }: { project: Project }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <div style={{ ...label, fontSize: 11 }}>TEST SUITE — {totalQ} questions</div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={() => setShowImport(!showImport)} style={{ ...btnOutline, fontSize: 9, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <button data-qid="clf-eval:import" onClick={() => setShowImport(!showImport)} style={{ ...btnOutline, fontSize: 9, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4 }}>
             <Upload size={10} /> IMPORT
           </button>
-          <button
+          <button data-qid="clf-eval:btn"
             onClick={runEval}
             disabled={running || totalQ === 0}
             style={{
@@ -3241,7 +3241,7 @@ function EvaluateTab({ project }: { project: Project }) {
         <div style={{ ...card, marginBottom: 16, padding: 16 }}>
           <div style={{ display: 'flex', gap: 12, marginBottom: 10, alignItems: 'center' }}>
             <div style={label}>IMPORT QUESTIONS</div>
-            <select value={importFormat} onChange={e => setImportFormat(e.target.value as 'csv' | 'jsonl')} style={filterSelect}>
+            <select data-qid="clf-eval:import-format" value={importFormat} onChange={e => setImportFormat(e.target.value as 'csv' | 'jsonl')} style={filterSelect}>
               <option value="jsonl">JSONL (one JSON per line)</option>
               <option value="csv">CSV (text,expected)</option>
             </select>
@@ -3251,7 +3251,7 @@ function EvaluateTab({ project }: { project: Project }) {
               ? 'Each line: {"text": "...", "expected": "Business"} — also accepts "class", "label", "question", "input" field names'
               : 'First row is header. Columns: text,expected'}
           </div>
-          <textarea
+          <textarea data-qid="clf-eval:import-data"
             value={importData}
             onChange={e => setImportData(e.target.value)}
             placeholder={importFormat === 'jsonl'
@@ -3265,10 +3265,10 @@ function EvaluateTab({ project }: { project: Project }) {
             }}
           />
           <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <button onClick={importQuestions} disabled={saving || !importData.trim()} style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px' }}>
+            <button data-qid="clf-eval:cancel" onClick={importQuestions} disabled={saving || !importData.trim()} style={{ ...btnOutline, borderColor: EMBRY.accent + '66', color: EMBRY.accent, fontSize: 9, padding: '4px 12px' }}>
               {saving ? 'IMPORTING...' : 'IMPORT'}
             </button>
-            <button onClick={() => setShowImport(false)} style={{ ...btnOutline, fontSize: 9, padding: '4px 12px' }}>CANCEL</button>
+            <button data-qid="clf-eval:cancel" onClick={() => setShowImport(false)} style={{ ...btnOutline, fontSize: 9, padding: '4px 12px' }}>CANCEL</button>
           </div>
         </div>
       )}
@@ -3295,7 +3295,7 @@ function EvaluateTab({ project }: { project: Project }) {
                   <td style={{ ...tdStyle, color: EMBRY.muted, width: 40 }}>{i + 1}</td>
                   <td style={tdStyle}>
                     {isEditing ? (
-                      <input value={editText} onChange={e => setEditText(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveEdit(q.id)}
+                      <input data-qid="clf-eval:edit-text" value={editText} onChange={e => setEditText(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveEdit(q.id)}
                         style={{ ...rerunInputStyle, fontSize: 10, padding: '4px 8px' }} autoFocus />
                     ) : (
                       <span style={{ fontSize: 10 }}>{q.text}</span>
@@ -3304,11 +3304,11 @@ function EvaluateTab({ project }: { project: Project }) {
                   <td style={{ ...tdStyle, width: 120 }}>
                     {isEditing ? (
                       classes.length > 0 ? (
-                        <select value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...filterSelect, fontSize: 10 }}>
+                        <select data-qid="clf-eval:expected-class" value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...filterSelect, fontSize: 10 }}>
                           {classes.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                       ) : (
-                        <input value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...rerunInputStyle, fontSize: 10, padding: '4px 8px' }} />
+                        <input data-qid="clf-eval:edit-expected" value={editExpected} onChange={e => setEditExpected(e.target.value)} style={{ ...rerunInputStyle, fontSize: 10, padding: '4px 8px' }} />
                       )
                     ) : (
                       <span style={{ fontSize: 10, fontFamily: MONO }}>{q.expected}</span>
@@ -3331,13 +3331,13 @@ function EvaluateTab({ project }: { project: Project }) {
                   <td style={{ ...tdStyle, width: 60 }}>
                     <div style={{ display: 'flex', gap: 4 }}>
                       {isEditing ? (
-                        <button onClick={() => saveEdit(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: EMBRY.green, fontSize: 10, fontWeight: 700 }}>SAVE</button>
+                        <button data-qid="clf-eval:save" onClick={() => saveEdit(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: EMBRY.green, fontSize: 10, fontWeight: 700 }}>SAVE</button>
                       ) : (
                         <>
-                          <button onClick={() => { setEditingId(q.id); setEditText(q.text); setEditExpected(q.expected) }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
+                          <button data-qid="clf-eval:edit-row" onClick={() => { setEditingId(q.id); setEditText(q.text); setEditExpected(q.expected) }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
                             <Pencil size={10} color={EMBRY.dim} />
                           </button>
-                          <button onClick={() => deleteQuestion(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
+                          <button data-qid="clf-eval:edit-row" onClick={() => deleteQuestion(q.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
                             <Trash2 size={10} color={EMBRY.dim} />
                           </button>
                         </>
@@ -3374,7 +3374,7 @@ function EvaluateTab({ project }: { project: Project }) {
         <div style={{ width: 150 }}>
           <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 4 }}>EXPECTED CLASS</div>
           {classes.length > 0 ? (
-            <select value={newExpected} onChange={e => setNewExpected(e.target.value)} style={{ ...filterSelect, width: '100%', padding: '8px 10px' }}>
+            <select data-qid="clf-eval:expected-class" value={newExpected} onChange={e => setNewExpected(e.target.value)} style={{ ...filterSelect, width: '100%', padding: '8px 10px' }}>
               <option value="">Select...</option>
               {classes.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
@@ -3387,7 +3387,7 @@ function EvaluateTab({ project }: { project: Project }) {
             />
           )}
         </div>
-        <button onClick={addQuestion} disabled={!newText.trim() || !newExpected.trim()} style={{
+        <button data-qid="clf-eval:btn" onClick={addQuestion} disabled={!newText.trim() || !newExpected.trim()} style={{
           background: newText.trim() && newExpected.trim() ? EMBRY.accent : 'transparent',
           border: `1px solid ${newText.trim() && newExpected.trim() ? EMBRY.accent : EMBRY.border}`,
           color: newText.trim() && newExpected.trim() ? '#000' : EMBRY.dim,
@@ -3604,7 +3604,7 @@ function PromoteTab({ project }: { project: Project }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
                 <div style={{ fontSize: 9, color: EMBRY.muted, marginBottom: 4 }}>FORMAT</div>
-                <select
+                <select data-qid="clf-promote:export-format"
                   value={exportFormat}
                   onChange={e => setExportFormat(e.target.value)}
                   style={filterSelect}
@@ -3649,7 +3649,7 @@ function PromoteTab({ project }: { project: Project }) {
           return (
             <div style={{ ...panel, textAlign: 'left', marginBottom: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showModelCard ? 12 : 0 }}>
-                <button
+                <button data-qid="clf-promote:btn"
                   onClick={() => setShowModelCard(!showModelCard)}
                   style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, padding: 0 }}
                 >
@@ -3659,7 +3659,7 @@ function PromoteTab({ project }: { project: Project }) {
                 </button>
                 {showModelCard && (
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button
+                    <button data-qid="clf-promote:btn"
                       onClick={() => {
                         if (editingCard) {
                           setEditingCard(false)
@@ -3671,7 +3671,7 @@ function PromoteTab({ project }: { project: Project }) {
                       }}
                       style={{ ...btnOutline, fontSize: 8, padding: '2px 8px', borderColor: editingCard ? EMBRY.accent + '66' : EMBRY.border, color: editingCard ? EMBRY.accent : EMBRY.dim }}
                     >{editingCard ? 'PREVIEW' : 'EDIT'}</button>
-                    <button
+                    <button data-qid="clf-promote:btn"
                       onClick={() => navigator.clipboard?.writeText(currentMd)}
                       style={{ ...btnOutline, fontSize: 8, padding: '2px 8px' }}
                     >COPY</button>
@@ -3680,7 +3680,7 @@ function PromoteTab({ project }: { project: Project }) {
               </div>
               {showModelCard && (
                 editingCard ? (
-                  <textarea
+                  <textarea data-qid="clf-promote:model-card-editor"
                     value={cardDraft}
                     onChange={e => setCardDraft(e.target.value)}
                     style={{
@@ -3755,7 +3755,7 @@ function PromoteTab({ project }: { project: Project }) {
                       </div>
                       {/* Action button for the next incomplete step */}
                       {isNext && step.id === 'export' && (
-                        <button
+                        <button data-qid="clf-promote:btn"
                           onClick={() => {
                             fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
                               method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -3766,7 +3766,7 @@ function PromoteTab({ project }: { project: Project }) {
                         >EXPORT MODEL</button>
                       )}
                       {isNext && step.id === 'registry' && (
-                        <button
+                        <button data-qid="clf-promote:btn"
                           onClick={() => {
                             fetch(`${API}/projects/classifier-lab/promote/${project.id}`, {
                               method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -3795,7 +3795,7 @@ function PromoteTab({ project }: { project: Project }) {
                 </div>
               )}
 
-              <RunButton onClick={promoteModel} disabled={promoting || !allDone}>
+              <RunButton data-qid="clf-promote:promote" onClick={promoteModel} disabled={promoting || !allDone}>
                 {promoting ? 'PROMOTING...' : allDone ? 'PROMOTE TO PRODUCTION' : 'COMPLETE STEPS ABOVE FIRST'}
               </RunButton>
               {promoteStatus.kind !== 'idle' && (
