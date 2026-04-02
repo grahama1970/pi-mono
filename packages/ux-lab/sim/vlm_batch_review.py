@@ -43,7 +43,8 @@ SCILLM_URL = os.environ.get("SCILLM_API_BASE", "http://localhost:4001") + "/v1/c
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 
 # Use Gemini Flash for VLM — multimodal, 1M context, cheaper than Qwen3-VL
-SCILLM_MODEL = os.environ.get("SCILLM_VLM_MODEL", "text-gemini")
+# Gemini 3 Flash Preview (thinking model, 1M context) — more critical than Gemini 2.5
+SCILLM_MODEL = os.environ.get("SCILLM_VLM_MODEL", "text-gemini-3")
 
 PERSONA_CONTEXT = {
     "tim-blazytko": (
@@ -324,20 +325,24 @@ def review(
     concurrency: int = typer.Option(4, help="Max concurrent VLM calls"),
     votes: int = typer.Option(1, help="Number of VLM calls per review, take median score"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without calling VLM"),
+    manifest_file: str = typer.Option(None, "--manifest", help="Path to manifest JSON (default: persona-review-manifest.json)"),
 ):
     """Run VLM batch review of all captured screenshots."""
-    if not MANIFEST_PATH.exists():
-        logger.error("Manifest not found: {}", MANIFEST_PATH)
+    manifest_path = Path(manifest_file) if manifest_file else MANIFEST_PATH
+    if not manifest_path.exists():
+        logger.error("Manifest not found: {}", manifest_path)
         raise typer.Exit(1)
 
-    manifest = json.loads(MANIFEST_PATH.read_text())
+    manifest = json.loads(manifest_path.read_text())
     target_reviews = manifest["reviews"]
     if persona:
         target_reviews = [r for r in target_reviews if r["persona"] == persona]
     if group:
         target_reviews = [r for r in target_reviews if r["group"] == group]
 
-    available = {d.name for d in CAPTURES_ROOT.iterdir() if d.is_dir()} if CAPTURES_ROOT.exists() else set()
+    # Use captures_dir from manifest if specified, otherwise default
+    captures_root = UX_LAB / manifest.get("captures_dir", "captures/persona-reviews")
+    available = {d.name for d in captures_root.iterdir() if d.is_dir()} if captures_root.exists() else set()
     target_reviews = [
         r for r in target_reviews
         if r.get("mode", "screenshot") == "code" or r["group"] in available
@@ -395,7 +400,7 @@ def review(
             update_manifest(manifest, r["persona"], r["group"], result, round_num)
 
     asyncio.run(run_all())
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2))
+    manifest_path.write_text(json.dumps(manifest, indent=2))
     write_report(manifest)
 
     reviewed = [r for r in manifest["reviews"] if r.get("status") == "reviewed"]
