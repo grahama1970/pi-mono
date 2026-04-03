@@ -1,0 +1,749 @@
+version: 1
+kind: test-interactions-manifest
+metadata:
+  title: "Datalake Explorer — Full Interaction Test Manifest"
+  app: datalake-explorer
+  url: "http://localhost:3002/#datalake-explorer"
+  created: "2026-04-02"
+  total_tests: 95
+  categories:
+    navigation: 10
+    quarantine_workflow: 15
+    corpus: 12
+    extraction_review: 12
+    bbox_workspace: 12
+    traceability: 5
+    cascade: 4
+    quality_metrics: 4
+    monitor: 3
+    requirements: 4
+    threat_matrix: 6
+    chat: 4
+    evidence_case: 4
+
+# =============================================================================
+# NAVIGATION (10 tests)
+# =============================================================================
+tests:
+  - id: nav-tab-overview
+    action: DATALAKE_TAB_OVERVIEW
+    selector: "[data-qs-action='DATALAKE_TAB_OVERVIEW']"
+    interaction: click
+    precondition: "Any tab active"
+    expected: "Overview tab becomes active, shows corpus stats"
+    category: navigation
+
+  - id: nav-tab-corpus
+    action: DATALAKE_TAB_CORPUS
+    selector: "[data-qs-action='DATALAKE_TAB_CORPUS']"
+    interaction: click
+    expected: "Corpus tab shows collection table with document list"
+    category: navigation
+
+  - id: nav-tab-extraction
+    action: DATALAKE_TAB_EXTRACTION
+    selector: "[data-qs-action='DATALAKE_TAB_EXTRACTION']"
+    interaction: click
+    expected: "Extraction tab loads"
+    category: navigation
+
+  - id: nav-tab-requirements
+    action: DATALAKE_TAB_REQUIREMENTS
+    selector: "[data-qs-action='DATALAKE_TAB_REQUIREMENTS']"
+    interaction: click
+    expected: "Requirements tab shows section list"
+    category: navigation
+
+  - id: nav-tab-traceability
+    action: DATALAKE_TAB_TRACEABILITY
+    selector: "[data-qs-action='DATALAKE_TAB_TRACEABILITY']"
+    interaction: click
+    expected: "Traceability tab shows verification groups"
+    category: navigation
+
+  - id: nav-tab-cascade
+    action: DATALAKE_TAB_CASCADE
+    selector: "[data-qs-action='DATALAKE_TAB_CASCADE']"
+    interaction: click
+    expected: "Cascade tab shows decision point visualizations"
+    category: navigation
+
+  - id: nav-tab-metrics
+    action: DATALAKE_TAB_METRICS
+    selector: "[data-qs-action='DATALAKE_TAB_METRICS']"
+    interaction: click
+    expected: "Metrics tab shows quality gauges and trend charts"
+    category: navigation
+
+  - id: nav-tab-quarantine
+    action: DATALAKE_TAB_QUARANTINE
+    selector: "[data-qs-action='DATALAKE_TAB_QUARANTINE']"
+    interaction: click
+    expected: "Quarantine tab shows entries with action buttons"
+    category: navigation
+
+  - id: nav-scope-select
+    interaction: click
+    precondition: "Left pane visible with scopes"
+    expected: "Clicking a scope filters the document list"
+    category: navigation
+
+  - id: nav-doc-select
+    interaction: click
+    precondition: "Documents visible in left pane"
+    expected: "Clicking a document selects it, detail pane updates"
+    category: navigation
+
+  # ===========================================================================
+  # QUARANTINE WORKFLOW (15 tests)
+  # ===========================================================================
+  - id: quar-approve
+    action: QUARANTINE_APPROVE_ENTRY
+    selector: "[data-qs-action='QUARANTINE_APPROVE_ENTRY']"
+    interaction: click
+    precondition: "Quarantine tab, entry selected"
+    expected: "POST /api/quarantine/:id/action with action=approve"
+    category: quarantine_workflow
+
+  - id: quar-reject
+    action: QUARANTINE_REJECT_ENTRY
+    selector: "[data-qs-action='QUARANTINE_REJECT_ENTRY']"
+    interaction: click
+    precondition: "Quarantine tab, entry selected"
+    expected: "POST /api/quarantine/:id/action with action=reject"
+    category: quarantine_workflow
+
+  - id: quar-reextract
+    action: QUARANTINE_SELECT_STRATEGY
+    selector: "[data-qs-action='QUARANTINE_SELECT_STRATEGY']"
+    interaction: click
+    precondition: "Quarantine tab, entry selected"
+    expected: "Opens re-extraction strategy selector"
+    category: quarantine_workflow
+
+  - id: quar-diagnose
+    action: QUARANTINE_DIAGNOSE
+    selector: "[data-qs-action='QUARANTINE_DIAGNOSE']"
+    interaction: click
+    precondition: "Quarantine tab, entry selected"
+    expected: "POST /api/quarantine/:id/diagnose, shows TOC comparison"
+    category: quarantine_workflow
+
+  - id: quar-converge
+    action: QUARANTINE_CONVERGE
+    selector: "[data-qs-action='QUARANTINE_CONVERGE']"
+    interaction: click
+    precondition: "Quarantine tab, entry selected"
+    expected: "Triggers convergence loop via pdf_lab tune-gt"
+    category: quarantine_workflow
+
+  - id: quar-toggle-section
+    action: QUARANTINE_TOGGLE_SECTION
+    selector: "[data-qs-action='QUARANTINE_TOGGLE_SECTION']"
+    interaction: click
+    expected: "Expands/collapses quarantine section group"
+    category: quarantine_workflow
+
+  - id: quar-filter
+    action: FILTER_QUARANTINE
+    selector: "[data-qs-action='FILTER_QUARANTINE']"
+    interaction: click
+    expected: "Filters quarantine entries by reason (all/low-confidence/error/etc)"
+    category: quarantine_workflow
+
+  - id: quar-select-all
+    action: QUARANTINE_SELECT_ALL
+    selector: "[data-qs-action='QUARANTINE_SELECT_ALL']"
+    interaction: click
+    expected: "Selects all visible quarantine entries for batch action"
+    category: quarantine_workflow
+
+  - id: quar-toggle-chat
+    action: QUARANTINE_TOGGLE_CHAT
+    selector: "[data-qs-action='QUARANTINE_TOGGLE_CHAT']"
+    interaction: click
+    expected: "Opens/closes interview chat panel for quarantined entry"
+    category: quarantine_workflow
+
+  - id: quar-close-chat
+    action: QUARANTINE_CLOSE_CHAT
+    selector: "[data-qs-action='QUARANTINE_CLOSE_CHAT']"
+    interaction: click
+    precondition: "Chat panel open"
+    expected: "Closes interview chat panel"
+    category: quarantine_workflow
+
+  - id: quar-choose-method
+    action: QUARANTINE_CHOOSE_METHOD
+    selector: "[data-qs-action='QUARANTINE_CHOOSE_METHOD']"
+    interaction: click
+    expected: "Selects resolution method for quarantine entry"
+    category: quarantine_workflow
+
+  - id: quar-search
+    action: QUARANTINE_SEARCH
+    selector: "[data-qs-action='QUARANTINE_SEARCH']"
+    interaction: type
+    input: "test query"
+    expected: "Filters quarantine entries by search text"
+    category: quarantine_workflow
+
+  - id: quar-batch-approve
+    action: QUARANTINE_APPROVE
+    selector: "[data-qs-action='QUARANTINE_APPROVE']"
+    interaction: click
+    precondition: "Multiple entries selected via select-all"
+    expected: "Batch approves all selected entries"
+    category: quarantine_workflow
+
+  - id: quar-batch-reject
+    action: QUARANTINE_REJECT
+    selector: "[data-qs-action='QUARANTINE_REJECT']"
+    interaction: click
+    precondition: "Multiple entries selected"
+    expected: "Batch rejects all selected entries"
+    category: quarantine_workflow
+
+  - id: quar-metrics-button
+    action: METRICS_QUARANTINE_BUTTON
+    selector: "[data-qs-action='METRICS_QUARANTINE_BUTTON']"
+    interaction: click
+    precondition: "Metrics tab, integrity issues visible"
+    expected: "Creates quarantine entries from flagged metrics issues"
+    category: quarantine_workflow
+
+  # ===========================================================================
+  # CORPUS (12 tests)
+  # ===========================================================================
+  - id: corpus-select-entry
+    action: CORPUS_SELECT_ENTRY
+    selector: "[data-qs-action='CORPUS_SELECT_ENTRY']"
+    interaction: click
+    expected: "Selects corpus document, opens detail pane"
+    category: corpus
+
+  - id: corpus-sort-column
+    action: CORPUS_SORT_COLUMN
+    selector: "[data-qs-action='CORPUS_SORT_COLUMN']"
+    interaction: click
+    expected: "Sorts table by clicked column header"
+    category: corpus
+
+  - id: corpus-clear-filter
+    action: CORPUS_CLEAR_SECTOR_FILTER
+    selector: "[data-qs-action='CORPUS_CLEAR_SECTOR_FILTER']"
+    interaction: click
+    expected: "Clears all active sector filters"
+    category: corpus
+
+  - id: corpus-toggle-filter-chip
+    action: CORPUS_TOGGLE_FILTER_CHIP
+    selector: "[data-qs-action='CORPUS_TOGGLE_FILTER_CHIP']"
+    interaction: click
+    expected: "Toggles a filter chip on/off"
+    category: corpus
+
+  - id: corpus-close-detail
+    action: CORPUS_CLOSE_DETAIL
+    selector: "[data-qs-action='CORPUS_CLOSE_DETAIL']"
+    interaction: click
+    precondition: "Detail pane open"
+    expected: "Closes the document detail pane"
+    category: corpus
+
+  - id: corpus-close-error
+    action: CORPUS_CLOSE_ERROR_PANE
+    selector: "[data-qs-action='CORPUS_CLOSE_ERROR_PANE']"
+    interaction: click
+    precondition: "Error pane visible"
+    expected: "Closes the error display pane"
+    category: corpus
+
+  - id: corpus-review-extraction
+    action: CORPUS_REVIEW_EXTRACTION
+    selector: "[data-qs-action='CORPUS_REVIEW_EXTRACTION']"
+    interaction: click
+    precondition: "Document selected in corpus"
+    expected: "Opens ExtractionReviewModal for selected document"
+    category: corpus
+
+  - id: corpus-toggle-collection
+    action: CORPUS_TOGGLE_COLLECTION
+    selector: "[data-qs-action='CORPUS_TOGGLE_COLLECTION']"
+    interaction: click
+    expected: "Expands/collapses collection section"
+    category: corpus
+
+  - id: corpus-collection-next
+    action: CORPUS_COLLECTION_NEXT_PAGE
+    selector: "[data-qs-action='CORPUS_COLLECTION_NEXT_PAGE']"
+    interaction: click
+    expected: "Pages forward in collection"
+    category: corpus
+
+  - id: corpus-collection-prev
+    action: CORPUS_COLLECTION_PREV_PAGE
+    selector: "[data-qs-action='CORPUS_COLLECTION_PREV_PAGE']"
+    interaction: click
+    expected: "Pages backward in collection"
+    category: corpus
+
+  - id: corpus-sort-asc
+    action: CORPUS_SORT_ASC
+    selector: "[data-qs-action='CORPUS_SORT_ASC']"
+    interaction: click
+    expected: "Sorts corpus ascending"
+    category: corpus
+
+  - id: corpus-sort-desc
+    action: CORPUS_SORT_DESC
+    selector: "[data-qs-action='CORPUS_SORT_DESC']"
+    interaction: click
+    expected: "Sorts corpus descending"
+    category: corpus
+
+  # ===========================================================================
+  # EXTRACTION REVIEW (12 tests)
+  # ===========================================================================
+  - id: review-toggle-mode
+    action: REVIEW_TOGGLE_VIEW_MODE
+    selector: "[data-qs-action='REVIEW_TOGGLE_VIEW_MODE']"
+    interaction: click
+    precondition: "ExtractionReviewModal open"
+    expected: "Toggles between review and compare mode"
+    category: extraction_review
+
+  - id: review-generate-fixture
+    action: REVIEW_GENERATE_FIXTURE
+    selector: "[data-qs-action='REVIEW_GENERATE_FIXTURE']"
+    interaction: click
+    expected: "Generates test fixture from current extraction"
+    category: extraction_review
+
+  - id: review-re-extract
+    action: REVIEW_RE_EXTRACT
+    selector: "[data-qs-action='REVIEW_RE_EXTRACT']"
+    interaction: click
+    expected: "Triggers re-extraction of current PDF"
+    category: extraction_review
+
+  - id: review-accept
+    action: REVIEW_ACCEPT_EXTRACTION
+    selector: "[data-qs-action='REVIEW_ACCEPT_EXTRACTION']"
+    interaction: click
+    expected: "Accepts current extraction as correct"
+    category: extraction_review
+
+  - id: review-close
+    action: REVIEW_CLOSE_MODAL
+    selector: "[data-qs-action='REVIEW_CLOSE_MODAL']"
+    interaction: click
+    expected: "Closes the extraction review modal"
+    category: extraction_review
+
+  - id: review-prev-page
+    action: REVIEW_PREV_PAGE
+    selector: "[data-qs-action='REVIEW_PREV_PAGE']"
+    interaction: click
+    expected: "Navigates to previous page in PDF review"
+    category: extraction_review
+
+  - id: review-next-page
+    action: REVIEW_NEXT_PAGE
+    selector: "[data-qs-action='REVIEW_NEXT_PAGE']"
+    interaction: click
+    expected: "Navigates to next page in PDF review"
+    category: extraction_review
+
+  - id: review-zoom-in
+    action: REVIEW_ZOOM_IN
+    selector: "[data-qs-action='REVIEW_ZOOM_IN']"
+    interaction: click
+    expected: "Zooms into PDF page"
+    category: extraction_review
+
+  - id: review-zoom-out
+    action: REVIEW_ZOOM_OUT
+    selector: "[data-qs-action='REVIEW_ZOOM_OUT']"
+    interaction: click
+    expected: "Zooms out of PDF page"
+    category: extraction_review
+
+  - id: review-toggle-block
+    action: REVIEW_TOGGLE_BLOCK
+    selector: "[data-qs-action='REVIEW_TOGGLE_BLOCK']"
+    interaction: click
+    expected: "Toggles block selection in review"
+    category: extraction_review
+
+  - id: review-fixture-spec
+    action: REVIEW_GENERATE_FIXTURE_SPEC
+    selector: "[data-qs-action='REVIEW_GENERATE_FIXTURE_SPEC']"
+    interaction: click
+    expected: "Generates fixture specification JSON"
+    category: extraction_review
+
+  - id: reextract-run-pipeline
+    action: REEXTRACT_RUN_PIPELINE
+    selector: "[data-qs-action='REEXTRACT_RUN_PIPELINE']"
+    interaction: click
+    precondition: "SpotReextract modal open, scope selected"
+    expected: "Runs re-extraction pipeline, shows step progress"
+    category: extraction_review
+
+  # ===========================================================================
+  # BBOX WORKSPACE (12 tests)
+  # ===========================================================================
+  - id: bbox-toggle-edit
+    action: BBOX_TOGGLE_EDIT_MODE
+    selector: "[data-qs-action='BBOX_TOGGLE_EDIT_MODE']"
+    interaction: click
+    precondition: "BboxWorkspace loaded with PDF"
+    expected: "Toggles bbox edit mode on/off"
+    category: bbox_workspace
+
+  - id: bbox-zoom-in
+    action: BBOX_ZOOM_IN
+    selector: "[data-qs-action='BBOX_ZOOM_IN']"
+    interaction: click
+    expected: "Zooms into rendered PDF page"
+    category: bbox_workspace
+
+  - id: bbox-zoom-out
+    action: BBOX_ZOOM_OUT
+    selector: "[data-qs-action='BBOX_ZOOM_OUT']"
+    interaction: click
+    expected: "Zooms out of rendered PDF page"
+    category: bbox_workspace
+
+  - id: bbox-toggle-reclassify
+    action: BBOX_TOGGLE_RECLASSIFY
+    selector: "[data-qs-action='BBOX_TOGGLE_RECLASSIFY']"
+    interaction: click
+    expected: "Opens block type reclassification dropdown"
+    category: bbox_workspace
+
+  - id: bbox-select-block-type
+    action: BBOX_SELECT_BLOCK_TYPE
+    selector: "[data-qs-action='BBOX_SELECT_BLOCK_TYPE']"
+    interaction: click
+    expected: "Selects a block type filter in workspace"
+    category: bbox_workspace
+
+  - id: bbox-change-section
+    action: BBOX_CHANGE_SECTION
+    selector: "[data-qs-action='BBOX_CHANGE_SECTION']"
+    interaction: click
+    expected: "Changes block section assignment"
+    category: bbox_workspace
+
+  - id: bbox-select
+    action: BBOX_SELECT
+    selector: "[data-qs-action='BBOX_SELECT']"
+    interaction: click
+    expected: "Selects a bbox block on the canvas"
+    category: bbox_workspace
+
+  - id: bbox-save
+    action: BBOX_SAVE
+    selector: "[data-qs-action='BBOX_SAVE']"
+    interaction: click
+    expected: "Saves bbox edits via POST /api/quarantine/:id/bbox-save"
+    category: bbox_workspace
+
+  - id: bbox-edit-coord
+    action: BBOX_EDIT_COORDINATE
+    selector: "[data-qs-action='BBOX_EDIT_COORDINATE']"
+    interaction: type
+    input: "0.5000"
+    expected: "Updates bbox coordinate value"
+    category: bbox_workspace
+
+  - id: bbox-reclassify
+    action: BBOX_RECLASSIFY_TYPE
+    selector: "[data-qs-action='BBOX_RECLASSIFY_TYPE']"
+    interaction: click
+    expected: "Reclassifies selected block to new type"
+    category: bbox_workspace
+
+  - id: bbox-prev
+    action: BBOX_PREV
+    selector: "[data-qs-action='BBOX_PREV']"
+    interaction: click
+    expected: "Selects previous block"
+    category: bbox_workspace
+
+  - id: bbox-next
+    action: BBOX_NEXT
+    selector: "[data-qs-action='BBOX_NEXT']"
+    interaction: click
+    expected: "Selects next block"
+    category: bbox_workspace
+
+  # ===========================================================================
+  # TRACEABILITY (5 tests)
+  # ===========================================================================
+  - id: trace-toggle-group
+    action: TRACE_TOGGLE_GROUP
+    selector: "[data-qs-action='TRACE_TOGGLE_GROUP']"
+    interaction: click
+    expected: "Expands/collapses verification group"
+    category: traceability
+
+  - id: trace-toggle-image
+    action: TRACE_TOGGLE_IMAGE
+    selector: "[data-qs-action='TRACE_TOGGLE_IMAGE']"
+    interaction: click
+    expected: "Toggles image preview for document"
+    category: traceability
+
+  - id: trace-log-evidence
+    action: TRACE_LOG_EVIDENCE
+    selector: "[data-qs-action='TRACE_LOG_EVIDENCE']"
+    interaction: click
+    expected: "Logs evidence details to console/audit"
+    category: traceability
+
+  - id: trace-run-verify
+    action: TRACE_RUN_VERIFY
+    selector: "[data-qs-action='TRACE_RUN_VERIFY']"
+    interaction: click
+    expected: "Runs verification for selected group"
+    category: traceability
+
+  - id: lemma-zoom-in
+    action: LEMMA_ZOOM_IN
+    selector: "[data-qs-action='LEMMA_ZOOM_IN']"
+    interaction: click
+    expected: "Zooms into lemma graph"
+    category: traceability
+
+  # ===========================================================================
+  # CASCADE (4 tests)
+  # ===========================================================================
+  - id: cascade-select-datapoint
+    action: CASCADE_SELECT_DATAPOINT
+    selector: "[data-qs-action='CASCADE_SELECT_DATAPOINT']"
+    interaction: click
+    expected: "Selects a cascade data point, shows detail"
+    category: cascade
+
+  - id: cascade-set-bins
+    action: CASCADE_SET_BIN_COUNT
+    selector: "[data-qs-action='CASCADE_SET_BIN_COUNT']"
+    interaction: click
+    expected: "Sets histogram bin count"
+    category: cascade
+
+  - id: cascade-filter-disposition
+    action: CASCADE_FILTER_DISPOSITION
+    selector: "[data-qs-action='CASCADE_FILTER_DISPOSITION']"
+    interaction: click
+    expected: "Filters by cascade disposition (accept/reject/escalate)"
+    category: cascade
+
+  - id: cascade-supervisor
+    action: SUPERVISOR_SELECT_AGENT
+    selector: "[data-qs-action='SUPERVISOR_SELECT_AGENT']"
+    interaction: click
+    expected: "Selects supervisor agent in cascade view"
+    category: cascade
+
+  # ===========================================================================
+  # QUALITY/METRICS (4 tests)
+  # ===========================================================================
+  - id: quality-time-range
+    action: QUALITY_SELECT_TIME_RANGE
+    selector: "[data-qs-action='QUALITY_SELECT_TIME_RANGE']"
+    interaction: click
+    expected: "Selects time range for quality metrics"
+    category: quality_metrics
+
+  - id: quality-toggle-presets
+    action: QUALITY_TOGGLE_PRESETS
+    selector: "[data-qs-action='QUALITY_TOGGLE_PRESETS']"
+    interaction: click
+    expected: "Toggles preset breakdown view"
+    category: quality_metrics
+
+  - id: quality-toggle-metric
+    action: QUALITY_TOGGLE_METRIC
+    selector: "[data-qs-action='QUALITY_TOGGLE_METRIC']"
+    interaction: click
+    expected: "Toggles a metric series on/off in chart"
+    category: quality_metrics
+
+  - id: metrics-coverage-text
+    action: METRICS_TEXT
+    selector: "[data-qs-action='METRICS_TEXT']"
+    interaction: click
+    expected: "Shows text coverage metric detail"
+    category: quality_metrics
+
+  # ===========================================================================
+  # MONITOR (3 tests)
+  # ===========================================================================
+  - id: monitor-select-source
+    action: MONITOR_SELECT_SOURCE
+    selector: "[data-qs-action='MONITOR_SELECT_SOURCE']"
+    interaction: click
+    expected: "Selects event source to filter monitor events"
+    category: monitor
+
+  - id: monitor-filter-level
+    action: MONITOR_FILTER_LEVEL
+    selector: "[data-qs-action='MONITOR_FILTER_LEVEL']"
+    interaction: click
+    expected: "Filters events by severity level"
+    category: monitor
+
+  - id: monitor-strip-navigate
+    action: MONITOR_STRIP_NAVIGATE_SOURCE
+    selector: "[data-qs-action='MONITOR_STRIP_NAVIGATE_SOURCE']"
+    interaction: click
+    expected: "Navigates to event source location"
+    category: monitor
+
+  # ===========================================================================
+  # REQUIREMENTS (4 tests)
+  # ===========================================================================
+  - id: req-select-section
+    action: REQUIREMENTS_SELECT_SECTION
+    selector: "[data-qs-action='REQUIREMENTS_SELECT_SECTION']"
+    interaction: click
+    expected: "Selects a requirement section"
+    category: requirements
+
+  - id: req-toggle-flag
+    action: REQ_TOGGLE_FLAG
+    selector: "[data-qs-action='REQ_TOGGLE_FLAG']"
+    interaction: click
+    expected: "Toggles requirement flag (marks as REQ)"
+    category: requirements
+
+  - id: req-select-control
+    action: REQ_SELECT_CONTROL
+    selector: "[data-qs-action='REQ_SELECT_CONTROL']"
+    interaction: change
+    expected: "Selects NIST control mapping from dropdown"
+    category: requirements
+
+  - id: req-create-evidence
+    action: REQ_CREATE_EVIDENCE
+    selector: "[data-qs-action='REQ_CREATE_EVIDENCE']"
+    interaction: click
+    precondition: "Control mapping selected"
+    expected: "Creates evidence case for requirement"
+    category: requirements
+
+  # ===========================================================================
+  # THREAT MATRIX (6 tests)
+  # ===========================================================================
+  - id: threat-toggle-framework
+    action: THREAT_TOGGLE_FRAMEWORK_FILTER
+    selector: "[data-qs-action='THREAT_TOGGLE_FRAMEWORK_FILTER']"
+    interaction: click
+    expected: "Toggles framework filter checkbox"
+    category: threat_matrix
+
+  - id: threat-select-cell
+    action: THREAT_SELECT_CELL
+    selector: "[data-qs-action='THREAT_SELECT_CELL']"
+    interaction: click
+    expected: "Selects a cell in the threat matrix heatmap"
+    category: threat_matrix
+
+  - id: threat-toggle-mode
+    action: THREAT_TOGGLE_MODE
+    selector: "[data-qs-action='THREAT_TOGGLE_MODE']"
+    interaction: click
+    expected: "Toggles between documents/verified mode"
+    category: threat_matrix
+
+  - id: threat-create-evidence
+    action: THREAT_CREATE_EVIDENCE
+    selector: "[data-qs-action='THREAT_CREATE_EVIDENCE']"
+    interaction: click
+    expected: "Creates evidence case from threat cell"
+    category: threat_matrix
+
+  - id: threat-edit-claim
+    action: THREAT_EDIT_CLAIM
+    selector: "[data-qs-action='THREAT_EDIT_CLAIM']"
+    interaction: type
+    input: "Updated claim text"
+    expected: "Edits evidence claim inline"
+    category: threat_matrix
+
+  - id: threat-close-drillthrough
+    action: THREAT_CLOSE_DRILLTHROUGH
+    selector: "[data-qs-action='THREAT_CLOSE_DRILLTHROUGH']"
+    interaction: click
+    expected: "Closes drillthrough panel"
+    category: threat_matrix
+
+  # ===========================================================================
+  # CHAT (4 tests)
+  # ===========================================================================
+  - id: chat-toggle-fab
+    action: CHAT_TOGGLE_FAB
+    selector: "[data-qs-action='CHAT_TOGGLE_FAB']"
+    interaction: click
+    expected: "Opens/closes the chat drawer"
+    category: chat
+
+  - id: chat-close
+    action: CHAT_CLOSE_CHAT
+    selector: "[data-qs-action='CHAT_CLOSE_CHAT']"
+    interaction: click
+    precondition: "Chat drawer open"
+    expected: "Closes the chat drawer"
+    category: chat
+
+  - id: chat-send-message
+    action: CHAT_SEND_MESSAGE
+    selector: "[data-qs-action='CHAT_SEND_MESSAGE']"
+    interaction: click
+    precondition: "Text entered in chat input"
+    expected: "Sends message, resolver checks for action, then LLM"
+    category: chat
+
+  - id: chat-input
+    action: DATALAKE-CHAT_INPUT
+    selector: "[data-qs-action='DATALAKE-CHAT_INPUT']"
+    interaction: type
+    input: "approve this entry"
+    expected: "Text appears in chat input field"
+    category: chat
+
+  # ===========================================================================
+  # EVIDENCE CASE (4 tests)
+  # ===========================================================================
+  - id: evidence-select-verdict
+    action: EVIDENCE_SELECT_VERDICT
+    selector: "[data-qs-action='EVIDENCE_SELECT_VERDICT']"
+    interaction: click
+    precondition: "EvidenceCasePanel open"
+    expected: "Selects verdict for evidence case"
+    category: evidence_case
+
+  - id: evidence-confidence
+    action: EVIDENCE_CONFIDENCE_SLIDER
+    selector: "[data-qs-action='EVIDENCE_CONFIDENCE_SLIDER']"
+    interaction: click
+    expected: "Adjusts confidence level"
+    category: evidence_case
+
+  - id: evidence-create
+    action: EVIDENCE_CREATE_CASE
+    selector: "[data-qs-action='EVIDENCE_CREATE_CASE']"
+    interaction: click
+    expected: "Creates the evidence case"
+    category: evidence_case
+
+  - id: evidence-cancel
+    action: EVIDENCE_CANCEL
+    selector: "[data-qs-action='EVIDENCE_CANCEL']"
+    interaction: click
+    expected: "Cancels evidence case creation"
+    category: evidence_case

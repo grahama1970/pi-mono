@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "app": "Datalake Explorer",
+  "base_url": "http://localhost:3002/#datalake-explorer",
+  "created": "2026-04-02",
+  "surfaces": [
+    {
+      "name": "datalake-explorer",
+      "path": "/",
+      "wait_ready": "[data-qid='datalake:tab:overview']",
+      "wait_ready_timeout_ms": 30000,
+      "elements": [
+        {
+          "name": "tab-overview",
+          "selector": "[data-qid='datalake:tab:overview']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:overview']",
+              "description": "Switch to Overview tab",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-corpus",
+          "selector": "[data-qid='datalake:tab:corpus']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:corpus']",
+              "description": "Switch to Corpus",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-extraction",
+          "selector": "[data-qid='datalake:tab:extraction']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:extraction']",
+              "description": "Switch to Extraction",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-requirements",
+          "selector": "[data-qid='datalake:tab:requirements']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:requirements']",
+              "description": "Switch to Requirements",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-traceability",
+          "selector": "[data-qid='datalake:tab:traceability']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:traceability']",
+              "description": "Switch to Traceability",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-cascade",
+          "selector": "[data-qid='datalake:tab:cascade']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:cascade']",
+              "description": "Switch to Cascade",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "tab-metrics",
+          "selector": "[data-qid='datalake:tab:metrics']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:metrics']",
+              "description": "Switch to Metrics",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "metrics-text",
+          "selector": "[data-qid='metrics:coverage:text']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Text coverage indicator"
+            }
+          ]
+        },
+        {
+          "name": "metrics-visual",
+          "selector": "[data-qid='metrics:coverage:visual']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Visual coverage indicator"
+            }
+          ]
+        },
+        {
+          "name": "tab-quarantine",
+          "selector": "[data-qid='datalake:tab:quarantine']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='datalake:tab:quarantine']",
+              "description": "Switch to Quarantine",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-filter-all",
+          "selector": "[data-qid='quarantine:filter:all']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:filter:all']",
+              "description": "Show all quarantine",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-filter-lowconf",
+          "selector": "[data-qid='quarantine:filter:lowconf']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:filter:lowconf']",
+              "description": "Filter low confidence",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-filter-all-reset",
+          "selector": "[data-qid='quarantine:filter:all']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:filter:all']",
+              "description": "Reset to all",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-layout-balanced",
+          "selector": "[data-qid='quarantine:layout:balanced']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:layout:balanced']",
+              "description": "Balanced layout",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-layout-review",
+          "selector": "[data-qid='quarantine:layout:review']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:layout:review']",
+              "description": "Review layout",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-layout-chat",
+          "selector": "[data-qid='quarantine:layout:chat']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:layout:chat']",
+              "description": "Chat layout",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-search",
+          "selector": "[data-qid='quarantine:search']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:search']",
+              "description": "Focus search",
+              "screenshot_after": true
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='quarantine:search']",
+              "value": "0000ea",
+              "description": "Search entries",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-select-all",
+          "selector": "[data-qid='quarantine:select-all-visible-docume']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='quarantine:select-all-visible-docume']",
+              "description": "Select all visible",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "quarantine-batch-approve",
+          "selector": "[data-qid='quarantine:batch:approve']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Batch approve button state"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "total_interactions": 20
+}

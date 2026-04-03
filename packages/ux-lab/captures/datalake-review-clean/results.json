@@ -1,0 +1,230 @@
+{
+  "app": "Datalake Explorer",
+  "total": 20,
+  "passed": 20,
+  "failed": 0,
+  "warned": 0,
+  "skipped": 0,
+  "interactions": [
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-overview",
+      "action": "click",
+      "description": "Switch to Overview tab",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Overview'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-overview_click.png",
+      "duration_ms": 753,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-corpus",
+      "action": "click",
+      "description": "Switch to Corpus",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Corpus'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-corpus_click.png",
+      "duration_ms": 745,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-extraction",
+      "action": "click",
+      "description": "Switch to Extraction",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Extraction'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-extraction_click.png",
+      "duration_ms": 744,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-requirements",
+      "action": "click",
+      "description": "Switch to Requirements",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Requirements'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-requirements_click.png",
+      "duration_ms": 739,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-traceability",
+      "action": "click",
+      "description": "Switch to Traceability",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Traceability'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-traceability_click.png",
+      "duration_ms": 731,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-cascade",
+      "action": "click",
+      "description": "Switch to Cascade",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Cascade'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-cascade_click.png",
+      "duration_ms": 737,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-metrics",
+      "action": "click",
+      "description": "Switch to Metrics",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Metrics'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-metrics_click.png",
+      "duration_ms": 732,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "metrics-text",
+      "action": "screenshot",
+      "description": "Text coverage indicator",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/metrics-text_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/metrics-text_screenshot.png",
+      "duration_ms": 447,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "metrics-visual",
+      "action": "screenshot",
+      "description": "Visual coverage indicator",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/metrics-visual_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/metrics-visual_screenshot.png",
+      "duration_ms": 421,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "tab-quarantine",
+      "action": "click",
+      "description": "Switch to Quarantine",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Quarantine'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/tab-quarantine_click.png",
+      "duration_ms": 780,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-filter-all",
+      "action": "click",
+      "description": "Show all quarantine",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'All(18)'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-filter-all_click.png",
+      "duration_ms": 762,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-filter-lowconf",
+      "action": "click",
+      "description": "Filter low confidence",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'LowConf(18)'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-filter-lowconf_click.png",
+      "duration_ms": 766,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-filter-all-reset",
+      "action": "click",
+      "description": "Reset to all",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'All(0)'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-filter-all-reset_click.png",
+      "duration_ms": 763,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-layout-balanced",
+      "action": "click",
+      "description": "Balanced layout",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Balanced'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-layout-balanced_click.png",
+      "duration_ms": 785,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-layout-review",
+      "action": "click",
+      "description": "Review layout",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Review'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-layout-review_click.png",
+      "duration_ms": 774,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-layout-chat",
+      "action": "click",
+      "description": "Chat layout",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Chat'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-layout-chat_click.png",
+      "duration_ms": 782,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-search",
+      "action": "click",
+      "description": "Focus search",
+      "status": "PASS",
+      "evidence": "clicked <INPUT> ''",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-search_click.png",
+      "duration_ms": 762,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-search",
+      "action": "type",
+      "description": "Search entries",
+      "status": "PASS",
+      "evidence": "typed '0000ea', value='0000ea'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-search_type.png",
+      "duration_ms": 740,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-select-all",
+      "action": "click",
+      "description": "Select all visible",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Select All'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-select-all_click.png",
+      "duration_ms": 739,
+      "assertions": []
+    },
+    {
+      "surface": "datalake-explorer",
+      "element": "quarantine-batch-approve",
+      "action": "screenshot",
+      "description": "Batch approve button state",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-batch-approve_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/datalake-interactions/datalake-explorer/quarantine-batch-approve_screenshot.png",
+      "duration_ms": 447,
+      "assertions": []
+    }
+  ]
+}
