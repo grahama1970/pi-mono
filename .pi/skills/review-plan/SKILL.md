@@ -227,6 +227,24 @@ test_manifest:
 
 **Manifest completeness check**: `/review-plan` MUST verify the manifest covers every view in the plan. For each task with `plan_type: design`, count the view/tab tasks and compare against `test_manifest` entries. If any view lacks a manifest entry, that's a FAIL. If a manifest entry lacks `interactions` or `visual`, that's a WARN. The manifest is the contract — it defines what "done" looks like BEFORE code is written. Incomplete manifests produce incomplete verification.
 
+### 15. Code-Runner Worktree vs Live Server Mismatch (FAIL grade)
+Scan every task with `runner: "code-runner"`. If the task's `definition_of_done.command` contains `curl`, `wget`, `http://localhost`, or any HTTP endpoint call, the task **MUST FAIL**.
+
+**Why:** Code-runner executes in a git worktree — an isolated copy of the repo. The running dev server (Express, Vite, etc.) serves from the **main working directory**, not the worktree. Any DoD that curls a live endpoint will always hit the old code and fail, wasting all code-runner rounds.
+
+**Detection:**
+- Parse `definition_of_done.command` for each `code-runner` task
+- If it contains `curl`, `wget`, `http://localhost`, `https://localhost`, or any URL pattern → **FAIL**
+- Also check `tests` array entries for the same patterns
+
+**Grading:**
+- **PASS**: No code-runner task has a live-server DoD
+- **FAIL**: Any code-runner task has `curl`/HTTP in its DoD command
+
+**Fix:** Change the task to `runner: "scillm"` (one-shot edit to working directory) + a separate `runner: "local"` task that restarts the server and runs the curl verification. Or split into: (1) code-runner writes the file with a file-based DoD (`grep -q 'routeName' file.ts`), (2) local task restarts server and curls.
+
+**Catches:** Agent writes Express endpoints via code-runner. Code-runner edits `server/index.ts` in a worktree. DoD runs `curl http://localhost:3001/api/posture/frameworks`. The running Express server doesn't see the worktree edits. Curl returns 404. Code-runner retries 5 rounds, fails every time. Hours of LLM tokens burned on an impossible DoD.
+
 ## Review Output
 
 ```

@@ -83,12 +83,19 @@ are simpler than that.
 - There's a runnable DoD command with a verifiable assertion
 - The fix may need multiple attempts (not a mechanical edit)
 - Dependencies are known and listed in `read_context`
+- **The DoD command does NOT require a live server** (code-runner uses git worktree isolation — the running dev server serves from the main working directory, not the worktree)
+
+**NEVER use code-runner when the DoD calls a live HTTP endpoint** (e.g. `curl http://localhost:3001/...`).
+Code-runner edits files in an isolated worktree. The dev server doesn't see those edits.
+The DoD `curl` will always hit the OLD code and fail. Use `scillm` (one-shot edit to the
+working directory) + a separate `local` task to restart the server and verify with `curl`.
 
 **Use scillm (not code-runner) for:**
 - Mechanical edits: add a field, update an import, rename a variable
 - Config changes: update YAML, add an entry to a list
 - Text generation: docstrings, summaries, classifications
 - Any task where "just do it once, correctly" is sufficient
+- **Server endpoint code where the DoD requires `curl` to a live server** — edits must land in the working directory, not a worktree
 
 **Use local for:**
 - Running tests, linters, formatters, build commands
