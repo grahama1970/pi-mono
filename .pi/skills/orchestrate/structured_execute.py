@@ -323,17 +323,38 @@ async def _run_code_runner(task: TaskRuntime, session_dir: Path) -> None:
                 cwd=str(work_cwd),
                 env=clean_env,
             )
+
+            # Stream stderr line-by-line so project agent sees live progress.
+            # stdout is collected in full (it's the LLM response text).
+            async def _stream_stderr(proc_stderr, task_id: str, lines: list[str]):
+                async for raw_line in proc_stderr:
+                    line = raw_line.decode(errors="replace").rstrip()
+                    lines.append(line)
+                    if line:
+                        logger.info("[cr:{}] {}", task_id, line)
+
+            stderr_lines: list[str] = []
+            stream_task = asyncio.create_task(
+                _stream_stderr(proc.stderr, task.task_id, stderr_lines))
+
             try:
-                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=task.timeout_seconds)
+                stdout = await asyncio.wait_for(proc.stdout.read(), timeout=task.timeout_seconds)
+                await proc.wait()
+                stream_task.cancel()
+                try:
+                    await stream_task
+                except asyncio.CancelledError:
+                    pass
             except asyncio.TimeoutError:
                 proc.kill()
                 await proc.wait()
+                stream_task.cancel()
                 task.review_status = "fail"
                 task.error = f"code-runner timed out after {task.timeout_seconds}s"
                 break
 
             stdout_text = stdout.decode(errors="replace")
-            stderr_text = stderr.decode(errors="replace")
+            stderr_text = "\n".join(stderr_lines)
 
             output_path = session_dir / f"{task.task_id}{attempt_tag}.response.txt"
             output_path.write_text(stdout_text)

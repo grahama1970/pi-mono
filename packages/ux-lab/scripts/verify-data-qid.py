@@ -137,7 +137,10 @@ def main():
         if len(all_missing) > 30:
             print(f"  ... and {len(all_missing) - 30} more")
 
-    if grand_qid < grand_total:
+    if grand_total == 0:
+        print("\nFAIL: 0 interactive elements found — nothing to verify (wrong path or empty scan)")
+        sys.exit(1)
+    elif grand_qid < grand_total:
         print(f"\nFAIL: {grand_total - grand_qid} interactive elements without data-qid")
         sys.exit(1)
     else:

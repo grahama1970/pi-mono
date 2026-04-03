@@ -89,7 +89,9 @@ export function usePostureData(): UsePostureDataResult {
 
 			try {
 				const [frameworksResponse, controlsByFamily, gaps, topRisks, driftAlerts] = await Promise.all([
-					getJson<{ frameworkCoverage: Record<string, FrameworkScore>; overallScore: number }>("/api/posture/frameworks"),
+					getJson<{ frameworkCoverage: Record<string, FrameworkScore>; overallScore: number }>(
+						"/api/posture/frameworks",
+					),
 					getJson<FamilyBreakdown[] | Record<string, FamilyBreakdown>>("/api/posture/families/NIST"),
 					getJson<GapAnalysis[]>("/api/posture/gaps"),
 					getJson<RiskControl[]>("/api/posture/risks"),
