@@ -88,22 +88,22 @@ export function usePostureData(): UsePostureDataResult {
 			setError(null);
 
 			try {
-				const [frameworksResponse, familiesResponse, gapsResponse, risksResponse, alertsResponse] = await Promise.all([
-					getJson<{ frameworkCoverage?: Record<string, FrameworkScore>; overallScore?: number }>("/api/posture/frameworks"),
-					getJson<{ controlsByFamily?: FamilyBreakdown[] | Record<string, FamilyBreakdown> }>("/api/posture/families/NIST"),
-					getJson<{ gaps?: GapAnalysis[] }>("/api/posture/gaps"),
-					getJson<{ topRisks?: RiskControl[] }>("/api/posture/risks"),
-					getJson<{ driftAlerts?: DriftAlert[] }>("/api/posture/alerts"),
+				const [frameworksResponse, controlsByFamily, gaps, topRisks, driftAlerts] = await Promise.all([
+					getJson<{ frameworkCoverage: Record<string, FrameworkScore>; overallScore: number }>("/api/posture/frameworks"),
+					getJson<FamilyBreakdown[] | Record<string, FamilyBreakdown>>("/api/posture/families/NIST"),
+					getJson<GapAnalysis[]>("/api/posture/gaps"),
+					getJson<RiskControl[]>("/api/posture/risks"),
+					getJson<DriftAlert[]>("/api/posture/alerts"),
 				]);
 
 				if (cancelled) return;
 				setData({
 					frameworkCoverage: frameworksResponse.frameworkCoverage ?? {},
 					overallScore: frameworksResponse.overallScore ?? 0,
-					controlsByFamily: familiesResponse.controlsByFamily ?? [],
-					gaps: gapsResponse.gaps ?? [],
-					topRisks: risksResponse.topRisks ?? [],
-					driftAlerts: alertsResponse.driftAlerts ?? [],
+					controlsByFamily: controlsByFamily ?? [],
+					gaps: gaps ?? [],
+					topRisks: topRisks ?? [],
+					driftAlerts: driftAlerts ?? [],
 				});
 			} catch (e) {
 				if (!cancelled) {
