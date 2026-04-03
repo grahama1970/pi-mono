@@ -199,7 +199,7 @@ tasks:
     runner: "code-runner"
     backend: "codex"
     mode: "iterative"
-    depends_on: ["2"]
+    depends_on: []
     skills:
       - "best-practices-react"
       - "best-practices-plan"
@@ -279,7 +279,7 @@ tasks:
     runner: "code-runner"
     backend: "codex"
     mode: "iterative"
-    depends_on: ["2", "5"]
+    depends_on: ["5"]
     skills:
       - "best-practices-react"
     allowlist:
