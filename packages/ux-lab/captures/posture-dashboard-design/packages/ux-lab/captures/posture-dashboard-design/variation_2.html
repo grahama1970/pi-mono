@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPARTA Posture Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+    :root {
+      --bg: #0d0f12;
+      --card: #12151a;
+      --green: #00ff88;
+      --amber: #ffaa00;
+      --red: #ff4444;
+      --blue: #4a9eff;
+      --accent: #7c4dff;
+      --white: #e8eaed;
+      --muted: #9fb0d1; /* From original, for secondary text */
+      --grid: #253450; /* From original, for grid lines */
+      --border: #22314f; /* From original, for borders */
+      --shadow: 0 8px 30px rgba(0,0,0,.25); /* From original */
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Space Mono', monospace;
+      background: var(--bg);
+      color: var(--white);
+    }
+    .wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    h1 { margin: 0 0 8px; font-size: 30px; letter-spacing: -0.03em; }
+    .subtitle { color: var(--muted); max-width: 780px; line-height: 1.45; font-size: 14px; }
+    .timestamp {
+      color: var(--muted);
+      font-size: 13px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 18px 0 20px;
+    }
+    .filter, .card, .panel, .donut-chart-container {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .filter {
+      padding: 12px;
+    }
+    .filter label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    select, button {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg); /* Use bg for inputs for contrast */
+      color: var(--white);
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: 'Space Mono', monospace;
+    }
+    button { cursor: pointer; transition: background 0.2s ease; }
+    button:hover { background: rgba(var(--bg), 0.8); }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .card {
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 10px;
+    }
+    .value {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .delta {
+      font-size: 13px;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    .delta.good { color: var(--green); text-shadow: 0 0 8px rgba(0, 255, 136, 0.4); }
+    .delta.bad { color: var(--red); text-shadow: 0 0 8px rgba(255, 68, 68, 0.4); }
+    .delta.warn { color: var(--amber); text-shadow: 0 0 8px rgba(255, 170, 0, 0.4); }
+
+    /* Donut Charts */
+    .donut-charts-row {
+        display: flex;
+        justify-content: space-around;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .donut-chart-container {
+        flex: 1;
+        min-width: 120px;
+        max-width: 150px;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        position: relative;
+    }
+    .donut-chart-container .label {
+        position: absolute;
+        top: 10px;
+        font-size: 10px;
+        text-align: center;
+        width: 100%;
+    }
+    .donut-chart-svg {
+        width: 100px;
+        height: 100px;
+        margin-top: 15px; /* Adjust to make space for label */
+    }
+    .donut-chart-text {
+        font-size: 1.2em;
+        font-weight: bold;
+        fill: var(--white);
+        text-anchor: middle;
+        dominant-baseline: middle;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+    .panel { padding: 16px; }
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+    .panel p.note {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    svg { width: 100%; height: auto; display: block; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+      background: currentColor;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 10px;
+      border-top: 1px solid var(--border);
+      text-align: left;
+    }
+    th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    tbody tr:hover { background: rgba(255,255,255,.02); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid currentColor;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+    .pill.good { color: var(--green); text-shadow: 0 0 4px rgba(0, 255, 136, 0.4); }
+    .pill.warn { color: var(--amber); text-shadow: 0 0 4px rgba(255, 170, 0, 0.4); }
+    .pill.bad { color: var(--red); text-shadow: 0 0 4px rgba(255, 68, 68, 0.4); }
+    .pill.amber { color: var(--amber); text-shadow: 0 0 4px rgba(255, 170, 0, 0.4); } /* For Medium severity in drift alerts */
+
+    .bar-row { margin: 10px 0; }
+    .bar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(var(--white), 0.05); /* Lighter background for the bar track */
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .bar > div { height: 100%; }
+    .bar > div.nrs-reject { background: var(--red); }
+    .bar > div.nrs-uncertain { background: var(--amber); }
+    .bar > div.nrs-accept { background: var(--green); }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 160px repeat(4, 1fr);
+      gap: 8px;
+      font-size: 13px;
+      align-items: center;
+    }
+    .matrix .header { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    .cell, .header-cell {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .cell.good { background: rgba(0,255,136,.08); }
+    .cell.warn { background: rgba(255,170,0,.08); }
+    .cell.bad { background: rgba(255,68,68,.08); }
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .small { font-size: 12px; color: var(--muted); }
+    @media (max-width: 1100px) {
+      .filters, .kpis, .grid, .grid-2 { grid-template-columns: 1fr; }
+    }
+    /* VARIATION 2 SPECIFIC STYLES */
+    .grid-2-alt {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns for drift alerts + program snapshot */
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+    .drift-alerts-compact {
+        /* Adjust for smaller panel */
+        max-height: 300px; /* Example height */
+        overflow-y: auto; /* Scroll if too many alerts */
+    }
+    .drift-alerts-compact table th, .drift-alerts-compact table td {
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+    .drift-alerts-compact .pill {
+      font-size: 10px;
+      padding: 2px 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>SPARTA Posture Dashboard</h1>
+        <div class="subtitle">Interactive overview of SPARTA's posture, including compliance trends, gap counts, NIST 800-53 control status, and framework coverage across Datalake scopes and time windows.</div>
+      </div>
+      <div class="timestamp" id="timestamp"></div>
+    </div>
+
+    <div class="filters">
+      <div class="filter">
+        <label>Datalake Scope</label>
+        <select id="buFilter"></select>
+      </div>
+      <div class="filter">
+        <label>Environment</label>
+        <select id="envFilter"></select>
+      </div>
+      <div class="filter">
+        <label>Framework</label>
+        <select id="frameworkFilter"></select>
+      </div>
+      <div class="filter">
+        <label>Time Window</label>
+        <select id="timeFilter">
+          <option value="6">Last 6 months</option>
+          <option value="4">Last 4 months</option>
+          <option value="3">Last 3 months</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label>&nbsp;</label>
+        <button id="resetBtn">Reset Filters</button>
+      </div>
+    </div>
+
+    <div class="donut-charts-row" id="frameworkDonuts">
+      <!-- Donut charts will be rendered here (placed above KPIs in this variation) -->
+    </div>
+
+    <div class="kpis">
+      <div class="card">
+        <div class="label">Overall Posture Score</div>
+        <div class="value" id="kpiScore">--</div>
+        <div class="delta" id="kpiScoreDelta"></div>
+      </div>
+      <div class="card">
+        <div class="label">Gap Count</div>
+        <div class="value" id="kpiGapCount">--</div>
+        <div class="delta" id="kpiGapDelta"></div>
+      </div>
+      <div class="card">
+        <div class="label">High NRS Rejects</div>
+        <div class="value" id="kpiNrsReject">--</div>
+        <div class="delta" id="kpiNrsRejectDelta"></div>
+      </div>
+      <div class="card">
+        <div class="label">QRA Coverage %</div>
+        <div class="value" id="kpiQraCoverage">--</div>
+        <div class="delta" id="kpiQraCoverageDelta"></div>
+      </div>
+      <div class="card">
+        <div class="label">800-53 Controls Healthy</div>
+        <div class="value" id="kpiHealthy">--</div>
+        <div class="delta" id="kpiHealthyDelta"></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <h2>Posture Score Trend</h2>
+        <p class="note">Weighted score by month. Use this chart to show whether posture is improving after remediation campaigns.</p>
+        <div id="trendChart"></div>
+        <div class="legend">
+          <span style="color: var(--blue)">Posture score</span>
+          <span style="color: var(--green)">Target (85)</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>NRS Distribution</h2>
+        <p class="note">Current findings by Normalized Risk Score (NRS).</p>
+        <div id="nrsChart"></div>
+        <div class="legend">
+          <span style="color: var(--red)">Reject (&lt;0.6)</span>
+          <span style="color: var(--amber)">Uncertain (0.6-0.8)</span>
+          <span style="color: var(--green)">Accept (&ge;0.8)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2>NIST 800-53 Control Family Status</h2>
+        <p class="note">Status table for NIST 800-53 control families. Scores below 70 usually require immediate attention.</p>
+        <div id="nistMatrix"></div>
+      </div>
+      <div class="panel">
+        <h2>Remediation Program Snapshot</h2>
+        <p class="note">Operational metrics security teams track during weekly posture reviews.</p>
+        <div id="programBars"></div>
+      </div>
+    </div>
+
+    <div class="grid-2-alt">
+        <div class="panel drift-alerts-compact">
+            <h2>Drift Alerts (Compact)</h2>
+            <p class="note">Recent alerts indicating deviations. Prioritize 'High' and 'Critical'.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CONTROL</th>
+                        <th>TYPE</th>
+                        <th>STATUS</th>
+                        <th>SEV</th>
+                    </tr>
+                </thead>
+                <tbody id="driftAlertsTable"></tbody>
+            </table>
+        </div>
+        <div class="panel">
+            <h2>Top 10 Risk Controls</h2>
+            <p class="note">Example drill-down for controls most affecting posture score. Links to control evidence or remediation tickets.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CONTROL ID</th>
+                        <th>NRS</th>
+                        <th>WEAKNESSES</th>
+                    </tr>
+                </thead>
+                <tbody id="riskTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">Mock data only. Designed as a reference layout for a React, Plotly, Streamlit, or BI implementation.</div>
+  </div>
+
+  <script>
+    const dataset = {
+      months: ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+      datalakeScopes: {
+        SPARTA: {
+          prod: {
+            framework: "SPARTA",
+            trend: [71, 73, 74, 76, 79, 82],
+            gapCount: 318, prevGapCount: 361,
+            nrsDistribution: { reject: 57, uncertain: 121, accept: 140 },
+            qraCoverage: 86, prevQraCoverage: 81,
+            healthyControls: 12, totalControls: 15,
+            nist80053: {
+              AC: { score: 85, status: 'good', action: 'Maintain' }, AU: { score: 78, status: 'warn', action: 'Review audit logs' },
+              CA: { score: 62, status: 'bad', action: 'Define assessment plan' }, CM: { score: 81, status: 'good', action: 'Monitor config drift' },
+              IA: { score: 79, status: 'warn', action: 'Strengthen auth' }, IR: { score: 60, status: 'bad', action: 'Update IR plan' },
+              MA: { score: 88, status: 'good', action: 'Schedule maintenance' }, MP: { score: 91, status: 'good', action: 'Update media policy' },
+              PE: { score: 84, status: 'good', action: 'Physical access review' }, PL: { score: 76, status: 'warn', action: 'Review policy gaps' },
+              PS: { score: 80, status: 'good', action: 'Personnel vetting' }, RA: { score: 75, status: 'warn', action: 'Conduct risk assessments' },
+              SA: { score: 68, status: 'bad', action: 'Secure dev lifecycle' }, SC: { score: 82, status: 'good', action: 'Harden systems' },
+              SI: { score: 77, status: 'warn', action: 'Improve monitoring' }
+            },
+            program: [
+              ["SPARTA AGENT COVERAGE", 92], ["CRITICAL CONTROLS REVIEWED", 86],
+              ["THREAT MODEL UPDATES", 95], ["POLICY EXCEPTIONS REVIEWED", 74],
+              ["SECURITY TRAINING COMPLETION", 88]
+            ],
+            riskControls: [
+              ["IR-4", "Incident Handling", "NIST", 0.40, "Playbooks outdated, no recent drills"],
+              ["CA-2", "Control Assessments", "NIST", 0.55, "No formal assessment schedule"],
+              ["SA-3", "System Development Life Cycle", "NIST", 0.58, "Lack of security in development"],
+              ["CM-6", "Configuration Settings", "NIST", 0.65, "Baseline drift on critical systems"],
+              ["AC-2", "Account Management", "NIST", 0.70, "Stale accounts detected, access reviews overdue"]
+            ],
+            driftAlerts: [
+              ["AC-2(3)", "CONFIG", "ACTIVE", "2024-03-15", "High", "SPARTA"],
+              ["CM-6(1)", "POLICY", "ACTIVE", "2024-03-10", "Medium", "F-36"],
+              ["SC-7", "BASELINE", "RESOLVED", "2024-03-01", "Low", "SPARTA"]
+            ]
+          },
+          corp: {
+            framework: "SPARTA",
+            trend: [75, 76, 77, 78, 80, 81],
+            gapCount: 143, prevGapCount: 151,
+            nrsDistribution: { reject: 25, uncertain: 59, accept: 63 },
+            qraCoverage: 90, prevQraCoverage: 87,
+            healthyControls: 13, totalControls: 15,
+            nist80053: {
+              AC: { score: 88, status: 'good', action: 'Maintain' }, AU: { score: 83, status: 'good', action: 'Monitor logs' },
+              CA: { score: 79, status: 'warn', action: 'Review assessment frequency' }, CM: { score: 82, status: 'good', action: 'Automate config checks' },
+              IA: { score: 84, status: 'good', action: 'Implement MFA' }, IR: { score: 78, status: 'warn', action: 'Conduct tabletop exercise' },
+              MA: { score: 90, status: 'good', action: 'Ensure regular maintenance' }, MP: { score: 92, status: 'good', action: 'Verify media sanitization' },
+              PE: { score: 86, status: 'good', action: 'Update physical access list' }, PL: { score: 81, status: 'good', action: 'Review policy updates' },
+              PS: { score: 83, status: 'good', action: 'Personnel background checks' }, RA: { score: 80, status: 'good', action: 'Update risk register' },
+              SA: { score: 75, status: 'warn', action: 'Integrate security into SDLC' }, SC: { score: 85, status: 'good', action: 'Apply hardening guides' },
+              SI: { score: 81, status: 'good', action: 'Deploy SIEM' }
+            },
+            program: [
+              ["SPARTA AGENT COVERAGE", 96], ["CRITICAL CONTROLS REVIEWED", 90],
+              ["THREAT MODEL UPDATES", 93], ["POLICY EXCEPTIONS REVIEWED", 82],
+              ["SECURITY TRAINING COMPLETION", 91]
+            ],
+            riskControls: [
+              ["IR-4", "Incident Handling", "NIST", 0.68, "Improve incident response playbooks"],
+              ["SA-3", "System Development Life Cycle", "NIST", 0.72, "Enhance security code reviews"],
+              ["CA-2", "Control Assessments", "NIST", 0.75, "Automate control validation"],
+              ["AC-2", "Account Management", "NIST", 0.81, "Clean up dormant accounts"],
+              ["CM-6", "Configuration Settings", "NIST", 0.85, "Regular configuration audits"]
+            ],
+            driftAlerts: [
+              ["AC-2(1)", "CONFIG", "ACTIVE", "2024-03-20", "Medium", "SPARTA"],
+              ["PE-3", "POLICY", "RESOLVED", "2024-03-12", "Low", "F-36"]
+            ]
+          }
+        },
+        F36: {
+          prod: {
+            framework: "NIST",
+            trend: [66, 69, 71, 72, 74, 77],
+            gapCount: 427, prevGapCount: 452,
+            nrsDistribution: { reject: 83, uncertain: 181, accept: 163 },
+            qraCoverage: 79, prevQraCoverage: 73,
+            healthyControls: 9, totalControls: 15,
+            nist80053: {
+              AC: { score: 78, status: 'warn', action: 'Review access policies' }, AU: { score: 69, status: 'bad', action: 'Improve audit logging' },
+              CA: { score: 75, status: 'warn', action: 'Schedule assessments' }, CM: { score: 70, status: 'bad', action: 'Automate config checks' },
+              IA: { score: 74, status: 'warn', action: 'Strengthen authentication' }, IR: { score: 65, status: 'bad', action: 'Develop IR plan' },
+              MA: { score: 85, status: 'good', action: 'Conduct regular maintenance' }, MP: { score: 80, status: 'good', action: 'Update media policies' },
+              PE: { score: 78, status: 'warn', action: 'Physical security audit' }, PL: { score: 68, status: 'bad', action: 'Define security policies' },
+              PS: { score: 73, status: 'warn', action: 'Personnel screening' }, RA: { score: 71, status: 'warn', action: 'Perform risk analysis' },
+              SA: { score: 62, status: 'bad', action: 'Implement secure dev' }, SC: { score: 77, status: 'warn', action: 'Harden network devices' },
+              SI: { score: 72, status: 'warn', action: 'Deploy threat intel' }
+            },
+            program: [
+              ["F-36 AGENT COVERAGE", 88], ["CRITICAL CONTROLS REVIEWED", 79],
+              ["THREAT MODEL UPDATES", 90], ["POLICY EXCEPTIONS REVIEWED", 70],
+              ["SECURITY TRAINING COMPLETION", 84]
+            ],
+            riskControls: [
+              ["PL-2", "Security Plan", "NIST", 0.35, "No formal security plan"],
+              ["SA-3", "System Development Life Cycle", "NIST", 0.45, "No secure coding practices"],
+              ["IR-4", "Incident Handling", "NIST", 0.50, "Lack of incident response capabilities"],
+              ["CM-6", "Configuration Settings", "NIST", 0.58, "Significant config drift on servers"],
+              ["AU-2", "Audit Logging", "NIST", 0.62, "Inadequate logging for critical systems"]
+            ],
+            driftAlerts: [
+              ["PL-2", "POLICY", "ACTIVE", "2024-03-18", "High", "F-36"],
+              ["SA-3", "CONFIG", "ACTIVE", "2024-03-05", "Medium", "SPARTA"]
+            ]
+          },
+          corp: {
+            framework: "NIST",
+            trend: [70, 71, 72, 73, 74, 76],
+            gapCount: 205, prevGapCount: 223,
+            nrsDistribution: { reject: 37, uncertain: 89, accept: 79 },
+            qraCoverage: 82, prevQraCoverage: 79,
+            healthyControls: 10, totalControls: 15,
+            nist80053: {
+              AC: { score: 80, status: 'good', action: 'Periodical access review' }, AU: { score: 74, status: 'warn', action: 'Standardize audit logs' },
+              CA: { score: 76, status: 'warn', action: 'Automate control assessments' }, CM: { score: 74, status: 'warn', action: 'Implement change management' },
+              IA: { score: 79, status: 'warn', action: 'Regular password rotation' }, IR: { score: 75, status: 'warn', action: 'Train incident responders' },
+              MA: { score: 87, status: 'good', action: 'Ensure software updates' }, MP: { score: 82, status: 'good', action: 'Secure media storage' },
+              PE: { score: 80, status: 'good', action: 'Access badge review' }, PL: { score: 72, status: 'warn', action: 'Document security policies' },
+              PS: { score: 77, status: 'warn', action: 'Onboarding security training' }, RA: { score: 75, status: 'warn', action: 'Identify emerging risks' },
+              SA: { score: 69, status: 'bad', action: 'Security in requirements phase' }, SC: { score: 78, status: 'warn', action: 'Implement security segmentation' },
+              SI: { score: 76, status: 'warn', action: 'Implement threat hunting' }
+            },
+            program: [
+              ["F-36 AGENT COVERAGE", 91], ["CRITICAL CONTROLS REVIEWED", 82],
+              ["THREAT MODEL UPDATES", 89], ["POLICY EXCEPTIONS REVIEWED", 76],
+              ["SECURITY TRAINING COMPLETION", 86]
+            ],
+            riskControls: [
+              ["SA-3", "System Development Life Cycle", "NIST", 0.60, "Security requirements not consistently applied"],
+              ["CM-6", "Configuration Settings", "NIST", 0.68, "Patch management process needs improvement"],
+              ["AU-2", "Audit Logging", "NIST", 0.70, "Log retention policies are inconsistent"],
+              ["IR-4", "Incident Handling", "NIST", 0.75, "Need for more frequent incident simulations"],
+              ["AC-2", "Account Management", "NIST", 0.80, "Reviewing shared account usage"]
+            ],
+            driftAlerts: [
+              ["SA-3", "BASELINE", "ACTIVE", "2024-03-22", "Medium", "F-36"],
+              ["CM-6(1)", "POLICY", "RESOLVED", "2024-03-15", "Low", "SPARTA"]
+            ]
+          }
+        },
+        Both: {
+          prod: {
+            framework: "CWE",
+            trend: [61, 62, 63, 65, 66, 68],
+            gapCount: 189, prevGapCount: 194,
+            nrsDistribution: { reject: 37, uncertain: 78, accept: 74 },
+            qraCoverage: 71, prevQraCoverage: 67,
+            healthyControls: 8, totalControls: 15,
+            nist80053: {
+              AC: { score: 72, status: 'warn', action: 'Implement access controls' }, AU: { score: 66, status: 'bad', action: 'Centralize audit logs' },
+              CA: { score: 68, status: 'bad', action: 'Conduct security assessments' }, CM: { score: 63, status: 'bad', action: 'Automate config enforcement' },
+              IA: { score: 70, status: 'warn', action: 'Multi-factor authentication' }, IR: { score: 60, status: 'bad', action: 'Establish IR team' },
+              MA: { score: 78, status: 'warn', action: 'Regular system maintenance' }, MP: { score: 74, status: 'warn', action: 'Secure media disposal' },
+              PE: { score: 72, status: 'warn', action: 'Physical access management' }, PL: { score: 61, status: 'bad', action: 'Formalize security policies' },
+              PS: { score: 69, status: 'bad', action: 'Background checks for staff' }, RA: { score: 65, status: 'bad', action: 'Periodic risk reviews' },
+              SA: { score: 60, status: 'bad', action: 'Security in SDLC planning' }, SC: { score: 68, status: '

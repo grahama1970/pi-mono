@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARTA Posture Dashboard Variation 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* EMBRY Dark Theme Variables */
+        :root {
+            --bg: #0d0f12;
+            --card: #12151a;
+            --green: #00ff88;
+            --amber: #ffaa00;
+            --red: #ff4444;
+            --blue: #4a9eff;
+            --accent: #7c4dff;
+            --white: #e8eaed;
+            --text-light: #b0b8c4; /* Lighter text for labels */
+            --text-dark: #6e7a8a; /* Darker text for secondary info */
+            --border-color: #2a2e35;
+
+            /* Framework Colors */
+            --fw-sparta: var(--accent);
+            --fw-nist: var(--blue);
+            --fw-cwe: #00ccff; /* lighter blue */
+            --fw-attack: #ff8800; /* orange */
+            --fw-d3fend: #00ffcc; /* aqua */
+            --fw-esa: #ff0088; /* magenta */
+            --fw-iso: #ccff00; /* lime */
+            --fw-nasa: #8800ff; /* purple */
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            overflow-y: auto;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1880px;
+            display: grid;
+            grid-template-rows: auto 1fr 1fr;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 6px; /* Slightly less rounded */
+            padding: 20px;
+            border: none; /* No explicit border, rely on background */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Subtler shadow */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        h2, h3, h4 {
+            color: var(--white);
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .label {
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            color: var(--white);
+            font-size: 1em;
+        }
+
+        .glow-green {
+            color: var(--green);
+            text-shadow: 0 0 6px var(--green); /* Less intense glow */
+        }
+        .glow-red {
+            color: var(--red);
+            text-shadow: 0 0 6px var(--red);
+        }
+        .glow-amber {
+            color: var(--amber);
+            text-shadow: 0 0 6px var(--amber);
+        }
+        .glow-accent {
+            color: var(--accent);
+            text-shadow: 0 0 6px var(--accent);
+        }
+
+        .dot-green {
+            display: inline-block;
+            width: 7px; /* Smaller dots */
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--green);
+            box-shadow: 0 0 4px var(--green);
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+        .dot-red {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--red);
+            box-shadow: 0 0 4px var(--red);
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+        .dot-amber {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--amber);
+            box-shadow: 0 0 4px var(--amber);
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--card);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-dark);
+        }
+
+        /* Common table styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        .data-table th, .data-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table th {
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.8em;
+        }
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Layout Specifics for Variation 3 */
+        .row-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: var(--card);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .score-main {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+        }
+        .score-value {
+            font-size: 4em;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .delta-badge {
+            background-color: rgba(0, 255, 136, 0.1); /* Lighter background */
+            color: var(--green);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(0, 255, 136, 0.5); /* Lighter border */
+            box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+        }
+        .framework-rings {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .framework-ring {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            border-radius: 50%;
+            outline: 1px solid transparent; /* subtle outline for hover */
+            transition: outline-color 0.2s;
+        }
+        .framework-ring:hover {
+            transform: scale(1.05);
+            outline-color: var(--accent); /* Accent outline on hover */
+        }
+        .framework-ring-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7em;
+            font-weight: 700;
+            color: var(--white);
+            pointer-events: none;
+            text-shadow: 0 0 3px rgba(0,0,0,0.8);
+        }
+        .framework-ring svg circle {
+            stroke-width: 6;
+        }
+
+        .row-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .nist-families-card {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .nist-family-bar-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+            cursor: pointer;
+            padding: 3px 0;
+            transition: background-color 0.1s;
+        }
+        .nist-family-bar-container:hover {
+            background-color: rgba(var(--accent-rgb, 124, 77, 255), 0.03);
+        }
+        .nist-family-bar-container:hover .bar-label,
+        .nist-family-bar-container:hover .bar-score {
+            color: var(--accent);
+        }
+        .bar-label {
+            width: 50px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        .progress-bar-wrapper {
+            flex-grow: 1;
+            height: 12px;
+            background-color: var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+        }
+        .progress-segment {
+            height: 100%;
+            transition: width 0.3s ease-in-out;
+        }
+        .progress-segment.green { background-color: var(--green); }
+        .progress-segment.amber { background-color: var(--amber); }
+        .progress-segment.red { background-color: var(--red); }
+        .bar-score {
+            width: 40px;
+            text-align: right;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .gap-analysis-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .gap-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--card); /* Match card background */
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color); /* Separator */
+            margin-bottom: 0; /* No margin between items */
+        }
+        .gap-item:first-child {
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+        .gap-item:last-child {
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            border-bottom: none;
+        }
+        .gap-label {
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+        .gap-count {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--red);
+            text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+        }
+
+        .row-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .drift-alerts-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .drift-alerts-card li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+            cursor: pointer;
+        }
+        .drift-alerts-card li:last-child {
+            border-bottom: none;
+        }
+        .drift-alerts-card li:hover .drift-name {
+            color: var(--accent);
+        }
+        .drift-alerts-card .dot {
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+        .drift-control-id {
+            color: var(--text-dark);
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        .drift-name {
+            flex-grow: 1;
+            color: var(--white);
+        }
+        .drift-score {
+            color: var(--red);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+        }
+
+        .top-risks-card {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+        .top-risks-table td {
+            color: var(--white);
+        }
+        .top-risks-table td:nth-child(2) {
+            color: var(--text-light);
+        }
+        .top-risks-table td:nth-child(3) {
+            color: var(--red);
+            font-weight: 700;
+        }
+        .top-risks-table td:nth-child(4) {
+            color: var(--amber);
+        }
+        .top-risks-table tbody tr {
+            cursor: pointer;
+        }
+        .top-risks-table tbody tr:hover td {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const mockData = {
+            overallScore: 72,
+            scoreDelta: 2.1,
+            controlsByFamily: {
+                AC: { total: 89, withQRAs: 67, withRelationships: 45, avgNRS: 0.72 },
+                AU: { total: 55, withQRAs: 30, withRelationships: 20, avgNRS: 0.55 },
+                CA: { total: 32, withQRAs: 15, withRelationships: 10, avgNRS: 0.45 },
+                CM: { total: 78, withQRAs: 70, withRelationships: 60, avgNRS: 0.85 },
+                IA: { total: 45, withQRAs: 25, withRelationships: 18, avgNRS: 0.50 },
+                IR: { total: 60, withQRAs: 40, withRelationships: 30, avgNRS: 0.65 },
+                MA: { total: 20, withQRAs: 18, withRelationships: 15, avgNRS: 0.90 },
+                MP: { total: 30, withQRAs: 10, withRelationships: 8, avgNRS: 0.30 },
+                PE: { total: 40, withQRAs: 35, withRelationships: 30, avgNRS: 0.80 },
+                PL: { total: 25, withQRAs: 12, withRelationships: 10, avgNRS: 0.48 },
+                PS: { total: 35, withQRAs: 28, withRelationships: 20, avgNRS: 0.75 },
+                RA: { total: 50, withQRAs: 30, withRelationships: 25, avgNRS: 0.60 },
+                SA: { total: 65, withQRAs: 45, withRelationships: 35, avgNRS: 0.70 },
+                SC: { total: 70, withQRAs: 50, withRelationships: 40, avgNRS: 0.68 },
+                SI: { total: 80, withQRAs: 60, withRelationships: 50, avgNRS: 0.78 },
+            },
+            frameworkCoverage: [
+                { name: 'SPARTA', total: 203, withQRAs: 180, pct: 89, colorVar: '--fw-sparta' },
+                { name: 'NIST', total: 1043, withQRAs: 612, pct: 59, colorVar: '--fw-nist' },
+                { name: 'CWE', total: 400, withQRAs: 280, pct: 70, colorVar: '--fw-cwe' },
+                { name: 'ATT&CK', total: 300, withQRAs: 150, pct: 50, colorVar: '--fw-attack' },
+                { name: 'D3FEND', total: 200, withQRAs: 120, pct: 60, colorVar: '--fw-d3fend' },
+                { name: 'ESA', total: 100, withQRAs: 90, pct: 90, colorVar: '--fw-esa' },
+                { name: 'ISO 27001', total: 100, withQRAs: 75, pct: 75, colorVar: '--fw-iso' },
+                { name: 'NASA', total: 50, withQRAs: 40, pct: 80, colorVar: '--fw-nasa' },
+            ],
+            gaps: { missingQRAs: 234, missingRelationships: 456, missingURLs: 123 },
+            topRisks: [
+                { control_id: 'SV-AC-2', name: 'Access Control Policy Enforcement', nrs_score: 0.12, weaknesses: 4 },
+                { control_id: 'SV-CM-7', name: 'Least Functionality Verification', nrs_score: 0.15, weaknesses: 3 },
+                { control_id: 'SV-MP-4', name: 'Media Protection Procedures', nrs_score: 0.20, weaknesses: 5 },
+                { control_id: 'SV-AU-6', name: 'Audit Log Retention & Review', nrs_score: 0.25, weaknesses: 2 },
+                { control_id: 'SV-RA-3', name: 'Risk Assessment Frequency', nrs_score: 0.28, weaknesses: 3 },
+                { control_id: 'SV-IA-5', name: 'Authenticator Management', nrs_score: 0.32, weaknesses: 2 },
+                { control_id: 'SV-SC-8', name: 'Transmission Integrity', nrs_score: 0.38, weaknesses: 1 },
+                { control_id: 'SV-PL-4', name: 'Security Planning Updates', nrs_score: 0.40, weaknesses: 2 },
+                { control_id: 'SV-IR-4', name: 'Incident Handling Processes', nrs_score: 0.42, weaknesses: 1 },
+                { control_id: 'SV-SA-11', name: 'Software Component Analysis', nrs_score: 0.45, weaknesses: 2 },
+            ],
+            driftAlerts: [
+                { control_id: 'CM-7', name: 'Least Functionality', nrs_score: 0.35 },
+                { control_id: 'AC-3', name: 'Access Enforcement', nrs_score: 0.40 },
+                { control_id: 'SC-12', name: 'Cryptography', nrs_score: 0.48 },
+                { control_id: 'SI-4', name: 'System Monitoring', nrs_score: 0.55 },
+                { control_id: 'IA-2', name: 'Identification & Auth', nrs_score: 0.60 },
+            ],
+        };
+
+        function createDonutChart(percentage, colorVar, label, fwName) {
+            const radius = 25;
+            const circumference = 2 * Math.PI * radius;
+            const strokeDashoffset = circumference - (percentage / 100) * circumference;
+            const uniqueId = `donut-${fwName.replace(/\s/g, '-')}`;
+
+            return `
+                <div class="framework-ring" style="--fw-color: var(${colorVar});"
+                     data-qs-action="VIEW_FRAMEWORK_DETAILS"
+                     data-qs-params='{"framework": "${fwName}"}'
+                     title="View details for ${fwName} framework">
+                    <svg width="60" height="60" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="${radius}" fill="none" stroke="var(--border-color)" stroke-width="6"></circle>
+                        <circle cx="30" cy="30" r="${radius}" fill="none" stroke="var(--fw-color)" stroke-width="6"
+                                stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}"
+                                transform="rotate(-90 30 30)"></circle>
+                    </svg>
+                    <span class="framework-ring-label">${percentage}%</span>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Row 1 HERO
+            const heroRow = document.querySelector('.row-hero');
+            if (heroRow) {
+                heroRow.innerHTML = `
+                    <div class="score-main">
+                        <span class="score-value glow-green">${mockData.overallScore}%</span>
+                        <span class="delta-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="12 17 12 3"></polyline><polyline points="6 9 12 3 18 9"></polyline>
+                            </svg>
+                            +${mockData.scoreDelta}%
+                        </span>
+                    </div>
+                    <div class="framework-rings">
+                        ${mockData.frameworkCoverage.map(fw =>
+                            createDonutChart(fw.pct, fw.colorVar, fw.pct, fw.name)
+                        ).join('')}
+                    </div>
+                `;
+            }
+
+            // Row 2 Main - NIST Families
+            const nistFamiliesContainer = document.querySelector('.nist-families-card .content');
+            if (nistFamiliesContainer) {
+                let familiesHtml = '';
+                for (const family in mockData.controlsByFamily) {
+                    const data = mockData.controlsByFamily[family];
+                    const greenPct = (data.withQRAs / data.total) * 100;
+                    const remaining = data.total - data.withQRAs;
+                    const amberPct = (remaining > 0) ? ((data.withRelationships - data.withQRAs > 0 ? (data.withRelationships - data.withQRAs) : 0) / data.total) * 100 : 0; // If relationships is a distinct in-progress
+                    const redPct = 100 - greenPct - amberPct;
+
+                    familiesHtml += `
+                        <div class="nist-family-bar-container"
+                             data-qs-action="VIEW_NIST_FAMILY_CONTROLS"
+                             data-qs-params='{"family": "${family}"}'
+                             title="View controls for NIST family ${family}">
+                            <span class="bar-label">${family}</span>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-segment green" style="width: ${greenPct}%;"></div>
+                                <div class="progress-segment amber" style="width: ${amberPct}%;"></div>
+                                <div class="progress-segment red" style="width: ${redPct}%;"></div>
+                            </div>
+                            <span class="bar-score">${(data.avgNRS * 100).toFixed(0)}</span>
+                        </div>
+                    `;
+                }
+                nistFamiliesContainer.innerHTML = familiesHtml;
+            }
+
+            // Row 2 Main - Gap Analysis
+            const gapAnalysisCard = document.querySelector('.gap-analysis-card .content');
+            if (gapAnalysisCard) {
+                const gaps = mockData.gaps;
+                gapAnalysisCard.innerHTML = `
+                    <div class="gap-item">
+                        <span class="gap-label">Missing QRAs</span>
+                        <span class="gap-count glow-red">${gaps.missingQRAs}</span>
+                    </div>
+                    <div class="gap-item">
+                        <span class="gap-label">Missing Relationships</span>
+                        <span class="gap-count glow-red">${gaps.missingRelationships}</span>
+                    </div>
+                    <div class="gap-item">
+                        <span class="gap-label">Missing URLs</span>
+                        <span class="gap-count glow-red">${gaps.missingURLs}</span>
+                    </div>
+                `;
+            }
+
+            // Row 3 Detail - Drift Alerts
+            const driftAlertsList = document.querySelector('.drift-alerts-card ul');
+            if (driftAlertsList) {
+                driftAlertsList.innerHTML = mockData.driftAlerts.map(alert => `
+                    <li data-qs-action="VIEW_CONTROL_DETAILS"
+                        data-qs-params='{"control_id": "${alert.control_id}"}'
+                        title="View details for control ${alert.control_id}">
+                        <span class="dot dot-red"></span>
+                        <span class="drift-control-id">${alert.control_id}</span>
+                        <span class="drift-name">${alert.name}</span>
+                        <span class="drift-score">${(alert.nrs_score * 100).toFixed(0)}</span>
+                    </li>
+                `).join('');
+            }
+
+            // Row 3 Detail - Top Risks
+            const topRisksTableBody = document.querySelector('.top-risks-table tbody');
+            if (topRisksTableBody) {
+                topRisksTableBody.innerHTML = mockData.topRisks.map(risk => `
+                    <tr data-qs-action="VIEW_CONTROL_DETAILS"
+                        data-qs-params='{"control_id": "${risk.control_id}"}'
+                        title="View details for control ${risk.control_id}">
+                        <td>${risk.control_id}</td>
+                        <td>${risk.name}</td>
+                        <td class="glow-red">${(risk.nrs_score * 100).toFixed(0)}</td>
+                        <td>${risk.weaknesses}</td>
+                    </tr>
+                `).join('');
+            }
+        });
+    </script>
+
+    <div class="dashboard-container">
+        <!-- Row 1 HERO -->
+        <div class="row-hero"></div>
+
+        <!-- Row 2 MAIN -->
+        <div class="row-main">
+            <div class="card nist-families-card">
+                <h3>NIST Family Posture</h3>
+                <div class="content">
+                    <!-- NIST Family Stacked Bars populated by JS -->
+                </div>
+            </div>
+            <div class="card gap-analysis-card">
+                <h3>Gap Analysis</h3>
+                <div class="content">
+                    <!-- Gap Analysis Badges populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3 DETAIL -->
+        <div class="row-detail">
+            <div class="card drift-alerts-card">
+                <h3>Drift Alerts</h3>
+                <ul>
+                    <!-- Drift Alerts List populated by JS -->
+                </ul>
+            </div>
+            <div class="card top-risks-card">
+                <h3>Top 10 Risk Controls</h3>
+                <table class="data-table top-risks-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Control Name</th>
+                            <th>NRS</th>
+                            <th>Weaknesses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Top 10 Risk Controls Table populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

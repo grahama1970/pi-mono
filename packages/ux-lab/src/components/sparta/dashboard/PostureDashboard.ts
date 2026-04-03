@@ -1,7 +1,7 @@
+import { arc as d3Arc, pie as d3Pie } from 'd3-shape'
 import { useMemo, useState } from 'react'
-import { pie as d3Pie, arc as d3Arc } from 'd3-shape'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
-import { EMBRY, card, label, heading, glowDot, fwBadge } from '../common/EmbryStyle'
+import { card, EMBRY, fwBadge, glowDot, heading, label } from '../common/EmbryStyle'
 
 type FrameworkKey = 'NIST' | 'CMMC' | 'RMF' | 'ISO' | 'CIS' | 'SOC2' | 'PCI' | 'HIPAA'
 
@@ -126,16 +126,16 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
 
   return (
     <div style={{ background: EMBRY.bg, minHeight: '100%', padding: 16, display: 'grid', gap: 16 }}>
-      <section style={{ display: 'grid', gap: 16, gridTemplateColumns: '1.35fr 2fr' }}>
-        <div style={{ ...card, background: EMBRY.bgCard, padding: 20, display: 'grid', alignItems: 'center', gap: 10 }}>
+      <section style={display: 'grid', gap: 16, gridTemplateColumns: '1.35fr 2fr' }>
+        <div style={...card, background: EMBRY.bgCard, padding: 20, display: 'grid', alignItems: 'center', gap: 10 }>
           <div style={label}>Global Posture Score</div>
-          <div style={{ ...heading, fontSize: 52, lineHeight: 1, color: EMBRY.green, textShadow: `0 0 14px ${EMBRY.green}` }}>{overallScore}%</div>
+          <div style={...heading, fontSize: 52, lineHeight: 1, color: EMBRY.green, textShadow: `0 0 14px $EMBRY.green` }}>{overallScore}%</div>
           <button
             type="button"
             title="Week-over-week posture delta"
             data-qid="posture:score:delta"
             data-qs-action="POSTURE_VIEW_SCORE_DELTA"
-            style={{ ...fwBadge, border: `1px solid ${EMBRY.green}`, color: EMBRY.green, background: EMBRY.bg }}
+            style={{ ...fwBadge, border: `1px solid $EMBRY.green`, color: EMBRY.green, background: EMBRY.bg }}
           >
             +3.4% WoW
           </button>
@@ -152,19 +152,19 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
                 <button
                   key={item.framework}
                   type="button"
-                  title={`${item.framework} framework coverage ${item.score}%`}
+                  title={`$item.frameworkframework coverage $item.score%`
                   data-qid={`posture:donut:${item.framework}`}
-                  data-qs-action={`POSTURE_SELECT_FRAMEWORK_${item.framework}`}
+                  data-qs-action={`POSTURE_SELECT_FRAMEWORK_$item.framework`}
                   style={{ ...card, background: EMBRY.bg, padding: 10, display: 'grid', placeItems: 'center', gap: 8 }}
                 >
-                  <svg width={84} height={84} viewBox="0 0 84 84" aria-label={`${item.framework} donut`}>
+                  <svg width={84} height={84} viewBox="0 0 84 84" aria-label={`$item.frameworkdonut`}>
                     <g transform="translate(42,42)">
                       {arcs.map((a, idx) => (
-                        <path key={`${item.framework}-${idx}`} d={donutGenerator(a) || ''} fill={idx === 0 ? fwColor : EMBRY.bgCard} stroke={EMBRY.bg} strokeWidth={1} />
+                        <path key={`$item.framework-$idx`} d={donutGenerator(a) || ''} fill={idx === 0 ? fwColor : EMBRY.bgCard} stroke={EMBRY.bg} strokeWidth={1} />
                       ))}
                     </g>
                   </svg>
-                  <div style={{ ...fwBadge, border: `1px solid ${fwColor}`, color: fwColor }}>{item.framework}</div>
+                  <div style={{ ...fwBadge, border: `1px solid $fwColor`, color: fwColor }}>{item.framework}</div>
                   <div style={label}>{item.score}% covered</div>
                 </button>
               )
@@ -186,17 +186,17 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
                 <button
                   key={f.family}
                   type="button"
-                  title={`Open ${f.family} family detail`}
-                  data-qid={`posture:family:${f.family}`}
-                  data-qs-action={`POSTURE_SELECT_FAMILY_${f.family}`}
+                  title={`Open $f.familyfamily detail`}
+                  data-qid={`posture:family:$f.family`}
+                  data-qs-action={`POSTURE_SELECT_FAMILY_$f.family`}
                   onClick={() => setSelectedFamily(f.family)}
-                  style={{ background: EMBRY.bg, border: `1px solid ${selectedFamily === f.family ? EMBRY.green : EMBRY.bgCard}`, borderRadius: 8, padding: 8, textAlign: 'left' }}
+                  style={{ background: EMBRY.bg, border: `1px solid $selectedFamily === f.family ? EMBRY.green : EMBRY.bgCard`, borderRadius: 8, padding: 8, textAlign: 'left' }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
                     <span style={heading}>{f.family}</span>
                     <span style={label}>{Math.round((f.pass / f.total) * 100)}% pass</span>
                   </div>
-                  <div style={{ height: 10, borderRadius: 6, overflow: 'hidden', display: 'grid', gridTemplateColumns: `${passPct}fr ${partialPct}fr ${failPct}fr` }}>
+                  <div style={{ height: 10, borderRadius: 6, overflow: 'hidden', display: 'grid', gridTemplateColumns: `$passPctfr $partialPctfr $failPctfr` }}>
                     <span title="Pass segment" style={{ background: EMBRY.green }} />
                     <span title="Partial segment" style={{ background: EMBRY.amber }} />
                     <span title="Fail segment" style={{ background: EMBRY.red }} />
@@ -219,10 +219,10 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
               <button
                 key={g.type}
                 type="button"
-                title={`View ${g.label}`}
-                data-qid={`posture:gap:${g.type}`}
-                data-qs-action={`POSTURE_VIEW_GAP_${g.type}`}
-                style={{ background: EMBRY.bg, border: `1px solid ${EMBRY.bgCard}`, borderRadius: 8, padding: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                title={`View $g.label`}
+                data-qid={`posture:gap:$g.type`}
+                data-qs-action={`POSTURE_VIEW_GAP_$g.type`}
+                style={{ background: EMBRY.bg, border: `1px solid $EMBRY.bgCard`, borderRadius: 8, padding: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               >
                 <span style={label}>{g.label}</span>
                 <span style={{ ...heading, fontSize: 14 }}>{g.value} ({g.delta})</span>
@@ -240,15 +240,15 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
               <button
                 key={a.control_id}
                 type="button"
-                title={`View alert ${a.control_id}`}
-                data-qid={`posture:alert:${a.control_id}`}
-                data-qs-action={`POSTURE_VIEW_ALERT_${a.control_id}`}
-                style={{ background: EMBRY.bg, border: `1px solid ${EMBRY.bgCard}`, borderRadius: 8, padding: 10, textAlign: 'left', display: 'grid', gap: 4 }}
+                title={`View alert $a.control_id`}
+                data-qid={`posture:alert:$a.control_id`}
+                data-qs-action={`POSTURE_VIEW_ALERT_$a.control_id`}
+                style={{ background: EMBRY.bg, border: `1px solid $EMBRY.bgCard`, borderRadius: 8, padding: 10, textAlign: 'left', display: 'grid', gap: 4 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ ...glowDot, background: getSeverityColor(a.severity), boxShadow: `0 0 8px ${getSeverityColor(a.severity)}` }} />
+                  <span style={{ ...glowDot, background: getSeverityColor(a.severity), boxShadow: `0 0 8px $getSeverityColor(a.severity)` }} />
                   <span style={heading}>{a.control_id} — {a.title}</span>
-                  <span style={{ ...fwBadge, marginLeft: 'auto', border: `1px solid ${getSeverityColor(a.severity)}`, color: getSeverityColor(a.severity) }}>{a.severity}</span>
+                  <span style={{ ...fwBadge, marginLeft: 'auto', border: `1px solid $getSeverityColor(a.severity)`, color: getSeverityColor(a.severity) }}>{a.severity}</span>
                 </div>
                 <div style={label}>{a.detail}</div>
               </button>
@@ -273,11 +273,11 @@ export default function PostureDashboard({ onNavigateToControl }: { onNavigateTo
                   <td colSpan={4} style={{ padding: 0 }}>
                     <button
                       type="button"
-                      title={`Open risk control ${r.control_id}`}
-                      data-qid={`posture:risk:${r.control_id}`}
-                      data-qs-action={`POSTURE_VIEW_RISK_${r.control_id}`}
+                      title={`Open risk control $r.control_id`}
+                      data-qid={`posture:risk:$r.control_id`}
+                      data-qs-action={`POSTURE_VIEW_RISK_$r.control_id`}
                       onClick={() => onNavigateToControl?.(r.control_id)}
-                      style={{ width: '100%', background: EMBRY.bg, border: `1px solid ${EMBRY.bgCard}`, marginBottom: 6, borderRadius: 8, padding: 8 }}
+                      style={{ width: '100%', background: EMBRY.bg, border: `1px solid $EMBRY.bgCard`, marginBottom: 6, borderRadius: 8, padding: 8 }}
                     >
                       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', alignItems: 'center' }}>
                         <span style={{ ...heading, textAlign: 'left' }}>{r.control_id} — {r.title}</span>
