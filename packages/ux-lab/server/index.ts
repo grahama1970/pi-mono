@@ -257,9 +257,61 @@ function isMemoryUnavailableError(err: unknown): boolean {
   return err instanceof Error && (err.message.includes('ECONNREFUSED') || err.message.includes('ENOENT') || err.message.includes('connect'))
 }
 
+// ── Posture Dashboard V2 ─────────────────────────────────────────────────────
+// Single endpoint: evidence case verdicts from lessons_v2, not NRS scores.
+function parseEvidenceSolution(doc: any): any {
+  try { return typeof doc.solution === 'string' ? JSON.parse(doc.solution) : (doc.solution ?? {}) } catch { return {} }
+}
+app.get('/api/posture/v2', async (_req, res) => {
+  try {
+    const [evidenceCases, controls, rels] = await Promise.all([
+      memoryListAll('lessons_v2', ['title', 'solution', 'tags', 'created_at'], { scope: 'evidence_case_labels' }),
+      memoryListAll('sparta_controls', ['control_id', 'name', 'source_framework', 'nrs_score']),
+      memoryListAll('sparta_relationships', ['source_control_id', 'target_control_id', 'relationship_type']),
+    ])
+    const cases = evidenceCases.map((ec: any) => { const sol = parseEvidenceSolution(ec); return { question: sol.question ?? ec.title ?? '', verdict: sol.verdict ?? 'unknown', grade: sol.grade ?? 'N/A', gates_passed: sol.gates_passed ?? 0, gates_total: sol.gates_total ?? 7, control_ids: sol.control_ids ?? [], category: sol.category ?? 'unknown', gate_summary: sol.gate_summary ?? '', created_at: ec.created_at ?? 0 } })
+    const satisfied = cases.filter((c: any) => c.verdict === 'satisfied')
+    const inconclusive = cases.filter((c: any) => c.verdict === 'inconclusive')
+    const notSatisfied = cases.filter((c: any) => c.verdict === 'not_satisfied')
+    const controlsWithEvidence = new Set(cases.flatMap((c: any) => c.control_ids))
+    const totalControls = controls.length
+    const relSet = new Set(rels.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
+    const postureScore = cases.length ? Math.round((satisfied.length / cases.length) * 100) : 0
+    const complianceScore = cases.length ? Math.round(((satisfied.length + inconclusive.length * 0.5) / cases.length) * 100) : 0
+    const evidenceFreshness = cases.length ? Math.round((cases.filter((c: any) => (Date.now() / 1000 - (c.created_at || 0)) < 90 * 86400).length / cases.length) * 100) : 0
+    const fwMap = new Map<string, { name: string; total: number; satisfied: number; inconclusive: number; failed: number }>()
+    for (const c of controls) { const fw = String(c.source_framework || 'Unknown'); if (!fwMap.has(fw)) fwMap.set(fw, { name: fw, total: 0, satisfied: 0, inconclusive: 0, failed: 0 }); const b = fwMap.get(fw)!; b.total += 1; if (controlsWithEvidence.has(String(c.control_id))) { const rc = cases.filter((ec: any) => ec.control_ids.includes(String(c.control_id))); if (rc.some((ec: any) => ec.verdict === 'satisfied') && !rc.some((ec: any) => ec.verdict === 'not_satisfied')) b.satisfied += 1; else if (rc.some((ec: any) => ec.verdict === 'not_satisfied')) b.failed += 1; else b.inconclusive += 1 } }
+    const frameworks = [...fwMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.satisfied / f.total) * 100) : 0 }))
+    const famMap = new Map<string, { family: string; total: number; satisfied: number; inconclusive: number; failed: number; noEvidence: number }>()
+    for (const c of controls) { const cid = String(c.control_id || ''); const fam = cid.match(/^([A-Z]{2})[-_]/)?.[1] ?? (cid.slice(0, 2).toUpperCase() || 'UN'); if (!famMap.has(fam)) famMap.set(fam, { family: fam, total: 0, satisfied: 0, inconclusive: 0, failed: 0, noEvidence: 0 }); const b = famMap.get(fam)!; b.total += 1; if (!controlsWithEvidence.has(cid)) { b.noEvidence += 1; continue } const ec2 = cases.filter((ec: any) => ec.control_ids.includes(cid)); if (ec2.some((ec: any) => ec.verdict === 'satisfied') && !ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.satisfied += 1; else if (ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.failed += 1; else b.inconclusive += 1 }
+    const families = [...famMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.satisfied / f.total) * 100) : 0 })).sort((a, b) => a.family.localeCompare(b.family))
+    const riskControls = notSatisfied.flatMap((ec: any) => ec.control_ids.map((cid: string) => { const ctrl = controls.find((c: any) => String(c.control_id) === cid); return { control_id: cid, name: ctrl?.name ?? '', source_framework: ctrl?.source_framework ?? '', verdict: 'not_satisfied', grade: ec.grade, question: ec.question } })).slice(0, 10)
+    const controlsWithRel = controls.filter((c: any) => relSet.has(String(c.control_id))).length
+    const relTypes: Record<string, number> = {}; for (const r of rels) { const t = String(r.relationship_type || 'unknown'); relTypes[t] = (relTypes[t] ?? 0) + 1 }
+    const reqToControl = cases.length ? Math.round((cases.filter((c: any) => c.control_ids.length > 0).length / cases.length) * 100) : 0
+    const controlToRel = totalControls ? Math.round((controlsWithRel / totalControls) * 100) : 0
+    const controlToEvidence = totalControls ? Math.round((controlsWithEvidence.size / totalControls) * 100) : 0
+    const brokenTraces = [...notSatisfied.map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Failed evidence case', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' })), ...inconclusive.slice(0, 4).map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Inconclusive evidence', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' }))].slice(0, 8)
+    const traceabilityScore = Math.round(reqToControl * 0.3 + controlToRel * 0.3 + controlToEvidence * 0.4)
+    const contradictions = notSatisfied.filter((ec: any) => ec.control_ids.some((cid: string) => satisfied.some((s: any) => s.control_ids.includes(cid)))).length
+    const assuranceScore = cases.length ? Math.round(((satisfied.length + inconclusive.length * 0.5) / cases.length) * 100) : 0
+    const avgGP = cases.length ? cases.reduce((s: number, c: any) => s + c.gates_passed, 0) / cases.length : 0
+    const avgGT = cases.length ? cases.reduce((s: number, c: any) => s + c.gates_total, 0) / cases.length : 7
+    const claimsNeedingReview = [...notSatisfied, ...inconclusive].slice(0, 6).map((ec: any) => ({ question: ec.question?.slice(0, 120) ?? '', verdict: ec.verdict, grade: ec.grade, gates: `${ec.gates_passed}/${ec.gates_total}`, controls: ec.control_ids.slice(0, 5), gate_summary: ec.gate_summary ?? '' }))
+    res.json({
+      posture: { postureScore, complianceScore, criticalFindings: notSatisfied.length, openFindings: notSatisfied.length + inconclusive.length, evidenceFreshness, totalCases: cases.length, frameworks, families, riskControls },
+      traceability: { traceabilityScore, mappedRequirements: cases.filter((c: any) => c.control_ids.length > 0).length, orphanRequirements: cases.filter((c: any) => c.control_ids.length === 0).length, totalControls, controlsWithEvidence: controlsWithEvidence.size, controlsWithRelationships: controlsWithRel, relationshipTypes: relTypes, totalRelationships: rels.length, coverageChain: { reqToControl, controlToRel, controlToEvidence }, brokenTraces },
+      assurance: { assuranceScore, supportedClaims: satisfied.length, partialClaims: inconclusive.length, unsupportedClaims: notSatisfied.length, contradictions, totalClaims: cases.length, evidenceQuality: { gatePassRate: Math.round((avgGP / avgGT) * 100), freshness: evidenceFreshness, completeness: reqToControl, authority: Math.round((satisfied.filter((c: any) => c.grade === 'A+').length / Math.max(satisfied.length, 1)) * 100) }, claimsNeedingReview },
+    })
+  } catch (err: any) {
+    if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
+    res.status(500).json({ error: 'Posture V2 failed', detail: String(err) })
+  }
+})
+
+// Legacy posture endpoints (kept for backward compat)
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {
-    // Compliance threshold: nrs_score >= 0.7 means the control meets F-36 compliance posture
     const NRS_COMPLIANCE_THRESHOLD = 0.7
     const controls = await memoryListAll('sparta_controls', ['control_id', 'source_framework', 'nrs_score'])
 

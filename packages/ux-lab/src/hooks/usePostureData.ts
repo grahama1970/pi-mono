@@ -1,120 +1,154 @@
 import { useEffect, useState } from "react";
 
-export type FrameworkScore = {
+// ── Types matching /api/posture/v2 response ──
+
+export type Framework = {
+	name: string;
 	total: number;
-	withQRAs: number;
-	withRels: number;
+	satisfied: number;
+	inconclusive: number;
+	failed: number;
 	pct: number;
 };
 
-export type FamilyBreakdown = {
+export type Family = {
 	family: string;
 	total: number;
-	withQRAs: number;
-	withRels: number;
+	satisfied: number;
+	inconclusive: number;
+	failed: number;
+	noEvidence: number;
 	pct: number;
-};
-
-export type GapAnalysis = {
-	control_id: string;
-	name?: string;
-	source_framework?: string;
-	reason?: string;
-	qraCount?: number;
-	relCount?: number;
 };
 
 export type RiskControl = {
 	control_id: string;
-	name?: string;
-	source_framework?: string;
-	weaknessCount?: number;
-	nrs_score?: number | string | null;
+	name: string;
+	source_framework: string;
+	verdict: string;
+	grade: string;
+	question: string;
 };
 
-export type DriftAlert = {
-	id?: string;
-	type?: string;
-	severity?: string;
-	title?: string;
-	message?: string;
-	control_id?: string;
-	timestamp?: string;
+export type BrokenTrace = {
+	trace: string;
+	defect: string;
+	impact: string;
+	fix: string;
 };
 
-export type PostureData = {
-	frameworkCoverage: Record<string, FrameworkScore>;
-	overallScore: number;
-	controlsByFamily: FamilyBreakdown[] | Record<string, FamilyBreakdown>;
-	gaps: GapAnalysis[];
-	topRisks: RiskControl[];
-	driftAlerts: DriftAlert[];
+export type ClaimReview = {
+	question: string;
+	verdict: string;
+	grade: string;
+	gates: string;
+	controls: string[];
+	gate_summary: string;
 };
 
-type UsePostureDataResult = PostureData & {
+export type PostureTab = {
+	postureScore: number;
+	complianceScore: number;
+	criticalFindings: number;
+	openFindings: number;
+	evidenceFreshness: number;
+	totalCases: number;
+	frameworks: Framework[];
+	families: Family[];
+	riskControls: RiskControl[];
+};
+
+export type TraceabilityTab = {
+	traceabilityScore: number;
+	mappedRequirements: number;
+	orphanRequirements: number;
+	totalControls: number;
+	controlsWithEvidence: number;
+	controlsWithRelationships: number;
+	relationshipTypes: Record<string, number>;
+	totalRelationships: number;
+	coverageChain: { reqToControl: number; controlToRel: number; controlToEvidence: number };
+	brokenTraces: BrokenTrace[];
+};
+
+export type AssuranceTab = {
+	assuranceScore: number;
+	supportedClaims: number;
+	partialClaims: number;
+	unsupportedClaims: number;
+	contradictions: number;
+	totalClaims: number;
+	evidenceQuality: {
+		gatePassRate: number;
+		freshness: number;
+		completeness: number;
+		authority: number;
+	};
+	claimsNeedingReview: ClaimReview[];
+};
+
+export type PostureV2Data = {
+	posture: PostureTab;
+	traceability: TraceabilityTab;
+	assurance: AssuranceTab;
+};
+
+type UsePostureV2Result = PostureV2Data & {
 	loading: boolean;
 	error: string | null;
 };
 
-async function getJson<T>(url: string): Promise<T> {
-	const response = await fetch(url);
-
-	if (!response.ok) {
-		throw new Error(`Failed to fetch ${url}: ${response.status}`);
-	}
-
-	return (await response.json()) as T;
-}
-
-const emptyData: PostureData = {
-	frameworkCoverage: {},
-	overallScore: 0,
-	controlsByFamily: [],
-	gaps: [],
-	topRisks: [],
-	driftAlerts: [],
+const emptyData: PostureV2Data = {
+	posture: {
+		postureScore: 0,
+		complianceScore: 0,
+		criticalFindings: 0,
+		openFindings: 0,
+		evidenceFreshness: 0,
+		totalCases: 0,
+		frameworks: [],
+		families: [],
+		riskControls: [],
+	},
+	traceability: {
+		traceabilityScore: 0,
+		mappedRequirements: 0,
+		orphanRequirements: 0,
+		totalControls: 0,
+		controlsWithEvidence: 0,
+		controlsWithRelationships: 0,
+		relationshipTypes: {},
+		totalRelationships: 0,
+		coverageChain: { reqToControl: 0, controlToRel: 0, controlToEvidence: 0 },
+		brokenTraces: [],
+	},
+	assurance: {
+		assuranceScore: 0,
+		supportedClaims: 0,
+		partialClaims: 0,
+		unsupportedClaims: 0,
+		contradictions: 0,
+		totalClaims: 0,
+		evidenceQuality: { gatePassRate: 0, freshness: 0, completeness: 0, authority: 0 },
+		claimsNeedingReview: [],
+	},
 };
 
-export function usePostureData(): UsePostureDataResult {
-	const [data, setData] = useState<PostureData>(emptyData);
-	const [loading, setLoading] = useState<boolean>(true);
+export function usePostureData(): UsePostureV2Result {
+	const [data, setData] = useState<PostureV2Data>(emptyData);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		let cancelled = false;
-
-		const fetchAll = async (): Promise<void> => {
+		const fetchData = async () => {
 			setLoading(true);
 			setError(null);
-
 			try {
-				const [fwRes, famRes, gapRes, riskRes, alertRes] = await Promise.all([
-					getJson<{
-						overallScore: number;
-						frameworks: Array<{ name: string; total: number; withQRAs: number; pct: number }>;
-					}>("/api/posture/frameworks"),
-					getJson<{ framework: string; families: FamilyBreakdown[] }>("/api/posture/families/NIST"),
-					getJson<{ details: GapAnalysis[] }>("/api/posture/gaps"),
-					getJson<{ risks: RiskControl[] }>("/api/posture/risks"),
-					getJson<{ alerts: DriftAlert[] }>("/api/posture/alerts"),
-				]);
-
-				if (cancelled) return;
-
-				// Convert frameworks array to Record keyed by name
-				const frameworkCoverage: Record<string, FrameworkScore> = {};
-				for (const fw of fwRes.frameworks ?? []) {
-					frameworkCoverage[fw.name] = { total: fw.total, withQRAs: fw.withQRAs, withRels: 0, pct: fw.pct };
-				}
-
-				setData({
-					frameworkCoverage,
-					overallScore: fwRes.overallScore ?? 0,
-					controlsByFamily: famRes.families ?? [],
-					gaps: gapRes.details ?? [],
-					topRisks: riskRes.risks ?? [],
-					driftAlerts: alertRes.alerts ?? [],
-				});
+				const res = await fetch("/api/posture/v2");
+				if (!res.ok) throw new Error(`Posture V2 failed: ${res.status}`);
+				const json = (await res.json()) as PostureV2Data;
+				if (!cancelled) setData(json);
 			} catch (e) {
 				if (!cancelled) {
 					setError(e instanceof Error ? e.message : "Failed to load posture data");
@@ -124,21 +158,11 @@ export function usePostureData(): UsePostureDataResult {
 				if (!cancelled) setLoading(false);
 			}
 		};
-
-		void fetchAll();
+		void fetchData();
 		return () => {
 			cancelled = true;
 		};
 	}, []);
 
-	return {
-		loading,
-		error,
-		frameworkCoverage: data.frameworkCoverage,
-		overallScore: data.overallScore,
-		controlsByFamily: data.controlsByFamily,
-		gaps: data.gaps,
-		topRisks: data.topRisks,
-		driftAlerts: data.driftAlerts,
-	};
+	return { loading, error, ...data };
 }
