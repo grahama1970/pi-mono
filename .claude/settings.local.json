@@ -38,7 +38,11 @@
       "Bash(rm .claude/hook-logs:*)",
       "Bash(echo 0 > /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)",
       "Bash(rm /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)",
-      "Skill(dogpile)"
+      "Skill(dogpile)",
+      "WebSearch",
+      "mcp__claude_ai_git-mcp__fetch_git_mcp_documentation",
+      "WebFetch(domain:gist.github.com)",
+      "mcp__claude_ai_git-mcp__fetch_generic_url_content"
     ]
   }
 }

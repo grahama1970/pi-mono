@@ -4,7 +4,8 @@ import { StatusBar } from '../../common/StatusBar'
 import { ChatWell } from '../query/ChatWell'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
-import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare, ShieldCheck } from 'lucide-react'
+import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare, ShieldCheck, Scan } from 'lucide-react'
+import EntitySpanViewer from '../../shared-chat/EntitySpanViewer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import PostureDashboard from '../dashboard/PostureDashboard'
 import { OverviewLanding } from './OverviewLanding'
@@ -16,7 +17,7 @@ const API = 'http://localhost:3001'
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
 const TABS = [
-  'Chat', 'Overview', 'Posture', 'Sources', 'Controls', 'URLs',
+  'Chat', 'Overview', 'Posture', 'Entities', 'Sources', 'Controls', 'URLs',
   'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
 ] as const
 
@@ -47,6 +48,7 @@ const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
   'Chat': MessageSquare,
   'Overview': Zap,
   'Posture': ShieldCheck,
+  'Entities': Scan,
   'Sources': FileSpreadsheet,
   'Controls': Shield,
   'URLs': Link,
@@ -458,6 +460,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
               {TABS.map((tab) => (
                 <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
                   {tab === 'Posture' ? (views[tab] ?? <PostureDashboard />)
+                    : tab === 'Entities' ? (views[tab] ?? <EntitySpanViewer />)
                     : tab === 'Overview' ? (views[tab] ?? <OverviewLanding onNavigate={navigateToTab} />)
                     : (views[tab] ?? <TabPlaceholder name={tab} />)}
                 </div>
