@@ -1,0 +1,88 @@
+{
+  "version": 2,
+  "app": "Posture Dashboard",
+  "base_url": "http://localhost:3002",
+  "created": "2026-04-04",
+  "notes": "CDP live DOM manifest for PostureDashboard (3ft compliance view) and OverviewLanding (5ft landing). Covers all data-qid elements across Posture and Overview tabs. Flyout elements appear after clicking a family bar.",
+  "elements": [
+    {"qid": "posture:donut:NIST", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:SPARTA", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:NVD", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:ATT_CK_Enterprise", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:ATT_CK_ICS", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:ATT_CK_Mobile", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:CAPEC", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:CWE", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:D3FEND", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:ESA", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:ISO", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:donut:NASA", "tag": "svg", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "posture:family:*", "tag": "button", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "15 NIST 800-53 family bars, dynamic qid per family"},
+    {"qid": "posture:gap:*", "tag": "button", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "Gap analysis items, dynamic qid per gap type"},
+    {"qid": "posture:alert:*", "tag": "button", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "Drift alert rows, dynamic qid per control_id"},
+    {"qid": "posture:risk:*", "tag": "tr", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "Top 10 risk control rows, dynamic qid per control_id"},
+    {"qid": "posture:flyout:backdrop", "tag": "div", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "Flyout backdrop — closes flyout on click"},
+    {"qid": "posture:flyout:panel", "tag": "aside", "surface": "posture-tab", "clickable": false, "hasTitle": true, "hasQsAction": true, "note": "Flyout slide-over panel"},
+    {"qid": "posture:flyout:family", "tag": "div", "surface": "posture-tab", "clickable": false, "hasTitle": true, "hasQsAction": true, "note": "Family name heading in flyout"},
+    {"qid": "posture:flyout:summary", "tag": "div", "surface": "posture-tab", "clickable": false, "hasTitle": true, "hasQsAction": true, "note": "Family summary stats in flyout"},
+    {"qid": "posture:flyout:close", "tag": "button", "surface": "posture-tab", "clickable": true, "hasTitle": true, "hasQsAction": true, "note": "Close button in flyout"},
+    {"qid": "overview:well:data-quality", "tag": "button", "surface": "overview-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "overview:well:threat-matrix", "tag": "button", "surface": "overview-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "overview:well:posture", "tag": "button", "surface": "overview-tab", "clickable": true, "hasTitle": true, "hasQsAction": true},
+    {"qid": "overview:well:proof-graph", "tag": "button", "surface": "overview-tab", "clickable": true, "hasTitle": true, "hasQsAction": true}
+  ],
+  "surfaces": [
+    {
+      "name": "posture-tab",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='sparta:nav:posture']",
+      "wait_ready_timeout_ms": 30000,
+      "setup": [
+        {"action": "click", "target": "[data-qid='sparta:nav:posture']", "description": "Navigate to Posture tab"}
+      ],
+      "interactions": [
+        {"action": "screenshot", "description": "Hero row with framework donut rings"},
+        {"action": "click", "target": "[data-qid='posture:donut:NIST']", "description": "Click NIST donut ring", "screenshot_after": true},
+        {"action": "click", "target": "[data-qid='posture:donut:SPARTA']", "description": "Click SPARTA donut ring", "screenshot_after": true},
+        {"action": "screenshot", "description": "NIST 800-53 family stacked bars"},
+        {"action": "click", "target": "[data-qid^='posture:family:']:first-of-type", "description": "Click first family bar — opens flyout", "screenshot_after": true},
+        {"action": "assert", "target": "[data-qid='posture:flyout:panel']", "assertion": "visible", "description": "Flyout panel is visible"},
+        {"action": "assert", "target": "[data-qid='posture:flyout:family']", "assertion": "visible", "description": "Family name heading is visible"},
+        {"action": "assert", "target": "[data-qid='posture:flyout:summary']", "assertion": "visible", "description": "Family summary stats visible"},
+        {"action": "click", "target": "[data-qid='posture:flyout:close']", "description": "Close flyout via close button", "screenshot_after": true},
+        {"action": "assert", "target": "[data-qid='posture:flyout:panel']", "assertion": "not_visible", "description": "Flyout panel closed"},
+        {"action": "click", "target": "[data-qid^='posture:family:']:first-of-type", "description": "Re-open flyout"},
+        {"action": "click", "target": "[data-qid='posture:flyout:backdrop']", "description": "Close flyout via backdrop click", "screenshot_after": true},
+        {"action": "screenshot", "description": "Gap analysis cards"},
+        {"action": "click", "target": "[data-qid^='posture:gap:']:first-of-type", "description": "Click first gap badge", "screenshot_after": true},
+        {"action": "screenshot", "description": "Drift alerts with severity glow-dots"},
+        {"action": "click", "target": "[data-qid^='posture:alert:']:first-of-type", "description": "Click first drift alert row", "screenshot_after": true},
+        {"action": "screenshot", "description": "Top 10 risk controls table"},
+        {"action": "click", "target": "[data-qid^='posture:risk:']:first-of-type", "description": "Click first risk row — navigate to control detail", "screenshot_after": true}
+      ]
+    },
+    {
+      "name": "overview-tab",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='sparta:nav:overview']",
+      "wait_ready_timeout_ms": 30000,
+      "setup": [
+        {"action": "click", "target": "[data-qid='sparta:nav:overview']", "description": "Navigate to Overview tab"}
+      ],
+      "interactions": [
+        {"action": "screenshot", "description": "Overview landing with 4 content wells"},
+        {"action": "assert", "target": "[data-qid='overview:well:data-quality']", "assertion": "visible", "description": "Data Quality well visible"},
+        {"action": "assert", "target": "[data-qid='overview:well:threat-matrix']", "assertion": "visible", "description": "Threat Matrix well visible"},
+        {"action": "assert", "target": "[data-qid='overview:well:posture']", "assertion": "visible", "description": "Posture well visible"},
+        {"action": "assert", "target": "[data-qid='overview:well:proof-graph']", "assertion": "visible", "description": "Proof Graph well visible"},
+        {"action": "click", "target": "[data-qid='overview:well:data-quality']", "description": "Click Data Quality well", "screenshot_after": true},
+        {"action": "click", "target": "[data-qid='sparta:nav:overview']", "description": "Return to Overview tab"},
+        {"action": "click", "target": "[data-qid='overview:well:threat-matrix']", "description": "Click Threat Matrix well", "screenshot_after": true},
+        {"action": "click", "target": "[data-qid='sparta:nav:overview']", "description": "Return to Overview tab"},
+        {"action": "click", "target": "[data-qid='overview:well:posture']", "description": "Click Posture well — navigates to Posture tab", "screenshot_after": true},
+        {"action": "click", "target": "[data-qid='sparta:nav:overview']", "description": "Return to Overview tab"},
+        {"action": "click", "target": "[data-qid='overview:well:proof-graph']", "description": "Click Proof Graph well", "screenshot_after": true}
+      ]
+    }
+  ]
+}
