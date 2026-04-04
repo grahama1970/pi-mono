@@ -18,6 +18,8 @@ export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
 export { configureDeepLinks, executePrimaryAction, resolveEntityActions } from "./DeepLinks";
 export type { DeltaItem, DeltaReport } from "./DeltaReportCard";
 export { DeltaReportCard } from "./DeltaReportCard";
+// Entity extraction viewer (three-layer pipeline)
+export { default as EntitySpanViewer } from "./EntitySpanViewer";
 export { ChatErrorBoundary } from "./ErrorBoundary";
 // Entity highlighting
 export { classifyEntity, ENTITY_PATTERN, ENTITY_STYLES, getEntityStyle, highlightEntities } from "./highlightEntities";

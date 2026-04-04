@@ -196,7 +196,7 @@ export function RegressionTab() {
                 return (
                   <tr
                     key={model.id}
-                    data-testid="model-row"
+                    data-qid="regression:table:row"
                     onClick={() => setSelectedModelId((p) => (p === model.id ? null : model.id))}
                     onMouseEnter={() => setHoveredRow(model.id)}
                     onMouseLeave={() => setHoveredRow(null)}
@@ -243,7 +243,7 @@ export function RegressionTab() {
                     <td style={{ padding: '10px 12px', minWidth: 90 }}>
                       {isHovered && !didReEval && (
                         <button
-                          data-testid="re-evaluate-link"
+                          data-qid="regression:action:re-evaluate"
                           onClick={(e) => handleReEvaluate(e, model.id)}
                           style={{
                             background: 'none',

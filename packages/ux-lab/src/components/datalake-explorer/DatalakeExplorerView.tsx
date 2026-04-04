@@ -30,15 +30,15 @@ interface DatalakeDoc {
 
 type Tab = 'overview' | 'corpus' | 'extraction' | 'requirements' | 'traceability' | 'cascade' | 'metrics' | 'quarantine'
 
-const TABS: { key: Tab; label: string; icon: typeof Database }[] = [
-  { key: 'overview', label: 'Overview', icon: BarChart3 },
-  { key: 'corpus', label: 'Corpus', icon: Database },
-  { key: 'extraction', label: 'Extraction', icon: FileText },
-  { key: 'requirements', label: 'Requirements', icon: Shield },
-  { key: 'traceability', label: 'Traceability', icon: GitBranch },
-  { key: 'cascade', label: 'Cascade', icon: Layers },
-  { key: 'metrics', label: 'Metrics', icon: Activity },
-  { key: 'quarantine', label: 'Quarantine', icon: AlertTriangle },
+const TABS: { key: Tab; label: string; icon: typeof Database; action: string }[] = [
+  { key: 'overview', label: 'Overview', icon: BarChart3, action: 'DATALAKE_TAB_OVERVIEW' },
+  { key: 'corpus', label: 'Corpus', icon: Database, action: 'DATALAKE_TAB_CORPUS' },
+  { key: 'extraction', label: 'Extraction', icon: FileText, action: 'DATALAKE_TAB_EXTRACTION' },
+  { key: 'requirements', label: 'Requirements', icon: Shield, action: 'DATALAKE_TAB_REQUIREMENTS' },
+  { key: 'traceability', label: 'Traceability', icon: GitBranch, action: 'DATALAKE_TAB_TRACEABILITY' },
+  { key: 'cascade', label: 'Cascade', icon: Layers, action: 'DATALAKE_TAB_CASCADE' },
+  { key: 'metrics', label: 'Metrics', icon: Activity, action: 'DATALAKE_TAB_METRICS' },
+  { key: 'quarantine', label: 'Quarantine', icon: AlertTriangle, action: 'DATALAKE_TAB_QUARANTINE' },
 ]
 
 const FALLBACK_SCOPES = [
@@ -84,7 +84,8 @@ function DatalakeLeftPane({
           <div
             key={s.name}
             data-qid={`datalake:scope:${s.name}`}
-            title={`Scope: ${s.name}`}
+            data-qs-action={`DATALAKE_SCOPE_${s.name.toUpperCase()}`}
+            title={`Select scope: ${s.name}`}
             style={{
               ...paneItemStyle(s.name === activeScope),
               display: 'flex',
@@ -131,7 +132,8 @@ function DatalakeLeftPane({
           <div
             key={d._key}
             data-qid={`datalake:doc:${d._key}`}
-            title={`Document: ${d._key}`}
+            data-qs-action={`DATALAKE_DOC_${d._key}`}
+            title={`Select document: ${d._key}`}
             style={{
               ...paneItemStyle(d._key === selectedDocKey),
               display: 'flex',
@@ -194,7 +196,8 @@ function TabBar({
           <button
             key={t.key}
             data-qid={`datalake:tab:${t.key}`}
-            title={`Tab: ${t.label}`}
+            data-qs-action={t.action}
+            title={`Switch to ${t.label} tab`}
             onClick={() => onSelectTab(t.key)}
             style={{
               display: 'flex',
@@ -566,9 +569,18 @@ export function DatalakeExplorerView() {
   const visibleDocs = activeScope
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('metrics:coverage:text', { app: 'datalake-explorer', action: 'COVERAGE_TEXT', label: 'Coverage Text', description: 'Coverage Text in DatalakeLeftPane' })
-  useRegisterAction('metrics:coverage:visual', { app: 'datalake-explorer', action: 'COVERAGE_VISUAL', label: 'Coverage Visual', description: 'Coverage Visual in DatalakeLeftPane' })
-  useRegisterAction('metrics:quarantine-button', { app: 'datalake-explorer', action: 'QUARANTINE_BUTTON', label: 'Quarantine Button', description: 'Quarantine Button in DatalakeLeftPane' })
+  useRegisterAction('datalake:tab:overview', { app: 'datalake-explorer', action: 'DATALAKE_TAB_OVERVIEW', label: 'Overview Tab', description: 'Switch to Overview tab' })
+  useRegisterAction('datalake:tab:corpus', { app: 'datalake-explorer', action: 'DATALAKE_TAB_CORPUS', label: 'Corpus Tab', description: 'Switch to Corpus tab' })
+  useRegisterAction('datalake:tab:extraction', { app: 'datalake-explorer', action: 'DATALAKE_TAB_EXTRACTION', label: 'Extraction Tab', description: 'Switch to Extraction tab' })
+  useRegisterAction('datalake:tab:requirements', { app: 'datalake-explorer', action: 'DATALAKE_TAB_REQUIREMENTS', label: 'Requirements Tab', description: 'Switch to Requirements tab' })
+  useRegisterAction('datalake:tab:traceability', { app: 'datalake-explorer', action: 'DATALAKE_TAB_TRACEABILITY', label: 'Traceability Tab', description: 'Switch to Traceability tab' })
+  useRegisterAction('datalake:tab:cascade', { app: 'datalake-explorer', action: 'DATALAKE_TAB_CASCADE', label: 'Cascade Tab', description: 'Switch to Cascade tab' })
+  useRegisterAction('datalake:tab:metrics', { app: 'datalake-explorer', action: 'DATALAKE_TAB_METRICS', label: 'Metrics Tab', description: 'Switch to Metrics tab' })
+  useRegisterAction('datalake:tab:quarantine', { app: 'datalake-explorer', action: 'DATALAKE_TAB_QUARANTINE', label: 'Quarantine Tab', description: 'Switch to Quarantine tab' })
+  useRegisterAction('datalake:search', { app: 'datalake-explorer', action: 'DATALAKE_SEARCH', label: 'Datalake Search', description: 'Search scopes and documents' })
+  useRegisterAction('metrics:coverage:text', { app: 'datalake-explorer', action: 'METRICS_TEXT', label: 'Text Coverage', description: 'Text embedding coverage gauge' })
+  useRegisterAction('metrics:coverage:visual', { app: 'datalake-explorer', action: 'METRICS_VISUAL', label: 'Visual Coverage', description: 'Visual embedding coverage gauge' })
+  useRegisterAction('metrics:quarantine-button', { app: 'datalake-explorer', action: 'METRICS_QUARANTINE_BUTTON', label: 'Quarantine Issues', description: 'Quarantine flagged metrics issues' })
 
     ? documents.filter(d => d.scope === activeScope)
     : documents

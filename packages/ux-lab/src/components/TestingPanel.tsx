@@ -213,14 +213,14 @@ export function TestingPanel() {
     const selectors = new Set<string>();
     tests.forEach(t => t.steps.forEach(s => s.selector && selectors.add(s.selector)));
     
-    // Fetch real coverage from backend (scans data-testid in source)
+    // Fetch real coverage from backend (scans data-qid in source)
     fetch('/api/test-runner/coverage')
       .then(r => r.json())
       .then(covData => {
         setCoverageData({
           total: covData.total,
           tested: covData.tested,
-          untested: covData.untested.map((id: string) => `[data-testid="${id}"]`),
+          untested: covData.untested.map((id: string) => `[data-qid="${id}"]`),
         });
       })
       .catch(() => {
@@ -852,7 +852,7 @@ function TestEditor({ test, onSave, onCancel }: { test: TestDefinition, onSave: 
                     {/* Dynamic Fields based on Action */}
                     {(step.action !== 'navigate' && step.action !== 'wait' && step.action !== 'screenshot' && step.action !== 'evaluate') && (
                       <input 
-                        placeholder="Selector (e.g. [data-testid='btn'])"
+                        placeholder="Selector (e.g. [data-qid='component:element'])"
                         value={step.selector || ''}
                         onChange={e => updateStep(idx, { selector: e.target.value })}
                         className="col-span-2 bg-[#0b1220] border border-white/10 rounded px-2 py-1.5 font-mono text-[11px] outline-none"

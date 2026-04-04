@@ -157,6 +157,8 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
                 <Search size={12} color={EMBRY.dim} />
                 <input value={search} onChange={e => setSearch(e.target.value)}
                   data-qid={searchTestId}
+                  data-qs-action={searchTestId ? `${searchTestId.replace(/:/g, '_').toUpperCase()}_SEARCH` : undefined}
+                  title={`Search ${title}`}
                   placeholder="Filter..." aria-label={`Search ${title}`}
                   style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
                 {sortable && (

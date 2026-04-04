@@ -298,7 +298,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
     {/* ═══ CANVAS AREA ═══ */}
     <div
       ref={containerRef}
-      data-testid="design-board-canvas"
+      data-qid="canvas:board:root"
       className="relative flex-1 bg-black overflow-hidden cursor-default select-none"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
@@ -322,7 +322,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
         {cards.map(card => (
           <div
             key={card.id}
-            data-testid={`canvas-card-${card.id}`}
+            data-qid={`canvas:card:${card.id}`}
             onMouseDown={(e) => handleCardMouseDown(e, card)}
             onContextMenu={(e) => handleContextMenu(e, 'card', card.id)}
             className={cn(
@@ -370,9 +370,9 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
       </div>
 
       {/* Left Toolbar */}
-      <aside data-testid="canvas-toolbar" className="fixed left-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 p-1.5 z-50 bg-[#201f1f]/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl">
+      <aside data-qid="canvas:toolbar:root" className="fixed left-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 p-1.5 z-50 bg-[#201f1f]/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl">
         <button
-          data-testid="tool-select"
+          data-qid="canvas:tool:select"
           onClick={() => setTool('select')}
           className={cn(
             "p-3 rounded-xl transition-all flex flex-col items-center gap-1",
@@ -383,7 +383,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
           <span className="font-mono text-[8px] uppercase font-bold">Select</span>
         </button>
         <button
-          data-testid="tool-pan"
+          data-qid="canvas:tool:pan"
           onClick={() => setTool('pan')}
           className={cn(
             "p-3 rounded-xl transition-all flex flex-col items-center gap-1",
@@ -404,7 +404,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
         </button>
         <div className="h-px bg-white/5 mx-2 my-1" />
         <button
-          data-testid="tool-grid"
+          data-qid="canvas:tool:grid"
           onClick={() => setShowGrid(!showGrid)}
           className={cn(
             "p-3 rounded-xl transition-all",
@@ -416,19 +416,19 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
       </aside>
 
       {/* Zoom Controls */}
-      <div data-testid="zoom-controls" className="fixed bottom-8 left-8 flex items-center bg-[#201f1f]/80 backdrop-blur-md border border-white/10 rounded-full p-1 shadow-2xl z-50">
+      <div data-qid="canvas:zoom:controls" className="fixed bottom-8 left-8 flex items-center bg-[#201f1f]/80 backdrop-blur-md border border-white/10 rounded-full p-1 shadow-2xl z-50">
         <button
-          data-testid="zoom-out"
+          data-qid="canvas:zoom:out"
           onClick={() => setScale(s => Math.max(s - 0.1, 0.1))}
           className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white"
         >
           <Minus size={14} />
         </button>
-        <div data-testid="zoom-level" className="px-3 border-x border-white/5 font-mono text-[10px] text-slate-300 min-w-[50px] text-center">
+        <div data-qid="canvas:zoom:level" className="px-3 border-x border-white/5 font-mono text-[10px] text-slate-300 min-w-[50px] text-center">
           {Math.round(scale * 100)}%
         </div>
         <button
-          data-testid="zoom-in"
+          data-qid="canvas:zoom:in"
           onClick={() => setScale(s => Math.min(s + 0.1, 5))}
           className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white"
         >
@@ -436,7 +436,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
         </button>
         <div className="w-px h-4 bg-white/10 mx-1" />
         <button
-          data-testid="zoom-reset"
+          data-qid="canvas:zoom:reset"
           onClick={() => { setScale(1); setOffset({ x: 0, y: 0 }); }}
           className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white"
         >
@@ -445,7 +445,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
       </div>
 
       {/* Status Indicator */}
-      <div data-testid="canvas-status" className="fixed bottom-8 right-8 flex items-center gap-4 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/5">
+      <div data-qid="canvas:status:bar" className="fixed bottom-8 right-8 flex items-center gap-4 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#00ff88] animate-pulse shadow-[0_0_8px_#00ff88]" />
           <span className="font-mono text-[9px] text-[#00ff88] uppercase tracking-[0.2em]">System Nominal</span>
@@ -458,7 +458,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
 
       {/* Empty State */}
       {!loading && cards.length === 0 && (
-        <div data-testid="canvas-empty" className="absolute inset-0 flex flex-col items-center justify-center text-slate-600 pointer-events-none">
+        <div data-qid="canvas:state:empty" className="absolute inset-0 flex flex-col items-center justify-center text-slate-600 pointer-events-none">
           <PlusCircle size={48} strokeWidth={1} className="mb-4 opacity-20" />
           <p className="font-mono text-xs tracking-widest uppercase opacity-40">
             Drop images here or right-click to add
@@ -468,7 +468,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
 
       {/* Loading State */}
       {loading && (
-        <div data-testid="canvas-loading" className="absolute inset-0 flex items-center justify-center bg-black z-[100]">
+        <div data-qid="canvas:state:loading" className="absolute inset-0 flex items-center justify-center bg-black z-[100]">
           <div className="flex flex-col items-center gap-4">
             <RefreshCw size={24} className="text-[#7c3aed] animate-spin" />
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#7c3aed]">INITIALIZING CANVAS</span>
@@ -479,7 +479,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
       {/* Context Menu */}
       {contextMenu && (
         <div
-          data-testid="context-menu"
+          data-qid="canvas:context:menu"
           className="fixed z-[1000] bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl py-1 backdrop-blur-md min-w-[140px]"
           style={{ left: contextMenu.x, top: contextMenu.y }}
           onClick={(e) => e.stopPropagation()}
@@ -488,18 +488,18 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
           {contextMenu.type === 'card' ? (
             <>
               <button
-                data-testid="ctx-delete"
+                data-qid="canvas:context:delete"
                 onClick={() => handleDelete(contextMenu.cardId!)}
                 className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors"
               >
                 Delete <Trash2 size={12} />
               </button>
-              <button data-testid="ctx-replace" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
+              <button data-qid="canvas:context:replace" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
                 Replace <RefreshCw size={12} />
               </button>
               <div className="h-px bg-white/5 my-1" />
               <button
-                data-testid="ctx-bring-forward"
+                data-qid="canvas:context:bring-forward"
                 onClick={() => handleBringForward(contextMenu.cardId!)}
                 className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors"
               >
@@ -508,10 +508,10 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
             </>
           ) : (
             <>
-              <button data-testid="ctx-add-image" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
+              <button data-qid="canvas:context:add-image" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
                 Add Image <ArrowUpRight size={12} />
               </button>
-              <button data-testid="ctx-paste-url" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
+              <button data-qid="canvas:context:paste-url" className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-sans text-slate-300 hover:bg-[#7c3aed]/20 hover:text-[#d2bbff] transition-colors">
                 Paste URL <LinkIcon size={12} />
               </button>
             </>
@@ -522,7 +522,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
 
     {/* ═══ RIGHT PANEL (collapsible, content from Activity Bar) ═══ */}
     {!panelCollapsed && (
-      <div data-testid="right-panel" className="w-[280px] bg-[#111111] border-l border-white/[0.13] flex flex-col overflow-hidden shrink-0">
+      <div data-qid="canvas:panel:right" className="w-[280px] bg-[#111111] border-l border-white/[0.13] flex flex-col overflow-hidden shrink-0">
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.13]">
           <span className="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-500" style={{ fontFamily: 'Inter, sans-serif' }}>
             {activeTab.toUpperCase()}
@@ -620,7 +620,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
     )}
 
     {/* ═══ ACTIVITY BAR (far right, 48px, VS Code style) ═══ */}
-    <div data-testid="activity-bar" className="w-12 bg-[#0b1220] border-l border-white/[0.13] flex flex-col items-center py-4 gap-1 shrink-0">
+    <div data-qid="canvas:activity:bar" className="w-12 bg-[#0b1220] border-l border-white/[0.13] flex flex-col items-center py-4 gap-1 shrink-0">
       {panelCollapsed && (
         <button onClick={() => setPanelCollapsed(false)} className="mb-2 text-slate-500 hover:text-white">
           <ChevronLeft size={14} />
@@ -629,7 +629,7 @@ export function DesignBoardCanvas({ projectId }: { projectId: string }) {
       {activityIcons.map((item) => (
         <button
           key={item.id}
-          data-testid={`activity-${item.id}`}
+          data-qid={`canvas:activity:${item.id}`}
           onClick={() => { setActiveTab(item.id); if (panelCollapsed) setPanelCollapsed(false); }}
           title={item.label}
           className={cn(

@@ -48,8 +48,7 @@ function SortedProjectList({ projects, sortFn, selectedProjectId, setSelectedPro
         const sel = p.id === selectedProjectId
         const f1Color = !p.f1 ? EMBRY.muted : p.f1 < 0.80 ? EMBRY.red : p.f1 >= 0.90 ? EMBRY.green : EMBRY.dim
         return (
-          <div key={p.id} data-testid={`clf-project-${p.id}`}
-            data-qid={`clf:project:${p.id}`} data-qs-action="CLF_SELECT_PROJECT" title={`Select project ${p.name}`}
+          <div key={p.id} data-qid={`clf:project:${p.id}`} data-qs-action="CLF_SELECT_PROJECT" title={`Select project ${p.name}`}
             onClick={() => setSelectedProjectId(p.id)}
             onContextMenu={e => triggerContextMenu(e, p.id)}
             style={{ ...paneItemStyle(sel), display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
@@ -278,7 +277,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
   )
 
   return (
-    <div data-testid="classifier-lab" style={{ display: 'flex', height: '100%', background: EMBRY.bg, color: EMBRY.white, fontFamily: 'Inter, sans-serif' }}>
+    <div data-qid="clf:root" style={{ display: 'flex', height: '100%', background: EMBRY.bg, color: EMBRY.white, fontFamily: 'Inter, sans-serif' }}>
       {menuProps && <ContextMenu {...menuProps} />}
       {/* Left pane */}
       <LeftPane title="CLASSIFIER LAB" searchable sortable
@@ -357,7 +356,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
             {TABS.map(t => {
               const blocked = isTabBlocked(t)
               return (
-                <button data-qid="clf:tab" data-qs-action="CLF_SWITCH_TAB" key={t} data-testid={`clf-tab-${t}`}
+                <button data-qid={`clf:tab:${t}`} data-qs-action="CLF_SWITCH_TAB" key={t}
                   onClick={() => { if (!blocked) { setActiveTab(t); window.location.hash = `classifier-lab/${t}` } }}
                   title={blocked ? (!researchGatePassed ? 'Research gate: run /dogpile first' : 'Data gate: need ≥200 samples per class') : `Switch to ${t} tab`}
                   style={{
@@ -389,7 +388,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
         </header>
 
         {/* Tab content */}
-        <main data-testid="clf-main" style={{ flex: 1, overflowY: 'auto', padding: 28 }}>
+        <main data-qid="clf:main" style={{ flex: 1, overflowY: 'auto', padding: 28 }}>
           {activeTab !== 'research' && activeTab !== 'data' && (
             <PreflightBar checks={computePreflights(activeTab, activeProject, mainDataInfo, mainTuneConfig, displayRows, benchmarkData, mainEvalData)} />
           )}

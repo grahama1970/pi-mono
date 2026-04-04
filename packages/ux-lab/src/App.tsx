@@ -922,7 +922,6 @@ const ProjectSidebar = ({
 
   const ProjectItem = ({ project }: { project: Project }) => (
     <div
-      data-testid={`project-${project.id}`}
       data-qid="sidebar:item:project"
       title={`Open project: ${project.title}`}
       onClick={() => onProjectSelect(project.id)}
@@ -1100,7 +1099,6 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
           return (
             <button
               key={label}
-              data-testid={`tab-${id}`}
               data-qid={`header:tab:${id}`}
               title={`Switch to ${label} view`}
               onClick={() => onViewChange(id)}

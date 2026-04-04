@@ -22,6 +22,7 @@ import { StatusPill } from '../unified-lab/components/StatusPill'
 import { useSpartaData } from '../../hooks/useSpartaData'
 import { BinaryGraph } from '../binary-explorer/BinaryGraph'
 import { useBinaryData } from '../../hooks/useBinaryData'
+import EntitySpanViewer from '../shared-chat/EntitySpanViewer'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
 import {
   sampleTactics, sampleTechniques, sampleMessages, emptyMessages,
@@ -711,6 +712,20 @@ const registry: GalleryEntry[] = [
       />
     ),
   },
+  {
+    id: 'entity-span-viewer',
+    name: 'EntitySpanViewer',
+    folder: ['Shared Chat', 'Entity Extraction'],
+    variations: ['nonsensical', 'compliance', 'aerospace'],
+    render: (v) => {
+      const queries: Record<string, string> = {
+        nonsensical: 'How do ham sandwiches relate to CWE-79?',
+        compliance: 'How does the flight management display system affect NIST 800-53 AC-6 compliance?',
+        aerospace: 'What challenges does buffer overflow pose for Mission-Operated Ground Systems?',
+      }
+      return <EntitySpanViewer query={queries[v] || queries.nonsensical} />
+    },
+  },
 ]
 
 /* ───── Folder tree helpers ───── */
@@ -938,7 +953,7 @@ export function ComponentGallery() {
   }
 
   return (
-    <div style={styles.container} data-testid="component-gallery">
+    <div style={styles.container} data-qid="gallery:root">
       {/* Sidebar — folder tree + search */}
       <div style={styles.sidebar}>
         <div style={styles.searchBox}>

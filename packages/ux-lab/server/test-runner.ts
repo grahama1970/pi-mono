@@ -235,7 +235,7 @@ let activeRunId: string | null = null;
 
 function scanTestIds(dir: string): string[] {
   const ids = new Set<string>();
-  const pattern = /data-testid[={"']+([^"'}]+)/g;
+  const pattern = /data-qid[={"']+([^"'}]+)/g;
   function walk(d: string) {
     try {
       for (const f of readdirSync(d)) {
@@ -296,7 +296,7 @@ export function registerTestRunnerRoutes(app: Express, broadcast: (msg: any) => 
       for (const test of manifest.tests) {
         for (const step of test.steps) {
           if (step.selector) {
-            const match = step.selector.match(/data-testid[='"]*([^'"\]]+)/);
+            const match = step.selector.match(/data-qid[='"]*([^'"\]]+)/);
             if (match) testedSelectors.add(match[1]);
           }
         }

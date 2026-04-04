@@ -311,7 +311,19 @@ export default function QuarantineView() {
   useRegisterAction('quarantine:action:reextract', { app: 'datalake-explorer', action: 'REEXTRACT_ENTRY', label: 'Re-extract', description: 'Re-run extraction with overrides', tags: ['quarantine'] })
   useRegisterAction('quarantine:action:diagnose', { app: 'datalake-explorer', action: 'DIAGNOSE_ENTRY', label: 'Diagnose', description: 'Compare TOC vs extraction sections', tags: ['quarantine', 'toc'] })
   useRegisterAction('quarantine:action:converge', { app: 'datalake-explorer', action: 'CONVERGE_ENTRY', label: 'Converge', description: 'Run convergence loop to tune extraction', tags: ['quarantine', 'convergence'] })
-  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'FILTER_QUARANTINE', label: 'Filter: All', description: 'Show all quarantine entries', params: { reason: 'all' }, tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:filter:all', { app: 'datalake-explorer', action: 'QUARANTINE_FILTER_ALL', label: 'Filter: All', description: 'Show all quarantine entries', tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:filter:lowconf', { app: 'datalake-explorer', action: 'QUARANTINE_FILTER_LOWCONF', label: 'Filter: Low Confidence', description: 'Filter low confidence entries', tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:filter:exterr', { app: 'datalake-explorer', action: 'QUARANTINE_FILTER_EXTERR', label: 'Filter: Extraction Errors', description: 'Filter extraction error entries', tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:filter:novel', { app: 'datalake-explorer', action: 'QUARANTINE_FILTER_NOVEL', label: 'Filter: Novel Layouts', description: 'Filter novel layout entries', tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:filter:timeout', { app: 'datalake-explorer', action: 'QUARANTINE_FILTER_TIMEOUT', label: 'Filter: Timeouts', description: 'Filter timeout entries', tags: ['quarantine', 'filter'] })
+  useRegisterAction('quarantine:layout:balanced', { app: 'datalake-explorer', action: 'QUARANTINE_LAYOUT_BALANCED', label: 'Layout: Balanced', description: 'Balanced layout preset', tags: ['quarantine', 'layout'] })
+  useRegisterAction('quarantine:layout:review', { app: 'datalake-explorer', action: 'QUARANTINE_LAYOUT_REVIEW', label: 'Layout: Review', description: 'Review layout preset', tags: ['quarantine', 'layout'] })
+  useRegisterAction('quarantine:layout:inspect', { app: 'datalake-explorer', action: 'QUARANTINE_LAYOUT_INSPECT', label: 'Layout: Inspect', description: 'Inspect layout preset', tags: ['quarantine', 'layout'] })
+  useRegisterAction('quarantine:layout:wide', { app: 'datalake-explorer', action: 'QUARANTINE_LAYOUT_WIDE', label: 'Layout: Wide Content', description: 'Wide content layout preset', tags: ['quarantine', 'layout'] })
+  useRegisterAction('quarantine:layout:chat', { app: 'datalake-explorer', action: 'QUARANTINE_LAYOUT_CHAT', label: 'Layout: Chat', description: 'Chat layout preset', tags: ['quarantine', 'layout'] })
+  useRegisterAction('quarantine:search', { app: 'datalake-explorer', action: 'QUARANTINE_SEARCH', label: 'Search Quarantine', description: 'Search quarantine entries', tags: ['quarantine', 'search'] })
+  useRegisterAction('quarantine:select-all-visible-docume', { app: 'datalake-explorer', action: 'QUARANTINE_SELECT_ALL', label: 'Select All Visible', description: 'Select all visible quarantine documents', tags: ['quarantine', 'batch'] })
+  useRegisterAction('quarantine:batch:approve', { app: 'datalake-explorer', action: 'QUARANTINE_BATCH_APPROVE', label: 'Batch Approve', description: 'Approve all selected entries', tags: ['quarantine', 'batch'] })
 
   const handlePresetChange = useCallback((p: LayoutPreset) => {
     setLayoutPreset(p)
@@ -920,6 +932,7 @@ export default function QuarantineView() {
             <button
               key={p}
               data-qid={`quarantine:layout:${p === 'wide-content' ? 'wide' : p}`}
+              data-qs-action={`QUARANTINE_LAYOUT_${(p === 'wide-content' ? 'WIDE' : p).toUpperCase()}`}
               title={`Layout: ${LAYOUT_PRESETS[p].label}`}
               onClick={() => handlePresetChange(p)}
               style={{
@@ -1031,6 +1044,13 @@ export default function QuarantineView() {
                       'novel-layout': 'novel',
                       'timeout': 'timeout',
                     }[chip.value] ?? chip.value}`}
+                    data-qs-action={`QUARANTINE_FILTER_${{
+                      'all': 'ALL',
+                      'low-confidence': 'LOWCONF',
+                      'extraction-error': 'EXTERR',
+                      'novel-layout': 'NOVEL',
+                      'timeout': 'TIMEOUT',
+                    }[chip.value] ?? chip.value.toUpperCase()}`}
                     title={`Filter: ${chip.label === 'All' ? 'show all entries' : chip.label === 'LowConf' ? 'low confidence' : chip.label === 'ExtErr' ? 'extraction errors' : chip.label === 'Novel' ? 'novel layouts' : 'timeouts'}`}
                     onClick={() => setReasonFilter(chip.value)}
                     style={{
@@ -1153,6 +1173,8 @@ export default function QuarantineView() {
                       type="checkbox"
                       checked={isChecked}
                       data-qid={`quarantine:checkbox:${entry.id}`}
+                      data-qs-action={`QUARANTINE_CHECK_${entry.id}`}
+                      title={`Select entry ${entry.id}`}
                       onChange={(e) => {
                         e.stopPropagation()
                         toggleChecked(entry.id)

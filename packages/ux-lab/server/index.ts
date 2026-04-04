@@ -1622,6 +1622,7 @@ app.get('/api/projects/:projectId/components', async (req, res) => {
     'prompt-lab': resolve(__dirname, '../src/components/sparta/explorer'),
     'llm-eval-lab': resolve(__dirname, '../src/components/sparta/explorer'),
     'classifier-lab': resolve(__dirname, '../src/components/sparta/explorer'),
+    'entity-span-viewer': resolve(__dirname, '../src/components/shared-chat'),
   }
   const dir = componentDirs[projectId] || resolve(__dirname, '../src/components')
   try {

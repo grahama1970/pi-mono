@@ -37,7 +37,8 @@
       "Edit(.claude/hook-logs/**)",
       "Bash(rm .claude/hook-logs:*)",
       "Bash(echo 0 > /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)",
-      "Bash(rm /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)"
+      "Bash(rm /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)",
+      "Skill(dogpile)"
     ]
   }
 }

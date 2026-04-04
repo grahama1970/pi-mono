@@ -336,8 +336,8 @@ interface CodePaneProps {
   maxHeight?: string
   /** Header label */
   header?: string
-  /** data-testid for the root element */
-  testId?: string
+  /** data-qid for the root element */
+  qid?: string
   /** Enable obfuscation pattern hints: dead code, NOP sleds, opaque predicate candidates */
   obfuscationHints?: boolean
 }
@@ -356,7 +356,7 @@ export function CodePane({
   showCopyButton = false,
   maxHeight = '100%',
   header,
-  testId,
+  qid,
   obfuscationHints = false,
 }: CodePaneProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -399,7 +399,7 @@ export function CodePane({
 
   return (
     <div
-      data-testid={testId ?? 'code-pane'}
+      data-qid={qid ?? 'code:pane:root'}
       data-obfuscation-summary={obfSummary ? JSON.stringify(obfSummary) : undefined}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}
     >
@@ -423,7 +423,7 @@ export function CodePane({
           )}
           {showCopyButton && (
             <button
-              data-testid="code-pane-copy"
+              data-qid="code:pane:copy"
               onClick={handleCopy}
               title="Copy to clipboard"
               style={{
@@ -499,7 +499,7 @@ export function CodePane({
             return (
               <div key={i}>
               {showBlockSeparator && (
-                <div data-testid="asm-block-separator" style={{ height: 1, background: '#2a2a2a', margin: '4px 0', borderTop: '1px solid #2d2d2d' }} />
+                <div data-qid="code:asm:block-separator" style={{ height: 1, background: '#2a2a2a', margin: '4px 0', borderTop: '1px solid #2d2d2d' }} />
               )}
               <div
                 data-block-end={blockEnd ? 'true' : undefined}

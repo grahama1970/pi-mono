@@ -141,7 +141,7 @@ export function ClassificationTab() {
             {agentRunning ? 'Training' : 'Stopped'}
           </StatusPill>
           <button
-            data-testid="stop-training-btn"
+            data-qid="classification:action:stop-training"
             onClick={handleStopTraining}
             disabled={!agentRunning}
             style={{
@@ -205,11 +205,11 @@ export function ClassificationTab() {
           <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <div style={{ width: 12, height: 2, backgroundColor: EMBRY.green }} />
-              <span data-testid="legend-item" style={{ fontSize: 9, color: EMBRY.dim }}>F1</span>
+              <span data-qid="classification:chart:legend-item" style={{ fontSize: 9, color: EMBRY.dim }}>F1</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <div style={{ width: 12, height: 2, backgroundColor: EMBRY.red }} />
-              <span data-testid="legend-item" style={{ fontSize: 9, color: EMBRY.dim }}>Loss</span>
+              <span data-qid="classification:chart:legend-item" style={{ fontSize: 9, color: EMBRY.dim }}>Loss</span>
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@ export function ClassificationTab() {
               return (
                 <tr
                   key={model.id}
-                  data-testid="promo-table-row"
+                  data-qid="classification:promo:row"
                   onClick={() => handleRowClick(model)}
                   onMouseEnter={() => setHoveredRow(model.id)}
                   onMouseLeave={() => setHoveredRow(null)}

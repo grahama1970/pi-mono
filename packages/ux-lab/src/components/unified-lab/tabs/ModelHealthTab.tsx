@@ -206,7 +206,7 @@ export function ModelHealthTab() {
       {/* Filters row */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 14, alignItems: 'center' }}>
         <input
-          data-testid="filter-input"
+          data-qid="model-health:filter:input"
           placeholder="Filter models..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
@@ -222,7 +222,7 @@ export function ModelHealthTab() {
           }}
         />
         <select
-          data-testid="filter-dropdown"
+          data-qid="model-health:filter:dropdown"
           value={labFilter}
           onChange={(e) => setLabFilter(e.target.value as LabType | 'all')}
           style={{
@@ -255,7 +255,7 @@ export function ModelHealthTab() {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    data-testid={`sort-${header.id}`}
+                    data-qid={`model-health:sort:${header.id}`}
                     onClick={header.column.getToggleSortingHandler()}
                     style={{
                       textAlign: 'left',
@@ -297,7 +297,7 @@ export function ModelHealthTab() {
               return (
                 <tr
                   key={row.id}
-                  data-testid="model-health-row"
+                  data-qid="model-health:table:row"
                   onMouseEnter={() => setHoveredRow(row.id)}
                   onMouseLeave={() => setHoveredRow(null)}
                   style={{
@@ -316,7 +316,7 @@ export function ModelHealthTab() {
                   <td style={{ padding: '10px 14px' }}>
                     {isHovered && (
                       <button
-                        data-testid="view-in-lab-link"
+                        data-qid="model-health:action:view-in-lab"
                         style={{
                           background: 'none',
                           border: 'none',
