@@ -69,6 +69,7 @@ const ArchitectureView = React.lazy(() => import('./components/architecture/Arch
 const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })).catch(() => ({ default: () => React.createElement('div', { style: { padding: 20, color: '#f44' } }, 'Embry Terminal failed to load — check console') })));
 const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })));
 const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaView').then(m => ({ default: m.Lean4LemmaView })));
+const ComponentGalleryView = React.lazy(() => import('./components/gallery/ComponentGallery').then(m => ({ default: m.ComponentGallery })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -1631,19 +1632,9 @@ export default function App() {
                       </React.Suspense>
                     </div>
                   ) : activeProjectId === 'sparta-explorer' ? (
-                    <div className="flex-1 flex flex-col overflow-hidden">
-                      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
-                        <SpartaExplorerView initialTab={hashSubpath} views={{
-                          Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
-                          Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
-                          Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
-                          URLs: <React.Suspense fallback={null}><URLsView /></React.Suspense>,
-                          QRAs: <React.Suspense fallback={null}><QRAsView /></React.Suspense>,
-                          Relationships: <React.Suspense fallback={null}><RelationshipsView /></React.Suspense>,
-                          'Threat Matrix': <React.Suspense fallback={null}><ThreatMatrixView /></React.Suspense>,
-                          Pipeline: <React.Suspense fallback={null}><PipelineView /></React.Suspense>,
-                          'Prompt Lab': <React.Suspense fallback={null}><PromptLabTabView /></React.Suspense>,
-                        }} />
+                    <div className="flex-1 overflow-auto">
+                      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_GALLERY...</div>}>
+                        <ComponentGalleryView />
                       </React.Suspense>
                     </div>
                   ) : activeProjectId === 'binary-explorer' ? (
@@ -1659,12 +1650,9 @@ export default function App() {
                       </React.Suspense>
                     </div>
                   ) : (
-                    <Components
-                      projectId={activeProjectId}
-                      selectedComponent={selectedComponent}
-                      setSelectedComponent={setSelectedComponent}
-                      setToast={setToast}
-                    />
+                    <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_GALLERY...</div>}>
+                      <ComponentGalleryView />
+                    </React.Suspense>
                   )}
                 </div>
               )}

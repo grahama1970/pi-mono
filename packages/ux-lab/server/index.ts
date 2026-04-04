@@ -1736,13 +1736,25 @@ app.post('/api/extract-entities', async (req, res) => {
     }
 
     // Mode 3: SPARTA entity extraction via daemon (FlashText Aho-Corasick)
+    // Pass through the full daemon response — spans, resolution_map, control_metadata, etc.
     try {
-      const result = await proxyPost('/extract-entities', { text, include_taxonomy: false })
-      const entities = (result.control_ids ?? []).map((cid: string, i: number) => {
-        const meta = (result.control_metadata ?? [])[i] ?? {}
+      const result = await proxyPost('/extract-entities', { text, include_taxonomy: false }) as Record<string, unknown>
+      const entities = ((result.control_ids ?? []) as string[]).map((cid: string, i: number) => {
+        const meta = ((result.control_metadata ?? []) as Array<{ name?: string; framework?: string }>)[i] ?? {}
         return { id: cid, name: meta.name ?? cid, label: cid, type: 'control', framework: meta.framework ?? '', exists: true }
       })
-      res.json({ entities, mode: 'flashtext' })
+      res.json({
+        entities,
+        mode: 'flashtext',
+        // Full pipeline data for EntitySpanViewer
+        control_ids: result.control_ids ?? [],
+        spans: result.spans ?? [],
+        resolution_map: result.resolution_map ?? {},
+        control_metadata: result.control_metadata ?? [],
+        not_in_corpus: result.not_in_corpus ?? [],
+        phrases: result.phrases ?? [],
+        misspellings: result.misspellings ?? [],
+      })
     } catch (daemonErr) {
       const detail = daemonErr instanceof Error ? daemonErr.message : String(daemonErr)
       console.error(`[extract-entities] daemon /extract-entities FAILED: ${detail}`)

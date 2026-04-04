@@ -35,12 +35,16 @@ interface SpartaNavContextValue {
 
 const SpartaNavContext = createContext<SpartaNavContextValue | undefined>(undefined)
 
+const NOOP_NAV: SpartaNavContextValue = {
+  navigateToTab: () => {},
+  navigateToTabWithFilter: () => {},
+  tabFilters: {},
+  clearTabFilter: () => {},
+}
+
 export function useSpartaNav(): SpartaNavContextValue {
   const context = useContext(SpartaNavContext)
-  if (!context) {
-    throw new Error('useSpartaNav must be used within SpartaExplorer')
-  }
-  return context
+  return context ?? NOOP_NAV
 }
 
 // Lucide icons for the global nav strip
