@@ -212,7 +212,6 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'sparta-explorer' && (
             <SpartaExplorerView views={{
               Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
-              Overview: <React.Suspense fallback={null}><OverviewView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
               Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
               URLs: <React.Suspense fallback={null}><URLsView /></React.Suspense>,
@@ -1638,7 +1637,6 @@ export default function App() {
                       <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
                         <SpartaExplorerView views={{
                           Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
-                          Overview: <React.Suspense fallback={null}><OverviewView /></React.Suspense>,
                           Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
                           Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
                           URLs: <React.Suspense fallback={null}><URLsView /></React.Suspense>,

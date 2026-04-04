@@ -33,7 +33,11 @@
       "Bash(kill -9 93979 93969 99258 99601 99607 99619)",
       "Bash(xargs -I{} ps -o ppid= -p {})",
       "Bash(xargs -I{} ps -fp {})",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Edit(.claude/hook-logs/**)",
+      "Bash(rm .claude/hook-logs:*)",
+      "Bash(echo 0 > /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)",
+      "Bash(rm /home/graham/workspace/experiments/pi-mono/.claude/hook-logs:*)"
     ]
   }
 }

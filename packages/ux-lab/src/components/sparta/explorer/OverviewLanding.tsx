@@ -93,7 +93,36 @@ export function OverviewLanding({ onNavigate }: OverviewLandingProps) {
     fetch('/api/posture/overview')
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
-        if (mounted && json) setData(json as OverviewResponse)
+        if (!mounted || !json) return
+        // API returns {wells: {data_quality, threat_matrix, posture, proof_graph}}
+        // Transform to component's expected shape
+        const w = json.wells ?? json
+        const dqRaw = w.data_quality ?? w.dataQuality ?? {}
+        const tmRaw = w.threat_matrix ?? w.threatMatrix ?? {}
+        const pRaw = w.posture ?? {}
+        const pgRaw = w.proof_graph ?? w.proofGraph ?? {}
+        setData({
+          dataQuality: {
+            qraCoveragePct: Math.round((dqRaw.completeness ?? dqRaw.qraCoveragePct ?? 0) * 100),
+            controlsAssessed: dqRaw.total_controls ?? dqRaw.controlsAssessed ?? 0,
+            trend: dqRaw.trend ?? [],
+          },
+          threatMatrix: {
+            techniqueCoveragePct: Math.round((tmRaw.avg_nrs_score ?? tmRaw.techniqueCoveragePct ?? 0) * 100),
+            topUncoveredTechniques: tmRaw.topUncoveredTechniques ?? [],
+          },
+          posture: {
+            overallScorePct: Math.round((pRaw.score ?? pRaw.overallScorePct ?? 0) * 100),
+            frameworks: pRaw.frameworks ?? [],
+            deltaPct: pRaw.deltaPct ?? 0,
+          },
+          proofGraph: {
+            relationshipDensity: pgRaw.relationships ?? pgRaw.relationshipDensity ?? 0,
+            avgNrs: pgRaw.avg_nrs ?? pgRaw.avgNrs ?? 0,
+            strongEdges: pgRaw.linked_controls ?? pgRaw.strongEdges ?? 0,
+            weakEdges: pgRaw.weakEdges ?? 0,
+          },
+        })
       })
       .catch(() => {
         if (mounted) setData({})
@@ -176,7 +205,7 @@ export function OverviewLanding({ onNavigate }: OverviewLandingProps) {
         style={{ ...cardStyle, textAlign: 'left' }}
       >
         <div style={{ fontSize: 12, opacity: 0.8 }}>Proof Graph</div>
-        <div style={{ fontSize: 32, fontWeight: 700 }}>{Math.round(pg.relationshipDensity ?? 0)}%</div>
+        <div style={{ fontSize: 32, fontWeight: 700 }}>{(pg.relationshipDensity ?? 0).toLocaleString()}</div>
         <div style={{ marginTop: 8, fontSize: 13 }}>Avg NRS: {Math.round((pg.avgNrs ?? 0) * 100) / 100}</div>
         <div style={{ marginTop: 4, fontSize: 13 }}>Strong edges: {pg.strongEdges ?? 0}</div>
         <div style={{ marginTop: 4, fontSize: 13 }}>Weak edges: {pg.weakEdges ?? 0}</div>

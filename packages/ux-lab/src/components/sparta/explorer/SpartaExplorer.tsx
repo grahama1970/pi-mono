@@ -4,19 +4,19 @@ import { StatusBar } from '../../common/StatusBar'
 import { ChatWell } from '../query/ChatWell'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
-import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare } from 'lucide-react'
 import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare, ShieldCheck } from 'lucide-react'
-import { OverviewLanding } from './OverviewLanding'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import PostureDashboard from '../dashboard/PostureDashboard'
+import { OverviewLanding } from './OverviewLanding'
 
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
 
+const API = 'http://localhost:3001'
+const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
+
 const TABS = [
   'Chat', 'Overview', 'Posture', 'Sources', 'Controls', 'URLs',
-  'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
-] as const
-  'Chat', 'Overview', 'Sources', 'Controls', 'URLs',
   'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
 ] as const
 
@@ -44,7 +44,6 @@ export function useSpartaNav(): SpartaNavContextValue {
 
 // Lucide icons for the global nav strip
 const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
-const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
   'Chat': MessageSquare,
   'Overview': Zap,
   'Posture': ShieldCheck,
@@ -56,6 +55,7 @@ const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
   'Threat Matrix': Target,
   'Pipeline': Workflow,
 }
+
 interface TabPlaceholderProps { name: TabName; message?: string }
 function TabPlaceholder({ name, message }: TabPlaceholderProps) {
   return (
@@ -435,10 +435,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
               </button>
             ))}
             {/* Collection stats */}
-              <button
-                key={tab}
-                data-qid={tab === 'Posture' ? 'sparta:tab:posture' : `sparta:nav:${tab.toLowerCase().replace(/\s+/g, '-')}`}
-                data-qs-action="NAVIGATE_TAB"
+            <div style={{ padding: '12px 16px', borderTop: `1px solid ${EMBRY.border}`, marginTop: 'auto' }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>Collections</div>
+              {collectionCounts.loading ? (
+                <span style={{ fontSize: 9, color: EMBRY.dim }}>loading...</span>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <CountRow label="controls" value={collectionCounts.controls} />
@@ -457,7 +457,9 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', minWidth: 0 }}>
               {TABS.map((tab) => (
                 <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-                  {views[tab] ?? <TabPlaceholder name={tab} />}
+                  {tab === 'Posture' ? (views[tab] ?? <PostureDashboard />)
+                    : tab === 'Overview' ? (views[tab] ?? <OverviewLanding onNavigate={navigateToTab} />)
+                    : (views[tab] ?? <TabPlaceholder name={tab} />)}
                 </div>
               ))}
             </div>
@@ -491,15 +493,13 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
         </div>
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
-              {TABS.map((tab) => (
-                <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-                  {tab === 'Overview'
-                    ? <OverviewLanding onNavigate={navigateToTab} />
-                    : tab === 'Posture'
-                      ? <PostureDashboard />
-                      : (views[tab] ?? <TabPlaceholder name={tab} />)}
-                </div>
-              ))}
+        </div>
+      </div>
+
+      {/* Shared status bar */}
+      <StatusBar
+        projectId="sparta-explorer"
+        connected={daemonHealth.ok}
         connectionLabel="daemon connected"
         items={[
           { label: activeTab },

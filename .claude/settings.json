@@ -8,6 +8,33 @@
             "type": "command",
             "command": "./.claude/hooks/unset-venv.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "./.claude/hooks/bash-mutation-guard.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/skill-check.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/post-skill-check.sh",
+            "timeout": 5
           }
         ]
       }

@@ -88,24 +88,32 @@ export function usePostureData(): UsePostureDataResult {
 			setError(null);
 
 			try {
-				const [frameworksResponse, controlsByFamily, gaps, topRisks, driftAlerts] = await Promise.all([
-					getJson<{ frameworkCoverage: Record<string, FrameworkScore>; overallScore: number }>(
-						"/api/posture/frameworks",
-					),
-					getJson<FamilyBreakdown[] | Record<string, FamilyBreakdown>>("/api/posture/families/NIST"),
-					getJson<GapAnalysis[]>("/api/posture/gaps"),
-					getJson<RiskControl[]>("/api/posture/risks"),
-					getJson<DriftAlert[]>("/api/posture/alerts"),
+				const [fwRes, famRes, gapRes, riskRes, alertRes] = await Promise.all([
+					getJson<{
+						overallScore: number;
+						frameworks: Array<{ name: string; total: number; withQRAs: number; pct: number }>;
+					}>("/api/posture/frameworks"),
+					getJson<{ framework: string; families: FamilyBreakdown[] }>("/api/posture/families/NIST"),
+					getJson<{ details: GapAnalysis[] }>("/api/posture/gaps"),
+					getJson<{ risks: RiskControl[] }>("/api/posture/risks"),
+					getJson<{ alerts: DriftAlert[] }>("/api/posture/alerts"),
 				]);
 
 				if (cancelled) return;
+
+				// Convert frameworks array to Record keyed by name
+				const frameworkCoverage: Record<string, FrameworkScore> = {};
+				for (const fw of fwRes.frameworks ?? []) {
+					frameworkCoverage[fw.name] = { total: fw.total, withQRAs: fw.withQRAs, withRels: 0, pct: fw.pct };
+				}
+
 				setData({
-					frameworkCoverage: frameworksResponse.frameworkCoverage ?? {},
-					overallScore: frameworksResponse.overallScore ?? 0,
-					controlsByFamily: controlsByFamily ?? [],
-					gaps: gaps ?? [],
-					topRisks: topRisks ?? [],
-					driftAlerts: driftAlerts ?? [],
+					frameworkCoverage,
+					overallScore: fwRes.overallScore ?? 0,
+					controlsByFamily: famRes.families ?? [],
+					gaps: gapRes.details ?? [],
+					topRisks: riskRes.risks ?? [],
+					driftAlerts: alertRes.alerts ?? [],
 				});
 			} catch (e) {
 				if (!cancelled) {

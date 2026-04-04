@@ -230,9 +230,27 @@ function memoryPost(path: string, body: Record<string, unknown>): Promise<Record
   })
 }
 
-/** Extract rows array from memory daemon response (handles items/data/results). */
+/** Extract rows array from memory daemon response (handles documents/items/data/results). */
 function asRows(raw: Record<string, unknown>): any[] {
-  return (raw.items ?? raw.data ?? raw.results ?? []) as any[]
+  return (raw.documents ?? raw.items ?? raw.data ?? raw.results ?? []) as any[]
+}
+
+/** Fetch ALL documents from a collection, paginating in batches of 500. */
+async function memoryListAll(collection: string, return_fields?: string[], filters?: Record<string, unknown>): Promise<any[]> {
+  const PAGE = 500
+  let offset = 0
+  const all: any[] = []
+  while (true) {
+    const body: Record<string, unknown> = { collection, limit: PAGE, offset, sort_field: '_key', sort_order: 'ASC' }
+    if (return_fields) body.return_fields = return_fields
+    if (filters) body.filters = filters
+    const raw = await memoryPost('/list', body)
+    const docs = asRows(raw)
+    all.push(...docs)
+    if (docs.length < PAGE) break
+    offset += PAGE
+  }
+  return all
 }
 
 function isMemoryUnavailableError(err: unknown): boolean {
@@ -241,22 +259,18 @@ function isMemoryUnavailableError(err: unknown): boolean {
 
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {
-    const [controlsRaw, qraRaw] = await Promise.all([
-      memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'source_framework', 'nrs_score', 'weaknesses'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_qra', return_fields: ['control_id'], limit: 0 }),
-    ])
-    const controls = asRows(controlsRaw)
-    const qraSet = new Set(asRows(qraRaw).map((r: any) => String(r.control_id)))
+    // Use nrs_score > 0 as proxy for "has QRA coverage" — avoids paginating 219K QRA docs
+    const controls = await memoryListAll('sparta_controls', ['control_id', 'source_framework', 'nrs_score'])
 
-    const fwMap = new Map<string, { name: string; total: number; withQRAs: number }>()
+    const fwMap = new Map<string, { name: string; total: number; covered: number }>()
     for (const c of controls) {
       const fw = String(c.source_framework || 'Unknown')
-      if (!fwMap.has(fw)) fwMap.set(fw, { name: fw, total: 0, withQRAs: 0 })
+      if (!fwMap.has(fw)) fwMap.set(fw, { name: fw, total: 0, covered: 0 })
       const b = fwMap.get(fw)!
       b.total += 1
-      if (qraSet.has(String(c.control_id))) b.withQRAs += 1
+      if (Number(c.nrs_score ?? 0) > 0) b.covered += 1
     }
-    const frameworks = [...fwMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.withQRAs / f.total) * 100) : 0 }))
+    const frameworks = [...fwMap.values()].map(f => ({ ...f, withQRAs: f.covered, pct: f.total ? Math.round((f.covered / f.total) * 100) : 0 }))
     const overallScore = frameworks.length ? Math.round(frameworks.reduce((s, f) => s + f.pct, 0) / frameworks.length) : 0
     res.json({ overallScore, delta: 0, frameworks })
   } catch (err: any) {
@@ -268,11 +282,7 @@ app.get('/api/posture/frameworks', async (_req, res) => {
 app.get('/api/posture/families/:framework', async (req, res) => {
   try {
     const framework = req.params.framework
-    const [controlsRaw, qraRaw] = await Promise.all([
-      memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'name', 'nrs_score', 'weaknesses'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_qra', return_fields: ['control_id'], limit: 0 }),
-    ])
-    const controls = asRows(controlsRaw)
+    const controls = await memoryListAll('sparta_controls', ['control_id', 'name', 'nrs_score', 'weaknesses'])
     const families = new Map<string, { family: string; total: number; pass: number; partial: number; fail: number }>()
     for (const c of controls) {
       const cid = String(c.control_id || '')
@@ -285,7 +295,8 @@ app.get('/api/posture/families/:framework', async (req, res) => {
       else if (nrs >= 0.6) b.partial += 1
       else b.fail += 1
     }
-    res.json({ framework, families: [...families.values()].sort((a, b) => a.family.localeCompare(b.family)) })
+    const familyList = [...families.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.pass / f.total) * 100) : 0 })).sort((a, b) => a.family.localeCompare(b.family))
+    res.json({ framework, families: familyList })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
     res.status(500).json({ error: 'Posture families failed', detail: String(err) })
@@ -294,28 +305,25 @@ app.get('/api/posture/families/:framework', async (req, res) => {
 
 app.get('/api/posture/gaps', async (_req, res) => {
   try {
-    const [controlsRaw, qraRaw, relsRaw] = await Promise.all([
-      memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'name', 'source_framework'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_qra', return_fields: ['control_id'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_relationships', return_fields: ['source_control_id', 'target_control_id'], limit: 0 }),
+    const [controls, relRows] = await Promise.all([
+      memoryListAll('sparta_controls', ['control_id', 'name', 'source_framework', 'nrs_score']),
+      memoryListAll('sparta_relationships', ['source_control_id', 'target_control_id']),
     ])
-    const controls = asRows(controlsRaw)
-    const qraSet = new Set(asRows(qraRaw).map((r: any) => String(r.control_id)))
-    const relSet = new Set(asRows(relsRaw).flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
+    const relSet = new Set(relRows.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
 
-    let missingQRAs = 0, noRelationships = 0
+    let lowCoverage = 0, noRelationships = 0
     const details: any[] = []
     for (const c of controls) {
       const cid = String(c.control_id)
-      const hasQra = qraSet.has(cid)
+      const nrs = Number(c.nrs_score ?? 0)
       const hasRel = relSet.has(cid)
-      if (!hasQra) missingQRAs++
+      if (nrs === 0) lowCoverage++
       if (!hasRel) noRelationships++
-      if ((!hasQra || !hasRel) && details.length < 20) {
-        details.push({ control_id: cid, name: c.name, framework: c.source_framework, missingQRA: !hasQra, missingRel: !hasRel })
+      if ((nrs === 0 || !hasRel) && details.length < 20) {
+        details.push({ control_id: cid, name: c.name, framework: c.source_framework, reason: nrs === 0 ? 'missing-qra' : 'missing-rel', qraCount: nrs > 0 ? 1 : 0 })
       }
     }
-    res.json({ missingQRAs, noRelationships, unmappedPolicies: 0, expiredEvidence: 0, manualReview: 0, details })
+    res.json({ missingQRAs: lowCoverage, noRelationships, unmappedPolicies: 0, expiredEvidence: 0, manualReview: 0, details })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
     res.status(500).json({ error: 'Posture gaps failed', detail: String(err) })
@@ -325,13 +333,12 @@ app.get('/api/posture/gaps', async (_req, res) => {
 app.get('/api/posture/risks', async (req, res) => {
   try {
     const limit = Math.min(Number(req.query.limit) || 10, 50)
-    const controlsRaw = await memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'name', 'source_framework', 'weaknesses', 'nrs_score'], limit: 0 })
-    const controls = asRows(controlsRaw)
+    const controls = await memoryListAll('sparta_controls', ['control_id', 'name', 'source_framework', 'nrs_score'])
     const risks = controls
-      .filter((c: any) => Number(c.weaknesses ?? 0) > 0)
-      .sort((a: any, b: any) => Number(b.weaknesses ?? 0) - Number(a.weaknesses ?? 0) || Number(a.nrs_score ?? 0) - Number(b.nrs_score ?? 0))
+      .filter((c: any) => Number(c.nrs_score ?? 0) < 0.6)
+      .sort((a: any, b: any) => Number(a.nrs_score ?? 0) - Number(b.nrs_score ?? 0))
       .slice(0, limit)
-      .map((c: any) => ({ control_id: c.control_id, name: c.name, framework: c.source_framework, weaknesses: Number(c.weaknesses ?? 0), nrs_score: Number(c.nrs_score ?? 0) }))
+      .map((c: any) => ({ control_id: c.control_id, name: c.name, source_framework: c.source_framework, nrs_score: Number(c.nrs_score ?? 0) }))
     res.json({ risks })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
@@ -342,12 +349,12 @@ app.get('/api/posture/risks', async (req, res) => {
 app.get('/api/posture/alerts', async (req, res) => {
   try {
     const limit = Math.min(Number(req.query.limit) || 20, 100)
-    const controlsRaw = await memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'name', 'nrs_score', 'weaknesses'], limit: 0 })
-    const alerts = asRows(controlsRaw)
-      .filter((c: any) => Number(c.nrs_score ?? 1) < 0.4 || Number(c.weaknesses ?? 0) > 3)
+    const allControls = await memoryListAll('sparta_controls', ['control_id', 'name', 'nrs_score'])
+    const alerts = allControls
+      .filter((c: any) => Number(c.nrs_score ?? 1) < 0.4)
       .sort((a: any, b: any) => Number(a.nrs_score ?? 0) - Number(b.nrs_score ?? 0))
       .slice(0, limit)
-      .map((c: any) => ({ control_id: c.control_id, name: c.name, severity: Number(c.nrs_score ?? 0) < 0.4 ? 'critical' : 'warning', nrs_score: Number(c.nrs_score ?? 0), weaknesses: Number(c.weaknesses ?? 0) }))
+      .map((c: any) => ({ control_id: c.control_id, name: c.name, severity: Number(c.nrs_score ?? 0) < 0.2 ? 'critical' : 'warning', nrs_score: Number(c.nrs_score ?? 0) }))
     res.json({ alerts })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
@@ -357,27 +364,23 @@ app.get('/api/posture/alerts', async (req, res) => {
 
 app.get('/api/posture/overview', async (_req, res) => {
   try {
-    const [controlsRaw, qraRaw, relsRaw] = await Promise.all([
-      memoryPost('/list', { collection: 'sparta_controls', return_fields: ['control_id', 'nrs_score', 'weaknesses'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_qra', return_fields: ['control_id'], limit: 0 }),
-      memoryPost('/list', { collection: 'sparta_relationships', return_fields: ['source_control_id', 'target_control_id', 'nrs_score'], limit: 0 }),
+    const [controls, rels] = await Promise.all([
+      memoryListAll('sparta_controls', ['control_id', 'nrs_score']),
+      memoryListAll('sparta_relationships', ['source_control_id', 'target_control_id']),
     ])
-    const controls = asRows(controlsRaw)
-    const qraSet = new Set(asRows(qraRaw).map((r: any) => String(r.control_id)))
-    const rels = asRows(relsRaw)
     const linked = new Set(rels.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
 
-    const withQra = controls.filter((c: any) => qraSet.has(String(c.control_id))).length
-    const withRel = controls.filter((c: any) => linked.has(String(c.control_id))).length
     const total = controls.length || 1
+    const covered = controls.filter((c: any) => Number(c.nrs_score ?? 0) > 0).length
+    const withRel = controls.filter((c: any) => linked.has(String(c.control_id))).length
     const avgNrs = controls.reduce((s: number, c: any) => s + Number(c.nrs_score ?? 0), 0) / total
-    const highWeak = controls.filter((c: any) => Number(c.weaknesses ?? 0) > 3).length
+    const lowNrs = controls.filter((c: any) => Number(c.nrs_score ?? 0) < 0.4).length
 
     res.json({
       wells: {
-        data_quality: { completeness: Number((withQra / total).toFixed(4)), relationship_coverage: Number((withRel / total).toFixed(4)), total_controls: controls.length },
-        threat_matrix: { high_weakness_controls: highWeak, avg_nrs_score: Number(avgNrs.toFixed(4)) },
-        posture: { score: Number(avgNrs.toFixed(4)), controls_with_qra: withQra, controls_without_qra: controls.length - withQra },
+        data_quality: { completeness: Number((covered / total).toFixed(4)), relationship_coverage: Number((withRel / total).toFixed(4)), total_controls: controls.length },
+        threat_matrix: { high_risk_controls: lowNrs, avg_nrs_score: Number(avgNrs.toFixed(4)) },
+        posture: { score: Number(avgNrs.toFixed(4)), controls_covered: covered, controls_uncovered: controls.length - covered },
         proof_graph: { relationships: rels.length, linked_controls: linked.size },
       }
     })
