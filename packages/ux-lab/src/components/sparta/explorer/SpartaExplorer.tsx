@@ -68,13 +68,21 @@ function TabPlaceholder({ name, message }: TabPlaceholderProps) {
   )
 }
 
+/** Map URL subpath slugs to tab names */
+const SUBPATH_TO_TAB: Record<string, TabName> = Object.fromEntries(
+  TABS.map(t => [t.toLowerCase().replace(/\s+/g, '-'), t])
+)
+
 export interface SpartaExplorerProps {
   views?: Partial<Record<TabName, ReactNode>>
   loadingTabs?: Partial<Record<TabName, boolean>>
+  initialTab?: string
 }
 
-export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerProps) {
-  const [activeTab, setActiveTab] = useState<TabName>('Chat')
+export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: SpartaExplorerProps) {
+  const [activeTab, setActiveTab] = useState<TabName>(
+    (initialTab && SUBPATH_TO_TAB[initialTab]) || 'Chat'
+  )
   const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>({})
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
 
@@ -111,6 +119,9 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
 
   const navigateToTab = useCallback((tab: TabName) => {
     setActiveTab(tab)
+    const slug = tab.toLowerCase().replace(/\s+/g, '-')
+    const base = window.location.hash.split('/')[0]
+    window.location.hash = slug === 'chat' ? base : `${base}/${slug}`
   }, [])
 
   const navigateToTabWithFilter = useCallback((tab: TabName, filter: SpartaTabFilter) => {

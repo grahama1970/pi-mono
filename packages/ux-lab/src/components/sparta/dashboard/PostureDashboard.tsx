@@ -6,7 +6,7 @@ import { EMBRY, card, label, heading, glowDot, fwBadge } from '../common/EmbrySt
 
 type Props = { onNavigateToControl?: (id: string) => void }
 
-const FRAMEWORKS = ['NIST', 'CMMC', 'ISO27001', 'CIS', 'SOC2', 'HIPAA', 'PCI', 'FedRAMP'] as const
+// Frameworks derived from live API data, not hardcoded
 
 function toActionToken(value: string) {
   return value.toUpperCase().replace(/[^A-Z0-9]+/g, '_')
@@ -54,10 +54,13 @@ export default function PostureDashboard({ onNavigateToControl }: Props) {
   const { loading, error, frameworkCoverage, overallScore, controlsByFamily, gaps, topRisks, driftAlerts } = usePostureData()
   const [selectedFamily, setSelectedFamily] = useState<string | null>(null)
 
-  const frameworks = useMemo(() => FRAMEWORKS.map((fw) => {
-    const fc = frameworkCoverage?.[fw]
-    return { framework: fw, pct: fc?.pct ?? 0 }
-  }), [frameworkCoverage])
+  const frameworks = useMemo(() => {
+    if (!frameworkCoverage) return []
+    return Object.entries(frameworkCoverage).map(([fw, fc]) => ({
+      framework: fw,
+      pct: fc?.pct ?? 0,
+    }))
+  }, [frameworkCoverage])
 
   const families = useMemo(() => {
     if (Array.isArray(controlsByFamily)) return controlsByFamily.slice(0, 15)

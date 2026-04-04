@@ -210,7 +210,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
-            <SpartaExplorerView views={{
+            <SpartaExplorerView initialTab={subpath} views={{
               Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
               Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
@@ -1633,7 +1633,7 @@ export default function App() {
                   ) : activeProjectId === 'sparta-explorer' ? (
                     <div className="flex-1 flex flex-col overflow-hidden">
                       <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
-                        <SpartaExplorerView views={{
+                        <SpartaExplorerView initialTab={hashSubpath} views={{
                           Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
                           Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
                           Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
