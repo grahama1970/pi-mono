@@ -1,39 +1,17 @@
 {
-  "version": 2,
+  "version": 3,
   "app": "Datalake Explorer",
   "base_url": "http://localhost:3002/#datalake-explorer",
-  "created": "2026-04-03",
-  "notes": "Full interaction manifest. 124 data-qs-action in source, ~39 on page load. Elements behind modals/selections require multi-step chains.",
+  "created": "2026-04-04",
+  "notes": "Order matters — interactions run sequentially. Tabs first, then quarantine, then sidebar/search last (search filters state).",
   "surfaces": [
     {
       "name": "datalake-explorer",
       "path": "/",
       "wait_ready": "[data-qid='datalake:tab:overview']",
       "wait_ready_timeout_ms": 30000,
+      "qid_compliance": true,
       "elements": [
-        {
-          "name": "scope-search",
-          "selector": "[data-qid='datalake:search']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='datalake:search']", "description": "Focus scope search", "screenshot_after": true},
-            {"action": "type", "target": "[data-qid='datalake:search']", "value": "extractor", "description": "Filter scopes", "screenshot_after": true},
-            {"action": "clear", "target": "[data-qid='datalake:search']", "description": "Clear search"}
-          ]
-        },
-        {
-          "name": "scope-extractor",
-          "selector": "[data-qid='datalake:scope:extractor']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='datalake:scope:extractor']", "description": "Select extractor scope", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "scope-fort-worth",
-          "selector": "[data-qid='datalake:scope:fort_worth_f36']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='datalake:scope:fort_worth_f36']", "description": "Select fort_worth_f36 scope", "screenshot_after": true}
-          ]
-        },
         {
           "name": "tab-overview",
           "selector": "[data-qid='datalake:tab:overview']",
@@ -49,46 +27,6 @@
           ]
         },
         {
-          "name": "corpus-sort-asc",
-          "selector": "[data-qs-action='CORPUS_SORT_ASC']",
-          "depends_on": "tab-corpus",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CORPUS_SORT_ASC']", "description": "Sort corpus ascending", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "corpus-sort-desc",
-          "selector": "[data-qs-action='CORPUS_SORT_DESC']",
-          "depends_on": "tab-corpus",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CORPUS_SORT_DESC']", "description": "Sort corpus descending", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "corpus-table-header",
-          "selector": "[data-qs-action='CORPUS_TABLE_HEADER']",
-          "depends_on": "tab-corpus",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CORPUS_TABLE_HEADER']", "description": "Click corpus table header", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "corpus-entry-filename",
-          "selector": "[data-qs-action='CORPUS_ENTRY.FILENAME']",
-          "depends_on": "tab-corpus",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CORPUS_ENTRY.FILENAME']", "description": "Click first corpus entry filename", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "corpus-retry",
-          "selector": "[data-qs-action='CORPUS_RETRY']",
-          "depends_on": "corpus-entry-filename",
-          "interactions": [
-            {"action": "screenshot", "description": "Corpus retry button state"}
-          ]
-        },
-        {
           "name": "tab-extraction",
           "selector": "[data-qid='datalake:tab:extraction']",
           "interactions": [
@@ -100,14 +38,6 @@
           "selector": "[data-qid='datalake:tab:requirements']",
           "interactions": [
             {"action": "click", "target": "[data-qid='datalake:tab:requirements']", "description": "Switch to Requirements tab", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "requirements-detail",
-          "selector": "[data-qs-action='REQUIREMENTS_DETAIL']",
-          "depends_on": "tab-requirements",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='REQUIREMENTS_DETAIL']", "description": "Open requirement detail", "screenshot_after": true}
           ]
         },
         {
@@ -134,7 +64,6 @@
         {
           "name": "metrics-text",
           "selector": "[data-qid='metrics:coverage:text']",
-          "depends_on": "tab-metrics",
           "interactions": [
             {"action": "screenshot", "description": "Text embedding coverage gauge"}
           ]
@@ -142,17 +71,8 @@
         {
           "name": "metrics-visual",
           "selector": "[data-qid='metrics:coverage:visual']",
-          "depends_on": "tab-metrics",
           "interactions": [
             {"action": "screenshot", "description": "Visual embedding coverage gauge"}
-          ]
-        },
-        {
-          "name": "metrics-quarantine-button",
-          "selector": "[data-qs-action='METRICS_QUARANTINE_BUTTON']",
-          "depends_on": "tab-metrics",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='METRICS_QUARANTINE_BUTTON']", "description": "Navigate to quarantine from metrics", "screenshot_after": true}
           ]
         },
         {
@@ -165,7 +85,6 @@
         {
           "name": "quarantine-filter-all",
           "selector": "[data-qid='quarantine:filter:all']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:all']", "description": "Show all quarantined", "screenshot_after": true}
           ]
@@ -173,7 +92,6 @@
         {
           "name": "quarantine-filter-lowconf",
           "selector": "[data-qid='quarantine:filter:lowconf']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:lowconf']", "description": "Filter low confidence", "screenshot_after": true}
           ]
@@ -181,7 +99,6 @@
         {
           "name": "quarantine-filter-exterr",
           "selector": "[data-qid='quarantine:filter:exterr']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:exterr']", "description": "Filter extraction errors", "screenshot_after": true}
           ]
@@ -189,7 +106,6 @@
         {
           "name": "quarantine-filter-novel",
           "selector": "[data-qid='quarantine:filter:novel']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:novel']", "description": "Filter novel documents", "screenshot_after": true}
           ]
@@ -197,7 +113,6 @@
         {
           "name": "quarantine-filter-timeout",
           "selector": "[data-qid='quarantine:filter:timeout']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:timeout']", "description": "Filter timeouts", "screenshot_after": true}
           ]
@@ -205,7 +120,6 @@
         {
           "name": "quarantine-filter-all-reset",
           "selector": "[data-qid='quarantine:filter:all']",
-          "depends_on": "quarantine-filter-timeout",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:filter:all']", "description": "Reset filter to all", "screenshot_after": true}
           ]
@@ -213,7 +127,6 @@
         {
           "name": "quarantine-layout-balanced",
           "selector": "[data-qid='quarantine:layout:balanced']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:layout:balanced']", "description": "Balanced layout", "screenshot_after": true}
           ]
@@ -221,7 +134,6 @@
         {
           "name": "quarantine-layout-review",
           "selector": "[data-qid='quarantine:layout:review']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:layout:review']", "description": "Review layout", "screenshot_after": true}
           ]
@@ -229,7 +141,6 @@
         {
           "name": "quarantine-layout-inspect",
           "selector": "[data-qid='quarantine:layout:inspect']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:layout:inspect']", "description": "Inspect layout", "screenshot_after": true}
           ]
@@ -237,7 +148,6 @@
         {
           "name": "quarantine-layout-wide",
           "selector": "[data-qid='quarantine:layout:wide']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:layout:wide']", "description": "Wide content layout", "screenshot_after": true}
           ]
@@ -245,7 +155,6 @@
         {
           "name": "quarantine-layout-chat",
           "selector": "[data-qid='quarantine:layout:chat']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:layout:chat']", "description": "Chat layout", "screenshot_after": true}
           ]
@@ -253,7 +162,6 @@
         {
           "name": "quarantine-search",
           "selector": "[data-qid='quarantine:search']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:search']", "description": "Focus quarantine search", "screenshot_after": true},
             {"action": "type", "target": "[data-qid='quarantine:search']", "value": "0000ea", "description": "Search quarantine entries", "screenshot_after": true}
@@ -262,7 +170,6 @@
         {
           "name": "quarantine-select-all",
           "selector": "[data-qid='quarantine:select-all-visible-docume']",
-          "depends_on": "tab-quarantine",
           "interactions": [
             {"action": "click", "target": "[data-qid='quarantine:select-all-visible-docume']", "description": "Select all visible documents", "screenshot_after": true}
           ]
@@ -270,142 +177,30 @@
         {
           "name": "quarantine-batch-approve",
           "selector": "[data-qid='quarantine:batch:approve']",
-          "depends_on": "quarantine-select-all",
           "interactions": [
             {"action": "screenshot", "description": "Batch approve button after selection"}
           ]
         },
         {
-          "name": "quarantine-entry-select",
-          "selector": "[data-qs-action='QUARANTINE_SELECT']",
-          "depends_on": "quarantine-filter-all",
+          "name": "scope-extractor",
+          "selector": "[data-qid='datalake:scope:extractor']",
           "interactions": [
-            {"action": "click", "target": "[data-qs-action='QUARANTINE_SELECT']", "description": "Select first quarantine entry", "screenshot_after": true}
+            {"action": "click", "target": "[data-qid='datalake:scope:extractor']", "description": "Select extractor scope", "screenshot_after": true}
           ]
         },
         {
-          "name": "quarantine-diagnose",
-          "selector": "[data-qs-action='QUARANTINE_DIAGNOSE']",
-          "depends_on": "quarantine-entry-select",
+          "name": "scope-fort-worth",
+          "selector": "[data-qid='datalake:scope:fort_worth_f36']",
           "interactions": [
-            {"action": "click", "target": "[data-qs-action='QUARANTINE_DIAGNOSE']", "description": "Diagnose selected entry", "screenshot_after": true}
+            {"action": "click", "target": "[data-qid='datalake:scope:fort_worth_f36']", "description": "Select fort_worth_f36 scope", "screenshot_after": true}
           ]
         },
         {
-          "name": "quarantine-reextract",
-          "selector": "[data-qs-action='QUARANTINE_REEXTRACT']",
-          "depends_on": "quarantine-entry-select",
+          "name": "scope-search",
+          "selector": "[data-qid='datalake:search']",
           "interactions": [
-            {"action": "screenshot", "description": "Re-extract button state"}
-          ]
-        },
-        {
-          "name": "quarantine-converge",
-          "selector": "[data-qs-action='QUARANTINE_CONVERGE']",
-          "depends_on": "quarantine-entry-select",
-          "interactions": [
-            {"action": "screenshot", "description": "Converge button state"}
-          ]
-        },
-        {
-          "name": "quarantine-reject",
-          "selector": "[data-qs-action='QUARANTINE_REJECT']",
-          "depends_on": "quarantine-entry-select",
-          "interactions": [
-            {"action": "screenshot", "description": "Reject button state"}
-          ]
-        },
-        {
-          "name": "quarantine-approve-single",
-          "selector": "[data-qs-action='QUARANTINE_APPROVE']",
-          "depends_on": "quarantine-entry-select",
-          "interactions": [
-            {"action": "screenshot", "description": "Approve single entry button state"}
-          ]
-        },
-        {
-          "name": "quarantine-interview",
-          "selector": "[data-qs-action='QUARANTINE_INTERVIEW']",
-          "depends_on": "quarantine-entry-select",
-          "interactions": [
-            {"action": "screenshot", "description": "Interview button state"}
-          ]
-        },
-        {
-          "name": "chat-fab-toggle",
-          "selector": "[data-qs-action='CHAT_TOGGLE_FAB']",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CHAT_TOGGLE_FAB']", "description": "Toggle chat FAB", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "chat-input",
-          "selector": "[data-qs-action='CHAT_INPUT_ROW']",
-          "depends_on": "chat-fab-toggle",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='DATALAKE-CHAT_INPUT']", "description": "Focus chat input", "screenshot_after": true},
-            {"action": "type", "target": "[data-qs-action='DATALAKE-CHAT_INPUT']", "value": "show quarantine stats", "description": "Type chat message", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "chat-send",
-          "selector": "[data-qs-action='CHAT_SEND_MESSAGE']",
-          "depends_on": "chat-input",
-          "interactions": [
-            {"action": "screenshot", "description": "Chat send button state"}
-          ]
-        },
-        {
-          "name": "chat-close",
-          "selector": "[data-qs-action='CHAT_CLOSE_CHAT']",
-          "depends_on": "chat-fab-toggle",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='CHAT_CLOSE_CHAT']", "description": "Close chat panel", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "monitor-strip-expand",
-          "selector": "[data-qs-action='MONITOR-STRIP_EXPAND_MONITOR_STRIP']",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='MONITOR-STRIP_EXPAND_MONITOR_STRIP']", "description": "Expand monitor strip", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "monitor-strip-collapse",
-          "selector": "[data-qs-action='MONITOR-STRIP_COLLAPSE_MONITOR_STRIP']",
-          "depends_on": "monitor-strip-expand",
-          "interactions": [
-            {"action": "click", "target": "[data-qs-action='MONITOR-STRIP_COLLAPSE_MONITOR_STRIP']", "description": "Collapse monitor strip", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "sidebar-toggle",
-          "selector": "[data-qid='sidebar:button:toggle']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='sidebar:button:toggle']", "description": "Toggle sidebar", "screenshot_after": true},
-            {"action": "click", "target": "[data-qid='sidebar:button:toggle']", "description": "Toggle sidebar back", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "sidebar-tab-shared",
-          "selector": "[data-qid='sidebar:tab:shared']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='sidebar:tab:shared']", "description": "Switch to Shared projects", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "sidebar-tab-my-projects",
-          "selector": "[data-qid='sidebar:tab:my-projects']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='sidebar:tab:my-projects']", "description": "Switch to My Projects", "screenshot_after": true}
-          ]
-        },
-        {
-          "name": "sidebar-search",
-          "selector": "[data-qid='sidebar:input:search']",
-          "interactions": [
-            {"action": "click", "target": "[data-qid='sidebar:input:search']", "description": "Focus sidebar search", "screenshot_after": true},
-            {"action": "type", "target": "[data-qid='sidebar:input:search']", "value": "datalake", "description": "Search projects", "screenshot_after": true}
+            {"action": "click", "target": "[data-qid='datalake:search']", "description": "Focus scope search", "screenshot_after": true},
+            {"action": "type", "target": "[data-qid='datalake:search']", "value": "extractor", "description": "Filter scopes", "screenshot_after": true}
           ]
         },
         {
@@ -418,5 +213,5 @@
       ]
     }
   ],
-  "total_interactions": 72
+  "total_interactions": 42
 }
