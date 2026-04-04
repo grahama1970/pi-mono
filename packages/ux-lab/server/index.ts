@@ -391,7 +391,27 @@ app.get('/api/posture/overview', async (_req, res) => {
     res.status(500).json({ error: 'Posture overview failed', detail: String(err) })
   }
 })
-
+app.get('/api/posture/timeline', async (_req, res) => {
+  try {
+    const lessons = await memoryListAll('lessons_v2', ['question', 'verdict', 'created_at', 'tags'])
+    const postureEvidence = lessons
+      .filter((lesson: any) => {
+        const tags = lesson.tags || []
+        return Array.isArray(tags) && tags.includes('posture')
+      })
+      .map((lesson: any) => ({
+        question: lesson.question || '',
+        verdict: lesson.verdict || '',
+        created_at: lesson.created_at || ''
+      }))
+      .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    
+    res.json({ ok: true, timeline: postureEvidence })
+  } catch (err: any) {
+    if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
+    res.status(500).json({ error: 'Posture timeline failed', detail: String(err) })
+  }
+})
 // ── Datalake endpoints ──────────────────────────────────────────────────────
 // Endpoints for browsing extracted PDF corpus data stored in ArangoDB.
 // All queries go through graph_memory container (8601) via the memory daemon
