@@ -259,7 +259,8 @@ function isMemoryUnavailableError(err: unknown): boolean {
 
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {
-    // Use nrs_score > 0 as proxy for "has QRA coverage" — avoids paginating 219K QRA docs
+    // Compliance threshold: nrs_score >= 0.7 means the control meets F-36 compliance posture
+    const NRS_COMPLIANCE_THRESHOLD = 0.7
     const controls = await memoryListAll('sparta_controls', ['control_id', 'source_framework', 'nrs_score'])
 
     const fwMap = new Map<string, { name: string; total: number; covered: number }>()
@@ -268,7 +269,7 @@ app.get('/api/posture/frameworks', async (_req, res) => {
       if (!fwMap.has(fw)) fwMap.set(fw, { name: fw, total: 0, covered: 0 })
       const b = fwMap.get(fw)!
       b.total += 1
-      if (Number(c.nrs_score ?? 0) > 0) b.covered += 1
+      if (Number(c.nrs_score ?? 0) >= NRS_COMPLIANCE_THRESHOLD) b.covered += 1
     }
     const frameworks = [...fwMap.values()].map(f => ({ ...f, withQRAs: f.covered, pct: f.total ? Math.round((f.covered / f.total) * 100) : 0 }))
     const overallScore = frameworks.length ? Math.round(frameworks.reduce((s, f) => s + f.pct, 0) / frameworks.length) : 0
@@ -370,17 +371,18 @@ app.get('/api/posture/overview', async (_req, res) => {
     ])
     const linked = new Set(rels.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
 
+    const NRS_COMPLIANCE_THRESHOLD = 0.7
     const total = controls.length || 1
-    const covered = controls.filter((c: any) => Number(c.nrs_score ?? 0) > 0).length
+    const compliant = controls.filter((c: any) => Number(c.nrs_score ?? 0) >= NRS_COMPLIANCE_THRESHOLD).length
     const withRel = controls.filter((c: any) => linked.has(String(c.control_id))).length
     const avgNrs = controls.reduce((s: number, c: any) => s + Number(c.nrs_score ?? 0), 0) / total
     const lowNrs = controls.filter((c: any) => Number(c.nrs_score ?? 0) < 0.4).length
 
     res.json({
       wells: {
-        data_quality: { completeness: Number((covered / total).toFixed(4)), relationship_coverage: Number((withRel / total).toFixed(4)), total_controls: controls.length },
+        data_quality: { completeness: Number((compliant / total).toFixed(4)), relationship_coverage: Number((withRel / total).toFixed(4)), total_controls: controls.length },
         threat_matrix: { high_risk_controls: lowNrs, avg_nrs_score: Number(avgNrs.toFixed(4)) },
-        posture: { score: Number(avgNrs.toFixed(4)), controls_covered: covered, controls_uncovered: controls.length - covered },
+        posture: { score: Number((compliant / total).toFixed(4)), controls_covered: compliant, controls_uncovered: controls.length - compliant },
         proof_graph: { relationships: rels.length, linked_controls: linked.size },
       }
     })
