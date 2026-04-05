@@ -1,11 +1,11 @@
 {
-    "task": "PDF Cloner v2: implement 8 missing functions in clone_pdf.py (render_windows, generate_window_ir, generate_ir_batch, evaluate_fixture, search_presets, clone_pdf, get_family_preset, CLI commands)",
+    "task": "Fix /create-evidence-case JSON output to include control_ids and recall_count at top level for ChatTab.tsx",
     "target_files": [
-        "python/pdf_oxide/clone_pdf.py"
+        "candidate_qra.py"
     ],
     "memory_recalled": true,
-    "skills_considered": ["pdf-lab", "scillm", "extractor", "review-pdf"],
-    "skills_selected": ["scillm"],
-    "skills_code_read": ["extract-pdf/SKILL.md"],
-    "bespoke_justification": "Completing PDF Cloner v2 plan (14_PDF_CLONE_V2_TASKS.yaml): 10/16 tasks done, 8 functions remaining across Waves 1-6. Working in pdf_oxide repo at /home/graham/workspace/experiments/pdf_oxide"
+    "skills_considered": ["create-evidence-case", "ux-lab"],
+    "skills_selected": ["create-evidence-case"],
+    "skills_code_read": ["create-evidence-case/candidate_qra.py"],
+    "bespoke_justification": "ChatTab.tsx reads ecRes.control_ids and ecRes.recall_count but persist_case() doesn't include them at top level"
 }

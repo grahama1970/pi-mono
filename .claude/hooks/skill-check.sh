@@ -36,14 +36,17 @@ while [[ "$DIR" != "/" ]]; do
 done
 [[ -z "$PROJECT_ROOT" ]] && exit 0
 
-# Session-aware plan files: each Claude Code session gets its own plan
-# Falls back to shared plan.json for backwards compatibility
+# Session-aware plan files: each Claude Code session gets its own plan.
+# Priority: 1) session_id from hook input, 2) PPID (Claude Code PID), 3) shared fallback
+mkdir -p "$PROJECT_ROOT/.claude/plans" 2>/dev/null
 if [[ -n "$SESSION_ID" && -f "$PROJECT_ROOT/.claude/plans/plan-${SESSION_ID}.json" ]]; then
     PLAN_FILE="$PROJECT_ROOT/.claude/plans/plan-${SESSION_ID}.json"
+elif [[ -f "$PROJECT_ROOT/.claude/plans/plan-${PPID}.json" ]]; then
+    PLAN_FILE="$PROJECT_ROOT/.claude/plans/plan-${PPID}.json"
 elif [[ -f "$PROJECT_ROOT/.claude/plan.json" ]]; then
     PLAN_FILE="$PROJECT_ROOT/.claude/plan.json"
 else
-    PLAN_FILE="$PROJECT_ROOT/.claude/plan.json"  # will trigger NO_PLAN path
+    PLAN_FILE="$PROJECT_ROOT/.claude/plans/plan-${PPID}.json"  # will trigger NO_PLAN path
 fi
 SKILLS_DIR="$PROJECT_ROOT/.pi/skills"
 LOG_DIR="$PROJECT_ROOT/.claude/hook-logs"
