@@ -1,9 +1,17 @@
 {
-    "task": "QRA variation generation via prompt-lab: expertise levels + reversal curse, stored in sparta_qra",
-    "target_files": [".pi/skills/prompt-lab/prompts/qra_variations_v1.txt", "packages/ux-lab/scripts/generate_qra_variations.py"],
+    "task": "Evidence case integration: apply review-prompt findings, fix Gemini/Claude model issues, wire ChatTab endpoint, deprecate vestigial endpoints",
+    "target_files": [
+        ".pi/skills/create-evidence-case/gate.py",
+        ".pi/skills/create-evidence-case/runner.py",
+        ".pi/skills/create-evidence-case/evidence_case.py",
+        ".pi/skills/prompt-lab/prompts/evidence_grounding_gate_v1.txt",
+        ".pi/skills/prompt-lab/prompts/evidence_grounding_gate_v1.review.json",
+        "packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx",
+        "packages/ux-lab/server/index.ts"
+    ],
     "memory_recalled": true,
-    "skills_considered": ["prompt-lab", "create-evidence-case", "memory"],
-    "skills_selected": ["prompt-lab"],
-    "skills_code_read": ["prompt-lab/prompts/cascade_grader_v9.txt"],
-    "bespoke_justification": "Creating prompt + runner for QRA variation generation using existing prompt-lab infrastructure"
+    "skills_considered": ["create-evidence-case", "review-prompt", "scillm", "ux-lab", "best-practices-react", "memory"],
+    "skills_selected": ["create-evidence-case", "review-prompt", "scillm", "ux-lab"],
+    "skills_code_read": ["create-evidence-case/gate.py", "create-evidence-case/runner.py", "create-evidence-case/evidence_case.py", "review-prompt/review_prompt.py"],
+    "bespoke_justification": "Resuming from checkpoint 605920423: applying 19 review-prompt findings to gate prompts, fixing model-specific parse failures, wiring ChatTab endpoint"
 }
