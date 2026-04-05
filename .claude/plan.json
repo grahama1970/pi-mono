@@ -1,0 +1,9 @@
+{
+    "task": "Posture Dashboard V2: rework endpoints + 3-tab React dashboard driven by evidence case verdicts",
+    "target_files": ["packages/ux-lab/server/index.ts", "packages/ux-lab/src/hooks/usePostureData.ts", "packages/ux-lab/src/components/sparta/dashboard/PostureDashboard.tsx"],
+    "memory_recalled": true,
+    "skills_considered": ["create-evidence-case", "checkpoint"],
+    "skills_selected": [],
+    "skills_code_read": ["create-evidence-case/evidence_case.py"],
+    "bespoke_justification": "Reworking existing dashboard to use evidence case verdicts from lessons_v2 instead of NRS scores"
+}

@@ -1826,6 +1826,8 @@ app.post('/api/extract-entities', async (req, res) => {
         not_in_corpus: result.not_in_corpus ?? [],
         phrases: result.phrases ?? [],
         misspellings: result.misspellings ?? [],
+        related_pairs: result.related_pairs ?? [],
+        recall_items: result.recall_items ?? [],
       })
     } catch (daemonErr) {
       const detail = daemonErr instanceof Error ? daemonErr.message : String(daemonErr)

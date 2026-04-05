@@ -1,0 +1,165 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "Datalake Explorer: /best-practices-react Compliance"
+  goal: "All 129 interactive elements pass 4-attribute rule (data-qid + data-qs-action + title + useRegisterAction)"
+  plan_type: code
+  created: "2026-04-04"
+  primary_persona:
+    name: "Nico Bailon"
+    role: "QA Engineer"
+    source: ".pi/agents/nico-bailon/AGENTS.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/memory recall: found /best-practices-react skill, /test-interactions skill, verify-data-qid.py CI gate"
+  - "verify-data-qid.py already scans TSX for data-qid coverage (124/129 = 96%)"
+  - "Live DOM audit via CDP confirms 48/48 compliant after partial fixes this session"
+  - "No existing skill for bulk data-qs-action/title/useRegisterAction addition"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Audit (deterministic baseline)"
+  - id: "1"
+    label: "Wave 1: Fix 5 missing data-qid + add data-qs-action/title where missing"
+  - id: "2"
+    label: "Wave 2: Verify via live DOM + test manifest"
+
+tasks:
+  - id: "1"
+    title: "Static audit: run verify-data-qid.py for exact count"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    command: "cd /home/graham/workspace/experiments/pi-mono && python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/ || true"
+    definition_of_done:
+      command: "python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/"
+      assertion: "Outputs element count and missing list"
+
+  - id: "2"
+    title: "Live DOM audit: CDP query for data-qid + data-qs-action + title per tab"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    command: "python3 /tmp/audit_qid3.py && python3 /tmp/audit_qid4.py"
+    definition_of_done:
+      command: "python3 /tmp/audit_qid3.py"
+      assertion: "Reports compliant vs missing counts per tab"
+
+  - id: "3"
+    title: "Fix 5 missing data-qid elements"
+    lane: "1"
+    runner: "code-runner"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1"]
+    prompt: |
+      Add data-qid to the 5 missing interactive elements identified by verify-data-qid.py:
+      1. BboxEditor.tsx:379 — EditorButton delete button
+      2. BboxWorkspace.tsx:871 — textarea
+      3. views/CascadeView.tsx:1013 — tr element
+      4. views/LemmaGraphView.tsx:858 — g element
+      5. views/RequirementsView.tsx:430 — tr element
+      Each must also get data-qs-action and title attributes.
+      This is attribute-only — no visual/layout changes.
+    allowlist:
+      - "packages/ux-lab/src/components/datalake-explorer/BboxEditor.tsx"
+      - "packages/ux-lab/src/components/datalake-explorer/BboxWorkspace.tsx"
+      - "packages/ux-lab/src/components/datalake-explorer/views/CascadeView.tsx"
+      - "packages/ux-lab/src/components/datalake-explorer/views/LemmaGraphView.tsx"
+      - "packages/ux-lab/src/components/datalake-explorer/views/RequirementsView.tsx"
+    read_context:
+      - "packages/ux-lab/scripts/verify-data-qid.py"
+    tests:
+      - "cd /home/graham/workspace/experiments/pi-mono && python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono && python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/"
+      assertion: "129/129 (100%) — exit code 0"
+    waivers:
+      - "design-board: attribute-only change, no visual design. Waived."
+      - "png-evidence: attribute-only change, no visual change. Waived."
+
+  - id: "4"
+    title: "Add data-qs-action to all elements missing it (static grep audit)"
+    lane: "1"
+    runner: "code-runner"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["3"]
+    prompt: |
+      For every element in datalake-explorer TSX files that has data-qid but NOT data-qs-action:
+      1. Add data-qs-action="COMPONENT_ACTION" in UPPER_SNAKE format
+      2. Add title="Human readable description" if missing
+      3. Do NOT modify elements that already have both attributes
+      Use grep to find elements with data-qid but without data-qs-action on the same JSX element.
+      This is attribute-only — no visual/layout changes.
+    allowlist:
+      - "packages/ux-lab/src/components/datalake-explorer/*.tsx"
+      - "packages/ux-lab/src/components/datalake-explorer/views/*.tsx"
+    read_context:
+      - ".pi/skills/best-practices-react/SKILL.md"
+    tests:
+      - "cd /home/graham/workspace/experiments/pi-mono && grep -rn 'data-qid=' packages/ux-lab/src/components/datalake-explorer/ | grep -v 'data-qs-action' | wc -l"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono && grep -rn 'data-qid=' packages/ux-lab/src/components/datalake-explorer/ | grep -v 'data-qs-action' | wc -l"
+      assertion: "Returns 0 (all data-qid elements also have data-qs-action)"
+    waivers:
+      - "design-board: attribute-only change, no visual design. Waived."
+
+  - id: "5"
+    title: "Verify Vite compiles with all changes"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["4"]
+    command: "curl -s -o /dev/null -w '%{http_code}' http://localhost:3002/"
+    definition_of_done:
+      command: "curl -s -o /dev/null -w '%{http_code}' http://localhost:3002/"
+      assertion: "Returns 200"
+
+  - id: "6"
+    title: "Live DOM compliance audit — all tabs via CDP"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["5"]
+    command: "python3 /tmp/audit_qid3.py && python3 /tmp/audit_qid4.py"
+    definition_of_done:
+      command: "python3 /tmp/audit_qid3.py"
+      assertion: "ALL DATALAKE INTERACTIVE ELEMENTS COMPLIANT"
+
+  - id: "7"
+    title: "Run /test-interactions manifest against live DOM"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["6"]
+    command: "/home/graham/.claude/skills/test-interactions/run.sh run packages/ux-lab/test-manifests/datalake_explorer_full.json"
+    definition_of_done:
+      command: "/home/graham/.claude/skills/test-interactions/run.sh run packages/ux-lab/test-manifests/datalake_explorer_full.json"
+      assertion: "All interactions PASS"
+
+  - id: "8"
+    title: "Final verify-data-qid.py gate — must be 129/129"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["7"]
+    command: "cd /home/graham/workspace/experiments/pi-mono && python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono && python3 packages/ux-lab/scripts/verify-data-qid.py packages/ux-lab/src/components/datalake-explorer/"
+      assertion: "129/129 (100%) — exit code 0"

@@ -1,0 +1,231 @@
+{"ts":1775307596,"file":"apply.py","result":"clean"}
+{"ts":1775307596,"file":"apply.py","result":"clean"}
+{"ts":1775307622,"file":"apply.py","result":"clean"}
+{"ts":1775307622,"file":"apply.py","result":"clean"}
+{"ts":1775307665,"file":"apply.py","result":"clean"}
+{"ts":1775307665,"file":"apply.py","result":"clean"}
+{"ts":1775307680,"file":"apply.py","result":"clean"}
+{"ts":1775307680,"file":"apply.py","result":"clean"}
+{"ts":1775307690,"file":"code_runner.py","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775307690,"file":"code_runner.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775307695,"file":"code_runner.py","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775307695,"file":"code_runner.py","violations":4,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308333,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775308371,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308394,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308422,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308477,"file":"code_runner.py","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308477,"file":"code_runner.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308492,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308492,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308498,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308498,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308517,"file":"code_runner.py","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308517,"file":"code_runner.py","violations":4,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308531,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308531,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308567,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308567,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775308653,"file":"code_runner.py","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308653,"file":"code_runner.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775308665,"file":"evidence.py","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|SECURITY: eval() detected.||"}
+{"ts":1775308665,"file":"evidence.py","violations":4,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|SECURITY: eval() detected.||"}
+{"ts":1775308718,"file":"prompt_assembly.py","result":"clean"}
+{"ts":1775308718,"file":"prompt_assembly.py","result":"clean"}
+{"ts":1775308727,"file":"evidence.py","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|SECURITY: eval() detected.||"}
+{"ts":1775308727,"file":"evidence.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|SECURITY: eval() detected.||"}
+{"ts":1775308773,"file":"post-skill-check.sh","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|BESPOKE: Hand-written prompt. Use /prompt-lab.|BANNED: claude -p / codex exec.|SECURITY: eval() detected.|BESPOKE: Symbol extraction. Use /treesitter.|BESPOKE: Embedding code. Use /embedding.||"}
+{"ts":1775308828,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775309647,"file":"index.ts","violations":4,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310241,"file":"post-skill-check.sh","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|BESPOKE: Hand-written prompt. Use /prompt-lab.|BANNED: claude -p / codex exec.|SECURITY: eval() detected.|BESPOKE: Symbol extraction. Use /treesitter.|BESPOKE: Embedding code. Use /embedding.||"}
+{"ts":1775310253,"file":"post-skill-check.sh","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|BESPOKE: Hand-written prompt. Use /prompt-lab.|BANNED: claude -p / codex exec.|SECURITY: eval() detected.|BESPOKE: Symbol extraction. Use /treesitter.|BESPOKE: Embedding code. Use /embedding.||"}
+{"ts":1775310500,"file":"index.ts","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310512,"file":"index.ts","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310523,"file":"index.ts","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310664,"file":"index.ts","violations":1,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310670,"file":"index.ts","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775310677,"file":"index.ts","violations":3,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775311095,"file":"usePostureData.ts","result":"clean"}
+{"ts":1775311108,"file":"index.ts","result":"clean"}
+{"ts":1775311127,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775311153,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775311313,"file":"index.ts","result":"clean"}
+{"ts":1775311313,"file":"index.ts","result":"clean"}
+{"ts":1775311341,"file":"index.ts","result":"clean"}
+{"ts":1775311341,"file":"index.ts","result":"clean"}
+{"ts":1775311359,"file":"tool_use.py","result":"clean"}
+{"ts":1775311359,"file":"tool_use.py","result":"clean"}
+{"ts":1775311373,"file":"index.ts","result":"clean"}
+{"ts":1775311373,"file":"index.ts","result":"clean"}
+{"ts":1775311381,"file":"index.ts","result":"clean"}
+{"ts":1775311381,"file":"index.ts","result":"clean"}
+{"ts":1775311396,"file":"index.ts","result":"clean"}
+{"ts":1775311396,"file":"index.ts","result":"clean"}
+{"ts":1775311406,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775311414,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775311445,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775311546,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775311573,"file":"tool_use.py","result":"clean"}
+{"ts":1775311585,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775312512,"file":"tool_use.py","result":"clean"}
+{"ts":1775312512,"file":"tool_use.py","result":"clean"}
+{"ts":1775312538,"file":"tool_use.py","result":"clean"}
+{"ts":1775312538,"file":"tool_use.py","result":"clean"}
+{"ts":1775312552,"file":"tool_use.py","result":"clean"}
+{"ts":1775312552,"file":"tool_use.py","result":"clean"}
+{"ts":1775312570,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775312570,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775312578,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775312578,"file":"code_runner.py","violations":4,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775312995,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775313185,"file":"App.tsx","result":"clean"}
+{"ts":1775313185,"file":"App.tsx","result":"clean"}
+{"ts":1775313199,"file":"App.tsx","result":"clean"}
+{"ts":1775313199,"file":"App.tsx","result":"clean"}
+{"ts":1775313338,"file":"OverviewLanding.tsx","result":"clean"}
+{"ts":1775313338,"file":"OverviewLanding.tsx","result":"clean"}
+{"ts":1775313344,"file":"OverviewLanding.tsx","result":"clean"}
+{"ts":1775313344,"file":"OverviewLanding.tsx","result":"clean"}
+{"ts":1775314469,"file":"tool_use.py","result":"clean"}
+{"ts":1775314477,"file":"tool_use.py","result":"clean"}
+{"ts":1775314485,"file":"tool_use.py","result":"clean"}
+{"ts":1775314490,"file":"tool_use.py","result":"clean"}
+{"ts":1775314511,"file":"tool_use.py","result":"clean"}
+{"ts":1775315105,"file":"test-runner.ts","result":"clean"}
+{"ts":1775315109,"file":"test-runner.ts","result":"clean"}
+{"ts":1775315121,"file":"TestingPanel.tsx","result":"clean"}
+{"ts":1775315129,"file":"TestingPanel.tsx","result":"clean"}
+{"ts":1775315160,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315164,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315172,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315177,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315182,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315186,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315190,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315194,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315198,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315202,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315206,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315210,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315214,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315215,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775315218,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315222,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315229,"file":"index.ts","result":"clean"}
+{"ts":1775315230,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315235,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315238,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315242,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315251,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315256,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315260,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315264,"file":"DesignBoardCanvas.tsx","result":"clean"}
+{"ts":1775315286,"file":"ComponentGallery.tsx","result":"clean"}
+{"ts":1775315288,"file":"ModelHealthTab.tsx","result":"clean"}
+{"ts":1775315289,"file":"ModelHealthTab.tsx","result":"clean"}
+{"ts":1775315290,"file":"ModelHealthTab.tsx","result":"clean"}
+{"ts":1775315302,"file":"ModelHealthTab.tsx","result":"clean"}
+{"ts":1775315303,"file":"ModelHealthTab.tsx","result":"clean"}
+{"ts":1775315304,"file":"RegressionTab.tsx","result":"clean"}
+{"ts":1775315305,"file":"RegressionTab.tsx","result":"clean"}
+{"ts":1775315312,"file":"ClassificationTab.tsx","result":"clean"}
+{"ts":1775315313,"file":"ClassificationTab.tsx","result":"clean"}
+{"ts":1775315314,"file":"ClassificationTab.tsx","result":"clean"}
+{"ts":1775315319,"file":"CodePane.tsx","result":"clean"}
+{"ts":1775315323,"file":"CodePane.tsx","result":"clean"}
+{"ts":1775315327,"file":"CodePane.tsx","result":"clean"}
+{"ts":1775315331,"file":"CodePane.tsx","result":"clean"}
+{"ts":1775315335,"file":"CodePane.tsx","result":"clean"}
+{"ts":1775315346,"file":"ClassifierLabView.tsx","result":"clean"}
+{"ts":1775315355,"file":"ClassifierLabView.tsx","result":"clean"}
+{"ts":1775315357,"file":"ClassifierLabView.tsx","result":"clean"}
+{"ts":1775315358,"file":"ClassifierLabView.tsx","result":"clean"}
+{"ts":1775315375,"file":"ComponentGallery.tsx","result":"clean"}
+{"ts":1775315388,"file":"ComponentGallery.tsx","result":"clean"}
+{"ts":1775315638,"file":"index.ts","result":"clean"}
+{"ts":1775315739,"file":"DatalakeExplorerView.tsx","result":"clean"}
+{"ts":1775315745,"file":"DatalakeExplorerView.tsx","result":"clean"}
+{"ts":1775315751,"file":"DatalakeExplorerView.tsx","result":"clean"}
+{"ts":1775315756,"file":"DatalakeExplorerView.tsx","result":"clean"}
+{"ts":1775315770,"file":"DatalakeExplorerView.tsx","result":"clean"}
+{"ts":1775315785,"file":"LeftPane.tsx","result":"clean"}
+{"ts":1775315869,"file":"QuarantineView.tsx","result":"clean"}
+{"ts":1775315878,"file":"QuarantineView.tsx","result":"clean"}
+{"ts":1775315887,"file":"QuarantineView.tsx","result":"clean"}
+{"ts":1775315910,"file":"QuarantineView.tsx","result":"clean"}
+{"ts":1775316141,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775316171,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775316180,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775316864,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775316887,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775316898,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775316909,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775316944,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775317000,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775317016,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775317772,"file":"index.ts","result":"clean"}
+{"ts":1775317788,"file":"index.ts","result":"clean"}
+{"ts":1775317996,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775318007,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775318007,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775318015,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775318015,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775318071,"file":"App.tsx","result":"clean"}
+{"ts":1775318103,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775318189,"file":"tool_use.py","result":"clean"}
+{"ts":1775318267,"file":"App.tsx","result":"clean"}
+{"ts":1775318798,"file":"App.tsx","result":"clean"}
+{"ts":1775318804,"file":"App.tsx","result":"clean"}
+{"ts":1775318831,"file":"SpartaExplorer.tsx","result":"clean"}
+{"ts":1775319022,"file":"index.ts","result":"clean"}
+{"ts":1775319037,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775319050,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775319384,"file":"App.tsx","result":"clean"}
+{"ts":1775320230,"file":"stress_test_real.py","result":"clean"}
+{"ts":1775320230,"file":"stress_test_real.py","result":"clean"}
+{"ts":1775320362,"file":"cdp_client.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775320384,"file":"cdp_client.py","result":"clean"}
+{"ts":1775320400,"file":"assertions.py","result":"clean"}
+{"ts":1775320434,"file":"assertions.py","result":"clean"}
+{"ts":1775320440,"file":"assertions.py","result":"clean"}
+{"ts":1775320446,"file":"assertions.py","result":"clean"}
+{"ts":1775320460,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320466,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320481,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320491,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320523,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320536,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320557,"file":"test_interactions.py","result":"clean"}
+{"ts":1775320653,"file":"tool_use.py","result":"clean"}
+{"ts":1775320660,"file":"cdp_client.py","result":"clean"}
+{"ts":1775320661,"file":"stress_test_real.py","result":"clean"}
+{"ts":1775320673,"file":"cdp_client.py","result":"clean"}
+{"ts":1775320684,"file":"assertions.py","result":"clean"}
+{"ts":1775320826,"file":"stress_test_real.py","result":"clean"}
+{"ts":1775320885,"file":"index.ts","result":"clean"}
+{"ts":1775320885,"file":"index.ts","result":"clean"}
+{"ts":1775320903,"file":"usePostureData.ts","result":"clean"}
+{"ts":1775320903,"file":"usePostureData.ts","result":"clean"}
+{"ts":1775321110,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775321110,"file":"PostureDashboard.tsx","result":"clean"}
+{"ts":1775321979,"file":"test_interactions.py","result":"clean"}
+{"ts":1775322008,"file":"test_interactions.py","result":"clean"}
+{"ts":1775322016,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775322041,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775322057,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775322064,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775322073,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775322076,"file":"test_interactions.py","result":"clean"}
+{"ts":1775322420,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330362,"file":"index.ts","result":"clean"}
+{"ts":1775330387,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330401,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330411,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330419,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330436,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330446,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330453,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330465,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330491,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330500,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775330507,"file":"EntitySpanViewer.tsx","result":"clean"}
