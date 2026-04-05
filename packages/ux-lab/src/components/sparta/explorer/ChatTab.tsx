@@ -354,21 +354,21 @@ export function ChatTab() {
             },
           })
         } else {
-          // FAIL — call /memory clarify for structured narrowing questions
-          let clarifyOptions: string[] | undefined
-          try {
-            const firstFailed = gates.find(g => !g.passed)
-            const clarifyRes = await fetch(`${API}/api/memory/clarify`, {
-              method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                q: query, scope: 'sparta',
-                context: { failed_gate: firstFailed?.gate, entities: intentEntities.filter(e => e.exists).map(e => e.id) },
-              }),
-            }).then(r => r.json())
-            const questions = clarifyRes.clarifications ?? clarifyRes.questions ?? []
-            clarifyOptions = questions.length > 0 ? questions.map((c: any) => typeof c === 'string' ? c : c.question ?? c.text ?? String(c)) : ['Could you be more specific about which control or technique?']
-          } catch {
-            clarifyOptions = ['Could you be more specific about which control or technique?']
+          // FAIL — derive clarify questions from gate trace (no daemon call needed)
+          const firstFailed = gates.find(g => !g.passed)
+          const clarifyOptions: string[] = []
+          if (firstFailed?.gate?.includes('topic')) {
+            clarifyOptions.push('Could you rephrase in terms of space cybersecurity?')
+          } else if (firstFailed?.gate?.includes('grounding') || firstFailed?.gate?.includes('entities')) {
+            const detail = firstFailed.detail ?? ''
+            if (detail.includes('fabricated')) clarifyOptions.push('The control ID may not exist. Did you mean a specific SPARTA countermeasure or NIST control?')
+            else if (detail.includes('typo') || detail.includes('misspell')) clarifyOptions.push('There may be a typo in the control ID. Could you verify the exact identifier?')
+            else clarifyOptions.push('Some entities could not be grounded in the corpus. Could you specify the exact control IDs or techniques?')
+          } else {
+            clarifyOptions.push('Could you be more specific about which control or technique?')
+          }
+          if (ecRes.clarify_result?.questions) {
+            clarifyOptions.push(...ecRes.clarify_result.questions.slice(0, 2))
           }
 
           addMsg({
