@@ -1,17 +1,11 @@
 {
-    "task": "Evidence case integration: apply review-prompt findings, fix Gemini/Claude model issues, wire ChatTab endpoint, deprecate vestigial endpoints",
+    "task": "PDF Cloner v2: implement 8 missing functions in clone_pdf.py (render_windows, generate_window_ir, generate_ir_batch, evaluate_fixture, search_presets, clone_pdf, get_family_preset, CLI commands)",
     "target_files": [
-        ".pi/skills/create-evidence-case/gate.py",
-        ".pi/skills/create-evidence-case/runner.py",
-        ".pi/skills/create-evidence-case/evidence_case.py",
-        ".pi/skills/prompt-lab/prompts/evidence_grounding_gate_v1.txt",
-        ".pi/skills/prompt-lab/prompts/evidence_grounding_gate_v1.review.json",
-        "packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx",
-        "packages/ux-lab/server/index.ts"
+        "python/pdf_oxide/clone_pdf.py"
     ],
     "memory_recalled": true,
-    "skills_considered": ["create-evidence-case", "review-prompt", "scillm", "ux-lab", "best-practices-react", "memory"],
-    "skills_selected": ["create-evidence-case", "review-prompt", "scillm", "ux-lab"],
-    "skills_code_read": ["create-evidence-case/gate.py", "create-evidence-case/runner.py", "create-evidence-case/evidence_case.py", "review-prompt/review_prompt.py"],
-    "bespoke_justification": "Resuming from checkpoint 605920423: applying 19 review-prompt findings to gate prompts, fixing model-specific parse failures, wiring ChatTab endpoint"
+    "skills_considered": ["pdf-lab", "scillm", "extractor", "review-pdf"],
+    "skills_selected": ["scillm"],
+    "skills_code_read": ["extract-pdf/SKILL.md"],
+    "bespoke_justification": "Completing PDF Cloner v2 plan (14_PDF_CLONE_V2_TASKS.yaml): 10/16 tasks done, 8 functions remaining across Waves 1-6. Working in pdf_oxide repo at /home/graham/workspace/experiments/pdf_oxide"
 }
