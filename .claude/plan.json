@@ -1,9 +1,9 @@
 {
-    "task": "QRA variation generation via prompt-lab: expertise levels + reversal curse, stored in sparta_qra",
-    "target_files": [".pi/skills/prompt-lab/prompts/qra_variations_v1.txt", "packages/ux-lab/scripts/generate_qra_variations.py"],
+    "task": "Add SKILL.md injection and preflight validation to code-runner prompt assembly",
+    "target_files": [".pi/skills/code-runner/prompt_assembly.py", ".pi/skills/code-runner/models.py", ".pi/skills/prompt-lab/prompts/code_runner_system_v3.txt"],
     "memory_recalled": true,
-    "skills_considered": ["prompt-lab", "create-evidence-case", "memory", "scillm"],
-    "skills_selected": ["prompt-lab", "scillm"],
-    "skills_code_read": ["prompt-lab/prompts/cascade_grader_v9.txt"],
-    "bespoke_justification": "Creating prompt + runner for QRA variation generation using existing prompt-lab and scillm infrastructure"
+    "skills_considered": ["code-runner", "orchestrate", "prompt-lab", "scillm"],
+    "skills_selected": ["code-runner"],
+    "skills_code_read": ["code-runner/prompt_assembly.py", "code-runner/models.py", "code-runner/code_runner.py"],
+    "bespoke_justification": "Adding trust boundary: deterministic SKILL.md injection into LLM context + preflight validation of skill usage"
 }

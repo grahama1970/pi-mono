@@ -13,16 +13,26 @@
             "type": "command",
             "command": "./.claude/hooks/bash-mutation-guard.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ./.claude/hooks/code_runner_guard.py pre-bash",
+            "timeout": 10
           }
         ]
       },
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
             "command": "./.claude/hooks/skill-check.sh",
             "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "python3 ./.claude/hooks/code_runner_guard.py pre-write",
+            "timeout": 5
           }
         ]
       }
@@ -35,6 +45,28 @@
             "type": "command",
             "command": "./.claude/hooks/post-skill-check.sh",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./.claude/hooks/code_runner_guard.py stop",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./.claude/hooks/code_runner_guard.py stop",
+            "timeout": 10
           }
         ]
       }
