@@ -1,9 +1,9 @@
 {
-    "task": "Posture Dashboard V2: rework endpoints + 3-tab React dashboard driven by evidence case verdicts",
-    "target_files": ["packages/ux-lab/server/index.ts", "packages/ux-lab/src/hooks/usePostureData.ts", "packages/ux-lab/src/components/sparta/dashboard/PostureDashboard.tsx"],
+    "task": "QRA variation generation via prompt-lab: expertise levels + reversal curse, stored in sparta_qra",
+    "target_files": [".pi/skills/prompt-lab/prompts/qra_variations_v1.txt", "packages/ux-lab/scripts/generate_qra_variations.py"],
     "memory_recalled": true,
-    "skills_considered": ["create-evidence-case", "checkpoint"],
-    "skills_selected": [],
-    "skills_code_read": ["create-evidence-case/evidence_case.py"],
-    "bespoke_justification": "Reworking existing dashboard to use evidence case verdicts from lessons_v2 instead of NRS scores"
+    "skills_considered": ["prompt-lab", "create-evidence-case", "memory"],
+    "skills_selected": ["prompt-lab"],
+    "skills_code_read": ["prompt-lab/prompts/cascade_grader_v9.txt"],
+    "bespoke_justification": "Creating prompt + runner for QRA variation generation using existing prompt-lab infrastructure"
 }

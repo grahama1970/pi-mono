@@ -229,3 +229,23 @@
 {"ts":1775330491,"file":"EntitySpanViewer.tsx","result":"clean"}
 {"ts":1775330500,"file":"EntitySpanViewer.tsx","result":"clean"}
 {"ts":1775330507,"file":"EntitySpanViewer.tsx","result":"clean"}
+{"ts":1775397274,"file":"helpers.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775397282,"file":"checkpoint.py","result":"clean"}
+{"ts":1775397291,"file":"checkpoint.py","result":"clean"}
+{"ts":1775397339,"file":"run.sh","violations":2,"warnings":"SECURITY: Bare except: hides errors. Catch specific exceptions.||"}
+{"ts":1775397388,"file":"structured_execute.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775397744,"file":"run.sh","violations":1,"warnings":"SECURITY: Bare except: hides errors. Catch specific exceptions.||"}
+{"ts":1775397765,"file":"run.sh","violations":2,"warnings":"SECURITY: Bare except: hides errors. Catch specific exceptions.||"}
+{"ts":1775397775,"file":"run.sh","violations":3,"warnings":"SECURITY: Bare except: hides errors. Catch specific exceptions.||"}
+{"ts":1775397987,"file":"run.sh","result":"clean"}
+{"ts":1775398046,"file":"models.py","result":"clean"}
+{"ts":1775398046,"file":"models.py","result":"clean"}
+{"ts":1775398187,"file":"structured_execute.py","result":"clean"}
+{"ts":1775398223,"file":"structured_execute.py","result":"clean"}
+{"ts":1775398518,"file":"backfill_f36_chunks.py","result":"clean"}
+{"ts":1775398518,"file":"backfill_f36_chunks.py","result":"clean"}
+{"ts":1775400096,"file":"evidence.py","violations":4,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775400707,"file":"generate_qra_variations.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775400707,"file":"generate_qra_variations.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775400747,"file":"generate_qra_variations.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775400747,"file":"generate_qra_variations.py","violations":4,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
