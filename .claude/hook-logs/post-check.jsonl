@@ -255,3 +255,4 @@
 {"ts":1775402770,"file":"checkpoint.py","result":"clean"}
 {"ts":1775402779,"file":"checkpoint.py","result":"clean"}
 {"ts":1775404944,"file":"run.sh","result":"clean"}
+{"ts":1775422897,"file":"generate_qra_variations.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}

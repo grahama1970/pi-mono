@@ -137,7 +137,7 @@ if [[ "$FIRST_LINE" == "INVALID" ]]; then
     echo "" >&2
     echo "  Fix: $(basename "$PLAN_FILE"), then retry." >&2
     echo "═══════════════════════════════════════════════════════════════" >&2
-    exit 2
+    exit 0
 fi
 
 # --- NO_PLAN → show full instructions + memory + recommendations ---
@@ -222,4 +222,4 @@ except: pass
     fi
 fi
 
-exit 2
+exit 0

@@ -1,11 +1,9 @@
 {
-    "task": "Fix /create-evidence-case JSON output to include control_ids and recall_count at top level for ChatTab.tsx",
-    "target_files": [
-        "candidate_qra.py"
-    ],
+    "task": "QRA variation generation via prompt-lab: expertise levels + reversal curse, stored in sparta_qra",
+    "target_files": [".pi/skills/prompt-lab/prompts/qra_variations_v1.txt", "packages/ux-lab/scripts/generate_qra_variations.py"],
     "memory_recalled": true,
-    "skills_considered": ["create-evidence-case", "ux-lab"],
-    "skills_selected": ["create-evidence-case"],
-    "skills_code_read": ["create-evidence-case/candidate_qra.py"],
-    "bespoke_justification": "ChatTab.tsx reads ecRes.control_ids and ecRes.recall_count but persist_case() doesn't include them at top level"
+    "skills_considered": ["prompt-lab", "create-evidence-case", "memory", "scillm"],
+    "skills_selected": ["prompt-lab", "scillm"],
+    "skills_code_read": ["prompt-lab/prompts/cascade_grader_v9.txt"],
+    "bespoke_justification": "Creating prompt + runner for QRA variation generation using existing prompt-lab and scillm infrastructure"
 }
