@@ -309,6 +309,45 @@ app.get('/api/posture/v2', async (_req, res) => {
   }
 })
 
+// ── QRA Coverage Stats ──────────────────────────────────────────────────────
+// Counts originals, variations, evidence-checked, verdicts, mismatches from sparta_qra tags
+app.get('/api/qra/coverage', async (_req, res) => {
+  try {
+    const allQRAs = await memoryListAll('sparta_qra', ['tags', 'evidence_verdict', 'evidence_mismatch'])
+    let originals = 0, variations = 0, evidenceChecked = 0, mismatches = 0
+    const verdicts: Record<string, number> = { satisfied: 0, inconclusive: 0, not_satisfied: 0, unknown: 0 }
+    const levels: Record<string, number> = {}
+    for (const q of allQRAs) {
+      const tags: string[] = Array.isArray(q.tags) ? q.tags : []
+      const isVariation = tags.includes('qra-variation')
+      if (isVariation) {
+        variations++
+        if (tags.includes('evidence-checked')) {
+          evidenceChecked++
+          const v = String(q.evidence_verdict || 'unknown')
+          verdicts[v] = (verdicts[v] ?? 0) + 1
+          if (q.evidence_mismatch) mismatches++
+        }
+        const lvl = tags.find((t: string) => t.startsWith('level:'))
+        if (lvl) { const l = lvl.slice(6); levels[l] = (levels[l] ?? 0) + 1 }
+      } else {
+        originals++
+      }
+    }
+    const coveragePct = originals ? Math.round((variations / (originals * 6)) * 100) : 0
+    const evidenceCheckPct = variations ? Math.round((evidenceChecked / variations) * 100) : 0
+    res.json({
+      originals, variations, coveragePct,
+      evidenceChecked, evidenceCheckPct,
+      mismatches, verdicts, levels,
+      total: allQRAs.length,
+    })
+  } catch (err: any) {
+    if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
+    res.status(500).json({ error: 'QRA coverage failed', detail: String(err) })
+  }
+})
+
 // Legacy posture endpoints (kept for backward compat)
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {

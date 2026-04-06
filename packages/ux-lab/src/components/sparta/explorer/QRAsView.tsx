@@ -24,11 +24,27 @@ function tierBadge(pass: boolean | undefined, tier: string): React.ReactNode {
   )
 }
 
+interface QRACoverage {
+  originals: number; variations: number; coveragePct: number
+  evidenceChecked: number; evidenceCheckPct: number; mismatches: number
+  verdicts: Record<string, number>; levels: Record<string, number>; total: number
+}
+
+function useQRACoverage() {
+  const [data, setData] = useState<QRACoverage | null>(null)
+  useEffect(() => {
+    fetch('http://localhost:3001/api/qra/coverage')
+      .then(r => r.json()).then(setData).catch(() => {})
+  }, [])
+  return data
+}
+
 export function QRAsView() {
   const nav = useSpartaNav()
   const controlFilter = nav.tabFilters.QRAs?.controlId
   const { data: qras, loading, error, refresh } = useQRAs("", controlFilter)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const coverage = useQRACoverage()
 
   // Reset index when filter changes
   useEffect(() => { setCurrentIndex(0) }, [controlFilter])
@@ -137,6 +153,21 @@ export function QRAsView() {
             </button>
           )}
         </div>
+
+        {/* Coverage Stats */}
+        {coverage && (
+          <div data-qid="qras:coverage" style={{ display: 'flex', gap: 8, padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, flexWrap: 'wrap' }}>
+            <CoverageStat data-qid="qras:coverage:originals" label="Originals" value={coverage.originals} />
+            <CoverageStat data-qid="qras:coverage:variations" label="Variations" value={coverage.variations} sub={`${coverage.coveragePct}% of 6x target`} color={coverage.coveragePct >= 80 ? EMBRY.green : coverage.coveragePct >= 40 ? EMBRY.amber : EMBRY.red} />
+            <CoverageStat data-qid="qras:coverage:checked" label="Evidence Checked" value={coverage.evidenceChecked} sub={`${coverage.evidenceCheckPct}%`} color={coverage.evidenceCheckPct >= 80 ? EMBRY.green : coverage.evidenceCheckPct >= 40 ? EMBRY.amber : EMBRY.dim} />
+            <CoverageStat data-qid="qras:coverage:satisfied" label="Satisfied" value={coverage.verdicts.satisfied ?? 0} color={EMBRY.green} />
+            <CoverageStat data-qid="qras:coverage:inconclusive" label="Inconclusive" value={coverage.verdicts.inconclusive ?? 0} color={EMBRY.amber} />
+            <CoverageStat data-qid="qras:coverage:not-satisfied" label="Not Satisfied" value={coverage.verdicts.not_satisfied ?? 0} color={EMBRY.red} />
+            {coverage.mismatches > 0 && (
+              <CoverageStat data-qid="qras:coverage:mismatches" label="Mismatches" value={coverage.mismatches} color={EMBRY.red} />
+            )}
+          </div>
+        )}
 
         {/* Card */}
         <div style={{ flex: 1, overflow: 'auto', padding: 16 }}>
@@ -299,6 +330,16 @@ function GateRow({ label: text, pass }: { label: string; pass: boolean | undefin
       <span style={{ fontSize: 11, fontWeight: 700, color }}>
         {pass === true ? 'PASS' : pass === false ? 'FAIL' : '—'}
       </span>
+    </div>
+  )
+}
+
+function CoverageStat({ label: text, value, sub, color, ...rest }: { label: string; value: number; sub?: string; color?: string; 'data-qid'?: string }) {
+  return (
+    <div {...rest} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '4px 10px', borderRadius: 6, backgroundColor: `${color ?? EMBRY.dim}08`, border: `1px solid ${color ?? EMBRY.border}22`, minWidth: 70 }}>
+      <span style={{ fontSize: 16, fontWeight: 900, color: color ?? EMBRY.white }}>{value.toLocaleString()}</span>
+      <span style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.5 }}>{text}</span>
+      {sub && <span style={{ fontSize: 9, color: color ?? EMBRY.dim }}>{sub}</span>}
     </div>
   )
 }

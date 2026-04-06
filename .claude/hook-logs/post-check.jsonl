@@ -288,3 +288,30 @@
 {"ts":1775499479,"file":"llm_invocations.py","result":"clean"}
 {"ts":1775499530,"file":"llm_invocations.py","result":"clean"}
 {"ts":1775499549,"file":"llm_invocations.py","result":"clean"}
+{"ts":1775500679,"file":"qra_batch.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.|BESPOKE: Direct scillm httpx. Use /scillm skill.||"}
+{"ts":1775500752,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775500796,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775500951,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501342,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775501353,"file":"code_runner.py","violations":4,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775501386,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501400,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501458,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775501492,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775501533,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775501553,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775501564,"file":"llm_invocations.py","result":"clean"}
+{"ts":1775501626,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501637,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501680,"file":"skill-read-gate.ts","result":"clean"}
+{"ts":1775501803,"file":"qra_evidence_batch.py","violations":2,"warnings":"BESPOKE: Direct ArangoDB. Use /memory.||"}
+{"ts":1775502560,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502566,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502585,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502662,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502667,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502673,"file":"skill-read-gate.test.ts","result":"clean"}
+{"ts":1775502844,"file":"index.ts","result":"clean"}
+{"ts":1775502864,"file":"QRAsView.tsx","result":"clean"}
+{"ts":1775502891,"file":"QRAsView.tsx","result":"clean"}
+{"ts":1775502910,"file":"QRAsView.tsx","result":"clean"}
