@@ -229,8 +229,17 @@ def handle_pre_write(payload: dict[str, Any]) -> int:
     if not file_path:
         return 0
 
-    if is_protected_path(file_path, cwd):
-        emit_pretool_deny(f"Blocked: protected path cannot be modified: {norm(file_path, cwd)}")
+    # Only enforce protected-path rule inside code-runner subagent sessions.
+    # The main session needs to edit hooks/settings for self-maintenance.
+    transcript_paths = []
+    for key in ("agent_transcript_path", "transcript_path"):
+        tp = payload.get(key)
+        if tp:
+            transcript_paths.append(tp)
+    in_code_runner = find_latest_code_runner_spec(transcript_paths, cwd) is not None
+
+    if in_code_runner and is_protected_path(file_path, cwd):
+        emit_pretool_deny(f"Blocked: protected path cannot be modified inside code-runner: {norm(file_path, cwd)}")
     return 0
 
 
