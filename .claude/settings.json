@@ -6,17 +6,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/unset-venv.sh\"",
+            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/unset-venv.sh\"",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/bash-mutation-guard.sh\"",
+            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/bash-mutation-guard.sh\"",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/code_runner_guard.py\" pre-bash",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/code_runner_guard.py\" pre-bash",
             "timeout": 10
           }
         ]
@@ -26,12 +26,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/skill-check.sh\"",
+            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill-check.sh\"",
             "timeout": 15
           },
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/code_runner_guard.py\" pre-write",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/code_runner_guard.py\" pre-write",
             "timeout": 5
           }
         ]
@@ -43,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/post-skill-check.sh\"",
+            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/post-skill-check.sh\"",
             "timeout": 5
           }
         ]
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/code_runner_guard.py\" stop",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/code_runner_guard.py\" stop",
             "timeout": 10
           }
         ]
@@ -65,7 +65,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.claude/hooks/code_runner_guard.py\" stop",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/code_runner_guard.py\" stop",
             "timeout": 10
           }
         ]
