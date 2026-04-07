@@ -23,6 +23,7 @@ const API = 'http://localhost:3001'
 // ── Shared state between chat + viz ──────────────────────────────────────
 
 type VizMode = 'matrix' | 'graph' | 'dashboard'
+type GraphSubMode = 'full' | 'critical-path' | 'proof'
 
 interface ChatTabContextValue {
   vizMode: VizMode
@@ -96,7 +97,7 @@ function toTimestampMs(timestamp: string | number | undefined): number | null {
 export function ChatTab() {
   // Shared state
   const [vizMode, setVizMode] = useState<VizMode>('matrix')
-  const [graphMode, setGraphMode] = useState<'full' | 'critical-path'>('full')
+  const [graphMode, setGraphMode] = useState<GraphSubMode>('full')
   const [focusTechnique, setFocusTechnique] = useState<string | null>(null)
   const [focusControl, setFocusControl] = useState<string | null>(null)
   const [currentSystem, setCurrentSystem] = useState('f36')
@@ -295,10 +296,14 @@ export function ChatTab() {
           setGraphMode('critical-path')
           addMsg({ role: 'system', content: 'Showing critical path — failing attack chains in the proof graph.', type: 'natural', cascadeLayer: 'recall' })
           return
-        } else if (rq.includes('proof') || rq.includes('lemma') || rq.includes('graph')) {
+        } else if (rq.includes('proof') || rq.includes('evidence graph') || rq.includes('verification')) {
+          setVizMode('graph')
+          setGraphMode('proof')
+          addMsg({ role: 'system', content: 'Showing evidence proof graph — nodes are evidence cases, colored by lean4 verification status.', type: 'natural', cascadeLayer: 'recall' })
+        } else if (rq.includes('lemma') || rq.includes('graph') || rq.includes('topology')) {
           setVizMode('graph')
           setGraphMode('full')
-          addMsg({ role: 'system', content: 'Showing full proof graph.', type: 'natural', cascadeLayer: 'recall' })
+          addMsg({ role: 'system', content: 'Showing control topology graph.', type: 'natural', cascadeLayer: 'recall' })
           return
         }
         // Unknown APP_COMMAND — fall through to QUERY handling
@@ -570,8 +575,39 @@ export function ChatTab() {
         setGraphNodes([...nodeMap.values()])
         setGraphEdges(edges)
       }).catch(() => { setGraphNodes([]); setGraphEdges([]) })
+    } else if (graphMode === 'proof') {
+      // Proof mode: evidence case verdicts as nodes, control_ids as edges
+      post('/list', { collection: 'evidence_cases', limit: 200, return_fields: ['question', 'verdict', 'grade', 'control_ids', 'gates_passed', 'gates_total', 'gate_trace'] })
+        .then(res => {
+          const docs = (res.documents ?? []) as any[]
+          const nodeMap = new Map<string, GraphNode>()
+          const edges: GraphEdge[] = []
+          for (const doc of docs) {
+            const verdict = doc.verdict ?? 'unknown'
+            const gates = doc.gate_trace ?? []
+            const lean4Gate = gates.find((g: any) => g.gate?.includes('lean4'))
+            const proofStatus: GraphNode['proofStatus'] =
+              lean4Gate?.detail?.includes('proof_success') ? 'proved'
+              : lean4Gate?.detail?.includes('sorry') || lean4Gate?.detail?.includes('proof_failed') ? 'sorry'
+              : verdict === 'satisfied' ? 'partial'
+              : 'axiom'
+            const ecId = `EC:${(doc.question ?? '?').slice(0, 40).replace(/\s+/g, '_')}`
+            const confidence = (doc.gates_passed ?? 0) / Math.max(doc.gates_total ?? 7, 1)
+            if (!nodeMap.has(ecId)) {
+              nodeMap.set(ecId, { id: ecId, label: (doc.question ?? '?').slice(0, 60), framework: 'Evidence', proofStatus, confidence, sourceCount: (doc.control_ids ?? []).length })
+            }
+            for (const cid of (doc.control_ids ?? [])) {
+              if (!nodeMap.has(cid)) {
+                nodeMap.set(cid, { id: cid, label: cid, framework: 'SPARTA', proofStatus: verdict === 'satisfied' ? 'proved' : 'partial', confidence: confidence })
+              }
+              edges.push({ source: cid, target: ecId, method: verdict, validated: verdict === 'satisfied' })
+            }
+          }
+          setGraphNodes([...nodeMap.values()])
+          setGraphEdges(edges)
+        }).catch(() => { setGraphNodes([]); setGraphEdges([]) })
     } else {
-      // Standard relationship graph
+      // Standard relationship graph (topology mode)
       const controlId = focusControl ?? focusTechnique ?? 'CWE-119'
       post('/recall', { q: controlId, collections: ['sparta_relationships'], k: 30, entities: [controlId] })
         .then(res => {
