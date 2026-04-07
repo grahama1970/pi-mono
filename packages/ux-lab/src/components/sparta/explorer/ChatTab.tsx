@@ -384,20 +384,52 @@ export function ChatTab() {
         return
       }
 
-      // NO_MATCH or unknown action — fallback to /memory recall
+      // NO_MATCH or unknown action — fallback to recall → auto evidence case
       const recallRes = await post('/recall', {
         q: query, collections: ['sparta_controls', 'sparta_qra'], k: 10,
       })
       const items = recallRes.items ?? []
-      const content = items.length > 0
-        ? `Found ${items.length} results across SPARTA corpus.`
-        : 'No matching results in SPARTA corpus.'
+      if (items.length === 0) {
+        addMsg({ role: 'system', content: 'No matching results in SPARTA corpus.', type: 'natural', cascadeLayer: 'recall' })
+        return
+      }
       addMsg({
-        role: 'system', content, type: 'natural',
-        cascadeLayer: 'recall', resultCount: items.length,
+        role: 'system', content: `Found ${items.length} results across SPARTA corpus. Running evidence case...`,
+        type: 'natural', cascadeLayer: 'recall', resultCount: items.length,
         entities: intentEntities.length > 0 ? intentEntities : undefined,
         recallItems: items.slice(0, 10),
       })
+
+      // Auto-chain: run evidence case on recall results
+      try {
+        const controlId = intentEntities.find(e => e.exists)?.id
+        const ecRes = await fetch(`${API}/api/evidence-case/run`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: query, controlId }),
+          signal: AbortSignal.timeout(90_000),
+        }).then(r => r.json())
+
+        const gates: EvidenceGate[] = (ecRes.gates ?? ecRes.gate_trace ?? []).map((g: any) => ({
+          gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '', duration: g.duration,
+        }))
+        const gatesPassed = gates.filter(g => g.passed).length
+        const verdict = ecRes.verdict?.state ?? ecRes.verdict_state ?? 'unknown'
+        const controlIds: string[] = ecRes.control_ids ?? ecRes.verdict?.control_ids ?? intentEntities.filter(e => e.exists).map(e => e.id)
+
+        addMsg({
+          role: 'system', content: ecRes.answer ?? `Evidence case: ${verdict} (${gatesPassed}/${gates.length} gates)`, type: 'natural', cascadeLayer: 'llm',
+          skillUsed: 'create-evidence-case',
+          entities: intentEntities.length > 0 ? intentEntities : undefined,
+          verdict: { state: verdict.toUpperCase(), gates, tier: ecRes.tier ?? 'T0' },
+          evidenceCase: {
+            verdict: verdict.toLowerCase(), grade: '—',
+            gates_passed: gatesPassed, gates_total: gates.length,
+            gate_summary: gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; '),
+            gate_trace: gates, control_ids: controlIds, tier: ecRes.tier ?? 'T0',
+            recall_count: ecRes.recall_count ?? ecRes.evidence?.length ?? 0,
+          },
+        })
+      } catch { /* evidence case timeout is non-fatal — recall results already shown */ }
     } catch (err) {
       addMsg({ role: 'system', content: `Error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
     }

@@ -324,3 +324,13 @@
 {"ts":1775504959,"file":"structured_execute.py","result":"clean"}
 {"ts":1775504972,"file":"structured_execute.py","result":"clean"}
 {"ts":1775504986,"file":"structured_plan.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775562930,"file":"structured_plan.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775562956,"file":"structured_execute.py","result":"clean"}
+{"ts":1775573959,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775574005,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775574884,"file":"estimate_timeout.py","violations":1,"warnings":"CONVENTION: Use typer, not argparse/click.|CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775574913,"file":"estimate_timeout.py","violations":2,"warnings":"CONVENTION: Use typer, not argparse/click.|CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775575206,"file":"ChatWell.tsx","result":"clean"}
+{"ts":1775575340,"file":"ChatTab.tsx","result":"clean"}
+{"ts":1775575419,"file":"highlightEntities.tsx","result":"clean"}
+{"ts":1775575505,"file":"ChatWell.tsx","result":"clean"}

@@ -57,6 +57,11 @@ export function highlightEntities(
       ENTITY_PATTERN.lastIndex = 0;
       const type = classifyEntity(part);
       const style = ENTITY_STYLES[type];
+      const tooltip = type === 'skill' ? `Skill: ${part} — click to invoke`
+        : type === 'control' ? `NIST control: ${part} — click for threat matrix`
+        : type === 'cwe' ? `Common Weakness: ${part} — click for analysis`
+        : type === 'framework' ? `Framework: ${part} — click for details`
+        : `${type}: ${part}`
       return (
         <span
           key={i}
@@ -66,9 +71,14 @@ export function highlightEntities(
             background: style.bg, padding: '1px 5px', borderRadius: 3,
             fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
             cursor: onEntityClick ? 'pointer' : 'inherit',
+            position: 'relative', display: 'inline-block',
+            transition: 'filter 0.15s, transform 0.1s',
+            border: `1px solid transparent`,
           }}
+          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.3)'; e.currentTarget.style.border = `1px solid ${style.color}` }}
+          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.border = '1px solid transparent' }}
           data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`} data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
-          title={type === 'skill' ? `Skill: ${part} — click to invoke` : type === 'control' ? `NIST control: ${part} — click for threat matrix` : type === 'cwe' ? `Common Weakness: ${part} — click for analysis` : type === 'framework' ? `Framework: ${part} — click for details` : `${type}: ${part}`}
+          title={tooltip}
         >
           {part}
         </span>

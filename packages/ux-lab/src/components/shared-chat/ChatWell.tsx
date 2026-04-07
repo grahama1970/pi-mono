@@ -85,23 +85,28 @@ function MessageItem({
     )
   }
 
-  // ── System message: flush left, no bubble ──
+  // ── System message: card with left accent border ──
+  const layerColor = msg.cascadeLayer ? LAYER_COLORS[msg.cascadeLayer] : EMBRY.border
   return (
-    <div style={{ padding: '8px 0' }}>
+    <div style={{
+      padding: '10px 12px', margin: '6px 0',
+      borderRadius: 8, borderLeft: `3px solid ${layerColor}`,
+      background: `${layerColor}06`,
+    }}>
       {/* Tool action line */}
       {msg.skillUsed && <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:skill:${msg.skillUsed}`} />}
 
       {/* Cascade layer indicator */}
       {msg.cascadeLayer && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
           <div style={{
             width: 6, height: 6, borderRadius: '50%',
-            background: LAYER_COLORS[msg.cascadeLayer],
-            boxShadow: `0 0 4px ${LAYER_COLORS[msg.cascadeLayer]}`,
+            background: layerColor,
+            boxShadow: `0 0 4px ${layerColor}`,
           }} />
           <span style={{
-            fontSize: 12, color: LAYER_COLORS[msg.cascadeLayer],
-            fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+            fontSize: 10, color: layerColor,
+            fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
             fontFamily: 'monospace',
           }}>
             {msg.cascadeLayer}
@@ -293,11 +298,26 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
         display: 'flex', flexDirection: 'column',
       }}>
         {messages.length === 0 && (
-          <div style={{
-            color: EMBRY.muted, fontSize: 12, textAlign: 'center',
-            padding: '48px 24px', lineHeight: 1.8,
-          }}>
-            "Show me the F-36 threat matrix"
+          <div style={{ padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+            <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Ask a question</div>
+            {[
+              'Show me the F-36 threat matrix',
+              'What SPARTA controls cover supply chain attacks?',
+              'Which controls have no evidence cases?',
+              'Run an evidence case for firmware tampering on avionics',
+              'What is our CMMC Level 2 compliance posture?',
+              'Show controls related to CWE-287 authentication bypass',
+            ].map((q) => (
+              <button key={q} onClick={() => onSend?.(q, 'natural')} style={{
+                background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`,
+                borderRadius: 8, padding: '10px 16px', cursor: 'pointer',
+                color: EMBRY.dim, fontSize: 12, textAlign: 'left', width: '100%',
+                transition: 'all 0.15s',
+              }} onMouseEnter={e => { e.currentTarget.style.borderColor = EMBRY.accent; e.currentTarget.style.color = EMBRY.white }}
+                 onMouseLeave={e => { e.currentTarget.style.borderColor = `${EMBRY.accent}22`; e.currentTarget.style.color = EMBRY.dim }}>
+                {q}
+              </button>
+            ))}
           </div>
         )}
         {messages.map((msg) => (
