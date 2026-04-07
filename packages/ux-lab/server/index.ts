@@ -310,37 +310,35 @@ app.get('/api/posture/v2', async (_req, res) => {
 })
 
 // ── QRA Coverage Stats ──────────────────────────────────────────────────────
-// Counts originals, variations, evidence-checked, verdicts, mismatches from sparta_qra tags
+// Uses /count endpoint for efficient server-side tag counting (no document transfer)
 app.get('/api/qra/coverage', async (_req, res) => {
   try {
-    const allQRAs = await memoryListAll('sparta_qra', ['tags', 'evidence_verdict', 'evidence_mismatch'])
-    let originals = 0, variations = 0, evidenceChecked = 0, mismatches = 0
-    const verdicts: Record<string, number> = { satisfied: 0, inconclusive: 0, not_satisfied: 0, unknown: 0 }
-    const levels: Record<string, number> = {}
-    for (const q of allQRAs) {
-      const tags: string[] = Array.isArray(q.tags) ? q.tags : []
-      const isVariation = tags.includes('qra-variation')
-      if (isVariation) {
-        variations++
-        if (tags.includes('evidence-checked')) {
-          evidenceChecked++
-          const v = String(q.evidence_verdict || 'unknown')
-          verdicts[v] = (verdicts[v] ?? 0) + 1
-          if (q.evidence_mismatch) mismatches++
-        }
-        const lvl = tags.find((t: string) => t.startsWith('level:'))
-        if (lvl) { const l = lvl.slice(6); levels[l] = (levels[l] ?? 0) + 1 }
-      } else {
-        originals++
-      }
-    }
-    const coveragePct = originals ? Math.round((variations / (originals * 6)) * 100) : 0
-    const evidenceCheckPct = variations ? Math.round((evidenceChecked / variations) * 100) : 0
+    const mc = (tags: string[]) => proxyPost('/count', { collection: 'sparta_qra', tags })
+    const [total, variations, checked, satisfied, inconclusive, notSatisfied, mismatchDocs] = await Promise.all([
+      proxyPost('/count', { collection: 'sparta_qra' }),
+      mc(['qra-variation']),
+      mc(['qra-variation', 'evidence-checked']),
+      mc(['qra-variation', 'ec-verdict:satisfied']),
+      mc(['qra-variation', 'ec-verdict:inconclusive']),
+      mc(['qra-variation', 'ec-verdict:not_satisfied']),
+      mc(['qra-variation', 'ec-mismatch']),
+    ])
+    const totalCount = total?.count ?? 0
+    const variationCount = variations?.count ?? 0
+    const originals = totalCount - variationCount
+    const evidenceChecked = checked?.count ?? 0
+    const mismatches = mismatchDocs?.count ?? 0
+    const coveragePct = originals ? Math.round((variationCount / (originals * 6)) * 100) : 0
+    const evidenceCheckPct = variationCount ? Math.round((evidenceChecked / variationCount) * 100) : 0
     res.json({
-      originals, variations, coveragePct,
-      evidenceChecked, evidenceCheckPct,
-      mismatches, verdicts, levels,
-      total: allQRAs.length,
+      originals, variations: variationCount, coveragePct,
+      evidenceChecked, evidenceCheckPct, mismatches,
+      verdicts: {
+        satisfied: satisfied?.count ?? 0,
+        inconclusive: inconclusive?.count ?? 0,
+        not_satisfied: notSatisfied?.count ?? 0,
+      },
+      total: totalCount,
     })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })

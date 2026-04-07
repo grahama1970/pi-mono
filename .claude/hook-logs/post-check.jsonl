@@ -315,3 +315,12 @@
 {"ts":1775502864,"file":"QRAsView.tsx","result":"clean"}
 {"ts":1775502891,"file":"QRAsView.tsx","result":"clean"}
 {"ts":1775502910,"file":"QRAsView.tsx","result":"clean"}
+{"ts":1775504447,"file":"index.ts","result":"clean"}
+{"ts":1775504874,"file":"structured_execute_helpers.py","result":"clean"}
+{"ts":1775504892,"file":"structured_execute_helpers.py","result":"clean"}
+{"ts":1775504909,"file":"structured_execute_helpers.py","result":"clean"}
+{"ts":1775504921,"file":"structured_execute_helpers.py","result":"clean"}
+{"ts":1775504935,"file":"structured_execute.py","result":"clean"}
+{"ts":1775504959,"file":"structured_execute.py","result":"clean"}
+{"ts":1775504972,"file":"structured_execute.py","result":"clean"}
+{"ts":1775504986,"file":"structured_plan.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
