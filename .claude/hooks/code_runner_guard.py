@@ -88,8 +88,15 @@ def iter_tool_calls(transcript_path: str) -> Iterable[dict[str, Any]]:
             except Exception:
                 continue
             for node in walk(record):
-                if isinstance(node, dict) and isinstance(node.get("tool_input"), dict) and node.get("tool_name"):
-                    yield node
+                if not isinstance(node, dict):
+                    continue
+                # Support both transcript formats:
+                #   legacy: tool_name / tool_input
+                #   current: name / input  (Claude Code 2025+)
+                t_name = node.get("tool_name") or node.get("name")
+                t_input = node.get("tool_input") or node.get("input")
+                if t_name and isinstance(t_input, dict):
+                    yield {"tool_name": t_name, "tool_input": t_input}
 
 
 def parse_code_runner_invocation(command: str, cwd: str) -> tuple[str, str, str] | None:
@@ -151,8 +158,8 @@ def load_result_for_spec(spec_path: str) -> tuple[str, dict[str, Any] | None]:
     except Exception:
         return "", None
     task_id = spec.get("task_id")
-    output_dir = spec.get("output_dir")
-    if not task_id or not output_dir:
+    output_dir = spec.get("output_dir") or "/tmp/code-runner"
+    if not task_id:
         return "", None
 
     output_dir_path = Path(output_dir)
@@ -198,7 +205,23 @@ def handle_pre_bash(payload: dict[str, Any]) -> int:
         return 0
 
     _, skill_md, spec_path = parsed
-    transcript_path = payload.get("transcript_path", "")
+
+    # Collect all transcript paths (parent + subagent)
+    transcript_paths: list[str] = []
+    for key in ("agent_transcript_path", "transcript_path"):
+        tp = payload.get(key)
+        if tp:
+            transcript_paths.append(tp)
+
+    # Derive subagent transcript path from session transcript + agent_id
+    agent_id = payload.get("agent_id")
+    main_tp = payload.get("transcript_path", "")
+    if agent_id and main_tp:
+        session_dir = Path(main_tp).with_suffix("")  # strip .jsonl
+        subagent_tp = session_dir / "subagents" / f"agent-{agent_id}.jsonl"
+        if subagent_tp.exists() and str(subagent_tp) not in transcript_paths:
+            transcript_paths.append(str(subagent_tp))
+
     missing: list[str] = []
 
     if not Path(spec_path).exists():
@@ -208,10 +231,10 @@ def handle_pre_bash(payload: dict[str, Any]) -> int:
         )
         return 0
 
-    if not transcript_has_read(transcript_path, skill_md, cwd):
+    if not any(transcript_has_read(tp, skill_md, cwd) for tp in transcript_paths):
         missing.append(skill_md)
 
-    if not transcript_has_read(transcript_path, spec_path, cwd):
+    if not any(transcript_has_read(tp, spec_path, cwd) for tp in transcript_paths):
         missing.append(spec_path)
 
     if missing:

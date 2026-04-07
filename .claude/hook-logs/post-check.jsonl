@@ -334,3 +334,11 @@
 {"ts":1775575340,"file":"ChatTab.tsx","result":"clean"}
 {"ts":1775575419,"file":"highlightEntities.tsx","result":"clean"}
 {"ts":1775575505,"file":"ChatWell.tsx","result":"clean"}
+{"ts":1775578290,"file":"structured_execute.py","result":"clean"}
+{"ts":1775579748,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775582282,"file":"models.py","result":"clean"}
+{"ts":1775582315,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775582331,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775582353,"file":"code_runner.py","violations":3,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775582392,"file":"code_runner.py","violations":1,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
+{"ts":1775584673,"file":"code_runner.py","violations":2,"warnings":"CONVENTION: Broad except Exception. Catch specific exceptions.||"}
