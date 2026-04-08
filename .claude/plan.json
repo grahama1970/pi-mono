@@ -1,9 +1,0 @@
-{
-    "task": "Add SKILL.md injection and preflight validation to code-runner prompt assembly",
-    "target_files": [".pi/skills/code-runner/prompt_assembly.py", ".pi/skills/code-runner/models.py", ".pi/skills/prompt-lab/prompts/code_runner_system_v3.txt"],
-    "memory_recalled": true,
-    "skills_considered": ["code-runner", "orchestrate", "prompt-lab", "scillm"],
-    "skills_selected": ["code-runner"],
-    "skills_code_read": ["code-runner/prompt_assembly.py", "code-runner/models.py", "code-runner/code_runner.py"],
-    "bespoke_justification": "Adding trust boundary: deterministic SKILL.md injection into LLM context + preflight validation of skill usage"
-}
