@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill_policy.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -11,8 +22,8 @@
           },
           {
             "type": "command",
-            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/bash-mutation-guard.sh\"",
-            "timeout": 5
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill_policy.py\"",
+            "timeout": 10
           },
           {
             "type": "command",
@@ -26,8 +37,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill-check.sh\"",
-            "timeout": 15
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill_policy.py\"",
+            "timeout": 10
           },
           {
             "type": "command",
@@ -39,11 +50,11 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Read",
         "hooks": [
           {
             "type": "command",
-            "command": "\"/home/graham/workspace/experiments/pi-mono/.claude/hooks/post-skill-check.sh\"",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill_policy.py\"",
             "timeout": 5
           }
         ]
@@ -63,6 +74,11 @@
     "Stop": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/skill_policy.py\"",
+            "timeout": 10
+          },
           {
             "type": "command",
             "command": "python3 \"/home/graham/workspace/experiments/pi-mono/.claude/hooks/code_runner_guard.py\" stop",
