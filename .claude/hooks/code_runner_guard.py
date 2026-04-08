@@ -266,51 +266,55 @@ def handle_pre_write(payload: dict[str, Any]) -> int:
     return 0
 
 
-def handle_stop(payload: dict[str, Any]) -> int:
+def handle_stop(payload: dict[str, Any]) -> int:                                                                                             
     if payload.get("stop_hook_active"):
-        return 0
-
+        return 0                                                                                                                             
+                                                                                                                                            
     cwd = payload["cwd"]
-    transcript_paths = []
-
+    transcript_paths = []                                                                                                                    
+                                                        
     agent_transcript = payload.get("agent_transcript_path")
     if agent_transcript:
         transcript_paths.append(agent_transcript)
 
-    main_transcript = payload.get("transcript_path")
+    main_transcript = payload.get("transcript_path")                                                                                         
     if main_transcript:
-        transcript_paths.append(main_transcript)
-
+        transcript_paths.append(main_transcript)                                                                                             
+                                                        
     parsed = find_latest_code_runner_spec(transcript_paths, cwd)
     if not parsed:
         return 0
 
     _, _, spec_path = parsed
-    result_path, result = load_result_for_spec(spec_path)
 
-    if not result_path:
-        emit_stop_block(
+    # Skip YAML task files and non-existent paths (not code-runner specs)                                                                    
+    if spec_path.endswith((".yaml", ".yml")) or not Path(spec_path).exists():
+        return 0                                                                                                                             
+                                                        
+    result_path, result = load_result_for_spec(spec_path)                                                                                    
+
+    if not result_path:                                                                                                                      
+        emit_stop_block(                                  
             f"This looks like a code-runner task, but the spec could not be parsed: {spec_path}. "
             "Inspect the spec and the run output before stopping."
-        )
+        )                                                                                                                                    
         return 0
-
-    if result is None:
+                                                                                                                                            
+    if result is None:                                    
         emit_stop_block(
             f"Do not stop yet. code-runner result file is missing or unreadable: {result_path}. "
             "Inspect the run output and either continue working or explicitly explain the failure."
-        )
+        )                                                                                                                                    
         return 0
-
-    if result.get("dod_passed") is not True:
+                                                                                                                                            
+    if result.get("dod_passed") is not True:              
         emit_stop_block(
             f"Do not stop yet. code-runner says dod_passed=false in {result_path}. "
-            "Continue working, or explicitly tell the user the DoD failed and summarize the blocking error."
+            "Continue working, or explicitly tell the user the DoD failed and summarize the blocking error."                                 
         )
-        return 0
-
+        return 0                                                                                                                             
+                                                        
     return 0
-
 
 def main() -> int:
     if len(sys.argv) != 2:
