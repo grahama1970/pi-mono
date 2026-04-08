@@ -1,0 +1,24 @@
+# Global conventions — always enforced on every Write/Edit
+# These are project-wide rules from CLAUDE.md and best-practices
+
+name: conventions
+
+forbidden_use:
+  any_of:
+    # Python library conventions (CLAUDE.md)
+    - import: logging
+      reason: "Use loguru, not logging (CLAUDE.md)"
+    - import: requests
+      reason: "Use httpx, not requests (CLAUDE.md)"
+    - import: argparse
+      reason: "Use typer, not argparse (CLAUDE.md)"
+    - import: click
+      reason: "Use typer, not click (CLAUDE.md)"
+
+    # Security
+    - call: eval
+      reason: "eval() is a security risk. Use ast.literal_eval or proper parsing."
+
+    # Banned CLI patterns
+    - pattern: "claude\\s+-p|codex\\s+exec"
+      reason: "claude -p / codex exec are banned"
