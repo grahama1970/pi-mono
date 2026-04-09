@@ -3980,6 +3980,16 @@ try {
   console.warn('  Pi chat adapter: failed to register (embry-agent may not be running)', err)
 }
 
+// ── Serve production build if dist/ exists ──────────────────────────────────
+const distPath = resolve(__dirname, '../dist')
+if (existsSync(distPath)) {
+  app.use(express.static(distPath))
+  app.get('*', (_req, res) => {
+    res.sendFile(resolve(distPath, 'index.html'))
+  })
+  console.log(`  Serving production build from ${distPath}`)
+}
+
 // ── Start ───────────────────────────────────────────────────────────────────
 
 const PORT = process.env.PORT ?? 3001

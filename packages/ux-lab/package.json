@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "start:prod": "npm run build && tsx server/index.ts"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.0",
