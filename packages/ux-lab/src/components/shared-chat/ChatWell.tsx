@@ -361,12 +361,12 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            data-qid="chat:input" title="Type a message or /skill-name" placeholder="Ask about the SPARTA graph... (/ for skills)"
+            data-qid="chat:input" data-qs-action="type-message" title="Type a message or /skill-name" placeholder="Ask about the SPARTA graph... (/ for skills)"
             style={{
               width: '100%', border: 'none', outline: 'none', resize: 'none',
               background: 'transparent', fontSize: 13, color: EMBRY.white,
               padding: '10px 14px 6px', lineHeight: 1.5,
-              minHeight: 24, maxHeight: 120,
+              minHeight: 44, maxHeight: 120,
             }}
             rows={1}
           />
@@ -377,7 +377,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             <button
               onClick={handleSend}
               disabled={!input.trim()}
-              data-qid="chat:send" title="Send message (Enter)"
+              data-qid="chat:send" data-qs-action="send-message" title="Send message (Enter)"
               aria-label="Send message"
               style={{
                 width: 44, height: 44, borderRadius: '50%', border: 'none',

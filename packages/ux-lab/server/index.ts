@@ -3919,6 +3919,7 @@ app.use('/screenshots', express.static(SCREENSHOTS_DIR))
 // ── Test Runner Routes ──────────────────────────────────────────────────────
 import { WebSocketServer, WebSocket } from 'ws'
 import { registerTestRunnerRoutes } from './test-runner.ts'
+import { createPiChatRouter } from '../../pi-chat-adapter/src/index.ts'
 
 const httpServer = createServer(app)
 const wss = new WebSocketServer({ server: httpServer })
@@ -3934,6 +3935,14 @@ const broadcast = (msg: any) => {
 }
 
 registerTestRunnerRoutes(app, broadcast)
+
+// Pi Chat Adapter — D-Bus bridge to embry-agent (SSE streaming)
+try {
+  app.use('/api/agent', createPiChatRouter())
+  console.log('  Pi chat adapter: registered at /api/agent')
+} catch (err) {
+  console.warn('  Pi chat adapter: failed to register (embry-agent may not be running)', err)
+}
 
 // ── Start ───────────────────────────────────────────────────────────────────
 

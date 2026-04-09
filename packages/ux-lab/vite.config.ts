@@ -9,6 +9,8 @@ export default defineConfig({
     alias: {
       // Import skill components directly — no duplication
       '@skills': resolve(__dirname, '../../.pi/skills'),
+      // Pi chat adapter — D-Bus bridge package
+      '@pi-chat-adapter': resolve(__dirname, '../pi-chat-adapter/src'),
       // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
       '@skills-theme': resolve(__dirname, 'src/components/sparta/common/nvis-shim.ts'),
     },

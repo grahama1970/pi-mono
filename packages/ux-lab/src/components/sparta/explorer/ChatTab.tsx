@@ -8,7 +8,8 @@
  * Brandon, Margaret, Jennifer personas ask questions here.
  * The threat matrix and lemma graph are LIVE — they reflect current graph state.
  */
-import { useState, useCallback, useRef, useEffect, createContext, useContext } from 'react'
+import { useState, useCallback, useRef, useEffect, createContext, useContext, useMemo } from 'react'
+import { usePiChat } from '@pi-chat-adapter/hook'
 import { EMBRY } from '../common/EmbryStyle'
 import { ChatWell } from '../../shared-chat'
 import type { ChatMessage, EntityRef, EvidenceGate, ThreatMatrixSummary } from '../../shared-chat'
@@ -102,11 +103,10 @@ export function ChatTab() {
   const [focusControl, setFocusControl] = useState<string | null>(null)
   const [currentSystem, setCurrentSystem] = useState('f36')
 
-  // Chat state
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  // Chat state — powered by Pi via D-Bus adapter
+  const piChat = usePiChat({ apiBase: API })
   const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
   const [skills, setSkills] = useState<Array<{ name: string; description: string; triggers: string[] }>>([])
-  const msgIdRef = useRef(0)
 
   // Fetch skills for palette
   useEffect(() => {
@@ -127,11 +127,15 @@ export function ChatTab() {
   const [graphNodes, setGraphNodes] = useState<GraphNode[]>([])
   const [graphEdges, setGraphEdges] = useState<GraphEdge[]>([])
 
-  const addMsg = useCallback((msg: Omit<ChatMessage, 'id' | 'timestamp'>) => {
-    const m: ChatMessage = { ...msg, id: String(++msgIdRef.current), timestamp: Date.now() }
-    setMessages(prev => [...prev, m])
+  // Merge Pi messages with threat-delta alerts
+  const [alertMessages, setAlertMessages] = useState<ChatMessage[]>([])
+  const alertIdRef = useRef(0)
+  const addAlert = useCallback((msg: Omit<ChatMessage, 'id' | 'timestamp'>) => {
+    const m: ChatMessage = { ...msg, id: `alert-${++alertIdRef.current}`, timestamp: Date.now() }
+    setAlertMessages(prev => [...prev, m])
     return m
   }, [])
+  const messages = useMemo(() => [...alertMessages, ...piChat.messages], [alertMessages, piChat.messages])
 
   // ── Load threat matrix on mount + datalake change ────────────────────
 
@@ -216,7 +220,7 @@ export function ChatTab() {
 
         const controlId = doc.control_id ?? 'unknown-control'
         const reason = doc.reason ? ` ${doc.reason}` : ''
-        addMsg({
+        addAlert({
           role: 'system',
           type: 'natural',
           alertType: 'threat-delta',
@@ -224,221 +228,17 @@ export function ChatTab() {
         })
       }
     })
-  }, [addMsg, evidenceMapLoaded])
+  }, [addAlert, evidenceMapLoaded])
 
-  // ── Chat send handler ────────────────────────────────────────────────
+  // ── Chat send handler — powered by Pi ─────────────────────────────────
 
-  const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
-    addMsg({ role: 'user', content: query, type })
+  const handleSend = useCallback((query: string, type: 'natural' | 'aql') => {
+    piChat.send(query, type)
+  }, [piChat])
 
-    try {
-      // Step 1: Intent classification via /memory intent
-      const intentRes = await fetch(`${API}/api/memory/intent`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query, scope: 'sparta' }),
-      }).then(r => r.json()).catch(() => ({ action: 'NO_MATCH' }))
+  // Legacy handleSend deleted — Pi handles everything via usePiChat hook.
+  // See git history before checkpoint/2026-04-08-230132 for the original 211-line handler.
 
-      const action: string = intentRes.action ?? 'NO_MATCH'
-      const intentEntities: EntityRef[] = (intentRes.entities ?? []).map((e: any) => ({
-        id: e.control_id ?? e.id ?? e,
-        label: e.name ?? e.control_id ?? e.id ?? String(e),
-        type: e.type ?? 'control',
-        exists: e.exists !== false,
-      }))
-
-      // Focus first entity in viz
-      if (intentEntities.length > 0 && intentEntities[0].exists) {
-        const eid = intentEntities[0].id
-        if (SPARTA_TACTICS.some(t => eid.startsWith(t.prefix + '-'))) {
-          setFocusTechnique(eid)
-        } else {
-          setFocusControl(eid)
-        }
-      }
-
-      // Step 2: Route based on intent action
-      if (action === 'APP_COMMAND') {
-        const rq = (intentRes.rewritten_query ?? query).toLowerCase()
-        if (rq.includes('matrix') || rq.includes('coverage') || rq.includes('threat landscape')) {
-          setVizMode('matrix')
-          // Matrix narration (preserved existing block)
-          const satisfied = [...evidenceMap.values()].filter(v => v.verdict === 'satisfied').length
-          const inconclusive = [...evidenceMap.values()].filter(v => v.verdict === 'inconclusive').length
-          const notSatisfied = [...evidenceMap.values()].filter(v => v.verdict === 'not_satisfied').length
-          const totalTech = techniques.length || 85
-          const noEvidence = totalTech - satisfied - inconclusive - notSatisfied
-          const dl = DATALAKES.find(d => d.id === currentSystem)
-          const covPct = totalTech > 0 ? Math.round((satisfied / totalTech) * 100) : 0
-          const tacticGaps: Record<string, number> = {}
-          for (const t of SPARTA_TACTICS) {
-            const tacticTechs = techniques.filter(tech => tech.tactic === t.name)
-            const covered = tacticTechs.filter(tech => evidenceMap.has(tech.id) && evidenceMap.get(tech.id)!.verdict === 'satisfied').length
-            tacticGaps[t.name] = tacticTechs.length > 0 ? covered / tacticTechs.length : 0
-          }
-          const weakest = Object.entries(tacticGaps).sort((a, b) => a[1] - b[1]).slice(0, 2)
-          let narration = `The ${dl?.name ?? 'F-36'} threat matrix is shown in the visualization pane. Coverage: ${covPct}% of ${totalTech} techniques have evidence.`
-          if (weakest.length > 0 && weakest[0][1] < 0.5) {
-            narration += `\n\nGaps: ${weakest.map(([name, pct]) => `${name} (${Math.round(pct * 100)}%)`).join(', ')} — weakest tactics.`
-          }
-          narration += '\n\nAsk about specific techniques or tactics to drill down.'
-          addMsg({
-            role: 'system', content: narration, type: 'natural',
-            cascadeLayer: 'recall',
-            matrixSummary: { totalTechniques: totalTech, totalTactics: SPARTA_TACTICS.length, satisfied, inconclusive, notSatisfied, noEvidence, datalake: dl?.name ?? 'F-36' },
-          })
-          return
-        } else if (rq.includes('dashboard') || rq.includes('posture') || rq.includes('overview') || rq.includes('status report')) {
-          setVizMode('dashboard')
-          addMsg({ role: 'system', content: 'Switching to Posture Dashboard.', type: 'natural', cascadeLayer: 'recall' })
-          return
-        } else if (rq.includes('critical path') || rq.includes('attack chain') || rq.includes('exploit chain')) {
-          setVizMode('graph')
-          setGraphMode('critical-path')
-          addMsg({ role: 'system', content: 'Showing critical path — failing attack chains in the proof graph.', type: 'natural', cascadeLayer: 'recall' })
-          return
-        } else if (rq.includes('proof') || rq.includes('evidence graph') || rq.includes('verification')) {
-          setVizMode('graph')
-          setGraphMode('proof')
-          addMsg({ role: 'system', content: 'Showing evidence proof graph — nodes are evidence cases, colored by lean4 verification status.', type: 'natural', cascadeLayer: 'recall' })
-        } else if (rq.includes('lemma') || rq.includes('graph') || rq.includes('topology')) {
-          setVizMode('graph')
-          setGraphMode('full')
-          addMsg({ role: 'system', content: 'Showing control topology graph.', type: 'natural', cascadeLayer: 'recall' })
-          return
-        }
-        // Unknown APP_COMMAND — fall through to QUERY handling
-      }
-
-      if (action === 'QUERY') {
-        // Run evidence case pipeline
-        const controlId = intentEntities.find(e => e.exists)?.id
-        const ecRes = await fetch(`${API}/api/evidence-case/run`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: query, controlId }),
-          signal: AbortSignal.timeout(90_000),
-        }).then(r => r.json())
-
-        const gates: EvidenceGate[] = (ecRes.gates ?? ecRes.gate_trace ?? []).map((g: any) => ({
-          gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '', duration: g.duration,
-        }))
-        const gatesPassed = gates.filter(g => g.passed).length
-        const verdict = ecRes.verdict?.state ?? ecRes.verdict_state ?? 'unknown'
-        const tier = ecRes.tier ?? 'T0'
-        const gateSummary = gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; ')
-        const controlIds: string[] = ecRes.control_ids ?? ecRes.verdict?.control_ids ?? intentEntities.filter(e => e.exists).map(e => e.id)
-
-        // Check drift
-        let drift: { old_verdict: string; new_verdict: string; timestamp: string } | undefined
-        if (controlIds.length > 0) {
-          try {
-            const driftRes = await fetch(`${API}/api/memory/list`, {
-              method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ collection: 'evidence_cases', limit: 5, filters: { type: 'threat-delta' } }),
-            }).then(r => r.json())
-            const deltas = (driftRes.documents ?? []).filter((d: any) => controlIds.includes(d.control_id))
-            if (deltas.length > 0) {
-              drift = { old_verdict: deltas[0].old_verdict, new_verdict: deltas[0].new_verdict, timestamp: deltas[0].timestamp }
-            }
-          } catch { /* non-critical */ }
-        }
-
-        if (gatesPassed >= 5) {
-          // PASS — show ReasoningBlock with evidence
-          addMsg({
-            role: 'system', content: ecRes.answer ?? '', type: 'natural', cascadeLayer: 'llm',
-            skillUsed: 'create-evidence-case',
-            entities: intentEntities.length > 0 ? intentEntities : undefined,
-            verdict: { state: verdict.toUpperCase(), gates, tier },
-            evidenceCase: {
-              verdict: verdict.toLowerCase(), grade: '—',
-              gates_passed: gatesPassed, gates_total: gates.length,
-              gate_summary: gateSummary, gate_trace: gates,
-              control_ids: controlIds, tier, drift,
-              recall_count: ecRes.recall_count ?? ecRes.evidence?.length ?? 0,
-              source_traceability: ecRes.source_traceability,
-            },
-          })
-        } else {
-          // FAIL — derive clarify questions from gate trace (no daemon call needed)
-          const firstFailed = gates.find(g => !g.passed)
-          const clarifyOptions: string[] = []
-          if (firstFailed?.gate?.includes('topic')) {
-            clarifyOptions.push('Could you rephrase in terms of space cybersecurity?')
-          } else if (firstFailed?.gate?.includes('grounding') || firstFailed?.gate?.includes('entities')) {
-            const detail = firstFailed.detail ?? ''
-            if (detail.includes('fabricated')) clarifyOptions.push('The control ID may not exist. Did you mean a specific SPARTA countermeasure or NIST control?')
-            else if (detail.includes('typo') || detail.includes('misspell')) clarifyOptions.push('There may be a typo in the control ID. Could you verify the exact identifier?')
-            else clarifyOptions.push('Some entities could not be grounded in the corpus. Could you specify the exact control IDs or techniques?')
-          } else {
-            clarifyOptions.push('Could you be more specific about which control or technique?')
-          }
-          if (ecRes.clarify_result?.questions) {
-            clarifyOptions.push(...ecRes.clarify_result.questions.slice(0, 2))
-          }
-
-          addMsg({
-            role: 'system',
-            content: `Evidence case returned ${gatesPassed}/${gates.length} gates passed — insufficient confidence. Please refine your question.`,
-            type: 'natural', cascadeLayer: 'llm',
-            skillUsed: 'create-evidence-case',
-            entities: intentEntities.length > 0 ? intentEntities : undefined,
-            verdict: { state: verdict.toUpperCase(), gates, tier },
-            clarifyOptions,
-          })
-        }
-        return
-      }
-
-      // NO_MATCH or unknown action — fallback to recall → auto evidence case
-      const recallRes = await post('/recall', {
-        q: query, collections: ['sparta_controls', 'sparta_qra'], k: 10,
-      })
-      const items = recallRes.items ?? []
-      if (items.length === 0) {
-        addMsg({ role: 'system', content: 'No matching results in SPARTA corpus.', type: 'natural', cascadeLayer: 'recall' })
-        return
-      }
-      addMsg({
-        role: 'system', content: `Found ${items.length} results across SPARTA corpus. Running evidence case...`,
-        type: 'natural', cascadeLayer: 'recall', resultCount: items.length,
-        entities: intentEntities.length > 0 ? intentEntities : undefined,
-        recallItems: items.slice(0, 10),
-      })
-
-      // Auto-chain: run evidence case on recall results
-      try {
-        const controlId = intentEntities.find(e => e.exists)?.id
-        const ecRes = await fetch(`${API}/api/evidence-case/run`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: query, controlId }),
-          signal: AbortSignal.timeout(90_000),
-        }).then(r => r.json())
-
-        const gates: EvidenceGate[] = (ecRes.gates ?? ecRes.gate_trace ?? []).map((g: any) => ({
-          gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '', duration: g.duration,
-        }))
-        const gatesPassed = gates.filter(g => g.passed).length
-        const verdict = ecRes.verdict?.state ?? ecRes.verdict_state ?? 'unknown'
-        const controlIds: string[] = ecRes.control_ids ?? ecRes.verdict?.control_ids ?? intentEntities.filter(e => e.exists).map(e => e.id)
-
-        addMsg({
-          role: 'system', content: ecRes.answer ?? `Evidence case: ${verdict} (${gatesPassed}/${gates.length} gates)`, type: 'natural', cascadeLayer: 'llm',
-          skillUsed: 'create-evidence-case',
-          entities: intentEntities.length > 0 ? intentEntities : undefined,
-          verdict: { state: verdict.toUpperCase(), gates, tier: ecRes.tier ?? 'T0' },
-          evidenceCase: {
-            verdict: verdict.toLowerCase(), grade: '—',
-            gates_passed: gatesPassed, gates_total: gates.length,
-            gate_summary: gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; '),
-            gate_trace: gates, control_ids: controlIds, tier: ecRes.tier ?? 'T0',
-            recall_count: ecRes.recall_count ?? ecRes.evidence?.length ?? 0,
-          },
-        })
-      } catch { /* evidence case timeout is non-fatal — recall results already shown */ }
-    } catch (err) {
-      addMsg({ role: 'system', content: `Error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
-    }
-  }, [addMsg])
 
   // ── Viz → Chat: cell click sends query ────────────────────────────
 
@@ -466,85 +266,28 @@ export function ChatTab() {
       setDetailLoading(false)
     })
 
-    // Also inject into chat
-    addMsg({ role: 'user', content: `Analyze technique ${tech.id}: ${tech.name}`, type: 'natural' })
-    handleSend(`Analyze technique ${tech.id}: ${tech.name}`, 'natural')
-  }, [addMsg, handleSend])
+    // Send to Pi
+    piChat.send(`Analyze technique ${tech.id}: ${tech.name}`, 'natural')
+  }, [piChat])
 
   // ── Graph node click → chat ────────────────────────────────────────
 
   const handleGraphNodeClick = useCallback((node: GraphNode) => {
     setFocusControl(node.id)
-    addMsg({ role: 'user', content: `Show proof chain for ${node.id}: ${node.label}`, type: 'natural' })
-    handleSend(`Show proof chain for ${node.id}: ${node.label}`, 'natural')
-  }, [addMsg, handleSend])
+    piChat.send(`Show proof chain for ${node.id}: ${node.label}`, 'natural')
+  }, [piChat])
 
   // ── Evidence case handler ──────────────────────────────────────────
 
+  // Evidence case — delegate to Pi (it has /create-evidence-case skill)
   const handleRunEvidenceCase = useCallback(async (msg: ChatMessage) => {
     const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
     if (!userMsg) return
     setEvidenceCaseLoading(msg.id)
-    try {
-      const controlId = msg.entities?.find(e => e.exists)?.id
-      const res = await fetch(`${API}/api/evidence-case/run`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: userMsg.content, controlId }),
-        signal: AbortSignal.timeout(90_000),
-      })
-      const data = await res.json()
-      const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
-        gate: g.gate ?? g.name ?? '?', passed: !!g.passed, detail: g.detail ?? '',
-        duration: g.duration,
-      }))
-      const verdict = data.verdict?.state ?? data.verdict_state ?? 'unknown'
-      const tier = data.tier ?? 'T0'
-      // Build evidenceCase for ReasoningBlock
-      const gateSummary = gates.map(g => (g.passed ? 'PASS' : 'FAIL') + ': ' + g.gate).join('; ')
-      const controlIds: string[] = data.control_ids ?? data.verdict?.control_ids ?? msg.entities?.filter(e => e.exists).map(e => e.id) ?? []
-
-      // Check for drift
-      let drift: { old_verdict: string; new_verdict: string; timestamp: string } | undefined
-      if (controlIds.length > 0) {
-        try {
-          const driftRes = await fetch(`${API}/api/memory/list`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ collection: 'evidence_cases', limit: 5, filters: { type: 'threat-delta' } }),
-          }).then(r => r.json())
-          const deltas = (driftRes.documents ?? []).filter((d: any) => controlIds.includes(d.control_id))
-          if (deltas.length > 0) {
-            drift = { old_verdict: deltas[0].old_verdict, new_verdict: deltas[0].new_verdict, timestamp: deltas[0].timestamp }
-          }
-        } catch { /* non-critical */ }
-      }
-
-      addMsg({
-        role: 'system',
-        content: data.answer ?? '',
-        type: 'natural', cascadeLayer: 'llm',
-        skillUsed: 'create-evidence-case',
-        entities: msg.entities,
-        verdict: { state: verdict.toUpperCase(), gates, tier },
-        evidenceCase: {
-          verdict: verdict.toLowerCase(),
-          grade: data.verdict?.grade ?? data.grade ?? '?',
-          gates_passed: gates.filter(g => g.passed).length,
-          gates_total: gates.length,
-          gate_summary: gateSummary,
-          gate_trace: gates,
-          control_ids: controlIds,
-          tier,
-          drift,
-          recall_count: data.recall_count ?? data.evidence?.length ?? 0,
-          source_traceability: data.source_traceability,
-        },
-      })
-    } catch (err) {
-      addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
-    } finally {
-      setEvidenceCaseLoading(null)
-    }
-  }, [messages, addMsg])
+    const controlId = msg.entities?.find(e => e.exists)?.id
+    piChat.send(`Run an evidence case for: ${userMsg.content}${controlId ? ` (control: ${controlId})` : ''}`, 'natural')
+    setEvidenceCaseLoading(null)
+  }, [messages, piChat])
 
   // ── Load lemma graph when switching to graph mode ──────────────────
 
@@ -704,7 +447,7 @@ export function ChatTab() {
             <span style={{ fontSize: 11, fontWeight: 900, color: EMBRY.white, letterSpacing: '0.05em' }}>SPARTA CHAT</span>
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
               {DATALAKES.map(dl => (
-                <button key={dl.id} data-qid={`chat:datalake:${dl.id}`} title={`Switch to ${dl.label} datalake`} onClick={() => setCurrentSystem(dl.id)} style={{
+                <button key={dl.id} data-qid={`chat:datalake:${dl.id}`} title={`Switch to ${dl.name} datalake`} onClick={() => setCurrentSystem(dl.id)} style={{
                   fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 4,
                   border: 'none', cursor: 'pointer',
                   backgroundColor: currentSystem === dl.id ? EMBRY.green : `${EMBRY.white}10`,

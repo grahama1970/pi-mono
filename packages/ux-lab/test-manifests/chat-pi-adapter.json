@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer - Pi Chat Adapter",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "sparta-chat",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='chat:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "chat-initial-state",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Chat tab initial state — starter questions visible, empty conversation"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='chat:input']",
+              "timeout_ms": 5000,
+              "description": "Wait for chat input to be ready"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:input']",
+              "description": "Focus chat input",
+              "assert_visible": "[data-qid='chat:input']",
+              "assert_min_size": {"selector": "[data-qid='chat:input']", "min_width": 44, "min_height": 24},
+              "assert_title": "[data-qid='chat:input']"
+            }
+          ]
+        },
+        {
+          "name": "send-sparta-query",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='chat:input']",
+              "value": "What SPARTA controls cover supply chain attacks?",
+              "description": "Type a SPARTA domain question into chat input"
+            },
+            {
+              "action": "screenshot",
+              "description": "Chat input with query typed, send button should be active"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:send']",
+              "description": "Click send button to submit query to Pi",
+              "screenshot_after": true,
+              "assert_visible": "[data-qid='chat:send']",
+              "assert_min_size": {"selector": "[data-qid='chat:send']", "min_width": 44, "min_height": 44},
+              "assert_title": "[data-qid='chat:send']"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='chat:send']",
+              "timeout_ms": 30000,
+              "description": "Wait for Pi response to stream back (up to 30s)"
+            },
+            {
+              "action": "screenshot",
+              "description": "Chat after Pi response — should show user bubble + system message with markdown, entity pills, skill badge"
+            }
+          ]
+        },
+        {
+          "name": "datalake-switcher",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='chat:datalake:f36']",
+              "description": "Click F-36 datalake button",
+              "assert_visible": "[data-qid='chat:datalake:f36']",
+              "assert_title": "[data-qid='chat:datalake:f36']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:datalake:cmmc']",
+              "description": "Click CMMC datalake button",
+              "screenshot_after": true,
+              "assert_visible": "[data-qid='chat:datalake:cmmc']",
+              "assert_title": "[data-qid='chat:datalake:cmmc']"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
