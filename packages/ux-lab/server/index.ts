@@ -14,6 +14,8 @@
 
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { execFile, exec } from 'child_process'
@@ -27,8 +29,42 @@ import { promisify } from 'util'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const app = express()
-app.use(cors({ origin: /http:\/\/localhost:\d+/ }))
+
+// CORS: allow localhost always, allow any origin for key-authenticated requests
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow no-origin (server-to-server, curl) and localhost
+    if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
+      callback(null, true)
+    } else {
+      // Allow external origins — auth middleware handles access control
+      callback(null, true)
+    }
+  },
+  credentials: true,
+}))
+app.use(cookieParser())
 app.use(express.json())
+
+// Auth: localhost bypasses, external requires access key
+app.use(authMiddleware)
+
+// Key management endpoints (localhost-only, handled by authMiddleware passthrough)
+app.post('/api/auth/generate-key', (req, res) => {
+  const hours = Number(req.body?.hours) || 24
+  const label = req.body?.label || 'client'
+  const key = generateKey(hours, label)
+  res.json({ ...key, message: `Key valid for ${hours}h. Share URL: http://<your-ip>:3001/?key=${key.key}#sparta-explorer` })
+})
+
+app.get('/api/auth/keys', (_req, res) => {
+  res.json({ keys: listKeys() })
+})
+
+app.post('/api/auth/revoke-all', (_req, res) => {
+  const count = revokeAll()
+  res.json({ revoked: count })
+})
 
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
