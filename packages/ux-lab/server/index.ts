@@ -53,8 +53,13 @@ app.use(authMiddleware)
 app.post('/api/auth/generate-key', (req, res) => {
   const hours = Number(req.body?.hours) || 24
   const label = req.body?.label || 'client'
-  const key = generateKey(hours, label)
-  res.json({ ...key, message: `Key valid for ${hours}h. Share URL: http://<your-ip>:3001/?key=${key.key}#sparta-explorer` })
+  const project = req.body?.project as string | undefined  // e.g. 'sparta-explorer'
+  const key = generateKey(hours, label, project)
+  const tsHost = process.env.TAILSCALE_HOSTNAME || 'graham-ms-7c60.tail750d5.ts.net'
+  const hash = project ? `#${project}` : '#sparta-explorer'
+  const tsUrl = `https://${tsHost}/?key=${key.key}${hash}`
+  const directUrl = `http://100.102.12.64:3001/?key=${key.key}${hash}`
+  res.json({ ...key, share_url: tsUrl, direct_url: directUrl, message: `Key valid for ${hours}h${project ? ` (${project} only)` : ' (all projects)'}` })
 })
 
 app.get('/api/auth/keys', (_req, res) => {
@@ -3984,7 +3989,7 @@ try {
 const distPath = resolve(__dirname, '../dist')
 if (existsSync(distPath)) {
   app.use(express.static(distPath))
-  app.get('*', (_req, res) => {
+  app.get('{*path}', (_req, res) => {
     res.sendFile(resolve(distPath, 'index.html'))
   })
   console.log(`  Serving production build from ${distPath}`)

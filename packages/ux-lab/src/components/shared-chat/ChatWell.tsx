@@ -41,6 +41,8 @@ export interface ChatWellProps {
   skills?: Skill[]
   /** Entity click handler — clicking AC-17, CWE-79, /assess triggers this */
   onEntityClick?: (entity: string, type: string) => void
+  /** Starter questions from sparta_qra — replaces hardcoded defaults when provided */
+  starterQuestions?: string[]
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -145,13 +147,14 @@ function MessageItem({
       {msg.entities && msg.entities.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
           {msg.entities.map((e, i) => (
-            <span key={i} style={{
+            <button key={i} data-qid={`chat:entity:${e.id}`} data-qs-action={`navigate-entity-${e.id}`} tabIndex={0} onClick={() => onEntityClick?.(e.id, e.exists ? 'control' : 'cwe')} style={{
               ...fwBadge(e.exists ? 'SPARTA' : 'CWE'),
               opacity: e.exists ? 1 : 0.5,
               cursor: 'pointer',
-            }} title={`${e.id} — ${e.exists ? 'found' : 'not found'}`}>
+              minHeight: 28, minWidth: 44,
+            }} title={`${e.id} — ${e.exists ? 'found in corpus' : 'not found'}`}>
               {e.label}
-            </span>
+            </button>
           ))}
         </div>
       )}
@@ -168,11 +171,11 @@ function MessageItem({
       {/* Run Evidence Case button */}
       {onRunEvidenceCase && msg.entities && msg.entities.some(e => e.exists) && !msg.verdict && (
         <button
-          data-qid={`chat:evidence-case:${msg.id}`} title="Run evidence case for this message" onClick={() => onRunEvidenceCase(msg)}
+          data-qid={`chat:evidence-case:${msg.id}`} data-qs-action="run-evidence-case" title="Run evidence case for this message" onClick={() => onRunEvidenceCase(msg)}
           disabled={evidenceCaseLoading === msg.id}
           style={{
             marginTop: 6, fontSize: 12, fontWeight: 700,
-            padding: '4px 12px', borderRadius: 12,
+            padding: '10px 16px', borderRadius: 12, minHeight: 44,
             border: `1px solid ${EMBRY.accent}66`,
             backgroundColor: evidenceCaseLoading === msg.id ? `${EMBRY.accent}08` : `${EMBRY.accent}18`,
             color: EMBRY.accent,
@@ -241,7 +244,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [showPalette, setShowPalette] = useState(false)
   const [skillFilter, setSkillFilter] = useState('')
@@ -300,19 +303,19 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
         {messages.length === 0 && (
           <div style={{ padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
             <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Ask a question</div>
-            {[
+            {(starterQuestions ?? [
               'Show me the F-36 threat matrix',
               'What SPARTA controls cover supply chain attacks?',
               'Which controls have no evidence cases?',
               'Run an evidence case for firmware tampering on avionics',
               'What is our CMMC Level 2 compliance posture?',
               'Show controls related to CWE-287 authentication bypass',
-            ].map((q) => (
-              <button key={q} onClick={() => onSend?.(q, 'natural')} style={{
+            ]).map((q, i) => (
+              <button key={q} data-qid={`chat:starter:${i}`} data-qs-action="send-starter-question" title={q} onClick={() => onSend?.(q, 'natural')} style={{
                 background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`,
                 borderRadius: 8, padding: '10px 16px', cursor: 'pointer',
                 color: EMBRY.dim, fontSize: 12, textAlign: 'left', width: '100%',
-                transition: 'all 0.15s',
+                minHeight: 44, transition: 'all 0.15s',
               }} onMouseEnter={e => { e.currentTarget.style.borderColor = EMBRY.accent; e.currentTarget.style.color = EMBRY.white }}
                  onMouseLeave={e => { e.currentTarget.style.borderColor = `${EMBRY.accent}22`; e.currentTarget.style.color = EMBRY.dim }}>
                 {q}

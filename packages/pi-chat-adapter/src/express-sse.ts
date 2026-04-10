@@ -30,6 +30,64 @@ export function createPiChatRouter(opts: PiChatRouterOptions = {}): Router {
 		}
 	}
 
+	// Starter questions — curated QRAs from the corpus for empty-state chat
+	router.get("/starters", async (req: Request, res: Response) => {
+		try {
+			const datalake = (req.query.datalake as string) || "sparta";
+			// Diverse starter topics — one per tactical domain
+			const topics = [
+				"supply chain attack countermeasures",
+				"authentication bypass space systems",
+				"firmware tampering avionics controls",
+				"jamming satellite communications",
+				"encryption key management spacecraft",
+				"insider threat ground station",
+			];
+			// Pick 5 random topics for variety
+			const selected = topics.sort(() => Math.random() - 0.5).slice(0, 5);
+
+			const starters: string[] = [];
+			for (const topic of selected) {
+				try {
+					const resp = await fetch("http://localhost/recall", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						// @ts-expect-error -- Node fetch supports unix socket via dispatcher
+						dispatcher: new (await import("undici")).Agent({
+							connect: { socketPath: "/run/user/1000/embry/memory.sock" },
+						}),
+						body: JSON.stringify({
+							q: topic,
+							k: 1,
+							collections: ["sparta_qra"],
+						}),
+					});
+					const data = (await resp.json()) as {
+						items?: Array<{ question?: string }>;
+					};
+					if (data.items?.[0]?.question) {
+						starters.push(data.items[0].question);
+					}
+				} catch {
+					/* skip failed recall */
+				}
+			}
+
+			// Fallback to hardcoded if recall is down
+			if (starters.length === 0) {
+				starters.push(
+					"What SPARTA controls cover supply chain attacks?",
+					"Show me the F-36 threat matrix",
+					"Which controls have no evidence cases?",
+				);
+			}
+
+			res.json({ starters, datalake });
+		} catch (err) {
+			res.status(500).json({ error: String(err) });
+		}
+	});
+
 	// Health check
 	router.get("/health", async (_req: Request, res: Response) => {
 		try {

@@ -397,6 +397,15 @@ export function ChatTab() {
 
   // ── Resizable pane ──────────────────────────────────────────────────
 
+  // Fetch starter questions from sparta_qra corpus
+  const [starterQuestions, setStarterQuestions] = useState<string[] | undefined>()
+  useEffect(() => {
+    fetch(`${API}/starters?datalake=${currentSystem}`)
+      .then(r => r.json())
+      .then(data => { if (data.starters?.length) setStarterQuestions(data.starters) })
+      .catch(() => { /* fallback to hardcoded defaults in ChatWell */ })
+  }, [currentSystem])
+
   const [chatWidth, setChatWidth] = useState(450)
   const dragging = useRef(false)
   const dragStartX = useRef(0)
@@ -473,6 +482,7 @@ export function ChatTab() {
               evidenceCaseLoading={evidenceCaseLoading}
               onNavigateMatrix={useCallback(() => setVizMode('matrix'), [])}
               skills={skills}
+              starterQuestions={starterQuestions}
               onEntityClick={useCallback((entity: string, type: string) => {
                 if (type === 'skill') {
                   // Populate input with skill
