@@ -94,11 +94,9 @@ def monitor_channels(max_new: int = 5):
 
         # 7. Distill new MD files to QRA with Federated Taxonomy enrichment
         # We use the improved doc2qra with --directory and --collection flags
-        distill_env = {
-            "CHUTES_TEXT_MODEL": "openai/deepseek-ai/DeepSeek-V3"
-        }
+        # scillm proxy handles model routing - just use model="text"
         distill_cmd = f"./run.sh --directory {channel_md_dir} --scope {KNOWLEDGE_SCOPE} --context '{KNOWLEDGE_CONTEXT}' --tags 'youtube,{name}' --collection operational"
-        res = run_cmd(distill_cmd, cwd=BASE_DIR / ".pi/skills/doc2qra", env=distill_env)
+        res = run_cmd(distill_cmd, cwd=BASE_DIR / ".pi/skills/doc2qra")
         print(res.stdout)
         if res.stderr:
             print(f"Distill errors: {res.stderr}")
