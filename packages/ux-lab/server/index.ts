@@ -1069,6 +1069,87 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
+// ── Batch Orchestrator State ───────────────────────────────────────────────
+// Reads state files from known orchestrators (create-qras, etc.) for dashboard
+// display. Enables "why did my batch fail" debugging and resume guidance.
+
+const ORCHESTRATOR_STATE_FILES: Record<string, { path: string; resumeCmd: string }> = {
+  'create-qras': {
+    path: `${process.env.HOME}/.claude/skills/create-qras/.evidence_case_batch_state.json`,
+    resumeCmd: 'python ~/.claude/skills/create-qras/batch_evidence_cases.py --resume',
+  },
+  'create-qras-amend': {
+    path: `${process.env.HOME}/.claude/skills/create-qras/.amend_checkpoint.json`,
+    resumeCmd: 'python ~/.claude/skills/create-qras/amend_and_export.py --resume',
+  },
+}
+
+app.get('/api/orchestrators', async (_req, res) => {
+  const orchestrators: Array<{
+    name: string
+    state: Record<string, unknown> | null
+    stateFile: string
+    resumeCmd: string
+    error?: string
+    lastModified?: string
+  }> = []
+
+  for (const [name, config] of Object.entries(ORCHESTRATOR_STATE_FILES)) {
+    try {
+      const fileStat = await stat(config.path)
+      const content = await readFile(config.path, 'utf-8')
+      const state = JSON.parse(content)
+      orchestrators.push({
+        name,
+        state,
+        stateFile: config.path,
+        resumeCmd: config.resumeCmd,
+        lastModified: fileStat.mtime.toISOString(),
+      })
+    } catch (e: any) {
+      orchestrators.push({
+        name,
+        state: null,
+        stateFile: config.path,
+        resumeCmd: config.resumeCmd,
+        error: e.code === 'ENOENT' ? 'No state file (never run or completed)' : e.message,
+      })
+    }
+  }
+
+  res.json({ orchestrators })
+})
+
+// Get LLM calls for a specific batch_id (links orchestrator to scillm logs)
+app.get('/api/orchestrators/:name/calls', async (req, res) => {
+  const { name } = req.params
+  const { batch_id } = req.query
+
+  if (!batch_id) {
+    return res.status(400).json({ error: 'batch_id query param required' })
+  }
+
+  try {
+    const result = await proxyPost('/query', {
+      collection: 'llm_call_log',
+      aql: `FOR doc IN llm_call_log
+            FILTER doc.metadata.batch_id == @batch_id
+            SORT doc.ts DESC
+            LIMIT 100
+            RETURN doc`,
+      bindVars: { batch_id },
+    })
+    res.json({
+      orchestrator: name,
+      batch_id,
+      calls: result?.documents ?? [],
+      total: result?.count ?? 0,
+    })
+  } catch (e) {
+    res.status(502).json({ error: 'Query failed', detail: String(e) })
+  }
+})
+
 // ── On-demand edge rationale (Sensai Cascade T2) ───────────────────────────
 // Generates LLM rationale for relationship edges using stored gate_evidence.
 // Cache-first: returns existing llm_rationale if present on the edge.

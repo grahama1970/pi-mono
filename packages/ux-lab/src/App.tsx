@@ -69,6 +69,7 @@ const ArchitectureView = React.lazy(() => import('./components/architecture/Arch
 const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })).catch(() => ({ default: () => React.createElement('div', { style: { padding: 20, color: '#f44' } }, 'Embry Terminal failed to load — check console') })));
 const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })));
 const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaView').then(m => ({ default: m.Lean4LemmaView })));
+const ScillmMonitor = React.lazy(() => import('./components/scillm/ScillmDashboard').then(m => ({ default: m.ScillmDashboard })));
 const ComponentGalleryView = React.lazy(() => import('./components/gallery/ComponentGallery').then(m => ({ default: m.ComponentGallery })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
@@ -232,7 +233,8 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {projectId === 'embry-terminal' && <EmbryTerminal />}
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer'].includes(projectId) && (
+          {projectId === 'scillm' && <ScillmMonitor />}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'lean4-lemma', 'scillm'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -907,6 +909,7 @@ const ProjectSidebar = ({
     { id: 'architecture', title: 'Architecture', subtitle: 'Visual collaboration diagrams', date: '2026-03-25', type: 'desktop' as const },
     { id: 'embry-terminal', title: 'Embry Terminal', subtitle: 'Agent control surface (Claude/Pi/Codex)', date: '2026-03-31', type: 'desktop' as const },
     { id: 'datalake-explorer', title: 'Datalake Explorer', subtitle: 'PDF extraction QA', date: '2026-03-31', type: 'desktop' as const, thumbnail: '' },
+    { id: 'scillm', title: 'scillm Monitor', subtitle: 'LLM proxy batch dashboard', date: '2026-04-13', type: 'desktop' as const },
   ];
 
   const filteredProjects = searchQuery
@@ -1545,11 +1548,12 @@ export default function App() {
     if (!raw) return { project: 'music-lab-pipeline', view: 'design-board' as View };
     const [first, ...rest] = raw.split('/');
     // Deep links to projects should default to 'final-site' (interactive implementation)
-    // instead of 'components' or 'design-board'
-    return { 
-      project: first, 
-      view: 'final-site' as View, 
-      subpath: rest.join('/') 
+    // except for projects that don't have a final-site view
+    const componentsOnlyProjects: string[] = [];
+    return {
+      project: first,
+      view: componentsOnlyProjects.includes(first) ? 'components' as View : 'final-site' as View,
+      subpath: rest.join('/')
     };
   }, []);
 
@@ -1647,6 +1651,12 @@ export default function App() {
                     <div className="flex-1 overflow-auto">
                       <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
                         <PromptLab />
+                      </React.Suspense>
+                    </div>
+                  ) : activeProjectId === 'scillm' ? (
+                    <div className="flex-1 overflow-auto p-4">
+                      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_SCILLM...</div>}>
+                        <ScillmMonitor />
                       </React.Suspense>
                     </div>
                   ) : (

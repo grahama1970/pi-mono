@@ -23,6 +23,8 @@ import { useSpartaData } from '../../hooks/useSpartaData'
 import { BinaryGraph } from '../binary-explorer/BinaryGraph'
 import { useBinaryData } from '../../hooks/useBinaryData'
 import EntitySpanViewer from '../shared-chat/EntitySpanViewer'
+import { ScillmDashboard, BatchProgressCard, SkillUsageTable, LatencyTable, RealtimeLogTable } from '../scillm'
+import { sampleLogs, sampleBatches, sampleSkills, sampleLatency } from '../scillm/sampleData'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
 import {
   sampleTactics, sampleTechniques, sampleMessages, emptyMessages,
@@ -724,6 +726,49 @@ const registry: GalleryEntry[] = [
         aerospace: 'What challenges does buffer overflow pose for Mission-Operated Ground Systems?',
       }
       return <EntitySpanViewer query={queries[v] || queries.nonsensical} />
+    },
+  },
+  /* ─── scillm Dashboard ─── */
+  {
+    id: 'scillm-dashboard',
+    name: 'ScillmDashboard',
+    folder: ['scillm', 'Composed'],
+    variations: ['live', 'mock'],
+    render: (v) => v === 'live' ? <ScillmDashboard /> : (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
+        <div style={{ display: 'flex', gap: 16 }}>
+          {sampleBatches.slice(0, 2).map((b) => <BatchProgressCard key={b.batch_id} batch={b} />)}
+        </div>
+        <SkillUsageTable skills={sampleSkills} />
+        <LatencyTable latency={sampleLatency} />
+        <RealtimeLogTable logs={sampleLogs} />
+      </div>
+    ),
+  },
+  {
+    id: 'scillm-batch-card',
+    name: 'BatchProgressCard',
+    folder: ['scillm', 'Components'],
+    variations: ['in-progress', 'complete', 'with-errors'],
+    render: (v) => {
+      const batch = v === 'complete'
+        ? { ...sampleBatches[1], completed: 156, errors: 0 }
+        : v === 'with-errors'
+        ? { ...sampleBatches[0], errors: 45 }
+        : sampleBatches[0]
+      return <BatchProgressCard batch={batch} />
+    },
+  },
+  {
+    id: 'scillm-log-table',
+    name: 'RealtimeLogTable',
+    folder: ['scillm', 'Components'],
+    variations: ['default', 'with-errors'],
+    render: (v) => {
+      const logs = v === 'with-errors'
+        ? sampleLogs.filter((l) => l.status === 'error').concat(sampleLogs)
+        : sampleLogs
+      return <RealtimeLogTable logs={logs} />
     },
   },
 ]

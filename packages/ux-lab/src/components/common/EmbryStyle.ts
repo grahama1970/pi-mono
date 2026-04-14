@@ -97,19 +97,17 @@ export function graphNodeColor(type: string): string {
 	return (EMBRY.graph as Record<string, string>)[type] ?? EMBRY.dim;
 }
 
-/** Card wrapper style */
+/** Card wrapper style (NVIS: sharp tactical edges) */
 export const card = {
 	backgroundColor: EMBRY.bgCard,
 	border: `1px solid ${EMBRY.border}`,
-	borderRadius: 12,
 	padding: 20,
 } as const;
 
-/** Panel wrapper (darker than card) */
+/** Panel wrapper (darker than card, NVIS: sharp edges) */
 export const panel = {
 	backgroundColor: EMBRY.bgPanel,
 	border: `1px solid ${EMBRY.border}`,
-	borderRadius: 12,
 	padding: 16,
 } as const;
 
