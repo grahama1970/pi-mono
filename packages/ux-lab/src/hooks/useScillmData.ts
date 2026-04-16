@@ -67,7 +67,7 @@ export interface LatencyStats {
 	count: number;
 }
 
-interface ListResponse {
+interface _ListResponse {
 	documents: LogEntry[];
 	total?: number;
 }

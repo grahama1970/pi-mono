@@ -154,8 +154,8 @@ const Mockups = ({ projectId }: { projectId: string }) => {
       <div className="p-4 border-b border-white/10 flex items-center justify-between bg-surface-low">
         <h2 className="text-xs font-mono text-slate-400 uppercase tracking-widest">Project Mockups: {projectId}</h2>
         <div className="flex gap-2">
-          <button data-qid="mockups:button:refresh" title="Refresh mockup assets" className="p-2 hover:bg-white/5 rounded text-slate-400"><RefreshCcw className="w-4 h-4" /></button>
-          <button data-qid="mockups:button:download" title="Download mockup assets" className="p-2 hover:bg-white/5 rounded text-slate-400"><Download className="w-4 h-4" /></button>
+          <button data-qid="mockups:button:refresh" data-qs-action="MOCKUPS_REFRESH" title="Refresh mockup assets" className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white/5 rounded text-slate-400"><RefreshCcw className="w-4 h-4" /></button>
+          <button data-qid="mockups:button:download" data-qs-action="MOCKUPS_DOWNLOAD" title="Download mockup assets" className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white/5 rounded text-slate-400"><Download className="w-4 h-4" /></button>
         </div>
       </div>
       
@@ -300,7 +300,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
     return (
       <div className="w-full h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 bg-surface-lowest border-b border-white/10">
-          <button data-qid="design-board:button:back-html" title="Back to design board gallery" onClick={() => setActiveHtml(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+          <button data-qid="design-board:button:back-html" data-qs-action="DESIGN_BOARD_BACK" title="Back to design board gallery" onClick={() => setActiveHtml(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1 min-h-[44px] px-2">
             <ChevronLeft className="w-3 h-3" /> BACK
           </button>
           <span className="text-[10px] font-mono text-tactical-primary">{activeHtml.split('/').pop()}</span>
@@ -314,7 +314,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
     return (
       <div className="w-full h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 bg-surface-lowest border-b border-white/10">
-          <button data-qid="design-board:button:back-image" title="Back to design board gallery" onClick={() => setSelectedImage(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+          <button data-qid="design-board:button:back-image" data-qs-action="DESIGN_BOARD_BACK" title="Back to design board gallery" onClick={() => setSelectedImage(null)} className="text-[10px] font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-1 min-h-[44px] px-2">
             <ChevronLeft className="w-3 h-3" /> BACK
           </button>
           <span className="text-[10px] font-mono text-tactical-primary">{selectedImage.split('/').pop()}</span>
@@ -334,7 +334,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Design Rounds</h3>
           <div className="grid grid-cols-2 gap-4">
             {data!.rounds.map(r => (
-              <button key={r.src} data-qid="design-board:button:open-round" title={`Open design round: ${r.name}`} onClick={() => setSelectedImage(r.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
+              <button key={r.src} data-qid="design-board:button:open-round" data-qs-action="DESIGN_BOARD_OPEN_ROUND" title={`Open design round: ${r.name}`} onClick={() => setSelectedImage(r.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left min-h-[44px]">
                 <img src={r.src} alt={r.name} className="w-full object-cover" />
                 <div className="px-3 py-2 text-[10px] font-mono text-slate-400 group-hover:text-tactical-primary transition-colors truncate">{r.name}</div>
               </button>
@@ -349,7 +349,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Design Board HTML</h3>
           <div className="space-y-2">
             {data!.htmlBoards.map(h => (
-              <button key={h.src} data-qid="design-board:button:open-html" title={`Open HTML board: ${h.name}`} onClick={() => setActiveHtml(h.src)} className="w-full flex items-center gap-3 px-3 py-2.5 bg-surface-lowest border border-white/5 hover:border-tactical-primary/30 transition-all group text-left">
+              <button key={h.src} data-qid="design-board:button:open-html" data-qs-action="DESIGN_BOARD_OPEN_HTML" title={`Open HTML board: ${h.name}`} onClick={() => setActiveHtml(h.src)} className="w-full flex items-center gap-3 px-3 py-2.5 min-h-[44px] bg-surface-lowest border border-white/5 hover:border-tactical-primary/30 transition-all group text-left">
                 <Code2 className="w-4 h-4 text-slate-500 group-hover:text-tactical-primary flex-shrink-0" />
                 <span className="text-[11px] font-mono text-slate-300 group-hover:text-white truncate">{h.name}</span>
                 <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-tactical-primary ml-auto flex-shrink-0" />
@@ -365,7 +365,7 @@ const DesignBoard = ({ projectId }: { projectId: string }) => {
           <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Stitch Mockups</h3>
           <div className="grid grid-cols-3 gap-3">
             {data!.stitchImages.map(s => (
-              <button key={s.src} data-qid="design-board:button:open-stitch" title={`Open stitch mockup: ${s.name}`} onClick={() => setSelectedImage(s.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left">
+              <button key={s.src} data-qid="design-board:button:open-stitch" data-qs-action="DESIGN_BOARD_OPEN_STITCH" title={`Open stitch mockup: ${s.name}`} onClick={() => setSelectedImage(s.src)} className="group border border-white/5 hover:border-tactical-primary/30 transition-all overflow-hidden bg-surface-lowest text-left min-h-[44px]">
                 <img src={s.src} alt={s.name} className="w-full aspect-video object-cover" />
                 <div className="px-2 py-1.5 text-[9px] font-mono text-slate-500 group-hover:text-tactical-primary truncate">{s.name}</div>
               </button>
@@ -429,14 +429,15 @@ const Reviews = ({ projectId }: { projectId: string }) => {
         <div className="flex gap-2">
           <button
             data-qid="reviews:button:rerun-vlm"
+            data-qs-action="REVIEWS_RERUN_VLM"
             title="Rerun VLM visual diff analysis"
             onClick={runComparison}
             disabled={isComparing}
-            className="px-3 py-1 bg-surface-high border border-white/10 text-[10px] font-mono hover:bg-white/5 transition-colors disabled:opacity-50"
+            className="px-3 py-1 min-h-[44px] bg-surface-high border border-white/10 text-[10px] font-mono hover:bg-white/5 transition-colors disabled:opacity-50"
           >
             {isComparing ? 'ANALYZING...' : 'RERUN_VLM_DIFF'}
           </button>
-          <button data-qid="reviews:button:approve" title="Approve visual diff result" className="px-3 py-1 bg-tactical-primary text-white text-[10px] font-mono hover:opacity-90 transition-all">APPROVE</button>
+          <button data-qid="reviews:button:approve" data-qs-action="REVIEWS_APPROVE" title="Approve visual diff result" className="px-3 py-1 min-h-[44px] bg-tactical-primary text-white text-[10px] font-mono hover:opacity-90 transition-all">APPROVE</button>
         </div>
       </div>
 
@@ -671,9 +672,10 @@ const Components = ({
           <div className="flex items-center gap-4">
             <button
               data-qid="components:button:back"
+              data-qs-action="COMPONENTS_BACK"
               title="Back to component library"
               onClick={() => setSelectedComponent(null)}
-              className="p-2 hover:bg-white/5 rounded-full transition-colors text-slate-400 hover:text-white"
+              className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white/5 rounded-full transition-colors text-slate-400 hover:text-white"
             >
               <ChevronRight className="w-5 h-5 rotate-180" />
             </button>
@@ -695,10 +697,11 @@ const Components = ({
                 <button
                   key={v}
                   data-qid={`components:button:viewport-${v}`}
+                  data-qs-action={`COMPONENTS_VIEWPORT_${v.toUpperCase()}`}
                   title={`Switch to ${v} preview`}
                   onClick={() => setPreviewViewport(v)}
                   className={cn(
-                    "px-3 py-1 text-[10px] font-mono uppercase transition-all rounded",
+                    "px-3 py-1 min-h-[44px] text-[10px] font-mono uppercase transition-all rounded",
                     previewViewport === v ? "bg-tactical-primary text-white" : "text-slate-500 hover:text-slate-300"
                   )}
                 >
@@ -707,10 +710,10 @@ const Components = ({
               ))}
             </div>
             <div className="flex gap-3">
-              <button data-qid="components:button:share" title="Share component link" className="flex items-center gap-2 px-4 py-2 bg-surface-high border border-white/10 text-[10px] font-mono text-white hover:bg-white/5 transition-all">
+              <button data-qid="components:button:share" data-qs-action="COMPONENTS_SHARE" title="Share component link" className="flex items-center gap-2 px-4 py-2 min-h-[44px] bg-surface-high border border-white/10 text-[10px] font-mono text-white hover:bg-white/5 transition-all">
                 <Share2 className="w-3 h-3" /> SHARE_COMPONENT
               </button>
-              <button data-qid="components:button:deploy" title="Deploy component to internal registry" className="flex items-center gap-2 px-4 py-2 bg-tactical-primary text-white text-[10px] font-mono font-bold hover:opacity-90 transition-all">
+              <button data-qid="components:button:deploy" data-qs-action="COMPONENTS_DEPLOY" title="Deploy component to internal registry" className="flex items-center gap-2 px-4 py-2 min-h-[44px] bg-tactical-primary text-white text-[10px] font-mono font-bold hover:opacity-90 transition-all">
                 <Rocket className="w-3 h-3" /> DEPLOY_TO_REGISTRY
               </button>
             </div>
@@ -751,12 +754,13 @@ const Components = ({
               <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Source Code</span>
               <button
                 data-qid="components:button:copy-code"
+                data-qs-action="COMPONENTS_COPY_CODE"
                 title="Copy component source code to clipboard"
                 onClick={() => {
                   navigator.clipboard.writeText(selectedComponent.code);
                   setToast({ message: 'CODE_COPIED_TO_CLIPBOARD', type: 'success' });
                 }}
-                className="p-1.5 hover:bg-white/5 rounded transition-colors text-tactical-primary flex items-center gap-2 text-[10px] font-mono"
+                className="p-2 min-w-[44px] min-h-[44px] hover:bg-white/5 rounded transition-colors text-tactical-primary flex items-center gap-2 text-[10px] font-mono"
               >
                 <Database className="w-4 h-4" /> COPY_CODE
               </button>
@@ -926,13 +930,14 @@ const ProjectSidebar = ({
 
   const ProjectItem = ({ project }: { project: Project }) => (
     <div
-      data-qid="sidebar:item:project"
+      data-qid={`sidebar:item:project:${project.id}`}
+      data-qs-action="SIDEBAR_SELECT_PROJECT"
       title={`Open project: ${project.title}`}
       onClick={() => onProjectSelect(project.id)}
       onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, projectId: project.id }); }}
       className={cn(
-        "flex cursor-pointer transition-colors group relative",
-        isCollapsed ? "items-center justify-center p-1.5" : "items-start gap-3 p-2.5 px-3",
+        "flex cursor-pointer transition-colors group relative min-h-[44px]",
+        isCollapsed ? "items-center justify-center p-1.5 min-w-[44px]" : "items-start gap-3 p-2.5 px-3",
         "hover:bg-white/5",
         activeProjectId === project.id && "bg-tactical-primary/10 border-r-2 border-tactical-primary"
       )}
@@ -989,9 +994,10 @@ const ProjectSidebar = ({
           )}
           <button
             data-qid="sidebar:button:toggle"
+            data-qs-action="SIDEBAR_TOGGLE"
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             onClick={onToggle}
-            className="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-500 hover:text-white"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white/5 rounded transition-colors text-slate-500 hover:text-white"
           >
             {isCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
@@ -1003,10 +1009,11 @@ const ProjectSidebar = ({
             <div className="flex bg-surface-lowest p-1 rounded-lg mb-4">
               <button
                 data-qid="sidebar:tab:my-projects"
+                data-qs-action="SIDEBAR_TAB_MY_PROJECTS"
                 title="View my projects"
                 onClick={() => setActiveTab('my')}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-1.5 text-[10px] font-headline font-bold rounded-md transition-all",
+                  "flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] text-[10px] font-headline font-bold rounded-md transition-all",
                   activeTab === 'my' ? "bg-surface-high text-white shadow-sm" : "text-slate-500 hover:text-slate-300"
                 )}
               >
@@ -1014,10 +1021,11 @@ const ProjectSidebar = ({
               </button>
               <button
                 data-qid="sidebar:tab:shared"
+                data-qs-action="SIDEBAR_TAB_SHARED"
                 title="View shared projects"
                 onClick={() => setActiveTab('shared')}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-1.5 text-[10px] font-headline font-bold rounded-md transition-all",
+                  "flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] text-[10px] font-headline font-bold rounded-md transition-all",
                   activeTab === 'shared' ? "bg-surface-high text-white shadow-sm" : "text-slate-500 hover:text-slate-300"
                 )}
               >
@@ -1030,12 +1038,13 @@ const ProjectSidebar = ({
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500" />
               <input
                 data-qid="sidebar:input:search"
+                data-qs-action="SIDEBAR_SEARCH"
                 title="Search projects by name or description"
                 type="text"
                 placeholder="Search projects"
                 value={searchQuery}
                 onChange={(e) => setSidebarSearch(e.target.value)}
-                className="w-full bg-surface-lowest border border-white/5 rounded-lg py-2 pl-9 pr-4 text-[11px] font-mono text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-tactical-primary/30 transition-colors"
+                className="w-full min-h-[44px] bg-surface-lowest border border-white/5 rounded-lg py-3 pl-9 pr-4 text-[11px] font-mono text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-tactical-primary/30 transition-colors"
               />
             </div>
           </>
@@ -1051,10 +1060,11 @@ const ProjectSidebar = ({
       <div className={cn("px-3 py-2 border-t border-white/10", isCollapsed && "px-1")}>
         <button
           data-qid="sidebar:button:new-project"
+          data-qs-action="SIDEBAR_NEW_PROJECT"
           title="Create a new project"
           className={cn(
-            "w-full flex items-center justify-center gap-1.5 py-1.5 border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
-            isCollapsed && "p-1.5"
+            "w-full flex items-center justify-center gap-1.5 py-3 min-h-[44px] border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
+            isCollapsed && "p-2.5 min-w-[44px]"
           )}>
           <Plus className="w-3 h-3" /> {!isCollapsed && "New Project"}
         </button>
@@ -1104,10 +1114,11 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
             <button
               key={label}
               data-qid={`header:tab:${id}`}
+              data-qs-action={`HEADER_TAB_${id.toUpperCase().replace('-', '_')}`}
               title={`Switch to ${label} view`}
               onClick={() => onViewChange(id)}
               className={cn(
-                "h-full flex flex-col items-center justify-center px-4 font-headline font-medium uppercase text-[10px] tracking-[0.2em] transition-all relative group",
+                "h-full min-h-[44px] flex flex-col items-center justify-center px-4 font-headline font-medium uppercase text-[10px] tracking-[0.2em] transition-all relative group",
                 isActive ? "text-tactical-primary" : "text-slate-600 hover:text-slate-300"
               )}
             >
@@ -1149,12 +1160,12 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
           </span>
         </div>
         <div className="w-px h-6 bg-tactical-primary/20 mx-2" />
-        <button data-qid="header:button:history" title="View project history" className="text-slate-500 hover:text-tactical-primary transition-all"><History className="w-4 h-4" /></button>
-        <button data-qid="header:button:notifications" title="View notifications" className="text-slate-500 hover:text-tactical-primary transition-all relative">
+        <button data-qid="header:button:history" data-qs-action="HEADER_HISTORY" title="View project history" className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-tactical-primary transition-all"><History className="w-4 h-4" /></button>
+        <button data-qid="header:button:notifications" data-qs-action="HEADER_NOTIFICATIONS" title="View notifications" className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-tactical-primary transition-all relative">
           <Bell className="w-4 h-4" />
           <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-tactical-danger rounded-full" />
         </button>
-        <button data-qid="header:button:deploy" title="Deploy project to production" className="bg-tactical-primary text-black px-4 py-1.5 text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 hover:bg-tactical-success transition-all">
+        <button data-qid="header:button:deploy" data-qs-action="HEADER_DEPLOY" title="Deploy project to production" className="bg-tactical-primary text-black px-4 py-2.5 min-h-[44px] text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 hover:bg-tactical-success transition-all">
           <Rocket className="w-3.5 h-3.5" />
           Deploy
         </button>
@@ -1262,9 +1273,10 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
           <div className="flex items-center gap-2">
             <button
               data-qid="testing:button:import-manifest"
+              data-qs-action="TESTING_IMPORT_MANIFEST"
               title="Import test manifest from JSON"
               onClick={handleImportManifest}
-              className="p-1 hover:text-tactical-primary transition-colors"
+              className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:text-tactical-primary transition-colors"
             >
               <Upload className="w-3.5 h-3.5" />
             </button>
@@ -1315,9 +1327,10 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
           
           <button
             data-qid="testing:button:add-node"
+            data-qs-action="TESTING_ADD_NODE"
             title="Add a new test node to the manifest"
             onClick={handleAddNode}
-            className="w-full p-2 border border-dashed border-tactical-primary/20 text-slate-500 hover:text-tactical-primary hover:border-tactical-primary/40 transition-all flex items-center justify-center gap-2 mt-2"
+            className="w-full p-2 min-h-[44px] border border-dashed border-tactical-primary/20 text-slate-500 hover:text-tactical-primary hover:border-tactical-primary/40 transition-all flex items-center justify-center gap-2 mt-2"
           >
             <Plus className="w-3 h-3" /> Add Test Node
           </button>
@@ -1344,11 +1357,12 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
           </div>
           <button
             data-qid="testing:button:execute"
+            data-qs-action="TESTING_EXECUTE"
             title="Execute test manifest against current project"
             onClick={runTest}
             disabled={isRunning}
             className={cn(
-              "px-4 py-1.5 border border-tactical-primary text-tactical-primary hover:bg-tactical-primary hover:text-black transition-all font-bold uppercase flex items-center gap-2",
+              "px-4 py-1.5 min-h-[44px] border border-tactical-primary text-tactical-primary hover:bg-tactical-primary hover:text-black transition-all font-bold uppercase flex items-center gap-2",
               isRunning && "opacity-50 cursor-not-allowed"
             )}
           >
@@ -1471,10 +1485,10 @@ const TestingManifest = ({ activeProjectId }: { activeProjectId: string }) => {
                 LLM agent detected a visual variance of 8%. Automated threshold is 5%. Please verify if this change is intentional.
               </p>
               <div className="grid grid-cols-2 gap-2">
-                <button data-qid="testing:button:approve-result" title="Approve inconclusive test result as passing" className="py-2 bg-tactical-success/20 border border-tactical-success/30 text-tactical-success hover:bg-tactical-success hover:text-black transition-all font-bold uppercase text-[9px]">
+                <button data-qid="testing:button:approve-result" data-qs-action="TESTING_APPROVE_RESULT" title="Approve inconclusive test result as passing" className="py-2 min-h-[44px] bg-tactical-success/20 border border-tactical-success/30 text-tactical-success hover:bg-tactical-success hover:text-black transition-all font-bold uppercase text-[9px]">
                   APPROVE
                 </button>
-                <button data-qid="testing:button:reject-result" title="Reject inconclusive test result as failing" className="py-2 bg-tactical-danger/20 border border-tactical-danger/30 text-tactical-danger hover:bg-tactical-danger hover:text-black transition-all font-bold uppercase text-[9px]">
+                <button data-qid="testing:button:reject-result" data-qs-action="TESTING_REJECT_RESULT" title="Reject inconclusive test result as failing" className="py-2 min-h-[44px] bg-tactical-danger/20 border border-tactical-danger/30 text-tactical-danger hover:bg-tactical-danger hover:text-black transition-all font-bold uppercase text-[9px]">
                   REJECT
                 </button>
               </div>

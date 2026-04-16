@@ -49,6 +49,7 @@ export interface BinaryFeature {
 	extraction_tier: "T0" | "T1" | "T2";
 	confidence: number;
 	fields?: string[];
+	typed_fields?: Record<string, string>;
 	states?: string[];
 	source_pattern?: string;
 }
@@ -412,7 +413,9 @@ ${schemaDescriptions.map((s) => `- ${s.name}: fields=[${s.fields.join(", ")}] co
 		confidence: n.confidence,
 		description: n.description,
 		fields: n.fields,
-		typed_fields: n.typed_fields,
+		typed_fields: n.typed_fields
+			? Object.entries(n.typed_fields).map(([name, type]) => ({ name, type }))
+			: undefined,
 		states: n.states,
 		source_pattern: n.source_pattern,
 	}));

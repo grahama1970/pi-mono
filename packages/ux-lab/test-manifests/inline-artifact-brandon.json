@@ -1,0 +1,235 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer - Inline Artifacts",
+  "base_url": "http://localhost:3003",
+  "persona": "brandon-bailey",
+  "description": "CMMC/compliance-focused testing of inline artifact rendering in SpartaChat. Tests evidence case cards, figure artifacts, COTS compliance, and accessibility.",
+  "surfaces": [
+    {
+      "name": "sparta-explorer-chat",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='chat:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "chat-input-controls",
+          "description": "Core chat interaction elements",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Initial chat state"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:input']",
+              "description": "Focus chat input",
+              "assert_title": "[data-qid='chat:input']",
+              "assert_qs_action": "[data-qid='chat:input']",
+              "assert_min_size": {"selector": "[data-qid='chat:input']", "min_width": 44, "min_height": 44}
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='chat:input']",
+              "value": "What evidence supports SA-1?",
+              "description": "Type evidence case query"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:send']",
+              "description": "Send message to trigger evidence case",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='chat:send']",
+              "assert_qs_action": "[data-qid='chat:send']",
+              "assert_min_size": {"selector": "[data-qid='chat:send']", "min_width": 44, "min_height": 44}
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid^='chat:evidence-case:']",
+              "timeout_ms": 15000,
+              "description": "Wait for evidence case card to appear"
+            }
+          ]
+        },
+        {
+          "name": "evidence-case-card",
+          "description": "Inline evidence case rendering (CMMC compliance critical)",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Evidence case card rendered inline"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='chat:evidence-case:']",
+              "description": "Click evidence case to run full case",
+              "screenshot_after": true,
+              "assert_title": "[data-qid^='chat:evidence-case:']",
+              "assert_qs_action": "[data-qid^='chat:evidence-case:']"
+            }
+          ]
+        },
+        {
+          "name": "inline-artifact-controls",
+          "description": "InlineArtifact component controls",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid^='artifact:copy:']",
+              "timeout_ms": 5000,
+              "description": "Wait for artifact to render"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='artifact:copy:']",
+              "description": "Copy artifact content",
+              "screenshot_after": true,
+              "assert_title": "[data-qid^='artifact:copy:']",
+              "assert_qs_action": "[data-qid^='artifact:copy:']",
+              "assert_font_size": {"selector": "[data-qid^='artifact:copy:']", "min_size": 12}
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='artifact:expand:']",
+              "description": "Expand artifact to full panel",
+              "screenshot_after": true,
+              "assert_title": "[data-qid^='artifact:expand:']",
+              "assert_qs_action": "[data-qid^='artifact:expand:']"
+            }
+          ]
+        },
+        {
+          "name": "artifact-table-interactions",
+          "description": "React-table artifact interactions",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='artifact:table:filter']",
+              "value": "SA-1",
+              "description": "Filter artifact table by control ID",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='artifact:table:filter']",
+              "assert_qs_action": "[data-qid='artifact:table:filter']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='artifact:table:sort:']",
+              "description": "Sort table column",
+              "screenshot_after": true,
+              "assert_qs_action": "[data-qid^='artifact:table:sort:']"
+            }
+          ]
+        },
+        {
+          "name": "feedback-controls",
+          "description": "Message feedback for audit trail (CMMC AC-2)",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid^='chat:feedback-up:']",
+              "description": "Mark response as helpful (audit trail)",
+              "screenshot_after": true,
+              "assert_title": "[data-qid^='chat:feedback-up:']",
+              "assert_min_size": {"selector": "[data-qid^='chat:feedback-up:']", "min_width": 44, "min_height": 44}
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='chat:feedback-down:']",
+              "description": "Mark response as not helpful",
+              "assert_title": "[data-qid^='chat:feedback-down:']"
+            }
+          ]
+        },
+        {
+          "name": "keyboard-navigation",
+          "description": "Keyboard accessibility (Section 508 / WCAG 2.1)",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='chat:input']",
+              "description": "Focus input for keyboard nav"
+            },
+            {
+              "action": "tab",
+              "count": 5,
+              "description": "Tab through interactive elements",
+              "assert_focus_visible": "[data-qid='chat:send']"
+            },
+            {
+              "action": "key",
+              "key": "Enter",
+              "description": "Activate focused element with Enter"
+            },
+            {
+              "action": "key",
+              "key": "Escape",
+              "description": "Close any open panels"
+            }
+          ]
+        },
+        {
+          "name": "entity-navigation",
+          "description": "Control entity deep-linking",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid^='chat:entity:']",
+              "description": "Click control entity to navigate",
+              "screenshot_after": true,
+              "assert_qs_action": "[data-qid^='chat:entity:']"
+            }
+          ]
+        },
+        {
+          "name": "skill-palette",
+          "description": "Skill invocation palette",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='skill-palette:dropdown']",
+              "description": "Open skill palette",
+              "screenshot_after": true,
+              "assert_qs_action": "[data-qid='skill-palette:dropdown']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='skill-palette:skill:create-evidence-case:']",
+              "description": "Select create-evidence-case skill",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "reasoning-block",
+          "description": "Evidence reasoning disclosure",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='reasoning:level-toggle']",
+              "description": "Toggle reasoning evidence level",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='reasoning:level-toggle']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid^='reasoning:control:']",
+              "description": "Navigate to control from reasoning",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cots_assertions": {
+    "C01_font_size": "All text >= 12px (MIL-STD-1472H)",
+    "C02_touch_targets": "All interactive elements >= 44x44px (WCAG 2.1)",
+    "C03_contrast": "Color contrast >= 4.5:1 (WCAG 2.1 AA)",
+    "C06_focus_visible": "Focus indicators visible on tab navigation",
+    "C14_tooltips": "All interactive elements have title attributes"
+  },
+  "cmmc_relevance": {
+    "AC-2": "Feedback controls create audit trail",
+    "AU-2": "Evidence case card shows verification status",
+    "SI-4": "Inline artifacts display security posture data"
+  }
+}

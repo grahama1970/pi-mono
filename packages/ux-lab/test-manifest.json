@@ -978,16 +978,16 @@
         {
           "action": "assert",
           "type": "evaluate",
-          "script": "return [...document.querySelectorAll('button')].some(b=>b.textContent==='\u25b2')"
+          "script": "return [...document.querySelectorAll('button')].some(b=>b.textContent==='▲')"
         },
         {
           "action": "assert",
           "type": "evaluate",
-          "script": "return [...document.querySelectorAll('button')].some(b=>b.textContent==='\u25bc')"
+          "script": "return [...document.querySelectorAll('button')].some(b=>b.textContent==='▼')"
         },
         {
           "action": "evaluate",
-          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='\u25b2')?.click()"
+          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='▲')?.click()"
         },
         {
           "action": "wait",
@@ -1354,7 +1354,7 @@
       "steps": [
         {
           "action": "evaluate",
-          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='\u25bc')?.click()"
+          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='▼')?.click()"
         },
         {
           "action": "wait",
@@ -4379,7 +4379,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_148",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4429,7 +4429,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_149",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4479,7 +4479,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_150",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4529,7 +4529,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_151",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4579,7 +4579,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_152",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4629,7 +4629,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_153",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4679,7 +4679,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_154",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4729,7 +4729,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_155",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4779,7 +4779,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_156",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4829,7 +4829,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_157",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4879,7 +4879,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_158",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4929,7 +4929,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_159",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -4979,7 +4979,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_160",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -5029,7 +5029,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_161",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -5079,7 +5079,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_162",
-          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly \u2014 the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
+          "text": "The chat panel should show an LLM response about the binary. The scene counter should NOT have increased significantly — the graph should look the same as before the question was asked. No new nodes should have appeared from the LLM response."
         }
       ]
     },
@@ -5646,7 +5646,7 @@
         },
         {
           "action": "evaluate",
-          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='\u25b2')?.click()"
+          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='▲')?.click()"
         },
         {
           "action": "wait",
@@ -5659,7 +5659,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_175",
-          "text": "The chat interaction feedback UI should be visible \u2014 either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
+          "text": "The chat interaction feedback UI should be visible — either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
         }
       ]
     },
@@ -5709,7 +5709,7 @@
         },
         {
           "action": "evaluate",
-          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='\u25bc')?.click()"
+          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='▼')?.click()"
         },
         {
           "action": "wait",
@@ -5723,7 +5723,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_176",
-          "text": "The chat interaction feedback UI should be visible \u2014 either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
+          "text": "The chat interaction feedback UI should be visible — either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
         }
       ]
     },
@@ -5784,7 +5784,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_177",
-          "text": "The chat interaction feedback UI should be visible \u2014 either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
+          "text": "The chat interaction feedback UI should be visible — either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
         }
       ]
     },
@@ -5847,7 +5847,7 @@
         {
           "action": "visual_assert",
           "name": "be_auto_178",
-          "text": "The chat interaction feedback UI should be visible \u2014 either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
+          "text": "The chat interaction feedback UI should be visible — either thumbs buttons, a correction prompt placeholder, a save confirmation, or cleared suggested queries depending on the test."
         }
       ]
     },
@@ -7588,7 +7588,7 @@
         {
           "action": "visual_assert",
           "name": "entrance_done",
-          "text": "Nodes should have grown from small to full size. Compare with the early screenshot \u2014 nodes should be larger now."
+          "text": "Nodes should have grown from small to full size. Compare with the early screenshot — nodes should be larger now."
         }
       ]
     },
@@ -7899,7 +7899,7 @@
         },
         {
           "action": "evaluate",
-          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='\u25bc')?.click()"
+          "script": "[...document.querySelectorAll('button')].find(b=>b.textContent==='▼')?.click()"
         },
         {
           "action": "wait",
@@ -7965,6 +7965,23 @@
           "action": "visual_assert",
           "name": "minimap_visible",
           "text": "Bottom-right of the graph should show a small dark minimap rectangle with colored dots (matching node colors) and a dashed purple viewport rectangle."
+        }
+      ]
+    },
+    {
+      "id": "cots_verify",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3003/#sparta-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector(\"[data-qid=\\\"sparta:nav:settings\\\"]\"); if (!btn) return \"NOT_FOUND\"; const rect = btn.getBoundingClientRect(); return JSON.stringify({ width: rect.width, height: rect.height, hasQsAction: btn.hasAttribute(\"data-qs-action\") }); })()"
         }
       ]
     }

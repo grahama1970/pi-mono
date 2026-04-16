@@ -13,17 +13,22 @@ const GLOW_CSS = `
 .embry-run-btn:hover:not(:disabled) { box-shadow: 0 0 32px rgba(0,255,136,0.5), 0 2px 8px rgba(0,0,0,0.3) !important; animation: none; }
 `
 
-export function RunButton({ children, onClick, disabled, ariaLabel }: {
+interface RunButtonProps {
   children: React.ReactNode
   onClick: () => void
   disabled?: boolean
   ariaLabel?: string
-}) {
+  title?: string
+  'data-qid'?: string
+  'data-qs-action'?: string
+}
+
+export function RunButton({ children, onClick, disabled, ariaLabel, title, 'data-qid': dataQid, 'data-qs-action': dataQsAction }: RunButtonProps) {
   return (
     <>
       <style>{GLOW_CSS}</style>
       <button className="embry-run-btn" onClick={onClick} disabled={disabled}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel} title={title} data-qid={dataQid} data-qs-action={dataQsAction}
         style={{
           padding: '10px 32px', borderRadius: 8, cursor: disabled ? 'default' : 'pointer',
           background: disabled ? EMBRY.muted : EMBRY.green,

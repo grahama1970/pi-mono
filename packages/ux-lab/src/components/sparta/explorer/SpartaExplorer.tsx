@@ -420,12 +420,13 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           {/* Spacer */}
           <div style={{ flex: 1 }} />
           {/* Settings */}
-          <button data-qid="sparta:nav:settings" onClick={() => setSettingsOpen(true)} title="Query settings" style={S.navBtn}>
+          <button data-qid="sparta:nav:settings" data-qs-action="OPEN_SETTINGS" onClick={() => setSettingsOpen(true)} title="Query settings" style={S.navBtn}>
             <Settings size={16} />
           </button>
           {/* Query toggle */}
           <button
             data-qid="sparta:nav:query-pane"
+            data-qs-action="TOGGLE_QUERY_PANE"
             onClick={() => setRightOpen(!rightOpen)}
             title="Toggle query pane"
             style={{ ...S.navBtn, ...(rightOpen ? S.navBtnActive : {}) }}
@@ -489,20 +490,20 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         <div style={S.drawerHead}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: 13, fontWeight: 900, color: EMBRY.white }}>Query</span>
-            <button data-qid="sparta:pane:close-right" onClick={() => setRightOpen(false)} data-qs-action="CLOSE_RIGHT_PANE" title="Close query pane" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
+            <button data-qid="sparta:pane:close-right" onClick={() => setRightOpen(false)} data-qs-action="CLOSE_RIGHT_PANE" title="Close query pane" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{'\u00D7'}</button>
           </div>
           {/* Compact scope + gate */}
           <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
             <div style={{ display: 'flex', gap: 1, flex: 1 }}>
               {(['sparta', 'f36', 'both'] as const).map(s => (
-                <button key={s} data-qid={`sparta:drawer:scope-${s}`} onClick={() => setScope(s)} title={`Set scope to ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
+                <button key={s} data-qid={`sparta:drawer:scope-${s}`} data-qs-action={`SPARTA_SET_SCOPE_${s.toUpperCase()}`} onClick={() => setScope(s)} title={`Set scope to ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
                   {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
                 </button>
               ))}
             </div>
             <div style={{ display: 'flex', gap: 1 }}>
               {(['fast', 'medium', 'accurate'] as const).map(g => (
-                <button key={g} data-qid={`sparta:drawer:depth-${g}`} onClick={() => setGateDepth(g)} title={`Set depth to ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
+                <button key={g} data-qid={`sparta:drawer:depth-${g}`} data-qs-action={`SPARTA_SET_DEPTH_${g.toUpperCase()}`} onClick={() => setGateDepth(g)} title={`Set depth to ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
                   {g === 'fast' ? 'F' : g === 'medium' ? 'M' : 'A'}
                 </button>
               ))}
@@ -540,7 +541,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           <div style={S.modal} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white }}>Query Settings</span>
-              <button data-qid="sparta:settings:close" onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18 }}>{'\u00D7'}</button>
+              <button data-qid="sparta:settings:close" onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{'\u00D7'}</button>
             </div>
             <div style={{ marginBottom: 16 }}>
               <div style={S.modalLabel}>Scope</div>
@@ -603,13 +604,15 @@ function CountRow({ label, value }: { label: string; value: number }) {
 
 const toggleSm: React.CSSProperties = {
   fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
-  padding: '2px 8px', borderRadius: 3, border: 'none', cursor: 'pointer',
+  padding: '8px 12px', borderRadius: 3, border: 'none', cursor: 'pointer',
   backgroundColor: 'transparent', color: EMBRY.dim, transition: 'all 0.15s',
-  flex: 1, textAlign: 'center',
+  flex: 1, textAlign: 'center', minHeight: 44, minWidth: 44,
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
 const toggleMd: React.CSSProperties = {
-  fontSize: 11, fontWeight: 700, padding: '6px 16px', borderRadius: 4, border: 'none',
+  fontSize: 11, fontWeight: 700, padding: '10px 16px', borderRadius: 4, border: 'none',
   cursor: 'pointer', backgroundColor: 'transparent', color: EMBRY.dim, transition: 'all 0.15s',
+  minHeight: 44, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
 const toggleActive: React.CSSProperties = {
   backgroundColor: EMBRY.accent, color: '#fff',
@@ -643,8 +646,10 @@ const S = {
     gap: 4,
   },
   navBtn: {
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
+    minWidth: 44,
+    minHeight: 44,
     borderRadius: 8,
     display: 'flex',
     alignItems: 'center',
@@ -689,7 +694,12 @@ const S = {
     color: EMBRY.dim,
     cursor: 'pointer',
     fontSize: 14,
-    padding: '0 2px',
+    padding: '10px',
+    minWidth: 44,
+    minHeight: 44,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   } as React.CSSProperties,
   sourceItem: {
     padding: '10px 16px',
@@ -705,6 +715,7 @@ const S = {
     width: '100%',
     color: EMBRY.dim,
     textAlign: 'left' as const,
+    minHeight: 44,
   } as React.CSSProperties,
   sourceItemActive: {
     backgroundColor: '#161a1f',

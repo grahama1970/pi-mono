@@ -12,7 +12,7 @@ export function useWebSocket(url = "ws://localhost:3003") {
 	const [status, setStatus] = useState<WsStatus>("closed");
 	const [lastMessage, setLastMessage] = useState<WsMessage | null>(null);
 	const wsRef = useRef<WebSocket | null>(null);
-	const reconnectTimer = useRef<ReturnType<typeof setTimeout>>();
+	const reconnectTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 	const connect = useCallback(() => {
 		if (wsRef.current?.readyState === WebSocket.OPEN) return;

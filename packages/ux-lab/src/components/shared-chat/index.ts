@@ -53,3 +53,5 @@ export type {
 export { useActivityFeed } from "./useActivityFeed";
 export type { CascadeConfig, CascadePipeline, CascadeResult } from "./useCascadePipeline";
 export { useCascadePipeline } from "./useCascadePipeline";
+export { InlineFigure } from './InlineFigure'
+export { InlineEvidenceCase } from './InlineEvidenceCase'
