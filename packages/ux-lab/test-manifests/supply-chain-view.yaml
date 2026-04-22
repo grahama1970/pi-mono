@@ -1,0 +1,154 @@
+version: 1
+kind: test-interactions-manifest
+metadata:
+  title: "Supply Chain View - ProvenanceGraph Day 3"
+  description: "Compliance cascade visualization with swimlane layout and supplier kill switch"
+  view: "Supply Chain"
+  url: "http://localhost:3002/#sparta-explorer/supply-chain"
+
+elements:
+  # Navigation
+  - qid: "sparta:nav:supply-chain"
+    type: button
+    description: "Supply Chain tab in nav strip"
+    expected: "Icon visible, clickable, navigates to Supply Chain view"
+
+  # Main view container
+  - qid: "supply-chain-view"
+    type: container
+    description: "Main Supply Chain view container"
+    expected: "Renders with dark background, contains control bar and graph"
+
+  # Control bar
+  - qid: "supply-chain-controls"
+    type: container
+    description: "Top control bar with scenario selector"
+    expected: "44px min height, border bottom, contains scenario dropdown"
+
+  - qid: "supply-chain-scenario-select"
+    type: select
+    description: "Scenario dropdown selector"
+    expected: "Shows 'F-36 Avionics (Minimal)', can select scenarios"
+    interactions:
+      - action: click
+        expected: "Opens dropdown with scenario options"
+
+  # Kill switch status (conditional)
+  - qid: "supply-chain-kill-status"
+    type: container
+    description: "Red status bar showing killed suppliers count"
+    expected: "Only visible when suppliers are killed, shows count"
+    conditional: true
+
+  - qid: "supply-chain-reset-kills"
+    type: button
+    description: "Reset button to clear all killed suppliers"
+    expected: "Clears all virtual taints when clicked"
+    conditional: true
+
+  # Selected node info panel (conditional)
+  - qid: "supply-chain-node-info"
+    type: container
+    description: "Bottom panel showing selected node details"
+    expected: "Shows label, class, framework, DAL, tier for selected node"
+    conditional: true
+
+interactions:
+  - name: "Navigate to Supply Chain tab"
+    steps:
+      - action: navigate
+        url: "http://localhost:3002/#sparta-explorer/supply-chain"
+      - action: wait
+        duration: 2000
+      - action: screenshot
+        output: "supply-chain-initial.png"
+    assertions:
+      - element: "supply-chain-view"
+        visible: true
+      - element: "supply-chain-controls"
+        visible: true
+
+  - name: "Verify swimlane headers render"
+    steps:
+      - action: screenshot
+        output: "supply-chain-swimlanes.png"
+    assertions:
+      - text_contains: "Supply Chain"
+      - text_contains: "Evidence"
+      - text_contains: "Controls"
+
+  - name: "Verify scenario selector"
+    steps:
+      - action: click
+        qid: "supply-chain-scenario-select"
+      - action: screenshot
+        output: "supply-chain-scenario-open.png"
+    assertions:
+      - element: "supply-chain-scenario-select"
+        value: "f36-minimal"
+
+  - name: "Verify graph nodes render"
+    steps:
+      - action: screenshot
+        output: "supply-chain-nodes.png"
+    assertions:
+      - text_contains: "Northrop"
+      - text_contains: "Raytheon"
+      - text_contains: "BAE"
+      - text_contains: "CMMC"
+      - text_contains: "DO-178C"
+
+  - name: "Test supplier kill switch"
+    steps:
+      - action: click
+        selector: "input[type='checkbox']"
+        index: 0
+      - action: wait
+        duration: 500
+      - action: screenshot
+        output: "supply-chain-kill-active.png"
+    assertions:
+      - element: "supply-chain-kill-status"
+        visible: true
+        text_contains: "KILLED"
+
+  - name: "Reset killed suppliers"
+    steps:
+      - action: click
+        qid: "supply-chain-reset-kills"
+      - action: wait
+        duration: 500
+      - action: screenshot
+        output: "supply-chain-reset.png"
+    assertions:
+      - element: "supply-chain-kill-status"
+        visible: false
+
+visual_checks:
+  - name: "Graph layout"
+    description: "Verify swimlane layout with fixed X positions"
+    expected: "Suppliers on left, Evidence middle-left, Controls middle-right, Frameworks right"
+
+  - name: "Node colors"
+    description: "Verify node cascade state colors"
+    expected: "Healthy nodes green, degraded amber, failed red"
+
+  - name: "Edge rendering"
+    description: "Verify edges connect nodes across swimlanes"
+    expected: "Red/amber lines connecting nodes, Canvas layer for edges"
+
+  - name: "Control panel"
+    description: "Floating control panel on left side"
+    expected: "Decay Horizon slider, Supplier Simulation checkboxes, Tier buttons"
+
+accessibility:
+  - name: "COTS C02 touch targets"
+    expected: "All interactive elements have minimum 44px touch target"
+    elements:
+      - "supply-chain-scenario-select"
+      - "supply-chain-reset-kills"
+      - "Tier buttons"
+      - "Supplier checkboxes"
+
+  - name: "Keyboard navigation"
+    expected: "Tab navigates between controls, Enter/Space activates"

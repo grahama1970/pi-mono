@@ -55,22 +55,44 @@ export function useLean4Data(): Lean4DataResult {
 
 		async function fetchData() {
 			try {
-				// Fetch proofs
-				const proofRes = await fetch(`${API}/api/memory/query`, {
+				// Fetch proofs via /list endpoint (no raw AQL)
+				const proofRes = await fetch(`${API}/api/memory/list`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						aql: "FOR d IN lean4_proofs LIMIT 500 RETURN {_key: d._key, _id: d._id, theorem_name: d.theorem_name, lean_code: d.lean_code, tactics: d.tactics, imports: d.imports, needs_mathlib: d.needs_mathlib, problem_description: d.problem_description}",
+						collection: "lean4_proofs",
+						limit: 500,
+						return_fields: [
+							"_key",
+							"_id",
+							"theorem_name",
+							"lean_code",
+							"tactics",
+							"imports",
+							"needs_mathlib",
+							"problem_description",
+						],
 					}),
 				});
 				const proofData = await proofRes.json();
 
-				// Fetch edges
-				const edgeRes = await fetch(`${API}/api/memory/query`, {
+				// Fetch edges via /list endpoint (no raw AQL)
+				const edgeRes = await fetch(`${API}/api/memory/list`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						aql: "FOR e IN proof_requirement_edges LIMIT 500 RETURN {_key: e._key, _from: e._from, _to: e._to, edge_type: e.edge_type, proof_code: e.proof_code, tactics: e.tactics, framework: e.framework, control_id: e.control_id}",
+						collection: "proof_requirement_edges",
+						limit: 500,
+						return_fields: [
+							"_key",
+							"_from",
+							"_to",
+							"edge_type",
+							"proof_code",
+							"tactics",
+							"framework",
+							"control_id",
+						],
 					}),
 				});
 				const edgeData = await edgeRes.json();

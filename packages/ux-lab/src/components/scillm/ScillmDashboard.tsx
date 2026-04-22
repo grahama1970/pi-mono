@@ -14,10 +14,11 @@
  * - Blast Radius: Hover to see dependencies
  */
 import { useState, useMemo } from "react";
-import { Search, X, Activity, Clock, AlertTriangle, DollarSign, Copy, Check, Sparkles, Loader2, Send } from "lucide-react";
+import { Search, X, Activity, Clock, AlertTriangle, DollarSign, Copy, Check, Sparkles, Loader2, Send, Terminal, Zap } from "lucide-react";
 import { EMBRY, glowDot } from "../common/EmbryStyle";
-import { useScillmData, useProviderAuth, type LogEntry, type AuthStatusResponse } from "../../hooks/useScillmData";
+import { useScillmData, useProviderAuth, useBatchJobState, type LogEntry, type AuthStatusResponse, type BatchJobState } from "../../hooks/useScillmData";
 import { JobsTable } from "./JobsTable";
+import { CodeRunnerSessions } from "./CodeRunnerSessions";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
 
@@ -146,7 +147,7 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
       {providers.map(({ name, data, key }) => {
         if (!data) return null;
         const color = getStatusColor(data.status);
-        const expiry = "expires_in_s" in data ? formatExpiry(data.expires_in_s) : "";
+        const expiry = "expires_in_s" in data ? formatExpiry(typeof data.expires_in_s === 'number' ? data.expires_in_s : undefined) : "";
 
         return (
           <div
@@ -185,6 +186,201 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
         );
       })}
     </div>
+  );
+}
+
+function getOrchestratorStatusColor(job: BatchJobState): string {
+  const status = job.state?.status;
+  if (status === "failed" || job.error) return EMBRY.red;
+  if (status === "completed") return EMBRY.green;
+  if (status === "running") return EMBRY.blue;
+  return EMBRY.amber;
+}
+
+function getVisibleOrchestrators(batchJobs: BatchJobState[]) {
+  return batchJobs
+    .filter((job) => job.state)
+    .sort((a, b) => {
+      const aRunning = a.state?.status === "running" ? 1 : 0;
+      const bRunning = b.state?.status === "running" ? 1 : 0;
+      if (aRunning !== bRunning) return bRunning - aRunning;
+      return (b.lastModified || "").localeCompare(a.lastModified || "");
+    });
+}
+
+function BatchStatusBanner({
+  batchJobs,
+  liveCallCount,
+}: {
+  batchJobs: BatchJobState[];
+  liveCallCount: number;
+}) {
+  const visibleJobs = getVisibleOrchestrators(batchJobs);
+  const primary = visibleJobs[0];
+  const state = primary?.state;
+  if (!state) return null;
+
+  const totalJobs = state.total_jobs ?? state.processed ?? 0;
+  const completedJobs = state.completed_jobs ?? state.processed ?? 0;
+  const failedJobs = state.failed_jobs ?? state.failed ?? 0;
+  const skippedJobs = state.skipped_jobs ?? state.skipped ?? 0;
+  const isRunning = state.status === "running";
+  const bannerColor = isRunning ? EMBRY.blue : state.status === "completed" ? EMBRY.green : EMBRY.amber;
+  const headline = isRunning
+    ? "Active create-qras batch is running"
+    : liveCallCount === 0
+      ? "No live scillm calls right now"
+      : "Most recent create-qras batch state";
+  const detail = isRunning
+    ? `${completedJobs}/${totalJobs} jobs complete, ${state.stored_qras ?? 0} stored, ${failedJobs} failed, ${skippedJobs} skipped`
+    : `Last batch ${state.status}: ${completedJobs}/${totalJobs} jobs, ${state.stored_qras ?? 0} stored, ${failedJobs} failed, ${skippedJobs} skipped`;
+
+  return (
+    <section
+      style={{
+        borderBottom: `1px solid ${EMBRY.border}`,
+        backgroundColor: EMBRY.bgPanel,
+        padding: "10px 16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+        <div style={glowDot(bannerColor)} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>
+            {headline}
+          </div>
+          <div style={{ fontSize: 10, color: EMBRY.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {detail}
+            {state.current_item ? ` · current ${state.current_item}` : ""}
+            {state.chunk_num && state.total_chunks ? ` · chunk ${state.chunk_num}/${state.total_chunks}` : ""}
+          </div>
+        </div>
+      </div>
+      <div style={{ fontSize: 11, fontWeight: 800, fontFamily: MONO, color: bannerColor }}>
+        {typeof state.progress_pct === "number" ? `${state.progress_pct.toFixed(0)}%` : "-"}
+      </div>
+    </section>
+  );
+}
+
+function OrchestratorStrip({ batchJobs }: { batchJobs: BatchJobState[] }) {
+  const visibleJobs = getVisibleOrchestrators(batchJobs);
+  if (visibleJobs.length === 0) return null;
+
+  return (
+    <section
+      style={{
+        borderBottom: `1px solid ${EMBRY.border}`,
+        backgroundColor: EMBRY.bgPanel,
+        padding: "10px 16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: EMBRY.dim }}>
+          Batch Progress
+        </span>
+        <span style={{ fontSize: 10, color: EMBRY.dim }}>
+          Native manifest state from `/create-qras`, separate from live scillm proxy traffic
+        </span>
+      </div>
+
+      <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 2 }}>
+        {visibleJobs.map((job) => {
+          const state = job.state;
+          const color = getOrchestratorStatusColor(job);
+          const totalJobs = state?.total_jobs ?? state?.processed ?? 0;
+          const completedJobs = state?.completed_jobs ?? state?.processed ?? 0;
+          const failedJobs = state?.failed_jobs ?? state?.failed ?? 0;
+          const skippedJobs = state?.skipped_jobs ?? state?.skipped ?? 0;
+          const progressPct = typeof state?.progress_pct === "number"
+            ? state.progress_pct
+            : totalJobs > 0
+              ? Math.round((completedJobs / totalJobs) * 100)
+              : 0;
+
+          return (
+            <div
+              key={job.name}
+              style={{
+                minWidth: 320,
+                maxWidth: 380,
+                border: `1px solid ${EMBRY.border}`,
+                backgroundColor: EMBRY.bgDeep,
+                padding: 12,
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={glowDot(color)} />
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>{job.name}</div>
+                    <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                      {state?.phase || "idle"} · {state?.status || "unknown"}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 800, fontFamily: MONO, color }}>{progressPct.toFixed(0)}%</div>
+              </div>
+
+              <div style={{ height: 6, backgroundColor: EMBRY.bg, border: `1px solid ${EMBRY.border}`, overflow: "hidden" }}>
+                <div
+                  style={{
+                    width: `${Math.max(0, Math.min(progressPct, 100))}%`,
+                    height: "100%",
+                    backgroundColor: color,
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
+                <StatPill label="Jobs" value={totalJobs ? `${completedJobs}/${totalJobs}` : `${completedJobs}`} small />
+                <StatPill label="Stored" value={`${state?.stored_qras ?? 0}`} small color={EMBRY.green} />
+                <StatPill label="Gen" value={`${state?.generated_qras ?? 0}`} small color={EMBRY.blue} />
+                <StatPill label="Fail" value={`${failedJobs}`} small color={failedJobs > 0 ? EMBRY.red : EMBRY.dim} />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8 }}>
+                <StatPill label="Skip" value={`${skippedJobs}`} small color={skippedJobs > 0 ? EMBRY.amber : EMBRY.dim} />
+                <StatPill
+                  label="Chunk"
+                  value={state?.chunk_num && state?.total_chunks ? `${state.chunk_num}/${state.total_chunks}` : "-"}
+                  small
+                />
+                <StatPill
+                  label="Range"
+                  value={state?.range_start && state?.range_end ? `${state.range_start}-${state.range_end}` : "-"}
+                  small
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 10 }}>
+                <div style={{ color: EMBRY.dim }}>Current</div>
+                <div style={{ color: EMBRY.white, fontFamily: MONO, wordBreak: "break-word" }}>
+                  {state?.current_item || state?.manifest_path || "No active item"}
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 10 }}>
+                <div style={{ color: EMBRY.dim }}>Last Message</div>
+                <div style={{ color: state?.last_error ? EMBRY.red : EMBRY.white, wordBreak: "break-word" }}>
+                  {state?.last_error || state?.last_message || "No state yet"}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -695,11 +891,15 @@ function Field({ label, value, highlight }: { label: string; value: string; high
   );
 }
 
+type ViewMode = "calls" | "code-runner";
+
 export function ScillmDashboard() {
   const { logs, loading, error, lastUpdate, refresh } = useScillmData();
   const { auth } = useProviderAuth();
+  const { batchJobs } = useBatchJobState();
   const [search, setSearch] = useState("");
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("calls");
 
   // Compute metrics including daily cost
   const metrics = useMemo(() => {
@@ -739,6 +939,11 @@ export function ScillmDashboard() {
         l.error?.toLowerCase().includes(q)
     );
   }, [logs, search]);
+
+  const liveCallCount = useMemo(
+    () => logs.filter((log) => Date.now() - new Date(log.ts).getTime() < 60_000).length,
+    [logs],
+  );
 
   return (
     <div
@@ -787,6 +992,58 @@ export function ScillmDashboard() {
 
         {/* Provider auth status */}
         <ProviderAuthStrip auth={auth} />
+
+        {/* View Toggle */}
+        <div
+          style={{
+            display: "flex",
+            gap: 0,
+            backgroundColor: EMBRY.bgDeep,
+            border: `1px solid ${EMBRY.border}`,
+          }}
+        >
+          <button
+            onClick={() => setViewMode("calls")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "6px 12px",
+              fontSize: 10,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              border: "none",
+              backgroundColor: viewMode === "calls" ? `${EMBRY.blue}30` : "transparent",
+              color: viewMode === "calls" ? EMBRY.blue : EMBRY.dim,
+              cursor: "pointer",
+              borderRight: `1px solid ${EMBRY.border}`,
+            }}
+          >
+            <Zap size={12} />
+            Calls
+          </button>
+          <button
+            onClick={() => setViewMode("code-runner")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "6px 12px",
+              fontSize: 10,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              border: "none",
+              backgroundColor: viewMode === "code-runner" ? `${EMBRY.blue}30` : "transparent",
+              color: viewMode === "code-runner" ? EMBRY.blue : EMBRY.dim,
+              cursor: "pointer",
+            }}
+          >
+            <Terminal size={12} />
+            Code Runner
+          </button>
+        </div>
 
         <div style={{ flex: 1 }} />
 
@@ -848,9 +1105,24 @@ export function ScillmDashboard() {
         </button>
       </header>
 
-      {/* MAIN: Jobs Table (GitHub Actions style) */}
+      {/* MAIN: Conditional view based on toggle */}
       <main style={{ overflow: "hidden", backgroundColor: EMBRY.bg }}>
-        <JobsTable logs={filteredLogs} onCallClick={setSelectedLog} />
+        {viewMode === "calls" ? (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateRows: batchJobs.some((job) => job.state) ? "auto auto 1fr" : "1fr",
+              height: "100%",
+              overflow: "hidden",
+            }}
+          >
+            <BatchStatusBanner batchJobs={batchJobs} liveCallCount={liveCallCount} />
+            <OrchestratorStrip batchJobs={batchJobs} />
+            <JobsTable logs={filteredLogs} onCallClick={setSelectedLog} />
+          </div>
+        ) : (
+          <CodeRunnerSessions />
+        )}
       </main>
 
       {/* Trace Panel (slide-out) */}

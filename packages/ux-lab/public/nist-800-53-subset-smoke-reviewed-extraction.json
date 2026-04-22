@@ -1,0 +1,1331 @@
+{
+  "pdfUrl": "/nist-800-53-subset-smoke.pdf",
+  "pageCount": 2,
+  "blocks": [
+    {
+      "id": "p0_e0",
+      "page": 0,
+      "bbox": [
+        0.14705882352941177,
+        0.04500001849550195,
+        1.0,
+        0.05507575141059029
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p0_e1",
+      "page": 0,
+      "bbox": [
+        0.14705882352941177,
+        0.057197031348642624,
+        0.8558836294934641,
+        0.06727276426373108
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "_________________________________________________________________________________________________",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p0_e8",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.09409093375157829,
+        0.8422847573274101,
+        0.24356865160392993
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "discretionary access control An access control policy that is enforced over all subjects and objects in a system where the policy specifies that a subject that has been granted access to information can do one or more of the following: pass the information to other subjects or objects; grant its privileges to other subjects; change the security attributes of subjects, objects, systems, or system components; choose the security attributes to be associated with newly- created or revised objects; or change the rules governing access control. Mandatory access controls restrict this capability.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e9",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.2542424828115136,
+        0.27110948749617036,
+        0.26810609451448075
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "disassociability",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e11",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.2542424828115136,
+        0.8421331667432598,
+        0.3020442615855824
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Enabling the processing of personally identifiable information or events without association to individuals or devices beyond the operational requirements of the system.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e10",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.27499998458708175,
+        0.21800738066629646,
+        0.2876515243992661
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[IR 8062]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e3",
+      "page": 0,
+      "bbox": [
+        0.03441176383323919,
+        0.2764393970219776,
+        0.3498234998166951,
+        0.28780303338561397
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "This publication is available free of charge from:",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e12",
+      "page": 0,
+      "bbox": [
+        0.15452326356975082,
+        0.31264996769452336,
+        0.8197462293836806,
+        0.37742083000414295
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "domain  An environment or context that includes a set of system resources and a set of system entities that have the right to access the resources as defined by a common security policy, security model, or security architecture. See security domain.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e13",
+      "page": 0,
+      "bbox": [
+        0.15452331343507456,
+        0.38809581718059505,
+        0.23563537099003012,
+        0.40195946741585775
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "enterprise",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e15",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.38810602823893225,
+        0.8282306147556678,
+        0.5037148600876933
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "An organization with a defined mission/goal and a defined boundary, using systems to execute that mission, and with responsibility for managing its own risks and performance. An enterprise may consist of all or some of the following business aspects: acquisition, program management, human resources, financial management, security, and systems, information and mission management. See organization.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e14",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.40378786337496053,
+        0.2437605764351639,
+        0.41765151361022335
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[CNSSI 4009]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e18",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.5143181771943064,
+        0.8237075307010825,
+        0.6129579255075166
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "A strategic information asset base, which defines the mission; the information necessary to perform the mission; the technologies necessary to perform the mission; and the transitional processes for implementing new technologies in response to changing mission needs; and includes a baseline architecture; a target architecture; and a sequencing plan.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e16",
+      "page": 0,
+      "bbox": [
+        0.1545053120532067,
+        0.5143205276643388,
+        0.3306158726511438,
+        0.5281841778996015
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "enterprise architecture",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e4",
+      "page": 0,
+      "bbox": [
+        0.03441176383323919,
+        0.5202272588556462,
+        0.2705250191532709,
+        0.5315908952192827
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e17",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.529999973798039,
+        0.24523117963005514,
+        0.5438636240333017
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[OMB A-130]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e19",
+      "page": 0,
+      "bbox": [
+        0.15452326356975082,
+        0.6236329126839686,
+        0.35250413184072454,
+        0.6374965629192314
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "environment of operation",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e21",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.6236363420582781,
+        0.7964781717537275,
+        0.6544690758290916
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "The physical surroundings in which an information system processes, stores, and transmits information.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e20",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.6393181771943064,
+        0.27621155782462725,
+        0.6531818274295691
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[OMB A-130]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e22",
+      "page": 0,
+      "bbox": [
+        0.1545053120532067,
+        0.6650747434057371,
+        0.2010088403240528,
+        0.6789383936409998
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "event",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e24",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.6651514997385969,
+        0.6617023243623621,
+        0.6790151499738597
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Any observable occurrence in a system.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e23",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.6807575803814512,
+        0.29905468809838387,
+        0.6946212113505662
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[SP 800-61, Adapted]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e27",
+      "page": 0,
+      "bbox": [
+        0.3691176370857588,
+        0.701287876475941,
+        0.8465594123391544,
+        0.7829585219874526
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "An executive department specified in 5 U.S.C., Sec. 101; a military department specified in 5 U.S.C., Sec. 102; an independent establishment as defined in 5 U.S.C., Sec. 104(1); and a wholly owned Government corporation fully subject to the provisions of 31 U.S.C., Chapter 91.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e25",
+      "page": 0,
+      "bbox": [
+        0.15450526218788296,
+        0.7012940223770912,
+        0.28640876720154207,
+        0.7151576533462062
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "executive agency",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e5",
+      "page": 0,
+      "bbox": [
+        0.03441176383323919,
+        0.7027272696446891,
+        0.06380882761836831,
+        0.7178787847962043
+      ],
+      "blockType": "list_item",
+      "semanticType": "List",
+      "text": "-53r5",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p0_e26",
+      "page": 0,
+      "bbox": [
+        0.15450979993234273,
+        0.7169697116119693,
+        0.24523117963005514,
+        0.7308333425810842
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[OMB A-130]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p0_e28",
+      "page": 0,
+      "bbox": [
+        0.15452326356975082,
+        0.7936335284300524,
+        0.7865011676464205,
+        0.8074971593991674
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "exfiltration The unauthorized transfer of information from a system.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e29",
+      "page": 0,
+      "bbox": [
+        0.1545053120532067,
+        0.8181028462419606,
+        0.8360386268765319,
+        0.8998428498855745
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "xternal system (or e component) A system or component of a system that is used by but is not a part of an organizational system and for which the organization has no direct control over the implementation of required security and privacy controls or the assessment of control effectiveness.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p0_e2",
+      "page": 0,
+      "bbox": [
+        0.14705882352941177,
+        0.9404545456472069,
+        0.8562647002974367,
+        0.9518181820108433
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "APPENDIX A  PAGE 402",
+      "confidence": 0.9,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.9
+        }
+      ],
+      "reviewNotes": [
+        "APPENDIX A PAGE 402 appears at bottom margin and is page-level metadata"
+      ]
+    },
+    {
+      "id": "p1_e0",
+      "page": 1,
+      "bbox": [
+        0.14705882352941177,
+        0.04500001849550195,
+        1.0,
+        0.05507575141059029
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p1_e1",
+      "page": 1,
+      "bbox": [
+        0.14705882352941177,
+        0.057197031348642624,
+        0.8558836294934641,
+        0.06727276426373108
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "_________________________________________________________________________________________________",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p1_e8",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.09409093375157829,
+        0.8420820049211091,
+        0.15879251499368685
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "external system service A system service that is provided by an external service provider and for which the organization has no direct control over the implementation of required security and privacy controls or the assessment of control effectiveness.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e9",
+      "page": 1,
+      "bbox": [
+        0.1545277015835631,
+        0.16946750217013884,
+        0.8437398274739584,
+        0.26810725048334916
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "external system service provider A provider of external system services to an organization through a variety of consumerproducer relationships, including - joint ventures, business partnerships, outsourcing arrangements (i.e., through contracts, interagency agreements, lines of business arrangements), licensing agreements, and/or supply chain exchanges.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e3",
+      "page": 1,
+      "bbox": [
+        0.03441176383323919,
+        0.2764393970219776,
+        0.3498234998166951,
+        0.28780303338561397
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "This publication is available free of charge from:",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e10",
+      "page": 1,
+      "bbox": [
+        0.15449187334846048,
+        0.27878223765980115,
+        0.7066853093165978,
+        0.2926458493627683
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "external network A network not controlled by the organization.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e11",
+      "page": 1,
+      "bbox": [
+        0.1544918484157986,
+        0.3033208365392204,
+        0.8166396197150735,
+        0.36802241778132894
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "failover The capability to switch over automatically (typically without human intervention or warning) to a redundant or standby system upon the failure or abnormal termination of the previously active system.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e12",
+      "page": 1,
+      "bbox": [
+        0.15450977499968085,
+        0.3786974049577809,
+        0.30492859884025225,
+        0.40953013872859456
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "federal information system",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e14",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.3787121242947049,
+        0.8468535180185356,
+        0.42651394160106926
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "An information system used or operated by an executive agency, by a contractor of an executive agency, or by another organization on behalf of an executive agency.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e13",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.4113636209507181,
+        0.24523117963005514,
+        0.4252272711859809
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[OMB A-130]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e15",
+      "page": 1,
+      "bbox": [
+        0.15452326356975082,
+        0.43711960917771464,
+        0.8387800229141136,
+        0.5527284410264757
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "FIPSvalidated - cryptography A cryptographic module validated by the Cryptographic Module Validation Program (CMVP) to meet requirements specified in FIPS Publication 1403 (as amended). As a prerequisite to CMVP - validation, the cryptographic module is required to employ a cryptographic algorithm implementation that has successfully passed validation testing by the Cryptographic Algorithm Validation Program (CAVP). See NSAapproved cryptography-.",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e4",
+      "page": 1,
+      "bbox": [
+        0.03441176383323919,
+        0.5202272588556462,
+        0.2705250191532709,
+        0.5315908952192827
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e16",
+      "page": 1,
+      "bbox": [
+        0.15446950875076593,
+        0.5634034282029277,
+        0.2273465574177262,
+        0.5772670784381905
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "firmware",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e18",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.5634090924503827,
+        0.8325490515216504,
+        0.6450797572280421
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Computer programs and data stored in hardware - typically in readonly memory (ROM) or programmable readonly memory -- (PROM) - such that the programs and data cannot be dynamically written or modified during execution of the programs. See hardware and software.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e17",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.5790908890541153,
+        0.2437605764351639,
+        0.5929545392893781
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[CNSSI 4009]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e19",
+      "page": 1,
+      "bbox": [
+        0.1545232137044271,
+        0.6557547444044942,
+        0.23082703235102633,
+        0.6696183946397569
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "hardware",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e21",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.6557575572620739,
+        0.8455293942121119,
+        0.6865902910328875
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "The material physical components of a system. See software and firmware.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e20",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.6714393923981021,
+        0.2437605764351639,
+        0.685303023367217
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[CNSSI 4009]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e22",
+      "page": 1,
+      "bbox": [
+        0.15450528712054484,
+        0.6971959778756807,
+        0.3044396693410437,
+        0.7110596088447956
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "highimpact system-",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e24",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.6971969797153665,
+        0.7624169642629187,
+        0.7110606106844815
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "A system in which at least one security objective (i.e.,",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e5",
+      "page": 1,
+      "bbox": [
+        0.03441176383323919,
+        0.7027272696446891,
+        0.06380882761836831,
+        0.7178787847962043
+      ],
+      "blockType": "list_item",
+      "semanticType": "List",
+      "text": "-53r5",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p1_e23",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.712878795585247,
+        0.22474096958933312,
+        0.726742426554362
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[FIPS 200]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e25",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.7141660632509174,
+        0.7896248811210682,
+        0.7280296942200324
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "confidentiality, integrity, or availability) is assigned a FIPS",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.8
+        }
+      ],
+      "reviewNotes": [
+        "Text about confidentiality, integrity, availability is part of definition, not boilerplate"
+      ]
+    },
+    {
+      "id": "p1_e26",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.7311351467864682,
+        0.7131755554598141,
+        0.7449987777555831
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Publication 199 potential impact value of high.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e27",
+      "page": 1,
+      "bbox": [
+        0.1545053120532067,
+        0.755673784198183,
+        0.26444882660909413,
+        0.769537415167298
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "hybrid control",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e29",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.7556818181818181,
+        0.840954549951491,
+        0.8034142966222282
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "A security or privacy control that is implemented for an information system in part as a common control and in part as a systemspecific control.-",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e28",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.7713636340516986,
+        0.24523117963005514,
+        0.7852272650208136
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[OMB A-130]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e32",
+      "page": 1,
+      "bbox": [
+        0.3691176370857588,
+        0.8103030426333648,
+        0.8481022454554739,
+        0.8750751572425919
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Unique data used to represent a person\u2019s identity and associated attributes. A name or a card number are examples of identifiers. A unique label used by a system to indicate a specific entity, object, or group.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p1_e30",
+      "page": 1,
+      "bbox": [
+        0.15452323863708894,
+        0.814089303064828,
+        0.2275079465379902,
+        0.8279529340339429
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "identifier",
+      "confidence": 0.0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "id": "p1_e31",
+      "page": 1,
+      "bbox": [
+        0.15450979993234273,
+        0.8297727372911241,
+        0.23797627368004493,
+        0.8436363682602391
+      ],
+      "blockType": "text",
+      "semanticType": "Reference",
+      "text": "[FIPS 201-2]",
+      "confidence": 0.699999988079071,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.699999988079071
+        }
+      ]
+    },
+    {
+      "id": "p1_e2",
+      "page": 1,
+      "bbox": [
+        0.14705882352941177,
+        0.9404545456472069,
+        0.8562647002974367,
+        0.9518181820108433
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "APPENDIX A  PAGE 403",
+      "confidence": 0.9,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.9
+        }
+      ],
+      "reviewNotes": [
+        "APPENDIX A PAGE 403 appears at bottom margin and is page numbering/location info"
+      ]
+    }
+  ]
+}

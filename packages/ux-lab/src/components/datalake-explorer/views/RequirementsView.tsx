@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NVIS } from '../theme'
-import { queryTaxonomy, listDocuments } from '../api/client'
+import { queryTaxonomy, recallDocuments } from '../api/client'
 import type { RequirementEntry, RequirementSection } from '../types'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
@@ -196,10 +196,10 @@ export default function RequirementsView() {
       try {
         // /taxonomy/query works with {text, scope} — use "sparta" scope
         const result = await queryTaxonomy('requirements', 'sparta')
-        // Also try listing sparta_qra for real requirement data
-        const qraResult = await listDocuments('sparta_qra', 50)
-        if (qraResult.documents && qraResult.documents.length > 0) {
-          const mapped: RequirementEntry[] = qraResult.documents.map((doc, i) => {
+        // Server-side filter — NEVER unfiltered list on sparta_qra (246K+ docs)
+        const qraRecall = await recallDocuments('formal requirement SPARTA countermeasure', 'sparta_qra')
+        if (qraRecall.results && qraRecall.results.length > 0) {
+          const mapped: RequirementEntry[] = qraRecall.results.map((doc, i) => {
             const meta = doc.metadata ?? {}
             const bridgeAttrs = meta.bridge_attributes as Record<string, unknown> | undefined
             return {
@@ -209,8 +209,8 @@ export default function RequirementsView() {
               nistSource: (meta.source_framework as string) ?? (bridgeAttrs?.nist_source as string) ?? '',
               spartaRef: (meta.sparta_ref as string) ?? (bridgeAttrs?.sparta_ref as string) ?? undefined,
               sectionId: 'ac',
-              evidence: (meta.score as number ?? 0) >= 0.8 ? 'pass' as const : (meta.score as number ?? 0) >= 0.5 ? 'partial' as const : 'none' as const,
-              proofStatus: (meta.score as number ?? 0) >= 0.8 ? 'proven' as const : (meta.score as number ?? 0) >= 0.5 ? 'partial' as const : 'unproven' as const,
+              evidence: doc.score >= 0.8 ? 'pass' as const : doc.score >= 0.5 ? 'partial' as const : 'none' as const,
+              proofStatus: doc.score >= 0.8 ? 'proven' as const : doc.score >= 0.5 ? 'partial' as const : 'unproven' as const,
               lean4Preview: undefined,
               lean4Fn: undefined,
             }

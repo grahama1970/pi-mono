@@ -378,7 +378,6 @@ function EventRow({
           whiteSpace: 'nowrap',
         }}
                 data-qid="monitor:item-1" data-qs-action="MONITOR_ITEM_1"
-                title="Item 1"
         onClick={() => onSourceClick?.(event.source)}
         title={event.source}
       >

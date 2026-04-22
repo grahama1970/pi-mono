@@ -1,0 +1,204 @@
+version: 1
+app: SPARTA Explorer
+description: Brandon Bailey compliance officer workflow - evidence traceability, DFARS export, view navigation
+base_url: "http://localhost:3004"
+
+surfaces:
+  # ── View Navigation ─────────────────────────────────────────────────────────
+  - name: view-tabs
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='sparta:nav']"
+    qid_compliance: true
+    elements:
+      - name: initial-state
+        interactions:
+          - action: screenshot
+            description: Initial SPARTA Explorer state
+
+      - name: grid-view-tab
+        interactions:
+          - action: click
+            target: "[data-qid='threat-matrix:view-grid']"
+            description: Switch to Grid view
+            screenshot_after: true
+
+      - name: bloom-view-tab
+        interactions:
+          - action: click
+            target: "[data-qid='threat-matrix:view-bloom']"
+            description: Switch to Bloom view (evidence density)
+            screenshot_after: true
+
+  # ── Bloom View + TacticalHUD ────────────────────────────────────────────────
+  - name: bloom-tactical-hud
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid^='threat-matrix:bloom-cell:']"
+    qid_compliance: true
+    elements:
+      - name: hover-green-cell
+        interactions:
+          - action: hover
+            target: "[data-qid^='threat-matrix:bloom-cell:']"
+            description: Hover bloom cell to trigger TacticalHUD tooltip
+            screenshot_after: true
+            burst: true
+            burst_frames: 3
+
+      - name: verify-tactical-hud
+        interactions:
+          - action: wait
+            target: "[data-qid='threat-matrix:tactical-hud']"
+            timeout_ms: 2000
+          - action: screenshot
+            description: TacticalHUD glassmorphic tooltip visible
+
+  # ── Grid View + Cell Selection ──────────────────────────────────────────────
+  - name: grid-cell-selection
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='threat-matrix:view-grid']"
+    qid_compliance: true
+    elements:
+      - name: switch-to-grid
+        interactions:
+          - action: click
+            target: "[data-qid='threat-matrix:view-grid']"
+            description: Ensure Grid view active
+            screenshot_after: true
+
+      - name: select-control-cell
+        interactions:
+          - action: click
+            target: "[data-qid^='threat-matrix:cell:']"
+            description: Click control cell to open detail panel
+            screenshot_after: true
+
+  # ── Detail Panel + Evidence Case ────────────────────────────────────────────
+  - name: detail-panel-evidence
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='threat-matrix:detail:close']"
+    qid_compliance: true
+    elements:
+      - name: detail-header
+        interactions:
+          - action: screenshot
+            description: Detail panel with control info
+
+      - name: scroll-to-evidence
+        interactions:
+          - action: scroll
+            direction: down
+            amount: 300
+            description: Scroll to evidence section
+            screenshot_after: true
+
+      - name: create-evidence-case-button
+        interactions:
+          - action: wait
+            target: "[data-qid='threat-matrix:detail:evidence-case']"
+            timeout_ms: 5000
+          - action: screenshot
+            description: Create Evidence Case button visible
+          - action: assert_min_size
+            selector: "[data-qid='threat-matrix:detail:evidence-case']"
+            min_width: 44
+            min_height: 44
+          - action: click
+            target: "[data-qid='threat-matrix:detail:evidence-case']"
+            description: Click Create Evidence Case
+            screenshot_after: true
+
+      - name: evidence-case-loading
+        interactions:
+          - action: wait
+            timeout_ms: 5000
+            description: Wait for evidence case to load
+          - action: screenshot
+            description: Evidence case panel/modal state
+
+  # ── DFARS 7012 Export ───────────────────────────────────────────────────────
+  - name: dfars-export-flow
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='threat-matrix:detail:close']"
+    qid_compliance: true
+    elements:
+      - name: scroll-to-dfars
+        interactions:
+          - action: scroll
+            direction: down
+            amount: 500
+            description: Scroll to DFARS export section
+            screenshot_after: true
+
+      - name: dfars-export-button
+        interactions:
+          - action: wait
+            target: "[data-qid='threat-matrix:detail:dfars-export']"
+            timeout_ms: 3000
+          - action: screenshot
+            description: DFARS 7012 export section with amber button
+          - action: assert_title
+            target: "[data-qid='threat-matrix:detail:dfars-export']"
+          - action: assert_min_size
+            selector: "[data-qid='threat-matrix:detail:dfars-export']"
+            min_width: 44
+            min_height: 44
+          - action: click
+            target: "[data-qid='threat-matrix:detail:dfars-export']"
+            description: Export DFARS incident packet
+            screenshot_after: true
+
+      - name: close-detail
+        interactions:
+          - action: click
+            target: "[data-qid='threat-matrix:detail:close']"
+            description: Close detail panel
+            screenshot_after: true
+
+  # ── Supply Chain View ───────────────────────────────────────────────────────
+  - name: supply-chain-navigation
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='sparta:nav']"
+    qid_compliance: true
+    elements:
+      - name: open-supply-chain
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:nav:supply-chain']"
+            description: Navigate to Supply Chain view
+            screenshot_after: true
+
+      - name: supply-chain-tiers
+        interactions:
+          - action: wait
+            target: "[data-qid^='supply-chain:tier:']"
+            timeout_ms: 3000
+          - action: screenshot
+            description: Supply chain tier visualization
+
+  # ── Keyboard Navigation (Accessibility) ─────────────────────────────────────
+  - name: keyboard-navigation
+    path: "/#sparta-explorer"
+    wait_ready: "[data-qid='sparta:nav']"
+    qid_compliance: true
+    elements:
+      - name: tab-through-nav
+        interactions:
+          - action: tab
+            count: 5
+            description: Tab through navigation elements
+          - action: screenshot
+            description: Focus indicator visible on nav item
+
+      - name: enter-to-activate
+        interactions:
+          - action: key
+            key: Enter
+            description: Activate focused element
+            screenshot_after: true
+
+      - name: escape-to-close
+        interactions:
+          - action: key
+            key: Escape
+            description: Escape closes modals/panels
+            screenshot_after: true

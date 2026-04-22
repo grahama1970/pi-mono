@@ -12,6 +12,7 @@ import {
 	streamSimple,
 	type TextContent,
 	type ThinkingBudgets,
+	type ToolResultMessage,
 	type Transport,
 } from "@mariozechner/pi-ai";
 import { runAgentLoop, runAgentLoopContinue } from "./agent-loop.js";
@@ -36,6 +37,35 @@ import type {
  */
 function defaultConvertToLlm(messages: AgentMessage[]): Message[] {
 	return messages.filter((m) => m.role === "user" || m.role === "assistant" || m.role === "toolResult");
+}
+
+function normalizePartialToolResult(
+	toolCallId: string,
+	toolName: string,
+	partialResult: unknown,
+): ToolResultMessage<unknown> | undefined {
+	if (typeof partialResult !== "object" || partialResult === null || !("content" in partialResult)) {
+		return undefined;
+	}
+
+	const { content, details } = partialResult as {
+		content?: unknown;
+		details?: unknown;
+	};
+
+	if (!Array.isArray(content)) {
+		return undefined;
+	}
+
+	return {
+		role: "toolResult",
+		toolCallId,
+		toolName,
+		content: content as (TextContent | ImageContent)[],
+		details,
+		isError: false,
+		timestamp: Date.now(),
+	};
 }
 
 export interface AgentOptions {
@@ -123,6 +153,7 @@ export class Agent {
 		isStreaming: false,
 		streamMessage: null,
 		pendingToolCalls: new Set<string>(),
+		partialToolResults: new Map<string, ToolResultMessage<unknown>>(),
 		error: undefined,
 	};
 
@@ -383,6 +414,7 @@ export class Agent {
 		this._state.isStreaming = false;
 		this._state.streamMessage = null;
 		this._state.pendingToolCalls = new Set<string>();
+		this._state.partialToolResults = new Map<string, ToolResultMessage<unknown>>();
 		this._state.error = undefined;
 		this.steeringQueue = [];
 		this.followUpQueue = [];
@@ -477,10 +509,23 @@ export class Agent {
 				break;
 			}
 
+			case "tool_execution_update": {
+				const partial = normalizePartialToolResult(event.toolCallId, event.toolName, event.partialResult);
+				if (partial) {
+					const partialToolResults = new Map(this._state.partialToolResults);
+					partialToolResults.set(event.toolCallId, partial);
+					this._state.partialToolResults = partialToolResults;
+				}
+				break;
+			}
+
 			case "tool_execution_end": {
 				const pendingToolCalls = new Set(this._state.pendingToolCalls);
 				pendingToolCalls.delete(event.toolCallId);
 				this._state.pendingToolCalls = pendingToolCalls;
+				const partialToolResults = new Map(this._state.partialToolResults);
+				partialToolResults.delete(event.toolCallId);
+				this._state.partialToolResults = partialToolResults;
 				break;
 			}
 
@@ -493,6 +538,7 @@ export class Agent {
 			case "agent_end":
 				this._state.isStreaming = false;
 				this._state.streamMessage = null;
+				this._state.partialToolResults = new Map<string, ToolResultMessage<unknown>>();
 				break;
 		}
 
@@ -597,6 +643,7 @@ export class Agent {
 			this._state.isStreaming = false;
 			this._state.streamMessage = null;
 			this._state.pendingToolCalls = new Set<string>();
+			this._state.partialToolResults = new Map<string, ToolResultMessage<unknown>>();
 			this.abortController = undefined;
 			this.resolveRunningPrompt?.();
 			this.runningPrompt = undefined;

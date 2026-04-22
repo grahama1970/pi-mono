@@ -472,6 +472,28 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 };
 
 const SELF_HEAL_FILE = "/tmp/pi-anthropic-oauth-self-heal.json";
+type NodeFsModule = {
+	readFileSync(path: string, encoding: string): string;
+	writeFileSync(path: string, data: string): void;
+};
+
+function getNodeFsModule(): NodeFsModule | undefined {
+	const processWithBuiltinLookup = process as NodeJS.Process & {
+		getBuiltinModule?: (id: string) => unknown;
+	};
+	const fsModule = processWithBuiltinLookup.getBuiltinModule?.("node:fs");
+	if (
+		fsModule &&
+		typeof fsModule === "object" &&
+		"readFileSync" in fsModule &&
+		"writeFileSync" in fsModule &&
+		typeof fsModule.readFileSync === "function" &&
+		typeof fsModule.writeFileSync === "function"
+	) {
+		return fsModule as NodeFsModule;
+	}
+	return undefined;
+}
 
 /**
  * Self-improvement loop for Anthropic OAuth policy blocks.
@@ -481,7 +503,10 @@ const SELF_HEAL_FILE = "/tmp/pi-anthropic-oauth-self-heal.json";
  */
 async function selfHealAnthropicOAuth(scillmUrl: string, originalError: string, _modelId: string): Promise<void> {
 	const maxRounds = 3;
-	const fs = await import("fs");
+	const fs = getNodeFsModule();
+	if (!fs) {
+		return;
+	}
 	let lastError = originalError;
 
 	for (let round = 0; round < maxRounds; round++) {
@@ -539,7 +564,7 @@ async function selfHealAnthropicOAuth(scillmUrl: string, originalError: string, 
 			break;
 		}
 		if (!token) break;
-		testHeaders["Authorization"] = `Bearer ${token}`;
+		testHeaders.Authorization = `Bearer ${token}`;
 
 		// Step 3: Test direct Anthropic call
 		try {

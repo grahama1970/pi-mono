@@ -526,7 +526,7 @@ function TuneHPControls({ projectId }: { projectId: string }) {
           { group: 'REGULARIZATION', keys: ['dropout', 'weight_decay', 'label_smoothing'] },
           { group: 'AUGMENTATION', keys: ['mixup_alpha', 'cutmix_alpha', 'random_erasing'] },
         ] as const).map(({ group, keys }) => {
-          const groupKnobs = knobs.filter(k => keys.includes(k.key as any))
+          const groupKnobs = knobs.filter(k => (keys as readonly string[]).includes(k.key))
           if (!groupKnobs.length) return null
           return (
             <div key={group} style={{ marginBottom: 16 }}>

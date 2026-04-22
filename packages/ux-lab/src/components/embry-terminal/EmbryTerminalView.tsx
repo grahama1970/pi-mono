@@ -50,6 +50,13 @@ interface AgentConfig {
 
 // HealthStatus imported from useEmbryFeatures
 
+interface EvidenceGate {
+  gate: string;
+  passed: boolean;
+  detail: string;
+  duration?: number;
+}
+
 interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -63,6 +70,7 @@ interface Message {
   chainTitle?: string;
   matrixSummary?: ThreatMatrixSummary;
   deltaReport?: DeltaReport;
+  verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
   timestamp: number;
 }
 
@@ -312,11 +320,10 @@ export function EmbryTerminalView() {
   const cmdHistory = useCommandHistory();
   const health = useHealthMonitor(BACKEND_URL, AUTH_HEADERS);
 
-  // Activity feed (real-time agent events + presence)
+  // Activity feed (real-time agent events)
   const activityWsUrl = BACKEND_URL.replace(/^http/, 'ws').replace(/\/api$/, '') + '/api/activity';
   const activityFeed = useActivityFeed(activityWsUrl, 'embry-dev-token');
   const activityEvents = activityFeed?.events ?? [];
-  const presence = activityFeed?.presence ?? [];
 
   // Suggestion accept/reject handlers
   const handleAcceptSuggestion = useCallback(async (id: string) => {
@@ -371,14 +378,12 @@ export function EmbryTerminalView() {
     inputRef.current?.focus();
   }, [input]);
 
-  const sendMessageRef = useRef<() => void>();
+  const sendMessageRef = useRef<(() => void) | null>(null);
 
   const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
-    cmdHistory.push(input.trim());
     const text = input.trim();
-    setCommandHistory(prev => [text, ...prev].slice(0, 50));
-    setHistoryIdx(-1);
+    cmdHistory.push(text);
     setMessages(m => [...m, { id: `u${Date.now()}`, role: 'user', content: text, timestamp: Date.now() }]);
     setInput('');
     setShowPalette(false);
@@ -505,8 +510,7 @@ export function EmbryTerminalView() {
 
         <div style={{ flex: 1 }} />
 
-        {/* Presence bar (full mode) — who's connected */}
-        {presence.length > 0 && <PresenceBar entries={presence} />}
+        {/* Presence bar (full mode) — who's connected — disabled: useActivityFeed doesn't return presence */}
 
         {/* Health status — per-service indicators with labels */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} data-qid="topbar:connection:status">
@@ -581,12 +585,7 @@ export function EmbryTerminalView() {
                 <Search size={13} style={{ color: '#334155' }} />
                 <span style={{ fontSize: 13, color: '#64748b' }}>Search projects…</span>
               </div>
-              {/* Presence indicators */}
-              {presence.length > 0 && (
-                <div style={{ marginTop: 8 }}>
-                  <PresenceBar entries={presence} compact />
-                </div>
-              )}
+              {/* Presence indicators — disabled: useActivityFeed doesn't return presence */}
             </div>
             <div style={{ flex: 1, overflow: 'auto', padding: '4px 8px' }}>
               <div style={{ fontSize: 9, fontWeight: 600, color: '#334155', padding: '8px 8px 4px', letterSpacing: 1, textTransform: 'uppercase' }}>

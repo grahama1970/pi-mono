@@ -1,14 +1,17 @@
-import { createContext, useState, useEffect, useCallback, useRef, useContext, type ReactNode } from 'react'
+import React, { createContext, useState, useEffect, useCallback, useRef, useContext, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { StatusBar } from '../../common/StatusBar'
+import { OfflineBanner } from '../../common/OfflineBanner'
 import { ChatWell } from '../query/ChatWell'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
-import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, GitBranch, Target, Workflow, Settings, MessageSquare, ShieldCheck, Scan } from 'lucide-react'
+import { useMemoryHealth } from '../../../hooks/useMemoryHealth'
+import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, ChevronLeft, Sparkles } from 'lucide-react'
 import EntitySpanViewer from '../../shared-chat/EntitySpanViewer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import PostureDashboard from '../dashboard/PostureDashboard'
 import { OverviewLanding } from './OverviewLanding'
+import { useReducedMotion } from 'motion/react'
 
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
@@ -17,13 +20,13 @@ const API = 'http://localhost:3001'
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
 const TABS = [
-  'Chat', 'Overview', 'Posture', 'Entities', 'Sources', 'Controls', 'URLs',
-  'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
+  'Posture', 'Threat Matrix', 'Controls', 'QRAs', 'Sources', 'URLs', 'Supply Chain',
 ] as const
 
 export type TabName = (typeof TABS)[number]
 export interface SpartaTabFilter {
   controlId?: string
+  qraKey?: string  // Auto-select specific QRA by _key
 }
 
 interface SpartaNavContextValue {
@@ -49,17 +52,13 @@ export function useSpartaNav(): SpartaNavContextValue {
 
 // Lucide icons for the global nav strip
 const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
-  'Chat': MessageSquare,
-  'Overview': Zap,
   'Posture': ShieldCheck,
-  'Entities': Scan,
-  'Sources': FileSpreadsheet,
-  'Controls': Shield,
-  'URLs': Link,
-  'QRAs': HelpCircle,
-  'Relationships': GitBranch,
   'Threat Matrix': Target,
-  'Pipeline': Workflow,
+  'Controls': Shield,
+  'QRAs': HelpCircle,
+  'Sources': FileSpreadsheet,
+  'URLs': Link,
+  'Supply Chain': Network,
 }
 
 interface TabPlaceholderProps { name: TabName; message?: string }
@@ -85,7 +84,7 @@ export interface SpartaExplorerProps {
 
 export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: SpartaExplorerProps) {
   const [activeTab, setActiveTab] = useState<TabName>(
-    (initialTab && SUBPATH_TO_TAB[initialTab]) || 'Chat'
+    (initialTab && SUBPATH_TO_TAB[initialTab]) || 'Threat Matrix'
   )
   const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>({})
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
@@ -97,6 +96,27 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     () => Object.fromEntries(FRAMEWORKS.map(fw => [fw, true]))
   )
   const collectionCounts = useCollectionCounts()
+  const reducedMotion = useReducedMotion()
+
+  // Memory health monitoring — adaptive polling, prominent banner when offline
+  const memoryHealth = useMemoryHealth()
+
+  // Auto-reload data when connection restores
+  useEffect(() => {
+    if (memoryHealth.wasOffline && memoryHealth.isHealthy) {
+      window.location.reload()
+    }
+  }, [memoryHealth.wasOffline, memoryHealth.isHealthy])
+
+  // Sync activeTab with URL changes (when parent passes new initialTab)
+  useEffect(() => {
+    if (initialTab) {
+      const tab = SUBPATH_TO_TAB[initialTab]
+      if (tab && tab !== activeTab) {
+        setActiveTab(tab)
+      }
+    }
+  }, [initialTab])
 
   // Pane state
   const [leftOpen, setLeftOpen] = useState(false)
@@ -112,10 +132,19 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   useRegisterAction('sparta:nav:tab', { app: 'sparta-explorer', action: 'NAVIGATE_TAB', label: 'Navigate Tab', description: 'Switch between SPARTA Explorer tabs' })
   useRegisterAction('sparta:pane:close-left', { app: 'sparta-explorer', action: 'CLOSE_LEFT_PANE', label: 'Close Left Pane', description: 'Close the explorer side panel' })
   useRegisterAction('sparta:pane:close-right', { app: 'sparta-explorer', action: 'CLOSE_RIGHT_PANE', label: 'Close Query Pane', description: 'Close the query flyout drawer' })
-  useRegisterAction('sparta:settings:overlay', { app: 'sparta-explorer', action: 'CLOSE_SETTINGS', label: 'Close Settings', description: 'Close the query settings modal' })
-  useRegisterAction('sparta:settings:scope', { app: 'sparta-explorer', action: 'SET_SCOPE', label: 'Set Scope', description: 'Set query scope (SPARTA, F-36, or Both)' })
-  useRegisterAction('sparta:settings:depth', { app: 'sparta-explorer', action: 'SET_GATE_DEPTH', label: 'Set Gate Depth', description: 'Set evidence gate depth (fast, medium, accurate)' })
-  useRegisterAction('sparta:settings:framework', { app: 'sparta-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle Framework', description: 'Enable/disable a framework filter' })
+  useRegisterAction('sparta:layout:settings-overlay', { app: 'sparta-explorer', action: 'CLOSE_SETTINGS', label: 'Close Settings', description: 'Close the query settings modal' })
+  useRegisterAction('sparta:button:settings-scope', { app: 'sparta-explorer', action: 'SET_SCOPE', label: 'Set Scope', description: 'Set query scope (SPARTA, F-36, or Both)' })
+  useRegisterAction('sparta:button:settings-depth', { app: 'sparta-explorer', action: 'SET_GATE_DEPTH', label: 'Set Gate Depth', description: 'Set evidence gate depth (fast, medium, accurate)' })
+  useRegisterAction('sparta:button:settings-framework', { app: 'sparta-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle Framework', description: 'Enable/disable a framework filter' })
+  useRegisterAction('sparta:button:chat-close', { app: 'sparta-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Ask Embry chat panel' })
+  useRegisterAction('sparta:button:ask-ai', { app: 'sparta-explorer', action: 'OPEN_CHAT', label: 'Ask AI', description: 'Open Ask Embry chat' })
+  useRegisterAction('sparta:button:settings', { app: 'sparta-explorer', action: 'OPEN_SETTINGS', label: 'Open Settings', description: 'Open query settings' })
+  useRegisterAction('sparta:button:chat-scope-sparta', { app: 'sparta-explorer', action: 'SET_CHAT_SCOPE', label: 'Scope: SPARTA', description: 'Set chat scope to SPARTA' })
+  useRegisterAction('sparta:button:chat-scope-f36', { app: 'sparta-explorer', action: 'SET_CHAT_SCOPE', label: 'Scope: F-36', description: 'Set chat scope to F-36' })
+  useRegisterAction('sparta:button:chat-scope-both', { app: 'sparta-explorer', action: 'SET_CHAT_SCOPE', label: 'Scope: Both', description: 'Set chat scope to Both' })
+  useRegisterAction('sparta:button:chat-depth-fast', { app: 'sparta-explorer', action: 'SET_CHAT_DEPTH', label: 'Depth: Fast', description: 'Set chat depth to Fast' })
+  useRegisterAction('sparta:button:chat-depth-medium', { app: 'sparta-explorer', action: 'SET_CHAT_DEPTH', label: 'Depth: Medium', description: 'Set chat depth to Medium' })
+  useRegisterAction('sparta:button:chat-depth-accurate', { app: 'sparta-explorer', action: 'SET_CHAT_DEPTH', label: 'Depth: Accurate', description: 'Set chat depth to Accurate' })
 
   const toggleFramework = useCallback((fw: string) => {
     setFrameworkFilters(prev => ({ ...prev, [fw]: !prev[fw] }))
@@ -149,17 +178,40 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     clearTabFilter,
   }
 
+  // Chat panel state
+  const [chatOpen, setChatOpen] = useState(false)
+  const [chatClosing, setChatClosing] = useState(false)
+
+  // Toggle chat with pulse-out animation on close
+  const toggleChat = useCallback(() => {
+    if (chatOpen) {
+      // Closing: trigger pulse-out animation
+      setChatClosing(true)
+      setTimeout(() => {
+        setChatClosing(false)
+        setChatOpen(false)
+      }, 250)
+    } else {
+      setChatOpen(true)
+    }
+  }, [chatOpen])
+
   // Keyboard: 1-8 tabs, Escape close flyouts
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+        if ((e.metaKey || e.ctrlKey) && (e.key === '\\' || e.key === 'j')) {
+            e.preventDefault()
+            toggleChat()
+            return
+        }
         if (e.key === 'Escape') { setRightOpen(false); setSettingsOpen(false); setLeftOpen(false); return }
         const num = Number.parseInt(e.key)
         if (num >= 1 && num <= TABS.length) navigateToTab(TABS[num - 1])
       }
       window.addEventListener('keydown', onKeyDown)
       return () => window.removeEventListener('keydown', onKeyDown)
-    }, [navigateToTab])
+    }, [navigateToTab, toggleChat])
 
   // Health check
   const checkHealth = useCallback(async () => {
@@ -236,7 +288,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       }
 
       const gates: EvidenceGate[] = []
-      let gateState: 'SATISFIED' | 'INCONCLUSIVE' | 'NOT_SATISFIED' = 'SATISFIED'
+      let gateState: 'SATISFIED' | 'INCONCLUSIVE' = 'SATISFIED'
       gates.push({ gate: 'grounding', passed: groundingOk, detail: groundingOk ? 'Entities exist' : 'Some not found' })
       if (!groundingOk) gateState = 'INCONCLUSIVE'
 
@@ -265,7 +317,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         }
       }
 
-      if (gateState === 'NOT_SATISFIED' || (gateState === 'INCONCLUSIVE' && gateDepth !== 'fast')) {
+      if (gateState === 'INCONCLUSIVE' && gateDepth !== 'fast') {
         let clarifyOptions: Array<{ question: string }> = []
         try {
           const cRes = await fetch(`${API}/api/memory/clarify`, {
@@ -277,8 +329,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             question: typeof s === 'string' ? s : s.question ?? s.text ?? String(s),
           })).slice(0, 5)
         } catch {}
-        addMsg({ role: 'system', content: gateState === 'NOT_SATISFIED' ? 'Cannot verify this query is answerable.' : 'Some gates inconclusive.', type: 'natural', entities, verdict: { state: gateState, gates }, clarifyOptions })
-        if (gateState === 'NOT_SATISFIED') return
+        addMsg({ role: 'system', content: 'Some gates inconclusive.', type: 'natural', entities, verdict: { state: gateState, gates }, clarifyOptions })
       }
 
       let querySpec: Record<string, unknown> | null = null
@@ -342,7 +393,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     setMessages(prev => prev.map(m => m.id === id ? { ...m, feedback: fb } : m))
     const msg = messages.find(m => m.id === id)
     if (!msg) return
-    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
+    const userMsg = [...messages].reverse().find(m => m.role === 'user' && (m.timestamp ?? 0) < (msg.timestamp ?? 0))
     if (userMsg) {
       fetch(`${API}/api/memory/learn`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -358,9 +409,9 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   const handleRunEvidenceCase = useCallback(async (msg: ChatMessage) => {
     // Find the user query that preceded this system message
-    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
+    const userMsg = [...messages].reverse().find(m => m.role === 'user' && (m.timestamp ?? 0) < (msg.timestamp ?? 0))
     if (!userMsg) return
-    setEvidenceCaseLoading(msg.id)
+    setEvidenceCaseLoading(msg.id ?? null)
     try {
       const controlId = msg.entities?.find(e => e.exists)?.id
       const res = await fetch(`${API}/api/evidence-case/run`, {
@@ -385,6 +436,17 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         cascadeLayer: 'llm',
         entities: msg.entities,
         verdict: { state: verdict.toUpperCase(), gates },
+        evidenceCase: {
+          verdict: verdict,
+          grade: data.verdict?.grade ?? 'C',
+          gates_passed: gates.filter(g => g.passed).length,
+          gates_total: gates.length,
+          gate_summary: `${gates.filter(g => g.passed).length}/${gates.length} gates passed`,
+          gate_trace: gates,
+          control_ids: data.context?.control_ids ?? [],
+          tier,
+          glossary: data.glossary ?? [],
+        },
       })
     } catch (err) {
       addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural' })
@@ -395,123 +457,178 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   // ── Render ───────────────────────────────────────────────────────────────
 
+  // Context-aware chat opening — injects contextual prompt based on current view
+  const openChatWithContext = useCallback(() => {
+    const contextPrompts: Record<TabName, string> = {
+      'Posture': 'You\'re viewing the Posture Dashboard. Want me to explain any compliance scores or trace evidence gaps?',
+      'Threat Matrix': 'You\'re viewing the SPARTA Threat Matrix. Want me to analyze coverage gaps or trace techniques to countermeasures?',
+      'Controls': 'You\'re viewing the Controls table. Want me to find related controls or check evidence case status?',
+      'QRAs': 'You\'re reviewing QRA items. Want me to validate grounding or suggest improvements?',
+      'Sources': 'You\'re viewing data sources. Want me to check extraction quality or find missing content?',
+      'URLs': 'You\'re viewing URL evidence. Want me to trace URLs to controls or check for stale links?',
+      'Supply Chain': 'You\'re viewing the Supply Chain graph. Want me to analyze vendor risk or trace compliance flow-down?',
+    }
+
+    const contextMsg: ChatMessage = {
+      id: `ctx-${Date.now()}`,
+      role: 'assistant',
+      content: contextPrompts[activeTab] || 'How can I help you with SPARTA compliance?',
+      timestamp: Date.now(),
+      entities: [],
+    }
+
+    setMessages(prev => prev.length === 0 ? [contextMsg] : prev)
+    setChatOpen(true)
+  }, [activeTab])
+
   return (
     <div style={S.container}>
-      <div style={S.main}>
+      {/* Offline Banner — shown when memory daemon is unreachable */}
+      <OfflineBanner
+        status={memoryHealth.status}
+        details={memoryHealth.details}
+        onRetry={memoryHealth.retry}
+        onReload={() => window.location.reload()}
+      />
 
-        {/* PANE 1: Icon-only global nav (always visible) */}
-        <nav style={S.iconNav}>
-          {TABS.map((tab, i) => (
-              <button
-                key={tab}
-                data-qid={`sparta:nav:${tab.toLowerCase().replace(/\s+/g, '-')}`}
-                data-qs-action="NAVIGATE_TAB"
-                data-qs-params={JSON.stringify({ tab })}
-                onClick={() => navigateToTab(tab)}
-                title={`${tab} (${i + 1})`}
-                style={{
-                  ...S.navBtn,
-                ...(activeTab === tab ? S.navBtnActive : {}),
+      {/* Horizontal Tab Strip */}
+      <div style={S.tabStrip} role="tablist" aria-label="Sparta Explorer Tabs">
+        <div style={S.tabStripLeft}>
+          {/* Embry AI Assistant — Trigger on left aligns with drawer opening left */}
+          <button
+            data-qid="sparta:button:embry-assistant"
+            data-qs-action="TOGGLE_CHAT"
+            onClick={toggleChat}
+            title="Ask Embry (⌘J)"
+            style={{
+              ...S.embryBtn,
+              backgroundColor: chatOpen ? 'rgba(0, 209, 255, 0.08)' : 'transparent',
+              color: chatOpen || chatClosing ? '#00D1FF' : '#fff',
+              borderColor: chatOpen ? 'rgba(0, 209, 255, 0.4)' : chatClosing ? 'rgba(0, 209, 255, 0.5)' : 'rgba(0, 209, 255, 0.2)',
+              boxShadow: chatClosing
+                ? '0 0 32px rgba(0, 209, 255, 0.7), 0 0 12px rgba(0, 209, 255, 0.5)'  // Pulse-out: bright flash
+                : chatOpen
+                  ? '0 0 24px rgba(0, 209, 255, 0.6), 0 0 8px rgba(0, 209, 255, 0.4)'
+                  : '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)',
+              transition: chatClosing ? 'all 0.15s ease-out' : 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (!chatOpen && !chatClosing) {
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 209, 255, 0.5), 0 0 6px rgba(0, 209, 255, 0.35)'
+                e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.35)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!chatOpen && !chatClosing) {
+                e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)'
+                e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.2)'
+              }
+            }}
+          >
+            <Sparkles size={16} />
+          </button>
+          <div style={{ width: 1, height: 24, backgroundColor: EMBRY.border, margin: '0 8px' }} />
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              role="tab"
+              aria-selected={activeTab === tab}
+              data-qid={`sparta:button:tab-${tab.toLowerCase().replace(/\s+/g, '-')}`}
+              data-qs-action="NAVIGATE_TAB"
+              onClick={() => navigateToTab(tab)}
+              title={tab}
+              style={{
+                ...S.tabBtn,
+                ...(activeTab === tab ? S.tabBtnActive : {}),
               }}
             >
-              {(() => { const Icon = TAB_ICON_COMPONENTS[tab]; return <Icon size={16} /> })()}
+              {(() => { const Icon = TAB_ICON_COMPONENTS[tab]; return Icon ? <Icon size={14} style={{ marginRight: 6 }} /> : null })()}
+              {tab}
             </button>
           ))}
-          {/* Spacer */}
-          <div style={{ flex: 1 }} />
-          {/* Settings */}
-          <button data-qid="sparta:nav:settings" data-qs-action="OPEN_SETTINGS" onClick={() => setSettingsOpen(true)} title="Query settings" style={S.navBtn}>
+        </div>
+        <div style={S.tabStripRight}>
+          <button
+            data-qid="sparta:button:settings"
+            data-qs-action="OPEN_SETTINGS"
+            onClick={() => setSettingsOpen(true)}
+            title="Settings"
+            style={S.settingsBtn}
+          >
             <Settings size={16} />
           </button>
-          {/* Query toggle */}
-          <button
-            data-qid="sparta:nav:query-pane"
-            data-qs-action="TOGGLE_QUERY_PANE"
-            onClick={() => setRightOpen(!rightOpen)}
-            title="Toggle query pane"
-            style={{ ...S.navBtn, ...(rightOpen ? S.navBtnActive : {}) }}
-          >
-            <MessageSquare size={16} />
-          </button>
-        </nav>
+        </div>
+      </div>
 
-        {/* PANE 2: Sources/explorer (expandable) */}
-        {leftOpen && (
-          <aside style={S.sourcesPane}>
-            <div style={S.paneHeader}>
-              <span>SPARTA Explorer</span>
-              <button data-qid="sparta:pane:close-left" onClick={() => setLeftOpen(false)} style={S.paneClose} data-qs-action="CLOSE_LEFT_PANE" title="Close explorer pane">{'\u00D7'}</button>
+      {/* Main Split Layout */}
+      <div style={S.splitContainer}>
+        {/* Chat Panel — slides in from left (respects prefers-reduced-motion) */}
+        <div
+          style={{
+            ...S.chatPanel,
+            width: chatOpen ? 420 : 0,
+            opacity: chatOpen ? 1 : 0,
+            transform: chatOpen ? 'translateX(0)' : 'translateX(-20px)',
+            transition: reducedMotion ? 'none' : S.chatPanel.transition,
+          }}
+        >
+          <div style={S.chatHeader}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <MessageSquare size={16} style={{ color: EMBRY.accent }} />
+              <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Ask Embry</span>
             </div>
-            {/* View navigation with counts */}
-              {TABS.map((tab) => (
-                <button key={tab} data-qid={`sparta:left-nav:${tab.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => { navigateToTab(tab); setLeftOpen(false) }} data-qs-action="NAVIGATE_TAB" data-qs-params={JSON.stringify({ tab })} title={`Navigate to ${tab}`} style={{
-                  ...S.sourceItem,
-                  ...(activeTab === tab ? S.sourceItemActive : {}),
-                }}>
-                <span>{tab}</span>
-                {loadingTabs[tab] && <span style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: EMBRY.accent, animation: 'pulse 1s infinite' }} />}
-              </button>
-            ))}
-            {/* Collection stats */}
-            <div style={{ padding: '12px 16px', borderTop: `1px solid ${EMBRY.border}`, marginTop: 'auto' }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>Collections</div>
-              {collectionCounts.loading ? (
-                <span style={{ fontSize: 9, color: EMBRY.dim }}>loading...</span>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <CountRow label="controls" value={collectionCounts.controls} />
-                  <CountRow label="qras" value={collectionCounts.qras} />
-                  <CountRow label="relationships" value={collectionCounts.relationships} />
-                  <CountRow label="urls" value={collectionCounts.urls} />
-                  <CountRow label="knowledge" value={collectionCounts.knowledge} />
-                </div>
-              )}
+            <button
+              data-qid="sparta:button:chat-close"
+              data-qs-action="CLOSE_CHAT"
+              onClick={() => setChatOpen(false)}
+              title="Close chat (Cmd+\\)"
+              style={S.chatCloseBtn}
+            >
+              <ChevronLeft size={18} />
+            </button>
+          </div>
+          {/* Scope/Gate toggles */}
+          <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 2, flex: 1 }}>
+              {(['sparta', 'f36', 'both'] as const).map(s => (
+                <button key={s} data-qid={`sparta:button:chat-scope-${s}`} data-qs-action="SET_CHAT_SCOPE" onClick={() => setScope(s)} title={`Scope: ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
+                  {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
+                </button>
+              ))}
             </div>
-          </aside>
-        )}
+            <div style={{ display: 'flex', gap: 2 }}>
+              {(['fast', 'medium', 'accurate'] as const).map(g => (
+                <button key={g} data-qid={`sparta:button:chat-depth-${g}`} data-qs-action="SET_CHAT_DEPTH" onClick={() => setGateDepth(g)} title={`Depth: ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
+                  {g[0].toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
+          </div>
+        </div>
 
-          {/* PANE 3: Main data table (always fills remaining space) */}
+        {/* Main Content Area */}
+        <div style={S.mainContent}>
           <SpartaNavContext.Provider value={navContextValue}>
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', minWidth: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
               {TABS.map((tab) => (
-                <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-                  {tab === 'Posture' ? (views[tab] ?? <PostureDashboard />)
-                    : tab === 'Entities' ? (views[tab] ?? <EntitySpanViewer />)
-                    : tab === 'Overview' ? (views[tab] ?? <OverviewLanding onNavigate={navigateToTab} />)
+                <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                  {tab === 'Posture' ? (views[tab] ?? <PostureDashboard onAnalyzeProofChain={(missingCount) => {
+                      const contextMsg: ChatMessage = {
+                        role: 'assistant',
+                        content: `Analyzing proof chain for Posture Score. Found ${missingCount} evidence gaps. I'll trace the missing evidence cases and identify which controls lack sufficient proof. What would you like to focus on first?`,
+                      }
+                      setMessages([contextMsg])
+                      setChatOpen(true)
+                    }} />)
                     : (views[tab] ?? <TabPlaceholder name={tab} />)}
                 </div>
               ))}
             </div>
           </SpartaNavContext.Provider>
-      </div>
 
-      {/* PANE 4: Query flyout drawer (overlays from right) */}
-      <div style={{ ...S.drawer, ...(rightOpen ? S.drawerOpen : {}) }}>
-        <div style={S.drawerHead}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 13, fontWeight: 900, color: EMBRY.white }}>Query</span>
-            <button data-qid="sparta:pane:close-right" onClick={() => setRightOpen(false)} data-qs-action="CLOSE_RIGHT_PANE" title="Close query pane" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{'\u00D7'}</button>
-          </div>
-          {/* Compact scope + gate */}
-          <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
-            <div style={{ display: 'flex', gap: 1, flex: 1 }}>
-              {(['sparta', 'f36', 'both'] as const).map(s => (
-                <button key={s} data-qid={`sparta:drawer:scope-${s}`} data-qs-action={`SPARTA_SET_SCOPE_${s.toUpperCase()}`} onClick={() => setScope(s)} title={`Set scope to ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
-                  {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
-                </button>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 1 }}>
-              {(['fast', 'medium', 'accurate'] as const).map(g => (
-                <button key={g} data-qid={`sparta:drawer:depth-${g}`} data-qs-action={`SPARTA_SET_DEPTH_${g.toUpperCase()}`} onClick={() => setGateDepth(g)} title={`Set depth to ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
-                  {g === 'fast' ? 'F' : g === 'medium' ? 'M' : 'A'}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div style={{ flex: 1, overflow: 'hidden' }}>
-          <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
         </div>
       </div>
 
@@ -537,17 +654,17 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
       {/* Settings modal */}
       {settingsOpen && (
-        <div data-qid="sparta:settings:overlay" style={S.modalOverlay} onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings">
+        <div data-qid="sparta:layout:settings-overlay" style={S.modalOverlay} onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings">
           <div style={S.modal} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white }}>Query Settings</span>
-              <button data-qid="sparta:settings:close" onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{'\u00D7'}</button>
+              <button data-qid="sparta:button:settings-close" onClick={() => setSettingsOpen(false)} data-qs-action="CLOSE_SETTINGS" title="Close settings" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 18, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{'\u00D7'}</button>
             </div>
             <div style={{ marginBottom: 16 }}>
               <div style={S.modalLabel}>Scope</div>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['sparta', 'f36', 'both'] as const).map(s => (
-                  <button key={s} data-qid={`sparta:settings:scope-${s}`} onClick={() => setScope(s)} data-qs-action="SET_SCOPE" data-qs-params={JSON.stringify({ scope: s })} title={`Set scope to ${s}`} style={{ ...toggleMd, ...(scope === s ? toggleActive : {}) }}>
+                  <button key={s} data-qid={`sparta:button:settings-scope-${s}`} onClick={() => setScope(s)} data-qs-action="SET_SCOPE" data-qs-params={JSON.stringify({ scope: s })} title={`Set scope to ${s}`} style={{ ...toggleMd, ...(scope === s ? toggleActive : {}) }}>
                     {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
                   </button>
                 ))}
@@ -557,7 +674,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               <div style={S.modalLabel}>Gate Depth</div>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['fast', 'medium', 'accurate'] as const).map(g => (
-                  <button key={g} data-qid={`sparta:settings:depth-${g}`} onClick={() => setGateDepth(g)} data-qs-action="SET_GATE_DEPTH" data-qs-params={JSON.stringify({ depth: g })} title={`Set gate depth to ${g}`} style={{ ...toggleMd, ...(gateDepth === g ? toggleActive : {}) }}>
+                  <button key={g} data-qid={`sparta:button:settings-depth-${g}`} onClick={() => setGateDepth(g)} data-qs-action="SET_GATE_DEPTH" data-qs-params={JSON.stringify({ depth: g })} title={`Set gate depth to ${g}`} style={{ ...toggleMd, ...(gateDepth === g ? toggleActive : {}) }}>
                     {g.charAt(0).toUpperCase() + g.slice(1)}
                   </button>
                 ))}
@@ -568,7 +685,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 16px' }}>
                 {FRAMEWORKS.map(fw => (
                   <label key={fw} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                    <input type="checkbox" data-qid={`sparta:settings:fw-${fw.toLowerCase()}`} checked={frameworkFilters[fw] ?? true} onChange={() => toggleFramework(fw)} data-qs-action="TOGGLE_FRAMEWORK_FILTER" data-qs-params={JSON.stringify({ framework: fw })} title={`Toggle ${fw} framework filter`} style={{ accentColor: EMBRY.fw[fw] ?? EMBRY.accent, width: 14, height: 14 }} />
+                    <input type="checkbox" data-qid={`sparta:input:framework-${fw.toLowerCase()}`} checked={frameworkFilters[fw] ?? true} onChange={() => toggleFramework(fw)} data-qs-action="TOGGLE_FRAMEWORK_FILTER" data-qs-params={JSON.stringify({ framework: fw })} title={`Toggle ${fw} framework filter`} style={{ accentColor: EMBRY.fw[fw] ?? EMBRY.accent, width: 14, height: 14 }} />
                     <span style={{ ...fwBadge(fw), fontSize: 10 }}>{fw}</span>
                   </label>
                 ))}
@@ -623,51 +740,195 @@ const S = {
     display: 'flex',
     flexDirection: 'column' as const,
     flex: 1,
+    height: '100%',
+    minHeight: 0,
     overflow: 'hidden',
     position: 'relative' as const,
-  },
-  main: {
-    display: 'flex',
-    flex: 1,
-    overflow: 'hidden',
     backgroundColor: EMBRY.bg,
   },
 
-  // PANE 1: Icon-only global nav
-  iconNav: {
-    width: 52,
+  // Horizontal Tab Strip
+  tabStrip: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0 16px',
+    height: 48,
     flexShrink: 0,
-    backgroundColor: '#000000',
+    backgroundColor: '#0a0b0d',
+    borderBottom: `1px solid ${EMBRY.border}`,
+  } as React.CSSProperties,
+  tabStripLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+  } as React.CSSProperties,
+  tabStripRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+  } as React.CSSProperties,
+  tabBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '8px 14px',
+    fontSize: 12,
+    fontWeight: 600,
+    color: EMBRY.dim,
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderRadius: 6,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    minHeight: 44,
+  } as React.CSSProperties,
+  tabBtnActive: {
+    color: EMBRY.white,
+    backgroundColor: `${EMBRY.accent}18`,
+    boxShadow: `inset 0 -2px 0 ${EMBRY.accent}`,
+  } as React.CSSProperties,
+  settingsBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 44,
+    height: 44,
+    minHeight: 44,
+    minWidth: 44,
+    borderRadius: 6,
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: EMBRY.dim,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+  } as React.CSSProperties,
+  embryBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    minHeight: 40,
+    minWidth: 40,
+    borderRadius: '50%',
+    border: '1px solid rgba(0, 209, 255, 0.2)',
+    backgroundColor: 'transparent',
+    color: '#fff',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    boxShadow: '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)',
+  } as React.CSSProperties,
+
+  // Split Container
+  splitContainer: {
+    display: 'flex',
+    flex: 1,
+    minHeight: 0,
+    overflow: 'hidden',
+    position: 'relative' as const,
+  } as React.CSSProperties,
+
+  // Chat Panel (slides in from left)
+  // Note: transition respects prefers-reduced-motion via CSS media query in theme
+  chatPanel: {
+    flexShrink: 0,
+    backgroundColor: EMBRY.bgPanel,
     borderRight: `1px solid ${EMBRY.border}`,
     display: 'flex',
     flexDirection: 'column' as const,
+    overflow: 'hidden',
+    transition: 'opacity 0.25s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+  } as React.CSSProperties,
+  chatHeader: {
+    display: 'flex',
     alignItems: 'center',
-    padding: '12px 0',
-    gap: 4,
-  },
-  navBtn: {
+    justifyContent: 'space-between',
+    padding: '12px 16px',
+    borderBottom: `1px solid ${EMBRY.border}`,
+    backgroundColor: '#0a0b0d',
+    flexShrink: 0,
+  } as React.CSSProperties,
+  chatCloseBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 44,
     height: 44,
     minWidth: 44,
     minHeight: 44,
-    borderRadius: 8,
+    borderRadius: 6,
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: EMBRY.dim,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+  } as React.CSSProperties,
+
+  // Main Content Area
+  mainContent: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    minHeight: 0,
+    overflow: 'hidden',
+    position: 'relative' as const,
+  } as React.CSSProperties,
+
+  // Floating Ask AI Button — 44px minimum touch target (WCAG 2.1 / MIL-STD-1472H)
+  askAiBtn: {
+    position: 'absolute' as const,
+    bottom: 24,
+    right: 24,
+    boxSizing: 'border-box' as const,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: 'pointer',
-    color: EMBRY.dim,
-    transition: '0.2s',
+    gap: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
+    minWidth: 56,
+    minHeight: 56,
+    height: 56,
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#fff',
+    backgroundColor: EMBRY.accent,
     border: 'none',
-    background: 'none',
-  } as React.CSSProperties,
-  navBtnActive: {
-    background: '#1a1d23',
-    color: EMBRY.green,
-    border: `1px solid ${EMBRY.green}4d`,
-    boxShadow: `0 0 15px ${EMBRY.green}1a`,
+    borderRadius: 12,
+    cursor: 'pointer',
+    boxShadow: `0 4px 20px ${EMBRY.accent}40, 0 0 40px ${EMBRY.accent}20`,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    zIndex: 100,
   } as React.CSSProperties,
 
-  // PANE 2: Sources/explorer
+  // Ghost-style query button — transparent, subtle border, appears on hover
+  queryBtn: {
+    position: 'absolute' as const,
+    bottom: 64,
+    right: 24,
+    boxSizing: 'border-box' as const,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingLeft: 12,
+    paddingRight: 14,
+    minWidth: 44,
+    minHeight: 44,
+    height: 36,
+    fontSize: 11,
+    fontWeight: 500,
+    letterSpacing: '0.03em',
+    color: 'rgba(0, 209, 255, 0.7)',
+    backgroundColor: 'transparent',
+    border: '1px solid rgba(0, 209, 255, 0.15)',
+    borderRadius: 4,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    zIndex: 100,
+  } as React.CSSProperties,
+
+  // Legacy styles (keeping for compatibility)
   sourcesPane: {
     width: 240,
     flexShrink: 0,

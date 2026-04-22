@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer",
+  "description": "ThreatMatrix DFARS 7012 Export + TacticalHUD + Bloom Mode tests",
+  "base_url": "http://localhost:3004",
+  "surfaces": [
+    {
+      "name": "threat-matrix-bloom",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='threat-matrix:view-bloom']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "view-mode-toggle",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Initial state - standard view"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:view-bloom']",
+              "description": "Switch to bloom view",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='threat-matrix:view-bloom']",
+              "assert_qs_action": "[data-qid='threat-matrix:view-bloom']",
+              "assert_min_size": {
+                "selector": "[data-qid='threat-matrix:view-bloom']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        },
+        {
+          "name": "bloom-cell-hover",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid^='threat-matrix:bloom-cell:']",
+              "timeout_ms": 3000
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid^='threat-matrix:bloom-cell:']",
+              "description": "Hover bloom cell to trigger TacticalHUD",
+              "screenshot_after": true,
+              "burst": true,
+              "burst_frames": 3
+            }
+          ]
+        },
+        {
+          "name": "bloom-cell-click",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid^='threat-matrix:bloom-cell:']",
+              "description": "Click bloom cell to open detail panel",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "detail-panel-dfars",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='threat-matrix:detail:close']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "detail-panel-scroll",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Detail panel header visible"
+            },
+            {
+              "action": "scroll",
+              "direction": "down",
+              "amount": 500,
+              "description": "Scroll detail panel content",
+              "screenshot_after": true
+            },
+            {
+              "action": "assert_visible",
+              "target": "[data-qid='threat-matrix:detail:close']",
+              "description": "Close button remains visible after scroll"
+            }
+          ]
+        },
+        {
+          "name": "dfars-export-button",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid='threat-matrix:detail:dfars-export']",
+              "timeout_ms": 5000
+            },
+            {
+              "action": "screenshot",
+              "description": "DFARS export section visible"
+            },
+            {
+              "action": "assert_title",
+              "target": "[data-qid='threat-matrix:detail:dfars-export']"
+            },
+            {
+              "action": "assert_qs_action",
+              "target": "[data-qid='threat-matrix:detail:dfars-export']"
+            },
+            {
+              "action": "assert_min_size",
+              "selector": "[data-qid='threat-matrix:detail:dfars-export']",
+              "min_width": 44,
+              "min_height": 44
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:detail:dfars-export']",
+              "description": "Click DFARS export button",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "close-detail",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:detail:close']",
+              "description": "Close detail panel",
+              "screenshot_after": true,
+              "assert_min_size": {
+                "selector": "[data-qid='threat-matrix:detail:close']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "graph-view",
+      "path": "/#sparta-explorer",
+      "wait_ready": "[data-qid='threat-matrix:view-graph']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "switch-to-graph",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:view-graph']",
+              "description": "Switch to graph view",
+              "screenshot_after": true
+            },
+            {
+              "action": "wait",
+              "timeout_ms": 2000,
+              "description": "Wait for D3 force simulation"
+            },
+            {
+              "action": "screenshot",
+              "description": "Graph view with force-directed layout"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

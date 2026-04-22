@@ -182,7 +182,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 						<span style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0" }}>Embry Agent</span>
 						<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
 							{contextStr && <span style={{ fontSize: 12, color: "#94a3b8", background: "#1a1a1a", padding: "2px 8px", borderRadius: 4 }}>{contextStr}</span>}
-							<button data-qid="chat:close-chat" data-qs-action="CHAT_CLOSE_CHAT" title="Close Chat" aria-label="Close chat" title="Close chat (Esc)" onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 18, padding: 8, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
+							<button data-qid="chat:close-chat" data-qs-action="CHAT_CLOSE_CHAT" title="Close chat (Esc)" aria-label="Close chat" onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 18, padding: 8, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
 						</div>
 					</div>
 
@@ -242,9 +242,8 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 									fontFamily: "var(--font-ui)", resize: "none", outline: "none",
 								}}
 							/>
-							<button data-qid="chat:send-message" data-qs-action="CHAT_SEND_MESSAGE" title="Send Message"
+							<button data-qid="chat:send-message" data-qs-action="CHAT_SEND_MESSAGE" title="Send message (Enter)"
 								aria-label="Send message"
-								title="Send message (Enter)"
 								onClick={sendMessage}
 								disabled={!input.trim() || pipeline.isLoading}
 								style={{
@@ -265,7 +264,7 @@ export default function ChatFAB({ currentView, selectedDocId, selectedSection, b
 			)}
 
 			{/* FAB button */}
-			<button data-qid="chat:el-3" data-qs-action="CHAT_TOGGLE_FAB" title="Toggle chat"
+			<button data-qid="chat:el-3" data-qs-action="CHAT_TOGGLE_FAB"
 				aria-label={open ? "Close Embry Agent" : "Open Embry Agent (press ? to toggle)"}
 				aria-expanded={open}
 				title={open ? "Close Embry Agent" : "Open Embry Agent chat"}

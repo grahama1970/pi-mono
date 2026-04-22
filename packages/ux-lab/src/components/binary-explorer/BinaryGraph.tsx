@@ -333,7 +333,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
           {(['organic', 'hierarchical', 'stratified', 'clustered'] as const).map((mode) => (
-            <button key={mode} data-qid={`be:layout:${mode}`} data-qs-action="SET_LAYOUT" title="Switch graph layout" data-qs-params={JSON.stringify({ mode })} onClick={() => setActiveLayout(mode)}
+            <button key={mode} data-qid={`be:layout:${mode}`} data-qs-action="SET_LAYOUT" data-qs-params={JSON.stringify({ mode })} onClick={() => setActiveLayout(mode)}
               title={mode === 'organic' ? 'Force-directed' : mode === 'hierarchical' ? 'Sugiyama DAG' : mode === 'stratified' ? 'Layer by type' : 'Cluster by namespace'}
               style={{ fontSize: 8, padding: '1px 6px', cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.04em', border: `1px solid ${activeLayout === mode ? EMBRY.accent : EMBRY.border}`, background: activeLayout === mode ? `${EMBRY.accent}22` : 'transparent', color: activeLayout === mode ? EMBRY.accent : EMBRY.muted, borderRadius: 0 }}>
               {mode === 'organic' ? 'FORCE' : mode === 'hierarchical' ? 'HIERARCHY' : mode === 'stratified' ? 'LAYERS' : 'CLUSTERS'}

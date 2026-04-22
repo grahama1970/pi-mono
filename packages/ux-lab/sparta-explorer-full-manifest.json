@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer",
+  "base_url": "http://localhost:3002",
+  "description": "Comprehensive test of all SPARTA Explorer tabs - Posture through Supply Chain",
+  "surfaces": [
+    {
+      "name": "posture",
+      "path": "/#sparta-explorer/posture",
+      "wait_ready": "[data-qid='posture:tab:posture']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "posture-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Posture view - initial state with compliance status indicators"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='posture:tab:traceability']",
+              "description": "Switch to traceability tab",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='posture:tab:assurance-case-health']",
+              "description": "Switch to assurance case health tab",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='posture:tab:posture']",
+              "description": "Return to posture tab"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "threat-matrix",
+      "path": "/#sparta-explorer/threat-matrix",
+      "wait_ready": "[data-qid='threat-matrix:input:datalake-selector']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "threat-matrix-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Threat Matrix - standard view showing SPARTA tactics grid"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:view-bloom']",
+              "description": "Switch to bloom filter view",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:view-graph']",
+              "description": "Switch to graph view",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:condensed-toggle']",
+              "description": "Toggle condensed mode"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:view-standard']",
+              "description": "Return to standard view",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "controls",
+      "path": "/#sparta-explorer/controls",
+      "wait_ready": "[data-qid='controls:search:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "controls-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Controls view - showing security controls list"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='controls:search:input']",
+              "value": "access control",
+              "description": "Search for access control",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:filter:nist']",
+              "description": "Filter by NIST framework",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:filter:all']",
+              "description": "Clear framework filter"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:page:next']",
+              "description": "Navigate to next page",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "qras",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='qras:search']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "qras-left-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "QRAs view - review queue with MIND filters"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='qras:search']",
+              "value": "authentication",
+              "description": "Filter QRAs by authentication keyword"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:filter:mind:Harden']",
+              "description": "Filter by Harden MIND category",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "qras-center-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "QRA detail panel with Accept/Reject/Edit actions"
+            }
+          ]
+        },
+        {
+          "name": "qras-evidence-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Evidence Context pane showing crosswalk chains"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sources",
+      "path": "/#sparta-explorer/sources",
+      "wait_ready": "[data-qid='sources:source:sparta-tactics']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "sources-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Sources view - data provenance and ingestion status"
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='sources:source:sparta-tactics']",
+              "description": "Hover over SPARTA tactics source for details"
+            },
+            {
+              "action": "screenshot",
+              "description": "Sources view with hover state"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "urls",
+      "path": "/#sparta-explorer/urls",
+      "wait_ready": "[data-qid='urls:search:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "urls-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "URLs view - reference link vitality and fetch status"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='urls:search:input']",
+              "value": "nist.gov",
+              "description": "Search for NIST domain URLs",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='urls:filter:all']",
+              "description": "Show all domain filters"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='urls:page:next']",
+              "description": "Navigate to next page of URLs",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "supply-chain",
+      "path": "/#sparta-explorer/supply-chain",
+      "wait_ready": "[data-qid='supply-chain-scenario-select']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "supply-chain-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Supply Chain view - component dependency analysis"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='supply-chain-scenario-select']",
+              "description": "Open scenario selector dropdown",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

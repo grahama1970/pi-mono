@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
 import type { BboxBlock } from './types'
@@ -7,49 +8,153 @@ import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
-// ---------------------------------------------------------------------------
-// Props
-// ---------------------------------------------------------------------------
-
 interface PdfCanvasProps {
   pdfUrl: string
   pageNumber: number
   bboxOverlays: BboxBlock[]
+  compareOverlays?: BboxBlock[]
   selectedBlockId: string | null
   onBlockClick: (id: string) => void
+  onBlockContextMenu?: (id: string, x: number, y: number) => void
   zoom: number
   editMode?: boolean
+  onBlockBBoxChange?: (id: string, bbox: [number, number, number, number]) => void
+  onCanvasClick?: () => void
+  onCreateBlock?: (bbox: [number, number, number, number]) => void
 }
 
-const DEFAULT_DPI = 150
-const SCALE = DEFAULT_DPI / 72 // pdf.js uses 72 DPI internally
+type ResizeHandle = 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w'
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
+type EditInteraction =
+  | {
+      mode: 'drag'
+      blockId: string
+      start: [number, number]
+      originalBbox: [number, number, number, number]
+    }
+  | {
+      mode: 'resize'
+      blockId: string
+      handle: ResizeHandle
+      originalBbox: [number, number, number, number]
+    }
+  | {
+      mode: 'create'
+      start: [number, number]
+    }
+
+const DEFAULT_DPI = 150
+const SCALE = DEFAULT_DPI / 72
+const HANDLE_SIZE_PX = 8
+const MIN_HANDLE_TARGET_PX = 6
+
+const HANDLE_DEFS: Array<{ key: ResizeHandle; left: string; top: string; cursor: string }> = [
+  { key: 'nw', left: '0%', top: '0%', cursor: 'nw-resize' },
+  { key: 'n', left: '50%', top: '0%', cursor: 'n-resize' },
+  { key: 'ne', left: '100%', top: '0%', cursor: 'ne-resize' },
+  { key: 'e', left: '100%', top: '50%', cursor: 'e-resize' },
+  { key: 'se', left: '100%', top: '100%', cursor: 'se-resize' },
+  { key: 's', left: '50%', top: '100%', cursor: 's-resize' },
+  { key: 'sw', left: '0%', top: '100%', cursor: 'sw-resize' },
+  { key: 'w', left: '0%', top: '50%', cursor: 'w-resize' },
+]
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value))
+}
+
+function moveBBox(
+  original: [number, number, number, number],
+  dx: number,
+  dy: number
+): [number, number, number, number] {
+  const width = original[2] - original[0]
+  const height = original[3] - original[1]
+  const x1 = clamp(original[0] + dx, 0, 1 - width)
+  const y1 = clamp(original[1] + dy, 0, 1 - height)
+  return [x1, y1, x1 + width, y1 + height]
+}
+
+function resizeBBox(
+  original: [number, number, number, number],
+  handle: ResizeHandle,
+  point: [number, number],
+  minWidth: number,
+  minHeight: number
+): [number, number, number, number] {
+  let [x1, y1, x2, y2] = original
+  const [px, py] = point
+
+  if (handle.includes('w')) x1 = clamp(px, 0, x2 - minWidth)
+  if (handle.includes('e')) x2 = clamp(px, x1 + minWidth, 1)
+  if (handle.includes('n')) y1 = clamp(py, 0, y2 - minHeight)
+  if (handle.includes('s')) y2 = clamp(py, y1 + minHeight, 1)
+
+  return [x1, y1, x2, y2]
+}
+
+function buildBBoxFromPoints(
+  start: [number, number],
+  end: [number, number]
+): [number, number, number, number] {
+  return [
+    Math.min(start[0], end[0]),
+    Math.min(start[1], end[1]),
+    Math.max(start[0], end[0]),
+    Math.max(start[1], end[1]),
+  ]
+}
 
 export default function PdfCanvas({
   pdfUrl,
   pageNumber,
   bboxOverlays,
+  compareOverlays = [],
   selectedBlockId,
   onBlockClick,
+  onBlockContextMenu,
   zoom,
   editMode = false,
+  onBlockBBoxChange,
+  onCanvasClick,
+  onCreateBlock,
 }: PdfCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const pageWrapperRef = useRef<HTMLDivElement>(null)
 
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null)
   const [page, setPage] = useState<PDFPageProxy | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [dims, setDims] = useState({ w: 0, h: 0 })
+  const [interaction, setInteraction] = useState<EditInteraction | null>(null)
+  const [draftCreateBBox, setDraftCreateBBox] = useState<[number, number, number, number] | null>(null)
+  const [hoveredBlockId, setHoveredBlockId] = useState<string | null>(null)
 
-  // -----------------------------------------------------------------------
-  // Load PDF document
-  // -----------------------------------------------------------------------
+  const editable = Boolean(editMode && onBlockBBoxChange)
+
+  const interactiveBlocks = useMemo(() => {
+    return [...bboxOverlays].sort((a, b) => {
+      const aArea = (a.bbox[2] - a.bbox[0]) * (a.bbox[3] - a.bbox[1])
+      const bArea = (b.bbox[2] - b.bbox[0]) * (b.bbox[3] - b.bbox[1])
+      return bArea - aArea
+    })
+  }, [bboxOverlays])
+
+  const getPageRect = useCallback(() => {
+    return pageWrapperRef.current?.getBoundingClientRect() ?? overlayRef.current?.getBoundingClientRect() ?? null
+  }, [])
+
+  const pointerToNormalized = useCallback((clientX: number, clientY: number): [number, number] | null => {
+    const rect = getPageRect()
+    if (!rect || rect.width === 0 || rect.height === 0) return null
+    const x = clamp((clientX - rect.left) / rect.width, 0, 1)
+    const y = clamp((clientY - rect.top) / rect.height, 0, 1)
+    return [x, y]
+  }, [getPageRect])
+
   useEffect(() => {
     if (!pdfUrl) return
 
@@ -78,14 +183,10 @@ export default function PdfCanvas({
     }
   }, [pdfUrl])
 
-  // -----------------------------------------------------------------------
-  // Load page when doc or pageNumber changes
-  // -----------------------------------------------------------------------
   useEffect(() => {
     if (!pdfDoc) return
 
     let cancelled = false
-    // pdfjs pages are 1-indexed; our pageNumber is 0-indexed
     const pdfPage = pageNumber + 1
     if (pdfPage < 1 || pdfPage > pdfDoc.numPages) {
       setError(`Page ${pdfPage} out of range (1-${pdfDoc.numPages})`)
@@ -109,9 +210,6 @@ export default function PdfCanvas({
     return () => { cancelled = true }
   }, [pdfDoc, pageNumber])
 
-  // -----------------------------------------------------------------------
-  // Render page to canvas
-  // -----------------------------------------------------------------------
   useEffect(() => {
     if (!page || !canvasRef.current) return
 
@@ -127,7 +225,9 @@ export default function PdfCanvas({
     let cancelled = false
     const renderTask = page.render({ canvas, canvasContext: ctx, viewport })
     renderTask.promise.catch(() => {
-      if (!cancelled) { /* render cancelled, ignore */ }
+      if (!cancelled) {
+        return
+      }
     })
 
     return () => {
@@ -136,9 +236,6 @@ export default function PdfCanvas({
     }
   }, [page, zoom])
 
-  // -----------------------------------------------------------------------
-  // Draw bbox overlays
-  // -----------------------------------------------------------------------
   useEffect(() => {
     if (!overlayRef.current || dims.w === 0) return
 
@@ -150,6 +247,20 @@ export default function PdfCanvas({
     canvas.height = dims.h
     ctx.clearRect(0, 0, dims.w, dims.h)
 
+    for (const block of compareOverlays) {
+      const [x1, y1, x2, y2] = block.bbox
+      const rx = x1 * dims.w
+      const ry = y1 * dims.h
+      const rw = (x2 - x1) * dims.w
+      const rh = (y2 - y1) * dims.h
+      ctx.save()
+      ctx.setLineDash([6, 4])
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.9)'
+      ctx.lineWidth = 1.5
+      ctx.strokeRect(rx, ry, rw, rh)
+      ctx.restore()
+    }
+
     for (const block of bboxOverlays) {
       const [x1, y1, x2, y2] = block.bbox
       const rx = x1 * dims.w
@@ -158,27 +269,74 @@ export default function PdfCanvas({
       const rh = (y2 - y1) * dims.h
 
       const isSelected = block.id === selectedBlockId
-      const color = BLOCK_TYPE_COLORS[block.blockType]
+      const color = block.humanEdited ? '#23c7d9' : BLOCK_TYPE_COLORS[block.blockType]
 
-      // Fill
-      ctx.fillStyle = isSelected ? 'rgba(124, 58, 237, 0.12)' : `${color}18`
+      ctx.fillStyle = isSelected
+        ? 'rgba(124, 58, 237, 0.12)'
+        : block.humanEdited
+          ? 'rgba(35, 199, 217, 0.14)'
+          : `${color}18`
       ctx.fillRect(rx, ry, rw, rh)
 
-      // Stroke
-      if (isSelected) {
-        ctx.strokeStyle = '#7c3aed'
-        ctx.lineWidth = 2
-      } else {
-        ctx.strokeStyle = `${color}99`
-        ctx.lineWidth = 1
-      }
+      ctx.strokeStyle = isSelected ? '#7c3aed' : `${color}cc`
+      ctx.lineWidth = isSelected ? 2 : block.humanEdited ? 1.75 : 1
       ctx.strokeRect(rx, ry, rw, rh)
     }
-  }, [bboxOverlays, selectedBlockId, dims])
+  }, [bboxOverlays, compareOverlays, selectedBlockId, dims])
 
-  // -----------------------------------------------------------------------
-  // Click detection on overlay canvas
-  // -----------------------------------------------------------------------
+  useEffect(() => {
+    if (!editable || !interaction) return
+
+    const handleMove = (event: MouseEvent) => {
+      const pointer = pointerToNormalized(event.clientX, event.clientY)
+      const rect = getPageRect()
+      if (!pointer || !rect) return
+      const minWidth = Math.max(MIN_HANDLE_TARGET_PX / rect.width, 0.003)
+      const minHeight = Math.max(MIN_HANDLE_TARGET_PX / rect.height, 0.003)
+
+      if (interaction.mode === 'create') {
+        setDraftCreateBBox(buildBBoxFromPoints(interaction.start, pointer))
+        return
+      }
+
+      if (!onBlockBBoxChange) return
+      const nextBBox = interaction.mode === 'drag'
+        ? moveBBox(
+            interaction.originalBbox,
+            pointer[0] - interaction.start[0],
+            pointer[1] - interaction.start[1]
+          )
+        : resizeBBox(interaction.originalBbox, interaction.handle, pointer, minWidth, minHeight)
+
+      onBlockBBoxChange(interaction.blockId, nextBBox)
+    }
+
+    const handleUp = () => {
+      if (interaction.mode === 'create') {
+        const rect = getPageRect()
+        if (rect && draftCreateBBox && onCreateBlock) {
+          const width = draftCreateBBox[2] - draftCreateBBox[0]
+          const height = draftCreateBBox[3] - draftCreateBBox[1]
+          const minWidth = Math.max(MIN_HANDLE_TARGET_PX / rect.width, 0.003)
+          const minHeight = Math.max(MIN_HANDLE_TARGET_PX / rect.height, 0.003)
+          if (width >= minWidth && height >= minHeight) onCreateBlock(draftCreateBBox)
+          else onCanvasClick?.()
+        } else {
+          onCanvasClick?.()
+        }
+        setDraftCreateBBox(null)
+      }
+      setInteraction(null)
+    }
+
+    window.addEventListener('mousemove', handleMove)
+    window.addEventListener('mouseup', handleUp)
+    return () => {
+      window.removeEventListener('mousemove', handleMove)
+      window.removeEventListener('mouseup', handleUp)
+    }
+  }, [editable, interaction, onBlockBBoxChange, pointerToNormalized, getPageRect, draftCreateBBox, onCreateBlock, onCanvasClick])
+
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       if (!overlayRef.current || dims.w === 0) return
@@ -189,11 +347,9 @@ export default function PdfCanvas({
       const cx = (e.clientX - rect.left) * scaleX
       const cy = (e.clientY - rect.top) * scaleY
 
-      // Normalized coords
       const nx = cx / dims.w
       const ny = cy / dims.h
 
-      // Find smallest block containing click (most specific match)
       let best: BboxBlock | null = null
       let bestArea = Infinity
       for (const block of bboxOverlays) {
@@ -207,16 +363,41 @@ export default function PdfCanvas({
         }
       }
 
-      if (best) {
-        onBlockClick(best.id)
-      }
+      if (best) onBlockClick(best.id)
+      else onCanvasClick?.()
     },
-    [bboxOverlays, dims, onBlockClick]
+    [bboxOverlays, dims, onBlockClick, onCanvasClick]
   )
 
-  // -----------------------------------------------------------------------
-  // Render states
-  // -----------------------------------------------------------------------
+  const startDrag = useCallback((event: React.MouseEvent<HTMLDivElement>, block: BboxBlock) => {
+    if (!editable) return
+    if (event.button !== 0) return
+    const pointer = pointerToNormalized(event.clientX, event.clientY)
+    if (!pointer) return
+    event.preventDefault()
+    event.stopPropagation()
+    onBlockClick(block.id)
+    setInteraction({
+      mode: 'drag',
+      blockId: block.id,
+      start: pointer,
+      originalBbox: block.bbox,
+    })
+  }, [editable, onBlockClick, pointerToNormalized])
+
+  const startResize = useCallback((event: React.MouseEvent<HTMLDivElement>, block: BboxBlock, handle: ResizeHandle) => {
+    if (!editable) return
+    if (event.button !== 0) return
+    event.preventDefault()
+    event.stopPropagation()
+    onBlockClick(block.id)
+    setInteraction({
+      mode: 'resize',
+      blockId: block.id,
+      handle,
+      originalBbox: block.bbox,
+    })
+  }, [editable, onBlockClick])
 
   if (!pdfUrl) {
     return (
@@ -262,71 +443,137 @@ export default function PdfCanvas({
         backgroundColor: '#0f1216',
       }}
     >
-      <div data-qid="pdf:page-wrapper" data-qs-action="PDF_PAGE_WRAPPER" title="Page Wrapper" style={{ position: 'relative', flexShrink: 0, margin: '12px' }}>
-        <canvas ref={canvasRef} data-qid="pdf:canvas" data-qs-action="PDF_CANVAS" title="PDF page canvas" style={{ display: 'block' }} />
+      <div
+        ref={pageWrapperRef}
+        data-qid="pdf:page-wrapper"
+        data-qs-action="PDF_PAGE_WRAPPER"
+        title="Page Wrapper"
+        style={{ position: 'relative', flexShrink: 0, margin: '12px' }}
+      >
+        <canvas
+          ref={canvasRef}
+          data-qid="pdf:canvas"
+          data-qs-action="PDF_CANVAS"
+          title="PDF page canvas"
+          style={{ display: 'block' }}
+        />
         <canvas
           ref={overlayRef}
-          onClick={handleOverlayClick}
+          onClick={editable ? undefined : handleOverlayClick}
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            cursor: 'crosshair',
+            pointerEvents: editable ? 'none' : 'auto',
+            cursor: editable ? 'default' : 'crosshair',
           }}
         />
-        {/* 4b.2: 8 resize handles on selected block in edit mode */}
-        {editMode && selectedBlockId && (() => {
-          const sel = bboxOverlays.find((b) => b.id === selectedBlockId)
-          if (!sel || dims.w === 0) return null
-          const cw = containerRef.current?.querySelector('canvas')?.clientWidth ?? dims.w
-          const ch = containerRef.current?.querySelector('canvas')?.clientHeight ?? dims.h
-          const [x1, y1, x2, y2] = sel.bbox
-          const left = x1 * cw
-          const top_ = y1 * ch
-          const right = x2 * cw
-          const bottom = y2 * ch
-          const mx = (left + right) / 2
-          const my = (top_ + bottom) / 2
-          const HS = 8 // handle size (4b.2: 8x8px)
-          const handles = [
-            { x: left, y: top_, cursor: 'nw-resize' },
-            { x: mx, y: top_, cursor: 'n-resize' },
-            { x: right, y: top_, cursor: 'ne-resize' },
-            { x: right, y: my, cursor: 'e-resize' },
-            { x: right, y: bottom, cursor: 'se-resize' },
-            { x: mx, y: bottom, cursor: 's-resize' },
-            { x: left, y: bottom, cursor: 'sw-resize' },
-            { x: left, y: my, cursor: 'w-resize' },
-          ]
-          return handles.map((h, i) => (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                left: `${h.x - HS / 2}px`,
-                top: `${h.y - HS / 2}px`,
-                width: `${HS}px`,
-                height: `${HS}px`,
-                backgroundColor: '#7c3aed',
-                border: '1px solid #5b21b6',
-                borderRadius: '1px',
-                cursor: h.cursor,
-                zIndex: 10,
-                pointerEvents: 'auto',
-              }}
-            />
-          ))
-        })()}
+        {editable && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              cursor: interaction?.mode === 'drag' ? 'move' : interaction?.mode === 'create' ? 'crosshair' : 'default',
+            }}
+            onMouseDown={(event) => {
+              if (event.button !== 0) return
+              if (event.target === event.currentTarget) {
+                const pointer = pointerToNormalized(event.clientX, event.clientY)
+                if (!pointer) return
+                setDraftCreateBBox([pointer[0], pointer[1], pointer[0], pointer[1]])
+                setInteraction({ mode: 'create', start: pointer })
+              }
+            }}
+            onContextMenu={(event) => {
+              event.preventDefault()
+              if (event.target === event.currentTarget) onCanvasClick?.()
+            }}
+          >
+            {interactiveBlocks.map((block) => {
+              const [x1, y1, x2, y2] = block.bbox
+              const isSelected = block.id === selectedBlockId
+              const isHovered = block.id === hoveredBlockId
+              const baseColor = block.humanEdited ? '#23c7d9' : BLOCK_TYPE_COLORS[block.blockType]
+              return (
+                <div
+                  key={block.id}
+                  onMouseDown={(event) => startDrag(event, block)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onBlockClick(block.id)
+                  }}
+                  onContextMenu={(event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    onBlockClick(block.id)
+                    onBlockContextMenu?.(block.id, event.clientX, event.clientY)
+                  }}
+                  onMouseEnter={() => setHoveredBlockId(block.id)}
+                  onMouseLeave={() => setHoveredBlockId(prev => prev === block.id ? null : prev)}
+                  style={{
+                    position: 'absolute',
+                    left: `${x1 * 100}%`,
+                    top: `${y1 * 100}%`,
+                    width: `${(x2 - x1) * 100}%`,
+                    height: `${(y2 - y1) * 100}%`,
+                    cursor: 'move',
+                    border: isSelected
+                      ? '2px solid rgba(124, 58, 237, 0.95)'
+                      : `1px dashed ${block.humanEdited ? 'rgba(35, 199, 217, 0.88)' : `${baseColor}99`}`,
+                    boxSizing: 'border-box',
+                    zIndex: isSelected ? 20 : 10,
+                    overflow: 'visible',
+                    boxShadow: isSelected
+                      ? '0 0 0 1px rgba(124, 58, 237, 0.2)'
+                      : isHovered
+                        ? `0 0 0 1px ${baseColor}55`
+                        : 'none',
+                  }}
+                >
+                  {isSelected && HANDLE_DEFS.map((handle) => (
+                    <div
+                      key={handle.key}
+                      onMouseDown={(event) => startResize(event, block, handle.key)}
+                      style={{
+                        position: 'absolute',
+                        left: `calc(${handle.left} - ${HANDLE_SIZE_PX / 2}px)`,
+                        top: `calc(${handle.top} - ${HANDLE_SIZE_PX / 2}px)`,
+                        width: `${HANDLE_SIZE_PX}px`,
+                        height: `${HANDLE_SIZE_PX}px`,
+                        borderRadius: '1px',
+                        backgroundColor: '#7c3aed',
+                        border: '1px solid #5b21b6',
+                        cursor: handle.cursor,
+                      }}
+                    />
+                  ))}
+                </div>
+              )
+            })}
+            {draftCreateBBox && (
+              <div
+                style={{
+                  position: 'absolute',
+                  left: `${draftCreateBBox[0] * 100}%`,
+                  top: `${draftCreateBBox[1] * 100}%`,
+                  width: `${(draftCreateBBox[2] - draftCreateBBox[0]) * 100}%`,
+                  height: `${(draftCreateBBox[3] - draftCreateBBox[1]) * 100}%`,
+                  border: '1.5px dashed rgba(35, 199, 217, 0.95)',
+                  backgroundColor: 'rgba(35, 199, 217, 0.08)',
+                  boxSizing: 'border-box',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                }}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 const centerStyle: React.CSSProperties = {
   display: 'flex',
@@ -339,8 +586,6 @@ const centerStyle: React.CSSProperties = {
 }
 
 function Spinner() {
-
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
   useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_WRAPPER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
   useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
 

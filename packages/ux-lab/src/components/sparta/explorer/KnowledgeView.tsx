@@ -39,7 +39,7 @@ export function KnowledgeView() {
     const lookup = new Map<string, string>()
     for (const chunk of knowledge) {
       const key = String(chunk.url_id ?? 'unknown')
-      const url = (chunk as Record<string, unknown>).url as string | undefined
+      const url = (chunk as unknown as Record<string, unknown>).url as string | undefined
       if (url && !lookup.has(key)) lookup.set(key, url)
     }
     return lookup

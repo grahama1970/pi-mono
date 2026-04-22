@@ -87,7 +87,7 @@ export function useCascadePipeline(config: CascadeConfig): CascadePipeline {
 							recallStep.status = "done";
 							recallStep.summary = `Recalled ${raw.items.length} results (conf ${Math.round((raw.confidence || 0) * 100)}%)`;
 							recallStep.confidence = raw.confidence;
-							recallStep.duration = Date.now() - Number.parseInt(recallStep.id.split("-")[1]);
+							recallStep.duration = Date.now() - Number.parseInt(recallStep.id.split("-")[1], 10);
 						} else {
 							recallStep.status = "done";
 							recallStep.summary = "No relevant memory found";
@@ -132,7 +132,7 @@ export function useCascadePipeline(config: CascadeConfig): CascadePipeline {
 				const agentData = await agentRes.json();
 				agentStep.status = "done";
 				agentStep.summary = `Response generated (${agentData.backend || "scillm"})`;
-				agentStep.duration = Date.now() - Number.parseInt(agentStep.id.split("-")[1]);
+				agentStep.duration = Date.now() - Number.parseInt(agentStep.id.split("-")[1], 10);
 
 				setIsLoading(false);
 				return {

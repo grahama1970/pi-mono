@@ -28,7 +28,7 @@ interface ChatFabProps {
 }
 
 /** Floating Embry chat — wraps the shared ChatWell component in a FAB overlay */
-export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQuery }: ChatFabProps) {
+export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate: _onNavigate, onQuery }: ChatFabProps) {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [lastLayer, setLastLayer] = useState<CascadeLayer | null>(null)
@@ -129,7 +129,7 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
       const recallConfidence = topHit?.score ?? topHit?.confidence ?? 0
 
       if (recallConfidence >= 0.75 && topHit?.solution) {
-        const msg = addMessage({
+        addMessage({
           role: 'system', content: topHit.solution, type: 'natural',
           cascadeLayer: 'recall', resultCount: recallData.items?.length ?? 0,
           entities,
@@ -142,7 +142,7 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
 
       // 2f. Evidence gate
       const gates: EvidenceGate[] = []
-      let gateState: 'SATISFIED' | 'INCONCLUSIVE' | 'NOT_SATISFIED' = 'SATISFIED'
+      let gateState: 'SATISFIED' | 'INCONCLUSIVE' | 'NOT_SATISFIED' = 'SATISFIED' as 'SATISFIED' | 'INCONCLUSIVE' | 'NOT_SATISFIED'
 
       // FAST: grounding check
       gates.push({ gate: 'grounding', passed: groundingOk, detail: groundingOk ? 'Entities exist in corpus' : 'Some entities not found' })
@@ -273,7 +273,7 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
         resultContent = llmData.choices?.[0]?.message?.content || llmData.error || 'No response'
       }
 
-      const msg = addMessage({
+      addMessage({
         role: 'system', content: resultContent, type: 'natural',
         cascadeLayer: layer, resultCount, entities,
         _querySpec: querySpec ?? undefined,
@@ -316,7 +316,7 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
     // Find the message to persist
     const msg = messages.find(m => m.id === msgIdStr)
     if (!msg) return
-    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
+    const userMsg = [...messages].reverse().find(m => m.role === 'user' && (m.timestamp ?? 0) < (msg.timestamp ?? 0))
     if (userMsg) {
       fetch(`${API}/api/memory/learn`, {
         method: 'POST',
@@ -348,8 +348,9 @@ export function ChatFab({ scope = 'sparta', gateDepth = 'fast', onNavigate, onQu
   if (!open) {
     return (
       <button
-        data-qid="chat-fab:open" title="Open chat" onClick={() => setOpen(true)}
+        data-qid="chat-fab:open"
         title="Chat with Embry"
+        onClick={() => setOpen(true)}
         data-qs-action="OPEN_CHAT_FAB"
         style={{
           position: 'fixed',

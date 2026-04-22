@@ -126,9 +126,10 @@ export const ChatInput = memo(function ChatInput({
 					onClick={handleSend}
 					disabled={!input.trim() || disabled || loading}
 					style={{
-						width: "var(--touch-min, 44px)",
-						height: "var(--touch-min, 44px)",
-						borderRadius: "50%",
+						minWidth: "var(--touch-min, 44px)",
+						minHeight: "var(--touch-min, 44px)",
+						padding: "0 12px",
+						borderRadius: 6,
 						border: "none",
 						background: input.trim() && !disabled ? "var(--embry-accent, #7c3aed)" : "var(--embry-bg-card, #27272a)",
 						color: input.trim() && !disabled ? "white" : "var(--embry-dim, #94a3b8)",
@@ -136,13 +137,13 @@ export const ChatInput = memo(function ChatInput({
 						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
-						fontSize: 16,
-						fontWeight: 700,
+						fontSize: 12,
+						fontWeight: 600,
 						transition: "all 0.15s",
 						flexShrink: 0,
 					}}
 				>
-					{loading ? "…" : "↑"}
+					{loading ? "…" : "Send"}
 				</button>
 			</div>
 

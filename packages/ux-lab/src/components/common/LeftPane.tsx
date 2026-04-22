@@ -98,7 +98,7 @@ const SORT_ICONS: { mode: SortMode; Icon: typeof Clock; title: string }[] = [
   { mode: 'alpha', Icon: ArrowDownAZ, title: 'Sort A-Z' },
 ]
 
-export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId }: {
+export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId, search: externalSearch, onSearchChange, searchPlaceholder }: {
   title: string
   children: React.ReactNode
   width?: number
@@ -113,9 +113,17 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
   activeFilter?: string
   /** Called when the filter chip × is clicked */
   onClearFilter?: () => void
+  /** Controlled search value (if external) */
+  search?: string
+  /** Called when search changes (controlled mode) */
+  onSearchChange?: React.Dispatch<React.SetStateAction<string>>
+  /** Placeholder text for search input */
+  searchPlaceholder?: string
 }) {
   const [collapsed, setCollapsed] = useState(false)
-  const [search, setSearch] = useState('')
+  const [internalSearch, setInternalSearch] = useState('')
+  const search = externalSearch ?? internalSearch
+  const setSearch = onSearchChange ?? setInternalSearch
   const [sortMode, setSortMode] = useState<SortMode>('recent')
   const modes = sortModes ?? ['recent', 'score', 'alpha']
 
@@ -214,7 +222,9 @@ export function paneItemStyle(selected: boolean): React.CSSProperties {
  * LeftPaneSection — A pinned section header inside LeftPane.
  * Content below scrolls independently.
  */
-export function LeftPaneSection({ title, children }: { title: React.ReactNode; children: React.ReactNode }) {
+export function LeftPaneSection({ title, children, defaultOpen = true }: { title: React.ReactNode; children: React.ReactNode; defaultOpen?: boolean }) {
+  // defaultOpen is accepted for API compatibility but currently ignored (always shown)
+  void defaultOpen
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ ...label, padding: '10px 16px 6px', flexShrink: 0, position: 'sticky', top: 0, background: EMBRY.bgPanel, zIndex: 1 }}>

@@ -78,7 +78,7 @@ function getCategoryKey(span: Span): keyof typeof CATEGORIES {
 
 const Tooltip = ({ span, resolution, metadata, category }: {
   span: Span; resolution?: Resolution; metadata?: ControlMetadata;
-  category: typeof CATEGORIES['SPARTA'];
+  category: (typeof CATEGORIES)[keyof typeof CATEGORIES];
 }) => (
   <div className="embry-tooltip" style={{
     position: 'absolute', bottom: 'calc(100% + 12px)', left: '50%', transform: 'translateX(-50%)',
@@ -128,7 +128,7 @@ export default function EntitySpanViewer({ query: initialQuery }: EntitySpanView
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [deletedIndices, setDeletedIndices] = useState<Set<number>>(new Set());
   const [panelEntity, setPanelEntity] = useState<string | null>(null);
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchEntities = useCallback(async (text: string) => {
     if (!text.trim()) { setData(null); return; }
@@ -266,7 +266,7 @@ export default function EntitySpanViewer({ query: initialQuery }: EntitySpanView
             <div className="skeleton" style={{ height: 24, width: '60%' }} />
           </div>
         ) : error ? (
-          <div style={{ color: EMBRY.red, ...body }}>{error}</div>
+          <div style={{ ...body, color: EMBRY.red }}>{error}</div>
         ) : data ? (
           <div style={{ ...body, fontSize: 18, lineHeight: 2.2 }}>{renderedContent}</div>
         ) : (

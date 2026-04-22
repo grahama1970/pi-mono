@@ -75,12 +75,80 @@ export interface SpartaControl {
 	status?: string;
 }
 
+/** Span with character positions for inline highlighting */
+export interface EvidenceSpan {
+	text: string;
+	span: [number, number];
+	kind: "control_id" | "aerospace_term" | "phrase";
+	framework?: string;
+	name?: string;
+	grounded_to_framework?: boolean;
+}
+
+/** Glossary entry with resolved control metadata */
+export interface GlossaryEntry {
+	id: string;
+	name: string;
+	framework: string;
+	type?: string;
+	description?: string;
+}
+
+/** Crosswalk chain showing framework-to-framework path */
+export interface CrosswalkChain {
+	// Field names vary: source/target OR from/from_framework/to_framework
+	source?: string;
+	target?: string;
+	from?: string;
+	from_framework?: string;
+	to_framework?: string;
+	hops?: Array<{ control_id?: string; id?: string; framework: string; name?: string }>;
+	method?: string;
+	relationship?: string;
+	confidence?: number;
+}
+
+/** Formal proof result from /lean4-prove */
+export interface FormalProof {
+	success: boolean;
+	code?: string;
+	attempts?: number;
+	errors?: string[];
+	proved_at?: number;
+}
+
+/** Full evidence case from /create-evidence-case */
+export interface EvidenceCase {
+	// Core evidence data
+	chains?: CrosswalkChain[];
+	crosswalk_chains?: CrosswalkChain[];
+	confidence?: number;
+	methods?: string[];
+
+	// Entity extraction
+	question_text?: string;
+	control_ids?: string[];
+	glossary?: GlossaryEntry[];
+	resolved_entities?: Array<{ id: string; name: string; framework: string }>;
+	spans?: EvidenceSpan[];
+
+	// Verification
+	formal_proof?: FormalProof;
+	sacm_ref?: { gid: string; xml_snippet?: string; generated_at?: number };
+
+	// Review status
+	review_status?: "auto" | "approved" | "rejected" | "pending";
+	extracted_at?: string;
+}
+
 export interface SpartaQRA {
 	_key: string;
 	_id: string;
 	control_id: string;
+	qra_id?: string;
 	question: string;
 	reasoning: string;
+	evidence: string;
 	answer: string;
 	grounding_score?: number;
 	mind?: string[];
@@ -88,7 +156,36 @@ export interface SpartaQRA {
 	tier15_pass?: boolean;
 	tier2_pass?: boolean;
 	source_framework?: string;
+	evidence_quotes?: Array<{ quote: string; relevance?: string }>;
+	crosswalk_chain?: string[];
+	qra_type?: string;
+	evidence_case?: EvidenceCase;
+	// Grouping fields - links QRAs from same prompt/batch
+	relationship_id?: string; // /create-evidence-case: EC-{timestamp}
+	run_id?: string; // /create-qras: skill_create_qras_{mode}_{timestamp}
+	expertise?: string;
+	difficulty?: string;
+	created_at?: number;
+	// v2 architecture fields (2026-04-20)
+	control_type?: string;
+	pair_type?: string;
+	grounding_mode?: "verbatim" | "close_paraphrase";
+	actionable_for?: string;
+	prompt_kind?: string;
+	source_hash?: string;
+	generator_version?: string;
+	is_active?: boolean;
+	// v2 collection indicator (derived from _id prefix)
+	_collection?: "sparta_qra" | "sparta_qra_canonical" | "sparta_qra_relationship";
 }
+
+// v2 QRA collection sources
+export type QRASource = "v2" | "legacy" | "all";
+
+// v2 QRA collections (separate canonical vs relationship)
+const QRA_COLLECTIONS_V2 = ["sparta_qra_canonical", "sparta_qra_relationship"];
+const QRA_COLLECTIONS_LEGACY = ["sparta_qra"];
+const QRA_COLLECTIONS_ALL = [...QRA_COLLECTIONS_V2, ...QRA_COLLECTIONS_LEGACY];
 
 // Relationships are DOCUMENTS (not ArangoDB edges) — no _from/_to
 export interface SpartaRelationship {
@@ -252,8 +349,12 @@ export function useControlsPaginated(
 }
 
 // ── useQRAs ─────────────────────────────────────────────────────────────────
+// v2 architecture (2026-04-20): supports separate canonical vs relationship collections
+// - source="v2": queries sparta_qra_canonical + sparta_qra_relationship (default)
+// - source="legacy": queries sparta_qra (for comparison during migration)
+// - source="all": queries all three collections
 
-export function useQRAs(query = "", controlId?: string): HookResult<SpartaQRA> {
+export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"): HookResult<SpartaQRA> {
 	const debouncedQuery = useDebouncedValue(query);
 	const [data, setData] = useState<SpartaQRA[]>([]);
 	const [total, setTotal] = useState(0);
@@ -264,24 +365,34 @@ export function useQRAs(query = "", controlId?: string): HookResult<SpartaQRA> {
 		setLoading(true);
 		setError(null);
 		try {
-			if (debouncedQuery || controlId) {
-				const q = debouncedQuery || `QRA for ${controlId}`;
-				const opts: { k?: number; entities?: string[] } = { k: 50 };
-				if (controlId) opts.entities = [controlId];
-				const result = await recallPost(["sparta_qra"], q, opts);
-				setData(result.items as unknown as SpartaQRA[]);
-				setTotal(result.items.length);
-			} else {
-				const result = await listPost("sparta_qra", { limit: 50 });
-				setData(result.documents as unknown as SpartaQRA[]);
-				setTotal(result.total);
-			}
+			// Select collections based on source
+			const collections =
+				source === "v2" ? QRA_COLLECTIONS_V2 : source === "legacy" ? QRA_COLLECTIONS_LEGACY : QRA_COLLECTIONS_ALL;
+
+			// Always use /recall - never /list on large collections
+			const q = debouncedQuery || (controlId ? `QRA for ${controlId}` : "SPARTA compliance question");
+			const opts: { k?: number; entities?: string[] } = { k: 50 };
+			if (controlId) opts.entities = [controlId];
+			const result = await recallPost(collections, q, opts);
+
+			// Tag each result with its source collection (derived from _id)
+			const items = (result.items as unknown as SpartaQRA[]).map((item) => ({
+				...item,
+				_collection: item._id?.startsWith("sparta_qra_canonical")
+					? ("sparta_qra_canonical" as const)
+					: item._id?.startsWith("sparta_qra_relationship")
+						? ("sparta_qra_relationship" as const)
+						: ("sparta_qra" as const),
+			}));
+
+			setData(items);
+			setTotal(items.length);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : String(err));
 		} finally {
 			setLoading(false);
 		}
-	}, [debouncedQuery, controlId]);
+	}, [debouncedQuery, controlId, source]);
 
 	useEffect(() => {
 		fetchData();
@@ -345,7 +456,10 @@ export function useURLs(query = "", domain?: string): HookResult<SpartaURL> {
 				setData(items);
 				setTotal(items.length);
 			} else {
-				const result = await listPost("sparta_urls", { limit: 100 });
+				const result = await listPost("sparta_urls", {
+						limit: 100,
+						return_fields: ["url_id", "url", "domain", "updated_at"],
+					});
 				let items = result.documents as unknown as SpartaURL[];
 				if (domain) items = items.filter((u) => u.domain === domain);
 				setData(items);
@@ -380,9 +494,10 @@ export function useURLsPaginated(
 		setError(null);
 		try {
 			const result = await listPost("sparta_urls", {
-				limit: pageSize,
-				offset: page * pageSize,
-			});
+					limit: pageSize,
+					offset: page * pageSize,
+					return_fields: ["url_id", "url", "domain", "updated_at"],
+				});
 			setData(result.documents as unknown as SpartaURL[]);
 			setTotal(result.total);
 		} catch (err) {
@@ -471,10 +586,14 @@ export function useKnowledge(query = "", urlId?: string): HookResult<SpartaURLKn
 }
 
 // ── useCollectionCounts ─────────────────────────────────────────────────────
+// v2 architecture (2026-04-20): includes separate canonical + relationship QRA counts
 
 export interface CollectionCounts {
 	controls: number;
-	qras: number;
+	qras: number; // legacy sparta_qra
+	qrasCanonical: number; // v2 sparta_qra_canonical
+	qrasRelationship: number; // v2 sparta_qra_relationship
+	qrasTotal: number; // sum of all QRA collections
 	relationships: number;
 	urls: number;
 	knowledge: number;
@@ -485,6 +604,9 @@ export function useCollectionCounts(): CollectionCounts {
 	const [counts, setCounts] = useState<CollectionCounts>({
 		controls: 0,
 		qras: 0,
+		qrasCanonical: 0,
+		qrasRelationship: 0,
+		qrasTotal: 0,
 		relationships: 0,
 		urls: 0,
 		knowledge: 0,
@@ -494,16 +616,21 @@ export function useCollectionCounts(): CollectionCounts {
 	useEffect(() => {
 		async function fetchCounts() {
 			try {
-				const [c, q, r, u, k] = await Promise.all([
-					listPost("sparta_controls", { limit: 1 }),
-					listPost("sparta_qra", { limit: 1 }),
-					listPost("sparta_relationships", { limit: 1 }),
-					listPost("sparta_urls", { limit: 1 }),
-					listPost("sparta_url_knowledge", { limit: 1 }),
+				const [c, qLegacy, qCanon, qRel, r, u, k] = await Promise.all([
+					listPost("sparta_controls", { limit: 1, return_fields: ["_key"] }),
+					listPost("sparta_qra", { limit: 1, filters: { source_framework: "SPARTA" }, return_fields: ["_key"] }),
+					listPost("sparta_qra_canonical", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
+					listPost("sparta_qra_relationship", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
+					listPost("sparta_relationships", { limit: 1, return_fields: ["_key"] }),
+					listPost("sparta_urls", { limit: 1, return_fields: ["_key"] }),
+					listPost("sparta_url_knowledge", { limit: 1, return_fields: ["_key"] }),
 				]);
 				setCounts({
 					controls: c.total,
-					qras: q.total,
+					qras: qLegacy.total,
+					qrasCanonical: qCanon.total,
+					qrasRelationship: qRel.total,
+					qrasTotal: qLegacy.total + qCanon.total + qRel.total,
 					relationships: r.total,
 					urls: u.total,
 					knowledge: k.total,
@@ -537,7 +664,7 @@ export function useFrameworkCounts(): { data: FrameworkCount[]; loading: boolean
 		async function fetch() {
 			try {
 				// Get total count
-				const meta = await listPost("sparta_controls", { limit: 1 });
+				const meta = await listPost("sparta_controls", { limit: 1, return_fields: ["_key"] });
 				const total = meta.total;
 
 				// Sample 25 pages of 40 across the full range for good coverage
@@ -589,53 +716,45 @@ export function useFrameworkCounts(): { data: FrameworkCount[]; loading: boolean
 }
 
 // ── useRawFrameworkCounts ────────────────────────────────────────────────────
-// Exact per-framework counts via server-side filters.
-// One /list call per known framework value — returns exact total, not sampled estimate.
+// Returns cached framework counts. Single sample query, no parallel storm.
+// Previous version made 17 parallel /list calls → crashed ArangoDB.
 
-const ALL_RAW_FRAMEWORKS = [
-	"SPARTA",
-	"sparta",
-	"NIST",
-	"nist",
-	"CWE",
-	"cwe",
-	"nvd",
-	"NVD",
-	"D3FEND",
-	"d3fend",
-	"ATT_CK_Enterprise",
-	"attack",
-	"ATT_CK_Mobile",
-	"ATT_CK_ICS",
-	"ESA",
-	"ISO",
-	"iso",
-	"NASA",
-];
+let _fwCountsCache: FrameworkCount[] | null = null;
 
 export function useRawFrameworkCounts(): { data: FrameworkCount[]; loading: boolean } {
-	const [data, setData] = useState<FrameworkCount[]>([]);
-	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState<FrameworkCount[]>(_fwCountsCache ?? []);
+	const [loading, setLoading] = useState(_fwCountsCache === null);
 
 	useEffect(() => {
-		async function fetchExact() {
-			try {
-				const results = await Promise.all(
-					ALL_RAW_FRAMEWORKS.map(async (fw) => {
-						const r = await listPost("sparta_controls", {
-							limit: 1,
-							filters: { source_framework: fw },
-						});
-						return { name: fw, total: r.total };
-					}),
-				);
+		if (_fwCountsCache) return; // Use cache
 
-				const totalAll = results.reduce((sum, r) => sum + r.total, 0);
-				const fwData: FrameworkCount[] = results
-					.filter((r) => r.total > 0)
-					.map((r) => ({ name: r.name, count: r.total, pct: totalAll > 0 ? (r.total / totalAll) * 100 : 0 }))
+		async function fetchOnce() {
+			try {
+				// Single query: sample 500 docs to estimate framework distribution
+				const res = await listPost("sparta_controls", {
+					limit: 500,
+					return_fields: ["source_framework"],
+				});
+
+				// Count frameworks in sample
+				const counts = new Map<string, number>();
+				for (const doc of res.documents) {
+					const fw = (doc as { source_framework?: string }).source_framework ?? "unknown";
+					counts.set(fw, (counts.get(fw) ?? 0) + 1);
+				}
+
+				// Extrapolate to total
+				const sampleSize = res.documents.length;
+				const total = res.total;
+				const fwData: FrameworkCount[] = [...counts.entries()]
+					.map(([name, sampled]) => ({
+						name,
+						count: Math.round((sampled / sampleSize) * total),
+						pct: (sampled / sampleSize) * 100,
+					}))
 					.sort((a, b) => b.count - a.count);
 
+				_fwCountsCache = fwData;
 				setData(fwData);
 			} catch {
 				setData([]);
@@ -643,21 +762,19 @@ export function useRawFrameworkCounts(): { data: FrameworkCount[]; loading: bool
 				setLoading(false);
 			}
 		}
-		fetchExact();
+		fetchOnce();
 	}, []);
 
 	return { data, loading };
 }
 
 // ── useControlsByFramework ──────────────────────────────────────────────────
-// Loads ALL controls for given frameworks via server-side filter.
-// For small-to-medium frameworks (<5000), fetches all docs so client-side
-// type filtering works correctly. Paginates display, not fetch.
+// Loads controls for given frameworks via server-side filter.
+// Optionally filters by controlType server-side to reduce memory usage.
 
 export function useControlsByFramework(
 	rawFrameworks: string[],
-	_page = 0,
-	_pageSize = 100,
+	controlType?: string,
 ): { data: SpartaControl[]; total: number; loading: boolean; error: string | null } {
 	const [data, setData] = useState<SpartaControl[]>([]);
 	const [total, setTotal] = useState(0);
@@ -673,22 +790,25 @@ export function useControlsByFramework(
 		setLoading(true);
 		setError(null);
 		try {
-			// Fetch all docs for each raw framework (most are <2000)
+			// Build filters - include controlType if specified for server-side filtering
+			const baseFilters: Record<string, string> = {};
+			if (controlType) baseFilters.control_type = controlType;
+
+			// Fetch docs for each framework
 			const results = await Promise.all(
 				rawFrameworks.map(async (fw) => {
+					const filters = { ...baseFilters, source_framework: fw };
+
 					// First get total
-					const meta = await listPost("sparta_controls", {
-						limit: 1,
-						filters: { source_framework: fw },
-					});
+					const meta = await listPost("sparta_controls", { limit: 1, filters, return_fields: ["_key"] });
 					const fwTotal = meta.total;
 					if (fwTotal === 0) return [];
 
-					// Fetch all in batches of 500
+					// Fetch in batches of 200 to avoid memory issues
 					const all: SpartaControl[] = [];
-					for (let offset = 0; offset < fwTotal; offset += 500) {
+					for (let offset = 0; offset < fwTotal; offset += 200) {
 						const batch = await listPost("sparta_controls", {
-							limit: 500,
+							limit: 200,
 							offset,
 							return_fields: [
 								"control_id",
@@ -702,7 +822,7 @@ export function useControlsByFramework(
 								"weaknesses",
 								"mind",
 							],
-							filters: { source_framework: fw },
+							filters,
 						});
 						all.push(...(batch.documents as unknown as SpartaControl[]));
 					}
@@ -718,7 +838,7 @@ export function useControlsByFramework(
 		} finally {
 			setLoading(false);
 		}
-	}, [rawFrameworks.length, rawFrameworks.map]);
+	}, [controlType, rawFrameworks]);
 
 	useEffect(() => {
 		fetchData();

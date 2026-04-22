@@ -993,12 +993,6 @@ export default function CascadeView() {
               ) : (
                 filteredEscalations.map((esc, i) => {
                   const disagree =
-
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('cascade:dyn-1', { app: 'datalake-explorer', action: 'DYN_1', label: 'Dyn 1', description: 'Dyn 1 in formatCount' })
-  useRegisterAction('cascade:dyn-2', { app: 'datalake-explorer', action: 'DYN_2', label: 'Dyn 2', description: 'Dyn 2 in formatCount' })
-  useRegisterAction('cascade:dyn-3', { app: 'datalake-explorer', action: 'DYN_3', label: 'Dyn 3', description: 'Dyn 3 in formatCount' })
-
                     esc.classifier_disposition &&
                     esc.classifier_disposition !== esc.rust_guess
                   return (

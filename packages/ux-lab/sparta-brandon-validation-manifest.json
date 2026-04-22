@@ -1,0 +1,240 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer - Brandon Bailey Validation",
+  "base_url": "http://localhost:3002",
+  "description": "Tests what a SPARTA domain expert (Brandon Bailey) would verify: technique anchoring, crosswalk chains, evidence cases, space terminology presence",
+  "surfaces": [
+    {
+      "name": "posture-compliance-status",
+      "path": "/#sparta-explorer/posture",
+      "wait_ready": "[data-qid='posture:tab:posture']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "compliance-hud",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Posture HUD showing SATISFIED/INCONCLUSIVE/NOT_SATISFIED counts - Brandon checks if compliance status is immediately visible"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='posture:tab:traceability']",
+              "description": "Check traceability view - Brandon needs to see evidence chains",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='posture:tab:assurance-case-health']",
+              "description": "Assurance case health - Brandon verifies /create-evidence-case pipeline status",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "threat-matrix-technique-anchoring",
+      "path": "/#sparta-explorer/threat-matrix",
+      "wait_ready": "[data-qid='threat-matrix:input:datalake-selector']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "technique-grid",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Threat matrix showing SPARTA techniques organized by tactic - Brandon verifies technique IDs are visible"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:cell-REC.0001']",
+              "description": "Click REC.0001 technique - Brandon checks if technique ID and MITRE mapping appear",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:view-graph']",
+              "description": "Graph view - Brandon needs to see crosswalk relationships visually",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "controls-crosswalk-verification",
+      "path": "/#sparta-explorer/controls",
+      "wait_ready": "[data-qid='controls:search:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "control-crosswalks",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Controls view - Brandon verifies framework filters and crosswalk visibility"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:filter:nist']",
+              "description": "Filter NIST controls - Brandon checks SPARTA-to-NIST mapping clarity",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:filter:cwe']",
+              "description": "Filter CWE - Brandon verifies SPARTA-to-CWE crosswalk evidence",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='controls:filter:attck']",
+              "description": "Filter ATT&CK - Brandon checks MITRE alignment sanity",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "qras-technique-tactic-anchoring",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='qras:search']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "qra-review-interface",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "QRA review - Brandon checks if technique ID/name is visible in header and MIND badges appear"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:filter:mind:Harden']",
+              "description": "Filter by Harden MIND category - Brandon checks persona stratification",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:filter:mind:Detect']",
+              "description": "Switch to Detect - Brandon verifies tactic anchoring",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "qra-actions",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "QRA action buttons - Brandon verifies Accept/Reject/Edit workflow is clear"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sources-data-provenance",
+      "path": "/#sparta-explorer/sources",
+      "wait_ready": "[data-qid='sources:source:sparta-tactics']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "source-provenance",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Sources view - Brandon checks data provenance is auditable"
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='sources:source:sparta-techniques']",
+              "description": "Hover techniques source - Brandon verifies source metadata visible",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "urls-knowledge-quality",
+      "path": "/#sparta-explorer/urls",
+      "wait_ready": "[data-qid='urls:search:input']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "url-vitality",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "URLs view - Brandon checks url_knowledge quality indicators (404s, errors)"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='urls:search:input']",
+              "value": "mitre",
+              "description": "Search MITRE URLs - Brandon verifies external reference quality",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "supply-chain-visibility",
+      "path": "/#sparta-explorer/supply-chain",
+      "wait_ready": "[data-qid='supply-chain-scenario-select']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "supply-chain-analysis",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Supply chain - Brandon checks component dependency visibility for ICS/OT context"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparta-chat-evidence-validation",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='sparta:button:embry-assistant']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "chat-evidence-query",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:button:embry-assistant']",
+              "description": "Open SPARTA chat - Brandon uses this to ask domain questions",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:button:chat-scope-sparta']",
+              "description": "Set scope to SPARTA - Brandon grounds queries in SPARTA knowledge",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:button:chat-depth-accurate']",
+              "description": "Set depth to accurate - Brandon needs /create-evidence-case validation",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:starter:0']",
+              "description": "Use first starter question - Brandon tests chat workflow",
+              "screenshot_after": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

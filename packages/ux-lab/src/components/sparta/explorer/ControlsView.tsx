@@ -7,9 +7,11 @@ import { UtilityBar } from '../common/UtilityBar'
 import { useToast } from '../common/Toast'
 import { ControlIdPills } from '../common/ControlIdPills'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useSpartaNav } from './SpartaExplorer'
 
 const API = 'http://localhost:3001/api/memory'
 const PAGE_SIZE = 100
+const QRA_PREVIEW_LIMIT = 5
 
 const FRAMEWORKS = ['ALL', 'SPARTA', 'NIST', 'CWE', 'D3FEND', 'ATT&CK', 'ISO', 'ESA', 'NASA'] as const
 const FW_TO_RAW: Record<string, string | undefined> = {
@@ -74,10 +76,29 @@ function nrsColor(score: number | undefined): string {
   return EMBRY.red
 }
 
+function normalizeControlName(name?: string): string {
+  if (!name) return 'Unnamed Control'
+  const collapsed = name.replace(/\s+/g, ' ').trim()
+  return collapsed.replace(/-([a-z])/g, (_m, c: string) => `-${c.toUpperCase()}`)
+}
+
 /* ── Detail pane for selected control ────────────────────────────────────── */
 
-function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control: SpartaControl; onClose: () => void; onNavigate?: (ctrl: SpartaControl) => void; onToast: (msg: string) => void }) {
+function ControlDetailPane({
+  control,
+  onClose,
+  onNavigate,
+  onNavigateToQras,
+  onToast,
+}: {
+  control: SpartaControl
+  onClose: () => void
+  onNavigate?: (ctrl: SpartaControl) => void
+  onNavigateToQras?: (controlId: string) => void
+  onToast: (msg: string) => void
+}) {
   const [qras, setQras] = useState<Array<Record<string, unknown>>>([])
+  const [qraTotal, setQraTotal] = useState(0)
   const [rels, setRels] = useState<Array<{ source_control_id?: string; target_control_id?: string; relationship_type?: string }>>([])
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [modalQra, setModalQra] = useState<Record<string, unknown> | null>(null)
@@ -87,19 +108,35 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
     setLoadingDetail(true)
     const q = `${control.control_id} ${control.name}`
     Promise.all([
+      fetch(`${API}/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          collection: 'sparta_qra',
+          limit: QRA_PREVIEW_LIMIT,
+          filters: { control_id: control.control_id },
+          return_fields: ['_key', 'control_id', 'question', 'reasoning', 'answer', 'grade', 'source', 'generation_method', 'confidence', 'question_type'],
+        }),
+      }).then((r) => r.json()).catch(() => ({ documents: [], total: 0 })),
+      fetch(`${API}/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          collection: 'sparta_qra',
+          limit: 1,
+          filters: { control_id: control.control_id },
+          return_fields: ['_key'],
+        }),
+      }).then((r) => r.json()).catch(() => ({ total: 0 })),
       fetch(`${API}/recall`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q, collections: ['sparta_qra'], k: 10, entities: [control.control_id] }),
+        body: JSON.stringify({ q, collections: ['sparta_relationships'], k: 20, entities: [control.control_id] }),
       }).then((r) => r.json()).catch(() => ({ items: [] })),
-      fetch(`${API}/recall`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q, collections: ['sparta_relationships'], k: 10, entities: [control.control_id] }),
-      }).then((r) => r.json()).catch(() => ({ items: [] })),
-    ]).then(([qraRes, relRes]) => {
+    ]).then(([qraPreviewRes, qraTotalRes, relRes]) => {
       if (cancelled) return
-      setQras(qraRes.items ?? [])
+      setQras(qraPreviewRes.documents ?? [])
+      setQraTotal(qraTotalRes.total ?? qraPreviewRes.total ?? (qraPreviewRes.documents?.length ?? 0))
       setRels(relRes.items ?? [])
       setLoadingDetail(false)
     })
@@ -107,6 +144,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
   }, [control.control_id, control.name])
 
   const fw = normalizeFramework(control.source_framework)
+  const displayName = normalizeControlName(control.name)
   const fwColor = EMBRY.fw[fw] ?? EMBRY.dim
   const deprecated = control.status === 'deprecated' || (control.description ?? '').startsWith('[Deprecated]') || (control.description ?? '').startsWith('[Withdrawn')
   const placeholder = !deprecated && isPlaceholder(control.description)
@@ -131,7 +169,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                 </span>
               )}
             </div>
-            <div style={{ fontSize: 16, fontWeight: 600, color: EMBRY.white }}>{control.name}</div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: EMBRY.white }}>{displayName}</div>
             {controlUrl(control.control_id, control.source_framework) && (
               <a
                 href={controlUrl(control.control_id, control.source_framework)!}
@@ -143,7 +181,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
               </a>
             )}
           </div>
-          <button data-qid="controls:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close control detail" style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+          <button data-qid="controls:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close control detail" style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer', minHeight: 44, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             Close
           </button>
         </div>
@@ -246,10 +284,10 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
 
       {/* QRAs */}
       <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 8 }}>QRAs ({qras.length})</div>
+        <div style={{ ...label, marginBottom: 8 }}>QRAs ({qraTotal})</div>
         {loadingDetail ? (
           <div style={{ fontSize: 12, color: EMBRY.dim }}>Loading...</div>
-        ) : qras.length === 0 ? (
+        ) : qraTotal === 0 ? (
           <div style={{ fontSize: 12, color: EMBRY.dim }}>No QRAs found</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -261,19 +299,19 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                   <span style={{ color: EMBRY.accent }}>Q: </span>
                   <span style={{ color: EMBRY.white }}>{qra.question as string}</span>
                 </div>
-                {qra.reasoning && !PLACEHOLDER_PATTERN.test(qra.reasoning) && (
+                {typeof qra.reasoning === 'string' && !PLACEHOLDER_PATTERN.test(qra.reasoning) && (
                   <div style={{ padding: '8px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
                     <span style={{ color: EMBRY.amber }}>R: </span>
                     <span style={{ color: EMBRY.dim }}>{qra.reasoning}</span>
                   </div>
                 )}
-                {qra.answer && (
+                {typeof qra.answer === 'string' && (
                   <div style={{ padding: '8px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
                     <span style={{ color: EMBRY.green }}>A: </span>
                     <span style={{ color: EMBRY.dim }}>{qra.answer}</span>
                   </div>
                 )}
-                {qra.grade && (
+                {typeof qra.grade === 'string' && (
                   <div style={{ padding: '4px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 10, color: qra.grade === 'PASS' ? EMBRY.green : EMBRY.red }}>
                     Grade: {qra.grade}
                   </div>
@@ -282,6 +320,28 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                 <QRASourceInfo qra={qra} />
               </div>
             ))}
+            {qraTotal > qras.length && (
+              <button
+                data-qid="controls:detail:nav-qras"
+                data-qs-action="NAVIGATE_TO_QRAS"
+                title={`View remaining ${qraTotal - qras.length} QRAs in QRA Review`}
+                onClick={() => onNavigateToQras?.(control.control_id)}
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: EMBRY.blue,
+                  backgroundColor: `${EMBRY.blue}12`,
+                  border: `1px solid ${EMBRY.blue}44`,
+                  borderRadius: 6,
+                  padding: '8px 10px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  minHeight: 44,
+                }}
+              >
+                View remaining {qraTotal - qras.length} QRAs in QRA Review →
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -289,6 +349,61 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
       {/* Relationships */}
       <div style={{ padding: '12px 20px' }}>
         <div style={{ ...label, marginBottom: 8 }}>Relationships ({rels.length})</div>
+        {(() => {
+          const stages = {
+            'SPARTA': new Set<string>(),
+            'NIST': new Set<string>(),
+            'CWE': new Set<string>(),
+            'ATT&CK': new Set<string>(),
+          }
+
+          const stageForId = (id: string): keyof typeof stages | null => {
+            const v = id.toUpperCase()
+            if (/^CWE-\d+/.test(v)) return 'CWE'
+            if (/^(T\d{4}|S\d{4}|G\d{4}|TA\d{4}|M\d{4})/.test(v)) return 'ATT&CK'
+            if (/^(AC|AT|AU|CA|CM|CP|IA|IR|MA|MP|PE|PL|PM|PS|RA|SA|SC|SI)-/.test(v)) return 'NIST'
+            if (/^(REC|RD|IA|EX|PER|DE|LM|EXF|IMP)-/.test(v)) return 'SPARTA'
+            return null
+          }
+
+          const addId = (id?: string) => {
+            if (!id) return
+            const stage = stageForId(id)
+            if (stage) stages[stage].add(id)
+          }
+
+          addId(control.control_id)
+          rels.forEach((rel) => {
+            const other = rel.source_control_id === control.control_id ? rel.target_control_id : rel.source_control_id
+            addId(other)
+          })
+
+          const order: Array<keyof typeof stages> = ['SPARTA', 'NIST', 'CWE', 'ATT&CK']
+          const hasAny = order.some((k) => stages[k].size > 0)
+          if (!hasAny) return null
+
+          return (
+            <div style={{ marginBottom: 10, padding: '8px 10px', borderRadius: 6, border: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
+              <div style={{ fontSize: 9, color: EMBRY.muted, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+                Crosswalk Chain
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                {order.map((stage, idx) => {
+                  const ids = [...stages[stage]].slice(0, 2)
+                  return (
+                    <div key={stage} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim }}>{stage}</span>
+                      <span style={{ fontSize: 10, fontFamily: 'monospace', color: ids.length ? EMBRY.white : EMBRY.muted, padding: '2px 6px', borderRadius: 4, backgroundColor: ids.length ? `${EMBRY.accent}18` : `${EMBRY.muted}12` }}>
+                        {ids.length ? ids.join(', ') : '—'}
+                      </span>
+                      {idx < order.length - 1 && <span style={{ color: EMBRY.muted, fontSize: 10 }}>→</span>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })()}
         {loadingDetail ? (
           <div style={{ fontSize: 12, color: EMBRY.dim }}>Loading...</div>
         ) : rels.length === 0 ? (
@@ -302,7 +417,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
                     if (!onNavigate || !other) return
                     fetch(`http://localhost:3001/api/memory/list`, {
                       method: 'POST', headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: other } }),
+                      body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: other }, return_fields: ['control_id', 'name', 'description', 'source_framework', 'control_type', 'parent_id', 'domain', 'scope', 'weaknesses', 'mind', 'nrs_score', 'status'] }),
                     }).then((r) => r.json()).then((d) => {
                       const ctrl = (d.documents ?? [])[0] as SpartaControl | undefined
                       if (ctrl) onNavigate(ctrl)
@@ -373,39 +488,39 @@ function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; c
             </span>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <button data-qid="controls:qra-modal:accept" onClick={() => grade('PASS')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"PASS"}' title="Accept QRA" style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
-            <button data-qid="controls:qra-modal:reject" onClick={() => grade('FAIL')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"FAIL"}' title="Reject QRA" style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
-            <button data-qid="controls:qra-modal:close" onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" title="Close QRA modal" style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
+            <button data-qid="controls:qra-modal:accept" onClick={() => grade('PASS')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"PASS"}' title="Accept QRA" style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44`, minHeight: 44 }}>Accept (A)</button>
+            <button data-qid="controls:qra-modal:reject" onClick={() => grade('FAIL')} disabled={grading} data-qs-action="GRADE_QRA" data-qs-params='{"grade":"FAIL"}' title="Reject QRA" style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44`, minHeight: 44 }}>Reject (R)</button>
+            <button data-qid="controls:qra-modal:close" onClick={onClose} data-qs-action="CLOSE_QRA_MODAL" title="Close QRA modal" style={{ ...modalBtn, color: EMBRY.dim, minHeight: 44 }}>Close (Esc)</button>
           </div>
         </div>
 
         {/* Question */}
         <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
           <div style={{ ...label, marginBottom: 8, color: EMBRY.accent }}>QUESTION</div>
-          <div style={{ fontSize: 15, lineHeight: 1.7, color: EMBRY.white }}>{qra.question as string}</div>
+          <div style={{ fontSize: 15, lineHeight: 1.7, color: EMBRY.white }}>{String(qra.question ?? '')}</div>
         </div>
 
         {/* Reasoning */}
-        {qra.reasoning && (
+        {typeof qra.reasoning === 'string' && (
           <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
             <div style={{ ...label, marginBottom: 8, color: EMBRY.amber }}>REASONING</div>
-            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.reasoning as string}</div>
+            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.reasoning}</div>
           </div>
         )}
 
         {/* Answer */}
-        {qra.answer && (
+        {typeof qra.answer === 'string' && (
           <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
             <div style={{ ...label, marginBottom: 8, color: EMBRY.green }}>ANSWER</div>
-            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.answer as string}</div>
+            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.answer}</div>
           </div>
         )}
 
         {/* Metadata */}
         <div style={{ padding: '16px 24px', display: 'flex', gap: 16, fontSize: 11, color: EMBRY.muted }}>
-          {qra.grade && <span>Grade: <span style={{ color: qra.grade === 'PASS' ? EMBRY.green : EMBRY.red, fontWeight: 700 }}>{qra.grade as string}</span></span>}
-          {qra.confidence && <span>Confidence: {qra.confidence as string}</span>}
-          {qra.question_type && <span>Type: {qra.question_type as string}</span>}
+          {typeof qra.grade === 'string' && <span>Grade: <span style={{ color: qra.grade === 'PASS' ? EMBRY.green : EMBRY.red, fontWeight: 700 }}>{qra.grade}</span></span>}
+          {qra.confidence != null && <span>Confidence: {String(qra.confidence)}</span>}
+          {typeof qra.question_type === 'string' && <span>Type: {qra.question_type}</span>}
           <span>Prompt: {parts[1] ?? 'legacy'}</span>
           <span>Model: {parts[2] ?? 'unknown'}</span>
         </div>
@@ -441,7 +556,7 @@ function QRASourceInfo({ qra }: { qra: Record<string, unknown> }) {
         data-qid="controls:qra:toggle-source"
         data-qs-action="TOGGLE_SECTION"
         title="Toggle source details"
-        style={{ padding: '4px 10px', fontSize: 10, color: EMBRY.muted, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+        style={{ padding: '4px 10px', fontSize: 10, color: EMBRY.muted, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, minHeight: 44 }}
       >
         <span style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.1s' }}>▸</span>
         Source: {promptName || source || 'unknown'}
@@ -472,6 +587,7 @@ function MetaField({ label: l, value, mono }: { label: string; value: string; mo
 /* ── Main Controls View ─────────────────────────────────────────────────── */
 
 export function ControlsView() {
+  const nav = useSpartaNav()
   const [page, setPage] = useState(0)
   const [fwFilter, setFwFilter] = useState<string | undefined>(undefined)
   const [search, setSearch] = useState('')
@@ -485,6 +601,7 @@ export function ControlsView() {
   useRegisterAction('controls:qra-modal:close', { app: 'sparta-explorer', action: 'CLOSE_QRA_MODAL', label: 'Close QRA Modal', description: 'Close the QRA review modal' })
   useRegisterAction('controls:qra-modal:grade', { app: 'sparta-explorer', action: 'GRADE_QRA', label: 'Grade QRA', description: 'Accept or reject a QRA' })
   useRegisterAction('controls:rel:navigate', { app: 'sparta-explorer', action: 'NAVIGATE_RELATIONSHIP', label: 'Navigate Relationship', description: 'Navigate to a related control' })
+  useRegisterAction('controls:detail:nav-qras', { app: 'sparta-explorer', action: 'NAVIGATE_TO_QRAS', label: 'View QRAs', description: 'Navigate to QRA Review for this control' })
   useRegisterAction('controls:filter:framework', { app: 'sparta-explorer', action: 'SET_FRAMEWORK_FILTER', label: 'Filter Framework', description: 'Filter controls by framework' })
   useRegisterAction('controls:page:prev', { app: 'sparta-explorer', action: 'PAGE_PREV', label: 'Previous Page', description: 'Navigate to previous page of controls' })
   useRegisterAction('controls:page:next', { app: 'sparta-explorer', action: 'PAGE_NEXT', label: 'Next Page', description: 'Navigate to next page of controls' })
@@ -528,18 +645,20 @@ export function ControlsView() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             data-qid="controls:search:input"
-            data-qs-input="controls-search"
+            data-qs-action="SEARCH_CONTROLS"
             title="Search controls on this page"
             placeholder="Search this page..."
             style={{
               backgroundColor: EMBRY.bgDeep,
               border: `1px solid ${EMBRY.border}`,
               borderRadius: 6,
-              padding: '5px 10px',
+              padding: '10px 12px',
               fontSize: 12,
               color: EMBRY.white,
               outline: 'none',
               width: 180,
+              minHeight: 44,
+              boxSizing: 'border-box' as const,
             }}
           />
         </div>
@@ -552,7 +671,7 @@ export function ControlsView() {
             return (
               <button
                 key={fw}
-                data-qid={`controls:filter:${fw.toLowerCase()}`}
+                data-qid={`controls:filter:${fw.toLowerCase().replace(/&/g, '')}`}
                 onClick={() => setFwFilter(fw === 'ALL' ? undefined : fw)}
                 data-qs-action="SET_FRAMEWORK_FILTER"
                 data-qs-params={JSON.stringify({ framework: fw })}
@@ -566,6 +685,10 @@ export function ControlsView() {
                   backgroundColor: isActive ? `${color}22` : 'transparent',
                   color: isActive ? color : EMBRY.dim,
                   cursor: 'pointer',
+                  minHeight: 44,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 {fw}
@@ -594,6 +717,7 @@ export function ControlsView() {
               <tbody>
                 {filtered.map((ctrl) => {
                   const fw = normalizeFramework(ctrl.source_framework)
+                  const displayName = normalizeControlName(ctrl.name)
                   const deprecated = ctrl.status === 'deprecated' || (ctrl.description ?? '').startsWith('[Deprecated]') || (ctrl.description ?? '').startsWith('[Withdrawn')
                   const placeholder = !deprecated && isPlaceholder(ctrl.description)
                   const hasIssues = (ctrl.weaknesses?.length ?? 0) > 0
@@ -608,7 +732,7 @@ export function ControlsView() {
                       data-qid={`controls:row:${ctrl.control_id}`}
                       data-qs-action="SELECT_CONTROL"
                       data-qs-params={JSON.stringify({ controlId: ctrl.control_id, framework: fw })}
-                      title={`${ctrl.control_id}: ${ctrl.name}`}
+                      title={`${ctrl.control_id}: ${displayName}`}
                       style={{
                         ...magneticRow,
                         ...(isSelected ? magneticRowSelected : {}),
@@ -624,7 +748,7 @@ export function ControlsView() {
                         {(() => { const s = nrsToStatus(ctrl.nrs_score); return s !== 'none' ? <span style={statusBadgeStyle(s)}>{statusBadgeLabel(s)}</span> : null })()}
                       </td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, fontWeight: 700 }}>{ctrl.control_id}</td>
-                      <td style={{ ...tdStyle, color: deprecated ? EMBRY.muted : EMBRY.dim }}>{ctrl.name}</td>
+                      <td style={{ ...tdStyle, color: deprecated ? EMBRY.muted : EMBRY.dim }}>{displayName}</td>
                       <td style={{ ...tdStyle, fontSize: 10, color: EMBRY.dim }}>{ctrl.control_type}</td>
                       <td style={tdStyle}>
                         {deprecated ? (
@@ -677,7 +801,13 @@ export function ControlsView() {
       {/* Detail flyout (overlays from right) */}
       {selected && (
         <div style={flyoutStyle}>
-          <ControlDetailPane control={selected} onClose={() => setSelected(null)} onNavigate={(ctrl) => setSelected(ctrl)} onToast={showToast} />
+          <ControlDetailPane
+            control={selected}
+            onClose={() => setSelected(null)}
+            onNavigate={(ctrl) => setSelected(ctrl)}
+            onNavigateToQras={(controlId) => nav.navigateToTabWithFilter('QRAs', { controlId })}
+            onToast={showToast}
+          />
         </div>
       )}
       {toast}
@@ -731,5 +861,9 @@ function paginationBtn(enabled: boolean): React.CSSProperties {
     color: enabled ? EMBRY.white : EMBRY.muted,
     cursor: enabled ? 'pointer' : 'default',
     opacity: enabled ? 1 : 0.5,
+    minHeight: 44,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 }

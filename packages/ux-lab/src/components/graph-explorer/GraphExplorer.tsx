@@ -296,7 +296,7 @@ export function GraphExplorer<N extends BaseNode, E extends BaseEdge>(
 			mmOffY = (MM_H - gH * sc) / 2 - yMin * sc;
 
 			const sel = mmNodesG
-				.selectAll<SVGCircleElement, (typeof mnodes)[0]>("circle")
+				.selectAll("circle")
 				.data(mnodes, (d: (typeof mnodes)[0]) => d.id);
 			sel
 				.join("circle")
@@ -476,7 +476,7 @@ export function GraphExplorer<N extends BaseNode, E extends BaseEdge>(
 		const r = (d: SimN) => nodeRadiusFn(d, degree.get(d.id) ?? 0);
 
 		// ── Hulls ──
-		let hullPaths: d3.Selection<SVGPathElement, [string, SimN[]], SVGGElement, unknown> | null = null;
+		let hullPaths: d3.Selection<any, [string, SimN[]], SVGGElement, unknown> | null = null;
 		const hullGroup = zoomG.append("g").attr("class", "hulls");
 		if (showHulls) {
 			const getCluster = clusterKeyFn ?? ((n: N) => n.cluster ?? "unknown");
@@ -489,7 +489,7 @@ export function GraphExplorer<N extends BaseNode, E extends BaseEdge>(
 			const hullData = [...clusterGroups.entries()].filter(([, ns]) => ns.length >= 4);
 			hullPaths = hullGroup
 				.selectAll("path")
-				.data(hullData, ([k]: [string, SimN[]]) => k)
+				.data(hullData, (([k]: [string, SimN[]]) => k) as any)
 				.join("path")
 				.attr("fill", "none")
 				.attr("stroke", EMBRY.accent)
@@ -504,7 +504,7 @@ export function GraphExplorer<N extends BaseNode, E extends BaseEdge>(
 				);
 			hullGroup
 				.selectAll("text")
-				.data(hullData, ([k]: [string, SimN[]]) => k)
+				.data(hullData, (([k]: [string, SimN[]]) => k) as any)
 				.join("text")
 				.attr("class", "hull-label")
 				.attr("text-anchor", "middle")
@@ -741,13 +741,13 @@ export function GraphExplorer<N extends BaseNode, E extends BaseEdge>(
 				const allGs = nodeGroup.selectAll<SVGGElement, SimN>("g").nodes();
 				const idx = allGs.indexOf(this as SVGGElement);
 				const next = allGs[(idx + 1) % allGs.length];
-				if (next) (next as HTMLElement).focus();
+				if (next) (next as unknown as HTMLElement).focus();
 			} else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
 				event.preventDefault();
 				const allGs = nodeGroup.selectAll<SVGGElement, SimN>("g").nodes();
 				const idx = allGs.indexOf(this as SVGGElement);
 				const prev = allGs[(idx - 1 + allGs.length) % allGs.length];
-				if (prev) (prev as HTMLElement).focus();
+				if (prev) (prev as unknown as HTMLElement).focus();
 			}
 		});
 

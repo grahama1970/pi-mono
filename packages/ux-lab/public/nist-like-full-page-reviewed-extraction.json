@@ -1,0 +1,606 @@
+{
+  "pdfUrl": "/nist_like_full_page.pdf",
+  "pageCount": 1,
+  "blocks": [
+    {
+      "id": "p0_e0",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.0211616284919508,
+        0.6972069896124546,
+        0.030000012330334558
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "NIST SP 800-53, Rev. 5SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "confidence": 0.8500000238418579,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8500000238418579
+        }
+      ]
+    },
+    {
+      "id": "p0_e2",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.07090905700067074,
+        0.35341500300987094,
+        0.08732319841481218
+      ],
+      "blockType": "header",
+      "semanticType": "SectionHeader",
+      "text": "C.1 ACCESS CONTROL (AC)",
+      "confidence": 0.9,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.9
+        }
+      ],
+      "reviewNotes": [
+        "C.1 ACCESS CONTROL (AC) is a section header introducing the content that follows, not a document title"
+      ]
+    },
+    {
+      "id": "p0_e3",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.09868683477844853,
+        1,
+        0.1555050165966304
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "The Access Control (AC) family manages authorization and restriction of system access to authenticated users, processes, and devices. [1] Controls in this family address account management, access enforcement, information flow, and the separation of duties between privileged and non-privileged roles. Implementation responsibility is shared between the organization (O) and the system or service (S); selected controls are designated O/S where both parties contribute.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e4",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.16434340043501416,
+        0.29140522900749655,
+        0.17696966306127682
+      ],
+      "blockType": "header",
+      "semanticType": "SectionHeader",
+      "text": "AC-2 ACCOUNT MANAGEMENT",
+      "confidence": 0.85,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.44999998807907104
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.85
+        }
+      ],
+      "reviewNotes": [
+        "AC-2 ACCOUNT MANAGEMENT is a subsection header in bold formatting"
+      ]
+    },
+    {
+      "id": "p0_e5",
+      "page": 0,
+      "bbox": [
+        0.09450980417089525,
+        0.19022723881885262,
+        0.14798203013301675,
+        0.20095956205117582
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Control",
+      "confidence": 0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0
+        }
+      ]
+    },
+    {
+      "id": "p0_e6",
+      "page": 0,
+      "bbox": [
+        0.09450980417089525,
+        0.20722221605705493,
+        1,
+        0.22994948878432764
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "The organization shall manage system accounts in accordance with the following requirements, as documented in the system security plan and subject to tailoring by the authorizing official.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e7",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.24429290463226006,
+        1,
+        0.27080805614741166
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "aThe organization shall define and document the types of system accounts allowed and specifically prohibited for use within the system.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e8",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.27712118746054293,
+        0.9875009137820574,
+        0.2897474500868056
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "bThe organization shall assign account managers for each account type and maintain a record of the assignment.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e9",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.29479795513731055,
+        1,
+        0.3074242177635732
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "cThe system shall require organization-defined prerequisites and criteria prior to establishing group or role membership.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e10",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.3124747228140783,
+        1,
+        0.3389898743292298
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "dThe system shall monitor the use of accounts and notify account managers within the defined time period when accounts are no longer required, are inactive, or are compromised.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e11",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.34530300564236116,
+        1,
+        0.37181819568980823
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "eThe organization shall review accounts for compliance with account management requirements at an organization-defined frequency.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e12",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.3806565795281921,
+        1,
+        0.4362121350837477
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "Discussion: Examples of system account types include individual, shared, group, system, guest or anonymous, emergency, developer, temporary, and service. Account monitoring can be modeled as a Bernoulli detection process where the probability of detecting at least one anomalous event over n independent observations is given by Equation C.1: [2]",
+      "confidence": 0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0
+        }
+      ]
+    },
+    {
+      "id": "p0_e13",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.44252526639687895,
+        1,
+        0.5309091047807173
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "P_detect = 1 - (1 - p)^n (C.1) where p is the per-observation detection probability and n is the number of independent observations within the monitoring window. Related Controls: AC-3, AC-5, AC-6, AC-17, AC-20, AU-2, AU-12, IA-2, IA-4, IA-5, IA-8, MA-3, MA-5, PE-2, PL-4, PS-2, PS-4, PS-5, PS-7, SC-7, SC-12, SC-13, SC-37.",
+      "confidence": 0,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0
+        }
+      ]
+    },
+    {
+      "id": "review:missed_equation_1",
+      "page": 0,
+      "bbox": [
+        0.085,
+        0.525,
+        0.4,
+        0.54
+      ],
+      "blockType": "equation",
+      "semanticType": "equation",
+      "text": "[MISSING EQUATION] Mathematical equation P_detect = 1 - (1 - p)^n (C.1) is displayed separately and missing from extraction",
+      "confidence": 0.85,
+      "reviewNotes": [
+        "Mathematical equation P_detect = 1 - (1 - p)^n (C.1) is displayed separately and missing from extraction"
+      ],
+      "cascadeTrail": [
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.85
+        }
+      ]
+    },
+    {
+      "id": "p0_e14",
+      "page": 0,
+      "bbox": [
+        0.3586617513419756,
+        0.5397474886191012,
+        0.6174851959826899,
+        0.5511111249827375
+      ],
+      "blockType": "caption",
+      "semanticType": "TableCaption",
+      "text": "TABLE C-1: ACCESS CONTROL FAMILY",
+      "confidence": 0.95,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.800000011920929
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.95
+        }
+      ],
+      "reviewNotes": [
+        "TABLE C-1: ACCESS CONTROL FAMILY is clearly a table caption, not a figure caption"
+      ]
+    },
+    {
+      "id": "review:missed_table_1",
+      "page": 0,
+      "bbox": [
+        0.088,
+        0.555,
+        0.76,
+        0.69
+      ],
+      "blockType": "table",
+      "semanticType": "table",
+      "text": "[MISSING TABLE] Visible table with control names, BY and ASSUR columns is completely missing from extraction",
+      "confidence": 0.9,
+      "reviewNotes": [
+        "Visible table with control names, BY and ASSUR columns is completely missing from extraction"
+      ],
+      "cascadeTrail": [
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "id": "p0_e15",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.556161591500947,
+        0.7615686117434034,
+        0.5662626016019571
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "CONTROLNAMEBYASSUR",
+      "confidence": 0.30000001192092896,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.30000001192092896
+        }
+      ]
+    },
+    {
+      "id": "p0_e16",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.5763636117029671,
+        0.7328104318356982,
+        0.5864646218039773
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-1Policy and ProceduresOV",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e17",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.5965656319049873,
+        0.6598692812950783,
+        0.6066666420059974
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-2Account ManagementO",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e18",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.6167676521070076,
+        0.6598692812950783,
+        0.6268686622080177
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-2(1)Automated Account MgmtO",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e19",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.6369696723090278,
+        0.6598692812950783,
+        0.6470706824100378
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-2(2)Temp and Emergency AccountsS",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e20",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.657171692511048,
+        0.6598692812950783,
+        0.6672727026120581
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-3Access EnforcementS",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e21",
+      "page": 0,
+      "bbox": [
+        0.08797385645847694,
+        0.6773737319792159,
+        0.6598692812950783,
+        0.6874747420802261
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "AC-4Info Flow EnforcementS",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e22",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.7076767622822463,
+        0.5691016764422647,
+        0.7266161562216402
+      ],
+      "blockType": "text",
+      "semanticType": "Body",
+      "text": "1 Terms are defined in CNSSI 4009 and NIST SP 800-37. 2 Derived from standard reliability theory; assumes independent observations.",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        }
+      ]
+    },
+    {
+      "id": "p0_e1",
+      "page": 0,
+      "bbox": [
+        0.0847058826022678,
+        0.9553535345828894,
+        0.9110457538779265,
+        0.9654545446838996
+      ],
+      "blockType": "boilerplate",
+      "semanticType": "PageFooter",
+      "text": "APPENDIX CPAGE 429",
+      "confidence": 0.8999999761581421,
+      "cascadeTrail": [
+        {
+          "tier": "T0",
+          "tierName": "classify_blocks",
+          "disposition": "accept",
+          "confidence": 0.8999999761581421
+        },
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.8
+        }
+      ],
+      "reviewNotes": [
+        "APPENDIX C PAGE 429 appears at bottom margin and is typical page footer content"
+      ]
+    }
+  ],
+  "reviewMode": "reviewed",
+  "reviewSummary": null,
+  "humanEdits": {
+    "updatedAt": "2026-04-21T16:37:12.470Z",
+    "updatedBlocks": 0,
+    "deletedBlocks": 1,
+    "editCount": 6
+  }
+}

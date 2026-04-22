@@ -74,11 +74,11 @@ function useURLDomains(): { domains: DomainGroup[]; total: number; loading: bool
       // Sample URLs to build domain distribution
       const API = 'http://localhost:3001/api/memory'
       const counts = new Map<string, number>()
-      const batchSize = 500
+      const batchSize = 200
       let offset = 0
       let dbTotal = 0
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         const res = await fetch(`${API}/list`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -155,7 +155,7 @@ export function SourcesView() {
           const res = await fetch(`${API_MEM}/list`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { source_framework: fw, control_type: src.controlType } }),
+            body: JSON.stringify({ collection: 'sparta_controls', limit: 1, return_fields: ['_key'], filters: { source_framework: fw, control_type: src.controlType } }),
           })
           const data = await res.json()
           if (data.total > 0) return { key: `${fw}:${src.controlType}`, count: data.total }
@@ -173,27 +173,30 @@ export function SourcesView() {
   }, [sources])
   const [urlsExpanded, setUrlsExpanded] = useState(false)
 
+  useEffect(() => {
+    if (!view && sources.length > 0) {
+      setView({ type: 'source', idx: 0 })
+    }
+  }, [view, sources])
+
   const source = view?.type === 'source' ? sources[view.idx] : null
   const domainFilter = view?.type === 'domain' ? view.domain : null
 
-  // Controls for source view — loads all for the framework
-  const { data: rawControls, total: rawTotal, loading: ctrlLoading } = useControlsByFramework(
+  // Controls for source view — server-side filtered by framework + controlType
+  const { data: controls, total: rawTotal, loading: ctrlLoading } = useControlsByFramework(
     source?.rawFrameworks ?? [],
+    source?.controlType,
   )
-  const controls = useMemo(() => {
-    if (!source?.controlType) return rawControls
-    return rawControls.filter((c) => c.control_type === source.controlType)
-  }, [rawControls, source?.controlType])
 
   // Type counts from loaded data — used to fix sidebar counts for worksheet sources
   const loadedTypeCounts = useMemo(() => {
     const m = new Map<string, number>()
-    for (const c of rawControls) {
+    for (const c of controls) {
       const t = c.control_type ?? 'unknown'
       m.set(t, (m.get(t) ?? 0) + 1)
     }
     return m
-  }, [rawControls])
+  }, [controls])
 
   // URLs for domain view
   const { data: urls, loading: urlLoading } = useURLs('', domainFilter ?? undefined)
@@ -263,7 +266,7 @@ export function SourcesView() {
         if (typeCounts.has(key)) return typeCounts.get(key)!
       }
       // Fallback: loaded data type count if available
-      if (source && src.rawFrameworks.some((fw) => source.rawFrameworks.includes(fw)) && rawControls.length > 0) {
+      if (source && src.rawFrameworks.some((fw) => source.rawFrameworks.includes(fw)) && controls.length > 0) {
         return loadedTypeCounts.get(src.controlType) ?? 0
       }
     }
@@ -372,16 +375,15 @@ export function SourcesView() {
                   {ctrlLoading ? 'Loading...' : `${filteredControls.length} controls${totalPages > 1 ? ` · page ${page + 1}/${totalPages}` : ''}`}
                   {source.controlType && <span style={{ marginLeft: 6, fontSize: 9, color: typeColor(source.controlType) }}>type: {source.controlType}</span>}
                 </div>
+              </div>              <input data-qid="sources:search:controls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter controls..." data-qs-input="sources-search" title="Filter controls"
+                style={{ width: 170, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
+              <input data-qid="sources:search:urls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter URLs..." data-qs-input="sources-search" title="Filter URLs"
+                style={{ width: 170, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
+                <button data-qid="sources:page:prev" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0 || totalPages <= 1} data-qs-action="PAGE_PREV" title="Previous page" style={{ ...btn, opacity: (page === 0 || totalPages <= 1) ? 0.3 : 1 }}>←</button>
+                <span style={{ fontSize: 9, color: EMBRY.dim }}>{Math.min(page + 1, Math.max(totalPages, 1))}/{Math.max(totalPages, 1)}</span>
+                <button data-qid="sources:page:next" onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1 || totalPages <= 1} data-qs-action="PAGE_NEXT" title="Next page" style={{ ...btn, opacity: (page >= totalPages - 1 || totalPages <= 1) ? 0.3 : 1 }}>→</button>
               </div>
-              <input data-qid="sources:search:controls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter..." data-qs-input="sources-search" title="Filter controls"
-                style={{ width: 200, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
-              {totalPages > 1 && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
-                  <button data-qid="sources:page:prev" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} data-qs-action="PAGE_PREV" title="Previous page" style={{ ...btn, opacity: page === 0 ? 0.3 : 1 }}>←</button>
-                  <span style={{ fontSize: 9, color: EMBRY.dim }}>{page + 1}/{totalPages}</span>
-                  <button data-qid="sources:page:next" onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} data-qs-action="PAGE_NEXT" title="Next page" style={{ ...btn, opacity: page >= totalPages - 1 ? 0.3 : 1 }}>→</button>
-                </div>
-              )}
             </div>
             {ctrlLoading ? <div style={{ padding: 16, color: EMBRY.dim }}>Loading...</div> : (
               <div style={{ flex: 1, overflow: 'auto' }}>
@@ -426,8 +428,10 @@ export function SourcesView() {
                 <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>{domainFilter}</div>
                 <div style={{ fontSize: 10, color: EMBRY.dim }}>{urlLoading ? 'Loading...' : `${filteredUrls.length} URLs`}</div>
               </div>
+              <input data-qid="sources:search:controls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter controls..." data-qs-input="sources-search" title="Filter controls"
+                style={{ width: 170, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
               <input data-qid="sources:search:urls" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Filter URLs..." data-qs-input="sources-search" title="Filter URLs"
-                style={{ width: 200, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
+                style={{ width: 170, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11, color: EMBRY.white, outline: 'none' }} />
             </div>
             {urlLoading ? <div style={{ padding: 16, color: EMBRY.dim }}>Loading...</div> : (
               <div style={{ flex: 1, overflow: 'auto' }}>
@@ -648,20 +652,59 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
         </div>
       )}
 
-      {/* QRAs */}
+      {/* QRAs Preview */}
       <div style={{ marginTop: 16, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
           <div style={{ ...label }}>QRAs {qraLoading ? '...' : `(${qras.length})`}</div>
           {!qraLoading && qras.length > 0 && (
-            <button data-qid="sources:detail:nav-qras" onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_QRAS" title="View QRAs for this control" style={{
+            <button data-qid="sources:detail:nav-qras" onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_QRAS" title="View all QRAs for this control" style={{
               background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
               padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
             }}>
-              View in QRAs tab →
+              View all {qras.length} QRAs →
             </button>
           )}
         </div>
-        {!qraLoading && qras.length === 0 && <div style={{ fontSize: 11, color: EMBRY.muted }}>No QRAs generated for this control</div>}
+        {qraLoading ? (
+          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
+        ) : qras.length === 0 ? (
+          <div style={{ fontSize: 11, color: EMBRY.muted }}>No QRAs generated for this control</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {qras.slice(0, 5).map((qra, i) => {
+              const q = qra as Record<string, unknown>
+              const question = (q.question as string) ?? ''
+              const truncated = question.length > 100 ? question.slice(0, 100) + '...' : question
+              const tier0 = q.tier0_pass as boolean | undefined
+              const tier2 = q.tier2_pass as boolean | undefined
+              return (
+                <div key={i} style={{
+                  padding: '6px 8px', borderRadius: 4, backgroundColor: EMBRY.bgDeep,
+                  border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
+                }}
+                  onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id, qraKey: q._key as string })}
+                  title="Click to view this QRA"
+                >
+                  <div style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.4 }}>{truncated}</div>
+                  <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                    {tier0 !== undefined && (
+                      <span style={{ fontSize: 8, color: tier0 ? EMBRY.green : EMBRY.red }}>T0: {tier0 ? '✓' : '✗'}</span>
+                    )}
+                    {tier2 !== undefined && (
+                      <span style={{ fontSize: 8, color: tier2 ? EMBRY.green : EMBRY.red }}>T2: {tier2 ? '✓' : '✗'}</span>
+                    )}
+                    {typeof q.qra_type === 'string' && <span style={{ fontSize: 8, color: EMBRY.muted }}>{q.qra_type}</span>}
+                  </div>
+                </div>
+              )
+            })}
+            {qras.length > 5 && (
+              <div style={{ fontSize: 10, color: EMBRY.muted, textAlign: 'center', padding: '4px 0' }}>
+                +{qras.length - 5} more QRAs
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Relationships */}
@@ -669,11 +712,11 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ ...label }}>Relationships {relLoading ? '...' : `(${rels.length})`}</div>
           {!relLoading && rels.length > 0 && (
-            <button data-qid="sources:detail:nav-rels" onClick={() => nav.navigateToTabWithFilter('Relationships', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_RELATIONSHIPS" title="View relationships for this control" style={{
+            <button data-qid="sources:detail:nav-supply" onClick={() => nav.navigateToTabWithFilter('Supply Chain', { controlId: control.control_id })} data-qs-action="NAVIGATE_TO_SUPPLY_CHAIN" title="View supply chain relationships for this control" style={{
               background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
               padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
             }}>
-              View in Relationships tab →
+              View in Supply Chain →
             </button>
           )}
         </div>

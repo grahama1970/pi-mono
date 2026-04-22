@@ -17,7 +17,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const WS_URL = "ws://localhost:3001/ws";
+const WS_URL = "ws://localhost:7890/ws";
 const RECONNECT_MS = 3000;
 
 export interface AgentMessage {

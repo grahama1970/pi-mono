@@ -67,23 +67,133 @@ const AVAILABLE_DATALAKES: DatalakeOption[] = [
 export function ThreatMatrixView() {
   const [rawTechniques, setRawTechniques] = useState<RawTechnique[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [showSubtechniques, setShowSubtechniques] = useState(false)
   const [selectedDetail, setSelectedDetail] = useState<TechniqueDetail | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [activeDatalake, setActiveDatalake] = useState<string>('')
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
+  const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>('standard')
+  const [condensedView, setCondensedView] = useState(false)
+  const [curationMode, setCurationMode] = useState(false)
+  const [curationNote, setCurationNote] = useState('')
+  const [proposalId, setProposalId] = useState('')
+  const [proposalName, setProposalName] = useState('')
+  const [proposalTactic, setProposalTactic] = useState(SPARTA_TACTICS[0]?.name ?? 'Reconnaissance')
+  const [saveStatus, setSaveStatus] = useState<string | null>(null)
+  const [openCurationItems, setOpenCurationItems] = useState(0)
+
+  // Curation actions for Brandon
+  const saveMatrixAmendment = useCallback(async () => {
+    if (!selectedDetail || !curationNote.trim()) {
+      setSaveStatus('Select a technique and enter an amendment note.')
+      return
+    }
+    const tech = selectedDetail.technique
+    const res = await fetch(`${DAEMON}/learn`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_matrix_amendments',
+        problem: `Amend matrix mapping for ${tech.id}: ${tech.name}`,
+        solution: curationNote.trim(),
+        metadata: {
+          type: 'matrix_amendment',
+          control_id: tech.id,
+          technique_name: tech.name,
+          tactic: tech.tactic,
+          verdict: tech.evidenceVerdict,
+          grade: tech.evidenceGrade ?? null,
+          status: 'open',
+          reviewed_by: 'brandon-bailey',
+          created_at: new Date().toISOString(),
+        },
+      }),
+    })
+    if (!res.ok) {
+      setSaveStatus(`Failed to save amendment (${res.status})`)
+      return
+    }
+    setCurationNote('')
+    setSaveStatus(`Saved amendment for ${tech.id}`)
+  }, [selectedDetail, curationNote])
+
+  const submitTechniqueProposal = useCallback(async () => {
+    const id = proposalId.trim().toUpperCase()
+    const name = proposalName.trim()
+    if (!id || !name) {
+      setSaveStatus('Enter technique ID and name to add a proposal.')
+      return
+    }
+    const res = await fetch(`${DAEMON}/learn`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_matrix_amendments',
+        problem: `Propose new threat matrix technique ${id}`,
+        solution: name,
+        metadata: {
+          type: 'new_technique_proposal',
+          proposed_control_id: id,
+          proposed_name: name,
+          proposed_tactic: proposalTactic,
+          status: 'open',
+          reviewed_by: 'brandon-bailey',
+          created_at: new Date().toISOString(),
+        },
+      }),
+    })
+    if (!res.ok) {
+      setSaveStatus(`Failed to save proposal (${res.status})`)
+      return
+    }
+    setProposalId('')
+    setProposalName('')
+    setSaveStatus(`Saved new technique proposal ${id}`)
+  }, [proposalId, proposalName, proposalTactic])
+
+  useEffect(() => {
+    post('/list', { collection: 'sparta_matrix_amendments', limit: 500 })
+      .then((res) => {
+        const docs = (res.documents ?? []) as Array<Record<string, unknown>>
+        const open = docs.filter((d) => (d.status as string | undefined) !== 'closed').length
+        setOpenCurationItems(open)
+      })
+      .catch(() => setOpenCurationItems(0))
+  }, [saveStatus])
 
   // Fetch all SPARTA techniques from daemon
   useEffect(() => {
     setLoading(true)
-    post('/list', {
-      collection: 'sparta_controls',
-      limit: 500,
-      filters: { source_framework: 'SPARTA', control_type: 'technique' },
-    }).then((res) => {
-      setRawTechniques(res.documents ?? [])
-      setLoading(false)
+    setError(null)
+    fetch(`${DAEMON}/list`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_controls',
+        limit: 500,
+        filters: { source_framework: 'SPARTA', control_type: 'technique' },
+      }),
     })
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}: ${r.statusText}`)
+        return r.json()
+      })
+      .then((res) => {
+        if (res.error) {
+          setError(res.error)
+          setRawTechniques([])
+        } else {
+          setRawTechniques(res.documents ?? [])
+        }
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error('ThreatMatrix fetch error:', err)
+        setError(err.message || 'Failed to load techniques')
+        setRawTechniques([])
+        setLoading(false)
+      })
   }, [])
 
   // Load evidence verdicts from dedicated evidence_cases collection
@@ -132,10 +242,10 @@ export function ThreatMatrixView() {
     .map((t) => {
       const ev = evidenceMap.get(t.control_id)
       const verdict = activeDatalake && ev ? ev.verdict : 'none'
-      const coverage = verdict === 'satisfied' ? 'full'
+      const coverage: 'full' | 'partial' | 'none' | 'unknown' = verdict === 'satisfied' ? 'full'
         : verdict === 'inconclusive' ? 'partial'
         : verdict === 'not_satisfied' ? 'none'
-        : 'unknown' as const
+        : 'unknown'
       return {
         id: t.control_id,
         name: t.name,
@@ -220,6 +330,8 @@ export function ThreatMatrixView() {
     showSubtechniques,
     selectedDetail,
     loadingDetail,
+    viewMode,
+    condensedView,
   }
 
   const selectDatalake = useCallback((dl: string) => setActiveDatalake(dl), [])
@@ -229,6 +341,8 @@ export function ThreatMatrixView() {
     clearSelection,
     toggleSubtechniques,
     selectDatalake,
+    setViewMode,
+    toggleCondensedView: () => setCondensedView((v) => !v),
   }
 
   const meta: ThreatMatrixMeta = {
@@ -241,10 +355,116 @@ export function ThreatMatrixView() {
   // Compose the shared compound component
   return (
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto', position: 'relative' }}>
+        {error && (
+          <div style={{ padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', borderBottom: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            Error loading techniques: {error}
+          </div>
+        )}
+
+        <div
+          data-qid="threat-matrix:layout:brandon-curation"
+          style={{
+            padding: '10px 16px',
+            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            background: 'linear-gradient(180deg, rgba(0, 209, 255, 0.08), rgba(0, 0, 0, 0))',
+            display: 'grid',
+            gap: 8,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <button
+              data-qid="threat-matrix:button:curation-toggle"
+              data-qs-action="TOGGLE_MATRIX_CURATION_MODE"
+              title="Toggle Brandon matrix curation mode"
+              onClick={() => setCurationMode(v => !v)}
+              style={{
+                minHeight: 44,
+                padding: '8px 12px',
+                borderRadius: 8,
+                border: curationMode ? '1px solid rgba(0, 209, 255, 0.55)' : '1px solid rgba(255,255,255,0.16)',
+                background: curationMode ? 'rgba(0, 209, 255, 0.16)' : 'rgba(255,255,255,0.04)',
+                color: curationMode ? '#00d1ff' : '#a3b3bf',
+                fontSize: 11,
+                fontWeight: 800,
+                cursor: 'pointer',
+              }}
+            >
+              {curationMode ? 'Curation Mode: ON' : 'Curation Mode: OFF'}
+            </button>
+            <div style={{ fontSize: 11, color: '#9fb0bd' }}>
+              Open matrix curation items: <strong style={{ color: '#ffffff' }}>{openCurationItems}</strong>
+            </div>
+            {saveStatus && <div style={{ fontSize: 11, color: '#00d1ff' }}>{saveStatus}</div>}
+          </div>
+
+          {curationMode && (
+            <div style={{ display: 'grid', gap: 8 }}>
+              <div style={{ fontSize: 11, color: '#c9d5de' }}>
+                Brandon workflow: select a technique, capture requirement conflict/cascade notes, and save amendments for adjudication.
+              </div>
+
+              <textarea
+                data-qid="threat-matrix:input:amendment-note"
+                value={curationNote}
+                onChange={(e) => setCurationNote(e.target.value)}
+                placeholder={selectedDetail ? `Amendment note for ${selectedDetail.technique.id}...` : 'Select a technique, then write amendment note...'}
+                title="Matrix amendment note"
+                style={{ minHeight: 88, resize: 'vertical', borderRadius: 8, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(0,0,0,0.35)', color: '#e6edf3', padding: 10, fontSize: 12 }}
+              />
+              <button
+                data-qid="threat-matrix:button:save-amendment"
+                data-qs-action="SAVE_MATRIX_AMENDMENT"
+                title="Save matrix amendment"
+                onClick={saveMatrixAmendment}
+                style={{ minHeight: 44, padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(0, 209, 255, 0.55)', background: 'rgba(0, 209, 255, 0.14)', color: '#00d1ff', fontSize: 11, fontWeight: 800, cursor: 'pointer', width: 'fit-content' }}
+              >
+                Save Amendment
+              </button>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+                <input
+                  data-qid="threat-matrix:input:new-technique-id"
+                  value={proposalId}
+                  onChange={(e) => setProposalId(e.target.value)}
+                  placeholder="New ID (e.g., REC-0999)"
+                  title="New technique ID"
+                  style={{ minHeight: 44, padding: '8px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(0,0,0,0.35)', color: '#e6edf3', fontSize: 12 }}
+                />
+                <input
+                  data-qid="threat-matrix:input:new-technique-name"
+                  value={proposalName}
+                  onChange={(e) => setProposalName(e.target.value)}
+                  placeholder="New technique name"
+                  title="New technique name"
+                  style={{ minHeight: 44, padding: '8px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(0,0,0,0.35)', color: '#e6edf3', fontSize: 12, minWidth: 260 }}
+                />
+                <select
+                  data-qid="threat-matrix:input:new-technique-tactic"
+                  value={proposalTactic}
+                  onChange={(e) => setProposalTactic(e.target.value)}
+                  title="Proposed tactic"
+                  style={{ minHeight: 44, padding: '8px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(0,0,0,0.35)', color: '#e6edf3', fontSize: 12 }}
+                >
+                  {SPARTA_TACTICS.map((t) => <option key={t.id} value={t.name}>{t.name}</option>)}
+                </select>
+                <button
+                  data-qid="threat-matrix:button:add-technique-proposal"
+                  data-qs-action="ADD_TECHNIQUE_PROPOSAL"
+                  title="Save new technique proposal"
+                  onClick={submitTechniqueProposal}
+                  style={{ minHeight: 44, padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(63, 185, 80, 0.55)', background: 'rgba(63, 185, 80, 0.14)', color: '#3fb950', fontSize: 11, fontWeight: 800, cursor: 'pointer' }}
+                >
+                  Add Technique Proposal
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
         <ThreatMatrix.Header />
         <ThreatMatrix.TacticStrip />
-        <div style={{ flex: 1, overflow: 'hidden' }}>
+        <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
           <ThreatMatrix.Grid />
         </div>
         <ThreatMatrix.Detail />

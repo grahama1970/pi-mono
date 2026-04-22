@@ -3,19 +3,19 @@
  * Converted from Stitch design (project 5752752744733317670)
  * Design system: Tactical HUD (0px radius, NVIS colors, Space Grotesk + JetBrains Mono)
  */
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import type { ChatMessage } from './shared-chat/ChatWell'
 import { SpartaExplorer } from './sparta/explorer/SpartaExplorer'
-import { OverviewView } from './sparta/explorer/OverviewView'
 import { SourcesView } from './sparta/explorer/SourcesView'
 import { ControlsView } from './sparta/explorer/ControlsView'
 import { URLsView } from './sparta/explorer/URLsView'
 import { QRAsView } from './sparta/explorer/QRAsView'
-import { RelationshipsView } from './sparta/explorer/RelationshipsView'
 import { ThreatMatrixView } from './sparta/explorer/ThreatMatrixView'
-import { PipelineView } from './sparta/explorer/PipelineView'
-import { PromptLabView } from './sparta/explorer/PromptLabView'
+import { SupplyChainView } from './sparta/explorer/SupplyChainView'
 import { MusicLabWorkbench } from './music-lab/MusicLabWorkbench'
+import { PromptLabView } from './sparta/explorer/PromptLabView'
 import { ChatWell } from './ChatWell'
+import { useRegisterAction } from '../hooks/useRegisterAction'
 
 type ProjectId = 'sparta' | 'music-lab' | 'prompt-lab' | 'datalake-explorer'
 type TabId = 'mockups' | 'components' | 'design-board' | 'reviews'
@@ -38,6 +38,14 @@ export function UxLabShell() {
   const [activeProject, setActiveProject] = useState<ProjectId>('music-lab')
   const [activeTab, setActiveTab] = useState<TabId>('mockups')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const emptyMessages = useMemo<ChatMessage[]>(() => [], [])
+
+  useRegisterAction('shell:button:sidebar-toggle', { app: 'ux-lab', action: 'TOGGLE_SIDEBAR', label: 'Toggle Sidebar', description: 'Collapse or expand the sidebar' })
+  useRegisterAction('shell:button:project-select', { app: 'ux-lab', action: 'SELECT_PROJECT', label: 'Select Project', description: 'Switch to a different project workspace' })
+  useRegisterAction('shell:button:settings', { app: 'ux-lab', action: 'OPEN_SETTINGS', label: 'Open Settings', description: 'Open UX Lab settings' })
+  useRegisterAction('shell:button:tab-select', { app: 'ux-lab', action: 'SELECT_TAB', label: 'Select Tab', description: 'Switch between main view tabs' })
+  useRegisterAction('shell:button:notifications', { app: 'ux-lab', action: 'OPEN_NOTIFICATIONS', label: 'Notifications', description: 'View latest alerts' })
+  useRegisterAction('shell:button:deploy', { app: 'ux-lab', action: 'DEPLOY_PROJECT', label: 'Deploy', description: 'Deploy the current project' })
 
   const sidebarWidth = sidebarCollapsed ? 48 : 240
 
@@ -51,6 +59,9 @@ export function UxLabShell() {
         {/* Brand */}
         <div className="h-14 flex items-center px-4 border-b border-white/10 gap-3">
           <button
+            data-qid="shell:button:sidebar-toggle"
+            data-qs-action="TOGGLE_SIDEBAR"
+            title="Toggle Sidebar"
             onClick={() => setSidebarCollapsed(v => !v)}
             className="text-slate-400 hover:text-white transition-colors"
           >
@@ -75,6 +86,9 @@ export function UxLabShell() {
           {PROJECTS.map(p => (
             <button
               key={p.id}
+              data-qid={`shell:button:project-select`}
+              data-qs-action="SELECT_PROJECT"
+              title={`Switch to ${p.label}`}
               onClick={() => setActiveProject(p.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors duration-150 ${
                 activeProject === p.id
@@ -90,7 +104,12 @@ export function UxLabShell() {
 
         {/* Footer */}
         <div className="border-t border-white/10 py-3">
-          <button className="w-full flex items-center gap-3 px-4 py-2 text-slate-400 hover:text-white transition-colors">
+          <button 
+            data-qid="shell:button:settings"
+            data-qs-action="OPEN_SETTINGS"
+            title="Settings"
+            className="w-full flex items-center gap-3 px-4 py-2 text-slate-400 hover:text-white transition-colors"
+          >
             <span className="material-symbols-outlined text-sm">settings</span>
             {!sidebarCollapsed && <span className="text-sm">Settings</span>}
           </button>
@@ -105,6 +124,9 @@ export function UxLabShell() {
             {TABS.map(tab => (
               <button
                 key={tab.id}
+                data-qid={`shell:button:tab-select`}
+                data-qs-action="SELECT_TAB"
+                title={`Select ${tab.label}`}
                 onClick={() => setActiveTab(tab.id)}
                 className={`h-full flex items-center text-xs font-headline font-medium uppercase tracking-widest transition-all ${
                   activeTab === tab.id
@@ -117,10 +139,20 @@ export function UxLabShell() {
             ))}
           </div>
           <div className="flex items-center gap-3">
-            <button className="p-2 text-slate-400 hover:bg-white/5 transition-all">
+            <button 
+              data-qid="shell:button:notifications"
+              data-qs-action="OPEN_NOTIFICATIONS"
+              title="Notifications"
+              className="p-2 text-slate-400 hover:bg-white/5 transition-all"
+            >
               <span className="material-symbols-outlined text-sm">notifications</span>
             </button>
-            <button className="bg-primary text-white px-4 py-1.5 flex items-center gap-2 hover:bg-primary/80 transition-all active:scale-95 text-xs font-bold uppercase tracking-widest font-headline">
+            <button 
+              data-qid="shell:button:deploy"
+              data-qs-action="DEPLOY_PROJECT"
+              title="Deploy Project"
+              className="bg-primary text-white px-4 py-1.5 flex items-center gap-2 hover:bg-primary/80 transition-all active:scale-95 text-xs font-bold uppercase tracking-widest font-headline"
+            >
               <span className="material-symbols-outlined text-sm">rocket_launch</span>
               Deploy
             </button>
@@ -132,15 +164,12 @@ export function UxLabShell() {
           {activeTab === 'mockups' && activeProject === 'sparta' && (
             <SpartaExplorer
               views={{
-                Overview: <OverviewView />,
                 Sources: <SourcesView />,
                 Controls: <ControlsView />,
                 URLs: <URLsView />,
                 QRAs: <QRAsView />,
-                Relationships: <RelationshipsView />,
                 'Threat Matrix': <ThreatMatrixView />,
-                Pipeline: <PipelineView />,
-                'Prompt Lab': <PromptLabView />,
+                'Supply Chain': <SupplyChainView />,
               }}
             />
           )}
@@ -165,7 +194,7 @@ export function UxLabShell() {
         </main>
       </div>
 
-      <ChatWell />
+      <ChatWell messages={emptyMessages} />
     </div>
   )
 }

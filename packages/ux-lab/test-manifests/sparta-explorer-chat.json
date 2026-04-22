@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer Chat Tab",
+  "base_url": "http://localhost:3002/#sparta-explorer",
+  "surfaces": [
+    {
+      "name": "chat-tab-layout",
+      "path": "/",
+      "wait_ready": "[data-qid='chat:composer']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "page-header-visible",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full page load - verify header FINAL_SITE is visible at top"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='chat:composer']",
+              "timeout_ms": 5000,
+              "description": "Wait for chat composer to load"
+            }
+          ]
+        },
+        {
+          "name": "starter-questions",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid='chat:starter:0']",
+              "timeout_ms": 5000,
+              "description": "Wait for starter questions to load"
+            },
+            {
+              "action": "screenshot",
+              "description": "Starter questions visible in chat area"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:starter:0']",
+              "description": "Click first starter question",
+              "screenshot_after": true,
+              "assert_min_size": {"selector": "[data-qid='chat:starter:0']", "min_width": 44, "min_height": 44},
+              "assert_title": "[data-qid='chat:starter:0']"
+            }
+          ]
+        },
+        {
+          "name": "chat-input",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='chat:input']",
+              "description": "Focus chat input field",
+              "assert_title": "[data-qid='chat:input']"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='chat:input']",
+              "value": "What controls cover supply chain?",
+              "description": "Type a test question"
+            },
+            {
+              "action": "screenshot",
+              "description": "Input filled with test question"
+            }
+          ]
+        },
+        {
+          "name": "send-button",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Send button appearance - should be rectangular, not large circle"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='chat:send']",
+              "description": "Click send button",
+              "screenshot_after": true,
+              "assert_min_size": {"selector": "[data-qid='chat:send']", "min_width": 44, "min_height": 44},
+              "assert_title": "[data-qid='chat:send']",
+              "assert_qs_action": "[data-qid='chat:send']"
+            }
+          ]
+        },
+        {
+          "name": "scroll-behavior",
+          "interactions": [
+            {
+              "action": "scroll",
+              "direction": "down",
+              "amount": 300,
+              "description": "Scroll down in chat area"
+            },
+            {
+              "action": "screenshot",
+              "description": "After scroll down - content should move"
+            },
+            {
+              "action": "scroll",
+              "direction": "up",
+              "amount": 500,
+              "description": "Scroll back to top"
+            },
+            {
+              "action": "screenshot",
+              "description": "After scroll to top - header should be visible"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "threat-matrix-panel",
+      "path": "/",
+      "wait_ready": "[data-qid='chat:datalake:f36']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "datalake-selector",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='chat:datalake:f36']",
+              "description": "Select F-36 datalake to show threat matrix",
+              "screenshot_after": true,
+              "assert_min_size": {"selector": "[data-qid='chat:datalake:f36']", "min_width": 44, "min_height": 44},
+              "assert_title": "[data-qid='chat:datalake:f36']"
+            }
+          ]
+        },
+        {
+          "name": "coverage-labels",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid='threat-matrix:cell:REC-0001']",
+              "timeout_ms": 5000,
+              "description": "Wait for threat matrix cells to load"
+            },
+            {
+              "action": "screenshot",
+              "description": "Threat matrix with coverage percentage labels visible"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

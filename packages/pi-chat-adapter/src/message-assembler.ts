@@ -84,6 +84,7 @@ export class RequestAssembler {
 	private textChunks: string[] = [];
 	private toolCalls: Array<{ tool: string; args: Record<string, unknown> }> = [];
 	private steps: ReasoningStep[] = [];
+	private gateSteps: Map<string, ReasoningStep> = new Map();
 	private done = false;
 
 	constructor(requestId: string) {
@@ -96,7 +97,10 @@ export class RequestAssembler {
 
 		switch (event.type) {
 			case "message_update":
-				if (event.text) this.textChunks.push(event.text);
+				if (event.text) {
+					this.textChunks.push(event.text);
+					this.parseGateProgress(event.text);
+				}
 				break;
 
 			case "tool_execution": {
@@ -187,8 +191,9 @@ export class RequestAssembler {
 		if (entities.length > 0) msg.entities = entities;
 
 		// Reasoning steps — with resolved skill names
-		if (this.steps.length > 0) {
-			msg.reasoningSteps = this.steps;
+		const reasoningSteps = this.currentSteps();
+		if (reasoningSteps.length > 0) {
+			msg.reasoningSteps = reasoningSteps;
 		}
 
 		return msg;
@@ -237,7 +242,64 @@ export class RequestAssembler {
 
 	/** Get current reasoning steps (for live step display) */
 	currentSteps(): ReasoningStep[] {
+		// If we have gate steps from evidence-case, return those for better granularity
+		if (this.gateSteps.size > 0) {
+			const orderedGates = [
+				"extract_entities",
+				"qra_recall",
+				"technique_intersection",
+				"lean4_prove",
+				"scillm_synthesize",
+			];
+			const gateStepsList: ReasoningStep[] = [];
+			for (const gate of orderedGates) {
+				const step = this.gateSteps.get(gate);
+				if (step) gateStepsList.push(step);
+			}
+			return gateStepsList;
+		}
 		return [...this.steps];
+	}
+
+	/**
+	 * Parse GATE_PROGRESS lines from streaming text.
+	 * Format: GATE_PROGRESS:{"type":"gate_progress","gate":"...","status":"...","detail":"..."}
+	 */
+	private parseGateProgress(text: string): void {
+		const lines = text.split("\n");
+		for (const line of lines) {
+			if (!line.startsWith("GATE_PROGRESS:")) continue;
+			try {
+				const json = line.slice("GATE_PROGRESS:".length);
+				const data = JSON.parse(json) as {
+					gate: string;
+					status: string;
+					detail?: string;
+					passed?: boolean;
+				};
+				const existing = this.gateSteps.get(data.gate);
+				const status = data.status === "running" ? "running" : data.status === "done" ? "done" : "failed";
+				if (existing) {
+					existing.status = status;
+					existing.detail = data.detail ?? existing.detail;
+					if (status !== "running") {
+						existing.duration = existing.startedAt ? Date.now() - existing.startedAt : undefined;
+					}
+				} else {
+					this.gateSteps.set(data.gate, {
+						id: `gate-${data.gate}`,
+						type: "skill",
+						skill: "create-evidence-case",
+						status,
+						summary: data.gate.replace(/_/g, " "),
+						detail: data.detail,
+						startedAt: status === "running" ? Date.now() : undefined,
+					});
+				}
+			} catch {
+				/* malformed gate progress line */
+			}
+		}
 	}
 
 	get isComplete(): boolean {
@@ -286,8 +348,7 @@ export class RequestAssembler {
 			/\bCWE-(\d+)\b/g, // CWE-287
 		];
 		for (const pattern of patterns) {
-			let match;
-			while ((match = pattern.exec(text)) !== null) {
+			for (const match of text.matchAll(pattern)) {
 				const id = match[0];
 				if (!seen.has(id)) {
 					seen.add(id);

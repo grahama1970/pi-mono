@@ -62,10 +62,11 @@ export const RecallCard = memo(function RecallCard({ items, resultCount, confide
 
   return (
     <div style={{ margin: '6px 0' }}>
-      <button data-qid="recall:toggle" onClick={() => setExpanded(v => !v)} title="Memory recall results — click to expand" style={{
+      <button data-qid="recall:toggle" data-qs-action="TOGGLE_RECALL_RESULTS" onClick={() => setExpanded(v => !v)} title="Memory recall results — click to expand" style={{
         display: 'flex', alignItems: 'center', gap: 6, width: '100%',
         fontSize: 13, color: EMBRY.dim, background: 'none', border: 'none',
         cursor: 'pointer', padding: '4px 0', textAlign: 'left',
+        minHeight: 44,
       }}>
         {confPct != null && (
           <span style={{ color: confColor, fontWeight: 700, fontFamily: 'monospace', fontSize: 12 }} title={confTooltip}>

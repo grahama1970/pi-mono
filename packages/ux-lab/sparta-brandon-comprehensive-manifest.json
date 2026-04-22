@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer - Brandon Bailey Comprehensive Validation",
+  "base_url": "http://localhost:3002",
+  "description": "Comprehensive test of ALL interactive elements across SPARTA Explorer tabs. Brandon Bailey persona validates: technique anchoring, crosswalk chains, evidence cases, space terminology, compliance status visibility",
+  "surfaces": [
+    {
+      "name": "posture-compliance-dashboard",
+      "path": "/#sparta-explorer/posture",
+      "wait_ready": "[data-qid='posture:tab:posture']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "posture-tabs",
+          "interactions": [
+            {"action": "screenshot", "description": "Initial posture dashboard - Brandon checks SATISFIED/INCONCLUSIVE/NOT_SATISFIED status visibility"},
+            {"action": "click", "target": "[data-qid='posture:tab:posture']", "description": "Posture tab - verify active state", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='posture:tab:traceability']", "description": "Traceability tab - Brandon verifies evidence chain visibility", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='posture:tab:assurance-case-health']", "description": "Assurance case health - Brandon checks /create-evidence-case pipeline status", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='posture:button:analyze-proof-chain']", "description": "Analyze proof chain button - Brandon validates formal verification trigger", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "threat-matrix-all-views",
+      "path": "/#sparta-explorer/threat-matrix",
+      "wait_ready": "[data-qid='threat-matrix:input:datalake-selector']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "matrix-controls",
+          "interactions": [
+            {"action": "screenshot", "description": "Threat matrix initial state - Brandon verifies technique IDs visible"},
+            {"action": "click", "target": "[data-qid='threat-matrix:input:datalake-selector']", "description": "Datalake selector - Brandon checks data source selection", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='threat-matrix:button:condensed-toggle']", "description": "Toggle condensed mode", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='threat-matrix:button:subtechniques-toggle']", "description": "Toggle subtechniques - Brandon verifies hierarchy display", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "matrix-view-modes",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='threat-matrix:button:view-bloom']", "description": "Bloom filter view - Brandon checks coverage heatmap", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='threat-matrix:button:view-graph']", "description": "Graph view - Brandon verifies crosswalk relationships visually", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='threat-matrix:button:view-standard']", "description": "Return to standard grid view", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "controls-framework-crosswalks",
+      "path": "/#sparta-explorer/controls",
+      "wait_ready": "[data-qid='controls:search:input']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "controls-search-filter",
+          "interactions": [
+            {"action": "screenshot", "description": "Controls view initial - Brandon checks framework filter visibility"},
+            {"action": "type", "target": "[data-qid='controls:search:input']", "value": "access", "description": "Search 'access' - Brandon tests control search", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:filter:sparta']", "description": "Filter SPARTA controls", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:filter:nist']", "description": "Filter NIST - Brandon checks SPARTA-to-NIST mapping", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:filter:cwe']", "description": "Filter CWE - Brandon verifies CWE crosswalk evidence", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:filter:d3fend']", "description": "Filter D3FEND - defensive technique mapping", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:filter:all']", "description": "Clear filter - show all frameworks", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "controls-pagination",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='controls:page:next']", "description": "Next page", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='controls:page:prev']", "description": "Previous page", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "qras-review-workflow",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='qras:search']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "qra-search-filter",
+          "interactions": [
+            {"action": "screenshot", "description": "QRA review interface - Brandon checks technique ID/name in header"},
+            {"action": "type", "target": "[data-qid='qras:search']", "value": "authentication", "description": "Search authentication QRAs", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "qra-mind-filters",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Harden']", "description": "Filter Harden - Brandon checks persona stratification", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Detect']", "description": "Filter Detect - tactic anchoring", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Isolate']", "description": "Filter Isolate", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Recover']", "description": "Filter Recover", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Respond']", "description": "Filter Respond", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:filter:mind:Design']", "description": "Filter Design", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "qra-actions",
+          "interactions": [
+            {"action": "screenshot", "description": "QRA action buttons - Accept/Reject/Edit visibility"},
+            {"action": "click", "target": "[data-qid='qras:action:accept']", "description": "Accept QRA button - Brandon tests review workflow", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='qras:action:undo']", "description": "Undo action - verify reversibility", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sources-data-provenance",
+      "path": "/#sparta-explorer/sources",
+      "wait_ready": "[data-qid='sources:source:sparta-tactics']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "sources-navigation",
+          "interactions": [
+            {"action": "screenshot", "description": "Sources view - Brandon checks data provenance auditability"},
+            {"action": "hover", "target": "[data-qid='sources:source:sparta-tactics']", "description": "Hover SPARTA tactics source", "screenshot_after": true},
+            {"action": "hover", "target": "[data-qid='sources:source:sparta-techniques']", "description": "Hover techniques source - verify metadata", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='sources:section:urls-toggle']", "description": "Toggle URLs section visibility", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "sources-search",
+          "interactions": [
+            {"action": "type", "target": "[data-qid='sources:search:controls']", "value": "NIST", "description": "Search NIST in controls sources", "screenshot_after": true},
+            {"action": "type", "target": "[data-qid='sources:search:urls']", "value": "mitre", "description": "Search MITRE in URL sources", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "sources-pagination",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='sources:page:next']", "description": "Next page of sources", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='sources:page:prev']", "description": "Previous page", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "urls-reference-quality",
+      "path": "/#sparta-explorer/urls",
+      "wait_ready": "[data-qid='urls:search:input']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "urls-search-filter",
+          "interactions": [
+            {"action": "screenshot", "description": "URLs view - Brandon checks url_knowledge quality (404s, errors)"},
+            {"action": "type", "target": "[data-qid='urls:search:input']", "value": "attack.mitre.org", "description": "Search MITRE ATT&CK URLs", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='urls:filter:all']", "description": "Show all domain filters", "screenshot_after": true}
+          ]
+        },
+        {
+          "name": "urls-pagination",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='urls:page:next']", "description": "Next page of URLs", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='urls:page:prev']", "description": "Previous page", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "supply-chain-analysis",
+      "path": "/#sparta-explorer/supply-chain",
+      "wait_ready": "[data-qid='supply-chain-scenario-select']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "supply-chain-controls",
+          "interactions": [
+            {"action": "screenshot", "description": "Supply chain view - Brandon checks component dependency visibility for ICS/OT"},
+            {"action": "click", "target": "[data-qid='supply-chain-scenario-select']", "description": "Open scenario selector", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='supply-chain-controls']", "description": "Toggle supply chain controls", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='supply-chain-reset-kills']", "description": "Reset kill chain simulation", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparta-chat-assistant",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='sparta:button:embry-assistant']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "chat-workflow",
+          "interactions": [
+            {"action": "screenshot", "description": "QRAs view with chat button visible"},
+            {"action": "click", "target": "[data-qid='sparta:button:embry-assistant']", "description": "Open SPARTA chat - Brandon asks domain questions", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='sparta:button:chat-close']", "description": "Close chat panel", "screenshot_after": true}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "global-settings",
+      "path": "/#sparta-explorer/posture",
+      "wait_ready": "[data-qid='sparta:button:settings']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "settings-modal",
+          "interactions": [
+            {"action": "click", "target": "[data-qid='sparta:button:settings']", "description": "Open settings modal", "screenshot_after": true},
+            {"action": "click", "target": "[data-qid='sparta:button:settings-close']", "description": "Close settings", "screenshot_after": true}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1657,7 +1657,7 @@ export default function QuarantineView() {
                 }}
               >
                 {/* L.5: Approve/Reject are dominant buttons */}
-                <button data-qid="quarantine:el-4" data-qs-action="QUARANTINE_EL_4" title="El 4"
+                <button
                   onClick={() => handleAction(selected.id, 'approve')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:approve" data-qs-action="QUARANTINE_APPROVE"
@@ -1680,7 +1680,7 @@ export default function QuarantineView() {
                 >
                   Approve (a)
                 </button>
-                <button data-qid="quarantine:el-5" data-qs-action="QUARANTINE_EL_5" title="El 5"
+                <button
                   onClick={() => handleAction(selected.id, 'reject')}
                   disabled={actionInFlight !== null}
                   data-qid="quarantine:action:reject" data-qs-action="QUARANTINE_REJECT"
@@ -1723,7 +1723,7 @@ export default function QuarantineView() {
                   disabled={actionInFlight !== null}
                   onClick={() => handleAction(selected.id, 're-extract')}
                 />
-                <select data-qid="quarantine:el-6" data-qs-action="QUARANTINE_EL_6" title="El 6"
+                <select
                   value={reExtractStrategy}
                   onChange={(e) => setReExtractStrategy(e.target.value)}
                   data-qid="quarantine:strategy:select" data-qs-action="QUARANTINE_SELECT"

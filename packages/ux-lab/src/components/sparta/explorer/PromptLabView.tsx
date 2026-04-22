@@ -257,7 +257,7 @@ export function PromptLabView() {
 
   const runOptimize = useCallback(async () => {
     if (!selectedPrompt) return
-    setRunning(true); setDone(false); setResults([]); setRoundLogs([]); setFinalPrompt('')
+    setRunning(true); setDone(false); setRoundLogs([]); setFinalPrompt('')
     try {
       await fetch(`${API}/prompt-lab/optimize-live`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -849,10 +849,11 @@ function PromptLabPaneContent({ prompts, groundTruthFiles, selectedPrompt, selec
       <LeftPaneSection title={
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <span>Prompts ({filtered.length + filteredOrphanGT.length})</span>
-          <Plus size={14} color={EMBRY.muted} style={{ cursor: 'pointer' }} onClick={handleAdd}
-            data-qid="prompt-lab:button:add-prompt"
-            title="Create a new prompt version"
-            aria-label="Add new prompt" />
+          <span title="Create a new prompt version"
+            data-qid="prompt-lab:button:add-prompt">
+            <Plus size={14} color={EMBRY.muted} style={{ cursor: 'pointer' }} onClick={handleAdd}
+              aria-label="Add new prompt" />
+          </span>
         </div>
       }>
         {filtered.map(p => (

@@ -85,6 +85,11 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
   const [proofStatus] = useState<ProofStatus>('unproven')
   const [currentStage, setCurrentStage] = useState<number>(0) // 0=Flag
 
+  // QuerySpec action registrations (data-qid → voice/NL/agent control)
+  useRegisterAction('req-block:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in RequirementsBlock' })
+  useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in RequirementsBlock' })
+  useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in RequirementsBlock' })
+
   const handleCreateEvidence = useCallback(() => {
     console.log('Creating evidence case for block:', block.id, {
       controlMapping: selectedControl,
@@ -252,12 +257,6 @@ export default function RequirementsBlock({ block }: RequirementsBlockProps) {
               const isDone = i < currentStage
               const isCurrent = i === currentStage
               const color = isDone
-
-  // QuerySpec action registrations (data-qid → voice/NL/agent control)
-  useRegisterAction('req-block:item-1', { app: 'datalake-explorer', action: 'ITEM_1', label: 'Item 1', description: 'Item 1 in RequirementsBlock' })
-  useRegisterAction('req-block:item-2', { app: 'datalake-explorer', action: 'ITEM_2', label: 'Item 2', description: 'Item 2 in RequirementsBlock' })
-  useRegisterAction('req-block:item-3', { app: 'datalake-explorer', action: 'ITEM_3', label: 'Item 3', description: 'Item 3 in RequirementsBlock' })
-
                 ? '#15803d'
                 : isCurrent
                 ? STAGE_COLORS[stage]

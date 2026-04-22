@@ -87,6 +87,11 @@ interface FGNode {
   __radius: number
   __color: string
   __importance: number
+  // Added by force simulation at runtime
+  x?: number
+  y?: number
+  vx?: number
+  vy?: number
 }
 
 interface FGLink {
@@ -673,7 +678,7 @@ export const BinaryGraphWebGL = forwardRef<BinaryGraphWebGLHandle, BinaryGraphPr
         >
           <ForceGraph2D
             ref={fgRef as any}
-            graphData={graphData}
+            graphData={graphData as any}
             width={dimensions.width}
             height={dimensions.height}
             backgroundColor={EMBRY.bgDeep}
@@ -716,12 +721,10 @@ export const BinaryGraphWebGL = forwardRef<BinaryGraphWebGLHandle, BinaryGraphPr
   },
 )
 
-// Helper: lazy-load d3-force functions for layout modes
+// Helper: get d3-force functions for layout modes
 function await_d3_forces() {
-  // d3-force is already bundled with react-force-graph-2d
-  // We use dynamic imports to avoid adding d3 as a direct dependency
-  const d3 = require('d3-force') // eslint-disable-line @typescript-eslint/no-require-imports
-  return { forceY: d3.forceY, forceX: d3.forceX }
+  // d3-force is already imported at the top
+  return { forceY: d3Force.forceY, forceX: d3Force.forceX }
 }
 
 export default BinaryGraphWebGL

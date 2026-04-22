@@ -3,8 +3,12 @@ import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { usePostureData } from '../../../hooks/usePostureData'
 import type { Framework, Family, RiskControl, BrokenTrace, ClaimReview } from '../../../hooks/usePostureData'
 import { EMBRY, card, label, heading } from '../common/EmbryStyle'
+import { EvidenceNavigatorButton } from './EvidenceNavigatorButton'
 
-type Props = { onNavigateToControl?: (id: string) => void }
+type Props = {
+  onNavigateToControl?: (id: string) => void
+  onAnalyzeProofChain?: (missingCount: number) => void
+}
 
 const tabs = ['Posture', 'Traceability', 'Assurance Case Health'] as const
 type Tab = typeof tabs[number]
@@ -50,13 +54,29 @@ function PanelSection({ title, desc, children, qid }: { title: string; desc?: st
 
 // ── Tab 1: Posture ──
 
-function PostureTab({ postureScore, complianceScore, criticalFindings, openFindings, evidenceFreshness, totalCases, families, riskControls, onNavigateToControl }: {
+function PostureTab({ postureScore, complianceScore, criticalFindings, openFindings, evidenceFreshness, totalCases, families, riskControls, onNavigateToControl, onAnalyzeProofChain }: {
   postureScore: number; complianceScore: number; criticalFindings: number; openFindings: number
   evidenceFreshness: number; totalCases: number; families: Family[]; riskControls: RiskControl[]
   onNavigateToControl?: (id: string) => void
+  onAnalyzeProofChain?: (missingCount: number) => void
 }) {
+  const missingCases = totalCases - Math.round(totalCases * (postureScore / 100))
   return (
     <div style={{ display: 'grid', gap: 16 }}>
+      {/* Primary Action Bar - ANALYZE PROOF CHAIN - prominent, full width */}
+      {onAnalyzeProofChain && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 16px', background: 'rgba(0, 209, 255, 0.04)', border: '1px solid rgba(0, 209, 255, 0.15)', borderRadius: 8 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(0, 209, 255, 0.7)', marginBottom: 4 }}>Evidence Gap Analysis</div>
+            <div style={{ fontSize: 13, color: '#9ca3af' }}>Posture score {postureScore} with {missingCases} unresolved evidence gaps</div>
+          </div>
+          <EvidenceNavigatorButton
+            onClick={() => onAnalyzeProofChain(missingCases)}
+            label="Analyze Proof Chain"
+          />
+        </div>
+      )}
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 14 }}>
         <KpiCard qid="posture:kpi:score" title="Posture Score" value={postureScore} delta={`${totalCases} evidence cases evaluated`} deltaType={postureScore >= 70 ? 'up' : 'down'} />
         <KpiCard qid="posture:kpi:compliance" title="Compliance Score" value={complianceScore} delta="Satisfied + partial weight" deltaType={complianceScore >= 70 ? 'up' : 'warn'} />
@@ -93,7 +113,7 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
             ? <div style={label}>No failed evidence cases.</div>
             : <div style={{ display: 'grid', gap: 8 }}>
                 {riskControls.map((r, i) => (
-                  <button key={`${r.control_id}-${i}`} type="button" data-qid={`posture:risk:${r.control_id}`} onClick={() => onNavigateToControl?.(r.control_id)} style={{ background: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 8, padding: 10, color: EMBRY.white, textAlign: 'left', cursor: 'pointer' }}>
+                  <button key={`${r.control_id}-${i}`} type="button" data-qid={`posture:risk:${r.control_id}`} data-qs-action={`NAVIGATE_RISK_${r.control_id.replace(/[^A-Za-z0-9]/g, '_').toUpperCase()}`} title={`View risk control ${r.control_id}: ${r.verdict}`} onClick={() => onNavigateToControl?.(r.control_id)} style={{ background: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 8, padding: 12, minHeight: 44, color: EMBRY.white, textAlign: 'left', cursor: 'pointer' }}>
                     <div style={{ fontWeight: 700, fontSize: 13 }}>{r.control_id}</div>
                     <div style={{ ...label, fontSize: 11, color: EMBRY.red }}>{r.grade} — {r.verdict}</div>
                     <div style={{ ...label, fontSize: 11, marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.question?.slice(0, 80)}</div>
@@ -243,12 +263,14 @@ function AssuranceTab({ assuranceScore, supportedClaims, partialClaims, unsuppor
 
 // ── Main Dashboard ──
 
-export default function PostureDashboard({ onNavigateToControl }: Props) {
+export default function PostureDashboard({ onNavigateToControl, onAnalyzeProofChain }: Props) {
   useRegisterAction('posture:dashboard', { app: 'sparta-explorer', action: 'SHOW_DASHBOARD', label: 'Show Posture Dashboard', description: 'Display the security posture dashboard' })
   useRegisterAction('posture:tab-switch', { app: 'sparta-explorer', action: 'POSTURE_TAB_SWITCH', label: 'Switch dashboard tab', description: 'Switch between Posture, Traceability, Assurance tabs' })
+  useRegisterAction('posture:workflow:analyze-proof-chain', { app: 'sparta-explorer', action: 'POSTURE_WORKFLOW_ANALYZE_PROOF_CHAIN', label: 'Analyze Proof Chain From Workflow', description: 'Run proof-chain analysis from the Brandon workflow guide' })
 
   const { loading, error, posture, traceability, assurance } = usePostureData()
   const [activeTab, setActiveTab] = useState<Tab>('Posture')
+  const missingCases = Math.max(0, posture.totalCases - Math.round(posture.totalCases * (posture.postureScore / 100)))
 
   return (
     <div style={{ background: EMBRY.bg, minHeight: '100%', padding: 16, display: 'grid', gap: 16, alignContent: 'start' }}>
@@ -274,23 +296,112 @@ export default function PostureDashboard({ onNavigateToControl }: Props) {
         </div>
       </section>
 
+
+      <section
+        data-qid="posture:workflow:guide"
+        style={{
+          ...card,
+          padding: '14px 16px',
+          border: '1px solid rgba(0, 209, 255, 0.22)',
+          background: 'linear-gradient(180deg, rgba(0, 209, 255, 0.08), rgba(0, 0, 0, 0))',
+          display: 'grid',
+          gap: 8,
+        }}
+      >
+        <div style={{ fontSize: 11, fontWeight: 800, color: '#00d1ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+          Brandon Assessor Workflow
+        </div>
+        <div style={{ fontSize: 12, color: EMBRY.dim }}>
+          Goal: determine if evidence is audit-defensible today, and identify proof gaps that block certification.
+        </div>
+        <div style={{ fontSize: 12, color: EMBRY.white }}>1. <strong>Posture</strong>: verify baseline score and failed controls.</div>
+        <div style={{ fontSize: 12, color: EMBRY.white }}>2. <strong>Traceability</strong>: inspect broken trace chains and mapping integrity.</div>
+        <div style={{ fontSize: 12, color: EMBRY.white }}>3. <strong>Assurance Case Health</strong>: review contradictions and unsupported claims.</div>
+        <div style={{ fontSize: 12, color: EMBRY.white }}>4. <strong>Analyze Proof Chain</strong>: drill into unresolved evidence obligations ({missingCases} open).</div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
+          <button
+            data-qid="posture:workflow:goto-posture"
+            data-qs-action="POSTURE_TAB_SWITCH"
+            title="Open Posture tab"
+            onClick={() => setActiveTab('Posture')}
+            style={{ padding: '8px 10px', minHeight: 44, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: activeTab === 'Posture' ? `${EMBRY.green}22` : EMBRY.bgDeep, color: EMBRY.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+          >
+            1 · Posture
+          </button>
+          <button
+            data-qid="posture:workflow:goto-traceability"
+            data-qs-action="POSTURE_TAB_SWITCH"
+            title="Open Traceability tab"
+            onClick={() => setActiveTab('Traceability')}
+            style={{ padding: '8px 10px', minHeight: 44, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: activeTab === 'Traceability' ? `${EMBRY.green}22` : EMBRY.bgDeep, color: EMBRY.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+          >
+            2 · Traceability
+          </button>
+          <button
+            data-qid="posture:workflow:goto-assurance"
+            data-qs-action="POSTURE_TAB_SWITCH"
+            title="Open Assurance Case Health tab"
+            onClick={() => setActiveTab('Assurance Case Health')}
+            style={{ padding: '8px 10px', minHeight: 44, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: activeTab === 'Assurance Case Health' ? `${EMBRY.green}22` : EMBRY.bgDeep, color: EMBRY.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+          >
+            3 · Assurance
+          </button>
+          {onAnalyzeProofChain && (
+            <button
+              data-qid="posture:workflow:analyze-proof-chain"
+              data-qs-action="POSTURE_WORKFLOW_ANALYZE_PROOF_CHAIN"
+              title="Analyze unresolved proof obligations"
+              onClick={() => onAnalyzeProofChain(missingCases)}
+              style={{ padding: '8px 12px', minHeight: 44, borderRadius: 8, border: '1px solid rgba(0, 209, 255, 0.45)', background: 'rgba(0, 209, 255, 0.14)', color: '#00d1ff', fontSize: 11, fontWeight: 800, cursor: 'pointer' }}
+            >
+              4 · Analyze Proof Chain
+            </button>
+          )}
+        </div>
+      </section>
+
       {/* Tab bar */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         {tabs.map((t, i) => (
-          <button key={t} type="button" data-qid={`posture:tab:${t.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setActiveTab(t)} style={{
-            appearance: 'none', padding: '12px 16px', borderRadius: 999, fontWeight: 700, cursor: 'pointer', transition: '0.2s ease', fontSize: 14,
-            background: activeTab === t ? EMBRY.green : EMBRY.bgCard,
-            color: activeTab === t ? EMBRY.bg : EMBRY.dim,
-            border: `1px solid ${activeTab === t ? 'transparent' : EMBRY.border}`,
-          }}>
+          <button
+            key={t}
+            type="button"
+            data-qid={`posture:tab:${t.toLowerCase().replace(/\s+/g, '-')}`}
+            data-qs-action="POSTURE_TAB_SWITCH"
+            title={`Switch to ${t} tab`}
+            onClick={() => setActiveTab(t)}
+            style={{
+              appearance: 'none',
+              padding: '12px 16px',
+              minHeight: 44,
+              borderRadius: 999,
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: '0.2s ease',
+              fontSize: 14,
+              background: activeTab === t ? EMBRY.green : EMBRY.bgCard,
+              color: activeTab === t ? EMBRY.bg : EMBRY.dim,
+              border: `1px solid ${activeTab === t ? 'transparent' : EMBRY.border}`,
+            }}
+          >
             {i + 1} · {t}
           </button>
         ))}
       </div>
+      {/* Keep proof-chain action available regardless of active tab. */}
+      {onAnalyzeProofChain && !loading && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <EvidenceNavigatorButton
+            onClick={() => onAnalyzeProofChain(Math.max(0, posture.totalCases - Math.round(posture.totalCases * (posture.postureScore / 100))))}
+            label="Analyze Proof Chain"
+          />
+        </div>
+      )}
 
       {/* Tab content */}
       {loading && <div style={{ ...label, padding: 20, textAlign: 'center' }}>Loading evidence case data...</div>}
-      {!loading && activeTab === 'Posture' && <PostureTab {...posture} onNavigateToControl={onNavigateToControl} />}
+      {!loading && activeTab === 'Posture' && <PostureTab {...posture} onNavigateToControl={onNavigateToControl} onAnalyzeProofChain={onAnalyzeProofChain} />}
       {!loading && activeTab === 'Traceability' && <TraceabilityTab {...traceability} />}
       {!loading && activeTab === 'Assurance Case Health' && <AssuranceTab {...assurance} />}
 

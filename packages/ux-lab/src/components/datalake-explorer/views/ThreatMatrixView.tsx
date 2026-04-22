@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { NVIS } from '../theme'
-import { listDocuments, storeDocument } from '../api/client'
+import { listDocuments, storeDocument, runAnalytics } from '../api/client'
 import EvidenceCasePanel from '../EvidenceCasePanel'
 import type { ThreatCell, ThreatDrillthrough, EvidenceCase } from '../types'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
@@ -246,7 +246,6 @@ function DrillthroughPanel({ data, onClose, onCreateEvidence }: DrillthroughPane
                 <div
                   style={{ fontSize: 11, color: NVIS.white, marginBottom: 4, lineHeight: 1.4, cursor: 'pointer' }}
                 data-qid="threatmatrix:item-4" data-qs-action="THREATMATRIX_ITEM_4"
-                title="Item 4"
                   onClick={() => startEdit(ec)}
                   title="Click to edit"
                 >
@@ -368,11 +367,23 @@ export default function ThreatMatrixView() {
   useEffect(() => {
     async function fetchFromDatalake() {
       try {
-        // Fetch controls and relationships from ArangoDB
-        const [controlsResult, relsResult] = await Promise.all([
+        // Fetch controls (small collection) and relationship aggregates via AQL
+        const [controlsResult, relAggResult] = await Promise.all([
           listDocuments('sparta_controls', 200),
-          listDocuments('sparta_relationships', 500),
+          runAnalytics(`
+            FOR r IN sparta_relationships
+              FILTER r.target_control_id != null AND r.target_control_id != ""
+              COLLECT targetId = r.target_control_id
+              AGGREGATE avgScore = AVG(r.combined_score),
+                        maxScore = MAX(r.combined_score),
+                        relCount = COUNT(1),
+                        firstSource = MIN(r.source_control_id)
+              RETURN { targetId, avgScore, maxScore, relCount, firstSource }
+          `),
         ])
+        const relAggs = (relAggResult.result ?? []) as Array<{
+          targetId: string; avgScore: number; maxScore: number; relCount: number; firstSource: string
+        }>
 
         // Build control name map and framework map from real data
         const nameMap: Record<string, string> = {}
@@ -399,47 +410,25 @@ export default function ThreatMatrixView() {
         setControlFrameworkMap(fwMap)
         setControlFamilies([...families].sort())
 
-        // Build cells from relationships — each relationship is a requirement→control mapping
-        // Group by target_control_id to get coverage per control
-        const controlCoverage = new Map<string, { scores: number[]; sources: string[] }>()
-
-        for (const doc of relsResult.documents) {
-          const d = doc as unknown as Record<string, unknown>
-          const targetId = (d.target_control_id as string) ?? ''
-          const sourceId = (d.source_control_id as string) ?? ''
-          const score = (d.combined_score as number) ?? 0
-
-          if (!targetId) continue
-          const entry = controlCoverage.get(targetId) ?? { scores: [], sources: [] }
-          entry.scores.push(score)
-          entry.sources.push(sourceId)
-          controlCoverage.set(targetId, entry)
-        }
-
-        // Build cells — one per control that has any relationships
-        const newCells: ThreatCell[] = []
-        for (const [controlId, { scores, sources }] of controlCoverage) {
-          const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length
-          const maxScore = Math.max(...scores)
-          const status: ThreatCell['status'] = maxScore >= 0.5 ? 'covered'
-            : maxScore >= 0.1 ? 'partial'
+        // Build cells from pre-aggregated relationship data (server-side AQL)
+        const newCells: ThreatCell[] = relAggs.map((agg) => {
+          const status: ThreatCell['status'] = (agg.maxScore ?? 0) >= 0.5 ? 'covered'
+            : (agg.maxScore ?? 0) >= 0.1 ? 'partial'
             : 'gap'
+          const sectorPrefix = agg.firstSource?.split('-')[0] ?? 'REC'
 
-          // Use source_control_id prefix as "sector" (REC-* groups)
-          const sectorPrefix = sources[0]?.split('-')[0] ?? 'REC'
-
-          newCells.push({
-            controlId,
-            controlName: nameMap[controlId] ?? controlId,
+          return {
+            controlId: agg.targetId,
+            controlName: nameMap[agg.targetId] ?? agg.targetId,
             sector: sectorPrefix,
-            coverageScore: Math.round(avgScore * 1000) / 1000,
-            evidenceCount: sources.length,
+            coverageScore: Math.round((agg.avgScore ?? 0) * 1000) / 1000,
+            evidenceCount: agg.relCount ?? 0,
             status,
-          })
-        }
+          }
+        })
 
         setCells(newCells)
-        setCoverageInfo(`${controlsResult.total?.toLocaleString() ?? '?'} controls, ${relsResult.total?.toLocaleString() ?? '?'} relationships from /memory`)
+        setCoverageInfo(`${controlsResult.total?.toLocaleString() ?? '?'} controls, ${relAggs.length.toLocaleString()} relationship groups from /memory`)
         setLoading(false)
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Memory service unreachable')
@@ -770,7 +759,6 @@ export default function ThreatMatrixView() {
                       <button
                         key={sector}
                 data-qid="threatmatrix:dyn-8" data-qs-action="THREATMATRIX_DYN_8"
-                title="Dyn 8"
                         onClick={() => handleCellClick(cell)}
                         title={`${cell.controlId} / ${cell.sector}: ${cell.status} (${Math.round(cell.coverageScore * 100)}%)`}
                         style={{

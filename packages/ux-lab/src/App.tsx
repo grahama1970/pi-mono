@@ -1,60 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  LayoutDashboard, 
-  Package, 
-  MousePointer2, 
-  Eye, 
-  Settings, 
-  HelpCircle, 
-  History, 
-  Bell, 
-  Share2, 
+import {
+  Package,
+  History,
+  Bell,
+  Share2,
   Rocket,
-  Menu,
   PanelLeft,
   PanelLeftClose,
   ChevronRight,
   User,
   Activity,
   Zap,
-  Thermometer,
-  Wifi,
   Database,
   Search,
   Plus,
-  Minus,
   Maximize2,
   Grid,
   Terminal,
   Cpu,
-  ShieldCheck,
-  Network,
   Play,
   CheckCircle2,
   XCircle,
   AlertCircle,
-  ExternalLink,
   Upload,
   RefreshCcw,
   Download,
-  Layout,
   ChevronLeft,
-  Share,
-  Database as DatabaseIcon,
   Code2,
-  FileCode,
-  FileJson,
   Layers,
-  Smartphone,
-  Shield,
-  Filter,
-  ArrowRight,
-  Clock,
-  AlertTriangle,
-  List,
-  Lock,
-  Minimize2,
-  MoreVertical
+  ArrowRight
 } from 'lucide-react';
 
 // Lazy load project components
@@ -71,53 +45,27 @@ const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer
 const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaView').then(m => ({ default: m.Lean4LemmaView })));
 const ScillmMonitor = React.lazy(() => import('./components/scillm/ScillmDashboard').then(m => ({ default: m.ScillmDashboard })));
 const ComponentGalleryView = React.lazy(() => import('./components/gallery/ComponentGallery').then(m => ({ default: m.ComponentGallery })));
+const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m => ({ default: m.PdfLabView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
-import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
 
 // SPARTA sub-views
 const ChatTabView = React.lazy(() => import('./components/sparta/explorer/ChatTab').then(m => ({ default: m.ChatTab })));
-const OverviewView = React.lazy(() => import('./components/sparta/explorer/OverviewView').then(m => ({ default: m.OverviewView })));
 const SourcesView = React.lazy(() => import('./components/sparta/explorer/SourcesView').then(m => ({ default: m.SourcesView })));
 const ControlsView = React.lazy(() => import('./components/sparta/explorer/ControlsView').then(m => ({ default: m.ControlsView })));
 const URLsView = React.lazy(() => import('./components/sparta/explorer/URLsView').then(m => ({ default: m.URLsView })));
 const QRAsView = React.lazy(() => import('./components/sparta/explorer/QRAsView').then(m => ({ default: m.QRAsView })));
-const RelationshipsView = React.lazy(() => import('./components/sparta/explorer/RelationshipsView').then(m => ({ default: m.RelationshipsView })));
 const ThreatMatrixView = React.lazy(() => import('./components/sparta/explorer/ThreatMatrixView').then(m => ({ default: m.ThreatMatrixView })));
-const PipelineView = React.lazy(() => import('./components/sparta/explorer/PipelineView').then(m => ({ default: m.PipelineView })));
-const PromptLabTabView = React.lazy(() => import('./components/sparta/explorer/PromptLabView').then(m => ({ default: m.PromptLabView })));
+const SupplyChainView = React.lazy(() => import('./components/sparta/explorer/SupplyChainView').then(m => ({ default: m.SupplyChainView })));
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useAgentBus } from './lib/useAgentBus';
-import type { AgentBusMessage } from './lib/useAgentBus';
 import { useRegisterAction } from './hooks/useRegisterAction';
 
 // --- Types ---
 
 type View = 'mockups' | 'components' | 'design-board' | 'reviews' | 'testing' | 'final-site';
-
-interface DatabaseStats {
-  status: string;
-  latency: string;
-  throughput: string;
-  temp: string;
-  packetLoss: string;
-  uptime: string;
-  lastSync: string;
-}
-
-interface Stem {
-  id: string;
-  name: string;
-  completion: number;
-  pitchCorr?: string;
-  dynamicRange?: string;
-  freqRange?: string;
-  hits?: number;
-  buffer?: string;
-}
 
 // --- Components ---
 
@@ -213,15 +161,12 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
             <SpartaExplorerView initialTab={subpath} views={{
-              Chat: <React.Suspense fallback={null}><ChatTabView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
               Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
               URLs: <React.Suspense fallback={null}><URLsView /></React.Suspense>,
               QRAs: <React.Suspense fallback={null}><QRAsView /></React.Suspense>,
-              Relationships: <React.Suspense fallback={null}><RelationshipsView /></React.Suspense>,
               'Threat Matrix': <React.Suspense fallback={null}><ThreatMatrixView /></React.Suspense>,
-              Pipeline: <React.Suspense fallback={null}><PipelineView /></React.Suspense>,
-              'Prompt Lab': <React.Suspense fallback={null}><PromptLabTabView /></React.Suspense>,
+              'Supply Chain': <React.Suspense fallback={null}><SupplyChainView /></React.Suspense>,
             }} />
           )}
           {projectId === 'binary-explorer' && <BinaryExplorer />}
@@ -233,8 +178,9 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {projectId === 'embry-terminal' && <EmbryTerminal />}
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
+          {projectId === 'pdf-lab' && <PdfLab />}
           {projectId === 'scillm' && <ScillmMonitor />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'lean4-lemma', 'scillm'].includes(projectId) && (
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -913,6 +859,7 @@ const ProjectSidebar = ({
     { id: 'architecture', title: 'Architecture', subtitle: 'Visual collaboration diagrams', date: '2026-03-25', type: 'desktop' as const },
     { id: 'embry-terminal', title: 'Embry Terminal', subtitle: 'Agent control surface (Claude/Pi/Codex)', date: '2026-03-31', type: 'desktop' as const },
     { id: 'datalake-explorer', title: 'Datalake Explorer', subtitle: 'PDF extraction QA', date: '2026-03-31', type: 'desktop' as const, thumbnail: '' },
+    { id: 'pdf-lab', title: 'PDF Lab', subtitle: 'Visual extraction verification', date: '2026-04-16', type: 'desktop' as const },
     { id: 'scillm', title: 'scillm Monitor', subtitle: 'LLM proxy batch dashboard', date: '2026-04-13', type: 'desktop' as const },
   ];
 
@@ -980,12 +927,12 @@ const ProjectSidebar = ({
 
   return (
     <aside className={cn(
-      "bg-surface-low border-r border-white/10 flex flex-col h-full overflow-hidden transition-all duration-300",
+      "bg-surface-low border-r border-white/10 flex flex-col h-full min-h-0 overflow-hidden transition-all duration-300",
       isCollapsed ? "w-12" : "w-[300px]"
     )}>
       {/* UX Lab Header */}
-      <div className={cn("p-6 pb-4", isCollapsed && "p-2 pb-2")}>
-        <div className={cn("flex items-center mb-6", isCollapsed ? "justify-center mb-2" : "justify-between")}>
+      <div className={cn("p-6 pb-4", isCollapsed && "p-2 pb-1")}>
+        <div className={cn("flex items-center mb-6", isCollapsed ? "justify-center mb-1" : "justify-between")}>
           {!isCollapsed && (
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-headline font-bold text-white tracking-tight">UX Lab</h1>
@@ -1051,7 +998,7 @@ const ProjectSidebar = ({
         )}
       </div>
       
-      <div className={cn("flex-1 overflow-y-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]", isCollapsed ? "px-0.5" : "px-3")}>
+      <div className={cn("flex-1 min-h-0 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]", isCollapsed ? "px-0.5 pb-1" : "px-3 pb-4")}>
         {!isCollapsed && <h3 className="px-3 py-2 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Projects</h3>}
         {filteredProjects.map(p => <ProjectItem key={p.id} project={p} />)}
       </div>
@@ -1629,7 +1576,7 @@ export default function App() {
         <main className="flex-1 relative min-h-0 flex flex-col tactical-corner tactical-corner-tl tactical-corner-br modern-scrollbar">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeView}
+              key={`${activeProjectId}-${activeView}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}

@@ -1,0 +1,196 @@
+version: 1
+app: SPARTA Explorer
+base_url: "http://localhost:3004/#sparta-explorer"
+persona: brandon-bailey
+
+surfaces:
+  - name: main-layout
+    path: "/"
+    wait_ready: "[data-qid='sparta:button:tab-threat-matrix']"
+    qid_compliance: true
+
+    elements:
+      - name: horizontal-tab-strip
+        interactions:
+          - action: screenshot
+            description: "Initial state — Threat Matrix tab active"
+
+          # Tab navigation — verify all 7 tabs
+          - action: click
+            target: "[data-qid='sparta:button:tab-posture']"
+            description: "Navigate to Posture tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-posture']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-posture']"
+            assert_qs_action: "[data-qid='sparta:button:tab-posture']"
+            assert_aria:
+              selector: "[data-qid='sparta:button:tab-posture']"
+              attribute: "aria-selected"
+              value: "true"
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-controls']"
+            description: "Navigate to Controls tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-controls']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-qras']"
+            description: "Navigate to QRAs tab"
+            screenshot_after: true
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-sources']"
+            description: "Navigate to Sources tab"
+            screenshot_after: true
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-urls']"
+            description: "Navigate to URLs tab"
+            screenshot_after: true
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-supply-chain']"
+            description: "Navigate to Supply Chain tab"
+            screenshot_after: true
+
+          - action: click
+            target: "[data-qid='sparta:button:tab-threat-matrix']"
+            description: "Return to Threat Matrix tab"
+            screenshot_after: true
+
+      - name: ask-ai-panel
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:ask-ai']"
+            description: "Open Ask Embry chat panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:ask-ai']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:ask-ai']"
+            assert_qs_action: "[data-qid='sparta:button:ask-ai']"
+
+          - action: wait
+            target: "[data-qid='sparta:button:chat-close']"
+            timeout_ms: 1000
+            description: "Wait for chat panel to animate open"
+
+          - action: screenshot
+            description: "Chat panel open — split view layout"
+
+          # Verify chat scope buttons
+          - action: click
+            target: "[data-qid='sparta:button:chat-scope-f36']"
+            description: "Switch chat scope to F-36"
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-scope-f36']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-scope-sparta']"
+            description: "Switch chat scope back to SPARTA"
+
+          # Verify gate depth buttons
+          - action: click
+            target: "[data-qid='sparta:button:chat-depth-medium']"
+            description: "Switch gate depth to medium"
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-depth-fast']"
+            description: "Switch gate depth back to fast"
+
+          # Close chat panel
+          - action: click
+            target: "[data-qid='sparta:button:chat-close']"
+            description: "Close chat panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-close']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:chat-close']"
+
+          - action: wait
+            timeout_ms: 500
+            description: "Wait for chat panel to animate closed"
+
+          - action: screenshot
+            description: "Chat panel closed — full width content"
+
+      - name: settings-panel
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:settings']"
+            description: "Open settings panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:settings']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:settings']"
+            assert_qs_action: "[data-qid='sparta:button:settings']"
+
+          - action: key
+            key: "Escape"
+            description: "Close settings with Escape key"
+            screenshot_after: true
+
+      - name: keyboard-navigation
+        interactions:
+          - action: tab
+            count: 3
+            description: "Tab through first 3 interactive elements"
+            assert_focus_visible: "[data-qid]"
+
+          - action: key
+            key: "1"
+            description: "Press 1 to navigate to first tab (Posture)"
+            screenshot_after: true
+
+          - action: key
+            key: "2"
+            description: "Press 2 to navigate to Threat Matrix"
+            screenshot_after: true
+
+  - name: threat-matrix-view
+    path: "/threat-matrix"
+    wait_ready: "[data-qid='sparta:button:tab-threat-matrix']"
+    qid_compliance: true
+
+    elements:
+      - name: matrix-controls
+        interactions:
+          - action: screenshot
+            description: "Threat Matrix view — standard mode"
+
+          # View mode toggles (if present)
+          - action: click
+            target: "[data-qid='matrix:view-standard']"
+            description: "Select standard view mode"
+            screenshot_after: true
+
+  - name: posture-view
+    path: "/posture"
+    wait_ready: "[data-qid='sparta:button:tab-posture']"
+    qid_compliance: true
+
+    elements:
+      - name: posture-dashboard
+        interactions:
+          - action: screenshot
+            description: "Posture dashboard view"
+
+assertions:
+  # Global COTS compliance
+  global_font_size: 12
+  global_contrast: 4.5
+  global_touch_target: 44

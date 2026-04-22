@@ -22,6 +22,8 @@ export const BLOCK_TYPE_COLORS: Record<BlockType, string> = {
   equation: '#991af2',
   list_item: '#e61a66',
   caption: '#cc801a',
+  page_number: '#66cccc',
+  boilerplate: '#666666',
 }
 
 export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
@@ -32,9 +34,11 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   equation: 'Equation',
   list_item: 'ListItem',
   caption: 'Caption',
+  page_number: 'PageNum',
+  boilerplate: 'Boilerplate',
 }
 
-const ALL_BLOCK_TYPES: BlockType[] = ['table', 'header', 'figure', 'text', 'equation', 'list_item', 'caption']
+const ALL_BLOCK_TYPES: BlockType[] = ['table', 'header', 'figure', 'text', 'equation', 'list_item', 'caption', 'page_number', 'boilerplate']
 
 function truncate(s: string, max: number): string {
   return s.length > max ? s.slice(0, max - 1) + '\u2026' : s
@@ -773,9 +777,9 @@ export default function BboxWorkspace({
 
             {/* Cascade Decision Trail */}
             <InspectorSection title="Cascade Trail">
-              {selectedBlock.cascadeTrail.length > 0 ? (
+              {(selectedBlock.cascadeTrail?.length ?? 0) > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  {selectedBlock.cascadeTrail.map((step, i) => (
+                  {selectedBlock.cascadeTrail?.map((step, i) => (
                     <div
                       key={i}
                       style={{

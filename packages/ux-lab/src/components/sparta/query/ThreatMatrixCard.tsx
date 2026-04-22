@@ -71,11 +71,12 @@ export const ThreatMatrixCard = memo(function ThreatMatrixCard({ summary, onNavi
 
       {/* Navigate button */}
       {onNavigate && (
-        <button data-qid="threat-matrix:action" title="Threat matrix action" onClick={onNavigate} style={{
+        <button data-qid="threat-matrix:action" data-qs-action="VIEW_FULL_THREAT_MATRIX" title="View the full threat matrix with all techniques and coverage details" onClick={onNavigate} style={{
           marginTop: 10, width: '100%', padding: '6px 0', borderRadius: 6,
           border: `1px solid ${EMBRY.accent}44`, background: `${EMBRY.accent}12`,
           color: EMBRY.accent, fontSize: 10, fontWeight: 700,
           cursor: 'pointer', letterSpacing: '0.05em',
+          minHeight: 44,
         }}>
           View Full Threat Matrix →
         </button>

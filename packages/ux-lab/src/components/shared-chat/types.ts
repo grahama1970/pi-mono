@@ -2,7 +2,7 @@
  * Shared chat types — unified across Embry Terminal + SPARTA Explorer.
  */
 
-export type EntityType = "skill" | "control" | "cwe" | "attack" | "framework" | "sparta";
+export type EntityType = "skill" | "control" | "cwe" | "attack" | "framework" | "sparta" | "domain";
 
 export type CascadeLayer = "recall" | "intent" | "llm" | "aql";
 
@@ -62,13 +62,22 @@ export interface ReasoningStep {
 	children?: ReasoningStep[];
 }
 
+export interface FigureSpec {
+	title?: string;
+	caption?: string;
+	width?: number;
+	height?: number;
+}
+
 export interface Artifact {
 	id: string;
 	title: string;
-	type: "code" | "html" | "svg" | "markdown" | "react-table" | "graph";
+	type: "code" | "html" | "svg" | "markdown" | "react-table" | "graph" | "figure" | "gsn-diagram";
 	content: string;
 	language?: string;
 	data?: unknown;
+	figureSpec?: FigureSpec;
+	description?: string;
 }
 
 export interface Skill {
@@ -83,7 +92,21 @@ export interface Agent {
 	color: string;
 }
 
+// Glossary term from /create-evidence-case daemon
+export interface GlossaryTerm {
+	term: string;
+	type:
+		| "control"
+		| "cwe_weakness"
+		| "attack_technique"
+		| "attack_mobile_technique"
+		| "countermeasure"
+		| "technique"
+		| "domain_term";
+}
+
 export interface EvidenceCaseData {
+	qraKey?: string;
 	verdict: string;
 	grade: string;
 	gates_passed: number;
@@ -96,13 +119,22 @@ export interface EvidenceCaseData {
 	recall_count?: number;
 	recall_breakdown?: Record<string, number>;
 	source_traceability?: Record<string, number>;
+	description?: string;
+	glossary?: GlossaryTerm[];
+	metadata?: {
+		gates_passed?: number;
+		gates_total?: number;
+		gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>;
+	};
 }
 
 export interface ChatMessage {
-	id: string;
+	id?: string;
 	role: "user" | "assistant" | "system" | "agent";
 	content: string;
-	timestamp: number;
+	timestamp?: number;
+	/** UI flag for BinaryExplorerView chat journal */
+	isExplanation?: boolean;
 	// Agent metadata
 	agent?: string;
 	skillUsed?: string;

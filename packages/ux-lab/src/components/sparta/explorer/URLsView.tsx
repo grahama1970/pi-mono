@@ -148,6 +148,7 @@ export function URLsView() {
           <div style={{ flex: 1 }} />
           <input
             data-qid="urls:search:input"
+            data-qs-action="SEARCH_URLS"
             data-qs-input="urls-search"
             title="Search URLs or control IDs"
             value={search}
@@ -313,7 +314,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
             {allGood ? 'COMPLETE' : 'INCOMPLETE'}
           </div>
         </div>
-        <button data-qid="urls:detail:close" data-qs-action="CLOSE_DETAIL" onClick={onClose} title="Close URL detail" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>Close</button>
+        <button data-qid="urls:detail:close" data-qs-action="CLOSE_DETAIL" onClick={onClose} title="Close URL detail" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer', minHeight: 44, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Close</button>
       </div>
 
       {/* URL */}
@@ -432,6 +433,7 @@ function StatusRow({ label: l, value, ok }: { label: string; value: string; ok: 
 const pillStyle: React.CSSProperties = {
   fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 4,
   border: `1px solid ${EMBRY.border}`, cursor: 'pointer', background: 'none',
+  minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
 const thStyle: React.CSSProperties = {
   fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em',
@@ -451,5 +453,6 @@ function paginationBtn(enabled: boolean): React.CSSProperties {
     fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
     border: `1px solid ${EMBRY.border}`, backgroundColor: enabled ? EMBRY.bgDeep : 'transparent',
     color: enabled ? EMBRY.white : EMBRY.muted, cursor: enabled ? 'pointer' : 'default', opacity: enabled ? 1 : 0.5,
+    minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
   }
 }

@@ -518,8 +518,8 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
             <span style={{ fontSize: 8, color: EMBRY.accent }}>{degreeMap.get(peekNode.id) ?? 0} connections</span>
             {peekNode.confidence != null && <span style={{ fontSize: 8, color: EMBRY.dim }}>{Math.round(peekNode.confidence * 100)}% conf</span>}
           </div>
-          {peekNode.fields?.length > 0 && (
-            <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 3 }}>Fields: {peekNode.fields.slice(0, 3).map((f: any) => f.name || f).join(', ')}{peekNode.fields.length > 3 ? ` +${peekNode.fields.length - 3}` : ''}</div>
+          {(peekNode.fields?.length ?? 0) > 0 && (
+            <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 3 }}>Fields: {peekNode.fields?.slice(0, 3).map((f: any) => f.name || f).join(', ')}{(peekNode.fields?.length ?? 0) > 3 ? ` +${(peekNode.fields?.length ?? 0) - 3}` : ''}</div>
           )}
         </div>
       )}

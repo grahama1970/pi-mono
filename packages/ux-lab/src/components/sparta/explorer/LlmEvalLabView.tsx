@@ -322,7 +322,6 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
       }))
       updateGt(prev => ({ ...prev, questions: [...prev.questions, ...normalized] }))
       setImportText('')
-      setShowImport(false)
     } catch { /* invalid JSON — do nothing */ }
   }
 

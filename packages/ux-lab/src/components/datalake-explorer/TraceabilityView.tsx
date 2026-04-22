@@ -104,7 +104,7 @@ function GroupSection({ groupLabel, color, items, hasAssets, scores }: { groupLa
                   {hasAssets && key && (
                     <button
                 data-qid="trace:item-2" data-qs-action="TRACE_ITEM_2"
-                title="Item 2" onClick={() => toggleImg(key)} title="Toggle image preview" style={{
+                onClick={() => toggleImg(key)} title="Toggle image preview" style={{
                       display: 'flex', alignItems: 'center', padding: '2px 4px', borderRadius: 3, cursor: 'pointer',
                       color: key in imgMap ? color : EMBRY.dim, background: 'transparent',
                       border: `1px solid ${key in imgMap ? color : EMBRY.border}`, flexShrink: 0,

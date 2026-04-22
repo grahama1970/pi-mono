@@ -12,9 +12,8 @@ export function useAgentBus(onMessage?: (msg: AgentBusMessage) => void) {
 	const socketRef = useRef<WebSocket | null>(null);
 
 	useEffect(() => {
-		const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-		const host = window.location.host;
-		const socket = new WebSocket(`${protocol}//${host}/ws`);
+		// Switchboard runs on port 7890, not the frontend dev server
+		const socket = new WebSocket("ws://localhost:7890/ws");
 		socketRef.current = socket;
 
 		socket.onopen = () => {

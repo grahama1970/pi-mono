@@ -220,10 +220,10 @@ export function Lean4LemmaView() {
   return (
     <div style={{ display: "flex", height: "100%", background: EMBRY.bgDeep, color: EMBRY.white, fontFamily: "JetBrains Mono, monospace" }}>
       {/* Left Pane */}
-      <LeftPane search={lpQuery} onSearchChange={setLpQuery} searchPlaceholder="Filter theorems...">
+      <LeftPane title="Lean4 Proofs" search={lpQuery} onSearchChange={setLpQuery} searchPlaceholder="Filter theorems...">
         <LeftPaneSection title={`Proofs (${data.proofs.length})`} defaultOpen>
           {filteredProofs.slice(0, 100).map((p) => {
-            const proof = "theorem_name" in p ? p : data.proofs.find(pr => pr._key === p.id);
+            const proof = p;
             if (!proof || !("theorem_name" in proof)) return null;
             const isSelected = proof._key === selectedProofKey;
             const tier = getEvidenceTier(proof);

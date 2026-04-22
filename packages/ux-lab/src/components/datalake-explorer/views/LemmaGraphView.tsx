@@ -51,13 +51,11 @@ function FilterChip({ label, color, active, onToggle }: FilterChipProps) {
   const [hovered, setHovered] = useState(false)
   return (
     <button
-                data-qid="lemma:item-1" data-qs-action="LEMMA_ITEM_1"
-                title="Item 1"
       onClick={onToggle}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-pressed={active}
-      data-qid="lemma-graph:filter-chip:toggle" data-qs-action="LEMMA-GRAPH_TOGGLE"
+      data-qid="lemma-graph:filter-chip:toggle" data-qs-action="LEMMA_GRAPH_TOGGLE"
       title={`Toggle ${label} filter`}
       style={{
         padding: '4px 10px',

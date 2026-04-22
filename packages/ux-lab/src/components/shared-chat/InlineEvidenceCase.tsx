@@ -15,17 +15,17 @@ export interface InlineEvidenceCaseProps {
   loading?: boolean
 }
 
-const VERDICT_COLORS = {
+const VERDICT_COLORS: Record<string, string> = {
   PASS: '#00ff88',
   FAIL: '#ff4444',
   UNKNOWN: '#ffaa00',
-} as const
+}
 
-const TIER_LABELS = {
+const TIER_LABELS: Record<string, string> = {
   TIER_1: 'Informational',
   TIER_2: 'Grounded',
   TIER_3: 'Verified',
-} as const
+}
 
 export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvidenceCaseProps) {
   const [expanded, setExpanded] = useState(false)

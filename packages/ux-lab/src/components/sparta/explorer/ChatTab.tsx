@@ -11,7 +11,11 @@
 import { useState, useCallback, useRef, useEffect, createContext, useContext, useMemo } from 'react'
 import { usePiChat } from '@pi-chat-adapter/hook'
 import { EMBRY } from '../common/EmbryStyle'
+import '../../../theme/industrial-minimal.css'
+import { ModernStatusBar, useHeatmapMatrix } from '../../modern'
+import type { TechniqueCell } from '../../modern'
 import { ChatWell } from '../../shared-chat'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import type { ChatMessage, EntityRef, EvidenceGate, ThreatMatrixSummary } from '../../shared-chat'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption } from '../shared/ThreatMatrix'
@@ -102,6 +106,9 @@ export function ChatTab() {
   const [focusTechnique, setFocusTechnique] = useState<string | null>(null)
   const [focusControl, setFocusControl] = useState<string | null>(null)
   const [currentSystem, setCurrentSystem] = useState('f36')
+
+  useRegisterAction('chat:button:datalake-f36', { app: 'sparta-explorer', action: 'SELECT_DATALAKE_F36', label: 'Datalake: F-36', description: 'Switch to F-36 datalake' })
+  useRegisterAction('chat:button:datalake-cmmc', { app: 'sparta-explorer', action: 'SELECT_DATALAKE_CMMC', label: 'Datalake: CMMC', description: 'Switch to CMMC datalake' })
 
   // Chat state — powered by Pi via D-Bus adapter
   const piChat = usePiChat({ apiBase: API })
@@ -279,14 +286,60 @@ export function ChatTab() {
 
   // ── Evidence case handler ──────────────────────────────────────────
 
-  // Evidence case — delegate to Pi (it has /create-evidence-case skill)
+  // Evidence case — call API directly (deterministic, no LLM overhead)
   const handleRunEvidenceCase = useCallback(async (msg: ChatMessage) => {
-    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp < msg.timestamp)
+    const userMsg = [...messages].reverse().find(m => m.role === 'user' && m.timestamp && msg.timestamp && m.timestamp < msg.timestamp)
     if (!userMsg) return
-    setEvidenceCaseLoading(msg.id)
+    setEvidenceCaseLoading(msg.id ?? null)
     const controlId = msg.entities?.find(e => e.exists)?.id
-    piChat.send(`Run an evidence case for: ${userMsg.content}${controlId ? ` (control: ${controlId})` : ''}`, 'natural')
-    setEvidenceCaseLoading(null)
+    try {
+      const res = await fetch(`${API}/api/evidence-case/run`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: userMsg.content, controlId }),
+        signal: AbortSignal.timeout(90_000),
+      })
+      const data = await res.json()
+      const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
+        gate: g.gate ?? g.name ?? '?',
+        passed: !!g.passed,
+        detail: g.detail ?? '',
+      }))
+      const verdict = data.verdict?.state ?? data.verdict_state ?? data.verdict ?? 'unknown'
+      const tier = data.tier ?? 'T0'
+      const tierLabel = tier === 'T2' ? ' [LLM Adjudicated]' : ''
+      piChat.setMessages((prev: ChatMessage[]) => [...prev, {
+        id: `ec-${Date.now()}`,
+        role: 'system' as const,
+        content: `Evidence Case: ${String(verdict).toUpperCase()}${tierLabel}\n${data.answer ?? ''}`,
+        timestamp: Date.now(),
+        type: 'natural' as const,
+        cascadeLayer: 'llm' as const,
+        entities: msg.entities,
+        verdict: { state: String(verdict).toUpperCase(), gates, tier },
+        evidenceCase: {
+          verdict: String(verdict),
+          grade: data.verdict?.grade ?? 'C',
+          gates_passed: gates.filter(g => g.passed).length,
+          gates_total: gates.length,
+          gate_summary: `${gates.filter(g => g.passed).length}/${gates.length} gates passed`,
+          gate_trace: gates,
+          control_ids: data.context?.control_ids ?? [],
+          tier,
+          glossary: data.glossary ?? [],
+        },
+      }])
+    } catch (err) {
+      piChat.setMessages((prev: ChatMessage[]) => [...prev, {
+        id: `ec-err-${Date.now()}`,
+        role: 'system' as const,
+        content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`,
+        timestamp: Date.now(),
+        type: 'natural' as const,
+      }])
+    } finally {
+      setEvidenceCaseLoading(null)
+    }
   }, [messages, piChat])
 
   // ── Load lemma graph when switching to graph mode ──────────────────
@@ -371,17 +424,35 @@ export function ChatTab() {
     }
   }, [vizMode, graphMode, focusControl, focusTechnique])
 
+  // ── Heatmap mode for matrix ─────────────────────────────────────────
+
+  const heatmapCells: TechniqueCell[] = useMemo(() =>
+    techniques.map(t => ({
+      id: t.id,
+      name: t.name,
+      tactic: t.tactic,
+      verdict: (t.evidenceVerdict ?? 'none') as 'satisfied' | 'inconclusive' | 'not_satisfied' | 'none',
+      grade: (t.evidenceGrade ?? '-') as 'A+' | 'A' | 'B' | 'C' | 'F' | '-',
+      caseCount: t.evidenceCaseCount ?? 0,
+    })), [techniques])
+
+  const heatmap = useHeatmapMatrix(heatmapCells)
+
   // ── Threat matrix state/actions/meta ───────────────────────────────
+
+  const [matrixViewMode, setMatrixViewMode] = useState<'standard' | 'bloom' | 'graph' | 'edges'>('standard')
 
   const matrixState: ThreatMatrixState = {
     tactics: SPARTA_TACTICS, techniques, loading: matrixLoading,
     showSubtechniques: showSub, selectedDetail, loadingDetail: detailLoading,
+    viewMode: matrixViewMode,
   }
   const matrixActions: ThreatMatrixActions = {
     selectTechnique: handleMatrixCellClick,
     clearSelection: useCallback(() => setSelectedDetail(null), []),
     toggleSubtechniques: useCallback(() => setShowSub(s => !s), []),
     selectDatalake: useCallback((dl: string) => setCurrentSystem(dl), []),
+    setViewMode: setMatrixViewMode,
   }
   const matrixMeta: ThreatMatrixMeta = {
     totalControls: techniques.length, source: 'chat',
@@ -437,13 +508,25 @@ export function ChatTab() {
 
   // ── Render ─────────────────────────────────────────────────────────
 
+  // Track connection state for status bar
+  const [connected, setConnected] = useState(true)
+  useEffect(() => {
+    const check = () => fetch(`${API}/api/health`).then(() => setConnected(true)).catch(() => setConnected(false))
+    check()
+    const id = setInterval(check, 30000)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <ChatTabContext.Provider value={ctxValue}>
-      <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', minHeight: 0 }}>
+        {/* Main content row */}
+        <div style={{ display: 'flex', flex: 1, minHeight: 0, overflow: 'hidden' }}>
 
         {/* LEFT: Chat pane (resizable) */}
         <div style={{
           width: chatWidth, minWidth: 280, maxWidth: 800,
+          height: '100%',
           display: 'flex', flexDirection: 'column',
           backgroundColor: EMBRY.bg, flexShrink: 0,
         }}>
@@ -456,9 +539,11 @@ export function ChatTab() {
             <span style={{ fontSize: 11, fontWeight: 900, color: EMBRY.white, letterSpacing: '0.05em' }}>SPARTA CHAT</span>
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
               {DATALAKES.map(dl => (
-                <button key={dl.id} data-qid={`chat:datalake:${dl.id}`} title={`Switch to ${dl.name} datalake`} onClick={() => setCurrentSystem(dl.id)} style={{
-                  fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 4,
+                <button key={dl.id} data-qid={`chat:button:datalake-${dl.id}`} data-qs-action={`SELECT_DATALAKE_${dl.id.toUpperCase()}`} title={`Switch to ${dl.name} datalake`} onClick={() => setCurrentSystem(dl.id)} style={{
+                  fontSize: 10, fontWeight: 700, padding: '8px 12px', borderRadius: 6,
                   border: 'none', cursor: 'pointer',
+                  minHeight: 44, minWidth: 44,
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                   backgroundColor: currentSystem === dl.id ? EMBRY.green : `${EMBRY.white}10`,
                   color: currentSystem === dl.id ? '#000' : EMBRY.dim,
                   textTransform: 'uppercase', letterSpacing: '0.08em',
@@ -470,13 +555,13 @@ export function ChatTab() {
           </div>
 
           {/* Chat messages */}
-          <div style={{ flex: 1, overflow: 'hidden' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minHeight: 0 }}>
             <ChatWell
               messages={messages}
               onSend={handleSend}
               onFeedback={useCallback((id: string, fb: 'up' | 'down') => {
-                setMessages(prev => prev.map(m => m.id === id ? { ...m, feedback: fb } : m))
-              }, [])}
+                piChat.setMessages((prev: ChatMessage[]) => prev.map((m: ChatMessage) => m.id === id ? { ...m, feedback: fb } : m))
+              }, [piChat])}
               onClarifyClick={useCallback((q: string) => handleSend(q, 'natural'), [handleSend])}
               onRunEvidenceCase={handleRunEvidenceCase}
               evidenceCaseLoading={evidenceCaseLoading}
@@ -498,8 +583,11 @@ export function ChatTab() {
                   }
                 }
               }, [handleSend])}
+              isStreaming={piChat.isStreaming}
+              streamingSteps={piChat.streamingSteps}
             />
           </div>
+
         </div>
 
         {/* DRAG HANDLE */}
@@ -516,26 +604,39 @@ export function ChatTab() {
 
         {/* RIGHT: Visualization workspace (flex) */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+
           {/* Viz content */}
-          <div style={{ flex: 1, overflow: vizMode === 'dashboard' ? 'auto' : 'hidden' }}>
+          <div style={{ flex: 1, overflow: 'auto' }}>
             {vizMode === 'dashboard' ? (
               <PostureDashboard onNavigateToControl={(id) => { setFocusTechnique(id); setVizMode('matrix') }} />
             ) : vizMode === 'matrix' ? (
               <ThreatMatrix.Provider state={matrixState} actions={matrixActions} meta={matrixMeta}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', position: 'relative' }}>
                   <ThreatMatrix.Header />
                   <ThreatMatrix.TacticStrip />
-                  <div style={{ flex: 1, overflow: 'hidden' }}>
-                    <ThreatMatrix.Grid />
-                  </div>
+                  <ThreatMatrix.Grid />
                   <ThreatMatrix.Detail />
                 </div>
               </ThreatMatrix.Provider>
             ) : (
-              <LemmaGraph nodes={graphNodes} edges={graphEdges} onNodeClick={handleGraphNodeClick} mode={graphMode} />
+              <LemmaGraph nodes={graphNodes} edges={graphEdges} onNodeClick={handleGraphNodeClick} mode={graphMode === 'proof' ? 'full' : graphMode} />
             )}
           </div>
         </div>
+        </div>
+
+        {/* Status bar */}
+        <ModernStatusBar
+          connected={connected}
+          scope={currentSystem === 'f36' ? 'F-36 Lightning II' : 'CMMC Assessment'}
+          gateDepth="7"
+          counts={{
+            controls: techniques.length,
+            qras: evidenceMapLoaded ? evidenceMap.size : 0,
+            relationships: graphEdges.length,
+          }}
+          onReconnect={() => fetch(`${API}/api/health`).then(() => setConnected(true)).catch(() => {})}
+        />
       </div>
     </ChatTabContext.Provider>
   )

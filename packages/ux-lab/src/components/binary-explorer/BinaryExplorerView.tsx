@@ -1457,7 +1457,8 @@ export function BinaryExplorerView() {
         // Validate perspective
         if (intentData.perspective && !VALID_PERSPECTIVES.has(intentData.perspective.toLowerCase())) intentData.perspective = undefined
         // Precondition check: entity-requiring actions without entity → skip
-        if (REQUIRES_ENTITY.has(intentData.ui_action) && !intentData.target_node_id) { intentData = null }
+        if (intentData.ui_action && REQUIRES_ENTITY.has(intentData.ui_action) && !intentData.target_node_id) { intentData = null }
+        if (!intentData) return // Couldn't determine action
         const { ui_action, target_node_id, expand_hops = 1, perspective: intentP, zoom: intentZoom } = intentData
         let executedMsg = ''
 
@@ -1823,9 +1824,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               {/* Undo / Redo — Gemini-designed 24px utility icons */}
               <div style={{ display: 'flex', gap: 2, marginRight: 8, alignItems: 'center' }}>
                 <button
-                  data-qid="be:undo" data-qs-action="UNDO" title="Undo last action" onClick={undo}
+                  data-qid="be:undo" data-qs-action="UNDO" title="Undo (Ctrl+Z)" onClick={undo}
                   disabled={historyIndex <= 0}
-                  title="Undo (Ctrl+Z)"
                   style={{
                     width: 24, height: 24, padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     borderRadius: 4, border: '1px solid transparent', backgroundColor: 'transparent',
@@ -1837,9 +1837,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   onMouseLeave={e => { e.currentTarget.style.color = historyIndex > 0 ? EMBRY.accent : EMBRY.muted; e.currentTarget.style.backgroundColor = 'transparent' }}
                 ><Undo size={14} /></button>
                 <button
-                  data-qid="be:redo" data-qs-action="REDO" title="Redo last action" onClick={redo}
+                  data-qid="be:redo" data-qs-action="REDO" title="Redo (Ctrl+Shift+Z)" onClick={redo}
                   disabled={historyIndex >= sceneHistory.length - 1}
-                  title="Redo (Ctrl+Shift+Z)"
                   style={{
                     width: 24, height: 24, padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     borderRadius: 4, border: '1px solid transparent', backgroundColor: 'transparent',
@@ -1916,14 +1915,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     >SAVE</button>
                     <button
                       id="be-scene-export"
-                      data-qid="be:scene:export" data-qs-action="EXPORT_SCENE" title="Export scene data" onClick={() => {
+                      data-qid="be:scene:export" data-qs-action="EXPORT_SCENE" title="Export scene as JSON" onClick={() => {
                         const blob = new Blob([JSON.stringify({ binary: binaryName, nodeIds: [...sceneNodeIds], perspective, layoutMode, selectedNodeId: selectedNode?.id, timestamp: new Date().toISOString() }, null, 2)], { type: 'application/json' })
                         const a = document.createElement('a')
                         a.href = URL.createObjectURL(blob)
                         a.download = `${binaryName}-scene-${Date.now()}.json`
                         a.click()
                       }}
-                      title="Export scene as JSON"
                       style={{ fontSize: 8, padding: '2px 6px', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer' }}
                     >EXPORT</button>
                     {sceneSaved && <span style={{ fontSize: 8, color: '#4CAF50', fontWeight: 700 }}>Saved "{sceneSaved}"</span>}
@@ -2166,8 +2164,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     { id: 'table' as const, title: 'All Features', icon: <Table2 size={14} /> },
                     { id: 'raw' as const, title: 'Raw JSON', icon: <Code size={14} /> },
                   ]).map(tab => (
-                    <button key={tab.id} id={`be-tab-${tab.id}`} title={tab.title}
-                      data-qid={`be:detail:tab:${tab.id}`} data-qs-action="SET_DETAIL_TAB" title="Switch detail panel tab" onClick={() => setDataTab(tab.id)}
+                    <button key={tab.id} id={`be-tab-${tab.id}`}
+                      data-qid={`be:detail:tab:${tab.id}`} data-qs-action="SET_DETAIL_TAB" title={tab.title} onClick={() => setDataTab(tab.id)}
                       style={{
                         padding: '4px 6px', cursor: 'pointer', border: 'none', borderRadius: 2,
                         background: dataTab === tab.id ? `${EMBRY.accent}20` : 'transparent',
@@ -2286,16 +2284,14 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div>
                             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 4 }}>
                               {cweList.map(c => (
-                                <span key={c} id={`be-cwe-${c}`} data-qid={`be:cwe:tag:${c}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title="Show CWE taxonomy chain" onClick={() => fetchTaxonomyChain(c)}
-                                  title={`Run evidence case for ${c}`}
+                                <span key={c} id={`be-cwe-${c}`} data-qid={`be:cwe:tag:${c}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title={`Run evidence case for ${c}`} onClick={() => fetchTaxonomyChain(c)}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#991b1b')}
                                   onMouseLeave={e => (e.currentTarget.style.background = '#7f1d1d')}
                                 >{evidenceCaseLoading === c ? '⏳ ' : '🔍 '}{c}</span>
                               ))}
                               {attackList.map(a => (
-                                <span key={a} id={`be-attack-${a}`} data-qid={`be:attack:tag:${a}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title="Show ATT&CK taxonomy chain" onClick={() => fetchTaxonomyChain(a)}
-                                  title={`Run evidence case for ${a}`}
+                                <span key={a} id={`be-attack-${a}`} data-qid={`be:attack:tag:${a}`} data-qs-action="SHOW_TAXONOMY_CHAIN" title={`Run evidence case for ${a}`} onClick={() => fetchTaxonomyChain(a)}
                                   style={{ fontSize: 8, padding: '1px 5px', background: '#713f12', border: '1px solid #92400e', color: '#fde68a', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#92400e')}
                                   onMouseLeave={e => (e.currentTarget.style.background = '#713f12')}
@@ -2679,14 +2675,14 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             {tableSearch && (
                               <span data-qid="be:table:clear" data-qs-action="CLEAR_FILTER" title="Clear filter" onClick={() => { setTableSearch(''); data.setSearchQuery('') }}
                                 style={{ position: 'absolute', right: 4, top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: '#ef4444', fontSize: 8, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', padding: '1px 4px', background: '#7f1d1d', borderRadius: 2, letterSpacing: '0.02em' }}
-                                title="Clear filter">CLEAR</span>
+                                >CLEAR</span>
                             )}
                           </div>
                           <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
                           {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
                           <button
                             id="be-table-export-csv"
-                            data-qid={`be:table:row:${n.id}`} data-qs-action="SELECT_NODE" title="Select feature in table" onClick={() => {
+                            data-qid="be:table:export-csv" data-qs-action="EXPORT_CSV" title="Export table as CSV" onClick={() => {
                               const header = 'Name,Type,Cluster,Connections,CWE,ATT&CK\n'
                               const rows = filtered.map(n => `"${n.label}","${n.nodeType}","${n.cluster}",${n.connections},"${n.cwe}","${n.attack}"`).join('\n')
                               const blob = new Blob([header + rows], { type: 'text/csv' })
@@ -2741,8 +2737,8 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                   <td style={{ padding: '3px 6px' }}>
                                     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                       {n.cwe ? n.cwe.split(', ').filter(Boolean).map(c => (
-                                        <span key={c} title={c} style={{ fontSize: 8, padding: '1px 4px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600 }}
-                                          data-qid={`be:evidence:${c}`} data-qs-action="RUN_EVIDENCE_CASE" title="Run evidence case" onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}
+                                        <span key={c} style={{ fontSize: 8, padding: '1px 4px', background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5', borderRadius: 2, whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600 }}
+                                          data-qid={`be:evidence:${c}`} data-qs-action="RUN_EVIDENCE_CASE" title={`Run evidence case for ${c}`} onClick={e => { e.stopPropagation(); runEvidenceCase(c) }}
                                         >{c}</span>
                                       )) : <span style={{ fontSize: 7, color: EMBRY.border }}>—</span>}
                                     </div>
@@ -2828,8 +2824,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               <div style={{ display: 'flex', alignItems: 'center', gap: 0, padding: '0 12px', background: '#060606', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
                 {/* Tab buttons */}
                 <button
-                  data-qid="be:right:tab:chat" data-qs-action="SET_RIGHT_TAB" title="Switch to chat panel" onClick={() => setRightTab('chat')}
-                  title="Analysis Chat"
+                  data-qid="be:right:tab:chat" data-qs-action="SET_RIGHT_TAB" title="Analysis Chat" onClick={() => setRightTab('chat')}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 5,
                     padding: '7px 12px', background: 'transparent', border: 'none',
@@ -2844,8 +2839,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </button>
                 <button
                   id="be-journal-tab"
-                  data-qid="be:right:tab:journal" data-qs-action="SET_RIGHT_TAB" title="Switch to journal" onClick={() => setRightTab('journal')}
-                  title="Investigation Journal"
+                  data-qid="be:right:tab:journal" data-qs-action="SET_RIGHT_TAB" title="Investigation Journal" onClick={() => setRightTab('journal')}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 5,
                     padding: '7px 12px', background: 'transparent', border: 'none',

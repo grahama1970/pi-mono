@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer - Supply Chain View",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "supply-chain-view",
+      "path": "/#sparta-explorer/supply-chain",
+      "wait_ready": "[data-qid='supply-chain-view']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "main-view",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Supply Chain view initial state"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='supply-chain-view']",
+              "timeout_ms": 5000,
+              "description": "Wait for view to render"
+            },
+            {
+              "action": "screenshot",
+              "description": "Supply Chain view after load"
+            }
+          ]
+        },
+        {
+          "name": "control-bar",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='supply-chain-scenario-select']",
+              "description": "Open scenario dropdown",
+              "screenshot_after": true,
+              "assert_min_size": {
+                "selector": "[data-qid='supply-chain-scenario-select']",
+                "min_width": 44,
+                "min_height": 32
+              }
+            }
+          ]
+        },
+        {
+          "name": "nav-integration",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:nav:supply-chain']",
+              "description": "Click Supply Chain nav icon",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:nav:supply-chain']"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

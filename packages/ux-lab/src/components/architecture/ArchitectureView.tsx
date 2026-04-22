@@ -5,10 +5,11 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { Excalidraw } from '@excalidraw/excalidraw'
 import '@excalidraw/excalidraw/index.css'
-import type { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExcalidrawImperativeAPI = any
 import {
-  Plus, Save, Brain, Map,
-  Trash2, Copy, Pencil, History, GitBranch, Link2,
+  Plus, Save as _Save, Brain, Map,
+  Trash2, Copy, Pencil, History, GitBranch as _GitBranch, Link2,
 } from 'lucide-react'
 import { EMBRY, heading } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle } from '../common/LeftPane'
@@ -229,7 +230,7 @@ export function ArchitectureView({ initialProjectId }: { initialProjectId?: stri
       locked: false,
       updated: Date.now(),
     }
-    const merged = { ...base, ...el }
+    const merged: Record<string, unknown> = { ...base, ...el }
     if (el.type === 'arrow') {
       merged.points = (el.points as number[][]) ?? [[0, 0], [0, (el.height as number) ?? 60]]
       merged.lastCommittedPoint = null
@@ -303,8 +304,9 @@ export function ArchitectureView({ initialProjectId }: { initialProjectId?: stri
     return () => { cancelled = true }
   }, [activeId])
 
-  /* Save current scene to ArangoDB via Express API */
-  const handleSave = useCallback(async () => {
+  /* Save current scene to ArangoDB via Express API (reserved for future use) */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _handleSave = useCallback(async () => {
     if (saveStatus === 'saving') return
     setSaveStatus('saving')
     try {

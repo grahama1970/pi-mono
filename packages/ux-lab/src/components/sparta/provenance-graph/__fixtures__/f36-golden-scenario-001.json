@@ -1,0 +1,442 @@
+{
+  "metadata": {
+    "id": "F36-GOLDEN-001",
+    "name": "F-36 Propulsion Supply Chain - Standard Scenario",
+    "description": "TQL-5 golden file for computeWeightedImpact validation",
+    "version": "1.0.0",
+    "created": "2026-04-18",
+    "covers": [
+      "hard_break propagation (d=1.0)",
+      "Noisy-OR shared evidence survival",
+      "DAL level multipliers (A-E)",
+      "Exclusivity-weighted redundancy",
+      "Temporal decay (expired evidence)",
+      "Supplier tier cascade",
+      "CUI boundary crossing"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "supplier-pratt-whitney",
+      "label": "Pratt & Whitney (Tier-1)",
+      "nodeClass": "supplier",
+      "supplier_id": "PW-001",
+      "supplier_tier": 1,
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-001",
+        "is_active": true
+      }
+    },
+    {
+      "id": "supplier-rolls-royce",
+      "label": "Rolls-Royce (Tier-1)",
+      "nodeClass": "supplier",
+      "supplier_id": "RR-001",
+      "supplier_tier": 1,
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-002",
+        "is_active": true
+      }
+    },
+    {
+      "id": "supplier-honeywell",
+      "label": "Honeywell Aerospace (Tier-2)",
+      "nodeClass": "supplier",
+      "supplier_id": "HW-001",
+      "supplier_tier": 2,
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-003",
+        "is_active": true
+      }
+    },
+    {
+      "id": "supplier-moog",
+      "label": "Moog Inc (Tier-3)",
+      "nodeClass": "supplier",
+      "supplier_id": "MOOG-001",
+      "supplier_tier": 3,
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-004",
+        "is_active": true
+      }
+    },
+    {
+      "id": "evidence-pw-do178c-cert",
+      "label": "PW DO-178C DAL-A Certificate",
+      "nodeClass": "evidence_artifact",
+      "framework": "DO-178C",
+      "dal_level": "A",
+      "proof_status": "proved",
+      "supplier_id": "PW-001",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-005",
+        "is_active": true
+      }
+    },
+    {
+      "id": "evidence-rr-do178c-cert",
+      "label": "RR DO-178C DAL-A Certificate",
+      "nodeClass": "evidence_artifact",
+      "framework": "DO-178C",
+      "dal_level": "A",
+      "proof_status": "proved",
+      "supplier_id": "RR-001",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-006",
+        "is_active": true
+      }
+    },
+    {
+      "id": "evidence-hw-attestation",
+      "label": "Honeywell CMMC L2 Attestation",
+      "nodeClass": "evidence_artifact",
+      "framework": "CMMC",
+      "dal_level": "B",
+      "proof_status": "partial",
+      "supplier_id": "HW-001",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-007",
+        "is_active": true
+      }
+    },
+    {
+      "id": "evidence-moog-expired",
+      "label": "Moog ISO 27001 (EXPIRED)",
+      "nodeClass": "evidence_artifact",
+      "framework": "ISO27001",
+      "dal_level": "C",
+      "proof_status": "sorry",
+      "supplier_id": "MOOG-001",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1712880000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-008",
+        "is_active": true
+      }
+    },
+    {
+      "id": "evidence-shared-penetration-test",
+      "label": "Shared Penetration Test Report",
+      "nodeClass": "evidence_artifact",
+      "framework": "NIST",
+      "dal_level": "B",
+      "proof_status": "proved",
+      "temporal": {
+        "observed_at": 1712880000000,
+        "valid_from": 1712880000000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-009",
+        "is_active": true
+      }
+    },
+    {
+      "id": "control-ac-2",
+      "label": "AC-2 Account Management",
+      "nodeClass": "control",
+      "framework": "NIST",
+      "family": "AC",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-010",
+        "is_active": true
+      }
+    },
+    {
+      "id": "control-sc-7",
+      "label": "SC-7 Boundary Protection",
+      "nodeClass": "control",
+      "framework": "NIST",
+      "family": "SC",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-011",
+        "is_active": true
+      }
+    },
+    {
+      "id": "control-si-4",
+      "label": "SI-4 System Monitoring",
+      "nodeClass": "control",
+      "framework": "NIST",
+      "family": "SI",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-012",
+        "is_active": true
+      }
+    },
+    {
+      "id": "objective-3-1-1",
+      "label": "CMMC 3.1.1 Authorized Access",
+      "nodeClass": "assessment_objective",
+      "framework": "CMMC",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-013",
+        "is_active": true
+      }
+    },
+    {
+      "id": "objective-3-13-1",
+      "label": "CMMC 3.13.1 Boundary Communications",
+      "nodeClass": "assessment_objective",
+      "framework": "CMMC",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-014",
+        "is_active": true
+      }
+    },
+    {
+      "id": "framework-do178c-obj-6-3",
+      "label": "DO-178C Objective 6.3",
+      "nodeClass": "framework_artifact",
+      "framework": "DO-178C",
+      "dal_level": "A",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-015",
+        "is_active": true
+      }
+    },
+    {
+      "id": "family-ac",
+      "label": "Access Control Family",
+      "nodeClass": "control_family",
+      "framework": "NIST",
+      "family": "AC",
+      "temporal": {
+        "observed_at": 1704067200000,
+        "valid_from": 1704067200000,
+        "valid_to": 1893456000000,
+        "assessed_at": 1712966400000,
+        "source_event_id": "ingest-016",
+        "is_active": true
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-001",
+      "source": "evidence-pw-do178c-cert",
+      "target": "framework-do178c-obj-6-3",
+      "type": "satisfies",
+      "weight": 1.0,
+      "dal_level": "A",
+      "exclusivity": 0.5,
+      "methods": ["Examine", "Test"],
+      "rigor": "Comprehensive"
+    },
+    {
+      "id": "edge-002",
+      "source": "evidence-rr-do178c-cert",
+      "target": "framework-do178c-obj-6-3",
+      "type": "satisfies",
+      "weight": 1.0,
+      "dal_level": "A",
+      "exclusivity": 0.5,
+      "methods": ["Examine", "Test"],
+      "rigor": "Comprehensive"
+    },
+    {
+      "id": "edge-003",
+      "source": "supplier-pratt-whitney",
+      "target": "evidence-pw-do178c-cert",
+      "type": "inherits_from",
+      "weight": 1.0,
+      "dal_level": "A",
+      "exclusivity": 1.0,
+      "supplier_tier": 1
+    },
+    {
+      "id": "edge-004",
+      "source": "supplier-rolls-royce",
+      "target": "evidence-rr-do178c-cert",
+      "type": "inherits_from",
+      "weight": 1.0,
+      "dal_level": "A",
+      "exclusivity": 1.0,
+      "supplier_tier": 1
+    },
+    {
+      "id": "edge-005",
+      "source": "supplier-honeywell",
+      "target": "evidence-hw-attestation",
+      "type": "inherits_from",
+      "weight": 1.0,
+      "dal_level": "B",
+      "exclusivity": 1.0,
+      "supplier_tier": 2
+    },
+    {
+      "id": "edge-006",
+      "source": "evidence-hw-attestation",
+      "target": "control-ac-2",
+      "type": "satisfies",
+      "weight": 0.8,
+      "dal_level": "B",
+      "exclusivity": 0.7,
+      "methods": ["Examine", "Interview"]
+    },
+    {
+      "id": "edge-007",
+      "source": "evidence-shared-penetration-test",
+      "target": "control-ac-2",
+      "type": "partially_supports",
+      "weight": 0.6,
+      "dal_level": "B",
+      "exclusivity": 0.3,
+      "methods": ["Test"]
+    },
+    {
+      "id": "edge-008",
+      "source": "control-ac-2",
+      "target": "objective-3-1-1",
+      "type": "maps_to",
+      "weight": 1.0,
+      "exclusivity": 1.0
+    },
+    {
+      "id": "edge-009",
+      "source": "control-ac-2",
+      "target": "family-ac",
+      "type": "depends_on",
+      "weight": 1.0,
+      "exclusivity": 1.0
+    },
+    {
+      "id": "edge-010",
+      "source": "supplier-moog",
+      "target": "evidence-moog-expired",
+      "type": "inherits_from",
+      "weight": 1.0,
+      "dal_level": "C",
+      "exclusivity": 1.0,
+      "supplier_tier": 3
+    },
+    {
+      "id": "edge-011",
+      "source": "evidence-moog-expired",
+      "target": "control-sc-7",
+      "type": "satisfies",
+      "weight": 1.0,
+      "dal_level": "C",
+      "exclusivity": 1.0,
+      "methods": ["Examine"]
+    },
+    {
+      "id": "edge-012",
+      "source": "control-sc-7",
+      "target": "objective-3-13-1",
+      "type": "maps_to",
+      "weight": 1.0,
+      "exclusivity": 1.0
+    },
+    {
+      "id": "edge-013",
+      "source": "evidence-shared-penetration-test",
+      "target": "control-si-4",
+      "type": "satisfies",
+      "weight": 0.9,
+      "dal_level": "B",
+      "exclusivity": 1.0,
+      "methods": ["Test"],
+      "is_cui_boundary": true
+    },
+    {
+      "id": "edge-014",
+      "source": "supplier-honeywell",
+      "target": "supplier-moog",
+      "type": "depends_on",
+      "weight": 0.5,
+      "exclusivity": 0.6,
+      "supplier_tier": 2
+    }
+  ],
+  "test_scenarios": [
+    {
+      "id": "scenario-baseline",
+      "description": "No failures - healthy baseline",
+      "rootFailures": [],
+      "virtualTaints": [],
+      "expectedConverged": true
+    },
+    {
+      "id": "scenario-pw-failure",
+      "description": "Pratt & Whitney loses certification - tests Noisy-OR (RR provides redundancy)",
+      "rootFailures": ["supplier-pratt-whitney"],
+      "virtualTaints": ["PW-001"],
+      "expectedConverged": true
+    },
+    {
+      "id": "scenario-both-tier1-failure",
+      "description": "Both Tier-1 suppliers fail - framework objective should fail",
+      "rootFailures": ["supplier-pratt-whitney", "supplier-rolls-royce"],
+      "virtualTaints": ["PW-001", "RR-001"],
+      "expectedConverged": true
+    },
+    {
+      "id": "scenario-expired-evidence",
+      "description": "Moog ISO cert expired - cascade to SC-7 and 3.13.1",
+      "rootFailures": [],
+      "virtualTaints": [],
+      "expectedConverged": true
+    },
+    {
+      "id": "scenario-tier2-cascade",
+      "description": "Honeywell fails - tests Tier-2 to Tier-3 cascade via depends_on",
+      "rootFailures": [],
+      "virtualTaints": ["HW-001"],
+      "expectedConverged": true
+    }
+  ]
+}

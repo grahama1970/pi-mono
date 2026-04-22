@@ -72,17 +72,20 @@ interface _ListResponse {
 	total?: number;
 }
 
-async function fetchLogs(limit = 500): Promise<LogEntry[]> {
-	// Use AQL query for proper sorting - /list endpoint doesn't sort correctly
-	const resp = await fetch(`${API_BASE}/query`, {
+async function fetchLogs(limit = 3000): Promise<LogEntry[]> {
+	// Use /list endpoint with proper parameters — no raw AQL
+	// NOTE: Increased from 500 to 3000 to properly track large batches (1688+ calls)
+	const resp = await fetch(`${API_BASE}/list`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
 			collection: "llm_call_log",
-			aql: `FOR doc IN llm_call_log SORT doc.ts DESC LIMIT ${limit} RETURN doc`,
+			limit,
+			sort_field: "ts",
+			sort_order: "DESC",
 		}),
 	});
-	if (!resp.ok) throw new Error(`Query failed: ${resp.status}`);
+	if (!resp.ok) throw new Error(`List failed: ${resp.status}`);
 	const data: { documents: LogEntry[] } = await resp.json();
 	return data.documents || [];
 }
@@ -202,7 +205,7 @@ export function useScillmData() {
 
 	const refresh = useCallback(async () => {
 		try {
-			const allLogs = await fetchLogs(500); // Use /list with limit
+			const allLogs = await fetchLogs(3000); // Increased from 500 to track large batches
 
 			// Sort by timestamp descending
 			allLogs.sort((a, b) => (b.ts || "").localeCompare(a.ts || ""));
@@ -233,6 +236,27 @@ export function useScillmData() {
 export interface BatchJobState {
 	name: string;
 	state: {
+		status?: "running" | "completed" | "failed" | string;
+		phase?: string;
+		progress_pct?: number;
+		current_item?: string;
+		last_message?: string;
+		last_error?: string | null;
+		manifest_path?: string;
+		review_status?: string;
+		total_jobs?: number;
+		canonical_jobs?: number;
+		relationship_jobs?: number;
+		completed_jobs?: number;
+		successful_jobs?: number;
+		failed_jobs?: number;
+		skipped_jobs?: number;
+		generated_qras?: number;
+		stored_qras?: number;
+		chunk_num?: number | null;
+		total_chunks?: number | null;
+		range_start?: number | null;
+		range_end?: number | null;
 		processed?: number;
 		success?: number;
 		failed?: number;

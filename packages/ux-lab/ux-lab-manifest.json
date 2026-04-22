@@ -1,0 +1,49 @@
+{
+  "project": "ux-lab",
+  "url": "http://localhost:3000",
+  "persona": "margaret-chen",
+  "itinerary": [
+    {
+      "step": "Toggle Sidebar",
+      "qid": "shell:button:sidebar-toggle",
+      "action": "click",
+      "thresholds": { "max_latency": 200 }
+    },
+    {
+      "step": "Open Settings",
+      "qid": "sparta:button:settings",
+      "action": "click",
+      "thresholds": { "max_latency": 300 }
+    },
+    {
+      "step": "Select F-36 Scope",
+      "qid": "sparta:button:settings-scope-f36",
+      "action": "click"
+    },
+    {
+      "step": "Close Settings",
+      "qid": "sparta:button:settings-close",
+      "action": "click"
+    },
+    {
+      "step": "Switch View to Bloom",
+      "qid": "threat-matrix:button:view-bloom",
+      "action": "click"
+    },
+    {
+      "step": "Switch View to Graph",
+      "qid": "threat-matrix:button:view-graph",
+      "action": "click"
+    },
+    {
+      "step": "Open Chat",
+      "qid": "sparta:button:ask-ai",
+      "action": "click"
+    },
+    {
+      "step": "Switch Datalake in Chat",
+      "qid": "chat:button:datalake-cmmc",
+      "action": "click"
+    }
+  ]
+}

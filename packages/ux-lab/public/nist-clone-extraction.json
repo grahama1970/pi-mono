@@ -1,0 +1,4603 @@
+{
+  "pdfUrl": "/nist_clone_full.pdf",
+  "pageCount": 34,
+  "blocks": [
+    {
+      "id": "block_0",
+      "page": 0,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_1",
+      "page": 0,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 1 of 1",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 1,
+        "totalPages": 1,
+        "expectedPage": 1,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_2",
+      "page": 0,
+      "bbox": [
+        0.09807107962814032,
+        0.07113633011326645,
+        0.9096509148092831,
+        0.13020956636679293
+      ],
+      "blockType": "header",
+      "text": "[QID_4D5111C7E18333B4] NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
+      "qids": [
+        "[QID_4D5111C7E18333B4]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_3",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.19472224302966185,
+        0.29687420215482024,
+        0.21906315196644177
+      ],
+      "blockType": "header",
+      "text": "[QID_36F92DF95ADAAF1B] Table of Contents",
+      "qids": [
+        "[QID_36F92DF95ADAAF1B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_4",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.24450760658341225,
+        0.8337415807387408,
+        0.2618560983677103
+      ],
+      "blockType": "header",
+      "text": "[QID_6460CBD585699DF5] NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations . 1",
+      "qids": [
+        "[QID_6460CBD585699DF5]"
+      ],
+      "tocEntries": [
+        {
+          "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
+          "page": 1,
+          "qid": "[QID_6460CBD585699DF5]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_5",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.26218437426017993,
+        0.37185614093456393,
+        0.27953286604447797
+      ],
+      "blockType": "header",
+      "text": "[QID_B34C91FD19FA586C] Abstract .......................................... 2",
+      "qids": [
+        "[QID_B34C91FD19FA586C]"
+      ],
+      "tocEntries": [
+        {
+          "title": "Abstract",
+          "page": 2,
+          "qid": "[QID_B34C91FD19FA586C]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_6",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.2798611419369476,
+        0.38302118637982535,
+        0.29720963372124565
+      ],
+      "blockType": "header",
+      "text": "[QID_4D53E849449882FA] Keywords .......................................... 3",
+      "qids": [
+        "[QID_4D53E849449882FA]"
+      ],
+      "tocEntries": [
+        {
+          "title": "Keywords",
+          "page": 3,
+          "qid": "[QID_4D53E849449882FA]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_7",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.2975379096137153,
+        0.36486756567861517,
+        0.3148864013980133
+      ],
+      "blockType": "header",
+      "text": "[QID_0B14309D501F5E85] Errata ............................................ 4",
+      "qids": [
+        "[QID_0B14309D501F5E85]"
+      ],
+      "tocEntries": [
+        {
+          "title": "Errata",
+          "page": 4,
+          "qid": "[QID_0B14309D501F5E85]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_8",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.31521467729048297,
+        0.4185604020660999,
+        0.3325631498086332
+      ],
+      "blockType": "header",
+      "text": "[QID_91F4F237E61FD03E] INTRODUCTION ...................................... 5",
+      "qids": [
+        "[QID_91F4F237E61FD03E]"
+      ],
+      "tocEntries": [
+        {
+          "title": "INTRODUCTION",
+          "page": 5,
+          "qid": "[QID_91F4F237E61FD03E]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_9",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.33289144496725065,
+        0.47742152993195974,
+        0.3502399174854009
+      ],
+      "blockType": "header",
+      "text": "[QID_4BA1DFB64F66FCC4] 1.1 PURPOSE AND APPLICABILITY ................... 6",
+      "qids": [
+        "[QID_4BA1DFB64F66FCC4]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.1 PURPOSE AND APPLICABILITY",
+          "page": 6,
+          "qid": "[QID_4BA1DFB64F66FCC4]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_10",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.3505681741117227,
+        0.43491822286368975,
+        0.36791664662987295
+      ],
+      "blockType": "header",
+      "text": "[QID_89A5222D44EC8624] 1.2 TARGET AUDIENCE ............................. 7",
+      "qids": [
+        "[QID_89A5222D44EC8624]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.2 TARGET AUDIENCE",
+          "page": 7,
+          "qid": "[QID_89A5222D44EC8624]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_11",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.3682449417884904,
+        0.5052809871100132,
+        0.3855934143066406
+      ],
+      "blockType": "header",
+      "text": "[QID_0812119FF531C144] 1.3 ORGANIZATIONAL RESPONSIBILITIES ............. 8",
+      "qids": [
+        "[QID_0812119FF531C144]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+          "page": 8,
+          "qid": "[QID_0812119FF531C144]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_12",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.38592170946525806,
+        0.5268561668645323,
+        0.4032701819834083
+      ],
+      "blockType": "header",
+      "text": "[QID_96EC66FC09B5091B] 1.4 RELATIONSHIP TO OTHER PUBLICATIONS .......... 9",
+      "qids": [
+        "[QID_96EC66FC09B5091B]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+          "page": 9,
+          "qid": "[QID_96EC66FC09B5091B]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_13",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.40359847714202574,
+        0.48649178299249385,
+        0.420946949660176
+      ],
+      "blockType": "header",
+      "text": "[QID_E4798D3ED0235DED] 1.5 REVISIONS AND EXTENSIONS .................... 10",
+      "qids": [
+        "[QID_E4798D3ED0235DED]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.5 REVISIONS AND EXTENSIONS",
+          "page": 10,
+          "qid": "[QID_E4798D3ED0235DED]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_14",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.4212752448187934,
+        0.48620256411483864,
+        0.43862371733694366
+      ],
+      "blockType": "header",
+      "text": "[QID_5F8018BCC4DA37F9] 1.6 PUBLICATION ORGANIZATION .................... 11",
+      "qids": [
+        "[QID_5F8018BCC4DA37F9]"
+      ],
+      "tocEntries": [
+        {
+          "title": "1.6 PUBLICATION ORGANIZATION",
+          "page": 11,
+          "qid": "[QID_5F8018BCC4DA37F9]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_15",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.4389520124955611,
+        0.4554280299766391,
+        0.45630048501371134
+      ],
+      "blockType": "header",
+      "text": "[QID_8B38F0C807BC9B8C] THE FUNDAMENTALS .................................. 12",
+      "qids": [
+        "[QID_8B38F0C807BC9B8C]"
+      ],
+      "tocEntries": [
+        {
+          "title": "THE FUNDAMENTALS",
+          "page": 12,
+          "qid": "[QID_8B38F0C807BC9B8C]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_16",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.4566287801723288,
+        0.5092384986628115,
+        0.473977252690479
+      ],
+      "blockType": "header",
+      "text": "[QID_268C72FF649BA701] 2.1 REQUIREMENTS AND CONTROLS ................... 13",
+      "qids": [
+        "[QID_268C72FF649BA701]"
+      ],
+      "tocEntries": [
+        {
+          "title": "2.1 REQUIREMENTS AND CONTROLS",
+          "page": 13,
+          "qid": "[QID_268C72FF649BA701]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_17",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.47430554784909645,
+        0.555406807294858,
+        0.4916540203672467
+      ],
+      "blockType": "header",
+      "text": "[QID_33FD9A4302E37059] 2.2 CONTROL STRUCTURE AND ORGANIZATION .......... 14",
+      "qids": [
+        "[QID_33FD9A4302E37059]"
+      ],
+      "tocEntries": [
+        {
+          "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "page": 14,
+          "qid": "[QID_33FD9A4302E37059]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_18",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.49198231552586413,
+        0.5549051621380974,
+        0.5093307880440143
+      ],
+      "blockType": "header",
+      "text": "[QID_66E5700773B1EABB] 2.3 CONTROL IMPLEMENTATION APPROACHES ........... 15",
+      "qids": [
+        "[QID_66E5700773B1EABB]"
+      ],
+      "tocEntries": [
+        {
+          "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+          "page": 15,
+          "qid": "[QID_66E5700773B1EABB]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_19",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5096590832026318,
+        0.518233604680479,
+        0.5270075557207821
+      ],
+      "blockType": "header",
+      "text": "[QID_530E90F658DA0809] 2.4 SECURITY AND PRIVACY CONTROLS ............... 16",
+      "qids": [
+        "[QID_530E90F658DA0809]"
+      ],
+      "tocEntries": [
+        {
+          "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+          "page": 16,
+          "qid": "[QID_530E90F658DA0809]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_20",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5273358508793995,
+        0.5355473437340431,
+        0.5446843233975497
+      ],
+      "blockType": "header",
+      "text": "[QID_346A54E17078F9AE] 2.5 TRUSTWORTHINESS AND ASSURANCE ............... 17",
+      "qids": [
+        "[QID_346A54E17078F9AE]"
+      ],
+      "tocEntries": [
+        {
+          "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+          "page": 17,
+          "qid": "[QID_346A54E17078F9AE]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_21",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5450126185561671,
+        0.430663314520144,
+        0.5623610910743174
+      ],
+      "blockType": "header",
+      "text": "[QID_89545A8D9B07CC47] THE CONTROLS ...................................... 18",
+      "qids": [
+        "[QID_89545A8D9B07CC47]"
+      ],
+      "tocEntries": [
+        {
+          "title": "THE CONTROLS",
+          "page": 18,
+          "qid": "[QID_89545A8D9B07CC47]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_22",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5626893862329349,
+        0.4453708424287684,
+        0.580037858751085
+      ],
+      "blockType": "header",
+      "text": "[QID_49EB59F3BEC9D115] 3.1 ACCESS CONTROL .............................. 19",
+      "qids": [
+        "[QID_49EB59F3BEC9D115]"
+      ],
+      "tocEntries": [
+        {
+          "title": "3.1 ACCESS CONTROL",
+          "page": 19,
+          "qid": "[QID_49EB59F3BEC9D115]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_23",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5803661539097025,
+        0.4996355343488307,
+        0.5977146264278528
+      ],
+      "blockType": "header",
+      "text": "[QID_4E4A54E6A6D879A1] AC-1 POLICY AND PROCEDURES ........................ 20",
+      "qids": [
+        "[QID_4E4A54E6A6D879A1]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-1 POLICY AND PROCEDURES",
+          "page": 20,
+          "qid": "[QID_4E4A54E6A6D879A1]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_24",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.5980429215864702,
+        0.4971617156384038,
+        0.6153913941046204
+      ],
+      "blockType": "header",
+      "text": "[QID_D3236CA70BB112BE] AC-2 ACCOUNT MANAGEMENT ........................... 21",
+      "qids": [
+        "[QID_D3236CA70BB112BE]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-2 ACCOUNT MANAGEMENT",
+          "page": 21,
+          "qid": "[QID_D3236CA70BB112BE]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_25",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.6157196892632378,
+        0.49208981383080574,
+        0.6330681617813881
+      ],
+      "blockType": "header",
+      "text": "[QID_50C5F4DF471A2758] AC-3 ACCESS ENFORCEMENT ........................... 22",
+      "qids": [
+        "[QID_50C5F4DF471A2758]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-3 ACCESS ENFORCEMENT",
+          "page": 22,
+          "qid": "[QID_50C5F4DF471A2758]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_26",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.6333964954723011,
+        0.5463283763212317,
+        0.6507449679904513
+      ],
+      "blockType": "header",
+      "text": "[QID_D34B1C7CD4B18B91] AC-4 INFORMATION FLOW ENFORCEMENT ................. 23",
+      "qids": [
+        "[QID_D34B1C7CD4B18B91]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-4 INFORMATION FLOW ENFORCEMENT",
+          "page": 23,
+          "qid": "[QID_D34B1C7CD4B18B91]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_27",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.6510732631490688,
+        0.4820309807272518,
+        0.6684217356672191
+      ],
+      "blockType": "header",
+      "text": "[QID_037F0DC013220FF9] AC-5 SEPARATION OF DUTIES ......................... 24",
+      "qids": [
+        "[QID_037F0DC013220FF9]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-5 SEPARATION OF DUTIES",
+          "page": 24,
+          "qid": "[QID_037F0DC013220FF9]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_28",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.6687500308258365,
+        0.45111433041641136,
+        0.6860985033439867
+      ],
+      "blockType": "header",
+      "text": "[QID_D42D0741CFC15A5C] AC-6 LEAST PRIVILEGE .............................. 25",
+      "qids": [
+        "[QID_D42D0741CFC15A5C]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-6 LEAST PRIVILEGE",
+          "page": 25,
+          "qid": "[QID_D42D0741CFC15A5C]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_29",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.6864267985026041,
+        0.5415571125504238,
+        0.7037752710207544
+      ],
+      "blockType": "header",
+      "text": "[QID_9778503907032A1D] AC-7 UNSUCCESSFUL LOGON ATTEMPTS .................. 26",
+      "qids": [
+        "[QID_9778503907032A1D]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-7 UNSUCCESSFUL LOGON ATTEMPTS",
+          "page": 26,
+          "qid": "[QID_9778503907032A1D]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_30",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.7041035661793719,
+        0.4967237983653748,
+        0.7214520386975221
+      ],
+      "blockType": "header",
+      "text": "[QID_80581062AC5DC343] AC-8 SYSTEM USE NOTIFICATION ...................... 27",
+      "qids": [
+        "[QID_80581062AC5DC343]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-8 SYSTEM USE NOTIFICATION",
+          "page": 27,
+          "qid": "[QID_80581062AC5DC343]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_31",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.7217803338561395,
+        0.5209623349258323,
+        0.7391288063742898
+      ],
+      "blockType": "header",
+      "text": "[QID_F5269E561C440B05] AC-9 PREVIOUS LOGON NOTIFICATION .................. 28",
+      "qids": [
+        "[QID_F5269E561C440B05]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-9 PREVIOUS LOGON NOTIFICATION",
+          "page": 28,
+          "qid": "[QID_F5269E561C440B05]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_32",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.7394571015329072,
+        0.5405408073874081,
+        0.7568055740510574
+      ],
+      "blockType": "header",
+      "text": "[QID_B57D40D95D30A1F6] AC-10 CONCURRENT SESSION CONTROL .................. 29",
+      "qids": [
+        "[QID_B57D40D95D30A1F6]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-10 CONCURRENT SESSION CONTROL",
+          "page": 29,
+          "qid": "[QID_B57D40D95D30A1F6]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_33",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.7571338692096748,
+        0.4412057913985907,
+        0.7744823417278252
+      ],
+      "blockType": "header",
+      "text": "[QID_6CDDF67E6AE402AF] AC-11 DEVICE LOCK ................................. 30",
+      "qids": [
+        "[QID_6CDDF67E6AE402AF]"
+      ],
+      "tocEntries": [
+        {
+          "title": "AC-11 DEVICE LOCK",
+          "page": 30,
+          "qid": "[QID_6CDDF67E6AE402AF]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_34",
+      "page": 1,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_35",
+      "page": 1,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 2 of 2",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 2,
+        "totalPages": 2,
+        "expectedPage": 2,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_36",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.8510227577359069,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_7C70E6B53EE94AFC] NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information",
+      "qids": [
+        "[QID_7C70E6B53EE94AFC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_37",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.09926764170328777,
+        0.3823692970026552,
+        0.12360856027314157
+      ],
+      "blockType": "header",
+      "text": "Systems and Organizations",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_38",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.14652776236485954,
+        0.9217349781709558,
+        0.2244823147552182
+      ],
+      "blockType": "text",
+      "text": "[QID_125E6FF281F49441] This publication establishes a foundational framework for implementing security and privacy controls within federal information systems and organizations. The catalog provides a systematic approach to managing cybersecurity and privacy risks through customizable control baselines. These controls address evolving threat landscapes while supporting organizational mission objectives and operational requirements. The structure enables integration with enterprise risk management practices across diverse technological environments.",
+      "qids": [
+        "[QID_125E6FF281F49441]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_39",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.22986109569819288,
+        0.9217349781709558,
+        0.30781564808855155
+      ],
+      "blockType": "text",
+      "text": "[QID_FEC1C246B4E7AB72] The document organizes controls into logical families based on functional security domains and privacy considerations. Each control includes implementation guidance to assist organizations in tailoring requirements to specific system characteristics and risk profiles. This approach facilitates consistent application of security measures while accommodating technological innovation and mission-specific needs. The framework serves as a critical reference for achieving compliance with federal cybersecurity directives and privacy regulations.",
+      "qids": [
+        "[QID_FEC1C246B4E7AB72]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_40",
+      "page": 2,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_41",
+      "page": 2,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 3 of 3",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 3,
+        "totalPages": 3,
+        "expectedPage": 3,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_42",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.1957500058841082,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_3B1E6CE5F1F263F0] Abstract",
+      "qids": [
+        "[QID_3B1E6CE5F1F263F0]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_43",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_2B456622A251505B] This publication establishes a standardized framework for implementing security controls within federal information systems. It provides foundational guidance for protecting confidentiality, integrity, and availability of government data assets. The document synthesizes current threat intelligence with established engineering principles to address evolving cybersecurity challenges. This edition incorporates refinements based on operational feedback from multiple federal agencies.",
+      "qids": [
+        "[QID_2B456622A251505B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_44",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_77AC71815ABAE3E8] The framework presented supports consistent security posture assessment across diverse government operational environments. It defines core control families while allowing necessary flexibility for mission-specific implementations. Technical specifications are designed to interoperate with existing federal security architectures and international standards. This document serves as a reference baseline for system authorization packages and continuous monitoring activities.",
+      "qids": [
+        "[QID_77AC71815ABAE3E8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_45",
+      "page": 3,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_46",
+      "page": 3,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 4 of 4",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 4,
+        "totalPages": 4,
+        "expectedPage": 4,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_47",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.212107839148029,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_AE4AF11F44F45071] Keywords",
+      "qids": [
+        "[QID_AE4AF11F44F45071]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_48",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_0F3219BCC6C76CBC] This section establishes standardized definitions for critical terminology employed within the document framework. Precise lexical alignment ensures consistent interpretation of security concepts across diverse organizational contexts. Ambiguity in foundational terms could compromise the effective implementation of prescribed controls.",
+      "qids": [
+        "[QID_0F3219BCC6C76CBC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_49",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.9217350779016034,
+        0.2345833248562283
+      ],
+      "blockType": "text",
+      "text": "[QID_8C8C4C29AF063313] Selected terms represent high-impact concepts requiring unambiguous specification for compliance assessment. Definitions reflect current technical consensus while accommodating evolving threat landscapes. These lexical anchors enable accurate cross-referencing throughout the security control catalog.",
+      "qids": [
+        "[QID_8C8C4C29AF063313]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_50",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.14242422701132418,
+        0.9176471186619178,
+        0.2560605906476878
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-B2EBCB | Item 1 for Errata | 10\nITEM-76AA8B | Item 2 for Errata | 20\nITEM-8C29B2 | Item 3 for Errata | 30\nITEM-4FC379 | Item 4 for Errata | 40\nITEM-58C1E2 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_51",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.30959597500887787,
+        0.9176471186619178,
+        0.42323233864524146
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-D67218 | Item 1 for Errata | 10\nITEM-846423 | Item 2 for Errata | 20\nITEM-BD1FB1 | Item 3 for Errata | 30\nITEM-46CF5F | Item 4 for Errata | 40\nITEM-BA9253 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_52",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.47676768447413587,
+        0.9176471186619178,
+        0.5904040481104995
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-D8141A | Item 1 for Errata | 10\nITEM-C81112 | Item 2 for Errata | 20\nITEM-5CE4C0 | Item 3 for Errata | 30\nITEM-E5C3B7 | Item 4 for Errata | 40\nITEM-8147F1 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_53",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.6439393939393939,
+        0.9176471186619178,
+        0.7575757575757576
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-600D63 | Item 1 for Errata | 10\nITEM-4735B6 | Item 2 for Errata | 20\nITEM-4C9729 | Item 3 for Errata | 30\nITEM-B427CC | Item 4 for Errata | 40\nITEM-7BEE1D | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_54",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.8111111419369476,
+        0.9176471186619178,
+        0.9247475055733112
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-180013 | Item 1 for Errata | 10\nITEM-2DF5D0 | Item 2 for Errata | 20\nITEM-632594 | Item 3 for Errata | 30\nITEM-2FB321 | Item 4 for Errata | 40\nITEM-B59DBD | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_55",
+      "page": 4,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_56",
+      "page": 4,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 5 of 5",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 5,
+        "totalPages": 5,
+        "expectedPage": 5,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_57",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.16898693757898667,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_14CE1016D6C9F455] Errata",
+      "qids": [
+        "[QID_14CE1016D6C9F455]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_58",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.5029508802625868,
+        0.13609846673830592
+      ],
+      "blockType": "text",
+      "text": "[QID_6307CD8CBC346F25] forecast models,\" Space Weather , vol. 21, no. 2, 2023.",
+      "qids": [
+        "[QID_6307CD8CBC346F25]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_59",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.26480431990189984,
+        0.2872369304981107,
+        0.28041795287469423
+      ],
+      "blockType": "text",
+      "text": "[QID_5F8CE0A535E78736] Table 1: Data from section 3",
+      "qids": [
+        "[QID_5F8CE0A535E78736]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_60",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.4319760101010101,
+        0.2872369304981107,
+        0.44758964307380444
+      ],
+      "blockType": "text",
+      "text": "[QID_24816305B3D110ED] Table 2: Data from section 3",
+      "qids": [
+        "[QID_24816305B3D110ED]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_61",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.5991477580985638,
+        0.2868741602679483,
+        0.6147613910713581
+      ],
+      "blockType": "text",
+      "text": "[QID_36476072C22029D6] Table 3: Data from section 3",
+      "qids": [
+        "[QID_36476072C22029D6]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_62",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.7663194290315262,
+        0.2879607755374285,
+        0.781933023472025
+      ],
+      "blockType": "text",
+      "text": "[QID_52BCD9531ED023EC] Table 4: Data from section 3",
+      "qids": [
+        "[QID_52BCD9531ED023EC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_63",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.11666669749250316,
+        0.9176471186619178,
+        0.23030306112886678
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-7F7225 | Item 1 for Errata | 10\nITEM-537167 | Item 2 for Errata | 20\nITEM-3462CC | Item 3 for Errata | 30\nITEM-FDB382 | Item 4 for Errata | 40\nITEM-D33884 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_64",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.2838383684254656,
+        0.9176471186619178,
+        0.3974747320618292
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-243F59 | Item 1 for Errata | 10\nITEM-337DF5 | Item 2 for Errata | 20\nITEM-1B0813 | Item 3 for Errata | 30\nITEM-43E501 | Item 4 for Errata | 40\nITEM-C0ACB2 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_65",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.45101011642301925,
+        0.9176471186619178,
+        0.5646464800593829
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-3DB1D4 | Item 1 for Errata | 10\nITEM-1623F7 | Item 2 for Errata | 20\nITEM-55F7E1 | Item 3 for Errata | 30\nITEM-5AF906 | Item 4 for Errata | 40\nITEM-0C0E10 | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_66",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.6181817873559817,
+        0.9176471186619178,
+        0.7318181509923454
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-1DDB53 | Item 1 for Errata | 10\nITEM-21913F | Item 2 for Errata | 20\nITEM-C588DD | Item 3 for Errata | 30\nITEM-C8C1AB | Item 4 for Errata | 40\nITEM-3198AB | Item 5 for Errata | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_67",
+      "page": 5,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_68",
+      "page": 5,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 6 of 6",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 6,
+        "totalPages": 6,
+        "expectedPage": 6,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_69",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.0718749701374709,
+        0.28750814799389807,
+        0.0874886079268022
+      ],
+      "blockType": "text",
+      "text": "[QID_8317A94FF4AFAE9B] Table 5: Data from section 3",
+      "qids": [
+        "[QID_8317A94FF4AFAE9B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_70",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.23904671331848762,
+        0.28777941535500917,
+        0.254660346291282
+      ],
+      "blockType": "text",
+      "text": "[QID_343EC431C36D4FBB] Table 6: Data from section 3",
+      "qids": [
+        "[QID_343EC431C36D4FBB]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_71",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.4062184420498935,
+        0.2883219002119077,
+        0.4218320750226878
+      ],
+      "blockType": "text",
+      "text": "[QID_C39C22ACC4E8CD53] Table 7: Data from section 3",
+      "qids": [
+        "[QID_C39C22ACC4E8CD53]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_72",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.5733901515151515,
+        0.2874166451248468,
+        0.5890037844879459
+      ],
+      "blockType": "text",
+      "text": "[QID_205167D4B229FDD0] Table 8: Data from section 3",
+      "qids": [
+        "[QID_205167D4B229FDD0]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_73",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.7405618995127051,
+        0.2872369304981107,
+        0.7561754939532039
+      ],
+      "blockType": "text",
+      "text": "[QID_9B471A2D485283D9] Table 9: Data from section 3",
+      "qids": [
+        "[QID_9B471A2D485283D9]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_74",
+      "page": 6,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_75",
+      "page": 6,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 7 of 7",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 7,
+        "totalPages": 7,
+        "expectedPage": 7,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_76",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.2786928314009523,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_A41BFB3D1C8F2566] INTRODUCTION",
+      "qids": [
+        "[QID_A41BFB3D1C8F2566]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_77",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217348784403084,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_903EE5E4D19AF6E0] This document establishes a foundational framework for securing information systems within federal executive branch agencies. It provides essential guidance for implementing robust security controls aligned with current technological landscapes and threat environments. The framework serves as a critical component in the national strategy to protect sensitive government data and ensure operational continuity. Its development reflects collaborative input from multiple federal cybersecurity stakeholders.",
+      "qids": [
+        "[QID_903EE5E4D19AF6E0]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_78",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217348784403084,
+        0.2951893854622889
+      ],
+      "blockType": "text",
+      "text": "[QID_90E4C1A8FE8174E4] The scope encompasses technical and procedural requirements for non-national security systems, focusing on confidentiality, integrity, and availability. It does not address classified systems or physical security measures beyond facility access controls for information technology assets. Targeted primarily at system owners, security officers, and IT personnel, this publication integrates with existing federal standards to form a cohesive security posture. Readers should reference complementary directives for specialized environments such as cloud services or industrial control systems.",
+      "qids": [
+        "[QID_90E4C1A8FE8174E4]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_79",
+      "page": 7,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_80",
+      "page": 7,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 8 of 8",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 8,
+        "totalPages": 8,
+        "expectedPage": 8,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_81",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.4881029814676522,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_5D406C6DF6218B49] 1.1 PURPOSE AND APPLICABILITY",
+      "qids": [
+        "[QID_5D406C6DF6218B49]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_82",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_E150F16ECC551051] This document establishes foundational security controls for federal information systems. It provides a standardized framework to protect against evolving cyber threats while ensuring operational continuity. The structure enables consistent implementation across diverse agency environments. Adherence supports compliance with broader legislative mandates for information security.",
+      "qids": [
+        "[QID_E150F16ECC551051]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_83",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.9217351776322508,
+        0.24973484000774346
+      ],
+      "blockType": "text",
+      "text": "[QID_9762466841FBDEE1] The guidance applies to all executive branch agencies managing sensitive government data. It is intended for system owners, security practitioners, and oversight personnel responsible for risk management. Non-federal entities operating federal systems must also align with these specifications. Specific applicability thresholds are defined in subsequent sections based on data sensitivity and system criticality.",
+      "qids": [
+        "[QID_9762466841FBDEE1]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_84",
+      "page": 8,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_85",
+      "page": 8,
+      "bbox": [
+        0.46656864141327103,
+        0.9573232477361505,
+        0.533431358586729,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 9 of 9",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 9,
+        "totalPages": 9,
+        "expectedPage": 9,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_86",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.36089053185157527,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_BF0762F3D8670F5B] 1.2 TARGET AUDIENCE",
+      "qids": [
+        "[QID_BF0762F3D8670F5B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_87",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.16640150667441012
+      ],
+      "blockType": "text",
+      "text": "[QID_19C4B9A1589A2CE0] The primary audience for this publication consists of federal agency system owners and authorizing officials. These personnel are directly responsible for the security posture of information systems under their jurisdiction. The document provides essential guidance for fulfilling statutory and regulatory security obligations.",
+      "qids": [
+        "[QID_19C4B9A1589A2CE0]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_88",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.17178028761738479,
+        0.9217351776322508,
+        0.2345833248562283
+      ],
+      "blockType": "text",
+      "text": "[QID_2710D1F759CD8B11] Supplementary audiences include security assessors, auditors, and federal contractors engaged in system development and maintenance. These groups will utilize the content to ensure consistent application of security controls across federal systems. Program executives and senior agency information security officers may also reference this material for oversight and policy development purposes.",
+      "qids": [
+        "[QID_2710D1F759CD8B11]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_89",
+      "page": 9,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_90",
+      "page": 9,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 10 of 10",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 10,
+        "totalPages": 10,
+        "expectedPage": 10,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_91",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5673627666398591,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_B1BD72C74B25C446] 1.3 ORGANIZATIONAL RESPONSIBILITIES",
+      "qids": [
+        "[QID_B1BD72C74B25C446]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_92",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.45558495615042893,
+        0.13609846673830592
+      ],
+      "blockType": "text",
+      "text": "[QID_4F4976DB570F2F74] our experiments. Fig. 1 shows a typical example.",
+      "qids": [
+        "[QID_4F4976DB570F2F74]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_93",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.14147725731435448,
+        0.37563393786062604,
+        0.15882573946557862
+      ],
+      "blockType": "text",
+      "text": "[QID_93B5DE8B5F983BDE] Acad. Sci. U.S.A. 108 , 20935 (2011).",
+      "qids": [
+        "[QID_93B5DE8B5F983BDE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_94",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.16420453004162722,
+        0.5839704625746783,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_F94EEB8218452AF0] Proof of Theorem 4.2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+      "qids": [
+        "[QID_F94EEB8218452AF0]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_95",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.36386267967473446,
+        0.204280294553198
+      ],
+      "blockType": "text",
+      "text": "[QID_1B8A50234227404D] puting , vol. 140, pp. 228-241, 2014.",
+      "qids": [
+        "[QID_1B8A50234227404D]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_96",
+      "page": 10,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_97",
+      "page": 10,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 11 of 11",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 11,
+        "totalPages": 11,
+        "expectedPage": 11,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_98",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.6143725027445874,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_E659CA77A8DA790F] 1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+      "qids": [
+        "[QID_E659CA77A8DA790F]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_99",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.21185605212895556
+      ],
+      "blockType": "text",
+      "text": "[QID_993E225B1EBA7E35] This publication functions as an integral component within the broader ecosystem of federal cybersecurity standards and guidelines. It is expressly designed to harmonize with, not replicate, existing frameworks established in NIST Special Publications and other recognized authorities. The document references core security controls from foundational publications such as NIST SP 800-53 Revision 5 and risk assessment methodologies from NIST SP 800-30. Organizations should apply this guidance in concert with these complementary resources to establish a cohesive security posture.",
+      "qids": [
+        "[QID_993E225B1EBA7E35]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_100",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.21723483307193023,
+        0.9217348784403084,
+        0.31034090061380404
+      ],
+      "blockType": "text",
+      "text": "[QID_F447BB23DC51E4A8] The technical specifications contained herein do not supersede statutory requirements or mandatory directives issued by federal oversight bodies. In cases of apparent conflict between this document and legally binding regulations, the applicable law or executive order shall govern implementation. This publication deliberately excludes domains comprehensively addressed by international standards including ISO/IEC 27002:2022 to avoid redundancy and promote interoperability. Practitioners are advised to maintain alignment with all relevant regulatory instruments while applying this guidance.",
+      "qids": [
+        "[QID_F447BB23DC51E4A8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_101",
+      "page": 11,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_102",
+      "page": 11,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 12 of 12",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 12,
+        "totalPages": 12,
+        "expectedPage": 12,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_103",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.4756111194884855,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_048A0472166BA6CB] 1.5 REVISIONS AND EXTENSIONS",
+      "qids": [
+        "[QID_048A0472166BA6CB]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_104",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_EB6CFC652A273FDC] This section outlines the framework for managing updates to the standard over time. As technological landscapes and threat environments evolve, periodic revisions ensure the standard remains relevant and effective. The revision process is designed to incorporate stakeholder feedback and emerging best practices while maintaining backward compatibility where feasible. Such updates are critical for sustaining the standard's utility in dynamic operational contexts.",
+      "qids": [
+        "[QID_EB6CFC652A273FDC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_105",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_1AC56A719D274857] Extensions to the standard may be developed to address specialized requirements in particular sectors or applications. These extensions are intended to supplement, not supersede, the core standard and must align with its foundational principles. The development of extensions follows a structured methodology to prevent fragmentation and ensure interoperability. Organizations adopting extensions are advised to document their implementation to facilitate future integration with revised versions.",
+      "qids": [
+        "[QID_1AC56A719D274857]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_106",
+      "page": 12,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_107",
+      "page": 12,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 13 of 13",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 13,
+        "totalPages": 13,
+        "expectedPage": 13,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_108",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.4809836593328738,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_C30A5E28BB27D9E8] 1.6 PUBLICATION ORGANIZATION",
+      "qids": [
+        "[QID_C30A5E28BB27D9E8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_109",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_9F8BFEDD8F63780A] This document is organized into sequential chapters that establish a hierarchical framework for security implementation. The initial sections define foundational terminology and overarching principles, followed by progressively detailed technical specifications. Subsequent chapters address operational considerations and validation methodologies. This structure ensures logical flow from conceptual understanding to practical application.",
+      "qids": [
+        "[QID_9F8BFEDD8F63780A]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_110",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.9217351776322508,
+        0.2648863551592586
+      ],
+      "blockType": "text",
+      "text": "[QID_0FA0E5DA4BC0BDE1] The publication design accommodates multiple stakeholder perspectives through distinct content segmentation. Management-oriented material appears in executive summaries and policy alignment sections, while engineering teams will reference granular configuration parameters in later annexes. Cross-chapter indexing facilitates rapid information retrieval across functional domains. This organization optimizes usability for both strategic planning and tactical execution contexts.",
+      "qids": [
+        "[QID_0FA0E5DA4BC0BDE1]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_111",
+      "page": 13,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_112",
+      "page": 13,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 14 of 14",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 14,
+        "totalPages": 14,
+        "expectedPage": 14,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_113",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.346130745083678,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_2D10DDFC3E500A53] THE FUNDAMENTALS",
+      "qids": [
+        "[QID_2D10DDFC3E500A53]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_114",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_C0A83491BE1EC34C] The foundational principles of information security form the essential framework for constructing robust protective measures across all operational domains. These core tenets provide a consistent basis for addressing evolving threats and vulnerabilities regardless of technological implementation. Organizations that neglect these principles often experience fragmented and ineffective security postures. Therefore, a thorough understanding of these fundamentals is critical for security practitioners.",
+      "qids": [
+        "[QID_C0A83491BE1EC34C]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_115",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217351776322508,
+        0.2951893854622889
+      ],
+      "blockType": "text",
+      "text": "[QID_3F2E4DAA7456B896] These fundamental concepts are universally applicable regardless of organizational size or sector, serving as the common language for security discourse and risk management. They enable systematic evaluation of threats and the development of coherent mitigation strategies through established analytical models. By internalizing these basics, security teams can more effectively communicate requirements and justify resource allocation decisions. Ultimately, the mastery of fundamentals underpins every advanced security capability and operational resilience initiative.",
+      "qids": [
+        "[QID_3F2E4DAA7456B896]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_116",
+      "page": 14,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_117",
+      "page": 14,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 15 of 15",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 15,
+        "totalPages": 15,
+        "expectedPage": 15,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_118",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5168496923508987,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_0E438EDAD83D28CA] 2.1 REQUIREMENTS AND CONTROLS",
+      "qids": [
+        "[QID_0E438EDAD83D28CA]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_119",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_21CB09EC7F51A1C8] Security requirements and controls form the essential structure for managing organizational risk and protecting critical information assets. Requirements define the necessary security outcomes mandated by law, regulation, or policy, while controls represent the specific countermeasures implemented to satisfy these requirements. This interdependent relationship ensures a systematic approach to achieving security objectives across diverse operational environments.",
+      "qids": [
+        "[QID_21CB09EC7F51A1C8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_120",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217348784403084,
+        0.2648863551592586
+      ],
+      "blockType": "text",
+      "text": "[QID_2918ACFD3C6A8365] Controls are categorized into families that address distinct security domains, including identity management, data protection, and system integrity. Each family provides a set of standardized practices that can be adapted to an organization's specific risk landscape and mission needs. Understanding these groupings facilitates effective control selection, implementation, and assessment within the security program.",
+      "qids": [
+        "[QID_2918ACFD3C6A8365]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_121",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3810605906476878
+      ],
+      "blockType": "table",
+      "text": "Control Family | Abbreviation | Primary Focus Area\nAccess Control | AC | Regulating user permissions and system access\nAudit and Accountability | AU | Tracking and examining system activities\nSecurity Assessment and Authorization | SA | Evaluating and authorizing system security\nSystem and Communications Protection | SC | Safeguarding data during transmission and storage",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 5,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_122",
+      "page": 15,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_123",
+      "page": 15,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 16 of 16",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 16,
+        "totalPages": 16,
+        "expectedPage": 16,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_124",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.6409999872344772,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_B5CB394AB906B286] 2.2 CONTROL STRUCTURE AND ORGANIZATION",
+      "qids": [
+        "[QID_B5CB394AB906B286]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_125",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_6351D92403F6CFA7] The control structure within this framework is organized to provide a comprehensive and modular approach to security management. It categorizes security controls into distinct families based on functional objectives and operational contexts. This organization facilitates systematic implementation and assessment across diverse organizational environments. Each control family addresses specific security domains while maintaining interoperability with others.",
+      "qids": [
+        "[QID_6351D92403F6CFA7]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_126",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_8BB679F949D474CA] Control organization is designed to support scalability from small deployments to complex enterprise architectures. The hierarchical arrangement allows for tailored application according to risk profiles and operational requirements. This structure ensures that security measures can be incrementally enhanced without disrupting existing implementations. Furthermore, it provides a clear foundation for continuous monitoring and adaptation to evolving threats.",
+      "qids": [
+        "[QID_8BB679F949D474CA]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_127",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.38980430063575205,
+        0.3034101498672386,
+        0.4054179336085464
+      ],
+      "blockType": "text",
+      "text": "[QID_12429A265E344AB8] Table 10: Data from section 13",
+      "qids": [
+        "[QID_12429A265E344AB8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_128",
+      "page": 16,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_129",
+      "page": 16,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 17 of 17",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 17,
+        "totalPages": 17,
+        "expectedPage": 17,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_130",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.6340523514093137,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_B5F0143F06DA5940] 2.3 CONTROL IMPLEMENTATION APPROACHES",
+      "qids": [
+        "[QID_B5F0143F06DA5940]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_131",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_0ED54B67D6FD1530] Organizations may adopt various methodologies when deploying security controls to safeguard information systems. These approaches range from prescriptive, step-by-step procedures to flexible frameworks that accommodate organizational uniqueness. The selection of an implementation strategy should align with the system's security categorization and the operational context. A well-chosen approach enhances both compliance and operational efficiency.",
+      "qids": [
+        "[QID_0ED54B67D6FD1530]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_132",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_87E8B4C8861780EE] Factors such as system complexity, regulatory obligations, and existing infrastructure significantly influence the implementation path. Common strategies include leveraging industry-recognized baselines, customizing controls for specific threats, or integrating security into the system development lifecycle. Organizations are encouraged to document their rationale for the chosen methodology to support future assessments. This documentation also facilitates adaptation as system requirements evolve.",
+      "qids": [
+        "[QID_87E8B4C8861780EE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_133",
+      "page": 17,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_134",
+      "page": 17,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 18 of 18",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 18,
+        "totalPages": 18,
+        "expectedPage": 18,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_135",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5553594851026348,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_9369AC9A0993792B] 2.4 SECURITY AND PRIVACY CONTROLS",
+      "qids": [
+        "[QID_9369AC9A0993792B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_136",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217348784403084,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_6F206C54725B5E74] Security and privacy controls form an integrated framework for mitigating risks to organizational operations and individual rights. These controls are derived from comprehensive risk assessments and tailored to address specific threat environments. Their implementation spans technical, administrative, and physical domains to create layered protective measures. This structured approach enables organizations to maintain confidentiality, integrity, and availability of critical information assets.",
+      "qids": [
+        "[QID_6F206C54725B5E74]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_137",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.2951893854622889
+      ],
+      "blockType": "text",
+      "text": "[QID_88C8096B037E6DEC] The relationship between security and privacy controls requires coordinated implementation to avoid conflicting requirements and ensure regulatory compliance. Privacy-preserving techniques such as data minimization and anonymization complement traditional security safeguards like access controls and encryption. Continuous monitoring and periodic reassessment of control effectiveness are essential components of this framework. These practices collectively support organizational resilience while upholding legal and ethical obligations regarding personal information handling.",
+      "qids": [
+        "[QID_88C8096B037E6DEC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_138",
+      "page": 18,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_139",
+      "page": 18,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 19 of 19",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 19,
+        "totalPages": 19,
+        "expectedPage": 19,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_140",
+      "page": 18,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5797418332567402,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_649B1757D5BAD191] 2.5 TRUSTWORTHINESS AND ASSURANCE",
+      "qids": [
+        "[QID_649B1757D5BAD191]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_141",
+      "page": 18,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_A392D8590E1126D2] Trustworthiness represents the inherent capacity of a system to maintain secure operations under defined environmental conditions and threat models. Assurance provides the structured evidence and analytical rigor necessary to validate claims regarding system trustworthiness through objective evaluation methods. These complementary concepts form the bedrock of security confidence in critical infrastructure deployments.",
+      "qids": [
+        "[QID_A392D8590E1126D2]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_142",
+      "page": 18,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.9217351776322508,
+        0.2648863551592586
+      ],
+      "blockType": "text",
+      "text": "[QID_ED01A8F4660A8E93] The relationship between trustworthiness and assurance is characterized by mutual dependency, where assurance activities systematically verify that trustworthiness attributes have been properly engineered and maintained. Key determinants include architectural soundness, implementation correctness, and lifecycle management practices that collectively substantiate security assertions. This framework enables stakeholders to assess security posture with measurable confidence.",
+      "qids": [
+        "[QID_ED01A8F4660A8E93]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_143",
+      "page": 19,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3621211967082939
+      ],
+      "blockType": "table",
+      "text": "Control ID | Category | Primary Function\nAC-3 | Access Control | Enforce access restrictions\nSC-12 | System and Communications Protection | Manage cryptographic key establishment\nSI-4 | System and Information Integrity | Monitor system security",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_144",
+      "page": 19,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_145",
+      "page": 19,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 20 of 20",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 20,
+        "totalPages": 20,
+        "expectedPage": 20,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_146",
+      "page": 19,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.2829820470872268,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_D7E51101884382A7] THE CONTROLS",
+      "qids": [
+        "[QID_D7E51101884382A7]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_147",
+      "page": 19,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_3D210D68BFF51E09] Security controls represent the foundational measures implemented to safeguard information systems and organizational operations. These controls are derived from established risk management frameworks and tailored to address specific threats and vulnerabilities. They encompass both technical and procedural mechanisms designed to protect confidentiality, integrity, and availability. The selection and implementation of controls must align with organizational risk tolerance and regulatory obligations.",
+      "qids": [
+        "[QID_3D210D68BFF51E09]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_148",
+      "page": 19,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_9DAF5E62737AD656] Controls are systematically organized into families based on their functional characteristics and operational domains. This categorization facilitates comprehensive coverage across the security spectrum and supports efficient assessment and monitoring activities. Each control family addresses distinct aspects of the security posture, from physical safeguards to cryptographic protections. Understanding these groupings is essential for effective security program management and continuous improvement.",
+      "qids": [
+        "[QID_9DAF5E62737AD656]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_149",
+      "page": 19,
+      "bbox": [
+        0.08235294366973678,
+        0.37086490669635813,
+        0.3037695791207108,
+        0.38647853966915247
+      ],
+      "blockType": "text",
+      "text": "[QID_0FD0588BDC600980] Table 11: Data from section 17",
+      "qids": [
+        "[QID_0FD0588BDC600980]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_150",
+      "page": 20,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_151",
+      "page": 20,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 21 of 21",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 21,
+        "totalPages": 21,
+        "expectedPage": 21,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_152",
+      "page": 20,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.3565375882815691,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_1A010789BECAAE6F] 3.1 ACCESS CONTROL",
+      "qids": [
+        "[QID_1A010789BECAAE6F]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_153",
+      "page": 20,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_62E11D3F7C2CD7DB] Access control mechanisms constitute a foundational security capability for regulating interactions between users and system resources. These controls enforce organizational policies to ensure only authorized operations occur within information environments. Proper implementation directly supports core security objectives including confidentiality and integrity preservation.",
+      "qids": [
+        "[QID_62E11D3F7C2CD7DB]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_154",
+      "page": 20,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.9217348784403084,
+        0.24973484000774346
+      ],
+      "blockType": "text",
+      "text": "[QID_79B008EDAA8030F6] Modern access control frameworks typically incorporate role-based or attribute-driven models to manage permissions dynamically. These approaches enable precise authorization decisions while accommodating evolving operational requirements. Effective deployment requires systematic integration with identity management systems and continuous policy validation processes.",
+      "qids": [
+        "[QID_79B008EDAA8030F6]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_155",
+      "page": 21,
+      "bbox": [
+        0.08235294366973678,
+        0.27121210579920296,
+        0.9176471186619178,
+        0.3469696815567787
+      ],
+      "blockType": "table",
+      "text": "Standard | Relevant Section | Alignment Level\nISO/IEC 27001:2022 | 5.3 | Full\nNIST SP 800-171 | 3.1.1 | Partial\nCIS Controls v8 | CSC 1 | Substantial",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_156",
+      "page": 21,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_157",
+      "page": 21,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 22 of 22",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 22,
+        "totalPages": 22,
+        "expectedPage": 22,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_158",
+      "page": 21,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.47226475734336704,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_BB2157AEF0EF5C5A] AC-1 POLICY AND PROCEDURES",
+      "qids": [
+        "[QID_BB2157AEF0EF5C5A]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_159",
+      "page": 21,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217350779016034,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_F1BFD051F7690EEA] The AC-1 control family establishes foundational requirements for organizational policy development and procedural documentation. This section provides context for the necessity of formalized access control policies that align with enterprise risk management objectives. Effective policy articulation ensures consistent interpretation and application across all operational units. Without such structured guidance, organizations may experience fragmented security implementations.",
+      "qids": [
+        "[QID_F1BFD051F7690EEA]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_160",
+      "page": 21,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.2648863551592586
+      ],
+      "blockType": "text",
+      "text": "[QID_03643701EDA07EFE] Maintaining current and accessible policy documentation is critical for ongoing compliance and operational effectiveness. Policies must be reviewed periodically to address evolving threats and regulatory landscapes. Dissemination mechanisms should ensure all relevant personnel understand their responsibilities. This continuous refinement process supports organizational resilience and accountability.",
+      "qids": [
+        "[QID_03643701EDA07EFE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_161",
+      "page": 21,
+      "bbox": [
+        0.08235294366973678,
+        0.35571339154484294,
+        0.3043137095332925,
+        0.3713270245176373
+      ],
+      "blockType": "text",
+      "text": "[QID_A660A6A97CD85CC2] Table 12: Data from section 19",
+      "qids": [
+        "[QID_A660A6A97CD85CC2]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_162",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.21060604519314235,
+        0.9176471186619178,
+        0.324242408829506
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-8F74C9 | Item 1 for AC-2 ACCOUNT MANAGEMENT | 10\nITEM-C8CC37 | Item 2 for AC-2 ACCOUNT MANAGEMENT | 20\nITEM-024E0B | Item 3 for AC-2 ACCOUNT MANAGEMENT | 30\nITEM-9AA22C | Item 4 for AC-2 ACCOUNT MANAGEMENT | 40\nITEM-BD1700 | Item 5 for AC-2 ACCOUNT MANAGEMENT | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_163",
+      "page": 22,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_164",
+      "page": 22,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 23 of 23",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 23,
+        "totalPages": 23,
+        "expectedPage": 23,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_165",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.44987742106119794,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_7C555F6E372FA4D3] AC-2 ACCOUNT MANAGEMENT",
+      "qids": [
+        "[QID_7C555F6E372FA4D3]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_166",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.6503315345913756,
+        0.13609846673830592
+      ],
+      "blockType": "text",
+      "text": "[QID_1E0DD949D02A0DA1] [111] W. Ma, L. Zhang, and Z. Wu, \"Location information-aided load balanc-",
+      "qids": [
+        "[QID_1E0DD949D02A0DA1]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_167",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.14147725731435448,
+        0.7418380438112745,
+        0.15882573946557862
+      ],
+      "blockType": "text",
+      "text": "[QID_AB5BBBFECE2A9119] U.S. adversaries. It is clear that a more proactive and systematic approach to U.S. cyber",
+      "qids": [
+        "[QID_AB5BBBFECE2A9119]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_168",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.16420453004162722,
+        0.805514466528799,
+        0.18155302182592528
+      ],
+      "blockType": "text",
+      "text": "[QID_C8DF9A155424E205] autonomous robotic systems: A survey. ACM Comput. Surv. 52 (5) (Sep 2019). https://doi.org/10.",
+      "qids": [
+        "[QID_C8DF9A155424E205]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_169",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.18693180276889992,
+        0.4768953510359222,
+        0.204280294553198
+      ],
+      "blockType": "text",
+      "text": "[QID_43F3989D3C0C64A4] Berns, H. Bhang, A. Blondel, S. Borghi, J. Bouchez,",
+      "qids": [
+        "[QID_43F3989D3C0C64A4]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_170",
+      "page": 22,
+      "bbox": [
+        0.08235294366973678,
+        0.33298615734986586,
+        0.3035000071806066,
+        0.3485997903226602
+      ],
+      "blockType": "text",
+      "text": "[QID_6531E60DB30715E8] Table 13: Data from section 20",
+      "qids": [
+        "[QID_6531E60DB30715E8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_171",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.2636363482234454,
+        0.9176471186619178,
+        0.37727271185980904
+      ],
+      "blockType": "table",
+      "text": "ID | Description | Value\nITEM-4613EF | Item 1 for AC-3 ACCESS ENFORCEMENT | 10\nITEM-A2C909 | Item 2 for AC-3 ACCESS ENFORCEMENT | 20\nITEM-359165 | Item 3 for AC-3 ACCESS ENFORCEMENT | 30\nITEM-4FC0EC | Item 4 for AC-3 ACCESS ENFORCEMENT | 40\nITEM-E83E43 | Item 5 for AC-3 ACCESS ENFORCEMENT | 50",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 6,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_172",
+      "page": 23,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_173",
+      "page": 23,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 24 of 24",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 24,
+        "totalPages": 24,
+        "expectedPage": 24,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_174",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.4408431208990758,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_667FB445A8A677F8] AC-3 ACCESS ENFORCEMENT",
+      "qids": [
+        "[QID_667FB445A8A677F8]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_175",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.15124998188982106
+      ],
+      "blockType": "text",
+      "text": "[QID_D60AF939D4680795] Figure 6: Visualisation of the space-time grid ( t i , x k ) in d = 2 for i = 0 , . . . , m + 1 and k = 0 , . . . , n + 1. The blue",
+      "qids": [
+        "[QID_D60AF939D4680795]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_176",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.15662877246586962,
+        0.5298904718137255,
+        0.17397726425016768
+      ],
+      "blockType": "text",
+      "text": "[QID_35E64ADEE7A8F9A5] all possible n -tuples ( x 1 , . . . , x n ) within each minibatch",
+      "qids": [
+        "[QID_35E64ADEE7A8F9A5]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_177",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.17935604519314235,
+        0.5846927617889603,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_DCB8806914C8A5C3] [13] A. Tiwari, J. Prakash, S. Gro\u00df, and C. Hammer, \"A large scale",
+      "qids": [
+        "[QID_DCB8806914C8A5C3]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_178",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217351776322508,
+        0.2345833248562283
+      ],
+      "blockType": "text",
+      "text": "[QID_75BF4959D57F0E2B] Intrinsic Neuronal Excitability,\" Frontiers in Synaptic Neuroscience , vol. 2, pp. 1-6, 2010. [ CrossRef ] [ Google Scholar ] [ Publisher Link ]",
+      "qids": [
+        "[QID_75BF4959D57F0E2B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_179",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.23996210579920296,
+        0.48307999754263686,
+        0.257310597583501
+      ],
+      "blockType": "text",
+      "text": "[QID_5C7D54895DA07102] [23] M. F. Sykes and J. W. Essam, Exact critical per-",
+      "qids": [
+        "[QID_5C7D54895DA07102]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_180",
+      "page": 23,
+      "bbox": [
+        0.08235294366973678,
+        0.38601642184787327,
+        0.30413399490655635,
+        0.4016300548206676
+      ],
+      "blockType": "text",
+      "text": "[QID_B439E4AD4527AAFB] Table 14: Data from section 21",
+      "qids": [
+        "[QID_B439E4AD4527AAFB]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_181",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3621211967082939
+      ],
+      "blockType": "table",
+      "text": "Data Type | Control Mechanism | Applicability\nConfidential | End-to-End Encryption | External network transfers\nPublic | Content Filtering | All inbound traffic\nProprietary | Protocol Validation | Inter-system communications",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_182",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.4156565810694839,
+        0.9176471186619178,
+        0.49141415682705963
+      ],
+      "blockType": "table",
+      "text": "Control ID | Control Name | Relationship\nAC-3 | Access Enforcement | Enables flow enforcement through access rules\nSC-7 | Boundary Protection | Provides foundational layer for flow control\nSC-8 | Transmission Confidentiality | Complements flow enforcement with encryption",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_183",
+      "page": 24,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_184",
+      "page": 24,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 25 of 25",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 25,
+        "totalPages": 25,
+        "expectedPage": 25,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_185",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5808872397429024,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_0479E8EA2D68F69C] AC-4 INFORMATION FLOW ENFORCEMENT",
+      "qids": [
+        "[QID_0479E8EA2D68F69C]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_186",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_F175254BD5121A55] Information flow enforcement mechanisms are critical for maintaining data integrity and confidentiality across system boundaries. These controls ensure that data is transmitted only through authorized pathways and in compliance with organizational policies. The implementation of such mechanisms prevents unauthorized data exfiltration and ingress of malicious content. Effective flow enforcement requires continuous monitoring and validation of data transfer protocols.",
+      "qids": [
+        "[QID_F175254BD5121A55]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_187",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_DD539689E3DC1BD5] Organizations must design their architectures to incorporate flow enforcement at strategic points, including network perimeters and internal segmentation boundaries. This involves the deployment of technical controls such as firewalls, data diodes, and protocol filters. The selection of appropriate mechanisms depends on the sensitivity of the information and the assessed risk environment. Regular testing and updating of these controls are essential to address evolving threats and system changes.",
+      "qids": [
+        "[QID_DD539689E3DC1BD5]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_188",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.37086490669635813,
+        0.3044019711563011,
+        0.38647853966915247
+      ],
+      "blockType": "text",
+      "text": "[QID_DFD0F694BAD5D86F] Table 15: Data from section 22",
+      "qids": [
+        "[QID_DFD0F694BAD5D86F]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_189",
+      "page": 24,
+      "bbox": [
+        0.08235294366973678,
+        0.5001578282828283,
+        0.30340685875587214,
+        0.5157714612556227
+      ],
+      "blockType": "text",
+      "text": "[QID_68FF01F77AA38F02] Table 16: Data from section 22",
+      "qids": [
+        "[QID_68FF01F77AA38F02]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_190",
+      "page": 25,
+      "bbox": [
+        0.08235294366973678,
+        0.3015151361022333,
+        0.9176471186619178,
+        0.39999998458708175
+      ],
+      "blockType": "table",
+      "text": "Control Enhancement | Separation Requirement | Applicability Scope\nAC-5(1) | Distinct roles for transaction initiation and approval | Financial management systems\nAC-5(2) | Segregation between configuration management\nand audit functions | Network infrastructure devices\nAC-5(3) | Isolation of duties for cryptographic key generation\nand usage | Systems handling classified information",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_191",
+      "page": 25,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_192",
+      "page": 25,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 26 of 26",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 26,
+        "totalPages": 26,
+        "expectedPage": 26,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_193",
+      "page": 25,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.441500046673943,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_34C6C0D8256DA70A] AC-5 SEPARATION OF DUTIES",
+      "qids": [
+        "[QID_34C6C0D8256DA70A]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_194",
+      "page": 25,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_961B5B044FEBB135] Separation of duties constitutes a foundational security practice that mitigates risk by distributing critical functions across multiple individuals or roles. This principle prevents concentration of privileges that could enable unauthorized actions or undetected errors within organizational processes. Implementation requires systematic analysis of task interdependencies and potential conflict points across operational workflows. Organizations must establish role definitions that inherently limit single-point control over sensitive operations.",
+      "qids": [
+        "[QID_961B5B044FEBB135]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_195",
+      "page": 25,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.2951893854622889
+      ],
+      "blockType": "text",
+      "text": "[QID_A7FE124B8512410D] Effective separation of duties extends beyond role assignment to encompass procedural controls and technical enforcement mechanisms throughout the enterprise environment. It is particularly vital in high-risk domains such as financial processing, system administration, and data integrity management functions. The principle introduces necessary checks and balances that reduce both malicious exploitation opportunities and accidental compromise scenarios. Continuous validation of role separation through audit trails and periodic access reviews remains essential for sustained effectiveness.",
+      "qids": [
+        "[QID_A7FE124B8512410D]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_196",
+      "page": 25,
+      "bbox": [
+        0.08235294366973678,
+        0.408743694575146,
+        0.3035000071806066,
+        0.42435732754794037
+      ],
+      "blockType": "text",
+      "text": "[QID_9BF47B880996A58A] Table 17: Data from section 23",
+      "qids": [
+        "[QID_9BF47B880996A58A]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_197",
+      "page": 26,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3621211967082939
+      ],
+      "blockType": "table",
+      "text": "Control Identifier | Privilege Restriction | Deployment Context\nAC-6(1) | Time-bound elevation | Administrative operations\nAC-6(2) | Role-based segmentation | Multi-tenant environments\nAC-6(3) | Attribute-constrained access | Sensitive data repositories",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_198",
+      "page": 26,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_199",
+      "page": 26,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 27 of 27",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 27,
+        "totalPages": 27,
+        "expectedPage": 27,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_200",
+      "page": 26,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.3660849527595869,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_3815DEE700F299CE] AC-6 LEAST PRIVILEGE",
+      "qids": [
+        "[QID_3815DEE700F299CE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_201",
+      "page": 26,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_B09CADD3194A0CE4] The principle of least privilege establishes that entities within an information system shall operate using the minimal set of privileges necessary to perform authorized tasks. This fundamental security measure prevents unauthorized access to critical resources and reduces potential attack vectors across organizational assets. Implementation requires systematic analysis of role responsibilities and continuous adjustment of permission sets. Adherence to this principle forms a critical layer in defense-in-depth strategies.",
+      "qids": [
+        "[QID_B09CADD3194A0CE4]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_202",
+      "page": 26,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_8169D84BCC675E59] Organizations should integrate least privilege considerations during system design phases rather than as retrofitted controls. Contextual factors such as user roles, system sensitivity, and operational requirements determine appropriate privilege boundaries. Automated tools assist in monitoring privilege assignments and identifying excessive permissions through regular audits. This practice significantly enhances resilience against insider threats and credential compromise incidents.",
+      "qids": [
+        "[QID_8169D84BCC675E59]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_203",
+      "page": 26,
+      "bbox": [
+        0.08235294366973678,
+        0.37086490669635813,
+        0.30422385221992443,
+        0.38647853966915247
+      ],
+      "blockType": "text",
+      "text": "[QID_EE34C9EFD02EE362] Table 18: Data from section 24",
+      "qids": [
+        "[QID_EE34C9EFD02EE362]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_204",
+      "page": 27,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3810605906476878
+      ],
+      "blockType": "table",
+      "text": "Control Variant | Threshold | Automated Response\nAC-7a | 3 consecutive failures | Temporary session suspension (60s)\nAC-7b | 5 consecutive failures | Multi-factor authentication challenge\nAC-7c | 10 consecutive failures | Account lockout (admin unlock required)\nAC-7d | 15 consecutive failures | IP address rate limiting (1hr)",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 5,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_205",
+      "page": 27,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_206",
+      "page": 27,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 28 of 28",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 28,
+        "totalPages": 28,
+        "expectedPage": 28,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_207",
+      "page": 27,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5704820421006944,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_1C760448CA25122E] AC-7 UNSUCCESSFUL LOGON ATTEMPTS",
+      "qids": [
+        "[QID_1C760448CA25122E]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_208",
+      "page": 27,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_48200EB34EBF881C] Unsuccessful logon attempts represent critical security events requiring systematic monitoring and response. These events occur when users or automated systems fail to authenticate using valid credentials due to typographical errors, credential compromise, or brute-force attacks. Organizations must analyze patterns in failed authentication attempts to distinguish between accidental errors and malicious activity. Proper handling of these events forms a foundational element of account management and intrusion detection strategies.",
+      "qids": [
+        "[QID_48200EB34EBF881C]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_209",
+      "page": 27,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_47F5BDD41CDBFEAE] The configuration of thresholds for consecutive failed attempts directly impacts both security posture and user experience. Security mechanisms must balance preventing credential stuffing attacks with avoiding denial-of-service conditions from legitimate user lockouts. Contextual factors such as time-of-day, geographic location, and device reputation should inform dynamic threshold adjustments. Effective implementation requires integration with centralized logging systems for comprehensive audit trail analysis.",
+      "qids": [
+        "[QID_47F5BDD41CDBFEAE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_210",
+      "page": 27,
+      "bbox": [
+        0.08235294366973678,
+        0.38980430063575205,
+        0.30331535588682085,
+        0.4054179336085464
+      ],
+      "blockType": "text",
+      "text": "[QID_94F608FF2804F1EF] Table 19: Data from section 25",
+      "qids": [
+        "[QID_94F608FF2804F1EF]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_211",
+      "page": 28,
+      "bbox": [
+        0.08235294366973678,
+        0.3015151361022333,
+        0.9176471186619178,
+        0.37727271185980904
+      ],
+      "blockType": "table",
+      "text": "Enhancement ID | Implementation Focus | Primary Applicability\nAC-8(1) | Legal authority citation | Public-facing systems\nAC-8(2) | Session duration disclosure | Long-duration access systems\nAC-8(3) | Multilingual support | International user bases",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_212",
+      "page": 28,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_213",
+      "page": 28,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 29 of 29",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 29,
+        "totalPages": 29,
+        "expectedPage": 29,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_214",
+      "page": 28,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.47963400448069854,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_5A960F0B84C77BEC] AC-8 SYSTEM USE NOTIFICATION",
+      "qids": [
+        "[QID_5A960F0B84C77BEC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_215",
+      "page": 28,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_B5A9066B22358604] System use notifications serve as formal declarations presented to users prior to granting access to organizational information systems. These notifications communicate essential policies regarding acceptable usage, privacy considerations, and legal implications of system interaction. The content typically includes organizational authority, permitted purposes, monitoring disclosures, and consequences for policy violations. This mechanism establishes necessary legal and operational transparency for both users and system custodians.",
+      "qids": [
+        "[QID_B5A9066B22358604]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_216",
+      "page": 28,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217351776322508,
+        0.2951893854622889
+      ],
+      "blockType": "text",
+      "text": "[QID_81D318CEB4EEE6B6] Effective implementation requires careful consideration of notification timing, content specificity, and technical delivery mechanisms across diverse access scenarios. Organizations should align notification content with applicable regulatory frameworks and system categorization levels while maintaining consistency across enterprise environments. The technical integration must ensure notifications precede privileged actions without creating exploitable bypass conditions. Periodic validation of notification delivery integrity remains critical for maintaining audit trails and legal defensibility.",
+      "qids": [
+        "[QID_81D318CEB4EEE6B6]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_217",
+      "page": 28,
+      "bbox": [
+        0.08235294366973678,
+        0.38601642184787327,
+        0.303861081989762,
+        0.4016300548206676
+      ],
+      "blockType": "text",
+      "text": "[QID_057C2484FA8ADA49] Table 20: Data from section 26",
+      "qids": [
+        "[QID_057C2484FA8ADA49]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_218",
+      "page": 29,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3848484694355666
+      ],
+      "blockType": "table",
+      "text": "Subcontrol | Functional Requirement | Deployment Scope\nAC-9(1) | Display last logon metadata during current session\ninitiation | All networked systems\nAC-9(2) | Enable user-initiated session termination for\nsuspicious activity | Remote access portals\nAC-9(3) | Maintain audit trail of notification events for 90 days | Privileged accounts",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_219",
+      "page": 29,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_220",
+      "page": 29,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 30 of 30",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 30,
+        "totalPages": 30,
+        "expectedPage": 30,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_221",
+      "page": 29,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5410065495110805,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_D6CB8B02A5247EDE] AC-9 PREVIOUS LOGON NOTIFICATION",
+      "qids": [
+        "[QID_D6CB8B02A5247EDE]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_222",
+      "page": 29,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_2F73DFCC4D29CEEC] Previous logon notification mechanisms provide users with critical security context regarding recent authentication events. This capability enables individuals to detect potential account compromise through unexpected access patterns or geographic anomalies. The feature serves as an early warning system for unauthorized credential usage without imposing significant operational overhead. Implementation typically occurs during the interactive session establishment phase following successful authentication.",
+      "qids": [
+        "[QID_2F73DFCC4D29CEEC]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_223",
+      "page": 29,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_9089776917D0AB5A] Organizations deploy these notifications through integrated messaging within the login interface or via secondary communication channels. The information conveyed includes timestamp, originating network address, and device characteristics from the prior authenticated session. This transparency supports user participation in security monitoring and incident reporting workflows. Proper configuration ensures notifications are sufficiently detailed while avoiding information disclosure risks.",
+      "qids": [
+        "[QID_9089776917D0AB5A]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_224",
+      "page": 29,
+      "bbox": [
+        0.08235294366973678,
+        0.39359217942363084,
+        0.3043120639776093,
+        0.4092058123964252
+      ],
+      "blockType": "text",
+      "text": "[QID_DD582E5CB3EFFF14] Table 21: Data from section 27",
+      "qids": [
+        "[QID_DD582E5CB3EFFF14]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_225",
+      "page": 30,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3810605906476878
+      ],
+      "blockType": "table",
+      "text": "Control ID | Associated Control | Applicability Scope\nAC-2 | Account Management | All organizational systems\nIA-5 | Authenticator Management | Systems requiring multi-factor authentication\nAU-12 | Audit Generation | Systems requiring session activity monitoring\nSC-10 | Network Disconnect | Remote access systems",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 5,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_226",
+      "page": 30,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_227",
+      "page": 30,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 31 of 31",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 31,
+        "totalPages": 31,
+        "expectedPage": 31,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_228",
+      "page": 30,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.5654933655184079,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_A539373C62C21A85] AC-10 CONCURRENT SESSION CONTROL",
+      "qids": [
+        "[QID_A539373C62C21A85]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_229",
+      "page": 30,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_A0A5463294654BD5] Concurrent session control mechanisms regulate the number of active sessions a single user account may maintain simultaneously across a system or network. This capability is essential for preventing unauthorized access through session hijacking and for enforcing resource allocation policies. Organizations implement these controls to mitigate risks associated with shared credentials and to ensure accountability in user activities. Proper configuration of concurrent session limits supports compliance with regulatory requirements for access management.",
+      "qids": [
+        "[QID_A0A5463294654BD5]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_230",
+      "page": 30,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217350779016034,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_1105855F958209B3] The effectiveness of concurrent session controls depends on the alignment of session limits with operational requirements and risk assessments. Administrators must balance security needs with user productivity by setting appropriate thresholds for different user roles and system types. Monitoring and logging of concurrent session activity provide valuable data for incident response and continuous improvement of access control policies. These practices collectively enhance the organization's ability to detect and prevent anomalous access patterns.",
+      "qids": [
+        "[QID_1105855F958209B3]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_231",
+      "page": 30,
+      "bbox": [
+        0.08235294366973678,
+        0.38980430063575205,
+        0.3035898644939747,
+        0.4054179336085464
+      ],
+      "blockType": "text",
+      "text": "[QID_9E8606ADB904F025] Table 22: Data from section 28",
+      "qids": [
+        "[QID_9E8606ADB904F025]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_232",
+      "page": 31,
+      "bbox": [
+        0.08235294366973678,
+        0.31666665125374843,
+        0.9176471186619178,
+        0.4265151361022333
+      ],
+      "blockType": "table",
+      "text": "Control ID | Implementation Specification | Deployment Scope\nAC-11.1 | Enforce automatic interface lock after 10-minute\ninactivity period | Workstations, Laptops, Thin Clients\nAC-11.2 | Require cryptographic authentication for lock\nreactivation | All End-User Devices Handling Controlled Data\nAC-11.3 | Support administrator-defined timeout configurations\nwithin policy ranges | Mobile Devices, Remote Access Terminals",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_233",
+      "page": 31,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_234",
+      "page": 31,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 32 of 32",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 32,
+        "totalPages": 32,
+        "expectedPage": 32,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_235",
+      "page": 31,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.3316568611494077,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_DA78069112B53A80] AC-11 DEVICE LOCK",
+      "qids": [
+        "[QID_DA78069112B53A80]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_236",
+      "page": 31,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.21185605212895556
+      ],
+      "blockType": "text",
+      "text": "[QID_2D363F40A91C47C4] Device lock mechanisms provide essential protection against unauthorized access when computing assets are temporarily unattended in operational environments. This security feature automatically secures device interfaces after predefined periods of user inactivity, thereby preserving data confidentiality and system integrity. The implementation of device locks constitutes a foundational administrative control within layered security architectures. These measures are particularly critical in shared or publicly accessible workspaces where physical oversight cannot be continuously maintained.",
+      "qids": [
+        "[QID_2D363F40A91C47C4]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_237",
+      "page": 31,
+      "bbox": [
+        0.08235294366973678,
+        0.21723483307193023,
+        0.9217350779016034,
+        0.31034090061380404
+      ],
+      "blockType": "text",
+      "text": "[QID_3D110AB47A91CF89] Organizations typically deploy device lock capabilities through operating system configurations, endpoint security suites, or mobile device management platforms. Implementation considerations include establishing appropriate timeout thresholds based on data sensitivity and operational requirements while avoiding excessive disruption to legitimate workflows. The authentication methods required for lock reactivation must align with organizational identity verification standards and cryptographic policies. Effective device lock strategies balance security objectives with user productivity through context-aware configuration parameters.",
+      "qids": [
+        "[QID_3D110AB47A91CF89]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_238",
+      "page": 31,
+      "bbox": [
+        0.08235294366973678,
+        0.4352588460902975,
+        0.3037695791207108,
+        0.45087247906309186
+      ],
+      "blockType": "text",
+      "text": "[QID_61160FBCA938CF94] Table 23: Data from section 29",
+      "qids": [
+        "[QID_61160FBCA938CF94]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_239",
+      "page": 32,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.3621211967082939
+      ],
+      "blockType": "table",
+      "text": "Control ID | Description | Applicability\nAC-2 | Account Management | All systems requiring user authentication\nAC-11 | Session Lock | Systems processing confidential information\nAC-17 | Remote Access | Systems with remote access capabilities",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_240",
+      "page": 32,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_241",
+      "page": 32,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 33 of 33",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 33,
+        "totalPages": 33,
+        "expectedPage": 33,
+        "valid": false
+      }
+    },
+    {
+      "id": "block_242",
+      "page": 32,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.44269117966196897,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_A3B0C4D2D81E9214] AC-12 SESSION TERMINATION",
+      "qids": [
+        "[QID_A3B0C4D2D81E9214]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_243",
+      "page": 32,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217351776322508,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_57F01D8ED93A6073] Session termination mechanisms are critical security controls designed to automatically end user sessions after a predefined period of inactivity. This practice mitigates the risk of unauthorized access to systems and data when users leave workstations unattended. Timely session termination ensures that active sessions do not persist indefinitely, reducing the window of opportunity for potential intruders. Organizations implement these controls to maintain continuous protection of information assets during periods of user absence.",
+      "qids": [
+        "[QID_57F01D8ED93A6073]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_244",
+      "page": 32,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217349781709558,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_A93DF3D9CECF4F88] The configuration of session termination parameters must balance security requirements with operational needs to avoid undue disruption to legitimate users. Common parameters include inactivity thresholds, which are typically set based on the sensitivity of the information processed. Automated session termination should be consistently applied across all system components that support user sessions. This control complements other access control measures by providing an additional layer of defense against session hijacking and unauthorized use.",
+      "qids": [
+        "[QID_A93DF3D9CECF4F88]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_245",
+      "page": 32,
+      "bbox": [
+        0.08235294366973678,
+        0.37086490669635813,
+        0.30431535508897567,
+        0.38647853966915247
+      ],
+      "blockType": "text",
+      "text": "[QID_DE375BB3D90AAE76] Table 24: Data from section 30",
+      "qids": [
+        "[QID_DE375BB3D90AAE76]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_246",
+      "page": 33,
+      "bbox": [
+        0.08235294366973678,
+        0.2863636209507181,
+        0.9176471186619178,
+        0.37348483307193026
+      ],
+      "blockType": "table",
+      "text": "Sub-control | Implementation Guidance | Applicability\nAC-13(1) | Conduct quarterly access reviews for privileged\naccounts | High-impact systems\nAC-13(2) | Maintain review documentation for audit trails | All organizational systems\nAC-13(3) | Integrate automated anomaly detection tools | Systems processing sensitive data",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "tableInfo": {
+        "rows": 4,
+        "cols": 3
+      }
+    },
+    {
+      "id": "block_247",
+      "page": 33,
+      "bbox": [
+        0.4233594906875511,
+        0.021919168607153074,
+        0.5766405093124489,
+        0.03582826046028523
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST Special Publication",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_248",
+      "page": 33,
+      "bbox": [
+        0.4593006707484426,
+        0.9573232477361505,
+        0.5406993292515574,
+        0.971202041163589
+      ],
+      "blockType": "page_number",
+      "text": "Page 34 of 34",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95,
+      "pageNumberInfo": {
+        "pageNumber": 34,
+        "totalPages": 34,
+        "expectedPage": 34,
+        "valid": true
+      }
+    },
+    {
+      "id": "block_249",
+      "page": 33,
+      "bbox": [
+        0.08235294366973678,
+        0.07148986874204694,
+        0.7347499872344772,
+        0.0958307824953638
+      ],
+      "blockType": "header",
+      "text": "[QID_0D7E6B9B036B6359] AC-13 SUPERVISION AND REVIEW \u2014 ACCESS CONTROL",
+      "qids": [
+        "[QID_0D7E6B9B036B6359]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_250",
+      "page": 33,
+      "bbox": [
+        0.08235294366973678,
+        0.11874998458708176,
+        0.9217349781709558,
+        0.19670453697744042
+      ],
+      "blockType": "text",
+      "text": "[QID_1B7652840265149E] Supervision and review processes constitute critical oversight mechanisms for maintaining robust access control frameworks. These activities verify that user permissions remain appropriate and aligned with operational requirements throughout system lifecycles. Continuous monitoring helps detect authorization anomalies and policy deviations before they compromise security postures. Effective implementation reduces organizational risk exposure through timely identification of access control deficiencies.",
+      "qids": [
+        "[QID_1B7652840265149E]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_251",
+      "page": 33,
+      "bbox": [
+        0.08235294366973678,
+        0.2020833179204151,
+        0.9217351776322508,
+        0.28003787031077376
+      ],
+      "blockType": "text",
+      "text": "[QID_13EBF47CC8D2B879] Organizations typically establish review frequencies based on system categorization and data sensitivity classifications. Automated audit trail analysis complements manual supervisory checks by identifying unusual access patterns and dormant accounts. Documentation of review outcomes provides essential evidence for compliance validation and process improvement initiatives. This layered approach ensures accountability while supporting adaptive security management practices.",
+      "qids": [
+        "[QID_13EBF47CC8D2B879]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_252",
+      "page": 33,
+      "bbox": [
+        0.08235294366973678,
+        0.3822285430599945,
+        0.3041323493508732,
+        0.3978421760327888
+      ],
+      "blockType": "text",
+      "text": "[QID_74FE824FEEE6FD7B] Table 25: Data from section 31",
+      "qids": [
+        "[QID_74FE824FEEE6FD7B]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    }
+  ]
+}

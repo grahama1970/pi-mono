@@ -10,6 +10,7 @@ interface EvidenceCaseData {
   gates_passed: number;
   gates_total: number;
   gate_summary: string;
+  gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>;
   control_ids: string[];
   tier: string;
   drift?: { old_verdict: string; new_verdict: string; timestamp: string };
@@ -109,7 +110,7 @@ export default function ReasoningBlock({
       <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <VerdictIcon size={16} color={verdictMeta.color} />
-          <span style={{ ...bodyStyle, fontWeight: 700, color: verdictMeta.color }}>
+          <span style={{ fontSize: 11, fontWeight: 800, color: verdictMeta.color, background: `${verdictMeta.color}22`, border: `1px solid ${verdictMeta.color}55`, padding: '3px 8px', borderRadius: 999, letterSpacing: '0.02em' }}>
             {verdictMeta.label}
           </span>
           <span style={{ ...bodyStyle, color: EMBRY.textMuted }}>
@@ -243,13 +244,12 @@ export default function ReasoningBlock({
         </div>
       )}
 
-      {level >= 2 && (
+      {level >= 2 && (data.recall_count ?? 0) > 0 && (
         <div style={{ padding: 16, borderTop: `1px solid ${EMBRY.border}` }}>
           <RecallCard
-            recallCount={data.recall_count ?? 0}
-            recallBreakdown={data.recall_breakdown || {}}
-            sourceTraceability={data.source_traceability || {}}
-            onNavigateToSource={onNavigateToSource}
+            items={[]}
+            resultCount={data.recall_count ?? 0}
+            confidence={undefined}
           />
         </div>
       )}

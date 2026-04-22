@@ -598,7 +598,7 @@ export function MusicLabPipeline() {
     S07_audio_player: false, S08_audio_converge: true, S09_voice: false,
   })
 
-  const { connected, send } = useAgentBus(useCallback((msg) => {
+  const { connected, send } = useAgentBus(useCallback((msg: { type: string; payload: Record<string, unknown> }) => {
     if (msg.type === 'pipeline-start') {
       setPipeline({ project: msg.payload.project as string, active: true, stages: [] })
     } else if (msg.type === 'pipeline-stage') {
@@ -636,7 +636,7 @@ export function MusicLabPipeline() {
       case 'S00_lore_recall':     return <S00Well status={status} />
       case 'S01_references':      return <S01Well status={status} />
       case 'S02_lyrics_create':   return <S02Well status={status} />
-      case 'S03_lyrics_converge': return <S03Well status={status} onSend={send} />
+      case 'S03_lyrics_converge': return <S03Well status={status} onSend={(type, payload) => send({ type, payload })} />
       case 'S04_annotate':        return <S04Well status={status} />
       case 'S05_arrangement':     return <S05Well status={status} />
       case 'S06_prompt_preview':  return <S06Well status={status} />

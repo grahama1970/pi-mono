@@ -1,34 +1,15 @@
 import React, { useState, useMemo, memo } from 'react';
 import { ChevronDown } from 'lucide-react';
+import type { ReasoningStep } from '../shared-chat/types';
 
 /**
  * ReasoningChain.tsx
- * 
+ *
  * NVIS MIL-STD-3009 compliant reasoning timeline.
  * Built for Embry OS // TAC-HUD.
  */
 
-// --- Types ---
-
-export interface ReasoningStep {
-  id: string;
-  type: 'recall' | 'skill' | 'text' | 'pending';
-  skill?: string;
-  status: 'running' | 'done' | 'failed' | 'pending';
-  summary: string;
-  detail?: string;
-  duration?: number;
-  startedAt?: number;
-  confidence?: number;
-  recallItems?: Array<{
-    _key?: string;
-    _source?: string;
-    problem: string;
-    solution: string;
-    scores: { bm25: number; graph: number; dense: number; freshness: number };
-  }>;
-  children?: ReasoningStep[];
-}
+export type { ReasoningStep };
 
 interface ReasoningChainProps {
   steps: ReasoningStep[];
@@ -329,9 +310,9 @@ const StepContent = memo(({ step }: { step: ReasoningStep }) => {
               </div>
               <div style={{ color: NVIS.dim, marginBottom: 8 }}>{item.solution}</div>
               <div style={{ maxWidth: 200 }}>
-                <ScoreBar label="BM25" value={item.scores.bm25} />
-                <ScoreBar label="GRAPH" value={item.scores.graph} />
-                <ScoreBar label="DENSE" value={item.scores.dense} />
+                <ScoreBar label="BM25" value={item.scores?.bm25 ?? 0} />
+                <ScoreBar label="GRAPH" value={item.scores?.graph ?? 0} />
+                <ScoreBar label="DENSE" value={item.scores?.dense ?? 0} />
               </div>
             </div>
           ))}

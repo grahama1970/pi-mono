@@ -99,7 +99,7 @@ export function noteToMidi(note: string | number): number {
 	const match = note.match(/^([A-G])(#|b)?(\d)$/);
 	if (!match) return 60;
 	const bases: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
-	let midi = bases[match[1]] + (parseInt(match[3]) + 1) * 12;
+	let midi = bases[match[1]] + (parseInt(match[3], 10) + 1) * 12;
 	if (match[2] === "#") midi++;
 	if (match[2] === "b") midi--;
 	return midi;

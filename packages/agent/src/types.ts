@@ -256,6 +256,7 @@ export interface AgentState {
 	isStreaming: boolean;
 	streamMessage: AgentMessage | null;
 	pendingToolCalls: Set<string>;
+	partialToolResults: Map<string, ToolResultMessage<unknown>>;
 	error?: string;
 }
 

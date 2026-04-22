@@ -1,0 +1,378 @@
+{
+  "pdfUrl": "/nist_clone_real.pdf",
+  "pageCount": 4,
+  "blocks": [
+    {
+      "id": "block_0",
+      "page": 0,
+      "bbox": [
+        0.12745098039215685,
+        0.22315657259237887,
+        0.654485216327742,
+        0.25630051198631826
+      ],
+      "blockType": "header",
+      "text": "[QID_TITLE_001] NIST SP 800-53 Rev. 5",
+      "qids": [
+        "[QID_TITLE_001]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_1",
+      "page": 0,
+      "bbox": [
+        0.12745098039215685,
+        0.27683080808080807,
+        0.4135130339977788,
+        0.3093308150166213
+      ],
+      "blockType": "text",
+      "text": "Security and Privacy Controls for Information Systems and Organizations",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_2",
+      "page": 1,
+      "bbox": [
+        0.12745098039215685,
+        0.0968939366966787,
+        0.37583334929023693,
+        0.1300378760906181
+      ],
+      "blockType": "header",
+      "text": "[QID_TOC_HEADER] Table of Contents",
+      "qids": [
+        "[QID_TOC_HEADER]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_3",
+      "page": 1,
+      "bbox": [
+        0.12745098039215685,
+        0.15056818181818182,
+        0.6350326538085938,
+        0.5189267553464331
+      ],
+      "blockType": "header",
+      "text": "[QID_TOC_000] Abstract .................................................... 3 [QID_TOC_001] Keywords .................................................... 3 [QID_TOC_002] Errata ...................................................... 18 [QID_TOC_003] INTRODUCTION ................................................ 27 [QID_TOC_004] 1.1 PURPOSE AND APPLICABILITY ............................... 28 [QID_TOC_005] 1.2 TARGET AUDIENCE ......................................... 29 [QID_TOC_006] 1.3 ORGANIZATIONAL RESPONSIBILITIES ......................... 29 [QID_TOC_007] 1.4 RELATIONSHIP TO OTHER PUBLICATIONS ...................... 31 [QID_TOC_008] 1.5 REVISIONS AND EXTENSIONS ................................ 31 [QID_TOC_009] 1.6 PUBLICATION ORGANIZATION ................................ 31 [QID_TOC_010] THE FUNDAMENTALS ............................................ 33 [QID_TOC_011] 2.1 REQUIREMENTS AND CONTROLS ............................... 33 [QID_TOC_012] 2.2 CONTROL STRUCTURE AND ORGANIZATION ...................... 34 [QID_TOC_013] 2.3 CONTROL IMPLEMENTATION APPROACHES ....................... 37 [QID_TOC_014] 2.4 SECURITY AND PRIVACY CONTROLS ........................... 39 [QID_TOC_015] 2.5 TRUSTWORTHINESS AND ASSURANCE ........................... 40 [QID_TOC_016] THE CONTROLS ................................................ 42 [QID_TOC_017] 3.1 ACCESS CONTROL .......................................... 44 [QID_TOC_018] AC-1 POLICY AND PROCEDURES .................................. 44 [QID_TOC_019] AC-2 ACCOUNT MANAGEMENT ..................................... 45 [QID_TOC_020] AC-3 ACCESS ENFORCEMENT ..................................... 49 [QID_TOC_021] AC-4 INFORMATION FLOW ENFORCEMENT ........................... 54 [QID_TOC_022] AC-5 SEPARATION OF DUTIES ................................... 62 [QID_TOC_023] AC-6 LEAST PRIVILEGE ........................................ 62",
+      "qids": [
+        "[QID_TOC_000]",
+        "[QID_TOC_001]",
+        "[QID_TOC_002]",
+        "[QID_TOC_003]",
+        "[QID_TOC_004]",
+        "[QID_TOC_005]",
+        "[QID_TOC_006]",
+        "[QID_TOC_007]",
+        "[QID_TOC_008]",
+        "[QID_TOC_009]",
+        "[QID_TOC_010]",
+        "[QID_TOC_011]",
+        "[QID_TOC_012]",
+        "[QID_TOC_013]",
+        "[QID_TOC_014]",
+        "[QID_TOC_015]",
+        "[QID_TOC_016]",
+        "[QID_TOC_017]",
+        "[QID_TOC_018]",
+        "[QID_TOC_019]",
+        "[QID_TOC_020]",
+        "[QID_TOC_021]",
+        "[QID_TOC_022]",
+        "[QID_TOC_023]"
+      ],
+      "tocEntries": [
+        {
+          "title": "Abstract",
+          "page": 3,
+          "qid": "[QID_TOC_000]"
+        },
+        {
+          "title": "Keywords",
+          "page": 3,
+          "qid": "[QID_TOC_001]"
+        },
+        {
+          "title": "Errata",
+          "page": 18,
+          "qid": "[QID_TOC_002]"
+        },
+        {
+          "title": "INTRODUCTION",
+          "page": 27,
+          "qid": "[QID_TOC_003]"
+        },
+        {
+          "title": "1.1 PURPOSE AND APPLICABILITY",
+          "page": 28,
+          "qid": "[QID_TOC_004]"
+        },
+        {
+          "title": "1.2 TARGET AUDIENCE",
+          "page": 29,
+          "qid": "[QID_TOC_005]"
+        },
+        {
+          "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+          "page": 29,
+          "qid": "[QID_TOC_006]"
+        },
+        {
+          "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+          "page": 31,
+          "qid": "[QID_TOC_007]"
+        },
+        {
+          "title": "1.5 REVISIONS AND EXTENSIONS",
+          "page": 31,
+          "qid": "[QID_TOC_008]"
+        },
+        {
+          "title": "1.6 PUBLICATION ORGANIZATION",
+          "page": 31,
+          "qid": "[QID_TOC_009]"
+        },
+        {
+          "title": "THE FUNDAMENTALS",
+          "page": 33,
+          "qid": "[QID_TOC_010]"
+        },
+        {
+          "title": "2.1 REQUIREMENTS AND CONTROLS",
+          "page": 33,
+          "qid": "[QID_TOC_011]"
+        },
+        {
+          "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "page": 34,
+          "qid": "[QID_TOC_012]"
+        },
+        {
+          "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+          "page": 37,
+          "qid": "[QID_TOC_013]"
+        },
+        {
+          "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+          "page": 39,
+          "qid": "[QID_TOC_014]"
+        },
+        {
+          "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+          "page": 40,
+          "qid": "[QID_TOC_015]"
+        },
+        {
+          "title": "THE CONTROLS",
+          "page": 42,
+          "qid": "[QID_TOC_016]"
+        },
+        {
+          "title": "3.1 ACCESS CONTROL",
+          "page": 44,
+          "qid": "[QID_TOC_017]"
+        },
+        {
+          "title": "AC-1 POLICY AND PROCEDURES",
+          "page": 44,
+          "qid": "[QID_TOC_018]"
+        },
+        {
+          "title": "AC-2 ACCOUNT MANAGEMENT",
+          "page": 45,
+          "qid": "[QID_TOC_019]"
+        },
+        {
+          "title": "AC-3 ACCESS ENFORCEMENT",
+          "page": 49,
+          "qid": "[QID_TOC_020]"
+        },
+        {
+          "title": "AC-4 INFORMATION FLOW ENFORCEMENT",
+          "page": 54,
+          "qid": "[QID_TOC_021]"
+        },
+        {
+          "title": "AC-5 SEPARATION OF DUTIES",
+          "page": 62,
+          "qid": "[QID_TOC_022]"
+        },
+        {
+          "title": "AC-6 LEAST PRIVILEGE",
+          "page": 62,
+          "qid": "[QID_TOC_023]"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "block_4",
+      "page": 2,
+      "bbox": [
+        0.12745098039215685,
+        0.0968939366966787,
+        0.584951014300577,
+        0.1300378760906181
+      ],
+      "blockType": "header",
+      "text": "[QID_CH1_HEADER] CHAPTER ONE: INTRODUCTION",
+      "qids": [
+        "[QID_CH1_HEADER]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_5",
+      "page": 2,
+      "bbox": [
+        0.12745098039215685,
+        0.15027777353922525,
+        0.5125883015152676,
+        0.17801768370348997
+      ],
+      "blockType": "header",
+      "text": "[QID_SEC_005] 1.1 PURPOSE AND APPLICABILITY",
+      "qids": [
+        "[QID_SEC_005]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_6",
+      "page": 2,
+      "bbox": [
+        0.12745098039215685,
+        0.18592171717171718,
+        0.8684802086524714,
+        0.2487247544105607
+      ],
+      "blockType": "text",
+      "text": "This publication provides a catalog of security and privacy controls for information systems and organizations to protect organizational operations and assets, individuals, other organizations, and the Nation from a diverse set of threats and risks including hostile attacks, human errors, natural disasters, structural failures, foreign intelligence entities, and privacy risks.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_7",
+      "page": 2,
+      "bbox": [
+        0.12745098039215685,
+        0.26517677307128906,
+        0.3854673298355801,
+        0.29291667360247986
+      ],
+      "blockType": "header",
+      "text": "[QID_SEC_006] 1.2 TARGET AUDIENCE",
+      "qids": [
+        "[QID_SEC_006]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_8",
+      "page": 2,
+      "bbox": [
+        0.12745098039215685,
+        0.30082070707070707,
+        0.8630717159096711,
+        0.34847220989188765
+      ],
+      "blockType": "text",
+      "text": "This publication is intended to serve a diverse group of individuals and organizations with security and privacy responsibilities including system owners, common control providers, authorizing officials, system security and privacy officers, and risk executives.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_9",
+      "page": 3,
+      "bbox": [
+        0.12745098039215685,
+        0.0968939366966787,
+        0.676421570622064,
+        0.1300378760906181
+      ],
+      "blockType": "header",
+      "text": "[QID_CH2_HEADER] CHAPTER TWO: THE FUNDAMENTALS",
+      "qids": [
+        "[QID_CH2_HEADER]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_10",
+      "page": 3,
+      "bbox": [
+        0.12745098039215685,
+        0.15027777353922525,
+        0.540519664490145,
+        0.17801768370348997
+      ],
+      "blockType": "header",
+      "text": "[QID_SEC_012] 2.1 REQUIREMENTS AND CONTROLS",
+      "qids": [
+        "[QID_SEC_012]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_11",
+      "page": 3,
+      "bbox": [
+        0.12745098039215685,
+        0.18592171717171718,
+        0.8584802166309232,
+        0.2487247544105607
+      ],
+      "blockType": "text",
+      "text": "Requirements are statements of security and privacy objectives that a system must achieve. Controls are the safeguards or countermeasures employed within a system to satisfy those requirements. The relationship between requirements and controls is fundamental to understanding how security and privacy objectives are translated into actionable technical and operational measures.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_12",
+      "page": 3,
+      "bbox": [
+        0.12745098039215685,
+        0.26517677307128906,
+        0.6650326298732384,
+        0.29291667360247986
+      ],
+      "blockType": "header",
+      "text": "[QID_SEC_013] 2.2 CONTROL STRUCTURE AND ORGANIZATION",
+      "qids": [
+        "[QID_SEC_013]"
+      ],
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_13",
+      "page": 3,
+      "bbox": [
+        0.12745098039215685,
+        0.30082070707070707,
+        0.8394279729307087,
+        0.34847220989188765
+      ],
+      "blockType": "text",
+      "text": "Controls in this publication are organized into twenty control families. Each family contains controls related to the security or privacy functionality of the family. The control families are aligned with the seventeen security-related areas in FIPS 200 and the privacy areas from OMB Circular A-130.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    }
+  ]
+}

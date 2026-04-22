@@ -582,7 +582,7 @@ export function InvestigationJournal({
 									</div>
 
 									{/* Snapshot indicator */}
-									{step.snapshot && (
+									{!!step.snapshot && (
 										<div style={styles.snapshotBadge}>
 											<Camera size={9} color={EMBRY.blue} />
 											snapshot captured

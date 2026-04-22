@@ -44,7 +44,7 @@ app.use(cors({
   credentials: true,
 }))
 app.use(cookieParser())
-app.use(express.json())
+app.use(express.json({ limit: '10mb' }))
 
 // Auth: localhost bypasses, external requires access key
 app.use(authMiddleware)
@@ -74,6 +74,7 @@ app.post('/api/auth/revoke-all', (_req, res) => {
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
 const ARCH_SCOPE = 'architecture'
+const RE_QUESTION_SKILL = '/home/graham/workspace/experiments/agent-skills/skills/review-question'
 const WORKSHEETS_PATH = process.env.WORKSHEETS_YAML ?? resolve(__dirname, '../fixtures/sparta-reference/worksheets.yaml')
 const WORKSHEETS_CACHE_TTL_MS = 60_000
 
@@ -118,6 +119,35 @@ function parseWorksheetsYaml(content: string): Record<string, WorksheetConfig> {
     return toWorksheetRecord(nested)
   }
   return toWorksheetRecord(parsed)
+}
+
+function resolvePublicJsonPath(extractionUrl: string): { relativePath: string; absolutePath: string } {
+  const relativePath = extractionUrl.replace(/^\/+/, '')
+  if (!relativePath.endsWith('.json')) {
+    throw new Error('extractionUrl must target a .json file under /public')
+  }
+  const publicRoot = resolve(__dirname, '../public')
+  const absolutePath = resolve(publicRoot, relativePath)
+  if (!absolutePath.startsWith(publicRoot)) {
+    throw new Error('extractionUrl escapes the public directory')
+  }
+  return { relativePath, absolutePath }
+}
+
+function buildPdfLabReviewKey(relativePath: string): string {
+  return relativePath.replace(/[^a-zA-Z0-9._-]+/g, '_').replace(/\.json$/i, '')
+}
+
+function sortPdfLabBlocks(blocks: any[]): any[] {
+  return [...blocks].sort((a, b) => {
+    const pageDelta = Number(a.page ?? 0) - Number(b.page ?? 0)
+    if (pageDelta !== 0) return pageDelta
+    const aBbox = Array.isArray(a.bbox) ? a.bbox : [0, 0, 0, 0]
+    const bBbox = Array.isArray(b.bbox) ? b.bbox : [0, 0, 0, 0]
+    const topDelta = Number(aBbox[1] ?? 0) - Number(bBbox[1] ?? 0)
+    if (topDelta !== 0) return topDelta
+    return Number(aBbox[0] ?? 0) - Number(bBbox[0] ?? 0)
+  })
 }
 
 // ── Health check ────────────────────────────────────────────────────────────
@@ -288,7 +318,8 @@ async function memoryListAll(collection: string, return_fields?: string[], filte
     const raw = await memoryPost('/list', body)
     const docs = asRows(raw)
     all.push(...docs)
-    if (docs.length < PAGE) break
+    // Safety limit: never fetch more than 15K docs via this helper to prevent system crashes
+    if (docs.length < PAGE || all.length >= 15000) break
     offset += PAGE
   }
   return all
@@ -436,9 +467,11 @@ app.get('/api/posture/families/:framework', async (req, res) => {
 
 app.get('/api/posture/gaps', async (_req, res) => {
   try {
+    // Optimized: Only fetch the first 1000 controls and a representative sample of relationships
     const [controls, relRows] = await Promise.all([
       memoryListAll('sparta_controls', ['control_id', 'name', 'source_framework', 'nrs_score']),
-      memoryListAll('sparta_relationships', ['source_control_id', 'target_control_id']),
+      proxyPost('/list', { collection: 'sparta_relationships', limit: 2000, return_fields: ['source_control_id', 'target_control_id'] })
+        .then(r => asRows(r))
     ])
     const relSet = new Set(relRows.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
 
@@ -808,27 +841,63 @@ function parseLastJsonObjectFromStdout(stdout: string): unknown {
 }
 
 app.post('/api/evidence-case/drift', async (req, res) => {
-  const { control_ids } = req.body as { control_ids?: string[] }
-  const ids = Array.isArray(control_ids)
-    ? control_ids.filter((id): id is string => typeof id === 'string')
-    : []
-  const suffix = ids.length
-    ? ` --control-ids ${ids.join(',')}`
-    : ' --all-recent'
-  const cmd = `unset VIRTUAL_ENV && cd .pi/skills/create-evidence-case && .venv/bin/python tools/compute_threat_delta.py${suffix}`
+  // Compute threat delta via daemon endpoints (no subprocess)
+  const { control_ids, limit = 50 } = req.body as { control_ids?: string[]; limit?: number }
+  const filterIds = new Set(Array.isArray(control_ids) ? control_ids.filter((id): id is string => typeof id === 'string') : [])
 
   try {
-    const { stdout } = await execAsync(cmd, {
-      cwd: PI_MONO,
-      timeout: 120000,
-      maxBuffer: 10 * 1024 * 1024,
+    // Step 1: List existing evidence cases from daemon
+    const listResult = await proxyPost('/list', { collection: 'evidence_cases', limit }) as { documents?: any[] }
+    const docs = listResult.documents ?? []
+
+    // Step 2: Build control→case map (most recent per control)
+    const controlCases = new Map<string, { question: string; old_verdict: string; source_key: string }>()
+    for (const doc of docs) {
+      if (doc.type === 'threat-delta') continue
+      const question = doc.question || doc.claim?.text || ''
+      if (!question) continue
+      const oldVerdict = (typeof doc.verdict === 'string' ? doc.verdict : doc.verdict?.state || doc.claim?.verdict || 'unknown').toLowerCase()
+      const sourceKey = doc._key || ''
+      const controlIdList: string[] = doc.control_ids ?? doc.claim?.control_ids ?? (doc.control_id ? [doc.control_id] : [])
+      for (const cid of controlIdList) {
+        if (filterIds.size > 0 && !filterIds.has(cid)) continue
+        if (!controlCases.has(cid)) {
+          controlCases.set(cid, { question, old_verdict: oldVerdict, source_key: sourceKey })
+        }
+      }
+    }
+
+    // Step 3: Re-evaluate each control via /create-evidence-case
+    const deltas: Array<{ control_id: string; old_verdict: string; new_verdict: string; changed: boolean }> = []
+    for (const [controlId, caseData] of controlCases) {
+      try {
+        const ecResult = await proxyPost('/create-evidence-case', {
+          question: caseData.question,
+          source_id: controlId,
+          skip_qra_recall: true,
+          enable_llm: false,
+        }) as { review_status?: string }
+        const newVerdict = (ecResult.review_status || 'unknown').toLowerCase()
+        deltas.push({
+          control_id: controlId,
+          old_verdict: caseData.old_verdict,
+          new_verdict: newVerdict,
+          changed: caseData.old_verdict !== newVerdict,
+        })
+      } catch {
+        deltas.push({ control_id: controlId, old_verdict: caseData.old_verdict, new_verdict: 'error', changed: true })
+      }
+    }
+
+    const changed = deltas.filter(d => d.changed)
+    res.json({
+      total_evaluated: deltas.length,
+      changed_count: changed.length,
+      deltas: changed,
+      timestamp: new Date().toISOString(),
     })
-    const parsed = parseLastJsonObjectFromStdout(stdout)
-    res.json(parsed)
-  } catch (error) {
-    const err = error as Error & { stderr?: string }
-    const message = err.stderr?.trim() || err.message || 'compute_threat_delta failed'
-    res.status(502).json({ error: message })
+  } catch (e) {
+    res.status(502).json({ error: 'Drift computation failed', detail: String(e) })
   }
 })
 
@@ -890,6 +959,128 @@ app.get('/api/datalake/metrics/:scope', async (req, res) => {
     const r = await proxyPost('/list', { collection: 'metrics_reports', k: 1, filters: { scope: req.params.scope } }) as any
     res.json(r?.documents?.[0] ?? { status: 'no_reports' })
   } catch (e) { res.status(502).json({ error: 'Metrics query failed', detail: String(e) }) }
+})
+
+// ── PDF Lab reviewed extraction persistence ───────────────────────────────
+
+app.post('/api/pdf-lab/review-save', async (req, res) => {
+  try {
+    const {
+      pdfUrl,
+      extractionUrl,
+      updatedBlocks,
+      deletedBlockIds,
+      reviewMode,
+      reviewSummary,
+      fileId,
+      fileName,
+    } = req.body as {
+      pdfUrl: string
+      extractionUrl: string
+      updatedBlocks: Array<Record<string, unknown>>
+      deletedBlockIds: string[]
+      reviewMode?: 'raw' | 'reviewed'
+      reviewSummary?: unknown
+      fileId?: string
+      fileName?: string
+    }
+
+    if (!pdfUrl || !extractionUrl) {
+      return res.status(400).json({ error: 'pdfUrl and extractionUrl are required' })
+    }
+    if (extractionUrl.includes('-raw-extraction.json')) {
+      return res.status(400).json({ error: 'Raw extraction is immutable; save to a reviewed/final extraction instead' })
+    }
+
+    const updates = Array.isArray(updatedBlocks) ? updatedBlocks : []
+    const deletedIds = Array.isArray(deletedBlockIds) ? deletedBlockIds : []
+    const { relativePath, absolutePath } = resolvePublicJsonPath(extractionUrl)
+    const existing = JSON.parse(await readFile(absolutePath, 'utf-8')) as Record<string, any>
+    const blocks = Array.isArray(existing.blocks) ? existing.blocks : []
+    const blockMap = new Map<string, Record<string, unknown>>(
+      blocks
+        .filter((block: unknown): block is Record<string, unknown> => !!block && typeof block === 'object' && typeof (block as any).id === 'string')
+        .map((block) => [String(block.id), { ...block }])
+    )
+
+    for (const block of updates) {
+      if (!block || typeof block !== 'object' || typeof block.id !== 'string') continue
+      blockMap.set(block.id, { ...block })
+    }
+    for (const blockId of deletedIds) {
+      blockMap.delete(blockId)
+    }
+
+    const now = new Date().toISOString()
+    const previousHumanEdits = existing.humanEdits && typeof existing.humanEdits === 'object'
+      ? existing.humanEdits as Record<string, unknown>
+      : {}
+    const nextExtraction = {
+      ...existing,
+      pdfUrl,
+      reviewMode: reviewMode ?? existing.reviewMode ?? 'reviewed',
+      reviewSummary: reviewSummary ?? existing.reviewSummary ?? null,
+      blocks: sortPdfLabBlocks(Array.from(blockMap.values())),
+      humanEdits: {
+        updatedAt: now,
+        updatedBlocks: updates.length,
+        deletedBlocks: deletedIds.length,
+        editCount: Number(previousHumanEdits.editCount ?? 0) + updates.length + deletedIds.length,
+      },
+    }
+
+    await writeFile(absolutePath, `${JSON.stringify(nextExtraction, null, 2)}\n`, 'utf-8')
+
+    const memoryKey = buildPdfLabReviewKey(relativePath)
+    const eventKey = `${memoryKey}_${Date.now()}`
+
+    await proxyPost('/upsert', {
+      collection: 'pdf_lab_reviewed_extractions',
+      documents: [{
+        _key: memoryKey,
+        scope: 'pdf-lab',
+        pdf_url: pdfUrl,
+        extraction_url: extractionUrl,
+        file_id: fileId ?? memoryKey,
+        file_name: fileName ?? relativePath,
+        review_mode: nextExtraction.reviewMode,
+        review_summary: nextExtraction.reviewSummary,
+        human_edits: nextExtraction.humanEdits,
+        block_count: nextExtraction.blocks.length,
+        extraction: nextExtraction,
+        updated_at: now,
+        source: 'pdf-lab-human-edit',
+      }],
+    })
+
+    await proxyPost('/upsert', {
+      collection: 'pdf_lab_review_edit_events',
+      documents: [{
+        _key: eventKey,
+        scope: 'pdf-lab',
+        pdf_url: pdfUrl,
+        extraction_url: extractionUrl,
+        file_id: fileId ?? memoryKey,
+        file_name: fileName ?? relativePath,
+        updated_block_ids: updates.map((block) => block.id).filter((value): value is string => typeof value === 'string'),
+        deleted_block_ids: deletedIds,
+        updated_blocks: updates,
+        updated_at: now,
+        source: 'pdf-lab-human-edit',
+      }],
+    })
+
+    return res.json({
+      saved: true,
+      updatedBlocks: updates.length,
+      deletedBlocks: deletedIds.length,
+      memoryKey,
+      eventKey,
+      extraction: nextExtraction,
+    })
+  } catch (e) {
+    return res.status(500).json({ error: 'Failed to persist reviewed extraction', detail: e instanceof Error ? e.message : String(e) })
+  }
 })
 
 // ── Quarantine CRUD ────────────────────────────────────────────────────────
@@ -1074,6 +1265,10 @@ app.post('/api/scillm', (req, res) => {
 // display. Enables "why did my batch fail" debugging and resume guidance.
 
 const ORCHESTRATOR_STATE_FILES: Record<string, { path: string; resumeCmd: string }> = {
+  'create-qras-manifest': {
+    path: `${process.env.HOME}/.create_qras_manifest_state.json`,
+    resumeCmd: 'cd /home/graham/workspace/experiments/memory && ./.agents/skills/create-qras/run.sh manifest <manifest>',
+  },
   'create-qras': {
     path: `${process.env.HOME}/.claude/skills/create-qras/.evidence_case_batch_state.json`,
     resumeCmd: 'python ~/.claude/skills/create-qras/batch_evidence_cases.py --resume',
@@ -1130,6 +1325,9 @@ app.get('/api/orchestrators/:name/calls', async (req, res) => {
   }
 
   try {
+    // TODO: Replace with /list endpoint once memory daemon supports metadata.batch_id filter
+    // See: https://github.com/anthropics/claude-code/issues/XXX
+    // For now, raw AQL is necessary because /list doesn't support nested field filters
     const result = await proxyPost('/query', {
       collection: 'llm_call_log',
       aql: `FOR doc IN llm_call_log
@@ -1676,12 +1874,18 @@ app.delete('/api/architecture/:id', async (req, res) => {
 
 // ── Internal helper ─────────────────────────────────────────────────────────
 
-function proxyPost(path: string, body: object | null = null): Promise<any> {
+function proxyPost(path: string, body: object | null = null, timeoutMs = 30000): Promise<any> {
   return new Promise((resolve, reject) => {
     const method = body ? 'POST' : 'GET'
     const data = body ? JSON.stringify(body) : undefined
     const headers: Record<string, string> = { 'Content-Type': 'application/json' }
     if (data) headers['Content-Length'] = String(Buffer.byteLength(data))
+
+    const timeout = setTimeout(() => {
+      req.destroy()
+      reject(new Error(`Memory daemon timeout after ${timeoutMs}ms on ${path}`))
+    }, timeoutMs)
+
     const req = httpRequest(
       {
         socketPath: MEMORY_SOCKET,
@@ -1693,12 +1897,16 @@ function proxyPost(path: string, body: object | null = null): Promise<any> {
         const chunks: Buffer[] = []
         res.on('data', (c: Buffer) => chunks.push(c))
         res.on('end', () => {
+          clearTimeout(timeout)
           try { resolve(JSON.parse(Buffer.concat(chunks).toString())) }
           catch { reject(new Error('Invalid JSON from memory daemon')) }
         })
       }
     )
-    req.on('error', reject)
+    req.on('error', (err) => {
+      clearTimeout(timeout)
+      reject(err)
+    })
     if (data) req.write(data)
     req.end()
   })
@@ -2064,7 +2272,11 @@ app.post('/api/binary-explorer/:name/duplicate', async (req, res) => {
 
 // ── Agent Control ───────────────────────────────────────────────────────────
 
-const agentState: Record<string, { active: boolean; paused: boolean }> = {}
+const agentState: Record<string, { active: boolean; paused: boolean }> = {
+  'sparta-explorer': { active: true, paused: false },
+  'datalake-explorer': { active: true, paused: false },
+  'binary-explorer': { active: true, paused: false }
+}
 
 app.get('/api/agent-control/status', (req, res) => {
   const project = req.query.project as string || 'default'
@@ -3851,75 +4063,121 @@ app.post('/api/evidence-case', async (req, res) => {
 })
 
 app.post('/api/evidence-case/run', async (req, res) => {
-  // Run the /create-evidence-case skill and return the full case with gate trace
+  // Call daemon /create-evidence-case directly (no subprocess, <1s per best-practices-arangodb)
   const { question, controlId, nodeLabel } = req.body
   if (!question) return res.status(400).json({ error: 'question required' })
 
-  const skillDir = process.env.SKILLS_DIR || resolve(process.env.HOME || '/home/graham', '.pi', 'skills', 'create-evidence-case')
-  const runSh = resolve(skillDir, 'run.sh')
-
   try {
-    const { execFile } = await import('child_process')
-    const { promisify } = await import('util')
-    const execFileAsync = promisify(execFile)
+    // Direct daemon call — deterministic, no LLM by default
+    const result = await proxyPost('/create-evidence-case', {
+      question,
+      source_id: controlId || null,
+      skip_qra_recall: false,
+      enable_llm: false,
+    })
 
-    // Run with 90s timeout — evidence cases take 30-60s
-    let stdout = ''
-    try {
-      const result = await execFileAsync(runSh, ['create', question, '--json'], {
-        timeout: 90000,
-        cwd: skillDir,
-        env: { ...process.env, PYTHONUNBUFFERED: '1' },
-        maxBuffer: 1024 * 1024,
-      })
-      stdout = result.stdout
-    } catch (execErr: any) {
-      // Skill may exit non-zero but still produce valid JSON on stdout
-      stdout = execErr.stdout || ''
-      if (!stdout) throw execErr
-      console.warn('[evidence-case/run] Skill exited non-zero but has stdout, attempting JSON parse')
-    }
+    // Daemon returns: {review_status, context, glossary, crosswalk_chains, prior_qra_evidence, cwe_record, ...}
+    // Map to UI format: {verdict, gate_trace, evidence, ...}
+    const reviewStatus = result.review_status || 'unknown'
+    const glossary = result.glossary || []
+    const crosswalks = result.crosswalk_chains || []
+    const qras = result.prior_qra_evidence || []
+    const relatedQras = result.related_qra_evidence || []
+    const context = result.context || {}
+    const cweRecord = result.cwe_record || null
 
-    // Parse JSON from stdout — find the outermost JSON object by trying from each { position
-    let parsed: any = null
-    const lines = stdout.split('\n')
-    // Try to find a line that starts with { and parse from there to the end
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].trim().startsWith('{')) {
-        const candidate = lines.slice(i).join('\n')
-        const lastBrace = candidate.lastIndexOf('}')
-        if (lastBrace > 0) {
-          try {
-            parsed = JSON.parse(candidate.substring(0, lastBrace + 1))
-            break
-          } catch { /* try next line */ }
-        }
-      }
-    }
-    if (parsed) {
-      res.json(parsed)
-    } else {
-      res.json({ verdict: { state: 'error', grade: '?', score: 0 }, gate_trace: [], raw: stdout.substring(0, 500) })
-    }
+    // Map review_status to verdict state
+    const verdictState = reviewStatus === 'passed' ? 'satisfied'
+      : reviewStatus === 'needs_review' ? 'inconclusive'
+      : 'not_satisfied'
+    const verdictGrade = verdictState === 'satisfied' ? 'A'
+      : verdictState === 'inconclusive' ? 'C' : 'F'
+    const verdictScore = verdictState === 'satisfied' ? 1.0
+      : verdictState === 'inconclusive' ? 0.5 : 0.0
+
+    // Build gate trace from daemon response
+    const hasGlossary = glossary.length > 0
+    const hasCrosswalks = crosswalks.length > 0
+    const hasQras = qras.length > 0 || relatedQras.length > 0
+    const hasCwe = !!cweRecord
+
+    res.json({
+      verdict: { state: verdictState, grade: verdictGrade, score: verdictScore },
+      gate_trace: [
+        { gate: 'extract_entities', passed: hasGlossary || hasCwe, detail: hasCwe ? `CWE: ${cweRecord?.control_id}` : `${glossary.length} terms` },
+        { gate: 'crosswalk', passed: hasCrosswalks, detail: `${crosswalks.length} chains` },
+        { gate: 'qra_recall', passed: hasQras, detail: `${qras.length + relatedQras.length} QRAs` },
+        { gate: 'framework', passed: !!context.framework, detail: context.framework || 'none' },
+      ],
+      evidence: [...qras, ...relatedQras].slice(0, 5).map((q: any) => ({
+        method: 'EXAMINE',
+        layer: 'sparta_qra',
+        result: { qra_text: q.question || q.problem, answer: q.answer || q.solution, control_id: q.control_id },
+        confidence: q.score || 0.5,
+      })),
+      // Transform daemon glossary {id, name, framework, type} to UI format {term, type}
+      glossary: glossary.slice(0, 20).map((g: any) => ({
+        term: g.name || g.id,
+        type: g.framework === 'CWE' ? 'cwe_weakness'
+          : (g.framework?.startsWith('ATT') || g.type === 'attack_technique') ? 'attack_technique'
+          : g.type === 'countermeasure' ? 'countermeasure'
+          : g.type === 'technique' ? 'technique'
+          : g.framework === 'SPARTA' ? 'control'
+          : g.framework === 'NIST' ? 'control'
+          : 'domain_term',
+      })),
+      crosswalk_chains: crosswalks,
+      context,
+      cwe_record: cweRecord,
+      answer: hasQras
+        ? `Found ${qras.length + relatedQras.length} related QRAs via ${context.framework || 'hybrid'} search.`
+        : `No QRAs found for the query.`,
+    })
   } catch (e: any) {
-    // Fallback: return a basic recall-based evidence case
-    console.error('[evidence-case/run] Skill execution failed:', e.message)
+    console.error('[evidence-case/run] Daemon call failed:', e.message)
+    // Fallback: use /recall directly (per /memory SKILL.md)
     try {
-      const recall = await proxyPost('/recall', { q: `${controlId || ''} ${nodeLabel || ''} vulnerability`, collections: ['sparta_qra'], k: 5 })
-      const items = recall.results || recall.items || []
+      const recall = await proxyPost('/recall', {
+        q: question,
+        k: 5,
+        collections: ['sparta_qra', 'sparta_controls'],
+      })
+      const items = recall.items || []  // NOTE: "items" not "results" per SKILL.md
       res.json({
         verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
         gate_trace: [
-          { gate: 'step_1_topic', passed: true, detail: `control=${controlId}` },
-          { gate: 'step_2_recall', passed: items.length > 0, detail: `${items.length} QRAs found` },
-          { gate: 'step_3_ground', passed: false, detail: 'Skill unavailable, using recall fallback' },
+          { gate: 'recall_fallback', passed: items.length > 0, detail: `${items.length} items via /recall` },
         ],
-        evidence: items.slice(0, 3).map((i: any) => ({ method: 'EXAMINE', layer: 'sparta_qra', result: { qra_text: i.problem || i.question, control_id: controlId }, confidence: i.score || 0.5 })),
-        recommendation: items.length > 0 ? `Found ${items.length} related QRAs. Full evidence case requires /create-evidence-case skill.` : 'No related QRAs found in corpus.',
+        evidence: items.slice(0, 3).map((i: any) => ({
+          method: 'EXAMINE',
+          layer: i._collection || 'sparta_qra',
+          result: { qra_text: i.problem || i.question || i.name, control_id: i.control_id || i._key },
+          confidence: i.scores?.bm25 || 0.5,  // Use scores.bm25 per SKILL.md
+        })),
+        answer: items.length > 0 ? `Found ${items.length} items. Full evidence case requires daemon.` : 'No results found.',
       })
     } catch {
-      res.status(502).json({ error: 'Evidence case skill and memory recall both unavailable' })
+      res.status(502).json({ error: 'Evidence case daemon and recall both unavailable' })
     }
+  }
+})
+
+app.post('/api/evidence/generate', async (req, res) => {
+  const { question } = req.body
+  if (!question) return res.status(400).json({ error: 'question required' })
+
+  try {
+    // Run the high-fidelity evidence case pipeline (deterministic proof chain)
+    const { stdout } = await execAsync(`uv run -q review_question.py evidence-case --question "${question.replace(/"/g, '\\"')}" --json`, {
+      cwd: RE_QUESTION_SKILL
+    })
+    
+    // Safety check: parse out JSON payload if Python dumped logs before it
+    const jsonStr = stdout.slice(stdout.indexOf('{'))
+    res.json(JSON.parse(jsonStr))
+  } catch (e: any) {
+    console.error('[evidence/generate] Python skill failed:', e.message)
+    res.status(502).json({ error: 'Evidence generation failed', details: e.message })
   }
 })
 

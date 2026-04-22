@@ -312,7 +312,7 @@ function CorpusTab({ docKey }: { docKey: string | null }) {
       <div style={{ ...label, marginBottom: 16 }}>Document Detail</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {rows.map(r => (
-          <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 12px', ...card }}>
+          <div key={r.label} style={{ ...card, display: 'flex', justifyContent: 'space-between', padding: '6px 12px' }}>
             <span style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>{r.label}</span>
             <span style={{ fontSize: 11, color: (r as any).color ?? EMBRY.white, fontFamily: MONO, fontWeight: 600 }}>{r.value}</span>
           </div>
@@ -567,6 +567,8 @@ export function DatalakeExplorerView() {
 
   // Visible documents filtered by scope
   const visibleDocs = activeScope
+    ? documents.filter(d => d.scope === activeScope)
+    : documents
 
   // QuerySpec action registrations (data-qid → voice/NL/agent control)
   useRegisterAction('datalake:tab:overview', { app: 'datalake-explorer', action: 'DATALAKE_TAB_OVERVIEW', label: 'Overview Tab', description: 'Switch to Overview tab' })
@@ -581,9 +583,6 @@ export function DatalakeExplorerView() {
   useRegisterAction('metrics:coverage:text', { app: 'datalake-explorer', action: 'METRICS_TEXT', label: 'Text Coverage', description: 'Text embedding coverage gauge' })
   useRegisterAction('metrics:coverage:visual', { app: 'datalake-explorer', action: 'METRICS_VISUAL', label: 'Visual Coverage', description: 'Visual embedding coverage gauge' })
   useRegisterAction('metrics:quarantine-button', { app: 'datalake-explorer', action: 'METRICS_QUARANTINE_BUTTON', label: 'Quarantine Issues', description: 'Quarantine flagged metrics issues' })
-
-    ? documents.filter(d => d.scope === activeScope)
-    : documents
 
   return (
     <div

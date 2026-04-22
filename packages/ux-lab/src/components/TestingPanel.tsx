@@ -12,15 +12,9 @@ import {
   Trash2,
   Edit3,
   Search,
-  Zap,
-  ShieldCheck,
-  Layout,
-  Maximize2,
   X,
   StopCircle,
   Clock,
-  ExternalLink,
-  Target,
   BarChart3,
   Save,
   Activity,
@@ -29,7 +23,6 @@ import {
 import { useAgentBus } from './sparta/common/useAgentBus';
 import { LeftPane, LeftPaneSection, paneItemStyle } from './common/LeftPane';
 import { ContextMenu } from './common/ContextMenu';
-import type { ContextMenuItem } from './common/ContextMenu';
 import { LightboxImage } from './common/Lightbox';
 
 // --- Types ---
@@ -72,7 +65,7 @@ interface TestDefinition {
 
 interface TestRunResult {
   testId: string;
-  status: 'PASSED' | 'FAILED' | 'RUNNING' | 'IDLE';
+  status: 'PASSED' | 'FAILED' | 'RUNNING' | 'IDLE' | 'PENDING';
   steps: StepResult[];
   durationMs?: number;
 }
@@ -133,35 +126,37 @@ export function TestingPanel() {
   useEffect(() => { fetchManifest(); }, [fetchManifest]);
 
   // Real-time Updates via WebSocket
-  const { send } = useAgentBus((msg) => {
+  useAgentBus((msg) => {
+    const p = msg.payload as Record<string, unknown>;
     switch (msg.type) {
       case 'test-run-start':
-        setActiveRunId(msg.payload.runId);
+        setActiveRunId(p.runId as string);
         // Reset results for fresh run
         setRunResults({});
         break;
 
       case 'test-step':
         setRunResults(prev => {
-          const current = prev[msg.payload.testId] || { testId: msg.payload.testId, status: 'RUNNING', steps: [] };
-          
-          if (msg.payload.action === 'START') return { ...prev, [msg.payload.testId]: { ...current, status: 'RUNNING' } };
+          const testId = p.testId as string;
+          const current = prev[testId] || { testId, status: 'RUNNING', steps: [] };
+
+          if (p.action === 'START') return { ...prev, [testId]: { ...current, status: 'RUNNING' } };
 
           const newStep: StepResult = {
-            action: msg.payload.step,
-            selector: msg.payload.selector,
-            url: msg.payload.url,
-            hash: msg.payload.hash,
-            status: msg.payload.status,
-            detail: msg.payload.detail,
-            expected: msg.payload.expected,
-            actual: msg.payload.actual,
-            screenshotUrl: msg.payload.screenshotUrl
+            action: p.step as StepAction,
+            selector: p.selector as string | undefined,
+            url: p.url as string | undefined,
+            hash: p.hash as string | undefined,
+            status: p.status as 'PASSED' | 'FAILED' | 'RUNNING' | 'PENDING',
+            detail: p.detail as string | undefined,
+            expected: p.expected as string | undefined,
+            actual: p.actual as string | undefined,
+            screenshotUrl: p.screenshotUrl as string | undefined
           };
 
           return {
             ...prev,
-            [msg.payload.testId]: {
+            [testId]: {
               ...current,
               steps: [...current.steps, newStep]
             }
@@ -170,39 +165,42 @@ export function TestingPanel() {
         break;
 
       case 'test-result':
-        setRunResults(prev => ({
-          ...prev,
-          [msg.payload.testId]: {
-            ...(prev[msg.payload.testId] || { steps: [] }),
-            testId: msg.payload.testId,
-            status: msg.payload.status,
-            durationMs: msg.payload.durationMs
-          }
-        }));
+        setRunResults(prev => {
+          const testId = p.testId as string;
+          return {
+            ...prev,
+            [testId]: {
+              ...(prev[testId] || { steps: [] }),
+              testId,
+              status: p.status as 'PASSED' | 'FAILED' | 'RUNNING' | 'PENDING',
+              durationMs: p.durationMs as number | undefined
+            }
+          };
+        });
         break;
 
       case 'test-run-done':
         setActiveRunId(null);
         // Auto-record round if this was a persona review manifest
-        if (msg.payload?.runId && selectedManifestFile.includes('review')) {
+        if (p?.runId && selectedManifestFile.includes('review')) {
           fetch(`/api/test-runner/rounds/record`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ runId: msg.payload.runId }),
+            body: JSON.stringify({ runId: p.runId }),
           })
             .then(r => r.json())
             .then(summary => {
               if (summary.round) {
-                setCurrentRound(summary.round);
-                setRoundScores(prev => [...prev, { round: summary.round, avg: summary.avg, passed: summary.passed, total: summary.total }]);
+                setCurrentRound(summary.round as number);
+                setRoundScores(prev => [...prev, { round: summary.round as number, avg: summary.avg as number, passed: summary.passed as number, total: summary.total as number }]);
               }
             })
             .catch(() => {});
         }
         break;
       case 'round-complete':
-        setCurrentRound(msg.payload.round);
-        setRoundScores(prev => [...prev, { round: msg.payload.round, avg: msg.payload.avg, passed: msg.payload.passed, total: msg.payload.total }]);
+        setCurrentRound(p.round as number);
+        setRoundScores(prev => [...prev, { round: p.round as number, avg: p.avg as number, passed: p.passed as number, total: p.total as number }]);
         break;
     }
   });

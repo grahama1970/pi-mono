@@ -23,8 +23,8 @@ import { useSpartaData } from '../../hooks/useSpartaData'
 import { BinaryGraph } from '../binary-explorer/BinaryGraph'
 import { useBinaryData } from '../../hooks/useBinaryData'
 import EntitySpanViewer from '../shared-chat/EntitySpanViewer'
-import { ScillmDashboard, BatchProgressCard, SkillUsageTable, LatencyTable, RealtimeLogTable } from '../scillm'
-import { sampleLogs, sampleBatches, sampleSkills, sampleLatency } from '../scillm/sampleData'
+import { ScillmDashboard, RealtimeLogTable } from '../scillm'
+import { sampleLogs } from '../scillm/sampleData'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
 import {
   sampleTactics, sampleTechniques, sampleMessages, emptyMessages,
@@ -160,15 +160,6 @@ function BinaryExplorerView() {
           onNodeClick={(node) => setSelectedNode(
             selectedNode?.id === node.id ? null : node
           )}
-          onNodeDoubleClick={(node) => {
-            if (node.nodeType === 'namespace') {
-              if (data.expandedClusters.has(node.label)) {
-                data.collapseCluster(node.label)
-              } else {
-                data.expandCluster(node.label)
-              }
-            }
-          }}
         />
       </div>
 
@@ -733,31 +724,8 @@ const registry: GalleryEntry[] = [
     id: 'scillm-dashboard',
     name: 'ScillmDashboard',
     folder: ['scillm', 'Composed'],
-    variations: ['live', 'mock'],
-    render: (v) => v === 'live' ? <ScillmDashboard /> : (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
-        <div style={{ display: 'flex', gap: 16 }}>
-          {sampleBatches.slice(0, 2).map((b) => <BatchProgressCard key={b.batch_id} batch={b} />)}
-        </div>
-        <SkillUsageTable skills={sampleSkills} />
-        <LatencyTable latency={sampleLatency} />
-        <RealtimeLogTable logs={sampleLogs} />
-      </div>
-    ),
-  },
-  {
-    id: 'scillm-batch-card',
-    name: 'BatchProgressCard',
-    folder: ['scillm', 'Components'],
-    variations: ['in-progress', 'complete', 'with-errors'],
-    render: (v) => {
-      const batch = v === 'complete'
-        ? { ...sampleBatches[1], completed: 156, errors: 0 }
-        : v === 'with-errors'
-        ? { ...sampleBatches[0], errors: 45 }
-        : sampleBatches[0]
-      return <BatchProgressCard batch={batch} />
-    },
+    variations: ['live'],
+    render: () => <ScillmDashboard />,
   },
   {
     id: 'scillm-log-table',

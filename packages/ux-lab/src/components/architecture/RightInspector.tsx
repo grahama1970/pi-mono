@@ -15,6 +15,7 @@ import { EMBRY, label, body } from '../common/EmbryStyle'
 
 export interface ElementCustomData {
   name?: string
+  label?: string
   latency?: string
   description?: string
   codeRef?: string

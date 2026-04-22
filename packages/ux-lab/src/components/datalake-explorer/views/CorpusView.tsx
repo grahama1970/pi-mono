@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { BarChart, Bar, Cell, ResponsiveContainer } from 'recharts'
-import { listDocuments, recallDocuments } from '../api/client'
+import { listDocuments, recallDocuments, runAnalytics } from '../api/client'
 import { NVIS } from '../theme'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
@@ -131,27 +131,28 @@ export default function CorpusView() {
       ))
 
       try {
-        const qraResult = await listDocuments('sparta_qra', 200)
-        let totalScored = 0, sumGrounding = 0
-        const nicoB = { fail: 0, warn: 0, needsHelp: 0, pass: 0 }
-        for (const doc of qraResult.documents) {
-          const d = doc as unknown as Record<string, unknown>
-          const gs = d.grounding_score as number | undefined
-          if (gs !== undefined && gs !== null) {
-            sumGrounding += gs; totalScored++
-            if (gs >= 0.82) nicoB.pass++
-            else if (gs >= 0.70) nicoB.needsHelp++
-            else if (gs >= 0.60) nicoB.warn++
-            else nicoB.fail++
-          }
-        }
-        if (totalScored > 0) {
-          setAvgGrounding(sumGrounding / totalScored)
+        // Server-side aggregation — NEVER fetch bulk docs from sparta_qra (246K+)
+        const aql = `
+          FOR q IN sparta_qra
+            FILTER q.grounding_score != null
+            COLLECT AGGREGATE
+              total = COUNT(1),
+              sumGs = SUM(q.grounding_score),
+              fail = SUM(q.grounding_score < 0.60 ? 1 : 0),
+              warn = SUM(q.grounding_score >= 0.60 AND q.grounding_score < 0.70 ? 1 : 0),
+              needsHelp = SUM(q.grounding_score >= 0.70 AND q.grounding_score < 0.82 ? 1 : 0),
+              pass = SUM(q.grounding_score >= 0.82 ? 1 : 0)
+            RETURN { total, sumGs, fail, warn, needsHelp, pass }
+        `
+        const analytics = await runAnalytics(aql)
+        const r = (analytics.result as Array<Record<string, number>>)?.[0]
+        if (r && r.total > 0) {
+          setAvgGrounding(r.sumGs / r.total)
           setScoreBuckets([
-            { range: 'Fail', count: nicoB.fail, color: '#ff4444' },
-            { range: 'Warn', count: nicoB.warn, color: '#ff4444' },
-            { range: 'Help', count: nicoB.needsHelp, color: '#ffaa00' },
-            { range: 'Pass', count: nicoB.pass, color: '#00ff88' },
+            { range: 'Fail', count: r.fail, color: '#ff4444' },
+            { range: 'Warn', count: r.warn, color: '#ff4444' },
+            { range: 'Help', count: r.needsHelp, color: '#ffaa00' },
+            { range: 'Pass', count: r.pass, color: '#00ff88' },
           ])
         }
       } catch { /* optional */ }
@@ -729,9 +730,12 @@ function MetricChip({ label, count, color }: { label: string; count: number; col
   )
 }
 
-function FilterChip({ label, active, color, onClick }: { label: string; active: boolean; color: string; onClick: () => void }) {
+function FilterChip({ label, active, color, onClick, ...rest }: { label: string; active: boolean; color: string; onClick: () => void; 'data-qid'?: string; 'data-qs-action'?: string; title?: string }) {
   return (
-    <span data-qid="corpus:el-9" data-qs-action="CORPUS_EL_9" title="El 9"
+    <span
+      data-qid={rest['data-qid'] || 'corpus:filter-chip'}
+      data-qs-action={rest['data-qs-action'] || 'CORPUS_FILTER'}
+      title={rest.title || label}
       onClick={onClick}
       style={{
         fontSize: 9, cursor: 'pointer', padding: '1px 6px', borderRadius: 2,

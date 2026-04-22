@@ -1,0 +1,2652 @@
+{
+  "pdfUrl": "/test-clone.pdf",
+  "pageCount": 18,
+  "blocks": [
+    {
+      "id": "962097ed406c9a27371c8c2e2d1403a1",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 1",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "092fce146d365b935b7e7ec74d83bd66",
+      "page": 0,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 1 of 1",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "1567afa5fa471d8567097abcd948b33b",
+      "page": 0,
+      "bbox": [
+        0.44632351943869997,
+        0.9772727272727273,
+        0.11683006535947713,
+        0.09545451462870902
+      ],
+      "blockType": "text",
+      "text": "[QID_536638075A2C714B]Page 1",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "b8647f037ecb2022ac57a4f78336cd96",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.23366008085363052,
+        0.1858586012715041
+      ],
+      "blockType": "text",
+      "text": "[QID_64E4B25F41C88499]Table of Contents",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "88802e425b8a432319f01625a7d1a88d",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.23030306112886678
+      ],
+      "blockType": "text",
+      "text": "[QID_088D6D4411D2D099]Page 1 ............................................ 1",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "29f494540e718fc3192dd3b47a68a1c2",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.24797982880563452
+      ],
+      "blockType": "text",
+      "text": "[QID_A4A0CA28D9EC3448]Page 2 ............................................ 2",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "cb98d7211cab6f5a085245e71c99713b",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.26565659648240214
+      ],
+      "blockType": "text",
+      "text": "[QID_69178141C38A2322]Page 3 ............................................ 3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "a5d5574c369b147edac9d547a8e90322",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.2833333641591699
+      ],
+      "blockType": "text",
+      "text": "[QID_4B2480C70AD9E591]Page 4 ............................................ 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6527f09e8091f2c179b0c48ead45afe2",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.3010101318359375
+      ],
+      "blockType": "text",
+      "text": "[QID_C954DB11ED57D703]Page 5 ............................................ 5",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "eba1c32369827244efe50954b5886492",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.3186868995127051
+      ],
+      "blockType": "text",
+      "text": "[QID_33AD88ABEBB939FE]Page 6 ............................................ 6",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4be3e42027c7a5dbdfe6a4d7cbf33141",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.33636366718947286
+      ],
+      "blockType": "text",
+      "text": "[QID_526D2D4D8448FE04]Page 7 ............................................ 7",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "290a4bd25b62c7cdd619115fb849f3b3",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.987373775906033,
+        0.49607844134561374,
+        0.3540403963339449
+      ],
+      "blockType": "text",
+      "text": "[QID_98606C9A5F468FD0]Page 8 ............................................ 8",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "42431c17442745674bbb3f756c233d97",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.49607844134561374,
+        0.37171716401071264
+      ],
+      "blockType": "text",
+      "text": "[QID_9B0DE11A3F37D8F1]Page 9 ............................................ 9",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "aa6e2a553543cbbad7ef328d4cc07bc1",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.38939393168748027
+      ],
+      "blockType": "text",
+      "text": "[QID_21C549D63FEE43D1]Page 10 ........................................... 10",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "95e729968e85cf051b3c8e9426ef79f5",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.407070699364248
+      ],
+      "blockType": "text",
+      "text": "[QID_41C028D1C868507A]Page 11 ........................................... 11",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "be6a936a1114113a04040cd9ca903c47",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.4247474670410156
+      ],
+      "blockType": "text",
+      "text": "[QID_2FEF8830F74403BF]Page 12 ........................................... 12",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "dc0fd6803053de3d44d1af128c442de4",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.44242423471778325
+      ],
+      "blockType": "text",
+      "text": "[QID_A19B3E3DDFD47F52]Page 13 ........................................... 13",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5ca845ec02da7df3ddcbf54115352117",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.460101002394551
+      ],
+      "blockType": "text",
+      "text": "[QID_72DDC130D333C8BF]Page 14 ........................................... 14",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d909e1701b3b2e3e69c301f2081140dc",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.4777777700713186
+      ],
+      "blockType": "text",
+      "text": "[QID_E282F02127B4C7C7]Page 15 ........................................... 15",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "386d3729e935d580e08bb254fac57217",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.49545453774808634
+      ],
+      "blockType": "text",
+      "text": "[QID_C3ABA5B2DF8C9A05]Page 16 ........................................... 16",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "ca861fc5815ebcd6e4c060358074de74",
+      "page": 0,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.505065369450189,
+        0.5131313054248541
+      ],
+      "blockType": "text",
+      "text": "[QID_5CC12941F94506D8]Page 17 ........................................... 17",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "74d1c44a0d12f93d34b6af2fd04c0668",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 2",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "ab5c081d8d9687888762e98daa268049",
+      "page": 1,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 2 of 2",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "a054186eeab12e41e498dab2405d5587",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_9647306E936CB03D]Page 1",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "589c21054bc9b67aa166fe1a2ac1f303",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_4045395A7C4DB7F7]This is placeholder paragraph 1 for section 'Page 1'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "51c26eab43493093a1469203ce5ccb53",
+      "page": 1,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_FF924904F70819E9]This is placeholder paragraph 2 for section 'Page 1'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3c5315e1339eadcc71226530e3b50a5a",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "65cba4c422ee85efbe465cf40b8f9b12",
+      "page": 2,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 3 of 3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "b9913b761bc9c5e62bda4255e5f6644e",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_479C8751C74850F4]Page 2",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8747d7ac95ded2e5d1d122dd3db02990",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_03DE3EB9CCED24DF]This is placeholder paragraph 1 for section 'Page 2'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3cfe9f73765b347f6f96320585de8b04",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_0A3FDF57C8C64D5C]This is placeholder paragraph 2 for section 'Page 2'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "2e703e81bbf36d51fd082cbfb8aa69bf",
+      "page": 2,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_14C6DE490C0494F7]This is placeholder paragraph 3 for section 'Page 2'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "09b3a1081bf2f52de2c84df2d79dc847",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f3914401bfb47ec80c931a924ffd14c2",
+      "page": 3,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 4 of 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "fbdaa46ccc406f3bd0b01c7fbc110779",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_CFAFD9A1637AC75F]Page 3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "06d966ee4bf0988ef4d2f4fa1e9e07ff",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_DB7F3AAFE0A62D68]This is placeholder paragraph 1 for section 'Page 3'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8a603d636bde5668d74cff7edbda2240",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_7C66E13D8DEE44F0]This is placeholder paragraph 2 for section 'Page 3'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "ba36fbb82d9e447bdbcf128319c36739",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_99AE6C34B2205B91]This is placeholder paragraph 3 for section 'Page 3'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7783ac41672f5cab6c0edc2a9d69dbf2",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_70ED97AE9A222890]Col_1[QID_FEDBCD063F757159]Col_2[QID_C77A6DF8B1767FEC]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5ef823abdcc48a2af5151d57b35d20bd",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_C51EE7314FEBA235]R1C1[QID_D9EB0659334CEBEB]R1C2[QID_7F6BEED4D08338CE]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "058d758b30f3baad59152a5241bcf67c",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_5107D3ED7AFB11A6]R2C1[QID_0D53F420720FA094]R2C2[QID_D6B524EEB7AE2BF2]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c9b6141f99bdfcb0bcc384af8e45e39b",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_4DA4A982EC832987]R3C1[QID_1DA4E2CFC76B6332]R3C2[QID_13E42A901CE45E1E]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6e061124bbac977e602d016838c39c0f",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_5BD819DCC39C7F5D]R4C1[QID_D15BBA559387CAF9]R4C2[QID_F1067D615AB817F3]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "0bd2923fb30a4d8076d9c21745ee5bb1",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_A283C4179A618D16]R5C1[QID_96CBB91525976767]R5C2[QID_14E60B9A4E139070]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3d1c47f23af248f66f55ab8e32c88762",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3393939239810212
+      ],
+      "blockType": "text",
+      "text": "[QID_C65A0ABA5D8E2658]R6C1[QID_03CC1FB37FE2CF8D]R6C2[QID_7EF14FFD79139FC8]R6C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "265ed431ce19b79027e22d1ef83eb4dd",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3621211967082939
+      ],
+      "blockType": "text",
+      "text": "[QID_8D0A557AA0570D42]R7C1[QID_D287D119685F04E5]R7C2[QID_B662AB8205413E17]R7C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "e0a0256be164eff7d7a43c7514477813",
+      "page": 3,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3848484694355666
+      ],
+      "blockType": "text",
+      "text": "[QID_245DCCB533B6E69C]R8C1[QID_88EE5F28002A5FA1]R8C2[QID_23BC1BDDBFBB0F50]R8C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "973bb2fa296273d9767f397c0384fe12",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.41338383067737927
+      ],
+      "blockType": "text",
+      "text": "[QID_D646E74A39F5FE7D]Table 1: Data from section 2",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "9af4309d3a625c450820311a4c46c76c",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 5",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "48bfd79af4841682dc46e52e8d571139",
+      "page": 4,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 5 of 5",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "eba1e79bbd1e77d7eb38f36c5ebccb4f",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_BC04A8F69E5F8165]Page 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5d0c0cb98230d2b114469f3709ab194f",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_686A41E94F37827C]This is placeholder paragraph 1 for section 'Page 4'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "69b24a8175426dfaaa0c951a80f3c76f",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_D3CE76B5350065A2]This is placeholder paragraph 2 for section 'Page 4'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f6c3fe29ee23c416f8990651b988b59b",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_973B11CAB7B61625]This is placeholder paragraph 3 for section 'Page 4'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "19e81ae0de3ff7d2d09bba48979eb666",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_C5802AEC3A010A2E]Col_1[QID_2572FDD7530B18CA]Col_2[QID_D905024BCDA57F59]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f561f480ab06395cfcc6e8b8556884e1",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_F04E920134500801]R1C1[QID_396B4295AABF09B3]R1C2[QID_017749AB9F2D04D3]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "836f23f721092711de1b4f259940d9f7",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_ECB4B6D1283DE59C]R2C1[QID_5D8109487858C55F]R2C2[QID_2323C6F90DB28BC9]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "41ec90465b65dc4b47813ef700b98bf0",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_782521C161DFABD6]R3C1[QID_CC58FBC97C9C6938]R3C2[QID_599ADBF7CAE0EE59]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7268154fc805661f1a8279b7f907e6c6",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_D161DB96743C11A0]R4C1[QID_2541D2EEF1917B82]R4C2[QID_F7CA655E14F89C02]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f615b4d9c9d28a798751d66516357ead",
+      "page": 4,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_E339FA31B7F49D75]R5C1[QID_0E7988ADBB39FDE4]R5C2[QID_A99E16F7B12C7CD7]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "373d6f630e96e430e3d854e3dd459196",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.3452020510278567
+      ],
+      "blockType": "text",
+      "text": "[QID_5ECB74C9950BA236]Table 2: Data from section 3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "9120a70e50e00a64ec0cd7627b0d427b",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 6",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c365869a7f7cd5946aaf213c59e81da6",
+      "page": 5,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 6 of 6",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4872fe67cc160384aebba46d7d742837",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_D0CFFEE91679D4C5]Page 5",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "03d3f5b361177eb205cd99fd8e614de1",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_5DF18D6BF25B1C43]This is placeholder paragraph 1 for section 'Page 5'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6a69dd9b7f92d0afa51e8962e1b98bce",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_B2B285FFC958564F]This is placeholder paragraph 2 for section 'Page 5'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "9e680208771c0bef37fc5b9458ad06ab",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_55AA09B659D7FEA6]This is placeholder paragraph 3 for section 'Page 5'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3d5e82325e4c0852196068866cee2181",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_FB3B373A779ECF59]Col_1[QID_E6C9F4352F87E643]Col_2[QID_7FF4446A4E4E4CBE]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f11fd2cd37cbcc811b969c0183472abb",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_F00074BD488264B1]R1C1[QID_647E0C03DF7F67AD]R1C2[QID_A3086AC94F67A984]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "72c17a264e9c22bc0f290161160c6947",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_966E6335E5BD5D62]R2C1[QID_A0F2E82193A6C071]R2C2[QID_11D7B77D5F71A26A]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "1d7275607ae0e39e43db707731748872",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_F0D977BB43769028]R3C1[QID_5CBC94472F0F8538]R3C2[QID_93AD855DDD556F6A]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "2fbdc038ed02ec5d798192021ea29f37",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_EF144C5F16C5759A]R4C1[QID_2E8DE4FB776A5DF1]R4C2[QID_937402FB896F5E82]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "bf7df035849cd493a6679a5967255f3d",
+      "page": 5,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_9B3B8E9372F3BE69]R5C1[QID_A2CF9F32E18C56F8]R5C2[QID_74B633473724EDA0]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "08c52b47a6d49a85708ebf5f31406080",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.3452020510278567
+      ],
+      "blockType": "text",
+      "text": "[QID_DE8E801848DC8B39]Table 3: Data from section 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "47fcf262f022118112d3be62ad184311",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 7",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "20309d0a1548468682ddcba882b7ccb8",
+      "page": 6,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 7 of 7",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "61f25cf5664dc0bcddb0acb0a4b4f8d9",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_1CD077234E679C45]Page 6",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f897ea912503d5a7c86697f78a7b87e1",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_147F7BB0A77F0953]This is placeholder paragraph 1 for section 'Page 6'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "2c94e8e7eda6a987e215bb57ef526118",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_4F5E29DFF9BD7A96]This is placeholder paragraph 2 for section 'Page 6'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6498bd414b1ce308931f747b99a4c1f6",
+      "page": 6,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_564104876EF03507]This is placeholder paragraph 3 for section 'Page 6'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "86cb0e2a1f0d8c14e9fa66deec1a7d56",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 8",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d56ee310c74cc2042d72a959113abfda",
+      "page": 7,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 8 of 8",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7b855be53a5aaab76d36a8e5c7d935f7",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_FB2B3F85F4DE3879]Page 7",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "58d02964c64023e10728cd9b8757b198",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_084D036FE5395E4E]This is placeholder paragraph 1 for section 'Page 7'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "903f42cbd10db2645f822f6e29eb2b83",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_6C23CCB7FB1B7EA1]This is placeholder paragraph 2 for section 'Page 7'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6f7ae0ee2d2f7242367c8359a1e2e6c8",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_9945E02A89813CEE]This is placeholder paragraph 3 for section 'Page 7'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5ed8332ee0b61beb6f33eee5fb9ac945",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_2A5F9FDD60C82869]Col_1[QID_D19283046CFAB1DF]Col_2[QID_57EB596A6AF5A208]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7eba42cf10f7f50f35244c3d6b231ba2",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_E5627B4B39AB6B37]R1C1[QID_7C5B392B5F13D414]R1C2[QID_4EA4629EA7EB75CD]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8ac14dbcc61f4d9d3fe12895d545572e",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_F3D6F9FF177FDDF5]R2C1[QID_6F42B6D8DEB2414E]R2C2[QID_FEC1A11DDECB27E3]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c748c5ecf0557503561ab3cf84f6e87a",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_9109F602A70D81A2]R3C1[QID_108B9ED6524D9D32]R3C2[QID_ABB3AABC3D514C6A]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4445573bac501a64903edcbbff87923a",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_79FE322D2E87CF46]R4C1[QID_3F17FA500E84635D]R4C2[QID_61627C9BC6E91E66]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "1a80d4dbeb3aa21fe99d424bb8a01034",
+      "page": 7,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_84AE344F33C5CEE0]R5C1[QID_9A55167A18C39383]R5C2[QID_FF9B2C5D33388F8E]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5117ca4b56d9fef7ec4eff866c32b12a",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.3452020510278567
+      ],
+      "blockType": "text",
+      "text": "[QID_CE6F555A2F9D0DDE]Table 4: Data from section 6",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "23ffcad6c99784cc4bc6b3cda6266197",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8370065128102022,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 9",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f1deaed760190172bada54393c97c724",
+      "page": 8,
+      "bbox": [
+        0.46656864141327103,
+        0.98989898989899,
+        0.07908495734719669,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 9 of 9",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8585fab58e11fae5ef944e3c9dc1b2ae",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_3B0A7A3C4052E293]Page 8",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "534be1f0221768193de908f5105690e9",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_D3E26DFD40744810]This is placeholder paragraph 1 for section 'Page 8'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c276dec621de7800b3cd293adb510f6c",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_20AA2B7B1E2F527C]This is placeholder paragraph 2 for section 'Page 8'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "84bb718dab3a9e2fca51327381ea11ae",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_3C9D81CA27CC96DD]This is placeholder paragraph 3 for section 'Page 8'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7c8bfbc8a5d77d619c639910aaf8c56d",
+      "page": 8,
+      "bbox": [
+        0.09052287831025965,
+        0.9772727272727273,
+        0.8025918100394455,
+        0.21565655024364738
+      ],
+      "blockType": "text",
+      "text": "[QID_6F136D68B7DE7ED1]Col _1 [QID_FCF8A8798536E8F1]Col _2 [QID_1167CA984613056C]Col_ 3 [QID_E2B55F72BEA4AAF0]Col _4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3930415caa250d2d308dd01126217fc0",
+      "page": 8,
+      "bbox": [
+        0.09052287831025965,
+        0.9772727272727273,
+        0.8025918100394455,
+        0.25101008559718274
+      ],
+      "blockType": "text",
+      "text": "[QID_8398019A71B24690]R1C1 [QID_CF87A1543A9A6424]R1C 2 [QID_DABE8AE7232F2D2B]R1 C3 [QID_4E7D426D1BDC8A7A]R1C 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "850b5e162cc58bfb5fc6776bbad6690e",
+      "page": 8,
+      "bbox": [
+        0.09052287831025965,
+        0.9772727272727273,
+        0.8025918100394455,
+        0.2863636209507181
+      ],
+      "blockType": "text",
+      "text": "[QID_A18AE6B56790A9A3]R2C 1 [QID_77FC0D3A1771B1FA]R2 C2 [QID_A9F78B07D9845F84]R2C 3 [QID_5FBF2ABBBB6CAF18]R2C 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "288990d82ca5288ee16b7c3f3ac24beb",
+      "page": 8,
+      "bbox": [
+        0.09052287831025965,
+        0.9772727272727273,
+        0.8097813924153646,
+        0.32171715630425346
+      ],
+      "blockType": "text",
+      "text": "[QID_6BD11C5E4E1D7526]R3C 1 [QID_87DFAE5A5F70BD54]R3 C2 [QID_BC810B9D4C3643FD]R3 C3 [QID_80FE7B52080D5779]R3C4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "274569fb60d767ba8decb416331a2224",
+      "page": 8,
+      "bbox": [
+        0.09052287831025965,
+        0.9772727272727273,
+        0.8025918100394455,
+        0.3570706916577888
+      ],
+      "blockType": "text",
+      "text": "[QID_20DCC6DEF349B57E]R4 C1 [QID_D955B49906B80078]R4C 2 [QID_C079C5227994332B]R4C 3 [QID_7B054022055BC3DB]R4C 4",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4911d9a47d2568518a1b07f1c7a314b3",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.3856060528996015
+      ],
+      "blockType": "text",
+      "text": "[QID_8E4DBBBD2F0CF289]Table 5: Data from section 7",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "11c905c0534c83fbf11c8262587a0c87",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 10",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "15fc9ffd4917aec7785e2bb6f6cebf8c",
+      "page": 9,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 10 of 10",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "541d37ab65897ab8b6d59c8cbf9c9438",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.09526144289502911,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_70AA9956AD5C8DA5]Page 9",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "67e17ccded8147a0edb7eaad9ef9a4f2",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_4DA84837D614C699]This is placeholder paragraph 1 for section 'Page 9'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "3bee711d84eaf75d2657b80ed6d93e36",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_554F6095ED68E5B4]This is placeholder paragraph 2 for section 'Page 9'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "db721424b652dc5e7cc3e994350cc179",
+      "page": 9,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8555555156632966,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_86B22338D633BC76]This is placeholder paragraph 3 for section 'Page 9'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "fa2dda9fef6438736911e52d2caa31ba",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 11",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5115450ac35a9cb2de6b9df98230e89a",
+      "page": 10,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 11 of 11",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "36bbcf8a843a83886f8deccd3c29f702",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_EA55C3AC9B5730BE]Page 10",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7a576bdfc44bd094fd7ce32179a0bb5b",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_F36E7D7C0EF4B542]This is placeholder paragraph 1 for section 'Page 10'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d3f80128bf4a0b7b8be5515d8a7a8e0a",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_253E6F412DDD2F14]This is placeholder paragraph 2 for section 'Page 10'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "9eb5532767f31fc08c81b0e4f9c3f72c",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_A9EFA7F9A54EF8AF]This is placeholder paragraph 3 for section 'Page 10'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "bd2e444f6e9079f0719a18da6c659f5d",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_92C6AA1822FAE970]Col_1[QID_274179AE5E11A027]Col_2[QID_ECFC19C4B46812FE]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d564a97b9a6ed8fd9b8e20707515a387",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_78945876CFED83B0]R1C1[QID_B6339D7DA8886707]R1C2[QID_E45D01AC472B3497]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5cb9c24170379f427b35d50ee2c49c12",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_99099E7315AB75D6]R2C1[QID_42F932DCE25A03BE]R2C2[QID_7AEA94E937E7FB40]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5c789b93c5d105e39878b9660abbd3b1",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_3ACFCB5AC0930627]R3C1[QID_B6EB8B70C53F5C8B]R3C2[QID_927F25D751BD0BDE]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "31e80ef80082e52f44762454a93e4a7a",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_C3298286C72A2BC6]R4C1[QID_B24D33A930E6CA9F]R4C2[QID_E6D6E0E226FAA53A]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "ce157dee7f9dda0ed365632e07317ef9",
+      "page": 10,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_1BEFE820F68A87FA]R5C1[QID_677811394F7EFBB9]R5C2[QID_BEAC611A6143560E]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "877cc04ac00bccd15839901842f9bcb2",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.2462417502808415,
+        0.3452020510278567
+      ],
+      "blockType": "text",
+      "text": "[QID_2BADB933A0371B14]Table 6: Data from section 9",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "a44ba5ae7f8a66973231264741a73c73",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 12",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "321c5029a03cbfc5e4b67d04e9a83b82",
+      "page": 11,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 12 of 12",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4368fa57e1af7dd1f5a89fbaaaf699ad",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_C9506E4B62717B33]Page 11",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "2f4372757115b636c079866724b4465f",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_682B2F6E7EB919D3]This is placeholder paragraph 1 for section 'Page 11'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d9eea8fe09237238539ab176ce301e90",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_B2F3E63459E22145]This is placeholder paragraph 2 for section 'Page 11'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5734c6bddbc03a621a3c7c40f9b8a970",
+      "page": 11,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_B9FBF24A51A969F2]This is placeholder paragraph 3 for section 'Page 11'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "596decf6e327baa098e94f103ea612d3",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 13",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "4736f700264d8016cfb9a3e5fcfa3188",
+      "page": 12,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 13 of 13",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f3e1ad2b821e49c77c8442a09c13ee54",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_66AA8592D0BA39EF]Page 12",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "288137bf0489b57da07ca7ec90f8efc3",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_A2EE1847FB153807]This is placeholder paragraph 1 for section 'Page 12'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5aac314f6e24d489b2a8dde53a642489",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_95CF67133BC11EDA]This is placeholder paragraph 2 for section 'Page 12'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "fefe178bd2a4b24978d8fcff9b3939fd",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_A47E5B4D6FA469C3]This is placeholder paragraph 3 for section 'Page 12'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6d4c10aa54b1a0180e5b07c3c89c0dd7",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_FD598437C711471E]Col_1[QID_6DBF89505A2EB4B7]Col_2[QID_472A2FD9B2983CB0]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "20a6066337c1cf4eae1ee1f839968d40",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_8F658D905A78E02B]R1C1[QID_D59D2CD7519DFF4E]R1C2[QID_DB6C3674C5134840]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "bd04598734b4c63b67c5ffdca0ddcbde",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_019655CBB6FB8595]R2C1[QID_08B0EB6E57D92A38]R2C2[QID_9A3B6748DA922862]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c3efe38499d6a698eab7e66a6793fafb",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_272467C5FA867B7B]R3C1[QID_1722C012C7E03FFE]R3C2[QID_016BE40BF54026DE]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d2c9560d2475c744ab54f384775adde1",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_F9B0926DD1D146BD]R4C1[QID_FD189E3B4CFA488F]R4C2[QID_EA0BC8BEC2DDE79C]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f9d0c3a6f662fa683aa262278481573f",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_763528A8E6458196]R5C1[QID_A9273B8C74992429]R5C2[QID_F92F7B6C4F50B0D2]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f378d5ff1c78e92da8ed82a62311ec99",
+      "page": 12,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3393939239810212
+      ],
+      "blockType": "text",
+      "text": "[QID_7B09118FB38DA7C8]R6C1[QID_473DECBC6B51CBD9]R6C2[QID_5D980970527A9A08]R6C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c9aded2dc803468af9312c0d496367ba",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.25433000552108864,
+        0.36792928522283386
+      ],
+      "blockType": "text",
+      "text": "[QID_D401A1981CB4BF3E]Table 7: Data from section 11",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8c6c234990f34a84d1dd2389b97f7089",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 14",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "b19e38bc693399343f20278d91c38cd8",
+      "page": 13,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 14 of 14",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "69b58896ea276033a2e174a51543dae8",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_C8BFE5FF2FAABE13]Page 13",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "27f3ddd8e9db552e3b81665b5d223879",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_D4045D2E1D67EDD2]This is placeholder paragraph 1 for section 'Page 13'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "24efdf12c136468ebc70c276c508d542",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_C7E4415207EBFEB4]This is placeholder paragraph 2 for section 'Page 13'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "2e6e8a7cb950bdc192a54527e67cd309",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_5CD423819745E51F]This is placeholder paragraph 3 for section 'Page 13'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "83325a75b2e77cfbe0a645ffb5efb01c",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7509804021299274,
+        0.20303028761738473
+      ],
+      "blockType": "text",
+      "text": "[QID_6C5404895BB839CC]Col_1[QID_274625B12C2FC63A]Col_2[QID_966C87775FA25707]Col_3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5b92d7a186b01d36431106846cb4baad",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.22575756034465755
+      ],
+      "blockType": "text",
+      "text": "[QID_E6829312DBB0E986]R1C1[QID_9C261EC764696A0D]R1C2[QID_88B64EDA3EE00AAA]R1C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f4f519cf8bf6ed4d46779d1378c4523f",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.24848483307193026
+      ],
+      "blockType": "text",
+      "text": "[QID_9443023CC12F2438]R2C1[QID_B3EE2ABF843AD5D8]R2C2[QID_AD1429DBEF7CBA0D]R2C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c49079411b5a465b6c2b817d9b85aa27",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.27121210579920296
+      ],
+      "blockType": "text",
+      "text": "[QID_BAEDC4C059DBD35B]R3C1[QID_1052ADEC72C9AB69]R3C2[QID_24D049CC45B09745]R3C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8a8caeb22f2a7b5ea7ce9a441279d633",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.29393937852647567
+      ],
+      "blockType": "text",
+      "text": "[QID_721E44B6CE8F8DC0]R4C1[QID_537F55E7097C3C6C]R4C2[QID_84E11E46E0A2F0A7]R4C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5be3bff2d44d60aafefd1329868c90b1",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3166666512537484
+      ],
+      "blockType": "text",
+      "text": "[QID_58C4682D57F871C2]R5C1[QID_7F40DAE3F5CE3879]R5C2[QID_F3A3A79D451AD7DD]R5C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "e933751f7c9e89be2f08d57a73187783",
+      "page": 13,
+      "bbox": [
+        0.09052287831025965,
+        0.98989898989899,
+        0.7437908696193322,
+        0.3393939239810212
+      ],
+      "blockType": "text",
+      "text": "[QID_DC2AB4BF6F532109]R6C1[QID_5F7E9A61D2DC3E9F]R6C2[QID_46396064852435B6]R6C3",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "68cdbf82ccaae451e32d7f3953eebd9f",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.9886363636363636,
+        0.25433000552108864,
+        0.36792928522283386
+      ],
+      "blockType": "text",
+      "text": "[QID_F1FE75BFCC157042]Table 8: Data from section 12",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "42408b6ad7a23ef6bd8e82a8f56e42aa",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 15",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "8df83dfd38715285176fe9fc782cef82",
+      "page": 14,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 15 of 15",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f1262d90f6eda6ad44ab1ba1f83b52a9",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_C7DF447B900C1D09]Page 14",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "27adb26501a55ca5f12aaff6fdd823cf",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_5B890F9CA8009694]This is placeholder paragraph 1 for section 'Page 14'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6589600924c5ea64986428457ee0fdd3",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_5982491BC048FA68]This is placeholder paragraph 2 for section 'Page 14'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "65c0b9679e956219df335b81f28d42c1",
+      "page": 14,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_C852165B10C68A39]This is placeholder paragraph 3 for section 'Page 14'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "b262f9ec5f25aab683f5e5e265314f36",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 16",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "36665b94931b0522f8af8f355e9d628b",
+      "page": 15,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 16 of 16",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "48fc3b26f873c38b35499b92e2a32616",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_8130766147C7AF42]Page 15",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "c9a8b4b4b12cce66aa2e0b4593355858",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_47083D44AFF61D66]This is placeholder paragraph 1 for section 'Page 15'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "5d2ab008f1758430ae0091ac4744f38c",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_09E730ED9290B8A4]This is placeholder paragraph 2 for section 'Page 15'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "d1f0f6be0a4d7bd82cb3874ea551bb49",
+      "page": 15,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_1459D90AE00CCF62]This is placeholder paragraph 3 for section 'Page 15'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "91fb487d21e92b80980cba628f9194aa",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 17",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "88c2e0d66401afaf9cbfc37272470a2a",
+      "page": 16,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 17 of 17",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "ddae64a8631765ff76658194ef86abd9",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_631CEB7E15A43B2F]Page 16",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "a1510123c1391b22193a973cfb806f61",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_DBE1E01741548E42]This is placeholder paragraph 1 for section 'Page 16'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "f7341f338b9bdf8d1b40a35f7e54ee21",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_DB57285B428A3659]This is placeholder paragraph 2 for section 'Page 16'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "1791d8be926fd03178e3a98997e1a1ca",
+      "page": 16,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.17777776236485954
+      ],
+      "blockType": "text",
+      "text": "[QID_E8EA3E8714AA8F1F]This is placeholder paragraph 3 for section 'Page 16'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "fe838afd38aff3dcedfe13e7dfc46000",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.98989898989899,
+        0.8369280247906454,
+        0.032727251149187175
+      ],
+      "blockType": "text",
+      "text": "Document TitlePage 18",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "7754a949dbcbf982cf7dbf7b030f5069",
+      "page": 17,
+      "bbox": [
+        0.4593006707484426,
+        0.98989898989899,
+        0.0934640722337112,
+        0.9681818172185108
+      ],
+      "blockType": "text",
+      "text": "Page 18 of 18",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6387424b8802621eed99aa8a26691acb",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.9823232323232324,
+        0.10784314972123289,
+        0.09040400957820394
+      ],
+      "blockType": "text",
+      "text": "[QID_08C99341FB367818]Page 17",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "9e127d9fbf72bae1990113dd4625ccc1",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.13232321691031412
+      ],
+      "blockType": "text",
+      "text": "[QID_6AE5F5C0861A0208]This is placeholder paragraph 1 for section 'Page 17'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "6c07bd8d63e09e784e27f5435ac1dd7b",
+      "page": 17,
+      "bbox": [
+        0.08235294366973678,
+        0.9873737373737373,
+        0.8645424437678717,
+        0.15505048963758683
+      ],
+      "blockType": "text",
+      "text": "[QID_DDF9BFFF0D17004B]This is placeholder paragraph 2 for section 'Page 17'. Content type: prose, domain: standards.",
+      "confidence": 0.9,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-0",
+      "page": 3,
+      "bbox": [
+        0.08235294366973678,
+        0.6075757729886758,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 0",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-1",
+      "page": 4,
+      "bbox": [
+        0.08235294366973678,
+        0.675757591170494,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 1",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-2",
+      "page": 5,
+      "bbox": [
+        0.08235294366973678,
+        0.675757591170494,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 2",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-3",
+      "page": 7,
+      "bbox": [
+        0.08235294366973678,
+        0.675757591170494,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 3",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-4",
+      "page": 8,
+      "bbox": [
+        0.08235294366973678,
+        0.6353535507664536,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 4",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-5",
+      "page": 10,
+      "bbox": [
+        0.08235294366973678,
+        0.675757591170494,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 5",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-6",
+      "page": 12,
+      "bbox": [
+        0.08235294366973678,
+        0.6530303184432213,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 6",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    },
+    {
+      "id": "table-7",
+      "page": 13,
+      "bbox": [
+        0.08235294366973678,
+        0.6530303184432213,
+        0.9176471186619178,
+        0.8121212275341304
+      ],
+      "blockType": "table",
+      "text": "Table 7",
+      "confidence": 0.95,
+      "cascadeTrail": []
+    }
+  ]
+}

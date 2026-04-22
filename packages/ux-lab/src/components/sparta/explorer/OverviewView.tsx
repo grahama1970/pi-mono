@@ -34,9 +34,9 @@ export function OverviewView({ onNavigate }: OverviewProps) {
   const issues = useMemo(() => {
     const list: { severity: 'high' | 'medium' | 'low'; text: string; tab: TabName }[] = []
     if (counts.urls === 0) list.push({ severity: 'high', text: 'No URLs fetched — URL pipeline may not have run', tab: 'URLs' })
-    if (counts.knowledge === 0) list.push({ severity: 'high', text: 'No knowledge chunks — extraction pipeline incomplete', tab: 'Knowledge' })
+    if (counts.knowledge === 0) list.push({ severity: 'high', text: 'No knowledge chunks — extraction pipeline incomplete', tab: 'Sources' })
     if (counts.qras === 0) list.push({ severity: 'high', text: 'No QRAs generated — QRA pipeline not started', tab: 'QRAs' })
-    if (counts.relationships === 0) list.push({ severity: 'medium', text: 'No relationships — cross-framework mapping incomplete', tab: 'Relationships' })
+    if (counts.relationships === 0) list.push({ severity: 'medium', text: 'No relationships — cross-framework mapping incomplete', tab: 'Supply Chain' })
     return list
   }, [counts])
 
@@ -78,6 +78,7 @@ export function OverviewView({ onNavigate }: OverviewProps) {
                     padding: '8px 12px', borderRadius: 6, cursor: 'pointer',
                     backgroundColor: EMBRY.bgDeep,
                     border: `1px solid ${severityColor[issue.severity]}22`,
+                    minHeight: 44,
                   }}
                 >
                   <div style={glowDot(severityColor[issue.severity], 6)} />

@@ -215,7 +215,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
     <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)' }}>
       <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={heading}>Edge Detail</div>
-        <button data-qid="relationships:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close edge detail" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+        <button data-qid="relationships:detail:close" onClick={onClose} data-qs-action="CLOSE_DETAIL" title="Close edge detail" style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer', minHeight: 44, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           Close
         </button>
       </div>
@@ -305,7 +305,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
                 } catch { /* non-critical */ }
                 setRationaleLoading(false)
               }}
-              style={{ fontSize: 11, padding: '6px 14px', borderRadius: 6, border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`, color: EMBRY.accent, cursor: rationaleLoading ? 'wait' : 'pointer', fontWeight: 700 }}
+              style={{ fontSize: 11, padding: '6px 14px', borderRadius: 6, border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`, color: EMBRY.accent, cursor: rationaleLoading ? 'wait' : 'pointer', fontWeight: 700, minHeight: 44 }}
             >
               {rationaleLoading ? 'Generating...' : 'Explain Relationship'}
             </button>
@@ -330,5 +330,6 @@ function paginationBtn(enabled: boolean): React.CSSProperties {
     fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
     border: `1px solid ${EMBRY.border}`, backgroundColor: enabled ? EMBRY.bgDeep : 'transparent',
     color: enabled ? EMBRY.white : EMBRY.muted, cursor: enabled ? 'pointer' : 'default', opacity: enabled ? 1 : 0.5,
+    minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
   }
 }

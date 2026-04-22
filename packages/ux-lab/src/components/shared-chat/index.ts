@@ -4,6 +4,8 @@
 
 export type { GateChainProps, GateStep } from "../sparta/query/GateChain";
 export { GateChain } from "../sparta/query/GateChain";
+export type { LiveGateChainProps, LiveStep } from "../sparta/query/LiveGateChain";
+export { LiveGateChain } from "../sparta/query/LiveGateChain";
 export type { RecallCardProps } from "../sparta/query/RecallCard";
 // Re-export SPARTA query components (no move — just unified access)
 export { RecallCard } from "../sparta/query/RecallCard";
@@ -11,7 +13,7 @@ export { ThreatMatrixCard } from "../sparta/query/ThreatMatrixCard";
 // Shared components
 export { ActivityFeed } from "./ActivityFeed";
 export { ChatInput } from "./ChatInput";
-export type { ChatWellProps } from "./ChatWell";
+export type { ChatWellProps, StreamingStep } from "./ChatWell";
 // ChatWell — the shared chat interface component
 export { ChatWell } from "./ChatWell";
 export type { DeepLinkAction, DeepLinkConfig } from "./DeepLinks";
@@ -21,9 +23,21 @@ export { DeltaReportCard } from "./DeltaReportCard";
 // Entity extraction viewer (three-layer pipeline)
 export { default as EntitySpanViewer } from "./EntitySpanViewer";
 export { ChatErrorBoundary } from "./ErrorBoundary";
+export type { GlossaryTerm as HighlightGlossaryTerm, GlossaryType as HighlightGlossaryType } from "./highlightEntities";
 // Entity highlighting
-export { classifyEntity, ENTITY_PATTERN, ENTITY_STYLES, getEntityStyle, highlightEntities } from "./highlightEntities";
+export {
+	buildGlossaryPattern,
+	classifyEntity,
+	ENTITY_PATTERN,
+	ENTITY_STYLES,
+	getEntityStyle,
+	glossaryTypeToEntityType,
+	highlightEntities,
+	highlightWithGlossary,
+} from "./highlightEntities";
 export { InlineArtifact } from "./InlineArtifact";
+export { InlineEvidenceCase } from "./InlineEvidenceCase";
+export { InlineFigure } from "./InlineFigure";
 export { MarkdownRenderer } from "./MarkdownRenderer";
 export { PresenceBar } from "./PresenceBar";
 export type { SkillPaletteProps } from "./SkillPalette";
@@ -53,5 +67,3 @@ export type {
 export { useActivityFeed } from "./useActivityFeed";
 export type { CascadeConfig, CascadePipeline, CascadeResult } from "./useCascadePipeline";
 export { useCascadePipeline } from "./useCascadePipeline";
-export { InlineFigure } from './InlineFigure'
-export { InlineEvidenceCase } from './InlineEvidenceCase'

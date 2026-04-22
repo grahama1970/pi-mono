@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer QRAs",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "qras-view",
+      "path": "/#sparta-explorer/qras",
+      "wait_ready": "[data-qid='qras:search']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "left-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Left pane in default state"
+            },
+            {
+              "action": "type",
+              "target": "[data-qid='qras:search']",
+              "value": "Test",
+              "description": "Type in search box"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:filter:mind:Harden']",
+              "description": "Click MIND filter tag"
+            }
+          ]
+        },
+        {
+          "name": "center-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Center pane in default state"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:action:accept']",
+              "description": "Accept QRA"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:action:undo']",
+              "description": "Undo Accept"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:action:edit']",
+              "description": "Enter Edit Mode"
+            }
+          ]
+        },
+        {
+          "name": "right-pane",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Right pane evidence view"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:action:validate_evidence']",
+              "description": "Run /create-evidence-case validation"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

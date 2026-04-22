@@ -182,6 +182,11 @@ export class AgentInterface extends LitElement {
 					}
 					this.requestUpdate();
 					break;
+				case "tool_execution_start":
+				case "tool_execution_update":
+				case "tool_execution_end":
+					this.requestUpdate();
+					break;
 			}
 		});
 	}
@@ -265,11 +270,23 @@ export class AgentInterface extends LitElement {
 		if (!this.session)
 			return html`<div class="p-4 text-center text-muted-foreground">${i18n("No session available")}</div>`;
 		const state = this.session.state;
+		const partialToolResults = (
+			state as typeof state & {
+				partialToolResults?: Map<string, ToolResultMessage<any>>;
+			}
+		).partialToolResults;
 		// Build a map of tool results to allow inline rendering in assistant messages
 		const toolResultsById = new Map<string, ToolResultMessage<any>>();
 		for (const message of state.messages) {
 			if (message.role === "toolResult") {
 				toolResultsById.set(message.toolCallId, message);
+			}
+		}
+		if (partialToolResults) {
+			for (const [toolCallId, partialResult] of partialToolResults) {
+				if (!toolResultsById.has(toolCallId)) {
+					toolResultsById.set(toolCallId, partialResult);
+				}
 			}
 		}
 		return html`

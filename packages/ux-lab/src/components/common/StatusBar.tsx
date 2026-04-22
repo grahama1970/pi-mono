@@ -53,7 +53,15 @@ export function StatusBar({
       color: EMBRY.dim,
     }}>
       {/* Connection status */}
-      <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: statusColor }}>
+      <span
+        style={{ display: 'flex', alignItems: 'center', gap: 4, color: statusColor, cursor: connected ? 'default' : 'help' }}
+        title={
+          loading ? 'Connecting to backend services...'
+          : error ? `Connection error: ${error}. Check that the daemon is running.`
+          : connected ? `Connected to ${connectionLabel}`
+          : 'Disconnected from backend. The WebSocket connection to localhost:7890 is down. Check that the Switchboard server is running (switchboard.sh start).'
+        }
+      >
         <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', flexShrink: 0 }} />
         {statusText}
       </span>

@@ -1,0 +1,511 @@
+version: 1
+app: SPARTA Explorer
+base_url: "http://localhost:3004/#sparta-explorer"
+persona: brandon-bailey
+
+# Brandon Bailey - CMMC/Compliance Persona
+# Focus: Status indicators, access control, audit trails, compliance posture
+# COTS Thresholds: C01 font>=12px, C02 touch>=44px, C03 contrast>=4.5:1, C06 focus-visible, C14 tooltips
+
+surfaces:
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 1: Main Layout & Global Navigation
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: main-layout
+    path: "/"
+    wait_ready: "[data-qid='sparta:button:tab-threat-matrix']"
+    qid_compliance: false  # Disable auto-scan (too many hidden elements)
+
+    elements:
+      # ── Tab Navigation ──────────────────────────────────────────────────────
+      - name: tab-navigation
+        interactions:
+          - action: screenshot
+            description: "Initial state - Threat Matrix tab active"
+
+          # Posture Tab (compliance-critical for Brandon)
+          - action: click
+            target: "[data-qid='sparta:button:tab-posture']"
+            description: "Navigate to Posture tab (compliance dashboard)"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-posture']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-posture']"
+            assert_qs_action: "[data-qid='sparta:button:tab-posture']"
+            assert_aria:
+              selector: "[data-qid='sparta:button:tab-posture']"
+              attribute: "aria-selected"
+              value: "true"
+
+          # Controls Tab (control mappings)
+          - action: click
+            target: "[data-qid='sparta:button:tab-controls']"
+            description: "Navigate to Controls tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-controls']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-controls']"
+            assert_qs_action: "[data-qid='sparta:button:tab-controls']"
+
+          # QRAs Tab (compliance Q&A)
+          - action: click
+            target: "[data-qid='sparta:button:tab-qras']"
+            description: "Navigate to QRAs tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-qras']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-qras']"
+            assert_qs_action: "[data-qid='sparta:button:tab-qras']"
+
+          # Sources Tab (audit trail - document provenance)
+          - action: click
+            target: "[data-qid='sparta:button:tab-sources']"
+            description: "Navigate to Sources tab (document provenance)"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-sources']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-sources']"
+            assert_qs_action: "[data-qid='sparta:button:tab-sources']"
+
+          # URLs Tab
+          - action: click
+            target: "[data-qid='sparta:button:tab-urls']"
+            description: "Navigate to URLs tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-urls']"
+              min_width: 44
+              min_height: 44
+
+          # Supply Chain Tab (critical for CMMC)
+          - action: click
+            target: "[data-qid='sparta:button:tab-supply-chain']"
+            description: "Navigate to Supply Chain tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-supply-chain']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:tab-supply-chain']"
+            assert_qs_action: "[data-qid='sparta:button:tab-supply-chain']"
+
+          # Threat Matrix Tab
+          - action: click
+            target: "[data-qid='sparta:button:tab-threat-matrix']"
+            description: "Return to Threat Matrix tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:tab-threat-matrix']"
+              min_width: 44
+              min_height: 44
+
+      # ── Ask AI Panel ────────────────────────────────────────────────────────
+      - name: ask-ai-panel
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:ask-ai']"
+            description: "Open Ask Embry chat panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:ask-ai']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:ask-ai']"
+            assert_qs_action: "[data-qid='sparta:button:ask-ai']"
+
+          - action: wait
+            target: "[data-qid='sparta:button:chat-close']"
+            timeout_ms: 1000
+            description: "Wait for chat panel animation"
+
+          - action: screenshot
+            description: "Chat panel open - split view layout"
+
+          # Scope buttons (data access control)
+          - action: click
+            target: "[data-qid='sparta:button:chat-scope-sparta']"
+            description: "Set scope to SPARTA only"
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-scope-sparta']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:chat-scope-sparta']"
+            assert_qs_action: "[data-qid='sparta:button:chat-scope-sparta']"
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-scope-f36']"
+            description: "Set scope to F-36 datalake"
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-scope-f36']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:chat-scope-f36']"
+            assert_qs_action: "[data-qid='sparta:button:chat-scope-f36']"
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-scope-both']"
+            description: "Set scope to Both datalakes"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-scope-both']"
+              min_width: 44
+              min_height: 44
+
+          # Gate depth buttons (evidence rigor)
+          - action: click
+            target: "[data-qid='sparta:button:chat-depth-fast']"
+            description: "Set gate depth to Fast"
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-depth-fast']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:chat-depth-fast']"
+            assert_qs_action: "[data-qid='sparta:button:chat-depth-fast']"
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-depth-medium']"
+            description: "Set gate depth to Medium"
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-depth-medium']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='sparta:button:chat-depth-accurate']"
+            description: "Set gate depth to Accurate (full evidence chain)"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-depth-accurate']"
+              min_width: 44
+              min_height: 44
+
+          # Close chat
+          - action: click
+            target: "[data-qid='sparta:button:chat-close']"
+            description: "Close chat panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:chat-close']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:chat-close']"
+
+          - action: wait
+            timeout_ms: 500
+            description: "Wait for close animation"
+
+      # ── Settings Panel ──────────────────────────────────────────────────────
+      - name: settings-panel
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:settings']"
+            description: "Open settings panel"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='sparta:button:settings']"
+              min_width: 44
+              min_height: 44
+            assert_title: "[data-qid='sparta:button:settings']"
+            assert_qs_action: "[data-qid='sparta:button:settings']"
+
+          - action: key
+            key: "Escape"
+            description: "Close settings with Escape"
+
+      # ── Keyboard Navigation (Accessibility) ─────────────────────────────────
+      - name: keyboard-navigation
+        interactions:
+          - action: tab
+            count: 5
+            description: "Tab through first 5 focusable elements"
+            assert_focus_visible: "[data-qid]"
+
+          - action: key
+            key: "1"
+            description: "Keyboard shortcut 1 - Posture tab"
+            screenshot_after: true
+
+          - action: key
+            key: "2"
+            description: "Keyboard shortcut 2 - Threat Matrix tab"
+            screenshot_after: true
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 2: Posture Dashboard (Compliance Status - Brandon's primary view)
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: posture-dashboard
+    path: "/posture"
+    wait_ready: "[data-qid='sparta:button:tab-posture']"
+    qid_compliance: false
+
+    elements:
+      - name: posture-overview
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-posture']"
+            description: "Ensure Posture tab is active"
+
+          - action: wait
+            timeout_ms: 500
+            description: "Wait for dashboard render"
+
+          - action: screenshot
+            description: "Posture dashboard - compliance status overview"
+
+      - name: posture-tabs
+        interactions:
+          # Internal posture sub-tabs if present
+          - action: click
+            target: "[data-qid='posture:tab:posture']"
+            description: "Click Posture sub-tab"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='posture:tab:posture']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='posture:tab:traceability']"
+            description: "Click Traceability sub-tab (audit trail)"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='posture:tab:traceability']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='posture:tab:assurance-case-health']"
+            description: "Click Assurance Case Health sub-tab"
+            screenshot_after: true
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 3: Controls View (Control Mappings)
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: controls-view
+    path: "/controls"
+    wait_ready: "[data-qid='sparta:button:tab-controls']"
+    qid_compliance: false
+
+    elements:
+      - name: controls-table
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-controls']"
+            description: "Navigate to Controls tab"
+
+          - action: wait
+            timeout_ms: 1000
+            description: "Wait for controls table to load"
+
+          - action: screenshot
+            description: "Controls view - control mapping table"
+
+      - name: controls-search
+        interactions:
+          - action: click
+            target: "[data-qid='controls:search:input']"
+            description: "Focus controls search input"
+            assert_min_size:
+              selector: "[data-qid='controls:search:input']"
+              min_width: 44
+              min_height: 44
+
+          - action: type
+            target: "[data-qid='controls:search:input']"
+            value: "AC-"
+            description: "Search for Access Control family"
+            screenshot_after: true
+
+          - action: type
+            target: "[data-qid='controls:search:input']"
+            value: ""
+            description: "Clear search"
+
+      - name: controls-filters
+        interactions:
+          - action: click
+            target: "[data-qid='controls:filter:framework']"
+            description: "Open framework filter dropdown"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='controls:filter:framework']"
+              min_width: 44
+              min_height: 44
+
+          - action: key
+            key: "Escape"
+            description: "Close filter dropdown"
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 4: QRAs View (Compliance Q&A)
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: qras-view
+    path: "/qras"
+    wait_ready: "[data-qid='sparta:button:tab-qras']"
+    qid_compliance: false
+
+    elements:
+      - name: qras-cards
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-qras']"
+            description: "Navigate to QRAs tab"
+
+          - action: wait
+            timeout_ms: 1000
+            description: "Wait for QRA cards to load"
+
+          - action: screenshot
+            description: "QRAs view - compliance Q&A cards"
+
+      - name: qras-keyboard
+        interactions:
+          # QRA keyboard navigation (A/Q/R for Answer/Question/Reasoning)
+          - action: key
+            key: "q"
+            description: "Press Q to focus Question section"
+            screenshot_after: true
+
+          - action: key
+            key: "a"
+            description: "Press A to focus Answer section"
+            screenshot_after: true
+
+          - action: key
+            key: "r"
+            description: "Press R to focus Reasoning section"
+            screenshot_after: true
+
+          - action: key
+            key: "ArrowRight"
+            description: "Navigate to next QRA card"
+
+          - action: key
+            key: "ArrowLeft"
+            description: "Navigate to previous QRA card"
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 5: Sources View (Document Provenance - Audit Trail)
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: sources-view
+    path: "/sources"
+    wait_ready: "[data-qid='sparta:button:tab-sources']"
+    qid_compliance: false
+
+    elements:
+      - name: sources-list
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-sources']"
+            description: "Navigate to Sources tab"
+
+          - action: wait
+            timeout_ms: 1000
+            description: "Wait for sources list to load"
+
+          - action: screenshot
+            description: "Sources view - document provenance list"
+
+      # Note: Source row interactions use dynamic QIDs (sources:source:*, sources:control:*, sources:url:*)
+      # based on data loaded from API. Static selector testing not applicable here.
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 6: Threat Matrix View
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: threat-matrix-view
+    path: "/threat-matrix"
+    wait_ready: "[data-qid='sparta:button:tab-threat-matrix']"
+    qid_compliance: false
+
+    elements:
+      - name: matrix-visualization
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-threat-matrix']"
+            description: "Navigate to Threat Matrix tab"
+
+          - action: wait
+            timeout_ms: 1500
+            description: "Wait for matrix visualization to render"
+
+          - action: screenshot
+            description: "Threat Matrix - standard view"
+
+      - name: matrix-view-modes
+        interactions:
+          - action: click
+            target: "[data-qid='matrix:view-standard']"
+            description: "Switch to standard view mode"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='matrix:view-standard']"
+              min_width: 44
+              min_height: 44
+
+          - action: click
+            target: "[data-qid='matrix:view-bloom']"
+            description: "Switch to bloom view mode"
+            screenshot_after: true
+
+          - action: click
+            target: "[data-qid='matrix:view-graph']"
+            description: "Switch to graph view mode (D3 force layout)"
+            screenshot_after: true
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # SURFACE 7: Supply Chain View (CMMC Critical)
+  # ══════════════════════════════════════════════════════════════════════════
+  - name: supply-chain-view
+    path: "/supply-chain"
+    wait_ready: "[data-qid='sparta:button:tab-supply-chain']"
+    qid_compliance: false
+
+    elements:
+      - name: supply-chain-overview
+        interactions:
+          - action: click
+            target: "[data-qid='sparta:button:tab-supply-chain']"
+            description: "Navigate to Supply Chain tab"
+
+          - action: wait
+            timeout_ms: 1000
+            description: "Wait for supply chain visualization"
+
+          - action: screenshot
+            description: "Supply Chain view - dependency graph"
+
+      - name: supply-chain-scenarios
+        interactions:
+          - action: click
+            target: "[data-qid='supply-chain-scenario-select']"
+            description: "Open scenario selector"
+            screenshot_after: true
+            assert_min_size:
+              selector: "[data-qid='supply-chain-scenario-select']"
+              min_width: 44
+              min_height: 44
+
+          - action: key
+            key: "Escape"
+            description: "Close scenario dropdown"
+
+# ══════════════════════════════════════════════════════════════════════════
+# Global COTS Compliance Assertions
+# ══════════════════════════════════════════════════════════════════════════
+assertions:
+  # C01: Minimum font size (MIL-STD-1472H)
+  global_font_size: 12
+
+  # C03: Color contrast ratio (WCAG 2.1 AA)
+  global_contrast: 4.5
+
+  # C02: Touch target minimum (WCAG 2.1 / MIL-STD-1472H)
+  global_touch_target: 44

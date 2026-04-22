@@ -12,11 +12,13 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../sparta/common/EmbryStyle'
 import ReasoningBlock from './ReasoningBlock'
-import { highlightEntities } from './highlightEntities'
+import { highlightEntities, highlightWithGlossary, type GlossaryTerm } from './highlightEntities'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { SkillPalette } from './SkillPalette'
+import { SpartaHudInput, type ReasoningStep } from '../sparta/query/SpartaHudInput'
 import { RecallCard } from '../sparta/query/RecallCard'
 import { GateChain } from '../sparta/query/GateChain'
+import { BuildingEvidenceCase, type BuildingStep } from '../sparta/shared/BuildingEvidenceCase'
 import { ThreatMatrixCard } from '../sparta/query/ThreatMatrixCard'
 import { ToolAction } from './ToolAction'
 import type {
@@ -25,8 +27,20 @@ import type {
 } from './types'
 
 // ChatMessage, EntityRef, EvidenceGate, CascadeLayer, ThreatMatrixSummary, RecallItem
-// are all imported from shared-chat — no local definitions needed.
-export type { ChatMessage, ThreatMatrixSummary, EntityRef, EvidenceGate, CascadeLayer } from './highlightEntities'
+// are all imported from shared-chat/types — re-export for consumers.
+export type { ChatMessage, ThreatMatrixSummary, EntityRef, EvidenceGate, CascadeLayer } from './types'
+
+/** Live streaming step for evidence case progression */
+export interface StreamingStep {
+  id: string
+  type: string
+  skill?: string
+  status: 'pending' | 'running' | 'done' | 'failed'
+  summary: string
+  detail?: string
+  duration?: number
+  startedAt?: number
+}
 
 export interface ChatWellProps {
   messages: ChatMessage[]
@@ -43,6 +57,10 @@ export interface ChatWellProps {
   onEntityClick?: (entity: string, type: string) => void
   /** Starter questions from sparta_qra — replaces hardcoded defaults when provided */
   starterQuestions?: string[]
+  /** True when agent is streaming a response */
+  isStreaming?: boolean
+  /** Live steps during evidence case/agent execution */
+  streamingSteps?: StreamingStep[]
 }
 
 const LAYER_COLORS: Record<CascadeLayer, string> = {
@@ -70,6 +88,14 @@ function MessageItem({
 }) {
   const isUser = msg.role === 'user'
 
+  // Get glossary from evidence case if available (domain phrases from /create-evidence-case daemon)
+  const glossary: GlossaryTerm[] = msg.evidenceCase?.glossary || []
+
+  // Use highlightWithGlossary when daemon glossary is available, else fallback to static patterns
+  const highlight = (text: string) => glossary.length > 0
+    ? highlightWithGlossary(text, glossary, onEntityClick)
+    : highlightEntities(text, onEntityClick)
+
   // ── User message: right-aligned bubble ──
   if (isUser) {
     return (
@@ -81,7 +107,7 @@ function MessageItem({
           fontSize: 12, lineHeight: 1.6, color: EMBRY.white,
           fontFamily: msg.type === 'aql' ? 'monospace' : 'inherit',
         }}>
-          {highlightEntities(msg.content)}
+          {highlight(msg.content)}
         </div>
       </div>
     )
@@ -147,11 +173,12 @@ function MessageItem({
       {msg.entities && msg.entities.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
           {msg.entities.map((e, i) => (
-            <button key={i} data-qid={`chat:entity:${e.id}`} data-qs-action={`navigate-entity-${e.id}`} tabIndex={0} onClick={() => onEntityClick?.(e.id, e.exists ? 'control' : 'cwe')} style={{
+            <button key={i} data-qid={`chat:entity:${e.id}`} data-qs-action={`NAVIGATE_ENTITY_${e.id.replace(/[^A-Za-z0-9]/g, '_').toUpperCase()}`} tabIndex={0} onClick={() => onEntityClick?.(e.id, e.exists ? 'control' : 'cwe')} style={{
               ...fwBadge(e.exists ? 'SPARTA' : 'CWE'),
               opacity: e.exists ? 1 : 0.5,
               cursor: 'pointer',
-              minHeight: 28, minWidth: 44,
+              minHeight: 44, minWidth: 44,
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             }} title={`${e.id} — ${e.exists ? 'found in corpus' : 'not found'}`}>
               {e.label}
             </button>
@@ -220,18 +247,38 @@ function MessageItem({
       {/* Thumbs */}
       {onFeedback && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
-          <button data-qid={`chat:feedback-up:${msg.id}`} title="Helpful response" onClick={() => onFeedback(msg.id, 'up')} style={{
-            background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
-            opacity: msg.feedback === 'up' ? 1 : 0.3,
-            filter: msg.feedback === 'up' ? `drop-shadow(0 0 4px ${EMBRY.green})` : 'none',
-          }}>
+          <button
+            data-qid={`chat:feedback-up:${msg.id}`}
+            data-qs-action="FEEDBACK_HELPFUL"
+            title="Helpful response"
+            onClick={() => msg.id && onFeedback(msg.id, 'up')}
+            style={{
+              background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
+              cursor: 'pointer', fontSize: 14,
+              minWidth: 44, minHeight: 44,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: msg.feedback === 'up' ? 1 : 0.5,
+              color: msg.feedback === 'up' ? EMBRY.green : EMBRY.dim,
+              filter: msg.feedback === 'up' ? `drop-shadow(0 0 4px ${EMBRY.green})` : 'none',
+            }}
+          >
             {'\u25B2'}
           </button>
-          <button data-qid={`chat:feedback-down:${msg.id}`} title="Not helpful" onClick={() => onFeedback(msg.id, 'down')} style={{
-            background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
-            opacity: msg.feedback === 'down' ? 1 : 0.3,
-            filter: msg.feedback === 'down' ? `drop-shadow(0 0 4px ${EMBRY.red})` : 'none',
-          }}>
+          <button
+            data-qid={`chat:feedback-down:${msg.id}`}
+            data-qs-action="FEEDBACK_NOT_HELPFUL"
+            title="Not helpful"
+            onClick={() => msg.id && onFeedback(msg.id, 'down')}
+            style={{
+              background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
+              cursor: 'pointer', fontSize: 14,
+              minWidth: 44, minHeight: 44,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: msg.feedback === 'down' ? 1 : 0.5,
+              color: msg.feedback === 'down' ? EMBRY.red : EMBRY.dim,
+              filter: msg.feedback === 'down' ? `drop-shadow(0 0 4px ${EMBRY.red})` : 'none',
+            }}
+          >
             {'\u25BC'}
           </button>
         </div>
@@ -244,7 +291,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions, isStreaming, streamingSteps }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [showPalette, setShowPalette] = useState(false)
   const [skillFilter, setSkillFilter] = useState('')
@@ -290,19 +337,26 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
     }
   }, [handleSend, showPalette])
 
+  const hasConversation = messages.length > 0 || isStreaming
+  const composerDockHeight = 128
+
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden',
+      display: 'flex', flexDirection: 'column', flex: 1, height: '100%', minHeight: 0, overflow: 'hidden',
       background: EMBRY.bg,
     }}>
       {/* Messages — scrollable, full height */}
       <div style={{
-        flex: 1, overflow: 'auto', padding: '8px 16px',
-        display: 'flex', flexDirection: 'column',
+        flex: 1,
+        minHeight: 0,
+        overflow: 'auto',
+        padding: hasConversation ? '8px 16px 8px 16px' : '4px 16px 8px 16px',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
         {messages.length === 0 && (
-          <div style={{ padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-            <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Ask a question</div>
+          <div style={{ padding: '4px 0 0 0', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center', marginBottom: 6 }}>
+            <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Ask a question</div>
             {(starterQuestions ?? [
               'Show me the F-36 threat matrix',
               'What SPARTA controls cover supply chain attacks?',
@@ -315,7 +369,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
                 background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`,
                 borderRadius: 8, padding: '10px 16px', cursor: 'pointer',
                 color: EMBRY.dim, fontSize: 12, textAlign: 'left', width: '100%',
-                minHeight: 44, transition: 'all 0.15s',
+                minWidth: 44, minHeight: 44, transition: 'all 0.15s',
               }} onMouseEnter={e => { e.currentTarget.style.borderColor = EMBRY.accent; e.currentTarget.style.color = EMBRY.white }}
                  onMouseLeave={e => { e.currentTarget.style.borderColor = `${EMBRY.accent}22`; e.currentTarget.style.color = EMBRY.dim }}>
                 {q}
@@ -336,22 +390,28 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             onEntityClick={onEntityClick}
           />
         ))}
+        {/* Live streaming gate progression — animated evidence case building */}
+        {isStreaming && (
+          <BuildingEvidenceCase
+            steps={streamingSteps?.map(s => ({
+              id: s.id,
+              type: s.type,
+              status: s.status,
+              summary: s.summary,
+              detail: s.detail,
+              duration: s.duration,
+            })) ?? []}
+            isStreaming={isStreaming}
+            title="Building Evidence Case"
+          />
+        )}
         <div ref={chatEndRef} />
       </div>
 
-      {/* Composer — with skill palette */}
-      <div style={{
-        padding: '8px 12px 12px',
-        borderTop: `1px solid ${EMBRY.border}`,
-        background: EMBRY.bgPanel,
-      }}>
-        <div style={{
-          background: EMBRY.bgDeep,
-          border: `1px solid ${EMBRY.border}`,
-          borderRadius: 12, overflow: 'hidden',
-          position: 'relative',
-        }}>
-          {showPalette && skills && skills.length > 0 && (
+      {/* 2026 Modern Tactical Command Bar — Glassmorphic Floating HUD */}
+      <div style={{ position: 'relative', flexShrink: 0, height: composerDockHeight }}>
+        {showPalette && skills && skills.length > 0 && (
+          <div style={{ position: 'absolute', bottom: 72, left: 16, right: 16, zIndex: 101 }}>
             <SkillPalette
               filter={skillFilter}
               skills={skills}
@@ -359,42 +419,15 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
               onClose={() => setShowPalette(false)}
               onKeyNav={handler => { paletteKeyHandler.current = handler }}
             />
-          )}
-          <textarea
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            data-qid="chat:input" data-qs-action="type-message" title="Type a message or /skill-name" placeholder="Ask about the SPARTA graph... (/ for skills)"
-            style={{
-              width: '100%', border: 'none', outline: 'none', resize: 'none',
-              background: 'transparent', fontSize: 13, color: EMBRY.white,
-              padding: '10px 14px 6px', lineHeight: 1.5,
-              minHeight: 44, maxHeight: 120,
-            }}
-            rows={1}
-          />
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-            padding: '2px 8px 6px',
-          }}>
-            <button
-              onClick={handleSend}
-              disabled={!input.trim()}
-              data-qid="chat:send" data-qs-action="send-message" title="Send message (Enter)"
-              aria-label="Send message"
-              style={{
-                width: 44, height: 44, borderRadius: '50%', border: 'none',
-                cursor: input.trim() ? 'pointer' : 'default',
-                background: input.trim() ? EMBRY.green : EMBRY.muted,
-                color: input.trim() ? '#000' : EMBRY.dim,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 14, fontWeight: 900, transition: 'all 0.15s',
-              }}
-            >
-              {'\u2191'}
-            </button>
           </div>
-        </div>
+        )}
+        <SpartaHudInput
+          onSend={(query, type) => onSend?.(query, type)}
+          onSkillsOpen={() => setShowPalette(true)}
+          isThinking={isStreaming}
+          thinkingLabel={isStreaming ? 'Building Evidence Case' : 'Thinking'}
+          reasoningSteps={streamingSteps ?? []}
+        />
       </div>
     </div>
   )

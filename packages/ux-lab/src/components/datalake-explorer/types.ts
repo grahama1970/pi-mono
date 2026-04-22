@@ -414,16 +414,38 @@ export interface MonitorEvent {
 }
 
 // --- BBox Workspace (V1 overhaul) ---
+export interface TocEntry {
+	title: string;
+	page: number;
+	qid?: string; // Associated QID marker for validation
+}
+
 export interface BboxBlock {
 	id: string;
 	page: number;
 	bbox: [number, number, number, number]; // x1, y1, x2, y2 normalized 0..1
-	blockType: "table" | "header" | "figure" | "text" | "equation" | "list_item" | "caption";
+	blockType:
+		| "table"
+		| "header"
+		| "figure"
+		| "text"
+		| "equation"
+		| "list_item"
+		| "caption"
+		| "page_number"
+		| "boilerplate";
+	semanticType?: string;
 	text: string;
 	confidence: number;
-	cascadeTrail: CascadeStep[];
+	cascadeTrail?: CascadeStep[];
 	sectionId?: string;
 	editState?: BboxEditState;
+	// PDF Lab extensions
+	qids?: string[]; // QID markers extracted from this block
+	tocEntries?: TocEntry[]; // Parsed TOC entries if this is a TOC block
+	reviewNotes?: string[];
+	humanEdited?: boolean;
+	humanEditedAt?: string;
 }
 
 export interface CascadeStep {

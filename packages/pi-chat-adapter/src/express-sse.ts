@@ -18,7 +18,7 @@ export interface PiChatRouterOptions {
 	lazyConnect?: boolean;
 }
 
-export function createPiChatRouter(opts: PiChatRouterOptions = {}): Router {
+export function createPiChatRouter(_opts: PiChatRouterOptions = {}): Router {
 	const router = Router();
 	const client = new PiDbusClient();
 	let connected = false;
@@ -215,7 +215,6 @@ export function createPiChatRouter(opts: PiChatRouterOptions = {}): Router {
 				try {
 					const state = await client.getState();
 					const streaming = state.isStreaming as boolean;
-					const msgCount = state.messageCount as number;
 					// If agent stopped streaming and we have text, it's done
 					if (!streaming && assembler.currentText().length > 0 && Date.now() - lastTextAt > 2000) {
 						finish();
@@ -226,7 +225,6 @@ export function createPiChatRouter(opts: PiChatRouterOptions = {}): Router {
 			}, 1500);
 
 			// Track last text event time for idle detection
-			const origOnRequest = client.onRequest.bind(client);
 			client.onRequest(requestId, () => {
 				lastTextAt = Date.now();
 			});

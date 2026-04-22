@@ -6,6 +6,7 @@
  *
  * Binary analysis presets: buildBinaryNodeMenuItems() returns IDA/Ghidra-style node items.
  */
+/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useRef } from 'react'
 import { EMBRY } from './EmbryStyle'
 
@@ -109,7 +110,7 @@ export function buildBinaryNodeMenuItems(
 }
 
 export interface ContextMenuItem {
-  label: string
+  label?: string
   icon?: React.ReactNode
   /** Keyboard shortcut label shown right-aligned (e.g. "N", "Ctrl+C", ";") */
   shortcut?: string
@@ -119,7 +120,11 @@ export interface ContextMenuItem {
   header?: boolean
   danger?: boolean
   disabled?: boolean
-  onClick: () => void
+  onClick?: () => void
+  /** Test automation identifier */
+  'data-qid'?: string
+  /** QuerySpec action identifier */
+  'data-qs-action'?: string
 }
 
 interface ContextMenuProps {
@@ -197,9 +202,12 @@ export function ContextMenu({ x, y, items, title, onClose }: ContextMenuProps) {
         return (
           <div
             key={i}
+            data-qid={item['data-qid']}
+            data-qs-action={item['data-qs-action']}
+            title={item.label}
             onClick={() => {
               if (item.disabled) return
-              item.onClick()
+              item.onClick?.()
               onClose()
             }}
             style={{

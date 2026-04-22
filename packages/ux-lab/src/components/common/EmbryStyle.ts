@@ -7,6 +7,12 @@ export const EMBRY = {
 	bgPanel: "#111111",
 	bgDeep: "#0b1220",
 	bgHeader: "#0f172a",
+	surface: "#1a1a1a", // alias for bgCard — used by InlineEvidenceCase
+	surfaceAlt: "#1e1e1e", // slightly lighter surface for contrast
+
+	// Text (aliases for consistency with other token sets)
+	text: "#e2e8f0", // alias for white
+	textMuted: "#94a3b8", // alias for muted/dim
 
 	// Border
 	border: "rgba(255, 255, 255, 0.13)",
@@ -146,6 +152,18 @@ export function glowDot(color: string, size = 8): React.CSSProperties {
 		flexShrink: 0,
 	};
 }
+
+/** Fluid typography scale using clamp() for responsive sizing */
+export const FLUID = {
+	/** Technique label: 10px → 14px */
+	techLabel: "clamp(0.625rem, 0.8vw + 0.4rem, 0.875rem)",
+	/** Tactic header: 8px → 12px */
+	tacticHeader: "clamp(0.5rem, 0.6vw + 0.3rem, 0.75rem)",
+	/** Card padding: 6px → 12px */
+	cardPadding: "clamp(6px, 0.8vw, 12px)",
+	/** Grid gap: 8px → 16px */
+	gridGap: "clamp(8px, 1vw, 16px)",
+} as const;
 
 /** Framework badge */
 export function fwBadge(framework: string): React.CSSProperties {

@@ -94,6 +94,10 @@ export const sampleBatches: BatchProgress[] = [
 		errors: 12,
 		cost_usd: 0.52,
 		avg_duration_ms: 2450,
+		status: "running",
+		lastActivityTs: new Date().toISOString(),
+		firstError: "Rate limit exceeded",
+		caller: "create-qras",
 	},
 	{
 		batch_id: "sparta-ingest-04",
@@ -102,6 +106,10 @@ export const sampleBatches: BatchProgress[] = [
 		errors: 3,
 		cost_usd: 0.18,
 		avg_duration_ms: 1820,
+		status: "completed",
+		lastActivityTs: new Date().toISOString(),
+		firstError: null,
+		caller: "ingest-sparta",
 	},
 	{
 		batch_id: "audiobook-ch5",
@@ -110,6 +118,10 @@ export const sampleBatches: BatchProgress[] = [
 		errors: 0,
 		cost_usd: 0.03,
 		avg_duration_ms: 3200,
+		status: "stalled",
+		lastActivityTs: new Date().toISOString(),
+		firstError: null,
+		caller: "consume-audiobook",
 	},
 ];
 
