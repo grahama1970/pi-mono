@@ -288,7 +288,7 @@ const styles: Record<string, React.CSSProperties> = {
   textarea: {
     flex: 1,
     minWidth: 0,
-    minHeight: 24,
+    minHeight: 44,
     maxHeight: 200,
     background: 'transparent',
     border: 'none',

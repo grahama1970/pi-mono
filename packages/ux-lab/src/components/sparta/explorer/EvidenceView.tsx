@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { CheckCircle2, XCircle, AlertCircle, ShieldCheck, RefreshCw, ArrowRight, Link2, FileText, ChevronDown, ChevronRight } from 'lucide-react'
-import { EMBRY, body } from '../common/EmbryStyle'
+import { useEffect, useState } from 'react'
+import { EMBRY } from '../common/EmbryStyle'
 import { inlineHighlight, spanHighlight } from './explorerUtils'
+import type { HighlightEmphasis } from './explorerUtils'
 import type { EvidenceCase, CrosswalkChain, EvidenceSpan } from '../../../hooks/useSpartaCollections'
-import { useRegisterAction } from '../../../hooks/useRegisterAction'
-import { MarkdownRenderer } from '../../shared-chat/MarkdownRenderer'
+import { EvidenceCaseTrace } from '../shared'
 
 // Framework colors per NVIS standard
 const FW_COLORS: Record<string, string> = {
@@ -16,6 +15,20 @@ const FW_COLORS: Record<string, string> = {
   D3FEND: '#00ff88',
 }
 
+const EXTRACT_API = 'http://localhost:3001/api/extract-entities'
+const CONTROL_ID_FALLBACK_RE = /\b(?:[A-Z]{1,8}-\d{1,4}(?:\([0-9A-Za-z]+\))?(?:\.\d+)?|(?:[A-Z]{2,8}-)?T\d{4}(?:\.\d{3})?|CWE-\d+|CAPEC-\d+|D3F:[A-Za-z0-9_.:-]+)\b/g
+
+function extractControlIdsFromText(text: string): string[] {
+  const hits = text.match(CONTROL_ID_FALLBACK_RE) ?? []
+  const unique = new Set<string>()
+  for (const raw of hits) {
+    const v = raw.trim().replace(/[),.;:!?]+$/g, '')
+    if (!v || v.startsWith('/')) continue
+    unique.add(v)
+  }
+  return Array.from(unique)
+}
+
 interface LiveEvidenceCase {
   question: string
   markdown_report?: string
@@ -23,114 +36,34 @@ interface LiveEvidenceCase {
   confidence: number
   entities: string[]
   total_time_ms: number
+  verdict?: string | { state?: string; grade?: string }
+  verdict_state?: string
+  answer?: string
+  response_action?: string
 }
 
 interface EvidenceViewProps {
   question: string
   qraKey?: string
   reasoning?: string
+  answer?: string
   groundingScore?: number
   storedEvidenceCase?: EvidenceCase | null
+  minHighlightEmphasis?: HighlightEmphasis
   onClose?: () => void
 }
 
-/** Render a single crosswalk chain as a visual path */
-function CrosswalkChainView({ chain }: { chain: CrosswalkChain }) {
-  const hops = chain.hops || []
-  // Handle both field name conventions: source/target OR from/from_framework/to_framework
-  const sourceId = chain.source || (chain as any).from || ''
-  const sourceFw = (chain as any).from_framework || 'source'
-  const targetFw = (chain as any).to_framework || 'target'
-  // Target is last hop's control_id, or explicit target field
-  const lastHop = hops[hops.length - 1]
-  const targetId = chain.target || lastHop?.control_id || lastHop?.id || ''
-
-  const allNodes = [
-    { control_id: sourceId, framework: sourceFw, name: undefined as string | undefined },
-    ...hops.map(h => ({ control_id: h.control_id || h.id, framework: h.framework, name: h.name })),
-    // Only add target node if it's different from last hop
-    ...(targetId && targetId !== (lastHop?.control_id || lastHop?.id) ? [{ control_id: targetId, framework: targetFw, name: undefined as string | undefined }] : []),
-  ]
-
-  return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      padding: '8px 10px',
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      borderRadius: 6,
-      border: `1px solid ${EMBRY.border}`,
-      flexWrap: 'wrap',
-    }}>
-      {allNodes.map((node, idx) => {
-        const fw = node.framework?.toUpperCase() || 'UNKNOWN'
-        const color = FW_COLORS[fw] || EMBRY.dim
-        const isLast = idx === allNodes.length - 1
-
-        return (
-          <div key={`${node.control_id}-${idx}`} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span
-              title={node.name || node.framework}
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                fontFamily: 'monospace',
-                padding: '3px 6px',
-                borderRadius: 4,
-                backgroundColor: `${color}20`,
-                color,
-                border: `1px solid ${color}40`,
-              }}
-            >
-              {node.control_id}
-            </span>
-            {!isLast && <ArrowRight size={12} color={EMBRY.dim} />}
-          </div>
-        )
-      })}
-      {chain.method && (
-        <span style={{
-          fontSize: 9,
-          color: EMBRY.dim,
-          marginLeft: 'auto',
-          fontStyle: 'italic',
-        }}>
-          via {chain.method}
-        </span>
-      )}
-      {chain.confidence !== undefined && (
-        <span style={{
-          fontSize: 9,
-          color: chain.confidence >= 0.8 ? EMBRY.green : EMBRY.amber,
-          fontWeight: 700,
-        }}>
-          {Math.round(chain.confidence * 100)}%
-        </span>
-      )}
-    </div>
-  )
-}
-
-/** Section header component */
-function SectionHeader({ icon: Icon, label: text, color }: { icon: typeof Link2; label: string; color?: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-      <Icon size={12} color={color || EMBRY.accent} />
-      <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1, color: color || EMBRY.accent, textTransform: 'uppercase' }}>
-        {text}
-      </span>
-    </div>
-  )
-}
-
-export function EvidenceView({ question, reasoning, groundingScore, storedEvidenceCase }: EvidenceViewProps) {
-  useRegisterAction('qras:action:validate_evidence', { app: 'sparta-explorer', action: 'VALIDATE_EVIDENCE', label: 'Validate Evidence', description: 'Run /create-evidence-case validation pipeline' })
-
+export function EvidenceView({ question, reasoning, answer, groundingScore, storedEvidenceCase, minHighlightEmphasis = 'medium' }: EvidenceViewProps) {
   const [liveData, setLiveData] = useState<LiveEvidenceCase | null>(null)
   const [validating, setValidating] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [reasoningExpanded, setReasoningExpanded] = useState(false)
+  const [extractedGlossary, setExtractedGlossary] = useState<Array<{ id: string; name: string; framework: string; type?: string; description?: string; source?: string }>>([])
+
+  const navigateToControl = (controlId: string) => {
+    window.dispatchEvent(new CustomEvent('sparta:navigate-control', { detail: { controlId } }))
+    const base = window.location.hash.split('/')[0] || '#sparta-explorer'
+    window.location.hash = `${base}/controls`
+  }
 
   const runValidation = async () => {
     setValidating(true)
@@ -150,256 +83,229 @@ export function EvidenceView({ question, reasoning, groundingScore, storedEviden
     }
   }
 
+  useEffect(() => {
+    let cancelled = false
+
+    const hasStoredGlossary = (storedEvidenceCase?.glossary?.length ?? 0) > 0
+    if (!question?.trim()) {
+      setExtractedGlossary([])
+      return () => { cancelled = true }
+    }
+
+    if (hasStoredGlossary) {
+      setExtractedGlossary([])
+      return () => { cancelled = true }
+    }
+
+    const storedSpans = Array.isArray((storedEvidenceCase as any)?.spans)
+      ? ((storedEvidenceCase as any).spans as Array<any>)
+      : []
+    const storedResolvedEntities = Array.isArray((storedEvidenceCase as any)?.resolved_entities)
+      ? ((storedEvidenceCase as any).resolved_entities as Array<any>)
+      : []
+
+    if (storedSpans.length > 0 || storedResolvedEntities.length > 0) {
+      const seeded = new Map<string, { id: string; name: string; framework: string; type?: string; description?: string; source?: string }>()
+
+      storedResolvedEntities.forEach((entity: any) => {
+        const id = typeof entity?.id === 'string' ? entity.id.trim() : ''
+        const name = typeof entity?.name === 'string' ? entity.name.trim() : ''
+        if (!id) return
+        const key = id.toLowerCase()
+        if (seeded.has(key)) return
+        seeded.set(key, {
+          id,
+          name: name || id,
+          framework: typeof entity?.framework === 'string' && entity.framework.trim() ? entity.framework : 'SPARTA',
+          type: 'phrase',
+          source: '/create-evidence-case resolved_entities',
+        })
+      })
+
+      storedSpans.forEach((span: any) => {
+        const spanText = typeof span?.text === 'string' ? span.text.trim() : ''
+        if (!spanText) return
+        const key = spanText.toLowerCase()
+        const existing = seeded.get(key)
+        if (existing) return
+        seeded.set(key, {
+          id: spanText,
+          name: spanText,
+          framework: typeof span?.framework === 'string' && span.framework.trim() ? span.framework : 'SPARTA',
+          type: span?.kind === 'control_id' ? 'control' : 'phrase',
+          source: '/create-evidence-case spans',
+        })
+      })
+
+      if (seeded.size > 0) {
+        setExtractedGlossary(Array.from(seeded.values()).slice(0, 30))
+      }
+    }
+
+    const extractionText = [question, answer, reasoning]
+      .filter((v): v is string => typeof v === 'string' && v.trim().length > 0)
+      .join('\n\n')
+
+    if (!extractionText) {
+      setExtractedGlossary([])
+      return () => { cancelled = true }
+    }
+
+    fetch(EXTRACT_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: extractionText, collection: 'sparta_controls' }),
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then(async (data) => {
+        if (cancelled) return
+
+        const ids = Array.isArray(data?.control_ids) ? data.control_ids : []
+        const metadata = Array.isArray(data?.control_metadata) ? data.control_metadata : []
+        const entities = Array.isArray(data?.entities) ? data.entities : []
+
+        const map = new Map<string, { id: string; name: string; framework: string; type?: string; description?: string; source?: string }>()
+
+        ids.forEach((cid: string, idx: number) => {
+          const meta = metadata[idx] ?? {}
+          if (!cid) return
+          map.set(cid, {
+            id: cid,
+            name: meta.name || cid,
+            framework: meta.framework || 'SPARTA',
+            type: 'control',
+            source: '/extract-entities',
+          })
+        })
+
+        entities.forEach((e: any) => {
+          const cid = typeof e?.id === 'string' ? e.id : ''
+          if (!cid || map.has(cid)) return
+          map.set(cid, {
+            id: cid,
+            name: typeof e?.name === 'string' && e.name.trim() ? e.name : cid,
+            framework: typeof e?.framework === 'string' && e.framework.trim() ? e.framework : 'SPARTA',
+            type: 'control',
+            source: '/extract-entities',
+          })
+        })
+
+        if (map.size > 0) {
+          setExtractedGlossary(Array.from(map.values()).slice(0, 20))
+          return
+        }
+
+        // Fallback: if flashtext extraction returns no IDs, parse explicit control IDs from text
+        // and re-query /extract-entities in delimiter mode for authoritative metadata.
+        const parsedIds = extractControlIdsFromText(extractionText)
+        if (parsedIds.length === 0) {
+          setExtractedGlossary([])
+          return
+        }
+
+        const delimited = await fetch(EXTRACT_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: parsedIds.join(', '),
+            collection: 'sparta_controls',
+            delimiter: 'auto',
+          }),
+        })
+        if (!delimited.ok) {
+          if (!cancelled) setExtractedGlossary([])
+          return
+        }
+        const delimiterData = await delimited.json()
+        if (cancelled) return
+
+        const delimEntities = Array.isArray(delimiterData?.entities) ? delimiterData.entities : []
+        const fallbackMap = new Map<string, { id: string; name: string; framework: string; type?: string; description?: string; source?: string }>()
+        delimEntities.forEach((e: any) => {
+          const cid = typeof e?.id === 'string' ? e.id : ''
+          if (!cid) return
+          fallbackMap.set(cid, {
+            id: cid,
+            name: typeof e?.name === 'string' && e.name.trim() ? e.name : cid,
+            framework: typeof e?.framework === 'string' && e.framework.trim() ? e.framework : 'SPARTA',
+            type: 'control',
+            source: '/extract-entities delimiter',
+          })
+        })
+        setExtractedGlossary(Array.from(fallbackMap.values()).slice(0, 20))
+      })
+      .catch(() => {
+        if (!cancelled) setExtractedGlossary([])
+      })
+
+    return () => { cancelled = true }
+  }, [question, answer, reasoning, storedEvidenceCase?.glossary?.length])
+
   const ec = storedEvidenceCase
   const chains = ec?.crosswalk_chains || ec?.chains || []
   const glossary = ec?.glossary || []
+  const effectiveGlossary = glossary.length > 0 ? glossary : extractedGlossary
+  const glossaryLabel = glossary.length > 0 ? 'Symbol Definitions' : 'Symbol Definitions (Extracted)'
   const controlIds = ec?.control_ids || []
+  const effectiveControlIds = controlIds.length > 0 ? controlIds : extractedGlossary.map((g) => g.id)
   const methods = ec?.methods || []
   const reviewStatus = ec?.review_status || 'pending'
   const confidence = ec?.confidence !== undefined
     ? Math.round(ec.confidence * 100)
     : (groundingScore ? Math.round(groundingScore * 100) : null)
   const formalProof = ec?.formal_proof
-  const spans = ec?.spans as EvidenceSpan[] | undefined
+  const liveVerdict = typeof liveData?.verdict === 'string'
+    ? liveData.verdict
+    : (liveData?.verdict?.state || liveData?.verdict_state)
+  const normalizedSpans: EvidenceSpan[] = Array.isArray(ec?.spans)
+    ? (ec!.spans as any[])
+      .map((span) => {
+        if (Array.isArray(span?.span) && span.span.length === 2) return span
+        if (typeof span?.start === 'number' && typeof span?.end === 'number') {
+          return { ...span, span: [span.start, span.end] }
+        }
+        return null
+      })
+      .filter((span): span is EvidenceSpan => Boolean(span))
+    : []
 
-  const itemStyle = { marginBottom: 16 }
+  const spanNode = normalizedSpans.length > 0
+    ? spanHighlight(question, normalizedSpans, effectiveGlossary, { minEmphasis: minHighlightEmphasis })
+    : null
+
+  const questionNode = (spanNode && spanNode !== question)
+    ? spanNode
+    : inlineHighlight(question, effectiveGlossary, { minEmphasis: minHighlightEmphasis })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: EMBRY.bg }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 12, fontFamily: 'monospace' }}>
-
-        {/* Claim Section */}
-        <div style={itemStyle}>
-          <SectionHeader icon={FileText} label="Claim" />
-          <div style={{ fontSize: 12, color: EMBRY.white, lineHeight: 1.5 }}>
-            {spans ? spanHighlight(question, spans, glossary) : inlineHighlight(question, glossary)}
-          </div>
-        </div>
-
-        {/* Verdict & Confidence Row */}
-        <div style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Verdict</div>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              color: reviewStatus === 'approved' ? EMBRY.green : reviewStatus === 'auto' ? EMBRY.amber : EMBRY.dim,
-              fontSize: 11, fontWeight: 700,
-            }}>
-              {reviewStatus === 'approved' && <CheckCircle2 size={12} />}
-              {reviewStatus === 'auto' && <RefreshCw size={12} />}
-              {reviewStatus === 'pending' && <AlertCircle size={12} />}
-              {reviewStatus.toUpperCase()}
-            </div>
-          </div>
-          {confidence !== null && (
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Confidence</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: confidence >= 80 ? EMBRY.green : EMBRY.amber }}>
-                {confidence}%
-              </div>
-            </div>
-          )}
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Formal Proof</div>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 4,
-              fontSize: 11, fontWeight: 700,
-              color: formalProof ? (formalProof.success ? EMBRY.green : EMBRY.red) : EMBRY.dim,
-            }}>
-              {formalProof ? (formalProof.success ? <CheckCircle2 size={12} /> : <XCircle size={12} />) : <AlertCircle size={12} />}
-              {formalProof ? (formalProof.success ? 'VERIFIED' : 'FAILED') : 'UNVERIFIED'}
-            </div>
-          </div>
-        </div>
-
-        {/* Methods Used */}
-        {methods.length > 0 && (
-          <div style={itemStyle}>
-            <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Methods</div>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              {methods.map(m => (
-                <span key={m} style={{
-                  fontSize: 9, padding: '2px 6px', borderRadius: 3,
-                  backgroundColor: `${EMBRY.blue}20`, color: EMBRY.blue,
-                  border: `1px solid ${EMBRY.blue}40`,
-                }}>{m}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Crosswalk Chains — THE KEY SECTION */}
-        {chains.filter(c => c.source || c.target || (c.hops && c.hops.length > 0)).length > 0 && (
-          <div style={itemStyle}>
-            <SectionHeader icon={Link2} label="Crosswalk Chains" color={EMBRY.green} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {chains.filter(c => c.source || c.target || (c.hops && c.hops.length > 0)).map((chain, idx) => (
-                <CrosswalkChainView key={`chain-${idx}`} chain={chain} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* No chains message */}
-        {chains.filter(c => c.source || c.target || (c.hops && c.hops.length > 0)).length === 0 && (
-          <div style={{
-            ...itemStyle,
-            padding: '12px',
-            backgroundColor: 'rgba(255,170,0,0.1)',
-            border: `1px solid ${EMBRY.amber}40`,
-            borderRadius: 6,
-          }}>
-            <div style={{ fontSize: 10, color: EMBRY.amber, fontWeight: 600 }}>
-              No crosswalk chains found
-            </div>
-            <div style={{ fontSize: 9, color: EMBRY.dim, marginTop: 4 }}>
-              This QRA is informational only — no framework-to-framework edges exist in sparta_relationships.
-            </div>
-          </div>
-        )}
-
-        {/* Source Control IDs */}
-        {controlIds.length > 0 && (
-          <div style={itemStyle}>
-            <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Source Controls</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-              {controlIds.map(id => (
-                <span key={id} style={{
-                  fontSize: 10, padding: '3px 7px',
-                  backgroundColor: `${EMBRY.accent}15`, color: EMBRY.accent,
-                  border: `1px solid ${EMBRY.accent}30`, borderRadius: 4,
-                  fontFamily: 'monospace',
-                }}>{id}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Glossary / Symbol Definitions */}
-        {glossary.length > 0 && (
-          <div style={itemStyle}>
-            <SectionHeader icon={FileText} label="Symbol Definitions" color={EMBRY.dim} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              {glossary.slice(0, 8).map(g => {
-                const color = FW_COLORS[g.framework?.toUpperCase()] || EMBRY.dim
-                return (
-                  <div key={g.id} style={{
-                    padding: '6px 8px', borderRadius: 4,
-                    background: 'rgba(0,0,0,0.2)', border: `1px solid ${EMBRY.border}`,
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 10, fontWeight: 700, color, fontFamily: 'monospace' }}>{g.id}</span>
-                      <span style={{ fontSize: 8, color: EMBRY.dim, opacity: 0.7 }}>{g.framework}</span>
-                    </div>
-                    <div style={{ fontSize: 10, color: EMBRY.white, marginTop: 2 }}>{g.name}</div>
-                    {g.description && (
-                      <div style={{ fontSize: 9, color: EMBRY.dim, marginTop: 3, lineHeight: 1.4 }}>
-                        {g.description.length > 100 ? g.description.slice(0, 100) + '...' : g.description}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Reasoning */}
-        {reasoning && (
-          <div style={itemStyle}>
-            <button
-              data-qid="qras:evidence:toggle-reasoning"
-              data-qs-action="TOGGLE_REASONING"
-              title="Toggle Evidence Context reasoning"
-              onClick={() => setReasoningExpanded((v) => !v)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                marginBottom: reasoningExpanded ? 6 : 0,
-                cursor: 'pointer',
-              }}
-            >
-              {reasoningExpanded ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
-              <span style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 1 }}>Reasoning</span>
-              {!reasoningExpanded && (
-                <span style={{ fontSize: 10, color: EMBRY.muted, fontStyle: 'italic' }}>
-                  ({reasoning.split('\n').length} lines)
-                </span>
-              )}
-            </button>
-            {reasoningExpanded && (
-              <div
-                style={{
-                  fontSize: 11,
-                  color: EMBRY.dim,
-                  lineHeight: 1.6,
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  padding: 8,
-                  borderRadius: 5,
-                  border: `1px solid ${EMBRY.border}`,
-                }}
-              >
-                <MarkdownRenderer content={reasoning} />
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Pipeline Gates (from live validation) */}
-        {liveData && (
-          <div style={{ marginTop: 4, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
-            <SectionHeader icon={ShieldCheck} label="Pipeline Gates" />
-            {liveData.gates.map(gate => {
-              const color = gate.passed ? EMBRY.green : EMBRY.red
-              const Icon = gate.passed ? CheckCircle2 : XCircle
-              return (
-                <div key={gate.gate} style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
-                  <Icon size={12} color={color} style={{ flexShrink: 0, marginTop: 2 }} />
-                  <div>
-                    <div style={{ fontSize: 10, color: EMBRY.white, fontWeight: 700 }}>{gate.gate.toUpperCase()}</div>
-                    <div style={{ fontSize: 9, color: EMBRY.dim }}>{gate.detail}</div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-
-        {error && (
-          <div style={{ ...body, fontSize: 10, color: EMBRY.red, marginTop: 8 }}>
-            <AlertCircle size={11} style={{ display: 'inline', marginRight: 4 }} />
-            {error}
-          </div>
-        )}
-      </div>
-
-      {/* Footer: Validate button */}
-      <div style={{ padding: '10px 16px', borderTop: `1px solid ${EMBRY.border}`, flexShrink: 0, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-        <button
-          data-qid="qras:action:validate_evidence"
-          data-qs-action="VALIDATE_EVIDENCE"
-          title="Run /create-evidence-case validation pipeline"
-          onClick={runValidation}
-          disabled={validating}
-          style={{
-            width: '100%', padding: '8px 0', borderRadius: 5, cursor: validating ? 'wait' : 'pointer',
-            backgroundColor: validating ? EMBRY.bgDeep : `${EMBRY.accent}15`,
-            border: `1px solid ${EMBRY.accent}33`,
-            color: EMBRY.accent, fontSize: 10, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-            textTransform: 'uppercase', letterSpacing: 1,
-          }}
-        >
-          {validating
-            ? <><RefreshCw size={12} style={{ animation: 'spin 1s linear infinite' }} /> Validating...</>
-            : <><ShieldCheck size={12} /> Run /create-evidence-case</>
-          }
-        </button>
-      </div>
-    </div>
+    <EvidenceCaseTrace
+      questionNode={questionNode}
+      reviewStatus={reviewStatus}
+      confidence={confidence}
+      formalProofSuccess={formalProof?.success}
+      hasFormalProof={Boolean(formalProof)}
+      methods={methods}
+      chains={chains}
+      controlIds={effectiveControlIds}
+      glossary={effectiveGlossary.map((entry) => ({
+        id: entry.id,
+        name: entry.name,
+        framework: entry.framework,
+        description: entry.description,
+      }))}
+      glossaryLabel={glossaryLabel}
+      reasoning={reasoning}
+      agentResponse={ec?.answer || liveData?.answer || answer}
+      responseAction={ec?.response_action || liveData?.response_action || (answer ? 'answer' : undefined)}
+      evidenceVerdict={ec?.verdict || liveVerdict}
+      evidenceGrade={ec?.grade || (typeof liveData?.verdict === 'object' ? liveData.verdict?.grade : undefined)}
+      gatesPassed={ec?.gates_passed}
+      gatesTotal={ec?.gates_total}
+      liveGates={liveData?.gates ?? []}
+      error={error}
+      onNavigateToControl={navigateToControl}
+      onRunValidation={runValidation}
+      validating={validating}
+    />
   )
 }

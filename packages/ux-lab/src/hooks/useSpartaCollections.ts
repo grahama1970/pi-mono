@@ -124,6 +124,11 @@ export interface EvidenceCase {
 	crosswalk_chains?: CrosswalkChain[];
 	confidence?: number;
 	methods?: string[];
+	verdict?: "satisfied" | "inconclusive" | "not_satisfied" | "none" | string;
+	grade?: string;
+	gates_passed?: number;
+	gates_total?: number;
+	gate_trace?: Array<{ gate: string; passed: boolean; detail: string; duration?: number }>;
 
 	// Entity extraction
 	question_text?: string;
@@ -131,6 +136,8 @@ export interface EvidenceCase {
 	glossary?: GlossaryEntry[];
 	resolved_entities?: Array<{ id: string; name: string; framework: string }>;
 	spans?: EvidenceSpan[];
+	answer?: string;
+	response_action?: "answer" | "deflect" | "clarify" | string;
 
 	// Verification
 	formal_proof?: FormalProof;
@@ -457,9 +464,9 @@ export function useURLs(query = "", domain?: string): HookResult<SpartaURL> {
 				setTotal(items.length);
 			} else {
 				const result = await listPost("sparta_urls", {
-						limit: 100,
-						return_fields: ["url_id", "url", "domain", "updated_at"],
-					});
+					limit: 100,
+					return_fields: ["url_id", "url", "domain", "updated_at"],
+				});
 				let items = result.documents as unknown as SpartaURL[];
 				if (domain) items = items.filter((u) => u.domain === domain);
 				setData(items);
@@ -494,10 +501,10 @@ export function useURLsPaginated(
 		setError(null);
 		try {
 			const result = await listPost("sparta_urls", {
-					limit: pageSize,
-					offset: page * pageSize,
-					return_fields: ["url_id", "url", "domain", "updated_at"],
-				});
+				limit: pageSize,
+				offset: page * pageSize,
+				return_fields: ["url_id", "url", "domain", "updated_at"],
+			});
 			setData(result.documents as unknown as SpartaURL[]);
 			setTotal(result.total);
 		} catch (err) {

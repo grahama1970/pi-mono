@@ -121,10 +121,13 @@ function parseWorksheetsYaml(content: string): Record<string, WorksheetConfig> {
   return toWorksheetRecord(parsed)
 }
 
-function resolvePublicJsonPath(extractionUrl: string): { relativePath: string; absolutePath: string } {
-  const relativePath = extractionUrl.replace(/^\/+/, '')
-  if (!relativePath.endsWith('.json')) {
-    throw new Error('extractionUrl must target a .json file under /public')
+const PDF_OXIDE_PYTHON = '/home/graham/workspace/experiments/pdf_oxide/.venv/bin/python3'
+
+function resolvePublicAssetPath(assetUrl: string, allowedExtensions: string[]): { relativePath: string; absolutePath: string } {
+  const relativePath = assetUrl.replace(/^\/+/, '')
+  const lowerRelativePath = relativePath.toLowerCase()
+  if (!allowedExtensions.some((extension) => lowerRelativePath.endsWith(extension.toLowerCase()))) {
+    throw new Error(`assetUrl must target one of: ${allowedExtensions.join(', ')}`)
   }
   const publicRoot = resolve(__dirname, '../public')
   const absolutePath = resolve(publicRoot, relativePath)
@@ -132,6 +135,14 @@ function resolvePublicJsonPath(extractionUrl: string): { relativePath: string; a
     throw new Error('extractionUrl escapes the public directory')
   }
   return { relativePath, absolutePath }
+}
+
+function resolvePublicJsonPath(extractionUrl: string): { relativePath: string; absolutePath: string } {
+  return resolvePublicAssetPath(extractionUrl, ['.json'])
+}
+
+function resolvePublicPdfPath(pdfUrl: string): { relativePath: string; absolutePath: string } {
+  return resolvePublicAssetPath(pdfUrl, ['.pdf'])
 }
 
 function buildPdfLabReviewKey(relativePath: string): string {
@@ -1083,6 +1094,151 @@ app.post('/api/pdf-lab/review-save', async (req, res) => {
   }
 })
 
+app.post('/api/pdf-lab/reextract-table-region', async (req, res) => {
+  try {
+    const {
+      pdfUrl,
+      pageNumber,
+      bbox,
+      flavor = 'stream',
+    } = req.body as {
+      pdfUrl?: string
+      pageNumber?: number
+      bbox?: [number, number, number, number]
+      flavor?: 'stream' | 'lattice' | 'auto'
+    }
+
+    if (!pdfUrl || typeof pageNumber !== 'number' || !Array.isArray(bbox) || bbox.length !== 4) {
+      return res.status(400).json({ error: 'pdfUrl, pageNumber, and bbox are required' })
+    }
+
+    const normalizedBBox = bbox.map((value) => Number(value)) as [number, number, number, number]
+    if (normalizedBBox.some((value) => Number.isNaN(value) || value < 0 || value > 1)) {
+      return res.status(400).json({ error: 'bbox values must be normalized between 0 and 1' })
+    }
+    if (normalizedBBox[0] >= normalizedBBox[2] || normalizedBBox[1] >= normalizedBBox[3]) {
+      return res.status(400).json({ error: 'bbox must be ordered as [left, top, right, bottom]' })
+    }
+
+    const { absolutePath } = resolvePublicPdfPath(pdfUrl)
+    const extractionScript = `
+import json
+import sys
+import pdf_oxide
+
+pdf_path = sys.argv[1]
+page_index = int(sys.argv[2])
+bbox = json.loads(sys.argv[3])
+requested_flavor = sys.argv[4]
+
+doc = pdf_oxide.PdfDocument(pdf_path)
+media_box = [float(value) for value in doc.page_media_box(page_index)]
+page_x0, page_y0, page_x1, page_y1 = media_box
+page_width = page_x1 - page_x0
+page_height = page_y1 - page_y0
+left, top, right, bottom = [float(value) for value in bbox]
+
+x1 = page_x0 + left * page_width
+x2 = page_x0 + right * page_width
+y_top = page_y0 + (1.0 - top) * page_height
+y_bottom = page_y0 + (1.0 - bottom) * page_height
+area = f"{x1:.2f},{y_top:.2f},{x2:.2f},{y_bottom:.2f}"
+
+flavors = []
+for candidate in [requested_flavor, "auto", "lattice", "stream"]:
+    if candidate not in flavors:
+        flavors.append(candidate)
+
+def pick_best_table(candidates):
+    def score(table):
+        rows = int(table.get("rows", len(table.get("data", []))) or 0)
+        cols = int(table.get("cols", 0) or 0)
+        accuracy = float(table.get("accuracy", 0.0) or 0.0)
+        return (rows * max(cols, 1), accuracy)
+    return max(candidates, key=score)
+
+table = None
+flavor_used = requested_flavor
+for flavor in flavors:
+    try:
+        tables = list(doc.read_pdf(pages=str(page_index + 1), flavor=flavor, table_areas=[area]))
+    except Exception:
+        tables = []
+    if tables:
+        table = pick_best_table(tables)
+        flavor_used = flavor
+        break
+
+if table is None:
+    print(json.dumps({
+        "ok": False,
+        "page_index": page_index,
+        "requested_flavor": requested_flavor,
+        "requested_bbox_norm_tlbr": bbox,
+        "requested_area": area,
+        "error": "No table extracted from selected area",
+    }))
+    raise SystemExit(0)
+
+table_bbox = table.get("bbox") or [x1, y_bottom, x2, y_top]
+if len(table_bbox) != 4:
+    table_bbox = [x1, y_bottom, x2, y_top]
+
+table_left = max(0.0, min(1.0, (float(table_bbox[0]) - page_x0) / page_width))
+table_right = max(0.0, min(1.0, (float(table_bbox[2]) - page_x0) / page_width))
+table_top = max(0.0, min(1.0, 1.0 - ((float(table_bbox[3]) - page_y0) / page_height)))
+table_bottom = max(0.0, min(1.0, 1.0 - ((float(table_bbox[1]) - page_y0) / page_height)))
+
+if table_right < table_left:
+    table_right = table_left
+if table_bottom < table_top:
+    table_bottom = table_top
+
+data = table.get("data", [])
+text_rows = []
+for row in data:
+    if isinstance(row, list):
+        text_rows.append("\\t".join("" if cell is None else str(cell) for cell in row))
+text = "\\n".join(text_rows)
+
+print(json.dumps({
+    "ok": True,
+    "page_index": page_index,
+    "requested_flavor": requested_flavor,
+    "flavor_used": flavor_used,
+    "requested_bbox_norm_tlbr": bbox,
+    "requested_area": area,
+    "media_box": media_box,
+    "bbox_pdf_ltrb": [float(table_bbox[0]), float(table_bbox[1]), float(table_bbox[2]), float(table_bbox[3])],
+    "bbox_norm_tlbr": [table_left, table_top, table_right, table_bottom],
+    "rows": int(table.get("rows", len(data)) or 0),
+    "cols": int(table.get("cols", 0) or 0),
+    "accuracy": float(table.get("accuracy", 0.0) or 0.0),
+    "whitespace": float(table.get("whitespace", 0.0) or 0.0),
+    "data": data,
+    "text": text,
+}, default=str))
+`
+
+    const { stdout } = await execFileAsync(
+      PDF_OXIDE_PYTHON,
+      ['-c', extractionScript, absolutePath, String(pageNumber), JSON.stringify(normalizedBBox), flavor],
+      {
+        timeout: 60_000,
+        maxBuffer: 20 * 1024 * 1024,
+      },
+    )
+
+    const payload = JSON.parse(stdout.trim().split('\n').pop() || '{}') as Record<string, unknown>
+    if (!payload.ok) {
+      return res.status(422).json(payload)
+    }
+    return res.json(payload)
+  } catch (e) {
+    return res.status(500).json({ error: 'Failed to re-extract table region', detail: e instanceof Error ? e.message : String(e) })
+  }
+})
+
 // ── Quarantine CRUD ────────────────────────────────────────────────────────
 
 app.get('/api/quarantine', async (req, res) => {
@@ -1279,6 +1435,188 @@ const ORCHESTRATOR_STATE_FILES: Record<string, { path: string; resumeCmd: string
   },
 }
 
+const TONIGHT_ROLLOUT_STATUS_FILE = '/tmp/sparta_tonight_rollout_status.json'
+const PATCH_OUTPUT_DIR = '/tmp/create-qras-patches'
+
+type JsonObject = Record<string, any>
+
+async function readJsonIfExists(path: string): Promise<JsonObject | null> {
+  try {
+    const raw = await readFile(path, 'utf-8')
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+function inferSiblingJsonPath(manifestPath: string, suffix: '.review.json' | '.report.json'): string {
+  if (manifestPath.endsWith('.json')) return manifestPath.replace(/\.json$/, suffix)
+  return `${manifestPath}${suffix}`
+}
+
+function getManifestJobsForState(manifest: JsonObject | null, state: JsonObject | null): JsonObject[] {
+  const jobs = Array.isArray(manifest?.jobs) ? manifest.jobs : []
+  const limit = Number(state?.limit || 0)
+  return limit > 0 ? jobs.slice(0, limit) : jobs
+}
+
+function getChunkWindow(state: JsonObject | null): { start: number; end: number } | null {
+  const start = Number(state?.range_start || 0)
+  const end = Number(state?.range_end || 0)
+  if (!start || !end || end < start) return null
+  return { start, end }
+}
+
+function getChunkJobs(manifest: JsonObject | null, state: JsonObject | null): JsonObject[] {
+  const jobs = getManifestJobsForState(manifest, state)
+  const window = getChunkWindow(state)
+  if (!window) return []
+
+  const phase = String(state?.phase || '')
+  const canonicalJobs = jobs.filter((job) => job?.job_type === 'canonical')
+  const relationshipJobs = jobs.filter((job) => job?.job_type === 'relationship')
+  const source = phase === 'relationship' ? relationshipJobs : canonicalJobs
+  return source.slice(window.start - 1, window.end)
+}
+
+function buildTailManifest(manifest: JsonObject | null, state: JsonObject | null): { manifest: JsonObject | null; diff: JsonObject | null } {
+  if (!manifest || !Array.isArray(manifest.jobs)) {
+    return { manifest: null, diff: null }
+  }
+
+  const jobs = getManifestJobsForState(manifest, state)
+  const phase = String(state?.phase || 'canonical')
+  const window = getChunkWindow(state)
+  if (!window) {
+    return {
+      manifest: {
+        ...manifest,
+        batch_metadata: {
+          ...(manifest.batch_metadata || {}),
+          patched_at: new Date().toISOString(),
+          patched_reason: 'tail-manifest fallback (no chunk window available)',
+          patched_from_orchestrator: state?.name || 'create-qras-manifest',
+        },
+        jobs,
+        summary: {
+          ...(manifest.summary || {}),
+          total_jobs: jobs.length,
+        },
+      },
+      diff: {
+        removed_jobs: [],
+        removed_count: 0,
+        retained_count: jobs.length,
+      },
+    }
+  }
+
+  const canonicalJobs = jobs.filter((job) => job?.job_type === 'canonical')
+  const relationshipJobs = jobs.filter((job) => job?.job_type === 'relationship')
+
+  let retainedJobs: JsonObject[] = []
+  if (phase === 'relationship') {
+    retainedJobs = [
+      ...canonicalJobs,
+      ...relationshipJobs.slice(window.start - 1),
+    ]
+  } else {
+    retainedJobs = [
+      ...canonicalJobs.slice(window.start - 1),
+      ...relationshipJobs,
+    ]
+  }
+
+  const retainedIds = new Set(retainedJobs.map((job) => String(job?.job_id || '')))
+  const removedJobs = jobs.filter((job) => !retainedIds.has(String(job?.job_id || '')))
+
+  return {
+    manifest: {
+      ...manifest,
+      batch_metadata: {
+        ...(manifest.batch_metadata || {}),
+        patched_at: new Date().toISOString(),
+        patched_reason: `tail-manifest from chunk ${window.start}-${window.end} (${phase})`,
+        patched_from_orchestrator: state?.name || 'create-qras-manifest',
+        patched_from_manifest: state?.manifest_path || null,
+      },
+      summary: {
+        ...(manifest.summary || {}),
+        total_jobs: retainedJobs.length,
+        patched_from_total_jobs: jobs.length,
+        patched_removed_jobs: removedJobs.length,
+      },
+      jobs: retainedJobs,
+    },
+    diff: {
+      phase,
+      chunk_start: window.start,
+      chunk_end: window.end,
+      removed_count: removedJobs.length,
+      retained_count: retainedJobs.length,
+      removed_job_ids: removedJobs.slice(0, 200).map((job) => job?.job_id),
+      retained_first_job_id: retainedJobs[0]?.job_id || null,
+      retained_last_job_id: retainedJobs[retainedJobs.length - 1]?.job_id || null,
+    },
+  }
+}
+
+function deriveChunkItemIds(chunkJobs: JsonObject[]): string[] {
+  const ids = new Set<string>()
+  for (const job of chunkJobs) {
+    const itemId = deriveJobItemId(job)
+    if (itemId) ids.add(itemId)
+  }
+  return [...ids]
+}
+
+function deriveJobItemId(job: JsonObject | null | undefined): string | null {
+  if (!job) return null
+  const identity = job.identity || {}
+  const sourceId = identity.source_control_id || identity.technique_id
+  const targetId = identity.countermeasure_id || identity.tactic_id
+  if (sourceId && targetId) return `${sourceId}->${targetId}`
+  if (sourceId) return String(sourceId)
+  return null
+}
+
+function deriveManifestItemIds(manifest: JsonObject | null): string[] {
+  const jobs = Array.isArray(manifest?.jobs) ? manifest.jobs : []
+  const ids = new Set<string>()
+  for (const job of jobs) {
+    const itemId = deriveJobItemId(job)
+    if (itemId) ids.add(itemId)
+  }
+  return [...ids]
+}
+
+function inferRolloutSummary(state: JsonObject | null, manifest: JsonObject | null, supervisor: JsonObject | null): JsonObject | null {
+  const manifestPath = String(state?.manifest_path || '')
+  if (!manifestPath.includes('sparta_v2_stage_manifest_tonight')) return null
+
+  const tonightTotal = 1720
+  let completedBeforeCurrent = 0
+  if (manifestPath.endsWith('sparta_v2_stage_manifest_tonight_after50.json')) completedBeforeCurrent = 50
+  else if (manifestPath.endsWith('sparta_v2_stage_manifest_tonight_after150.json')) completedBeforeCurrent = 150
+  else if (manifestPath.endsWith('sparta_v2_stage_manifest_tonight_remainder.json')) completedBeforeCurrent = 400
+
+  const currentCompleted = Number(state?.completed_jobs || 0)
+  const trancheTotal = Number(state?.total_jobs || 0)
+  const tonightCompleted = completedBeforeCurrent + currentCompleted
+
+  return {
+    status: supervisor?.phase || null,
+    detail: supervisor?.detail || null,
+    tonight_total_jobs: tonightTotal,
+    tonight_completed_jobs: tonightCompleted,
+    tonight_remaining_jobs: Math.max(tonightTotal - tonightCompleted, 0),
+    current_tranche_total_jobs: trancheTotal,
+    current_tranche_completed_jobs: currentCompleted,
+    current_tranche_label: supervisor?.detail || null,
+    current_manifest_jobs: Array.isArray(manifest?.jobs) ? manifest.jobs.length : trancheTotal,
+  }
+}
+
 app.get('/api/orchestrators', async (_req, res) => {
   const orchestrators: Array<{
     name: string
@@ -1315,6 +1653,118 @@ app.get('/api/orchestrators', async (_req, res) => {
   res.json({ orchestrators })
 })
 
+app.get('/api/orchestrators/:name/detail', async (req, res) => {
+  const { name } = req.params
+  const config = ORCHESTRATOR_STATE_FILES[name]
+  if (!config) return res.status(404).json({ error: `Unknown orchestrator: ${name}` })
+
+  try {
+    const state = await readJsonIfExists(config.path)
+    const manifestPath = String(state?.manifest_path || '')
+    const manifest = manifestPath ? await readJsonIfExists(manifestPath) : null
+    const review = manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.review.json')) : null
+    const report = manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.report.json')) : null
+    const supervisor = await readJsonIfExists(TONIGHT_ROLLOUT_STATUS_FILE)
+    const chunkJobs = getChunkJobs(manifest, state)
+    const chunkItemIds = deriveChunkItemIds(chunkJobs)
+    const manifestItemIds = deriveManifestItemIds(manifest)
+    const { manifest: tailManifest, diff } = buildTailManifest(manifest, state)
+    const rollout = inferRolloutSummary(state, manifest, supervisor)
+
+    let calls: JsonObject[] = []
+    if (manifestItemIds.length > 0) {
+      const result = await proxyPost('/query', {
+        aql: `FOR doc IN llm_call_log
+              FILTER doc.caller == 'create-qras'
+              FILTER doc.metadata.item_id IN @item_ids
+              SORT doc.ts DESC
+              COLLECT item_id = doc.metadata.item_id INTO grouped = doc
+              LET latest = FIRST(grouped)
+              SORT latest.ts DESC
+              RETURN latest`,
+        bind_vars: { item_ids: manifestItemIds },
+      })
+      calls = result?.documents ?? []
+    } else if (state?.started_at) {
+      const startedIso = new Date(Number(state.started_at) * 1000).toISOString()
+      const result = await proxyPost('/query', {
+        aql: `FOR doc IN llm_call_log
+              FILTER doc.caller == 'create-qras'
+              FILTER doc.ts >= @started_iso
+              SORT doc.ts DESC
+              LIMIT 250
+              RETURN doc`,
+        bind_vars: { started_iso: startedIso },
+      })
+      calls = result?.documents ?? []
+    }
+
+    const chunkCalls = chunkItemIds.length > 0
+      ? calls.filter((call) => chunkItemIds.includes(String(call?.metadata?.item_id || '')))
+      : []
+
+    res.json({
+      orchestrator: name,
+      state,
+      manifest_path: manifestPath || null,
+      manifest,
+      review,
+      report,
+      supervisor,
+      rollout,
+      chunk_jobs: chunkJobs,
+      chunk_item_ids: chunkItemIds,
+      manifest_item_ids: manifestItemIds,
+      calls,
+      chunk_calls: chunkCalls,
+      tail_manifest: tailManifest,
+      tail_diff: diff,
+      resume_cmd: config.resumeCmd,
+    })
+  } catch (e) {
+    res.status(502).json({ error: 'Failed to load orchestrator detail', detail: String(e) })
+  }
+})
+
+app.post('/api/orchestrators/:name/patched-tail', async (req, res) => {
+  const { name } = req.params
+  const config = ORCHESTRATOR_STATE_FILES[name]
+  if (!config) return res.status(404).json({ error: `Unknown orchestrator: ${name}` })
+
+  try {
+    const state = await readJsonIfExists(config.path)
+    const manifestPath = String(state?.manifest_path || '')
+    if (!manifestPath) return res.status(400).json({ error: 'No manifest_path in orchestrator state' })
+
+    const manifest = await readJsonIfExists(manifestPath)
+    const { manifest: tailManifest, diff } = buildTailManifest(manifest, state)
+    if (!tailManifest) return res.status(400).json({ error: 'Unable to build tail manifest' })
+
+    await mkdir(PATCH_OUTPUT_DIR, { recursive: true })
+    const ts = new Date().toISOString().replace(/[:.]/g, '-')
+    const baseName = manifestPath.split('/').pop()?.replace(/\.json$/, '') || name
+    const chunkStart = Number(state?.range_start || 0)
+    const chunkLabel = chunkStart > 0 ? `chunk-${chunkStart}` : 'tail'
+    const patchPath = `${PATCH_OUTPUT_DIR}/${baseName}.${chunkLabel}.${ts}.json`
+    const reviewPath = patchPath.replace(/\.json$/, '.review.json')
+    await writeFile(patchPath, `${JSON.stringify(tailManifest, null, 2)}\n`, 'utf-8')
+
+    res.json({
+      orchestrator: name,
+      manifest_path: patchPath,
+      review_path: reviewPath,
+      manifest: tailManifest,
+      diff,
+      copy_cli: {
+        review: `cd /home/graham/workspace/experiments/memory && /home/graham/workspace/experiments/memory/.agents/skills/create-qras/run.sh review \"${patchPath}\" -o \"${reviewPath}\"`,
+        manifest: `cd /home/graham/workspace/experiments/memory && /home/graham/workspace/experiments/memory/.agents/skills/create-qras/run.sh manifest \"${patchPath}\"`,
+      },
+    })
+  } catch (e) {
+    res.status(502).json({ error: 'Failed to create patched tail manifest', detail: String(e) })
+  }
+})
+
 // Get LLM calls for a specific batch_id (links orchestrator to scillm logs)
 app.get('/api/orchestrators/:name/calls', async (req, res) => {
   const { name } = req.params
@@ -1329,13 +1779,12 @@ app.get('/api/orchestrators/:name/calls', async (req, res) => {
     // See: https://github.com/anthropics/claude-code/issues/XXX
     // For now, raw AQL is necessary because /list doesn't support nested field filters
     const result = await proxyPost('/query', {
-      collection: 'llm_call_log',
       aql: `FOR doc IN llm_call_log
             FILTER doc.metadata.batch_id == @batch_id
             SORT doc.ts DESC
             LIMIT 100
             RETURN doc`,
-      bindVars: { batch_id },
+      bind_vars: { batch_id },
     })
     res.json({
       orchestrator: name,
@@ -2175,26 +2624,141 @@ app.post('/api/extract-entities', async (req, res) => {
     }
 
     // Mode 3: SPARTA entity extraction via daemon (FlashText Aho-Corasick)
-    // Pass through the full daemon response — spans, resolution_map, control_metadata, etc.
+    // Normalize both legacy and current daemon contracts into one UI-friendly shape.
     try {
       const result = await proxyPost('/extract-entities', { text, include_taxonomy: false }) as Record<string, unknown>
-      const entities = ((result.control_ids ?? []) as string[]).map((cid: string, i: number) => {
-        const meta = ((result.control_metadata ?? []) as Array<{ name?: string; framework?: string }>)[i] ?? {}
-        return { id: cid, name: meta.name ?? cid, label: cid, type: 'control', framework: meta.framework ?? '', exists: true }
+
+      const legacyControlIds = Array.isArray(result.control_ids) ? (result.control_ids as string[]) : []
+      const legacyControlMeta = Array.isArray(result.control_metadata)
+        ? (result.control_metadata as Array<{ name?: string; framework?: string; domain?: string }>)
+        : []
+      const legacySpans = Array.isArray(result.spans) ? (result.spans as Array<Record<string, unknown>>) : []
+      const legacyPhrases = Array.isArray(result.phrases) ? (result.phrases as string[]) : []
+
+      const resolvedEntities = Array.isArray((result as any).resolved_entities)
+        ? ((result as any).resolved_entities as Array<{
+            mention?: string
+            span?: [number, number]
+            canonical_id?: string
+            canonical_name?: string
+            framework?: string
+            entity_type?: string
+          }>)
+        : []
+      const unresolvedEntities = Array.isArray((result as any).unresolved_entities)
+        ? ((result as any).unresolved_entities as Array<{
+            mention?: string
+            span?: [number, number]
+            reason?: string
+          }>)
+        : []
+      const domainTerms = Array.isArray((result as any).domain_terms)
+        ? ((result as any).domain_terms as Array<{
+            text?: string
+            span?: [number, number]
+            kind?: string
+          }>)
+        : []
+
+      const normalizedControlIds = legacyControlIds.length > 0
+        ? legacyControlIds
+        : resolvedEntities
+            .map((e) => e.canonical_id)
+            .filter((v): v is string => typeof v === 'string' && v.length > 0)
+
+      const normalizedControlMeta = legacyControlMeta.length > 0
+        ? legacyControlMeta
+        : resolvedEntities
+            .filter((e) => typeof e.canonical_id === 'string' && e.canonical_id.length > 0)
+            .map((e) => ({
+              name: e.canonical_name ?? e.canonical_id,
+              framework: e.framework ?? '',
+            }))
+
+      const entities = normalizedControlIds.map((cid: string, i: number) => {
+        const meta = normalizedControlMeta[i] ?? {}
+        return {
+          id: cid,
+          name: meta.name ?? cid,
+          label: cid,
+          type: 'control',
+          framework: meta.framework ?? '',
+          exists: true,
+        }
       })
+
+      const normalizedSpans = legacySpans.length > 0
+        ? legacySpans
+        : [
+            ...resolvedEntities
+              .filter((e) => Array.isArray(e.span) && typeof e.span[0] === 'number' && typeof e.span[1] === 'number')
+              .map((e) => ({
+                text: e.mention ?? e.canonical_id ?? '',
+                span: e.span,
+                kind: 'control_id',
+                framework: e.framework ?? '',
+                name: e.canonical_name ?? e.canonical_id ?? '',
+                grounded_to_framework: true,
+                source: '/extract-entities',
+              })),
+            ...domainTerms
+              .filter((t) => Array.isArray(t.span) && typeof t.span[0] === 'number' && typeof t.span[1] === 'number')
+              .map((t) => ({
+                text: t.text ?? '',
+                span: t.span,
+                kind: 'aerospace_term',
+                source: '/extract-entities',
+              })),
+          ].filter((s) => typeof s.text === 'string' && s.text.length > 0)
+
+      const normalizedPhrases = legacyPhrases.length > 0
+        ? legacyPhrases
+        : domainTerms
+            .map((t) => t.text)
+            .filter((v): v is string => typeof v === 'string' && v.length > 0)
+
+      const normalizedResolutionMap = (result as any).resolution_map ?? Object.fromEntries([
+        ...resolvedEntities
+          .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
+          .map((e) => [e.mention as string, {
+            exists: true,
+            control_id: e.canonical_id ?? null,
+            name: e.canonical_name ?? e.mention,
+            framework: e.framework ?? null,
+            match_type: 'exact',
+          }]),
+        ...unresolvedEntities
+          .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
+          .map((e) => [e.mention as string, {
+            exists: false,
+            reason: e.reason ?? 'unresolved',
+            match_type: 'unresolved',
+          }]),
+      ])
+
+      const normalizedNotInCorpus = Array.isArray((result as any).not_in_corpus)
+        ? ((result as any).not_in_corpus as unknown[])
+        : unresolvedEntities
+            .map((e) => e.mention)
+            .filter((v): v is string => typeof v === 'string' && v.length > 0)
+
       res.json({
         entities,
         mode: 'flashtext',
-        // Full pipeline data for EntitySpanViewer
-        control_ids: result.control_ids ?? [],
-        spans: result.spans ?? [],
-        resolution_map: result.resolution_map ?? {},
-        control_metadata: result.control_metadata ?? [],
-        not_in_corpus: result.not_in_corpus ?? [],
-        phrases: result.phrases ?? [],
+        // Normalized data for UI consumers that expect legacy keys
+        control_ids: normalizedControlIds,
+        spans: normalizedSpans,
+        resolution_map: normalizedResolutionMap,
+        control_metadata: normalizedControlMeta,
+        not_in_corpus: normalizedNotInCorpus,
+        phrases: normalizedPhrases,
         misspellings: result.misspellings ?? [],
         related_pairs: result.related_pairs ?? [],
         recall_items: result.recall_items ?? [],
+        // Pass-through current contract for newer consumers
+        resolved_entities: resolvedEntities,
+        unresolved_entities: unresolvedEntities,
+        domain_terms: domainTerms,
       })
     } catch (daemonErr) {
       const detail = daemonErr instanceof Error ? daemonErr.message : String(daemonErr)

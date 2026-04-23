@@ -16,6 +16,7 @@ export type {
 	EvidenceVerdict,
 } from "./EvidenceCasePanel";
 export { EvidenceCasePanel } from "./EvidenceCasePanel";
+export { EvidenceCaseTrace } from "./EvidenceCaseTrace";
 export type {
 	DatalakeOption,
 	TechniqueDetail,

@@ -67,9 +67,27 @@ export interface LatencyStats {
 	count: number;
 }
 
-interface _ListResponse {
-	documents: LogEntry[];
-	total?: number;
+function isLogEntry(value: unknown): value is LogEntry {
+	if (!value || typeof value !== "object") return false;
+	const candidate = value as { _key?: unknown; ts?: unknown };
+	return typeof candidate._key === "string" && typeof candidate.ts === "string";
+}
+
+function dedupeLogs(logs: LogEntry[]): LogEntry[] {
+	const deduped = new Map<string, LogEntry>();
+	for (const log of logs) {
+		deduped.set(log._key, log);
+	}
+	return Array.from(deduped.values()).sort((a, b) => (b.ts || "").localeCompare(a.ts || ""));
+}
+
+async function fetchOrchestratorCalls(name: string, batchId: string): Promise<LogEntry[]> {
+	const resp = await fetch(
+		`${API_BASE.replace("/memory", "")}/orchestrators/${encodeURIComponent(name)}/calls?batch_id=${encodeURIComponent(batchId)}`,
+	);
+	if (!resp.ok) throw new Error(`Calls failed: ${resp.status}`);
+	const data: { calls?: unknown[] } = await resp.json();
+	return (data.calls || []).filter(isLogEntry);
 }
 
 async function fetchLogs(limit = 3000): Promise<LogEntry[]> {
@@ -81,8 +99,6 @@ async function fetchLogs(limit = 3000): Promise<LogEntry[]> {
 		body: JSON.stringify({
 			collection: "llm_call_log",
 			limit,
-			sort_field: "ts",
-			sort_order: "DESC",
 		}),
 	});
 	if (!resp.ok) throw new Error(`List failed: ${resp.status}`);
@@ -244,6 +260,7 @@ export interface BatchJobState {
 		last_error?: string | null;
 		manifest_path?: string;
 		review_status?: string;
+		started_at?: number;
 		total_jobs?: number;
 		canonical_jobs?: number;
 		relationship_jobs?: number;
@@ -272,6 +289,47 @@ export interface BatchJobState {
 	lastModified?: string;
 }
 
+export interface OrchestratorDetailResponse {
+	orchestrator: string;
+	state: Record<string, any> | null;
+	manifest_path: string | null;
+	manifest: Record<string, any> | null;
+	review: Record<string, any> | null;
+	report: Record<string, any> | null;
+	supervisor: Record<string, any> | null;
+	rollout: {
+		status?: string | null;
+		detail?: string | null;
+		tonight_total_jobs?: number;
+		tonight_completed_jobs?: number;
+		tonight_remaining_jobs?: number;
+		current_tranche_total_jobs?: number;
+		current_tranche_completed_jobs?: number;
+		current_tranche_label?: string | null;
+		current_manifest_jobs?: number;
+	} | null;
+	chunk_jobs: Record<string, any>[];
+	chunk_item_ids: string[];
+	manifest_item_ids?: string[];
+	calls: LogEntry[];
+	chunk_calls: LogEntry[];
+	tail_manifest: Record<string, any> | null;
+	tail_diff: Record<string, any> | null;
+	resume_cmd: string;
+}
+
+export interface PatchedTailResponse {
+	orchestrator: string;
+	manifest_path: string;
+	review_path: string;
+	manifest: Record<string, any>;
+	diff: Record<string, any> | null;
+	copy_cli: {
+		review: string;
+		manifest: string;
+	};
+}
+
 export function useBatchJobState() {
 	const [batchJobs, setBatchJobs] = useState<BatchJobState[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -298,6 +356,87 @@ export function useBatchJobState() {
 	}, [refresh]);
 
 	return { batchJobs, loading, error, refresh };
+}
+
+export function useOrchestratorDetail(name: string | null) {
+	const [detail, setDetail] = useState<OrchestratorDetailResponse | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const refresh = useCallback(async () => {
+		if (!name) {
+			setDetail(null);
+			setLoading(false);
+			return;
+		}
+		setLoading(true);
+		try {
+			const resp = await fetch(
+				`${API_BASE.replace("/memory", "")}/orchestrators/${encodeURIComponent(name)}/detail`,
+			);
+			if (!resp.ok) throw new Error(`Failed: ${resp.status}`);
+			const data: OrchestratorDetailResponse = await resp.json();
+			const hydratedCalls = (data.calls || []).filter(isLogEntry);
+			const hydratedChunkCalls = (data.chunk_calls || []).filter(isLogEntry);
+			const batchIds = Array.from(
+				new Set(
+					[
+						data.state?.active_batch_id,
+						data.state?.canonical_batch_id,
+						data.state?.relationship_batch_id,
+					].filter((value): value is string => typeof value === "string" && value.length > 0),
+				),
+			);
+
+			let mergedCalls = hydratedCalls;
+			if (mergedCalls.length === 0 && batchIds.length > 0) {
+				const results = await Promise.allSettled(
+					batchIds.map((batchId) => fetchOrchestratorCalls(name, batchId)),
+				);
+				mergedCalls = dedupeLogs(
+					results.flatMap((result) => (result.status === "fulfilled" ? result.value : [])),
+				);
+			}
+
+			const chunkItemIds = new Set(data.chunk_item_ids || []);
+			const mergedChunkCalls = chunkItemIds.size > 0
+				? mergedCalls.filter((call) => chunkItemIds.has(String(call.metadata?.item_id || "")))
+				: hydratedChunkCalls;
+
+			setDetail({
+				...data,
+				calls: mergedCalls,
+				chunk_calls: mergedChunkCalls,
+			});
+			setError(null);
+		} catch (e) {
+			setError(e instanceof Error ? e.message : "Unknown error");
+		} finally {
+			setLoading(false);
+		}
+	}, [name]);
+
+	useEffect(() => {
+		refresh();
+		if (!name) return;
+		const interval = setInterval(refresh, POLL_INTERVAL);
+		return () => clearInterval(interval);
+	}, [name, refresh]);
+
+	return { detail, loading, error, refresh };
+}
+
+export async function createPatchedTailManifest(name: string): Promise<PatchedTailResponse> {
+	const resp = await fetch(
+		`${API_BASE.replace("/memory", "")}/orchestrators/${encodeURIComponent(name)}/patched-tail`,
+		{
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({}),
+		},
+	);
+	if (!resp.ok) throw new Error(`Failed: ${resp.status}`);
+	return resp.json();
 }
 
 // Provider auth status from scillm proxy

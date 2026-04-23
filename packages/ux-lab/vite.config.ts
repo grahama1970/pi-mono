@@ -19,7 +19,14 @@ export default defineConfig({
   server: {
     port: 3000,
     watch: {
-      ignored: ['**/node_modules/**', '**/.git/**', '**/test-results/**', '**/captures/**', '**/dist/**'],
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/test-results/**',
+        '**/captures/**',
+        '**/dist/**',
+        '**/public/**/*-extraction.json',
+      ],
     },
     proxy: {
       '/api': {

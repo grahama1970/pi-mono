@@ -5,13 +5,47 @@ import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { EvidenceView } from './EvidenceView'
-import { Search, CheckCircle2, XCircle, FileText, PanelLeftClose, PanelLeft, PanelRightClose, PanelRight, Layers, X, ChevronDown, ChevronRight } from 'lucide-react'
+import { Search, CheckCircle2, XCircle, FileText, PanelLeftClose, PanelLeft, PanelRightClose, PanelRight, Layers, X, ChevronDown, ChevronRight, AlertCircle } from 'lucide-react'
 import { MarkdownRenderer } from '../../shared-chat/MarkdownRenderer'
 import { inlineHighlight, spanHighlight } from './explorerUtils'
-import type { Span } from './explorerUtils'
+import type { Span, GlossaryEntryLike, HighlightEmphasis } from './explorerUtils'
+
+type EntityViewMode = 'anchors' | 'context' | 'full'
+
+const ENTITY_VIEW_OPTIONS: Array<{ mode: EntityViewMode; label: string; title: string; minEmphasis: HighlightEmphasis }> = [
+  { mode: 'anchors', label: 'Anchors', title: 'Show only primary entities and IDs', minEmphasis: 'high' },
+  { mode: 'context', label: 'Context', title: 'Show primary entities plus named phrase context', minEmphasis: 'medium' },
+  { mode: 'full', label: 'Full', title: 'Show all available extracted entities after suppression', minEmphasis: 'low' },
+]
+
+const ENTITY_VIEW_STORAGE_KEY = 'sparta_qra_entity_view_mode'
+
+function loadEntityViewMode(): EntityViewMode {
+  try {
+    const value = localStorage.getItem(ENTITY_VIEW_STORAGE_KEY)
+    if (value === 'anchors' || value === 'context' || value === 'full') return value
+  } catch { /* ignore */ }
+  return 'context'
+}
+
+function saveEntityViewMode(mode: EntityViewMode) {
+  try { localStorage.setItem(ENTITY_VIEW_STORAGE_KEY, mode) } catch { /* ignore */ }
+}
+
+function minEmphasisForMode(mode: EntityViewMode): HighlightEmphasis {
+  return ENTITY_VIEW_OPTIONS.find((option) => option.mode === mode)?.minEmphasis ?? 'medium'
+}
 
 /** Render QRA answer as clean paragraphs with subtle entity highlighting */
-function AnswerDisplay({ text, glossary = [] }: { text: string; glossary?: Array<{ id?: string; name?: string; framework?: string; type?: string; description?: string; source?: string }> }) {
+function AnswerDisplay({
+  text,
+  glossary = [],
+  minEmphasis = 'medium',
+}: {
+  text: string
+  glossary?: Array<{ id?: string; name?: string; framework?: string; type?: string; description?: string; source?: string }>
+  minEmphasis?: HighlightEmphasis
+}) {
   if (!text) return null
 
   // Clean up the text
@@ -29,7 +63,7 @@ function AnswerDisplay({ text, glossary = [] }: { text: string; glossary?: Array
     <>
       {paragraphs.map((para, i) => (
         <p key={i} style={{ margin: '0 0 12px 0', lineHeight: 1.7 }}>
-          {inlineHighlight(para.trim(), glossary)}
+          {inlineHighlight(para.trim(), glossary, { minEmphasis })}
         </p>
       ))}
     </>
@@ -77,6 +111,56 @@ function prodigyBtn(baseColor: string): React.CSSProperties {
     height: 32, borderRadius: 6, cursor: 'pointer', transition: 'all 0.2s', padding: '0 16px',
     border: `1px solid ${baseColor}44`, backgroundColor: `${baseColor}12`, color: baseColor,
   }
+}
+
+function compactKey(key: string, prefix = 24, suffix = 10): string {
+  if (key.length <= prefix + suffix + 3) return key
+  return `${key.slice(0, prefix)}...${key.slice(-suffix)}`
+}
+
+function deriveEvidenceOutcome(qra: SpartaQRA | undefined): {
+  state: 'passed' | 'inconclusive' | 'failed' | 'pending'
+  label: string
+  shortLabel: string
+  color: string
+  Icon: typeof CheckCircle2
+} {
+  const verdict = String(qra?.evidence_case?.verdict ?? '').trim().toLowerCase()
+  const gatesPassed = typeof qra?.evidence_case?.gates_passed === 'number' ? qra.evidence_case.gates_passed : undefined
+  const gatesTotal = typeof qra?.evidence_case?.gates_total === 'number' ? qra.evidence_case.gates_total : undefined
+
+  if (verdict === 'satisfied') {
+    return { state: 'passed', label: 'Passed /create-evidence-case', shortLabel: 'Pass', color: EMBRY.green, Icon: CheckCircle2 }
+  }
+  if (verdict === 'inconclusive') {
+    return { state: 'inconclusive', label: 'Inconclusive evidence case', shortLabel: 'Partial', color: EMBRY.amber, Icon: AlertCircle }
+  }
+  if (verdict === 'not_satisfied') {
+    return { state: 'failed', label: 'Failed /create-evidence-case', shortLabel: 'Fail', color: EMBRY.red, Icon: XCircle }
+  }
+  if ((gatesTotal ?? 0) > 0) {
+    if (gatesPassed === gatesTotal) {
+      return { state: 'passed', label: 'Passed /create-evidence-case', shortLabel: 'Pass', color: EMBRY.green, Icon: CheckCircle2 }
+    }
+    if ((gatesPassed ?? 0) === 0) {
+      return { state: 'failed', label: 'Failed /create-evidence-case', shortLabel: 'Fail', color: EMBRY.red, Icon: XCircle }
+    }
+    return { state: 'inconclusive', label: 'Inconclusive evidence case', shortLabel: 'Partial', color: EMBRY.amber, Icon: AlertCircle }
+  }
+  return { state: 'pending', label: 'Evidence case not yet run', shortLabel: 'Pending', color: EMBRY.dim, Icon: AlertCircle }
+}
+
+function evidenceSummaryLine(qra: SpartaQRA | undefined): string {
+  if (!qra?.evidence_case) return 'No evidence-case summary is available yet.'
+  const parts = [
+    typeof qra.evidence_case.gates_total === 'number'
+      ? `${qra.evidence_case.gates_passed ?? 0}/${qra.evidence_case.gates_total} gates`
+      : null,
+    qra.evidence_case.control_ids?.length ? `${qra.evidence_case.control_ids.length} controls` : null,
+    qra.evidence_case.grade ? `grade ${qra.evidence_case.grade}` : null,
+    qra.evidence_case.review_status ? `workflow ${qra.evidence_case.review_status}` : null,
+  ].filter(Boolean)
+  return parts.length > 0 ? parts.join(' • ') : 'No evidence-case summary is available yet.'
 }
 
 export function QRAsView() {
@@ -128,8 +212,24 @@ export function QRAsView() {
   const [showBatchModal, setShowBatchModal] = useState(false)
   // Collapsible reasoning
   const [reasoningExpanded, setReasoningExpanded] = useState(false)
+  const [entityViewMode, setEntityViewMode] = useState<EntityViewMode>(loadEntityViewMode)
 
   const current = qras[currentIndex] as SpartaQRA | undefined
+  const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
+  const currentEvidenceOutcome = deriveEvidenceOutcome(current)
+  const currentEvidenceSummary = evidenceSummaryLine(current)
+
+  const [fallbackHighlights, setFallbackHighlights] = useState<Map<string, { spans: Span[]; glossary: GlossaryEntryLike[] }>>(new Map())
+
+  const activeHighlight = current ? fallbackHighlights.get(current._key) : undefined
+  const storedSpans = Array.isArray(current?.evidence_case?.spans)
+    ? (current!.evidence_case!.spans as Span[])
+    : []
+  const storedGlossary = Array.isArray(current?.evidence_case?.glossary)
+    ? (current!.evidence_case!.glossary as GlossaryEntryLike[])
+    : []
+  const questionSpans = storedSpans.length > 0 ? storedSpans : (activeHighlight?.spans ?? [])
+  const questionGlossary = storedGlossary.length > 0 ? storedGlossary : (activeHighlight?.glossary ?? [])
 
   useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
   useRegisterAction('qras:action:reject', { app: 'sparta-explorer', action: 'REJECT_QRA', label: 'Reject QRA', description: 'Mark the current QRA as rejected' })
@@ -138,6 +238,13 @@ export function QRAsView() {
   useRegisterAction('qras:action:edit', { app: 'sparta-explorer', action: 'EDIT_QRA', label: 'Edit QRA', description: 'Edit the current QRA' })
   useRegisterAction('qras:action:toggle_evidence', { app: 'sparta-explorer', action: 'TOGGLE_EVIDENCE', label: 'Toggle Evidence', description: 'View the evidence pane for the selected QRA' })
   useRegisterAction('qras:action:toggle_hmn', { app: 'sparta-explorer', action: 'TOGGLE_HMN', label: 'Toggle Human', description: 'View human review status for QRA' })
+  useRegisterAction('qras:display:entity-anchors', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_ANCHORS', label: 'Entity View Anchors', description: 'Show only primary entities in the QRA panes' })
+  useRegisterAction('qras:display:entity-context', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_CONTEXT', label: 'Entity View Context', description: 'Show primary entities plus contextual phrase entities in the QRA panes' })
+  useRegisterAction('qras:display:entity-full', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_FULL', label: 'Entity View Full', description: 'Show the full extracted entity set in the QRA panes' })
+
+  useEffect(() => {
+    saveEntityViewMode(entityViewMode)
+  }, [entityViewMode])
 
   // when current changes, reset edit data
   useEffect(() => {
@@ -146,6 +253,73 @@ export function QRAsView() {
       setIsEditing(false)
     }
   }, [current])
+
+
+  useEffect(() => {
+    if (!current?._key || !current.question) return
+    const hasStoredSpans = Array.isArray(current.evidence_case?.spans) && current.evidence_case.spans.length > 0
+    const hasStoredGlossary = Array.isArray(current.evidence_case?.glossary) && current.evidence_case.glossary.length > 0
+    if (hasStoredSpans && hasStoredGlossary) return
+    if (fallbackHighlights.has(current._key)) return
+
+    let cancelled = false
+    fetch('http://localhost:3001/api/extract-entities', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: current.question }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return
+        const spans = Array.isArray(data?.spans)
+          ? (data.spans as Span[]).filter((sp) => Array.isArray(sp?.span) && sp.span.length === 2)
+          : []
+
+        const ids = Array.isArray(data?.control_ids) ? (data.control_ids as string[]) : []
+        const metadata = Array.isArray(data?.control_metadata) ? data.control_metadata : []
+        const entities = Array.isArray(data?.entities) ? data.entities : []
+
+        const glossaryMap = new Map<string, GlossaryEntryLike>()
+
+        ids.forEach((cid: string, idx: number) => {
+          if (!cid || typeof cid !== 'string') return
+          const meta = metadata[idx] ?? {}
+          glossaryMap.set(cid, {
+            id: cid,
+            name: typeof meta?.name === 'string' && meta.name.trim() ? meta.name : cid,
+            framework: typeof meta?.framework === 'string' && meta.framework.trim() ? meta.framework : 'SPARTA',
+            description: typeof meta?.description === 'string' ? meta.description : undefined,
+            source: typeof meta?.source === 'string' ? meta.source : '/extract-entities',
+          })
+        })
+
+        entities.forEach((entity: any) => {
+          const id = typeof entity?.id === 'string' ? entity.id.trim() : ''
+          if (!id || glossaryMap.has(id)) return
+          glossaryMap.set(id, {
+            id,
+            name: typeof entity?.name === 'string' && entity.name.trim() ? entity.name : id,
+            framework: typeof entity?.framework === 'string' && entity.framework.trim() ? entity.framework : 'SPARTA',
+            source: '/extract-entities',
+          })
+        })
+
+        const glossaryFromApi: GlossaryEntryLike[] = Array.from(glossaryMap.values())
+
+        if (spans.length === 0 && glossaryFromApi.length === 0) return
+        setFallbackHighlights((prev) => {
+          if (prev.has(current._key)) return prev
+          const next = new Map(prev)
+          next.set(current._key, { spans, glossary: glossaryFromApi })
+          return next
+        })
+      })
+      .catch(() => { /* no-op: highlighting falls back to regex */ })
+
+    return () => {
+      cancelled = true
+    }
+  }, [current, fallbackHighlights])
 
   const advance = useCallback((dir: number) => {
     setIsEditing(false)
@@ -454,12 +628,44 @@ export function QRAsView() {
                      <span
                        title="Click to copy _key"
                        onClick={() => navigator.clipboard.writeText(current._key)}
-                       style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.dim, cursor: 'pointer', padding: '2px 6px', borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.05)', wordBreak: 'break-all' }}
+                       style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.dim, cursor: 'pointer', padding: '2px 6px', borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.05)' }}
                      >
-                       {current._key}
+                       {compactKey(current._key)}
                      </span>
                    </div>
                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: 2, borderRadius: 6, backgroundColor: `${EMBRY.bg}66`, border: `1px solid ${EMBRY.border}` }}>
+                        <span style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6, paddingLeft: 6 }}>Entities</span>
+                        {ENTITY_VIEW_OPTIONS.map((option) => {
+                          const isActive = entityViewMode === option.mode
+                          const action = option.mode === 'anchors'
+                            ? 'SET_ENTITY_VIEW_ANCHORS'
+                            : option.mode === 'context'
+                              ? 'SET_ENTITY_VIEW_CONTEXT'
+                              : 'SET_ENTITY_VIEW_FULL'
+                          return (
+                            <button
+                              key={option.mode}
+                              data-qid={`qras:display:entity-${option.mode}`}
+                              data-qs-action={action}
+                              title={option.title}
+                              onClick={() => setEntityViewMode(option.mode)}
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 700,
+                                padding: '5px 8px',
+                                borderRadius: 4,
+                                border: 'none',
+                                backgroundColor: isActive ? `${EMBRY.accent}22` : 'transparent',
+                                color: isActive ? EMBRY.accent : EMBRY.dim,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {option.label}
+                            </button>
+                          )
+                        })}
+                      </div>
                       {/* Batch info button */}
                       {current.run_id && (
                         <button
@@ -517,13 +723,56 @@ export function QRAsView() {
                            </div>
                          ) : (
                            <>
-                               <div style={{ ...body, fontSize: 15, fontWeight: 500, color: EMBRY.white, marginBottom: 20, lineHeight: 1.7, padding: '4px 0' }}>
-                                 {current?.evidence_case?.spans ? spanHighlight(editData.question, current.evidence_case.spans as Span[], current.evidence_case.glossary ?? []) : inlineHighlight(editData.question, current?.evidence_case?.glossary ?? [])}
+                               <div style={{ marginBottom: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+                                   <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 0 }}>
+                                     <currentEvidenceOutcome.Icon size={18} color={currentEvidenceOutcome.color} style={{ flexShrink: 0, marginTop: 2 }} />
+                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+                                       <div style={{ fontSize: 10, color: EMBRY.dim, letterSpacing: 1, textTransform: 'uppercase' }}>Question</div>
+                                       <div style={{ ...body, fontSize: 15, fontWeight: 500, color: EMBRY.white, lineHeight: 1.7, padding: '4px 0' }}>
+                                         {questionSpans.length > 0
+                                           ? spanHighlight(editData.question, questionSpans, questionGlossary, { minEmphasis: minHighlightEmphasis })
+                                           : inlineHighlight(editData.question, questionGlossary, { minEmphasis: minHighlightEmphasis })}
+                                       </div>
+                                     </div>
+                                   </div>
+                                   <span
+                                     title={currentEvidenceOutcome.label}
+                                     style={{
+                                       flexShrink: 0,
+                                       display: 'inline-flex',
+                                       alignItems: 'center',
+                                       gap: 6,
+                                       padding: '5px 8px',
+                                       borderRadius: 999,
+                                       backgroundColor: `${currentEvidenceOutcome.color}16`,
+                                       border: `1px solid ${currentEvidenceOutcome.color}33`,
+                                       color: currentEvidenceOutcome.color,
+                                       fontSize: 9,
+                                       fontWeight: 700,
+                                       textTransform: 'uppercase',
+                                       letterSpacing: 0.8,
+                                     }}
+                                   >
+                                     <currentEvidenceOutcome.Icon size={11} />
+                                     {currentEvidenceOutcome.shortLabel}
+                                   </span>
+                                 </div>
+                                 <div style={{
+                                   fontSize: 10,
+                                   color: EMBRY.dim,
+                                   lineHeight: 1.5,
+                                   padding: '8px 10px',
+                                   borderRadius: 6,
+                                   backgroundColor: 'rgba(255,255,255,0.03)',
+                                   border: `1px solid ${EMBRY.border}`,
+                                 }}>
+                                   {currentEvidenceSummary}
+                                 </div>
                                </div>
-
                                <div style={{ ...label, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1, fontSize: 10 }}>Answer</div>
                                <div style={{ ...body, fontSize: 13, color: `${EMBRY.white}E8`, lineHeight: 1.65 }}>
-                                 <AnswerDisplay text={editData.answer} glossary={current?.evidence_case?.glossary ?? []} />
+                                 <AnswerDisplay text={editData.answer} glossary={current?.evidence_case?.glossary ?? []} minEmphasis={minHighlightEmphasis} />
                                </div>
 
                               {editData.reasoning && editData.reasoning.trim().length > 0 && (
@@ -563,29 +812,6 @@ export function QRAsView() {
                                 </>
                               )}
 
-                              {/* Native Evidence Chain from QRA Doc */}
-                              <div style={{ marginTop: 8, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 24 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                                  <FileText size={16} color={EMBRY.accent} />
-                                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: EMBRY.accent, textTransform: 'uppercase' }}>Workflow Validation</span>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: current.evidence_case?.review_status === 'approved' ? `${EMBRY.green}20` : `${EMBRY.dim}15`, padding: '8px 16px', borderRadius: 4, border: `1px solid ${current.evidence_case?.review_status === 'approved' ? `${EMBRY.green}50` : EMBRY.border}` }}>
-                                    {current.evidence_case?.review_status === 'approved' && <CheckCircle2 size={14} color={EMBRY.green} />}
-                                    <span style={{ fontSize: 12, color: current.evidence_case?.review_status === 'approved' ? EMBRY.green : EMBRY.dim, fontWeight: 700 }}>
-                                      {current.evidence_case?.review_status === 'approved' ? 'BLESSED BY HUMAN' : 'AUTO-GENERATED'}
-                                    </span>
-                                  </div>
-                                  
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: current.evidence_case?.formal_proof?.success ? `${EMBRY.accent}20` : `${EMBRY.dim}15`, padding: '8px 16px', borderRadius: 4, border: `1px solid ${current.evidence_case?.formal_proof?.success ? `${EMBRY.accent}50` : EMBRY.border}` }}>
-                                      {current.evidence_case?.formal_proof?.success && <CheckCircle2 size={14} color={EMBRY.accent} />}
-                                      <span style={{ fontSize: 12, color: current.evidence_case?.formal_proof?.success ? EMBRY.accent : EMBRY.dim, fontWeight: 700 }}>
-                                        {current.evidence_case?.formal_proof?.success ? 'PASSED /CREATE-EVIDENCE-CASE' : 'UNVERIFIED ALIGNMENT'}
-                                      </span>
-                                  </div>
-                                </div>
-                              </div>
                            </>
                    )}
                 </div>
@@ -666,8 +892,10 @@ export function QRAsView() {
                       question={current.question} 
                       qraKey={current.qra_id || current._key} 
                       reasoning={current.reasoning}
+                      answer={current.answer}
                       groundingScore={current.grounding_score}
-                      storedEvidenceCase={current.evidence_case as any} 
+                      storedEvidenceCase={current.evidence_case as any}
+                      minHighlightEmphasis={minHighlightEmphasis}
                     />
                  ) : (
                    <div style={{ ...body, padding: 40, color: EMBRY.dim, textAlign: 'center' }}>

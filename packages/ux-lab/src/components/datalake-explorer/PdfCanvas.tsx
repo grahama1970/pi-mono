@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import type { ReactNode } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
 import type { BboxBlock } from './types'
@@ -21,6 +22,12 @@ interface PdfCanvasProps {
   onBlockBBoxChange?: (id: string, bbox: [number, number, number, number]) => void
   onCanvasClick?: () => void
   onCreateBlock?: (bbox: [number, number, number, number]) => void
+  fitMode?: 'manual' | 'page'
+  interactionMode?: 'draw-block' | 'select-area'
+  selectedAreaBBox?: [number, number, number, number] | null
+  selectedAreaBlockIds?: string[]
+  onSelectArea?: (bbox: [number, number, number, number], blockIds: string[]) => void
+  selectedAreaToolbar?: ReactNode
 }
 
 type ResizeHandle = 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w'
@@ -40,6 +47,10 @@ type EditInteraction =
     }
   | {
       mode: 'create'
+      start: [number, number]
+    }
+  | {
+      mode: 'select-area'
       start: [number, number]
     }
 
@@ -118,7 +129,44 @@ export default function PdfCanvas({
   onBlockBBoxChange,
   onCanvasClick,
   onCreateBlock,
+  fitMode = 'manual',
+  interactionMode = 'draw-block',
+  selectedAreaBBox = null,
+  selectedAreaBlockIds = [],
+  onSelectArea,
+  selectedAreaToolbar,
 }: PdfCanvasProps) {
+  useRegisterAction('pdf:page-wrapper', {
+    app: 'datalake-explorer',
+    action: 'PDF_PAGE_WRAPPER',
+    label: 'Page Wrapper',
+    description: 'PDF page wrapper in PdfCanvas',
+  })
+  useRegisterAction('pdf:canvas', {
+    app: 'datalake-explorer',
+    action: 'PDF_CANVAS',
+    label: 'PDF Canvas',
+    description: 'Rendered PDF page canvas in PdfCanvas',
+  })
+  useRegisterAction('pdf:create-layer', {
+    app: 'datalake-explorer',
+    action: 'PDF_CREATE_BLOCK',
+    label: 'Create Block Layer',
+    description: 'Interactive layer for creating reviewed blocks in PdfCanvas',
+  })
+  useRegisterAction('pdf:block', {
+    app: 'datalake-explorer',
+    action: 'PDF_SELECT_BLOCK',
+    label: 'Select Block',
+    description: 'Select or drag a reviewed extraction block in PdfCanvas',
+  })
+  useRegisterAction('pdf:block-handle', {
+    app: 'datalake-explorer',
+    action: 'PDF_RESIZE_BLOCK',
+    label: 'Resize Block',
+    description: 'Resize a reviewed extraction block using drag handles in PdfCanvas',
+  })
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -129,11 +177,34 @@ export default function PdfCanvas({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [dims, setDims] = useState({ w: 0, h: 0 })
+  const [containerDims, setContainerDims] = useState({ w: 0, h: 0 })
   const [interaction, setInteraction] = useState<EditInteraction | null>(null)
   const [draftCreateBBox, setDraftCreateBBox] = useState<[number, number, number, number] | null>(null)
   const [hoveredBlockId, setHoveredBlockId] = useState<string | null>(null)
 
   const editable = Boolean(editMode && onBlockBBoxChange)
+  const selectingArea = editable && interactionMode === 'select-area'
+
+  useEffect(() => {
+    const node = containerRef.current
+    if (!node) return
+
+    const update = () => {
+      setContainerDims({
+        w: node.clientWidth,
+        h: node.clientHeight,
+      })
+    }
+
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(node)
+    window.addEventListener('resize', update)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', update)
+    }
+  }, [])
 
   const interactiveBlocks = useMemo(() => {
     return [...bboxOverlays].sort((a, b) => {
@@ -142,6 +213,23 @@ export default function PdfCanvas({
       return bArea - aArea
     })
   }, [bboxOverlays])
+
+  const selectedAreaToolbarPosition = useMemo(() => {
+    if (!selectedAreaBBox) return null
+    const [left, top, , bottom] = selectedAreaBBox
+    if (top < 0.1) {
+      return {
+        left: `${left * 100}%`,
+        top: `${bottom * 100}%`,
+        transform: 'translateY(8px)',
+      }
+    }
+    return {
+      left: `${left * 100}%`,
+      top: `${top * 100}%`,
+      transform: 'translateY(calc(-100% - 8px))',
+    }
+  }, [selectedAreaBBox])
 
   const getPageRect = useCallback(() => {
     return pageWrapperRef.current?.getBoundingClientRect() ?? overlayRef.current?.getBoundingClientRect() ?? null
@@ -217,7 +305,19 @@ export default function PdfCanvas({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const viewport = page.getViewport({ scale: SCALE * zoom })
+    const baseViewport = page.getViewport({ scale: SCALE })
+    const liveContainerWidth = containerRef.current?.clientWidth ?? containerDims.w
+    const liveContainerHeight = containerRef.current?.clientHeight ?? containerDims.h
+    const fittedZoom = fitMode === 'page' && liveContainerWidth > 0 && liveContainerHeight > 0
+      ? Math.max(
+        0.2,
+        Math.min(
+          (liveContainerWidth - 36) / baseViewport.width,
+          (liveContainerHeight - 36) / baseViewport.height,
+        ),
+      )
+      : zoom
+    const viewport = page.getViewport({ scale: SCALE * fittedZoom })
     canvas.width = viewport.width
     canvas.height = viewport.height
     setDims({ w: viewport.width, h: viewport.height })
@@ -234,7 +334,7 @@ export default function PdfCanvas({
       cancelled = true
       renderTask.cancel()
     }
-  }, [page, zoom])
+  }, [containerDims.h, containerDims.w, fitMode, page, zoom])
 
   useEffect(() => {
     if (!overlayRef.current || dims.w === 0) return
@@ -294,7 +394,7 @@ export default function PdfCanvas({
       const minWidth = Math.max(MIN_HANDLE_TARGET_PX / rect.width, 0.003)
       const minHeight = Math.max(MIN_HANDLE_TARGET_PX / rect.height, 0.003)
 
-      if (interaction.mode === 'create') {
+      if (interaction.mode === 'create' || interaction.mode === 'select-area') {
         setDraftCreateBBox(buildBBoxFromPoints(interaction.start, pointer))
         return
       }
@@ -325,6 +425,20 @@ export default function PdfCanvas({
           onCanvasClick?.()
         }
         setDraftCreateBBox(null)
+      } else if (interaction.mode === 'select-area') {
+        if (draftCreateBBox && onSelectArea) {
+          const [sx1, sy1, sx2, sy2] = draftCreateBBox
+          const selectedBlockIds = bboxOverlays
+            .filter((block) => {
+              const [bx1, by1, bx2, by2] = block.bbox
+              return !(bx2 < sx1 || bx1 > sx2 || by2 < sy1 || by1 > sy2)
+            })
+            .map((block) => block.id)
+          onSelectArea(draftCreateBBox, selectedBlockIds)
+        } else {
+          onCanvasClick?.()
+        }
+        setDraftCreateBBox(null)
       }
       setInteraction(null)
     }
@@ -335,7 +449,7 @@ export default function PdfCanvas({
       window.removeEventListener('mousemove', handleMove)
       window.removeEventListener('mouseup', handleUp)
     }
-  }, [editable, interaction, onBlockBBoxChange, pointerToNormalized, getPageRect, draftCreateBBox, onCreateBlock, onCanvasClick])
+  }, [bboxOverlays, draftCreateBBox, editable, getPageRect, interaction, onBlockBBoxChange, onCanvasClick, onCreateBlock, onSelectArea, pointerToNormalized])
 
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -472,10 +586,17 @@ export default function PdfCanvas({
         />
         {editable && (
           <div
+            data-qid="pdf:create-layer"
+            data-qs-action="PDF_CREATE_BLOCK"
+            title="Create reviewed block layer"
             style={{
               position: 'absolute',
               inset: 0,
-              cursor: interaction?.mode === 'drag' ? 'move' : interaction?.mode === 'create' ? 'crosshair' : 'default',
+              cursor: interaction?.mode === 'drag'
+                ? 'move'
+                : interaction?.mode === 'create' || interaction?.mode === 'select-area'
+                  ? 'crosshair'
+                  : 'default',
             }}
             onMouseDown={(event) => {
               if (event.button !== 0) return
@@ -483,7 +604,7 @@ export default function PdfCanvas({
                 const pointer = pointerToNormalized(event.clientX, event.clientY)
                 if (!pointer) return
                 setDraftCreateBBox([pointer[0], pointer[1], pointer[0], pointer[1]])
-                setInteraction({ mode: 'create', start: pointer })
+                setInteraction({ mode: selectingArea ? 'select-area' : 'create', start: pointer })
               }
             }}
             onContextMenu={(event) => {
@@ -494,11 +615,15 @@ export default function PdfCanvas({
             {interactiveBlocks.map((block) => {
               const [x1, y1, x2, y2] = block.bbox
               const isSelected = block.id === selectedBlockId
+              const isAreaSelected = selectedAreaBlockIds.includes(block.id)
               const isHovered = block.id === hoveredBlockId
               const baseColor = block.humanEdited ? '#23c7d9' : BLOCK_TYPE_COLORS[block.blockType]
               return (
                 <div
                   key={block.id}
+                  data-qid={`pdf:block:${block.id}`}
+                  data-qs-action="PDF_SELECT_BLOCK"
+                  title={`Select ${block.semanticType || block.blockType} block ${block.id}`}
                   onMouseDown={(event) => startDrag(event, block)}
                   onClick={(event) => {
                     event.stopPropagation()
@@ -518,23 +643,31 @@ export default function PdfCanvas({
                     top: `${y1 * 100}%`,
                     width: `${(x2 - x1) * 100}%`,
                     height: `${(y2 - y1) * 100}%`,
-                    cursor: 'move',
+                    cursor: selectingArea ? 'crosshair' : 'move',
                     border: isSelected
                       ? '2px solid rgba(124, 58, 237, 0.95)'
+                      : isAreaSelected
+                        ? '2px dashed rgba(245, 158, 11, 0.95)'
                       : `1px dashed ${block.humanEdited ? 'rgba(35, 199, 217, 0.88)' : `${baseColor}99`}`,
                     boxSizing: 'border-box',
                     zIndex: isSelected ? 20 : 10,
                     overflow: 'visible',
                     boxShadow: isSelected
                       ? '0 0 0 1px rgba(124, 58, 237, 0.2)'
+                      : isAreaSelected
+                        ? '0 0 0 1px rgba(245, 158, 11, 0.35)'
                       : isHovered
                         ? `0 0 0 1px ${baseColor}55`
                         : 'none',
+                    pointerEvents: selectingArea ? 'none' : 'auto',
                   }}
                 >
                   {isSelected && HANDLE_DEFS.map((handle) => (
                     <div
                       key={handle.key}
+                      data-qid={`pdf:block-handle:${block.id}:${handle.key}`}
+                      data-qs-action="PDF_RESIZE_BLOCK"
+                      title={`Resize block ${block.id} from ${handle.key.toUpperCase()} handle`}
                       onMouseDown={(event) => startResize(event, block, handle.key)}
                       style={{
                         position: 'absolute',
@@ -560,13 +693,44 @@ export default function PdfCanvas({
                   top: `${draftCreateBBox[1] * 100}%`,
                   width: `${(draftCreateBBox[2] - draftCreateBBox[0]) * 100}%`,
                   height: `${(draftCreateBBox[3] - draftCreateBBox[1]) * 100}%`,
-                  border: '1.5px dashed rgba(35, 199, 217, 0.95)',
-                  backgroundColor: 'rgba(35, 199, 217, 0.08)',
+                  border: selectingArea ? '1.5px dashed rgba(245, 158, 11, 0.95)' : '1.5px dashed rgba(35, 199, 217, 0.95)',
+                  backgroundColor: selectingArea ? 'rgba(245, 158, 11, 0.08)' : 'rgba(35, 199, 217, 0.08)',
                   boxSizing: 'border-box',
                   pointerEvents: 'none',
                   zIndex: 5,
                 }}
               />
+            )}
+            {selectedAreaBBox && !draftCreateBBox && (
+              <div
+                style={{
+                  position: 'absolute',
+                  left: `${selectedAreaBBox[0] * 100}%`,
+                  top: `${selectedAreaBBox[1] * 100}%`,
+                  width: `${(selectedAreaBBox[2] - selectedAreaBBox[0]) * 100}%`,
+                  height: `${(selectedAreaBBox[3] - selectedAreaBBox[1]) * 100}%`,
+                  border: '1.5px dashed rgba(245, 158, 11, 0.95)',
+                  backgroundColor: 'rgba(245, 158, 11, 0.06)',
+                  boxSizing: 'border-box',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                }}
+              />
+            )}
+            {selectedAreaBBox && selectedAreaToolbar && selectedAreaToolbarPosition && (
+              <div
+                data-qid="pdf-lab:contextual-toolbar"
+                style={{
+                  position: 'absolute',
+                  left: selectedAreaToolbarPosition.left,
+                  top: selectedAreaToolbarPosition.top,
+                  transform: selectedAreaToolbarPosition.transform,
+                  zIndex: 30,
+                  pointerEvents: 'auto',
+                }}
+              >
+                {selectedAreaToolbar}
+              </div>
             )}
           </div>
         )}
@@ -586,9 +750,6 @@ const centerStyle: React.CSSProperties = {
 }
 
 function Spinner() {
-  useRegisterAction('pdf:page-wrapper', { app: 'datalake-explorer', action: 'PAGE_WRAPPER', label: 'Page Wrapper', description: 'Page Wrapper in PdfCanvas' })
-  useRegisterAction('pdf:canvas', { app: 'datalake-explorer', action: 'CANVAS', label: 'Canvas', description: 'Canvas in PdfCanvas' })
-
   return (
     <div
       style={{

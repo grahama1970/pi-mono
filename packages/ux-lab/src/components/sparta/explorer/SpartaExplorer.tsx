@@ -153,13 +153,16 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const navigateToTab = useCallback((tab: TabName) => {
     setActiveTab(tab)
     const slug = tab.toLowerCase().replace(/\s+/g, '-')
-    const base = window.location.hash.split('/')[0]
+    const base = window.location.hash.split('/')[0] || '#sparta-explorer'
     window.location.hash = slug === 'chat' ? base : `${base}/${slug}`
   }, [])
 
   const navigateToTabWithFilter = useCallback((tab: TabName, filter: SpartaTabFilter) => {
     setTabFilters(prev => ({ ...prev, [tab]: filter }))
     setActiveTab(tab)
+    const slug = tab.toLowerCase().replace(/\s+/g, '-')
+    const base = window.location.hash.split('/')[0]
+    window.location.hash = `${base}/${slug}`
   }, [])
 
   const clearTabFilter = useCallback((tab: TabName) => {
@@ -171,6 +174,16 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     })
   }, [])
 
+  useEffect(() => {
+    const onNavigateControl = (evt: Event) => {
+      const detail = (evt as CustomEvent<{ controlId?: string }>).detail
+      const controlId = detail?.controlId
+      navigateToTabWithFilter('Controls', controlId ? { controlId } : {})
+    }
+    window.addEventListener('sparta:navigate-control', onNavigateControl as EventListener)
+    return () => window.removeEventListener('sparta:navigate-control', onNavigateControl as EventListener)
+  }, [navigateToTabWithFilter])
+
   const navContextValue: SpartaNavContextValue = {
     navigateToTab,
     navigateToTabWithFilter,
@@ -180,21 +193,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   // Chat panel state
   const [chatOpen, setChatOpen] = useState(false)
-  const [chatClosing, setChatClosing] = useState(false)
 
-  // Toggle chat with pulse-out animation on close
+  // Keep chat panel mounted only when open so hidden controls are not left in the DOM.
   const toggleChat = useCallback(() => {
-    if (chatOpen) {
-      // Closing: trigger pulse-out animation
-      setChatClosing(true)
-      setTimeout(() => {
-        setChatClosing(false)
-        setChatOpen(false)
-      }, 250)
-    } else {
-      setChatOpen(true)
-    }
-  }, [chatOpen])
+    setChatOpen((open) => !open)
+  }, [])
 
   // Keyboard: 1-8 tabs, Escape close flyouts
   useEffect(() => {
@@ -445,6 +448,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           gate_trace: gates,
           control_ids: data.context?.control_ids ?? [],
           tier,
+          answer: data.answer ?? '',
+          response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
           glossary: data.glossary ?? [],
         },
       })
@@ -481,6 +486,23 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     setChatOpen(true)
   }, [activeTab])
 
+  const activeView = activeTab === 'Posture'
+    ? (
+      views[activeTab] ?? (
+        <PostureDashboard
+          onAnalyzeProofChain={(missingCount) => {
+            const contextMsg: ChatMessage = {
+              role: 'assistant',
+              content: `Analyzing proof chain for Posture Score. Found ${missingCount} evidence gaps. I'll trace the missing evidence cases and identify which controls lack sufficient proof. What would you like to focus on first?`,
+            }
+            setMessages([contextMsg])
+            setChatOpen(true)
+          }}
+        />
+      )
+    )
+    : (views[activeTab] ?? <TabPlaceholder name={activeTab} />)
+
   return (
     <div style={S.container}>
       {/* Offline Banner — shown when memory daemon is unreachable */}
@@ -503,23 +525,21 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             style={{
               ...S.embryBtn,
               backgroundColor: chatOpen ? 'rgba(0, 209, 255, 0.08)' : 'transparent',
-              color: chatOpen || chatClosing ? '#00D1FF' : '#fff',
-              borderColor: chatOpen ? 'rgba(0, 209, 255, 0.4)' : chatClosing ? 'rgba(0, 209, 255, 0.5)' : 'rgba(0, 209, 255, 0.2)',
-              boxShadow: chatClosing
-                ? '0 0 32px rgba(0, 209, 255, 0.7), 0 0 12px rgba(0, 209, 255, 0.5)'  // Pulse-out: bright flash
-                : chatOpen
-                  ? '0 0 24px rgba(0, 209, 255, 0.6), 0 0 8px rgba(0, 209, 255, 0.4)'
-                  : '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)',
-              transition: chatClosing ? 'all 0.15s ease-out' : 'all 0.2s ease',
+              color: chatOpen ? '#00D1FF' : '#fff',
+              borderColor: chatOpen ? 'rgba(0, 209, 255, 0.4)' : 'rgba(0, 209, 255, 0.2)',
+              boxShadow: chatOpen
+                ? '0 0 24px rgba(0, 209, 255, 0.6), 0 0 8px rgba(0, 209, 255, 0.4)'
+                : '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)',
+              transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              if (!chatOpen && !chatClosing) {
+              if (!chatOpen) {
                 e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 209, 255, 0.5), 0 0 6px rgba(0, 209, 255, 0.35)'
                 e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.35)'
               }
             }}
             onMouseLeave={(e) => {
-              if (!chatOpen && !chatClosing) {
+              if (!chatOpen) {
                 e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)'
                 e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.2)'
               }
@@ -562,70 +582,62 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
       {/* Main Split Layout */}
       <div style={S.splitContainer}>
-        {/* Chat Panel — slides in from left (respects prefers-reduced-motion) */}
-        <div
-          style={{
-            ...S.chatPanel,
-            width: chatOpen ? 420 : 0,
-            opacity: chatOpen ? 1 : 0,
-            transform: chatOpen ? 'translateX(0)' : 'translateX(-20px)',
-            transition: reducedMotion ? 'none' : S.chatPanel.transition,
-          }}
-        >
-          <div style={S.chatHeader}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <MessageSquare size={16} style={{ color: EMBRY.accent }} />
-              <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Ask Embry</span>
+        {/* Chat Panel — mounted only when open so hidden controls are not left in DOM */}
+        {chatOpen && (
+          <div
+            style={{
+              ...S.chatPanel,
+              width: 420,
+              opacity: 1,
+              transform: 'translateX(0)',
+              transition: reducedMotion ? 'none' : S.chatPanel.transition,
+            }}
+          >
+            <div style={S.chatHeader}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <MessageSquare size={16} style={{ color: EMBRY.accent }} />
+                <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Ask Embry</span>
+              </div>
+              <button
+                data-qid="sparta:button:chat-close"
+                data-qs-action="CLOSE_CHAT"
+                onClick={() => setChatOpen(false)}
+                title="Close chat (Cmd+\\)"
+                style={S.chatCloseBtn}
+              >
+                <ChevronLeft size={18} />
+              </button>
             </div>
-            <button
-              data-qid="sparta:button:chat-close"
-              data-qs-action="CLOSE_CHAT"
-              onClick={() => setChatOpen(false)}
-              title="Close chat (Cmd+\\)"
-              style={S.chatCloseBtn}
-            >
-              <ChevronLeft size={18} />
-            </button>
-          </div>
-          {/* Scope/Gate toggles */}
-          <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8 }}>
-            <div style={{ display: 'flex', gap: 2, flex: 1 }}>
-              {(['sparta', 'f36', 'both'] as const).map(s => (
-                <button key={s} data-qid={`sparta:button:chat-scope-${s}`} data-qs-action="SET_CHAT_SCOPE" onClick={() => setScope(s)} title={`Scope: ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
-                  {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
-                </button>
-              ))}
+            {/* Scope/Gate toggles */}
+            <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 2, flex: 1 }}>
+                {(['sparta', 'f36', 'both'] as const).map(s => (
+                  <button key={s} data-qid={`sparta:button:chat-scope-${s}`} data-qs-action="SET_CHAT_SCOPE" onClick={() => setScope(s)} title={`Scope: ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
+                    {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 2 }}>
+                {(['fast', 'medium', 'accurate'] as const).map(g => (
+                  <button key={g} data-qid={`sparta:button:chat-depth-${g}`} data-qs-action="SET_CHAT_DEPTH" onClick={() => setGateDepth(g)} title={`Depth: ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
+                    {g[0].toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: 2 }}>
-              {(['fast', 'medium', 'accurate'] as const).map(g => (
-                <button key={g} data-qid={`sparta:button:chat-depth-${g}`} data-qs-action="SET_CHAT_DEPTH" onClick={() => setGateDepth(g)} title={`Depth: ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
-                  {g[0].toUpperCase()}
-                </button>
-              ))}
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
             </div>
           </div>
-          <div style={{ flex: 1, overflow: 'hidden' }}>
-            <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
-          </div>
-        </div>
+        )}
 
         {/* Main Content Area */}
         <div style={S.mainContent}>
           <SpartaNavContext.Provider value={navContextValue}>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-              {TABS.map((tab) => (
-                <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-                  {tab === 'Posture' ? (views[tab] ?? <PostureDashboard onAnalyzeProofChain={(missingCount) => {
-                      const contextMsg: ChatMessage = {
-                        role: 'assistant',
-                        content: `Analyzing proof chain for Posture Score. Found ${missingCount} evidence gaps. I'll trace the missing evidence cases and identify which controls lack sufficient proof. What would you like to focus on first?`,
-                      }
-                      setMessages([contextMsg])
-                      setChatOpen(true)
-                    }} />)
-                    : (views[tab] ?? <TabPlaceholder name={tab} />)}
-                </div>
-              ))}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                {activeView}
+              </div>
             </div>
           </SpartaNavContext.Provider>
 
@@ -806,10 +818,10 @@ const S = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 40,
-    height: 40,
-    minHeight: 40,
-    minWidth: 40,
+    width: 44,
+    height: 44,
+    minHeight: 44,
+    minWidth: 44,
     borderRadius: '50%',
     border: '1px solid rgba(0, 209, 255, 0.2)',
     backgroundColor: 'transparent',

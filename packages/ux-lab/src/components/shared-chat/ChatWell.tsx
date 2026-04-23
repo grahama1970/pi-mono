@@ -338,7 +338,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
   }, [handleSend, showPalette])
 
   const hasConversation = messages.length > 0 || isStreaming
-  const composerDockHeight = 128
+  const composerDockHeight = 104
 
   return (
     <div style={{
@@ -350,12 +350,12 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
         flex: 1,
         minHeight: 0,
         overflow: 'auto',
-        padding: hasConversation ? '8px 16px 8px 16px' : '4px 16px 8px 16px',
+        padding: hasConversation ? '8px 16px 8px 16px' : '0 16px 6px 16px',
         display: 'flex',
         flexDirection: 'column',
       }}>
         {messages.length === 0 && (
-          <div style={{ padding: '4px 0 0 0', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center', marginBottom: 6 }}>
+          <div style={{ padding: '0', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center', marginBottom: 0 }}>
             <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Ask a question</div>
             {(starterQuestions ?? [
               'Show me the F-36 threat matrix',

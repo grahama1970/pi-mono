@@ -1,7 +1,7 @@
 /**
  * Entity highlighting — shared across Embry Terminal + SPARTA Explorer.
  * Detects compliance entities (NIST controls, CWEs, ATT&CK, SPARTA, frameworks)
- * and skill names (/skill-name) in text, returns JSX with colored chips.
+ * and skill names (/skill-name) in text, returns JSX with lightweight inline emphasis.
  */
 import type { ReactNode } from 'react';
 import type { EntityType } from './types';
@@ -99,17 +99,24 @@ export function highlightEntities(
           key={i}
           onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(part, type); } : undefined}
           style={{
-            color: style.color, fontWeight: 600, fontSize: '0.92em',
-            background: style.bg, padding: '8px 12px', borderRadius: 6,
+            color: style.color, fontWeight: type === 'control' || type === 'cwe' || type === 'attack' || type === 'sparta' ? 700 : 600,
+            fontSize: '1em',
+            background: 'transparent',
+            boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
+            borderBottom: `1px solid ${style.color}44`,
+            textDecoration: onEntityClick ? 'underline' : 'none',
+            textDecorationColor: `${style.color}66`,
+            textUnderlineOffset: '2px',
+            padding: '0 1px',
+            borderRadius: 0,
             fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
             cursor: onEntityClick ? 'pointer' : 'inherit',
-            position: 'relative', display: 'inline-flex', alignItems: 'center',
-            minHeight: 44, minWidth: 44, boxSizing: 'border-box',
-            transition: 'filter 0.15s, transform 0.1s',
-            border: `1px solid transparent`,
+            position: 'relative', display: 'inline',
+            boxSizing: 'border-box',
+            transition: 'filter 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
           }}
-          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.3)'; e.currentTarget.style.border = `1px solid ${style.color}` }}
-          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.border = '1px solid transparent' }}
+          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.borderBottomColor = style.color; }}
+          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.borderBottomColor = `${style.color}44`; }}
           data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`} data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
           title={tooltip}
         >
@@ -166,17 +173,24 @@ export function highlightWithGlossary(
           key={i}
           onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(part, type); } : undefined}
           style={{
-            color: style.color, fontWeight: 600, fontSize: '0.92em',
-            background: style.bg, padding: '8px 12px', borderRadius: 6,
+            color: style.color, fontWeight: type === 'control' || type === 'cwe' || type === 'attack' || type === 'sparta' ? 700 : 600,
+            fontSize: '1em',
+            background: 'transparent',
+            boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
+            borderBottom: `1px solid ${style.color}44`,
+            textDecoration: onEntityClick ? 'underline' : 'none',
+            textDecorationColor: `${style.color}66`,
+            textUnderlineOffset: '2px',
+            padding: '0 1px',
+            borderRadius: 0,
             fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
             cursor: onEntityClick ? 'pointer' : 'inherit',
-            position: 'relative', display: 'inline-flex', alignItems: 'center',
-            minHeight: 44, minWidth: 44, boxSizing: 'border-box',
-            transition: 'filter 0.15s, transform 0.1s',
-            border: `1px solid transparent`,
+            position: 'relative', display: 'inline',
+            boxSizing: 'border-box',
+            transition: 'filter 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
           }}
-          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.3)'; e.currentTarget.style.border = `1px solid ${style.color}` }}
-          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.border = '1px solid transparent' }}
+          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.borderBottomColor = style.color; }}
+          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.borderBottomColor = `${style.color}44`; }}
           data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`}
           data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
           title={tooltip}

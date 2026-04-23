@@ -422,7 +422,7 @@ function ControlDetailPane({
                       const ctrl = (d.documents ?? [])[0] as SpartaControl | undefined
                       if (ctrl) onNavigate(ctrl)
                     }).catch(() => {})
-                  }} data-qid={`controls:rel:${other}`} data-qs-action="NAVIGATE_RELATIONSHIP" title={`Navigate to ${other}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
+                  }} data-qid={`controls:rel:${other}`} data-qs-action="NAVIGATE_RELATIONSHIP" title={`Navigate to ${other}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 10px', minHeight: 44, boxSizing: 'border-box', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
                   onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}15` }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = EMBRY.bgDeep }}>
                   <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.blue }}>{other}</span>
@@ -588,6 +588,7 @@ function MetaField({ label: l, value, mono }: { label: string; value: string; mo
 
 export function ControlsView() {
   const nav = useSpartaNav()
+  const controlFilter = nav.tabFilters.Controls?.controlId
   const [page, setPage] = useState(0)
   const [fwFilter, setFwFilter] = useState<string | undefined>(undefined)
   const [search, setSearch] = useState('')
@@ -622,6 +623,44 @@ export function ControlsView() {
         (c.description ?? '').toLowerCase().includes(search.toLowerCase()),
       )
     : controls
+
+  useEffect(() => {
+    if (!controlFilter) return
+    setSearch(controlFilter)
+
+    const local = controls.find((c) => c.control_id === controlFilter)
+    if (local) {
+      setSelected(local)
+      nav.clearTabFilter('Controls')
+      return
+    }
+
+    let cancelled = false
+    fetch(`${API}/list`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_controls',
+        limit: 1,
+        filters: { control_id: controlFilter },
+        return_fields: ['control_id', 'name', 'description', 'source_framework', 'control_type', 'parent_id', 'domain', 'scope', 'weaknesses', 'mind', 'nrs_score', 'status'],
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return
+        const doc = (data.documents ?? [])[0] as SpartaControl | undefined
+        if (doc) setSelected(doc)
+      })
+      .catch(() => { /* no-op: leave current selection unchanged */ })
+      .finally(() => {
+        if (!cancelled) nav.clearTabFilter('Controls')
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [controlFilter, controls, nav])
 
   if (error) {
     return <div style={{ padding: 20, color: EMBRY.red, border: `1px solid ${EMBRY.red}33`, borderRadius: 8, margin: 16 }}>Error: {error}</div>
@@ -686,6 +725,7 @@ export function ControlsView() {
                   color: isActive ? color : EMBRY.dim,
                   cursor: 'pointer',
                   minHeight: 44,
+                  minWidth: 44,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

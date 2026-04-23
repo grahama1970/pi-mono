@@ -1505,9 +1505,11 @@ export default function App() {
 
   // Hash routing: #project-id or #project-id/subpath
   const parseHash = useCallback(() => {
-    const raw = window.location.hash.replace('#', '');
-    if (!raw) return { project: 'music-lab-pipeline', view: 'design-board' as View };
-    const [first, ...rest] = raw.split('/');
+    const raw = window.location.hash.replace(/^#/, '');
+    const [pathOnly] = raw.split('?');
+    const normalizedPath = pathOnly.replace(/^\/+/, '');
+    if (!normalizedPath) return { project: 'music-lab-pipeline', view: 'design-board' as View };
+    const [first, ...rest] = normalizedPath.split('/');
     // Deep links to projects should default to 'final-site' (interactive implementation)
     // except for projects that don't have a final-site view
     const componentsOnlyProjects: string[] = [];

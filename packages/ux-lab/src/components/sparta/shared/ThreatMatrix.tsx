@@ -273,7 +273,7 @@ function TacticalHUD({ tech, position, visible }: TacticalHUDProps) {
 
   return (
     <div
-      data-qid="threat-matrix:layout:tactical-hud"
+      data-qid="threat-matrix:overlay:tactical-hud"
       data-qs-action="tactical-hud-display"
       title={`Tactical HUD: ${tech.id}`}
       style={{
@@ -1175,6 +1175,12 @@ function Grid() {
       </div>
 
       {/* TacticalHUD — NVIS 2026 glassmorphic tooltip */}
+      <div
+        data-qid="threat-matrix:layout:tactical-hud"
+        data-qs-action="TACTICAL_HUD_LAYOUT"
+        aria-hidden
+        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}
+      />
       {hudTech && (
         <TacticalHUD
           tech={hudTech}

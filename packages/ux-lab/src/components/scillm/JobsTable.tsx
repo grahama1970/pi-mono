@@ -5,7 +5,7 @@
  * This replaces both the Callers sidebar AND the flat log table.
  */
 import React, { useState, useMemo } from "react";
-import { ChevronRight, ChevronDown, Copy, Check, RotateCcw, Play, Square, AlertTriangle } from "lucide-react";
+import { ChevronRight, ChevronDown, Copy, Check, AlertTriangle, Search } from "lucide-react";
 import { EMBRY } from "../common/EmbryStyle";
 import type { LogEntry } from "../../hooks/useScillmData";
 
@@ -122,6 +122,9 @@ interface Props {
   logs: LogEntry[];
   onCallClick?: (call: LogEntry) => void;
 }
+
+type SortKey = "caller" | "progress" | "status" | "latency" | "cost" | "activity";
+type SortDirection = "asc" | "desc";
 
 // Group calls into chunks
 function groupCallsIntoChunks(calls: LogEntry[]): Chunk[] {
@@ -322,6 +325,30 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
   );
 }
 
+function summarizeCallResponse(call: LogEntry): string {
+  if (call.error) return call.error;
+  const raw = call.response_content?.trim();
+  if (!raw) return "No response content captured";
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (typeof parsed?.skipped_reason === "string" && parsed.skipped_reason) return parsed.skipped_reason;
+    if (Array.isArray(parsed?.pairs) && parsed.pairs.length > 0) {
+      const firstPair = parsed.pairs[0];
+      if (typeof firstPair?.answer === "string" && firstPair.answer) return firstPair.answer;
+      if (typeof firstPair?.reasoning === "string" && firstPair.reasoning) return firstPair.reasoning;
+      if (typeof firstPair?.question === "string" && firstPair.question) return firstPair.question;
+    }
+    if (typeof parsed?.answer === "string" && parsed.answer) return parsed.answer;
+    if (typeof parsed?.reasoning === "string" && parsed.reasoning) return parsed.reasoning;
+    if (typeof parsed?.question === "string" && parsed.question) return parsed.question;
+  } catch {
+    return raw.length > 180 ? `${raw.slice(0, 177)}...` : raw;
+  }
+
+  return raw.length > 180 ? `${raw.slice(0, 177)}...` : raw;
+}
+
 // Render a single call row (used in both chunk and non-chunk views)
 function CallRow({
   call,
@@ -340,6 +367,9 @@ function CallRow({
 }) {
   const prefix = isLast ? "└─" : "├─";
   const paddingLeft = 24 + indentLevel * 16;
+  const health = getCallHealth(call);
+  const summary = summarizeCallResponse(call);
+  const summaryColor = health.level === "error" ? EMBRY.red : health.level === "warning" ? EMBRY.amber : EMBRY.dim;
 
   return (
     <tr
@@ -357,17 +387,33 @@ function CallRow({
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bg)}
     >
       <td style={{ padding: `8px 16px 8px ${paddingLeft}px`, fontSize: 11 }}>
-        <span style={{ color: EMBRY.dim }}>{prefix}</span>{" "}
-        <span style={{ color: EMBRY.white, fontFamily: MONO }}>
-          {call.metadata?.item_id || call.model_served || call.model_requested}
-        </span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <div>
+            <span style={{ color: EMBRY.dim }}>{prefix}</span>{" "}
+            <span style={{ color: EMBRY.white, fontFamily: MONO }}>
+              {call.metadata?.item_id || call.model_served || call.model_requested}
+            </span>
+          </div>
+          <div
+            style={{
+              color: summaryColor,
+              fontSize: 10,
+              lineHeight: 1.35,
+              maxWidth: 480,
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+            }}
+            title={summary}
+          >
+            {summary}
+          </div>
+        </div>
       </td>
       <td style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
         {call.total_tokens || 0} tokens
       </td>
       <td style={{ padding: "8px" }}>
         {(() => {
-          const health = getCallHealth(call);
           const color = health.level === "error" ? EMBRY.red
             : health.level === "warning" ? EMBRY.amber
             : EMBRY.green;
@@ -440,7 +486,16 @@ function JobRow({
   onCallClick?: (call: LogEntry) => void;
 }) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [callFilter, setCallFilter] = useState<"all" | "completed" | "issues">("all");
   const borderColor = job.status === "failed" ? EMBRY.red : job.status === "running" ? EMBRY.blue : EMBRY.green;
+  const completedCalls = useMemo(
+    () => job.calls.filter((call) => getCallHealth(call).level === "ok"),
+    [job.calls],
+  );
+  const issueCalls = useMemo(
+    () => job.calls.filter((call) => getCallHealth(call).level !== "ok"),
+    [job.calls],
+  );
 
   const handleCopyPrompt = async (e: React.MouseEvent, call: LogEntry) => {
     e.stopPropagation();
@@ -448,6 +503,12 @@ function JobRow({
     await navigator.clipboard.writeText(text);
     setCopiedKey(call._key);
     setTimeout(() => setCopiedKey(null), 2000);
+  };
+
+  const getVisibleCalls = (calls: LogEntry[]) => {
+    if (callFilter === "completed") return calls.filter((call) => getCallHealth(call).level === "ok");
+    if (callFilter === "issues") return calls.filter((call) => getCallHealth(call).level !== "ok");
+    return calls;
   };
 
   return (
@@ -521,11 +582,51 @@ function JobRow({
         <td style={{ padding: "12px 8px" }} />
       </tr>
 
+      {isExpanded && (
+        <tr style={{ backgroundColor: EMBRY.bgPanel, borderLeft: `4px solid ${borderColor}55` }}>
+          <td colSpan={7} style={{ padding: "8px 16px", fontSize: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {[
+                  { key: "all", label: `All calls (${job.calls.length})` },
+                  { key: "completed", label: `Completed (${completedCalls.length})` },
+                  { key: "issues", label: `Issues (${issueCalls.length})` },
+                ].map(({ key, label }) => (
+                  <button
+                    key={key}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCallFilter(key as typeof callFilter);
+                    }}
+                    style={{
+                      padding: "4px 8px",
+                      border: `1px solid ${callFilter === key ? EMBRY.blue : EMBRY.border}`,
+                      backgroundColor: callFilter === key ? `${EMBRY.blue}20` : EMBRY.bgDeep,
+                      color: callFilter === key ? EMBRY.blue : EMBRY.white,
+                      cursor: "pointer",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                Completed responses stay visible here even while the parent job is still running.
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+
       {/* Expanded: Show chunks if available, otherwise flat calls */}
       {isExpanded && job.hasChunks ? (
         <>
         {/* Hierarchical chunk view */}
-        {job.chunks.map((chunk, chunkIdx) => {
+        {job.chunks.map((chunk) => {
           const isChunkExpanded = expandedChunks.has(chunk.index);
           const chunkStatusColor = chunk.status === "failed" ? EMBRY.red
             : chunk.status === "running" ? EMBRY.blue
@@ -580,12 +681,12 @@ function JobRow({
               </tr>
 
               {/* Expanded Chunk Calls */}
-              {isChunkExpanded && chunk.calls.map((call, callIdx) => (
+              {isChunkExpanded && getVisibleCalls(chunk.calls).map((call, callIdx, visibleCalls) => (
                 <CallRow
                   key={call._key}
                   call={call}
                   indentLevel={2}
-                  isLast={callIdx === chunk.calls.length - 1}
+                  isLast={callIdx === visibleCalls.length - 1}
                   onCallClick={onCallClick}
                   copiedKey={copiedKey}
                   onCopyPrompt={handleCopyPrompt}
@@ -617,12 +718,12 @@ function JobRow({
             </td>
           </tr>
         )}
-        {job.ungroupedCalls.map((call, idx) => (
+        {getVisibleCalls(job.ungroupedCalls).map((call, idx, visibleCalls) => (
           <CallRow
             key={call._key}
             call={call}
             indentLevel={1}
-            isLast={idx === job.ungroupedCalls.length - 1}
+            isLast={idx === visibleCalls.length - 1}
             onCallClick={onCallClick}
             copiedKey={copiedKey}
             onCopyPrompt={handleCopyPrompt}
@@ -631,12 +732,12 @@ function JobRow({
       </>
       ) : isExpanded ? (
         // Flat call view (no chunks)
-        job.calls.map((call, idx) => (
+        getVisibleCalls(job.calls).map((call, idx, visibleCalls) => (
           <CallRow
             key={call._key}
             call={call}
             indentLevel={1}
-            isLast={idx === job.calls.length - 1}
+            isLast={idx === visibleCalls.length - 1}
             onCallClick={onCallClick}
             copiedKey={copiedKey}
             onCopyPrompt={handleCopyPrompt}
@@ -650,16 +751,69 @@ function JobRow({
 export function JobsTable({ logs, onCallClick }: Props) {
   const [expandedJobs, setExpandedJobs] = useState<Set<string>>(new Set());
   const [expandedChunks, setExpandedChunks] = useState<Map<string, Set<number>>>(new Map());
-  const [filter, setFilter] = useState<"all" | "running" | "errors">("all");
+  const [filter, setFilter] = useState<"all" | "running" | "completed" | "errors">("all");
+  const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("activity");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const jobs = useMemo(() => groupLogsIntoJobs(logs), [logs]);
 
   const filteredJobs = useMemo(() => {
-    if (filter === "all") return jobs;
-    if (filter === "running") return jobs.filter(j => j.status === "running");
-    if (filter === "errors") return jobs.filter(j => j.errors > 0);
-    return jobs;
-  }, [jobs, filter]);
+    let next = jobs;
+
+    if (filter === "running") next = next.filter(j => j.status === "running");
+    else if (filter === "completed") next = next.filter(j => j.status === "completed");
+    else if (filter === "errors") next = next.filter(j => j.errors > 0);
+
+    const query = search.trim().toLowerCase();
+    if (query) {
+      next = next.filter((job) => {
+        const jobFields = [
+          job.caller,
+          job.batchId,
+          job.firstError,
+          job.firstWarning,
+        ];
+        const jobMatch = jobFields.some((value) => value?.toLowerCase().includes(query));
+        if (jobMatch) return true;
+        return job.calls.some((call) =>
+          [
+            call.metadata?.item_id,
+            call.model_served,
+            call.model_requested,
+            call.error,
+          ].some((value) => value?.toLowerCase().includes(query))
+        );
+      });
+    }
+
+    const statusOrder = { running: 0, failed: 1, completed: 2 };
+    const sorted = [...next].sort((a, b) => {
+      const direction = sortDirection === "asc" ? 1 : -1;
+
+      switch (sortKey) {
+        case "caller":
+          return direction * a.caller.localeCompare(b.caller);
+        case "progress": {
+          const aRatio = (a.expectedTotal || a.totalCalls) > 0 ? a.completedCalls / (a.expectedTotal || a.totalCalls) : 0;
+          const bRatio = (b.expectedTotal || b.totalCalls) > 0 ? b.completedCalls / (b.expectedTotal || b.totalCalls) : 0;
+          if (aRatio !== bRatio) return direction * (aRatio - bRatio);
+          return direction * (a.completedCalls - b.completedCalls);
+        }
+        case "status":
+          return direction * (statusOrder[a.status] - statusOrder[b.status]);
+        case "latency":
+          return direction * (a.avgLatency - b.avgLatency);
+        case "cost":
+          return direction * (a.totalCost - b.totalCost);
+        case "activity":
+        default:
+          return direction * a.lastActivity.localeCompare(b.lastActivity);
+      }
+    });
+
+    return sorted;
+  }, [jobs, filter, search, sortDirection, sortKey]);
 
   const toggleJob = (jobId: string) => {
     setExpandedJobs((prev) => {
@@ -685,8 +839,26 @@ export function JobsTable({ logs, onCallClick }: Props) {
   const stats = useMemo(() => ({
     total: jobs.length,
     running: jobs.filter(j => j.status === "running").length,
+    completed: jobs.filter(j => j.status === "completed").length,
     withErrors: jobs.filter(j => j.errors > 0).length,
   }), [jobs]);
+
+  const toggleSort = (key: SortKey) => {
+    setSortKey((prevKey) => {
+      if (prevKey === key) {
+        setSortDirection((prevDirection) => (prevDirection === "asc" ? "desc" : "asc"));
+        return prevKey;
+      }
+      setSortDirection(key === "caller" ? "asc" : "desc");
+      return key;
+    });
+  };
+
+  const renderSortLabel = (label: string, key: SortKey) => {
+    const isActive = sortKey === key;
+    const suffix = isActive ? (sortDirection === "asc" ? " ↑" : " ↓") : "";
+    return `${label}${suffix}`;
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -702,6 +874,7 @@ export function JobsTable({ logs, onCallClick }: Props) {
         {[
           { key: "all", label: "All", count: stats.total },
           { key: "running", label: "Running", count: stats.running },
+          { key: "completed", label: "Completed", count: stats.completed },
           { key: "errors", label: "Errors", count: stats.withErrors },
         ].map(({ key, label, count }) => (
           <button
@@ -725,6 +898,48 @@ export function JobsTable({ logs, onCallClick }: Props) {
         ))}
       </div>
 
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "10px 16px",
+          borderBottom: `1px solid ${EMBRY.border}`,
+          backgroundColor: EMBRY.bgPanel,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "6px 10px",
+            border: `1px solid ${EMBRY.border}`,
+            backgroundColor: EMBRY.bgDeep,
+            minWidth: 280,
+          }}
+        >
+          <Search size={12} color={EMBRY.dim} />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search caller, batch, item id, model, error..."
+            style={{
+              flex: 1,
+              background: "none",
+              border: "none",
+              outline: "none",
+              color: EMBRY.white,
+              fontSize: 11,
+              fontFamily: MONO,
+            }}
+          />
+        </div>
+        <div style={{ fontSize: 10, color: EMBRY.dim }}>
+          {filteredJobs.length} shown
+        </div>
+      </div>
+
       {/* Table */}
       <div style={{ flex: 1, overflowY: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -741,12 +956,36 @@ export function JobsTable({ logs, onCallClick }: Props) {
                 backgroundColor: EMBRY.bgDeep,
               }}
             >
-              <th style={{ padding: "10px 16px" }}>Job / Caller</th>
-              <th style={{ padding: "10px 8px" }}>Progress</th>
-              <th style={{ padding: "10px 8px" }}>Status</th>
-              <th style={{ padding: "10px 8px" }}>Avg Latency</th>
-              <th style={{ padding: "10px 8px" }}>Cost</th>
-              <th style={{ padding: "10px 8px" }}>Last Activity</th>
+              <th style={{ padding: "10px 16px" }}>
+                <button onClick={() => toggleSort("caller")} style={headerButtonStyle}>
+                  {renderSortLabel("Job / Caller", "caller")}
+                </button>
+              </th>
+              <th style={{ padding: "10px 8px" }}>
+                <button onClick={() => toggleSort("progress")} style={headerButtonStyle}>
+                  {renderSortLabel("Progress", "progress")}
+                </button>
+              </th>
+              <th style={{ padding: "10px 8px" }}>
+                <button onClick={() => toggleSort("status")} style={headerButtonStyle}>
+                  {renderSortLabel("Status", "status")}
+                </button>
+              </th>
+              <th style={{ padding: "10px 8px" }}>
+                <button onClick={() => toggleSort("latency")} style={headerButtonStyle}>
+                  {renderSortLabel("Avg Latency", "latency")}
+                </button>
+              </th>
+              <th style={{ padding: "10px 8px" }}>
+                <button onClick={() => toggleSort("cost")} style={headerButtonStyle}>
+                  {renderSortLabel("Cost", "cost")}
+                </button>
+              </th>
+              <th style={{ padding: "10px 8px" }}>
+                <button onClick={() => toggleSort("activity")} style={headerButtonStyle}>
+                  {renderSortLabel("Last Activity", "activity")}
+                </button>
+              </th>
               <th style={{ padding: "10px 8px" }}>Actions</th>
             </tr>
           </thead>
@@ -776,3 +1015,14 @@ export function JobsTable({ logs, onCallClick }: Props) {
     </div>
   );
 }
+
+const headerButtonStyle: React.CSSProperties = {
+  padding: 0,
+  border: "none",
+  background: "none",
+  color: "inherit",
+  cursor: "pointer",
+  font: "inherit",
+  letterSpacing: "inherit",
+  textTransform: "inherit",
+};

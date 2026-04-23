@@ -326,6 +326,8 @@ export function ChatTab() {
           gate_trace: gates,
           control_ids: data.context?.control_ids ?? [],
           tier,
+          answer: data.answer ?? '',
+          response_action: String(verdict) === 'satisfied' ? 'answer' : String(verdict) === 'not_satisfied' ? 'deflect' : 'clarify',
           glossary: data.glossary ?? [],
         },
       }])

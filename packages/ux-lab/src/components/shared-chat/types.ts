@@ -120,6 +120,8 @@ export interface EvidenceCaseData {
 	recall_breakdown?: Record<string, number>;
 	source_traceability?: Record<string, number>;
 	description?: string;
+	answer?: string;
+	response_action?: "answer" | "deflect" | "clarify" | string;
 	glossary?: GlossaryTerm[];
 	metadata?: {
 		gates_passed?: number;
