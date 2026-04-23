@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback } from 'react'
-import { EMBRY, label, body } from '../common/EmbryStyle'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { EMBRY, label } from '../common/EmbryStyle'
 import { useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { EvidenceView } from './EvidenceView'
-import { Search, CheckCircle2, XCircle, FileText, PanelLeftClose, PanelLeft, PanelRightClose, PanelRight, Layers, X, ChevronDown, ChevronRight, AlertCircle } from 'lucide-react'
-import { MarkdownRenderer } from '../../shared-chat/MarkdownRenderer'
-import { inlineHighlight, spanHighlight } from './explorerUtils'
-import type { Span, GlossaryEntryLike, HighlightEmphasis } from './explorerUtils'
+import { Search, CheckCircle2, XCircle, PanelLeftClose, PanelLeft, Layers, X } from 'lucide-react'
+import type { HighlightEmphasis } from './explorerUtils'
 
 type EntityViewMode = 'anchors' | 'context' | 'full'
 
@@ -36,80 +34,63 @@ function minEmphasisForMode(mode: EntityViewMode): HighlightEmphasis {
   return ENTITY_VIEW_OPTIONS.find((option) => option.mode === mode)?.minEmphasis ?? 'medium'
 }
 
-/** Render QRA answer as clean paragraphs with subtle entity highlighting */
-function AnswerDisplay({
-  text,
-  glossary = [],
-  minEmphasis = 'medium',
-}: {
-  text: string
-  glossary?: Array<{ id?: string; name?: string; framework?: string; type?: string; description?: string; source?: string }>
-  minEmphasis?: HighlightEmphasis
-}) {
-  if (!text) return null
+const PANE_PADDING = 16
+type EvidenceFilter = 'all' | 'failed' | 'passed'
 
-  // Clean up the text
-  const cleaned = text
-    .replace(/\[EPISODIC\]\s*/g, '')
-    .replace(/\[QRA-GROUNDED\]\s*/g, '\n\n')
-    .replace(/\[Prior:\s*([^\]]+)\]/g, '(Prior: $1)')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
+function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
+  const verdict = (q.evidence_case?.verdict || '').trim().toLowerCase()
+  if (verdict === 'satisfied' || verdict === 'pass' || verdict === 'passed') return 'passed'
+  if (verdict === 'not_satisfied' || verdict === 'fail' || verdict === 'failed' || verdict === 'rejected') return 'failed'
+  if (verdict === 'inconclusive' || verdict === 'auto' || verdict === 'qualified') return 'failed'
+  if (q.evidence_case?.review_status === 'approved' || q.evidence_case?.formal_proof?.success) return 'passed'
+  if (q.evidence_case?.review_status === 'rejected') return 'failed'
+  if (q.evidence_case?.review_status === 'pending') return 'failed'
+  return q.evidence_case ? 'failed' : 'failed'
+}
 
-  // Split into paragraphs
-  const paragraphs = cleaned.split(/\n\n+/)
+function statusIndicators(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) => void): React.ReactNode {
+  const status = deriveEvidenceStatus(q)
+  const color = status === 'passed' ? EMBRY.green : EMBRY.red
+  const glow = status === 'passed' ? `${EMBRY.green}33` : `${EMBRY.red}33`
+  const title = status === 'passed'
+    ? 'Evidence passed or was approved'
+    : q.evidence_case
+      ? 'Evidence failed or needs review'
+      : 'No evidence case attached'
 
   return (
-    <>
-      {paragraphs.map((para, i) => (
-        <p key={i} style={{ margin: '0 0 12px 0', lineHeight: 1.7 }}>
-          {inlineHighlight(para.trim(), glossary, { minEmphasis })}
-        </p>
-      ))}
-    </>
+    <button
+      type="button"
+      data-qid="qras:action:toggle_evidence"
+      data-qs-action="TOGGLE_EVIDENCE"
+      aria-label="Evidence status"
+      title={title}
+      onClick={onEvidenceClick}
+      style={{
+        width: 32,
+        height: 32,
+        padding: 0,
+        borderRadius: '50%',
+        color,
+        backgroundColor: 'transparent',
+        border: `1px solid ${glow}`,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: onEvidenceClick ? 'pointer' : 'default',
+        flexShrink: 0,
+      }}
+    >
+      <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: color, boxShadow: status === 'passed' ? 'none' : `0 0 8px ${EMBRY.red}44` }} />
+    </button>
   )
 }
 
-function statusBadges(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) => void): React.ReactNode {
-  const evidencePass = q.evidence_case?.formal_proof?.success
-  const humanBlessed = q.evidence_case?.review_status === 'approved'
-
-  const badge = (pass: boolean | undefined, label: string, title: string, onClick?: (e: React.MouseEvent) => void, qid?: string, qsAction?: string) => {
-    const color = pass === true ? EMBRY.green : pass === false ? EMBRY.red : EMBRY.dim
-    const isClickable = !!onClick
-    return (
-      <span
-        data-qid={qid}
-        data-qs-action={qsAction}
-        title={title}
-        onClick={onClick}
-        style={{
-          fontSize: 9, fontWeight: 800, padding: '2px 4px', borderRadius: 4,
-          color, backgroundColor: `${color}15`, border: `1px solid ${color}30`,
-          display: 'flex', alignItems: 'center', gap: 3,
-          cursor: isClickable ? 'pointer' : 'default',
-          transition: 'all 0.15s',
-        }}
-      >
-        <span style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: color }} />
-        {label}
-      </span>
-    )
-  }
-
-  return (
-    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-      {badge(evidencePass, 'EVD', evidencePass === true ? 'Evidence PASS — click to view' : evidencePass === false ? 'Evidence FAIL — click to view' : 'No Evidence — click to view', onEvidenceClick, `qras:action:toggle_evidence`, 'TOGGLE_EVIDENCE')}
-      {badge(humanBlessed, 'HMN', humanBlessed ? 'Human Blessed ✓' : 'Unblessed — click for details', () => { /* no-op or simple focus handling */ }, `qras:action:toggle_hmn`, 'TOGGLE_HMN')}
-    </div>
-  )
-}
-
-function prodigyBtn(baseColor: string): React.CSSProperties {
+function decisionBtn(baseColor: string): React.CSSProperties {
   return {
     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-    height: 32, borderRadius: 6, cursor: 'pointer', transition: 'all 0.2s', padding: '0 16px',
-    border: `1px solid ${baseColor}44`, backgroundColor: `${baseColor}12`, color: baseColor,
+    height: 36, borderRadius: 6, cursor: 'pointer', transition: 'background-color 0.2s, border-color 0.2s, transform 0.15s', padding: '0 14px',
+    border: `1px solid ${baseColor}33`, backgroundColor: 'transparent', color: baseColor,
   }
 }
 
@@ -118,49 +99,52 @@ function compactKey(key: string, prefix = 24, suffix = 10): string {
   return `${key.slice(0, prefix)}...${key.slice(-suffix)}`
 }
 
-function deriveEvidenceOutcome(qra: SpartaQRA | undefined): {
-  state: 'passed' | 'inconclusive' | 'failed' | 'pending'
-  label: string
-  shortLabel: string
-  color: string
-  Icon: typeof CheckCircle2
-} {
-  const verdict = String(qra?.evidence_case?.verdict ?? '').trim().toLowerCase()
-  const gatesPassed = typeof qra?.evidence_case?.gates_passed === 'number' ? qra.evidence_case.gates_passed : undefined
-  const gatesTotal = typeof qra?.evidence_case?.gates_total === 'number' ? qra.evidence_case.gates_total : undefined
+function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
+  if (!current) return []
+  const byKey = new Map(qras.map((entry) => [entry._key, entry]))
+  const byQraId = new Map(qras.filter((entry) => Boolean(entry.qra_id)).map((entry) => [entry.qra_id as string, entry]))
+  const explicitKeys = Array.from(new Set([
+    ...(current.lineage?.upstream_qra_keys ?? []),
+    ...(current.evidence_case?.prior_qra_evidence ?? []).map((entry) => entry._key).filter(Boolean) as string[],
+    ...(current.evidence_case?.prior_qra_evidence ?? []).map((entry) => entry.qra_id).filter(Boolean) as string[],
+  ]))
+  const explicitMatches = explicitKeys
+    .map((key) => byKey.get(key) || byQraId.get(key))
+    .filter((candidate): candidate is SpartaQRA => Boolean(candidate) && candidate._key !== current._key)
 
-  if (verdict === 'satisfied') {
-    return { state: 'passed', label: 'Passed /create-evidence-case', shortLabel: 'Pass', color: EMBRY.green, Icon: CheckCircle2 }
+  if (explicitMatches.length > 0) {
+    return explicitMatches.slice(0, 4).map((candidate) => ({
+      key: candidate._key,
+      qraId: candidate.qra_id || candidate._key,
+      controlId: candidate.control_id,
+      source: candidate.source_framework || 'SPARTA',
+      question: candidate.question,
+      verdict: deriveEvidenceStatus(candidate),
+    }))
   }
-  if (verdict === 'inconclusive') {
-    return { state: 'inconclusive', label: 'Inconclusive evidence case', shortLabel: 'Partial', color: EMBRY.amber, Icon: AlertCircle }
-  }
-  if (verdict === 'not_satisfied') {
-    return { state: 'failed', label: 'Failed /create-evidence-case', shortLabel: 'Fail', color: EMBRY.red, Icon: XCircle }
-  }
-  if ((gatesTotal ?? 0) > 0) {
-    if (gatesPassed === gatesTotal) {
-      return { state: 'passed', label: 'Passed /create-evidence-case', shortLabel: 'Pass', color: EMBRY.green, Icon: CheckCircle2 }
-    }
-    if ((gatesPassed ?? 0) === 0) {
-      return { state: 'failed', label: 'Failed /create-evidence-case', shortLabel: 'Fail', color: EMBRY.red, Icon: XCircle }
-    }
-    return { state: 'inconclusive', label: 'Inconclusive evidence case', shortLabel: 'Partial', color: EMBRY.amber, Icon: AlertCircle }
-  }
-  return { state: 'pending', label: 'Evidence case not yet run', shortLabel: 'Pending', color: EMBRY.dim, Icon: AlertCircle }
-}
 
-function evidenceSummaryLine(qra: SpartaQRA | undefined): string {
-  if (!qra?.evidence_case) return 'No evidence-case summary is available yet.'
-  const parts = [
-    typeof qra.evidence_case.gates_total === 'number'
-      ? `${qra.evidence_case.gates_passed ?? 0}/${qra.evidence_case.gates_total} gates`
-      : null,
-    qra.evidence_case.control_ids?.length ? `${qra.evidence_case.control_ids.length} controls` : null,
-    qra.evidence_case.grade ? `grade ${qra.evidence_case.grade}` : null,
-    qra.evidence_case.review_status ? `workflow ${qra.evidence_case.review_status}` : null,
-  ].filter(Boolean)
-  return parts.length > 0 ? parts.join(' • ') : 'No evidence-case summary is available yet.'
+  return qras
+    .filter((candidate) => {
+      if (candidate._key === current._key) return false
+      if (current.relationship_id && candidate.relationship_id) {
+        return candidate.relationship_id === current.relationship_id
+      }
+      if (current.run_id && candidate.run_id === current.run_id) {
+        return candidate.control_id === current.control_id
+          || candidate.source_framework === current.source_framework
+          || candidate.qra_type === current.qra_type
+      }
+      return false
+    })
+    .slice(0, 4)
+    .map((candidate) => ({
+      key: candidate._key,
+      qraId: candidate.qra_id || candidate._key,
+      controlId: candidate.control_id,
+      source: candidate.source_framework || 'SPARTA',
+      question: candidate.question,
+      verdict: deriveEvidenceStatus(candidate),
+    }))
 }
 
 export function QRAsView() {
@@ -172,6 +156,7 @@ export function QRAsView() {
 
   // Source filter (v2 vs legacy collections) - must be declared before useQRAs
   const [source, setSource] = useState<QRASource>('legacy')
+  const [evidenceFilter, setEvidenceFilter] = useState<EvidenceFilter>('all')
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500)
@@ -193,43 +178,43 @@ export function QRAsView() {
   const [decisions, setDecisions] = useState<Map<string, 'accept' | 'reject'>>(new Map())
   const [undoTimer, setUndoTimer] = useState<{ key: string; timer: number } | null>(null)
 
-  // Edit mode state
-  const [isEditing, setIsEditing] = useState(false)
-  const [editData, setEditData] = useState<{ question: string; answer: string; reasoning: string; evidence: string }>({ question: '', answer: '', reasoning: '', evidence: '' })
-
   // MIND category filter
   const [mindFilter, setMindFilter] = useState<string | null>(null)
   const MIND_TAGS = ['Detect', 'Harden', 'Isolate', 'Recover', 'Respond', 'Design']
+  const EVIDENCE_FILTERS: EvidenceFilter[] = ['all', 'failed', 'passed']
 
   // Resizable / Collapsible State
   const [leftWidth, setLeftWidth] = useState(280)
-  const [rightWidth, setRightWidth] = useState(500)
   const [leftCollapsed, setLeftCollapsed] = useState(false)
-  const [rightCollapsed, setRightCollapsed] = useState(false)
   const [hoveredQra, setHoveredQra] = useState<string | null>(null)
 
   // Batch info modal
   const [showBatchModal, setShowBatchModal] = useState(false)
-  // Collapsible reasoning
-  const [reasoningExpanded, setReasoningExpanded] = useState(false)
   const [entityViewMode, setEntityViewMode] = useState<EntityViewMode>(loadEntityViewMode)
+  const [showEntitiesHelp, setShowEntitiesHelp] = useState(false)
+
+  const baseVisibleQras = useMemo(
+    () => qras
+      .map((q, idx) => ({ q, idx }))
+      .filter(({ q }) => !mindFilter || (q.mind && q.mind.includes(mindFilter))),
+    [mindFilter, qras],
+  )
+
+  const evidenceCounts = useMemo(() => {
+    const counts: Record<EvidenceFilter, number> = { all: baseVisibleQras.length, failed: 0, passed: 0 }
+    baseVisibleQras.forEach(({ q }) => {
+      counts[deriveEvidenceStatus(q)] += 1
+    })
+    return counts
+  }, [baseVisibleQras])
+
+  const visibleQras = useMemo(
+    () => baseVisibleQras.filter(({ q }) => evidenceFilter === 'all' || deriveEvidenceStatus(q) === evidenceFilter),
+    [baseVisibleQras, evidenceFilter],
+  )
 
   const current = qras[currentIndex] as SpartaQRA | undefined
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
-  const currentEvidenceOutcome = deriveEvidenceOutcome(current)
-  const currentEvidenceSummary = evidenceSummaryLine(current)
-
-  const [fallbackHighlights, setFallbackHighlights] = useState<Map<string, { spans: Span[]; glossary: GlossaryEntryLike[] }>>(new Map())
-
-  const activeHighlight = current ? fallbackHighlights.get(current._key) : undefined
-  const storedSpans = Array.isArray(current?.evidence_case?.spans)
-    ? (current!.evidence_case!.spans as Span[])
-    : []
-  const storedGlossary = Array.isArray(current?.evidence_case?.glossary)
-    ? (current!.evidence_case!.glossary as GlossaryEntryLike[])
-    : []
-  const questionSpans = storedSpans.length > 0 ? storedSpans : (activeHighlight?.spans ?? [])
-  const questionGlossary = storedGlossary.length > 0 ? storedGlossary : (activeHighlight?.glossary ?? [])
 
   useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
   useRegisterAction('qras:action:reject', { app: 'sparta-explorer', action: 'REJECT_QRA', label: 'Reject QRA', description: 'Mark the current QRA as rejected' })
@@ -238,91 +223,32 @@ export function QRAsView() {
   useRegisterAction('qras:action:edit', { app: 'sparta-explorer', action: 'EDIT_QRA', label: 'Edit QRA', description: 'Edit the current QRA' })
   useRegisterAction('qras:action:toggle_evidence', { app: 'sparta-explorer', action: 'TOGGLE_EVIDENCE', label: 'Toggle Evidence', description: 'View the evidence pane for the selected QRA' })
   useRegisterAction('qras:action:toggle_hmn', { app: 'sparta-explorer', action: 'TOGGLE_HMN', label: 'Toggle Human', description: 'View human review status for QRA' })
+  useRegisterAction('qras:filter:evidence', { app: 'sparta-explorer', action: 'FILTER_EVIDENCE', label: 'Filter by Evidence Status', description: 'Filter the QRA queue by evidence outcome' })
+  useRegisterAction('qras:display:entity-help', { app: 'sparta-explorer', action: 'SHOW_ENTITY_VIEW_HELP', label: 'Entity View Help', description: 'Show help text explaining the entity highlighting controls' })
   useRegisterAction('qras:display:entity-anchors', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_ANCHORS', label: 'Entity View Anchors', description: 'Show only primary entities in the QRA panes' })
   useRegisterAction('qras:display:entity-context', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_CONTEXT', label: 'Entity View Context', description: 'Show primary entities plus contextual phrase entities in the QRA panes' })
   useRegisterAction('qras:display:entity-full', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_FULL', label: 'Entity View Full', description: 'Show the full extracted entity set in the QRA panes' })
+  useRegisterAction('qras:trace:select-related', { app: 'sparta-explorer', action: 'SELECT_RELATED_QRA', label: 'Select Related QRA', description: 'Select a related QRA from the evidence trace' })
 
   useEffect(() => {
     saveEntityViewMode(entityViewMode)
   }, [entityViewMode])
 
-  // when current changes, reset edit data
   useEffect(() => {
-    if (current) {
-      setEditData({ question: current.question || '', answer: current.answer || '', reasoning: current.reasoning || '', evidence: current.evidence || '' })
-      setIsEditing(false)
+    if (visibleQras.length === 0) return
+    if (!visibleQras.some(({ idx }) => idx === currentIndex)) {
+      setCurrentIndex(visibleQras[0].idx)
     }
-  }, [current])
+  }, [currentIndex, visibleQras])
 
+  const relatedQras = useMemo(() => buildRelatedQras(current, qras), [current, qras])
 
-  useEffect(() => {
-    if (!current?._key || !current.question) return
-    const hasStoredSpans = Array.isArray(current.evidence_case?.spans) && current.evidence_case.spans.length > 0
-    const hasStoredGlossary = Array.isArray(current.evidence_case?.glossary) && current.evidence_case.glossary.length > 0
-    if (hasStoredSpans && hasStoredGlossary) return
-    if (fallbackHighlights.has(current._key)) return
-
-    let cancelled = false
-    fetch('http://localhost:3001/api/extract-entities', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: current.question }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (cancelled) return
-        const spans = Array.isArray(data?.spans)
-          ? (data.spans as Span[]).filter((sp) => Array.isArray(sp?.span) && sp.span.length === 2)
-          : []
-
-        const ids = Array.isArray(data?.control_ids) ? (data.control_ids as string[]) : []
-        const metadata = Array.isArray(data?.control_metadata) ? data.control_metadata : []
-        const entities = Array.isArray(data?.entities) ? data.entities : []
-
-        const glossaryMap = new Map<string, GlossaryEntryLike>()
-
-        ids.forEach((cid: string, idx: number) => {
-          if (!cid || typeof cid !== 'string') return
-          const meta = metadata[idx] ?? {}
-          glossaryMap.set(cid, {
-            id: cid,
-            name: typeof meta?.name === 'string' && meta.name.trim() ? meta.name : cid,
-            framework: typeof meta?.framework === 'string' && meta.framework.trim() ? meta.framework : 'SPARTA',
-            description: typeof meta?.description === 'string' ? meta.description : undefined,
-            source: typeof meta?.source === 'string' ? meta.source : '/extract-entities',
-          })
-        })
-
-        entities.forEach((entity: any) => {
-          const id = typeof entity?.id === 'string' ? entity.id.trim() : ''
-          if (!id || glossaryMap.has(id)) return
-          glossaryMap.set(id, {
-            id,
-            name: typeof entity?.name === 'string' && entity.name.trim() ? entity.name : id,
-            framework: typeof entity?.framework === 'string' && entity.framework.trim() ? entity.framework : 'SPARTA',
-            source: '/extract-entities',
-          })
-        })
-
-        const glossaryFromApi: GlossaryEntryLike[] = Array.from(glossaryMap.values())
-
-        if (spans.length === 0 && glossaryFromApi.length === 0) return
-        setFallbackHighlights((prev) => {
-          if (prev.has(current._key)) return prev
-          const next = new Map(prev)
-          next.set(current._key, { spans, glossary: glossaryFromApi })
-          return next
-        })
-      })
-      .catch(() => { /* no-op: highlighting falls back to regex */ })
-
-    return () => {
-      cancelled = true
-    }
-  }, [current, fallbackHighlights])
+  const selectRelatedQra = useCallback((identifier: string) => {
+    const nextIndex = qras.findIndex((entry) => entry._key === identifier || entry.qra_id === identifier)
+    if (nextIndex >= 0) setCurrentIndex(nextIndex)
+  }, [qras])
 
   const advance = useCallback((dir: number) => {
-    setIsEditing(false)
     setCurrentIndex((i) => Math.max(0, Math.min(qras.length - 1, i + dir)))
   }, [qras.length])
 
@@ -356,44 +282,25 @@ export function QRAsView() {
     advance(1)
   }, [current, undoTimer, advance])
 
-  const handleEditSave = useCallback(() => {
-    if (!current) return
-    setIsEditing(false)
-    // Post edit modifications to the backend
-    fetch('http://localhost:3001/api/memory/learn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        collection: 'sparta_qra',
-        problem: editData.question,
-        solution: editData.answer,
-        metadata: { 
-          _key: current._key, 
-          control_id: current.control_id, 
-          reasoning: editData.reasoning, 
-          edited: true, 
-          reviewed_by: 'brandon', 
-          reviewed_at: new Date().toISOString() 
-        },
-      }),
-    }).catch(() => {})
-  }, [current, editData])
-
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       if (!current) return
-      if (!isEditing) {
-        if (e.key === 'a' || e.key === 'A' || e.key === '1') { e.preventDefault(); handleDecision('accept'); }
-        if (e.key === 'r' || e.key === 'R' || e.key === '2') { e.preventDefault(); handleDecision('reject'); }
-        if (e.key === 'e' || e.key === 'E' || e.key === '3') { e.preventDefault(); setIsEditing(true); }
-        if (e.key === 'ArrowRight' || e.key === 'j') { e.preventDefault(); advance(1); }
-        if (e.key === 'ArrowLeft' || e.key === 'k') { e.preventDefault(); advance(-1); }
+      if (e.key === 'a' || e.key === 'A' || e.key === '1') { e.preventDefault(); handleDecision('accept'); }
+      if (e.key === 'r' || e.key === 'R' || e.key === '2') { e.preventDefault(); handleDecision('reject'); }
+      if (e.key === 'e' || e.key === 'E' || e.key === '3') {
+        e.preventDefault()
+        document.querySelector<HTMLElement>('[data-qid="qras:action:edit-answer"]')?.click()
       }
+      if (e.key === 'f' || e.key === 'F') { e.preventDefault(); setEvidenceFilter('failed') }
+      if (e.key === 'p' || e.key === 'P') { e.preventDefault(); setEvidenceFilter('passed') }
+      if (e.key === '0' || e.key === 'o' || e.key === 'O') { e.preventDefault(); setEvidenceFilter('all') }
+      if (e.key === 'ArrowRight' || e.key === 'j') { e.preventDefault(); advance(1); }
+      if (e.key === 'ArrowLeft' || e.key === 'k') { e.preventDefault(); advance(-1); }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [current, handleDecision, advance, isEditing])
+  }, [current, handleDecision, advance])
 
   function undoLast() {
     if (!undoTimer) return
@@ -407,6 +314,33 @@ export function QRAsView() {
     advance(-1)
   }
 
+  const reviewActions = current ? (
+    <>
+      <button
+        data-qid="qras:action:reject"
+        data-qs-action="REJECT_QRA"
+        title="Reject QRA"
+        onClick={() => handleDecision('reject')}
+        style={decisionBtn(EMBRY.red)}
+      >
+        <XCircle size={14} />
+        <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: 0.5 }}>Reject</span>
+        <span style={{ fontSize: 9, opacity: 0.65 }}>[R]</span>
+      </button>
+      <button
+        data-qid="qras:action:accept"
+        data-qs-action="ACCEPT_QRA"
+        title="Accept QRA"
+        onClick={() => handleDecision('accept')}
+        style={decisionBtn(EMBRY.green)}
+      >
+        <CheckCircle2 size={14} />
+        <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: 0.5 }}>Accept</span>
+        <span style={{ fontSize: 9, opacity: 0.65 }}>[A]</span>
+      </button>
+    </>
+  ) : null
+
   if (error) {
     return <div style={{ padding: 20, color: EMBRY.red, border: `1px solid ${EMBRY.red}33`, borderRadius: 8, margin: 16 }}>Error: {error}</div>
   }
@@ -414,10 +348,10 @@ export function QRAsView() {
   return (
     <div style={{ display: 'flex', flex: 1, flexDirection: 'column', overflow: 'hidden' }}>
       {/* HEADER */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, backgroundColor: EMBRY.bgDeep }}>
-        <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, letterSpacing: 1 }}>QRA REVIEW</div>
-        <div style={{ ...label, backgroundColor: EMBRY.bgPanel, padding: '4px 8px', borderRadius: 4 }}>
-          {qras.length - currentIndex} Remaining
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: `8px ${PANE_PADDING}px`, borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, backgroundColor: EMBRY.bgDeep }}>
+        <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white, letterSpacing: 0.8 }}>QRA</div>
+        <div style={{ ...label, backgroundColor: EMBRY.bgPanel, padding: '3px 7px', borderRadius: 4, fontSize: 9 }}>
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{qras.length - currentIndex}</span> left
         </div>
         
         {controlFilter && (
@@ -428,8 +362,8 @@ export function QRAsView() {
         )}
 
         <div style={{ flex: 1 }} />
-        <span style={{ fontSize: 10, color: EMBRY.dim }}>
-          [1/A] Accept • [2/R] Reject • [3/E] Edit | ←→ Navigate
+        <span style={{ fontSize: 9, color: EMBRY.dim }}>
+          A accept · R reject · E edit · ←→ move
         </span>
         
         {undoTimer && (
@@ -461,135 +395,194 @@ export function QRAsView() {
              </div>
            ) : (
              <>
-               <div style={{ padding: '12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12 }}>
-                 <div style={{ position: 'relative', flex: 1 }}>
-                    <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: EMBRY.dim }} />
-                    <input
-                      data-qid="qras:search"
-                      data-qs-action="SEARCH_QRAS"
-                      title="Filter QRAs by question text"
-                      type="text"
-                      placeholder="Filter..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{
-                        width: '100%', padding: '8px 12px 8px 32px', backgroundColor: `${EMBRY.bg}80`,
-                        border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.white,
-                        fontSize: 12, outline: 'none'
-                      }}
-                    />
+               <div style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: EMBRY.bgDeep }}>
+                 <div style={{ padding: '8px 10px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
+                   <div style={{ position: 'relative', flex: 1 }}>
+                      <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: EMBRY.dim }} />
+                      <input
+                        data-qid="qras:search"
+                        data-qs-action="SEARCH_QRAS"
+                        title="Filter QRAs by question text"
+                        type="text"
+                        placeholder="Filter questions or controls..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                          width: '100%', padding: '7px 10px 7px 30px', backgroundColor: `${EMBRY.bg}80`,
+                          border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.white,
+                          fontSize: 11, outline: 'none'
+                        }}
+                      />
+                   </div>
+                   <button title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
+                     <PanelLeftClose size={18} />
+                   </button>
                  </div>
-                 <button title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 6, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
-                   <PanelLeftClose size={18} />
-                 </button>
-               </div>
 
-               {/* Source Filter (v2 vs legacy) */}
-               <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
-                 <span style={{ fontSize: 9, fontWeight: 600, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.5 }}>Source:</span>
-                 <div style={{ display: 'flex', gap: 2, backgroundColor: `${EMBRY.bg}60`, borderRadius: 4, padding: 2 }}>
-                   {(['legacy', 'v2', 'all'] as QRASource[]).map(s => {
-                     const isActive = source === s
-                     const label = s === 'v2' ? 'v2' : s === 'legacy' ? 'Legacy' : 'All'
-                     return (
-                       <button
-                         key={s}
-                         onClick={() => setSource(s)}
-                         style={{
-                           fontSize: 9, fontWeight: 600, padding: '4px 10px', borderRadius: 3,
-                           minHeight: 44, minWidth: 44,
-                           border: 'none',
-                           backgroundColor: isActive ? EMBRY.accent : 'transparent',
-                           color: isActive ? EMBRY.white : EMBRY.dim,
-                           cursor: 'pointer', transition: 'all 0.15s',
-                         }}
-                       >
-                         {label}
-                       </button>
-                     )
-                   })}
+                 <div style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                     <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6 }}>Source:</span>
+                     <div style={{ display: 'flex', gap: 2, backgroundColor: `${EMBRY.bg}60`, borderRadius: 6, padding: 2, flex: 1 }}>
+                       {(['legacy', 'v2', 'all'] as QRASource[]).map(s => {
+                         const isActive = source === s
+                         const sourceLabel = s === 'v2' ? 'v2' : s === 'legacy' ? 'Legacy' : 'All'
+                         return (
+                           <button
+                             key={s}
+                             onClick={() => setSource(s)}
+                             style={{
+                               flex: 1,
+                               fontSize: 9,
+                               fontWeight: 800,
+                               padding: '4px 0',
+                               borderRadius: 4,
+                               border: 'none',
+                               backgroundColor: isActive ? EMBRY.accent : 'transparent',
+                               color: isActive ? EMBRY.white : EMBRY.dim,
+                               cursor: 'pointer',
+                               transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
+                               textTransform: 'uppercase',
+                             }}
+                           >
+                             {sourceLabel}
+                           </button>
+                         )
+                       })}
+                     </div>
+                   </div>
+
+                   <div style={{ display: 'flex', gap: 4, backgroundColor: `${EMBRY.bg}66`, padding: 2, borderRadius: 6 }}>
+                     {EVIDENCE_FILTERS.map(status => {
+                       const isActive = evidenceFilter === status
+                       const count = evidenceCounts[status]
+                       return (
+                         <button
+                           key={status}
+                           data-qid={`qras:filter:evidence:${status}`}
+                           data-qs-action="FILTER_EVIDENCE"
+                           title={`Filter queue by ${status} evidence status`}
+                           onClick={() => setEvidenceFilter(status)}
+                           style={{
+                             flex: 1,
+                             fontSize: 8.5,
+                             fontWeight: 800,
+                             padding: '4px 0',
+                             borderRadius: 4,
+                             border: 'none',
+                             backgroundColor: isActive ? EMBRY.bgPanel : 'transparent',
+                             color: status === 'failed' && !isActive ? EMBRY.red : isActive ? EMBRY.white : EMBRY.dim,
+                             cursor: 'pointer',
+                             transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
+                             textTransform: 'uppercase',
+                           }}
+                         >
+                           {status} <span style={{ opacity: 0.72, fontVariantNumeric: "tabular-nums" }}>{count}</span>
+                         </button>
+                       )
+                     })}
+                   </div>
+
+                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                     {MIND_TAGS.map(tag => {
+                       const isActive = mindFilter === tag
+                       return (
+                         <button
+                           key={tag}
+                           data-qid={`qras:filter:mind:${tag}`}
+                           data-qs-action="FILTER_MIND"
+                           title={`Filter by ${tag} category`}
+                           onClick={() => setMindFilter(isActive ? null : tag)}
+                           style={{
+                             fontSize: 8.5, fontWeight: 700, padding: '2px 6px', borderRadius: 4,
+                             border: `1px solid ${isActive ? EMBRY.accent : EMBRY.border}`,
+                             backgroundColor: isActive ? `${EMBRY.accent}14` : 'transparent',
+                             color: isActive ? EMBRY.white : EMBRY.dim,
+                             cursor: 'pointer', transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
+                           }}
+                         >
+                           {tag}
+                         </button>
+                       )
+                     })}
+                   </div>
                  </div>
-               </div>
 
-               {/* MIND Category Filter */}
-               <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                 {MIND_TAGS.map(tag => {
-                   const isActive = mindFilter === tag
-                   return (
-                     <button
-                       key={tag}
-                       data-qid={`qras:filter:mind:${tag}`}
-                       data-qs-action="FILTER_MIND"
-                       title={`Filter by ${tag} category`}
-                       onClick={() => setMindFilter(isActive ? null : tag)}
-                       style={{
-                         fontSize: 9, fontWeight: 600, padding: '3px 8px', borderRadius: 4,
-                         minHeight: 44, minWidth: 44,
-                         border: `1px solid ${isActive ? EMBRY.accent : EMBRY.border}`,
-                         backgroundColor: isActive ? `${EMBRY.accent}20` : 'transparent',
-                         color: isActive ? EMBRY.accent : EMBRY.dim,
-                         cursor: 'pointer', transition: 'all 0.15s',
-                       }}
-                     >
-                       {tag}
-                     </button>
-                   )
-                 })}
+                 <div style={{ display: 'grid', gridTemplateColumns: '24px 80px 56px minmax(0, 1fr)', gap: 12, padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 8.5, fontWeight: 800, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+                   <span />
+                   <span>Control</span>
+                   <span>Source</span>
+                   <span>Question</span>
+                 </div>
                </div>
 
                <div style={{ flex: 1, overflowY: 'auto' }}>
                   {loading && <div style={{ padding: 16, color: EMBRY.dim, fontSize: 12 }}>Loading QRAs...</div>}
-                  {qras.map((q, idx) => ({ q, idx })).filter(({ q }) => !mindFilter || (q.mind && q.mind.includes(mindFilter))).map(({ q, idx }) => {
+                  {!loading && visibleQras.length === 0 && (
+                    <div style={{ padding: 16, color: EMBRY.dim, fontSize: 11 }}>
+                      No QRAs match the active filters.
+                    </div>
+                  )}
+                  {visibleQras.map(({ q, idx }) => {
                      const isActive = idx === currentIndex
                      
                      return (
-                        <div key={q._key} 
+                        <div
+                          key={`${q._key}:${idx}`}
+                          data-qid={`qras:item:${q._key}`}
+                          data-qs-action="SELECT_QRA"
+                          title={q.question}
                           onMouseEnter={() => setHoveredQra(q._key)}
                           onMouseLeave={() => setHoveredQra(null)}
                           onClick={() => setCurrentIndex(idx)}
                           style={{
-                            padding: '10px 12px',
+                            padding: '5px 10px',
                             borderBottom: `1px solid ${EMBRY.border}`,
-                            backgroundColor: isActive ? 'rgba(124, 58, 237, 0.15)' : (hoveredQra === q._key ? 'rgba(255,255,255,0.03)' : 'transparent'),
+                            backgroundColor: isActive ? 'rgba(124, 58, 237, 0.08)' : (hoveredQra === q._key ? 'rgba(255,255,255,0.02)' : 'transparent'),
                             cursor: 'pointer',
                             position: 'relative',
-                            transition: 'all 0.2s',
-                          }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                               {statusBadges(q, (e) => {
-                                 e.stopPropagation()
-                                 setCurrentIndex(idx)
-                                 setRightCollapsed(false)
-                               })}
+                            transition: 'background-color 0.2s',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '24px 80px 56px minmax(0, 1fr)',
+                              alignItems: 'center',
+                              gap: 12,
+                              minWidth: 0,
+                            }}
+                          >
+                            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                              {statusIndicators(q, (e) => {
+                                e.stopPropagation()
+                                setCurrentIndex(idx)
+                              })}
                             </div>
-                           <div style={{ 
-                             fontSize: 12, color: isActive ? EMBRY.white : `${EMBRY.white}BB`, 
-                             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', 
-                             fontWeight: isActive ? 600 : 400 
-                           }}>
-                              <><div style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.accent, marginBottom: 2 }}>{q.control_id}</div>{q.question}</>
-                           </div>
 
-                            {/* Rich hover tooltip — Only render if exactly this item is hovered */}
-                            {hoveredQra === q._key && (
-                              <div style={{ 
-                                position: 'absolute', left: '100%', top: 0, width: 340, zIndex: 1000,
-                                backgroundColor: '#111', border: `1px solid #333`,
-                                borderRadius: 8, padding: 16, borderLeft: `4px solid ${EMBRY.accent}`,
-                                boxShadow: '0 12px 32px rgba(0,0,0,0.7)', pointerEvents: 'none', marginLeft: 12
-                              }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                                  <div style={{ fontSize: 9, fontFamily: 'monospace', color: EMBRY.accent, fontWeight: 700 }}>{q.control_id}</div>
-                                  <div style={{ fontSize: 10, color: EMBRY.dim }}>{q.source_framework || 'SPARTA'}</div>
-                                </div>
-                                <div style={{ fontSize: 13, fontWeight: 600, color: EMBRY.white, lineHeight: 1.5 }}>
-                                  <><div style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.accent, marginBottom: 2 }}>{q.control_id}</div>{q.question}</>
-                                </div>
-                                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid #222`, display: 'flex', gap: 12 }}>
-                                   <div style={{ fontSize: 10, color: EMBRY.dim }}>Click to inspect reasoning & answer</div>
-                                </div>
-                              </div>
-                            )}
+                            <div style={{ fontSize: 9.5, fontFamily: 'monospace', color: EMBRY.accent, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {q.control_id?.trim() || '—'}
+                            </div>
+
+                            <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {q.source_framework || 'SPARTA'}
+                            </div>
+
+                            <div
+                              title={q.question}
+                              style={{
+                                fontSize: 10.5,
+                                color: isActive ? EMBRY.white : `${EMBRY.white}B0`,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                fontWeight: isActive ? 600 : 450,
+                                lineHeight: 1.25,
+                                minWidth: 0,
+                              }}
+                            >
+                              {q.question}
+                            </div>
+                          </div>
                         </div>
                      )
                   })}
@@ -614,297 +607,169 @@ export function QRAsView() {
            />
         )}
 
-        {/* CENTER PANE: Annotator */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: EMBRY.bgPanel, position: 'relative' }}>
-           {!current ? (
-             <div style={{ color: EMBRY.dim, padding: 40, textAlign: 'center', margin: 'auto' }}>No QRAs to display. Select an item from the queue.</div>
-           ) : (
-             <>
-                {/* Header Strip */}
-                <div style={{ padding: '12px 24px', backgroundColor: EMBRY.bgDeep, borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, flexWrap: 'wrap', gap: 12 }}>
-                   <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-                     <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 1 }}>Current QRA</span>
-                     <span style={{ fontSize: 12, fontFamily: 'monospace', color: EMBRY.accent, backgroundColor: `${EMBRY.accent}15`, padding: '4px 8px', borderRadius: 4, border: `1px solid ${EMBRY.accent}33` }}>{current.control_id}</span>
-                     <span
-                       title="Click to copy _key"
-                       onClick={() => navigator.clipboard.writeText(current._key)}
-                       style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.dim, cursor: 'pointer', padding: '2px 6px', borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                     >
-                       {compactKey(current._key)}
-                     </span>
-                   </div>
-                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: 2, borderRadius: 6, backgroundColor: `${EMBRY.bg}66`, border: `1px solid ${EMBRY.border}` }}>
-                        <span style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6, paddingLeft: 6 }}>Entities</span>
-                        {ENTITY_VIEW_OPTIONS.map((option) => {
-                          const isActive = entityViewMode === option.mode
-                          const action = option.mode === 'anchors'
-                            ? 'SET_ENTITY_VIEW_ANCHORS'
-                            : option.mode === 'context'
-                              ? 'SET_ENTITY_VIEW_CONTEXT'
-                              : 'SET_ENTITY_VIEW_FULL'
-                          return (
-                            <button
-                              key={option.mode}
-                              data-qid={`qras:display:entity-${option.mode}`}
-                              data-qs-action={action}
-                              title={option.title}
-                              onClick={() => setEntityViewMode(option.mode)}
-                              style={{
-                                fontSize: 10,
-                                fontWeight: 700,
-                                padding: '5px 8px',
-                                borderRadius: 4,
-                                border: 'none',
-                                backgroundColor: isActive ? `${EMBRY.accent}22` : 'transparent',
-                                color: isActive ? EMBRY.accent : EMBRY.dim,
-                                cursor: 'pointer',
-                              }}
-                            >
-                              {option.label}
-                            </button>
-                          )
-                        })}
-                      </div>
-                      {/* Batch info button */}
-                      {current.run_id && (
-                        <button
-                          onClick={() => setShowBatchModal(true)}
-                          title={`View batch: ${current.run_id}`}
+        {/* CENTER PANE: Unified decision surface */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: EMBRY.bgPanel, minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+          {!current ? (
+            <div style={{ color: EMBRY.dim, padding: 40, textAlign: 'center', margin: 'auto' }}>No QRAs to display. Select an item from the queue.</div>
+          ) : (
+            <>
+              <div style={{ padding: `12px ${PANE_PADDING + 8}px`, backgroundColor: EMBRY.bgDeep, borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0, flexWrap: 'wrap', gap: 12, position: 'sticky', top: 0, zIndex: 3 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 7, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, minWidth: 0 }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8 }}>Decision Surface</span>
+                    {current.control_id?.trim() ? (
+                      <span style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.accent, backgroundColor: `${EMBRY.accent}0d`, padding: '3px 7px', borderRadius: 4, border: `1px solid ${EMBRY.accent}24` }}>{current.control_id}</span>
+                    ) : null}
+                    <span
+                      title="Click to copy _key"
+                      onClick={() => navigator.clipboard.writeText(current._key)}
+                      style={{ fontSize: 9, fontFamily: 'monospace', color: EMBRY.dim, cursor: 'pointer', padding: '2px 5px', borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.035)', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 420 }}
+                    >
+                      {compactKey(current._key)}
+                    </span>
+                  </div>
+                  {current.mind && current.mind.length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 8, fontWeight: 800, color: `${EMBRY.dim}cc`, textTransform: 'uppercase', letterSpacing: 0.8 }}>Mind</span>
+                      {current.mind.map(tag => (
+                        <span
+                          key={tag}
                           style={{
-                            background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 4,
-                            padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
-                            color: EMBRY.dim, transition: 'all 0.15s',
+                            fontSize: 8.5,
+                            padding: '2px 6px',
+                            borderRadius: 999,
+                            border: `1px solid ${EMBRY.border}`,
+                            backgroundColor: 'rgba(255,255,255,0.02)',
+                            color: EMBRY.dim,
+                            lineHeight: 1.4,
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.borderColor = EMBRY.accent; e.currentTarget.style.color = EMBRY.accent }}
-                          onMouseLeave={e => { e.currentTarget.style.borderColor = EMBRY.border; e.currentTarget.style.color = EMBRY.dim }}
                         >
-                          <Layers size={12} />
-                          <span style={{ fontSize: 9, fontFamily: 'monospace' }}>
-                            {qras.filter(q => q.run_id === current.run_id).length}
-                          </span>
-                        </button>
-                      )}
-                      {current.mind && current.mind.map(tag => (
-                        <span key={tag} style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.accent}15`, color: EMBRY.accent }}>{tag}</span>
+                          {tag}
+                        </span>
                       ))}
-                   </div>
+                    </div>
+                  )}
                 </div>
-
-                {/* SCROLLABLE QRA CONTENT */}
-                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px 60px', display: 'flex', flexDirection: 'column' }}>
-                   {isEditing ? (
-                           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                              <div>
-                                 <label style={{ ...label, marginBottom: 6, display: 'block' }}>Question</label>
-                                 <textarea 
-                                   value={editData.question} onChange={e => setEditData(d => ({ ...d, question: e.target.value }))}
-                                   style={{ width: '100%', minHeight: 80, padding: 12, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.accent}`, borderRadius: 8, color: EMBRY.white, fontSize: 15, outline: 'none', lineHeight: 1.5 }}
-                                 />
-                              </div>
-                              <div>
-                                 <label style={{ ...label, marginBottom: 6, display: 'block' }}>Answer</label>
-                                 <textarea 
-                                   value={editData.answer} onChange={e => setEditData(d => ({ ...d, answer: e.target.value }))}
-                                   style={{ width: '100%', minHeight: 120, padding: 12, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.accent}`, borderRadius: 8, color: EMBRY.white, fontSize: 14, outline: 'none', lineHeight: 1.6 }}
-                                 />
-                              </div>
-                              <div>
-                                 <label style={{ ...label, marginBottom: 6, display: 'block' }}>Reasoning</label>
-                                 <textarea 
-                                   value={editData.reasoning} onChange={e => setEditData(d => ({ ...d, reasoning: e.target.value }))}
-                                   style={{ width: '100%', minHeight: 100, padding: 12, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 8, color: EMBRY.dim, fontSize: 13, outline: 'none', lineHeight: 1.5 }}
-                                 />
-                              </div>
-                              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 4 }}>
-                                 <button onClick={() => setIsEditing(false)} style={{ padding: '8px 20px', borderRadius: 8, backgroundColor: 'transparent', border: `1px solid ${EMBRY.dim}`, color: EMBRY.dim, cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-                                 <button onClick={handleEditSave} style={{ padding: '8px 24px', borderRadius: 8, backgroundColor: EMBRY.accent, border: 'none', color: EMBRY.white, cursor: 'pointer', fontWeight: 700 }}>Save Changes</button>
-                              </div>
-                           </div>
-                         ) : (
-                           <>
-                               <div style={{ marginBottom: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-                                   <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 0 }}>
-                                     <currentEvidenceOutcome.Icon size={18} color={currentEvidenceOutcome.color} style={{ flexShrink: 0, marginTop: 2 }} />
-                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
-                                       <div style={{ fontSize: 10, color: EMBRY.dim, letterSpacing: 1, textTransform: 'uppercase' }}>Question</div>
-                                       <div style={{ ...body, fontSize: 15, fontWeight: 500, color: EMBRY.white, lineHeight: 1.7, padding: '4px 0' }}>
-                                         {questionSpans.length > 0
-                                           ? spanHighlight(editData.question, questionSpans, questionGlossary, { minEmphasis: minHighlightEmphasis })
-                                           : inlineHighlight(editData.question, questionGlossary, { minEmphasis: minHighlightEmphasis })}
-                                       </div>
-                                     </div>
-                                   </div>
-                                   <span
-                                     title={currentEvidenceOutcome.label}
-                                     style={{
-                                       flexShrink: 0,
-                                       display: 'inline-flex',
-                                       alignItems: 'center',
-                                       gap: 6,
-                                       padding: '5px 8px',
-                                       borderRadius: 999,
-                                       backgroundColor: `${currentEvidenceOutcome.color}16`,
-                                       border: `1px solid ${currentEvidenceOutcome.color}33`,
-                                       color: currentEvidenceOutcome.color,
-                                       fontSize: 9,
-                                       fontWeight: 700,
-                                       textTransform: 'uppercase',
-                                       letterSpacing: 0.8,
-                                     }}
-                                   >
-                                     <currentEvidenceOutcome.Icon size={11} />
-                                     {currentEvidenceOutcome.shortLabel}
-                                   </span>
-                                 </div>
-                                 <div style={{
-                                   fontSize: 10,
-                                   color: EMBRY.dim,
-                                   lineHeight: 1.5,
-                                   padding: '8px 10px',
-                                   borderRadius: 6,
-                                   backgroundColor: 'rgba(255,255,255,0.03)',
-                                   border: `1px solid ${EMBRY.border}`,
-                                 }}>
-                                   {currentEvidenceSummary}
-                                 </div>
-                               </div>
-                               <div style={{ ...label, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1, fontSize: 10 }}>Answer</div>
-                               <div style={{ ...body, fontSize: 13, color: `${EMBRY.white}E8`, lineHeight: 1.65 }}>
-                                 <AnswerDisplay text={editData.answer} glossary={current?.evidence_case?.glossary ?? []} minEmphasis={minHighlightEmphasis} />
-                               </div>
-
-                              {editData.reasoning && editData.reasoning.trim().length > 0 && (
-                                <div style={{ marginBottom: 16 }}>
-                                  <button
-                                    onClick={() => setReasoningExpanded(!reasoningExpanded)}
-                                    style={{
-                                      display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
-                                      cursor: 'pointer', padding: 0, marginBottom: reasoningExpanded ? 8 : 0,
-                                    }}
-                                  >
-                                    {reasoningExpanded ? <ChevronDown size={14} color={EMBRY.dim} /> : <ChevronRight size={14} color={EMBRY.dim} />}
-                                    <span style={{ ...label, textTransform: 'uppercase', letterSpacing: 1, fontSize: 10 }}>Reasoning</span>
-                                    {!reasoningExpanded && (
-                                      <span style={{ fontSize: 10, color: EMBRY.dim, fontStyle: 'italic', marginLeft: 8 }}>
-                                        ({editData.reasoning.split('\n').length} lines)
-                                      </span>
-                                    )}
-                                  </button>
-                                  {reasoningExpanded && (
-                                    <div style={{
-                                      fontSize: 12, color: EMBRY.dim, backgroundColor: 'rgba(0,0,0,0.3)',
-                                      padding: 12, borderRadius: 8, border: `1px solid ${EMBRY.border}`, lineHeight: 1.6,
-                                    }}>
-                                      <MarkdownRenderer content={editData.reasoning} />
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-
-                              {editData.evidence && editData.evidence.trim().length > 0 && (
-                                <>
-                                  <div style={{ ...label, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1, fontSize: 10 }}>Evidence</div>
-                                  <div style={{ ...body, fontSize: 13, color: '#e2e8f0', backgroundColor: 'rgba(0,0,0,0.2)', padding: 12, borderRadius: 8, border: `1px solid ${EMBRY.border}`, lineHeight: 1.6, marginBottom: 16 }}>
-                                    {editData.evidence}
-                                  </div>
-                                </>
-                              )}
-
-                           </>
-                   )}
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, position: 'relative' }}>
+                    <button
+                      type="button"
+                      data-qid="qras:display:entity-help"
+                      data-qs-action="SHOW_ENTITY_VIEW_HELP"
+                      aria-label="Explain entity highlighting"
+                      onMouseEnter={() => setShowEntitiesHelp(true)}
+                      onMouseLeave={() => setShowEntitiesHelp(false)}
+                      onFocus={() => setShowEntitiesHelp(true)}
+                      onBlur={() => setShowEntitiesHelp(false)}
+                      style={{
+                        fontSize: 8.5,
+                        color: EMBRY.dim,
+                        textTransform: 'uppercase',
+                        letterSpacing: 0.8,
+                        fontWeight: 800,
+                        padding: '0 2px',
+                        cursor: 'help',
+                        border: 'none',
+                        background: 'transparent',
+                        borderBottom: `1px dotted ${EMBRY.dim}66`,
+                      }}
+                    >
+                      Entities
+                    </button>
+                    {showEntitiesHelp && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 'calc(100% + 8px)',
+                          right: 0,
+                          width: 260,
+                          maxWidth: 'min(260px, calc(100vw - 48px))',
+                          padding: '8px 10px',
+                          borderRadius: 6,
+                          border: `1px solid ${EMBRY.border}`,
+                          backgroundColor: EMBRY.bgDeep,
+                          boxShadow: '0 10px 24px rgba(0,0,0,0.35)',
+                          color: EMBRY.white,
+                          fontSize: 10,
+                          lineHeight: 1.45,
+                          zIndex: 4,
+                          pointerEvents: 'none',
+                        }}
+                      >
+                        Entity highlighting changes how much extracted grounding and context is shown in the question and answer surfaces.
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: 2, borderRadius: 6, backgroundColor: `${EMBRY.bg}4d`, border: `1px solid ${EMBRY.border}` }}>
+                    {ENTITY_VIEW_OPTIONS.map((option) => {
+                      const isActive = entityViewMode === option.mode
+                      const action = option.mode === 'anchors'
+                        ? 'SET_ENTITY_VIEW_ANCHORS'
+                        : option.mode === 'context'
+                          ? 'SET_ENTITY_VIEW_CONTEXT'
+                          : 'SET_ENTITY_VIEW_FULL'
+                      return (
+                        <button
+                          key={option.mode}
+                          data-qid={`qras:display:entity-${option.mode}`}
+                          data-qs-action={action}
+                          title={option.title}
+                          onClick={() => setEntityViewMode(option.mode)}
+                          style={{
+                            fontSize: 9,
+                            fontWeight: 700,
+                            padding: '4px 7px',
+                            borderRadius: 4,
+                            border: 'none',
+                            backgroundColor: isActive ? `${EMBRY.accent}16` : 'transparent',
+                            color: isActive ? EMBRY.white : EMBRY.dim,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {option.label}
+                        </button>
+                      )
+                    })}
+                    </div>
+                  </div>
+                  {current.run_id && (
+                    <button
+                      onClick={() => setShowBatchModal(true)}
+                      title={`View batch: ${current.run_id}`}
+                      style={{
+                        background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 4,
+                        padding: '3px 6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
+                        color: EMBRY.dim,
+                      }}
+                    >
+                      <Layers size={12} />
+                      <span style={{ fontSize: 8.5, fontFamily: 'monospace' }}>
+                        {qras.filter(q => q.run_id === current.run_id).length}
+                      </span>
+                    </button>
+                  )}
                 </div>
-             </>
-           )}
-
-           {/* Action Bar */}
-           {current && !isEditing && (
-              <div style={{ 
-                position: 'absolute', bottom: 0, left: 0, right: 0, 
-                padding: '8px 24px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep,
-                display: 'flex', justifyContent: 'center', pointerEvents: 'auto'
-              }}>
-                 <div style={{ display: 'flex', gap: 12 }}>
-                    <button data-qid="qras:action:accept" data-qs-action="ACCEPT_QRA" title="Accept QRA" onClick={() => handleDecision('accept')} style={{ ...prodigyBtn(EMBRY.green) }}>
-                       <CheckCircle2 size={14} />
-                       <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.2 }}>ACCEPT</span>
-                       <span style={{ fontSize: 9, opacity: 0.6 }}>[A]</span>
-                    </button>
-                    <button data-qid="qras:action:reject" data-qs-action="REJECT_QRA" title="Reject QRA" onClick={() => handleDecision('reject')} style={{ ...prodigyBtn(EMBRY.red) }}>
-                       <XCircle size={14} />
-                       <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.2 }}>REJECT</span>
-                       <span style={{ fontSize: 9, opacity: 0.6 }}>[R]</span>
-                    </button>
-                    <button data-qid="qras:action:edit" data-qs-action="EDIT_QRA" title="Edit QRA" onClick={() => setIsEditing(true)} style={{ ...prodigyBtn(EMBRY.dim) }}>
-                       <FileText size={18} />
-                       <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>EDIT</span>
-                       <span style={{ fontSize: 10, opacity: 0.6 }}>[E]</span>
-                    </button>
-                 </div>
               </div>
-           )}
-        </div>
 
-        {/* RIGHT RESIZER */}
-        {!rightCollapsed && (
-           <div 
-             style={{ width: 4, cursor: 'col-resize', backgroundColor: 'transparent', zIndex: 10, flexShrink: 0, marginLeft: -2, marginRight: -2 }}
-             onMouseDown={(e) => {
-               e.preventDefault()
-               const startX = e.clientX
-               const startWidth = rightWidth
-               const onMouseMove = (moveEvent: MouseEvent) => setRightWidth(Math.max(300, Math.min(1000, startWidth - (moveEvent.clientX - startX))))
-               const onMouseUp = () => { document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp) }
-               document.addEventListener('mousemove', onMouseMove)
-               document.addEventListener('mouseup', onMouseUp)
-             }}
-           />
-        )}
-
-        {/* RIGHT PANE */}
-        <div style={{ 
-          width: rightCollapsed ? 56 : rightWidth, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          backgroundColor: EMBRY.bgDeep, 
-          flexShrink: 0,
-          borderLeft: `1px solid ${EMBRY.border}`,
-          transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-        }}>
-           {rightCollapsed ? (
-             <div style={{ padding: '16px 0', display: 'flex', justifyContent: 'center' }}>
-               <button title="Expand Right Panel" onClick={() => setRightCollapsed(false)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 8, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
-                 <PanelRight size={20} />
-               </button>
-             </div>
-           ) : (
-             <>
-               <div style={{ padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                 <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1, color: EMBRY.dim, textTransform: 'uppercase' }}>Evidence Context</span>
-                 <button title="Collapse Right Panel" onClick={() => setRightCollapsed(true)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 6, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
-                   <PanelRightClose size={18} />
-                 </button>
-               </div>
-               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                 {current ? (
-                    <EvidenceView 
-                      question={current.question} 
-                      qraKey={current.qra_id || current._key} 
-                      reasoning={current.reasoning}
-                      answer={current.answer}
-                      groundingScore={current.grounding_score}
-                      storedEvidenceCase={current.evidence_case as any}
-                      minHighlightEmphasis={minHighlightEmphasis}
-                    />
-                 ) : (
-                   <div style={{ ...body, padding: 40, color: EMBRY.dim, textAlign: 'center' }}>
-                     Select a QRA to view trace evidence
-                   </div>
-                 )}
-               </div>
-             </>
-           )}
+              <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                <EvidenceView
+                  question={current.question}
+                  qraKey={current.qra_id || current._key}
+                  reasoning={current.reasoning}
+                  answer={current.answer}
+                  groundingScore={current.grounding_score}
+                  storedEvidenceCase={current.evidence_case as any}
+                  qraFormalProof={current.formal_proof}
+                  qraSacmRef={current.sacm_ref}
+                  upstreamQRAKeys={current.lineage?.upstream_qra_keys || []}
+                  priorQRAEvidence={current.evidence_case?.prior_qra_evidence || []}
+                  minHighlightEmphasis={minHighlightEmphasis}
+                  reviewActions={reviewActions}
+                  relatedQRAs={relatedQras}
+                  onSelectRelatedQRA={selectRelatedQra}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -1000,7 +865,7 @@ export function QRAsView() {
                           padding: '10px 12px', borderRadius: 6, cursor: 'pointer',
                           backgroundColor: isCurrent ? `${EMBRY.accent}15` : 'rgba(255,255,255,0.03)',
                           border: `1px solid ${isCurrent ? EMBRY.accent : EMBRY.border}`,
-                          transition: 'all 0.15s',
+                          transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
                         }}
                         onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)' }}
                         onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)' }}
