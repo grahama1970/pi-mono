@@ -13,12 +13,12 @@
  * - Cost Tracking: Daily spend with budget progress bar
  * - Blast Radius: Hover to see dependencies
  */
-import { useEffect, useMemo, useState } from "react";
-import { Search, X, Activity, Clock, AlertTriangle, DollarSign, Copy, Check, Sparkles, Loader2, Send, Terminal, Zap, Eye, ChevronDown, ChevronRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Search, X, Activity, Clock, AlertTriangle, DollarSign, Copy, Check, Sparkles, Loader2, Send, Zap, Eye, ChevronRight } from "lucide-react";
 import { EMBRY, glowDot } from "../common/EmbryStyle";
 import { useScillmData, useProviderAuth, useBatchJobState, useOrchestratorDetail, type LogEntry, type AuthStatusResponse, type BatchJobState } from "../../hooks/useScillmData";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
 import { JobsTable } from "./JobsTable";
-import { CodeRunnerSessions } from "./CodeRunnerSessions";
 import { CreateQrasManifestPane } from "./CreateQrasManifestPane";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
@@ -46,12 +46,14 @@ function StatPill({
   color = EMBRY.blue,
   icon: Icon,
   small,
+  noWrap,
 }: {
   label: string;
   value: string;
   color?: string;
   icon?: React.ComponentType<{ size: number; color: string }>;
   small?: boolean;
+  noWrap?: boolean;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -71,47 +73,16 @@ function StatPill({
         {label}
       </span>
       <span
+        className="tabular-nums"
         style={{
           fontSize: small ? 12 : 16,
           fontWeight: 700,
           fontFamily: MONO,
           color,
+          whiteSpace: noWrap ? "nowrap" : "normal",
         }}
       >
         {value}
-      </span>
-    </div>
-  );
-}
-
-// Budget uses StatPill pattern - no extra elements
-function BudgetBar({ spent, budget }: { spent: number; budget: number }) {
-  const percent = Math.min((spent / budget) * 100, 100);
-  const color = percent > 90 ? EMBRY.red : percent > 70 ? EMBRY.amber : EMBRY.green;
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <span
-        style={{
-          fontSize: 9,
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          color: EMBRY.dim,
-        }}
-      >
-        Budget
-      </span>
-      <span
-        style={{
-          fontSize: 16,
-          fontWeight: 700,
-          fontFamily: MONO,
-          color,
-        }}
-      >
-        {percent.toFixed(0)}%
-        <span style={{ fontSize: 10, color: EMBRY.dim }}> (${budget})</span>
       </span>
     </div>
   );
@@ -329,12 +300,62 @@ type WholeJobRow = {
   manifestIndex: number;
 };
 
+type IncomingCallRow = {
+  key: string;
+  itemLabel: string;
+  projectLabel: string;
+  callCategory: string | null;
+  batchId: string | null;
+  log: LogEntry;
+  outcome: CallOutcome;
+};
+
+function getLogTimestamp(log: LogEntry | null): number {
+  if (!log?.ts) return Number.NEGATIVE_INFINITY;
+  const parsed = Date.parse(log.ts);
+  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
+function shouldReplaceManifestCall(existing: LogEntry, candidate: LogEntry, preferredBatchId?: string | null): boolean {
+  const existingBatchId = existing.metadata?.batch_id || null;
+  const candidateBatchId = candidate.metadata?.batch_id || null;
+
+  if (preferredBatchId) {
+    const existingMatches = existingBatchId === preferredBatchId;
+    const candidateMatches = candidateBatchId === preferredBatchId;
+    if (existingMatches !== candidateMatches) return candidateMatches;
+  }
+
+  const timeDiff = getLogTimestamp(candidate) - getLogTimestamp(existing);
+  if (timeDiff !== 0) return timeDiff > 0;
+
+  const candidateHasResponse = Boolean(candidate.response_content?.trim());
+  const existingHasResponse = Boolean(existing.response_content?.trim());
+  if (candidateHasResponse !== existingHasResponse) return candidateHasResponse;
+
+  const candidateHasPrompt = Boolean(candidate.request_prompt?.trim());
+  const existingHasPrompt = Boolean(existing.request_prompt?.trim());
+  if (candidateHasPrompt !== existingHasPrompt) return candidateHasPrompt;
+
+  return candidate._key > existing._key;
+}
+
+function outcomeBadgeColor(outcome: CallOutcome): string {
+  if (outcome.source === "scillm") return EMBRY.red;
+  if (outcome.status === "ok") return EMBRY.green;
+  if (outcome.status === "pending") return EMBRY.dim;
+  return EMBRY.amber;
+}
+
 function ResizeGrip({ onMouseDown }: { onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void }) {
   return (
     <div
+      data-qid="scillm:resize:grip"
+      data-qs-action="SCILLM_RESIZE_PANEL"
+      title="Drag to resize panel"
       onMouseDown={onMouseDown}
       style={{
-        height: 12,
+        height: 16,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -342,7 +363,6 @@ function ResizeGrip({ onMouseDown }: { onMouseDown: (event: React.MouseEvent<HTM
         background: EMBRY.bgPanel,
         borderTop: `1px solid ${EMBRY.border}`,
       }}
-      title="Drag to resize"
     >
       <div
         style={{
@@ -431,6 +451,99 @@ function parseCallOutcome(log: LogEntry | null): CallOutcome {
   };
 }
 
+function summarizeTextPreview(text: string, fallback = "Response captured"): string {
+  const singleLine = text.replace(/\s+/g, " ").trim();
+  return singleLine || fallback;
+}
+
+function isStructuredEvidenceCall(log: LogEntry): boolean {
+  const prompt = log.request_prompt || "";
+  return prompt.includes("top-level JSON object with keys") || prompt.includes("skipped_reason");
+}
+
+function parseIncomingOutcome(log: LogEntry | null): CallOutcome {
+  if (!log) return { status: "pending", source: "pending", label: "Pending", summary: "No response yet" };
+  if (log.status === "error" || log.error) {
+    return {
+      status: "failed",
+      source: "scillm",
+      label: "Transport",
+      summary: log.error || "scillm transport error",
+      error: log.error || "scillm transport error",
+    };
+  }
+  if (isStructuredEvidenceCall(log)) return parseCallOutcome(log);
+  if (typeof log.response_content !== "string" || !log.response_content.trim()) {
+    return {
+      status: "invalid",
+      source: "create-evidence",
+      label: "Empty",
+      summary: "Response body was empty",
+      error: "response_content is null/empty",
+    };
+  }
+  return {
+    status: "ok",
+    source: "complete",
+    label: "Complete",
+    summary: summarizeTextPreview(log.response_content, "Response captured"),
+  };
+}
+
+function deriveProjectLabel(log: LogEntry): string {
+  return log.caller?.trim() || "system";
+}
+
+function formatCallCategory(category: string): string {
+  return category
+    .replace(/^sparta_/, "SPARTA ")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
+function deriveLegacyCreateQrasCategory(log: LogEntry): string | null {
+  const itemId = log.metadata?.item_id || "";
+  const batchId = log.metadata?.batch_id || "";
+
+  if (itemId.includes("->")) {
+    const [sourceId, targetId] = itemId.split("->");
+    if (sourceId.startsWith("DE-") && targetId.startsWith("CM")) {
+      return "SPARTA Technique Countermeasure Relationship";
+    }
+    if (sourceId.startsWith("DE-") && targetId.startsWith("ST")) {
+      return "SPARTA Tactic Technique Relationship";
+    }
+    if (batchId.includes("relationship")) {
+      return "SPARTA Relationship";
+    }
+  }
+
+  if (itemId.startsWith("DE-")) return "SPARTA Technique Canonical";
+  if (itemId.startsWith("CM")) return "SPARTA Countermeasure Canonical";
+  if (itemId.startsWith("ST")) return "SPARTA Tactic Canonical";
+  if (batchId.includes("canonical")) return "SPARTA Canonical";
+  if (batchId.includes("relationship")) return "SPARTA Relationship";
+  return null;
+}
+
+function deriveCallCategory(log: LogEntry): string | null {
+  const explicit = log.metadata?.call_category || log.metadata?.prompt_kind;
+  if (explicit) return formatCallCategory(explicit);
+  if (log.caller === "create-qras") return deriveLegacyCreateQrasCategory(log);
+  return null;
+}
+
+function deriveIncomingItemLabel(log: LogEntry): string {
+  return log.metadata?.item_id || log._key;
+}
+
+function formatEvidenceCaseSummary(outcome: CallOutcome): string {
+  if (outcome.status === "ok") return "Complete: grounded response accepted";
+  if (outcome.status === "pending") return "Pending: awaiting response";
+  if (outcome.status === "skipped") return `Skipped: ${outcome.summary}`;
+  return `${outcome.label}: ${outcome.summary}`;
+}
+
 function outcomeChipStyle(outcome: CallOutcome): React.CSSProperties {
   const color = outcome.source === "scillm"
     ? EMBRY.red
@@ -474,70 +587,214 @@ function renderOutcomeIcon(outcome: CallOutcome) {
   return <AlertTriangle size={14} style={iconStyle} />;
 }
 
+function summarizePromptPreview(log: LogEntry | null, fallback: string): string {
+  const raw = log?.request_prompt?.trim();
+  if (!raw) return fallback;
+  const singleLine = raw.replace(/\s+/g, " ").trim();
+  return singleLine || fallback;
+}
+
+function PromptDialog({
+  title,
+  prompt,
+  onClose,
+}: {
+  title: string;
+  prompt: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      className="scillm-dialog-backdrop"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1100,
+        backgroundColor: "rgba(0,0,0,0.74)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+      }}
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="scillm-dialog-content elevated-surface"
+        style={{
+          width: "min(1100px, 86vw)",
+          maxHeight: "84vh",
+          backgroundColor: EMBRY.bgPanel,
+          border: `1px solid ${EMBRY.border}`,
+          borderLeft: `3px solid ${EMBRY.blue}`,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: 16,
+            padding: "14px 16px",
+            borderBottom: `1px solid ${EMBRY.border}`,
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: EMBRY.dim,
+                marginBottom: 6,
+              }}
+            >
+              Full prompt
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white, wordBreak: "break-word" }}>
+              {title}
+            </div>
+          </div>
+          <button
+            data-qid="scillm:prompt-dialog:close"
+            data-qs-action="SCILLM_CLOSE_PROMPT"
+            title="Close full prompt dialog"
+            onClick={onClose}
+            className="press-scale scillm-focus"
+            style={{
+              border: `1px solid ${EMBRY.border}`,
+              background: EMBRY.bgDeep,
+              color: EMBRY.white,
+              cursor: "pointer",
+              padding: "6px 10px",
+              fontSize: 10,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+            }}
+          >
+            Close
+          </button>
+        </div>
+        <div
+          style={{
+            overflow: "auto",
+            padding: 16,
+            fontFamily: MONO,
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: EMBRY.white,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          {prompt}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ActiveCreateQrasTable({
   detail,
+  logs,
   onCallClick,
   onInspect,
-  collapsed,
-  onToggleCollapsed,
+  selectedLog,
   tableHeight,
   onResizeStart,
 }: {
   detail: any | null;
+  logs: LogEntry[];
   onCallClick: (log: LogEntry) => void;
   onInspect: () => void;
-  collapsed: boolean;
-  onToggleCollapsed: () => void;
+  selectedLog: LogEntry | null;
   tableHeight: number;
   onResizeStart: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "complete" | "pending" | "transport" | "schema" | "empty" | "skipped">("all");
-  const rows = useMemo(() => {
-    const manifestJobs = Array.isArray(detail?.manifest?.jobs) ? detail.manifest.jobs : [];
-    const calls = Array.isArray(detail?.calls)
-      ? detail.calls.filter((call: unknown): call is LogEntry => Boolean(call && typeof call === "object"))
-      : [];
-    const outcomePriority: Record<OutcomeStatus, number> = {
-      ok: 0,
-      skipped: 1,
-      failed: 2,
-      invalid: 3,
-      unknown: 4,
-      pending: 5,
-    };
-    const callByItemId = new Map<string, LogEntry>();
-    for (const call of calls) {
-      const itemId = call.metadata?.item_id;
-      if (itemId && !callByItemId.has(itemId)) callByItemId.set(itemId, call);
+  const [failureStreamAutoScroll, setFailureStreamAutoScroll] = useState(true);
+  const [projectScope, setProjectScope] = useState<string>("all");
+  const [batchScope, setBatchScope] = useState<string>("all");
+  const [promptDialog, setPromptDialog] = useState<{ title: string; prompt: string } | null>(null);
+  const rowRefs = useRef(new Map<string, HTMLTableRowElement>());
+  const failureStreamRef = useRef<HTMLDivElement | null>(null);
+
+  useRegisterAction("scillm:filter:all", { app: "ux-lab", action: "SCILLM_FILTER_ALL", label: "Filter: All", description: "Show all incoming calls" });
+  useRegisterAction("scillm:filter:complete", { app: "ux-lab", action: "SCILLM_FILTER_COMPLETE", label: "Filter: Complete", description: "Show complete calls only" });
+  useRegisterAction("scillm:filter:pending", { app: "ux-lab", action: "SCILLM_FILTER_PENDING", label: "Filter: Pending", description: "Show pending calls only" });
+  useRegisterAction("scillm:filter:skipped", { app: "ux-lab", action: "SCILLM_FILTER_SKIPPED", label: "Filter: Skipped", description: "Show skipped calls only" });
+  useRegisterAction("scillm:inspect:batch", { app: "ux-lab", action: "SCILLM_INSPECT_BATCH", label: "Inspect Batch", description: "Inspect active batch details" });
+  useRegisterAction("scillm:resize:grip", { app: "ux-lab", action: "SCILLM_RESIZE_PANEL", label: "Resize Panel", description: "Drag to resize incoming table panel" });
+
+  const calls = useMemo(() => logs.filter(isRenderableLogEntry), [logs]);
+  const projectOptions = useMemo(() => {
+    const options = Array.from(new Set(calls.map((call) => deriveProjectLabel(call))));
+    return options.sort((a, b) => a.localeCompare(b));
+  }, [calls]);
+  const scopedProjectCalls = useMemo(
+    () => (projectScope === "all" ? calls : calls.filter((call) => deriveProjectLabel(call) === projectScope)),
+    [calls, projectScope],
+  );
+  const batchOptions = useMemo(() => {
+    const seen = new Set<string>();
+    const options: string[] = [];
+    for (const call of scopedProjectCalls) {
+      const batchId = call.metadata?.batch_id;
+      if (batchId && !seen.has(batchId)) {
+        seen.add(batchId);
+        options.push(batchId);
+      }
     }
-    return manifestJobs
-      .filter((job: unknown): job is Record<string, any> => Boolean(job && typeof job === "object"))
-      .map((job: Record<string, any>, index: number): WholeJobRow => {
-        const itemId = deriveManifestJobItemId(job);
-        const log = callByItemId.get(itemId) || null;
-        return {
-          key: job.job_id || `${itemId}-${index}`,
-          itemId,
-          promptKind: job.prompt_kind || job.job_type || "unknown",
-          log,
-          outcome: parseCallOutcome(log),
-          manifestIndex: index,
-        };
-      })
-      .sort((a: WholeJobRow, b: WholeJobRow) => {
-        const priorityDiff = (outcomePriority[a.outcome.status] ?? 99) - (outcomePriority[b.outcome.status] ?? 99);
-        if (priorityDiff !== 0) return priorityDiff;
-        const tsA = a.log?.ts ? Date.parse(a.log.ts) : Number.NaN;
-        const tsB = b.log?.ts ? Date.parse(b.log.ts) : Number.NaN;
-        if (Number.isFinite(tsA) && Number.isFinite(tsB) && tsA !== tsB) return tsB - tsA;
-        return a.manifestIndex - b.manifestIndex;
-      });
-  }, [detail]);
+    return options.sort((a, b) => b.localeCompare(a));
+  }, [scopedProjectCalls]);
+
+  useEffect(() => {
+    if (projectScope !== "all" && !projectOptions.includes(projectScope)) {
+      setProjectScope("all");
+    }
+  }, [projectOptions, projectScope]);
+
+  useEffect(() => {
+    if (batchScope !== "all" && !batchOptions.includes(batchScope)) {
+      setBatchScope("all");
+      return;
+    }
+  }, [batchOptions, batchScope]);
+
+  const rows = useMemo(() => {
+    const scopedCalls = batchScope === "all"
+      ? scopedProjectCalls
+      : scopedProjectCalls.filter((call: LogEntry) => (call.metadata?.batch_id || "") === batchScope);
+    return scopedCalls
+      .map((log): IncomingCallRow => ({
+        key: log._key,
+        itemLabel: deriveIncomingItemLabel(log),
+        projectLabel: deriveProjectLabel(log),
+        callCategory: deriveCallCategory(log),
+        batchId: log.metadata?.batch_id || null,
+        log,
+        outcome: parseIncomingOutcome(log),
+      }))
+      .sort((a, b) => getLogTimestamp(b.log) - getLogTimestamp(a.log));
+  }, [batchScope, scopedProjectCalls]);
 
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return rows.filter((row: WholeJobRow) => {
+    return rows.filter((row: IncomingCallRow) => {
       const filterMatch =
         filter === "all" ? true
         : filter === "complete" ? row.outcome.status === "ok"
@@ -551,8 +808,10 @@ function ActiveCreateQrasTable({
       if (!filterMatch) return false;
       if (!query) return true;
       return [
-        row.itemId,
-        row.promptKind,
+        row.itemLabel,
+        row.projectLabel,
+        row.callCategory,
+        row.batchId,
         row.outcome.status,
         row.outcome.source,
         row.outcome.label,
@@ -563,8 +822,17 @@ function ActiveCreateQrasTable({
       ].some((value) => value?.toLowerCase().includes(query));
     });
   }, [filter, rows, search]);
+  const failureRows = useMemo(() => {
+    return rows
+      .filter((row: IncomingCallRow) => row.outcome.status !== "ok" && row.outcome.status !== "pending" && row.outcome.status !== "skipped");
+  }, [rows]);
 
-  if (!detail?.state || rows.length === 0) return null;
+  useEffect(() => {
+    if (!failureStreamAutoScroll) return;
+    failureStreamRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [failureRows.length, failureStreamAutoScroll]);
+
+  if (rows.length === 0) return null;
 
   return (
     <section
@@ -579,28 +847,69 @@ function ActiveCreateQrasTable({
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 10, minWidth: 0 }}>
-          <button
-            onClick={onToggleCollapsed}
-            style={{
-              marginTop: 1,
-              padding: 2,
-              border: "none",
-              background: "transparent",
-              color: EMBRY.dim,
-              cursor: "pointer",
-            }}
-            title={collapsed ? "Expand Whole job" : "Collapse Whole job"}
-          >
-            {collapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
-          </button>
           <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>
-              Whole job
+            <div className="text-balance" style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>
+              Incoming
             </div>
-            <div style={{ fontSize: 10, color: EMBRY.dim }}>Manifest rows sorted with completed responses first.</div>
+            <div className="text-pretty" style={{ fontSize: 10, color: EMBRY.dim }}>Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginLeft: "auto" }}>
+          {projectOptions.length > 1 && (
+            <select
+              data-qid="scillm:scope:project"
+              data-qs-action="SCILLM_SCOPE_PROJECT"
+              title="Filter incoming calls by project"
+              value={projectScope}
+              onChange={(event) => {
+                setProjectScope(event.target.value);
+                setBatchScope("all");
+              }}
+              className="scillm-focus"
+              style={{
+                padding: "6px 10px",
+                background: EMBRY.bgPanel,
+                border: `1px solid ${EMBRY.border}`,
+                color: EMBRY.white,
+                fontSize: 11,
+                fontFamily: MONO,
+                minWidth: 180,
+              }}
+            >
+              <option value="all">All projects</option>
+              {projectOptions.map((project) => (
+                <option key={project} value={project}>
+                  {project}
+                </option>
+              ))}
+            </select>
+          )}
+          {batchOptions.length > 0 && (
+            <select
+              data-qid="scillm:scope:batch"
+              data-qs-action="SCILLM_SCOPE_BATCH"
+              title="Filter incoming calls by batch id"
+              value={batchScope}
+              onChange={(event) => setBatchScope(event.target.value)}
+              className="scillm-focus"
+              style={{
+                padding: "6px 10px",
+                background: EMBRY.bgPanel,
+                border: `1px solid ${EMBRY.border}`,
+                color: EMBRY.white,
+                fontSize: 11,
+                fontFamily: MONO,
+                minWidth: 280,
+              }}
+            >
+              <option value="all">All batch ids</option>
+              {batchOptions.map((batchId) => (
+                <option key={batchId} value={batchId}>
+                  {batchId}
+                </option>
+              ))}
+            </select>
+          )}
           <div
             style={{
               minWidth: 280,
@@ -629,8 +938,12 @@ function ActiveCreateQrasTable({
             />
             {search && (
               <button
+                data-qid="scillm:search:clear"
+                data-qs-action="SCILLM_CLEAR_SEARCH"
+                title="Clear search"
                 onClick={() => setSearch("")}
-                style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 2 }}
+                className="press-scale scillm-focus"
+                style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 6, display: "flex", alignItems: "center", justifyContent: "center" }}
               >
                 <X size={12} />
               </button>
@@ -640,7 +953,11 @@ function ActiveCreateQrasTable({
             {filteredRows.length}/{rows.length} shown
           </div>
           <button
+            data-qid="scillm:inspect:batch"
+            data-qs-action="SCILLM_INSPECT_BATCH"
+            title="Inspect active batch details"
             onClick={onInspect}
+            className="press-scale scillm-focus"
             style={{
               fontSize: 10,
               fontWeight: 700,
@@ -655,28 +972,30 @@ function ActiveCreateQrasTable({
             }}
           >
             <Eye size={12} />
-            Inspect Manifest
+            Inspect Batch
           </button>
         </div>
       </div>
-
-      {!collapsed && (
-        <>
+      <>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             {[
               { key: "all", label: `All (${rows.length})` },
-              { key: "complete", label: `Complete (${rows.filter((row: WholeJobRow) => row.outcome.status === "ok").length})` },
-              { key: "pending", label: `Pending (${rows.filter((row: WholeJobRow) => row.outcome.status === "pending").length})` },
-              { key: "transport", label: `Transport (${rows.filter((row: WholeJobRow) => row.outcome.label === "Transport").length})` },
-              { key: "schema", label: `Schema (${rows.filter((row: WholeJobRow) => row.outcome.label === "Schema").length})` },
-              { key: "empty", label: `Empty (${rows.filter((row: WholeJobRow) => row.outcome.label === "Empty").length})` },
-              { key: "skipped", label: `Skipped (${rows.filter((row: WholeJobRow) => row.outcome.status === "skipped").length})` },
+              { key: "complete", label: `Complete (${rows.filter((row: IncomingCallRow) => row.outcome.status === "ok").length})` },
+              { key: "pending", label: `Pending (${rows.filter((row: IncomingCallRow) => row.outcome.status === "pending").length})` },
+              { key: "transport", label: `Transport (${rows.filter((row: IncomingCallRow) => row.outcome.label === "Transport").length})` },
+              { key: "schema", label: `Schema (${rows.filter((row: IncomingCallRow) => row.outcome.label === "Schema").length})` },
+              { key: "empty", label: `Empty (${rows.filter((row: IncomingCallRow) => row.outcome.label === "Empty").length})` },
+              { key: "skipped", label: `Skipped (${rows.filter((row: IncomingCallRow) => row.outcome.status === "skipped").length})` },
             ].map(({ key, label }) => (
               <button
                 key={key}
+                data-qid={`scillm:filter:${key}`}
+                data-qs-action={`SCILLM_FILTER_${key.toUpperCase()}`}
+                title={`Filter by ${key}`}
                 onClick={() => setFilter(key as typeof filter)}
+                className="press-scale scillm-focus"
                 style={{
-                  padding: "4px 8px",
+                  padding: "6px 10px",
                   border: `1px solid ${filter === key ? EMBRY.blue : EMBRY.border}`,
                   backgroundColor: filter === key ? `${EMBRY.blue}20` : EMBRY.bgPanel,
                   color: filter === key ? EMBRY.blue : EMBRY.white,
@@ -692,95 +1011,335 @@ function ActiveCreateQrasTable({
             ))}
           </div>
           <div style={{ fontSize: 10, color: EMBRY.dim }}>
-            Filters: <span style={{ color: EMBRY.red }}>Transport</span> means the proxy call itself failed. <span style={{ color: EMBRY.amber }}>Schema</span> and <span style={{ color: EMBRY.amber }}>Empty</span> mean scillm returned a payload that did not ground into valid evidence output.
+            Filters: <span style={{ color: EMBRY.red }}>Transport</span> means the proxy call itself failed. <span style={{ color: EMBRY.amber }}>Schema</span> and <span style={{ color: EMBRY.amber }}>Empty</span> mean the returned payload was malformed or empty.
           </div>
 
-          <div style={{ border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, overflow: "auto", height: tableHeight }}>
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1.35fr 0.9fr 88px 0.8fr minmax(360px, 3.4fr)",
-              gap: 8,
-              padding: "8px 10px",
-                borderBottom: `1px solid ${EMBRY.border}`,
-                fontSize: 9,
-                fontWeight: 800,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: EMBRY.dim,
-                position: "sticky",
-                top: 0,
-                background: EMBRY.bgPanel,
-                zIndex: 1,
-              }}
-            >
-              <div>Item</div>
-              <div>Prompt</div>
-              <div>Duration</div>
-              <div>Model</div>
-              <div>Response / Error</div>
+              gridTemplateColumns: failureRows.length > 0 ? "minmax(0, 1fr) 280px" : "minmax(0, 1fr)",
+              gap: 12,
+              minHeight: 0,
+            }}
+          >
+            <div style={{ border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, overflow: "auto", height: tableHeight }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                <colgroup>
+                <col style={{ width: "18%" }} />
+                <col style={{ width: "19%" }} />
+                <col style={{ width: "29%" }} />
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "8%" }} />
+                <col style={{ width: "16%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    {["Call", "Prompt", "Response", "Evidence case", "Duration", "Model"].map((label) => (
+                      <th
+                        key={label}
+                        style={{
+                          padding: "8px 10px",
+                          borderBottom: `1px solid ${EMBRY.border}`,
+                          fontSize: 9,
+                          fontWeight: 800,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          color: EMBRY.dim,
+                          position: "sticky",
+                          top: 0,
+                          background: EMBRY.bgPanel,
+                          zIndex: 1,
+                          textAlign: "left",
+                        }}
+                      >
+                        {label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRows.map((row: IncomingCallRow) => {
+                    const promptPreview = summarizePromptPreview(row.log, row.projectLabel);
+                    const evidenceText = row.outcome.status === "ok" ? row.outcome.summary : "—";
+                    const evidenceCaseText = formatEvidenceCaseSummary(row.outcome);
+                    const evidenceCaseColor = row.outcome.status === "ok"
+                      ? EMBRY.dim
+                      : row.outcome.source === "scillm"
+                        ? EMBRY.red
+                        : row.outcome.status === "pending"
+                          ? EMBRY.dim
+                          : EMBRY.amber;
+                    const isSelected = Boolean(selectedLog && selectedLog._key === row.log._key);
+
+                    return (
+                      <tr
+                        key={row.key}
+                        data-qid={`scillm:incoming:row:${row.key}`}
+                        ref={(node) => {
+                          if (node) rowRefs.current.set(row.key, node);
+                          else rowRefs.current.delete(row.key);
+                        }}
+                        onClick={() => row.log && onCallClick(row.log)}
+                        className={`scillm-row ${isSelected ? "scillm-row-selected" : ""}`}
+                        style={{
+                          cursor: row.log ? "pointer" : "default",
+                          fontSize: 10,
+                        }}
+                      >
+                        <td style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: "top" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, fontFamily: MONO }}>
+                            <div
+                              title={`${row.outcome.label}: ${row.outcome.summary}`}
+                              style={{
+                                ...outcomeChipStyle(row.outcome),
+                                width: 28,
+                                height: 28,
+                                padding: 0,
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              {renderOutcomeIcon(row.outcome)}
+                            </div>
+                            <div
+                              title={`${row.itemLabel}${row.callCategory ? ` • ${row.callCategory}` : ""}${row.batchId ? ` • ${row.batchId}` : ""}`}
+                              style={{ minWidth: 0, overflow: "hidden" }}
+                            >
+                              <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: EMBRY.white, fontWeight: 700 }}>
+                                {row.itemLabel}
+                              </div>
+                              <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: EMBRY.dim, fontSize: 9, fontFamily: "Inter, sans-serif" }}>
+                                {row.projectLabel}
+                                {row.callCategory ? ` • ${row.callCategory}` : ""}
+                                {row.batchId ? ` • ${row.batchId}` : ""}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.dim, verticalAlign: "top" }}
+                        >
+                          <button
+                            data-qid={`scillm:incoming:prompt:${row.key}`}
+                            data-qs-action="SCILLM_OPEN_PROMPT"
+                            title={`Open full prompt for ${row.itemLabel}`}
+                            className="press-scale scillm-focus"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setPromptDialog({
+                                title: row.itemLabel,
+                                prompt: row.log.request_prompt?.trim() || promptPreview,
+                              });
+                            }}
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              fontFamily: MONO,
+                              color: EMBRY.dim,
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                              textAlign: "left",
+                            }}
+                          >
+                            {promptPreview}
+                          </button>
+                        </td>
+                        <td
+                          title={evidenceText}
+                          style={{
+                            padding: "10px",
+                            borderBottom: `1px solid ${EMBRY.border}`,
+                            color: row.outcome.status === "ok" ? EMBRY.white : EMBRY.dim,
+                            verticalAlign: "top",
+                          }}
+                        >
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              display: "-webkit-box",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 2,
+                              wordBreak: "break-word",
+                              lineHeight: 1.35,
+                            }}
+                          >
+                            {evidenceText}
+                          </div>
+                        </td>
+                        <td
+                          title={evidenceCaseText}
+                          style={{
+                            padding: "10px",
+                            borderBottom: `1px solid ${EMBRY.border}`,
+                            color: evidenceCaseColor,
+                            verticalAlign: "top",
+                          }}
+                        >
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              display: "-webkit-box",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 2,
+                              wordBreak: "break-word",
+                              lineHeight: 1.35,
+                            }}
+                          >
+                            {evidenceCaseText}
+                          </div>
+                        </td>
+                        <td className="tabular-nums" style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, fontFamily: MONO, whiteSpace: "nowrap", verticalAlign: "top" }}>
+                          {row.log?.duration_ms != null ? `${row.log.duration_ms}ms` : "—"}
+                        </td>
+                        <td
+                          className="tabular-nums"
+                          title={row.log?.model_served || row.log?.model_requested || "—"}
+                          style={{
+                            padding: "10px",
+                            borderBottom: `1px solid ${EMBRY.border}`,
+                            fontSize: 9,
+                            color: EMBRY.dim,
+                            verticalAlign: "top",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {row.log?.model_served || row.log?.model_requested || "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {filteredRows.length === 0 && (
+                    <tr>
+                      <td colSpan={6} style={{ padding: 16, fontSize: 11, color: EMBRY.dim }}>
+                        No incoming calls match the current scope and search.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-            {filteredRows.map((row: WholeJobRow) => (
-              <button
-                key={row.key}
-                onClick={() => row.log && onCallClick(row.log)}
-                disabled={!row.log}
+            {failureRows.length > 0 && (
+              <aside
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1.35fr 0.9fr 88px 0.8fr minmax(360px, 3.4fr)",
-                  gap: 8,
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "9px 10px",
-                  border: "none",
-                  borderBottom: `1px solid ${EMBRY.border}`,
-                  background: "transparent",
-                  color: EMBRY.white,
-                  cursor: row.log ? "pointer" : "default",
-                  fontSize: 10,
+                  border: `1px solid ${EMBRY.border}`,
+                  backgroundColor: EMBRY.bgPanel,
+                  height: tableHeight,
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: 0,
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, fontFamily: MONO }}>
-                  <div
-                    title={`${row.outcome.label}: ${row.outcome.summary}`}
-                    style={{
-                      ...outcomeChipStyle(row.outcome),
-                      width: 28,
-                      height: 28,
-                      padding: 0,
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {renderOutcomeIcon(row.outcome)}
-                  </div>
-                  <div style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {row.itemId}
-                  </div>
-                </div>
-                <div style={{ color: EMBRY.dim }}>{row.promptKind}</div>
-                <div style={{ fontFamily: MONO }}>{row.log?.duration_ms != null ? `${row.log.duration_ms}ms` : "—"}</div>
-                <div style={{ fontSize: 9, color: EMBRY.dim }}>{row.log?.model_served || row.log?.model_requested || "—"}</div>
                 <div
                   style={{
-                    color: row.outcome.error ? EMBRY.red : EMBRY.white,
-                    whiteSpace: "normal",
-                    wordBreak: "break-word",
-                    lineHeight: 1.35,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 10,
+                    padding: "10px 12px",
+                    borderBottom: `1px solid ${EMBRY.border}`,
                   }}
                 >
-                  {row.outcome.summary}
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: EMBRY.red, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                      Failure Stream
+                    </div>
+                    <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                      {failureRows.length} failed manifest rows
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setFailureStreamAutoScroll((prev) => !prev)}
+                    style={{
+                      border: `1px solid ${failureStreamAutoScroll ? EMBRY.blue : EMBRY.border}`,
+                      background: failureStreamAutoScroll ? `${EMBRY.blue}18` : EMBRY.bgDeep,
+                      color: failureStreamAutoScroll ? EMBRY.blue : EMBRY.dim,
+                      padding: "4px 8px",
+                      fontSize: 9,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Auto-scroll {failureStreamAutoScroll ? "on" : "off"}
+                  </button>
                 </div>
-              </button>
-            ))}
-            {filteredRows.length === 0 && (
-              <div style={{ padding: 16, fontSize: 11, color: EMBRY.dim }}>
-                No manifest rows match the current Whole job search.
-              </div>
+                <div
+                  ref={failureStreamRef}
+                  style={{
+                    overflowY: "auto",
+                    minHeight: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {failureRows.map((row: IncomingCallRow) => {
+                    const isSelected = Boolean(selectedLog && selectedLog._key === row.log._key);
+                    return (
+                      <button
+                        key={`failure-${row.key}`}
+                        onClick={() => {
+                          rowRefs.current.get(row.key)?.scrollIntoView({ block: "center", behavior: "smooth" });
+                          onCallClick(row.log);
+                        }}
+                        style={{
+                          textAlign: "left",
+                          padding: "8px 10px",
+                          border: "none",
+                          borderLeft: `2px solid ${row.outcome.source === "scillm" ? EMBRY.red : EMBRY.amber}`,
+                          borderBottom: `1px solid ${EMBRY.border}`,
+                          backgroundColor: isSelected ? `${EMBRY.red}12` : "transparent",
+                          color: EMBRY.white,
+                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 3,
+                        }}
+                        >
+                          <div style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.white }}>
+                            {row.itemLabel}
+                          </div>
+                          <div style={{ fontSize: 10, color: row.outcome.source === "scillm" ? EMBRY.red : EMBRY.amber }}>
+                            {row.projectLabel}
+                            {row.callCategory ? ` • ${row.callCategory}` : ""}
+                            {` • ${row.outcome.label}`}
+                          </div>
+                        <div
+                          style={{
+                            fontSize: 9,
+                            color: EMBRY.dim,
+                            overflow: "hidden",
+                            display: "-webkit-box",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 2,
+                            wordBreak: "break-word",
+                            lineHeight: 1.35,
+                          }}
+                        >
+                          {row.outcome.summary}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </aside>
             )}
           </div>
           <ResizeGrip onMouseDown={onResizeStart} />
-        </>
+      </>
+      {promptDialog && (
+        <PromptDialog
+          title={promptDialog.title}
+          prompt={promptDialog.prompt}
+          onClose={() => setPromptDialog(null)}
+        />
       )}
     </section>
   );
@@ -815,11 +1374,11 @@ function OrchestratorStrip({
           borderBottom: `1px solid ${EMBRY.border}`,
         }}
       >
-        <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: EMBRY.dim }}>
+        <span className="text-balance" style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: EMBRY.dim }}>
           Batch Progress
         </span>
         <span style={{ fontSize: 10, color: EMBRY.dim }}>
-          Manifest-level ribbon. Inspect opens the full diagnostic dossier.
+          Manifest items, LLM calls, stored QRAs, and skips are separate counters. Inspect opens the full diagnostic dossier.
         </span>
       </div>
 
@@ -831,6 +1390,9 @@ function OrchestratorStrip({
         const totalJobs = state?.total_jobs ?? state?.processed ?? 0;
         const completedJobs = state?.completed_jobs ?? state?.processed ?? 0;
         const failedJobs = state?.failed_jobs ?? state?.failed ?? 0;
+        const skippedJobs = state?.skipped_jobs ?? state?.skipped ?? 0;
+        const llmCalls = state?.llm_calls_started;
+        const llmCallsLabel = llmCalls == null ? "legacy" : `${llmCalls}`;
         const progressPct = typeof state?.progress_pct === "number"
           ? state.progress_pct
           : totalJobs > 0
@@ -874,7 +1436,7 @@ function OrchestratorStrip({
                 >
                   {statusLabel}
                 </div>
-                <div style={{ fontSize: 12, fontWeight: 800, color, fontFamily: MONO, marginLeft: "auto" }}>
+                <div className="tabular-nums" style={{ fontSize: 12, fontWeight: 800, color, fontFamily: MONO, marginLeft: "auto" }}>
                   {progressPct.toFixed(0)}%
                 </div>
               </div>
@@ -884,14 +1446,17 @@ function OrchestratorStrip({
                     width: `${Math.max(0, Math.min(progressPct, 100))}%`,
                     height: "100%",
                     backgroundColor: color,
+                    transition: "width 0.6s cubic-bezier(0.2, 0, 0, 1)",
                   }}
                 />
               </div>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-              <StatPill label="Jobs" value={totalJobs ? `${completedJobs}/${totalJobs}` : `${completedJobs}`} small />
+              <StatPill label="Items" value={totalJobs ? `${completedJobs}/${totalJobs}` : `${completedJobs}`} small />
+              <StatPill label="Calls" value={llmCallsLabel} small color={EMBRY.blue} />
               <StatPill label="Stored" value={`${state?.stored_qras ?? 0}`} small color={EMBRY.green} />
+              <StatPill label="Skipped" value={`${skippedJobs}`} small color={skippedJobs > 0 ? EMBRY.amber : EMBRY.dim} />
               <StatPill label="Fail" value={`${failedJobs}`} small color={failedJobs > 0 ? EMBRY.red : EMBRY.dim} />
               <StatPill label="ETA" value={formatEta(eta.tonightEtaSeconds)} small color={EMBRY.white} />
             </div>
@@ -909,7 +1474,9 @@ function OrchestratorStrip({
 
             <button
               data-qid={`scillm:orchestrator:inspect:${job.name}`}
+              data-qs-action="SCILLM_INSPECT_JOB"
               title={`Inspect ${job.name}`}
+              className="press-scale scillm-focus"
               onClick={() => onInspect(job)}
               style={{
                 display: "flex",
@@ -1046,6 +1613,12 @@ function TracePanel({
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [analysisCopied, setAnalysisCopied] = useState(false);
+  const outcome = useMemo(() => parseIncomingOutcome(log), [log]);
+  const statusColor = outcomeBadgeColor(outcome);
+  const statusText = outcome.label;
+  const callTimestamp = log.ts ? new Date(log.ts).toLocaleString() : "Unknown time";
+  const headerTitle = log.metadata?.item_id ? `Request Inspector: ${log.metadata.item_id}` : "Request Inspector";
+  const renderedError = outcome.error || log.error || null;
 
   const analyzeCall = async () => {
     setAnalyzing(true);
@@ -1053,8 +1626,8 @@ function TracePanel({
       const prompt = `You are an LLM proxy debugger. Analyze this API call and provide a concise diagnosis.
 
 ## Call Details
-- **Status:** ${log.status}
-- **Error:** ${log.error || "None"}
+- **Status:** ${statusText}
+- **Error:** ${renderedError || "None"}
 - **Model Requested:** ${log.model_requested}
 - **Model Served:** ${log.model_served || "unknown"}
 - **Provider:** ${log.provider || "unknown"}
@@ -1081,11 +1654,13 @@ Provide:
 
 Keep it concise — under 200 words total.`;
 
-      const resp = await fetch("http://localhost:4001/v1/chat/completions", {
+      const scillmUrl = import.meta.env.VITE_SCILLM_URL || "http://localhost:4001/v1/chat/completions";
+      const scillmToken = import.meta.env.VITE_SCILLM_TOKEN || "";
+      const resp = await fetch(scillmUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer sk-dev-proxy-123",
+          Authorization: scillmToken ? `Bearer ${scillmToken}` : "",
           "X-Caller-Skill": "ux-lab.scillm-debugger",
         },
         body: JSON.stringify({
@@ -1115,7 +1690,7 @@ Keep it concise — under 200 words total.`;
 **Timestamp:** ${log.ts}
 **Caller:** ${log.caller || "unknown"}
 **Model:** ${log.model_requested} → ${log.model_served || "unknown"}
-**Status:** ${log.status}${log.error ? ` (${log.error})` : ""}
+**Status:** ${statusText}${renderedError ? ` (${renderedError})` : ""}
 
 ### LLM Debugger Analysis
 ${analysis}
@@ -1130,6 +1705,7 @@ ${analysis}
 
   return (
     <div
+      className="scillm-panel-enter elevated-surface"
       style={{
         position: "fixed",
         top: 0,
@@ -1141,7 +1717,6 @@ ${analysis}
         zIndex: 1000,
         display: "flex",
         flexDirection: "column",
-        boxShadow: "-4px 0 20px rgba(0,0,0,0.5)",
       }}
     >
       {/* Header */}
@@ -1154,17 +1729,24 @@ ${analysis}
           justifyContent: "space-between",
         }}
       >
-        <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>
-          Call Trace
-        </span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>
+            {headerTitle}
+          </span>
         <button
+          data-qid="scillm:trace-panel:close"
+          data-qs-action="SCILLM_CLOSE_TRACE"
+          title="Close trace panel"
           onClick={onClose}
+          className="press-scale scillm-focus"
           style={{
             background: "none",
             border: "none",
             color: EMBRY.dim,
             cursor: "pointer",
-            padding: 4,
+            padding: 8,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <X size={16} />
@@ -1180,20 +1762,20 @@ ${analysis}
               fontSize: 10,
               fontWeight: 700,
               padding: "4px 8px",
-              backgroundColor: log.status === "error" ? `${EMBRY.red}20` : `${EMBRY.green}20`,
-              color: log.status === "error" ? EMBRY.red : EMBRY.green,
+              backgroundColor: `${statusColor}20`,
+              color: statusColor,
               textTransform: "uppercase",
             }}
           >
-            {log.status}
+            {statusText}
           </span>
           <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 8 }}>
-            {new Date(log.ts).toLocaleString()}
+            {callTimestamp}
           </span>
         </div>
 
         {/* Error message */}
-        {log.error && (
+        {renderedError && (
           <div
             style={{
               marginBottom: 16,
@@ -1206,7 +1788,7 @@ ${analysis}
               Error
             </span>
             <div style={{ fontSize: 11, color: EMBRY.white, marginTop: 4, fontFamily: MONO }}>
-              {log.error}
+              {renderedError}
             </div>
           </div>
         )}
@@ -1245,13 +1827,17 @@ ${analysis}
             <span>LLM Debugger</span>
             {!analysis && (
               <button
+                data-qid="scillm:trace-panel:analyze"
+                data-qs-action="SCILLM_ANALYZE_CALL"
+                title="Analyze this scillm call with LLM debugger"
                 onClick={analyzeCall}
                 disabled={analyzing}
+                className="press-scale scillm-focus"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 4,
-                  padding: "4px 8px",
+                  padding: "6px 10px",
                   fontSize: 9,
                   fontWeight: 700,
                   border: "none",
@@ -1297,7 +1883,11 @@ ${analysis}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <button
+                  data-qid="scillm:trace-panel:copy-analysis"
+                  data-qs-action="SCILLM_COPY_ANALYSIS"
+                  title="Copy analysis report for agent"
                   onClick={copyAnalysisForAgent}
+                  className="press-scale scillm-focus"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -1324,7 +1914,11 @@ ${analysis}
                   )}
                 </button>
                 <button
+                  data-qid="scillm:trace-panel:clear-analysis"
+                  data-qs-action="SCILLM_CLEAR_ANALYSIS"
+                  title="Clear analysis result"
                   onClick={() => setAnalysis(null)}
+                  className="press-scale scillm-focus"
                   style={{
                     padding: "6px 12px",
                     fontSize: 10,
@@ -1376,6 +1970,8 @@ ${analysis}
           <Section title="Metadata">
             {log.metadata.batch_id && <Field label="Batch ID" value={log.metadata.batch_id} />}
             {log.metadata.item_id && <Field label="Item ID" value={log.metadata.item_id} />}
+            {deriveCallCategory(log) && <Field label="Call Category" value={deriveCallCategory(log) || "—"} />}
+            {log.metadata.prompt_kind && <Field label="Prompt Kind" value={log.metadata.prompt_kind} />}
           </Section>
         )}
 
@@ -1443,8 +2039,7 @@ function Field({ label, value, highlight }: { label: string; value: string; high
   );
 }
 
-type ViewMode = "calls" | "code-runner";
-type CallsSubview = "manifest" | "debug";
+type CallsSubview = "incoming" | "debug";
 
 export function ScillmDashboard() {
   const { logs, error, lastUpdate, refresh } = useScillmData();
@@ -1453,15 +2048,20 @@ export function ScillmDashboard() {
   const [search, setSearch] = useState("");
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
   const [selectedJob, setSelectedJob] = useState<BatchJobState | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("calls");
-  const [callsSubview, setCallsSubview] = useState<CallsSubview>("manifest");
-  const [wholeJobCollapsed, setWholeJobCollapsed] = useState(false);
+  const [callsSubview, setCallsSubview] = useState<CallsSubview>("incoming");
   const [wholeJobHeight, setWholeJobHeight] = useState(360);
   const [activeResize, setActiveResize] = useState<{
     panel: "whole-job";
     startY: number;
     startHeight: number;
   } | null>(null);
+
+  useRegisterAction("scillm:refresh", { app: "ux-lab", action: "SCILLM_REFRESH", label: "Refresh", description: "Refresh scillm monitor data" });
+  useRegisterAction("scillm:tab:incoming", { app: "ux-lab", action: "SCILLM_TAB_INCOMING", label: "Tab: Incoming", description: "Switch to incoming calls view" });
+  useRegisterAction("scillm:tab:debug", { app: "ux-lab", action: "SCILLM_TAB_DEBUG", label: "Tab: Debug Logs", description: "Switch to debug logs view" });
+  useRegisterAction("scillm:search:clear", { app: "ux-lab", action: "SCILLM_CLEAR_SEARCH", label: "Clear Search", description: "Clear scillm search filter" });
+  useRegisterAction("scillm:orchestrator:inspect", { app: "ux-lab", action: "SCILLM_INSPECT_JOB", label: "Inspect Job", description: "Inspect batch job details" });
+
   const activeCreateQrasJob = useMemo(
     () =>
       batchJobs.find((job) => job.name === "create-qras-manifest" && getOrchestratorDisplayStatus(job) === "running") ||
@@ -1470,51 +2070,11 @@ export function ScillmDashboard() {
     [batchJobs],
   );
   const { detail: activeCreateQrasDetail } = useOrchestratorDetail(activeCreateQrasJob?.name || null);
-  const hasActiveCreateQrasTable = Boolean(
-    activeCreateQrasDetail?.state &&
-      Array.isArray(activeCreateQrasDetail?.manifest?.jobs) &&
-      activeCreateQrasDetail.manifest.jobs.length > 0,
-  );
-  const hasOverviewSections = batchJobs.some((job) => job.state) || hasActiveCreateQrasTable;
-
-  // Compute metrics including daily cost
-  const metrics = useMemo(() => {
-    const total = logs.length;
-    const errors = logs.filter((l) => l.status === "error").length;
-    const errorRate = total > 0 ? errors / total : 0;
-
-    const withLatency = logs.filter((l) => l.duration_ms != null);
-    const avgLatency = withLatency.length > 0
-      ? Math.round(withLatency.reduce((sum, l) => sum + (l.duration_ms || 0), 0) / withLatency.length)
-      : 0;
-
-    const now = Date.now();
-    const recent = logs.filter((l) => now - new Date(l.ts).getTime() < 10 * 60 * 1000);
-    const totalTokens = recent.reduce((sum, l) => sum + (l.total_tokens || 0), 0);
-    const tpm = Math.round(totalTokens / 10);
-
-    // Daily cost (last 24 hours)
-    const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
-    const dailyCost = logs
-      .filter((l) => l.ts >= oneDayAgo)
-      .reduce((sum, l) => sum + (l.cost_usd || 0), 0);
-
-    return { total, errors, errorRate, avgLatency, tpm, dailyCost };
-  }, [logs]);
-
-  // Filtered logs by search text
-  const filteredLogs = useMemo(() => {
-    if (!search.trim()) return logs;
-    const q = search.toLowerCase();
-    return logs.filter(
-      (l) =>
-        l.model_served?.toLowerCase().includes(q) ||
-        l.model_requested?.toLowerCase().includes(q) ||
-        l.caller?.toLowerCase().includes(q) ||
-        l.provider?.toLowerCase().includes(q) ||
-        l.error?.toLowerCase().includes(q)
-    );
-  }, [logs, search]);
+  const activeBatchFailCount =
+    activeCreateQrasDetail?.state?.failed_jobs ??
+    activeCreateQrasJob?.state?.failed_jobs ??
+    activeCreateQrasJob?.state?.failed ??
+    0;
 
   useEffect(() => {
     if (!activeResize) return undefined;
@@ -1545,11 +2105,11 @@ export function ScillmDashboard() {
   };
 
   const jobsTableLogs = useMemo(() => {
-    if (filteredLogs.length > 0) return filteredLogs;
-    const fallbackLogs = (activeCreateQrasDetail?.calls || []).filter(isRenderableLogEntry);
-    if (!search.trim()) return fallbackLogs;
+    const incomingLogs = (activeCreateQrasDetail?.calls || []).filter(isRenderableLogEntry);
+    const sourceLogs = incomingLogs.length > 0 ? incomingLogs : logs.filter(isRenderableLogEntry);
+    if (!search.trim()) return sourceLogs;
     const q = search.toLowerCase();
-    return fallbackLogs.filter(
+    return sourceLogs.filter(
       (log) =>
         log.model_served?.toLowerCase().includes(q) ||
         log.model_requested?.toLowerCase().includes(q) ||
@@ -1558,7 +2118,43 @@ export function ScillmDashboard() {
         log.error?.toLowerCase().includes(q) ||
         log.metadata?.item_id?.toLowerCase().includes(q),
     );
-  }, [activeCreateQrasDetail?.calls, filteredLogs, search]);
+  }, [activeCreateQrasDetail?.calls, logs, search]);
+  const monitorLogs = useMemo(() => {
+    const scoped = jobsTableLogs.filter(isRenderableLogEntry);
+    return scoped.length > 0 ? scoped : logs.filter(isRenderableLogEntry);
+  }, [jobsTableLogs, logs]);
+
+  // Compute monitor metrics from the visible/live call stream, not the generic global sample.
+  const metrics = useMemo(() => {
+    const total = monitorLogs.length;
+    const outcomes = monitorLogs.map((log) => parseIncomingOutcome(log));
+    const errors = outcomes.filter((outcome) => outcome.status !== "ok" && outcome.status !== "skipped").length;
+    const errorRate = total > 0 ? errors / total : 0;
+
+    const withLatency = monitorLogs.filter((l) => l.duration_ms != null);
+    const avgLatency = withLatency.length > 0
+      ? Math.round(withLatency.reduce((sum, l) => sum + (l.duration_ms || 0), 0) / withLatency.length)
+      : 0;
+
+    const now = Date.now();
+    const recent = monitorLogs.filter((l) => now - new Date(l.ts).getTime() < 10 * 60 * 1000);
+    const totalTokens = recent.reduce((sum, l) => sum + (l.total_tokens || 0), 0);
+    const throughputValue = totalTokens > 0 ? Math.round(totalTokens / 10) : recent.length * 6;
+    const throughputUnit = totalTokens > 0 ? "tpm" : "calls/min";
+    const throughputLabel = totalTokens > 0 ? "Throughput" : "Activity";
+
+    const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+    const dailyCost = monitorLogs
+      .filter((l) => l.ts >= oneDayAgo)
+      .reduce((sum, l) => sum + (l.cost_usd || 0), 0);
+
+    return { total, errors, errorRate, avgLatency, throughputValue, throughputUnit, throughputLabel, dailyCost };
+  }, [monitorLogs]);
+  const budgetPercent = Math.min((metrics.dailyCost / DAILY_BUDGET_USD) * 100, 100);
+  const budgetColor =
+    budgetPercent > 90 ? EMBRY.red : budgetPercent > 70 ? EMBRY.amber : EMBRY.green;
+  const hasIncomingCallsTable = jobsTableLogs.length > 0;
+  const hasOverviewSections = batchJobs.some((job) => job.state) || hasIncomingCallsTable;
 
   return (
     <div
@@ -1573,194 +2169,104 @@ export function ScillmDashboard() {
     >
       {/* HEALTH RIBBON */}
       <header
+        className="elevated-surface"
         style={{
           backgroundColor: EMBRY.bgPanel,
           borderBottom: `1px solid ${EMBRY.border}`,
           display: "flex",
           alignItems: "center",
-          padding: "0 20px",
-          gap: 24,
+          padding: "0 16px",
+          gap: 16,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16, fontWeight: 900, color: EMBRY.blue }}>scillm</span>
           <span style={{ fontSize: 16, fontWeight: 700, color: EMBRY.white }}>Monitor</span>
           <div style={glowDot(error ? EMBRY.red : EMBRY.green)} />
-        </div>
-
-        <StatPill label="Throughput" value={`${metrics.tpm.toLocaleString()} tpm`} icon={Activity} />
-        <StatPill label="Avg Latency" value={`${metrics.avgLatency}ms`} icon={Clock} />
-        <StatPill
-          label="Error Rate"
-          value={`${(metrics.errorRate * 100).toFixed(2)}%`}
-          color={metrics.errorRate > ERROR_CRIT ? EMBRY.red : metrics.errorRate > ERROR_WARN ? EMBRY.amber : EMBRY.green}
-          icon={AlertTriangle}
-        />
-        <StatPill
-          label="Daily Cost"
-          value={`$${metrics.dailyCost.toFixed(2)}`}
-          color={metrics.dailyCost > DAILY_BUDGET_USD * 0.9 ? EMBRY.red : metrics.dailyCost > DAILY_BUDGET_USD * 0.7 ? EMBRY.amber : EMBRY.green}
-          icon={DollarSign}
-        />
-
-        <BudgetBar spent={metrics.dailyCost} budget={DAILY_BUDGET_USD} />
-
-        {/* Provider auth status */}
-        <ProviderAuthStrip auth={auth} />
-
-        {/* View Toggle */}
-        <div
-          style={{
-            display: "flex",
-            gap: 0,
-            backgroundColor: EMBRY.bgDeep,
-            border: `1px solid ${EMBRY.border}`,
-          }}
-        >
-          <button
-            onClick={() => setViewMode("calls")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "6px 12px",
-              fontSize: 10,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-              border: "none",
-              backgroundColor: viewMode === "calls" ? `${EMBRY.blue}30` : "transparent",
-              color: viewMode === "calls" ? EMBRY.blue : EMBRY.dim,
-              cursor: "pointer",
-              borderRight: `1px solid ${EMBRY.border}`,
-            }}
-          >
-            <Zap size={12} />
-            Calls
-          </button>
-          <button
-            onClick={() => setViewMode("code-runner")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "6px 12px",
-              fontSize: 10,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-              border: "none",
-              backgroundColor: viewMode === "code-runner" ? `${EMBRY.blue}30` : "transparent",
-              color: viewMode === "code-runner" ? EMBRY.blue : EMBRY.dim,
-              cursor: "pointer",
-            }}
-          >
-            <Terminal size={12} />
-            Code Runner
-          </button>
-        </div>
-
-        {viewMode === "calls" && (
-          <div
-            style={{
-              display: "flex",
-              gap: 0,
-              backgroundColor: EMBRY.bgDeep,
-              border: `1px solid ${EMBRY.border}`,
-            }}
-          >
-            <button
-              onClick={() => setCallsSubview("manifest")}
+          {activeBatchFailCount > 0 && (
+            <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                padding: "6px 12px",
+                padding: "3px 8px",
+                border: `1px solid ${EMBRY.red}55`,
+                backgroundColor: `${EMBRY.red}14`,
+                color: EMBRY.red,
                 fontSize: 10,
-                fontWeight: 700,
+                fontWeight: 800,
+                letterSpacing: "0.06em",
                 textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                border: "none",
-                backgroundColor: callsSubview === "manifest" ? `${EMBRY.blue}20` : "transparent",
-                color: callsSubview === "manifest" ? EMBRY.blue : EMBRY.dim,
-                cursor: "pointer",
-                borderRight: `1px solid ${EMBRY.border}`,
+                borderRadius: 999,
               }}
             >
-              Manifest
-            </button>
-            <button
-              onClick={() => setCallsSubview("debug")}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                padding: "6px 12px",
-                fontSize: 10,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                border: "none",
-                backgroundColor: callsSubview === "debug" ? `${EMBRY.blue}20` : "transparent",
-                color: callsSubview === "debug" ? EMBRY.blue : EMBRY.dim,
-                cursor: "pointer",
-              }}
-            >
-              Debug Logs
-            </button>
-          </div>
-        )}
-
-        <div style={{ flex: 1 }} />
-
-        {/* Search */}
-        <div
-          style={{
-            width: 200,
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "4px 10px",
-            background: EMBRY.bgDeep,
-            border: `1px solid ${EMBRY.border}`,
-          }}
-        >
-          <Search size={12} color={EMBRY.dim} />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Filter logs..."
-            style={{
-              flex: 1,
-              background: "none",
-              border: "none",
-              outline: "none",
-              color: EMBRY.white,
-              fontSize: 11,
-              fontFamily: MONO,
-            }}
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 2 }}
-            >
-              <X size={12} />
-            </button>
+              {activeBatchFailCount} fails
+            </div>
           )}
         </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            paddingLeft: 16,
+            borderLeft: `1px solid ${EMBRY.border}`,
+          }}
+        >
+          <StatPill label={metrics.throughputLabel} value={`${metrics.throughputValue.toLocaleString()} ${metrics.throughputUnit}`} icon={Activity} />
+          <StatPill label="Avg Latency" value={`${metrics.avgLatency}ms`} icon={Clock} />
+          <StatPill
+            label="Error Rate"
+            value={`${(metrics.errorRate * 100).toFixed(2)}%`}
+            color={metrics.errorRate > ERROR_CRIT ? EMBRY.red : metrics.errorRate > ERROR_WARN ? EMBRY.amber : EMBRY.green}
+            icon={AlertTriangle}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            paddingLeft: 16,
+            borderLeft: `1px solid ${EMBRY.border}`,
+          }}
+        >
+          {metrics.dailyCost > 0 && (
+            <StatPill
+              label="Spent"
+              value={`$${metrics.dailyCost.toFixed(2)} / $${DAILY_BUDGET_USD.toFixed(0)} · ${budgetPercent.toFixed(0)}%`}
+              color={budgetColor}
+              icon={DollarSign}
+              small
+              noWrap
+            />
+          )}
+          <StatPill
+            label="Calls"
+            value={`${metrics.total.toLocaleString()} · ${metrics.errors} err`}
+            color={metrics.errors > 0 ? EMBRY.amber : EMBRY.white}
+            icon={Zap}
+            small
+            noWrap
+          />
+        </div>
+
+        <div style={{ flex: 1 }} />
 
         <span style={{ fontSize: 10, color: EMBRY.dim }}>
           {lastUpdate ? lastUpdate.toLocaleTimeString() : ""}
         </span>
         <button
+          data-qid="scillm:action:refresh"
+          data-qs-action="SCILLM_REFRESH"
+          title="Refresh scillm monitor data"
           onClick={refresh}
+          className="press-scale scillm-focus"
           style={{
             fontSize: 9,
             fontWeight: 700,
             textTransform: "uppercase",
             letterSpacing: "0.1em",
-            padding: "4px 10px",
+            padding: "6px 12px",
             border: `1px solid ${EMBRY.border}`,
             backgroundColor: "transparent",
             color: EMBRY.white,
@@ -1771,81 +2277,193 @@ export function ScillmDashboard() {
         </button>
       </header>
 
-      {/* MAIN: Conditional view based on toggle */}
       <main style={{ overflow: "hidden", backgroundColor: EMBRY.bg, minHeight: 0 }}>
-        {viewMode === "calls" ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            overflow: "hidden",
+            minHeight: 0,
+          }}
+        >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              overflow: "hidden",
-              minHeight: 0,
+              alignItems: "center",
+              gap: 12,
+              padding: "8px 16px",
+              borderBottom: `1px solid ${EMBRY.border}`,
+              backgroundColor: EMBRY.bgPanel,
             }}
           >
-            {callsSubview === "manifest" && hasOverviewSections && (
-              <div
-                style={{
-                  flex: "1 1 auto",
-                  minHeight: 0,
-                  overflowY: "auto",
-                  overflowX: "hidden",
-                }}
-              >
-                <OrchestratorStrip batchJobs={batchJobs} onInspect={setSelectedJob} />
-                {hasActiveCreateQrasTable && (
-                  <ActiveCreateQrasTable
-                    detail={activeCreateQrasDetail}
-                    onCallClick={setSelectedLog}
-                    onInspect={() => activeCreateQrasJob && setSelectedJob(activeCreateQrasJob)}
-                    collapsed={wholeJobCollapsed}
-                    onToggleCollapsed={() => setWholeJobCollapsed((prev) => !prev)}
-                    tableHeight={wholeJobHeight}
-                    onResizeStart={startResize("whole-job")}
-                  />
-                )}
-              </div>
-            )}
-            {callsSubview === "debug" && (
-              <section
+            <div
+              style={{
+                display: "flex",
+                gap: 0,
+                backgroundColor: EMBRY.bgDeep,
+                border: `1px solid ${EMBRY.border}`,
+              }}
+            >
+              <button
+                data-qid="scillm:tab:incoming"
+                data-qs-action="SCILLM_TAB_INCOMING"
+                title="Switch to incoming calls view"
+                onClick={() => setCallsSubview("incoming")}
+                className="press-scale scillm-focus"
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  flex: "1 1 auto",
-                  minHeight: 0,
-                  borderTop: `1px solid ${EMBRY.border}`,
-                  backgroundColor: EMBRY.bgPanel,
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "6px 12px",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  border: "none",
+                  backgroundColor: callsSubview === "incoming" ? `${EMBRY.blue}20` : "transparent",
+                  color: callsSubview === "incoming" ? EMBRY.blue : EMBRY.dim,
+                  cursor: "pointer",
+                  borderRight: `1px solid ${EMBRY.border}`,
                 }}
               >
+                Incoming
+              </button>
+              <button
+                data-qid="scillm:tab:debug"
+                data-qs-action="SCILLM_TAB_DEBUG"
+                title="Switch to debug logs view"
+                onClick={() => setCallsSubview("debug")}
+                className="press-scale scillm-focus"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "6px 12px",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  border: "none",
+                  backgroundColor: callsSubview === "debug" ? `${EMBRY.blue}20` : "transparent",
+                  color: callsSubview === "debug" ? EMBRY.blue : EMBRY.dim,
+                  cursor: "pointer",
+                }}
+              >
+                Debug Logs
+              </button>
+            </div>
+            <div style={{ fontSize: 10, color: EMBRY.dim }}>
+              {callsSubview === "incoming"
+                ? "Live incoming calls view. Search stays local to the incoming table."
+                : "Raw proxy logs and provider state."}
+            </div>
+            <div style={{ flex: 1 }} />
+            {callsSubview === "debug" && (
+              <>
+                <ProviderAuthStrip auth={auth} />
                 <div
                   style={{
+                    width: 240,
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    padding: "10px 16px",
-                    borderBottom: `1px solid ${EMBRY.border}`,
+                    gap: 6,
+                    padding: "4px 10px",
+                    background: EMBRY.bgDeep,
+                    border: `1px solid ${EMBRY.border}`,
                   }}
                 >
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>Raw scillm jobs</div>
-                    <div style={{ fontSize: 10, color: EMBRY.dim }}>
-                      Proxy/debug view. Use this when you need caller-grouped logs instead of manifest intent.
-                    </div>
-                  </div>
-                  <div style={{ fontSize: 10, color: EMBRY.dim }}>
-                    {jobsTableLogs.length} call rows in scope
-                  </div>
+                  <Search size={12} color={EMBRY.dim} />
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Filter logs..."
+                    style={{
+                      flex: 1,
+                      background: "none",
+                      border: "none",
+                      outline: "none",
+                      color: EMBRY.white,
+                      fontSize: 11,
+                      fontFamily: MONO,
+                    }}
+                  />
+                  {search && (
+                    <button
+                      data-qid="scillm:search:clear"
+                      data-qs-action="SCILLM_CLEAR_SEARCH"
+                      title="Clear search"
+                      onClick={() => setSearch("")}
+                      className="press-scale scillm-focus"
+                      style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 6, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
                 </div>
-                <div style={{ flex: "1 1 auto", minHeight: 0 }}>
-                  <JobsTable logs={jobsTableLogs} onCallClick={setSelectedLog} />
-                </div>
-              </section>
+              </>
             )}
           </div>
-        ) : (
-          <CodeRunnerSessions />
-        )}
+          {callsSubview === "incoming" && hasOverviewSections && (
+            <div
+              style={{
+                flex: "1 1 auto",
+                minHeight: 0,
+                overflowY: "auto",
+                overflowX: "hidden",
+              }}
+            >
+              <OrchestratorStrip batchJobs={batchJobs} onInspect={setSelectedJob} />
+              {hasIncomingCallsTable && (
+                <ActiveCreateQrasTable
+                  detail={activeCreateQrasDetail}
+                  logs={jobsTableLogs}
+                  onCallClick={setSelectedLog}
+                  onInspect={() => activeCreateQrasJob && setSelectedJob(activeCreateQrasJob)}
+                  selectedLog={selectedLog}
+                  tableHeight={wholeJobHeight}
+                  onResizeStart={startResize("whole-job")}
+                />
+              )}
+            </div>
+          )}
+          {callsSubview === "debug" && (
+            <section
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: "1 1 auto",
+                minHeight: 0,
+                borderTop: `1px solid ${EMBRY.border}`,
+                backgroundColor: EMBRY.bgPanel,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 12,
+                  padding: "10px 16px",
+                  borderBottom: `1px solid ${EMBRY.border}`,
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>Raw scillm jobs</div>
+                  <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                    Proxy/debug view. Use this when you need caller-grouped logs instead of manifest intent.
+                  </div>
+                </div>
+                <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                  {jobsTableLogs.length} call rows in scope
+                </div>
+              </div>
+              <div style={{ flex: "1 1 auto", minHeight: 0 }}>
+                <JobsTable logs={jobsTableLogs} onCallClick={setSelectedLog} />
+              </div>
+            </section>
+          )}
+        </div>
       </main>
 
       {/* Trace Panel (slide-out) */}

@@ -161,3 +161,109 @@
 }
 .next-steps-full h3 { font-size: 13px; margin: 20px 0 6px; }
 .next-steps-full p { margin: 4px 0 10px; }
+
+/* ── scillm dashboard shared utilities ───────────────────────── */
+
+/* Tabular numerals for all dynamic numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Press feedback — subtle scale on active */
+.press-scale {
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+.press-scale:active {
+  transform: scale(0.96);
+}
+
+/* Row hover with interruptible transition (replaces inline mutation) */
+.scillm-row {
+  transition: background-color 0.15s ease;
+}
+.scillm-row:hover {
+  background-color: #0b1220;
+}
+
+/* Selected row state */
+.scillm-row-selected {
+  background-color: rgba(74, 158, 255, 0.07);
+  box-shadow: inset 2px 0 0 #4a9eff;
+}
+
+/* Focus-visible ring for keyboard navigation */
+.scillm-focus:focus-visible {
+  outline: 2px solid #4a9eff;
+  outline-offset: 2px;
+}
+
+/* Text wrapping helpers */
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Modal / panel entrance animations */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { transform: scale(0.98); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.scillm-panel-enter {
+  animation: slideInRight 0.25s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+.scillm-dialog-backdrop {
+  animation: fadeIn 0.2s ease forwards;
+}
+.scillm-dialog-content {
+  animation: scaleIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+/* Status glow pulse for running indicators */
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+.status-pulse {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+/* Chevron rotation transition */
+.chevron-transition {
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.chevron-rotated {
+  transform: rotate(90deg);
+}
+
+/* Elevated surface shadow (replaces heavy borders) */
+.elevated-surface {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Orchestrator accent stripe with subtle glow */
+.orchestrator-stripe {
+  position: relative;
+}
+.orchestrator-stripe::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--stripe-color, #4a9eff);
+  box-shadow: inset 4px 0 8px -2px var(--stripe-color, #4a9eff);
+}

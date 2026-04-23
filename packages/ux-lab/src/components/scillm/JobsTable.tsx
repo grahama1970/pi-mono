@@ -7,6 +7,7 @@
 import React, { useState, useMemo } from "react";
 import { ChevronRight, ChevronDown, Copy, Check, AlertTriangle, Search } from "lucide-react";
 import { EMBRY } from "../common/EmbryStyle";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
 import type { LogEntry } from "../../hooks/useScillmData";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
@@ -44,6 +45,37 @@ const EXPECTED_ALIASES: Record<string, RegExp[]> = {
   "vlm-codex": [/gpt/i, /codex/i],
   "local-text": [/qwen/i, /ollama/i],
 };
+
+function formatCallCategory(category: string): string {
+  return category
+    .replace(/^sparta_/, "SPARTA ")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
+function deriveLegacyCreateQrasCategory(call: LogEntry): string | null {
+  const itemId = call.metadata?.item_id || "";
+  const batchId = call.metadata?.batch_id || "";
+  if (itemId.includes("->")) {
+    const [sourceId, targetId] = itemId.split("->");
+    if (sourceId.startsWith("DE-") && targetId.startsWith("CM")) return "SPARTA Technique Countermeasure Relationship";
+    if (sourceId.startsWith("DE-") && targetId.startsWith("ST")) return "SPARTA Tactic Technique Relationship";
+    if (batchId.includes("relationship")) return "SPARTA Relationship";
+  }
+  if (itemId.startsWith("DE-")) return "SPARTA Technique Canonical";
+  if (itemId.startsWith("CM")) return "SPARTA Countermeasure Canonical";
+  if (itemId.startsWith("ST")) return "SPARTA Tactic Canonical";
+  if (batchId.includes("canonical")) return "SPARTA Canonical";
+  if (batchId.includes("relationship")) return "SPARTA Relationship";
+  return null;
+}
+
+function deriveCallCategory(call: LogEntry): string | null {
+  const explicit = call.metadata?.call_category || call.metadata?.prompt_kind;
+  if (explicit) return formatCallCategory(explicit);
+  if (call.caller === "create-qras") return deriveLegacyCreateQrasCategory(call);
+  return null;
+}
 
 function getCallHealth(call: LogEntry): CallHealth {
   // 1. Transport error - most severe
@@ -314,11 +346,11 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
             width: `${pct}%`,
             height: "100%",
             backgroundColor: EMBRY.green,
-            transition: "width 0.3s",
+            transition: "width 0.6s cubic-bezier(0.2, 0, 0, 1)",
           }}
         />
       </div>
-      <span style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.dim }}>
+      <span className="tabular-nums" style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.dim }}>
         {completed}/{total}
       </span>
     </div>
@@ -374,17 +406,17 @@ function CallRow({
   return (
     <tr
       key={call._key}
+      data-qid={`scillm:call:row:${call._key}`}
       onClick={(e) => {
         e.stopPropagation();
         onCallClick?.(call);
       }}
+      className="scillm-row"
       style={{
         backgroundColor: EMBRY.bg,
         cursor: "pointer",
         borderLeft: `4px solid transparent`,
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bgDeep)}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bg)}
     >
       <td style={{ padding: `8px 16px 8px ${paddingLeft}px`, fontSize: 11 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -394,6 +426,11 @@ function CallRow({
               {call.metadata?.item_id || call.model_served || call.model_requested}
             </span>
           </div>
+          {deriveCallCategory(call) && (
+            <div style={{ color: EMBRY.dim, fontSize: 9, fontFamily: "Inter, sans-serif" }}>
+              {deriveCallCategory(call)}
+            </div>
+          )}
           <div
             style={{
               color: summaryColor,
@@ -409,7 +446,7 @@ function CallRow({
           </div>
         </div>
       </td>
-      <td style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
         {call.total_tokens || 0} tokens
       </td>
       <td style={{ padding: "8px" }}>
@@ -435,24 +472,27 @@ function CallRow({
           );
         })()}
       </td>
-      <td style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
         {call.duration_ms != null ? `${(call.duration_ms / 1000).toFixed(1)}s` : "—"}
       </td>
-      <td style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
         ${(call.cost_usd || 0).toFixed(4)}
       </td>
-      <td style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
         {new Date(call.ts).toLocaleTimeString("en-US", { hour12: false })}
       </td>
       <td style={{ padding: "8px" }}>
         <button
-          onClick={(e) => onCopyPrompt(e, call)}
+          data-qid={`scillm:call:copy-prompt:${call._key}`}
+          data-qs-action="SCILLM_COPY_PROMPT"
           title={call.request_prompt ? "Copy prompt to clipboard" : "No prompt captured"}
+          onClick={(e) => onCopyPrompt(e, call)}
+          className="press-scale scillm-focus"
           style={{
             display: "flex",
             alignItems: "center",
             gap: 4,
-            padding: "2px 6px",
+            padding: "4px 8px",
             fontSize: 9,
             fontWeight: 700,
             border: "none",
@@ -515,14 +555,14 @@ function JobRow({
     <>
       {/* Parent Job Row */}
       <tr
+        data-qid={`scillm:job:row:${job.id}`}
         onClick={onToggle}
+        className="scillm-row"
         style={{
           backgroundColor: EMBRY.bgCard,
           cursor: "pointer",
           borderLeft: `4px solid ${borderColor}`,
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bgPanel)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bgCard)}
       >
         <td style={{ padding: "12px 16px", display: "flex", alignItems: "center", gap: 8 }}>
           {isExpanded ? <ChevronDown size={14} color={EMBRY.dim} /> : <ChevronRight size={14} color={EMBRY.dim} />}
@@ -568,13 +608,13 @@ function JobRow({
             </div>
           )}
         </td>
-        <td style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.dim }}>
+        <td className="tabular-nums" style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.dim }}>
           {job.avgLatency > 0 ? `${(job.avgLatency / 1000).toFixed(1)}s` : "—"}
         </td>
-        <td style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.amber }}>
+        <td className="tabular-nums" style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.amber }}>
           ${job.totalCost.toFixed(3)}
         </td>
-        <td style={{ padding: "12px 8px" }}>
+        <td className="tabular-nums" style={{ padding: "12px 8px" }}>
           <span style={{ fontSize: 10, color: EMBRY.dim }}>
             {new Date(job.lastActivity).toLocaleTimeString("en-US", { hour12: false })}
           </span>
@@ -594,12 +634,16 @@ function JobRow({
                 ].map(({ key, label }) => (
                   <button
                     key={key}
+                    data-qid={`scillm:job:${job.id}:filter:${key}`}
+                    data-qs-action={`SCILLM_JOB_FILTER_${key.toUpperCase()}`}
+                    title={`Filter calls by ${key}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       setCallFilter(key as typeof callFilter);
                     }}
+                    className="press-scale scillm-focus"
                     style={{
-                      padding: "4px 8px",
+                      padding: "6px 10px",
                       border: `1px solid ${callFilter === key ? EMBRY.blue : EMBRY.border}`,
                       backgroundColor: callFilter === key ? `${EMBRY.blue}20` : EMBRY.bgDeep,
                       color: callFilter === key ? EMBRY.blue : EMBRY.white,
@@ -639,17 +683,17 @@ function JobRow({
             <React.Fragment key={`chunk-${chunk.index}`}>
               {/* Chunk Row */}
               <tr
+                data-qid={`scillm:chunk:row:${chunk.index}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   onToggleChunk(chunk.index);
                 }}
+                className="scillm-row"
                 style={{
                   backgroundColor: EMBRY.bgDeep,
                   cursor: "pointer",
                   borderLeft: `4px solid ${chunkStatusColor}40`,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bgPanel)}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = EMBRY.bgDeep)}
               >
                 <td style={{ padding: "8px 16px 8px 32px", fontSize: 11 }}>
                   {isChunkExpanded ? <ChevronDown size={12} color={EMBRY.dim} style={{ marginRight: 4, verticalAlign: "middle" }} />
@@ -665,14 +709,14 @@ function JobRow({
                   </span>
                 </td>
                 <td style={{ padding: "8px" }} />
-                <td style={{ padding: "8px" }}>
+                <td className="tabular-nums" style={{ padding: "8px" }}>
                   {chunk.errors > 0 && (
                     <span style={{ fontSize: 10, color: EMBRY.red, fontFamily: MONO }}>
                       {chunk.errors} err
                     </span>
                   )}
                 </td>
-                <td style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+                <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
                   {(chunk.totalDurationMs / 1000).toFixed(1)}s
                 </td>
                 <td style={{ padding: "8px" }} />
@@ -755,6 +799,12 @@ export function JobsTable({ logs, onCallClick }: Props) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("activity");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  useRegisterAction("scillm:jobs:filter:all", { app: "ux-lab", action: "SCILLM_JOBS_FILTER_ALL", label: "Jobs Filter: All", description: "Show all jobs" });
+  useRegisterAction("scillm:jobs:filter:running", { app: "ux-lab", action: "SCILLM_JOBS_FILTER_RUNNING", label: "Jobs Filter: Running", description: "Show running jobs" });
+  useRegisterAction("scillm:jobs:filter:completed", { app: "ux-lab", action: "SCILLM_JOBS_FILTER_COMPLETED", label: "Jobs Filter: Completed", description: "Show completed jobs" });
+  useRegisterAction("scillm:jobs:filter:errors", { app: "ux-lab", action: "SCILLM_JOBS_FILTER_ERRORS", label: "Jobs Filter: Errors", description: "Show jobs with errors" });
+  useRegisterAction("scillm:jobs:search:clear", { app: "ux-lab", action: "SCILLM_JOBS_CLEAR_SEARCH", label: "Clear Jobs Search", description: "Clear jobs search filter" });
 
   const jobs = useMemo(() => groupLogsIntoJobs(logs), [logs]);
 
@@ -879,7 +929,11 @@ export function JobsTable({ logs, onCallClick }: Props) {
         ].map(({ key, label, count }) => (
           <button
             key={key}
+            data-qid={`scillm:jobs:filter:${key}`}
+            data-qs-action={`SCILLM_JOBS_FILTER_${key.toUpperCase()}`}
+            title={`Filter jobs by ${label}`}
             onClick={() => setFilter(key as typeof filter)}
+            className="press-scale scillm-focus"
             style={{
               padding: "10px 16px",
               fontSize: 11,
@@ -957,32 +1011,32 @@ export function JobsTable({ logs, onCallClick }: Props) {
               }}
             >
               <th style={{ padding: "10px 16px" }}>
-                <button onClick={() => toggleSort("caller")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:caller" data-qs-action="SCILLM_JOBS_SORT_CALLER" title="Sort by caller" className="press-scale scillm-focus" onClick={() => toggleSort("caller")} style={headerButtonStyle}>
                   {renderSortLabel("Job / Caller", "caller")}
                 </button>
               </th>
               <th style={{ padding: "10px 8px" }}>
-                <button onClick={() => toggleSort("progress")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:progress" data-qs-action="SCILLM_JOBS_SORT_PROGRESS" title="Sort by progress" className="press-scale scillm-focus" onClick={() => toggleSort("progress")} style={headerButtonStyle}>
                   {renderSortLabel("Progress", "progress")}
                 </button>
               </th>
               <th style={{ padding: "10px 8px" }}>
-                <button onClick={() => toggleSort("status")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:status" data-qs-action="SCILLM_JOBS_SORT_STATUS" title="Sort by status" className="press-scale scillm-focus" onClick={() => toggleSort("status")} style={headerButtonStyle}>
                   {renderSortLabel("Status", "status")}
                 </button>
               </th>
               <th style={{ padding: "10px 8px" }}>
-                <button onClick={() => toggleSort("latency")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:latency" data-qs-action="SCILLM_JOBS_SORT_LATENCY" title="Sort by latency" className="press-scale scillm-focus" onClick={() => toggleSort("latency")} style={headerButtonStyle}>
                   {renderSortLabel("Avg Latency", "latency")}
                 </button>
               </th>
               <th style={{ padding: "10px 8px" }}>
-                <button onClick={() => toggleSort("cost")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:cost" data-qs-action="SCILLM_JOBS_SORT_COST" title="Sort by cost" className="press-scale scillm-focus" onClick={() => toggleSort("cost")} style={headerButtonStyle}>
                   {renderSortLabel("Cost", "cost")}
                 </button>
               </th>
               <th style={{ padding: "10px 8px" }}>
-                <button onClick={() => toggleSort("activity")} style={headerButtonStyle}>
+                <button data-qid="scillm:jobs:sort:activity" data-qs-action="SCILLM_JOBS_SORT_ACTIVITY" title="Sort by activity" className="press-scale scillm-focus" onClick={() => toggleSort("activity")} style={headerButtonStyle}>
                   {renderSortLabel("Last Activity", "activity")}
                 </button>
               </th>
