@@ -9,93 +9,9 @@ import { ChevronRight, ChevronDown, Copy, Check, AlertTriangle, Search } from "l
 import { EMBRY } from "../common/EmbryStyle";
 import { useRegisterAction } from "../../hooks/useRegisterAction";
 import type { LogEntry } from "../../hooks/useScillmData";
+import "./scillm-dashboard.css";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
-
-const LABEL_STYLE: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 800,
-  letterSpacing: "0.1em",
-  textTransform: "uppercase",
-  color: EMBRY.dim,
-};
-
-const META_STYLE: React.CSSProperties = {
-  fontSize: 10,
-  color: EMBRY.dim,
-};
-
-const WHITE_HEADING_STYLE: React.CSSProperties = {
-  fontSize: 12,
-  fontWeight: 800,
-  color: EMBRY.white,
-};
-
-const FLEX_COL_GAP4: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 4,
-};
-
-const FLEX_COL_GAP8: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-};
-
-const FLEX_ROW_CENTER_GAP8: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-};
-
-const FLEX_ROW_CENTER_GAP12: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
-};
-
-const TABLE_BORDER_BOTTOM: React.CSSProperties = {
-  padding: "8px 10px",
-  borderBottom: `1px solid ${EMBRY.border}`,
-  fontSize: 9,
-  fontWeight: 800,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: EMBRY.dim,
-};
-
-const LINE_CLAMP2: React.CSSProperties = {
-  overflow: "hidden",
-  display: "-webkit-box",
-  WebkitBoxOrient: "vertical",
-  WebkitLineClamp: 2,
-  wordBreak: "break-word",
-  lineHeight: 1.35,
-};
-
-const BUTTON_BASE: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 700,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  cursor: "pointer",
-};
-
-
-// Spinner animation for in-progress items
-const spinnerKeyframes = `
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-`;
-if (typeof document !== "undefined" && !document.getElementById("jobs-table-styles")) {
-  const style = document.createElement("style");
-  style.id = "jobs-table-styles";
-  style.textContent = spinnerKeyframes;
-  document.head.appendChild(style);
-}
 
 // Health evaluation beyond transport-level success
 type CallHealth = {
@@ -382,9 +298,9 @@ function StatusPill({ status }: { status: Job["status"] }) {
   // GitHub Actions style: amber spinner for running, green check for done, red X for failed
   if (status === "running") {
     return (
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-        <span style={{ display: "inline-block", width: 10, height: 10, border: "2px solid #d29922", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
-        <span style={{ fontSize: 10, color: "#d29922", fontWeight: 600 }}>In progress</span>
+      <span className="scillm-pill">
+        <span className="scillm-spinner" />
+        <span className="scillm-text-11 scillm-fw-600" style={{ color: "#d29922" }}>In progress</span>
       </span>
     );
   }
@@ -393,9 +309,9 @@ function StatusPill({ status }: { status: Job["status"] }) {
     failed: { icon: "✗", color: "#ff7b72", label: "Failed" },
   }[status];
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-      <span style={{ color: config.color, fontWeight: 700 }}>{config.icon}</span>
-      <span style={{ fontSize: 10, color: config.color, fontWeight: 600 }}>{config.label}</span>
+    <span className="scillm-pill">
+      <span className="scillm-fw-700" style={{ color: config.color }}>{config.icon}</span>
+      <span className="scillm-text-11 scillm-fw-600" style={{ color: config.color }}>{config.label}</span>
     </span>
   );
 }
@@ -404,24 +320,17 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
   const pct = total > 0 ? (completed / total) * 100 : 0;
 
   return (
-    <div style={{ ...FLEX_ROW_CENTER_GAP8 }}>
-      <div
-        style={{
-          width: 80,
-          height: 6,
-          backgroundColor: EMBRY.bgDeep,
-        }}
-      >
+    <div className="scillm-flex-row scillm-gap-8">
+      <div className="scillm-progress-bg">
         <div
+          className="scillm-progress-fill"
           style={{
             width: `${pct}%`,
-            height: "100%",
             backgroundColor: EMBRY.green,
-            transition: "width 0.6s cubic-bezier(0.2, 0, 0, 1)",
           }}
         />
       </div>
-      <span className="tabular-nums" style={{ ...META_STYLE, fontFamily: MONO }}>
+      <span className="tabular-nums scillm-mono scillm-meta">
         {completed}/{total}
       </span>
     </div>
@@ -482,59 +391,43 @@ function CallRow({
         e.stopPropagation();
         onCallClick?.(call);
       }}
-      className="scillm-row"
-      style={{
-        backgroundColor: EMBRY.bg,
-        cursor: "pointer",
-        borderLeft: `4px solid transparent`,
-      }}
+      className="scillm-call-row"
+      style={{ paddingLeft }}
     >
-      <td style={{ padding: `8px 16px 8px ${paddingLeft}px`, fontSize: 11 }}>
-        <div style={{ ...FLEX_COL_GAP4 }}>
+      <td className="scillm-td--8-16" style={{ fontSize: 11, paddingLeft }}>
+        <div className="scillm-flex-col scillm-gap-4">
           <div>
-            <span style={{ color: EMBRY.dim }}>{prefix}</span>{" "}
-            <span style={{ color: EMBRY.white, fontFamily: MONO }}>
+            <span className="scillm-text-dim">{prefix}</span>{" "}
+            <span className="scillm-mono scillm-text-white">
               {call.metadata?.item_id || call.model_served || call.model_requested}
             </span>
           </div>
           {deriveCallCategory(call) && (
-            <div style={{ color: EMBRY.dim, fontSize: 9, fontFamily: "Inter, sans-serif" }}>
+            <div className="scillm-ui scillm-text-dim" style={{ fontSize: 9 }}>
               {deriveCallCategory(call)}
             </div>
           )}
           <div
-            style={{
-              color: summaryColor,
-              fontSize: 10,
-              lineHeight: 1.35,
-              maxWidth: 480,
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-            }}
+            className="scillm-call-summary"
+            style={{ color: summaryColor }}
             title={summary}
           >
             {summary}
           </div>
         </div>
       </td>
-      <td className="tabular-nums" style={{ ...META_STYLE, padding: "8px" }}>
+      <td className="tabular-nums scillm-meta scillm-td--8">
         {call.total_tokens || 0} tokens
       </td>
-      <td style={{ padding: "8px" }}>
+      <td className="scillm-td--8">
         {(() => {
           const color = health.level === "error" ? EMBRY.red
             : health.level === "warning" ? EMBRY.amber
             : EMBRY.green;
           return (
             <span
-              style={{
-                fontSize: 10,
-                color,
-                fontFamily: MONO,
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-              }}
+              className="scillm-flex-row scillm-gap-4 scillm-text-11 scillm-mono"
+              style={{ color }}
               title={health.detail || ""}
             >
               {health.level === "warning" && <AlertTriangle size={10} />}
@@ -543,38 +436,23 @@ function CallRow({
           );
         })()}
       </td>
-      <td className="tabular-nums" style={{
-        ...META_STYLE,
-        padding: "8px",
-        fontFamily: MONO
-      }}>
+      <td className="tabular-nums scillm-meta scillm-mono scillm-td--8">
         {call.duration_ms != null ? `${(call.duration_ms / 1000).toFixed(1)}s` : "—"}
       </td>
-      <td className="tabular-nums" style={{
-        ...META_STYLE,
-        padding: "8px",
-        fontFamily: MONO
-      }}>
+      <td className="tabular-nums scillm-meta scillm-mono scillm-td--8">
         ${(call.cost_usd || 0).toFixed(4)}
       </td>
-      <td className="tabular-nums" style={{ ...META_STYLE, padding: "8px" }}>
+      <td className="tabular-nums scillm-meta scillm-td--8">
         {new Date(call.ts).toLocaleTimeString("en-US", { hour12: false })}
       </td>
-      <td style={{ padding: "8px" }}>
+      <td className="scillm-td--8">
         <button
           data-qid={`scillm:call:copy-prompt:${call._key}`}
           data-qs-action="SCILLM_COPY_PROMPT"
           title={call.request_prompt ? "Copy prompt to clipboard" : "No prompt captured"}
           onClick={(e) => onCopyPrompt(e, call)}
-          className="press-scale scillm-focus"
+          className="press-scale scillm-focus scillm-button--prompt"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            padding: "4px 8px",
-            fontSize: 9,
-            fontWeight: 700,
-            border: "none",
             backgroundColor: copiedKey === call._key ? `${EMBRY.green}20` : `${EMBRY.blue}20`,
             color: copiedKey === call._key ? EMBRY.green : EMBRY.blue,
             cursor: call.request_prompt ? "pointer" : "not-allowed",
@@ -636,80 +514,74 @@ function JobRow({
       <tr
         data-qid={`scillm:job:row:${job.id}`}
         onClick={onToggle}
-        className="scillm-row"
+        className="scillm-job-row"
         style={{
-          backgroundColor: EMBRY.bgCard,
-          cursor: "pointer",
           borderLeft: `4px solid ${borderColor}`,
         }}
       >
-        <td style={{ ...FLEX_ROW_CENTER_GAP8, padding: "12px 16px" }}>
+        <td className="scillm-flex-row scillm-gap-8 scillm-td--12-16">
           {isExpanded ? <ChevronDown size={14} color={EMBRY.dim} /> : <ChevronRight size={14} color={EMBRY.dim} />}
-          <span style={{ fontWeight: 700, color: EMBRY.white }}>{job.caller}</span>
+          <span className="scillm-fw-700 scillm-text-white">{job.caller}</span>
           {job.batchId && (
-            <span style={{ ...META_STYLE, fontFamily: MONO }}>
+            <span className="scillm-mono scillm-meta">
               #{job.batchId.slice(0, 8)}
             </span>
           )}
           {job.hasChunks && job.chunkTotal && (
-            <span style={{ fontSize: 9, color: EMBRY.blue, fontFamily: MONO }}>
+            <span className="scillm-mono scillm-text-blue" style={{ fontSize: 9 }}>
               {job.chunks.length}/{job.chunkTotal} chunks
             </span>
           )}
         </td>
-        <td style={{ padding: "12px 8px" }}>
+        <td className="scillm-td--12-8">
           <ProgressBar completed={job.completedCalls} total={job.expectedTotal || job.totalCalls} />
         </td>
-        <td style={{ padding: "12px 8px" }}>
+        <td className="scillm-td--12-8">
           {job.errors > 0 ? (
             <span
-              style={{ fontSize: 11, fontWeight: 700, color: EMBRY.red }}
+              className="scillm-text-12 scillm-fw-700 scillm-text-red"
               title={job.firstError || ""}
             >
               {job.errors} error{job.errors > 1 ? "s" : ""}
             </span>
           ) : job.warnings > 0 ? (
             <span
-              style={{ fontSize: 11, fontWeight: 700, color: EMBRY.amber, display: "flex", alignItems: "center", gap: 4 }}
+              className="scillm-flex-row scillm-gap-4 scillm-text-11 scillm-fw-700 scillm-text-amber"
               title={job.firstWarning || ""}
             >
               <AlertTriangle size={12} />
               {job.warnings} warn
             </span>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <div className="scillm-flex-col scillm-gap-2">
               <StatusPill status={job.status} />
               {job.status === "running" && job.avgLatency > 0 && job.expectedTotal && (
-                <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: MONO }}>
+                <span className="scillm-mono scillm-text-dim" style={{ fontSize: 9 }}>
                   ETA: {Math.round(((job.expectedTotal - job.totalCalls) * job.avgLatency) / 60000)}m
                 </span>
               )}
             </div>
           )}
         </td>
-        <td className="tabular-nums" style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.dim }}>
+        <td className="tabular-nums scillm-mono scillm-td--12-8 scillm-text-11 scillm-text-dim">
           {job.avgLatency > 0 ? `${(job.avgLatency / 1000).toFixed(1)}s` : "—"}
         </td>
-        <td className="tabular-nums" style={{ padding: "12px 8px", fontFamily: MONO, fontSize: 11, color: EMBRY.amber }}>
+        <td className="tabular-nums scillm-mono scillm-td--12-8 scillm-text-11 scillm-text-amber">
           ${job.totalCost.toFixed(3)}
         </td>
-        <td className="tabular-nums" style={{ padding: "12px 8px" }}>
-          <span style={{ ...META_STYLE }}>
+        <td className="tabular-nums scillm-td--12-8">
+          <span className="scillm-meta">
             {new Date(job.lastActivity).toLocaleTimeString("en-US", { hour12: false })}
           </span>
         </td>
-        <td style={{ padding: "12px 8px" }} />
+        <td className="scillm-td--12-8" />
       </tr>
 
       {isExpanded && (
         <tr style={{ backgroundColor: EMBRY.bgPanel, borderLeft: `4px solid ${borderColor}55` }}>
-          <td colSpan={7} style={{ padding: "8px 16px", fontSize: 10 }}>
-            <div style={{
-              ...FLEX_ROW_CENTER_GAP12,
-              justifyContent: "space-between",
-              flexWrap: "wrap"
-            }}>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <td colSpan={7} className="scillm-td--8-16" style={{ fontSize: 10 }}>
+            <div className="scillm-flex-row scillm-gap-12 scillm-flex-between scillm-flex-wrap">
+              <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap">
                 {[
                   { key: "all", label: `All calls (${job.calls.length})` },
                   { key: "completed", label: `Completed (${completedCalls.length})` },
@@ -724,24 +596,13 @@ function JobRow({
                       e.stopPropagation();
                       setCallFilter(key as typeof callFilter);
                     }}
-                    className="press-scale scillm-focus"
-                    style={{
-                      padding: "6px 10px",
-                      border: `1px solid ${callFilter === key ? EMBRY.blue : EMBRY.border}`,
-                      backgroundColor: callFilter === key ? `${EMBRY.blue}20` : EMBRY.bgDeep,
-                      color: callFilter === key ? EMBRY.blue : EMBRY.white,
-                      cursor: "pointer",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.04em",
-                      textTransform: "uppercase",
-                    }}
+                    className={`press-scale scillm-focus scillm-button--filter ${callFilter === key ? 'scillm-button--filter-active' : ''}`}
                   >
                     {label}
                   </button>
                 ))}
               </div>
-              <div style={{ ...META_STYLE }}>
+              <div className="scillm-meta">
                 Completed responses stay visible here even while the parent job is still running.
               </div>
             </div>
@@ -771,44 +632,38 @@ function JobRow({
                   e.stopPropagation();
                   onToggleChunk(chunk.index);
                 }}
-                className="scillm-row"
+                className="scillm-chunk-row"
                 style={{
-                  backgroundColor: EMBRY.bgDeep,
-                  cursor: "pointer",
                   borderLeft: `4px solid ${chunkStatusColor}40`,
                 }}
               >
-                <td style={{ padding: "8px 16px 8px 32px", fontSize: 11 }}>
+                <td className="scillm-td--8-16" style={{ paddingLeft: 32, fontSize: 11 }}>
                   {isChunkExpanded ? <ChevronDown size={12} color={EMBRY.dim} style={{ marginRight: 4, verticalAlign: "middle" }} />
                     : <ChevronRight size={12} color={EMBRY.dim} style={{ marginRight: 4, verticalAlign: "middle" }} />}
-                  <span style={{ color: EMBRY.white, fontWeight: 600 }}>
+                  <span className="scillm-text-white scillm-fw-600">
                     Chunk {chunk.index}/{chunk.total}
                   </span>
-                  <span style={{ ...META_STYLE, marginLeft: 8 }}>
+                  <span className="scillm-meta" style={{ marginLeft: 8 }}>
                     ({chunk.completedCalls}/{chunk.calls.length} complete)
                   </span>
                   <span style={{ color: chunkStatusColor, marginLeft: 8, fontSize: 12 }}>
                     {chunkStatusIcon}
                   </span>
                 </td>
-                <td style={{ padding: "8px" }} />
-                <td className="tabular-nums" style={{ padding: "8px" }}>
+                <td className="scillm-td--8" />
+                <td className="tabular-nums scillm-td--8">
                   {chunk.errors > 0 && (
-                    <span style={{ fontSize: 10, color: EMBRY.red, fontFamily: MONO }}>
+                    <span className="scillm-text-11 scillm-mono scillm-text-red">
                       {chunk.errors} err
                     </span>
                   )}
                 </td>
-                <td className="tabular-nums" style={{
-                  ...META_STYLE,
-                  padding: "8px",
-                  fontFamily: MONO
-                }}>
+                <td className="tabular-nums scillm-meta scillm-mono scillm-td--8">
                   {(chunk.totalDurationMs / 1000).toFixed(1)}s
                 </td>
-                <td style={{ padding: "8px" }} />
-                <td style={{ padding: "8px" }} />
-                <td style={{ padding: "8px" }} />
+                <td className="scillm-td--8" />
+                <td className="scillm-td--8" />
+                <td className="scillm-td--8" />
               </tr>
 
               {/* Expanded Chunk Calls */}
@@ -829,18 +684,14 @@ function JobRow({
         {/* In-flight chunk indicator when job is running */}
         {job.status === "running" && job.chunkTotal && (
           <tr style={{ backgroundColor: EMBRY.bgDeep, borderLeft: `4px solid ${EMBRY.blue}` }}>
-            <td style={{
-              ...FLEX_ROW_CENTER_GAP8,
-              padding: "8px 16px 8px 32px",
-              fontSize: 11
-            }}>
-              <span style={{ display: "inline-block", width: 12, height: 12, border: `2px solid ${EMBRY.blue}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
-              <span style={{ color: EMBRY.blue, fontWeight: 600 }}>
+            <td className="scillm-flex-row scillm-gap-8 scillm-td--8-16" style={{ paddingLeft: 32, fontSize: 11 }}>
+              <span className="scillm-spinner scillm-spinner--blue" />
+              <span className="scillm-text-blue scillm-fw-600">
                 Chunk {(job.chunks.length > 0 ? Math.max(...job.chunks.map(c => c.index)) : 0) + 1}/{job.chunkTotal}
               </span>
-              <span style={{ ...META_STYLE }}>processing...</span>
+              <span className="scillm-meta">processing...</span>
             </td>
-            <td colSpan={6} style={{ ...META_STYLE, padding: "8px" }}>
+            <td colSpan={6} className="scillm-meta scillm-td--8">
               4 calls in-flight
             </td>
           </tr>
@@ -848,8 +699,8 @@ function JobRow({
         {/* Legacy calls without chunk metadata */}
         {job.ungroupedCalls.length > 0 && (
           <tr style={{ backgroundColor: EMBRY.bgDeep, borderLeft: `4px solid ${EMBRY.dim}40` }}>
-            <td colSpan={7} style={{ padding: "8px 16px 8px 32px", fontSize: 11 }}>
-              <span style={{ color: EMBRY.dim }}>Legacy ({job.ungroupedCalls.length} calls without chunk metadata)</span>
+            <td colSpan={7} className="scillm-td--8-16" style={{ paddingLeft: 32, fontSize: 11 }}>
+              <span className="scillm-text-dim">Legacy ({job.ungroupedCalls.length} calls without chunk metadata)</span>
             </td>
           </tr>
         )}
@@ -1002,12 +853,11 @@ export function JobsTable({ logs, onCallClick }: Props) {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div className="scillm-flex-col scillm-h-full">
       {/* Filter Tabs */}
       <div
+        className="scillm-flex-row"
         style={{
-          display: "flex",
-          gap: 0,
           borderBottom: `1px solid ${EMBRY.border}`,
           backgroundColor: EMBRY.bgPanel,
         }}
@@ -1024,19 +874,7 @@ export function JobsTable({ logs, onCallClick }: Props) {
             data-qs-action={`SCILLM_JOBS_FILTER_${key.toUpperCase()}`}
             title={`Filter jobs by ${label}`}
             onClick={() => setFilter(key as typeof filter)}
-            className="press-scale scillm-focus"
-            style={{
-              padding: "10px 16px",
-              fontSize: 11,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-              border: "none",
-              borderBottom: filter === key ? `2px solid ${EMBRY.blue}` : "2px solid transparent",
-              backgroundColor: "transparent",
-              color: filter === key ? EMBRY.white : EMBRY.dim,
-              cursor: "pointer",
-            }}
+            className={`press-scale scillm-focus scillm-button--sort ${filter === key ? 'scillm-button--sort-active' : ''}`}
           >
             {label} ({count})
           </button>
@@ -1044,98 +882,72 @@ export function JobsTable({ logs, onCallClick }: Props) {
       </div>
 
       <div
+        className="scillm-flex-row scillm-gap-8"
         style={{
-          ...FLEX_ROW_CENTER_GAP8,
           padding: "10px 16px",
           borderBottom: `1px solid ${EMBRY.border}`,
           backgroundColor: EMBRY.bgPanel
         }}
       >
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "6px 10px",
-            border: `1px solid ${EMBRY.border}`,
-            backgroundColor: EMBRY.bgDeep,
-            minWidth: 280,
-          }}
+          className="scillm-search-box scillm-search-box--deep"
+          style={{ minWidth: 280 }}
         >
           <Search size={12} color={EMBRY.dim} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search caller, batch, item id, model, error..."
-            style={{
-              flex: 1,
-              background: "none",
-              border: "none",
-              outline: "none",
-              color: EMBRY.white,
-              fontSize: 11,
-              fontFamily: MONO,
-            }}
+            className="scillm-input"
           />
         </div>
-        <div style={{ ...META_STYLE }}>
+        <div className="scillm-meta">
           {filteredJobs.length} shown
         </div>
       </div>
 
       {/* Table */}
-      <div style={{ flex: 1, overflowY: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <div className="scillm-flex-1 scillm-overflow-y">
+        <table className="scillm-table scillm-table--auto">
           <thead>
-            <tr
-              style={{
-                textAlign: "left",
-                color: EMBRY.dim,
-                fontSize: 9,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                borderBottom: `1px solid ${EMBRY.border}`,
-                backgroundColor: EMBRY.bgDeep,
-              }}
-            >
-              <th style={{ padding: "10px 16px" }}>
-                <button data-qid="scillm:jobs:sort:caller" data-qs-action="SCILLM_JOBS_SORT_CALLER" title="Sort by caller" className="press-scale scillm-focus" onClick={() => toggleSort("caller")} style={headerButtonStyle}>
+            <tr className="scillm-jobs-header">
+              <th className="scillm-td--10-16">
+                <button data-qid="scillm:jobs:sort:caller" data-qs-action="SCILLM_JOBS_SORT_CALLER" title="Sort by caller" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("caller")}>
                   {renderSortLabel("Job / Caller", "caller")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>
-                <button data-qid="scillm:jobs:sort:progress" data-qs-action="SCILLM_JOBS_SORT_PROGRESS" title="Sort by progress" className="press-scale scillm-focus" onClick={() => toggleSort("progress")} style={headerButtonStyle}>
+              <th className="scillm-td--10-8">
+                <button data-qid="scillm:jobs:sort:progress" data-qs-action="SCILLM_JOBS_SORT_PROGRESS" title="Sort by progress" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("progress")}>
                   {renderSortLabel("Progress", "progress")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>
-                <button data-qid="scillm:jobs:sort:status" data-qs-action="SCILLM_JOBS_SORT_STATUS" title="Sort by status" className="press-scale scillm-focus" onClick={() => toggleSort("status")} style={headerButtonStyle}>
+              <th className="scillm-td--10-8">
+                <button data-qid="scillm:jobs:sort:status" data-qs-action="SCILLM_JOBS_SORT_STATUS" title="Sort by status" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("status")}>
                   {renderSortLabel("Status", "status")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>
-                <button data-qid="scillm:jobs:sort:latency" data-qs-action="SCILLM_JOBS_SORT_LATENCY" title="Sort by latency" className="press-scale scillm-focus" onClick={() => toggleSort("latency")} style={headerButtonStyle}>
+              <th className="scillm-td--10-8">
+                <button data-qid="scillm:jobs:sort:latency" data-qs-action="SCILLM_JOBS_SORT_LATENCY" title="Sort by latency" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("latency")}>
                   {renderSortLabel("Avg Latency", "latency")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>
-                <button data-qid="scillm:jobs:sort:cost" data-qs-action="SCILLM_JOBS_SORT_COST" title="Sort by cost" className="press-scale scillm-focus" onClick={() => toggleSort("cost")} style={headerButtonStyle}>
+              <th className="scillm-td--10-8">
+                <button data-qid="scillm:jobs:sort:cost" data-qs-action="SCILLM_JOBS_SORT_COST" title="Sort by cost" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("cost")}>
                   {renderSortLabel("Cost", "cost")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>
-                <button data-qid="scillm:jobs:sort:activity" data-qs-action="SCILLM_JOBS_SORT_ACTIVITY" title="Sort by activity" className="press-scale scillm-focus" onClick={() => toggleSort("activity")} style={headerButtonStyle}>
+              <th className="scillm-td--10-8">
+                <button data-qid="scillm:jobs:sort:activity" data-qs-action="SCILLM_JOBS_SORT_ACTIVITY" title="Sort by activity" className="press-scale scillm-focus scillm-button--header" onClick={() => toggleSort("activity")}>
                   {renderSortLabel("Last Activity", "activity")}
                 </button>
               </th>
-              <th style={{ padding: "10px 8px" }}>Actions</th>
+              <th className="scillm-td--10-8">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredJobs.length === 0 ? (
               <tr>
-                <td colSpan={7} style={{ padding: 24, textAlign: "center", color: EMBRY.dim }}>
+                <td colSpan={7} className="scillm-jobs-empty">
                   No jobs found
                 </td>
               </tr>
@@ -1159,13 +971,4 @@ export function JobsTable({ logs, onCallClick }: Props) {
   );
 }
 
-const headerButtonStyle: React.CSSProperties = {
-  padding: 0,
-  border: "none",
-  background: "none",
-  color: "inherit",
-  cursor: "pointer",
-  font: "inherit",
-  letterSpacing: "inherit",
-  textTransform: "inherit",
-};
+

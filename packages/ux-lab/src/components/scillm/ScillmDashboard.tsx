@@ -20,87 +20,9 @@ import { useScillmData, useProviderAuth, useBatchJobState, useOrchestratorDetail
 import { useRegisterAction } from "../../hooks/useRegisterAction";
 import { JobsTable } from "./JobsTable";
 import { CreateQrasManifestPane } from "./CreateQrasManifestPane";
+import "./scillm-dashboard.css";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
-
-const LABEL_STYLE: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 800,
-  letterSpacing: "0.1em",
-  textTransform: "uppercase",
-  color: EMBRY.dim,
-};
-
-const META_STYLE: React.CSSProperties = {
-  fontSize: 10,
-  color: EMBRY.dim,
-};
-
-const WHITE_HEADING_STYLE: React.CSSProperties = {
-  fontSize: 12,
-  fontWeight: 800,
-  color: EMBRY.white,
-};
-
-const FLEX_COL_GAP4: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 4,
-};
-
-const FLEX_COL_GAP8: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-};
-
-const FLEX_ROW_CENTER_GAP8: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-};
-
-const FLEX_ROW_CENTER_GAP12: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
-};
-
-const TABLE_BORDER_BOTTOM: React.CSSProperties = {
-  padding: "8px 10px",
-  borderBottom: `1px solid ${EMBRY.border}`,
-  fontSize: 9,
-  fontWeight: 800,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: EMBRY.dim,
-};
-
-const LINE_CLAMP2: React.CSSProperties = {
-  overflow: "hidden",
-  display: "-webkit-box",
-  WebkitBoxOrient: "vertical",
-  WebkitLineClamp: 2,
-  wordBreak: "break-word",
-  lineHeight: 1.35,
-};
-
-const BUTTON_BASE: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 700,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  cursor: "pointer",
-};
-
-
-// Inject spin animation for loader
-if (typeof document !== "undefined" && !document.getElementById("scillm-animations")) {
-  const style = document.createElement("style");
-  style.id = "scillm-animations";
-  style.textContent = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
-  document.head.appendChild(style);
-}
 
 // Traffic light thresholds for error rate coloring
 const ERROR_WARN = 0.01;     // 1% = yellow
@@ -127,28 +49,16 @@ function StatPill({
   noWrap?: boolean;
 }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <span
-        style={{
-          fontSize: 9,
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          color: EMBRY.dim,
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-        }}
-      >
+    <div className="scillm-flex-col scillm-gap-2">
+      <span className="scillm-flex-row scillm-gap-4 scillm-uppercase">
         {Icon && <Icon size={10} color={EMBRY.dim} />}
         {label}
       </span>
       <span
-        className="tabular-nums"
+        className="tabular-nums scillm-mono"
         style={{
           fontSize: small ? 12 : 16,
           fontWeight: 700,
-          fontFamily: MONO,
           color,
           whiteSpace: noWrap ? "nowrap" : "normal",
         }}
@@ -187,7 +97,7 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
   };
 
   return (
-    <div style={{ ...FLEX_ROW_CENTER_GAP12 }}>
+    <div className="scillm-flex-row scillm-gap-12">
       {providers.map(({ name, data, key }) => {
         if (!data) return null;
         const color = getStatusColor(data.status);
@@ -196,11 +106,7 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
         return (
           <div
             key={key}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="scillm-flex-row scillm-gap-4"
             title={`${name}: ${data.status}${expiry ? ` (${expiry} remaining)` : ""}`}
           >
             <span
@@ -213,13 +119,8 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
               }}
             />
             <span
-              style={{
-                fontSize: 9,
-                fontWeight: 700,
-                color: color,
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
+              className="scillm-uppercase-sm"
+              style={{ color }}
             >
               {name}
             </span>
@@ -425,24 +326,10 @@ function ResizeGrip({ onMouseDown }: { onMouseDown: (event: React.MouseEvent<HTM
       data-qs-action="SCILLM_RESIZE_PANEL"
       title="Drag to resize panel"
       onMouseDown={onMouseDown}
-      style={{
-        height: 16,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "ns-resize",
-        background: EMBRY.bgPanel,
-        borderTop: `1px solid ${EMBRY.border}`,
-      }}
+      className="scillm-resize-grip"
+      style={{ background: EMBRY.bgPanel, borderTop: `1px solid ${EMBRY.border}` }}
     >
-      <div
-        style={{
-          width: 56,
-          height: 4,
-          borderRadius: 999,
-          background: EMBRY.border,
-        }}
-      />
+      <div className="scillm-resize-grip__bar" style={{ background: EMBRY.border }} />
     </div>
   );
 }
@@ -627,17 +514,9 @@ function outcomeChipStyle(outcome: CallOutcome): React.CSSProperties {
           : EMBRY.amber;
 
   return {
-    display: "inline-flex",
-    alignItems: "center",
-    padding: "2px 6px",
-    border: `1px solid ${color}55`,
+    borderColor: `${color}55`,
     backgroundColor: `${color}12`,
     color,
-    borderRadius: 999,
-    fontSize: 9,
-    fontWeight: 800,
-    letterSpacing: "0.04em",
-    textTransform: "uppercase",
   };
 }
 
@@ -686,54 +565,22 @@ function PromptDialog({
     <div
       onClick={onClose}
       className="scillm-dialog-backdrop"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 1100,
-        backgroundColor: "rgba(0,0,0,0.74)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
-      }}
     >
       <div
         onClick={(event) => event.stopPropagation()}
         className="scillm-dialog-content elevated-surface"
         style={{
-          width: "min(1100px, 86vw)",
-          maxHeight: "84vh",
           backgroundColor: EMBRY.bgPanel,
           border: `1px solid ${EMBRY.border}`,
           borderLeft: `3px solid ${EMBRY.blue}`,
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 0,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: 16,
-            padding: "14px 16px",
-            borderBottom: `1px solid ${EMBRY.border}`,
-          }}
-        >
-          <div style={{ minWidth: 0 }}>
-            <div
-              style={{
-                ...META_STYLE,
-                fontWeight: 800,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                marginBottom: 6
-              }}
-            >
+        <div className="scillm-dialog-header">
+          <div className="scillm-min-w-0">
+            <div className="scillm-meta scillm-uppercase-lg" style={{ marginBottom: 6 }}>
               Full prompt
             </div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white, wordBreak: "break-word" }}>
+            <div className="scillm-text-13 scillm-fw-700 scillm-text-white" style={{ wordBreak: "break-word" }}>
               {title}
             </div>
           </div>
@@ -742,34 +589,15 @@ function PromptDialog({
             data-qs-action="SCILLM_CLOSE_PROMPT"
             title="Close full prompt dialog"
             onClick={onClose}
-            className="press-scale scillm-focus"
+            className="press-scale scillm-focus scillm-button"
             style={{
-              border: `1px solid ${EMBRY.border}`,
               background: EMBRY.bgDeep,
-              color: EMBRY.white,
-              cursor: "pointer",
-              padding: "6px 10px",
-              fontSize: 10,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
             }}
           >
             Close
           </button>
         </div>
-        <div
-          style={{
-            overflow: "auto",
-            padding: 16,
-            fontFamily: MONO,
-            fontSize: 11,
-            lineHeight: 1.5,
-            color: EMBRY.white,
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word",
-          }}
-        >
+        <div className="scillm-dialog-body">
           {prompt}
         </div>
       </div>
@@ -905,30 +733,17 @@ function ActiveCreateQrasTable({
   if (rows.length === 0) return null;
 
   return (
-    <section
-      style={{
-        borderBottom: `1px solid ${EMBRY.border}`,
-        padding: "12px 16px 8px 16px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        overflow: "hidden",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, minWidth: 0 }}>
-          <div style={{ ...FLEX_COL_GAP4, minWidth: 0 }}>
-            <div className="text-balance" style={{ ...WHITE_HEADING_STYLE }}>
+    <section className="scillm-panel" style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
+      <div className="scillm-flex-between-start scillm-gap-12 scillm-flex-wrap">
+        <div className="scillm-flex-row-start scillm-gap-10 scillm-min-w-0">
+          <div className="scillm-flex-col scillm-gap-4 scillm-min-w-0">
+            <div className="text-balance scillm-heading">
               Incoming
             </div>
-            <div className="text-pretty" style={{ ...META_STYLE }}>Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
+            <div className="text-pretty scillm-meta">Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
           </div>
         </div>
-        <div style={{
-          ...FLEX_ROW_CENTER_GAP8,
-          flexWrap: "wrap",
-          marginLeft: "auto"
-        }}>
+        <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap scillm-ml-auto">
           {projectOptions.length > 1 && (
             <select
               data-qid="scillm:scope:project"
@@ -939,16 +754,7 @@ function ActiveCreateQrasTable({
                 setProjectScope(event.target.value);
                 setBatchScope("all");
               }}
-              className="scillm-focus"
-              style={{
-                padding: "6px 10px",
-                background: EMBRY.bgPanel,
-                border: `1px solid ${EMBRY.border}`,
-                color: EMBRY.white,
-                fontSize: 11,
-                fontFamily: MONO,
-                minWidth: 180,
-              }}
+              className="scillm-focus scillm-select"
             >
               <option value="all">All projects</option>
               {projectOptions.map((project) => (
@@ -965,16 +771,7 @@ function ActiveCreateQrasTable({
               title="Filter incoming calls by batch id"
               value={batchScope}
               onChange={(event) => setBatchScope(event.target.value)}
-              className="scillm-focus"
-              style={{
-                padding: "6px 10px",
-                background: EMBRY.bgPanel,
-                border: `1px solid ${EMBRY.border}`,
-                color: EMBRY.white,
-                fontSize: 11,
-                fontFamily: MONO,
-                minWidth: 280,
-              }}
+              className="scillm-focus scillm-select scillm-select--wide"
             >
               <option value="all">All batch ids</option>
               {batchOptions.map((batchId) => (
@@ -985,30 +782,14 @@ function ActiveCreateQrasTable({
             </select>
           )}
           <div
-            style={{
-              minWidth: 280,
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "6px 10px",
-              background: EMBRY.bgPanel,
-              border: `1px solid ${EMBRY.border}`,
-            }}
+            className="scillm-search-box scillm-min-w-280"
           >
             <Search size={12} color={EMBRY.dim} />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search item, prompt, response, scillm error..."
-              style={{
-                flex: 1,
-                background: "none",
-                border: "none",
-                outline: "none",
-                color: EMBRY.white,
-                fontSize: 11,
-                fontFamily: MONO,
-              }}
+              className="scillm-input"
             />
             {search && (
               <button
@@ -1016,14 +797,13 @@ function ActiveCreateQrasTable({
                 data-qs-action="SCILLM_CLEAR_SEARCH"
                 title="Clear search"
                 onClick={() => setSearch("")}
-                className="press-scale scillm-focus"
-                style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 6, display: "flex", alignItems: "center", justifyContent: "center" }}
+                className="press-scale scillm-focus scillm-button--icon"
               >
                 <X size={12} />
               </button>
             )}
           </div>
-          <div style={{ ...META_STYLE }}>
+          <div className="scillm-meta">
             {filteredRows.length}/{rows.length} shown
           </div>
           <button
@@ -1031,17 +811,9 @@ function ActiveCreateQrasTable({
             data-qs-action="SCILLM_INSPECT_BATCH"
             title="Inspect active batch details"
             onClick={onInspect}
-            className="press-scale scillm-focus"
+            className="press-scale scillm-focus scillm-button"
             style={{
-              fontSize: 10,
-              fontWeight: 700,
-              padding: "6px 10px",
-              border: `1px solid ${EMBRY.border}`,
               background: EMBRY.bgPanel,
-              color: EMBRY.white,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
               gap: 6,
             }}
           >
@@ -1051,7 +823,7 @@ function ActiveCreateQrasTable({
         </div>
       </div>
       <>
-          <div style={{ ...FLEX_ROW_CENTER_GAP8, flexWrap: "wrap" }}>
+          <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap">
             {[
               { key: "all", label: `All (${rows.length})` },
               { key: "complete", label: `Complete (${rows.filter((row: IncomingCallRow) => row.outcome.status === "ok").length})` },
@@ -1067,37 +839,19 @@ function ActiveCreateQrasTable({
                 data-qs-action={`SCILLM_FILTER_${key.toUpperCase()}`}
                 title={`Filter by ${key}`}
                 onClick={() => setFilter(key as typeof filter)}
-                className="press-scale scillm-focus"
-                style={{
-                  padding: "6px 10px",
-                  border: `1px solid ${filter === key ? EMBRY.blue : EMBRY.border}`,
-                  backgroundColor: filter === key ? `${EMBRY.blue}20` : EMBRY.bgPanel,
-                  color: filter === key ? EMBRY.blue : EMBRY.white,
-                  cursor: "pointer",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                }}
+                className={`press-scale scillm-focus scillm-button--filter ${filter === key ? 'scillm-button--filter-active' : ''}`}
               >
                 {label}
               </button>
             ))}
           </div>
-          <div style={{ ...META_STYLE }}>
-            Filters: <span style={{ color: EMBRY.red }}>Transport</span> means the proxy call itself failed. <span style={{ color: EMBRY.amber }}>Schema</span> and <span style={{ color: EMBRY.amber }}>Empty</span> mean the returned payload was malformed or empty.
+          <div className="scillm-meta">
+            Filters: <span className="scillm-text-red">Transport</span> means the proxy call itself failed. <span className="scillm-text-amber">Schema</span> and <span className="scillm-text-amber">Empty</span> mean the returned payload was malformed or empty.
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: failureRows.length > 0 ? "minmax(0, 1fr) 280px" : "minmax(0, 1fr)",
-              gap: 12,
-              minHeight: 0,
-            }}
-          >
+          <div className={failureRows.length > 0 ? "scillm-grid-2" : "scillm-grid-1"}>
             <div style={{ border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, overflow: "auto", height: tableHeight }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+              <table className="scillm-table">
                 <colgroup>
                 <col style={{ width: "18%" }} />
                 <col style={{ width: "19%" }} />
@@ -1111,14 +865,7 @@ function ActiveCreateQrasTable({
                     {["Call", "Prompt", "Response", "Evidence case", "Duration", "Model"].map((label) => (
                       <th
                         key={label}
-                        style={{
-                          ...TABLE_BORDER_BOTTOM,
-                          position: "sticky",
-                          top: 0,
-                          background: EMBRY.bgPanel,
-                          zIndex: 1,
-                          textAlign: "left"
-                        }}
+                        className="scillm-th scillm-th--sticky scillm-bg-panel"
                       >
                         {label}
                       </th>
@@ -1154,29 +901,23 @@ function ActiveCreateQrasTable({
                           fontSize: 10,
                         }}
                       >
-                        <td style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: "top" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, fontFamily: MONO }}>
+                        <td className="scillm-td">
+                          <div className="scillm-flex-row scillm-gap-10 scillm-min-w-0 scillm-mono">
                             <div
                               title={`${row.outcome.label}: ${row.outcome.summary}`}
-                              style={{
-                                ...outcomeChipStyle(row.outcome),
-                                width: 28,
-                                height: 28,
-                                padding: 0,
-                                justifyContent: "center",
-                                flexShrink: 0,
-                              }}
+                              className="scillm-chip scillm-chip--square"
+                              style={outcomeChipStyle(row.outcome)}
                             >
                               {renderOutcomeIcon(row.outcome)}
                             </div>
                             <div
                               title={`${row.itemLabel}${row.callCategory ? ` • ${row.callCategory}` : ""}${row.batchId ? ` • ${row.batchId}` : ""}`}
-                              style={{ minWidth: 0, overflow: "hidden" }}
+                              className="scillm-ellipsis-box"
                             >
-                              <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: EMBRY.white, fontWeight: 700 }}>
+                              <div className="scillm-ellipsis scillm-text-white scillm-fw-700">
                                 {row.itemLabel}
                               </div>
-                              <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: EMBRY.dim, fontSize: 9, fontFamily: "Inter, sans-serif" }}>
+                              <div className="scillm-ellipsis scillm-ui scillm-text-dim" style={{ fontSize: 9 }}>
                                 {row.projectLabel}
                                 {row.callCategory ? ` • ${row.callCategory}` : ""}
                                 {row.batchId ? ` • ${row.batchId}` : ""}
@@ -1185,13 +926,13 @@ function ActiveCreateQrasTable({
                           </div>
                         </td>
                         <td
-                          style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.dim, verticalAlign: "top" }}
+                          className="scillm-td scillm-text-dim"
                         >
                           <button
                             data-qid={`scillm:incoming:prompt:${row.key}`}
                             data-qs-action="SCILLM_OPEN_PROMPT"
                             title={`Open full prompt for ${row.itemLabel}`}
-                            className="press-scale scillm-focus"
+                            className="press-scale scillm-focus scillm-prompt-btn"
                             onClick={(event) => {
                               event.stopPropagation();
                               setPromptDialog({
@@ -1199,70 +940,35 @@ function ActiveCreateQrasTable({
                                 prompt: row.log.request_prompt?.trim() || promptPreview,
                               });
                             }}
-                            style={{
-                              display: "block",
-                              width: "100%",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              fontFamily: MONO,
-                              color: EMBRY.dim,
-                              background: "none",
-                              border: "none",
-                              padding: 0,
-                              cursor: "pointer",
-                              textAlign: "left",
-                            }}
                           >
                             {promptPreview}
                           </button>
                         </td>
                         <td
                           title={evidenceText}
-                          style={{
-                            padding: "10px",
-                            borderBottom: `1px solid ${EMBRY.border}`,
-                            color: row.outcome.status === "ok" ? EMBRY.white : EMBRY.dim,
-                            verticalAlign: "top",
-                          }}
+                          className="scillm-td"
+                          style={{ color: row.outcome.status === "ok" ? EMBRY.white : EMBRY.dim }}
                         >
-                          <div
-                            style={{ ...LINE_CLAMP2 }}
-                          >
+                          <div className="scillm-line-clamp-2">
                             {evidenceText}
                           </div>
                         </td>
                         <td
                           title={evidenceCaseText}
-                          style={{
-                            padding: "10px",
-                            borderBottom: `1px solid ${EMBRY.border}`,
-                            color: evidenceCaseColor,
-                            verticalAlign: "top",
-                          }}
+                          className="scillm-td"
+                          style={{ color: evidenceCaseColor }}
                         >
-                          <div
-                            style={{ ...LINE_CLAMP2 }}
-                          >
+                          <div className="scillm-line-clamp-2">
                             {evidenceCaseText}
                           </div>
                         </td>
-                        <td className="tabular-nums" style={{ padding: "10px", borderBottom: `1px solid ${EMBRY.border}`, fontFamily: MONO, whiteSpace: "nowrap", verticalAlign: "top" }}>
+                        <td className="tabular-nums scillm-td scillm-mono scillm-td--nowrap">
                           {row.log?.duration_ms != null ? `${row.log.duration_ms}ms` : "—"}
                         </td>
                         <td
-                          className="tabular-nums"
+                          className="tabular-nums scillm-td scillm-ellipsis"
                           title={row.log?.model_served || row.log?.model_requested || "—"}
-                          style={{
-                            padding: "10px",
-                            borderBottom: `1px solid ${EMBRY.border}`,
-                            fontSize: 9,
-                            color: EMBRY.dim,
-                            verticalAlign: "top",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
+                          style={{ fontSize: 9, color: EMBRY.dim }}
                         >
                           {row.log?.model_served || row.log?.model_requested || "—"}
                         </td>
@@ -1271,7 +977,7 @@ function ActiveCreateQrasTable({
                   })}
                   {filteredRows.length === 0 && (
                     <tr>
-                      <td colSpan={6} style={{ padding: 16, fontSize: 11, color: EMBRY.dim }}>
+                      <td colSpan={6} className="scillm-td--16 scillm-text-11 scillm-text-dim">
                         No incoming calls match the current scope and search.
                       </td>
                     </tr>
@@ -1281,58 +987,29 @@ function ActiveCreateQrasTable({
             </div>
             {failureRows.length > 0 && (
               <aside
-                style={{
-                  border: `1px solid ${EMBRY.border}`,
-                  backgroundColor: EMBRY.bgPanel,
-                  height: tableHeight,
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: 0,
-                }}
+                className="scillm-aside"
+                style={{ height: tableHeight }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 10,
-                    padding: "10px 12px",
-                    borderBottom: `1px solid ${EMBRY.border}`,
-                  }}
-                >
+                <div className="scillm-aside-header">
                   <div>
-                    <div style={{ fontSize: 10, fontWeight: 800, color: EMBRY.red, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                    <div className="scillm-uppercase scillm-text-red">
                       Failure Stream
                     </div>
-                    <div style={{ ...META_STYLE }}>
+                    <div className="scillm-meta">
                       {failureRows.length} failed manifest rows
                     </div>
                   </div>
                   <button
                     onClick={() => setFailureStreamAutoScroll((prev) => !prev)}
-                    style={{
-                      border: `1px solid ${failureStreamAutoScroll ? EMBRY.blue : EMBRY.border}`,
-                      background: failureStreamAutoScroll ? `${EMBRY.blue}18` : EMBRY.bgDeep,
-                      color: failureStreamAutoScroll ? EMBRY.blue : EMBRY.dim,
-                      padding: "4px 8px",
-                      fontSize: 9,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                    }}
+                    className={`scillm-button--scope ${failureStreamAutoScroll ? 'scillm-button--scope-active' : ''}`}
                   >
                     Auto-scroll {failureStreamAutoScroll ? "on" : "off"}
                   </button>
                 </div>
                 <div
                   ref={failureStreamRef}
-                  style={{
-                    overflowY: "auto",
-                    minHeight: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+                  className="scillm-flex-col"
+                  style={{ overflowY: "auto", minHeight: 0 }}
                 >
                   {failureRows.map((row: IncomingCallRow) => {
                     const isSelected = Boolean(selectedLog && selectedLog._key === row.log._key);
@@ -1343,35 +1020,20 @@ function ActiveCreateQrasTable({
                           rowRefs.current.get(row.key)?.scrollIntoView({ block: "center", behavior: "smooth" });
                           onCallClick(row.log);
                         }}
+                        className={`scillm-button--failure ${isSelected ? 'scillm-button--failure-selected' : ''}`}
                         style={{
-                          textAlign: "left",
-                          padding: "8px 10px",
-                          border: "none",
                           borderLeft: `2px solid ${row.outcome.source === "scillm" ? EMBRY.red : EMBRY.amber}`,
-                          borderBottom: `1px solid ${EMBRY.border}`,
-                          backgroundColor: isSelected ? `${EMBRY.red}12` : "transparent",
-                          color: EMBRY.white,
-                          cursor: "pointer",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 3,
                         }}
-                        >
-                          <div style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.white }}>
-                            {row.itemLabel}
-                          </div>
-                          <div style={{ fontSize: 10, color: row.outcome.source === "scillm" ? EMBRY.red : EMBRY.amber }}>
-                            {row.projectLabel}
-                            {row.callCategory ? ` • ${row.callCategory}` : ""}
-                            {` • ${row.outcome.label}`}
-                          </div>
-                        <div
-                          style={{
-                            ...LINE_CLAMP2,
-                            fontSize: 9,
-                            color: EMBRY.dim
-                          }}
-                        >
+                      >
+                        <div className="scillm-text-11 scillm-mono scillm-text-white">
+                          {row.itemLabel}
+                        </div>
+                        <div className="scillm-text-11" style={{ color: row.outcome.source === "scillm" ? EMBRY.red : EMBRY.amber }}>
+                          {row.projectLabel}
+                          {row.callCategory ? ` • ${row.callCategory}` : ""}
+                          {` • ${row.outcome.label}`}
+                        </div>
+                        <div className="scillm-line-clamp-2" style={{ fontSize: 9, color: EMBRY.dim }}>
                           {row.outcome.summary}
                         </div>
                       </button>
@@ -1406,30 +1068,14 @@ function OrchestratorStrip({
 
   return (
     <section
-      style={{
-        borderBottom: `1px solid ${EMBRY.border}`,
-        backgroundColor: EMBRY.bgPanel,
-        position: "sticky",
-        top: 0,
-        zIndex: 3,
-      }}
+      className="scillm-panel--sticky"
+      style={{ borderBottom: `1px solid ${EMBRY.border}` }}
     >
-      <div
-        style={{
-          ...FLEX_ROW_CENTER_GAP8,
-          padding: "8px 16px",
-          borderBottom: `1px solid ${EMBRY.border}`
-        }}
-      >
-        <span className="text-balance" style={{
-          ...META_STYLE,
-          fontWeight: 800,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase"
-        }}>
+      <div className="scillm-orchestrator-header">
+        <span className="text-balance scillm-meta scillm-uppercase-lg">
           Batch Progress
         </span>
-        <span style={{ ...META_STYLE }}>
+        <span className="scillm-meta">
           Manifest items, LLM calls, stored QRAs, and skips are separate counters. Inspect opens the full diagnostic dossier.
         </span>
       </div>
@@ -1456,55 +1102,42 @@ function OrchestratorStrip({
         return (
           <div
             key={job.name}
+            className="scillm-orchestrator-item"
             style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(260px, 1.2fr) minmax(320px, 1fr) minmax(220px, 0.8fr) auto",
-              gap: 16,
-              alignItems: "center",
-              padding: "10px 16px",
               borderTop: index > 0 ? `1px solid ${EMBRY.border}` : "none",
               borderLeft: `3px solid ${statusBorder}`,
-              backgroundColor: EMBRY.bgPanel,
             }}
           >
-            <div style={{ ...FLEX_COL_GAP8, minWidth: 0 }}>
-              <div style={{ ...FLEX_ROW_CENTER_GAP8, minWidth: 0 }}>
+            <div className="scillm-flex-col scillm-gap-8 scillm-min-w-0">
+              <div className="scillm-flex-row scillm-gap-8 scillm-min-w-0">
                 <div style={glowDot(color)} />
-                <div style={{ ...WHITE_HEADING_STYLE, minWidth: 0 }}>{job.name}</div>
+                <div className="scillm-heading scillm-min-w-0">{job.name}</div>
                 <div
+                  className="scillm-chip--status"
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "2px 8px",
-                    borderRadius: 999,
                     border: `1px solid ${color}55`,
                     backgroundColor: `${color}12`,
                     color,
-                    fontSize: 9,
-                    fontWeight: 800,
-                    letterSpacing: "0.05em",
-                    textTransform: "uppercase",
                   }}
                 >
                   {statusLabel}
                 </div>
-                <div className="tabular-nums" style={{ fontSize: 12, fontWeight: 800, color, fontFamily: MONO, marginLeft: "auto" }}>
+                <div className="tabular-nums scillm-mono scillm-text-12 scillm-fw-800" style={{ color, marginLeft: "auto" }}>
                   {progressPct.toFixed(0)}%
                 </div>
               </div>
-              <div style={{ height: 6, backgroundColor: EMBRY.bg, border: `1px solid ${EMBRY.border}`, overflow: "hidden" }}>
+              <div className="scillm-progress-track">
                 <div
+                  className="scillm-progress-fill"
                   style={{
                     width: `${Math.max(0, Math.min(progressPct, 100))}%`,
-                    height: "100%",
                     backgroundColor: color,
-                    transition: "width 0.6s cubic-bezier(0.2, 0, 0, 1)",
                   }}
                 />
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <div className="scillm-flex-row scillm-gap-16 scillm-flex-wrap">
               <StatPill label="Items" value={totalJobs ? `${completedJobs}/${totalJobs}` : `${completedJobs}`} small />
               <StatPill label="Calls" value={llmCallsLabel} small color={EMBRY.blue} />
               <StatPill label="Stored" value={`${state?.stored_qras ?? 0}`} small color={EMBRY.green} />
@@ -1513,18 +1146,13 @@ function OrchestratorStrip({
               <StatPill label="ETA" value={formatEta(eta.tonightEtaSeconds)} small color={EMBRY.white} />
             </div>
 
-            <div style={{ ...FLEX_COL_GAP4, minWidth: 0 }}>
-              <div style={{ ...META_STYLE }}>
+            <div className="scillm-flex-col scillm-gap-4 scillm-min-w-0">
+              <div className="scillm-meta">
                 {state?.phase || "idle"}
                 {state?.chunk_num && state?.total_chunks ? ` · chunk ${state.chunk_num}/${state.total_chunks}` : ""}
                 {state?.range_start && state?.range_end ? ` · range ${state.range_start}-${state.range_end}` : ""}
               </div>
-              <div style={{
-                ...META_STYLE,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis"
-              }}>
+              <div className="scillm-meta scillm-ellipsis" style={{ textOverflow: "ellipsis" }}>
                 {state?.current_item || state?.last_error || state?.last_message || "No active item"}
               </div>
             </div>
@@ -1533,20 +1161,13 @@ function OrchestratorStrip({
               data-qid={`scillm:orchestrator:inspect:${job.name}`}
               data-qs-action="SCILLM_INSPECT_JOB"
               title={`Inspect ${job.name}`}
-              className="press-scale scillm-focus"
+              className="press-scale scillm-focus scillm-button"
               onClick={() => onInspect(job)}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                padding: "6px 10px",
-                border: `1px solid ${EMBRY.border}`,
                 backgroundColor: EMBRY.bgDeep,
-                color: EMBRY.white,
-                cursor: "pointer",
+                gap: 4,
                 fontSize: 9,
                 fontWeight: 800,
-                textTransform: "uppercase",
                 letterSpacing: "0.08em",
               }}
             >
@@ -1586,31 +1207,18 @@ function CopyableSection({
 
   return (
     <div
+      className={`scillm-card ${isEmpty ? '' : 'scillm-card--highlight'}`}
       style={{
         marginBottom: 16,
-        padding: 12,
-        backgroundColor: EMBRY.bgDeep,
-        border: `1px solid ${isEmpty ? EMBRY.border : EMBRY.blue}40`,
+        borderColor: isEmpty ? EMBRY.border : `${EMBRY.blue}40`,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 8,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <div className="scillm-copyable-header">
+        <div className="scillm-copyable-title">
           {Icon && <Icon size={12} />}
           <span
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              color: isEmpty ? EMBRY.dim : EMBRY.blue,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-            }}
+            className="scillm-uppercase-lg"
+            style={{ color: isEmpty ? EMBRY.dim : EMBRY.blue }}
           >
             {title}
           </span>
@@ -1618,19 +1226,11 @@ function CopyableSection({
         {!isEmpty && (
           <button
             onClick={handleCopy}
+            className="scillm-button--copy"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "4px 10px",
               backgroundColor: copied ? `${EMBRY.green}20` : `${EMBRY.blue}20`,
               border: `1px solid ${copied ? EMBRY.green : EMBRY.blue}50`,
               color: copied ? EMBRY.green : EMBRY.blue,
-              cursor: "pointer",
-              fontSize: 10,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
             }}
           >
             {copied ? <Check size={12} /> : <Copy size={12} />}
@@ -1639,19 +1239,8 @@ function CopyableSection({
         )}
       </div>
       <pre
-        style={{
-          fontSize: 11,
-          fontFamily: MONO,
-          color: isEmpty ? EMBRY.dim : EMBRY.white,
-          backgroundColor: EMBRY.bgPanel,
-          padding: 10,
-          margin: 0,
-          overflow: "auto",
-          maxHeight: 200,
-          whiteSpace: "pre-wrap",
-          wordBreak: "break-word",
-          fontStyle: isEmpty ? "italic" : "normal",
-        }}
+        className={`scillm-pre ${isEmpty ? 'scillm-pre--empty' : ''}`}
+        style={{ backgroundColor: EMBRY.bgPanel }}
       >
         {content || emptyText}
       </pre>
@@ -1762,31 +1351,12 @@ ${analysis}
 
   return (
     <div
-      className="scillm-panel-enter elevated-surface"
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 0,
-        width: 420,
-        height: "100%",
-        backgroundColor: EMBRY.bgPanel,
-        borderLeft: `1px solid ${EMBRY.border}`,
-        zIndex: 1000,
-        display: "flex",
-        flexDirection: "column",
-      }}
+      className="scillm-panel-enter elevated-surface scillm-trace-panel"
+      style={{ backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}` }}
     >
       {/* Header */}
-      <div
-        style={{
-          padding: "12px 16px",
-          borderBottom: `1px solid ${EMBRY.border}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-          <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>
+      <div className="scillm-trace-header">
+          <span className="scillm-text-12 scillm-fw-700 scillm-text-white">
             {headerTitle}
           </span>
         <button
@@ -1794,57 +1364,37 @@ ${analysis}
           data-qs-action="SCILLM_CLOSE_TRACE"
           title="Close trace panel"
           onClick={onClose}
-          className="press-scale scillm-focus"
-          style={{
-            background: "none",
-            border: "none",
-            color: EMBRY.dim,
-            cursor: "pointer",
-            padding: 8,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          className="press-scale scillm-focus scillm-button--icon"
         >
           <X size={16} />
         </button>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+      <div className="scillm-trace-content">
         {/* Status */}
-        <div style={{ marginBottom: 16 }}>
+        <div className="scillm-section">
           <span
+            className="scillm-status-badge"
             style={{
-              fontSize: 10,
-              fontWeight: 700,
-              padding: "4px 8px",
               backgroundColor: `${statusColor}20`,
               color: statusColor,
-              textTransform: "uppercase",
             }}
           >
             {statusText}
           </span>
-          <span style={{ ...META_STYLE, marginLeft: 8 }}>
+          <span className="scillm-meta" style={{ marginLeft: 8 }}>
             {callTimestamp}
           </span>
         </div>
 
         {/* Error message */}
         {renderedError && (
-          <div
-            style={{
-              marginBottom: 16,
-              padding: 12,
-              backgroundColor: `${EMBRY.red}10`,
-              border: `1px solid ${EMBRY.red}30`,
-            }}
-          >
-            <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.red, textTransform: "uppercase" }}>
+          <div className="scillm-error-box">
+            <span className="scillm-uppercase scillm-text-red">
               Error
             </span>
-            <div style={{ fontSize: 11, color: EMBRY.white, marginTop: 4, fontFamily: MONO }}>
+            <div className="scillm-text-11 scillm-text-white scillm-mono" style={{ marginTop: 4 }}>
               {renderedError}
             </div>
           </div>
@@ -1865,22 +1415,8 @@ ${analysis}
         />
 
         {/* LLM Debugger */}
-        <div style={{ marginBottom: 16 }}>
-          <div
-            style={{
-              fontSize: 9,
-              fontWeight: 700,
-              color: EMBRY.dim,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              marginBottom: 8,
-              paddingBottom: 4,
-              borderBottom: `1px solid ${EMBRY.border}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+        <div className="scillm-section">
+          <div className="scillm-section-title scillm-section-title--between">
             <span>LLM Debugger</span>
             {!analysis && (
               <button
@@ -1889,19 +1425,10 @@ ${analysis}
                 title="Analyze this scillm call with LLM debugger"
                 onClick={analyzeCall}
                 disabled={analyzing}
-                className="press-scale scillm-focus"
+                className="press-scale scillm-focus scillm-button--analyze"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "6px 10px",
-                  fontSize: 9,
-                  fontWeight: 700,
-                  border: "none",
-                  backgroundColor: `${EMBRY.blue}20`,
-                  color: EMBRY.blue,
-                  cursor: analyzing ? "wait" : "pointer",
                   opacity: analyzing ? 0.6 : 1,
+                  cursor: analyzing ? "wait" : "pointer",
                 }}
               >
                 {analyzing ? (
@@ -1920,42 +1447,20 @@ ${analysis}
           </div>
 
           {analysis ? (
-            <div
-              style={{
-                backgroundColor: EMBRY.bgDeep,
-                border: `1px solid ${EMBRY.green}40`,
-                padding: 12,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  color: EMBRY.white,
-                  whiteSpace: "pre-wrap",
-                  lineHeight: 1.5,
-                  marginBottom: 12,
-                }}
-              >
+            <div className="scillm-analysis-box">
+              <div className="scillm-analysis-text">
                 {analysis}
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="scillm-flex-row scillm-gap-8">
                 <button
                   data-qid="scillm:trace-panel:copy-analysis"
                   data-qs-action="SCILLM_COPY_ANALYSIS"
                   title="Copy analysis report for agent"
                   onClick={copyAnalysisForAgent}
-                  className="press-scale scillm-focus"
+                  className="press-scale scillm-focus scillm-button--send"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 4,
-                    padding: "6px 12px",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    border: "none",
                     backgroundColor: analysisCopied ? `${EMBRY.green}20` : `${EMBRY.amber}20`,
                     color: analysisCopied ? EMBRY.green : EMBRY.amber,
-                    cursor: "pointer",
                   }}
                 >
                   {analysisCopied ? (
@@ -1975,14 +1480,9 @@ ${analysis}
                   data-qs-action="SCILLM_CLEAR_ANALYSIS"
                   title="Clear analysis result"
                   onClick={() => setAnalysis(null)}
-                  className="press-scale scillm-focus"
+                  className="press-scale scillm-focus scillm-button--send scillm-meta"
                   style={{
-                    ...META_STYLE,
-                    padding: "6px 12px",
-                    fontWeight: 700,
-                    border: "none",
                     backgroundColor: `${EMBRY.dim}20`,
-                    cursor: "pointer"
                   }}
                 >
                   Clear
@@ -1990,7 +1490,7 @@ ${analysis}
               </div>
             </div>
           ) : (
-            <div style={{ ...META_STYLE, fontStyle: "italic" }}>
+            <div className="scillm-meta" style={{ fontStyle: "italic" }}>
               Click "Analyze Call" to get LLM-powered diagnosis
             </div>
           )}
@@ -2034,16 +1534,8 @@ ${analysis}
         {/* Raw JSON */}
         <Section title="Raw Log Entry">
           <pre
-            style={{
-              ...META_STYLE,
-              fontFamily: MONO,
-              backgroundColor: EMBRY.bgDeep,
-              padding: 12,
-              overflow: "auto",
-              maxHeight: 200,
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-all"
-            }}
+            className="scillm-pre"
+            style={{ backgroundColor: EMBRY.bgDeep }}
           >
             {JSON.stringify(log, null, 2)}
           </pre>
@@ -2055,22 +1547,11 @@ ${analysis}
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div
-        style={{
-          fontSize: 9,
-          fontWeight: 700,
-          color: EMBRY.dim,
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          marginBottom: 8,
-          paddingBottom: 4,
-          borderBottom: `1px solid ${EMBRY.border}`,
-        }}
-      >
+    <div className="scillm-section">
+      <div className="scillm-section-title">
         {title}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div className="scillm-section-body">
         {children}
       </div>
     </div>
@@ -2079,14 +1560,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Field({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <span style={{ ...META_STYLE }}>{label}</span>
+    <div className="scillm-field">
+      <span className="scillm-meta">{label}</span>
       <span
-        style={{
-          fontSize: 10,
-          fontFamily: MONO,
-          color: highlight ? EMBRY.amber : EMBRY.white,
-        }}
+        className="scillm-text-10 scillm-mono"
+        style={{ color: highlight ? EMBRY.amber : EMBRY.white }}
       >
         {value}
       </span>
@@ -2213,55 +1691,26 @@ export function ScillmDashboard() {
 
   return (
     <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "grid",
-        gridTemplateRows: "56px 1fr",
-        overflow: "hidden",
-        backgroundColor: EMBRY.bg,
-      }}
+      className="scillm-dashboard"
     >
       {/* HEALTH RIBBON */}
       <header
-        className="elevated-surface"
-        style={{
-          backgroundColor: EMBRY.bgPanel,
-          borderBottom: `1px solid ${EMBRY.border}`,
-          display: "flex",
-          alignItems: "center",
-          padding: "0 16px",
-          gap: 16,
-        }}
+        className="elevated-surface scillm-dashboard__header"
       >
-        <div style={{ ...FLEX_ROW_CENTER_GAP8 }}>
-          <span style={{ fontSize: 16, fontWeight: 900, color: EMBRY.blue }}>scillm</span>
-          <span style={{ fontSize: 16, fontWeight: 700, color: EMBRY.white }}>Monitor</span>
+        <div className="scillm-flex-row scillm-gap-8">
+          <span className="scillm-heading-lg">scillm</span>
+          <span className="scillm-heading-md">Monitor</span>
           <div style={glowDot(error ? EMBRY.red : EMBRY.green)} />
           {activeBatchFailCount > 0 && (
-            <div
-              style={{
-                padding: "3px 8px",
-                border: `1px solid ${EMBRY.red}55`,
-                backgroundColor: `${EMBRY.red}14`,
-                color: EMBRY.red,
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                borderRadius: 999,
-              }}
-            >
+            <div className="scillm-fail-badge">
               {activeBatchFailCount} fails
             </div>
           )}
         </div>
 
         <div
+          className="scillm-flex-row scillm-gap-16"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
             paddingLeft: 16,
             borderLeft: `1px solid ${EMBRY.border}`,
           }}
@@ -2277,10 +1726,8 @@ export function ScillmDashboard() {
         </div>
 
         <div
+          className="scillm-flex-row scillm-gap-16"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
             paddingLeft: 16,
             borderLeft: `1px solid ${EMBRY.border}`,
           }}
@@ -2307,7 +1754,7 @@ export function ScillmDashboard() {
 
         <div style={{ flex: 1 }} />
 
-        <span style={{ ...META_STYLE }}>
+        <span className="scillm-meta">
           {lastUpdate ? lastUpdate.toLocaleTimeString() : ""}
         </span>
         <button
@@ -2315,68 +1762,26 @@ export function ScillmDashboard() {
           data-qs-action="SCILLM_REFRESH"
           title="Refresh scillm monitor data"
           onClick={refresh}
-          className="press-scale scillm-focus"
-          style={{
-            fontSize: 9,
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.1em",
-            padding: "6px 12px",
-            border: `1px solid ${EMBRY.border}`,
-            backgroundColor: "transparent",
-            color: EMBRY.white,
-            cursor: "pointer",
-          }}
+          className="press-scale scillm-focus scillm-button--refresh"
         >
           Refresh
         </button>
       </header>
 
-      <main style={{ overflow: "hidden", backgroundColor: EMBRY.bg, minHeight: 0 }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            overflow: "hidden",
-            minHeight: 0,
-          }}
-        >
+      <main className="scillm-dashboard__main">
+        <div className="scillm-dashboard__content">
           <div
-            style={{
-              ...FLEX_ROW_CENTER_GAP12,
-              padding: "8px 16px",
-              borderBottom: `1px solid ${EMBRY.border}`,
-              backgroundColor: EMBRY.bgPanel
-            }}
+            className="scillm-dashboard__subheader"
           >
-            <div
-              style={{
-                display: "flex",
-                gap: 0,
-                backgroundColor: EMBRY.bgDeep,
-                border: `1px solid ${EMBRY.border}`,
-              }}
-            >
+            <div className="scillm-dashboard__tabs">
               <button
                 data-qid="scillm:tab:incoming"
                 data-qs-action="SCILLM_TAB_INCOMING"
                 title="Switch to incoming calls view"
                 onClick={() => setCallsSubview("incoming")}
-                className="press-scale scillm-focus"
+                className={`press-scale scillm-focus scillm-button--tab ${callsSubview === "incoming" ? 'scillm-button--filter-active' : 'scillm-text-dim'}`}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "6px 12px",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  border: "none",
                   backgroundColor: callsSubview === "incoming" ? `${EMBRY.blue}20` : "transparent",
-                  color: callsSubview === "incoming" ? EMBRY.blue : EMBRY.dim,
-                  cursor: "pointer",
                   borderRight: `1px solid ${EMBRY.border}`,
                 }}
               >
@@ -2387,26 +1792,15 @@ export function ScillmDashboard() {
                 data-qs-action="SCILLM_TAB_DEBUG"
                 title="Switch to debug logs view"
                 onClick={() => setCallsSubview("debug")}
-                className="press-scale scillm-focus"
+                className={`press-scale scillm-focus scillm-button--tab ${callsSubview === "debug" ? 'scillm-button--filter-active' : 'scillm-text-dim'}`}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "6px 12px",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  border: "none",
                   backgroundColor: callsSubview === "debug" ? `${EMBRY.blue}20` : "transparent",
-                  color: callsSubview === "debug" ? EMBRY.blue : EMBRY.dim,
-                  cursor: "pointer",
                 }}
               >
                 Debug Logs
               </button>
             </div>
-            <div style={{ ...META_STYLE }}>
+            <div className="scillm-meta">
               {callsSubview === "incoming"
                 ? "Live incoming calls view. Search stays local to the incoming table."
                 : "Raw proxy logs and provider state."}
@@ -2416,30 +1810,15 @@ export function ScillmDashboard() {
               <>
                 <ProviderAuthStrip auth={auth} />
                 <div
-                  style={{
-                    width: 240,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "4px 10px",
-                    background: EMBRY.bgDeep,
-                    border: `1px solid ${EMBRY.border}`,
-                  }}
+                  className="scillm-search-box scillm-search-box--deep"
+                  style={{ width: 240, padding: "4px 10px" }}
                 >
                   <Search size={12} color={EMBRY.dim} />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Filter logs..."
-                    style={{
-                      flex: 1,
-                      background: "none",
-                      border: "none",
-                      outline: "none",
-                      color: EMBRY.white,
-                      fontSize: 11,
-                      fontFamily: MONO,
-                    }}
+                    className="scillm-input"
                   />
                   {search && (
                     <button
@@ -2447,8 +1826,7 @@ export function ScillmDashboard() {
                       data-qs-action="SCILLM_CLEAR_SEARCH"
                       title="Clear search"
                       onClick={() => setSearch("")}
-                      className="press-scale scillm-focus"
-                      style={{ background: "none", border: "none", color: EMBRY.dim, cursor: "pointer", padding: 6, display: "flex", alignItems: "center", justifyContent: "center" }}
+                      className="press-scale scillm-focus scillm-button--icon"
                     >
                       <X size={12} />
                     </button>
@@ -2458,14 +1836,7 @@ export function ScillmDashboard() {
             )}
           </div>
           {callsSubview === "incoming" && hasOverviewSections && (
-            <div
-              style={{
-                flex: "1 1 auto",
-                minHeight: 0,
-                overflowY: "auto",
-                overflowX: "hidden",
-              }}
-            >
+            <div className="scillm-dashboard__scroll">
               <OrchestratorStrip batchJobs={batchJobs} onInspect={setSelectedJob} />
               {hasIncomingCallsTable && (
                 <ActiveCreateQrasTable
@@ -2482,30 +1853,22 @@ export function ScillmDashboard() {
           )}
           {callsSubview === "debug" && (
             <section
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: "1 1 auto",
-                minHeight: 0,
-                borderTop: `1px solid ${EMBRY.border}`,
-                backgroundColor: EMBRY.bgPanel,
-              }}
+              className="scillm-dashboard__section"
             >
               <div
+                className="scillm-flex-row scillm-gap-12 scillm-flex-between"
                 style={{
-                  ...FLEX_ROW_CENTER_GAP12,
-                  justifyContent: "space-between",
                   padding: "10px 16px",
                   borderBottom: `1px solid ${EMBRY.border}`
                 }}
               >
                 <div>
-                  <div style={{ ...WHITE_HEADING_STYLE }}>Raw scillm jobs</div>
-                  <div style={{ ...META_STYLE }}>
+                  <div className="scillm-heading">Raw scillm jobs</div>
+                  <div className="scillm-meta">
                     Proxy/debug view. Use this when you need caller-grouped logs instead of manifest intent.
                   </div>
                 </div>
-                <div style={{ ...META_STYLE }}>
+                <div className="scillm-meta">
                   {jobsTableLogs.length} call rows in scope
                 </div>
               </div>
