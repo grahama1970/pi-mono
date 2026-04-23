@@ -23,6 +23,77 @@ import { CreateQrasManifestPane } from "./CreateQrasManifestPane";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
 
+const LABEL_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 800,
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  color: EMBRY.dim,
+};
+
+const META_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  color: EMBRY.dim,
+};
+
+const WHITE_HEADING_STYLE: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 800,
+  color: EMBRY.white,
+};
+
+const FLEX_COL_GAP4: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
+};
+
+const FLEX_COL_GAP8: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 8,
+};
+
+const FLEX_ROW_CENTER_GAP8: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+};
+
+const FLEX_ROW_CENTER_GAP12: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+};
+
+const TABLE_BORDER_BOTTOM: React.CSSProperties = {
+  padding: "8px 10px",
+  borderBottom: `1px solid ${EMBRY.border}`,
+  fontSize: 9,
+  fontWeight: 800,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+  color: EMBRY.dim,
+};
+
+const LINE_CLAMP2: React.CSSProperties = {
+  overflow: "hidden",
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 2,
+  wordBreak: "break-word",
+  lineHeight: 1.35,
+};
+
+const BUTTON_BASE: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  cursor: "pointer",
+};
+
+
 // Inject spin animation for loader
 if (typeof document !== "undefined" && !document.getElementById("scillm-animations")) {
   const style = document.createElement("style");
@@ -116,7 +187,7 @@ function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
   };
 
   return (
-    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+    <div style={{ ...FLEX_ROW_CENTER_GAP12 }}>
       {providers.map(({ name, data, key }) => {
         if (!data) return null;
         const color = getStatusColor(data.status);
@@ -653,12 +724,11 @@ function PromptDialog({
           <div style={{ minWidth: 0 }}>
             <div
               style={{
-                fontSize: 10,
+                ...META_STYLE,
                 fontWeight: 800,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: EMBRY.dim,
-                marginBottom: 6,
+                marginBottom: 6
               }}
             >
               Full prompt
@@ -847,14 +917,18 @@ function ActiveCreateQrasTable({
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 10, minWidth: 0 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
-            <div className="text-balance" style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>
+          <div style={{ ...FLEX_COL_GAP4, minWidth: 0 }}>
+            <div className="text-balance" style={{ ...WHITE_HEADING_STYLE }}>
               Incoming
             </div>
-            <div className="text-pretty" style={{ fontSize: 10, color: EMBRY.dim }}>Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
+            <div className="text-pretty" style={{ ...META_STYLE }}>Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginLeft: "auto" }}>
+        <div style={{
+          ...FLEX_ROW_CENTER_GAP8,
+          flexWrap: "wrap",
+          marginLeft: "auto"
+        }}>
           {projectOptions.length > 1 && (
             <select
               data-qid="scillm:scope:project"
@@ -949,7 +1023,7 @@ function ActiveCreateQrasTable({
               </button>
             )}
           </div>
-          <div style={{ fontSize: 10, color: EMBRY.dim }}>
+          <div style={{ ...META_STYLE }}>
             {filteredRows.length}/{rows.length} shown
           </div>
           <button
@@ -977,7 +1051,7 @@ function ActiveCreateQrasTable({
         </div>
       </div>
       <>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <div style={{ ...FLEX_ROW_CENTER_GAP8, flexWrap: "wrap" }}>
             {[
               { key: "all", label: `All (${rows.length})` },
               { key: "complete", label: `Complete (${rows.filter((row: IncomingCallRow) => row.outcome.status === "ok").length})` },
@@ -1010,7 +1084,7 @@ function ActiveCreateQrasTable({
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 10, color: EMBRY.dim }}>
+          <div style={{ ...META_STYLE }}>
             Filters: <span style={{ color: EMBRY.red }}>Transport</span> means the proxy call itself failed. <span style={{ color: EMBRY.amber }}>Schema</span> and <span style={{ color: EMBRY.amber }}>Empty</span> mean the returned payload was malformed or empty.
           </div>
 
@@ -1038,18 +1112,12 @@ function ActiveCreateQrasTable({
                       <th
                         key={label}
                         style={{
-                          padding: "8px 10px",
-                          borderBottom: `1px solid ${EMBRY.border}`,
-                          fontSize: 9,
-                          fontWeight: 800,
-                          letterSpacing: "0.08em",
-                          textTransform: "uppercase",
-                          color: EMBRY.dim,
+                          ...TABLE_BORDER_BOTTOM,
                           position: "sticky",
                           top: 0,
                           background: EMBRY.bgPanel,
                           zIndex: 1,
-                          textAlign: "left",
+                          textAlign: "left"
                         }}
                       >
                         {label}
@@ -1159,14 +1227,7 @@ function ActiveCreateQrasTable({
                           }}
                         >
                           <div
-                            style={{
-                              overflow: "hidden",
-                              display: "-webkit-box",
-                              WebkitBoxOrient: "vertical",
-                              WebkitLineClamp: 2,
-                              wordBreak: "break-word",
-                              lineHeight: 1.35,
-                            }}
+                            style={{ ...LINE_CLAMP2 }}
                           >
                             {evidenceText}
                           </div>
@@ -1181,14 +1242,7 @@ function ActiveCreateQrasTable({
                           }}
                         >
                           <div
-                            style={{
-                              overflow: "hidden",
-                              display: "-webkit-box",
-                              WebkitBoxOrient: "vertical",
-                              WebkitLineClamp: 2,
-                              wordBreak: "break-word",
-                              lineHeight: 1.35,
-                            }}
+                            style={{ ...LINE_CLAMP2 }}
                           >
                             {evidenceCaseText}
                           </div>
@@ -1250,7 +1304,7 @@ function ActiveCreateQrasTable({
                     <div style={{ fontSize: 10, fontWeight: 800, color: EMBRY.red, letterSpacing: "0.06em", textTransform: "uppercase" }}>
                       Failure Stream
                     </div>
-                    <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                    <div style={{ ...META_STYLE }}>
                       {failureRows.length} failed manifest rows
                     </div>
                   </div>
@@ -1313,14 +1367,9 @@ function ActiveCreateQrasTable({
                           </div>
                         <div
                           style={{
+                            ...LINE_CLAMP2,
                             fontSize: 9,
-                            color: EMBRY.dim,
-                            overflow: "hidden",
-                            display: "-webkit-box",
-                            WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 2,
-                            wordBreak: "break-word",
-                            lineHeight: 1.35,
+                            color: EMBRY.dim
                           }}
                         >
                           {row.outcome.summary}
@@ -1367,17 +1416,20 @@ function OrchestratorStrip({
     >
       <div
         style={{
+          ...FLEX_ROW_CENTER_GAP8,
           padding: "8px 16px",
-        display: "flex",
-          alignItems: "center",
-          gap: 8,
-          borderBottom: `1px solid ${EMBRY.border}`,
+          borderBottom: `1px solid ${EMBRY.border}`
         }}
       >
-        <span className="text-balance" style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: EMBRY.dim }}>
+        <span className="text-balance" style={{
+          ...META_STYLE,
+          fontWeight: 800,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase"
+        }}>
           Batch Progress
         </span>
-        <span style={{ fontSize: 10, color: EMBRY.dim }}>
+        <span style={{ ...META_STYLE }}>
           Manifest items, LLM calls, stored QRAs, and skips are separate counters. Inspect opens the full diagnostic dossier.
         </span>
       </div>
@@ -1415,10 +1467,10 @@ function OrchestratorStrip({
               backgroundColor: EMBRY.bgPanel,
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+            <div style={{ ...FLEX_COL_GAP8, minWidth: 0 }}>
+              <div style={{ ...FLEX_ROW_CENTER_GAP8, minWidth: 0 }}>
                 <div style={glowDot(color)} />
-                <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white, minWidth: 0 }}>{job.name}</div>
+                <div style={{ ...WHITE_HEADING_STYLE, minWidth: 0 }}>{job.name}</div>
                 <div
                   style={{
                     display: "inline-flex",
@@ -1461,13 +1513,18 @@ function OrchestratorStrip({
               <StatPill label="ETA" value={formatEta(eta.tonightEtaSeconds)} small color={EMBRY.white} />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
-              <div style={{ fontSize: 10, color: EMBRY.dim }}>
+            <div style={{ ...FLEX_COL_GAP4, minWidth: 0 }}>
+              <div style={{ ...META_STYLE }}>
                 {state?.phase || "idle"}
                 {state?.chunk_num && state?.total_chunks ? ` · chunk ${state.chunk_num}/${state.total_chunks}` : ""}
                 {state?.range_start && state?.range_end ? ` · range ${state.range_start}-${state.range_end}` : ""}
               </div>
-              <div style={{ fontSize: 10, color: EMBRY.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <div style={{
+                ...META_STYLE,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }}>
                 {state?.current_item || state?.last_error || state?.last_message || "No active item"}
               </div>
             </div>
@@ -1769,7 +1826,7 @@ ${analysis}
           >
             {statusText}
           </span>
-          <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 8 }}>
+          <span style={{ ...META_STYLE, marginLeft: 8 }}>
             {callTimestamp}
           </span>
         </div>
@@ -1920,13 +1977,12 @@ ${analysis}
                   onClick={() => setAnalysis(null)}
                   className="press-scale scillm-focus"
                   style={{
+                    ...META_STYLE,
                     padding: "6px 12px",
-                    fontSize: 10,
                     fontWeight: 700,
                     border: "none",
                     backgroundColor: `${EMBRY.dim}20`,
-                    color: EMBRY.dim,
-                    cursor: "pointer",
+                    cursor: "pointer"
                   }}
                 >
                   Clear
@@ -1934,7 +1990,7 @@ ${analysis}
               </div>
             </div>
           ) : (
-            <div style={{ fontSize: 10, color: EMBRY.dim, fontStyle: "italic" }}>
+            <div style={{ ...META_STYLE, fontStyle: "italic" }}>
               Click "Analyze Call" to get LLM-powered diagnosis
             </div>
           )}
@@ -1979,15 +2035,14 @@ ${analysis}
         <Section title="Raw Log Entry">
           <pre
             style={{
-              fontSize: 10,
+              ...META_STYLE,
               fontFamily: MONO,
-              color: EMBRY.dim,
               backgroundColor: EMBRY.bgDeep,
               padding: 12,
               overflow: "auto",
               maxHeight: 200,
               whiteSpace: "pre-wrap",
-              wordBreak: "break-all",
+              wordBreak: "break-all"
             }}
           >
             {JSON.stringify(log, null, 2)}
@@ -2025,7 +2080,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Field({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <span style={{ fontSize: 10, color: EMBRY.dim }}>{label}</span>
+      <span style={{ ...META_STYLE }}>{label}</span>
       <span
         style={{
           fontSize: 10,
@@ -2179,7 +2234,7 @@ export function ScillmDashboard() {
           gap: 16,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ ...FLEX_ROW_CENTER_GAP8 }}>
           <span style={{ fontSize: 16, fontWeight: 900, color: EMBRY.blue }}>scillm</span>
           <span style={{ fontSize: 16, fontWeight: 700, color: EMBRY.white }}>Monitor</span>
           <div style={glowDot(error ? EMBRY.red : EMBRY.green)} />
@@ -2252,7 +2307,7 @@ export function ScillmDashboard() {
 
         <div style={{ flex: 1 }} />
 
-        <span style={{ fontSize: 10, color: EMBRY.dim }}>
+        <span style={{ ...META_STYLE }}>
           {lastUpdate ? lastUpdate.toLocaleTimeString() : ""}
         </span>
         <button
@@ -2289,12 +2344,10 @@ export function ScillmDashboard() {
         >
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
+              ...FLEX_ROW_CENTER_GAP12,
               padding: "8px 16px",
               borderBottom: `1px solid ${EMBRY.border}`,
-              backgroundColor: EMBRY.bgPanel,
+              backgroundColor: EMBRY.bgPanel
             }}
           >
             <div
@@ -2353,7 +2406,7 @@ export function ScillmDashboard() {
                 Debug Logs
               </button>
             </div>
-            <div style={{ fontSize: 10, color: EMBRY.dim }}>
+            <div style={{ ...META_STYLE }}>
               {callsSubview === "incoming"
                 ? "Live incoming calls view. Search stays local to the incoming table."
                 : "Raw proxy logs and provider state."}
@@ -2440,21 +2493,19 @@ export function ScillmDashboard() {
             >
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
+                  ...FLEX_ROW_CENTER_GAP12,
                   justifyContent: "space-between",
-                  gap: 12,
                   padding: "10px 16px",
-                  borderBottom: `1px solid ${EMBRY.border}`,
+                  borderBottom: `1px solid ${EMBRY.border}`
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white }}>Raw scillm jobs</div>
-                  <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                  <div style={{ ...WHITE_HEADING_STYLE }}>Raw scillm jobs</div>
+                  <div style={{ ...META_STYLE }}>
                     Proxy/debug view. Use this when you need caller-grouped logs instead of manifest intent.
                   </div>
                 </div>
-                <div style={{ fontSize: 10, color: EMBRY.dim }}>
+                <div style={{ ...META_STYLE }}>
                   {jobsTableLogs.length} call rows in scope
                 </div>
               </div>

@@ -12,6 +12,77 @@ import type { LogEntry } from "../../hooks/useScillmData";
 
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
 
+const LABEL_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 800,
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  color: EMBRY.dim,
+};
+
+const META_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  color: EMBRY.dim,
+};
+
+const WHITE_HEADING_STYLE: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 800,
+  color: EMBRY.white,
+};
+
+const FLEX_COL_GAP4: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
+};
+
+const FLEX_COL_GAP8: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 8,
+};
+
+const FLEX_ROW_CENTER_GAP8: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+};
+
+const FLEX_ROW_CENTER_GAP12: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+};
+
+const TABLE_BORDER_BOTTOM: React.CSSProperties = {
+  padding: "8px 10px",
+  borderBottom: `1px solid ${EMBRY.border}`,
+  fontSize: 9,
+  fontWeight: 800,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+  color: EMBRY.dim,
+};
+
+const LINE_CLAMP2: React.CSSProperties = {
+  overflow: "hidden",
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 2,
+  wordBreak: "break-word",
+  lineHeight: 1.35,
+};
+
+const BUTTON_BASE: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  cursor: "pointer",
+};
+
+
 // Spinner animation for in-progress items
 const spinnerKeyframes = `
 @keyframes spin {
@@ -333,7 +404,7 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
   const pct = total > 0 ? (completed / total) * 100 : 0;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <div style={{ ...FLEX_ROW_CENTER_GAP8 }}>
       <div
         style={{
           width: 80,
@@ -350,7 +421,7 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
           }}
         />
       </div>
-      <span className="tabular-nums" style={{ fontSize: 10, fontFamily: MONO, color: EMBRY.dim }}>
+      <span className="tabular-nums" style={{ ...META_STYLE, fontFamily: MONO }}>
         {completed}/{total}
       </span>
     </div>
@@ -419,7 +490,7 @@ function CallRow({
       }}
     >
       <td style={{ padding: `8px 16px 8px ${paddingLeft}px`, fontSize: 11 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ ...FLEX_COL_GAP4 }}>
           <div>
             <span style={{ color: EMBRY.dim }}>{prefix}</span>{" "}
             <span style={{ color: EMBRY.white, fontFamily: MONO }}>
@@ -446,7 +517,7 @@ function CallRow({
           </div>
         </div>
       </td>
-      <td className="tabular-nums" style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ ...META_STYLE, padding: "8px" }}>
         {call.total_tokens || 0} tokens
       </td>
       <td style={{ padding: "8px" }}>
@@ -472,13 +543,21 @@ function CallRow({
           );
         })()}
       </td>
-      <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{
+        ...META_STYLE,
+        padding: "8px",
+        fontFamily: MONO
+      }}>
         {call.duration_ms != null ? `${(call.duration_ms / 1000).toFixed(1)}s` : "—"}
       </td>
-      <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{
+        ...META_STYLE,
+        padding: "8px",
+        fontFamily: MONO
+      }}>
         ${(call.cost_usd || 0).toFixed(4)}
       </td>
-      <td className="tabular-nums" style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
+      <td className="tabular-nums" style={{ ...META_STYLE, padding: "8px" }}>
         {new Date(call.ts).toLocaleTimeString("en-US", { hour12: false })}
       </td>
       <td style={{ padding: "8px" }}>
@@ -564,11 +643,11 @@ function JobRow({
           borderLeft: `4px solid ${borderColor}`,
         }}
       >
-        <td style={{ padding: "12px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+        <td style={{ ...FLEX_ROW_CENTER_GAP8, padding: "12px 16px" }}>
           {isExpanded ? <ChevronDown size={14} color={EMBRY.dim} /> : <ChevronRight size={14} color={EMBRY.dim} />}
           <span style={{ fontWeight: 700, color: EMBRY.white }}>{job.caller}</span>
           {job.batchId && (
-            <span style={{ fontSize: 10, color: EMBRY.dim, fontFamily: MONO }}>
+            <span style={{ ...META_STYLE, fontFamily: MONO }}>
               #{job.batchId.slice(0, 8)}
             </span>
           )}
@@ -615,7 +694,7 @@ function JobRow({
           ${job.totalCost.toFixed(3)}
         </td>
         <td className="tabular-nums" style={{ padding: "12px 8px" }}>
-          <span style={{ fontSize: 10, color: EMBRY.dim }}>
+          <span style={{ ...META_STYLE }}>
             {new Date(job.lastActivity).toLocaleTimeString("en-US", { hour12: false })}
           </span>
         </td>
@@ -625,7 +704,11 @@ function JobRow({
       {isExpanded && (
         <tr style={{ backgroundColor: EMBRY.bgPanel, borderLeft: `4px solid ${borderColor}55` }}>
           <td colSpan={7} style={{ padding: "8px 16px", fontSize: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <div style={{
+              ...FLEX_ROW_CENTER_GAP12,
+              justifyContent: "space-between",
+              flexWrap: "wrap"
+            }}>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {[
                   { key: "all", label: `All calls (${job.calls.length})` },
@@ -658,7 +741,7 @@ function JobRow({
                   </button>
                 ))}
               </div>
-              <div style={{ fontSize: 10, color: EMBRY.dim }}>
+              <div style={{ ...META_STYLE }}>
                 Completed responses stay visible here even while the parent job is still running.
               </div>
             </div>
@@ -701,7 +784,7 @@ function JobRow({
                   <span style={{ color: EMBRY.white, fontWeight: 600 }}>
                     Chunk {chunk.index}/{chunk.total}
                   </span>
-                  <span style={{ color: EMBRY.dim, marginLeft: 8, fontSize: 10 }}>
+                  <span style={{ ...META_STYLE, marginLeft: 8 }}>
                     ({chunk.completedCalls}/{chunk.calls.length} complete)
                   </span>
                   <span style={{ color: chunkStatusColor, marginLeft: 8, fontSize: 12 }}>
@@ -716,7 +799,11 @@ function JobRow({
                     </span>
                   )}
                 </td>
-                <td className="tabular-nums" style={{ padding: "8px", fontFamily: MONO, fontSize: 10, color: EMBRY.dim }}>
+                <td className="tabular-nums" style={{
+                  ...META_STYLE,
+                  padding: "8px",
+                  fontFamily: MONO
+                }}>
                   {(chunk.totalDurationMs / 1000).toFixed(1)}s
                 </td>
                 <td style={{ padding: "8px" }} />
@@ -742,14 +829,18 @@ function JobRow({
         {/* In-flight chunk indicator when job is running */}
         {job.status === "running" && job.chunkTotal && (
           <tr style={{ backgroundColor: EMBRY.bgDeep, borderLeft: `4px solid ${EMBRY.blue}` }}>
-            <td style={{ padding: "8px 16px 8px 32px", fontSize: 11, display: "flex", alignItems: "center", gap: 8 }}>
+            <td style={{
+              ...FLEX_ROW_CENTER_GAP8,
+              padding: "8px 16px 8px 32px",
+              fontSize: 11
+            }}>
               <span style={{ display: "inline-block", width: 12, height: 12, border: `2px solid ${EMBRY.blue}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
               <span style={{ color: EMBRY.blue, fontWeight: 600 }}>
                 Chunk {(job.chunks.length > 0 ? Math.max(...job.chunks.map(c => c.index)) : 0) + 1}/{job.chunkTotal}
               </span>
-              <span style={{ color: EMBRY.dim, fontSize: 10 }}>processing...</span>
+              <span style={{ ...META_STYLE }}>processing...</span>
             </td>
-            <td colSpan={6} style={{ padding: "8px", fontSize: 10, color: EMBRY.dim }}>
+            <td colSpan={6} style={{ ...META_STYLE, padding: "8px" }}>
               4 calls in-flight
             </td>
           </tr>
@@ -954,12 +1045,10 @@ export function JobsTable({ logs, onCallClick }: Props) {
 
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
+          ...FLEX_ROW_CENTER_GAP8,
           padding: "10px 16px",
           borderBottom: `1px solid ${EMBRY.border}`,
-          backgroundColor: EMBRY.bgPanel,
+          backgroundColor: EMBRY.bgPanel
         }}
       >
         <div
@@ -989,7 +1078,7 @@ export function JobsTable({ logs, onCallClick }: Props) {
             }}
           />
         </div>
-        <div style={{ fontSize: 10, color: EMBRY.dim }}>
+        <div style={{ ...META_STYLE }}>
           {filteredJobs.length} shown
         </div>
       </div>
