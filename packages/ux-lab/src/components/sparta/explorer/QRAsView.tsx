@@ -66,6 +66,7 @@ function statusIndicators(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) 
       aria-label="Evidence status"
       title={title}
       onClick={onEvidenceClick}
+      className="press-scale"
       style={{
         width: 32,
         height: 32,
@@ -341,6 +342,7 @@ export function QRAsView() {
         data-qs-action="REJECT_QRA"
         title="Reject QRA"
         onClick={() => handleDecision('reject')}
+        className="press-scale"
         style={decisionBtn(EMBRY.red)}
       >
         <XCircle size={14} />
@@ -352,6 +354,7 @@ export function QRAsView() {
         data-qs-action="ACCEPT_QRA"
         title="Accept QRA"
         onClick={() => handleDecision('accept')}
+        className="press-scale"
         style={decisionBtn(EMBRY.green)}
       >
         <CheckCircle2 size={14} />
@@ -377,7 +380,7 @@ export function QRAsView() {
         {controlFilter && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', backgroundColor: `${EMBRY.accent}12`, borderRadius: 4, border: `1px solid ${EMBRY.accent}33`, marginLeft: 16 }}>
             <span style={{ fontSize: 10, color: EMBRY.accent }}>Filtered: {controlFilter}</span>
-            <button data-qid="qras:filter:clear" data-qs-action="CLEAR_TAB_FILTER" onClick={() => nav.clearTabFilter('QRAs')} title="Clear QRA filter" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
+            <button data-qid="qras:filter:clear" data-qs-action="CLEAR_TAB_FILTER" onClick={() => nav.clearTabFilter('QRAs')} title="Clear QRA filter" className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12, width: 24, height: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 4 }}>×</button>
           </div>
         )}
 
@@ -387,7 +390,7 @@ export function QRAsView() {
         </span>
         
         {undoTimer && (
-          <button data-qid="qras:action:undo" onClick={undoLast} data-qs-action="UNDO_DECISION" title="Undo last decision" style={{
+          <button data-qid="qras:action:undo" onClick={undoLast} data-qs-action="UNDO_DECISION" title="Undo last decision" className="press-scale" style={{
             fontSize: 10, padding: '4px 12px', borderRadius: 4, cursor: 'pointer',
             border: `1px solid ${EMBRY.amber}44`, backgroundColor: `${EMBRY.amber}12`, color: EMBRY.amber,
           }}>
@@ -409,7 +412,7 @@ export function QRAsView() {
         }}>
            {leftCollapsed ? (
              <div style={{ padding: '16px 0', display: 'flex', justifyContent: 'center' }}>
-               <button title="Expand Left Panel" onClick={() => setLeftCollapsed(false)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 8, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
+               <button title="Expand Left Panel" onClick={() => setLeftCollapsed(false)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 8, borderRadius: 6, transition: 'background-color 0.2s' }}>
                  <PanelLeft size={20} />
                </button>
              </div>
@@ -434,7 +437,7 @@ export function QRAsView() {
                         }}
                       />
                    </div>
-                   <button title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4, borderRadius: 6, transition: 'background-color 0.2s', ':hover': { backgroundColor: EMBRY.bgPanel } } as any}>
+                   <button title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4, borderRadius: 6, transition: 'background-color 0.2s' }}>
                      <PanelLeftClose size={18} />
                    </button>
                  </div>
@@ -450,6 +453,7 @@ export function QRAsView() {
                            <button
                              key={s}
                              onClick={() => setSource(s)}
+                             className="press-scale"
                              style={{
                                flex: 1,
                                fontSize: 9,
@@ -482,6 +486,7 @@ export function QRAsView() {
                            data-qs-action="FILTER_EVIDENCE"
                            title={`Filter queue by ${status} evidence status`}
                            onClick={() => setEvidenceFilter(status)}
+                           className="press-scale"
                            style={{
                              flex: 1,
                              fontSize: 8.5,
@@ -512,6 +517,7 @@ export function QRAsView() {
                            data-qs-action="FILTER_MIND"
                            title={`Filter by ${tag} category`}
                            onClick={() => setMindFilter(isActive ? null : tag)}
+                           className="press-scale"
                            style={{
                              fontSize: 8.5, fontWeight: 700, padding: '2px 6px', borderRadius: 4,
                              border: `1px solid ${isActive ? EMBRY.accent : EMBRY.border}`,
@@ -686,6 +692,7 @@ export function QRAsView() {
                       onMouseLeave={() => setShowEntitiesHelp(false)}
                       onFocus={() => setShowEntitiesHelp(true)}
                       onBlur={() => setShowEntitiesHelp(false)}
+                      className="press-scale"
                       style={{
                         fontSize: 8.5,
                         color: EMBRY.dim,
@@ -739,6 +746,7 @@ export function QRAsView() {
                           data-qs-action={action}
                           title={option.title}
                           onClick={() => setEntityViewMode(option.mode)}
+                          className="press-scale"
                           style={{
                             fontSize: 9,
                             fontWeight: 700,
@@ -760,6 +768,7 @@ export function QRAsView() {
                     <button
                       onClick={() => setShowBatchModal(true)}
                       title={`View batch: ${current.run_id}`}
+                      className="press-scale"
                       style={{
                         background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 4,
                         padding: '3px 6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
@@ -819,7 +828,7 @@ export function QRAsView() {
                 <Layers size={18} color={EMBRY.accent} />
                 <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Batch Information</span>
               </div>
-              <button onClick={() => setShowBatchModal(false)} style={{
+              <button onClick={() => setShowBatchModal(false)} className="press-scale" style={{
                 background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4,
               }}>
                 <X size={18} />

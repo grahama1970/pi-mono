@@ -234,6 +234,7 @@ function ToggleSection({
       <button
         type="button"
         onClick={onToggle}
+        className="press-scale"
         style={{
           width: '100%',
           display: 'flex',
@@ -421,6 +422,7 @@ export function EvidenceCaseTrace({
                     data-qs-action="NAVIGATE_TO_CONTROL"
                     title={`Open control ${id}`}
                     onClick={() => onNavigateToControl(id)}
+                    className="press-scale"
                     style={{
                       padding: '3px 6px',
                       borderRadius: 4,
@@ -630,6 +632,7 @@ export function EvidenceCaseTrace({
                     data-qs-action="OPEN_LEAN4_VIEWER"
                     title="Open Lean4 Lemma Viewer"
                     onClick={onOpenFormalMethods}
+                    className="press-scale"
                     style={{
                       padding: '4px 8px',
                       borderRadius: 6,
@@ -729,6 +732,7 @@ export function EvidenceCaseTrace({
                       data-qs-action="SELECT_RELATED_QRA"
                       title={`Open related QRA ${entry.qraId}`}
                       onClick={() => onSelectRelatedQRA?.(entry.key)}
+                      className="press-scale"
                       style={{
                         display: 'grid',
                         gridTemplateColumns: '64px 52px 1fr',
@@ -872,6 +876,7 @@ export function EvidenceCaseTrace({
                   data-qs-action="EDIT_ANSWER"
                   title="Edit the answer inline"
                   onClick={onStartEdit}
+                  className="press-scale"
                   style={{
                     padding: '4px 8px',
                     borderRadius: 5,
@@ -971,6 +976,7 @@ export function EvidenceCaseTrace({
                     data-qs-action="TOGGLE_EVIDENCE_STEP"
                     title={`Toggle ${step.title}`}
                     onClick={() => setExpandedStep((current) => current === step.id ? null : step.id)}
+                    className="press-scale"
                     style={{
                       width: '100%',
                       display: 'flex',
@@ -1041,6 +1047,7 @@ export function EvidenceCaseTrace({
                         data-qs-action="NAVIGATE_TO_CONTROL"
                         title={`Open grounded control ${entry.id}`}
                         onClick={() => onNavigateToControl(entry.id)}
+                        className="press-scale"
                         style={{
                           padding: '3px 6px',
                           borderRadius: 4,
@@ -1120,6 +1127,7 @@ export function EvidenceCaseTrace({
                 data-qs-action="CANCEL_EDIT_ANSWER"
                 title="Cancel answer editing"
                 onClick={onCancelEdit}
+                className="press-scale"
                 style={{ width: primaryActionCount <= 1 && variant !== 'chat' ? 188 : '100%', padding: '10px 14px', borderRadius: 6, border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim, cursor: 'pointer', fontSize: 10, fontWeight: 800, letterSpacing: 0.4, textTransform: 'uppercase' }}
               >
                 Cancel
@@ -1133,6 +1141,7 @@ export function EvidenceCaseTrace({
                 title="Save the edited answer and rerun evidence context"
                 onClick={onSaveAndRerun}
                 disabled={validating}
+                className="press-scale"
                 style={{ width: primaryActionCount <= 1 && variant !== 'chat' ? 188 : '100%', padding: '10px 14px', borderRadius: 6, border: 'none', backgroundColor: EMBRY.accent, color: EMBRY.white, cursor: validating ? 'wait' : 'pointer', fontSize: 10, fontWeight: 800, letterSpacing: 0.4, textTransform: 'uppercase' }}
               >
                 {validating ? 'Rerunning…' : 'Save & Rerun'}
@@ -1150,6 +1159,7 @@ export function EvidenceCaseTrace({
                 title="Rerun /create-evidence-case"
                 onClick={onRunValidation}
                 disabled={validating}
+                className="press-scale"
                 style={{ flexShrink: 0, width: 36, height: 36, padding: 0, borderRadius: 6, border: 'none', backgroundColor: 'transparent', color: EMBRY.dim, cursor: validating ? 'wait' : 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <RefreshCw size={14} />
@@ -1162,6 +1172,7 @@ export function EvidenceCaseTrace({
                 data-qs-action="REFINE_IN_CHAT"
                 title="Open this QRA in SPARTA Chat"
                 onClick={onEscalateToChat}
+                className="press-scale"
                 style={{ flexShrink: 0, width: 36, height: 36, padding: 0, borderRadius: 6, border: 'none', background: 'transparent', color: EMBRY.dim, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <MessageSquareText size={14} />
