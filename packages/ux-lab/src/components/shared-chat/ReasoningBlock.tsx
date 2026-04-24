@@ -58,6 +58,7 @@ export default function ReasoningBlock({
 
   return (
     <EvidenceCaseTrace
+      variant="chat"
       questionNode={data.description ? <span>{data.description}</span> : <span>Evidence case for {data.control_ids.join(', ') || 'the current claim'}.</span>}
       reviewStatus={data.verdict || data.grade || 'pending'}
       confidence={null}

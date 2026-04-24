@@ -147,16 +147,19 @@ const Mockups = ({ projectId }: { projectId: string }) => {
 };
 
 const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
+  const hideFinalSiteChrome = projectId === 'pdf-lab';
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
-      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
-        <div className="flex items-center gap-4 px-2">
-          <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
-          <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
-            <Activity className="w-3 h-3" /> LIVE_RENDER
+      {!hideFinalSiteChrome && (
+        <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
+          <div className="flex items-center gap-4 px-2">
+            <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
+            <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
+              <Activity className="w-3 h-3" /> LIVE_RENDER
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
@@ -1460,22 +1463,8 @@ const useSystemHealth = () => {
         if (res.ok) {
           const data = await res.json();
           if (data.status === 'ok' && data.memory_db_connected) {
-            // Check if any projects actually have data (e.g. binary-explorer)
-            // This is a proxy for "is the database actually populated?"
-            const blobRes = await fetch('http://localhost:3001/api/memory/list', { 
-              method: 'POST', 
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ collection: 'binary_features', limit: 1 })
-            });
-            const blobData = await blobRes.json();
-            
-            if (blobData.total === 0) {
-              setHealth('DEGRADED');
-              setDetails('Database is connected but EMPTY');
-            } else {
-              setHealth('NOMINAL');
-              setDetails('All systems online');
-            }
+            setHealth('NOMINAL');
+            setDetails('All systems online');
           } else {
             setHealth('DEGRADED');
             setDetails(data.error || 'Database disconnected');
@@ -1525,6 +1514,7 @@ export default function App() {
   const [activeView, setActiveView] = useState<View>(initial.view);
   const [hashSubpath, setHashSubpath] = useState<string>(initial.subpath || '');
   const systemHealth = useSystemHealth();
+  const isPdfLabFocus = activeProjectId === 'pdf-lab' && activeView === 'final-site';
 
   // Sync hash → state on popstate (back/forward)
   useEffect(() => {
@@ -1554,26 +1544,33 @@ export default function App() {
   }, [toast]);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-surface-base relative nvis-scan-line">
-      {/* Tactical Corner Brackets */}
-      <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-tactical-primary/20 z-[60] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-tactical-primary/20 z-[60] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-tactical-primary/20 z-[60] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-tactical-primary/20 z-[60] pointer-events-none" />
+    <div className={`flex h-screen w-screen overflow-hidden bg-surface-base relative ${isPdfLabFocus ? '' : 'nvis-scan-line'}`}>
+      {!isPdfLabFocus && (
+        <>
+          <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-tactical-primary/20 z-[60] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-tactical-primary/20 z-[60] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-tactical-primary/20 z-[60] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-tactical-primary/20 z-[60] pointer-events-none" />
+        </>
+      )}
 
-      <ProjectSidebar 
-        isCollapsed={isSidebarCollapsed} 
-        onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-        activeProjectId={activeProjectId}
-        onProjectSelect={handleProjectSelect}
-      />
-      
-      <div className="flex-1 flex flex-col relative overflow-hidden">
-        <ViewHeader 
-          activeView={activeView} 
-          onViewChange={setActiveView} 
-          systemHealth={systemHealth}
+      {!isPdfLabFocus && (
+        <ProjectSidebar 
+          isCollapsed={isSidebarCollapsed} 
+          onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+          activeProjectId={activeProjectId}
+          onProjectSelect={handleProjectSelect}
         />
+      )}
+
+      <div className="flex-1 flex flex-col relative overflow-hidden">
+        {!isPdfLabFocus && (
+          <ViewHeader 
+            activeView={activeView} 
+            onViewChange={setActiveView} 
+            systemHealth={systemHealth}
+          />
+        )}
         
         <main className="flex-1 relative min-h-0 flex flex-col tactical-corner tactical-corner-tl tactical-corner-br modern-scrollbar">
           <AnimatePresence mode="wait">

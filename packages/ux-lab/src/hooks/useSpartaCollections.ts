@@ -138,6 +138,20 @@ export interface EvidenceCase {
 	spans?: EvidenceSpan[];
 	answer?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
+	entity_resolution?: Array<{ entity?: string; status?: string; mapping?: string }>;
+	technique_check?: { status?: string; summary?: string };
+	prior_qra_evidence?: Array<{
+		_key?: string;
+		qra_id?: string;
+		source_framework?: string;
+		citation_id?: string;
+		question?: string;
+		answer?: string;
+	}>;
+	failure_stage?: string;
+	failure_reason?: string;
+	failed_items?: string[];
+	skipped_checks?: string[];
 
 	// Verification
 	formal_proof?: FormalProof;
@@ -167,6 +181,14 @@ export interface SpartaQRA {
 	crosswalk_chain?: string[];
 	qra_type?: string;
 	evidence_case?: EvidenceCase;
+	formal_proof?: FormalProof;
+	sacm_ref?: { gid: string; xml_snippet?: string; generated_at?: number };
+	lineage?: {
+		upstream_qra_keys?: string[];
+		entity_ids?: string[];
+		entity_frameworks?: string[];
+		assembled_at?: string;
+	};
 	// Grouping fields - links QRAs from same prompt/batch
 	relationship_id?: string; // /create-evidence-case: EC-{timestamp}
 	run_id?: string; // /create-qras: skill_create_qras_{mode}_{timestamp}
@@ -623,14 +645,12 @@ export function useCollectionCounts(): CollectionCounts {
 	useEffect(() => {
 		async function fetchCounts() {
 			try {
-				const [c, qLegacy, qCanon, qRel, r, u, k] = await Promise.all([
+				const [c, qLegacy, qCanon, qRel, u] = await Promise.all([
 					listPost("sparta_controls", { limit: 1, return_fields: ["_key"] }),
 					listPost("sparta_qra", { limit: 1, filters: { source_framework: "SPARTA" }, return_fields: ["_key"] }),
 					listPost("sparta_qra_canonical", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
 					listPost("sparta_qra_relationship", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
-					listPost("sparta_relationships", { limit: 1, return_fields: ["_key"] }),
 					listPost("sparta_urls", { limit: 1, return_fields: ["_key"] }),
-					listPost("sparta_url_knowledge", { limit: 1, return_fields: ["_key"] }),
 				]);
 				setCounts({
 					controls: c.total,
@@ -638,9 +658,9 @@ export function useCollectionCounts(): CollectionCounts {
 					qrasCanonical: qCanon.total,
 					qrasRelationship: qRel.total,
 					qrasTotal: qLegacy.total + qCanon.total + qRel.total,
-					relationships: r.total,
+					relationships: 0,
 					urls: u.total,
-					knowledge: k.total,
+					knowledge: 0,
 					loading: false,
 				});
 			} catch {

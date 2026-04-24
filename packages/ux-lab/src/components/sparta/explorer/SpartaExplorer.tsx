@@ -184,6 +184,42 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     return () => window.removeEventListener('sparta:navigate-control', onNavigateControl as EventListener)
   }, [navigateToTabWithFilter])
 
+  useEffect(() => {
+    const onOpenQraChat = (evt: Event) => {
+      const detail = (evt as CustomEvent<{
+        question?: string
+        answer?: string
+        reasoning?: string
+        verdict?: string
+        why?: string
+        unsupportedAnswerIds?: string[]
+      }>).detail
+      setScope('sparta')
+      setChatOpen(true)
+      const unsupported = Array.isArray(detail?.unsupportedAnswerIds) && detail.unsupportedAnswerIds.length > 0
+        ? `Unsupported answer claims: ${detail.unsupportedAnswerIds.join(', ')}.`
+        : ''
+      const contextMsg: ChatMessage = {
+        id: `qra-chat-${Date.now()}`,
+        role: 'assistant',
+        content: [
+          'This chat is scoped to the current QRA for human-guided refinement.',
+          detail?.why ? `Why the evidence case is blocked: ${detail.why}` : '',
+          unsupported,
+          detail?.question ? `Question: ${detail.question}` : '',
+          detail?.answer ? `Current answer: ${detail.answer}` : '',
+          detail?.reasoning ? `Reasoning excerpt: ${detail.reasoning.slice(0, 400)}` : '',
+          'Guide the next attempt by clarifying the grounded scope, removing unsupported claims, or asking for a safer answer.',
+        ].filter(Boolean).join('\n\n'),
+        timestamp: Date.now(),
+        entities: [],
+      }
+      setMessages((prev) => prev.length === 0 ? [contextMsg] : [...prev, contextMsg])
+    }
+    window.addEventListener('sparta:open-qra-chat', onOpenQraChat as EventListener)
+    return () => window.removeEventListener('sparta:open-qra-chat', onOpenQraChat as EventListener)
+  }, [])
+
   const navContextValue: SpartaNavContextValue = {
     navigateToTab,
     navigateToTabWithFilter,

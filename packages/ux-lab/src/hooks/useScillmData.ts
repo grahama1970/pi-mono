@@ -26,6 +26,8 @@ export interface LogEntry {
 	metadata?: {
 		batch_id?: string;
 		item_id?: string;
+		call_category?: string;
+		prompt_kind?: string;
 		expected_total?: number;
 		chunk_index?: number;
 		chunk_total?: number;
@@ -268,8 +270,15 @@ export interface BatchJobState {
 		successful_jobs?: number;
 		failed_jobs?: number;
 		skipped_jobs?: number;
+		prefilter_existing_jobs?: number;
 		generated_qras?: number;
 		stored_qras?: number;
+		llm_calls_started?: number;
+		llm_calls_completed?: number;
+		llm_calls_failed?: number;
+		llm_calls_in_flight?: number;
+		last_call_item?: string | null;
+		skip_reason_counts?: Record<string, number>;
 		chunk_num?: number | null;
 		total_chunks?: number | null;
 		range_start?: number | null;
@@ -380,28 +389,23 @@ export function useOrchestratorDetail(name: string | null) {
 			const hydratedChunkCalls = (data.chunk_calls || []).filter(isLogEntry);
 			const batchIds = Array.from(
 				new Set(
-					[
-						data.state?.active_batch_id,
-						data.state?.canonical_batch_id,
-						data.state?.relationship_batch_id,
-					].filter((value): value is string => typeof value === "string" && value.length > 0),
+					[data.state?.active_batch_id, data.state?.canonical_batch_id, data.state?.relationship_batch_id].filter(
+						(value): value is string => typeof value === "string" && value.length > 0,
+					),
 				),
 			);
 
 			let mergedCalls = hydratedCalls;
 			if (mergedCalls.length === 0 && batchIds.length > 0) {
-				const results = await Promise.allSettled(
-					batchIds.map((batchId) => fetchOrchestratorCalls(name, batchId)),
-				);
-				mergedCalls = dedupeLogs(
-					results.flatMap((result) => (result.status === "fulfilled" ? result.value : [])),
-				);
+				const results = await Promise.allSettled(batchIds.map((batchId) => fetchOrchestratorCalls(name, batchId)));
+				mergedCalls = dedupeLogs(results.flatMap((result) => (result.status === "fulfilled" ? result.value : [])));
 			}
 
 			const chunkItemIds = new Set(data.chunk_item_ids || []);
-			const mergedChunkCalls = chunkItemIds.size > 0
-				? mergedCalls.filter((call) => chunkItemIds.has(String(call.metadata?.item_id || "")))
-				: hydratedChunkCalls;
+			const mergedChunkCalls =
+				chunkItemIds.size > 0
+					? mergedCalls.filter((call) => chunkItemIds.has(String(call.metadata?.item_id || "")))
+					: hydratedChunkCalls;
 
 			setDetail({
 				...data,

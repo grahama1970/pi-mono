@@ -3,24 +3,49 @@
   "pageCount": 35,
   "blocks": [
     {
-      "id": "p0_e0",
+      "id": "review:missed_page_header",
       "page": 0,
       "bbox": [
-        0.14705882352941177,
-        0.04500001849550195,
-        1,
-        0.05507575141059029
+        0.065,
+        0.025,
+        0.935,
+        0.065
       ],
       "blockType": "header",
-      "semanticType": "PageHeader",
-      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "semanticType": "page_header",
+      "text": "[MISSING PAGE HEADER] Page header with document title and section name is missing from extraction",
       "confidence": 0.9,
+      "reviewNotes": [
+        "Page header with document title and section name is missing from extraction"
+      ],
+      "cascadeTrail": [
+        {
+          "tier": "T2",
+          "tierName": "LLM second pass",
+          "disposition": "accept",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "id": "p0_t0",
+      "page": 0,
+      "bbox": [
+        0.065,
+        0.08,
+        0.935,
+        0.88
+      ],
+      "blockType": "table",
+      "semanticType": "definition_list",
+      "text": "Table 12x2: discretionary access | An access control policy that is enforced over all subjects and; control | objects in a system where the policy specifies that a subject that has been granted access to information can do one or more of the following: pass the information to other subjects or objects; grant its privileges to other subjects; change the security attributes of subjects, objects, systems, or system components; choose the security attributes to be associated with newly- created or revised objects; or change the rules governing access control. Mandatory access controls restrict this capability.; disassociability | Enabling the processing of personally identifiable information or [IR 8062] events without association to individuals or devices beyond the operational requirements of the system.",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
-          "tierName": "classify_blocks",
+          "tierName": "extract_tables_definition_list",
           "disposition": "accept",
-          "confidence": 0.8500000238418579
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -30,619 +55,32 @@
         }
       ],
       "reviewNotes": [
-        "This is the document title appearing at the top of the page, not a footer"
+        "Review status: refine"
       ]
     },
     {
-      "id": "p0_e1",
+      "id": "review:missed_page_footer",
       "page": 0,
       "bbox": [
-        0.14705882352941177,
-        0.057197031348642624,
-        0.8558836294934641,
-        0.06727276426373108
-      ],
-      "blockType": "header",
-      "semanticType": "PageHeader",
-      "text": "_________________________________________________________________________________________________",
-      "confidence": 0.9,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8500000238418579
-        },
-        {
-          "tier": "T2",
-          "tierName": "LLM second pass",
-          "disposition": "accept",
-          "confidence": 0.9
-        }
-      ],
-      "reviewNotes": [
-        "This is a decorative line under the page header, not a footer"
-      ]
-    },
-    {
-      "id": "p0_e8",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.09409093375157829,
-        0.8422847573274101,
-        0.24356865160392993
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "discretionary access control An access control policy that is enforced over all subjects and objects in a system where the policy specifies that a subject that has been granted access to information can do one or more of the following: pass the information to other subjects or objects; grant its privileges to other subjects; change the security attributes of subjects, objects, systems, or system components; choose the security attributes to be associated with newly- created or revised objects; or change the rules governing access control. Mandatory access controls restrict this capability.",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e9",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.2542424828115136,
-        0.27110948749617036,
-        0.26810609451448075
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "disassociability",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e11",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.2542424828115136,
-        0.8421331667432598,
-        0.3020442615855824
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "Enabling the processing of personally identifiable information or events without association to individuals or devices beyond the operational requirements of the system.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e10",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.27499998458708175,
-        0.21800738066629646,
-        0.2876515243992661
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[IR 8062]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e3",
-      "page": 0,
-      "bbox": [
-        0.03441176383323919,
-        0.2764393970219776,
-        0.3498234998166951,
-        0.28780303338561397
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "This publication is available free of charge from:",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e12",
-      "page": 0,
-      "bbox": [
-        0.15452326356975082,
-        0.31264996769452336,
-        0.8197462293836806,
-        0.37742083000414295
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "domain  An environment or context that includes a set of system resources and a set of system entities that have the right to access the resources as defined by a common security policy, security model, or security architecture. See security domain.",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e13",
-      "page": 0,
-      "bbox": [
-        0.15452331343507456,
-        0.38809581718059505,
-        0.23563537099003012,
-        0.40195946741585775
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "enterprise",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e15",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.38810602823893225,
-        0.8282306147556678,
-        0.5037148600876933
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "An organization with a defined mission/goal and a defined boundary, using systems to execute that mission, and with responsibility for managing its own risks and performance. An enterprise may consist of all or some of the following business aspects: acquisition, program management, human resources, financial management, security, and systems, information and mission management. See organization.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e14",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.40378786337496053,
-        0.2437605764351639,
-        0.41765151361022335
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[CNSSI 4009]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e18",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.5143181771943064,
-        0.8237075307010825,
-        0.6129579255075166
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "A strategic information asset base, which defines the mission; the information necessary to perform the mission; the technologies necessary to perform the mission; and the transitional processes for implementing new technologies in response to changing mission needs; and includes a baseline architecture; a target architecture; and a sequencing plan.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e16",
-      "page": 0,
-      "bbox": [
-        0.1545053120532067,
-        0.5143205276643388,
-        0.3306158726511438,
-        0.5281841778996015
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "enterprise architecture",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e4",
-      "page": 0,
-      "bbox": [
-        0.03441176383323919,
-        0.5202272588556462,
-        0.2705250191532709,
-        0.5315908952192827
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "https://doi.org/10.6028/NIST.SP.800",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e17",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.529999973798039,
-        0.24523117963005514,
-        0.5438636240333017
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[OMB A-130]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e19",
-      "page": 0,
-      "bbox": [
-        0.15452326356975082,
-        0.6236329126839686,
-        0.35250413184072454,
-        0.6374965629192314
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "environment of operation",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e21",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.6236363420582781,
-        0.7964781717537275,
-        0.6544690758290916
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "The physical surroundings in which an information system processes, stores, and transmits information.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e20",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.6393181771943064,
-        0.27621155782462725,
-        0.6531818274295691
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[OMB A-130]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e22",
-      "page": 0,
-      "bbox": [
-        0.1545053120532067,
-        0.6650747434057371,
-        0.2010088403240528,
-        0.6789383936409998
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "event",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e24",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.6651514997385969,
-        0.6617023243623621,
-        0.6790151499738597
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "Any observable occurrence in a system.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e23",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.6807575803814512,
-        0.29905468809838387,
-        0.6946212113505662
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[SP 800-61, Adapted]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e27",
-      "page": 0,
-      "bbox": [
-        0.3691176370857588,
-        0.701287876475941,
-        0.8465594123391544,
-        0.7829585219874526
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "An executive department specified in 5 U.S.C., Sec. 101; a military department specified in 5 U.S.C., Sec. 102; an independent establishment as defined in 5 U.S.C., Sec. 104(1); and a wholly owned Government corporation fully subject to the provisions of 31 U.S.C., Chapter 91.",
-      "confidence": 0.8999999761581421,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        }
-      ]
-    },
-    {
-      "id": "p0_e25",
-      "page": 0,
-      "bbox": [
-        0.15450526218788296,
-        0.7012940223770912,
-        0.28640876720154207,
-        0.7151576533462062
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "executive agency",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e5",
-      "page": 0,
-      "bbox": [
-        0.03441176383323919,
-        0.7027272696446891,
-        0.06380882761836831,
-        0.7178787847962043
-      ],
-      "blockType": "list_item",
-      "semanticType": "List",
-      "text": "-53r5",
-      "confidence": 0.8500000238418579,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8500000238418579
-        }
-      ]
-    },
-    {
-      "id": "p0_e26",
-      "page": 0,
-      "bbox": [
-        0.15450979993234273,
-        0.7169697116119693,
-        0.24523117963005514,
-        0.7308333425810842
-      ],
-      "blockType": "text",
-      "semanticType": "Reference",
-      "text": "[OMB A-130]",
-      "confidence": 0.699999988079071,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.699999988079071
-        }
-      ]
-    },
-    {
-      "id": "p0_e28",
-      "page": 0,
-      "bbox": [
-        0.15452326356975082,
-        0.7936335284300524,
-        0.7865011676464205,
-        0.8074971593991674
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "exfiltration The unauthorized transfer of information from a system.",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e29",
-      "page": 0,
-      "bbox": [
-        0.1545053120532067,
-        0.8181028462419606,
-        0.8360386268765319,
-        0.8998428498855745
-      ],
-      "blockType": "text",
-      "semanticType": "Body",
-      "text": "xternal system (or e component) A system or component of a system that is used by but is not a part of an organizational system and for which the organization has no direct control over the implementation of required security and privacy controls or the assessment of control effectiveness.",
-      "confidence": 0,
-      "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0
-        }
-      ]
-    },
-    {
-      "id": "p0_e2",
-      "page": 0,
-      "bbox": [
-        0.14705882352941177,
-        0.9404545456472069,
-        0.8562647002974367,
-        0.9518181820108433
+        0.065,
+        0.94,
+        0.935,
+        0.98
       ],
       "blockType": "boilerplate",
-      "semanticType": "PageFooter",
-      "text": "APPENDIX A  PAGE 402",
-      "confidence": 0.8999999761581421,
+      "semanticType": "page_footer",
+      "text": "[MISSING PAGE FOOTER] Page footer with appendix label and page number is missing from extraction",
+      "confidence": 0.9,
+      "reviewNotes": [
+        "Page footer with appendix label and page number is missing from extraction"
+      ],
       "cascadeTrail": [
-        {
-          "tier": "T0",
-          "tierName": "classify_blocks",
-          "disposition": "accept",
-          "confidence": 0.8999999761581421
-        },
         {
           "tier": "T2",
           "tierName": "LLM second pass",
           "disposition": "accept",
-          "confidence": 0.8
+          "confidence": 0.9
         }
-      ],
-      "reviewNotes": [
-        "This appears at the bottom of the page and contains page information"
       ]
     },
     {
@@ -651,7 +89,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "header",
@@ -719,13 +157,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "external system service A system service that is provided by an external service provider and for which the organization has no direct control over the implementation of required security and privacy controls or the assessment of control effectiveness.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -741,13 +179,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "external system service provider A provider of external system services to an organization through a variety of consumerproducer relationships, including - joint ventures, business partnerships, outsourcing arrangements (i.e., through contracts, interagency agreements, lines of business arrangements), licensing agreements, and/or supply chain exchanges.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -763,13 +201,13 @@
       "blockType": "figure",
       "semanticType": "image",
       "text": "Raster image candidate",
-      "confidence": 1,
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_images",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -816,13 +254,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "external network A network not controlled by the organization.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -838,13 +276,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "failover The capability to switch over automatically (typically without human intervention or warning) to a redundant or standby system upon the failure or abnormal termination of the previously active system.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -860,13 +298,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "federal information system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -926,13 +364,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "FIPSvalidated - cryptography A cryptographic module validated by the Cryptographic Module Validation Program (CMVP) to meet requirements specified in FIPS Publication 1403 (as amended). As a prerequisite to CMVP - validation, the cryptographic module is required to employ a cryptographic algorithm implementation that has successfully passed validation testing by the Cryptographic Algorithm Validation Program (CAVP). See NSAapproved cryptography-.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -970,13 +408,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "firmware",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1036,13 +474,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "hardware",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1102,13 +540,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "highimpact system-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1234,13 +672,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "hybrid control",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1299,7 +737,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Unique data used to represent a person’s identity and associated attributes. A name or a card number are examples of identifiers. A unique label used by a system to indicate a specific entity, object, or group.",
+      "text": "Unique data used to represent a person\u2019s identity and associated attributes. A name or a card number are examples of identifiers. A unique label used by a system to indicate a specific entity, object, or group.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -1322,13 +760,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "identifier",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1391,7 +829,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -1441,13 +879,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "impact The effect on organizational operations, organizational assets, individuals, other organizations, or the Nation (including the national security interests of the United States) of a loss of",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1507,13 +945,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "impact value",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1573,13 +1011,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "incident",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1661,13 +1099,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "industrial control system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1749,13 +1187,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1815,13 +1253,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information flow control Controls to ensure that information transfers within a system or organization are not made in violation of the security policy.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1837,13 +1275,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information leakage The intentional or unintentional release of information to an untrusted environment.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1859,13 +1297,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information owner",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -1947,13 +1385,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information resources",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2013,13 +1451,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information security",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2079,13 +1517,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information security architecture",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2100,7 +1538,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "An embedded, integral part of the enterprise architecture that describes the structure and behavior of the enterprise security processes, security systems, personnel and organizational subunits, showing their alignment with the enterprise’s mission and strategic plans.",
+      "text": "An embedded, integral part of the enterprise architecture that describes the structure and behavior of the enterprise security processes, security systems, personnel and organizational subunits, showing their alignment with the enterprise\u2019s mission and strategic plans.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -2170,7 +1608,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -2220,13 +1658,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information security policy",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2286,13 +1724,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information security program plan",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2352,13 +1790,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information security risk",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2440,13 +1878,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information steward",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2506,13 +1944,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2572,13 +2010,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information technology",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2682,13 +2120,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information technology product See system component.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2729,7 +2167,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -2779,13 +2217,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "information type",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2889,13 +2327,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "insider [CNSSI 4009, Adapted] Any person with authorized access to any organizational resource, to include personnel, facilities, information, equipment, networks, or systems.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2911,13 +2349,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "insider threat [CNSSI 4009, Adapted] The threat that an insider will use her/his authorized access, wittingly or unwittingly, to do harm to the security of organizational operations and assets, individuals, other organizations, and the Nation. This threat can include damage through espionage, terrorism, unauthorized disclosure of national security information, or through the loss or degradation of organizational resources or capabilities.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2955,13 +2393,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "insider threat program [CNSSI 4009, Adapted] A coordinated collection of capabilities authorized by the organization and used to deter, detect, and mitigate the unauthorized disclosure of information.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -2977,13 +2415,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "interface",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3043,13 +2481,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "integrity",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3109,13 +2547,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "internal network A network where the establishment, maintenance, and provisioning of security controls are under the direct control of organizational employees or contractors. Cryptographic encapsulation or similar security technology implemented between organization-controlled endpoints provides the same effect (at least regarding confidentiality and integrity). An internal network is typically organizationowned yet may be - organization-controlled while not being organizationowned.-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3153,13 +2591,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "label See security label.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3175,13 +2613,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "least privilege",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3263,13 +2701,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "local access Access to an organizational system by a user (or process acting on behalf of a user) communicating through a direct connection without the use of a network.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3310,7 +2748,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -3359,14 +2797,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "logical access control system An automated system that controls an individual’s ability to access one or more computer system resources, such as a workstation, network, application, or database. A logical access control system requires the validation of an individual’s identity through some mechanism, such as a PIN, card, biometric, or other token. It has the capability to assign different access privileges to different individuals depending on their roles and responsibilities in an organization.",
-      "confidence": 0,
+      "text": "logical access control system An automated system that controls an individual\u2019s ability to access one or more computer system resources, such as a workstation, network, application, or database. A logical access control system requires the validation of an individual\u2019s identity through some mechanism, such as a PIN, card, biometric, or other token. It has the capability to assign different access privileges to different individuals depending on their roles and responsibilities in an organization.",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3404,13 +2842,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "lowimpact system-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3514,13 +2952,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "malicious code Software or firmware intended to perform an unauthorized process that will have adverse impacts on the confidentiality, integrity, or availability of a system. A virus, worm, Trojan horse, or other codebased entity that infects a host. Spyware and - some forms of adware are also examples of malicious code.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3536,13 +2974,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "managed interface An interface within a system that provides boundary protection capabilities using automated mechanisms or devices.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3558,13 +2996,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "mandatory access control An access control policy that is uniformly enforced across all subjects and objects within a system. A subject that has been granted access to information is constrained from: passing the information to unauthorized subjects or objects; granting its privileges to other subjects; changing one or more security attributes on subjects, objects, the system, or system components; choosing the security attributes to be associated with newly created or modified objects; or changing the rules for governing access control. Organization-defined subjects may explicitly be granted organizationdefined privileges (i.e., they - are trusted subjects) such that they are not limited by some or all of the above constraints. Mandatory access control is considered a type of nondiscretionary access control.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3602,13 +3040,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "marking See security marking.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3624,13 +3062,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "matching agreement",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3712,13 +3150,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "media",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3778,13 +3216,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "metadata Information that describes the characteristics of data, including structural metadata that describes data structures (i.e., data format, syntax, semantics) and descriptive metadata that describes data contents (i.e., security labels).",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3825,7 +3263,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -3875,13 +3313,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "mobile code Software programs or parts of programs obtained from remote systems, transmitted across a network, and executed on a local system without explicit installation or execution by the recipient.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3897,13 +3335,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "mobile code technologies Software technologies that provide the mechanisms for the production and use of mobile code.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3919,13 +3357,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "mobile device A portable computing device that has a small form factor such that it can easily be carried by a single individual; is designed to operate without a physical connection (e.g., wirelessly transmit or receive information); possesses local, nonremovable data - storage; and is powered on for extended periods of time with a selfcontained power source. Mobile devices may also include - voice communication capabilities, on-board sensors that allow the device to capture (e.g., photograph, video, record, or determine location) information, and/or builtin features for - synchronizing local data with remote locations. Examples include smart phones, tablets, and ereaders.-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -3963,13 +3401,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "moderateimpact system-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4095,13 +3533,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "multifactor - authentication",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4161,13 +3599,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "multilevel security",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4227,13 +3665,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "multiple security levels",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4340,7 +3778,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -4390,13 +3828,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "national security system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4411,7 +3849,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Any system (including any telecommunications system) used or operated by an agency or by a contractor of an agency, or other organization on behalf of an agency—(i) the function, operation, or use of which involves intelligence activities; involves cryptologic activities related to national security; involves command and control of military forces; involves equipment that is an integral part of a weapon or weapons system; or is critical to the direct fulfillment of military or intelligence missions (excluding a system that is to be used for routine administrative and business applications, for example, payroll, finance, logistics, and personnel management applications); or (ii) is protected at all times by procedures established for information that have been specifically authorized under criteria established by an Executive Order or an Act of Congress to be kept classified in the interest of national defense or foreign policy.",
+      "text": "Any system (including any telecommunications system) used or operated by an agency or by a contractor of an agency, or other organization on behalf of an agency\u2014(i) the function, operation, or use of which involves intelligence activities; involves cryptologic activities related to national security; involves command and control of military forces; involves equipment that is an integral part of a weapon or weapons system; or is critical to the direct fulfillment of military or intelligence missions (excluding a system that is to be used for routine administrative and business applications, for example, payroll, finance, logistics, and personnel management applications); or (ii) is protected at all times by procedures established for information that have been specifically authorized under criteria established by an Executive Order or an Act of Congress to be kept classified in the interest of national defense or foreign policy.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -4478,13 +3916,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "network  A system implemented with a collection of connected components. Such components may include routers, hubs, cabling, telecommunications controllers, key distribution centers, and technical control devices.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4500,13 +3938,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "network access Access to a system by a user (or a process acting on behalf of a user) communicating through a network, including a local area network, a wide area network, and the Internet.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4544,13 +3982,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "nonce",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4610,13 +4048,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "nondiscretionary access control See mandatory access control.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4632,13 +4070,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "nonlocal maintenance Maintenance activities conducted by individuals who communicate through either an internal or external network.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4654,13 +4092,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "non-organizational user A user who is not an organizational user (including public users).",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4676,13 +4114,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "non-repudiation Protection against an individual who falsely denies having performed a certain action and provides the capability to determine whether an individual took a certain action, such as creating information, sending a message, approving information, or receiving a message.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4698,13 +4136,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "NSAapproved - cryptography Cryptography that consists of an approved algorithm, an implementation that has been approved for the protection of classified information and/or controlled unclassified information in a specific environment, and a supporting key management infrastructure.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4745,7 +4183,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -4795,13 +4233,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "object Passive systemrelated entity, including devices, files, records, - tables, processes, programs, and domains that contain or receive information. Access to an object (by a subject) implies access to the information it contains. See subject.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4839,13 +4277,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "operations security",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4905,13 +4343,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "organization",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4971,13 +4409,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "organization-defined control parameter The variable part of a control or control enhancement that is instantiated by an organization during the tailoring process by either assigning an organizationdefined value or selecting a - value from a predefined list provided as part of the control or control enhancement. See assignment operation and selection operation.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -4993,13 +4431,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "organizational user An organizational employee or an individual whom the organization deems to have equivalent status of an employee, including a contractor, guest researcher, or individual detailed from another organization. Policies and procedures for granting the equivalent status of employees to individuals may include need-toknow, relationship to the organization, and citizenship.-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5037,13 +4475,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "overlay",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5125,13 +4563,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "parameter See organizationdefined control parameter-.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5147,13 +4585,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "penetration testing A test methodology in which assessors, typically working under specific constraints, attempt to circumvent or defeat the security features of a system.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5194,7 +4632,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -5244,13 +4682,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "periods processing A mode of system operation in which information of different sensitivities is processed at distinctly different times by the same system with the system being properly purged or sanitized between periods.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5266,13 +4704,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "personally identifiable information",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5287,7 +4725,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Information that can be used to distinguish or trace an individual’s identity, either alone or when combined with other information that is linked or linkable to a specific individual.",
+      "text": "Information that can be used to distinguish or trace an individual\u2019s identity, either alone or when combined with other information that is linked or linkable to a specific individual.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -5332,13 +4770,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "personally identifiable information processing [ISO/IEC 29100, Adapted]",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5398,13 +4836,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "personally identifiable information processing permissions",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5442,13 +4880,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "personnel security The discipline of assessing the conduct, integrity, judgment, loyalty, reliability, and stability of individuals for duties and responsibilities that require trustworthiness.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5464,13 +4902,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "physical access control system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5530,13 +4968,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "plan of action and milestones ",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5595,14 +5033,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "portable storage device A system component that can communicate with and be added to or removed from a system or network and that is limited to data storage—including text, video, audio or image data—as its primary function (e.g., optical discs, external or removable hard drives, external or removable solidstate disk drives-, magnetic or optical tapes, flash memory devices, flash memory cards, and other external or removable disks).",
-      "confidence": 0,
+      "text": "portable storage device A system component that can communicate with and be added to or removed from a system or network and that is limited to data storage\u2014including text, video, audio or image data\u2014as its primary function (e.g., optical discs, external or removable hard drives, external or removable solidstate disk drives-, magnetic or optical tapes, flash memory devices, flash memory cards, and other external or removable disks).",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5618,13 +5056,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "potential impact",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5706,13 +5144,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy architecture",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5727,7 +5165,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "An embedded, integral part of the enterprise architecture that describes the structure and behavior for an enterprise’s privacy protection processes, technical measures, personnel and organizational subunits, showing their alignment with the - enterprise’s mission and strategic plans.",
+      "text": "An embedded, integral part of the enterprise architecture that describes the structure and behavior for an enterprise\u2019s privacy protection processes, technical measures, personnel and organizational subunits, showing their alignment with the - enterprise\u2019s mission and strategic plans.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -5797,7 +5235,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -5847,13 +5285,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy control",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5913,13 +5351,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy control baseline The set of privacy controls selected based on the privacy selection criteria that provide a starting point for the tailoring process.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5935,13 +5373,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy domain A domain that implements a privacy policy.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -5957,13 +5395,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy impact assessment",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6067,13 +5505,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy plan",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6133,13 +5571,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privacy program plan",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6154,7 +5592,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "A formal document that provides an overview of an agency’s privacy program, including a description of the structure of the privacy program, the resources dedicated to the privacy program, the role of the Senior Agency Official for Privacy and other privacy officials and staff, the strategic goals and objectives of the privacy program, and the program management controls and common controls in place or planned for meeting applicable privacy requirements and managing privacy risks.",
+      "text": "A formal document that provides an overview of an agency\u2019s privacy program, including a description of the structure of the privacy program, the resources dedicated to the privacy program, the role of the Senior Agency Official for Privacy and other privacy officials and staff, the strategic goals and objectives of the privacy program, and the program management controls and common controls in place or planned for meeting applicable privacy requirements and managing privacy risks.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -6199,13 +5637,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privileged account A system account with the authorizations of a privileged user.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6243,13 +5681,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privileged command A humaninitiated command executed on a system that involves- the control, monitoring, or administration of the system, including security functions and associated securityrelevant - information.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6265,13 +5703,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "privileged user",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6356,7 +5794,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -6406,13 +5844,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "protected distribution system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6472,13 +5910,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "provenance The chronology of the origin, development, ownership, location, and changes to a system or system component and associated data. It may also include the personnel and processes used to interact with or make modifications to the system, component, or associated data.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6516,13 +5954,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "public key infrastructure",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6582,13 +6020,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "purge",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6648,13 +6086,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "reciprocity",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6669,7 +6107,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Agreement among participating organizations to accept each other’s security assessments to reuse system resources and/or to accept each other’s assessed security posture to share information.",
+      "text": "Agreement among participating organizations to accept each other\u2019s security assessments to reuse system resources and/or to accept each other\u2019s assessed security posture to share information.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -6714,13 +6152,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "records",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6802,13 +6240,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "red team exercise An exercise, reflecting realworld conditions- that is conducted as a simulated adversarial attempt to compromise organizational missions or business processes and to provide a comprehensive assessment of the security capabilities of an organization and its systems.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6846,13 +6284,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "reference monitor A set of design requirements on a reference validation mechanism that, as a key component of an operating system, enforces an access control policy over all subjects and objects. A reference validation mechanism is always invoked (i.e., complete mediation), tamperproof, and small enough to be subject to analysis and tests, the completeness of which can be assured (i.e., verifiable).",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -6893,7 +6331,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -6943,13 +6381,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "regrader",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7009,13 +6447,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "remote access Access to an organizational system by a user (or a process acting on behalf of a user) communicating through an external network.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7031,13 +6469,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "remote maintenance Maintenance activities conducted by individuals communicating through an external network.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7053,13 +6491,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "replay attack",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7141,13 +6579,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "replay resistance Protection against the capture of transmitted authentication or access control information and its subsequent retransmission with the intent of producing an unauthorized effect or gaining unauthorized access.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7163,13 +6601,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "resilience",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7229,13 +6667,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "restricted data",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7339,13 +6777,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7383,13 +6821,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk assessment",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7518,7 +6956,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -7568,13 +7006,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk executive (function)",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7656,13 +7094,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk management",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7722,13 +7160,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk mitigation",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7788,13 +7226,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk response",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7854,13 +7292,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "risk tolerance",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7942,13 +7380,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "role-based access control Access control based on user roles (i.e., a collection of access authorizations that a user receives based on an explicit or implicit assumption of a given role). Role permissions may be inherited through a role hierarchy and typically reflect the permissions needed to perform defined functions within an organization. A given role may apply to a single individual or to several individuals.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7964,13 +7402,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "runtime The period during which a computer program is executing.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -7986,13 +7424,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "sanitization",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8074,13 +7512,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "scoping considerations A part of tailoring guidance that provides organizations with specific considerations on the applicability and implementation of security and privacy controls in the control baselines. Considerations include policy or regulatory, technology, physical infrastructure, system component allocation, public access, scalability, common control, operational or environmental, and security objective.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8121,7 +7559,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -8170,7 +7608,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "A condition that results from the establishment and maintenance of protective measures that enable an organization to perform its mission or critical functions despite risks posed by threats to its use of systems. Protective measures may involve a combination of deterrence, avoidance, prevention, detection, recovery, and correction that should form part of the organization’s risk management approach.",
+      "text": "A condition that results from the establishment and maintenance of protective measures that enable an organization to perform its mission or critical functions despite risks posed by threats to its use of systems. Protective measures may involve a combination of deterrence, avoidance, prevention, detection, recovery, and correction that should form part of the organization\u2019s risk management approach.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -8193,13 +7631,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8236,14 +7674,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "security attribute An abstraction that represents the basic properties or characteristics of an entity with respect to safeguarding informationypically associated with internal data structures. T— including records, buffers, and files within the system—and used to enable the implementation of access control and flow control policies; reflect special dissemination, handling or distribution instructions; or support other aspects of the information security policy.",
-      "confidence": 0,
+      "text": "security attribute An abstraction that represents the basic properties or characteristics of an entity with respect to safeguarding informationypically associated with internal data structures. T\u2014 including records, buffers, and files within the system\u2014and used to enable the implementation of access control and flow control policies; reflect special dissemination, handling or distribution instructions; or support other aspects of the information security policy.",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8281,13 +7719,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security categorization The process of determining the security category for information or a system. Security categorization methodologies are described in CNSS Instruction 1253 for national security systems and in FIPS Publication 199 for other than national security systems. See security category.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8303,13 +7741,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security category",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8435,13 +7873,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security control",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8545,13 +7983,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security control baseline",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8611,13 +8049,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security domain",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8699,13 +8137,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security functionality The security-related features, functions, mechanisms, services, procedures, and architectures implemented within organizational information systems or the environments in which those systems operate.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8721,13 +8159,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security functions The hardware, software, or firmware of the system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8743,13 +8181,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security impact analysis",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8834,7 +8272,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -8906,13 +8344,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security kernel",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8950,13 +8388,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security label The means used to associate a set of security attributes with a specific information object as part of the data structure for that object.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -8972,13 +8410,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security marking  The means used to associate a set of security attributes with objects in a humanreadable form in order to enable - organizational, processbased enforcement of information - security policies.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9016,13 +8454,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security objective",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9082,13 +8520,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security plan A formal document that provides an overview of the security requirements for an information system or an information security program and describes the security controls in place or planned for meeting those requirements. The system security plan describes the system components that are included within the system, the environment in which the system operates, how the security requirements are implemented, and the relationships with or connections to other systems. See system security plan.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9126,13 +8564,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security policy",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9214,13 +8652,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security policy filter A hardware and/or software component that performs one or more of the following functions: content verification to ensure the data type of the submitted content; content inspection to analyze the submitted content and verify that complies with a defined policy; malicious content checker that evaluates the content for malicious code; suspicious activity checker that evaluates or executes the content in a safe manner, such as in a sandbox or detonation chamber and monitors for suspicious activity; or content sanitization, cleansing, and transformation, which modifies the submitted content to comply with a defined policy.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9283,7 +8721,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -9333,13 +8771,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security requirement",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9399,13 +8837,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "security service",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9493,7 +8931,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -9524,7 +8962,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -9555,7 +8993,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -9579,7 +9017,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Official responsible for carrying out the Chief Information Officer responsibilities under FISMA and serving as the Chief Information Officer’s primary liaison to the agency’s authorizing officials, information system owners, and information system security officers. Note: Organizations subordinate to federal agencies may use the term senior information security officer or chief information security officer to denote individuals who fill positions with similar responsibilities to senior agency information security officers.",
+      "text": "Official responsible for carrying out the Chief Information Officer responsibilities under FISMA and serving as the Chief Information Officer\u2019s primary liaison to the agency\u2019s authorizing officials, information system owners, and information system security officers. Note: Organizations subordinate to federal agencies may use the term senior information security officer or chief information security officer to denote individuals who fill positions with similar responsibilities to senior agency information security officers.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -9630,7 +9068,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -9654,7 +9092,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "Senior official, designated by the head of each agency, who has agencywide responsibility for privacy, including implementation - of privacy protections; compliance with Federal laws, regulations, and policies relating to privacy; management of privacy risks at the agency; and a central policy-making role in the agency’s development and evaluation of legislative, regulatory, and other policy proposals.",
+      "text": "Senior official, designated by the head of each agency, who has agencywide responsibility for privacy, including implementation - of privacy protections; compliance with Federal laws, regulations, and policies relating to privacy; management of privacy risks at the agency; and a central policy-making role in the agency\u2019s development and evaluation of legislative, regulatory, and other policy proposals.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -9727,7 +9165,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -9821,7 +9259,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -9871,13 +9309,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "serviceoriented - architecture A set of principles and methodologies for designing and developing software in the form of interoperable services. These services are welldefined business functions that are built as - software components (i.e., discrete pieces of code and/or data structures) that can be reused for different purposes.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9893,13 +9331,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "shared control A security or privacy control that is implemented for an information system in part as a common control and in part as a systemspecific control. See -hybrid control.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -9915,13 +9353,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "software",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10003,13 +9441,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "spam The abuse of electronic messaging systems to indiscriminately send unsolicited bulk messages.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10047,13 +9485,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "special access program",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10091,13 +9529,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "split tunneling The process of allowing a remote user or device to establish a nonremote connection with a system and simultaneously - communicate via some other connection to a resource in an external network. This method of network access enables a user to access remote devices, and simultaneously, access uncontrolled networks.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10113,13 +9551,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "spyware Software that is secretly or surreptitiously installed into an information system to gather information on individuals or organizations without their knowledge; a type of malicious code.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10157,13 +9595,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "subject An individual, process, or device that causes information to flow among objects or change to the system state. Also see object.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10179,13 +9617,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "subsystem A major subdivision or component of an information system consisting of information, information technology, and personnel that performs one or more specific functions.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10207,7 +9645,7 @@
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         },
         {
           "tier": "T2",
@@ -10254,13 +9692,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "supply chain  Linked set of resources and processes between and among multiple tiers of organizations, each of which is an acquirer, that begins with the sourcing of products and services and extends through their life cycle.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10301,7 +9739,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -10351,13 +9789,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "supply chain element Organizations, entities, or tools employed for the research and development, design, manufacturing, acquisition, delivery, integration, operations and maintenance, and disposal of systems and system components.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10373,13 +9811,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "supply chain risk The potential for harm or compromise that arises as a result of security risks from suppliers, their supply chains, and their products or services. Supply chain risks include exposures, threats, and vulnerabilities associated with the products and services traversing the supply chain as well as the exposures, threats, and vulnerabilities to the supply chain.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10417,13 +9855,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "supply chain risk assessment A systematic examination of supply chain risks, likelihoods of their occurrence, and potential impacts.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10439,13 +9877,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "supply chain risk management  ",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10483,13 +9921,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10615,13 +10053,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system component",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10681,13 +10119,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system of records",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10747,13 +10185,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "ystem of records notices",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10838,7 +10276,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -10888,13 +10326,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system owner (or program manager) Official responsible for the overall procurement, development, integration, modification, operation, and maintenance of a system.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10910,13 +10348,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system security officer",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10976,13 +10414,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system security plan See security plan.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -10998,13 +10436,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "system service A capability provided by a system that facilitates information processing, storage, or transmission.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11042,13 +10480,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "systemrelated security - risk",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11108,13 +10546,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "systemspecific control-",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11174,13 +10612,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "systems engineering",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11195,7 +10633,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "An engineering discipline whose responsibility is creating and executing an interdisciplinary process to ensure that the customer and all other stakeholder needs are satisfied in a high- quality, trustworthy, cost-efficient, and schedulecompliant - manner throughout a system’s entire life cycle.",
+      "text": "An engineering discipline whose responsibility is creating and executing an interdisciplinary process to ensure that the customer and all other stakeholder needs are satisfied in a high- quality, trustworthy, cost-efficient, and schedulecompliant - manner throughout a system\u2019s entire life cycle.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -11262,13 +10700,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "systems security engineering",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11328,13 +10766,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "tailored control baseline A set of controls that result from the application of tailoring guidance to a control baseline. See tailoring.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11350,13 +10788,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "tailoring The process by which security control baselines are modified by: identifying and designating common controls, applying scoping considerations on the applicability and implementation of baseline controls, selecting compensating security controls, assigning specific values to organizationdefined security control - parameters, supplementing baselines with additional security controls or control enhancements, and providing additional specification information for control implementation.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11394,13 +10832,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "tampering",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11485,7 +10923,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -11535,13 +10973,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "threat",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11601,13 +11039,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "threat assessment",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11667,13 +11105,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "threat modeling",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11799,13 +11237,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "transmission",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11865,13 +11303,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "trusted path A mechanism by which a user (through an input device) can communicate directly with the security functions of the system with the necessary confidence to support the system security policy. This mechanism can only be activated by the user or the security functions of the system and cannot be imitated by untrusted software.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -11887,13 +11325,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "trustworthiness",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -12019,13 +11457,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "user",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -12041,13 +11479,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "virtual private network",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -12132,7 +11570,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -12204,13 +11642,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "Weakness in an information system, system security procedures, internal controls, or implementation that could be exploited or triggered by a threat source.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -12301,13 +11739,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "Systematic examination of an information system or product to determine the adequacy of security measures, identify security deficiencies, provide data from which to predict the effectiveness of proposed security measures, and confirm the adequacy of such measures after implementation.",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -12427,7 +11865,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -13250,7 +12688,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -14117,7 +13555,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -14387,13 +13825,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "ODNI Office of the Director of National Intelligence",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -14409,13 +13847,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "OMB Office of Management and Budget",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -14975,7 +14413,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -15569,7 +15007,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -15706,7 +15144,7 @@
       ],
       "blockType": "list_item",
       "semanticType": "List",
-      "text": "• A control or control enhancement that has been withdrawn from the control catalog is",
+      "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is",
       "confidence": 0.8500000238418579,
       "cascadeTrail": [
         {
@@ -15728,7 +15166,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "indicated by a “W” and an explanation of the control or control enhancement disposition in light gray text.",
+      "text": "indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in light gray text.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -15772,7 +15210,7 @@
       ],
       "blockType": "list_item",
       "semanticType": "List",
-      "text": "• A control or control enhancement that is typically implemented by an information system",
+      "text": "\u2022 A control or control enhancement that is typically implemented by an information system",
       "confidence": 0.8500000238418579,
       "cascadeTrail": [
         {
@@ -15794,7 +15232,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "through technical means is indicated by an “” Sin the mplemented iby column.",
+      "text": "through technical means is indicated by an \u201c\u201d Sin the mplemented iby column.",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -15816,7 +15254,7 @@
       ],
       "blockType": "list_item",
       "semanticType": "List",
-      "text": "• A control or control enhancement that is typically implemented by an organization (i.e., by",
+      "text": "\u2022 A control or control enhancement that is typically implemented by an organization (i.e., by",
       "confidence": 0.8500000238418579,
       "cascadeTrail": [
         {
@@ -15838,7 +15276,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "an individual through nontechnical means) is indicated by an “O” in the mplemented iby column.35",
+      "text": "an individual through nontechnical means) is indicated by an \u201cO\u201d in the mplemented iby column.35",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -15860,7 +15298,7 @@
       ],
       "blockType": "list_item",
       "semanticType": "List",
-      "text": "• A control or control enhancement that can be implemented by an organization, a system, or",
+      "text": "\u2022 A control or control enhancement that can be implemented by an organization, a system, or",
       "confidence": 0.8500000238418579,
       "cascadeTrail": [
         {
@@ -15882,7 +15320,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "a combination of the two is indicated by an “O/S.”",
+      "text": "a combination of the two is indicated by an \u201cO/S.\u201d",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -15904,7 +15342,7 @@
       ],
       "blockType": "list_item",
       "semanticType": "List",
-      "text": "• A control or control enhancement marked with a “√” in the assurance column indicates the",
+      "text": "\u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the",
       "confidence": 0.8500000238418579,
       "cascadeTrail": [
         {
@@ -16009,7 +15447,7 @@
       "bbox": [
         0.14705882352941177,
         0.6924242539839311,
-        1,
+        1.0,
         0.7571969658437401
       ],
       "blockType": "text",
@@ -16106,7 +15544,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -16177,14 +15615,14 @@
       ],
       "blockType": "table",
       "semanticType": "table",
-      "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AC-1 | Policy and Procedures | O | √; AC-2 | Account Management | O",
-      "confidence": 1,
+      "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AC-1 | Policy and Procedures | O | \u221a; AC-2 | Account Management | O",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -16283,14 +15721,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-1 Policy and Procedures   O √",
-      "confidence": 0,
+      "text": "AC-1 Policy and Procedures   O \u221a",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -17299,7 +16737,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -17349,13 +16787,13 @@
       "blockType": "table",
       "semanticType": "table",
       "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AC-4(11) | CONFIURATIN F ECURIY R RIACY OLIY ITERS | S; AC-4(12) | DATA YPE DENTIIRS | S",
-      "confidence": 1,
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -18514,7 +17952,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -18564,13 +18002,13 @@
       "blockType": "table",
       "semanticType": "table",
       "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AC-9(2) | SUCCESSFUL ND NSUCCESSFUL OGONS | S; AC-9(3) | NOTIIATIN F CCOUNT HANGES | S",
-      "confidence": 1,
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -18952,13 +18390,13 @@
       "blockType": "text",
       "semanticType": "Body",
       "text": "AC-14 Permitted Actions without Identification or Authentication O",
-      "confidence": 0,
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -19237,7 +18675,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-16(9) ATTRIBUTE REASSIGNMENT – REGRADING MECHANISMS O",
+      "text": "AC-16(9) ATTRIBUTE REASSIGNMENT \u2013 REGRADING MECHANISMS O",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -19703,7 +19141,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -19846,13 +19284,13 @@
       "blockType": "table",
       "semanticType": "table",
       "text": "Table 23x5: T\n: ht | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AC-19 | Access Control or Mobile Devices | O; AC-19(1) | USE F RIABLE ND ORTABLE TORAGE EVIES | W: ncorporated ntoP-7.",
-      "confidence": 1,
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -20074,7 +19512,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-20(2) PORTABLE STORAGE DEVICES — RESTRICTED USE O",
+      "text": "AC-20(2) PORTABLE STORAGE DEVICES \u2014 RESTRICTED USE O",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20096,7 +19534,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-20(3) NON-ORGANIZATIONALLY OWNED SYSTEMS — RESTRICTED USE O",
+      "text": "AC-20(3) NON-ORGANIZATIONALLY OWNED SYSTEMS \u2014 RESTRICTED USE O",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20118,7 +19556,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-20(4) NETWORK ACCESSIBLE STORAGE DEVICES — PROHIBITED USE O",
+      "text": "AC-20(4) NETWORK ACCESSIBLE STORAGE DEVICES \u2014 PROHIBITED USE O",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20140,7 +19578,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-20(5) PORTABLE STORAGE DEVICES — PROHIBITED USE O",
+      "text": "AC-20(5) PORTABLE STORAGE DEVICES \u2014 PROHIBITED USE O",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20338,7 +19776,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AC-25 Reference Monitor S √",
+      "text": "AC-25 Reference Monitor S \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -20430,7 +19868,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -20501,14 +19939,14 @@
       ],
       "blockType": "table",
       "semanticType": "table",
-      "text": "Table 19x5: T | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AT-1 | Policy and Procedures | O | √; AT-2 | Literacy Training and Awareness | O | √",
-      "confidence": 1,
+      "text": "Table 19x5: T | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AT-1 | Policy and Procedures | O | \u221a; AT-2 | Literacy Training and Awareness | O | \u221a",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -20629,14 +20067,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-1 Policy and Procedures O √",
-      "confidence": 0,
+      "text": "AT-1 Policy and Procedures O \u221a",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -20651,7 +20089,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2 Literacy Training and Awareness O √",
+      "text": "AT-2 Literacy Training and Awareness O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -20673,7 +20111,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(1) PRACTICAL EXERCISES O √",
+      "text": "AT-2(1) PRACTICAL EXERCISES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20695,7 +20133,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(2) INSIDER THREAT O √",
+      "text": "AT-2(2) INSIDER THREAT O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20717,7 +20155,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(3) SOCIAL ENGINEERING AND MINING O √",
+      "text": "AT-2(3) SOCIAL ENGINEERING AND MINING O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20739,7 +20177,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(4) SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR O √",
+      "text": "AT-2(4) SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20783,7 +20221,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(5) ADVANCED PERSISTENT THREAT O √",
+      "text": "AT-2(5) ADVANCED PERSISTENT THREAT O \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -20805,7 +20243,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-2(6) CYBER THREAT ENVIRONMENT O √",
+      "text": "AT-2(6) CYBER THREAT ENVIRONMENT O \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -20827,7 +20265,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-3 Role-Based Training O √",
+      "text": "AT-3 Role-Based Training O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -20849,7 +20287,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-3(1) ENVIRONMENTAL CONTROLS O √",
+      "text": "AT-3(1) ENVIRONMENTAL CONTROLS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20871,7 +20309,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-3(2) PHYSICAL SECURITY CONTROLS O √",
+      "text": "AT-3(2) PHYSICAL SECURITY CONTROLS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20893,7 +20331,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-3(3) PRACTICAL EXERCISES O √",
+      "text": "AT-3(3) PRACTICAL EXERCISES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20937,7 +20375,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-3(5) PROCESSING PERSONALLY IDENTIFIABLE INFORMATION O √",
+      "text": "AT-3(5) PROCESSING PERSONALLY IDENTIFIABLE INFORMATION O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -20959,7 +20397,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-4 Training Records O √",
+      "text": "AT-4 Training Records O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -21003,7 +20441,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AT-6 Training Feedback O √  ",
+      "text": "AT-6 Training Feedback O \u221a  ",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -21095,7 +20533,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -21166,14 +20604,14 @@
       ],
       "blockType": "table",
       "semanticType": "table",
-      "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AU-1 | Policy and Procedures | O | √; AU-2 | Event Logging | O",
-      "confidence": 1,
+      "text": "Table 43x5: T\n: ht\n-53 | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AU-1 | Policy and Procedures | O | \u221a; AU-2 | Event Logging | O",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -21294,14 +20732,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-1 Policy and Procedures O √",
-      "confidence": 0,
+      "text": "AU-1 Policy and Procedures O \u221a",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -21383,13 +20821,13 @@
       "blockType": "figure",
       "semanticType": "image",
       "text": "Raster image candidate",
-      "confidence": 1,
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_images",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -21743,7 +21181,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6 Audit Record Review, Analysis, and Reporting O √",
+      "text": "AU-6 Audit Record Review, Analysis, and Reporting O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -21765,7 +21203,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(1) AUTOMATED PROCESS INTEGRATION O √",
+      "text": "AU-6(1) AUTOMATED PROCESS INTEGRATION O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21831,7 +21269,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(3) CORRELATE AUDIT RECORD REPOSITORIES O √",
+      "text": "AU-6(3) CORRELATE AUDIT RECORD REPOSITORIES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21853,7 +21291,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(4) CENTRAL REVIEW AND ANALYSIS S √",
+      "text": "AU-6(4) CENTRAL REVIEW AND ANALYSIS S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21875,7 +21313,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(5) INTEGRATED ANALYSIS OF AUDIT RECORDS O √",
+      "text": "AU-6(5) INTEGRATED ANALYSIS OF AUDIT RECORDS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21897,7 +21335,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(6) CORRELATION WITH PHYSICAL MONITORING O √",
+      "text": "AU-6(6) CORRELATION WITH PHYSICAL MONITORING O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21919,7 +21357,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(7) PERMITTED ACTIONS O √",
+      "text": "AU-6(7) PERMITTED ACTIONS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21941,7 +21379,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(8) FULL TEXT ANALYSIS OF PRIVILEGED COMMANDS O √",
+      "text": "AU-6(8) FULL TEXT ANALYSIS OF PRIVILEGED COMMANDS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -21963,7 +21401,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-6(9) CORRELATION WITH INFORMATION FROM NONTECHNICAL SOURCES O √",
+      "text": "AU-6(9) CORRELATION WITH INFORMATION FROM NONTECHNICAL SOURCES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22007,7 +21445,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-7 Audit Record Reduction and Report Generation S √",
+      "text": "AU-7 Audit Record Reduction and Report Generation S \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -22029,7 +21467,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-7(1) AUTOMATIC PROCESSING S √",
+      "text": "AU-7(1) AUTOMATIC PROCESSING S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22332,7 +21770,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -22381,14 +21819,14 @@
       ],
       "blockType": "table",
       "semanticType": "table",
-      "text": "Table 29x5: T\n: ht | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AU-9(7) | STORE N OMPONENT IH IFERENT PERATIG YSTEM | O; AU-10 | Non-repudiation | S | √",
-      "confidence": 1,
+      "text": "Table 29x5: T\n: ht | CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE; AU-9(7) | STORE N OMPONENT IH IFERENT PERATIG YSTEM | O; AU-10 | Non-repudiation | S | \u221a",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -22522,7 +21960,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-10 Non-repudiation S √",
+      "text": "AU-10 Non-repudiation S \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -22544,7 +21982,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-10(1) ASSOCIATION OF IDENTITIES S √",
+      "text": "AU-10(1) ASSOCIATION OF IDENTITIES S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22566,7 +22004,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-10(2) VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY S √",
+      "text": "AU-10(2) VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22588,7 +22026,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-10(3) CHAIN OF CUSTODY O/S √",
+      "text": "AU-10(3) CHAIN OF CUSTODY O/S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22610,7 +22048,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-10(4) VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY S √",
+      "text": "AU-10(4) VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22698,7 +22136,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-11(1) LONG-TERM RETRIEVAL CAPABILITY O √",
+      "text": "AU-11(1) LONG-TERM RETRIEVAL CAPABILITY O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22830,7 +22268,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-13 Monitoring for Information Disclosure O √",
+      "text": "AU-13 Monitoring for Information Disclosure O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -22852,7 +22290,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-13(1) USE OF AUTOMATED TOOLS O/S √",
+      "text": "AU-13(1) USE OF AUTOMATED TOOLS O/S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22874,7 +22312,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-13(2) REVIEW OF MONITORED SITES O √",
+      "text": "AU-13(2) REVIEW OF MONITORED SITES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -22896,7 +22334,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-13(3) UNAUTHORIZED REPLICATION OF INFORMATION O/S √",
+      "text": "AU-13(3) UNAUTHORIZED REPLICATION OF INFORMATION O/S \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -22918,7 +22356,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-14 Session Audit S √",
+      "text": "AU-14 Session Audit S \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -22940,7 +22378,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-14(1) SYSTEM START-UP S √",
+      "text": "AU-14(1) SYSTEM START-UP S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23006,7 +22444,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "AU-14(3) REMOTE VIEWING AND LISTENING S √",
+      "text": "AU-14(3) REMOTE VIEWING AND LISTENING S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23186,7 +22624,7 @@
       "bbox": [
         0.14705882352941177,
         0.04500001849550195,
-        1,
+        1.0,
         0.05507575141059029
       ],
       "blockType": "boilerplate",
@@ -23257,14 +22695,14 @@
       ],
       "blockType": "table",
       "semanticType": "table",
-      "text": "Table 35x1: T\n: ht\n-53\nCONTROL\nNUMBER CONTROL NAME\nCONTROL NHANCEMENT AME IMPLEMENTED\nBY ASSURANCE\nCA-1 Policy and Procedures O √\nCA-2 Control Assessments O √\nCA-2(1) IDEPENDENT SSESSORS O √\nCA-2(2) SPECILIED SSESSMENTS O √\nCA-2(3) LEVERAGIG ESULTS ROM XTERNAL RGANIATINS O √\nCA-3\nCA-3 Information Exchange\nInformation Excha O √\nCA-3(1) UNCLASSIID ATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(25).\nCA-3(2) CLASSIID ATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(26).\nCA-3(3) UNCLASSIID ON-NATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(27).\nCA-3(4) CONNECTINS O UBLI ETWORKS W: oved o C-7(28).\nCA-3(5) RESTRITINS N XTERNAL YSTEM ONNECTINS W: ncorporated ntoC-7(5).\nCA-3(6) TRANSFER UTHORIATINS O/S √\nCA-3(7) TRANSIIE NFORMATIN XCHANGES O/S √\nCA-4 Security Certification W: ncorporated ntoA-2.\nCA-5 Plan of Action and Milestones O √\nCA-5(1) AUTOMATIN UPPORT OR CCURACY ND URRENCY O √\nCA-6 Authorization O √\nCA-6(1) JOIT UTHORIATIN  NTRA-ORGANIATIN O √\nCA-6(2) JOIT UTHORIATIN  NTER-ORGANIATIN O √\nCA-7 Continuous Monitoring O √\nCA-7(1) IDEPENDENT SSESSMENT O √\nCA-7(2) TYPES F SSESSMENTS W: ncorporated ntoA-2.\nCA-7(3) TREND NALYSES O √\nCA-7(4) RIK ONIORIG O/S √\nCA-7(5) CONSITENCY NALYSI O √\nCA-7(6) AUTOMATIN UPPORT OR ONIORIG O/S √\nCA-8 Penetration Testing O √\nCA-8(1) IDEPENDENT ENETRATIN ESTIG GENT R EAM O √\nCA-8(2) RED EAM XERCIES O √\nCA-8(3) FACIIY ENETRATIN ESTIG O √\nCA-9 Internal ystem onnections O √\nCA-9(1) COMPLINCE HECKS O/S √",
-      "confidence": 1,
+      "text": "Table 35x1: T\n: ht\n-53\nCONTROL\nNUMBER CONTROL NAME\nCONTROL NHANCEMENT AME IMPLEMENTED\nBY ASSURANCE\nCA-1 Policy and Procedures O \u221a\nCA-2 Control Assessments O \u221a\nCA-2(1) IDEPENDENT SSESSORS O \u221a\nCA-2(2) SPECILIED SSESSMENTS O \u221a\nCA-2(3) LEVERAGIG ESULTS ROM XTERNAL RGANIATINS O \u221a\nCA-3\nCA-3 Information Exchange\nInformation Excha O \u221a\nCA-3(1) UNCLASSIID ATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(25).\nCA-3(2) CLASSIID ATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(26).\nCA-3(3) UNCLASSIID ON-NATINAL ECURIY YSTEM ONNECTINS W: oved o C-7(27).\nCA-3(4) CONNECTINS O UBLI ETWORKS W: oved o C-7(28).\nCA-3(5) RESTRITINS N XTERNAL YSTEM ONNECTINS W: ncorporated ntoC-7(5).\nCA-3(6) TRANSFER UTHORIATINS O/S \u221a\nCA-3(7) TRANSIIE NFORMATIN XCHANGES O/S \u221a\nCA-4 Security Certification W: ncorporated ntoA-2.\nCA-5 Plan of Action and Milestones O \u221a\nCA-5(1) AUTOMATIN UPPORT OR CCURACY ND URRENCY O \u221a\nCA-6 Authorization O \u221a\nCA-6(1) JOIT UTHORIATIN  NTRA-ORGANIATIN O \u221a\nCA-6(2) JOIT UTHORIATIN  NTER-ORGANIATIN O \u221a\nCA-7 Continuous Monitoring O \u221a\nCA-7(1) IDEPENDENT SSESSMENT O \u221a\nCA-7(2) TYPES F SSESSMENTS W: ncorporated ntoA-2.\nCA-7(3) TREND NALYSES O \u221a\nCA-7(4) RIK ONIORIG O/S \u221a\nCA-7(5) CONSITENCY NALYSI O \u221a\nCA-7(6) AUTOMATIN UPPORT OR ONIORIG O/S \u221a\nCA-8 Penetration Testing O \u221a\nCA-8(1) IDEPENDENT ENETRATIN ESTIG GENT R EAM O \u221a\nCA-8(2) RED EAM XERCIES O \u221a\nCA-8(3) FACIIY ENETRATIN ESTIG O \u221a\nCA-9 Internal ystem onnections O \u221a\nCA-9(1) COMPLINCE HECKS O/S \u221a",
+      "confidence": 1.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "extract_tables",
           "disposition": "accept",
-          "confidence": 1
+          "confidence": 1.0
         },
         {
           "tier": "T2",
@@ -23363,14 +22801,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-1 Policy and Procedures O √",
-      "confidence": 0,
+      "text": "CA-1 Policy and Procedures O \u221a",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -23385,7 +22823,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-2 Control Assessments O √",
+      "text": "CA-2 Control Assessments O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -23407,7 +22845,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-2(1) INDEPENDENT ASSESSORS O √",
+      "text": "CA-2(1) INDEPENDENT ASSESSORS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23429,7 +22867,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-2(2) SPECIALIZED ASSESSMENTS O √",
+      "text": "CA-2(2) SPECIALIZED ASSESSMENTS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23451,7 +22889,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-2(3) LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS O √",
+      "text": "CA-2(3) LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23473,7 +22911,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-3 Information Exchange O √",
+      "text": "CA-3 Information Exchange O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -23627,7 +23065,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-3(6) TRANSFER AUTHORIZATIONS O/S √",
+      "text": "CA-3(6) TRANSFER AUTHORIZATIONS O/S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23649,7 +23087,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-3(7) TRANSITIVE INFORMATION EXCHANGES O/S √",
+      "text": "CA-3(7) TRANSITIVE INFORMATION EXCHANGES O/S \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -23693,14 +23131,14 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-5 Plan of Action and Milestones O √",
-      "confidence": 0,
+      "text": "CA-5 Plan of Action and Milestones O \u221a",
+      "confidence": 0.0,
       "cascadeTrail": [
         {
           "tier": "T0",
           "tierName": "classify_blocks",
           "disposition": "accept",
-          "confidence": 0
+          "confidence": 0.0
         }
       ]
     },
@@ -23715,7 +23153,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-5(1) AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY O √",
+      "text": "CA-5(1) AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23737,7 +23175,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-6 Authorization O √",
+      "text": "CA-6 Authorization O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -23759,7 +23197,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-6(1) JOINT AUTHORIZATION — INTRA-ORGANIZATION O √",
+      "text": "CA-6(1) JOINT AUTHORIZATION \u2014 INTRA-ORGANIZATION O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23781,7 +23219,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-6(2) JOINT AUTHORIZATION — INTER-ORGANIZATION O √",
+      "text": "CA-6(2) JOINT AUTHORIZATION \u2014 INTER-ORGANIZATION O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23803,7 +23241,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7 Continuous Monitoring O √",
+      "text": "CA-7 Continuous Monitoring O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -23847,7 +23285,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7(1) INDEPENDENT ASSESSMENT O √",
+      "text": "CA-7(1) INDEPENDENT ASSESSMENT O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23891,7 +23329,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7(3) TREND ANALYSES O √",
+      "text": "CA-7(3) TREND ANALYSES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23913,7 +23351,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7(4) RISK MONITORING O/S √",
+      "text": "CA-7(4) RISK MONITORING O/S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -23935,7 +23373,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7(5) CONSISTENCY ANALYSIS O √",
+      "text": "CA-7(5) CONSISTENCY ANALYSIS O \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -23957,7 +23395,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-7(6) AUTOMATION SUPPORT FOR MONITORING O/S √",
+      "text": "CA-7(6) AUTOMATION SUPPORT FOR MONITORING O/S \u221a",
       "confidence": 0.8999999761581421,
       "cascadeTrail": [
         {
@@ -23979,7 +23417,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-8 Penetration Testing O √",
+      "text": "CA-8 Penetration Testing O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -24001,7 +23439,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-8(1) INDEPENDENT PENETRATION TESTING AGENT OR TEAM O √",
+      "text": "CA-8(1) INDEPENDENT PENETRATION TESTING AGENT OR TEAM O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -24023,7 +23461,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-8(2) RED TEAM EXERCISES O √",
+      "text": "CA-8(2) RED TEAM EXERCISES O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -24045,7 +23483,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-8(3) FACILITY PENETRATION TESTING O √",
+      "text": "CA-8(3) FACILITY PENETRATION TESTING O \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -24067,7 +23505,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-9 Internal System Connections O √",
+      "text": "CA-9 Internal System Connections O \u221a",
       "confidence": 0.44999998807907104,
       "cascadeTrail": [
         {
@@ -24111,7 +23549,7 @@
       ],
       "blockType": "text",
       "semanticType": "Body",
-      "text": "CA-9(1) COMPLIANCE CHECKS O/S √",
+      "text": "CA-9(1) COMPLIANCE CHECKS O/S \u221a",
       "confidence": 0.3499999940395355,
       "cascadeTrail": [
         {
@@ -24149,7 +23587,7 @@
   "reviewSummary": {
     "reviewedPageCount": 35,
     "totalPages": 35,
-    "totalFindings": 175,
+    "totalFindings": 172,
     "verdictCounts": {
       "accept": 28,
       "needs_human_review": 7
@@ -24159,15 +23597,15 @@
         "page": 0,
         "pageNumber": 1,
         "verdict": "needs_human_review",
-        "totalFindings": 7,
-        "elementTypeCorrections": 3,
+        "totalFindings": 4,
+        "elementTypeCorrections": 0,
         "elementBBoxReviews": 0,
-        "falsePositiveElements": 2,
+        "falsePositiveElements": 0,
         "tableReviews": 1,
         "figureReviews": 0,
         "equationReviews": 0,
         "imageReviews": 1,
-        "missedRegions": 0
+        "missedRegions": 2
       },
       {
         "page": 1,
@@ -24646,11 +24084,5 @@
         "missedRegions": 0
       }
     ]
-  },
-  "humanEdits": {
-    "updatedAt": "2026-04-22T17:19:55.488Z",
-    "updatedBlocks": 1072,
-    "deletedBlocks": 0,
-    "editCount": 1072
   }
 }

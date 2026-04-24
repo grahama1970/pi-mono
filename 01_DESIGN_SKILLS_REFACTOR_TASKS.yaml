@@ -1,0 +1,298 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "Consolidate design skills into a canonical create-review-ship flow"
+  goal: "Refactor overlapping skill contracts into one canonical routing workflow for mockup creation, critique, verification, and packaging, while absorbing make-interfaces-feel-better rules into existing skills instead of adding another top-level entrypoint."
+  plan_type: code
+  created: "2026-04-23"
+  primary_persona:
+    name: "Graham"
+    role: "Skills maintainer and agent UX workflow owner"
+    source: "conversation:2026-04-23"
+
+execution:
+  max_concurrency: 2
+  wave_barrier: false
+  scheduling_policy: dependency_only
+
+capability_overlap:
+  - "/memory recall confirms overlap across /mockup-lab, /review-design, /create-react-designs, /prototype-react-iterate, /create-design-board, /create-styleguide, /create-image, /best-practices-react, and /test-interactions."
+  - "CALL/GLUE: keep /mockup-lab as the HTML/CSS generation engine, /review-design as the critique engine, /test-interactions as live-DOM verification, /create-image as asset/reference generation, and /create-design-board plus /create-styleguide as downstream packaging/governance."
+  - "EXTEND: update /review-design and /best-practices-react to absorb the relevant make-interfaces-feel-better critique and implementation rules."
+  - "CREATE: add a thin /create-mockup wrapper because no existing skill provides one canonical create/improve/ship entrypoint; this is routing and composition, not parallel infrastructure."
+
+questions_blockers:
+  - "None"
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Canonical flow specification"
+  - id: "1"
+    label: "Wave 1: Create the front-door skill"
+  - id: "2"
+    label: "Wave 2: Re-route overlapping skills and integrate polish rules"
+  - id: "3"
+    label: "Wave 3: Validation and regression coverage"
+
+tasks:
+  - id: "1"
+    title: "Write the canonical design-skill flow and migration spec"
+    lane: "0"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: []
+    skills:
+      - "assess"
+      - "memory"
+      - "mockup-lab"
+      - "review-design"
+      - "best-practices-react"
+      - "test-interactions"
+    read_context:
+      - ".pi/skills/mockup-lab/SKILL.md"
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/best-practices-react/SKILL.md"
+      - ".pi/skills/test-interactions/SKILL.md"
+    allowlist:
+      - "docs/design-skill-flow.md"
+    implementation:
+      - "Create `docs/design-skill-flow.md` documenting the canonical stages: create, improve, ship, review, package."
+      - "Include a routing matrix showing when to use `/create-mockup`, `/review-design`, `/test-interactions`, `/create-image`, `/create-design-board`, and `/create-styleguide`."
+      - "Record migration decisions for `mockup-lab`, `create-react-designs`, and `prototype-react-iterate` so downstream skill edits have a single source of truth."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n '/create-mockup|/review-design|/test-interactions' docs/design-skill-flow.md"
+    gate: "The flow spec must name one front door, one critique stage, and one ship-stage verification gate."
+    definition_of_done:
+      command: "test -f docs/design-skill-flow.md && rg -n '/create-mockup|/review-design|/test-interactions|/create-image|/create-design-board' docs/design-skill-flow.md"
+      assertion: "The design flow spec exists and names the canonical creation, critique, verification, and packaging stages."
+
+  - id: "2"
+    title: "Create `/create-mockup` as the canonical front door for new and improved designs"
+    lane: "1"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+    skills:
+      - "mockup-lab"
+      - "review-design"
+      - "create-image"
+      - "test-interactions"
+    read_context:
+      - "docs/design-skill-flow.md"
+      - ".pi/skills/mockup-lab/SKILL.md"
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/create-image/SKILL.md"
+      - ".pi/skills/test-interactions/SKILL.md"
+    allowlist:
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/create-mockup/run.sh"
+      - ".pi/skills/create-mockup/references/make-interfaces-feel-better.md"
+    implementation:
+      - "Add a new `/create-mockup` skill that exposes explicit `new`, `improve`, and `ship` modes."
+      - "Make the skill route image/reference generation to `/create-image`, HTML/CSS mockup generation to `/mockup-lab`, critique to `/review-design`, and live-DOM verification to `/test-interactions`."
+      - "Document that UI mockups use HTML/CSS, while image generation is for reference art, icons, or assets."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n 'new|improve|ship' .pi/skills/create-mockup/SKILL.md"
+    gate: "The new skill must be composition-only and must not duplicate mockup-lab, review-design, create-image, or test-interactions logic."
+    definition_of_done:
+      command: "test -f .pi/skills/create-mockup/SKILL.md && test -f .pi/skills/create-mockup/run.sh && rg -n 'new|improve|ship' .pi/skills/create-mockup/SKILL.md && rg -n '/mockup-lab|/review-design|/test-interactions|/create-image' .pi/skills/create-mockup/SKILL.md"
+      assertion: "The create-mockup skill exists, exposes the canonical modes, and routes to the correct downstream skills."
+
+  - id: "3"
+    title: "Re-route overlapping design-entry skills so they point at the canonical flow"
+    lane: "2"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+      - "2"
+    skills:
+      - "mockup-lab"
+      - "create-react-designs"
+      - "prototype-react-iterate"
+      - "create-design-board"
+      - "create-styleguide"
+      - "create-image"
+    read_context:
+      - "docs/design-skill-flow.md"
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/mockup-lab/SKILL.md"
+      - ".pi/skills/create-react-designs/SKILL.md"
+      - ".pi/skills/prototype-react-iterate/SKILL.md"
+      - ".pi/skills/create-design-board/SKILL.md"
+      - ".pi/skills/create-styleguide/SKILL.md"
+      - ".pi/skills/create-image/SKILL.md"
+    allowlist:
+      - ".pi/skills/mockup-lab/SKILL.md"
+      - ".pi/skills/create-react-designs/SKILL.md"
+      - ".pi/skills/prototype-react-iterate/SKILL.md"
+      - ".pi/skills/create-design-board/SKILL.md"
+      - ".pi/skills/create-styleguide/SKILL.md"
+      - ".pi/skills/create-image/SKILL.md"
+    implementation:
+      - "Reposition `/mockup-lab` as the HTML/CSS/mockup engine used by `/create-mockup`, not as the primary user-facing front door."
+      - "Update `create-react-designs` and `prototype-react-iterate` so they document their narrower roles or route users to `/create-mockup ship` for the canonical path."
+      - "Update `create-design-board`, `create-styleguide`, and `create-image` so they clearly describe themselves as downstream packaging/governance/reference tools instead of first-stop UI creation surfaces."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n '/create-mockup' .pi/skills/mockup-lab/SKILL.md .pi/skills/create-react-designs/SKILL.md .pi/skills/prototype-react-iterate/SKILL.md .pi/skills/create-design-board/SKILL.md .pi/skills/create-styleguide/SKILL.md .pi/skills/create-image/SKILL.md"
+    gate: "Overlapping design-entry skills must stop behaving like competing front doors."
+    definition_of_done:
+      command: "rg -n '/create-mockup' .pi/skills/mockup-lab/SKILL.md .pi/skills/create-react-designs/SKILL.md .pi/skills/prototype-react-iterate/SKILL.md .pi/skills/create-design-board/SKILL.md .pi/skills/create-styleguide/SKILL.md .pi/skills/create-image/SKILL.md"
+      assertion: "All overlapping design-entry skills either route to create-mockup or clearly state their downstream role in the canonical flow."
+
+  - id: "4"
+    title: "Absorb `make-interfaces-feel-better` rules into create, review, and implementation stages"
+    lane: "2"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "2"
+    skills:
+      - "best-practices-react"
+      - "review-design"
+    read_context:
+      - "docs/design-skill-flow.md"
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/best-practices-react/SKILL.md"
+      - "/home/graham/workspace/experiments/make-interfaces-feel-better/skills/make-interfaces-feel-better/SKILL.md"
+      - "/home/graham/workspace/experiments/make-interfaces-feel-better/skills/make-interfaces-feel-better/typography.md"
+      - "/home/graham/workspace/experiments/make-interfaces-feel-better/skills/make-interfaces-feel-better/surfaces.md"
+      - "/home/graham/workspace/experiments/make-interfaces-feel-better/skills/make-interfaces-feel-better/animations.md"
+      - "/home/graham/workspace/experiments/make-interfaces-feel-better/skills/make-interfaces-feel-better/performance.md"
+    allowlist:
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/create-mockup/references/make-interfaces-feel-better.md"
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/best-practices-react/SKILL.md"
+    implementation:
+      - "Create a short imported-rules reference under `/create-mockup` so the upstream ideas remain traceable."
+      - "Add creation-stage polish guidance to `/create-mockup`."
+      - "Add structured review categories to `/review-design` for concentric radius, optical alignment, tabular numerals, text wrap, transition specificity, and hit areas."
+      - "Add implementation-stage rules to `/best-practices-react` for animation discipline, touch targets, and transition specificity."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n 'concentric|optical|tabular|text-wrap|transition: all|hit area' .pi/skills/create-mockup/SKILL.md .pi/skills/review-design/SKILL.md .pi/skills/best-practices-react/SKILL.md"
+    gate: "The imported polish rules must strengthen existing skills instead of creating another user-facing skill."
+    definition_of_done:
+      command: "rg -n 'concentric|optical|tabular|text-wrap|transition: all|hit area' .pi/skills/create-mockup/SKILL.md .pi/skills/review-design/SKILL.md .pi/skills/best-practices-react/SKILL.md"
+      assertion: "The imported polish rules are distributed across create, review, and implementation skills instead of existing as a separate top-level skill."
+
+  - id: "5"
+    title: "Make `/review-design`, `/test-interactions`, and `/ux-lab` explicit stages in the canonical ship flow"
+    lane: "2"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+      - "2"
+    skills:
+      - "review-design"
+      - "test-interactions"
+      - "ux-lab"
+      - "best-practices-react"
+    read_context:
+      - "docs/design-skill-flow.md"
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/test-interactions/SKILL.md"
+      - ".pi/skills/ux-lab/SKILL.md"
+      - ".pi/skills/best-practices-react/SKILL.md"
+    allowlist:
+      - ".pi/skills/review-design/SKILL.md"
+      - ".pi/skills/test-interactions/SKILL.md"
+      - ".pi/skills/ux-lab/SKILL.md"
+    implementation:
+      - "Update `/review-design` so it is explicitly the critique stage for both improving existing designs and final visual drift checks after implementation."
+      - "Update `/test-interactions` so it is explicitly mandatory for live rendered UIs in the ship stage and explicitly optional for static mockups."
+      - "Update `/ux-lab` so it points builders through create-mockup → review-design → ux-lab implementation → test-interactions → final review-design."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n '/create-mockup|ship|live DOM|final review' .pi/skills/review-design/SKILL.md .pi/skills/test-interactions/SKILL.md .pi/skills/ux-lab/SKILL.md"
+    gate: "Live rendered interfaces must have explicit critique and deterministic interaction-test stages before they are considered shippable."
+    definition_of_done:
+      command: "rg -n '/create-mockup|ship|live DOM|final review' .pi/skills/review-design/SKILL.md .pi/skills/test-interactions/SKILL.md .pi/skills/ux-lab/SKILL.md"
+      assertion: "Review-design, test-interactions, and ux-lab all document their exact stage placement in the canonical design-to-ship pipeline."
+
+  - id: "6"
+    title: "Add sanity and skills-ci regression coverage for the new routing"
+    lane: "3"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+    skills:
+      - "skills-ci"
+      - "eval-skills"
+    read_context:
+      - "docs/design-skill-flow.md"
+      - ".pi/skills/create-mockup/SKILL.md"
+      - ".pi/skills/skills-ci/SKILL.md"
+    allowlist:
+      - ".pi/skills/create-mockup/sanity.sh"
+      - ".pi/skills/create-mockup/eval.json"
+      - ".pi/skills/create-mockup/SKILL.md"
+    implementation:
+      - "Add a `sanity.sh` for `/create-mockup` that checks the skill contract is readable and the mode names are present."
+      - "Add `eval.json` coverage that verifies routing expectations for `new`, `improve`, and `ship` prompts."
+      - "Keep the coverage lightweight and focused on routing and stage placement, not external provider calls."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "test -f .pi/skills/create-mockup/sanity.sh && test -f .pi/skills/create-mockup/eval.json"
+    gate: "The new routing must have lightweight regression coverage before the refactor is considered complete."
+    definition_of_done:
+      command: "test -f .pi/skills/create-mockup/sanity.sh && test -f .pi/skills/create-mockup/eval.json && bash .pi/skills/create-mockup/sanity.sh"
+      assertion: "Create-mockup has lightweight routing regression coverage and a passing sanity check."
+
+  - id: "7"
+    title: "Run cross-skill validation and publish the migration summary"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "general-purpose"
+    depends_on:
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+    command: "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills && rg -n '/create-mockup' docs/design-skill-flow.md .pi/skills/mockup-lab/SKILL.md .pi/skills/review-design/SKILL.md .pi/skills/test-interactions/SKILL.md .pi/skills/create-react-designs/SKILL.md .pi/skills/prototype-react-iterate/SKILL.md"
+    implementation:
+      - "Run a final skills-ci scan after all skill edits."
+      - "Verify the migration doc and the routed skills consistently mention `/create-mockup`."
+      - "Keep this as a deterministic local validation task; if a later iteration needs one-shot automated summarization, use `/scillm` rather than inventing a separate convergence loop."
+      - "Use the resulting scan and routing summary as the handoff artifact for the maintainer before any wider rollout."
+    tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    gate: "The final handoff must prove both cross-skill consistency and a clean skills-ci result."
+    definition_of_done:
+      command: "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills && rg -n '/create-mockup' docs/design-skill-flow.md .pi/skills/mockup-lab/SKILL.md .pi/skills/review-design/SKILL.md .pi/skills/test-interactions/SKILL.md .pi/skills/create-react-designs/SKILL.md .pi/skills/prototype-react-iterate/SKILL.md"
+      assertion: "Skills CI passes and the migration summary is visible across the canonical flow and the deprecated/redirected skills."

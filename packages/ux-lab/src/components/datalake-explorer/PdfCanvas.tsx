@@ -15,6 +15,7 @@ interface PdfCanvasProps {
   bboxOverlays: BboxBlock[]
   compareOverlays?: BboxBlock[]
   selectedBlockId: string | null
+  activeTaskBlockId?: string | null
   onBlockClick: (id: string) => void
   onBlockContextMenu?: (id: string, x: number, y: number) => void
   zoom: number
@@ -70,6 +71,12 @@ const HANDLE_DEFS: Array<{ key: ResizeHandle; left: string; top: string; cursor:
   { key: 'w', left: '0%', top: '50%', cursor: 'w-resize' },
 ]
 
+function formatCanvasSemanticLabel(block: Pick<BboxBlock, 'blockType' | 'semanticType'>): string {
+  if (block.blockType === 'table' && block.semanticType === 'definition_list') return 'definition list'
+  if (block.semanticType) return block.semanticType.replaceAll('_', ' ')
+  return block.blockType.replaceAll('_', ' ')
+}
+
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value))
 }
@@ -122,6 +129,7 @@ export default function PdfCanvas({
   bboxOverlays,
   compareOverlays = [],
   selectedBlockId,
+  activeTaskBlockId = null,
   onBlockClick,
   onBlockContextMenu,
   zoom,
@@ -230,6 +238,14 @@ export default function PdfCanvas({
       transform: 'translateY(calc(-100% - 8px))',
     }
   }, [selectedAreaBBox])
+
+  const classifyReviewBand = useCallback((block: BboxBlock): 'low' | 'medium' | 'ghost' => {
+    const flagged = Boolean(block.flagged)
+    const hasOpenComments = Boolean(block.hasOpenComments || (block.reviewNotes && block.reviewNotes.length > 0))
+    if (flagged || block.confidence < 0.6) return 'low'
+    if (hasOpenComments || block.confidence < 0.9) return 'medium'
+    return 'ghost'
+  }, [])
 
   const getPageRect = useCallback(() => {
     return pageWrapperRef.current?.getBoundingClientRect() ?? overlayRef.current?.getBoundingClientRect() ?? null
@@ -355,9 +371,11 @@ export default function PdfCanvas({
       const rh = (y2 - y1) * dims.h
       ctx.save()
       ctx.setLineDash([6, 4])
-      ctx.strokeStyle = 'rgba(245, 158, 11, 0.9)'
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.5)'
       ctx.lineWidth = 1.5
       ctx.strokeRect(rx, ry, rw, rh)
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.06)'
+      ctx.fillRect(rx, ry, rw, rh)
       ctx.restore()
     }
 
@@ -369,20 +387,55 @@ export default function PdfCanvas({
       const rh = (y2 - y1) * dims.h
 
       const isSelected = block.id === selectedBlockId
-      const color = block.humanEdited ? '#23c7d9' : BLOCK_TYPE_COLORS[block.blockType]
+      const isActiveTask = block.id === activeTaskBlockId
+      const band = classifyReviewBand(block)
+      const isAgentAdded = block.id.startsWith('review:') || (block.cascadeTrail?.some((t: any) => t.tier === 'T2') ?? false)
+      const color = band === 'low'
+        ? '#FF4D4D'
+        : band === 'medium'
+          ? '#FFC107'
+          : block.humanEdited
+            ? '#23c7d9'
+            : isAgentAdded
+              ? '#a78bfa'
+              : BLOCK_TYPE_COLORS[block.blockType]
+      const faded = Boolean(selectedBlockId && !isSelected)
+      const fillAlpha = isSelected ? '0.12' : band === 'ghost' ? '0.02' : band === 'medium' ? '0.05' : '0.07'
 
       ctx.fillStyle = isSelected
         ? 'rgba(124, 58, 237, 0.12)'
-        : block.humanEdited
-          ? 'rgba(35, 199, 217, 0.14)'
-          : `${color}18`
+        : `rgba(${band === 'low' ? '255, 77, 77' : band === 'medium' ? '255, 193, 7' : '224, 224, 224'}, ${faded ? '0.01' : fillAlpha})`
       ctx.fillRect(rx, ry, rw, rh)
 
-      ctx.strokeStyle = isSelected ? '#7c3aed' : `${color}cc`
-      ctx.lineWidth = isSelected ? 2 : block.humanEdited ? 1.75 : 1
+      ctx.strokeStyle = isSelected ? '#7c3aed' : color
+      ctx.lineWidth = isSelected ? 2 : band === 'ghost' ? 1 : 2
+      if (!isSelected) ctx.setLineDash(band === 'medium' ? [6, 4] : band === 'ghost' ? [3, 5] : [])
+      ctx.globalAlpha = faded ? 0.12 : isActiveTask ? 1 : band === 'ghost' ? 0.28 : 0.95
       ctx.strokeRect(rx, ry, rw, rh)
+      if (isAgentAdded && !isSelected && !block.humanEdited) {
+        ctx.setLineDash([4, 4])
+        ctx.strokeStyle = '#a78bfa'
+        ctx.lineWidth = 1.5
+        ctx.globalAlpha = faded ? 0.12 : 0.7
+        ctx.strokeRect(rx - 2, ry - 2, rw + 4, rh + 4)
+      }
+      ctx.setLineDash([])
+      ctx.globalAlpha = 1
     }
-  }, [bboxOverlays, compareOverlays, selectedBlockId, dims])
+  }, [activeTaskBlockId, bboxOverlays, classifyReviewBand, compareOverlays, selectedBlockId, dims])
+
+  useEffect(() => {
+    if (!selectedBlockId) return
+    const frame = window.requestAnimationFrame(() => {
+      const el = pageWrapperRef.current?.querySelector<HTMLElement>(`[data-qid="pdf:block:${CSS.escape(selectedBlockId)}"]`)
+      if (el) {
+        el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+        return
+      }
+      pageWrapperRef.current?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [dims.h, dims.w, pageNumber, selectedBlockId])
 
   useEffect(() => {
     if (!editable || !interaction) return
@@ -615,15 +668,27 @@ export default function PdfCanvas({
             {interactiveBlocks.map((block) => {
               const [x1, y1, x2, y2] = block.bbox
               const isSelected = block.id === selectedBlockId
+              const isActiveTask = block.id === activeTaskBlockId
               const isAreaSelected = selectedAreaBlockIds.includes(block.id)
               const isHovered = block.id === hoveredBlockId
-              const baseColor = block.humanEdited ? '#23c7d9' : BLOCK_TYPE_COLORS[block.blockType]
+              const band = classifyReviewBand(block)
+              const isAgentAdded = block.id.startsWith('review:') || (block.cascadeTrail?.some((t: any) => t.tier === 'T2') ?? false)
+              const baseColor = band === 'low'
+                ? '#FF4D4D'
+                : band === 'medium'
+                  ? '#FFC107'
+                  : block.humanEdited
+                    ? '#23c7d9'
+                    : isAgentAdded
+                      ? '#a78bfa'
+                      : BLOCK_TYPE_COLORS[block.blockType]
+              const faded = Boolean(selectedBlockId && !isSelected)
               return (
                 <div
                   key={block.id}
                   data-qid={`pdf:block:${block.id}`}
                   data-qs-action="PDF_SELECT_BLOCK"
-                  title={`Select ${block.semanticType || block.blockType} block ${block.id}`}
+                  title={`Select ${formatCanvasSemanticLabel(block)} block ${block.id}`}
                   onMouseDown={(event) => startDrag(event, block)}
                   onClick={(event) => {
                     event.stopPropagation()
@@ -648,16 +713,25 @@ export default function PdfCanvas({
                       ? '2px solid rgba(124, 58, 237, 0.95)'
                       : isAreaSelected
                         ? '2px dashed rgba(245, 158, 11, 0.95)'
-                      : `1px dashed ${block.humanEdited ? 'rgba(35, 199, 217, 0.88)' : `${baseColor}99`}`,
+                      : band === 'medium'
+                        ? `2px dashed ${baseColor}`
+                        : band === 'ghost'
+                          ? `1px solid rgba(224, 224, 224, 0.24)`
+                          : `2px solid ${baseColor}`,
                     boxSizing: 'border-box',
                     zIndex: isSelected ? 20 : 10,
                     overflow: 'visible',
+                    opacity: faded ? 0.12 : band === 'ghost' ? 0.32 : 1,
                     boxShadow: isSelected
                       ? '0 0 0 1px rgba(124, 58, 237, 0.2)'
                       : isAreaSelected
                         ? '0 0 0 1px rgba(245, 158, 11, 0.35)'
+                      : isActiveTask
+                        ? `0 0 0 2px ${baseColor}33`
                       : isHovered
                         ? `0 0 0 1px ${baseColor}55`
+                      : isAgentAdded
+                        ? '0 0 0 2px rgba(167, 139, 250, 0.25)'
                         : 'none',
                     pointerEvents: selectingArea ? 'none' : 'auto',
                   }}

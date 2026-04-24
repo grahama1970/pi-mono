@@ -444,6 +444,8 @@ export interface BboxBlock {
 	qids?: string[]; // QID markers extracted from this block
 	tocEntries?: TocEntry[]; // Parsed TOC entries if this is a TOC block
 	reviewNotes?: string[];
+	flagged?: boolean;
+	hasOpenComments?: boolean;
 	humanEdited?: boolean;
 	humanEditedAt?: string;
 }
