@@ -382,6 +382,22 @@ export function useControlsPaginated(
 // - source="v2": queries sparta_qra_canonical + sparta_qra_relationship (default)
 // - source="legacy": queries sparta_qra (for comparison during migration)
 // - source="all": queries all three collections
+//
+// Caching: module-level cache keyed by (query, controlId, source) with 30s TTL.
+// Prevents re-fetching on every tab switch / remount.
+
+interface QraCacheEntry {
+	data: SpartaQRA[];
+	total: number;
+	at: number;
+}
+
+const QRA_CACHE = new Map<string, QraCacheEntry>();
+const QRA_CACHE_TTL_MS = 30_000;
+
+function qraCacheKey(query: string, controlId: string | undefined, source: QRASource): string {
+	return JSON.stringify({ query, controlId, source });
+}
 
 export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"): HookResult<SpartaQRA> {
 	const debouncedQuery = useDebouncedValue(query);
@@ -390,21 +406,30 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const fetchData = useCallback(async () => {
+	const fetchData = useCallback(async (opts?: { force?: boolean }) => {
+		const cacheKey = qraCacheKey(debouncedQuery, controlId, source);
+		const cached = QRA_CACHE.get(cacheKey);
+
+		// Serve stale immediately if available and not forcing refresh
+		if (!opts?.force && cached && Date.now() - cached.at < QRA_CACHE_TTL_MS) {
+			setData(cached.data);
+			setTotal(cached.total);
+			setLoading(false);
+			setError(null);
+			return;
+		}
+
 		setLoading(true);
 		setError(null);
 		try {
-			// Select collections based on source
 			const collections =
 				source === "v2" ? QRA_COLLECTIONS_V2 : source === "legacy" ? QRA_COLLECTIONS_LEGACY : QRA_COLLECTIONS_ALL;
 
-			// Always use /recall - never /list on large collections
 			const q = debouncedQuery || (controlId ? `QRA for ${controlId}` : "SPARTA compliance question");
-			const opts: { k?: number; entities?: string[] } = { k: 50 };
-			if (controlId) opts.entities = [controlId];
-			const result = await recallPost(collections, q, opts);
+			const recallOpts: { k?: number; entities?: string[] } = { k: 50 };
+			if (controlId) recallOpts.entities = [controlId];
+			const result = await recallPost(collections, q, recallOpts);
 
-			// Tag each result with its source collection (derived from _id)
 			const items = (result.items as unknown as SpartaQRA[]).map((item) => ({
 				...item,
 				_collection: item._id?.startsWith("sparta_qra_canonical")
@@ -414,6 +439,7 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 						: ("sparta_qra" as const),
 			}));
 
+			QRA_CACHE.set(cacheKey, { data: items, total: items.length, at: Date.now() });
 			setData(items);
 			setTotal(items.length);
 		} catch (err) {
@@ -426,7 +452,8 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
-	return { data, total, loading, error, refresh: fetchData };
+
+	return { data, total, loading, error, refresh: () => fetchData({ force: true }) };
 }
 
 // ── useRelationships ────────────────────────────────────────────────────────

@@ -83,10 +83,28 @@ export interface SpartaExplorerProps {
 }
 
 export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: SpartaExplorerProps) {
-  const [activeTab, setActiveTab] = useState<TabName>(
-    (initialTab && SUBPATH_TO_TAB[initialTab]) || 'Threat Matrix'
-  )
-  const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>({})
+  // Parse URL hash on mount to restore tab + filters (e.g. ?qra=abc123)
+  const getInitialState = useCallback(() => {
+    const hash = window.location.hash || ''
+    const [pathPart, queryPart] = hash.split('?')
+    const parts = pathPart.replace('#', '').split('/')
+    const slug = parts[1] || initialTab || ''
+    const tab = SUBPATH_TO_TAB[slug] || 'Threat Matrix'
+    const filters: Partial<Record<TabName, SpartaTabFilter>> = {}
+    if (queryPart) {
+      const sp = new URLSearchParams(queryPart)
+      const controlId = sp.get('control') || undefined
+      const qraKey = sp.get('qra') || undefined
+      if (controlId || qraKey) {
+        filters[tab] = { controlId, qraKey }
+      }
+    }
+    return { tab, filters }
+  }, [initialTab])
+
+  const initialState = getInitialState()
+  const [activeTab, setActiveTab] = useState<TabName>(initialState.tab)
+  const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>(initialState.filters)
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
 
   // Query settings
@@ -150,20 +168,45 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     setFrameworkFilters(prev => ({ ...prev, [fw]: !prev[fw] }))
   }, [])
 
-  const navigateToTab = useCallback((tab: TabName) => {
-    setActiveTab(tab)
+  // URL hash helpers for tab + query params (e.g. #sparta-explorer/qras?qra=abc123)
+  const buildHash = useCallback((tab: TabName, params?: Record<string, string>) => {
     const slug = tab.toLowerCase().replace(/\s+/g, '-')
     const base = window.location.hash.split('/')[0] || '#sparta-explorer'
-    window.location.hash = slug === 'chat' ? base : `${base}/${slug}`
+    let hash = slug === 'chat' ? base : `${base}/${slug}`
+    if (params && Object.keys(params).length > 0) {
+      const q = new URLSearchParams(params).toString()
+      hash += `?${q}`
+    }
+    return hash
   }, [])
+
+  const parseHashParams = useCallback((): { tab: TabName; params: Record<string, string> } => {
+    const hash = window.location.hash || ''
+    const [pathPart, queryPart] = hash.split('?')
+    const parts = pathPart.replace('#', '').split('/')
+    const slug = parts[1] || ''
+    const tab = SUBPATH_TO_TAB[slug] || 'Threat Matrix'
+    const params: Record<string, string> = {}
+    if (queryPart) {
+      const sp = new URLSearchParams(queryPart)
+      sp.forEach((v, k) => { params[k] = v })
+    }
+    return { tab, params }
+  }, [])
+
+  const navigateToTab = useCallback((tab: TabName) => {
+    setActiveTab(tab)
+    window.location.hash = buildHash(tab)
+  }, [buildHash])
 
   const navigateToTabWithFilter = useCallback((tab: TabName, filter: SpartaTabFilter) => {
     setTabFilters(prev => ({ ...prev, [tab]: filter }))
     setActiveTab(tab)
-    const slug = tab.toLowerCase().replace(/\s+/g, '-')
-    const base = window.location.hash.split('/')[0]
-    window.location.hash = `${base}/${slug}`
-  }, [])
+    const params: Record<string, string> = {}
+    if (filter.controlId) params.control = filter.controlId
+    if (filter.qraKey) params.qra = filter.qraKey
+    window.location.hash = buildHash(tab, Object.keys(params).length > 0 ? params : undefined)
+  }, [buildHash])
 
   const clearTabFilter = useCallback((tab: TabName) => {
     setTabFilters(prev => {
@@ -172,7 +215,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       delete next[tab]
       return next
     })
-  }, [])
+    // Strip query params from hash when clearing filter
+    const { tab: currentTab } = parseHashParams()
+    if (currentTab === tab) {
+      window.location.hash = buildHash(tab)
+    }
+  }, [buildHash, parseHashParams])
 
   useEffect(() => {
     const onNavigateControl = (evt: Event) => {

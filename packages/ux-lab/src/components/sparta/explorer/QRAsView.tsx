@@ -147,6 +147,16 @@ function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
     }))
 }
 
+// Sync selected QRA _key into URL hash params (e.g. #sparta-explorer/qras?qra=abc123)
+function syncQraUrl(qraKey: string | undefined) {
+  const hash = window.location.hash || ''
+  const [pathPart] = hash.split('?')
+  const sp = new URLSearchParams()
+  if (qraKey) sp.set('qra', qraKey)
+  const q = sp.toString()
+  window.location.hash = q ? `${pathPart}?${q}` : pathPart
+}
+
 export function QRAsView() {
   const nav = useSpartaNav()
   const controlFilter = nav.tabFilters.QRAs?.controlId
@@ -164,15 +174,25 @@ export function QRAsView() {
   }, [searchQuery])
 
   const { data: qras = [], loading, error } = useQRAs(debouncedSearch, controlFilter, source)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndexRaw] = useState(0)
+
+  // Wrapper that also syncs URL when selection changes
+  const setCurrentIndex = useCallback((idx: number | ((prev: number) => number)) => {
+    setCurrentIndexRaw((prev) => {
+      const next = typeof idx === 'function' ? idx(prev) : idx
+      const qra = qras[next]
+      if (qra) syncQraUrl(qra._key)
+      return next
+    })
+  }, [qras])
 
   // Reset index when filter changes, or auto-select by qraKey
   useEffect(() => {
     if (qraKeyFilter && qras.length > 0) {
       const idx = qras.findIndex(q => q._key === qraKeyFilter)
-      setCurrentIndex(idx >= 0 ? idx : 0)
+      setCurrentIndexRaw(idx >= 0 ? idx : 0)
     } else {
-      setCurrentIndex(0)
+      setCurrentIndexRaw(0)
     }
   }, [controlFilter, debouncedSearch, qraKeyFilter, qras, source])
   const [decisions, setDecisions] = useState<Map<string, 'accept' | 'reject'>>(new Map())
