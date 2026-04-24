@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { EMBRY, label } from '../common/EmbryStyle'
 import { useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
@@ -557,11 +558,14 @@ export function QRAsView() {
                      const isActive = idx === currentIndex
                      
                      return (
-                        <div
+                        <motion.div
                           key={`${q._key}:${idx}`}
                           data-qid={`qras:item:${q._key}`}
                           data-qs-action="SELECT_QRA"
                           title={q.question}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2, delay: Math.min(idx * 0.015, 0.3) }}
                           onMouseEnter={() => setHoveredQra(q._key)}
                           onMouseLeave={() => setHoveredQra(null)}
                           onClick={() => setCurrentIndex(idx)}
@@ -571,7 +575,6 @@ export function QRAsView() {
                             backgroundColor: isActive ? 'rgba(124, 58, 237, 0.08)' : (hoveredQra === q._key ? 'rgba(255,255,255,0.02)' : 'transparent'),
                             cursor: 'pointer',
                             position: 'relative',
-                            transition: 'background-color 0.2s',
                           }}
                         >
                           <div
@@ -614,7 +617,7 @@ export function QRAsView() {
                               {q.question}
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                      )
                   })}
                </div>
@@ -808,16 +811,28 @@ export function QRAsView() {
       </div>
 
       {/* Batch Info Modal */}
+      <AnimatePresence>
       {showBatchModal && current?.run_id && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 9999,
-          backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }} onClick={() => setShowBatchModal(false)}>
-          <div style={{
-            width: 520, maxHeight: '80vh', backgroundColor: EMBRY.bgPanel,
-            border: `1px solid ${EMBRY.border}`, borderRadius: 12, overflow: 'hidden',
-            boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-          }} onClick={e => e.stopPropagation()}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }} onClick={() => setShowBatchModal(false)}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 10 }}
+            transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
+            style={{
+              width: 520, maxHeight: '80vh', backgroundColor: EMBRY.bgPanel,
+              border: `1px solid ${EMBRY.border}`, borderRadius: 12, overflow: 'hidden',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+            }} onClick={e => e.stopPropagation()}
+          >
             {/* Modal Header */}
             <div style={{
               padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`,
@@ -926,9 +941,10 @@ export function QRAsView() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   )
 }
