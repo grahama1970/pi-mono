@@ -429,6 +429,114 @@ app.get('/api/qra/coverage', async (_req, res) => {
   }
 })
 
+app.post('/api/qra/feed', async (req, res) => {
+  const limitRaw = Number(req.body?.limit)
+  const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, limitRaw)) : 50
+  const source = String(req.body?.source || 'legacy').toLowerCase()
+  const projection = `{
+    _key: doc._key,
+    _id: doc._id,
+    qra_id: doc.qra_id,
+    question: doc.question,
+    reasoning: doc.reasoning,
+    answer: doc.answer,
+    grounding_score: doc.grounding_score,
+    source_framework: doc.source_framework,
+    source_control_id: doc.source_control_id,
+    control_id: doc.source_control_id,
+    run_id: doc.run_id,
+    mind: doc.mind,
+    relationship_id: doc.relationship_id,
+    expertise: doc.expertise,
+    difficulty: doc.difficulty,
+    created_at: doc.created_at,
+    review_status: doc.review_status,
+    evidence_case: doc.evidence_case ? KEEP(
+      doc.evidence_case,
+      "verdict",
+      "review_status",
+      "question_text",
+      "control_ids",
+      "glossary",
+      "resolved_entities",
+      "spans",
+      "prior_qra_evidence",
+      "crosswalk_chains",
+      "formal_proof",
+      "sacm_ref",
+      "cae_tree",
+      "entity_resolution",
+      "technique_check",
+      "failure_reason",
+      "failure_mode",
+      "failure_details"
+    ) : null,
+    formal_proof: doc.formal_proof,
+    sacm_ref: doc.sacm_ref,
+    lineage: doc.lineage
+  }`
+
+  async function queryFeed(aql: string, bind_vars: Record<string, unknown>) {
+    const result = await proxyPost('/query', { aql, bind_vars }, 45000)
+    return Array.isArray(result?.documents) ? result.documents : []
+  }
+
+  try {
+    // Do not use /list to browse the full QRA corpus. Keep this bounded and server-side.
+    // Avoid global sorts on the 245k-row legacy collection; they exceed Arango memory.
+    let documents: any[] = []
+    let sourceUsed = 'legacy'
+
+    if (source === 'v2') {
+      sourceUsed = 'v2'
+      documents = await queryFeed(
+        `FOR doc IN sparta_qra_relationship
+           LIMIT @limit
+           RETURN ${projection}`,
+        { limit },
+      )
+    } else if (source === 'all') {
+      const legacyLimit = Math.max(1, Math.ceil(limit / 2))
+      const v2Limit = Math.max(1, limit - legacyLimit)
+      const [legacyDocs, v2Docs] = await Promise.all([
+        queryFeed(
+          `FOR doc IN sparta_qra
+             FILTER doc.source_framework == "SPARTA"
+             LIMIT @limit
+             RETURN ${projection}`,
+          { limit: legacyLimit },
+        ),
+        queryFeed(
+          `FOR doc IN sparta_qra_relationship
+             LIMIT @limit
+             RETURN ${projection}`,
+          { limit: v2Limit },
+        ),
+      ])
+      documents = [...legacyDocs, ...v2Docs].slice(0, limit)
+      sourceUsed = 'all'
+    } else {
+      sourceUsed = 'legacy'
+      documents = await queryFeed(
+        `FOR doc IN sparta_qra
+           FILTER doc.source_framework == "SPARTA"
+           LIMIT @limit
+           RETURN ${projection}`,
+        { limit },
+      )
+    }
+
+    res.json({
+      documents,
+      total: documents.length,
+      source_used: sourceUsed,
+    })
+  } catch (e) {
+    console.error('[qra/feed] failed', e)
+    res.status(502).json({ error: 'qra_feed_failed', detail: String(e) })
+  }
+})
+
 // Legacy posture endpoints (kept for backward compat)
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {
@@ -4696,6 +4804,13 @@ app.post('/api/evidence-case/run', async (req, res) => {
       answer: hasQras
         ? `Found ${qras.length + relatedQras.length} related QRAs via ${context.framework || 'hybrid'} search.`
         : `No QRAs found for the query.`,
+      // Pass through CAE tree when daemon returns it (v4.3+ schema)
+      cae_tree: result.claim ? {
+        claim: result.claim,
+        strategies: result.strategies || [],
+        evidence: result.evidence || [],
+        verdict: result.verdict || null,
+      } : null,
     })
   } catch (e: any) {
     console.error('[evidence-case/run] Daemon call failed:', e.message)
