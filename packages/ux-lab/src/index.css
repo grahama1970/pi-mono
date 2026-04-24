@@ -267,3 +267,46 @@
   background-color: var(--stripe-color, #4a9eff);
   box-shadow: inset 4px 0 8px -2px var(--stripe-color, #4a9eff);
 }
+
+/* ── Global loading spinner ─────────────────────────────────────────────── */
+
+@keyframes spinnerOrbit {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.nvis-spinner {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.nvis-spinner::before,
+.nvis-spinner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.nvis-spinner::before {
+  border-top-color: var(--color-tactical-primary);
+  border-right-color: var(--color-tactical-primary);
+  animation: spinnerOrbit 0.8s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+}
+
+.nvis-spinner::after {
+  border-top-color: rgba(0, 255, 102, 0.15);
+  animation: spinnerOrbit 1.2s linear infinite reverse;
+}
+
+.nvis-spinner-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.nvis-spinner-lg::before,
+.nvis-spinner-lg::after {
+  border-width: 3px;
+}

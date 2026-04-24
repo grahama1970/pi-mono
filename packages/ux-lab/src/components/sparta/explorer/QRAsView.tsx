@@ -536,7 +536,12 @@ export function QRAsView() {
                </div>
 
                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  {loading && <div style={{ padding: 16, color: EMBRY.dim, fontSize: 12 }}>Loading QRAs...</div>}
+                  {loading && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '32px 16px', color: EMBRY.dim }}>
+                      <div className="nvis-spinner nvis-spinner-lg" />
+                      <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase' }}>Loading QRAs</span>
+                    </div>
+                  )}
                   {!loading && visibleQras.length === 0 && (
                     <div style={{ padding: 16, color: EMBRY.dim, fontSize: 11 }}>
                       No QRAs match the active filters.
