@@ -910,10 +910,11 @@ export function QRAsView() {
                           setCurrentIndex(qraIndex)
                           setShowBatchModal(false)
                         }}
+                        className="elevated-surface"
                         style={{
                           padding: '10px 12px', borderRadius: 6, cursor: 'pointer',
                           backgroundColor: isCurrent ? `${EMBRY.accent}15` : 'rgba(255,255,255,0.03)',
-                          border: `1px solid ${isCurrent ? EMBRY.accent : EMBRY.border}`,
+                          border: `1px solid ${isCurrent ? EMBRY.accent : 'transparent'}`,
                           transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
                         }}
                         onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)' }}
