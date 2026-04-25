@@ -1,0 +1,282 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "Add PTY-managed `/subagent-runner` for Codex-class agent sessions"
+  goal: "Introduce a PTY-managed subprocess runner for Codex-class agent sessions without weakening `/code-runner`'s deterministic guarantees, then teach `/orchestrate`, `/plan`, and `/review-plan` when to use each runner."
+  plan_type: code
+  created: "2026-04-24"
+  primary_persona:
+    name: "Graham"
+    role: "Agent runtime maintainer and workflow owner"
+    source: "conversation:2026-04-24"
+
+execution:
+  max_concurrency: 2
+  wave_barrier: false
+  scheduling_policy: dependency_only
+
+capability_overlap:
+  - "/code-runner already covers bounded, deterministic, allowlisted code repair with DoD scoring — KEEP that runner and do not fold PTY subprocess behavior into it."
+  - "/orchestrate already provides async DAG dispatch, task lifecycle, and per-run artifacts — EXTEND it with a new runner type instead of inventing a second orchestrator."
+  - "Deprecated `subagent-service` references in `/orchestrate` prove there was prior demand for isolated subagent execution, but the current fallback path is degraded and not a PTY-managed local runner."
+  - "CREATE: add `/subagent-runner` because no current skill in this repo provides PTY-managed Codex subprocess sessions with attach/detach, artifact capture, and explicit routing criteria."
+
+questions_blockers:
+  - "None"
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Architecture and routing contract"
+  - id: "1"
+    label: "Wave 1: Core subagent-runner implementation"
+  - id: "2"
+    label: "Wave 2: Orchestrate and planning integration"
+  - id: "3"
+    label: "Wave 3: Validation and migration"
+
+tasks:
+  - id: "1"
+    title: "Write the subagent-runner architecture and routing spec"
+    lane: "0"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: []
+    skills:
+      - "assess"
+      - "memory"
+      - "code-runner"
+      - "orchestrate"
+    read_context:
+      - ".pi/skills/code-runner/SKILL.md"
+      - ".pi/skills/orchestrate/SKILL.md"
+      - ".pi/skills/orchestrate/structured_execute.py"
+      - ".pi/skills/plan/SKILL.md"
+      - ".pi/skills/review-plan/SKILL.md"
+    allowlist:
+      - "docs/subagent-runner-architecture.md"
+    implementation:
+      - "Create `docs/subagent-runner-architecture.md` defining the separation between `/code-runner` and `/subagent-runner`."
+      - "Document the PTY session model, artifact contract (`status.json`, transcript, logs, outputs), and attach/detach/intervene semantics."
+      - "Add a routing matrix showing when to use `local`, `scillm`, `code-runner`, and `subagent-runner`, including examples of tasks that must stay on `/code-runner`."
+      - "Define the minimum policy boundary: explicit write scope, blocked destructive commands, timeout/watchdog behavior, and what `/orchestrate` is responsible for versus the runner itself."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "rg -n 'subagent-runner|code-runner|PTY|attach|detach|intervene' docs/subagent-runner-architecture.md"
+    gate: "The spec must make it impossible to confuse PTY subagent sessions with deterministic code-runner tasks."
+    definition_of_done:
+      command: "test -f docs/subagent-runner-architecture.md && rg -n 'subagent-runner|code-runner|PTY|attach|detach|intervene|routing matrix' docs/subagent-runner-architecture.md"
+      assertion: "The architecture spec exists and clearly separates PTY-managed subagents from code-runner while defining the routing contract."
+
+  - id: "2"
+    title: "Create `/subagent-runner` skill scaffold and session contract"
+    lane: "1"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+    skills:
+      - "codex"
+      - "orchestrate"
+      - "code-runner"
+    read_context:
+      - "docs/subagent-runner-architecture.md"
+      - ".pi/skills/code-runner/SKILL.md"
+      - ".pi/skills/code-runner/models.py"
+      - ".pi/skills/orchestrate/structured_execute.py"
+    allowlist:
+      - ".pi/skills/subagent-runner/SKILL.md"
+      - ".pi/skills/subagent-runner/run.sh"
+      - ".pi/skills/subagent-runner/models.py"
+      - ".pi/skills/subagent-runner/session_store.py"
+    implementation:
+      - "Create a new `/subagent-runner` skill that documents PTY-managed agent sessions, supported backends, artifact layout, and safety constraints."
+      - "Add typed task/session/result models for the runner spec, including session id, cwd, backend, prompt contract, output paths, and status lifecycle."
+      - "Add a session-store module that owns per-run directories and the canonical artifact filenames instead of scattering them through the runtime."
+      - "Keep the initial interface Codex-first, but structure the models so other CLI agent backends can be added later without changing the contract."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "python .pi/skills/subagent-runner/run.sh help >/dev/null"
+    gate: "The new skill must exist as a first-class runner contract before any PTY execution logic is added."
+    definition_of_done:
+      command: "test -f .pi/skills/subagent-runner/SKILL.md && test -f .pi/skills/subagent-runner/run.sh && test -f .pi/skills/subagent-runner/models.py && test -f .pi/skills/subagent-runner/session_store.py"
+      assertion: "The subagent-runner skill scaffold and typed session contract exist with documented artifact ownership."
+
+  - id: "3"
+    title: "Implement PTY lifecycle, transcript capture, and intervention controls"
+    lane: "1"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "2"
+    skills:
+      - "codex"
+      - "task-monitor"
+    read_context:
+      - "docs/subagent-runner-architecture.md"
+      - ".pi/skills/subagent-runner/SKILL.md"
+      - ".pi/skills/subagent-runner/models.py"
+      - ".pi/skills/subagent-runner/session_store.py"
+    allowlist:
+      - ".pi/skills/subagent-runner/pty_runtime.py"
+      - ".pi/skills/subagent-runner/result_watcher.py"
+      - ".pi/skills/subagent-runner/run.py"
+      - ".pi/skills/subagent-runner/run.sh"
+    implementation:
+      - "Add a PTY runtime that launches the Codex subprocess, streams stdout/stderr into append-only transcripts, and persists status changes to `status.json`."
+      - "Implement a result watcher that detects session exit, timeout, watchdog stall, and intervention files (`PAUSE`, `RESUME`, `CANCEL`, or equivalent) and writes normalized state transitions."
+      - "Expose direct runner commands for start, status, attach, send-input, and cancel so `/orchestrate` and humans can inspect or intervene without editing runtime internals."
+      - "Ensure the PTY lifecycle keeps command execution observable and recoverable instead of hiding state inside the terminal session."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "python .pi/skills/subagent-runner/run.py --help"
+    gate: "A crashed or stalled PTY session must leave a coherent artifact trail that another process can inspect."
+    definition_of_done:
+      command: "python .pi/skills/subagent-runner/run.py --help >/dev/null"
+      assertion: "The PTY runtime and watcher modules exist and expose a usable runner CLI for session lifecycle operations."
+
+  - id: "4"
+    title: "Integrate `subagent-runner` into `/orchestrate` as an explicit runner type"
+    lane: "2"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+      - "2"
+      - "3"
+    skills:
+      - "orchestrate"
+      - "code-runner"
+    read_context:
+      - "docs/subagent-runner-architecture.md"
+      - ".pi/skills/subagent-runner/SKILL.md"
+      - ".pi/skills/orchestrate/SKILL.md"
+      - ".pi/skills/orchestrate/run.sh"
+      - ".pi/skills/orchestrate/structured_execute.py"
+    allowlist:
+      - ".pi/skills/orchestrate/SKILL.md"
+      - ".pi/skills/orchestrate/run.sh"
+      - ".pi/skills/orchestrate/structured_execute.py"
+    implementation:
+      - "Add `subagent-runner` as a supported structured-plan runner with explicit dispatch rather than deprecating everything to `code-runner` or `scillm`."
+      - "Teach `/orchestrate` how to start the runner, track per-task session artifacts, surface intermediate state, and propagate cancel/pause/resume signals."
+      - "Preserve `/code-runner` as the default for bounded implementation tasks; `subagent-runner` should be opt-in for PTY-style agent sessions."
+      - "Replace the current `subagent-service` deprecation messaging with migration guidance toward the new runner where appropriate, without silently rewriting deterministic tasks."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "python .pi/skills/plan/plan.py --validate 14_SUBAGENT_RUNNER_TASKS.yaml"
+    gate: "Orchestrate must understand subagent-runner as a first-class runner without erasing the code-runner boundary."
+    definition_of_done:
+      command: "rg -n 'subagent-runner' .pi/skills/orchestrate/SKILL.md .pi/skills/orchestrate/run.sh .pi/skills/orchestrate/structured_execute.py"
+      assertion: "Orchestrate documents and dispatches the new runner explicitly instead of treating it as a deprecated compatibility alias."
+
+  - id: "5"
+    title: "Teach `/plan` and `/review-plan` when to route to subagent-runner"
+    lane: "2"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "1"
+      - "4"
+    skills:
+      - "plan"
+      - "review-plan"
+      - "best-practices-plan"
+    read_context:
+      - "docs/subagent-runner-architecture.md"
+      - ".pi/skills/plan/SKILL.md"
+      - ".pi/skills/review-plan/SKILL.md"
+      - "/home/graham/workspace/experiments/agent-skills/skills/best-practices-plan/SKILL.md"
+    allowlist:
+      - ".pi/skills/plan/SKILL.md"
+      - ".pi/skills/review-plan/SKILL.md"
+      - ".pi/skills/review-plan/review_plan.py"
+    implementation:
+      - "Update `/plan` guidance so PTY-managed agent sessions are selected only for open-ended CLI-agent work, takeover-friendly sessions, or tasks whose DoD depends on a real terminal session."
+      - "Update `/review-plan` so it warns or fails when `subagent-runner` is chosen for tasks that should stay on `/code-runner`, such as bounded allowlisted file edits with a deterministic DoD."
+      - "Add the inverse guard too: plans that ask `/code-runner` to satisfy PTY-only behavior, attach/detach semantics, or interactive takeover should be routed to `subagent-runner` instead."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "uv run --project .pi/skills/review-plan python .pi/skills/review-plan/review_plan.py review 14_SUBAGENT_RUNNER_TASKS.yaml --json"
+    gate: "The planner must stop treating subagent-runner and code-runner as interchangeable."
+    definition_of_done:
+      command: "rg -n 'subagent-runner|code-runner' .pi/skills/plan/SKILL.md .pi/skills/review-plan/SKILL.md .pi/skills/review-plan/review_plan.py"
+      assertion: "Planning and review rules explicitly describe when to use subagent-runner versus code-runner and reject misuse in both directions."
+
+  - id: "6"
+    title: "Add sanity coverage and targeted regression tests for the new runner"
+    lane: "3"
+    runner: "code-runner"
+    backend: "gpt-5.3-codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on:
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+    skills:
+      - "skills-ci"
+      - "test"
+    read_context:
+      - "docs/subagent-runner-architecture.md"
+      - ".pi/skills/subagent-runner/SKILL.md"
+      - ".pi/skills/orchestrate/structured_execute.py"
+    allowlist:
+      - ".pi/skills/subagent-runner/sanity.sh"
+      - ".pi/skills/subagent-runner/tests/test_session_store.py"
+      - ".pi/skills/subagent-runner/tests/test_watcher.py"
+      - ".pi/skills/orchestrate/pipeline_sanity.py"
+    implementation:
+      - "Add a lightweight `sanity.sh` for `/subagent-runner` covering imports and basic CLI surface."
+      - "Add focused tests for session artifact creation and watcher state transitions so PTY lifecycle bugs fail fast."
+      - "Extend `/orchestrate` pipeline sanity to cover a structured plan task that uses `runner: subagent-runner` without launching a real long-running agent."
+    blind_tests:
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    tests:
+      - "bash .pi/skills/subagent-runner/sanity.sh"
+    gate: "The new runner needs its own regression harness before any migration off deprecated subagent-service references."
+    definition_of_done:
+      command: "test -f .pi/skills/subagent-runner/sanity.sh && bash .pi/skills/subagent-runner/sanity.sh"
+      assertion: "Subagent-runner has lightweight regression coverage and a passing sanity harness."
+
+  - id: "7"
+    title: "Run final validation and publish migration notes for deprecated subagent-service tasks"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "general-purpose"
+    depends_on:
+      - "4"
+      - "5"
+      - "6"
+    command: "python .pi/skills/plan/plan.py --validate 14_SUBAGENT_RUNNER_TASKS.yaml && uv run --project .pi/skills/review-plan python .pi/skills/review-plan/review_plan.py review 14_SUBAGENT_RUNNER_TASKS.yaml --json && ./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    implementation:
+      - "Run plan validation, review-plan validation, and a final skills-ci scan once the new runner and routing rules exist."
+      - "Publish migration notes describing how old `subagent-service` tasks should be rewritten as either `subagent-runner`, `code-runner`, or `scillm` depending on task shape."
+      - "Keep this final task deterministic; use it as the maintainer handoff checkpoint before wider rollout."
+    tests:
+      - "python .pi/skills/plan/plan.py --validate 14_SUBAGENT_RUNNER_TASKS.yaml"
+      - "uv run --project .pi/skills/review-plan python .pi/skills/review-plan/review_plan.py review 14_SUBAGENT_RUNNER_TASKS.yaml --json"
+      - "./.pi/skills/skills-ci/run.sh scan --root ./.pi/skills"
+    gate: "The rollout is not complete until the runner contract, planner guidance, and migration story validate together."
+    definition_of_done:
+      command: "python .pi/skills/plan/plan.py --validate 14_SUBAGENT_RUNNER_TASKS.yaml && uv run --project .pi/skills/review-plan python .pi/skills/review-plan/review_plan.py review 14_SUBAGENT_RUNNER_TASKS.yaml --json"
+      assertion: "The subagent-runner plan validates cleanly and the final migration notes are ready for execution."

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EMBRY, label } from '../common/EmbryStyle'
-import { useQRAs } from '../../../hooks/useSpartaCollections'
+import { qraDetailPost, useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
@@ -177,6 +177,8 @@ export function QRAsView() {
 
   const { data: qras = [], loading, error } = useQRAs(debouncedSearch, controlFilter, source)
   const [currentIndex, setCurrentIndexRaw] = useState(0)
+  const [qraDetails, setQraDetails] = useState<Map<string, SpartaQRA>>(new Map())
+  const [detailLoadingKey, setDetailLoadingKey] = useState<string | null>(null)
 
   // Wrapper that also syncs URL when selection changes
   const setCurrentIndex = useCallback((idx: number | ((prev: number) => number)) => {
@@ -235,7 +237,8 @@ export function QRAsView() {
     [baseVisibleQras, evidenceFilter],
   )
 
-  const current = qras[currentIndex] as SpartaQRA | undefined
+  const currentListItem = qras[currentIndex] as SpartaQRA | undefined
+  const current = currentListItem ? (qraDetails.get(currentListItem._key) ?? currentListItem) : undefined
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
 
   useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
@@ -262,6 +265,33 @@ export function QRAsView() {
       setCurrentIndex(visibleQras[0].idx)
     }
   }, [currentIndex, visibleQras])
+
+  useEffect(() => {
+    if (!currentListItem?._key) return
+    if (qraDetails.has(currentListItem._key)) return
+
+    let cancelled = false
+    setDetailLoadingKey(currentListItem._key)
+    qraDetailPost({
+      source,
+      key: currentListItem._key,
+      qraId: currentListItem.qra_id,
+    })
+      .then((result) => {
+        if (cancelled || !result.document) return
+        setQraDetails((prev) => {
+          const next = new Map(prev)
+          next.set(currentListItem._key, result.document as SpartaQRA)
+          return next
+        })
+      })
+      .catch(() => { /* keep lightweight row visible */ })
+      .finally(() => {
+        if (!cancelled) setDetailLoadingKey((prev) => (prev === currentListItem._key ? null : prev))
+      })
+
+    return () => { cancelled = true }
+  }, [currentListItem?._key, currentListItem?.qra_id, qraDetails, source])
 
   const relatedQras = useMemo(() => buildRelatedQras(current, qras), [current, qras])
 

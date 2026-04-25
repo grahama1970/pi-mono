@@ -433,7 +433,36 @@ app.post('/api/qra/feed', async (req, res) => {
   const limitRaw = Number(req.body?.limit)
   const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, limitRaw)) : 50
   const source = String(req.body?.source || 'legacy').toLowerCase()
-  const projection = `{
+  const LEGACY_FRAMEWORKS = ['SPARTA', 'NIST', 'ATT&CK', 'CWE', 'D3FEND']
+  const feedProjection = `{
+    _key: doc._key,
+    _id: doc._id,
+    qra_id: doc.qra_id,
+    question: doc.question,
+    source_framework: doc.source_framework,
+    source_control_id: doc.source_control_id,
+    control_id: doc.source_control_id,
+    run_id: doc.run_id,
+    mind: doc.mind,
+    relationship_id: doc.relationship_id,
+    expertise: doc.expertise,
+    difficulty: doc.difficulty,
+    created_at: doc.created_at,
+    review_status: doc.review_status,
+    evidence_case: doc.evidence_case ? KEEP(
+      doc.evidence_case,
+      "verdict",
+      "review_status",
+      "failure_reason",
+      "failure_mode",
+      "failure_details"
+    ) : null,
+    formal_proof: doc.formal_proof ? { success: doc.formal_proof.success } : (doc.evidence_case && doc.evidence_case.formal_proof ? { success: doc.evidence_case.formal_proof.success } : null),
+    sacm_ref: doc.sacm_ref ? { gid: doc.sacm_ref.gid } : (doc.evidence_case && doc.evidence_case.sacm_ref ? { gid: doc.evidence_case.sacm_ref.gid } : null),
+    lineage: doc.lineage ? KEEP(doc.lineage, "upstream_qra_keys", "entity_ids", "entity_frameworks", "assembled_at") : null
+  }`
+
+  const detailProjection = `{
     _key: doc._key,
     _id: doc._id,
     qra_id: doc.qra_id,
@@ -478,7 +507,29 @@ app.post('/api/qra/feed', async (req, res) => {
 
   async function queryFeed(aql: string, bind_vars: Record<string, unknown>) {
     const result = await proxyPost('/query', { aql, bind_vars }, 45000)
-    return Array.isArray(result?.documents) ? result.documents : []
+    return asRows(result)
+  }
+
+  async function sampleLegacyFeed(sampleLimit: number) {
+    const perFramework = Math.max(1, Math.ceil(sampleLimit / LEGACY_FRAMEWORKS.length))
+    const offsets = Array.from({ length: perFramework }, (_, idx) => idx)
+    const groups = await Promise.all(
+      LEGACY_FRAMEWORKS.map(async (framework) => {
+        const docs = await Promise.all(
+          offsets.map((offset) =>
+            queryFeed(
+              `FOR doc IN sparta_qra
+                 FILTER doc.source_framework == @framework
+                 LIMIT @offset, 1
+                 RETURN ${feedProjection}`,
+              { framework, offset },
+            ).then((rows) => rows[0] ?? null),
+          ),
+        )
+        return docs.filter(Boolean)
+      }),
+    )
+    return groups.flat().slice(0, sampleLimit)
   }
 
   try {
@@ -492,24 +543,18 @@ app.post('/api/qra/feed', async (req, res) => {
       documents = await queryFeed(
         `FOR doc IN sparta_qra_relationship
            LIMIT @limit
-           RETURN ${projection}`,
+           RETURN ${feedProjection}`,
         { limit },
       )
     } else if (source === 'all') {
       const legacyLimit = Math.max(1, Math.ceil(limit / 2))
       const v2Limit = Math.max(1, limit - legacyLimit)
       const [legacyDocs, v2Docs] = await Promise.all([
-        queryFeed(
-          `FOR doc IN sparta_qra
-             FILTER doc.source_framework == "SPARTA"
-             LIMIT @limit
-             RETURN ${projection}`,
-          { limit: legacyLimit },
-        ),
+        sampleLegacyFeed(legacyLimit),
         queryFeed(
           `FOR doc IN sparta_qra_relationship
              LIMIT @limit
-             RETURN ${projection}`,
+             RETURN ${feedProjection}`,
           { limit: v2Limit },
         ),
       ])
@@ -517,13 +562,7 @@ app.post('/api/qra/feed', async (req, res) => {
       sourceUsed = 'all'
     } else {
       sourceUsed = 'legacy'
-      documents = await queryFeed(
-        `FOR doc IN sparta_qra
-           FILTER doc.source_framework == "SPARTA"
-           LIMIT @limit
-           RETURN ${projection}`,
-        { limit },
-      )
+      documents = await sampleLegacyFeed(limit)
     }
 
     res.json({
@@ -534,6 +573,247 @@ app.post('/api/qra/feed', async (req, res) => {
   } catch (e) {
     console.error('[qra/feed] failed', e)
     res.status(502).json({ error: 'qra_feed_failed', detail: String(e) })
+  }
+})
+
+app.post('/api/qra/detail', async (req, res) => {
+  const source = String(req.body?.source || 'all').toLowerCase()
+  const key = String(req.body?.key || '').trim()
+  const qraId = String(req.body?.qraId || '').trim()
+  if (!key && !qraId) return res.status(400).json({ error: 'qra_detail_requires_key_or_qraId' })
+
+  const detailProjection = `{
+    _key: doc._key,
+    _id: doc._id,
+    qra_id: doc.qra_id,
+    question: doc.question,
+    reasoning: doc.reasoning,
+    answer: doc.answer,
+    grounding_score: doc.grounding_score,
+    source_framework: doc.source_framework,
+    source_control_id: doc.source_control_id,
+    control_id: doc.source_control_id,
+    run_id: doc.run_id,
+    mind: doc.mind,
+    relationship_id: doc.relationship_id,
+    expertise: doc.expertise,
+    difficulty: doc.difficulty,
+    created_at: doc.created_at,
+    review_status: doc.review_status,
+    evidence_case: doc.evidence_case ? KEEP(
+      doc.evidence_case,
+      "verdict",
+      "review_status",
+      "question_text",
+      "control_ids",
+      "glossary",
+      "resolved_entities",
+      "spans",
+      "prior_qra_evidence",
+      "crosswalk_chains",
+      "formal_proof",
+      "sacm_ref",
+      "cae_tree",
+      "entity_resolution",
+      "technique_check",
+      "failure_reason",
+      "failure_mode",
+      "failure_details"
+    ) : null,
+    formal_proof: doc.formal_proof,
+    sacm_ref: doc.sacm_ref,
+    lineage: doc.lineage
+  }`
+
+  async function queryOne(collection: string) {
+    const result = await proxyPost('/query', {
+      aql: `FOR doc IN ${collection}
+              FILTER (@key != "" AND doc._key == @key) OR (@qraId != "" AND doc.qra_id == @qraId)
+              LIMIT 1
+              RETURN ${detailProjection}`,
+      bind_vars: { key, qraId },
+    }, 45000)
+    return asRows(result)[0] ?? null
+  }
+
+  try {
+    const collections =
+      source === 'v2'
+        ? ['sparta_qra_relationship']
+        : source === 'legacy'
+          ? ['sparta_qra']
+          : ['sparta_qra', 'sparta_qra_relationship']
+
+    for (const collection of collections) {
+      const doc = await queryOne(collection)
+      if (doc) return res.json({ document: doc })
+    }
+
+    return res.status(404).json({ error: 'qra_not_found' })
+  } catch (e) {
+    console.error('[qra/detail] failed', e)
+    res.status(502).json({ error: 'qra_detail_failed', detail: String(e) })
+  }
+})
+
+app.post('/api/qra/search', async (req, res) => {
+  const limitRaw = Number(req.body?.limit)
+  const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, limitRaw)) : 50
+  const offsetRaw = Number(req.body?.offset)
+  const offset = Number.isFinite(offsetRaw) ? Math.max(0, offsetRaw) : 0
+  const source = String(req.body?.source || 'legacy').toLowerCase()
+  const LEGACY_FRAMEWORKS = ['SPARTA', 'NIST', 'ATT&CK', 'CWE', 'D3FEND']
+  const q = String(req.body?.q || '').trim()
+  const controlId = String(req.body?.controlId || '').trim()
+  const needle = q.toLowerCase()
+  const controlIdUpper = controlId.toUpperCase()
+  const projection = `{
+    _key: doc._key,
+    _id: doc._id,
+    qra_id: doc.qra_id,
+    question: doc.question,
+    source_framework: doc.source_framework,
+    source_control_id: doc.source_control_id,
+    control_id: doc.source_control_id,
+    run_id: doc.run_id,
+    mind: doc.mind,
+    relationship_id: doc.relationship_id,
+    expertise: doc.expertise,
+    difficulty: doc.difficulty,
+    created_at: doc.created_at,
+    review_status: doc.review_status,
+    evidence_case: doc.evidence_case ? KEEP(
+      doc.evidence_case,
+      "verdict",
+      "review_status",
+      "failure_reason",
+      "failure_mode",
+      "failure_details"
+    ) : null,
+    formal_proof: doc.formal_proof ? { success: doc.formal_proof.success } : (doc.evidence_case && doc.evidence_case.formal_proof ? { success: doc.evidence_case.formal_proof.success } : null),
+    sacm_ref: doc.sacm_ref ? { gid: doc.sacm_ref.gid } : (doc.evidence_case && doc.evidence_case.sacm_ref ? { gid: doc.evidence_case.sacm_ref.gid } : null),
+    lineage: doc.lineage ? KEEP(doc.lineage, "upstream_qra_keys", "entity_ids", "entity_frameworks", "assembled_at") : null
+  }`
+
+  const filterClause = `
+    FILTER (
+      @needle == "" OR
+      CONTAINS(LOWER(doc.question), @needle) OR
+      CONTAINS(LOWER(doc.answer), @needle) OR
+      CONTAINS(LOWER(doc.reasoning), @needle) OR
+      (doc.qra_id != null AND CONTAINS(LOWER(doc.qra_id), @needle))
+    )
+    FILTER (
+      @controlIdUpper == "" OR
+      UPPER(doc.source_control_id) == @controlIdUpper OR
+      UPPER(doc.control_id) == @controlIdUpper
+    )
+  `
+
+  async function querySearch(aql: string, bind_vars: Record<string, unknown>) {
+    const result = await proxyPost('/query', { aql, bind_vars }, 45000)
+    return asRows(result)
+  }
+
+  try {
+    let documents: any[] = []
+    let sourceUsed = source
+
+    if (source === 'v2') {
+      documents = await querySearch(
+        `FOR doc IN sparta_qra_relationship
+           ${filterClause}
+           SORT doc.created_at DESC
+           LIMIT @offset, @limit
+           RETURN ${projection}`,
+        { needle, controlIdUpper, offset, limit },
+      )
+    } else if (source === 'all') {
+      const perCollectionLimit = Math.max(limit, 50)
+      const [legacyDocs, v2Docs] = await Promise.all([
+        Promise.all(
+          LEGACY_FRAMEWORKS.map((framework) =>
+            querySearch(
+              `FOR doc IN sparta_qra
+                 FILTER doc.source_framework == @framework
+                 ${filterClause}
+                 SORT doc.created_at DESC
+                 LIMIT @offset, @limit
+                 RETURN ${projection}`,
+              { framework, needle, controlIdUpper, offset: 0, limit: Math.max(10, Math.ceil(perCollectionLimit / LEGACY_FRAMEWORKS.length)) },
+            ),
+          ),
+        ).then((groups) => groups.flat()),
+        querySearch(
+          `FOR doc IN sparta_qra_relationship
+             ${filterClause}
+             SORT doc.created_at DESC
+             LIMIT @offset, @limit
+             RETURN ${projection}`,
+          { needle, controlIdUpper, offset: 0, limit: perCollectionLimit },
+        ),
+      ])
+      documents = [...legacyDocs, ...v2Docs]
+        .sort((a, b) => Number(b?.created_at ?? 0) - Number(a?.created_at ?? 0))
+        .slice(offset, offset + limit)
+      sourceUsed = 'all'
+    } else {
+      sourceUsed = 'legacy'
+      const groups = await Promise.all(
+        LEGACY_FRAMEWORKS.map((framework) =>
+          querySearch(
+            `FOR doc IN sparta_qra
+               FILTER doc.source_framework == @framework
+               ${filterClause}
+               SORT doc.created_at DESC
+               LIMIT @offset, @limit
+               RETURN ${projection}`,
+            { framework, needle, controlIdUpper, offset: 0, limit: Math.max(10, Math.ceil(limit / LEGACY_FRAMEWORKS.length)) },
+          ),
+        ),
+      )
+      documents = groups.flat()
+        .sort((a, b) => Number(b?.created_at ?? 0) - Number(a?.created_at ?? 0))
+        .slice(offset, offset + limit)
+    }
+
+    res.json({
+      documents,
+      total: documents.length,
+      source_used: sourceUsed,
+    })
+  } catch (e) {
+    console.error('[qra/search] failed', e)
+    res.status(502).json({ error: 'qra_search_failed', detail: String(e) })
+  }
+})
+
+app.get('/api/sparta/counts', async (_req, res) => {
+  try {
+    const [controls, qras, qrasCanonical, qrasRelationship, relationships, urls] = await Promise.all([
+      proxyPost('/count', { collection: 'sparta_controls' }),
+      proxyPost('/count', { collection: 'sparta_qra' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_qra_canonical' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_qra_relationship' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_relationships' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_urls' }).catch(() => ({ count: 0 })),
+    ])
+
+    const payload = {
+      controls: controls?.count ?? 0,
+      qras: qras?.count ?? 0,
+      qrasCanonical: qrasCanonical?.count ?? 0,
+      qrasRelationship: qrasRelationship?.count ?? 0,
+      qrasTotal: (qras?.count ?? 0) + (qrasCanonical?.count ?? 0) + (qrasRelationship?.count ?? 0),
+      relationships: relationships?.count ?? 0,
+      urls: urls?.count ?? 0,
+      knowledge: 0,
+    }
+
+    res.json(payload)
+  } catch (e) {
+    console.error('[sparta/counts] failed', e)
+    res.status(502).json({ error: 'sparta_counts_failed', detail: String(e) })
   }
 })
 

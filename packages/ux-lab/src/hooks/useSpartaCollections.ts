@@ -9,7 +9,8 @@
  */
 import { useCallback, useEffect, useState } from "react";
 
-const API = "http://localhost:3001/api/memory";
+const API_ROOT = "http://localhost:3001/api";
+const API = `${API_ROOT}/memory`;
 
 // ── Shared fetch helpers ────────────────────────────────────────────────────
 
@@ -211,10 +212,49 @@ export interface SpartaQRA {
 // v2 QRA collection sources
 export type QRASource = "v2" | "legacy" | "all";
 
-// v2 QRA collections (separate canonical vs relationship)
-const QRA_COLLECTIONS_V2 = ["sparta_qra_canonical", "sparta_qra_relationship"];
-const QRA_COLLECTIONS_LEGACY = ["sparta_qra"];
-const QRA_COLLECTIONS_ALL = [...QRA_COLLECTIONS_V2, ...QRA_COLLECTIONS_LEGACY];
+async function qraFeedPost(body: {
+	source: QRASource;
+	limit?: number;
+	offset?: number;
+}): Promise<{ documents: Record<string, unknown>[]; total: number; source_used?: string }> {
+	const res = await fetch(`${API_ROOT}/qra/feed`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+	if (!res.ok) throw new Error(`/qra/feed ${res.status}: ${await res.text()}`);
+	return res.json();
+}
+
+async function qraSearchPost(body: {
+	source: QRASource;
+	q?: string;
+	controlId?: string;
+	limit?: number;
+	offset?: number;
+}): Promise<{ documents: Record<string, unknown>[]; total: number; source_used?: string }> {
+	const res = await fetch(`${API_ROOT}/qra/search`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+	if (!res.ok) throw new Error(`/qra/search ${res.status}: ${await res.text()}`);
+	return res.json();
+}
+
+export async function qraDetailPost(body: {
+	source?: QRASource;
+	key?: string;
+	qraId?: string;
+}): Promise<{ document: Record<string, unknown> | null }> {
+	const res = await fetch(`${API_ROOT}/qra/detail`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+	if (!res.ok) throw new Error(`/qra/detail ${res.status}: ${await res.text()}`);
+	return res.json();
+}
 
 // Relationships are DOCUMENTS (not ArangoDB edges) — no _from/_to
 export interface SpartaRelationship {
@@ -423,19 +463,17 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 			setLoading(true);
 			setError(null);
 			try {
-				const collections =
-					source === "v2"
-						? QRA_COLLECTIONS_V2
-						: source === "legacy"
-							? QRA_COLLECTIONS_LEGACY
-							: QRA_COLLECTIONS_ALL;
+				const result =
+					debouncedQuery || controlId
+						? await qraSearchPost({
+								source,
+								q: debouncedQuery || undefined,
+								controlId,
+								limit: 20,
+							})
+						: await qraFeedPost({ source, limit: 20 });
 
-				const q = debouncedQuery || (controlId ? `QRA for ${controlId}` : "SPARTA compliance question");
-				const recallOpts: { k?: number; entities?: string[] } = { k: 50 };
-				if (controlId) recallOpts.entities = [controlId];
-				const result = await recallPost(collections, q, recallOpts);
-
-				const items = (result.items as unknown as SpartaQRA[]).map((item) => ({
+				const items = (result.documents as unknown as SpartaQRA[]).map((item) => ({
 					...item,
 					_collection: item._id?.startsWith("sparta_qra_canonical")
 						? ("sparta_qra_canonical" as const)
@@ -444,9 +482,9 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 							: ("sparta_qra" as const),
 				}));
 
-				QRA_CACHE.set(cacheKey, { data: items, total: items.length, at: Date.now() });
+				QRA_CACHE.set(cacheKey, { data: items, total: result.total ?? items.length, at: Date.now() });
 				setData(items);
-				setTotal(items.length);
+				setTotal(result.total ?? items.length);
 			} catch (err) {
 				setError(err instanceof Error ? err.message : String(err));
 			} finally {
@@ -679,22 +717,18 @@ export function useCollectionCounts(): CollectionCounts {
 	useEffect(() => {
 		async function fetchCounts() {
 			try {
-				const [c, qLegacy, qCanon, qRel, u] = await Promise.all([
-					listPost("sparta_controls", { limit: 1, return_fields: ["_key"] }),
-					listPost("sparta_qra", { limit: 1, filters: { source_framework: "SPARTA" }, return_fields: ["_key"] }),
-					listPost("sparta_qra_canonical", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
-					listPost("sparta_qra_relationship", { limit: 1, return_fields: ["_key"] }).catch(() => ({ total: 0 })),
-					listPost("sparta_urls", { limit: 1, return_fields: ["_key"] }),
-				]);
+				const res = await fetch(`${API_ROOT}/sparta/counts`);
+				if (!res.ok) throw new Error(`/sparta/counts ${res.status}: ${await res.text()}`);
+				const payload = await res.json();
 				setCounts({
-					controls: c.total,
-					qras: qLegacy.total,
-					qrasCanonical: qCanon.total,
-					qrasRelationship: qRel.total,
-					qrasTotal: qLegacy.total + qCanon.total + qRel.total,
-					relationships: 0,
-					urls: u.total,
-					knowledge: 0,
+					controls: payload.controls ?? 0,
+					qras: payload.qras ?? 0,
+					qrasCanonical: payload.qrasCanonical ?? 0,
+					qrasRelationship: payload.qrasRelationship ?? 0,
+					qrasTotal: payload.qrasTotal ?? 0,
+					relationships: payload.relationships ?? 0,
+					urls: payload.urls ?? 0,
+					knowledge: payload.knowledge ?? 0,
 					loading: false,
 				});
 			} catch {

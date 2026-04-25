@@ -742,6 +742,16 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     }
   }
 
+  const showQueueView = useCallback((page?: number) => {
+    if (typeof page === 'number') setCurrentPage(page)
+    setSelectedBlockId(null)
+    setActiveTaskBlockId(null)
+    setContextMenu(null)
+    clearAreaSelection()
+    setShowAuditPane(true)
+    setAuditTab('queue')
+  }, [clearAreaSelection])
+
   // Keyboard navigation
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -826,16 +836,6 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     const newHash = `#pdf-lab?pdf=${encodeURIComponent(file.pdfUrl)}&extraction=${encodeURIComponent(file.extractionUrl)}`
     window.history.replaceState(null, '', newHash)
   }
-
-  const showQueueView = useCallback((page?: number) => {
-    if (typeof page === 'number') setCurrentPage(page)
-    setSelectedBlockId(null)
-    setActiveTaskBlockId(null)
-    setContextMenu(null)
-    clearAreaSelection()
-    setShowAuditPane(true)
-    setAuditTab('queue')
-  }, [clearAreaSelection])
 
   const inspectBlock = useCallback((block: BboxBlock, options?: {
     jumpToPage?: boolean
