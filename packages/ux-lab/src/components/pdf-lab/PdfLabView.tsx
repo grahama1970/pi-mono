@@ -4,7 +4,7 @@ import PdfCanvas from '../datalake-explorer/PdfCanvas'
 import type { BboxBlock } from '../datalake-explorer/types'
 import { BLOCK_TYPE_COLORS, BLOCK_TYPE_LABELS } from '../datalake-explorer/BboxWorkspace'
 import BboxEditor from '../datalake-explorer/BboxEditor'
-import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
+import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { ContextMenu, type ContextMenuItem } from '../common/ContextMenu'
 import { SharedRightPane } from '../common/SharedRightPane'
 import { EMBRY } from '../common/EmbryStyle'
@@ -51,6 +51,68 @@ interface PdfFile {
   extractionUrl: string
 }
 
+interface ReviewQueuePage {
+  page: number
+  count: number
+  tasks: PdfLabTask[]
+}
+
+interface VerificationToast {
+  action: string
+  block: BboxBlock
+  previousActiveTaskBlockId: string | null
+  previousSelectedBlockId: string | null
+}
+
+type PdfLabTaskKind =
+  | 'missing_object'
+  | 'existing_object'
+  | 'bbox_uncertain'
+  | 'type_uncertain'
+  | 'table_uncertain'
+  | 'false_positive'
+
+type PdfLabTaskActionType =
+  | 'ADD'
+  | 'VERIFY'
+  | 'IGNORE'
+  | 'DELETE'
+  | 'KEEP'
+  | 'RECLASSIFY'
+  | 'FIX_BBOX'
+  | 'CONFIRM_FIX'
+  | 'PREVIEW_GRID'
+
+interface PdfLabTaskAction {
+  label: string
+  type: PdfLabTaskActionType
+}
+
+interface PdfLabTask {
+  id: string
+  block: BboxBlock
+  kind: PdfLabTaskKind
+  humanQuestion: string
+  calloutLabel: string
+  inspectorSummary: string
+  primaryAction: PdfLabTaskAction
+  secondaryActions: PdfLabTaskAction[]
+}
+
+type PdfLabQueueMode = 'calibration' | 'review'
+
+interface PdfLabQueueModeInfo {
+  mode: PdfLabQueueMode
+  title: string
+  progressTitle: string
+  pageSectionTitle: string
+  controlTitle: string
+  activeQuestionLabel: string
+  currentPageTitle: string
+  unresolvedLabel: string
+  description: string
+}
+
 interface TableRegionReextractResult {
   ok: boolean
   flavor_used: string
@@ -90,41 +152,164 @@ const EDITABLE_BLOCK_TYPES: Array<BboxBlock['blockType']> = [
   'boilerplate',
 ]
 
+function getQueueModeInfo(mode: PdfLabQueueMode): PdfLabQueueModeInfo {
+  if (mode === 'calibration') {
+    return {
+      mode,
+      title: 'Calibration Queue',
+      progressTitle: 'Calibration progress',
+      pageSectionTitle: 'Clarification pages',
+      controlTitle: 'Calibration control center',
+      activeQuestionLabel: 'Clarification for human',
+      currentPageTitle: 'Current page clarifications',
+      unresolvedLabel: 'signals',
+      description: 'High-volume items are extractor calibration signals. Answer the active question; repeated patterns should become preset fixes, not reviewer toil.',
+    }
+  }
+
+  return {
+    mode,
+    title: 'Verification Queue',
+    progressTitle: 'Verification progress',
+    pageSectionTitle: 'Agent-selected pages',
+    controlTitle: 'Review control center',
+    activeQuestionLabel: 'Human question',
+    currentPageTitle: 'Current page queue',
+    unresolvedLabel: 'unresolved',
+    description: 'Production review should show only high-value human decisions after calibration has reduced systematic extraction errors.',
+  }
+}
+
 function PdfLeftPane({
-  files,
-  selectedId,
+  selectedFile,
+  queuePages,
+  currentPage,
+  progressLabel,
+  progressPercent,
+  queueModeInfo,
   onSelectFile,
+  onSelectTask,
+  onTeleportNext,
 }: {
-  files: PdfFile[]
-  selectedId: string | null
+  selectedFile: PdfFile
+  queuePages: ReviewQueuePage[]
+  currentPage: number
+  progressLabel: string
+  progressPercent: number
+  queueModeInfo: PdfLabQueueModeInfo
   onSelectFile: (file: PdfFile) => void
+  onSelectTask: (block: BboxBlock) => void
+  onTeleportNext: () => void
 }) {
   const search = useLeftPaneSearch().toLowerCase()
-  const filteredFiles = files.filter(f => !search || f.name.toLowerCase().includes(search))
+  const filteredQueuePages = queuePages.filter(({ page, tasks }) => (
+    !search ||
+    `page ${page + 1}`.includes(search) ||
+    tasks.some(task => `${task.calloutLabel} ${task.humanQuestion}`.toLowerCase().includes(search))
+  ))
 
   return (
-    <LeftPane title="PDF Lab" searchable searchTestId="pdf-lab:search" width={200}>
-      <LeftPaneSection title={`PDFs (${filteredFiles.length})`}>
-        {filteredFiles.map(file => (
-          <button
-            key={file.id}
-            data-qid={`pdf-lab:file:${file.id}`}
-            data-selected={file.id === selectedId ? 'true' : 'false'}
-            title={file.pdfUrl}
-            className="pdf-lab-pane-item"
-            onClick={() => onSelectFile(file)}
-          >
-            <FileText size={14} color={file.id === selectedId ? EMBRY.accent : EMBRY.dim} />
+    <LeftPane title={queueModeInfo.title} searchable searchTestId="pdf-lab:search" width={260}>
+      <LeftPaneSection title={queueModeInfo.progressTitle}>
+        <div style={burndownCardStyle}>
+          <div style={burndownTrackStyle}>
+            <div style={{ ...burndownFillStyle, width: `${progressPercent}%` }} />
+          </div>
+          <div style={burndownLabelStyle}>{progressLabel}</div>
+          <div data-qid="pdf-lab:queue:mode-notice" style={queueModeNoticeStyle}>
             <span style={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              flex: 1,
+              ...queueModeBadgeStyle,
+              color: queueModeInfo.mode === 'calibration' ? EMBRY.amber : EMBRY.green,
+              borderColor: queueModeInfo.mode === 'calibration' ? `${EMBRY.amber}88` : `${EMBRY.green}88`,
             }}>
-              {file.name}
+              {queueModeInfo.mode === 'calibration' ? 'Calibration' : 'Review'}
             </span>
+            <span style={{ color: EMBRY.dim }}>{queueModeInfo.description}</span>
+          </div>
+          <button
+            className="pdf-lab-btn"
+            data-qid="pdf-lab:queue:teleport-next"
+            data-qs-action="PDF_LAB_TELEPORT_NEXT_FLAG"
+            title="Teleport to the next unresolved agent task"
+            onClick={onTeleportNext}
+            style={teleportButtonStyle}
+          >
+            Teleport to Next Flag
           </button>
-        ))}
+        </div>
+      </LeftPaneSection>
+
+      <LeftPaneSection title={`${queueModeInfo.pageSectionTitle} (${filteredQueuePages.length})`}>
+        {filteredQueuePages.length > 0 ? filteredQueuePages.map(({ page, tasks }) => (
+          <div key={page} style={queuePageGroupStyle}>
+            <div style={queuePageHeaderStyle}>
+              <span style={{ color: page === currentPage ? EMBRY.white : EMBRY.dim, fontWeight: 800 }}>
+                Page {page + 1}
+              </span>
+              <span style={{ color: EMBRY.dim }}>{tasks.length} task{tasks.length === 1 ? '' : 's'}</span>
+            </div>
+            <div style={queueTaskListStyle}>
+              {tasks.map(task => (
+                <button
+                  key={task.id}
+                  data-qid={`pdf-lab:queue-task:${task.id}`}
+                  data-qs-action="PDF_LAB_SELECT_QUEUE_TASK"
+                  title={task.humanQuestion}
+                  className="pdf-lab-btn"
+                  onClick={() => onSelectTask(task.block)}
+                  style={queueTaskButtonStyle}
+                >
+                  <span style={queueTaskDotStyle} />
+                  <span style={{ minWidth: 0 }}>
+                    <span style={queueTaskTitleStyle}>{task.calloutLabel}</span>
+                    <span style={queueTaskSubtitleStyle}>{task.inspectorSummary}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )) : (
+          <div style={{ padding: '8px 16px', color: EMBRY.dim, fontSize: 11 }}>
+            No unresolved tasks remain.
+          </div>
+        )}
+      </LeftPaneSection>
+
+      <LeftPaneSection title="Library">
+        <details style={pdfDatasetDetailsStyle}>
+          <summary
+            data-qid="pdf-lab:dataset:switcher"
+            data-qs-action="PDF_LAB_TOGGLE_DATASET_SWITCHER"
+            title="Show available PDF Lab extractions"
+            style={pdfDatasetSummaryToggleStyle}
+          >
+            Back to Library · {selectedFile.name}
+          </summary>
+          <div style={{ marginTop: 8 }}>
+            {PDF_FILES.map(file => (
+              <button
+                key={file.id}
+                data-qid={`pdf-lab:file:${file.id}`}
+                data-qs-action="PDF_LAB_SELECT_DATASET"
+                data-selected={file.id === selectedFile.id ? 'true' : 'false'}
+                title={file.pdfUrl}
+                className="pdf-lab-pane-item"
+                onClick={() => onSelectFile(file)}
+                style={{ minHeight: 44 }}
+              >
+                <FileText size={14} color={file.id === selectedFile.id ? EMBRY.accent : EMBRY.dim} />
+                <span style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  flex: 1,
+                }}>
+                  {file.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </details>
       </LeftPaneSection>
     </LeftPane>
   )
@@ -152,6 +337,125 @@ function getBlockSemanticSummary(block: Pick<BboxBlock, 'blockType' | 'semanticT
   if (block.blockType === 'table' && semanticLabel === 'Definition List') return 'Two-column term/definition structure'
   if (semanticLabel) return semanticLabel
   return 'Needs review'
+}
+
+function isResolvedReviewBlock(block: BboxBlock): boolean {
+  return block.reviewStatus === 'verified' || block.reviewStatus === 'rejected' || block.reviewStatus === 'ignored'
+}
+
+function humanizeMissedObjectType(block: BboxBlock): string {
+  const missedType = block.id.startsWith('review:missed_')
+    ? block.id.replace(/^review:missed_/, '').replace(/_\d+$/, '')
+    : ''
+  if (missedType.includes('header') || block.blockType === 'header') return 'Header'
+  if (missedType.includes('boilerplate') || missedType.includes('footer') || block.blockType === 'boilerplate' || block.blockType === 'page_number') return 'Boilerplate'
+  if (missedType.includes('definition_list') || block.semanticType === 'definition_list') return 'Definition List'
+  if (missedType.includes('table') || block.blockType === 'table') return 'Table'
+  if (missedType.includes('figure') || block.blockType === 'figure') return 'Figure'
+  return getBlockDisplayLabel(block)
+}
+
+function buildPdfLabTask(block: BboxBlock, kind: PdfLabTaskKind, config: {
+  humanQuestion: string
+  calloutLabel: string
+  inspectorSummary: string
+  primaryAction: PdfLabTaskAction
+  secondaryActions?: PdfLabTaskAction[]
+}): PdfLabTask {
+  return {
+    id: block.id,
+    block,
+    kind,
+    humanQuestion: config.humanQuestion,
+    calloutLabel: config.calloutLabel,
+    inspectorSummary: config.inspectorSummary,
+    primaryAction: config.primaryAction,
+    secondaryActions: config.secondaryActions ?? [],
+  }
+}
+
+function getPdfLabTask(block: BboxBlock): PdfLabTask | null {
+  if (isResolvedReviewBlock(block)) return null
+  const notes = (block.reviewNotes || []).join(' ').toLowerCase()
+  const semantic = (block.semanticType || '').toLowerCase()
+  const label = getBlockDisplayLabel(block)
+
+  if (block.id.startsWith('review:missed_')) {
+    const objectLabel = humanizeMissedObjectType(block)
+    const lowerLabel = objectLabel.toLowerCase()
+    return buildPdfLabTask(block, 'missing_object', {
+      humanQuestion: `Should this missing ${lowerLabel} be added?`,
+      calloutLabel: `Add missing ${lowerLabel}`,
+      inspectorSummary: `Agent detected a missing ${lowerLabel} in this region.`,
+      primaryAction: { type: 'ADD', label: `Add ${objectLabel}` },
+      secondaryActions: [{ type: 'IGNORE', label: 'Ignore' }],
+    })
+  }
+
+  if (notes.includes('false positive')) {
+    return buildPdfLabTask(block, 'false_positive', {
+      humanQuestion: `Should this ${label.toLowerCase()} be deleted?`,
+      calloutLabel: `Check false positive ${label.toLowerCase()}`,
+      inspectorSummary: 'Agent thinks this extracted object is likely wrong.',
+      primaryAction: { type: 'DELETE', label: 'Delete' },
+      secondaryActions: [{ type: 'KEEP', label: 'Keep' }],
+    })
+  }
+
+  if (block.blockType === 'table' || semantic.includes('definition_list') || semantic.includes('table')) {
+    return buildPdfLabTask(block, 'table_uncertain', {
+      humanQuestion: `Is this ${label.toLowerCase()} structure correct?`,
+      calloutLabel: label === 'Definition List' ? 'Verify definition list' : 'Verify this table',
+      inspectorSummary: 'Verify structure and bbox against the PDF. Cell edits belong in Audit Mode.',
+      primaryAction: { type: 'VERIFY', label: label === 'Definition List' ? 'Verify Definition List' : 'Verify Table' },
+      secondaryActions: [{ type: 'PREVIEW_GRID', label: 'Preview Grid' }, { type: 'FIX_BBOX', label: 'Fix Bbox' }],
+    })
+  }
+
+  if (notes.includes('bbox should') || notes.includes('bbox includes')) {
+    return buildPdfLabTask(block, 'bbox_uncertain', {
+      humanQuestion: `Does this ${label.toLowerCase()} bbox capture the right region?`,
+      calloutLabel: `Fix ${label.toLowerCase()} bbox`,
+      inspectorSummary: 'Agent is uncertain about the region boundary.',
+      primaryAction: { type: 'FIX_BBOX', label: 'Fix Bbox' },
+      secondaryActions: [{ type: 'VERIFY', label: 'Accept Bbox' }],
+    })
+  }
+
+  if (notes.includes('table header') || notes.includes('table column') || notes.includes('not a document title')) {
+    return buildPdfLabTask(block, 'type_uncertain', {
+      humanQuestion: `Is this ${label.toLowerCase()} classification correct?`,
+      calloutLabel: `Check ${label.toLowerCase()} type`,
+      inspectorSummary: 'Agent is uncertain about the semantic classification.',
+      primaryAction: { type: 'VERIFY', label: 'Confirm Type' },
+      secondaryActions: [{ type: 'RECLASSIFY', label: 'Reclassify' }],
+    })
+  }
+
+  if (block.flagged || block.hasOpenComments || notes.includes('review status: confirm') || notes.includes('review status: refine')) {
+    return buildPdfLabTask(block, 'existing_object', {
+      humanQuestion: `Is this ${label.toLowerCase()} correct?`,
+      calloutLabel: `Verify ${label.toLowerCase()}`,
+      inspectorSummary: summarizeReviewNote(block),
+      primaryAction: { type: 'VERIFY', label: 'Verify' },
+      secondaryActions: [{ type: 'DELETE', label: 'Reject' }],
+    })
+  }
+
+  return null
+}
+
+function getRuntimePdfLabTask(block: BboxBlock, isFixingBbox: boolean): PdfLabTask | null {
+  const task = getPdfLabTask(block)
+  if (!task || !isFixingBbox) return task
+  return {
+    ...task,
+    humanQuestion: `Confirm the corrected bbox for this ${getBlockDisplayLabel(block).toLowerCase()}?`,
+    calloutLabel: 'Confirm bbox fix',
+    inspectorSummary: 'BBox was adjusted. Confirm the fix to resolve this task, or keep editing the region.',
+    primaryAction: { type: 'CONFIRM_FIX', label: 'Confirm Fix' },
+    secondaryActions: [{ type: 'FIX_BBOX', label: 'Keep Editing' }],
+  }
 }
 
 export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUrl }: PdfLabViewProps) {
@@ -183,6 +487,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   const [showRawCompare, setShowRawCompare] = useState(false)
   const [saving, setSaving] = useState(false)
   const [reextractingArea, setReextractingArea] = useState(false)
+  const [, setVerificationToast] = useState<VerificationToast | null>(null)
   const [dirtyBlockIds, setDirtyBlockIds] = useState<Set<string>>(new Set())
   const [deletedBlockIds, setDeletedBlockIds] = useState<Set<string>>(new Set())
   const [newBlockType, setNewBlockType] = useState<BboxBlock['blockType']>('text')
@@ -195,6 +500,8 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   const [auditTab, setAuditTab] = useState<'selected' | 'queue' | 'filters'>('queue')
   const [showGhostQueueItems, setShowGhostQueueItems] = useState(false)
   const [reviewNavMode, setReviewNavMode] = useState(false)
+  const [bboxFixTaskIds, setBboxFixTaskIds] = useState<Set<string>>(new Set())
+  const [, setPreviewGridBlockId] = useState<string | null>(null)
 
   useEffect(() => {
     const syncSelectedFile = () => {
@@ -229,11 +536,14 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     setSelectedAreaBlockIds(new Set())
     setDirtyBlockIds(new Set())
     setDeletedBlockIds(new Set())
+    setVerificationToast(null)
     setContextMenu(null)
     setReextractingArea(false)
     setShowAuditPane(true)
     setAuditTab('queue')
     setShowGhostQueueItems(false)
+    setBboxFixTaskIds(new Set())
+    setPreviewGridBlockId(null)
 
     fetch(extractionUrl)
       .then(r => {
@@ -241,8 +551,12 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
         return r.json()
       })
       .then((data: ExtractionData) => {
+        const firstQueuedBlock = findFirstPdfLabTaskBlock(data)
         setExtraction(data)
         setBaselineExtraction(cloneExtractionData(data))
+        setCurrentPage(firstQueuedBlock?.page ?? 0)
+        setSelectedBlockId(firstQueuedBlock?.id ?? null)
+        setActiveTaskBlockId(firstQueuedBlock?.id ?? null)
         setEditMode(data.reviewMode === 'reviewed' && !extractionUrl.includes('-raw-extraction.json'))
         setLoading(false)
       })
@@ -286,7 +600,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
 
   // Filter blocks for current page and selected types
   const visibleBlocks = extraction?.blocks.filter(
-    b => b.page === currentPage && typeFilters.has(b.blockType)
+    b => b.page === currentPage && typeFilters.has(b.blockType) && b.reviewStatus !== 'rejected' && b.reviewStatus !== 'ignored'
   ) || []
   const rawCompareBlocks = useMemo(() => {
     if (!showRawCompare || !rawCompareExtraction || !extraction) return []
@@ -327,11 +641,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     if (block.blockType === 'text') return 10
     return 11
   }, [])
-  const isUnresolvedBlock = useCallback((block: BboxBlock) => {
-    if (block.flagged || block.hasOpenComments) return true
-    if (block.reviewNotes && block.reviewNotes.length > 0) return true
-    return block.confidence < 0.9
-  }, [])
+  const isUnresolvedBlock = useCallback((block: BboxBlock) => getPdfLabTask(block) !== null, [])
   const unresolvedBlocks = useMemo(() => {
     const all = extraction?.blocks.filter(isUnresolvedBlock) ?? []
     const weighted = [...all].sort((a, b) => {
@@ -351,14 +661,15 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     () => unresolvedBlocks.filter(block => block.page === currentPage),
     [unresolvedBlocks, currentPage]
   )
-  const activeTaskBlock = useMemo(() => {
-    if (!extraction) return null
-    if (activeTaskBlockId) {
-      const direct = extraction.blocks.find(block => block.id === activeTaskBlockId)
-      if (direct) return direct
-    }
-    return unresolvedBlocksOnCurrentPage[0] ?? unresolvedBlocks[0] ?? null
-  }, [activeTaskBlockId, extraction, unresolvedBlocks, unresolvedBlocksOnCurrentPage])
+	  const activeTaskBlock = useMemo(() => {
+	    if (!extraction) return null
+	    if (activeTaskBlockId) {
+	      const direct = extraction.blocks.find(block => block.id === activeTaskBlockId)
+	      if (direct && isUnresolvedBlock(direct)) return direct
+	    }
+	    return unresolvedBlocksOnCurrentPage[0] ?? unresolvedBlocks[0] ?? null
+	  }, [activeTaskBlockId, extraction, isUnresolvedBlock, unresolvedBlocks, unresolvedBlocksOnCurrentPage])
+  const activeTask = activeTaskBlock ? getRuntimePdfLabTask(activeTaskBlock, bboxFixTaskIds.has(activeTaskBlock.id)) : null
   const currentPageOtherTasks = useMemo(
     () => unresolvedBlocksOnCurrentPage.filter(block => block.id !== activeTaskBlock?.id),
     [activeTaskBlock?.id, unresolvedBlocksOnCurrentPage]
@@ -394,6 +705,39 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   const nextUnresolvedBlock = unresolvedBlocks.find(block => block.page > currentPage)
     ?? unresolvedBlocksOnCurrentPage.find(block => block.id !== activeTaskBlock?.id)
     ?? unresolvedBlocks[0]
+  const totalReviewPages = extraction?.reviewSummary?.totalPages ?? extraction?.pageCount ?? 0
+  const completedReviewPages = Math.max(0, totalReviewPages - unresolvedPages.length)
+  const progressLabel = `Progress: ${completedReviewPages} / ${totalReviewPages} Pages`
+  const progressPercent = Math.round((completedReviewPages / Math.max(1, totalReviewPages)) * 100)
+  const queueMode: PdfLabQueueMode = unresolvedBlocks.length > Math.max(30, Math.ceil(totalReviewPages * 0.25))
+    ? 'calibration'
+    : 'review'
+  const queueModeInfo = useMemo(() => getQueueModeInfo(queueMode), [queueMode])
+  const reviewQueuePages = useMemo<ReviewQueuePage[]>(() => (
+    unresolvedPages.map(({ page, count }) => ({
+      page,
+      count,
+      tasks: unresolvedBlocks
+        .filter(block => block.page === page)
+        .map(block => getRuntimePdfLabTask(block, bboxFixTaskIds.has(block.id)))
+        .filter((task): task is PdfLabTask => Boolean(task)),
+    }))
+  ), [bboxFixTaskIds, unresolvedBlocks, unresolvedPages])
+  const agentNotes = useMemo(() => (
+    unresolvedBlocksOnCurrentPage.slice(0, 8)
+      .map(block => getRuntimePdfLabTask(block, bboxFixTaskIds.has(block.id)))
+      .filter((task): task is PdfLabTask => Boolean(task))
+      .map(task => ({
+        id: task.id,
+        blockId: task.block.id,
+        bbox: task.block.bbox,
+        title: task.calloutLabel,
+        body: task.inspectorSummary,
+        severity: task.kind === 'missing_object' || task.kind === 'false_positive' ? 'high' as const : 'medium' as const,
+        primaryActionLabel: task.primaryAction.label,
+        secondaryActionLabel: task.secondaryActions[0]?.label,
+      }))
+  ), [bboxFixTaskIds, unresolvedBlocksOnCurrentPage])
 
   const dirtyBlocks = useMemo(() => {
     if (!extraction) return []
@@ -876,6 +1220,90 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     showQueueView(page)
   }, [showQueueView])
 
+  const findNextDecisionBlock = useCallback((block: BboxBlock): BboxBlock | null => {
+    const remainingBlocks = unresolvedBlocks.filter(candidate => candidate.id !== block.id)
+    const samePageBlock = remainingBlocks.find(candidate => candidate.page === block.page)
+    if (samePageBlock) return samePageBlock
+
+    const remainingPages = [...new Set(remainingBlocks.map(candidate => candidate.page))].sort((a, b) => a - b)
+    const nextPage = remainingPages.find(page => page > block.page) ?? remainingPages[0]
+    if (typeof nextPage !== 'number') return null
+    return remainingBlocks.find(candidate => candidate.page === nextPage) ?? null
+  }, [unresolvedBlocks])
+
+  const completeTaskWithStatus = useCallback((block: BboxBlock, reviewStatus: NonNullable<BboxBlock['reviewStatus']>, action: string, note: string) => {
+    if (!canEditExtraction) return
+    const nextBlock = findNextDecisionBlock(block)
+
+    setVerificationToast({
+      action,
+      block,
+      previousActiveTaskBlockId: activeTaskBlockId,
+      previousSelectedBlockId: selectedBlockId,
+    })
+
+    updateBlock(block.id, current => applyHumanEditMetadata({
+      ...current,
+      reviewStatus,
+      confidence: 1,
+      flagged: false,
+      hasOpenComments: false,
+    }, note))
+
+    setBboxFixTaskIds(prev => {
+      const next = new Set(prev)
+      next.delete(block.id)
+      return next
+    })
+    setPreviewGridBlockId(prev => prev === block.id ? null : prev)
+
+    if (nextBlock) {
+      focusQueueBlock(nextBlock)
+    } else {
+      setSelectedBlockId(null)
+      setActiveTaskBlockId(null)
+    }
+    setSaveNotice(`${action}. Save to persist.`)
+  }, [activeTaskBlockId, canEditExtraction, findNextDecisionBlock, focusQueueBlock, selectedBlockId, updateBlock])
+
+  const handleTaskAction = useCallback((task: PdfLabTask, action: PdfLabTaskAction) => {
+    const block = task.block
+    switch (action.type) {
+      case 'ADD':
+        completeTaskWithStatus(block, 'verified', `${humanizeMissedObjectType(block)} Added`, 'Human added missing object proposed by agent in pdf-lab')
+        return
+      case 'VERIFY':
+      case 'CONFIRM_FIX':
+        completeTaskWithStatus(block, 'verified', action.type === 'CONFIRM_FIX' ? 'Fix Confirmed' : 'Verified', 'Human verified agent proposal in pdf-lab')
+        return
+      case 'IGNORE':
+        completeTaskWithStatus(block, 'ignored', 'Ignored', 'Human ignored agent proposal in pdf-lab')
+        return
+      case 'DELETE':
+        completeTaskWithStatus(block, 'rejected', 'Rejected', 'Human rejected agent proposal in pdf-lab')
+        return
+      case 'KEEP':
+        completeTaskWithStatus(block, 'verified', 'Kept', 'Human kept agent-flagged block in pdf-lab')
+        return
+      case 'FIX_BBOX':
+        setBboxFixTaskIds(prev => new Set(prev).add(block.id))
+        setEditMode(true)
+        setSelectionMode('draw-block')
+        focusQueueBlock(block)
+        return
+      case 'PREVIEW_GRID':
+        setPreviewGridBlockId(prev => prev === block.id ? null : block.id)
+        focusQueueBlock(block)
+        return
+      case 'RECLASSIFY':
+        reclassifyBlock(block.id, block.blockType === 'table' ? 'text' : 'table')
+        setBboxFixTaskIds(prev => new Set(prev).add(block.id))
+        focusQueueBlock(block)
+        return
+    }
+  }, [completeTaskWithStatus, focusQueueBlock, reclassifyBlock])
+
+
   const blockContextMenuItems = useMemo<ContextMenuItem[]>(() => {
     if (!contextMenuBlock) return []
     const items: ContextMenuItem[] = [
@@ -954,9 +1382,15 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   return (
     <div style={containerStyle}>
       <PdfLeftPane
-        files={PDF_FILES}
-        selectedId={selectedFile.id}
+        selectedFile={selectedFile}
+        queuePages={reviewQueuePages}
+        currentPage={currentPage}
+        progressLabel={progressLabel}
+        progressPercent={progressPercent}
+        queueModeInfo={queueModeInfo}
         onSelectFile={handleSelectFile}
+        onSelectTask={focusQueueBlock}
+        onTeleportNext={() => nextUnresolvedBlock && focusQueueBlock(nextUnresolvedBlock)}
       />
 
       {/* Main Content */}
@@ -999,6 +1433,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                 <button
                   className="pdf-lab-btn"
                   data-qid="pdf-lab:toolbar:toggle-edit"
+                  data-qs-action="PDF_LAB_TOGGLE_EDIT_MODE"
                   title={canEditExtraction ? 'Toggle bbox edit mode' : 'Raw extraction is read-only'}
                   onClick={() => setEditMode(mode => !mode)}
                   disabled={!canEditExtraction}
@@ -1017,6 +1452,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <button
                     className="pdf-lab-btn"
                     data-qid="pdf-lab:toolbar:toggle-review-nav"
+                    data-qs-action="PDF_LAB_TOGGLE_REVIEW_NAV"
                     title={reviewNavMode ? 'Switch to browse mode (free-form page scrolling)' : 'Switch to review mode (jump between flagged pages only)'}
                     onClick={() => setReviewNavMode(mode => !mode)}
                     style={{
@@ -1037,6 +1473,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <button
                     className="pdf-lab-btn"
                     data-qid="pdf-lab:toolbar:revert"
+                    data-qs-action="PDF_LAB_REVERT_CHANGES"
                     title="Discard reviewed changes on this extraction"
                     onClick={handleRevert}
                     disabled={!canEditExtraction}
@@ -1050,6 +1487,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <button
                     className="pdf-lab-btn"
                     data-qid="pdf-lab:toolbar:save"
+                    data-qs-action="PDF_LAB_SAVE_CHANGES"
                     title="Persist reviewed changes to disk and memory"
                     onClick={handleSave}
                     disabled={dirtyCount === 0 || saving || !canEditExtraction}
@@ -1083,6 +1521,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                     <button
                       className="pdf-lab-btn"
                       data-qid="pdf-lab:toolbar:compare-raw"
+                      data-qs-action="PDF_LAB_COMPARE_RAW"
                       onClick={() => setShowRawCompare(value => !value)}
                       disabled={!rawCompareExtraction}
                       style={{ ...dockBtnStyle, opacity: rawCompareExtraction ? 1 : 0.45 }}
@@ -1114,6 +1553,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                     {editMode && (
                       <select
                         data-qid="pdf-lab:toolbar:new-block-type"
+                        data-qs-action="PDF_LAB_SET_NEW_BLOCK_TYPE"
                         value={newBlockType}
                         onChange={(event) => setNewBlockType(event.target.value as BboxBlock['blockType'])}
                         style={dockSelectStyle}
@@ -1135,11 +1575,12 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
               }}>
                 <PdfCanvas
                   pdfUrl={pdfUrl}
-                  pageNumber={currentPage}
-                  bboxOverlays={visibleBlocks}
-                  compareOverlays={rawCompareBlocks}
-                  selectedBlockId={selectedBlockId}
-                  activeTaskBlockId={activeTaskBlockId}
+	                  pageNumber={currentPage}
+	                  bboxOverlays={visibleBlocks}
+	                  compareOverlays={rawCompareBlocks}
+                    agentNotes={agentNotes}
+	                  selectedBlockId={selectedBlockId}
+	                  activeTaskBlockId={activeTaskBlockId}
                   onBlockClick={(blockId) => {
                     const block = extraction?.blocks.find(candidate => candidate.id === blockId)
                     if (!block) return
@@ -1147,10 +1588,27 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   }}
                   onBlockContextMenu={(blockId, x, y) => {
                     const block = extraction?.blocks.find(candidate => candidate.id === blockId)
-                    if (block) inspectBlock(block)
-                    setContextMenu({ blockId, x, y })
-                  }}
-                  zoom={zoom}
+	                    if (block) inspectBlock(block)
+	                    setContextMenu({ blockId, x, y })
+	                  }}
+                    onAgentNoteClick={(_, blockId) => {
+                      const block = extraction?.blocks.find(candidate => candidate.id === blockId)
+                      if (block) focusQueueBlock(block)
+                    }}
+                    onAgentNoteAccept={(_, blockId) => {
+                      const block = extraction?.blocks.find(candidate => candidate.id === blockId)
+                      if (!block) return
+                      const task = getRuntimePdfLabTask(block, bboxFixTaskIds.has(block.id))
+                      if (task) handleTaskAction(task, task.primaryAction)
+                    }}
+                    onAgentNoteSecondary={(_, blockId) => {
+                      const block = extraction?.blocks.find(candidate => candidate.id === blockId)
+                      if (!block) return
+                      const task = getRuntimePdfLabTask(block, bboxFixTaskIds.has(block.id))
+                      const secondaryAction = task?.secondaryActions[0]
+                      if (task && secondaryAction) handleTaskAction(task, secondaryAction)
+                    }}
+	                  zoom={zoom}
                   fitMode={viewMode === 'fit-page' ? 'page' : 'manual'}
                   editMode={editMode && canEditExtraction}
                   interactionMode={selectionMode}
@@ -1208,6 +1666,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       <button
                         className="pdf-lab-btn"
                         data-qid="pdf-lab:toolbar:prev-flagged"
+                        data-qs-action="PDF_LAB_PREV_FLAGGED_PAGE"
                         onClick={() => prevFlaggedPage !== null && jumpToPage(prevFlaggedPage)}
                         disabled={prevFlaggedPage === null}
                         style={{
@@ -1225,9 +1684,10 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       <button
                         className="pdf-lab-btn"
                         data-qid="pdf-lab:toolbar:page-prev"
+                        data-qs-action="PDF_LAB_PREVIOUS_PAGE_RAW"
                         onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
                         disabled={currentPage === 0}
-                        style={{ ...viewportBtnStyle, opacity: currentPage === 0 ? 0.3 : 1, minWidth: 28, padding: '7px 6px' }}
+                        style={{ ...viewportBtnStyle, opacity: currentPage === 0 ? 0.3 : 1 }}
                         title="Previous page (raw)"
                       >
                         <ChevronLeft size={12} />
@@ -1238,6 +1698,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                     <button
                       className="pdf-lab-btn"
                       data-qid="pdf-lab:toolbar:page-prev"
+                      data-qs-action="PDF_LAB_PREVIOUS_PAGE"
                       onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
                       disabled={currentPage === 0}
                       style={{ ...viewportBtnStyle, opacity: currentPage === 0 ? 0.3 : 1 }}
@@ -1260,9 +1721,10 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       <button
                         className="pdf-lab-btn"
                         data-qid="pdf-lab:toolbar:page-next"
+                        data-qs-action="PDF_LAB_NEXT_PAGE_RAW"
                         onClick={() => setCurrentPage(p => Math.min((extraction?.pageCount || 1) - 1, p + 1))}
                         disabled={currentPage >= (extraction?.pageCount || 1) - 1}
-                        style={{ ...viewportBtnStyle, opacity: currentPage >= (extraction?.pageCount || 1) - 1 ? 0.3 : 1, minWidth: 28, padding: '7px 6px' }}
+                        style={{ ...viewportBtnStyle, opacity: currentPage >= (extraction?.pageCount || 1) - 1 ? 0.3 : 1 }}
                         title="Next page (raw)"
                       >
                         <ChevronRight size={12} />
@@ -1270,6 +1732,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       <button
                         className="pdf-lab-btn"
                         data-qid="pdf-lab:toolbar:next-flagged"
+                        data-qs-action="PDF_LAB_NEXT_FLAGGED_PAGE"
                         onClick={() => nextFlaggedPage !== null && jumpToPage(nextFlaggedPage)}
                         disabled={nextFlaggedPage === null}
                         style={{
@@ -1290,6 +1753,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                     <button
                       className="pdf-lab-btn"
                       data-qid="pdf-lab:toolbar:page-next"
+                      data-qs-action="PDF_LAB_NEXT_PAGE"
                       onClick={() => setCurrentPage(p => Math.min((extraction?.pageCount || 1) - 1, p + 1))}
                       disabled={currentPage >= (extraction?.pageCount || 1) - 1}
                       style={{ ...viewportBtnStyle, opacity: currentPage >= (extraction?.pageCount || 1) - 1 ? 0.3 : 1 }}
@@ -1302,6 +1766,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <button
                     className="pdf-lab-btn"
                     data-qid="pdf-lab:toolbar:zoom-out"
+                    data-qs-action="PDF_LAB_ZOOM_OUT"
                     title="Zoom out"
                     onClick={() => {
                       setViewMode('manual')
@@ -1317,6 +1782,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <button
                     className="pdf-lab-btn"
                     data-qid="pdf-lab:toolbar:zoom-in"
+                    data-qs-action="PDF_LAB_ZOOM_IN"
                     title="Zoom in"
                     onClick={() => {
                       setViewMode('manual')
@@ -1347,24 +1813,22 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
             </div>
 
             {showAuditPane && (
-              <SharedRightPane
-                title="Inspector"
-                subtitle={selectedBlock
-                  ? `${getBlockDisplayLabel(selectedBlock)} · page ${selectedBlock.page + 1}`
-                  : currentPageReview
-                    ? `Page ${currentPage + 1} · ${currentPageReview.verdict} · ${currentPageReview.totalFindings} findings`
-                    : `Page ${currentPage + 1}`}
-                mode="docked"
-                width={280}
-                tabs={[
-                  { id: 'selected', label: 'Selected' },
-                  { id: 'queue', label: 'Queue' },
-                  { id: 'filters', label: 'Filters' },
-                ]}
-                activeTab={auditTab}
-                onTabChange={(tab) => setAuditTab(tab as 'selected' | 'queue' | 'filters')}
-                onClose={() => setShowAuditPane(false)}
-              >
+	              <SharedRightPane
+	                title="Triage Station"
+	                subtitle={activeTask
+	                  ? `Page ${activeTask.block.page + 1} · ${getBlockDisplayLabel(activeTask.block)}`
+	                  : currentPageReview
+	                    ? `Page ${currentPage + 1} · ${currentPageReview.verdict} · ${currentPageReview.totalFindings} findings`
+	                    : `Page ${currentPage + 1}`}
+	                mode="docked"
+	                width={280}
+	                tabs={[
+	                  { id: 'queue', label: 'TASK' },
+	                ]}
+	                activeTab="queue"
+	                onTabChange={() => setAuditTab('queue')}
+	                onClose={() => setShowAuditPane(false)}
+	              >
                 {auditTab === 'selected' ? (
                   <div key="selected" className="pdf-lab-tab-panel">
                   {selectedBlock ? (
@@ -1521,15 +1985,26 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                 ) : auditTab === 'queue' ? (
                   <div key="queue" className="pdf-lab-tab-panel">
                     <div style={reviewQueueSectionStyle}>
-                      <div style={sidebarSectionTitleStyle}>Review control center</div>
+                      <div style={sidebarSectionTitleStyle}>{queueModeInfo.controlTitle}</div>
                       <div style={queueMetaRowStyle}>
                         <span style={{ color: EMBRY.dim }}>{unresolvedPages.length} pages</span>
-                        <span style={{ color: EMBRY.dim }}>{unresolvedBlocks.length} unresolved</span>
+                        <span style={{ color: EMBRY.dim }}>{unresolvedBlocks.length} {queueModeInfo.unresolvedLabel}</span>
+                      </div>
+                      <div data-qid="pdf-lab:inspector:queue-mode" style={inspectorQueueModeStyle}>
+                        <span style={{
+                          ...queueModeBadgeStyle,
+                          color: queueModeInfo.mode === 'calibration' ? EMBRY.amber : EMBRY.green,
+                          borderColor: queueModeInfo.mode === 'calibration' ? `${EMBRY.amber}88` : `${EMBRY.green}88`,
+                        }}>
+                          {queueModeInfo.mode === 'calibration' ? 'Calibration' : 'Review'}
+                        </span>
+                        <span>{queueModeInfo.description}</span>
                       </div>
                       <div style={{ ...queueMetaRowStyle, marginTop: 8 }}>
                         <button
                           className="pdf-lab-btn"
                           data-qid="pdf-lab:queue:toggle-ghost"
+                          data-qs-action="PDF_LAB_TOGGLE_GHOST_QUEUE"
                           title={showGhostQueueItems ? 'Hide high-confidence ghost items' : 'Show all unresolved including ghost items'}
                           onClick={() => setShowGhostQueueItems(value => !value)}
                           style={{
@@ -1545,19 +2020,19 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       </div>
                     </div>
 
-                    {activeTaskBlock ? (
-                      <div style={{ ...reviewQueueSectionStyle, ...heroTaskSectionStyle }}>
-                        <div style={sidebarSubsectionLabelStyle}>Active task</div>
-                        <div
-                          key={activeTaskBlock.id}
-                          className="pdf-lab-hero-enter"
-                          data-qid={`pdf-lab:queue:hero:${activeTaskBlock.id}`}
-                          style={heroTaskCardStyle}
+	                    {activeTaskBlock && activeTask ? (
+	                      <div style={{ ...reviewQueueSectionStyle, ...heroTaskSectionStyle }}>
+	                        <div style={sidebarSubsectionLabelStyle}>{queueModeInfo.activeQuestionLabel}</div>
+	                        <div
+	                          key={activeTaskBlock.id}
+	                          className="pdf-lab-hero-enter"
+	                          data-qid={`pdf-lab:queue:hero:${activeTaskBlock.id}`}
+	                          style={heroTaskCardStyle}
                         >
                           <div style={heroTaskHeaderStyle}>
-                            <span
-                              style={{
-                                ...heroTaskBandStyle,
+	                            <span
+	                              style={{
+	                                ...heroTaskBandStyle,
                                 color: classifyReviewBand(activeTaskBlock) === 'low' ? '#FF4D4D' : classifyReviewBand(activeTaskBlock) === 'medium' ? '#FFC107' : EMBRY.dim,
                                 borderColor: classifyReviewBand(activeTaskBlock) === 'low' ? '#FF4D4D66' : classifyReviewBand(activeTaskBlock) === 'medium' ? '#FFC10766' : EMBRY.border,
                                 backgroundColor: classifyReviewBand(activeTaskBlock) === 'low'
@@ -1565,43 +2040,53 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                                   : classifyReviewBand(activeTaskBlock) === 'medium'
                                     ? 'rgba(255, 193, 7, 0.12)'
                                     : EMBRY.bgDeep,
-                              }}
-                            >
-                              {classifyReviewBand(activeTaskBlock) === 'low' ? 'Action required' : classifyReviewBand(activeTaskBlock) === 'medium' ? 'Verify' : 'Ghost'}
-                            </span>
-                            <span style={{ color: EMBRY.dim, fontSize: 11 }}>
-                              {describeReviewReason(activeTaskBlock)}
-                            </span>
-                          </div>
-                          <div style={heroTaskTitleStyle}>
-                            {getBlockDisplayLabel(activeTaskBlock)}
-                            <span style={{ color: EMBRY.dim, fontWeight: 500 }}>
-                              p{activeTaskBlock.page + 1} · {getBlockSemanticSummary(activeTaskBlock)}
-                            </span>
-                          </div>
-                          <div style={heroTaskNoteStyle}>{summarizeReviewNote(activeTaskBlock)}</div>
-                          <div style={heroTaskActionsStyle}>
-                            <button
-                              className="pdf-lab-btn"
-                              data-qid={`pdf-lab:queue:hero-focus:${activeTaskBlock.id}`}
-                              title="Center this item on the page"
-                              onClick={() => focusQueueBlock(activeTaskBlock)}
-                              style={queueActionStyle}
-                            >
-                              Focus on page
-                            </button>
-                            <button
-                              className="pdf-lab-btn"
-                              data-qid={`pdf-lab:queue:hero-inspect:${activeTaskBlock.id}`}
-                              title="Open element details"
-                              onClick={() => inspectBlock(activeTaskBlock, { jumpToPage: true, syncActiveTask: true })}
-                              style={{ ...queueActionStyle, marginTop: 0, backgroundColor: EMBRY.bgDeep, borderColor: EMBRY.border }}
-                            >
-                              Inspect details
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+	                              }}
+	                            >
+	                              {activeTask.primaryAction.label}
+	                            </span>
+	                            <span style={{ color: EMBRY.dim, fontSize: 11 }}>
+	                              {describeReviewReason(activeTaskBlock)}
+	                            </span>
+	                          </div>
+	                          <div style={heroTaskTitleStyle}>
+	                            {activeTask.humanQuestion}
+	                            <span style={{ color: EMBRY.dim, fontWeight: 500 }}>
+	                              p{activeTaskBlock.page + 1} · {getBlockSemanticSummary(activeTaskBlock)}
+	                            </span>
+	                          </div>
+	                          <div style={heroTaskNoteStyle}>{activeTask.inspectorSummary}</div>
+                            <div style={{ marginTop: 12 }}>
+                              <div style={sidebarSubsectionLabelStyle}>Preview</div>
+                              <div data-qid="pdf-lab:task:preview" style={textPreviewStyle}>
+                                {activeTaskBlock.blockType === 'table'
+                                  ? `${parseTableRows(activeTaskBlock.text).length || '?'} rows detected · ${getBlockSemanticSummary(activeTaskBlock)}`
+                                  : activeTaskBlock.text || '(empty)'}
+                              </div>
+                            </div>
+	                          <div style={heroTaskActionsStyle}>
+                              {[activeTask.primaryAction, ...activeTask.secondaryActions].map((action, index) => (
+                                <button
+                                  key={`${activeTask.id}:${action.type}`}
+                                  className="pdf-lab-btn"
+                                  data-qid={`pdf-lab:task-action:${action.type.toLowerCase()}:${activeTask.id}`}
+                                  data-qs-action={`PDF_LAB_${action.type}_ACTIVE_TASK`}
+                                  title={action.label}
+                                  onClick={() => handleTaskAction(activeTask, action)}
+                                  disabled={!canEditExtraction && action.type !== 'PREVIEW_GRID'}
+                                  style={{
+                                    ...queueActionStyle,
+                                    marginTop: index === 0 ? 0 : 6,
+                                    minHeight: index === 0 ? 48 : 44,
+                                    backgroundColor: index === 0 ? 'rgba(0, 255, 136, 0.15)' : EMBRY.bgDeep,
+                                    borderColor: index === 0 ? `${EMBRY.green}88` : EMBRY.border,
+                                  }}
+                                >
+                                  {action.label}
+                                </button>
+                              ))}
+	                          </div>
+	                        </div>
+	                      </div>
                     ) : (
                       <div style={reviewQueueSectionStyle}>
                         <div style={sidebarSectionTitleStyle}>Active task</div>
@@ -1627,7 +2112,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       )}
                       <div style={queueMetaRowStyle}>
                         <span style={{ color: EMBRY.white }}>Page {currentPage + 1}</span>
-                        <span style={{ color: EMBRY.dim }}>{unresolvedBlocksOnCurrentPage.length} unresolved</span>
+                        <span style={{ color: EMBRY.dim }}>{unresolvedBlocksOnCurrentPage.length} {queueModeInfo.unresolvedLabel}</span>
                       </div>
                       <div style={pageFocusMeterTrackStyle}>
                         <div
@@ -1645,6 +2130,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                           <button
                             className="pdf-lab-btn"
                             data-qid="pdf-lab:queue:next-flagged"
+                            data-qs-action="PDF_LAB_NEXT_UNRESOLVED"
                             title={`Jump to next unresolved issue on page ${nextUnresolvedBlock.page + 1}`}
                             onClick={() => focusQueueBlock(nextUnresolvedBlock)}
                             style={inlineQueueLinkStyle}
@@ -1655,13 +2141,14 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                       </div>
 
                       <div style={{ marginTop: 14 }}>
-                        <div style={sidebarSubsectionLabelStyle}>Current page queue</div>
+                        <div style={sidebarSubsectionLabelStyle}>{queueModeInfo.currentPageTitle}</div>
                         <div style={queueListStyle}>
                           {currentPageOtherTasks.length > 0 ? currentPageOtherTasks.slice(0, 8).map(block => (
                             <button
                               className="pdf-lab-btn"
                               key={block.id}
                               data-qid={`pdf-lab:queue:block:${block.id}`}
+                              data-qs-action="PDF_LAB_SELECT_PAGE_QUEUE_BLOCK"
                               title={`Select ${BLOCK_TYPE_LABELS[block.blockType] || block.blockType}`}
                               onClick={() => focusQueueBlock(block)}
                               style={{
@@ -1699,6 +2186,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                                 className="pdf-lab-btn"
                                 key={page}
                                 data-qid={`pdf-lab:queue:page:${page + 1}`}
+                                data-qs-action="PDF_LAB_JUMP_QUEUE_PAGE"
                                 title={`Jump to page ${page + 1}`}
                                 onClick={() => jumpToPage(page)}
                                 style={upcomingPageRowStyle}
@@ -1724,6 +2212,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                             className="pdf-lab-btn"
                             key={type}
                             data-qid={`pdf-lab:filter:${type}`}
+                            data-qs-action="PDF_LAB_TOGGLE_TYPE_FILTER"
                             title={`Toggle ${BLOCK_TYPE_LABELS[type] || type} overlays`}
                             onClick={() => toggleTypeFilter(type)}
                             style={{
@@ -1745,6 +2234,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                         <button
                           className="pdf-lab-btn"
                           data-qid="pdf-lab:filter:queue-scope"
+                          data-qs-action="PDF_LAB_TOGGLE_QUEUE_SCOPE"
                           title={showGhostQueueItems ? 'Hide ghost-confidence items from the unresolved queue' : 'Show all confidence bands in the unresolved queue'}
                           onClick={() => setShowGhostQueueItems(value => !value)}
                           style={{
@@ -1837,6 +2327,45 @@ function findRawCompareFile(file: PdfFile): PdfFile | null {
   ) || null
 }
 
+function findFirstPdfLabTaskBlock(data: ExtractionData): BboxBlock | null {
+  return data.blocks
+    .filter(block => getPdfLabTask(block) !== null)
+    .sort((leftBlock, rightBlock) => {
+      const priorityDelta = reviewBlockPriority(leftBlock) - reviewBlockPriority(rightBlock)
+      if (priorityDelta !== 0) return priorityDelta
+      if (leftBlock.page !== rightBlock.page) return leftBlock.page - rightBlock.page
+      const vertical = leftBlock.bbox[1] - rightBlock.bbox[1]
+      if (Math.abs(vertical) > 0.01) return vertical
+      return leftBlock.bbox[0] - rightBlock.bbox[0]
+    })[0] ?? null
+}
+
+function reviewBlockPriority(block: BboxBlock): number {
+  const notes = (block.reviewNotes || []).join(' ').toLowerCase()
+  const semantic = (block.semanticType || '').toLowerCase()
+  if (block.id.startsWith('review:missed_table')) return 0
+  if (semantic === 'definition_list') return 1
+  if (block.blockType === 'table') return 2
+  if (block.id.startsWith('review:missed_')) return 3
+  if (notes.includes('false positive')) return 4
+  if (notes.includes('bbox should') || notes.includes('bbox includes')) return 5
+  if (notes.includes('table header') || notes.includes('table column')) return 6
+  return 9
+}
+
+function parseTableRows(text: string): string[][] {
+  const tableText = text.replace(/^Table\s+\d+x\d+:\s*/i, '').trim()
+  if (!tableText) return []
+  return tableText
+    .split(';')
+    .map(row => row
+      .split('|')
+      .map(cell => cell.replace(/\s+/g, ' ').trim())
+      .filter(Boolean)
+    )
+    .filter(row => row.length > 0)
+}
+
 function toSemanticType(blockType: BboxBlock['blockType']): string {
   switch (blockType) {
     case 'table':
@@ -1886,6 +2415,144 @@ function describeReviewReason(block: BboxBlock): string {
 }
 
 // Styles using EMBRY theme
+const burndownCardStyle: React.CSSProperties = {
+  padding: '8px 12px',
+  display: 'grid',
+  gap: 8,
+}
+
+const burndownTrackStyle: React.CSSProperties = {
+  height: 5,
+  borderRadius: 999,
+  backgroundColor: 'rgba(255,255,255,0.12)',
+  overflow: 'hidden',
+}
+
+const burndownFillStyle: React.CSSProperties = {
+  height: '100%',
+  borderRadius: 999,
+  background: 'linear-gradient(90deg, #7c3aed, #23c7d9)',
+}
+
+const burndownLabelStyle: React.CSSProperties = {
+  color: EMBRY.dim,
+  fontSize: 11,
+  fontVariantNumeric: 'tabular-nums',
+}
+
+const queueModeNoticeStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 6,
+  padding: '8px 10px',
+  border: `1px solid rgba(255,255,255,0.08)`,
+  borderRadius: 10,
+  backgroundColor: 'rgba(14, 18, 24, 0.72)',
+  fontSize: 11,
+  lineHeight: 1.45,
+}
+
+const queueModeBadgeStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  width: 'fit-content',
+  alignItems: 'center',
+  border: '1px solid',
+  borderRadius: 999,
+  padding: '3px 8px',
+  fontSize: 10,
+  fontWeight: 800,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+}
+
+const teleportButtonStyle: React.CSSProperties = {
+  width: '100%',
+  minHeight: 44,
+  borderRadius: 10,
+  border: `1px solid ${EMBRY.border}`,
+  backgroundColor: EMBRY.bgDeep,
+  color: EMBRY.white,
+  cursor: 'pointer',
+  fontSize: 12,
+}
+
+const queuePageGroupStyle: React.CSSProperties = {
+  padding: '8px 10px',
+  borderBottom: `1px solid rgba(255,255,255,0.05)`,
+}
+
+const queuePageHeaderStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 7,
+  fontSize: 11,
+}
+
+const queueTaskListStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 6,
+}
+
+const queueTaskButtonStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '8px 1fr',
+  gap: 8,
+  alignItems: 'start',
+  width: '100%',
+  minHeight: 44,
+  padding: '7px 8px',
+  borderRadius: 8,
+  border: `1px solid ${EMBRY.border}`,
+  backgroundColor: 'rgba(8, 11, 16, 0.72)',
+  color: EMBRY.white,
+  cursor: 'pointer',
+  textAlign: 'left',
+}
+
+const queueTaskDotStyle: React.CSSProperties = {
+  width: 7,
+  height: 7,
+  borderRadius: 999,
+  backgroundColor: '#FF4D4D',
+  marginTop: 4,
+  boxShadow: '0 0 10px rgba(255,77,77,0.5)',
+}
+
+const queueTaskTitleStyle: React.CSSProperties = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  fontSize: 11,
+  fontWeight: 800,
+}
+
+const queueTaskSubtitleStyle: React.CSSProperties = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  marginTop: 2,
+  color: EMBRY.dim,
+  fontSize: 9,
+}
+
+const pdfDatasetDetailsStyle: React.CSSProperties = {
+  padding: '0 8px',
+}
+
+const pdfDatasetSummaryToggleStyle: React.CSSProperties = {
+  cursor: 'pointer',
+  padding: '8px 10px',
+  borderRadius: 10,
+  border: `1px solid ${EMBRY.border}`,
+  color: EMBRY.dim,
+  fontSize: 10,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
 const containerStyle: React.CSSProperties = {
   display: 'flex',
   height: '100%',
@@ -2096,7 +2763,7 @@ const dockBtnStyle: React.CSSProperties = {
   alignItems: 'center',
   gap: 5,
   justifyContent: 'flex-start',
-  minHeight: 40,
+  minHeight: 44,
   padding: '7px 10px',
   fontSize: 10,
   cursor: 'pointer',
@@ -2115,7 +2782,7 @@ const dockSelectStyle: React.CSSProperties = {
   padding: '7px 10px',
   outline: 'none',
   minWidth: 108,
-  minHeight: 40,
+  minHeight: 44,
   borderRadius: 12,
 }
 
@@ -2147,7 +2814,8 @@ const viewportBtnStyle: React.CSSProperties = {
   alignItems: 'center',
   justifyContent: 'center',
   gap: 6,
-  minHeight: 40,
+  minWidth: 44,
+  minHeight: 44,
   padding: '7px 10px',
   cursor: 'pointer',
   border: `1px solid rgba(255,255,255,0.08)`,
@@ -2225,6 +2893,19 @@ const inspectorModeActionsStyle: React.CSSProperties = {
   marginTop: 10,
 }
 
+const inspectorQueueModeStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 8,
+  marginTop: 10,
+  padding: '10px 12px',
+  border: `1px solid rgba(255,255,255,0.08)`,
+  borderRadius: 12,
+  backgroundColor: 'rgba(255,255,255,0.025)',
+  color: EMBRY.dim,
+  fontSize: 11,
+  lineHeight: 1.45,
+}
+
 const heroTaskCardStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
@@ -2297,6 +2978,7 @@ const queueMetaRowStyle: React.CSSProperties = {
 
 const queueActionStyle: React.CSSProperties = {
   width: '100%',
+  minHeight: 44,
   marginTop: 8,
   backgroundColor: 'rgba(74, 158, 255, 0.14)',
   border: `1px solid ${EMBRY.blue}`,
@@ -2310,12 +2992,14 @@ const queueActionStyle: React.CSSProperties = {
 }
 
 const inlineQueueLinkStyle: React.CSSProperties = {
-  border: 'none',
-  background: 'transparent',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 8,
+  background: EMBRY.bgDeep,
   color: EMBRY.accent,
   fontSize: 11,
   cursor: 'pointer',
-  padding: 0,
+  minHeight: 44,
+  padding: '0 10px',
   fontWeight: 600,
 }
 
@@ -2323,6 +3007,7 @@ const pageChipStyle: React.CSSProperties = {
   border: '1px solid',
   borderRadius: 999,
   padding: '6px 10px',
+  minHeight: 44,
   fontSize: 11,
   cursor: 'pointer',
   fontFamily: '"JetBrains Mono", monospace',
@@ -2338,6 +3023,7 @@ const queueListStyle: React.CSSProperties = {
 const queueBlockItemStyle: React.CSSProperties = {
   border: '1px solid',
   borderRadius: 10,
+  minHeight: 44,
   padding: '9px 10px',
   textAlign: 'left',
   cursor: 'pointer',
@@ -2393,6 +3079,7 @@ const collapsedQueueSummaryStyle: React.CSSProperties = {
 const upcomingPageRowStyle: React.CSSProperties = {
   border: `1px solid ${EMBRY.border}`,
   borderRadius: 10,
+  minHeight: 44,
   padding: '10px 12px',
   backgroundColor: EMBRY.bgDeep,
   display: 'flex',
@@ -2415,6 +3102,7 @@ const btnStyle: React.CSSProperties = {
 
 const actionBtnStyle: React.CSSProperties = {
   ...btnStyle,
+  minHeight: 44,
   padding: '5px 9px',
   gap: 5,
   color: EMBRY.white,
@@ -2470,16 +3158,5 @@ const tocListStyle: React.CSSProperties = {
   overflow: 'auto',
 }
 
-const tocEntryStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  padding: '4px 8px',
-  borderBottom: `1px solid ${EMBRY.border}`,
-  fontSize: 10,
-  fontFamily: '"JetBrains Mono", monospace',
-  color: EMBRY.white,
-  cursor: 'pointer',
-  transition: 'background 0.1s',
-}
 
 export default PdfLabView

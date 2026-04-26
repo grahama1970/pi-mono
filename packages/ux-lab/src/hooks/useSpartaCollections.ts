@@ -433,13 +433,20 @@ interface QraCacheEntry {
 }
 
 const QRA_CACHE = new Map<string, QraCacheEntry>();
+const QRA_PENDING = new Map<string, Promise<QraCacheEntry>>();
 const QRA_CACHE_TTL_MS = 30_000;
 
 function qraCacheKey(query: string, controlId: string | undefined, source: QRASource): string {
 	return JSON.stringify({ query, controlId, source });
 }
 
-export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"): HookResult<SpartaQRA> {
+export function useQRAs(
+	query = "",
+	controlId?: string,
+	source: QRASource = "v2",
+	page = 0,
+	pageSize = 50,
+): HookResult<SpartaQRA> {
 	const debouncedQuery = useDebouncedValue(query);
 	const [data, setData] = useState<SpartaQRA[]>([]);
 	const [total, setTotal] = useState(0);
@@ -448,7 +455,7 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 
 	const fetchData = useCallback(
 		async (opts?: { force?: boolean }) => {
-			const cacheKey = qraCacheKey(debouncedQuery, controlId, source);
+			const cacheKey = JSON.stringify({ query: debouncedQuery, controlId, source, page, pageSize });
 			const cached = QRA_CACHE.get(cacheKey);
 
 			// Serve stale immediately if available and not forcing refresh
@@ -463,35 +470,46 @@ export function useQRAs(query = "", controlId?: string, source: QRASource = "v2"
 			setLoading(true);
 			setError(null);
 			try {
-				const result =
-					debouncedQuery || controlId
-						? await qraSearchPost({
-								source,
-								q: debouncedQuery || undefined,
-								controlId,
-								limit: 20,
-							})
-						: await qraFeedPost({ source, limit: 20 });
+				const pending =
+					!opts?.force && QRA_PENDING.has(cacheKey)
+						? QRA_PENDING.get(cacheKey)!
+						: (async () => {
+								const result =
+									debouncedQuery || controlId
+										? await qraSearchPost({
+												source,
+												q: debouncedQuery || undefined,
+												controlId,
+												offset: page * pageSize,
+												limit: pageSize,
+											})
+										: await qraFeedPost({ source, offset: page * pageSize, limit: pageSize });
 
-				const items = (result.documents as unknown as SpartaQRA[]).map((item) => ({
-					...item,
-					_collection: item._id?.startsWith("sparta_qra_canonical")
-						? ("sparta_qra_canonical" as const)
-						: item._id?.startsWith("sparta_qra_relationship")
-							? ("sparta_qra_relationship" as const)
-							: ("sparta_qra" as const),
-				}));
+								const items = (result.documents as unknown as SpartaQRA[]).map((item) => ({
+									...item,
+									_collection: item._id?.startsWith("sparta_qra_canonical")
+										? ("sparta_qra_canonical" as const)
+										: item._id?.startsWith("sparta_qra_relationship")
+											? ("sparta_qra_relationship" as const)
+											: ("sparta_qra" as const),
+								}));
 
-				QRA_CACHE.set(cacheKey, { data: items, total: result.total ?? items.length, at: Date.now() });
-				setData(items);
-				setTotal(result.total ?? items.length);
+								return { data: items, total: result.total ?? items.length, at: Date.now() };
+							})();
+
+				if (!opts?.force && !QRA_PENDING.has(cacheKey)) QRA_PENDING.set(cacheKey, pending);
+				const entry = await pending;
+				QRA_CACHE.set(cacheKey, entry);
+				setData(entry.data);
+				setTotal(entry.total);
 			} catch (err) {
 				setError(err instanceof Error ? err.message : String(err));
 			} finally {
+				QRA_PENDING.delete(cacheKey);
 				setLoading(false);
 			}
 		},
-		[debouncedQuery, controlId, source],
+		[debouncedQuery, controlId, source, page, pageSize],
 	);
 
 	useEffect(() => {

@@ -710,10 +710,10 @@
 
 /* Orchestrator strip */
 .scillm-orchestrator-item {
-  display: grid;
-  grid-template-columns: minmax(260px, 1.2fr) minmax(320px, 1fr) minmax(220px, 0.8fr) auto;
-  gap: 16px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
   padding: 10px 16px;
   background-color: var(--scillm-bg-panel);
 }

@@ -282,9 +282,14 @@ export interface BatchJobState {
 		chunk_num?: number | null;
 		total_chunks?: number | null;
 		range_start?: number | null;
-		range_end?: number | null;
-		processed?: number;
-		success?: number;
+			range_end?: number | null;
+			concurrency_limit?: number | null;
+			pending_jobs?: number | null;
+			pending_items?: string[];
+			execution_mode?: string;
+			model_pool?: string;
+			processed?: number;
+			success?: number;
 		failed?: number;
 		skipped?: number;
 		last_key?: string;
@@ -466,6 +471,59 @@ export interface AuthStatusResponse {
 
 const SCILLM_API = "http://localhost:4001";
 const AUTH_POLL_INTERVAL = 30000; // 30s for auth status
+const RUNTIME_POLL_INTERVAL = 5000;
+
+export interface ActiveScillmCall {
+	call_id: string;
+	model: string;
+	caller: string;
+	provider: string;
+	stream: boolean;
+	started_ts: string;
+	elapsed_ms: number;
+}
+
+export interface ScillmProviderConcurrency {
+	configured_limit: number;
+	effective_limit: number;
+	in_flight: number;
+	queued: number;
+	available: number;
+}
+
+export interface ScillmRuntimeSnapshot {
+	active: ActiveScillmCall[];
+	concurrency: Record<string, ScillmProviderConcurrency>;
+}
+
+export interface ModelPoolLaneStatus {
+	name: string;
+	provider: string;
+	model: string;
+	weight: number;
+	lane_limit: number;
+	configured_limit: number;
+	effective_limit: number;
+	in_flight: number;
+	queued: number;
+	available: number;
+	paused: boolean;
+	backoff_active: boolean;
+	pause_remaining_s: number;
+	registry_in_flight: number;
+	semaphore_in_flight: number;
+	drift: number;
+}
+
+export interface ModelPoolStatus {
+	name: string;
+	strategy: string;
+	in_flight: number;
+	limit: number;
+	queued: number;
+	available: number;
+	lanes: ModelPoolLaneStatus[];
+}
 
 export function useProviderAuth() {
 	const [auth, setAuth] = useState<AuthStatusResponse | null>(null);
@@ -495,4 +553,80 @@ export function useProviderAuth() {
 	}, [refresh]);
 
 	return { auth, loading, error, refresh };
+}
+
+export function useScillmRuntime() {
+	const [runtime, setRuntime] = useState<ScillmRuntimeSnapshot | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	const refresh = useCallback(async () => {
+		try {
+			const headers = { Authorization: "Bearer sk-dev-proxy-123" };
+			const [healthResp, activeResp] = await Promise.all([
+				fetch(`${SCILLM_API}/v1/scillm/health`, { headers }),
+				fetch(`${SCILLM_API}/v1/scillm/active-calls`, { headers }),
+			]);
+			if (!healthResp.ok) throw new Error(`Health failed: ${healthResp.status}`);
+			if (!activeResp.ok) throw new Error(`Active calls failed: ${activeResp.status}`);
+			const healthData: { concurrency?: Record<string, ScillmProviderConcurrency> } = await healthResp.json();
+			const activeData: { active?: ActiveScillmCall[] } = await activeResp.json();
+			setRuntime({
+				active: Array.isArray(activeData.active) ? activeData.active : [],
+				concurrency: healthData.concurrency || {},
+			});
+			setError(null);
+		} catch (e) {
+			setError(e instanceof Error ? e.message : "Unknown error");
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		refresh();
+		const interval = setInterval(refresh, RUNTIME_POLL_INTERVAL);
+		return () => clearInterval(interval);
+	}, [refresh]);
+
+	return { runtime, loading, error, refresh };
+}
+
+export function useModelPoolStatus(pool: string | null | undefined) {
+	const [status, setStatus] = useState<ModelPoolStatus | null>(null);
+	const [loading, setLoading] = useState(Boolean(pool));
+	const [error, setError] = useState<string | null>(null);
+
+	const refresh = useCallback(async () => {
+		const poolName = String(pool || "").trim();
+		if (!poolName) {
+			setStatus(null);
+			setLoading(false);
+			setError(null);
+			return;
+		}
+		try {
+			const resp = await fetch(`${SCILLM_API}/v1/scillm/model-pools/${encodeURIComponent(poolName)}/status`, {
+				headers: { Authorization: "Bearer sk-dev-proxy-123" },
+			});
+			if (!resp.ok) throw new Error(`Pool status failed: ${resp.status}`);
+			const data: ModelPoolStatus = await resp.json();
+			setStatus(data);
+			setError(null);
+		} catch (e) {
+			setError(e instanceof Error ? e.message : "Unknown error");
+		} finally {
+			setLoading(false);
+		}
+	}, [pool]);
+
+	useEffect(() => {
+		setLoading(Boolean(pool));
+		refresh();
+		if (!pool) return undefined;
+		const interval = setInterval(refresh, RUNTIME_POLL_INTERVAL);
+		return () => clearInterval(interval);
+	}, [pool, refresh]);
+
+	return { status, loading, error, refresh };
 }

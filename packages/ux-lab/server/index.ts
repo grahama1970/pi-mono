@@ -317,6 +317,124 @@ function asRows(raw: Record<string, unknown>): any[] {
   return (raw.documents ?? raw.items ?? raw.data ?? raw.results ?? []) as any[]
 }
 
+const QRA_V2_COLLECTIONS = ['sparta_qra_canonical', 'sparta_qra_relationship'] as const
+const LEGACY_QRA_COLLECTION = 'sparta_qra' as const
+const QRA_COUNT_CACHE_TTL_MS = 30_000
+const QRA_COUNT_CACHE = new Map<string, { count: number; at: number }>()
+const QRA_SUMMARY_FIELDS = [
+  '_key',
+  '_id',
+  'qra_id',
+  'question',
+  'source_framework',
+  'source_control_id',
+  'control_id',
+  'run_id',
+  'mind',
+  'relationship_id',
+  'expertise',
+  'difficulty',
+  'created_at',
+  'review_status',
+] as const
+
+function normalizeQraDocument(doc: Record<string, any> | null | undefined, collection?: string) {
+  if (!doc) return null
+  const normalized = { ...doc } as Record<string, any>
+  if (!normalized.control_id && normalized.source_control_id) normalized.control_id = normalized.source_control_id
+  if (!normalized._collection && collection) normalized._collection = collection
+  return normalized
+}
+
+async function fetchQraDocsByKeys(
+  collection: string,
+  keys: string[],
+  return_fields?: readonly string[],
+): Promise<any[]> {
+  if (!keys.length) return []
+  const result = await proxyPost('/recall/by-keys', {
+    collection,
+    keys,
+    ...(return_fields ? { return_fields: [...return_fields] } : {}),
+  }, 45000)
+  const docs = asRows(result).map((doc) => normalizeQraDocument(doc, collection))
+  const byKey = new Map(docs.filter(Boolean).map((doc: any) => [doc._key, doc]))
+  return keys.map((key) => byKey.get(key)).filter(Boolean)
+}
+
+function qraCountCacheKey(collection: string, filters?: Record<string, unknown>): string {
+  return JSON.stringify({ collection, filters: filters ?? null })
+}
+
+async function countQraDocs(collection: string, filters?: Record<string, unknown>): Promise<number> {
+  const key = qraCountCacheKey(collection, filters)
+  const cached = QRA_COUNT_CACHE.get(key)
+  if (cached && Date.now() - cached.at < QRA_COUNT_CACHE_TTL_MS) return cached.count
+
+  const result = await proxyPost('/count', { collection, ...(filters ? { filters } : {}) }, 45_000)
+  const count = Number(result?.count ?? 0)
+  QRA_COUNT_CACHE.set(key, { count, at: Date.now() })
+  return count
+}
+
+async function queryQraKeysPage(collection: string, offset: number, limit: number): Promise<string[]> {
+  if (limit <= 0) return []
+  const result = await proxyPost('/query', {
+    aql: `FOR doc IN ${collection}
+            LIMIT @offset, @limit
+            RETURN doc._key`,
+    bind_vars: { offset, limit },
+  }, 45_000)
+  return asRows(result)
+    .map((row) => row?._key ?? row)
+    .filter((value): value is string => typeof value === 'string' && value.length > 0)
+}
+
+async function pageCollectionSummaries(collection: string, offset: number, limit: number): Promise<any[]> {
+  const keys = await queryQraKeysPage(collection, offset, limit)
+  return fetchQraDocsByKeys(collection, keys, QRA_SUMMARY_FIELDS)
+}
+
+async function pagePartitionedSummaries(
+  partitions: Array<{ collection: string; filters?: Record<string, unknown> }>,
+  offset: number,
+  limit: number,
+): Promise<{ documents: any[]; total: number }> {
+  const counts = await Promise.all(partitions.map((partition) => countQraDocs(partition.collection, partition.filters)))
+  const total = counts.reduce((sum, count) => sum + count, 0)
+  if (limit <= 0 || total === 0 || offset >= total) return { documents: [], total }
+
+  let remainingOffset = Math.max(0, offset)
+  let remainingLimit = limit
+  const documents: any[] = []
+
+  for (let index = 0; index < partitions.length && remainingLimit > 0; index += 1) {
+    const partition = partitions[index]
+    const partitionCount = counts[index]
+    if (remainingOffset >= partitionCount) {
+      remainingOffset -= partitionCount
+      continue
+    }
+
+    const page = await proxyPost('/list', {
+      collection: partition.collection,
+      limit: remainingLimit,
+      offset: remainingOffset,
+      ...(partition.filters ? { filters: partition.filters } : {}),
+      return_fields: ['_key'],
+    }, 45_000)
+    const keys = asRows(page)
+      .map((row) => row?._key ?? row)
+      .filter((value): value is string => typeof value === 'string' && value.length > 0)
+
+    documents.push(...(await fetchQraDocsByKeys(partition.collection, keys, QRA_SUMMARY_FIELDS)))
+    remainingLimit -= keys.length
+    remainingOffset = 0
+  }
+
+  return { documents, total }
+}
+
 /** Fetch ALL documents from a collection, paginating in batches of 500. */
 async function memoryListAll(collection: string, return_fields?: string[], filters?: Record<string, unknown>): Promise<any[]> {
   const PAGE = 500
@@ -432,142 +550,52 @@ app.get('/api/qra/coverage', async (_req, res) => {
 app.post('/api/qra/feed', async (req, res) => {
   const limitRaw = Number(req.body?.limit)
   const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, limitRaw)) : 50
+  const offsetRaw = Number(req.body?.offset)
+  const offset = Number.isFinite(offsetRaw) ? Math.max(0, offsetRaw) : 0
   const source = String(req.body?.source || 'legacy').toLowerCase()
-  const LEGACY_FRAMEWORKS = ['SPARTA', 'NIST', 'ATT&CK', 'CWE', 'D3FEND']
-  const feedProjection = `{
-    _key: doc._key,
-    _id: doc._id,
-    qra_id: doc.qra_id,
-    question: doc.question,
-    source_framework: doc.source_framework,
-    source_control_id: doc.source_control_id,
-    control_id: doc.source_control_id,
-    run_id: doc.run_id,
-    mind: doc.mind,
-    relationship_id: doc.relationship_id,
-    expertise: doc.expertise,
-    difficulty: doc.difficulty,
-    created_at: doc.created_at,
-    review_status: doc.review_status,
-    evidence_case: doc.evidence_case ? KEEP(
-      doc.evidence_case,
-      "verdict",
-      "review_status",
-      "failure_reason",
-      "failure_mode",
-      "failure_details"
-    ) : null,
-    formal_proof: doc.formal_proof ? { success: doc.formal_proof.success } : (doc.evidence_case && doc.evidence_case.formal_proof ? { success: doc.evidence_case.formal_proof.success } : null),
-    sacm_ref: doc.sacm_ref ? { gid: doc.sacm_ref.gid } : (doc.evidence_case && doc.evidence_case.sacm_ref ? { gid: doc.evidence_case.sacm_ref.gid } : null),
-    lineage: doc.lineage ? KEEP(doc.lineage, "upstream_qra_keys", "entity_ids", "entity_frameworks", "assembled_at") : null
-  }`
-
-  const detailProjection = `{
-    _key: doc._key,
-    _id: doc._id,
-    qra_id: doc.qra_id,
-    question: doc.question,
-    reasoning: doc.reasoning,
-    answer: doc.answer,
-    grounding_score: doc.grounding_score,
-    source_framework: doc.source_framework,
-    source_control_id: doc.source_control_id,
-    control_id: doc.source_control_id,
-    run_id: doc.run_id,
-    mind: doc.mind,
-    relationship_id: doc.relationship_id,
-    expertise: doc.expertise,
-    difficulty: doc.difficulty,
-    created_at: doc.created_at,
-    review_status: doc.review_status,
-    evidence_case: doc.evidence_case ? KEEP(
-      doc.evidence_case,
-      "verdict",
-      "review_status",
-      "question_text",
-      "control_ids",
-      "glossary",
-      "resolved_entities",
-      "spans",
-      "prior_qra_evidence",
-      "crosswalk_chains",
-      "formal_proof",
-      "sacm_ref",
-      "cae_tree",
-      "entity_resolution",
-      "technique_check",
-      "failure_reason",
-      "failure_mode",
-      "failure_details"
-    ) : null,
-    formal_proof: doc.formal_proof,
-    sacm_ref: doc.sacm_ref,
-    lineage: doc.lineage
-  }`
-
-  async function queryFeed(aql: string, bind_vars: Record<string, unknown>) {
-    const result = await proxyPost('/query', { aql, bind_vars }, 45000)
-    return asRows(result)
-  }
-
-  async function sampleLegacyFeed(sampleLimit: number) {
-    const perFramework = Math.max(1, Math.ceil(sampleLimit / LEGACY_FRAMEWORKS.length))
-    const offsets = Array.from({ length: perFramework }, (_, idx) => idx)
-    const groups = await Promise.all(
-      LEGACY_FRAMEWORKS.map(async (framework) => {
-        const docs = await Promise.all(
-          offsets.map((offset) =>
-            queryFeed(
-              `FOR doc IN sparta_qra
-                 FILTER doc.source_framework == @framework
-                 LIMIT @offset, 1
-                 RETURN ${feedProjection}`,
-              { framework, offset },
-            ).then((rows) => rows[0] ?? null),
-          ),
-        )
-        return docs.filter(Boolean)
-      }),
-    )
-    return groups.flat().slice(0, sampleLimit)
-  }
 
   try {
-    // Do not use /list to browse the full QRA corpus. Keep this bounded and server-side.
-    // Avoid global sorts on the 245k-row legacy collection; they exceed Arango memory.
     let documents: any[] = []
     let sourceUsed = 'legacy'
+    let total = 0
 
     if (source === 'v2') {
       sourceUsed = 'v2'
-      documents = await queryFeed(
-        `FOR doc IN sparta_qra_relationship
-           LIMIT @limit
-           RETURN ${feedProjection}`,
-        { limit },
+      const result = await pagePartitionedSummaries(
+        QRA_V2_COLLECTIONS.map((collection) => ({ collection })),
+        offset,
+        limit,
       )
+      documents = result.documents
+      total = result.total
     } else if (source === 'all') {
       const legacyLimit = Math.max(1, Math.ceil(limit / 2))
       const v2Limit = Math.max(1, limit - legacyLimit)
-      const [legacyDocs, v2Docs] = await Promise.all([
-        sampleLegacyFeed(legacyLimit),
-        queryFeed(
-          `FOR doc IN sparta_qra_relationship
-             LIMIT @limit
-             RETURN ${feedProjection}`,
-          { limit: v2Limit },
+      const pageIndex = Math.floor(offset / Math.max(limit, 1))
+      const [legacyDocs, legacyTotal, v2Page, v2Total] = await Promise.all([
+        pageCollectionSummaries(LEGACY_QRA_COLLECTION, pageIndex * legacyLimit, legacyLimit),
+        countQraDocs(LEGACY_QRA_COLLECTION),
+        pagePartitionedSummaries(
+          QRA_V2_COLLECTIONS.map((collection) => ({ collection })),
+          pageIndex * v2Limit,
+          v2Limit,
         ),
+        Promise.all(QRA_V2_COLLECTIONS.map((collection) => countQraDocs(collection))).then((counts) => counts.reduce((sum, count) => sum + count, 0)),
       ])
-      documents = [...legacyDocs, ...v2Docs].slice(0, limit)
+      documents = [...legacyDocs, ...v2Page.documents]
+      total = legacyTotal + v2Total
       sourceUsed = 'all'
     } else {
       sourceUsed = 'legacy'
-      documents = await sampleLegacyFeed(limit)
+      documents = await pageCollectionSummaries(LEGACY_QRA_COLLECTION, offset, limit)
+      total = await countQraDocs(LEGACY_QRA_COLLECTION)
     }
 
     res.json({
       documents,
-      total: documents.length,
+      total,
+      offset,
+      limit,
       source_used: sourceUsed,
     })
   } catch (e) {
@@ -582,67 +610,32 @@ app.post('/api/qra/detail', async (req, res) => {
   const qraId = String(req.body?.qraId || '').trim()
   if (!key && !qraId) return res.status(400).json({ error: 'qra_detail_requires_key_or_qraId' })
 
-  const detailProjection = `{
-    _key: doc._key,
-    _id: doc._id,
-    qra_id: doc.qra_id,
-    question: doc.question,
-    reasoning: doc.reasoning,
-    answer: doc.answer,
-    grounding_score: doc.grounding_score,
-    source_framework: doc.source_framework,
-    source_control_id: doc.source_control_id,
-    control_id: doc.source_control_id,
-    run_id: doc.run_id,
-    mind: doc.mind,
-    relationship_id: doc.relationship_id,
-    expertise: doc.expertise,
-    difficulty: doc.difficulty,
-    created_at: doc.created_at,
-    review_status: doc.review_status,
-    evidence_case: doc.evidence_case ? KEEP(
-      doc.evidence_case,
-      "verdict",
-      "review_status",
-      "question_text",
-      "control_ids",
-      "glossary",
-      "resolved_entities",
-      "spans",
-      "prior_qra_evidence",
-      "crosswalk_chains",
-      "formal_proof",
-      "sacm_ref",
-      "cae_tree",
-      "entity_resolution",
-      "technique_check",
-      "failure_reason",
-      "failure_mode",
-      "failure_details"
-    ) : null,
-    formal_proof: doc.formal_proof,
-    sacm_ref: doc.sacm_ref,
-    lineage: doc.lineage
-  }`
-
   async function queryOne(collection: string) {
+    if (key) {
+      const docs = await fetchQraDocsByKeys(collection, [key])
+      if (docs.length > 0) return docs[0]
+    }
+    if (!qraId) return null
     const result = await proxyPost('/query', {
       aql: `FOR doc IN ${collection}
-              FILTER (@key != "" AND doc._key == @key) OR (@qraId != "" AND doc.qra_id == @qraId)
+              FILTER doc.qra_id == @qraId
               LIMIT 1
-              RETURN ${detailProjection}`,
-      bind_vars: { key, qraId },
+              RETURN doc._key`,
+      bind_vars: { qraId },
     }, 45000)
-    return asRows(result)[0] ?? null
+    const docKey = asRows(result)[0]?._key ?? asRows(result)[0]
+    if (typeof docKey !== 'string' || !docKey) return null
+    const docs = await fetchQraDocsByKeys(collection, [docKey])
+    return docs[0] ?? null
   }
 
   try {
     const collections =
       source === 'v2'
-        ? ['sparta_qra_relationship']
+        ? [...QRA_V2_COLLECTIONS]
         : source === 'legacy'
           ? ['sparta_qra']
-          : ['sparta_qra', 'sparta_qra_relationship']
+          : ['sparta_qra', ...QRA_V2_COLLECTIONS]
 
     for (const collection of collections) {
       const doc = await queryOne(collection)
@@ -667,33 +660,6 @@ app.post('/api/qra/search', async (req, res) => {
   const controlId = String(req.body?.controlId || '').trim()
   const needle = q.toLowerCase()
   const controlIdUpper = controlId.toUpperCase()
-  const projection = `{
-    _key: doc._key,
-    _id: doc._id,
-    qra_id: doc.qra_id,
-    question: doc.question,
-    source_framework: doc.source_framework,
-    source_control_id: doc.source_control_id,
-    control_id: doc.source_control_id,
-    run_id: doc.run_id,
-    mind: doc.mind,
-    relationship_id: doc.relationship_id,
-    expertise: doc.expertise,
-    difficulty: doc.difficulty,
-    created_at: doc.created_at,
-    review_status: doc.review_status,
-    evidence_case: doc.evidence_case ? KEEP(
-      doc.evidence_case,
-      "verdict",
-      "review_status",
-      "failure_reason",
-      "failure_mode",
-      "failure_details"
-    ) : null,
-    formal_proof: doc.formal_proof ? { success: doc.formal_proof.success } : (doc.evidence_case && doc.evidence_case.formal_proof ? { success: doc.evidence_case.formal_proof.success } : null),
-    sacm_ref: doc.sacm_ref ? { gid: doc.sacm_ref.gid } : (doc.evidence_case && doc.evidence_case.sacm_ref ? { gid: doc.evidence_case.sacm_ref.gid } : null),
-    lineage: doc.lineage ? KEEP(doc.lineage, "upstream_qra_keys", "entity_ids", "entity_frameworks", "assembled_at") : null
-  }`
 
   const filterClause = `
     FILTER (
@@ -710,9 +676,11 @@ app.post('/api/qra/search', async (req, res) => {
     )
   `
 
-  async function querySearch(aql: string, bind_vars: Record<string, unknown>) {
+  async function querySearchKeys(aql: string, bind_vars: Record<string, unknown>) {
     const result = await proxyPost('/query', { aql, bind_vars }, 45000)
     return asRows(result)
+      .map((row) => row?._key ?? row)
+      .filter((key): key is string => typeof key === 'string' && key.length > 0)
   }
 
   try {
@@ -720,38 +688,50 @@ app.post('/api/qra/search', async (req, res) => {
     let sourceUsed = source
 
     if (source === 'v2') {
-      documents = await querySearch(
-        `FOR doc IN sparta_qra_relationship
-           ${filterClause}
-           SORT doc.created_at DESC
-           LIMIT @offset, @limit
-           RETURN ${projection}`,
-        { needle, controlIdUpper, offset, limit },
+      const perCollectionLimit = Math.max(limit, 20)
+      const groups = await Promise.all(
+        QRA_V2_COLLECTIONS.map(async (collection) => {
+          const keys = await querySearchKeys(
+            `FOR doc IN ${collection}
+               ${filterClause}
+               LIMIT @offset, @limit
+               RETURN doc._key`,
+            { needle, controlIdUpper, offset: 0, limit: perCollectionLimit },
+          )
+          return fetchQraDocsByKeys(collection, keys, QRA_SUMMARY_FIELDS)
+        }),
       )
+      documents = groups.flat()
+        .sort((a, b) => Number(b?.created_at ?? 0) - Number(a?.created_at ?? 0))
+        .slice(offset, offset + limit)
     } else if (source === 'all') {
       const perCollectionLimit = Math.max(limit, 50)
       const [legacyDocs, v2Docs] = await Promise.all([
         Promise.all(
           LEGACY_FRAMEWORKS.map((framework) =>
-            querySearch(
+            querySearchKeys(
               `FOR doc IN sparta_qra
                  FILTER doc.source_framework == @framework
                  ${filterClause}
                  SORT doc.created_at DESC
                  LIMIT @offset, @limit
-                 RETURN ${projection}`,
+                 RETURN doc._key`,
               { framework, needle, controlIdUpper, offset: 0, limit: Math.max(10, Math.ceil(perCollectionLimit / LEGACY_FRAMEWORKS.length)) },
-            ),
+            ).then((keys) => fetchQraDocsByKeys('sparta_qra', keys, QRA_SUMMARY_FIELDS)),
           ),
         ).then((groups) => groups.flat()),
-        querySearch(
-          `FOR doc IN sparta_qra_relationship
-             ${filterClause}
-             SORT doc.created_at DESC
-             LIMIT @offset, @limit
-             RETURN ${projection}`,
-          { needle, controlIdUpper, offset: 0, limit: perCollectionLimit },
-        ),
+        Promise.all(
+          QRA_V2_COLLECTIONS.map(async (collection) => {
+            const keys = await querySearchKeys(
+              `FOR doc IN ${collection}
+                 ${filterClause}
+                 LIMIT @offset, @limit
+                 RETURN doc._key`,
+              { needle, controlIdUpper, offset: 0, limit: perCollectionLimit },
+            )
+            return fetchQraDocsByKeys(collection, keys, QRA_SUMMARY_FIELDS)
+          }),
+        ).then((groups) => groups.flat()),
       ])
       documents = [...legacyDocs, ...v2Docs]
         .sort((a, b) => Number(b?.created_at ?? 0) - Number(a?.created_at ?? 0))
@@ -761,15 +741,15 @@ app.post('/api/qra/search', async (req, res) => {
       sourceUsed = 'legacy'
       const groups = await Promise.all(
         LEGACY_FRAMEWORKS.map((framework) =>
-          querySearch(
+          querySearchKeys(
             `FOR doc IN sparta_qra
                FILTER doc.source_framework == @framework
                ${filterClause}
                SORT doc.created_at DESC
                LIMIT @offset, @limit
-               RETURN ${projection}`,
+               RETURN doc._key`,
             { framework, needle, controlIdUpper, offset: 0, limit: Math.max(10, Math.ceil(limit / LEGACY_FRAMEWORKS.length)) },
-          ),
+          ).then((keys) => fetchQraDocsByKeys('sparta_qra', keys, QRA_SUMMARY_FIELDS)),
         ),
       )
       documents = groups.flat()
@@ -2735,8 +2715,16 @@ function proxyPost(path: string, body: object | null = null, timeoutMs = 30000):
         res.on('data', (c: Buffer) => chunks.push(c))
         res.on('end', () => {
           clearTimeout(timeout)
-          try { resolve(JSON.parse(Buffer.concat(chunks).toString())) }
-          catch { reject(new Error('Invalid JSON from memory daemon')) }
+          const rawText = Buffer.concat(chunks).toString()
+          let parsed: any
+          try { parsed = JSON.parse(rawText) }
+          catch { reject(new Error('Invalid JSON from memory daemon')); return }
+          if ((res.statusCode ?? 500) >= 400) {
+            const detail = parsed?.detail || parsed?.error || rawText || 'unknown error'
+            reject(new Error(`Memory daemon ${res.statusCode} on ${path}: ${detail}`))
+            return
+          }
+          resolve(parsed)
         })
       }
     )

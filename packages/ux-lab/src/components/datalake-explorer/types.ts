@@ -448,6 +448,7 @@ export interface BboxBlock {
 	hasOpenComments?: boolean;
 	humanEdited?: boolean;
 	humanEditedAt?: string;
+	reviewStatus?: "active" | "verified" | "rejected" | "ignored";
 }
 
 export interface CascadeStep {

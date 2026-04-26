@@ -80,6 +80,7 @@ export function SharedRightPane({
 				</div>
 				<button
 					data-qid="shared-right-pane:close"
+					data-qs-action="SHARED_RIGHT_PANE_CLOSE"
 					title="Close detail pane"
 					onClick={onClose}
 					style={{
@@ -87,7 +88,13 @@ export function SharedRightPane({
 						border: "none",
 						color: EMBRY.dim,
 						cursor: "pointer",
-						padding: 4,
+						padding: 0,
+						width: 44,
+						minWidth: 44,
+						minHeight: 44,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
 						flexShrink: 0,
 					}}
 				>
@@ -110,9 +117,12 @@ export function SharedRightPane({
 						<button
 							key={tab.id}
 							data-qid={`shared-right-pane:tab:${tab.id}`}
+							data-qs-action={`SHARED_RIGHT_PANE_TAB_${String(tab.id).replace(/[^a-z0-9]+/gi, "_").toUpperCase()}`}
 							title={`Show ${tab.label}`}
 							onClick={() => onTabChange(tab.id)}
 							style={{
+								minWidth: 44,
+								minHeight: 44,
 								padding: "8px 10px",
 								border: "none",
 								borderBottom: activeTab === tab.id ? `2px solid ${EMBRY.blue}` : "2px solid transparent",

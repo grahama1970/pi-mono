@@ -36,9 +36,13 @@ function minEmphasisForMode(mode: EntityViewMode): HighlightEmphasis {
 }
 
 const PANE_PADDING = 16
+const QRA_PAGE_SIZE = 25
 type EvidenceFilter = 'all' | 'failed' | 'passed'
 
 function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
+  const reviewStatus = (q.review_status || '').trim().toLowerCase()
+  if (reviewStatus === 'approved' || reviewStatus === 'pass' || reviewStatus === 'passed') return 'passed'
+  if (reviewStatus === 'rejected' || reviewStatus === 'fail' || reviewStatus === 'failed' || reviewStatus === 'pending') return 'failed'
   const verdict = (q.evidence_case?.verdict || '').trim().toLowerCase()
   if (verdict === 'satisfied' || verdict === 'pass' || verdict === 'passed') return 'passed'
   if (verdict === 'not_satisfied' || verdict === 'fail' || verdict === 'failed' || verdict === 'rejected') return 'failed'
@@ -167,15 +171,20 @@ export function QRAsView() {
   const [debouncedSearch, setDebouncedSearch] = useState("")
 
   // Source filter (v2 vs legacy collections) - must be declared before useQRAs
-  const [source, setSource] = useState<QRASource>('legacy')
+  const [source, setSource] = useState<QRASource>('all')
   const [evidenceFilter, setEvidenceFilter] = useState<EvidenceFilter>('all')
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500)
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  const { data: qras = [], loading, error } = useQRAs(debouncedSearch, controlFilter, source)
+  useEffect(() => {
+    setPage(0)
+  }, [controlFilter, debouncedSearch, source])
+
+  const { data: qras = [], total: qraTotal, loading, error } = useQRAs(debouncedSearch, controlFilter, source, page, QRA_PAGE_SIZE)
   const [currentIndex, setCurrentIndexRaw] = useState(0)
   const [qraDetails, setQraDetails] = useState<Map<string, SpartaQRA>>(new Map())
   const [detailLoadingKey, setDetailLoadingKey] = useState<string | null>(null)
@@ -240,6 +249,10 @@ export function QRAsView() {
   const currentListItem = qras[currentIndex] as SpartaQRA | undefined
   const current = currentListItem ? (qraDetails.get(currentListItem._key) ?? currentListItem) : undefined
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
+  const pageStart = qraTotal === 0 ? 0 : page * QRA_PAGE_SIZE + 1
+  const pageEnd = qraTotal === 0 ? 0 : page * QRA_PAGE_SIZE + qras.length
+  const canPrevPage = page > 0
+  const canNextPage = pageEnd < qraTotal
 
   useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
   useRegisterAction('qras:action:reject', { app: 'sparta-explorer', action: 'REJECT_QRA', label: 'Reject QRA', description: 'Mark the current QRA as rejected' })
@@ -405,7 +418,7 @@ export function QRAsView() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: `8px ${PANE_PADDING}px`, borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, backgroundColor: EMBRY.bgDeep }}>
         <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white, letterSpacing: 0.8 }}>QRA</div>
         <div style={{ ...label, backgroundColor: EMBRY.bgPanel, padding: '3px 7px', borderRadius: 4, fontSize: 9 }}>
-          <span style={{ fontVariantNumeric: "tabular-nums" }}>{qras.length - currentIndex}</span> left
+          <span style={{ fontVariantNumeric: "tabular-nums" }}>{pageStart}-{pageEnd}</span> of {qraTotal.toLocaleString()}
         </div>
         
         {controlFilter && (
@@ -416,6 +429,45 @@ export function QRAsView() {
         )}
 
         <div style={{ flex: 1 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            onClick={() => canPrevPage && setPage((prev) => prev - 1)}
+            disabled={!canPrevPage || loading}
+            className="press-scale"
+            style={{
+              fontSize: 10,
+              padding: '4px 8px',
+              borderRadius: 4,
+              border: `1px solid ${EMBRY.border}`,
+              backgroundColor: EMBRY.bgPanel,
+              color: canPrevPage && !loading ? EMBRY.white : EMBRY.dim,
+              cursor: canPrevPage && !loading ? 'pointer' : 'not-allowed',
+              opacity: canPrevPage && !loading ? 1 : 0.55,
+            }}
+          >
+            Prev
+          </button>
+          <div style={{ fontSize: 10, color: EMBRY.dim, minWidth: 54, textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>
+            Page {page + 1}
+          </div>
+          <button
+            onClick={() => canNextPage && setPage((prev) => prev + 1)}
+            disabled={!canNextPage || loading}
+            className="press-scale"
+            style={{
+              fontSize: 10,
+              padding: '4px 8px',
+              borderRadius: 4,
+              border: `1px solid ${EMBRY.border}`,
+              backgroundColor: EMBRY.bgPanel,
+              color: canNextPage && !loading ? EMBRY.white : EMBRY.dim,
+              cursor: canNextPage && !loading ? 'pointer' : 'not-allowed',
+              opacity: canNextPage && !loading ? 1 : 0.55,
+            }}
+          >
+            Next
+          </button>
+        </div>
         <span style={{ fontSize: 9, color: EMBRY.dim }}>
           A accept · R reject · E edit · ←→ move
         </span>

@@ -168,7 +168,7 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
                   data-qs-action={searchTestId ? `${searchTestId.replace(/:/g, '_').toUpperCase()}_SEARCH` : undefined}
                   title={`Search ${title}`}
                   placeholder="Filter..." aria-label={`Search ${title}`}
-                  style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
+                  style={{ flex: 1, minHeight: 44, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
                 {sortable && (
                   <div style={{ display: 'flex', gap: 2, alignItems: 'center', flexShrink: 0 }}>
                     {SORT_ICONS.filter(s => modes.includes(s.mode)).map(s => (

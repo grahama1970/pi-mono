@@ -1,0 +1,311 @@
+id: codex-skills-broadcast
+title: Codex-specific skills broadcast profile
+plan_type: infrastructure
+repo_root: /home/graham/workspace/experiments/pi-mono
+status: draft
+
+primary_persona:
+  name: skill infrastructure maintainer
+  workflow: Maintains shared skills across Pi, Codex, Claude Code, and registered projects without breaking client-specific discovery behavior.
+
+capability_overlap:
+  memory_recall:
+    query: Codex skill discovery skills-broadcast agent-inbox repo-local .agents/skills
+    result: Strong match. Existing skills-broadcast provides skill distribution, and agent-inbox provides registered project enumeration and dispatch.
+  skills_manifest:
+    checked:
+      - skills-broadcast
+      - agent-inbox
+      - memory
+      - review-plan
+      - best-practices-plan
+    decision_matrix:
+      codex_target_profile: EXTEND skills-broadcast
+      registered_project_enumeration: CALL agent-inbox
+      prior_solution_lookup: CALL memory
+      plan_validation: CALL review-plan
+      skill_distribution_core: EXTEND skills-broadcast
+      new_global_sync_system: DO_NOT_CREATE
+    anti_silo_justification: No new standalone broadcaster should be created. Extend skills-broadcast with a Codex target profile and use agent-inbox only as the registry and optional dispatch transport.
+
+constraints:
+  - This plan is Codex-only unless explicitly invoked with a broader target.
+  - Claude behavior and Claude-specific skill paths must remain unchanged.
+  - Do not broadcast the full global skill library into every project.
+  - Do not overwrite project-local skills unless they are marked as managed by skills-broadcast.
+  - All implementation must support dry-run before mutation.
+
+managed_file_policy:
+  marker: "managed-by: skills-broadcast"
+  rule: Files without the marker are read-only for this workflow unless the operator explicitly approves overwrite.
+
+lanes:
+  - id: discovery
+    title: Discovery
+    purpose: Read current skill infrastructure and confirm contracts before implementation.
+  - id: design
+    title: Design
+    purpose: Define the Codex-specific profile and managed payload boundaries.
+  - id: implementation
+    title: Implementation
+    purpose: Extend skills-broadcast with dry-run and managed Codex mutation behavior.
+  - id: validation
+    title: Validation
+    purpose: Validate the plan, sanity harness, and one pilot rollout before broad broadcast.
+
+tasks:
+  - id: "1.1"
+    title: Inspect current skills-broadcast interfaces
+    lane: discovery
+    runner: local
+    backend: ""
+    mode: read_only
+    dependencies: []
+    depends_on: []
+    skills:
+      - memory
+      - skills-broadcast
+    command: "printf 'Inspect .pi/skills/skills-broadcast without modifying files\n'"
+    implementation:
+      - Read the full skills-broadcast skill and implementation files.
+      - Identify current target names, canonical source directory, sync/link behavior, and sanity coverage.
+      - Record which files would need changes in the implementation phase.
+    gate: "No file writes are performed, and current skills-broadcast behavior is documented."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Existing broadcaster regressions before changes.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Pre-existing skills-broadcast sanity harness exits 0 before implementation."
+
+  - id: "1.2"
+    title: Inspect agent-inbox project registry contract
+    lane: discovery
+    runner: local
+    backend: ""
+    mode: read_only
+    dependencies: []
+    depends_on: []
+    skills:
+      - agent-inbox
+      - memory
+    command: "printf 'Inspect agent-inbox project registry contract without modifying files\n'"
+    implementation:
+      - Read the full agent-inbox skill and relevant registry command implementation.
+      - Confirm the command that lists registered projects as JSON.
+      - Confirm whether skills-broadcast should call agent-inbox directly or consume exported project JSON.
+    gate: "The implementation phase has one canonical registered-project input contract."
+    tests:
+      - command: "./.pi/skills/agent-inbox/sanity.sh"
+        blind: true
+        catches: Registry command regressions before broadcast integration.
+    blind_tests:
+      - "./.pi/skills/agent-inbox/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/agent-inbox/sanity.sh"
+      assertion: "Pre-existing agent-inbox sanity harness exits 0 before implementation."
+
+  - id: "2.1"
+    title: Add Codex target profile design
+    lane: design
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    dependencies:
+      - "1.1"
+      - "1.2"
+    depends_on:
+      - "1.1"
+      - "1.2"
+    skills:
+      - skills-broadcast
+      - agent-inbox
+    allowlist:
+      - .pi/skills/skills-broadcast/SKILL.md
+      - .pi/skills/skills-broadcast/run.sh
+      - .pi/skills/skills-broadcast/sanity.sh
+    allowlist_optional: true
+    command: ""
+    implementation:
+      - Define target profiles for codex, claude, pi, and all if they do not already exist.
+      - Specify Codex destination resolution as project_root plus .agents/skills unless configured otherwise.
+      - Keep Claude destination resolution unchanged.
+      - Add dry-run planning data with project, root, codex_skill_dir, action, managed_files, and skipped_reason fields.
+    gate: "A dry-run can describe Codex actions without changing any project files."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Codex target profile breaks existing broadcaster behavior.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Sanity harness exits 0 and includes Codex target dry-run coverage."
+
+  - id: "2.2"
+    title: Define managed Codex payload
+    lane: design
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    dependencies:
+      - "2.1"
+    depends_on:
+      - "2.1"
+    skills:
+      - skills-broadcast
+    allowlist:
+      - .pi/skills/skills-broadcast/SKILL.md
+      - .pi/skills/skills-broadcast/run.sh
+      - .pi/skills/skills-broadcast/sanity.sh
+    allowlist_optional: true
+    command: ""
+    implementation:
+      - Define the minimal Codex payload as a router skill, optional manifest pointer, and concise invocation guidance.
+      - Include the managed-by marker in generated files.
+      - Prefer pointers and aliases over copying full skill instructions.
+      - Document that Codex explicit invocation should prefer $skill-name when UI recognition matters.
+    gate: "Generated Codex payload is minimal and contains an ownership marker."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Payload generator overwrites unmanaged files or emits full-library copies.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Sanity harness exits 0 and verifies managed marker behavior."
+
+  - id: "3.1"
+    title: Implement registered-project dry-run
+    lane: implementation
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    dependencies:
+      - "2.1"
+      - "2.2"
+    depends_on:
+      - "2.1"
+      - "2.2"
+    skills:
+      - skills-broadcast
+      - agent-inbox
+    allowlist:
+      - .pi/skills/skills-broadcast/SKILL.md
+      - .pi/skills/skills-broadcast/run.sh
+      - .pi/skills/skills-broadcast/sanity.sh
+    allowlist_optional: true
+    command: ""
+    implementation:
+      - Add or update --target codex --dry-run behavior.
+      - Resolve registered project roots from the agreed agent-inbox registry contract.
+      - Report intended actions without writing files.
+      - Refuse ambiguous or missing project roots with skipped_reason instead of failing the whole run.
+    gate: "Dry-run reports every registered project and writes no files."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Dry-run writes files or omits registered projects.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Sanity harness exits 0 and verifies dry-run is non-mutating."
+
+  - id: "3.2"
+    title: Implement Codex broadcast mutation
+    lane: implementation
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    dependencies:
+      - "3.1"
+    depends_on:
+      - "3.1"
+    skills:
+      - skills-broadcast
+    allowlist:
+      - .pi/skills/skills-broadcast/SKILL.md
+      - .pi/skills/skills-broadcast/run.sh
+      - .pi/skills/skills-broadcast/sanity.sh
+    allowlist_optional: true
+    command: ""
+    implementation:
+      - Create missing project-local Codex skill directories only under the Codex destination.
+      - Write or update only managed Codex payload files.
+      - Skip unmanaged existing files and report them.
+      - Keep non-Codex targets and Claude-specific paths untouched.
+    gate: "Mutation is limited to managed files under each project-local Codex skill directory."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Broadcast overwrites unmanaged files or changes non-Codex paths.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Sanity harness exits 0 and proves Claude paths/configs are unchanged."
+
+  - id: "4.1"
+    title: Pilot one registered project
+    lane: validation
+    runner: local
+    backend: ""
+    mode: verify
+    dependencies:
+      - "3.2"
+    depends_on:
+      - "3.2"
+    skills:
+      - skills-broadcast
+      - agent-inbox
+      - review-plan
+    command: "./.pi/skills/skills-broadcast/sanity.sh"
+    implementation:
+      - Select one registered project as the pilot.
+      - Run Codex dry-run for that project and inspect planned actions.
+      - Run Codex broadcast for that project only.
+      - Start a Codex session from the pilot project root and verify the router can be explicitly invoked with $skill-router.
+    gate: "Pilot project has Codex-local skill entrypoints and no unrelated skill files changed."
+    tests:
+      - command: "./.pi/skills/skills-broadcast/sanity.sh"
+        blind: true
+        catches: Pilot rollout misses Codex router or mutates unrelated files.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Sanity harness exits 0 after pilot rollout."
+
+  - id: "4.2"
+    title: Review rollout readiness
+    lane: validation
+    runner: local
+    backend: ""
+    mode: verify
+    dependencies:
+      - "4.1"
+    depends_on:
+      - "4.1"
+    skills:
+      - review-plan
+      - skills-broadcast
+    command: "./.pi/skills/review-plan/run.sh review /home/graham/workspace/experiments/pi-mono/.pi/tasks/codex-skills-broadcast-plan.yaml --suggest-fixes"
+    implementation:
+      - Run review-plan against this task file.
+      - Resolve any FAIL findings before broad rollout.
+      - Summarize remaining WARN findings for operator approval.
+    gate: "No review-plan FAIL findings remain before multi-project broadcast."
+    tests:
+      - command: "./.pi/skills/review-plan/run.sh review /home/graham/workspace/experiments/pi-mono/.pi/tasks/codex-skills-broadcast-plan.yaml --suggest-fixes"
+        blind: false
+        catches: Plan drift, missing gates, or weak definitions of done.
+    blind_tests:
+      - "./.pi/skills/skills-broadcast/sanity.sh"
+    definition_of_done:
+      command: "./.pi/skills/skills-broadcast/sanity.sh"
+      assertion: "Skills-broadcast blind sanity harness exits 0, and review-plan has no FAIL findings."

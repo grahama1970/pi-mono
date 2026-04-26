@@ -14,9 +14,13 @@ interface PdfCanvasProps {
   pageNumber: number
   bboxOverlays: BboxBlock[]
   compareOverlays?: BboxBlock[]
+  agentNotes?: PdfAgentNote[]
   selectedBlockId: string | null
   activeTaskBlockId?: string | null
   onBlockClick: (id: string) => void
+  onAgentNoteClick?: (noteId: string, blockId?: string) => void
+  onAgentNoteAccept?: (noteId: string, blockId?: string) => void
+  onAgentNoteSecondary?: (noteId: string, blockId?: string) => void
   onBlockContextMenu?: (id: string, x: number, y: number) => void
   zoom: number
   editMode?: boolean
@@ -29,6 +33,17 @@ interface PdfCanvasProps {
   selectedAreaBlockIds?: string[]
   onSelectArea?: (bbox: [number, number, number, number], blockIds: string[]) => void
   selectedAreaToolbar?: ReactNode
+}
+
+interface PdfAgentNote {
+  id: string
+  blockId?: string
+  bbox: [number, number, number, number]
+  title: string
+  body: string
+  severity: 'high' | 'medium'
+  primaryActionLabel: string
+  secondaryActionLabel?: string
 }
 
 type ResizeHandle = 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w'
@@ -128,9 +143,13 @@ export default function PdfCanvas({
   pageNumber,
   bboxOverlays,
   compareOverlays = [],
+  agentNotes = [],
   selectedBlockId,
   activeTaskBlockId = null,
   onBlockClick,
+  onAgentNoteClick,
+  onAgentNoteAccept,
+  onAgentNoteSecondary,
   onBlockContextMenu,
   zoom,
   editMode = false,
@@ -624,9 +643,9 @@ export default function PdfCanvas({
           title="PDF page canvas"
           style={{ display: 'block' }}
         />
-        <canvas
-          ref={overlayRef}
-          onClick={editable ? undefined : handleOverlayClick}
+	        <canvas
+	          ref={overlayRef}
+	          onClick={editable ? undefined : handleOverlayClick}
           style={{
             position: 'absolute',
             top: 0,
@@ -634,9 +653,182 @@ export default function PdfCanvas({
             width: '100%',
             height: '100%',
             pointerEvents: editable ? 'none' : 'auto',
-            cursor: editable ? 'default' : 'crosshair',
-          }}
-        />
+	            cursor: editable ? 'default' : 'crosshair',
+	          }}
+	        />
+        {agentNotes.length > 0 && (
+          <svg
+            aria-hidden
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              overflow: 'visible',
+              pointerEvents: 'none',
+              zIndex: 24,
+            }}
+          >
+            {agentNotes.map((note, noteIndex) => {
+              const [, y1, x2, y2] = note.bbox
+              const centerY = ((y1 + y2) / 2) * 100
+              const labelY = Math.min(92, Math.max(5, centerY + (noteIndex % 3 - 1) * 2))
+              const color = note.severity === 'high' ? '#FF4D4D' : '#FFC107'
+              return (
+                <g key={note.id}>
+                  <path
+                    d={`M ${x2 * 100} ${centerY} H 104 V ${labelY}`}
+                    stroke={color}
+                    strokeWidth="0.35"
+                    strokeDasharray="1.2 1.2"
+                    vectorEffect="non-scaling-stroke"
+                    fill="none"
+                    opacity="0.9"
+                  />
+                  <circle
+                    cx={x2 * 100}
+                    cy={centerY}
+                    r="0.55"
+                    vectorEffect="non-scaling-stroke"
+                    fill={color}
+                  />
+                </g>
+              )
+            })}
+          </svg>
+        )}
+        {agentNotes.map((note, noteIndex) => {
+          const isActive = note.blockId === activeTaskBlockId || note.blockId === selectedBlockId
+          const [, y1, , y2] = note.bbox
+          const centerY = ((y1 + y2) / 2) * 100
+          const labelY = Math.min(92, Math.max(5, centerY + (noteIndex % 3 - 1) * 2))
+          const borderColor = note.severity === 'high' ? '#FF4D4D' : '#FFC107'
+          const secondaryIsDestructive = /reject|delete/i.test(note.secondaryActionLabel ?? '')
+          return (
+            <div
+              key={note.id}
+              style={{
+                position: 'absolute',
+                left: 'calc(100% + 18px)',
+                top: `${labelY}%`,
+                width: 190,
+                transform: 'translateY(-50%)',
+                zIndex: isActive ? 45 : 34,
+              }}
+            >
+              <button
+                data-qid={`pdf:agent-note:${note.id}`}
+                data-qs-action="PDF_AGENT_NOTE_SELECT"
+                title={`${note.title}: ${note.body}`}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onAgentNoteClick?.(note.id, note.blockId)
+                }}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  minHeight: 44,
+                  borderRadius: 12,
+                  border: `1px solid ${borderColor}`,
+                  background: isActive ? 'rgba(14, 18, 24, 0.98)' : 'rgba(14, 18, 24, 0.92)',
+                  boxShadow: isActive ? `0 0 0 2px ${borderColor}44, 0 12px 26px rgba(0,0,0,0.34)` : '0 8px 18px rgba(0,0,0,0.22)',
+                  color: '#f8fafc',
+                  cursor: 'pointer',
+                  display: 'grid',
+                  gridTemplateColumns: '24px 1fr',
+                  gap: 8,
+                  alignItems: 'center',
+                  textAlign: 'left',
+                  fontFamily: '"JetBrains Mono", monospace',
+                }}
+              >
+                <span style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 999,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: borderColor,
+                  color: '#050505',
+                  fontWeight: 900,
+                  fontSize: 11,
+                }}>
+                  {noteIndex + 1}
+                </span>
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 900, fontSize: 11 }}>
+                    {note.title}
+                  </span>
+                  <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#94a3b8', fontSize: 9, marginTop: 2 }}>
+                    {note.body}
+                  </span>
+                </span>
+              </button>
+              {isActive && (
+                <div
+                  data-qid={`pdf:agent-note-hud:${note.id}`}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: note.secondaryActionLabel ? '1fr 1fr' : '1fr',
+                    gap: 6,
+                    marginTop: 7,
+                    padding: 6,
+                    borderRadius: 10,
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: 'rgba(8, 11, 16, 0.96)',
+                    boxShadow: '0 10px 22px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  <button
+                    data-qid={`pdf:agent-note-accept:${note.id}`}
+                    data-qs-action="PDF_AGENT_NOTE_ACCEPT"
+                    title={note.primaryActionLabel}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onAgentNoteAccept?.(note.id, note.blockId)
+                    }}
+                    style={{
+                      minHeight: 44,
+                      borderRadius: 8,
+                      border: '1px solid rgba(0, 255, 136, 0.5)',
+                      backgroundColor: 'rgba(0, 255, 136, 0.16)',
+                      color: '#f8fafc',
+                      cursor: 'pointer',
+                      fontSize: 10,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {note.primaryActionLabel}
+                  </button>
+                  {note.secondaryActionLabel && (
+                    <button
+                      data-qid={`pdf:agent-note-secondary:${note.id}`}
+                      data-qs-action="PDF_AGENT_NOTE_SECONDARY"
+                      title={note.secondaryActionLabel}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        onAgentNoteSecondary?.(note.id, note.blockId)
+                      }}
+                      style={{
+                        minHeight: 44,
+                        borderRadius: 8,
+                        border: secondaryIsDestructive ? '1px solid rgba(255, 77, 77, 0.42)' : '1px solid rgba(124, 58, 237, 0.5)',
+                        backgroundColor: secondaryIsDestructive ? 'rgba(255, 77, 77, 0.12)' : 'rgba(124, 58, 237, 0.14)',
+                        color: secondaryIsDestructive ? '#ff6b6b' : '#a855f7',
+                        cursor: 'pointer',
+                        fontSize: 10,
+                        fontWeight: 800,
+                      }}
+                    >
+                      {note.secondaryActionLabel}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
         {editable && (
           <div
             data-qid="pdf:create-layer"
@@ -686,22 +878,6 @@ export default function PdfCanvas({
               return (
                 <div
                   key={block.id}
-                  data-qid={`pdf:block:${block.id}`}
-                  data-qs-action="PDF_SELECT_BLOCK"
-                  title={`Select ${formatCanvasSemanticLabel(block)} block ${block.id}`}
-                  onMouseDown={(event) => startDrag(event, block)}
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onBlockClick(block.id)
-                  }}
-                  onContextMenu={(event) => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    onBlockClick(block.id)
-                    onBlockContextMenu?.(block.id, event.clientX, event.clientY)
-                  }}
-                  onMouseEnter={() => setHoveredBlockId(block.id)}
-                  onMouseLeave={() => setHoveredBlockId(prev => prev === block.id ? null : prev)}
                   style={{
                     position: 'absolute',
                     left: `${x1 * 100}%`,
@@ -736,6 +912,40 @@ export default function PdfCanvas({
                     pointerEvents: selectingArea ? 'none' : 'auto',
                   }}
                 >
+                  <button
+                    type="button"
+                    data-qid={`pdf:block:${block.id}`}
+                    data-qs-action="PDF_SELECT_BLOCK"
+                    title={`Select ${formatCanvasSemanticLabel(block)} block ${block.id}`}
+                    onMouseDown={(event) => startDrag(event, block)}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onBlockClick(block.id)
+                    }}
+                    onContextMenu={(event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      onBlockClick(block.id)
+                      onBlockContextMenu?.(block.id, event.clientX, event.clientY)
+                    }}
+                    onMouseEnter={() => setHoveredBlockId(block.id)}
+                    onMouseLeave={() => setHoveredBlockId(prev => prev === block.id ? null : prev)}
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: '50%',
+                      width: 'max(100%, 44px)',
+                      height: 'max(100%, 44px)',
+                      minWidth: 44,
+                      minHeight: 44,
+                      transform: 'translateY(-50%)',
+                      padding: 0,
+                      border: 'none',
+                      background: 'transparent',
+                      cursor: selectingArea ? 'crosshair' : 'move',
+                      zIndex: 1,
+                    }}
+                  />
                   {isSelected && HANDLE_DEFS.map((handle) => (
                     <div
                       key={handle.key}
@@ -753,6 +963,7 @@ export default function PdfCanvas({
                         backgroundColor: '#7c3aed',
                         border: '1px solid #5b21b6',
                         cursor: handle.cursor,
+                        zIndex: 2,
                       }}
                     />
                   ))}
