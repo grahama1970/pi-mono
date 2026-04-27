@@ -71,6 +71,26 @@ function StatPill({
   );
 }
 
+function LiveCallFlow({ activeCalls }: { activeCalls: number }) {
+  const isActive = activeCalls > 0;
+  return (
+    <div
+      className={`scillm-live-call-flow${isActive ? " is-active" : ""}`}
+      title={isActive ? `${activeCalls} live LLM calls in flight` : "No live LLM calls in flight"}
+      aria-label={isActive ? `${activeCalls} live LLM calls in flight` : "No live LLM calls in flight"}
+    >
+      <span className="scillm-live-call-flow__node" />
+      <span className="scillm-live-call-flow__rail">
+        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--one" />
+        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--two" />
+        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--three" />
+      </span>
+      <span className="scillm-live-call-flow__node" />
+      <span className="scillm-live-call-flow__count tabular-nums scillm-mono">{activeCalls}</span>
+    </div>
+  );
+}
+
 // Provider auth status strip - shows which providers are healthy
 function ProviderAuthStrip({ auth }: { auth: AuthStatusResponse | null }) {
   if (!auth) return null;
@@ -2058,6 +2078,7 @@ export function ScillmDashboard() {
     [batchJobs],
   );
   const { detail: activeCreateQrasDetail } = useOrchestratorDetail(activeCreateQrasJob?.name || null);
+  const activeCreateQrasState = activeCreateQrasDetail?.state || activeCreateQrasJob?.state || null;
   const activeBatchFailCount =
     activeCreateQrasDetail?.state?.failed_jobs ??
     activeCreateQrasJob?.state?.failed_jobs ??
@@ -2182,9 +2203,20 @@ export function ScillmDashboard() {
     const now = Date.now();
     const recent = monitorLogs.filter((l) => now - new Date(l.ts).getTime() < 10 * 60 * 1000);
     const totalTokens = recent.reduce((sum, l) => sum + (l.total_tokens || 0), 0);
-    const throughputValue = totalTokens > 0 ? Math.round(totalTokens / 10) : recent.length * 6;
-    const throughputUnit = totalTokens > 0 ? "tpm" : "calls/min";
-    const throughputLabel = totalTokens > 0 ? "Throughput" : "Activity";
+    const hasLiveManifestActivity =
+      activeCreateQrasState?.status === "running" &&
+      (activeInFlight > 0 || Number(activeCreateQrasState.llm_calls_started || 0) > 0);
+    const throughputValue = hasLiveManifestActivity
+      ? activeInFlight
+      : totalTokens > 0
+        ? Math.round(totalTokens / 10)
+        : recent.length * 6;
+    const throughputUnit = hasLiveManifestActivity
+      ? "active"
+      : totalTokens > 0
+        ? "tpm"
+        : "calls/min";
+    const throughputLabel = hasLiveManifestActivity ? "LLM Activity" : totalTokens > 0 ? "Throughput" : "Activity";
 
     const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
     const dailyCost = monitorLogs
@@ -2192,7 +2224,7 @@ export function ScillmDashboard() {
       .reduce((sum, l) => sum + (l.cost_usd || 0), 0);
 
     return { total, errors, errorRate, avgLatency, throughputValue, throughputUnit, throughputLabel, dailyCost };
-  }, [monitorLogs]);
+  }, [activeCreateQrasState?.llm_calls_started, activeCreateQrasState?.status, activeInFlight, monitorLogs]);
   const budgetPercent = Math.min((metrics.dailyCost / DAILY_BUDGET_USD) * 100, 100);
   const budgetColor =
     budgetPercent > 90 ? EMBRY.red : budgetPercent > 70 ? EMBRY.amber : EMBRY.green;
@@ -2211,6 +2243,7 @@ export function ScillmDashboard() {
           <span className="scillm-heading-lg">scillm</span>
           <span className="scillm-heading-md">Monitor</span>
           <div style={glowDot(error ? EMBRY.red : EMBRY.green)} />
+          <LiveCallFlow activeCalls={activeInFlight} />
           {activeBatchFailCount > 0 && (
             <div className="scillm-fail-badge">
               {activeBatchFailCount} fails

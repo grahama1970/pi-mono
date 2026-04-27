@@ -725,6 +725,84 @@
   border-bottom: 1px solid var(--scillm-border);
 }
 
+.scillm-live-call-flow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 104px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--scillm-border);
+  background: color-mix(in srgb, var(--scillm-bg-deep) 88%, transparent);
+  opacity: 0.46;
+}
+.scillm-live-call-flow.is-active {
+  border-color: color-mix(in srgb, var(--scillm-green) 42%, var(--scillm-border));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--scillm-green) 14%, transparent);
+  opacity: 1;
+}
+.scillm-live-call-flow__node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--scillm-dim);
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__node {
+  background: var(--scillm-green);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--scillm-green) 66%, transparent);
+}
+.scillm-live-call-flow__rail {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 42px;
+  height: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--scillm-dim) 42%, transparent);
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__rail {
+  background: color-mix(in srgb, var(--scillm-green) 24%, transparent);
+}
+.scillm-live-call-flow__packet {
+  position: absolute;
+  top: -2px;
+  left: -8px;
+  width: 8px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--scillm-green);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--scillm-green) 70%, transparent);
+  opacity: 0;
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__packet {
+  animation: scillm-live-call-packet 1.15s linear infinite;
+  opacity: 1;
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__packet--two {
+  animation-delay: 0.38s;
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__packet--three {
+  animation-delay: 0.76s;
+}
+.scillm-live-call-flow__count {
+  min-width: 14px;
+  color: var(--scillm-dim);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+}
+.scillm-live-call-flow.is-active .scillm-live-call-flow__count {
+  color: var(--scillm-green);
+}
+
+@keyframes scillm-live-call-packet {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(54px);
+  }
+}
+
 /* Prompt button in table */
 .scillm-prompt-btn {
   display: block;

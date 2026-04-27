@@ -8,6 +8,7 @@ import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane
 import { ContextMenu, type ContextMenuItem } from '../common/ContextMenu'
 import { SharedRightPane } from '../common/SharedRightPane'
 import { EMBRY } from '../common/EmbryStyle'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import './PdfLabView.css'
 
 interface PdfLabViewProps {
@@ -42,6 +43,106 @@ interface ExtractionData {
     deletedBlocks: number
     editCount: number
   } | null
+}
+
+interface PdfLabWorkflowPhase {
+  id: string
+  label: string
+  status: 'complete' | 'passed' | 'ready' | 'empty' | 'artifact_gap' | string
+  summary: string
+  details?: Record<string, unknown>
+}
+
+interface PdfLabWorkflowCandidatePage {
+  page: number
+  element_count: number
+  element_types: Record<string, number>
+  task_count: number
+  task_kinds: Record<string, number>
+  severity: string
+  gate_status: 'pass' | 'review' | string
+  inferred_match_score?: number | null
+  source: string
+}
+
+interface PdfLabWorkflowManifest {
+  schema_version: string
+  source_pdf: string
+  document_family_preset: string
+  page_count: number
+  phases: PdfLabWorkflowPhase[]
+  element_summary: {
+    total_elements: number
+    types: Record<string, number>
+    high_signal_pages: Array<{ page: number; element_count: number; types: Record<string, number> }>
+  }
+  candidate_inventory: {
+    candidate_page_count: number
+    candidate_pages: PdfLabWorkflowCandidatePage[]
+    source: string
+  }
+  gate: PdfLabWorkflowPhase
+  human_triage: {
+    task_count: number
+    summary: {
+      tasks_by_kind?: Record<string, number>
+      tasks_by_severity?: Record<string, number>
+      pages_with_tasks?: number
+    }
+    page_groups: Array<{ page: number; task_count: number; tasks: string[] }>
+  }
+  artifact_gaps: Array<{ status: string; missing_field: string; reason: string }>
+  evidence_elements_by_page?: Record<string, PdfLabFullExtractionElement[]>
+}
+
+interface PdfLabFullExtractionElement {
+  id: string
+  page: number
+  type: string
+  bbox: [number, number, number, number]
+  text?: string
+  confidence?: number
+  source?: string
+  raw?: Record<string, unknown>
+  preset_applied?: string
+}
+
+interface PdfLabFullExtraction {
+  schema_version: string
+  source_pdf: string
+  page_count: number
+  document_family_preset: string
+  elements: PdfLabFullExtractionElement[]
+}
+
+interface PdfLabHumanTriageTask {
+  task_id: string
+  page: number
+  kind: string
+  severity: string
+  target_id: string
+  target_bbox?: [number, number, number, number]
+  human_question: string
+  agent_reasoning: string
+  preview?: {
+    type?: string
+    text?: string
+  }
+  suggested_fix?: {
+    action?: string
+    fallback_actions?: string[]
+  }
+  proposed_json_delta?: Record<string, unknown>
+}
+
+interface PdfLabHumanTriageQueue {
+  schema_version: string
+  source_pdf: string
+  page_count: number
+  task_count: number
+  summary: PdfLabWorkflowManifest['human_triage']['summary']
+  page_groups: PdfLabWorkflowManifest['human_triage']['page_groups']
+  human_triage_queue: PdfLabHumanTriageTask[]
 }
 
 interface PdfFile {
@@ -151,6 +252,25 @@ const EDITABLE_BLOCK_TYPES: Array<BboxBlock['blockType']> = [
   'page_number',
   'boilerplate',
 ]
+
+const PDF_LAB_WORKFLOW_DATA_VERSION = '20260426c'
+const PDF_LAB_WORKFLOW_MANIFEST_URL = `/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
+const PDF_LAB_HUMAN_TRIAGE_URL = `/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
+const PDF_LAB_REAL_NIST_PDF_URL = '/NIST_SP_800-53r5.pdf'
+
+async function fetchPdfLabJson<T>(url: string): Promise<T> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Failed ${url}: ${response.status}`)
+  }
+  const text = await response.text()
+  try {
+    return JSON.parse(text) as T
+  } catch (error) {
+    const snippet = text.trim().slice(0, 80).replace(/\s+/g, ' ')
+    throw new Error(`Failed JSON parse for ${url}: ${snippet}`)
+  }
+}
 
 function getQueueModeInfo(mode: PdfLabQueueMode): PdfLabQueueModeInfo {
   if (mode === 'calibration') {
@@ -458,7 +578,98 @@ function getRuntimePdfLabTask(block: BboxBlock, isFixingBbox: boolean): PdfLabTa
   }
 }
 
+function normalizeWorkflowBlockType(type: string | undefined): BboxBlock['blockType'] {
+  const normalized = (type || '').toLowerCase()
+  if (normalized.includes('table') || normalized.includes('definition')) return 'table'
+  if (normalized.includes('header') || normalized.includes('title')) return 'header'
+  if (normalized.includes('figure') || normalized.includes('image')) return 'figure'
+  if (normalized.includes('equation')) return 'equation'
+  if (normalized.includes('list')) return 'list_item'
+  if (normalized.includes('caption')) return 'caption'
+  if (normalized.includes('page_number')) return 'page_number'
+  if (normalized.includes('boilerplate') || normalized.includes('footer')) return 'boilerplate'
+  return 'text'
+}
+
+function workflowElementToBlock(element: PdfLabFullExtractionElement): BboxBlock {
+  const blockType = normalizeWorkflowBlockType(element.type)
+  return {
+    id: element.id,
+    page: Math.max(0, element.page - 1),
+    bbox: element.bbox,
+    blockType,
+    semanticType: element.type,
+    text: element.text || '',
+    confidence: element.confidence ?? 1,
+    reviewStatus: 'verified',
+  }
+}
+
+function triageTaskToBlock(task: PdfLabHumanTriageTask): BboxBlock | null {
+  if (!task.target_bbox) return null
+  const previewType = task.preview?.type || task.kind
+  return {
+    id: task.target_id || task.task_id,
+    page: Math.max(0, task.page - 1),
+    bbox: task.target_bbox,
+    blockType: normalizeWorkflowBlockType(previewType),
+    semanticType: previewType,
+    text: task.preview?.text || task.human_question,
+    confidence: task.severity === 'high' ? 0.42 : 0.74,
+    reviewNotes: [task.agent_reasoning],
+    flagged: true,
+    hasOpenComments: true,
+    reviewStatus: 'active',
+  }
+}
+
+function formatCount(value: number | undefined): string {
+  return typeof value === 'number' ? value.toLocaleString() : '—'
+}
+
 export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUrl }: PdfLabViewProps) {
+  useRegisterAction('pdf-lab:workflow:diagnostics', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_DIAGNOSTICS',
+    label: 'Open workflow diagnostics',
+    description: 'Open hidden extraction workflow diagnostics for the PDF Lab triage surface',
+  })
+  useRegisterAction('pdf-lab:workflow:audit-repair', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_AUDIT_REPAIR',
+    label: 'Open audit repair',
+    description: 'Leave surgical triage and open the detailed audit and repair surface',
+  })
+  useRegisterAction('pdf-lab:workflow:intent', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_INTENT',
+    label: 'Enter intent correction',
+    description: 'Type an intent-based correction for the active PDF ambiguity',
+  })
+  useRegisterAction('pdf-lab:workflow:accept', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_ACCEPT',
+    label: 'Accept active card',
+    description: 'Accept the active PDF Lab human triage card and advance to the next card',
+  })
+  useRegisterAction('pdf-lab:workflow:reject', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_REJECT',
+    label: 'Reject active card',
+    description: 'Reject the active PDF Lab human triage card and advance to the next card',
+  })
+  useRegisterAction('pdf-lab:workflow:skip', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_SKIP',
+    label: 'Skip active card',
+    description: 'Skip the active PDF Lab human triage card and advance to the next card',
+  })
+  useRegisterAction('pdf-lab:workflow:agent-read', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_AGENT_READ',
+    label: 'Toggle agent read',
+    description: 'Show or hide the compact extracted-text support line for the active card',
+  })
   const resolveSelectedFile = useCallback((pdfUrl: string | null | undefined, extractionUrl: string | null | undefined): PdfFile => (
     PDF_FILES.find(
       f => f.pdfUrl === pdfUrl && (!extractionUrl || f.extractionUrl === extractionUrl)
@@ -502,6 +713,58 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   const [reviewNavMode, setReviewNavMode] = useState(false)
   const [bboxFixTaskIds, setBboxFixTaskIds] = useState<Set<string>>(new Set())
   const [, setPreviewGridBlockId] = useState<string | null>(null)
+  const [workflowShellEnabled, setWorkflowShellEnabled] = useState(true)
+  const [workflowStageId, setWorkflowStageId] = useState('agent_scan')
+  const [workflowManifest, setWorkflowManifest] = useState<PdfLabWorkflowManifest | null>(null)
+  const [workflowExtraction, setWorkflowExtraction] = useState<PdfLabFullExtraction | null>(null)
+  const [workflowTriage, setWorkflowTriage] = useState<PdfLabHumanTriageQueue | null>(null)
+  const [workflowLoading, setWorkflowLoading] = useState(true)
+  const [workflowError, setWorkflowError] = useState<string | null>(null)
+  const [workflowTaskIndex, setWorkflowTaskIndex] = useState(0)
+  const [intentDraft, setIntentDraft] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+    setWorkflowLoading(true)
+    setWorkflowError(null)
+
+    if (!workflowShellEnabled) {
+      setWorkflowLoading(false)
+      return () => { cancelled = true }
+    }
+
+    Promise.all([
+      fetchPdfLabJson<PdfLabWorkflowManifest>(PDF_LAB_WORKFLOW_MANIFEST_URL),
+      fetchPdfLabJson<PdfLabHumanTriageQueue>(PDF_LAB_HUMAN_TRIAGE_URL),
+    ])
+      .then(([manifest, triage]) => {
+        if (cancelled) return
+        const compactEvidence = Object.values(manifest.evidence_elements_by_page || {}).flat()
+        const fullExtraction: PdfLabFullExtraction = {
+          schema_version: 'pdf_lab_compact_evidence.v1',
+          source_pdf: manifest.source_pdf,
+          page_count: manifest.page_count,
+          document_family_preset: manifest.document_family_preset,
+          elements: compactEvidence,
+        }
+        setWorkflowManifest(manifest)
+        setWorkflowExtraction(fullExtraction)
+        setWorkflowTriage(triage)
+        const firstTask = triage.human_triage_queue[0]
+        if (firstTask) {
+          setCurrentPage(Math.max(0, firstTask.page - 1))
+          setWorkflowTaskIndex(0)
+        }
+        setWorkflowLoading(false)
+      })
+      .catch((err: Error) => {
+        if (cancelled) return
+        setWorkflowError(err.message)
+        setWorkflowLoading(false)
+      })
+
+    return () => { cancelled = true }
+  }, [workflowShellEnabled, PDF_LAB_WORKFLOW_DATA_VERSION])
 
   useEffect(() => {
     const syncSelectedFile = () => {
@@ -520,6 +783,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
 
   // Load extraction data when file changes
   useEffect(() => {
+    if (workflowShellEnabled) return
     setLoading(true)
     setError(null)
     setSaveError(null)
@@ -564,7 +828,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
         setError(err.message)
         setLoading(false)
       })
-  }, [extractionUrl])
+  }, [extractionUrl, workflowShellEnabled])
 
   // Auto-activate Review Mode on reviewed datasets
   useEffect(() => {
@@ -739,6 +1003,89 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
       }))
   ), [bboxFixTaskIds, unresolvedBlocksOnCurrentPage])
 
+  const workflowTasks = workflowTriage?.human_triage_queue ?? []
+  const activeWorkflowTask = workflowTasks[workflowTaskIndex] ?? null
+  const activeWorkflowTaskBlock = activeWorkflowTask ? triageTaskToBlock(activeWorkflowTask) : null
+  const workflowEvidencePage = activeWorkflowTask ? Math.max(0, activeWorkflowTask.page - 1) : currentPage
+  const intentHint = intentDraft.trim().toLowerCase()
+  const intentMode = intentHint.startsWith('t') || intentHint.includes('table')
+    ? 'table'
+    : intentHint.includes('up') || intentHint.includes('down') || intentHint.includes('bbox') || intentHint.includes('box')
+      ? 'bbox'
+      : intentHint.includes('skip')
+        ? 'skip'
+        : null
+  const workflowPageElements = useMemo(() => {
+    if (!workflowExtraction) return []
+    return workflowExtraction.elements
+      .filter(element => Math.max(0, element.page - 1) === workflowEvidencePage)
+      .slice(0, 120)
+      .map(workflowElementToBlock)
+  }, [workflowEvidencePage, workflowExtraction])
+  const workflowEvidenceLines = useMemo(() => {
+    if (!activeWorkflowTaskBlock) return []
+    const [x1, y1, x2, y2] = activeWorkflowTaskBlock.bbox
+    return workflowPageElements
+      .filter(block => {
+        if (block.id === activeWorkflowTaskBlock.id) return false
+        if (!block.text || block.text.trim().length < 8) return false
+        if (block.blockType === 'page_number' || block.blockType === 'boilerplate') return false
+        if (block.semanticType === 'running_header' || block.semanticType === 'running_footer') return false
+        const [bx1, by1, bx2, by2] = block.bbox
+        return bx2 >= x1 && bx1 <= x2 && by2 >= y1 && by1 <= y2
+      })
+      .sort((a, b) => a.bbox[1] - b.bbox[1])
+      .slice(0, 9)
+  }, [activeWorkflowTaskBlock, workflowPageElements])
+  const workflowAttentionBBox = useMemo<[number, number, number, number] | null>(() => {
+    if (!activeWorkflowTaskBlock) return null
+    const [x1, y1, x2, y2] = activeWorkflowTaskBlock.bbox
+    const width = x2 - x1
+    const height = y2 - y1
+    if (width * height <= 0.45 && height <= 0.68) return activeWorkflowTaskBlock.bbox
+
+    const overlappingText = workflowEvidenceLines.slice(0, 8)
+    if (overlappingText.length === 0) return activeWorkflowTaskBlock.bbox
+
+    const focus = overlappingText.reduce<[number, number, number, number]>(
+      (acc, block) => [
+        Math.min(acc[0], block.bbox[0]),
+        Math.min(acc[1], block.bbox[1]),
+        Math.max(acc[2], block.bbox[2]),
+        Math.max(acc[3], block.bbox[3]),
+      ],
+      [1, 1, 0, 0]
+    )
+    return [
+      Math.max(0, focus[0] - 0.025),
+      Math.max(0, focus[1] - 0.025),
+      Math.min(1, focus[2] + 0.025),
+      Math.min(1, focus[3] + 0.045),
+    ]
+  }, [activeWorkflowTaskBlock, workflowEvidenceLines])
+  const workflowCanvasBlocks = useMemo(() => {
+    const blocks = activeWorkflowTaskBlock
+      ? [activeWorkflowTaskBlock, ...workflowPageElements.filter(block => block.id !== activeWorkflowTaskBlock.id)]
+      : workflowPageElements
+    return blocks.slice(0, 121)
+  }, [activeWorkflowTaskBlock, workflowPageElements])
+  const workflowAgentNotes = useMemo(() => (
+    activeWorkflowTaskBlock && activeWorkflowTask
+      ? [{
+          id: activeWorkflowTask.task_id,
+          blockId: activeWorkflowTaskBlock.id,
+          bbox: activeWorkflowTaskBlock.bbox,
+          title: activeWorkflowTask.human_question,
+          body: activeWorkflowTask.agent_reasoning,
+          severity: activeWorkflowTask.severity === 'high' ? 'high' as const : 'medium' as const,
+          primaryActionLabel: 'Accept',
+          secondaryActionLabel: 'Skip',
+        }]
+      : []
+  ), [activeWorkflowTask, activeWorkflowTaskBlock])
+  const selectedWorkflowStage = workflowManifest?.phases.find(phase => phase.id === workflowStageId) ?? workflowManifest?.phases[0] ?? null
+  const topWorkflowCandidates = workflowManifest?.candidate_inventory.candidate_pages.slice(0, 8) ?? []
+
   const dirtyBlocks = useMemo(() => {
     if (!extraction) return []
     return extraction.blocks.filter(block => dirtyBlockIds.has(block.id))
@@ -770,6 +1117,23 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
       setContextMenu(null)
     }
   }, [contextMenu, extraction])
+
+  useEffect(() => {
+    if (!workflowShellEnabled) return
+    const handleWorkflowKeydown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      const isTyping = target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable
+      if (isTyping || event.metaKey || event.ctrlKey || event.altKey) return
+      const key = event.key.toLowerCase()
+      if (key === 'a' || key === 'r' || key === 's') {
+        event.preventDefault()
+        setWorkflowTaskIndex(index => Math.min((workflowTriage?.human_triage_queue.length ?? 1) - 1, index + 1))
+        setIntentDraft('')
+      }
+    }
+    window.addEventListener('keydown', handleWorkflowKeydown)
+    return () => window.removeEventListener('keydown', handleWorkflowKeydown)
+  }, [workflowShellEnabled, workflowTriage?.human_triage_queue.length])
 
   const markBlockDirty = (blockId: string) => {
     setDirtyBlockIds(prev => {
@@ -1378,6 +1742,243 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
       </button>
     </div>
   ) : null
+
+  if (workflowShellEnabled) {
+    if (workflowLoading) {
+      return (
+        <div style={workflowLoadingStyle}>
+          <div style={workflowLoadingCardStyle}>
+            <div style={workflowEyebrowStyle}>PDF Lab · Real NIST workflow</div>
+            <h1 style={workflowLoadingTitleStyle}>Loading agentic extraction artifacts…</h1>
+            <p style={workflowMutedTextStyle}>Fetching full extraction, workflow manifest, and human triage queue from real NIST data.</p>
+          </div>
+        </div>
+      )
+    }
+
+    if (workflowError || !workflowManifest || !workflowExtraction || !workflowTriage) {
+      return (
+        <div style={workflowLoadingStyle}>
+          <div style={workflowLoadingCardStyle}>
+            <div style={workflowEyebrowStyle}>PDF Lab · Artifact contract blocked</div>
+            <h1 style={workflowLoadingTitleStyle}>Cannot load real workflow data</h1>
+            <p style={{ ...workflowMutedTextStyle, color: EMBRY.red }}>{workflowError || 'Missing workflow artifacts'}</p>
+            <button className="pdf-lab-btn" style={workflowSecondaryButtonStyle} onClick={() => setWorkflowShellEnabled(false)}>
+              Open legacy audit surface
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    const goToWorkflowTask = (index: number) => {
+      const boundedIndex = Math.max(0, Math.min(workflowTasks.length - 1, index))
+      const task = workflowTasks[boundedIndex]
+      setWorkflowTaskIndex(boundedIndex)
+      if (task) setCurrentPage(Math.max(0, task.page - 1))
+      setWorkflowStageId('human_triage')
+      setIntentDraft('')
+    }
+
+    const currentGateAccuracy = typeof workflowManifest.gate.details?.known_validation_accuracy === 'number'
+      ? workflowManifest.gate.details.known_validation_accuracy
+      : null
+    const activeWorkflowTaskPage = activeWorkflowTask?.page ?? currentPage + 1
+    const activeWorkflowTaskKind = activeWorkflowTask?.kind.replace(/_/g, ' ') ?? 'triage'
+    const nextWorkflowTask = workflowTasks[workflowTaskIndex + 1]
+
+    return (
+      <div data-qid="pdf-lab:agentic-workflow" style={workflowRootStyle}>
+        <header style={workflowHeaderStyle}>
+          <div>
+            <div style={workflowEyebrowStyle}>PDF Lab · Surgical triage</div>
+            <div style={workflowTitleStyle}>NIST SP 800-53 Rev. 5</div>
+          </div>
+          <div style={workflowHeaderActionsStyle}>
+            <details style={workflowDiagnosticsDetailsStyle}>
+              <summary
+                data-qid="pdf-lab:workflow:diagnostics"
+                data-qs-action="PDF_LAB_WORKFLOW_DIAGNOSTICS"
+                title="Open workflow diagnostics"
+                style={workflowDiagnosticsSummaryStyle}
+              >
+                i
+              </summary>
+              <div style={workflowDiagnosticsPopoverStyle}>
+                <div style={workflowPanelHeaderStyle}>
+                  <span>Workflow diagnostics</span>
+                  <span style={workflowPanelMetaStyle}>hidden during triage</span>
+                </div>
+                <div style={workflowDiagnosticsGridStyle}>
+                  <span>Elements</span><strong>{formatCount(workflowManifest.element_summary.total_elements)}</strong>
+                  <span>Candidate pages</span><strong>{workflowManifest.candidate_inventory.candidate_page_count}</strong>
+                  <span>95% gate</span><strong>{currentGateAccuracy ? `${(currentGateAccuracy * 100).toFixed(2)}%` : 'passed'}</strong>
+                  <span>Artifact gaps</span><strong>{workflowManifest.artifact_gaps.length}</strong>
+                </div>
+                <div style={workflowDiagnosticsPhaseListStyle}>
+                  {workflowManifest.phases.map(phase => (
+                    <button
+                      key={phase.id}
+                      className="pdf-lab-btn"
+                      data-qid={`pdf-lab:workflow:phase:${phase.id}`}
+                      data-qs-action="PDF_LAB_WORKFLOW_PHASE"
+                      title={`Inspect workflow phase: ${phase.label}`}
+                      onClick={() => setWorkflowStageId(phase.id)}
+                      style={{
+                        ...workflowDiagnosticsPhaseButtonStyle,
+                        color: phase.status === 'artifact_gap' ? EMBRY.amber : phase.status === 'passed' || phase.status === 'complete' ? EMBRY.green : EMBRY.white,
+                      }}
+                    >
+                      <span>{phase.label}</span>
+                      <span>{phase.status}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </details>
+            <button
+              className="pdf-lab-btn"
+              data-qid="pdf-lab:workflow:audit-repair"
+              data-qs-action="PDF_LAB_WORKFLOW_AUDIT_REPAIR"
+              title="Open detailed audit and repair surface"
+              style={workflowSecondaryButtonStyle}
+              onClick={() => setWorkflowShellEnabled(false)}
+            >
+              Audit / Repair
+            </button>
+          </div>
+        </header>
+
+        <main style={workflowMainStyle}>
+          <section style={workflowEvidenceShellStyle}>
+            <div style={workflowEvidenceHeaderStyle}>
+              <span>Evidence viewport · page {workflowEvidencePage + 1}</span>
+              <span>{workflowCanvasBlocks.length} real extraction overlays · next {nextWorkflowTask ? `p${nextWorkflowTask.page}` : 'complete'}</span>
+            </div>
+            <div style={workflowCanvasStageStyle}>
+              <PdfCanvas
+                pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
+                pageNumber={workflowEvidencePage}
+                bboxOverlays={workflowCanvasBlocks}
+                agentNotes={[]}
+                selectedBlockId={activeWorkflowTaskBlock?.id ?? null}
+                activeTaskBlockId={activeWorkflowTaskBlock?.id ?? null}
+                onBlockClick={(blockId) => setSelectedBlockId(blockId)}
+                onCanvasClick={() => setSelectedBlockId(null)}
+                onAgentNoteClick={() => setWorkflowStageId('human_triage')}
+                zoom={1}
+                fitMode="page"
+                editMode={false}
+                autoFrameBBox={workflowAttentionBBox}
+                surgicalFocusBlockId={activeWorkflowTaskBlock?.id ?? null}
+                surgicalFocusBBox={workflowAttentionBBox}
+              />
+              {activeWorkflowTask ? (
+                <section style={workflowFloatingHudStyle}>
+                  <div style={workflowTriageSeverityRowStyle}>
+                    <span style={{
+                      color: EMBRY.accent,
+                      fontSize: 10,
+                      fontWeight: 900,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      fontFamily: '"JetBrains Mono", monospace',
+                    }}>
+                      Path: NIST › Appx A › Glossary
+                    </span>
+                    <span style={{
+                      color: EMBRY.dim,
+                      fontSize: 10,
+                      fontWeight: 800,
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                      fontFamily: '"JetBrains Mono", monospace',
+                    }}>
+                      CARD {workflowTaskIndex + 1}/{workflowTasks.length} · PAGE {activeWorkflowTask.page} · {activeWorkflowTask.severity.toUpperCase()}
+                    </span>
+                  </div>
+                  <h2 style={workflowTriageQuestionStyle}>{activeWorkflowTask.human_question}</h2>
+                  <p style={workflowMutedTextStyle}>{activeWorkflowTask.agent_reasoning}</p>
+                  <details style={workflowAgentReadDetailsStyle}>
+                    <summary
+                      data-qid="pdf-lab:workflow:agent-read"
+                      data-qs-action="PDF_LAB_WORKFLOW_AGENT_READ"
+                      title="Show compact extracted-text support for this card"
+                      style={workflowAgentReadSummaryStyle}
+                    >
+                      Agent read
+                    </summary>
+                    <div style={workflowAgentReadBodyStyle}>
+                      {workflowEvidenceLines.length > 0
+                        ? workflowEvidenceLines.map(line => line.text).join(' ')
+                        : activeWorkflowTask.preview?.text || activeWorkflowTask.human_question}
+                    </div>
+                  </details>
+                  <div style={workflowIntentBoxStyle}>
+                    <input
+                      data-qid="pdf-lab:workflow:intent"
+                      data-qs-action="PDF_LAB_WORKFLOW_INTENT"
+                      title="Type an intent correction for the active ambiguity"
+                      value={intentDraft}
+                      onChange={event => setIntentDraft(event.target.value)}
+                      placeholder="Type intent correction: table, move box up, split row 2…"
+                      style={workflowIntentInputStyle}
+                    />
+                    {intentMode && (
+                      <span style={{
+                        ...workflowIntentModeStyle,
+                        color: intentMode === 'table' ? EMBRY.green : intentMode === 'bbox' ? EMBRY.amber : EMBRY.accent,
+                        borderColor: intentMode === 'table' ? `${EMBRY.green}66` : intentMode === 'bbox' ? `${EMBRY.amber}66` : `${EMBRY.accent}66`,
+                      }}>
+                        {intentMode === 'table' ? 'CLASSIFY: TABLE' : intentMode === 'bbox' ? 'INTENT: BBOX' : 'QUEUE: SKIP'}
+                      </span>
+                    )}
+                  </div>
+                  <div style={workflowTriageActionsStyle}>
+                    <button
+                      className="pdf-lab-btn"
+                      data-qid="pdf-lab:workflow:reject"
+                      data-qs-action="PDF_LAB_WORKFLOW_REJECT"
+                      title="Reject this ambiguity card and advance"
+                      style={{ ...workflowActionButtonStyle, borderColor: `${EMBRY.red}66`, color: EMBRY.red }}
+                      onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
+                    >
+                      R · Reject
+                    </button>
+                    <button
+                      className="pdf-lab-btn"
+                      data-qid="pdf-lab:workflow:skip"
+                      data-qs-action="PDF_LAB_WORKFLOW_SKIP"
+                      title="Skip this ambiguity card and advance"
+                      style={workflowActionButtonStyle}
+                      onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
+                    >
+                      S · Skip
+                    </button>
+                    <button
+                      className="pdf-lab-btn"
+                      data-qid="pdf-lab:workflow:accept"
+                      data-qs-action="PDF_LAB_WORKFLOW_ACCEPT"
+                      title="Accept this ambiguity card and advance"
+                      style={{ ...workflowActionButtonStyle, ...workflowAcceptButtonStyle }}
+                      onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
+                    >
+                      A · Accept
+                    </button>
+                  </div>
+                </section>
+              ) : (
+                <section style={workflowFloatingHudStyle}>
+                  <h2 style={workflowTriageQuestionStyle}>Triage complete</h2>
+                  <p style={workflowMutedTextStyle}>No remaining human ambiguity cards are available in the real queue.</p>
+                </section>
+              )}
+            </div>
+          </section>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div style={containerStyle}>
@@ -3156,6 +3757,550 @@ const tocListStyle: React.CSSProperties = {
   borderRadius: 4,
   maxHeight: 300,
   overflow: 'auto',
+}
+
+const workflowRootStyle: React.CSSProperties = {
+  height: '100vh',
+  width: '100vw',
+  overflow: 'hidden',
+  display: 'grid',
+  gridTemplateRows: '44px 1fr',
+  backgroundColor: '#000000',
+  color: EMBRY.white,
+}
+
+const workflowHeaderStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 18,
+  padding: '5px 18px',
+  borderBottom: `1px solid rgba(255,255,255,0.06)`,
+  background: 'rgba(0, 0, 0, 0.88)',
+  position: 'relative',
+  zIndex: 20,
+}
+
+const workflowHeaderActionsStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  gap: 8,
+  flexWrap: 'wrap',
+}
+
+const workflowEyebrowStyle: React.CSSProperties = {
+  color: EMBRY.accent,
+  fontSize: 10,
+  fontWeight: 800,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+}
+
+const workflowTitleStyle: React.CSSProperties = {
+  marginTop: 1,
+  color: EMBRY.white,
+  fontSize: 12,
+  fontWeight: 800,
+  letterSpacing: '-0.03em',
+}
+
+const workflowSubtitleStyle: React.CSSProperties = {
+  marginTop: 3,
+  color: EMBRY.dim,
+  fontSize: 11,
+}
+
+const workflowMetricPillStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  minHeight: 44,
+  padding: '0 12px',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 999,
+  backgroundColor: EMBRY.bgDeep,
+  color: EMBRY.white,
+  fontSize: 11,
+  fontVariantNumeric: 'tabular-nums',
+}
+
+const workflowSecondaryButtonStyle: React.CSSProperties = {
+  minHeight: 36,
+  padding: '0 12px',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 10,
+  backgroundColor: 'rgba(7, 10, 15, 0.9)',
+  color: EMBRY.white,
+  fontSize: 10,
+  cursor: 'pointer',
+}
+
+const workflowMainStyle: React.CSSProperties = {
+  minHeight: 0,
+  display: 'block',
+  padding: 0,
+  overflow: 'hidden',
+  position: 'relative',
+}
+
+const workflowLeftRailStyle: React.CSSProperties = {
+  minHeight: 0,
+  overflow: 'auto',
+  display: 'grid',
+  alignContent: 'start',
+  gap: 12,
+}
+
+const workflowRightRailStyle: React.CSSProperties = {
+  minHeight: 0,
+  overflow: 'auto',
+  display: 'grid',
+  alignContent: 'start',
+  gap: 12,
+}
+
+const workflowCenterStyle: React.CSSProperties = {
+  minHeight: 0,
+  overflow: 'hidden',
+  display: 'grid',
+  gridTemplateRows: 'auto 1fr',
+  gap: 12,
+}
+
+const workflowPanelStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 18,
+  backgroundColor: EMBRY.bgCard,
+  padding: 12,
+  boxShadow: '0 18px 38px rgba(0, 0, 0, 0.18)',
+}
+
+const workflowPanelHeaderStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 8,
+  marginBottom: 10,
+  color: EMBRY.white,
+  fontSize: 12,
+  fontWeight: 800,
+}
+
+const workflowPanelMetaStyle: React.CSSProperties = {
+  color: EMBRY.dim,
+  fontSize: 10,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  letterSpacing: '0.05em',
+}
+
+const workflowPhaseListStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 8,
+}
+
+const workflowPhaseButtonStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '28px 1fr auto',
+  alignItems: 'center',
+  gap: 9,
+  width: '100%',
+  minHeight: 58,
+  padding: 9,
+  border: '1px solid',
+  borderRadius: 14,
+  color: EMBRY.white,
+  cursor: 'pointer',
+  textAlign: 'left',
+}
+
+const workflowPhaseIndexStyle: React.CSSProperties = {
+  width: 28,
+  height: 28,
+  display: 'grid',
+  placeItems: 'center',
+  borderRadius: 999,
+  backgroundColor: EMBRY.bgPanel,
+  color: EMBRY.white,
+  fontSize: 11,
+  fontWeight: 800,
+}
+
+const workflowPhaseLabelStyle: React.CSSProperties = {
+  display: 'block',
+  color: EMBRY.white,
+  fontSize: 12,
+  fontWeight: 800,
+}
+
+const workflowPhaseSummaryStyle: React.CSSProperties = {
+  display: 'block',
+  marginTop: 2,
+  color: EMBRY.dim,
+  fontSize: 10,
+  lineHeight: 1.3,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
+const workflowPhaseStatusStyle: React.CSSProperties = {
+  fontSize: 9,
+  fontWeight: 800,
+  textTransform: 'uppercase',
+}
+
+const workflowCandidateListStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 8,
+}
+
+const workflowCandidateButtonStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '42px 1fr auto',
+  alignItems: 'center',
+  gap: 9,
+  minHeight: 54,
+  width: '100%',
+  padding: 9,
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 14,
+  backgroundColor: EMBRY.bgDeep,
+  color: EMBRY.white,
+  cursor: 'pointer',
+  textAlign: 'left',
+}
+
+const workflowCandidatePageStyle: React.CSSProperties = {
+  width: 42,
+  height: 36,
+  display: 'grid',
+  placeItems: 'center',
+  borderRadius: 12,
+  backgroundColor: EMBRY.bgPanel,
+  color: EMBRY.white,
+  fontSize: 11,
+  fontWeight: 800,
+  fontVariantNumeric: 'tabular-nums',
+}
+
+const workflowCandidateTitleStyle: React.CSSProperties = {
+  display: 'block',
+  color: EMBRY.white,
+  fontSize: 12,
+  fontWeight: 800,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
+const workflowCandidateMetaStyle: React.CSSProperties = {
+  display: 'block',
+  marginTop: 2,
+  color: EMBRY.dim,
+  fontSize: 10,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
+const workflowGateBadgeStyle: React.CSSProperties = {
+  border: '1px solid',
+  borderRadius: 999,
+  padding: '4px 8px',
+  fontSize: 10,
+  fontWeight: 800,
+  textTransform: 'uppercase',
+}
+
+const workflowStageHeroStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr) 170px 170px',
+  gap: 10,
+}
+
+const workflowStageHeroCopyStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 18,
+  backgroundColor: EMBRY.bgCard,
+  padding: 14,
+}
+
+const workflowStageTitleStyle: React.CSSProperties = {
+  margin: '4px 0 6px',
+  color: EMBRY.white,
+  fontSize: 22,
+  lineHeight: 1.05,
+  letterSpacing: '-0.04em',
+}
+
+const workflowMutedTextStyle: React.CSSProperties = {
+  margin: 0,
+  color: EMBRY.dim,
+  fontSize: 11,
+  lineHeight: 1.35,
+}
+
+const workflowGateCardStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.green}55`,
+  borderRadius: 18,
+  backgroundColor: EMBRY.bgCard,
+  padding: 14,
+  display: 'grid',
+  gap: 6,
+}
+
+const workflowGapCardStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.amber}55`,
+  borderRadius: 18,
+  backgroundColor: EMBRY.bgCard,
+  padding: 14,
+  display: 'grid',
+  gap: 6,
+}
+
+const workflowEvidenceShellStyle: React.CSSProperties = {
+  minHeight: 0,
+  overflow: 'hidden',
+  height: '100%',
+  border: 0,
+  borderRadius: 0,
+  backgroundColor: '#030406',
+  display: 'grid',
+  gridTemplateRows: '34px 1fr',
+}
+
+const workflowEvidenceHeaderStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 8,
+  padding: '0 18px',
+  borderBottom: `1px solid rgba(255,255,255,0.05)`,
+  backgroundColor: 'rgba(4, 6, 9, 0.72)',
+  color: EMBRY.dim,
+  fontSize: 10,
+  position: 'relative',
+  zIndex: 10,
+}
+
+const workflowCanvasStageStyle: React.CSSProperties = {
+  minHeight: 0,
+  position: 'relative',
+  overflow: 'hidden',
+  display: 'grid',
+  placeItems: 'center',
+}
+
+const workflowFloatingHudStyle: React.CSSProperties = {
+  position: 'absolute',
+  left: '50%',
+  bottom: 20,
+  transform: 'translateX(-50%)',
+  zIndex: 12,
+  width: 'min(620px, calc(100vw - 48px))',
+  display: 'grid',
+  gap: 8,
+  padding: 12,
+  border: `1px solid rgba(255,255,255,0.12)`,
+  borderRadius: 16,
+  background: 'rgba(5, 7, 10, 0.95)',
+  boxShadow: '0 24px 80px rgba(0,0,0,0.66)',
+  backdropFilter: 'blur(18px)',
+}
+
+const workflowAgentReadDetailsStyle: React.CSSProperties = {
+  border: `1px solid rgba(255,255,255,0.08)`,
+  borderRadius: 10,
+  backgroundColor: 'rgba(255,255,255,0.025)',
+  overflow: 'hidden',
+}
+
+const workflowAgentReadSummaryStyle: React.CSSProperties = {
+  cursor: 'pointer',
+  padding: '6px 9px',
+  color: EMBRY.dim,
+  fontSize: 10,
+  fontWeight: 900,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  fontFamily: '"JetBrains Mono", monospace',
+}
+
+const workflowAgentReadBodyStyle: React.CSSProperties = {
+  padding: '0 9px 8px',
+  color: '#cbd5e1',
+  fontSize: 10,
+  lineHeight: 1.35,
+  maxHeight: 52,
+  overflow: 'hidden',
+}
+
+const workflowDiagnosticsDetailsStyle: React.CSSProperties = {
+  position: 'relative',
+}
+
+const workflowDiagnosticsSummaryStyle: React.CSSProperties = {
+  width: 44,
+  height: 44,
+  display: 'grid',
+  placeItems: 'center',
+  listStyle: 'none',
+  cursor: 'pointer',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 999,
+  backgroundColor: EMBRY.bgDeep,
+  color: EMBRY.white,
+  fontSize: 13,
+  fontWeight: 900,
+}
+
+const workflowDiagnosticsPopoverStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: 52,
+  right: 0,
+  zIndex: 40,
+  width: 360,
+  maxHeight: 'calc(100vh - 110px)',
+  overflow: 'auto',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 18,
+  backgroundColor: 'rgba(14, 18, 25, 0.98)',
+  boxShadow: '0 24px 80px rgba(0,0,0,0.65)',
+  padding: 14,
+}
+
+const workflowDiagnosticsGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '1fr auto',
+  gap: '8px 12px',
+  color: EMBRY.dim,
+  fontSize: 12,
+  marginBottom: 14,
+}
+
+const workflowDiagnosticsPhaseListStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 6,
+}
+
+const workflowDiagnosticsPhaseButtonStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 10,
+  width: '100%',
+  minHeight: 36,
+  padding: '7px 9px',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 10,
+  backgroundColor: EMBRY.bgDeep,
+  fontSize: 10,
+  fontWeight: 800,
+  cursor: 'pointer',
+  textAlign: 'left',
+}
+
+const workflowTriageCardStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: 12,
+}
+
+const workflowTriageSeverityRowStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 8,
+}
+
+const workflowTriageQuestionStyle: React.CSSProperties = {
+  margin: 0,
+  color: EMBRY.white,
+  fontSize: 17,
+  lineHeight: 1.15,
+  letterSpacing: '-0.035em',
+}
+
+const workflowIntentBoxStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 12,
+  backgroundColor: '#000000',
+  padding: 5,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+}
+
+const workflowIntentInputStyle: React.CSSProperties = {
+  width: '100%',
+  border: 0,
+  outline: 'none',
+  background: 'transparent',
+  color: EMBRY.white,
+  fontSize: 12,
+  fontFamily: '"JetBrains Mono", monospace',
+  padding: '6px 8px',
+}
+
+const workflowIntentModeStyle: React.CSSProperties = {
+  flexShrink: 0,
+  border: '1px solid',
+  borderRadius: 999,
+  padding: '5px 8px',
+  fontSize: 9,
+  fontWeight: 900,
+  letterSpacing: '0.08em',
+  fontFamily: '"JetBrains Mono", monospace',
+}
+
+const workflowTriageActionsStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gap: 8,
+}
+
+const workflowActionButtonStyle: React.CSSProperties = {
+  minHeight: 34,
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 10,
+  backgroundColor: 'rgba(10, 14, 22, 0.72)',
+  color: EMBRY.white,
+  fontSize: 11,
+  fontWeight: 800,
+  fontFamily: '"JetBrains Mono", monospace',
+  cursor: 'pointer',
+}
+
+const workflowAcceptButtonStyle: React.CSSProperties = {
+  borderColor: `${EMBRY.green}88`,
+  color: '#b7ffe0',
+  backgroundColor: 'rgba(0, 255, 136, 0.08)',
+  boxShadow: 'inset 0 0 0 1px rgba(0, 255, 136, 0.08), 0 0 18px rgba(0, 255, 136, 0.08)',
+}
+
+const workflowLoadingStyle: React.CSSProperties = {
+  width: '100vw',
+  height: '100vh',
+  display: 'grid',
+  placeItems: 'center',
+  backgroundColor: EMBRY.bg,
+  color: EMBRY.white,
+}
+
+const workflowLoadingCardStyle: React.CSSProperties = {
+  width: 'min(520px, 92vw)',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 22,
+  backgroundColor: EMBRY.bgCard,
+  padding: 24,
+}
+
+const workflowLoadingTitleStyle: React.CSSProperties = {
+  margin: '6px 0 8px',
+  color: EMBRY.white,
+  fontSize: 24,
+  letterSpacing: '-0.04em',
 }
 
 

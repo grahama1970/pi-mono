@@ -1,0 +1,3924 @@
+{
+  "schema_version": "pdf-lab.human-triage-queue.v1",
+  "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "source_extraction": "/tmp/pdf-lab-agentic-nist-full-batch/final_extraction.json",
+  "source_comparison": "/tmp/pdf-lab-agentic-nist-full-batch/iteration_01/comparison.json",
+  "created_at": "2026-04-25T20:45:37Z",
+  "engine": "pdf-lab.final-agent-pass",
+  "document_family_preset": {
+    "name": "nist_sp_800_53r5_pdf",
+    "schema_version": "pdf-oxide.document-family-preset.v1",
+    "path": "/home/graham/workspace/experiments/agent-skills/skills/pdf-lab/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json"
+  },
+  "page_count": 492,
+  "task_count": 96,
+  "summary": {
+    "tasks_by_kind": {
+      "comparison_miss": 88,
+      "table_uncertain": 8
+    },
+    "tasks_by_severity": {
+      "high": 8,
+      "medium": 88
+    },
+    "pages_with_tasks": 69
+  },
+  "page_groups": [
+    {
+      "page": 4,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p4_line_14"
+      ]
+    },
+    {
+      "page": 5,
+      "task_count": 7,
+      "tasks": [
+        "review:comparison_miss:expected_p5_line_14",
+        "review:comparison_miss:expected_p5_line_64",
+        "review:comparison_miss:expected_p5_line_66",
+        "review:comparison_miss:expected_p5_line_72",
+        "review:comparison_miss:expected_p5_line_74",
+        "review:comparison_miss:expected_p5_line_80",
+        "review:comparison_miss:expected_p5_line_82"
+      ]
+    },
+    {
+      "page": 12,
+      "task_count": 1,
+      "tasks": [
+        "review:table_candidate:actual_p12_table_0"
+      ]
+    },
+    {
+      "page": 20,
+      "task_count": 3,
+      "tasks": [
+        "review:comparison_miss:expected_p20_line_100",
+        "review:comparison_miss:expected_p20_line_3",
+        "review:comparison_miss:expected_p20_line_4"
+      ]
+    },
+    {
+      "page": 21,
+      "task_count": 5,
+      "tasks": [
+        "review:comparison_miss:expected_p21_line_129",
+        "review:comparison_miss:expected_p21_line_16",
+        "review:comparison_miss:expected_p21_line_17_expected_p21_line_70",
+        "review:comparison_miss:expected_p21_line_4",
+        "review:comparison_miss:expected_p21_line_5"
+      ]
+    },
+    {
+      "page": 22,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p22_line_86"
+      ]
+    },
+    {
+      "page": 23,
+      "task_count": 2,
+      "tasks": [
+        "review:table_candidate:actual_p23_table_0",
+        "review:comparison_miss:expected_p23_line_74"
+      ]
+    },
+    {
+      "page": 24,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p24_line_14",
+        "review:comparison_miss:expected_p24_line_74"
+      ]
+    },
+    {
+      "page": 26,
+      "task_count": 3,
+      "tasks": [
+        "review:comparison_miss:expected_p26_line_145",
+        "review:comparison_miss:expected_p26_line_77",
+        "review:comparison_miss:expected_p26_line_8"
+      ]
+    },
+    {
+      "page": 27,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p27_line_29"
+      ]
+    },
+    {
+      "page": 33,
+      "task_count": 3,
+      "tasks": [
+        "review:comparison_miss:expected_p33_line_17",
+        "review:comparison_miss:expected_p33_line_4",
+        "review:comparison_miss:expected_p33_line_9"
+      ]
+    },
+    {
+      "page": 36,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p36_line_35",
+        "review:comparison_miss:expected_p36_line_43"
+      ]
+    },
+    {
+      "page": 45,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p45_line_13"
+      ]
+    },
+    {
+      "page": 46,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p46_line_20"
+      ]
+    },
+    {
+      "page": 48,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p48_line_14",
+        "review:comparison_miss:expected_p48_line_27"
+      ]
+    },
+    {
+      "page": 54,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p54_line_29"
+      ]
+    },
+    {
+      "page": 67,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p67_line_15"
+      ]
+    },
+    {
+      "page": 68,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p68_line_16"
+      ]
+    },
+    {
+      "page": 76,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p76_line_13"
+      ]
+    },
+    {
+      "page": 83,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p83_line_30"
+      ]
+    },
+    {
+      "page": 85,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p85_line_14"
+      ]
+    },
+    {
+      "page": 86,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p86_line_32"
+      ]
+    },
+    {
+      "page": 88,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p88_line_29"
+      ]
+    },
+    {
+      "page": 94,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p94_line_11"
+      ]
+    },
+    {
+      "page": 106,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p106_line_13",
+        "review:comparison_miss:expected_p106_line_50"
+      ]
+    },
+    {
+      "page": 117,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p117_line_13"
+      ]
+    },
+    {
+      "page": 119,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p119_line_15_expected_p119_line_16"
+      ]
+    },
+    {
+      "page": 129,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p129_line_13"
+      ]
+    },
+    {
+      "page": 142,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p142_line_13"
+      ]
+    },
+    {
+      "page": 149,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p149_line_15"
+      ]
+    },
+    {
+      "page": 152,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p152_line_15"
+      ]
+    },
+    {
+      "page": 164,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p164_line_14"
+      ]
+    },
+    {
+      "page": 190,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p190_line_17"
+      ]
+    },
+    {
+      "page": 210,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p210_line_29"
+      ]
+    },
+    {
+      "page": 223,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p223_line_14"
+      ]
+    },
+    {
+      "page": 239,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p239_line_14"
+      ]
+    },
+    {
+      "page": 240,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p240_line_29"
+      ]
+    },
+    {
+      "page": 245,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p245_line_16"
+      ]
+    },
+    {
+      "page": 259,
+      "task_count": 1,
+      "tasks": [
+        "review:table_candidate:actual_p259_table_0"
+      ]
+    },
+    {
+      "page": 261,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p261_line_14"
+      ]
+    },
+    {
+      "page": 265,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p265_line_13"
+      ]
+    },
+    {
+      "page": 279,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p279_line_18_expected_p279_line_19"
+      ]
+    },
+    {
+      "page": 280,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p280_line_30"
+      ]
+    },
+    {
+      "page": 283,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p283_line_19"
+      ]
+    },
+    {
+      "page": 310,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p310_line_13"
+      ]
+    },
+    {
+      "page": 332,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p332_line_15"
+      ]
+    },
+    {
+      "page": 337,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p337_line_28"
+      ]
+    },
+    {
+      "page": 351,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p351_line_14",
+        "review:comparison_miss:expected_p351_line_27"
+      ]
+    },
+    {
+      "page": 361,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p361_line_28"
+      ]
+    },
+    {
+      "page": 376,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p376_line_16"
+      ]
+    },
+    {
+      "page": 396,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p396_line_29"
+      ]
+    },
+    {
+      "page": 403,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p403_line_34"
+      ]
+    },
+    {
+      "page": 405,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p405_line_16"
+      ]
+    },
+    {
+      "page": 406,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p406_line_16"
+      ]
+    },
+    {
+      "page": 409,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p409_line_16"
+      ]
+    },
+    {
+      "page": 413,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p413_line_16",
+        "review:comparison_miss:expected_p413_line_52"
+      ]
+    },
+    {
+      "page": 421,
+      "task_count": 3,
+      "tasks": [
+        "review:comparison_miss:expected_p421_line_12",
+        "review:comparison_miss:expected_p421_line_52",
+        "review:comparison_miss:expected_p421_line_54"
+      ]
+    },
+    {
+      "page": 447,
+      "task_count": 2,
+      "tasks": [
+        "review:comparison_miss:expected_p447_line_16",
+        "review:comparison_miss:expected_p447_line_18"
+      ]
+    },
+    {
+      "page": 457,
+      "task_count": 1,
+      "tasks": [
+        "review:table_candidate:actual_p457_table_0"
+      ]
+    },
+    {
+      "page": 458,
+      "task_count": 2,
+      "tasks": [
+        "review:table_candidate:actual_p458_table_0",
+        "review:table_candidate:actual_p458_table_1"
+      ]
+    },
+    {
+      "page": 459,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p459_line_33"
+      ]
+    },
+    {
+      "page": 466,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p466_line_53"
+      ]
+    },
+    {
+      "page": 469,
+      "task_count": 1,
+      "tasks": [
+        "review:table_candidate:actual_p469_table_0"
+      ]
+    },
+    {
+      "page": 470,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p470_line_52"
+      ]
+    },
+    {
+      "page": 471,
+      "task_count": 1,
+      "tasks": [
+        "review:table_candidate:actual_p471_table_0"
+      ]
+    },
+    {
+      "page": 477,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p477_line_95"
+      ]
+    },
+    {
+      "page": 479,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p479_line_72"
+      ]
+    },
+    {
+      "page": 480,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p480_line_27"
+      ]
+    },
+    {
+      "page": 490,
+      "task_count": 1,
+      "tasks": [
+        "review:comparison_miss:expected_p490_line_24"
+      ]
+    }
+  ],
+  "human_triage_queue": [
+    {
+      "task_id": "review:table_candidate:actual_p12_table_0",
+      "page": 12,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p12:table:0",
+      "target_bbox": [
+        0.032912,
+        0.0435,
+        0.850151,
+        0.953015
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': ''}, {'text': 'NIST SP 800-53,', 'bbox': [90.0, 748.3800048828125, 50.17417907714844, 7.97998046875]}, {'text': 'REV. 5', 'bbox': [141.66000366210938, 748.3800048828125, 18.745849609375, 7.97998046875"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p12:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p12:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p23_table_0",
+      "page": 23,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p23:table:0",
+      "target_bbox": [
+        0.14556,
+        0.277439,
+        0.854049,
+        0.293697
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': 'is', 'bbox': [90.00050354003906, 560.5800170898438, 5.399497985839844, 10.5]}, {'text': 'available free', 'bbox': [95.4000015258789, 560.5800170898438, 56.70000457763672, 10.5]}, {'text': '', 'bbox':"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p23:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p23:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p259_table_0",
+      "page": 259,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p259:table:0",
+      "target_bbox": [
+        0.204382,
+        0.585924,
+        0.814833,
+        0.650591
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': 'be reasonably expected to understand and accept the privacy risks that arise from their', 'bbox': [126.0, 314.5199890136719, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p259:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p259:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p457_table_0",
+      "page": 457,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p457:table:0",
+      "target_bbox": [
+        0.14556,
+        0.249106,
+        0.854049,
+        0.269151
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': '', 'bbox': [90.00050354003906, 580.02001953125, 5.399497985839844, 13.5]}, {'text': 'AC-4(16)', 'bbox': [95.4000015258789, 580.02001953125, 42.23999786376953, 13.5]}, {'text': '', 'bbox': [137.639999"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p457:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p457:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p458_table_0",
+      "page": 458,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p458:table:0",
+      "target_bbox": [
+        0.14556,
+        0.824941,
+        0.854049,
+        0.844985
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': '', 'bbox': [90.00050354003906, 123.95999908447266, 5.399497985839844, 13.499000549316406]}, {'text': 'AC-18(2)', 'bbox': [95.4000015258789, 123.95999908447266, 42.23999786376953, 13.499000549316406]}"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p458:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p458:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p458_table_1",
+      "page": 458,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p458:table:1",
+      "target_bbox": [
+        0.14556,
+        0.688727,
+        0.854049,
+        0.708773
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': '', 'bbox': [90.00050354003906, 231.8400115966797, 5.399497985839844, 13.499984741210938]}, {'text': 'AC-17(5)', 'bbox': [95.4000015258789, 231.8400115966797, 42.23999786376953, 13.499984741210938]}, "
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p458:table:1",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p458:table:1",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p469_table_0",
+      "page": 469,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p469:table:0",
+      "target_bbox": [
+        0.14556,
+        0.382213,
+        0.854049,
+        0.402258
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': '', 'bbox': [90.00050354003906, 474.6000061035156, 5.399497985839844, 13.498992919921875]}, {'text': 'IA-8(3)', 'bbox': [95.4000015258789, 474.6000061035156, 42.23999786376953, 13.498992919921875]}, {"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p469:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p469:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:table_candidate:actual_p471_table_0",
+      "page": 471,
+      "kind": "table_uncertain",
+      "severity": "high",
+      "target_id": "actual:p471:table:0",
+      "target_bbox": [
+        0.145167,
+        0.089712,
+        0.854835,
+        0.183697
+      ],
+      "human_question": "Is this a real table, and are the extracted table bounds correct?",
+      "agent_reasoning": "pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.",
+      "preview": {
+        "type": "table",
+        "text": "{'is_header': False, 'cells': [{'text': 'CONTROL\\nNUMBER', 'bbox': [98.4000015258789, 680.4600219726562, 36.00000762939453, 19.01995849609375]}, {'text': 'CONTROL NAME\\nCONTROL ENHANCEMENT NAME', 'bbox': [211.13999938964844, 675.84002685546"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TABLE",
+        "fallback_actions": [
+          "RECLASSIFY",
+          "FIX_BBOX",
+          "REJECT_FALSE_POSITIVE"
+        ]
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "actual:p471:table:0",
+          "reviewStatus": "pending_review"
+        },
+        "after": {
+          "id": "actual:p471:table:0",
+          "reviewStatus": "verified",
+          "type": "table"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p4_line_14",
+      "page": 4,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p4:line:14",
+      "target_bbox": [
+        0.147041,
+        0.279268,
+        0.452624,
+        0.297818
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p4:line:14` because `text_similarity_below_threshold`. IoU=0.5146, text_similarity=0.6047, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "government, and academic organizations."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p4:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p4:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_14",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:14",
+      "target_bbox": [
+        0.147059,
+        0.284477,
+        0.217159,
+        0.299682
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:14` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.5217, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Dana Deasy"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:14",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_64",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:64",
+      "target_bbox": [
+        0.147074,
+        0.726,
+        0.285331,
+        0.740795
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:64` because `text_similarity_below_threshold`. IoU=0.3837, text_similarity=0.6774, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "The MITRE Corporation"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:64",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:64",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_66",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:66",
+      "target_bbox": [
+        0.340235,
+        0.726,
+        0.46065,
+        0.740795
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:66` because `text_similarity_below_threshold`. IoU=0.3335, text_similarity=0.6333, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Booz Allen Hamilton"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:66",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:66",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_72",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:72",
+      "target_bbox": [
+        0.147088,
+        0.761307,
+        0.28534,
+        0.776102
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:72` because `text_similarity_below_threshold`. IoU=0.3643, text_similarity=0.6562, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "The MITRE Corporation"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:72",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:72",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_74",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:74",
+      "target_bbox": [
+        0.34025,
+        0.761307,
+        0.478497,
+        0.776102
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:74` because `text_similarity_below_threshold`. IoU=0.3608, text_similarity=0.6562, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "The MITRE Corporation"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:74",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:74",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_80",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:80",
+      "target_bbox": [
+        0.147088,
+        0.796614,
+        0.285346,
+        0.811409
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:80` because `text_similarity_below_threshold`. IoU=0.3643, text_similarity=0.6562, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "The MITRE Corporation"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:80",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:80",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p5_line_82",
+      "page": 5,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p5:line:82",
+      "target_bbox": [
+        0.34025,
+        0.796614,
+        0.478497,
+        0.811409
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p5:line:82` because `text_similarity_below_threshold`. IoU=0.3608, text_similarity=0.6562, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "The MITRE Corporation"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p5:line:82",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p5:line:82",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p20_line_100",
+      "page": 20,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p20:line:100",
+      "target_bbox": [
+        0.361765,
+        0.721144,
+        0.503304,
+        0.736348
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p20:line:100` because `bbox_iou_below_threshold`. IoU=0.2126, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "“data loss assessment;”"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p20:line:100",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p20:line:100",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p20_line_3",
+      "page": 20,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p20:line:3",
+      "target_bbox": [
+        0.182255,
+        0.097944,
+        0.222081,
+        0.117187
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p20:line:3` because `bbox_iou_below_threshold`. IoU=0.2584, text_similarity=0.6154, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "DATE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p20:line:3",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p20:line:3",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p20_line_4",
+      "page": 20,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p20:line:4",
+      "target_bbox": [
+        0.286863,
+        0.097944,
+        0.323362,
+        0.117187
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p20:line:4` because `bbox_iou_below_threshold`. IoU=0.1773, text_similarity=0.6154, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "TYPE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p20:line:4",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p20:line:4",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p21_line_129",
+      "page": 21,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p21:line:129",
+      "target_bbox": [
+        0.805,
+        0.569705,
+        0.827368,
+        0.584909
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p21:line:129` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.6667, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "150"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p21:line:129",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p21:line:129",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p21_line_16",
+      "page": 21,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p21:line:16",
+      "target_bbox": [
+        0.167843,
+        0.276144,
+        0.23649,
+        0.291348
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p21:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "12-10-2020"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p21:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p21:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p21_line_17_expected_p21_line_70",
+      "page": 21,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p21:line:17+expected:p21:line:70",
+      "target_bbox": [
+        0.280196,
+        0.276144,
+        0.744175,
+        0.291348
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p21:line:17+expected:p21:line:70` because `text_similarity_below_threshold`. IoU=0.5388, text_similarity=0.6702, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Editorial AUTHORIZATION” to “DUAL AUTHORIZATION FOR DELETION OR"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p21:line:17+expected:p21:line:70",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p21:line:17+expected:p21:line:70",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p21_line_4",
+      "page": 21,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p21:line:4",
+      "target_bbox": [
+        0.182255,
+        0.097944,
+        0.222081,
+        0.117187
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p21:line:4` because `bbox_iou_below_threshold`. IoU=0.2584, text_similarity=0.6154, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "DATE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p21:line:4",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p21:line:4",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p21_line_5",
+      "page": 21,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p21:line:5",
+      "target_bbox": [
+        0.286863,
+        0.097944,
+        0.323362,
+        0.117187
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p21:line:5` because `bbox_iou_below_threshold`. IoU=0.1773, text_similarity=0.6154, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "TYPE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p21:line:5",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p21:line:5",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p22_line_86",
+      "page": 22,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p22:line:86",
+      "target_bbox": [
+        0.361765,
+        0.276068,
+        0.526147,
+        0.290864
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p22:line:86` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.9825, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "process-level; System-level”"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p22:line:86",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p22:line:86",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p23_line_74",
+      "page": 23,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p23:line:74",
+      "target_bbox": [
+        0.361765,
+        0.276068,
+        0.431343,
+        0.290864
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p23:line:74` because `bbox_iou_below_threshold`. IoU=0.157, text_similarity=0.3014, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "frequency]”"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p23:line:74",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p23:line:74",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p24_line_14",
+      "page": 24,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p24:line:14",
+      "target_bbox": [
+        0.167843,
+        0.27925,
+        0.23649,
+        0.294455
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p24:line:14` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "12-10-2020"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p24:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p24:line:14",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p24_line_74",
+      "page": 24,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p24:line:74",
+      "target_bbox": [
+        0.361765,
+        0.272962,
+        0.720425,
+        0.288167
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p24:line:74` because `text_similarity_below_threshold`. IoU=0.3782, text_similarity=0.6593, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "additional information on the use of the resource public key"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p24:line:74",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p24:line:74",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p26_line_145",
+      "page": 26,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p26:line:145",
+      "target_bbox": [
+        0.805,
+        0.793189,
+        0.827368,
+        0.808394
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p26:line:145` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "426"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p26:line:145",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p26:line:145",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p26_line_77",
+      "page": 26,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p26:line:77",
+      "target_bbox": [
+        0.361765,
+        0.278644,
+        0.704324,
+        0.293848
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p26:line:77` because `text_similarity_below_threshold`. IoU=0.334, text_similarity=0.6437, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "“http://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf” to"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p26:line:77",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p26:line:77",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p26_line_8",
+      "page": 26,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p26:line:8",
+      "target_bbox": [
+        0.167843,
+        0.284932,
+        0.23649,
+        0.300136
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p26:line:8` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "12-10-2020"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p26:line:8",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p26:line:8",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p27_line_29",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p27:line:29",
+      "target_bbox": [
+        0.167843,
+        0.27925,
+        0.23649,
+        0.294455
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p27:line:29` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "12-10-2020"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p27:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p27:line:29",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p33_line_17",
+      "page": 33,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p33:line:17",
+      "target_bbox": [
+        0.176471,
+        0.276837,
+        0.47944,
+        0.295386
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p33:line:17` because `text_similarity_below_threshold`. IoU=0.5444, text_similarity=0.6331, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "the use of security and privacy controls. 23"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p33:line:17",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p33:line:17",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p33_line_4",
+      "page": 33,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p33:line:4",
+      "target_bbox": [
+        0.147059,
+        0.090991,
+        0.155312,
+        0.107974
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p33:line:4` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.0222, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "•"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p33:line:4",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p33:line:4",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p33_line_9",
+      "page": 33,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p33:line:9",
+      "target_bbox": [
+        0.147059,
+        0.167052,
+        0.155312,
+        0.184035
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p33:line:9` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.0222, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "•"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p33:line:9",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p33:line:9",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p36_line_35",
+      "page": 36,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p36:line:35",
+      "target_bbox": [
+        0.116966,
+        0.59153,
+        0.201088,
+        0.607303
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p36:line:35` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.2941, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Enhancement"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p36:line:35",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p36:line:35",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p36_line_43",
+      "page": 36,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p36:line:43",
+      "target_bbox": [
+        0.218431,
+        0.72952,
+        0.344225,
+        0.746447
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p36:line:43` because `bbox_iou_below_threshold`. IoU=0.1742, text_similarity=0.3696, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "References: None."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p36:line:43",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p36:line:43",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p45_line_13",
+      "page": 45,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p45:line:13",
+      "target_bbox": [
+        0.264725,
+        0.267708,
+        0.475967,
+        0.284636
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p45:line:13` because `text_similarity_below_threshold`. IoU=0.3502, text_similarity=0.5714, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "level] access control policy that:"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p45:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p45:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p46_line_20",
+      "page": 46,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p46:line:20",
+      "target_bbox": [
+        0.264676,
+        0.28322,
+        0.485938,
+        0.300147
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p46:line:20` because `bbox_iou_below_threshold`. IoU=0.2908, text_similarity=0.5263, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Group and role membership; and"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p46:line:20",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p46:line:20",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p48_line_14",
+      "page": 48,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p48:line:14",
+      "target_bbox": [
+        0.235294,
+        0.2758,
+        0.288389,
+        0.293361
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p48:line:14` because `bbox_iou_below_threshold`. IoU=0.154, text_similarity=0.2388, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "actions."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p48:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p48:line:14",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p48_line_27",
+      "page": 48,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p48:line:27",
+      "target_bbox": [
+        0.235294,
+        0.517088,
+        0.322419,
+        0.534104
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p48:line:27` because `bbox_iou_below_threshold`. IoU=0.2628, text_similarity=0.4375, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "capabilities]."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p48:line:27",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p48:line:27",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p54_line_29",
+      "page": 54,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p54:line:29",
+      "target_bbox": [
+        0.235376,
+        0.523849,
+        0.266451,
+        0.540777
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p54:line:29` because `bbox_iou_below_threshold`. IoU=0.095, text_similarity=0.25, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "files."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p54:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p54:line:29",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p67_line_15",
+      "page": 67,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p67:line:15",
+      "target_bbox": [
+        0.235294,
+        0.283762,
+        0.38844,
+        0.30069
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p67:line:15` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Related Controls: IA-3."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p67:line:15",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p67:line:15",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p68_line_16",
+      "page": 68,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p68:line:16",
+      "target_bbox": [
+        0.205882,
+        0.274671,
+        0.440989,
+        0.291599
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p68:line:16` because `text_similarity_below_threshold`. IoU=0.4899, text_similarity=0.5854, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Related Controls: AC-14, PL-4, SI-4."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p68:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p68:line:16",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p76_line_13",
+      "page": 76,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p76:line:13",
+      "target_bbox": [
+        0.235294,
+        0.268383,
+        0.482263,
+        0.285311
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p76:line:13` because `text_similarity_below_threshold`. IoU=0.4192, text_similarity=0.592, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Related Controls: SC-8, SC-12, SC-13."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p76:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p76:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p83_line_30",
+      "page": 83,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p83:line:30",
+      "target_bbox": [
+        0.205882,
+        0.513913,
+        0.409048,
+        0.530841
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p83:line:30` because `text_similarity_below_threshold`. IoU=0.4466, text_similarity=0.6, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Control Enhancements: None."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p83:line:30",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p83:line:30",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p85_line_14",
+      "page": 85,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p85:line:14",
+      "target_bbox": [
+        0.205882,
+        0.279753,
+        0.544637,
+        0.29668
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p85:line:14` because `text_similarity_below_threshold`. IoU=0.4553, text_similarity=0.6623, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "testing, the completeness of which can be assured."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p85:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p85:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p86_line_32",
+      "page": 86,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p86:line:32",
+      "target_bbox": [
+        0.264709,
+        0.515815,
+        0.459018,
+        0.532287
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p86:line:32` because `text_similarity_below_threshold`. IoU=0.4002, text_similarity=0.5745, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "organization-defined events]."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p86:line:32",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p86:line:32",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p88_line_29",
+      "page": 88,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p88:line:29",
+      "target_bbox": [
+        0.235294,
+        0.51122,
+        0.297887,
+        0.526424
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p88:line:29` because `bbox_iou_below_threshold`. IoU=0.1549, text_similarity=0.3077, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "BEHAVIOR"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p88:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p88:line:29",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p94_line_11",
+      "page": 94,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p94:line:11",
+      "target_bbox": [
+        0.235294,
+        0.264898,
+        0.502567,
+        0.281826
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p94:line:11` because `text_similarity_below_threshold`. IoU=0.3747, text_similarity=0.6047, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "[Withdrawn: Incorporated into AC-6(9).]"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p94:line:11",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p94:line:11",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p106_line_13",
+      "page": 106,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p106:line:13",
+      "target_bbox": [
+        0.205882,
+        0.26611,
+        0.331671,
+        0.283038
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p106:line:13` because `bbox_iou_below_threshold`. IoU=0.2795, text_similarity=0.4, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "References: None."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p106:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p106:line:13",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p106_line_50",
+      "page": 106,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p106:line:50",
+      "target_bbox": [
+        0.205882,
+        0.88517,
+        0.823137,
+        0.903809
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p106:line:50` because `text_similarity_below_threshold`. IoU=0.4239, text_similarity=0.6613, type_compatible=True.",
+      "preview": {
+        "type": "list_item",
+        "text": "(3) MONITORING FOR INFORMATION DISCLOSURE | UNAUTHORIZED REPLICATION OF INFORMATION"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p106:line:50",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p106:line:50",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p117_line_13",
+      "page": 117,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p117:line:13",
+      "target_bbox": [
+        0.235261,
+        0.268405,
+        0.463107,
+        0.285333
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p117:line:13` because `text_similarity_below_threshold`. IoU=0.4037, text_similarity=0.5641, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "with multiple information owners."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p117:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p117:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p119_line_15_expected_p119_line_16",
+      "page": 119,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p119:line:15+expected:p119:line:16",
+      "target_bbox": [
+        0.235294,
+        0.268219,
+        0.457322,
+        0.285779
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p119:line:15+expected:p119:line:16` because `text_similarity_below_threshold`. IoU=0.4123, text_similarity=0.5405, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "(b) Compliance monitoring; and"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p119:line:15+expected:p119:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p119:line:15+expected:p119:line:16",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p129_line_13",
+      "page": 129,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p129:line:13",
+      "target_bbox": [
+        0.205882,
+        0.26808,
+        0.465192,
+        0.285008
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p129:line:13` because `text_similarity_below_threshold`. IoU=0.4467, text_similarity=0.5984, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "associated with changes to the system."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p129:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p129:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p142_line_13",
+      "page": 142,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p142:line:13",
+      "target_bbox": [
+        0.264709,
+        0.267708,
+        0.523706,
+        0.284636
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p142:line:13` because `text_similarity_below_threshold`. IoU=0.3859, text_similarity=0.6107, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "level] contingency planning policy that:"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p142:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p142:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p149_line_15",
+      "page": 149,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p149:line:15",
+      "target_bbox": [
+        0.235271,
+        0.279985,
+        0.304787,
+        0.296913
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p149:line:15` because `bbox_iou_below_threshold`. IoU=0.1604, text_similarity=0.2817, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "execution."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p149:line:15",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p149:line:15",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p152_line_15",
+      "page": 152,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p152:line:15",
+      "target_bbox": [
+        0.235343,
+        0.276219,
+        0.369058,
+        0.293147
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p152:line:15` because `text_similarity_below_threshold`. IoU=0.3409, text_similarity=0.4396, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "the risk assessment."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p152:line:15",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p152:line:15",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p164_line_14",
+      "page": 164,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p164:line:14",
+      "target_bbox": [
+        0.235294,
+        0.277474,
+        0.506211,
+        0.294402
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p164:line:14` because `text_similarity_below_threshold`. IoU=0.4476, text_similarity=0.6107, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "[Withdrawn: Incorporated into IA-12(2).]"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p164:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p164:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p190_line_17",
+      "page": 190,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p190:line:17",
+      "target_bbox": [
+        0.23532,
+        0.275983,
+        0.484031,
+        0.292911
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p190:line:17` because `text_similarity_below_threshold`. IoU=0.4665, text_similarity=0.5854, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "maintenance, repair, or replacement;"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p190:line:17",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p190:line:17",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p210_line_29",
+      "page": 210,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p210:line:29",
+      "target_bbox": [
+        0.205882,
+        0.525807,
+        0.331671,
+        0.542735
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p210:line:29` because `bbox_iou_below_threshold`. IoU=0.2689, text_similarity=0.4857, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "References: None."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p210:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p210:line:29",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p223_line_14",
+      "page": 223,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p223:line:14",
+      "target_bbox": [
+        0.205882,
+        0.267146,
+        0.371458,
+        0.284074
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p223:line:14` because `text_similarity_below_threshold`. IoU=0.3495, text_similarity=0.4848, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "the plan is implemented."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p223:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p223:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p239_line_14",
+      "page": 239,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p239:line:14",
+      "target_bbox": [
+        0.235337,
+        0.271885,
+        0.44471,
+        0.288812
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p239:line:14` because `text_similarity_below_threshold`. IoU=0.4602, text_similarity=0.5487, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "regulations, and standards; and"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p239:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p239:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p240_line_29",
+      "page": 240,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p240:line:29",
+      "target_bbox": [
+        0.205882,
+        0.513156,
+        0.409039,
+        0.530084
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p240:line:29` because `text_similarity_below_threshold`. IoU=0.4295, text_similarity=0.6, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Control Enhancements: None."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p240:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p240:line:29",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p245_line_16",
+      "page": 245,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p245:line:16",
+      "target_bbox": [
+        0.264709,
+        0.267855,
+        0.56342,
+        0.284782
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p245:line:16` because `text_similarity_below_threshold`. IoU=0.4189, text_similarity=0.6222, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "monitoring privacy program compliance; and"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p245:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p245:line:16",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p261_line_14",
+      "page": 261,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p261:line:14",
+      "target_bbox": [
+        0.205882,
+        0.274412,
+        0.481196,
+        0.293052
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p261:line:14` because `text_similarity_below_threshold`. IoU=0.5139, text_similarity=0.6107, type_compatible=True.",
+      "preview": {
+        "type": "list_item",
+        "text": "(1) PRIVACY NOTICE | JUST-IN-TIME NOTICE"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p261:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p261:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p265_line_13",
+      "page": 265,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p265:line:13",
+      "target_bbox": [
+        0.264709,
+        0.267708,
+        0.485729,
+        0.284636
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p265:line:13` because `text_similarity_below_threshold`. IoU=0.358, text_similarity=0.5785, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "level] risk assessment policy that:"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p265:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p265:line:13",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p279_line_18_expected_p279_line_19",
+      "page": 279,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p279:line:18+expected:p279:line:19",
+      "target_bbox": [
+        0.205882,
+        0.275637,
+        0.572808,
+        0.292565
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p279:line:18+expected:p279:line:19` because `text_similarity_below_threshold`. IoU=0.5632, text_similarity=0.6623, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "e. Security and privacy documentation requirements;"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p279:line:18+expected:p279:line:19",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p279:line:18+expected:p279:line:19",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p280_line_30",
+      "page": 280,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p280:line:30",
+      "target_bbox": [
+        0.235294,
+        0.524065,
+        0.397476,
+        0.540993
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p280:line:30` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Related Controls: None."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p280:line:30",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p280:line:30",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p283_line_19",
+      "page": 283,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p283:line:19",
+      "target_bbox": [
+        0.235255,
+        0.275654,
+        0.333271,
+        0.292582
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p283:line:19` because `bbox_iou_below_threshold`. IoU=0.2764, text_similarity=0.3704, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "that describes:"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p283:line:19",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p283:line:19",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p310_line_13",
+      "page": 310,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p310:line:13",
+      "target_bbox": [
+        0.264716,
+        0.26823,
+        0.307962,
+        0.285247
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p310:line:13` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3333, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "tools];"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p310:line:13",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p310:line:13",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p332_line_15",
+      "page": 332,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p332:line:15",
+      "target_bbox": [
+        0.205882,
+        0.274671,
+        0.317753,
+        0.291599
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p332:line:15` because `text_similarity_below_threshold`. IoU=0.3149, text_similarity=0.4, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "20, SC-23, SC-28."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p332:line:15",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p332:line:15",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p337_line_28",
+      "page": 337,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p337:line:28",
+      "target_bbox": [
+        0.235294,
+        0.520497,
+        0.492906,
+        0.537513
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p337:line:28` because `text_similarity_below_threshold`. IoU=0.4424, text_similarity=0.6481, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "online meetings and teleconferences]."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p337:line:28",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p337:line:28",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p351_line_14",
+      "page": 351,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p351:line:14",
+      "target_bbox": [
+        0.147059,
+        0.281808,
+        0.358596,
+        0.301051
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p351:line:14` because `text_similarity_below_threshold`. IoU=0.4124, text_similarity=0.4742, type_compatible=True.",
+      "preview": {
+        "type": "requirement",
+        "text": "SC-39 PROCESS ISOLATION"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p351:line:14",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p351:line:14",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p351_line_27",
+      "page": 351,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p351:line:27",
+      "target_bbox": [
+        0.205882,
+        0.514217,
+        0.361749,
+        0.531144
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p351:line:27` because `text_similarity_below_threshold`. IoU=0.3984, text_similarity=0.5385, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "Control Enhancements:"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p351:line:27",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p351:line:27",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p361_line_28",
+      "page": 361,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p361:line:28",
+      "target_bbox": [
+        0.235294,
+        0.521349,
+        0.286277,
+        0.538277
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p361:line:28` because `bbox_iou_below_threshold`. IoU=0.1604, text_similarity=0.28, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "system."
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p361:line:28",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p361:line:28",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p376_line_16",
+      "page": 376,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p376:line:16",
+      "target_bbox": [
+        0.205882,
+        0.281988,
+        0.516974,
+        0.300627
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p376:line:16` because `text_similarity_below_threshold`. IoU=0.4065, text_similarity=0.6107, type_compatible=True.",
+      "preview": {
+        "type": "list_item",
+        "text": "(1) SPAM PROTECTION | CENTRAL MANAGEMENT"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p376:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p376:line:16",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p396_line_29",
+      "page": 396,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p396:line:29",
+      "target_bbox": [
+        0.235294,
+        0.521406,
+        0.400338,
+        0.538966
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p396:line:29` because `text_similarity_below_threshold`. IoU=0.3499, text_similarity=0.5714, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "modification, or update."
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p396:line:29",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p396:line:29",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p403_line_34",
+      "page": 403,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p403:line:34",
+      "target_bbox": [
+        0.288235,
+        0.521565,
+        0.370974,
+        0.538493
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p403:line:34` because `bbox_iou_below_threshold`. IoU=0.1883, text_similarity=0.4, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "0revised.pdf"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p403:line:34",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p403:line:34",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p405_line_16",
+      "page": 405,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p405:line:16",
+      "target_bbox": [
+        0.155882,
+        0.275353,
+        0.246897,
+        0.292281
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p405:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.75, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[ISO 15408-3]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p405:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p405:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p406_line_16",
+      "page": 406,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p406:line:16",
+      "target_bbox": [
+        0.155882,
+        0.275353,
+        0.23542,
+        0.292281
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p406:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.9167, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[FIPS 180-4]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p406:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p406:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p409_line_16",
+      "page": 409,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p409:line:16",
+      "target_bbox": [
+        0.155882,
+        0.275353,
+        0.240903,
+        0.292281
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p409:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.9167, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[SP 800-56B]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p409:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p409:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p413_line_16",
+      "page": 413,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p413:line:16",
+      "target_bbox": [
+        0.155882,
+        0.275353,
+        0.240316,
+        0.292281
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p413:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.9167, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[SP 800-124]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p413:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p413:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p413_line_52",
+      "page": 413,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p413:line:52",
+      "target_bbox": [
+        0.155882,
+        0.818686,
+        0.249828,
+        0.835614
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p413:line:52` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3704, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[SP 800-137A]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p413:line:52",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p413:line:52",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p421_line_12",
+      "page": 421,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p421:line:12",
+      "target_bbox": [
+        0.369118,
+        0.275479,
+        0.782159,
+        0.294028
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p421:line:12` because `text_similarity_below_threshold`. IoU=0.4647, text_similarity=0.6322, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "obtaining and using information and related information"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p421:line:12",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p421:line:12",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p421_line_52",
+      "page": 421,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p421:line:52",
+      "target_bbox": [
+        0.15451,
+        0.275504,
+        0.234046,
+        0.292432
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p421:line:52` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3333, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[FIPS 201-2]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p421:line:52",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p421:line:52",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p421_line_54",
+      "page": 421,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p421:line:54",
+      "target_bbox": [
+        0.15451,
+        0.521868,
+        0.230713,
+        0.538796
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p421:line:54` because `bbox_iou_below_threshold`. IoU=0.2979, text_similarity=0.3793, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "[SP 800-39]"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p421:line:54",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p421:line:54",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p447_line_16",
+      "page": 447,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p447:line:16",
+      "target_bbox": [
+        0.154505,
+        0.278244,
+        0.27833,
+        0.297487
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p447:line:16` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "supply chain risk"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p447:line:16",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p447:line:16",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p447_line_18",
+      "page": 447,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p447:line:18",
+      "target_bbox": [
+        0.3691,
+        0.278424,
+        0.813207,
+        0.296974
+      ],
+      "human_question": "Does this extracted text match the PDF?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p447:line:18` because `text_similarity_below_threshold`. IoU=0.4259, text_similarity=0.6425, type_compatible=True.",
+      "preview": {
+        "type": "paragraph",
+        "text": "A systematic examination of supply chain risks, likelihoods of"
+      },
+      "suggested_fix": {
+        "action": "VERIFY_TEXT",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p447:line:18",
+          "reviewStatus": "unresolved",
+          "reason": "text_similarity_below_threshold"
+        },
+        "after": {
+          "id": "expected:p447:line:18",
+          "reviewStatus": "verified",
+          "resolution": "VERIFY_TEXT"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p459_line_33",
+      "page": 459,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p459:line:33",
+      "target_bbox": [
+        0.758039,
+        0.121501,
+        0.824018,
+        0.135486
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p459:line:33` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3077, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "ASSURANCE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p459:line:33",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p459:line:33",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p466_line_53",
+      "page": 466,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p466:line:53",
+      "target_bbox": [
+        0.758039,
+        0.143774,
+        0.824018,
+        0.157759
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p466:line:53` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3571, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "ASSURANCE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p466:line:53",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p466:line:53",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p470_line_52",
+      "page": 470,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p470:line:52",
+      "target_bbox": [
+        0.761078,
+        0.143774,
+        0.827057,
+        0.157759
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p470:line:52` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.4, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "ASSURANCE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p470:line:52",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p470:line:52",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p477_line_95",
+      "page": 477,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p477:line:95",
+      "target_bbox": [
+        0.761078,
+        0.143774,
+        0.827057,
+        0.157759
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p477:line:95` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.5, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "ASSURANCE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p477:line:95",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p477:line:95",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p479_line_72",
+      "page": 479,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p479:line:72",
+      "target_bbox": [
+        0.663333,
+        0.480224,
+        0.670927,
+        0.492084
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p479:line:72` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "O"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p479:line:72",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p479:line:72",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p480_line_27",
+      "page": 480,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p480:line:27",
+      "target_bbox": [
+        0.758039,
+        0.143774,
+        0.824018,
+        0.157759
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p480:line:27` because `bbox_iou_below_threshold`. IoU=0.0, text_similarity=0.3871, type_compatible=True.",
+      "preview": {
+        "type": "section_header",
+        "text": "ASSURANCE"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p480:line:27",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p480:line:27",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:expected_p490_line_24",
+      "page": 490,
+      "kind": "comparison_miss",
+      "severity": "medium",
+      "target_id": "expected:p490:line:24",
+      "target_bbox": [
+        0.155882,
+        0.267966,
+        0.17873,
+        0.283739
+      ],
+      "human_question": "Is this extracted region bounded correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `expected:p490:line:24` because `bbox_iou_below_threshold`. IoU=0.2775, text_similarity=1.0, type_compatible=True.",
+      "preview": {
+        "type": "requirement",
+        "text": "SI-6"
+      },
+      "suggested_fix": {
+        "action": "FIX_BBOX",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "expected:p490:line:24",
+          "reviewStatus": "unresolved",
+          "reason": "bbox_iou_below_threshold"
+        },
+        "after": {
+          "id": "expected:p490:line:24",
+          "reviewStatus": "verified",
+          "resolution": "FIX_BBOX"
+        }
+      }
+    }
+  ]
+}

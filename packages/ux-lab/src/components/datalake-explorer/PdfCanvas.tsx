@@ -33,6 +33,9 @@ interface PdfCanvasProps {
   selectedAreaBlockIds?: string[]
   onSelectArea?: (bbox: [number, number, number, number], blockIds: string[]) => void
   selectedAreaToolbar?: ReactNode
+  autoFrameBBox?: [number, number, number, number] | null
+  surgicalFocusBlockId?: string | null
+  surgicalFocusBBox?: [number, number, number, number] | null
 }
 
 interface PdfAgentNote {
@@ -162,6 +165,9 @@ export default function PdfCanvas({
   selectedAreaBlockIds = [],
   onSelectArea,
   selectedAreaToolbar,
+  autoFrameBBox = null,
+  surgicalFocusBlockId = null,
+  surgicalFocusBBox = null,
 }: PdfCanvasProps) {
   useRegisterAction('pdf:page-wrapper', {
     app: 'datalake-explorer',
@@ -343,14 +349,27 @@ export default function PdfCanvas({
     const baseViewport = page.getViewport({ scale: SCALE })
     const liveContainerWidth = containerRef.current?.clientWidth ?? containerDims.w
     const liveContainerHeight = containerRef.current?.clientHeight ?? containerDims.h
-    const fittedZoom = fitMode === 'page' && liveContainerWidth > 0 && liveContainerHeight > 0
+    const pageFitZoom = liveContainerWidth > 0 && liveContainerHeight > 0
       ? Math.max(
-        0.2,
-        Math.min(
-          (liveContainerWidth - 36) / baseViewport.width,
-          (liveContainerHeight - 36) / baseViewport.height,
-        ),
-      )
+          0.2,
+          Math.min(
+            (liveContainerWidth - 36) / baseViewport.width,
+            (liveContainerHeight - 36) / baseViewport.height,
+          ),
+        )
+      : zoom
+    const autoFrameZoom = autoFrameBBox && liveContainerWidth > 0 && liveContainerHeight > 0
+      ? Math.max(
+          pageFitZoom,
+          Math.min(
+            1.55,
+            (liveContainerHeight * 0.6) / (baseViewport.height * Math.max(0.08, autoFrameBBox[3] - autoFrameBBox[1])),
+            (liveContainerWidth * 0.72) / (baseViewport.width * Math.max(0.08, autoFrameBBox[2] - autoFrameBBox[0])),
+          ),
+        )
+      : pageFitZoom
+    const fittedZoom = fitMode === 'page' && liveContainerWidth > 0 && liveContainerHeight > 0
+      ? autoFrameZoom
       : zoom
     const viewport = page.getViewport({ scale: SCALE * fittedZoom })
     canvas.width = viewport.width
@@ -369,7 +388,7 @@ export default function PdfCanvas({
       cancelled = true
       renderTask.cancel()
     }
-  }, [containerDims.h, containerDims.w, fitMode, page, zoom])
+  }, [autoFrameBBox, containerDims.h, containerDims.w, fitMode, page, zoom])
 
   useEffect(() => {
     if (!overlayRef.current || dims.w === 0) return
@@ -381,6 +400,32 @@ export default function PdfCanvas({
     canvas.width = dims.w
     canvas.height = dims.h
     ctx.clearRect(0, 0, dims.w, dims.h)
+
+    const surgicalFocusBlock = surgicalFocusBlockId
+      ? bboxOverlays.find(block => block.id === surgicalFocusBlockId)
+      : null
+    const surgicalBBox = surgicalFocusBBox ?? surgicalFocusBlock?.bbox ?? null
+    if (surgicalBBox) {
+      const [x1, y1, x2, y2] = surgicalBBox
+      const rx = x1 * dims.w
+      const ry = y1 * dims.h
+      const rw = (x2 - x1) * dims.w
+      const rh = (y2 - y1) * dims.h
+      const pad = 8
+      ctx.save()
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.82)'
+      ctx.fillRect(0, 0, dims.w, dims.h)
+      ctx.clearRect(
+        Math.max(0, rx - pad),
+        Math.max(0, ry - pad),
+        Math.min(dims.w, rw + pad * 2),
+        Math.min(dims.h, rh + pad * 2)
+      )
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.88)'
+      ctx.lineWidth = 1
+      ctx.strokeRect(rx - pad, ry - pad, rw + pad * 2, rh + pad * 2)
+      ctx.restore()
+    }
 
     for (const block of compareOverlays) {
       const [x1, y1, x2, y2] = block.bbox
@@ -407,6 +452,8 @@ export default function PdfCanvas({
 
       const isSelected = block.id === selectedBlockId
       const isActiveTask = block.id === activeTaskBlockId
+      const isSurgicalFocusBlock = Boolean(surgicalFocusBBox && surgicalFocusBlockId && block.id === surgicalFocusBlockId)
+      const suppressOversizedFocusBlock = isSurgicalFocusBlock && (x2 - x1) * (y2 - y1) > 0.45
       const band = classifyReviewBand(block)
       const isAgentAdded = block.id.startsWith('review:') || (block.cascadeTrail?.some((t: any) => t.tier === 'T2') ?? false)
       const color = band === 'low'
@@ -421,16 +468,18 @@ export default function PdfCanvas({
       const faded = Boolean(selectedBlockId && !isSelected)
       const fillAlpha = isSelected ? '0.12' : band === 'ghost' ? '0.02' : band === 'medium' ? '0.05' : '0.07'
 
-      ctx.fillStyle = isSelected
+      ctx.fillStyle = isSurgicalFocusBlock
+        ? 'rgba(0, 0, 0, 0)'
+        : isSelected
         ? 'rgba(124, 58, 237, 0.12)'
         : `rgba(${band === 'low' ? '255, 77, 77' : band === 'medium' ? '255, 193, 7' : '224, 224, 224'}, ${faded ? '0.01' : fillAlpha})`
-      ctx.fillRect(rx, ry, rw, rh)
+      if (!isSurgicalFocusBlock && !suppressOversizedFocusBlock) ctx.fillRect(rx, ry, rw, rh)
 
       ctx.strokeStyle = isSelected ? '#7c3aed' : color
-      ctx.lineWidth = isSelected ? 2 : band === 'ghost' ? 1 : 2
+      ctx.lineWidth = isSurgicalFocusBlock ? 1 : isSelected ? 2 : band === 'ghost' ? 1 : 2
       if (!isSelected) ctx.setLineDash(band === 'medium' ? [6, 4] : band === 'ghost' ? [3, 5] : [])
       ctx.globalAlpha = faded ? 0.12 : isActiveTask ? 1 : band === 'ghost' ? 0.28 : 0.95
-      ctx.strokeRect(rx, ry, rw, rh)
+      if (!suppressOversizedFocusBlock) ctx.strokeRect(rx, ry, rw, rh)
       if (isAgentAdded && !isSelected && !block.humanEdited) {
         ctx.setLineDash([4, 4])
         ctx.strokeStyle = '#a78bfa'
@@ -441,9 +490,10 @@ export default function PdfCanvas({
       ctx.setLineDash([])
       ctx.globalAlpha = 1
     }
-  }, [activeTaskBlockId, bboxOverlays, classifyReviewBand, compareOverlays, selectedBlockId, dims])
+  }, [activeTaskBlockId, bboxOverlays, classifyReviewBand, compareOverlays, selectedBlockId, surgicalFocusBBox, surgicalFocusBlockId, dims])
 
   useEffect(() => {
+    if (surgicalFocusBBox) return
     if (!selectedBlockId) return
     const frame = window.requestAnimationFrame(() => {
       const el = pageWrapperRef.current?.querySelector<HTMLElement>(`[data-qid="pdf:block:${CSS.escape(selectedBlockId)}"]`)
@@ -454,7 +504,7 @@ export default function PdfCanvas({
       pageWrapperRef.current?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [dims.h, dims.w, pageNumber, selectedBlockId])
+  }, [dims.h, dims.w, pageNumber, selectedBlockId, surgicalFocusBBox])
 
   useEffect(() => {
     if (!editable || !interaction) return
@@ -616,17 +666,37 @@ export default function PdfCanvas({
     )
   }
 
+  const surgicalCameraStyle = surgicalFocusBBox && dims.w > 0 && dims.h > 0 && containerDims.w > 0 && containerDims.h > 0
+    ? (() => {
+        const [x1, y1, x2, y2] = surgicalFocusBBox
+        const focusCenterX = ((x1 + x2) / 2) * dims.w
+        const focusCenterY = ((y1 + y2) / 2) * dims.h
+        const targetX = containerDims.w / 2
+        const targetY = containerDims.h * 0.3
+        return {
+          position: 'absolute' as const,
+          left: 0,
+          top: 0,
+          margin: 0,
+          transform: `translate3d(${targetX - focusCenterX}px, ${targetY - focusCenterY}px, 0)`,
+          transition: 'transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1)',
+        }
+      })()
+    : null
+
   return (
     <div
       ref={containerRef}
       style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
+        display: surgicalFocusBBox ? 'block' : 'flex',
+        alignItems: surgicalFocusBBox ? undefined : 'center',
+        justifyContent: surgicalFocusBBox ? undefined : 'center',
         width: '100%',
         height: '100%',
-        overflow: 'auto',
-        backgroundColor: '#0f1216',
+        overflow: surgicalFocusBBox ? 'hidden' : 'auto',
+        backgroundColor: '#000000',
+        scrollBehavior: surgicalFocusBBox ? undefined : 'smooth',
+        position: 'relative',
       }}
     >
       <div
@@ -634,7 +704,7 @@ export default function PdfCanvas({
         data-qid="pdf:page-wrapper"
         data-qs-action="PDF_PAGE_WRAPPER"
         title="Page Wrapper"
-        style={{ position: 'relative', flexShrink: 0, margin: '12px' }}
+        style={surgicalCameraStyle ?? { position: 'relative', flexShrink: 0, margin: '12px' }}
       >
         <canvas
           ref={canvasRef}
