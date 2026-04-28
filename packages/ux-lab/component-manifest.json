@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-  "updated": "2026-03-13",
+  "updated": "2026-04-27",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -292,6 +292,7 @@
     "name": "PdfLabView",
     "file": "src/components/pdf-lab/PdfLabView.tsx",
     "description": "Default PDF Lab surface now presents the real-data agentic workflow: agent scan, representative samples, deterministic extraction, parity comparison, preset/code improvement, 95% gate, full extraction, and human triage.",
+    "composition": "Surgical evidence viewport with shared collapsible LeftPane ambiguity queue, default-collapsed queue chrome, and compact floating command HUD positioned away from the active evidence.",
     "data_sources": [
       "public/pdf-lab-nist-workflow-manifest.json",
       "public/pdf-lab-nist-full-extraction.json",
@@ -301,8 +302,21 @@
     "artifact_contract": {
       "workflow_manifest": "Browser-oriented phase/candidate/gate summary derived from real full-batch artifacts.",
       "full_extraction": "Deterministic pdf_oxide full-document extraction.",
-      "human_triage_queue": "Final ambiguity cards only; no solved pages should become human work."
+      "human_triage_queue": "Final ambiguity cards only; no solved pages should become human work.",
+      "gemini_review_bundle": "Top-bar shared ReviewBundleButton calls POST /api/pdf-lab/gemini-review-bundle, writes /tmp/pdf-lab-gemini-review-bundle-latest.md, and copies the complete review/fix prompt with xclip."
     },
+    "test_status": "TypeScript + CDP visual verification required after every layout change"
+  },
+  "scillm_monitor": {
+    "id": "scillm-monitor",
+    "name": "ScillmDashboard",
+    "file": "src/components/scillm/ScillmDashboard.tsx",
+    "description": "LLM proxy batch dashboard with health ribbon, batch progress strip, incoming calls table, scoped search, status filters, and call trace inspector.",
+    "composition": "Incoming table controls use a left-aligned diagnostic control row: search and batch scope picker, Inspect Batch, then status filters. A responsive divider separates the batch action from view-state filters when width allows; compact widths fall back to spacing only.",
+    "data_sources": [
+      "src/hooks/useScillmData.ts",
+      "http://localhost:4001/v1/scillm/*"
+    ],
     "test_status": "TypeScript + CDP visual verification required after every layout change"
   },
   "planned_components": [

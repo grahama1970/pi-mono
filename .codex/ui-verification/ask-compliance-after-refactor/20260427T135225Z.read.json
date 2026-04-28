@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  heading \"/ask compliance after refactor\" [e2] [level=1]\n  paragraph \"Generated for Codex UI verification marker.\" [e3]\n  generic [e4]\n    generic \"Runtime modules moved to .\" [e5]\n      generic \"PASS\" [e6]\n      generic \"src/ask/\" [e7]\n    generic \"Tests moved to .\" [e8]\n      generic \"PASS\" [e9]\n      generic \"tests/\" [e10]\n    generic \"No root-level runtime Python module pile remains.\" [e11]\n      generic \"PASS\" [e12]\n    generic \"All tracked Python modules have docstrings and stay under 800 lines.\" [e13]\n      generic \"PASS\" [e14]\n    generic \"split with .\" [e15]\n      generic \"PASS\" [e16]\n      generic \"ask_oracle.py\" [e17]\n      generic \"oracle_adapters.py\" [e18]\n    generic \"and focused pytest checks pass under .\" [e19]\n      generic \"PASS\" [e20]\n      generic \"sanity.sh\" [e21]\n  generic \"Checked layout, spacing, card grid, footer visibility, and readable status markers.\" [e22]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:8772/ask-compliance-after-refactor.html",
+  "title": "/ask compliance report"
+}

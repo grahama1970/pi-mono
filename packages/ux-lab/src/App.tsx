@@ -108,7 +108,19 @@ const Mockups = ({ projectId }: { projectId: string }) => {
       </div>
       
       <div className="flex-1 overflow-auto p-6">
-        {loading ? (
+        {projectId === 'pdf-lab' ? (
+          <div className="h-full min-h-[720px] grid grid-rows-[auto_minmax(0,1fr)] gap-4">
+            <div className="border border-tactical-primary/30 bg-black/40 p-3">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-tactical-primary">Mockup · Surgical Triage Static Proof</div>
+              <div className="mt-1 text-xs text-slate-400">Verified HTML/CSS fixture mounted inside the mockup lane. Final Site remains separate.</div>
+            </div>
+            <div className="min-h-0 overflow-hidden border border-white/10 bg-black">
+              <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PDF_LAB_MOCKUP...</div>}>
+                <PdfLab initialSubpath="static-proof" />
+              </React.Suspense>
+            </div>
+          </div>
+        ) : loading ? (
           <div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">
             LOADING_MOCKUP_ASSETS...
           </div>
@@ -181,7 +193,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
           {projectId === 'embry-terminal' && <EmbryTerminal />}
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
-          {projectId === 'pdf-lab' && <PdfLab />}
+          {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
           {projectId === 'scillm' && <ScillmMonitor />}
           {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
@@ -1499,13 +1511,15 @@ export default function App() {
     const normalizedPath = pathOnly.replace(/^\/+/, '');
     if (!normalizedPath) return { project: 'music-lab-pipeline', view: 'design-board' as View };
     const [first, ...rest] = normalizedPath.split('/');
+    const viewNames = new Set<View>(['mockups', 'components', 'design-board', 'reviews', 'testing', 'final-site']);
+    const requestedView = viewNames.has(rest[0] as View) ? rest[0] as View : undefined;
     // Deep links to projects should default to 'final-site' (interactive implementation)
     // except for projects that don't have a final-site view
     const componentsOnlyProjects: string[] = [];
     return {
       project: first,
-      view: componentsOnlyProjects.includes(first) ? 'components' as View : 'final-site' as View,
-      subpath: rest.join('/')
+      view: requestedView ?? (componentsOnlyProjects.includes(first) ? 'components' as View : 'final-site' as View),
+      subpath: requestedView ? rest.slice(1).join('/') : rest.join('/')
     };
   }, []);
 

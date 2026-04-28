@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  heading \"/ask README update assessment\" [e2] [level=1]\n  paragraph \"Assessment of proposed README restructuring against the current README.\" [e3]\n  generic [e4]\n    generic \"Hero pipeline and quick start ordering.\" [e5]\n      generic \"Adopt\" [e6]\n    generic \"Shorter config table and link to .\" [e7]\n      generic \"Adopt\" [e8]\n      generic \"SKILL.md\" [e9]\n    generic \"belongs in docs/project knowledge.\" [e10]\n      generic \"Move\" [e11]\n      generic \"Deep Review Direction\" [e12]\n    generic \"Badges are optional; avoid external badge dependency noise.\" [e13]\n      generic \"Keep concise\" [e14]\n    generic \"Placeholder license section unless real license exists.\" [e15]\n      generic \"Do not adopt\" [e16]\n    generic \"Pipeline Flow beats Oracle Lens for GitHub clarity.\" [e17]\n      generic \"Best header\" [e18]\n  generic \"Visual check target: layout, spacing, cards, footer, and status contrast.\" [e19]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:8773/ask-readme-assessment.html",
+  "title": "ask README assessment"
+}

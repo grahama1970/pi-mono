@@ -436,8 +436,14 @@ const QRA_CACHE = new Map<string, QraCacheEntry>();
 const QRA_PENDING = new Map<string, Promise<QraCacheEntry>>();
 const QRA_CACHE_TTL_MS = 30_000;
 
-function qraCacheKey(query: string, controlId: string | undefined, source: QRASource): string {
-	return JSON.stringify({ query, controlId, source });
+function qraCacheKey(
+	query: string,
+	controlId: string | undefined,
+	source: QRASource,
+	page: number,
+	pageSize: number,
+): string {
+	return JSON.stringify({ query, controlId, source, page, pageSize });
 }
 
 export function useQRAs(
@@ -455,7 +461,7 @@ export function useQRAs(
 
 	const fetchData = useCallback(
 		async (opts?: { force?: boolean }) => {
-			const cacheKey = JSON.stringify({ query: debouncedQuery, controlId, source, page, pageSize });
+			const cacheKey = qraCacheKey(debouncedQuery, controlId, source, page, pageSize);
 			const cached = QRA_CACHE.get(cacheKey);
 
 			// Serve stale immediately if available and not forcing refresh

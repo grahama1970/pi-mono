@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  heading \"ask\" [e2] [level=1]\n  generic \"Zero-cognitive-load querying and learning for agent skill environments.\" [e3]\n  paragraph \"is the natural-language front door to memory-backed context, persona\" [e4]\n    generic \"ask\" [e5]\n  paragraph \"consultation, fresh discovery, and high-reasoning synthesis. It lets a human ask\" [e6]\n  paragraph \"normally while the system chooses the right retrieval, freshness, persona, and\" [e7]\n  paragraph \"oracle path.\" [e8]\n  paragraph \"uses the model surfaces, subscriptions, APIs, and local providers available\" [e9]\n    generic \"ask\" [e10]\n  paragraph \"in the current environment: Codex subscription surfaces, OpenAI API access,\" [e11]\n  paragraph \"routes, local models, DeepSeek, Gemini, or other configured backends.\" [e12]\n    generic \"/scillm\" [e13]\n  generic \"human asks naturally \u2193 /ask resolves intent \u2193 /memory provides durable context \u2193 optiona...\" [e14]\n  paragraph \"Memory recall is context, not evidence. Code and design\" [e15]\n    generic \"Core principle:\" [e16]\n  paragraph \"claims must still be grounded in inspected files, diffs, tests, or artifacts.\" [e17]\n  heading \"Quick Start\" [e18] [level=2]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:8774/ask-readme-render.html",
+  "title": "ask README"
+}

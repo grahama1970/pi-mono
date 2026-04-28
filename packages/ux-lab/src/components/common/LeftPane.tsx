@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback, useRef, createContext, useContext } from 'react'
 import { PanelLeftClose, PanelLeftOpen, Search, Clock, ArrowDownWideNarrow, ArrowDownAZ } from 'lucide-react'
 import { EMBRY, label } from './EmbryStyle'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 /* ── Context Menu ──────────────────────────────────────────── */
 
@@ -98,10 +99,11 @@ const SORT_ICONS: { mode: SortMode; Icon: typeof Clock; title: string }[] = [
   { mode: 'alpha', Icon: ArrowDownAZ, title: 'Sort A-Z' },
 ]
 
-export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId, search: externalSearch, onSearchChange, searchPlaceholder }: {
+export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId, search: externalSearch, onSearchChange, searchPlaceholder, defaultCollapsed = false }: {
   title: string
   children: React.ReactNode
   width?: number
+  defaultCollapsed?: boolean
   searchable?: boolean
   /** data-qid for the search input */
   searchTestId?: string
@@ -120,7 +122,22 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
   /** Placeholder text for search input */
   searchPlaceholder?: string
 }) {
-  const [collapsed, setCollapsed] = useState(false)
+  const paneId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'pane'
+
+  useRegisterAction(`left-pane:${paneId}:expand`, {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_EXPAND',
+    label: `Expand ${title}`,
+    description: `Expand the ${title} left pane`,
+  })
+  useRegisterAction(`left-pane:${paneId}:collapse`, {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_COLLAPSE',
+    label: `Collapse ${title}`,
+    description: `Collapse the ${title} left pane`,
+  })
+
+  const [collapsed, setCollapsed] = useState(defaultCollapsed)
   const [internalSearch, setInternalSearch] = useState('')
   const search = externalSearch ?? internalSearch
   const setSearch = onSearchChange ?? setInternalSearch
@@ -134,7 +151,12 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
         background: EMBRY.bgPanel, display: 'flex', alignItems: 'flex-start',
         justifyContent: 'center', paddingTop: 12,
       }}>
-        <button onClick={() => setCollapsed(false)} aria-label="Expand pane"
+        <button
+          data-qid={`left-pane:${paneId}:expand`}
+          data-qs-action="LEFT_PANE_EXPAND"
+          title={`Expand ${title}`}
+          onClick={() => setCollapsed(false)}
+          aria-label={`Expand ${title}`}
           style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
           <PanelLeftOpen size={14} />
         </button>
@@ -154,7 +176,12 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
             padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
           }}>
             <div style={label}>{title}</div>
-            <button onClick={() => setCollapsed(true)} aria-label="Collapse pane"
+            <button
+              data-qid={`left-pane:${paneId}:collapse`}
+              data-qs-action="LEFT_PANE_COLLAPSE"
+              title={`Collapse ${title}`}
+              onClick={() => setCollapsed(true)}
+              aria-label={`Collapse ${title}`}
               style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
               <PanelLeftClose size={14} />
             </button>

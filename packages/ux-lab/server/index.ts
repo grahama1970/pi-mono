@@ -1342,6 +1342,402 @@ app.get('/api/datalake/metrics/:scope', async (req, res) => {
 
 // ── PDF Lab reviewed extraction persistence ───────────────────────────────
 
+function shellQuote(value: string): string {
+  return `'${value.replace(/'/g, `'\\''`)}'`
+}
+
+async function readUtf8IfExists(path: string): Promise<string> {
+  if (!existsSync(path)) return ''
+  return readFile(path, 'utf-8')
+}
+
+function fencedCode(path: string, content: string, language = ''): string {
+  return `### ${path}\n\n\`\`\`${language}\n${content.trimEnd()}\n\`\`\`\n`
+}
+
+function truncateForBundle(content: string, maxChars = 120_000): string {
+  if (content.length <= maxChars) return content
+  return `${content.slice(0, maxChars)}\n\n[TRUNCATED: ${content.length - maxChars} chars omitted]\n`
+}
+
+async function copyBundleFile(sourcePath: string, bundleDir: string, relativeName: string): Promise<string | null> {
+  if (!sourcePath || !existsSync(sourcePath)) return null
+  const safeName = relativeName.replace(/^\/+/, '').replace(/\.\./g, '__')
+  const destinationPath = resolve(bundleDir, safeName)
+  await mkdir(dirname(destinationPath), { recursive: true })
+  await copyFile(sourcePath, destinationPath)
+  return safeName
+}
+
+async function latestFileInDir(dir: string, suffix: string): Promise<string | null> {
+  if (!existsSync(dir)) return null
+  const entries = await readdir(dir, { withFileTypes: true })
+  const candidates = await Promise.all(entries
+    .filter(entry => entry.isFile() && entry.name.endsWith(suffix))
+    .map(async entry => {
+      const path = resolve(dir, entry.name)
+      const info = await stat(path)
+      return { path, mtimeMs: info.mtimeMs }
+    }))
+  candidates.sort((a, b) => b.mtimeMs - a.mtimeMs)
+  return candidates[0]?.path ?? null
+}
+
+async function collectPdfLabVerificationArtifacts(pdfOxideRoot: string): Promise<Array<{ label: string; path: string }>> {
+  const verificationRoot = resolve(pdfOxideRoot, '.codex/ui-verification')
+  const artifacts: Array<{ label: string; path: string }> = []
+  const seen = new Set<string>()
+  const add = (label: string, path: string | null | undefined) => {
+    if (!path || !existsSync(path) || seen.has(path)) return
+    seen.add(path)
+    artifacts.push({ label, path })
+  }
+
+  const latestPath = resolve(verificationRoot, 'latest.json')
+  add('ui-verification/latest.json', latestPath)
+  try {
+    const latest = JSON.parse(await readUtf8IfExists(latestPath)) as Record<string, unknown>
+    const screenshot = typeof latest.screenshot === 'string' ? latest.screenshot : ''
+    const readJson = typeof latest.read_json === 'string' ? latest.read_json : ''
+    add('latest/screenshot.png', screenshot)
+    add('latest/read.json', readJson)
+    if (screenshot) {
+      add('latest/metrics.json', screenshot.replace(/\.png$/, '.metrics.json'))
+      add('latest/meta.json', screenshot.replace(/\.png$/, '.meta.json'))
+    }
+  } catch {
+    // latest marker is optional
+  }
+
+  if (!existsSync(verificationRoot)) return artifacts
+  const relevantVerificationDirs = new Set([
+    'pdf-lab-surgical-fixture-final-decree',
+    'pdf-lab-gemini-surgical-react-measured-route',
+    'pdf-lab-gemini-surgical-react-no-oval',
+    'pdf-lab-gemini-surgical-react',
+    'pdf-lab-gemini-literal-rewrite-pass6',
+    'pdf-lab-gemini-final-visible-callout',
+  ])
+  const dirs = (await readdir(verificationRoot, { withFileTypes: true }))
+    .filter(entry => entry.isDirectory() && relevantVerificationDirs.has(entry.name))
+    .map(entry => entry.name)
+  for (const dirName of dirs) {
+    const dir = resolve(verificationRoot, dirName)
+    add(`${dirName}/latest.png`, await latestFileInDir(dir, '.png'))
+    add(`${dirName}/latest.metrics.json`, await latestFileInDir(dir, '.metrics.json'))
+    add(`${dirName}/latest.read.json`, await latestFileInDir(dir, '.read.json'))
+    add(`${dirName}/latest.meta.json`, await latestFileInDir(dir, '.meta.json'))
+  }
+
+  return artifacts
+}
+
+function summarizePdfLabJson(name: string, content: string): string {
+  if (!content) return `- ${name}: missing\n`
+  try {
+    const data = JSON.parse(content) as Record<string, any>
+    if (name.includes('workflow-manifest')) {
+      return [
+        `- ${name}: workflow manifest`,
+        `  - source_pdf: ${data.source_pdf ?? 'unknown'}`,
+        `  - preset: ${data.document_family_preset ?? 'unknown'}`,
+        `  - page_count: ${data.page_count ?? 'unknown'}`,
+        `  - candidate_page_count: ${data.candidate_inventory?.candidate_page_count ?? 'unknown'}`,
+        `  - total_elements: ${data.element_summary?.total_elements ?? 'unknown'}`,
+        `  - element_types: ${JSON.stringify(data.element_summary?.types ?? {})}`,
+        `  - artifact_gaps: ${Array.isArray(data.artifact_gaps) ? data.artifact_gaps.length : 'unknown'}`,
+      ].join('\n') + '\n'
+    }
+    if (name.includes('human-triage')) {
+      return [
+        `- ${name}: human triage queue`,
+        `  - queue length: ${Array.isArray(data.human_triage_queue) ? data.human_triage_queue.length : 'unknown'}`,
+        `  - pages_with_tasks: ${data.summary?.pages_with_tasks ?? 'unknown'}`,
+        `  - severity: ${JSON.stringify(data.summary?.tasks_by_severity ?? {})}`,
+        `  - first task: ${JSON.stringify(Array.isArray(data.human_triage_queue) ? data.human_triage_queue[0] : null)}`,
+      ].join('\n') + '\n'
+    }
+    if (name.includes('full-extraction')) {
+      return [
+        `- ${name}: full extraction`,
+        `  - source_pdf: ${data.source_pdf ?? 'unknown'}`,
+        `  - page_count: ${data.page_count ?? 'unknown'}`,
+        `  - elements: ${Array.isArray(data.elements) ? data.elements.length : 'unknown'}`,
+      ].join('\n') + '\n'
+    }
+  } catch (error) {
+    return `- ${name}: failed to parse JSON (${error instanceof Error ? error.message : String(error)})\n`
+  }
+  return `- ${name}: available (${content.length} bytes)\n`
+}
+
+app.post('/api/pdf-lab/gemini-review-bundle', async (req, res) => {
+  try {
+    const now = new Date()
+    const stamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
+    const uxLabRoot = resolve(__dirname, '..')
+    const pdfOxideRoot = '/home/graham/workspace/experiments/pdf_oxide'
+    const latestVerificationPath = resolve(pdfOxideRoot, '.codex/ui-verification/latest.json')
+    const bundlePath = `/tmp/pdf-lab-gemini-review-bundle-${stamp}.md`
+    const latestBundlePath = '/tmp/pdf-lab-gemini-review-bundle-latest.md'
+    const bundleDir = `/tmp/pdf-lab-gemini-review-bundle-${stamp}`
+    const latestBundleDir = '/tmp/pdf-lab-gemini-review-bundle-latest'
+    const zipPath = `${bundleDir}.zip`
+    const latestZipPath = '/tmp/pdf-lab-gemini-review-bundle-latest.zip'
+    await mkdir(bundleDir, { recursive: true })
+
+    const files = [
+      { label: 'src/components/pdf-lab/PdfLabView.tsx', path: resolve(uxLabRoot, 'src/components/pdf-lab/PdfLabView.tsx'), lang: 'tsx' },
+      { label: 'src/components/pdf-lab/SurgicalTriageFixture.tsx', path: resolve(uxLabRoot, 'src/components/pdf-lab/SurgicalTriageFixture.tsx'), lang: 'tsx' },
+      { label: 'src/components/pdf-lab/SurgicalTriageViewport.tsx', path: resolve(uxLabRoot, 'src/components/pdf-lab/SurgicalTriageViewport.tsx'), lang: 'tsx' },
+      { label: 'src/components/datalake-explorer/PdfCanvas.tsx', path: resolve(uxLabRoot, 'src/components/datalake-explorer/PdfCanvas.tsx'), lang: 'tsx' },
+      { label: 'src/components/common/LeftPane.tsx', path: resolve(uxLabRoot, 'src/components/common/LeftPane.tsx'), lang: 'tsx' },
+      { label: 'src/components/common/ReviewBundleButton.tsx', path: resolve(uxLabRoot, 'src/components/common/ReviewBundleButton.tsx'), lang: 'tsx' },
+      { label: 'src/components/pdf-lab/PdfLabView.css', path: resolve(uxLabRoot, 'src/components/pdf-lab/PdfLabView.css'), lang: 'css' },
+      { label: 'src/components/pdf-lab/surgical-triage.design-manifest.yml', path: resolve(uxLabRoot, 'src/components/pdf-lab/surgical-triage.design-manifest.yml'), lang: 'yaml' },
+      { label: 'src/App.tsx', path: resolve(uxLabRoot, 'src/App.tsx'), lang: 'tsx' },
+      { label: 'server/index.ts', path: resolve(uxLabRoot, 'server/index.ts'), lang: 'ts' },
+      { label: 'component-manifest.json', path: resolve(uxLabRoot, 'component-manifest.json'), lang: 'json' },
+    ]
+
+    const jsonFiles = [
+      { label: 'public/pdf-lab-nist-workflow-manifest.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-workflow-manifest.json') },
+      { label: 'public/pdf-lab-nist-human-triage-queue.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-human-triage-queue.json') },
+      { label: 'public/pdf-lab-nist-full-extraction.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-full-extraction.json') },
+    ]
+
+    const latestVerification = await readUtf8IfExists(latestVerificationPath)
+    let latestVerificationJson: Record<string, unknown> | null = null
+    try {
+      latestVerificationJson = latestVerification ? JSON.parse(latestVerification) as Record<string, unknown> : null
+    } catch {
+      latestVerificationJson = null
+    }
+
+    const sourceSections = await Promise.all(files.map(async file => (
+      fencedCode(file.label, truncateForBundle(await readUtf8IfExists(file.path)), file.lang)
+    )))
+    const dataSummary = (await Promise.all(jsonFiles.map(async file => (
+      summarizePdfLabJson(file.label, await readUtf8IfExists(file.path))
+    )))).join('')
+    const gitDiff = await execAsync('git diff -- packages/ux-lab/src/App.tsx packages/ux-lab/src/components/pdf-lab/PdfLabView.tsx packages/ux-lab/src/components/pdf-lab/SurgicalTriageFixture.tsx packages/ux-lab/src/components/pdf-lab/SurgicalTriageViewport.tsx packages/ux-lab/src/components/pdf-lab/PdfLabView.css packages/ux-lab/src/components/pdf-lab/surgical-triage.design-manifest.yml packages/ux-lab/src/components/datalake-explorer/PdfCanvas.tsx packages/ux-lab/src/components/common/LeftPane.tsx packages/ux-lab/src/components/common/ReviewBundleButton.tsx packages/ux-lab/server/index.ts packages/ux-lab/component-manifest.json', {
+      cwd: PI_MONO,
+      maxBuffer: 8 * 1024 * 1024,
+    }).then(result => result.stdout).catch(error => `git diff unavailable: ${error instanceof Error ? error.message : String(error)}`)
+
+    const requestBody = req.body && typeof req.body === 'object' ? req.body as Record<string, unknown> : {}
+    const screenshotPath = typeof latestVerificationJson?.screenshot === 'string'
+      ? latestVerificationJson.screenshot
+      : typeof latestVerificationJson?.path === 'string'
+        ? latestVerificationJson.path
+        : 'unknown'
+    const verificationArtifacts = await collectPdfLabVerificationArtifacts(pdfOxideRoot)
+    const findArtifact = (predicate: (artifact: { label: string; path: string }) => boolean): string | null => (
+      verificationArtifacts.find(predicate)?.path ?? null
+    )
+    const productionScreenshot = screenshotPath !== 'unknown' ? screenshotPath : findArtifact(artifact => artifact.label.includes('pdf-lab-gemini-surgical-react-measured-route') && artifact.label.endsWith('.png'))
+    const fixtureScreenshot = findArtifact(artifact => artifact.label.includes('pdf-lab-surgical-fixture-final-decree') && artifact.label.endsWith('.png'))
+    const productionMetricsPath = findArtifact(artifact => artifact.label.includes('pdf-lab-gemini-surgical-react-measured-route') && artifact.label.endsWith('.metrics.json'))
+    const fixtureMetricsPath = findArtifact(artifact => artifact.label.includes('pdf-lab-surgical-fixture-final-decree') && artifact.label.endsWith('.metrics.json'))
+    const productionReadPath = findArtifact(artifact => artifact.label.includes('pdf-lab-gemini-surgical-react-measured-route') && artifact.label.endsWith('.read.json'))
+    const fixtureReadPath = findArtifact(artifact => artifact.label.includes('pdf-lab-surgical-fixture-final-decree') && artifact.label.endsWith('.read.json'))
+    const visualMetrics = {
+      generatedAt: now.toISOString(),
+      latestVerificationPath,
+      latestVerification: latestVerificationJson,
+      production: {
+        route: 'http://localhost:3002/#pdf-lab',
+        screenshot: productionScreenshot,
+        metrics: productionMetricsPath ? JSON.parse(await readUtf8IfExists(productionMetricsPath)) : null,
+        accessibilityRead: productionReadPath ? JSON.parse(await readUtf8IfExists(productionReadPath)) : null,
+      },
+      cleanRoomFixture: {
+        route: 'http://localhost:3002/#pdf-lab/surgical-fixture',
+        screenshot: fixtureScreenshot,
+        metrics: fixtureMetricsPath ? JSON.parse(await readUtf8IfExists(fixtureMetricsPath)) : null,
+        accessibilityRead: fixtureReadPath ? JSON.parse(await readUtf8IfExists(fixtureReadPath)) : null,
+      },
+    }
+
+    const markdown = `# PDF Lab Gemini Production Transplant Escalation Bundle
+
+Generated: ${now.toISOString()}
+
+## Request to Gemini
+
+Return complete production React/TypeScript/CSS code for \`http://localhost:3002/#pdf-lab\`.
+
+Do not return only rationale. Do not leave visual-critical gaps for Codex to infer. If a file must be replaced, provide the full replacement. If a patch is sufficient, provide exact patch hunks.
+
+The clean-room fixture now passes the Final Design Decree metrics, but the production \`#pdf-lab\` transplant remains visually wrong. Codex must stop inventing integration details and needs Gemini to provide the missing production code.
+
+## Final Design Decree
+
+- Active evidence BBox center: 55–65% viewport height.
+- Context: dim surrounding PDF, do not crop away orientation context.
+- Masking: CSS hard cutout using \`mask-image: radial-gradient(ellipse 220px 160px at var(--bbox-center-x) var(--bbox-center-y), transparent 99%, black 100%)\`.
+- HUD: right-margin satellite preferred, left/below fallback if needed, 0px evidence overlap.
+- Chrome: 36px ultra-slim instrument header with progress, Gemini Bundle, Audit / Repair ghost buttons; footer hotkeys.
+- Connector: yellow dot and 1px line \`rgba(245, 158, 11, 0.4)\`.
+- BBox: persistent 2px \`#8b5cf6\` border.
+- Reference viewport: 1280 × 813 @ DPR 1.
+- Implementation sequence: standalone fixture first, then production transplant.
+- Gate: bbox center 60% ±5%, HUD max width 420px, evidence occlusion 0px, dim opacity 85%, 600ms \`cubic-bezier(0.22, 1, 0.36, 1)\`.
+
+## Active UI Context
+
+- Route: ${String(requestBody.route ?? 'http://localhost:3002/#pdf-lab')}
+- Surface: ${String(requestBody.surface ?? 'pdf-lab')}
+- Active task id: ${String(requestBody.activeTaskId ?? 'unknown')}
+- Active page: ${String(requestBody.activePage ?? 'unknown')}
+- Workflow task index: ${String(requestBody.workflowTaskIndex ?? 'unknown')}
+- Latest CDP verification marker: ${latestVerificationPath}
+- Latest screenshot artifact: ${screenshotPath}
+- Zip bundle path: ${zipPath}
+
+## Attached Artifacts in Zip
+
+The zip intentionally contains **five files maximum**:
+
+1. \`README.md\` — escalation request and design contract.
+2. \`source-and-data.md\` — relevant code, diff, and real data summary.
+3. \`visual-metrics.json\` — production/fixture metrics and accessibility reads.
+4. \`production-current.png\` — current production \`#pdf-lab\` screenshot.
+5. \`clean-room-fixture.png\` — clean-room fixture screenshot, when available.
+
+## What Is Broken
+
+- \`#pdf-lab/surgical-fixture\` is a clean-room proof and is not the production route.
+- \`#pdf-lab\` still uses a hybrid real \`PdfCanvas\` path and does not match the fixture visual contract.
+- The production camera/mask coordinate mapping is unresolved.
+- The production HUD placement is not derived from measured whitespace zones.
+- Codex repeatedly drifted by adapting the design into the old app structure.
+
+## Failure Taxonomy
+
+- SOURCE_DRIFT: production route diverges from Final Design Decree.
+- HYBRIDIZATION: clean-room fixture and production \`PdfCanvas\` behavior are mixed.
+- MISFRAMING: production route previously measured bbox center outside the 55–65% gate.
+- MASK_FAILURE: previous duplicate oval wrapper mask was introduced and removed.
+- FALSE_VISUAL_CLAIM: fixture proof was previously reported while production route remained wrong.
+
+## Specific Missing Code Gemini Must Provide
+
+1. Exact production \`PdfLabView\` render path for active surgical triage.
+2. Exact \`PdfCanvas\` replacement/adaptation for CSS mask center mapping after transform.
+3. Exact camera transform math from normalized PDF bbox to viewport target at 60% Y.
+4. Exact satellite HUD placement algorithm: right, left, below fallback with 0px overlap.
+5. Exact CSS for the production route using the Final Design Decree.
+6. Exact handling for real NIST/pdf_oxide workflow data.
+7. Exact preservation points for review-save and ArangoDB audit hooks.
+
+## Expected Gemini Output
+
+Return:
+
+1. Complete production React/TypeScript/CSS code or exact patches.
+2. File-by-file instructions.
+3. Browser-measurable acceptance criteria.
+4. Any conflicts where the current \`PdfCanvas\` architecture prevents the design.
+5. Do not ask Codex to infer visual-critical geometry.
+
+## Required Data Flow
+
+The real workflow is:
+
+1. Agentic sweep finds candidate pages containing pdf_oxide-supported elements.
+2. pdf_oxide deterministically extracts those pages.
+3. Agent second pass compares rendered evidence against deterministic extraction.
+4. Pages/elements that reach ~95% parity pass without human triage.
+5. Only remaining ambiguities become human cards.
+6. After triage, run full pdf_oxide extraction for the complete PDF.
+
+## ArangoDB / Persistence Hooks
+
+Existing backend persistence uses \`proxyPost('/upsert', ...)\` into:
+
+- \`pdf_lab_reviewed_extractions\`
+- \`pdf_lab_review_edit_events\`
+
+Do not remove these hooks. If you propose new backend changes, preserve existing review-save behavior and event auditability.
+
+## Current Screenshot/Metric Notes
+
+The zip contains CDP screenshots and metrics under \`artifacts/\`, including:
+
+- Clean-room fixture proof route: \`#pdf-lab/surgical-fixture\`
+- Production route attempts: \`#pdf-lab\`
+- Latest \`.codex/ui-verification/latest.json\`
+
+`
+    const sourceAndDataMarkdown = `# PDF Lab Source and Data Bundle
+
+Generated: ${now.toISOString()}
+
+## Real Data Summary
+
+${dataSummary}
+
+## Current Git Diff
+
+\`\`\`diff
+${gitDiff.trimEnd()}
+\`\`\`
+
+## Relevant Source Code
+
+${sourceSections.join('\n')}
+`
+
+    await writeFile(bundlePath, markdown, 'utf-8')
+    await writeFile(latestBundlePath, markdown, 'utf-8')
+    await writeFile(resolve(bundleDir, 'README.md'), markdown, 'utf-8')
+    await writeFile(resolve(bundleDir, 'source-and-data.md'), sourceAndDataMarkdown, 'utf-8')
+    await writeFile(resolve(bundleDir, 'visual-metrics.json'), JSON.stringify(visualMetrics, null, 2), 'utf-8')
+    const copiedArtifacts: string[] = ['README.md', 'source-and-data.md', 'visual-metrics.json']
+    if (productionScreenshot && existsSync(productionScreenshot)) {
+      await copyFile(productionScreenshot, resolve(bundleDir, 'production-current.png'))
+      copiedArtifacts.push('production-current.png')
+    }
+    if (fixtureScreenshot && existsSync(fixtureScreenshot)) {
+      await copyFile(fixtureScreenshot, resolve(bundleDir, 'clean-room-fixture.png'))
+      copiedArtifacts.push('clean-room-fixture.png')
+    }
+    await writeFile(resolve('/tmp', `pdf-lab-gemini-review-bundle-${stamp}.index.json`), JSON.stringify({
+      generatedAt: now.toISOString(),
+      markdown: bundlePath,
+      latestMarkdown: latestBundlePath,
+      zip: zipPath,
+      latestZip: latestZipPath,
+      route: String(requestBody.route ?? 'http://localhost:3002/#pdf-lab'),
+      screenshot: screenshotPath,
+      artifacts: copiedArtifacts,
+    }, null, 2), 'utf-8')
+    await execAsync(`rm -f ${shellQuote(zipPath)} ${shellQuote(latestZipPath)} && cd ${shellQuote(bundleDir)} && zip -qr ${shellQuote(zipPath)} .`)
+    await execAsync(`rm -rf ${shellQuote(latestBundleDir)} && cp -a ${shellQuote(bundleDir)} ${shellQuote(latestBundleDir)} && cp ${shellQuote(zipPath)} ${shellQuote(latestZipPath)}`)
+    await execAsync(`(xclip -selection clipboard < ${shellQuote(bundlePath)} >/dev/null 2>&1 &)`)
+
+    return res.json({
+      ok: true,
+      copied: true,
+      path: bundlePath,
+      latestPath: latestBundlePath,
+      dir: bundleDir,
+      latestDir: latestBundleDir,
+      zipPath,
+      latestZipPath,
+      bytes: Buffer.byteLength(markdown, 'utf-8'),
+      screenshot: screenshotPath,
+      artifacts: copiedArtifacts,
+    })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to generate Gemini review bundle',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
 app.post('/api/pdf-lab/review-save', async (req, res) => {
   try {
     const {
@@ -1784,6 +2180,44 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
+app.get('/api/scillm/{*path}', (req, res) => {
+  const scillmPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
+  const url = new URL(`${SCILLM_URL}${scillmPath}`)
+  if (req.url.includes('?')) {
+    url.search = req.url.slice(req.url.indexOf('?'))
+  }
+
+  const proxyReq = httpRequest(
+    {
+      hostname: url.hostname,
+      port: url.port,
+      path: `${url.pathname}${url.search}`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
+        'X-Caller-Skill': 'ux-lab',
+      },
+    },
+    (proxyRes) => {
+      res.status(proxyRes.statusCode ?? 500)
+      const chunks: Buffer[] = []
+      proxyRes.on('data', (chunk: Buffer) => chunks.push(chunk))
+      proxyRes.on('end', () => {
+        const data = Buffer.concat(chunks).toString()
+        try {
+          res.json(JSON.parse(data))
+        } catch {
+          res.send(data)
+        }
+      })
+    }
+  )
+  proxyReq.on('error', (err) => {
+    res.status(502).json({ error: 'scillm unreachable', detail: err.message })
+  })
+  proxyReq.end()
+})
+
 // ── Batch Orchestrator State ───────────────────────────────────────────────
 // Reads state files from known orchestrators (create-qras, etc.) for dashboard
 // display. Enables "why did my batch fail" debugging and resume guidance.
@@ -1805,6 +2239,7 @@ const ORCHESTRATOR_STATE_FILES: Record<string, { path: string; resumeCmd: string
 
 const TONIGHT_ROLLOUT_STATUS_FILE = '/tmp/sparta_tonight_rollout_status.json'
 const PATCH_OUTPUT_DIR = '/tmp/create-qras-patches'
+const RELATIONSHIP_ADJUDICATION_ORCHESTRATOR = 'create-evidence-case-adjudication'
 
 type JsonObject = Record<string, any>
 
@@ -1815,6 +2250,525 @@ async function readJsonIfExists(path: string): Promise<JsonObject | null> {
   } catch {
     return null
   }
+}
+
+async function readTextIfExists(path: string): Promise<string | null> {
+  try {
+    return await readFile(path, 'utf-8')
+  } catch {
+    return null
+  }
+}
+
+function countJsonlLines(content: string | null): number {
+  if (!content) return 0
+  return content.split(/\r?\n/).filter((line) => line.trim().length > 0).length
+}
+
+function extractQuotedFlag(script: string | null, flag: string): string | null {
+  if (!script) return null
+  const pattern = new RegExp(`${flag}\\s+["']([^"']+)["']`)
+  return script.match(pattern)?.[1] || null
+}
+
+function extractArgValue(args: string[], flag: string): string | null {
+  const index = args.indexOf(flag)
+  if (index < 0 || index + 1 >= args.length) return null
+  return args[index + 1] || null
+}
+
+function parseRunStartIso(log: string | null): string | null {
+  const match = log?.match(/^START\s+([^\s]+)\s+/m)
+  return match?.[1] || null
+}
+
+function parseStartedAtSeconds(log: string | null): number | null {
+  const iso = parseRunStartIso(log)
+  if (!iso) return null
+  const parsed = Date.parse(iso)
+  return Number.isFinite(parsed) ? Math.floor(parsed / 1000) : null
+}
+
+function isPidAlive(pid: number, expectedCommand?: string): boolean {
+  if (!Number.isFinite(pid) || pid <= 0) return false
+  try {
+    process.kill(pid, 0)
+  } catch {
+    return false
+  }
+  if (!expectedCommand) return true
+  try {
+    const command = readFileSync(`/proc/${pid}/cmdline`, 'utf-8').replace(/\0/g, ' ')
+    return command.includes(expectedCommand)
+  } catch {
+    return true
+  }
+}
+
+async function newestMtimeIso(paths: string[], fallbackIso: string): Promise<string> {
+  let newest = 0
+  for (const path of paths) {
+    try {
+      const fileStat = await stat(path)
+      newest = Math.max(newest, fileStat.mtime.getTime())
+    } catch {
+      // Ignore missing optional run artifacts.
+    }
+  }
+  return newest > 0 ? new Date(newest).toISOString() : fallbackIso
+}
+
+function deriveManifestJobCount(manifest: JsonObject | null): number {
+  if (Array.isArray(manifest?.jobs)) return manifest.jobs.length
+  const summary = manifest?.summary || {}
+  return Number(summary.total_jobs || summary.gated_jobs || summary.resume_jobs || 0)
+}
+
+function deriveAcceptedJobCount(manifest: JsonObject | null): number {
+  if (Array.isArray(manifest?.jobs)) return manifest.jobs.length
+  const summary = manifest?.summary || {}
+  return Number(summary.accepted_jobs || summary.total_jobs || summary.gated_jobs || 0)
+}
+
+function deriveRelationshipLogProgress(log: string | null): {
+  accepted: number
+  nonGeneration: number
+  processed: number
+  processing: number | null
+  processingEnd: number | null
+  total: number | null
+  currentItem: string | null
+} {
+  if (!log) return { accepted: 0, nonGeneration: 0, processed: 0, processing: null, processingEnd: null, total: null, currentItem: null }
+
+  let accepted = 0
+  let nonGeneration = 0
+  let processed = 0
+  let processing: number | null = null
+  let processingEnd: number | null = null
+  let total: number | null = null
+  let currentItem: string | null = null
+
+  for (const line of log.split(/\r?\n/)) {
+    const processedMatch = line.match(/^Processed\s+(\d+)\/(\d+)\s+relationship candidates.*accepted=(\d+)\s+non_generation=(\d+)/)
+    if (processedMatch) {
+      processed = Math.max(processed, Number(processedMatch[1] || 0))
+      total = Number(processedMatch[2] || total || 0) || total
+      accepted = Math.max(accepted, Number(processedMatch[3] || 0))
+      nonGeneration = Math.max(nonGeneration, Number(processedMatch[4] || 0))
+      currentItem = line
+      continue
+    }
+    const pooledMatch = line.match(/^Processing pooled candidates\s+(\d+)-(\d+)\/(\d+)\s+via\s+(.+)$/)
+    if (pooledMatch) {
+      processing = Number(pooledMatch[1] || 0) || processing
+      processingEnd = Number(pooledMatch[2] || 0) || processingEnd
+      total = Number(pooledMatch[3] || total || 0) || total
+      currentItem = line
+      continue
+    }
+    const acceptedMatch = line.match(/^Accepted\s+(\d+)\/(\d+)\s+candidate\s+(.+?)(?:\s+in\s+[\d.]+s)?$/)
+    if (acceptedMatch) {
+      processed = Math.max(processed, Number(acceptedMatch[1] || 0))
+      total = Number(acceptedMatch[2] || total || 0) || total
+      currentItem = acceptedMatch[3] || currentItem
+      continue
+    }
+    const erroredMatch = line.match(/^Errored\s+(\d+)\/(\d+)\s+candidate\s+(.+?):\s+(.+)$/)
+    if (erroredMatch) {
+      processed = Math.max(processed, Number(erroredMatch[1] || 0))
+      total = Number(erroredMatch[2] || total || 0) || total
+      currentItem = `${erroredMatch[3]}: ${erroredMatch[4]}`
+      continue
+    }
+    const processingMatch = line.match(/^Processing\s+(\d+)\/(\d+)\s+candidate\s+(.+)$/)
+    if (processingMatch) {
+      processing = Number(processingMatch[1] || 0) || processing
+      processingEnd = processing
+      total = Number(processingMatch[2] || total || 0) || total
+      currentItem = processingMatch[3] || currentItem
+    }
+  }
+
+  return { accepted, nonGeneration, processed, processing, processingEnd, total, currentItem }
+}
+
+function parseRelationshipWatchdogReport(report: string | null): {
+  accepted: number
+  nonGeneration: number
+  processed: number
+  liveInFlight: number | null
+  staleActiveCalls: number | null
+  latestProcessed: string | null
+} {
+  if (!report) return { accepted: 0, nonGeneration: 0, processed: 0, liveInFlight: null, staleActiveCalls: null, latestProcessed: null }
+  const accepted = Number(report.match(/\baccepted=(\d+)/)?.[1] || 0)
+  const nonGeneration = Number(report.match(/\bnon_generation_lines=(\d+)/)?.[1] || 0)
+  const processed = Number(report.match(/\bprogress_count=(\d+)/)?.[1] || 0)
+  const latestProcessed = report.match(/^latest_processed=(.+)$/m)?.[1] || null
+  const activeJson = report.match(/^active_calls=(\{.+\})$/m)?.[1] || null
+  let liveInFlight: number | null = null
+  let staleActiveCalls: number | null = null
+  if (activeJson) {
+    try {
+      const parsed = JSON.parse(activeJson) as JsonObject
+      liveInFlight = Number(parsed.live_in_flight ?? parsed.active_calls ?? 0)
+      staleActiveCalls = Number(parsed.stale_active_calls ?? 0)
+    } catch {
+      liveInFlight = null
+      staleActiveCalls = null
+    }
+  }
+  return { accepted, nonGeneration, processed, liveInFlight, staleActiveCalls, latestProcessed }
+}
+
+function relationshipLaunchPathForOutput(outputManifestPath: string): string | null {
+  const match = outputManifestPath.match(/^(.*\/)?relationship_pooled_full_accepted_(\d{8}_\d{6})\.json$/)
+  if (!match) return null
+  return `${match[1] || ''}relationship_pooled_full_${match[2]}.launch.json`
+}
+
+function relationshipStatePathForOutput(outputManifestPath: string): string | null {
+  if (!outputManifestPath.endsWith('.json')) return null
+  return outputManifestPath.replace(/\.json$/, '_state.json')
+}
+
+async function countLlmCallsForItemIds(itemIds: string[]): Promise<{ total: number; completed: number; failed: number }> {
+  if (itemIds.length === 0) return { total: 0, completed: 0, failed: 0 }
+  try {
+    const result = await proxyPost('/query', {
+      aql: `FOR doc IN llm_call_log
+            FILTER doc.metadata.item_id IN @item_ids
+            COLLECT status = doc.status WITH COUNT INTO count
+            RETURN { status, count }`,
+      bind_vars: { item_ids: itemIds },
+    }, 10_000)
+    const rows = Array.isArray(result?.documents) ? result.documents : []
+    let total = 0
+    let completed = 0
+    let failed = 0
+    for (const row of rows) {
+      const count = Number(row?.count || 0)
+      const status = String(row?.status || '').toLowerCase()
+      total += count
+      if (status === 'ok' || status === 'success' || status === 'completed') completed += count
+      if (status === 'error' || status === 'failed') failed += count
+    }
+    return { total, completed, failed }
+  } catch {
+    return { total: 0, completed: 0, failed: 0 }
+  }
+}
+
+async function discoverRelationshipAdjudicationOrchestrators(): Promise<Array<{
+  name: string
+  state: Record<string, unknown>
+  stateFile: string
+  resumeCmd: string
+  lastModified: string
+}>> {
+  const rows: Array<{
+    name: string
+    state: Record<string, unknown>
+    stateFile: string
+    resumeCmd: string
+    lastModified: string
+  }> = []
+  const seen = new Set<string>()
+
+  async function pushRelationshipRow({
+    stamp,
+    pid,
+    running,
+    candidateManifestPath,
+    outputManifestPath,
+    nonGenerationPath,
+    stateFile,
+    resumeCmd,
+    logPath,
+    reportPath,
+    activeMessageFallback,
+    startedAtOverride,
+  }: {
+    stamp: string
+    pid: number
+    running: boolean
+    candidateManifestPath: string
+    outputManifestPath: string
+    nonGenerationPath: string
+    stateFile: string
+    resumeCmd: string
+    logPath?: string
+    reportPath?: string
+    activeMessageFallback: string
+    startedAtOverride?: number | null
+	  }) {
+	    const key = `${candidateManifestPath}\n${outputManifestPath}`
+	    if (seen.has(key)) return
+	    seen.add(key)
+	
+	    const launch = await readJsonIfExists(relationshipLaunchPathForOutput(outputManifestPath) || '')
+	    const resolvedLogPath = logPath || (typeof launch?.log === 'string' ? launch.log : undefined)
+	    const resolvedReportPath = reportPath || (typeof launch?.report === 'string' ? launch.report : undefined)
+	    const resolvedPid = pid || Number(launch?.pid || 0)
+	    const durableStatePath = relationshipStatePathForOutput(outputManifestPath)
+	    const durableState = durableStatePath ? await readJsonIfExists(durableStatePath) : null
+	    const hasCanonicalState = Boolean(durableState)
+	    const activeScillmBatchPath = typeof durableState?.active_scillm_batch_path === 'string'
+	      ? durableState.active_scillm_batch_path
+	      : null
+	    const activeScillmProgress = {
+	      completed: Number(durableState?.active_scillm_batch_completed || 0),
+	      failed: Number(durableState?.active_scillm_batch_failed || 0),
+	      resolved: Number(durableState?.active_scillm_batch_resolved || 0),
+	      total: Number(durableState?.active_scillm_batch_total || 0),
+	    }
+	    const log = resolvedLogPath ? await readTextIfExists(resolvedLogPath) : null
+	    const report = resolvedReportPath ? await readTextIfExists(resolvedReportPath) : null
+	    const candidateManifest = await readJsonIfExists(candidateManifestPath)
+	    const acceptedManifest = await readJsonIfExists(outputManifestPath)
+	    const nonGenerationLines = countJsonlLines(await readTextIfExists(nonGenerationPath))
+	    const logProgress = deriveRelationshipLogProgress(log)
+	    const watchdog = parseRelationshipWatchdogReport(report)
+	    const totalJobs = Number(durableState?.relationship_jobs || durableState?.total_jobs || 0) || deriveManifestJobCount(candidateManifest) || logProgress.total || 0
+	    const itemIds = deriveManifestItemIds(candidateManifest)
+	    const callCounts = hasCanonicalState
+	      ? {
+	        total: activeScillmProgress.total,
+	        completed: activeScillmProgress.completed,
+	        failed: activeScillmProgress.failed,
+	      }
+	      : await countLlmCallsForItemIds(itemIds)
+	    const acceptedJobs = hasCanonicalState
+	      ? Number(durableState?.accepted_jobs || 0)
+	      : Math.max(deriveAcceptedJobCount(acceptedManifest), logProgress.accepted, watchdog.accepted)
+	    const skippedJobs = hasCanonicalState
+	      ? Number(durableState?.non_generation_outcomes || 0)
+	      : Math.max(nonGenerationLines, logProgress.nonGeneration, watchdog.nonGeneration)
+	    const completedJobs = hasCanonicalState
+	      ? Math.min(totalJobs || Number(durableState?.visible_completed_jobs || durableState?.completed_jobs || 0), Number(durableState?.visible_completed_jobs || durableState?.completed_jobs || 0))
+	      : Math.min(
+	        totalJobs || acceptedJobs + skippedJobs,
+	        Math.max(Number(durableState?.completed_jobs || 0), logProgress.processed, watchdog.processed, acceptedJobs + skippedJobs),
+	      )
+	    const startedAt = startedAtOverride || parseStartedAtSeconds(log)
+	    const fallbackModified = new Date().toISOString()
+	    const lastModified = running
+	      ? fallbackModified
+	      : await newestMtimeIso([stateFile, resolvedLogPath || '', resolvedReportPath || '', outputManifestPath, nonGenerationPath], fallbackModified)
+	    const progressPct = hasCanonicalState && durableState?.progress_pct != null
+	      ? Number(durableState.progress_pct)
+	      : totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 0
+	    const terminalLogLine = log?.trim().split(/\r?\n/).reverse().find((line) => line.trim().length > 0) || null
+	    const durableStatus = typeof durableState?.status === 'string' ? durableState.status : null
+	    const status = running || durableStatus === 'running'
+	      ? 'running'
+	      : durableStatus === 'completed' || acceptedManifest
+	        ? 'completed'
+	        : 'stalled'
+	    const activeMessage = hasCanonicalState
+	      ? (
+	        (typeof durableState?.failure_report === 'string' ? durableState.failure_report : null) ||
+	        (typeof durableState?.error === 'string' ? `Failed: ${durableState.error}` : null) ||
+	        (typeof durableState?.current_item === 'string' ? durableState.current_item : null) ||
+	        activeMessageFallback
+	      )
+	      : (
+	        (!running && !acceptedManifest && terminalLogLine ? `Exited before manifest write: ${terminalLogLine}` : null) ||
+	        watchdog.latestProcessed ||
+	        (logProgress.currentItem
+	          ? `${logProgress.processing && logProgress.total ? `Processing ${logProgress.processing}${logProgress.processingEnd && logProgress.processingEnd !== logProgress.processing ? `-${logProgress.processingEnd}` : ''}/${logProgress.total}: ` : ''}${logProgress.currentItem}`
+	          : null) ||
+	        report?.match(/Status:\s+([^\n]+)/)?.[0] ||
+	        log?.trim().split(/\r?\n/).slice(-1)[0] ||
+	        activeMessageFallback
+	      )
+
+    rows.push({
+      name: RELATIONSHIP_ADJUDICATION_ORCHESTRATOR,
+      state: {
+        status,
+        phase: 'relationship adjudication',
+        current_item: activeMessage,
+        last_message: activeMessage,
+        manifest_path: candidateManifestPath,
+        candidate_manifest_path: candidateManifestPath,
+	        output_manifest_path: outputManifestPath,
+	        non_generation_outcomes_path: nonGenerationPath,
+	        durable_state_path: durableStatePath,
+	        journal_path: typeof durableState?.journal_path === 'string' ? durableState.journal_path : null,
+	        active_scillm_batch_path: activeScillmBatchPath,
+	        active_scillm_batch_completed: activeScillmProgress.completed,
+	        active_scillm_batch_failed: activeScillmProgress.failed,
+	        active_scillm_batch_total: activeScillmProgress.total,
+	        monitor_report_path: resolvedReportPath,
+	        started_at: startedAt || undefined,
+	        total_jobs: totalJobs,
+	        relationship_jobs: totalJobs,
+	        completed_jobs: completedJobs,
+	        successful_jobs: acceptedJobs,
+	        stored_qras: deriveAcceptedJobCount(acceptedManifest),
+	        accepted_jobs: acceptedJobs,
+	        skipped_jobs: skippedJobs,
+	        failed_jobs: 0,
+	        pending_jobs: totalJobs > 0 ? Math.max(totalJobs - completedJobs, 0) : null,
+	        progress_pct: progressPct,
+	        execution_mode: 'create-evidence-case',
+	        active_batch_id: `relationship-adjudication-${stamp.replace('_', '-')}`,
+	        relationship_batch_id: `relationship-adjudication-${stamp.replace('_', '-')}`,
+	        llm_calls_started: callCounts.total,
+	        llm_calls_completed: callCounts.completed,
+	        llm_calls_failed: callCounts.failed,
+	        llm_calls_in_flight: Number(durableState?.llm_calls_in_flight ?? watchdog.liveInFlight ?? 0),
+	        concurrency_limit: 16,
+	        stale_active_calls: watchdog.staleActiveCalls ?? 0,
+	        failure_report: typeof durableState?.failure_report === 'string' ? durableState.failure_report : null,
+	        pid: resolvedPid || null,
+	        watchdog_pid: Number(launch?.watchdog_pid || 0) || null,
+	        log_path: resolvedLogPath,
+	      },
+      stateFile,
+      resumeCmd,
+      lastModified,
+    })
+  }
+
+  try {
+    const procEntries = await readdir('/proc')
+    for (const entry of procEntries) {
+      if (!/^\d+$/.test(entry)) continue
+      const pid = Number(entry)
+      let args: string[] = []
+      try {
+        args = readFileSync(`/proc/${pid}/cmdline`, 'utf-8').split('\0').filter(Boolean)
+      } catch {
+        continue
+      }
+      if (!args.some((arg) => arg.includes('batch_evidence_cases.py'))) continue
+      if (!args.includes('relationship-manifest')) continue
+      const candidateManifestPath = extractArgValue(args, '--candidate-manifest')
+      const outputManifestPath = extractArgValue(args, '--output-manifest')
+      const nonGenerationPath = extractArgValue(args, '--non-generation-outcomes')
+      if (!candidateManifestPath || !outputManifestPath || !nonGenerationPath) continue
+      const stamp =
+        outputManifestPath.match(/resume_(\d{8}_\d{4})/)?.[1] ||
+        candidateManifestPath.match(/resume_(\d{8}_\d{4})/)?.[1] ||
+        `pid_${pid}`
+      const inferredLogPath = stamp.startsWith('pid_') ? undefined : `/tmp/sparta_qra_relationship_adjudication_resume_${stamp}.log`
+      const inferredReportPath = stamp.startsWith('pid_') ? undefined : `/tmp/sparta_qra_relationship_adjudication_resume_${stamp}_report.txt`
+      await pushRelationshipRow({
+        stamp,
+        pid,
+        running: isPidAlive(pid),
+        candidateManifestPath,
+        outputManifestPath,
+        nonGenerationPath,
+        stateFile: `/proc/${pid}/cmdline`,
+        resumeCmd: args.join(' '),
+        logPath: inferredLogPath,
+        reportPath: inferredReportPath,
+        activeMessageFallback: `relationship-manifest production pid=${pid}`,
+      })
+    }
+  } catch {
+    // /proc is best-effort; wrapper scripts below remain the fallback.
+  }
+
+  const launchDirs = [
+    '/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan',
+  ]
+  for (const launchDir of launchDirs) {
+    let launchFiles: string[] = []
+    try {
+      launchFiles = await readdir(launchDir)
+    } catch {
+      launchFiles = []
+    }
+    const launchStamps = launchFiles
+      .map((fileName) => fileName.match(/^relationship_pooled_full_(\d{8}_\d{6})\.launch\.json$/)?.[1])
+      .filter((stamp): stamp is string => Boolean(stamp))
+      .sort()
+      .reverse()
+
+    for (const stamp of launchStamps.slice(0, 3)) {
+      const launchPath = `${launchDir}/relationship_pooled_full_${stamp}.launch.json`
+      const launch = await readJsonIfExists(launchPath)
+      const candidateManifestPath = typeof launch?.candidate === 'string' ? launch.candidate : ''
+      const outputManifestPath = typeof launch?.accepted === 'string' ? launch.accepted : ''
+      const nonGenerationPath = typeof launch?.non_generation === 'string' ? launch.non_generation : ''
+      if (!candidateManifestPath || !outputManifestPath || !nonGenerationPath) continue
+      const pid = Number(launch?.pid || 0)
+      const runner = typeof launch?.runner === 'string' ? launch.runner : launchPath
+      await pushRelationshipRow({
+        stamp,
+        pid,
+        running: isPidAlive(pid, runner),
+        candidateManifestPath,
+        outputManifestPath,
+        nonGenerationPath,
+        stateFile: launchPath,
+        resumeCmd: runner,
+        logPath: typeof launch?.log === 'string' ? launch.log : undefined,
+        reportPath: typeof launch?.report === 'string' ? launch.report : undefined,
+        activeMessageFallback: 'relationship-manifest production · launch file discovered',
+        startedAtOverride: typeof launch?.timestamp === 'string' ? null : null,
+      })
+    }
+  }
+
+  let tmpFiles: string[] = []
+  try {
+    tmpFiles = await readdir('/tmp')
+  } catch {
+    tmpFiles = []
+  }
+
+  const runScripts = tmpFiles
+    .map((fileName) => fileName.match(/^run_sparta_qra_relationship_adjudication_resume_(\d{8}_\d{4})\.sh$/)?.[1])
+    .filter((stamp): stamp is string => Boolean(stamp))
+    .sort()
+    .reverse()
+
+  for (const stamp of runScripts.slice(0, 3)) {
+    const runScriptPath = `/tmp/run_sparta_qra_relationship_adjudication_resume_${stamp}.sh`
+    const pidFile = `/tmp/sparta_qra_relationship_adjudication_resume_${stamp}.pid`
+    const logPath = `/tmp/sparta_qra_relationship_adjudication_resume_${stamp}.log`
+    const reportPath = `/tmp/sparta_qra_relationship_adjudication_resume_${stamp}_report.txt`
+    const script = await readTextIfExists(runScriptPath)
+    const candidateManifestPath =
+      extractQuotedFlag(script, '--candidate-manifest') ||
+      `/tmp/sparta_qra_relationship_candidates_resume_${stamp}.json`
+    const outputManifestPath =
+      extractQuotedFlag(script, '--output-manifest') ||
+      `/tmp/sparta_qra_relationship_adjudicated_resume_${stamp}.json`
+    const nonGenerationPath =
+      extractQuotedFlag(script, '--non-generation-outcomes') ||
+      `/tmp/sparta_qra_relationship_non_generation_resume_${stamp}.jsonl`
+    const pidText = await readTextIfExists(pidFile)
+    const pid = Number(pidText?.trim() || 0)
+    await pushRelationshipRow({
+      stamp,
+      pid,
+      running: isPidAlive(pid, runScriptPath),
+      candidateManifestPath,
+      outputManifestPath,
+      nonGenerationPath,
+      stateFile: runScriptPath,
+      resumeCmd: runScriptPath,
+      logPath,
+      reportPath,
+      activeMessageFallback: 'relationship-manifest production · waiting for first progress report',
+    })
+  }
+
+  return rows
+    .sort((a, b) => {
+      const aRunning = a.state.status === 'running' ? 1 : 0
+      const bRunning = b.state.status === 'running' ? 1 : 0
+      if (aRunning !== bRunning) return bRunning - aRunning
+      return b.lastModified.localeCompare(a.lastModified)
+    })
+    .slice(0, 1)
 }
 
 function inferSiblingJsonPath(manifestPath: string, suffix: '.review.json' | '.report.json'): string {
@@ -1932,28 +2886,28 @@ function buildTailManifest(manifest: JsonObject | null, state: JsonObject | null
 function deriveChunkItemIds(chunkJobs: JsonObject[]): string[] {
   const ids = new Set<string>()
   for (const job of chunkJobs) {
-    const itemId = deriveJobItemId(job)
-    if (itemId) ids.add(itemId)
+    for (const itemId of deriveJobItemIds(job)) ids.add(itemId)
   }
   return [...ids]
 }
 
-function deriveJobItemId(job: JsonObject | null | undefined): string | null {
-  if (!job) return null
+function deriveJobItemIds(job: JsonObject | null | undefined): string[] {
+  if (!job) return []
+  const ids = new Set<string>()
+  if (typeof job.job_id === 'string' && job.job_id.length > 0) ids.add(job.job_id)
   const identity = job.identity || {}
   const sourceId = identity.source_control_id || identity.technique_id
   const targetId = identity.countermeasure_id || identity.tactic_id
-  if (sourceId && targetId) return `${sourceId}->${targetId}`
-  if (sourceId) return String(sourceId)
-  return null
+  if (sourceId && targetId) ids.add(`${sourceId}->${targetId}`)
+  if (sourceId) ids.add(String(sourceId))
+  return [...ids]
 }
 
 function deriveManifestItemIds(manifest: JsonObject | null): string[] {
   const jobs = Array.isArray(manifest?.jobs) ? manifest.jobs : []
   const ids = new Set<string>()
   for (const job of jobs) {
-    const itemId = deriveJobItemId(job)
-    if (itemId) ids.add(itemId)
+    for (const itemId of deriveJobItemIds(job)) ids.add(itemId)
   }
   return [...ids]
 }
@@ -2018,51 +2972,62 @@ app.get('/api/orchestrators', async (_req, res) => {
     }
   }
 
+  const relationshipAdjudicators = await discoverRelationshipAdjudicationOrchestrators()
+  orchestrators.push(...relationshipAdjudicators)
+
   res.json({ orchestrators })
 })
 
 app.get('/api/orchestrators/:name/detail', async (req, res) => {
   const { name } = req.params
   const config = ORCHESTRATOR_STATE_FILES[name]
-  if (!config) return res.status(404).json({ error: `Unknown orchestrator: ${name}` })
+  const relationshipAdjudicator = !config && name === RELATIONSHIP_ADJUDICATION_ORCHESTRATOR
+    ? (await discoverRelationshipAdjudicationOrchestrators())[0]
+    : null
+  if (!config && !relationshipAdjudicator) return res.status(404).json({ error: `Unknown orchestrator: ${name}` })
 
   try {
-    const state = await readJsonIfExists(config.path)
+    const state = relationshipAdjudicator?.state || (config ? await readJsonIfExists(config.path) : null)
     const manifestPath = String(state?.manifest_path || '')
     const manifest = manifestPath ? await readJsonIfExists(manifestPath) : null
-    const review = manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.review.json')) : null
-    const report = manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.report.json')) : null
+    const review = config && manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.review.json')) : null
+    const report = config && manifestPath ? await readJsonIfExists(inferSiblingJsonPath(manifestPath, '.report.json')) : null
     const supervisor = await readJsonIfExists(TONIGHT_ROLLOUT_STATUS_FILE)
-    const chunkJobs = getChunkJobs(manifest, state)
+    const chunkJobs = relationshipAdjudicator
+      ? (Array.isArray(manifest?.jobs) ? manifest.jobs.slice(0, 50) : [])
+      : getChunkJobs(manifest, state)
     const chunkItemIds = deriveChunkItemIds(chunkJobs)
     const manifestItemIds = deriveManifestItemIds(manifest)
-    const { manifest: tailManifest, diff } = buildTailManifest(manifest, state)
-    const rollout = inferRolloutSummary(state, manifest, supervisor)
+    const { manifest: tailManifest, diff } = relationshipAdjudicator
+      ? { manifest: null, diff: null }
+      : buildTailManifest(manifest, state)
+    const rollout = relationshipAdjudicator ? null : inferRolloutSummary(state, manifest, supervisor)
 
     let calls: JsonObject[] = []
+    const caller = relationshipAdjudicator ? null : 'create-qras'
     if (manifestItemIds.length > 0) {
       const result = await proxyPost('/query', {
         aql: `FOR doc IN llm_call_log
-              FILTER doc.caller == 'create-qras'
+              FILTER @caller == null OR doc.caller == @caller
               FILTER doc.metadata.item_id IN @item_ids
               SORT doc.ts DESC
               COLLECT item_id = doc.metadata.item_id INTO grouped = doc
               LET latest = FIRST(grouped)
               SORT latest.ts DESC
               RETURN latest`,
-        bind_vars: { item_ids: manifestItemIds },
+        bind_vars: { item_ids: manifestItemIds, caller },
       })
       calls = result?.documents ?? []
     } else if (state?.started_at) {
       const startedIso = new Date(Number(state.started_at) * 1000).toISOString()
       const result = await proxyPost('/query', {
         aql: `FOR doc IN llm_call_log
-              FILTER doc.caller == 'create-qras'
+              FILTER @caller == null OR doc.caller == @caller
               FILTER doc.ts >= @started_iso
               SORT doc.ts DESC
               LIMIT 250
               RETURN doc`,
-        bind_vars: { started_iso: startedIso },
+        bind_vars: { started_iso: startedIso, caller },
       })
       calls = result?.documents ?? []
     }
@@ -2087,7 +3052,7 @@ app.get('/api/orchestrators/:name/detail', async (req, res) => {
       chunk_calls: chunkCalls,
       tail_manifest: tailManifest,
       tail_diff: diff,
-      resume_cmd: config.resumeCmd,
+      resume_cmd: relationshipAdjudicator?.resumeCmd || config?.resumeCmd || null,
     })
   } catch (e) {
     res.status(502).json({ error: 'Failed to load orchestrator detail', detail: String(e) })

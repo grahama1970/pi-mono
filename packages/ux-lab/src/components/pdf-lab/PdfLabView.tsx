@@ -8,12 +8,17 @@ import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane
 import { ContextMenu, type ContextMenuItem } from '../common/ContextMenu'
 import { SharedRightPane } from '../common/SharedRightPane'
 import { EMBRY } from '../common/EmbryStyle'
+import { ReviewBundleButton } from '../common/ReviewBundleButton'
+import { SurgicalTriageFixture } from './SurgicalTriageFixture'
+import { SurgicalTriageCleanRoom } from './SurgicalTriageCleanRoom'
+import { SurgicalTriageStaticProof } from './SurgicalTriageStaticProof'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import './PdfLabView.css'
 
 interface PdfLabViewProps {
   pdfUrl?: string
   extractionUrl?: string
+  initialSubpath?: string
 }
 
 interface ExtractionData {
@@ -627,7 +632,7 @@ function formatCount(value: number | undefined): string {
   return typeof value === 'number' ? value.toLocaleString() : '—'
 }
 
-export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUrl }: PdfLabViewProps) {
+export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUrl, initialSubpath }: PdfLabViewProps) {
   useRegisterAction('pdf-lab:workflow:diagnostics', {
     app: 'pdf-lab',
     action: 'PDF_LAB_WORKFLOW_DIAGNOSTICS',
@@ -663,6 +668,18 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     action: 'PDF_LAB_WORKFLOW_SKIP',
     label: 'Skip active card',
     description: 'Skip the active PDF Lab human triage card and advance to the next card',
+  })
+  useRegisterAction('pdf-lab:workflow:previous', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_PREVIOUS',
+    label: 'Previous ambiguity card',
+    description: 'Move to the previous PDF Lab ambiguity card',
+  })
+  useRegisterAction('pdf-lab:workflow:next', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_WORKFLOW_NEXT',
+    label: 'Next ambiguity card',
+    description: 'Move to the next PDF Lab ambiguity card',
   })
   useRegisterAction('pdf-lab:workflow:agent-read', {
     app: 'pdf-lab',
@@ -1042,10 +1059,17 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     const [x1, y1, x2, y2] = activeWorkflowTaskBlock.bbox
     const width = x2 - x1
     const height = y2 - y1
-    if (width * height <= 0.45 && height <= 0.68) return activeWorkflowTaskBlock.bbox
+    if (width <= 0.55 && width * height <= 0.28 && height <= 0.68) return activeWorkflowTaskBlock.bbox
+
+    const visualWideCrop: [number, number, number, number] = [
+      x1,
+      y1,
+      Math.min(1, x1 + width * 0.62),
+      y2,
+    ]
 
     const overlappingText = workflowEvidenceLines.slice(0, 8)
-    if (overlappingText.length === 0) return activeWorkflowTaskBlock.bbox
+    if (overlappingText.length === 0) return visualWideCrop
 
     const focus = overlappingText.reduce<[number, number, number, number]>(
       (acc, block) => [
@@ -1059,7 +1083,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     return [
       Math.max(0, focus[0] - 0.025),
       Math.max(0, focus[1] - 0.025),
-      Math.min(1, focus[2] + 0.025),
+      Math.min(visualWideCrop[2], focus[2] + 0.025),
       Math.min(1, focus[3] + 0.045),
     ]
   }, [activeWorkflowTaskBlock, workflowEvidenceLines])
@@ -1073,9 +1097,9 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     activeWorkflowTaskBlock && activeWorkflowTask
       ? [{
           id: activeWorkflowTask.task_id,
-          blockId: activeWorkflowTaskBlock.id,
+          blockId: undefined,
           bbox: activeWorkflowTaskBlock.bbox,
-          title: activeWorkflowTask.human_question,
+          title: 'Agent Doubts',
           body: activeWorkflowTask.agent_reasoning,
           severity: activeWorkflowTask.severity === 'high' ? 'high' as const : 'medium' as const,
           primaryActionLabel: 'Accept',
@@ -1743,6 +1767,42 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     </div>
   ) : null
 
+  if (initialSubpath === 'surgical-fixture') {
+    return <SurgicalTriageFixture />
+  }
+
+  if (initialSubpath === 'static-proof') {
+    return <SurgicalTriageStaticProof />
+  }
+
+  if (initialSubpath === 'surgical-clean-room') {
+    return (
+      <SurgicalTriageCleanRoom
+        pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
+        pageNumber={11}
+        taskIndex={0}
+        taskCount={96}
+        task={{
+          id: 'clean-room-p12-table-uncertain',
+          question: 'Is this a real table, and are the extracted table bounds correct?',
+          reasoning: 'pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox only; cell editing belongs in Audit Mode.',
+          path: 'NIST › APPX A › GLOSSARY',
+          severity: 'high',
+          bbox: [0.158, 0.103, 0.54, 0.291],
+        }}
+        intentDraft={intentDraft}
+        onIntentChange={setIntentDraft}
+        onAccept={() => undefined}
+        onReject={() => undefined}
+        onSkip={() => undefined}
+        onPrevious={() => undefined}
+        onNext={() => undefined}
+        onOpenAudit={() => undefined}
+        onOpenQueue={() => undefined}
+      />
+    )
+  }
+
   if (workflowShellEnabled) {
     if (workflowLoading) {
       return (
@@ -1786,15 +1846,84 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     const activeWorkflowTaskPage = activeWorkflowTask?.page ?? currentPage + 1
     const activeWorkflowTaskKind = activeWorkflowTask?.kind.replace(/_/g, ' ') ?? 'triage'
     const nextWorkflowTask = workflowTasks[workflowTaskIndex + 1]
+    const workflowQueueStart = Math.max(0, workflowTaskIndex - 2)
+    const workflowQueueTasks = workflowTasks.slice(workflowQueueStart, workflowQueueStart + 10)
+    const triageProgressPercent = workflowTasks.length > 0
+      ? Math.round((workflowTaskIndex / workflowTasks.length) * 100)
+      : 100
+    const highSeverityCount = workflowTriage.summary.tasks_by_severity?.high ?? 0
+    const mediumSeverityCount = workflowTriage.summary.tasks_by_severity?.medium ?? 0
+    const surgicalTask = activeWorkflowTask
+      ? {
+          id: activeWorkflowTask.task_id,
+          pageNumber: activeWorkflowTask.page,
+          question: activeWorkflowTask.human_question,
+          reasoning: activeWorkflowTask.agent_reasoning,
+          confidence: activeWorkflowTaskBlock?.confidence ?? 0.68,
+          path: 'NIST › APPX A › GLOSSARY',
+          severity: activeWorkflowTask.severity,
+          bbox: workflowAttentionBBox ?? activeWorkflowTask.target_bbox ?? activeWorkflowTaskBlock?.bbox ?? [0, 0, 1, 1] as [number, number, number, number],
+        }
+      : null
+
+    return (
+      <SurgicalTriageCleanRoom
+        pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
+        pageNumber={workflowEvidencePage}
+        taskIndex={workflowTaskIndex}
+        taskCount={workflowTasks.length}
+        task={surgicalTask}
+        intentDraft={intentDraft}
+        onIntentChange={setIntentDraft}
+        onAccept={() => goToWorkflowTask(workflowTaskIndex + 1)}
+        onReject={() => goToWorkflowTask(workflowTaskIndex + 1)}
+        onSkip={() => goToWorkflowTask(workflowTaskIndex + 1)}
+        onPrevious={() => goToWorkflowTask(workflowTaskIndex - 1)}
+        onNext={() => goToWorkflowTask(workflowTaskIndex + 1)}
+        onOpenAudit={() => setWorkflowShellEnabled(false)}
+        onOpenQueue={() => setWorkflowStageId('human_triage')}
+      />
+    )
 
     return (
       <div data-qid="pdf-lab:agentic-workflow" style={workflowRootStyle}>
         <header style={workflowHeaderStyle}>
-          <div>
-            <div style={workflowEyebrowStyle}>PDF Lab · Surgical triage</div>
-            <div style={workflowTitleStyle}>NIST SP 800-53 Rev. 5</div>
+          <div style={workflowHeaderProgressStyle}>
+            <div style={workflowHeaderProgressTrackStyle}>
+              <div style={{ ...workflowHeaderProgressFillStyle, width: `${triageProgressPercent}%` }} />
+            </div>
+            <span style={workflowHeaderProgressLabelStyle}>
+              Card {workflowTaskIndex + 1} / {workflowTasks.length} · {workflowTriage.summary.pages_with_tasks ?? 0} pages with final ambiguities
+            </span>
+          </div>
+          <div style={workflowHeaderTitleStyle}>
+            NIST SP 800-53 Rev. 5 · Surgical Triage
           </div>
           <div style={workflowHeaderActionsStyle}>
+            <ReviewBundleButton
+              app="pdf-lab"
+              endpoint="/api/pdf-lab/gemini-review-bundle"
+              actionId="pdf-lab:workflow:gemini-review-bundle"
+              action="PDF_LAB_WORKFLOW_GEMINI_REVIEW_BUNDLE"
+              label="Gemini Bundle"
+              title="Generate a complete Gemini review/fix request bundle and copy it with xclip"
+              description="Generate a Gemini review/fix request with current PDF Lab code, workflow context, screenshots, and known design failures"
+              className="pdf-lab-btn"
+              requestBody={{
+                surface: 'pdf-lab',
+                route: 'http://localhost:3002/#pdf-lab',
+                activeTaskId: activeWorkflowTask.task_id,
+                activePage: activeWorkflowTask.page,
+                workflowTaskIndex,
+              }}
+              style={workflowReviewBundleButtonStyle}
+            />
+            <span style={{ ...workflowStatusPillStyle, color: EMBRY.green, borderColor: `${EMBRY.green}55` }}>
+              {currentGateAccuracy ? `${(currentGateAccuracy * 100).toFixed(1)}% gate` : 'gate passed'}
+            </span>
+            <span style={workflowStatusPillStyle}>
+              {highSeverityCount} high · {mediumSeverityCount} medium
+            </span>
             <details style={workflowDiagnosticsDetailsStyle}>
               <summary
                 data-qid="pdf-lab:workflow:diagnostics"
@@ -1851,129 +1980,186 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
 
         <main style={workflowMainStyle}>
           <section style={workflowEvidenceShellStyle}>
+            <div style={workflowQueuePaneFrameStyle}>
+              <LeftPane title="Ambiguities" width={220} defaultCollapsed>
+                <LeftPaneSection title={`${workflowTasks.length} cards`}>
+                  <div style={workflowQueueListStyle}>
+                    {workflowQueueTasks.map((task, offset) => {
+                      const absoluteIndex = workflowQueueStart + offset
+                      const selected = absoluteIndex === workflowTaskIndex
+                      return (
+                        <button
+                          key={task.task_id}
+                          className="pdf-lab-btn"
+                          data-qid={`pdf-lab:workflow:queue-card:${task.task_id}`}
+                          data-qs-action="PDF_LAB_WORKFLOW_QUEUE_CARD"
+                          title={`Open ambiguity ${absoluteIndex + 1} on page ${task.page}`}
+                          onClick={() => goToWorkflowTask(absoluteIndex)}
+                          style={{
+                            ...workflowQueueCardStyle,
+                            ...(selected ? workflowQueueCardActiveStyle : null),
+                          }}
+                        >
+                          <span style={workflowQueueCardPageStyle}>p{task.page}</span>
+                          <span style={workflowQueueCardBodyStyle}>
+                            <span style={workflowQueueCardKindStyle}>{task.kind.replace(/_/g, ' ')}</span>
+                            <span style={workflowQueueCardMetaStyle}>{absoluteIndex + 1}/{workflowTasks.length} · {task.severity}</span>
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </LeftPaneSection>
+              </LeftPane>
+            </div>
             <div style={workflowEvidenceHeaderStyle}>
               <span>Evidence viewport · page {workflowEvidencePage + 1}</span>
               <span>{workflowCanvasBlocks.length} real extraction overlays · next {nextWorkflowTask ? `p${nextWorkflowTask.page}` : 'complete'}</span>
             </div>
-            <div style={workflowCanvasStageStyle}>
-              <PdfCanvas
-                pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
-                pageNumber={workflowEvidencePage}
-                bboxOverlays={workflowCanvasBlocks}
-                agentNotes={[]}
-                selectedBlockId={activeWorkflowTaskBlock?.id ?? null}
-                activeTaskBlockId={activeWorkflowTaskBlock?.id ?? null}
-                onBlockClick={(blockId) => setSelectedBlockId(blockId)}
-                onCanvasClick={() => setSelectedBlockId(null)}
-                onAgentNoteClick={() => setWorkflowStageId('human_triage')}
-                zoom={1}
-                fitMode="page"
-                editMode={false}
-                autoFrameBBox={workflowAttentionBBox}
-                surgicalFocusBlockId={activeWorkflowTaskBlock?.id ?? null}
-                surgicalFocusBBox={workflowAttentionBBox}
-              />
+            <div style={workflowEvidenceBodyStyle}>
+              <div style={workflowCanvasStageStyle}>
+                <PdfCanvas
+                  pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
+                  pageNumber={workflowEvidencePage}
+                  bboxOverlays={workflowCanvasBlocks}
+                  agentNotes={workflowAgentNotes}
+                  selectedBlockId={activeWorkflowTaskBlock?.id ?? null}
+                  activeTaskBlockId={activeWorkflowTaskBlock?.id ?? null}
+                  onBlockClick={(blockId) => setSelectedBlockId(blockId)}
+                  onCanvasClick={() => setSelectedBlockId(null)}
+                  onAgentNoteClick={() => setWorkflowStageId('human_triage')}
+                  zoom={1}
+                  fitMode="page"
+                  editMode={false}
+                  autoFrameBBox={workflowAttentionBBox}
+                  surgicalFocusBlockId={activeWorkflowTaskBlock?.id ?? null}
+                  surgicalFocusBBox={workflowAttentionBBox}
+                  surgicalCameraEnabled
+                />
+              </div>
+            </div>
+            <footer style={workflowHudBandStyle}>
               {activeWorkflowTask ? (
-                <section style={workflowFloatingHudStyle}>
-                  <div style={workflowTriageSeverityRowStyle}>
-                    <span style={{
-                      color: EMBRY.accent,
-                      fontSize: 10,
-                      fontWeight: 900,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      fontFamily: '"JetBrains Mono", monospace',
-                    }}>
-                      Path: NIST › Appx A › Glossary
-                    </span>
-                    <span style={{
-                      color: EMBRY.dim,
-                      fontSize: 10,
-                      fontWeight: 800,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase',
-                      fontFamily: '"JetBrains Mono", monospace',
-                    }}>
-                      CARD {workflowTaskIndex + 1}/{workflowTasks.length} · PAGE {activeWorkflowTask.page} · {activeWorkflowTask.severity.toUpperCase()}
-                    </span>
-                  </div>
-                  <h2 style={workflowTriageQuestionStyle}>{activeWorkflowTask.human_question}</h2>
-                  <p style={workflowMutedTextStyle}>{activeWorkflowTask.agent_reasoning}</p>
-                  <details style={workflowAgentReadDetailsStyle}>
-                    <summary
-                      data-qid="pdf-lab:workflow:agent-read"
-                      data-qs-action="PDF_LAB_WORKFLOW_AGENT_READ"
-                      title="Show compact extracted-text support for this card"
-                      style={workflowAgentReadSummaryStyle}
-                    >
-                      Agent read
-                    </summary>
-                    <div style={workflowAgentReadBodyStyle}>
-                      {workflowEvidenceLines.length > 0
-                        ? workflowEvidenceLines.map(line => line.text).join(' ')
-                        : activeWorkflowTask.preview?.text || activeWorkflowTask.human_question}
-                    </div>
-                  </details>
-                  <div style={workflowIntentBoxStyle}>
-                    <input
-                      data-qid="pdf-lab:workflow:intent"
-                      data-qs-action="PDF_LAB_WORKFLOW_INTENT"
-                      title="Type an intent correction for the active ambiguity"
-                      value={intentDraft}
-                      onChange={event => setIntentDraft(event.target.value)}
-                      placeholder="Type intent correction: table, move box up, split row 2…"
-                      style={workflowIntentInputStyle}
-                    />
-                    {intentMode && (
+                <section style={workflowDockedHudStyle}>
+                  <div style={workflowHudCopyStyle}>
+                    <div style={workflowTriageSeverityRowStyle}>
                       <span style={{
-                        ...workflowIntentModeStyle,
-                        color: intentMode === 'table' ? EMBRY.green : intentMode === 'bbox' ? EMBRY.amber : EMBRY.accent,
-                        borderColor: intentMode === 'table' ? `${EMBRY.green}66` : intentMode === 'bbox' ? `${EMBRY.amber}66` : `${EMBRY.accent}66`,
+                        color: EMBRY.accent,
+                        fontSize: 10,
+                        fontWeight: 900,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        fontFamily: '"JetBrains Mono", monospace',
                       }}>
-                        {intentMode === 'table' ? 'CLASSIFY: TABLE' : intentMode === 'bbox' ? 'INTENT: BBOX' : 'QUEUE: SKIP'}
+                        Path: NIST › Appx A › Glossary
                       </span>
-                    )}
+                      <span style={{
+                        color: EMBRY.dim,
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}>
+                        CARD {workflowTaskIndex + 1}/{workflowTasks.length} · PAGE {activeWorkflowTask.page} · {activeWorkflowTask.severity.toUpperCase()}
+                      </span>
+                    </div>
+                    <h2 style={workflowTriageQuestionStyle}>{activeWorkflowTask.human_question}</h2>
+                    <p style={workflowMutedTextStyle}>{activeWorkflowTask.agent_reasoning}</p>
                   </div>
-                  <div style={workflowTriageActionsStyle}>
-                    <button
-                      className="pdf-lab-btn"
-                      data-qid="pdf-lab:workflow:reject"
-                      data-qs-action="PDF_LAB_WORKFLOW_REJECT"
-                      title="Reject this ambiguity card and advance"
-                      style={{ ...workflowActionButtonStyle, borderColor: `${EMBRY.red}66`, color: EMBRY.red }}
+                  <div style={workflowHudControlsStyle}>
+                    <div style={workflowIntentBoxStyle}>
+                      <input
+                        data-qid="pdf-lab:workflow:intent"
+                        data-qs-action="PDF_LAB_WORKFLOW_INTENT"
+                        title="Type an intent correction for the active ambiguity"
+                        value={intentDraft}
+                        onChange={event => setIntentDraft(event.target.value)}
+                        placeholder="Type intent correction: table, move box up, split row 2…"
+                        style={workflowIntentInputStyle}
+                      />
+                      {intentMode && (
+                        <span style={{
+                          ...workflowIntentModeStyle,
+                          color: intentMode === 'table' ? EMBRY.green : intentMode === 'bbox' ? EMBRY.amber : EMBRY.accent,
+                          borderColor: intentMode === 'table' ? `${EMBRY.green}66` : intentMode === 'bbox' ? `${EMBRY.amber}66` : `${EMBRY.accent}66`,
+                        }}>
+                          {intentMode === 'table' ? 'CLASSIFY: TABLE' : intentMode === 'bbox' ? 'INTENT: BBOX' : 'QUEUE: SKIP'}
+                        </span>
+                      )}
+                    </div>
+                    <div style={workflowTriageActionsStyle}>
+                      <button
+                        className="pdf-lab-btn"
+                        data-qid="pdf-lab:workflow:reject"
+                        data-qs-action="PDF_LAB_WORKFLOW_REJECT"
+                        title="Reject this ambiguity card and advance"
+                        style={{ ...workflowActionButtonStyle, borderColor: `${EMBRY.red}66`, color: EMBRY.red }}
                       onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
                     >
-                      R · Reject
+                      Reject (R)
                     </button>
-                    <button
-                      className="pdf-lab-btn"
-                      data-qid="pdf-lab:workflow:skip"
-                      data-qs-action="PDF_LAB_WORKFLOW_SKIP"
-                      title="Skip this ambiguity card and advance"
-                      style={workflowActionButtonStyle}
+                      <button
+                        className="pdf-lab-btn"
+                        data-qid="pdf-lab:workflow:skip"
+                        data-qs-action="PDF_LAB_WORKFLOW_SKIP"
+                        title="Skip this ambiguity card and advance"
+                        style={workflowActionButtonStyle}
                       onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
                     >
-                      S · Skip
+                      Skip (S)
                     </button>
-                    <button
-                      className="pdf-lab-btn"
-                      data-qid="pdf-lab:workflow:accept"
-                      data-qs-action="PDF_LAB_WORKFLOW_ACCEPT"
-                      title="Accept this ambiguity card and advance"
-                      style={{ ...workflowActionButtonStyle, ...workflowAcceptButtonStyle }}
+                      <button
+                        className="pdf-lab-btn"
+                        data-qid="pdf-lab:workflow:accept"
+                        data-qs-action="PDF_LAB_WORKFLOW_ACCEPT"
+                        title="Accept this ambiguity card and advance"
+                        style={{ ...workflowActionButtonStyle, ...workflowAcceptButtonStyle }}
                       onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
                     >
-                      A · Accept
+                      Confirm (A)
                     </button>
+                    </div>
                   </div>
                 </section>
               ) : (
-                <section style={workflowFloatingHudStyle}>
+                <section style={workflowDockedHudStyle}>
                   <h2 style={workflowTriageQuestionStyle}>Triage complete</h2>
                   <p style={workflowMutedTextStyle}>No remaining human ambiguity cards are available in the real queue.</p>
                 </section>
               )}
+            </footer>
+            <div style={workflowHotkeyHintStyle}>
+              USE <kbd style={workflowKbdStyle}>A</kbd> ACCEPT · <kbd style={workflowKbdStyle}>R</kbd> REJECT · <kbd style={workflowKbdStyle}>S</kbd> SKIP
             </div>
+            <footer style={workflowFooterStyle}>
+              <div style={workflowFooterNavStyle}>
+                <button
+                  className="pdf-lab-btn"
+                  data-qid="pdf-lab:workflow:previous"
+                  data-qs-action="PDF_LAB_WORKFLOW_PREVIOUS"
+                  title="Previous ambiguity card"
+                  style={workflowFooterButtonStyle}
+                  onClick={() => goToWorkflowTask(workflowTaskIndex - 1)}
+                >
+                  ←
+                </button>
+                <button
+                  className="pdf-lab-btn"
+                  data-qid="pdf-lab:workflow:next"
+                  data-qs-action="PDF_LAB_WORKFLOW_NEXT"
+                  title="Next ambiguity card"
+                  style={workflowFooterButtonStyle}
+                  onClick={() => goToWorkflowTask(workflowTaskIndex + 1)}
+                >
+                  →
+                </button>
+                <span>Page {activeWorkflowTaskPage} · {activeWorkflowTaskKind}</span>
+              </div>
+              <div aria-hidden="true" />
+              <div style={{ minWidth: 230, textAlign: 'right' }}>Zen Mode Active</div>
+            </footer>
           </section>
         </main>
       </div>
@@ -3764,29 +3950,87 @@ const workflowRootStyle: React.CSSProperties = {
   width: '100vw',
   overflow: 'hidden',
   display: 'grid',
-  gridTemplateRows: '44px 1fr',
+  gridTemplateRows: '56px 1fr 48px',
   backgroundColor: '#000000',
   color: EMBRY.white,
+  WebkitFontSmoothing: 'antialiased',
 }
 
 const workflowHeaderStyle: React.CSSProperties = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'minmax(260px, 1fr) auto minmax(260px, 1fr)',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 18,
-  padding: '5px 18px',
-  borderBottom: `1px solid rgba(255,255,255,0.06)`,
-  background: 'rgba(0, 0, 0, 0.88)',
+  gap: 12,
+  padding: '0 20px',
+  borderBottom: `1px solid ${EMBRY.border}`,
+  background: 'rgba(15, 17, 23, 0.9)',
   position: 'relative',
   zIndex: 20,
+}
+
+const workflowHeaderProgressStyle: React.CSSProperties = {
+  minWidth: 0,
+  display: 'grid',
+  gap: 3,
+}
+
+const workflowHeaderProgressTrackStyle: React.CSSProperties = {
+  width: 286,
+  maxWidth: '100%',
+  height: 4,
+  borderRadius: 999,
+  backgroundColor: EMBRY.bgPanel,
+  overflow: 'hidden',
+  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06)',
+}
+
+const workflowHeaderProgressFillStyle: React.CSSProperties = {
+  height: '100%',
+  borderRadius: 999,
+  background: `linear-gradient(90deg, ${EMBRY.accent}, ${EMBRY.blue})`,
+  transitionProperty: 'width',
+  transitionDuration: '180ms',
+  transitionTimingFunction: 'cubic-bezier(0.2, 0, 0, 1)',
+}
+
+const workflowHeaderProgressLabelStyle: React.CSSProperties = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  color: EMBRY.dim,
+  fontSize: 10,
+  fontVariantNumeric: 'tabular-nums',
+}
+
+const workflowHeaderTitleStyle: React.CSSProperties = {
+  color: EMBRY.white,
+  fontSize: 11,
+  fontWeight: 800,
+  textAlign: 'center',
+  whiteSpace: 'nowrap',
 }
 
 const workflowHeaderActionsStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  gap: 8,
-  flexWrap: 'wrap',
+  gap: 6,
+  minWidth: 0,
+}
+
+const workflowStatusPillStyle: React.CSSProperties = {
+  minHeight: 24,
+  display: 'inline-flex',
+  alignItems: 'center',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 999,
+  padding: '0 8px',
+  color: EMBRY.dim,
+  backgroundColor: EMBRY.bgDeep,
+  fontSize: 10,
+  fontWeight: 700,
+  fontVariantNumeric: 'tabular-nums',
+  whiteSpace: 'nowrap',
 }
 
 const workflowEyebrowStyle: React.CSSProperties = {
@@ -3834,6 +4078,13 @@ const workflowSecondaryButtonStyle: React.CSSProperties = {
   color: EMBRY.white,
   fontSize: 10,
   cursor: 'pointer',
+}
+
+const workflowReviewBundleButtonStyle: React.CSSProperties = {
+  minHeight: 32,
+  padding: '0 10px',
+  fontSize: 10,
+  whiteSpace: 'nowrap',
 }
 
 const workflowMainStyle: React.CSSProperties = {
@@ -4066,13 +4317,17 @@ const workflowEvidenceShellStyle: React.CSSProperties = {
   height: '100%',
   border: 0,
   borderRadius: 0,
-  backgroundColor: '#030406',
+  backgroundColor: '#000000',
   display: 'grid',
-  gridTemplateRows: '34px 1fr',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: '1fr',
+  position: 'relative',
 }
 
 const workflowEvidenceHeaderStyle: React.CSSProperties = {
-  display: 'flex',
+  gridColumn: 1,
+  gridRow: 1,
+  display: 'none',
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: 8,
@@ -4087,32 +4342,257 @@ const workflowEvidenceHeaderStyle: React.CSSProperties = {
 
 const workflowCanvasStageStyle: React.CSSProperties = {
   minHeight: 0,
+  height: '100%',
+  width: '100%',
   position: 'relative',
   overflow: 'hidden',
   display: 'grid',
   placeItems: 'center',
+  backgroundColor: '#000000',
 }
 
-const workflowFloatingHudStyle: React.CSSProperties = {
-  position: 'absolute',
-  left: '50%',
-  bottom: 20,
-  transform: 'translateX(-50%)',
-  zIndex: 12,
-  width: 'min(620px, calc(100vw - 48px))',
+const workflowEvidenceBodyStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  minHeight: 0,
+  overflow: 'hidden',
+}
+
+const workflowQueuePaneFrameStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  display: 'none',
+  minHeight: 0,
+  height: '100%',
+  overflow: 'hidden',
+  borderRight: `1px solid ${EMBRY.border}`,
+  backgroundColor: EMBRY.bgDeep,
+}
+
+const workflowQueueListStyle: React.CSSProperties = {
   display: 'grid',
+  gap: 6,
+  padding: '4px 8px 12px',
+}
+
+const workflowQueueCardStyle: React.CSSProperties = {
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: '42px minmax(0, 1fr)',
   gap: 8,
-  padding: 12,
-  border: `1px solid rgba(255,255,255,0.12)`,
-  borderRadius: 16,
-  background: 'rgba(5, 7, 10, 0.95)',
-  boxShadow: '0 24px 80px rgba(0,0,0,0.66)',
+  alignItems: 'center',
+  padding: '8px',
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 12,
+  backgroundColor: EMBRY.bgCard,
+  color: EMBRY.dim,
+  textAlign: 'left',
+  cursor: 'pointer',
+}
+
+const workflowQueueCardActiveStyle: React.CSSProperties = {
+  borderColor: `${EMBRY.accent}88`,
+  backgroundColor: 'rgba(124, 58, 237, 0.16)',
+  color: EMBRY.white,
+}
+
+const workflowQueueCardPageStyle: React.CSSProperties = {
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 10,
+  padding: '7px 0',
+  textAlign: 'center',
+  color: EMBRY.white,
+  fontSize: 10,
+  fontWeight: 900,
+  fontFamily: '"JetBrains Mono", monospace',
+}
+
+const workflowQueueCardBodyStyle: React.CSSProperties = {
+  minWidth: 0,
+  display: 'grid',
+  gap: 2,
+}
+
+const workflowQueueCardKindStyle: React.CSSProperties = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  color: 'inherit',
+  fontSize: 11,
+  fontWeight: 800,
+  textTransform: 'capitalize',
+}
+
+const workflowQueueCardMetaStyle: React.CSSProperties = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  color: EMBRY.dim,
+  fontSize: 9,
+  fontFamily: '"JetBrains Mono", monospace',
+  textTransform: 'uppercase',
+}
+
+const workflowHudBandStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  alignSelf: 'end',
+  justifySelf: 'center',
+  width: 'min(520px, calc(100% - 48px))',
+  marginRight: 0,
+  marginBottom: 40,
+  display: 'grid',
+  alignItems: 'stretch',
+  justifyItems: 'stretch',
+  position: 'relative',
+  zIndex: 18,
+  pointerEvents: 'none',
+}
+
+const workflowHotkeyHintStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  alignSelf: 'end',
+  justifySelf: 'center',
+  marginBottom: 12,
+  position: 'relative',
+  zIndex: 19,
+  color: EMBRY.dim,
+  fontSize: 10,
+  letterSpacing: '0.08em',
+  pointerEvents: 'none',
+}
+
+const workflowFooterStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  display: 'none',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 16,
+  padding: '0 24px',
+  borderTop: `1px solid ${EMBRY.border}`,
+  backgroundColor: 'rgba(10, 12, 16, 0.95)',
+  color: EMBRY.dim,
+  fontSize: 11,
+  position: 'relative',
+  zIndex: 18,
+}
+
+const workflowFooterNavStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  minWidth: 230,
+}
+
+const workflowFooterButtonStyle: React.CSSProperties = {
+  width: 32,
+  height: 32,
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 10,
+  backgroundColor: EMBRY.bgDeep,
+  color: EMBRY.white,
+  cursor: 'pointer',
+  fontSize: 14,
+}
+
+const workflowAgentDoubtCalloutStyle: React.CSSProperties = {
+  gridColumn: 1,
+  gridRow: 1,
+  alignSelf: 'start',
+  justifySelf: 'end',
+  width: 360,
+  marginTop: 142,
+  marginRight: 294,
+  position: 'relative',
+  zIndex: 20,
+  display: 'grid',
+  gap: 2,
+  color: '#f8e08e',
+  fontSize: 11,
+  lineHeight: 1.25,
+  pointerEvents: 'none',
+  fontFamily: '"JetBrains Mono", monospace',
+}
+
+const workflowAgentDoubtDotStyle: React.CSSProperties = {
+  position: 'absolute',
+  left: -86,
+  top: 12,
+  width: 8,
+  height: 8,
+  borderRadius: 999,
+  backgroundColor: EMBRY.amber,
+  boxShadow: `0 0 12px ${EMBRY.amber}`,
+}
+
+const workflowAgentDoubtLineStyle: React.CSSProperties = {
+  position: 'absolute',
+  left: -80,
+  top: 15,
+  width: 72,
+  height: 1,
+  backgroundColor: `${EMBRY.amber}99`,
+}
+
+const workflowAgentDoubtTitleStyle: React.CSSProperties = {
+  color: '#fff1a8',
+  fontSize: 11,
+  fontWeight: 900,
+}
+
+const workflowAgentDoubtTextStyle: React.CSSProperties = {
+  color: '#f8e08e',
+  fontSize: 10,
+}
+
+const workflowKbdStyle: React.CSSProperties = {
+  display: 'inline-grid',
+  placeItems: 'center',
+  minWidth: 18,
+  height: 16,
+  margin: '0 2px',
+  borderRadius: 4,
+  backgroundColor: EMBRY.bgPanel,
+  color: EMBRY.white,
+  fontFamily: '"JetBrains Mono", monospace',
+  fontSize: 9,
+  fontWeight: 800,
+}
+
+const workflowDockedHudStyle: React.CSSProperties = {
+  width: '100%',
+  minHeight: 0,
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: 14,
+  padding: 20,
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 24,
+  backgroundColor: 'rgba(18, 20, 27, 0.92)',
+  boxShadow: '0 25px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05)',
   backdropFilter: 'blur(18px)',
+  pointerEvents: 'auto',
+}
+
+const workflowHudCopyStyle: React.CSSProperties = {
+  minWidth: 0,
+  display: 'grid',
+  alignContent: 'start',
+  gap: 8,
+}
+
+const workflowHudControlsStyle: React.CSSProperties = {
+  minWidth: 0,
+  display: 'grid',
+  alignContent: 'end',
+  gap: 9,
 }
 
 const workflowAgentReadDetailsStyle: React.CSSProperties = {
-  border: `1px solid rgba(255,255,255,0.08)`,
-  borderRadius: 10,
+  border: `1px solid ${EMBRY.border}`,
+  borderRadius: 12,
   backgroundColor: 'rgba(255,255,255,0.025)',
   overflow: 'hidden',
 }
@@ -4133,7 +4613,7 @@ const workflowAgentReadBodyStyle: React.CSSProperties = {
   color: '#cbd5e1',
   fontSize: 10,
   lineHeight: 1.35,
-  maxHeight: 52,
+  maxHeight: 34,
   overflow: 'hidden',
 }
 
@@ -4220,13 +4700,14 @@ const workflowTriageQuestionStyle: React.CSSProperties = {
   fontSize: 17,
   lineHeight: 1.15,
   letterSpacing: '-0.035em',
+  textWrap: 'balance',
 }
 
 const workflowIntentBoxStyle: React.CSSProperties = {
   border: `1px solid ${EMBRY.border}`,
-  borderRadius: 12,
+  borderRadius: 14,
   backgroundColor: '#000000',
-  padding: 5,
+  padding: 4,
   display: 'flex',
   alignItems: 'center',
   gap: 8,
@@ -4240,7 +4721,7 @@ const workflowIntentInputStyle: React.CSSProperties = {
   color: EMBRY.white,
   fontSize: 12,
   fontFamily: '"JetBrains Mono", monospace',
-  padding: '6px 8px',
+  padding: '9px 10px',
 }
 
 const workflowIntentModeStyle: React.CSSProperties = {
@@ -4256,20 +4737,23 @@ const workflowIntentModeStyle: React.CSSProperties = {
 
 const workflowTriageActionsStyle: React.CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
+  gridTemplateColumns: '1fr 1fr 1.5fr',
   gap: 8,
 }
 
 const workflowActionButtonStyle: React.CSSProperties = {
-  minHeight: 34,
+  minHeight: 50,
   border: `1px solid ${EMBRY.border}`,
-  borderRadius: 10,
+  borderRadius: 14,
   backgroundColor: 'rgba(10, 14, 22, 0.72)',
   color: EMBRY.white,
   fontSize: 11,
   fontWeight: 800,
   fontFamily: '"JetBrains Mono", monospace',
   cursor: 'pointer',
+  transitionProperty: 'transform, border-color, background-color, box-shadow',
+  transitionDuration: '140ms',
+  transitionTimingFunction: 'cubic-bezier(0.2, 0, 0, 1)',
 }
 
 const workflowAcceptButtonStyle: React.CSSProperties = {

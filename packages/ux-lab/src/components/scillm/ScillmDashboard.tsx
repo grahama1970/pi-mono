@@ -16,8 +16,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X, Activity, Clock, AlertTriangle, DollarSign, Copy, Check, Sparkles, Loader2, Send, Zap, Eye, ChevronRight } from "lucide-react";
 import { EMBRY, glowDot } from "../common/EmbryStyle";
-import { useScillmData, useProviderAuth, useBatchJobState, useOrchestratorDetail, useModelPoolStatus, type LogEntry, type AuthStatusResponse, type BatchJobState, type ModelPoolStatus } from "../../hooks/useScillmData";
+import { useScillmData, useProviderAuth, useBatchJobState, useOrchestratorDetail, useModelPoolStatus, useScillmRuntime, type LogEntry, type AuthStatusResponse, type BatchJobState, type ModelPoolStatus } from "../../hooks/useScillmData";
 import { useRegisterAction } from "../../hooks/useRegisterAction";
+import { JsonCodeBlock } from "../common/JsonCodeBlock";
 import { JobsTable } from "./JobsTable";
 import { CreateQrasManifestPane } from "./CreateQrasManifestPane";
 import "./scillm-dashboard.css";
@@ -71,22 +72,46 @@ function StatPill({
   );
 }
 
-function LiveCallFlow({ activeCalls }: { activeCalls: number }) {
+function BatchMetricPill({
+  label,
+  value,
+  color,
+  active = true,
+}: {
+  label: string;
+  value: string | number;
+  color: string;
+  active?: boolean;
+}) {
+  const metricColor = active ? color : EMBRY.dim;
+
+  return (
+    <span
+      className="scillm-batch-metric tabular-nums scillm-mono"
+      style={{
+        borderColor: `${metricColor}44`,
+        backgroundColor: `${metricColor}12`,
+        color: metricColor,
+      }}
+    >
+      <span className="scillm-batch-metric__label">{label}</span>
+      <span className="scillm-batch-metric__value">{value}</span>
+    </span>
+  );
+}
+
+function ConcurrencyBadge({ activeCalls, limit }: { activeCalls: number; limit?: number | null }) {
   const isActive = activeCalls > 0;
+  const countLabel = limit && limit > 0 ? `${activeCalls}/${limit}` : `${activeCalls}`;
   return (
     <div
-      className={`scillm-live-call-flow${isActive ? " is-active" : ""}`}
-      title={isActive ? `${activeCalls} live LLM calls in flight` : "No live LLM calls in flight"}
-      aria-label={isActive ? `${activeCalls} live LLM calls in flight` : "No live LLM calls in flight"}
+      className={`scillm-concurrency-badge${isActive ? " is-active" : ""}`}
+      title={`${countLabel} live LLM calls in flight`}
+      aria-label={`Concurrency ${countLabel}`}
     >
-      <span className="scillm-live-call-flow__node" />
-      <span className="scillm-live-call-flow__rail">
-        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--one" />
-        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--two" />
-        <span className="scillm-live-call-flow__packet scillm-live-call-flow__packet--three" />
-      </span>
-      <span className="scillm-live-call-flow__node" />
-      <span className="scillm-live-call-flow__count tabular-nums scillm-mono">{activeCalls}</span>
+      <span className="scillm-concurrency-badge__label">Concurrency</span>
+      <span className="scillm-concurrency-badge__dot" />
+      <span className="scillm-concurrency-badge__value tabular-nums scillm-mono">{countLabel}</span>
     </div>
   );
 }
@@ -176,11 +201,19 @@ function getVisibleOrchestrators(batchJobs: BatchJobState[]) {
   return batchJobs
     .filter((job) => job.state)
     .sort((a, b) => {
-      const aRunning = a.state?.status === "running" ? 1 : 0;
-      const bRunning = b.state?.status === "running" ? 1 : 0;
+      const aRunning = getOrchestratorDisplayStatus(a) === "running" ? 1 : 0;
+      const bRunning = getOrchestratorDisplayStatus(b) === "running" ? 1 : 0;
       if (aRunning !== bRunning) return bRunning - aRunning;
       return (b.lastModified || "").localeCompare(a.lastModified || "");
     });
+}
+
+function isCreateQrasMonitorJob(job: BatchJobState): boolean {
+  return job.name === "create-qras-manifest" || job.name === "create-evidence-case-adjudication";
+}
+
+function isHiddenStalledByDefault(job: BatchJobState): boolean {
+  return getOrchestratorDisplayStatus(job) === "stalled" && job.name !== "create-evidence-case-adjudication";
 }
 
 function inferTonightRolloutPreview(job: BatchJobState): {
@@ -292,7 +325,8 @@ function summarizeModelPoolStatus(poolStatus: ModelPoolStatus | null | undefined
   const parts = poolStatus.lanes.map((lane) => {
     const label = formatPoolLaneLabel(lane.name, lane.provider);
     const driftPart = lane.drift !== 0 ? ` drift ${lane.drift}` : "";
-    return `${label} ${lane.in_flight}/${lane.effective_limit}${driftPart}`;
+    const live = Number(lane.live_in_flight ?? lane.actual_in_flight ?? lane.in_flight ?? 0);
+    return `${label} ${live}/${lane.effective_limit}${driftPart}`;
   });
   return `Live lanes: ${parts.join(" • ")}`;
 }
@@ -301,14 +335,16 @@ function getAggregatePoolConcurrency(
   poolStatus: ModelPoolStatus | null | undefined,
 ): { value: string; title: string | null } | null {
   if (!poolStatus) return null;
-  const value = poolStatus.limit > 0 ? `${poolStatus.in_flight}/${poolStatus.limit}` : `${poolStatus.in_flight}`;
+  const live = Number(poolStatus.live_in_flight ?? poolStatus.actual_in_flight ?? poolStatus.in_flight ?? 0);
+  const value = poolStatus.limit > 0 ? `${live}/${poolStatus.limit}` : `${live}`;
   const title = poolStatus.lanes.length > 0
     ? poolStatus.lanes
         .map((lane) => {
           const label = formatPoolLaneLabel(lane.name, lane.provider);
           const queuePart = lane.queued > 0 ? ` • q${lane.queued}` : "";
           const driftPart = ` • drift ${lane.drift}`;
-          return `${label} ${lane.in_flight}/${lane.effective_limit}${queuePart}${driftPart}`;
+          const laneLive = Number(lane.live_in_flight ?? lane.actual_in_flight ?? lane.in_flight ?? 0);
+          return `${label} ${laneLive}/${lane.effective_limit}${queuePart}${driftPart}`;
         })
         .join("\n")
     : null;
@@ -526,6 +562,70 @@ function summarizeTextPreview(text: string, fallback = "Response captured"): str
   return singleLine || fallback;
 }
 
+function formatJsonPreviewValue(value: unknown): string {
+  if (value == null) return "null";
+  if (typeof value === "string") return summarizeTextPreview(value, "empty");
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return `[${value.length} ${value.length === 1 ? "item" : "items"}]`;
+  if (typeof value === "object") return `{${Object.keys(value as Record<string, unknown>).length} keys}`;
+  return String(value);
+}
+
+function getResponseJsonPreview(log: LogEntry | null): Array<[string, string]> | null {
+  const parsed = parseResponseJson(log);
+  if (!parsed) return null;
+
+  const entries = Object.entries(parsed)
+    .filter(([, value]) => value !== undefined)
+    .slice(0, 4)
+    .map(([key, value]) => [key, formatJsonPreviewValue(value)] as [string, string]);
+
+  return entries.length > 0 ? entries : null;
+}
+
+function ResponsePreview({
+  log,
+  outcome,
+  fallback,
+  onOpen,
+}: {
+  log: LogEntry | null;
+  outcome: CallOutcome;
+  fallback: string;
+  onOpen: () => void;
+}) {
+  const entries = outcome.status === "ok" ? getResponseJsonPreview(log) : null;
+
+  return (
+    <button
+      data-qid={log ? `scillm:incoming:response:${log._key}` : undefined}
+      data-qs-action="SCILLM_OPEN_RESPONSE"
+      title={log ? "Open formatted response JSON" : "No response captured"}
+      className="press-scale scillm-focus scillm-response-preview"
+      onClick={(event) => {
+        event.stopPropagation();
+        onOpen();
+      }}
+      disabled={!log}
+    >
+      {entries ? (
+        <span className="scillm-json-preview scillm-line-clamp-2">
+          {entries.map(([key, value], index) => (
+            <span key={key} className="scillm-json-preview__pair">
+              {index > 0 && <span className="scillm-json-preview__sep"> · </span>}
+              <span className="scillm-json-preview__key">{key}</span>
+              <span className="scillm-json-preview__colon">: </span>
+              <span className="scillm-json-preview__value">{value}</span>
+            </span>
+          ))}
+        </span>
+      ) : (
+        <span className="scillm-line-clamp-2">{fallback}</span>
+      )}
+    </button>
+  );
+}
+
 const PROMPT_PREVIEW_NOISE = [
   /^return exactly one top-level json object/i,
   /^generate up to \d+/i,
@@ -665,7 +765,7 @@ function summarizeEvidencePreview(log: LogEntry | null, outcome: CallOutcome): s
   return formatEvidenceCaseSummary(outcome);
 }
 
-function formatDialogContent(log: LogEntry | null, kind: "prompt" | "evidence", fallback: string): string {
+function formatDialogContent(log: LogEntry | null, kind: "prompt" | "response" | "evidence", fallback: string): string {
   if (kind === "prompt") {
     return log?.request_prompt?.trim() || fallback;
   }
@@ -801,11 +901,13 @@ function ContentDialog({
   title,
   content,
   label,
+  contentKind = "text",
   onClose,
 }: {
   title: string;
   content: string;
   label: string;
+  contentKind?: "text" | "json";
   onClose: () => void;
 }) {
   useEffect(() => {
@@ -852,9 +954,11 @@ function ContentDialog({
             Close
           </button>
         </div>
-        <div className="scillm-dialog-body">
-          {content}
-        </div>
+        {contentKind === "json" ? (
+          <JsonCodeBlock content={content} className="scillm-dialog-body scillm-dialog-body--json" />
+        ) : (
+          <pre className="scillm-dialog-body">{content}</pre>
+        )}
       </div>
     </div>
   );
@@ -883,7 +987,7 @@ function ActiveCreateQrasTable({
   const [projectScope, setProjectScope] = useState<string>("all");
   const [batchScope, setBatchScope] = useState<string>("all");
   const [batchPickerOpen, setBatchPickerOpen] = useState(false);
-  const [contentDialog, setContentDialog] = useState<{ title: string; label: string; content: string } | null>(null);
+  const [contentDialog, setContentDialog] = useState<{ title: string; label: string; content: string; contentKind?: "text" | "json" } | null>(null);
   const rowRefs = useRef(new Map<string, HTMLTableRowElement>());
   const failureStreamRef = useRef<HTMLDivElement | null>(null);
   const searchWellRef = useRef<HTMLDivElement | null>(null);
@@ -1011,16 +1115,14 @@ function ActiveCreateQrasTable({
 
   return (
     <section className="scillm-panel" style={{ borderBottom: `1px solid ${EMBRY.border}` }}>
-      <div className="scillm-flex-between-start scillm-gap-12 scillm-flex-wrap">
-        <div className="scillm-flex-row-start scillm-gap-10 scillm-min-w-0">
-          <div className="scillm-flex-col scillm-gap-4 scillm-min-w-0">
-            <div className="text-balance scillm-heading">
-              Incoming
-            </div>
-            <div className="text-pretty scillm-meta">Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
+      <div className="scillm-flex-col scillm-gap-10">
+        <div className="scillm-flex-col scillm-gap-4 scillm-min-w-0">
+          <div className="text-balance scillm-heading">
+            Incoming
           </div>
+          <div className="text-pretty scillm-meta">Live incoming LLM calls across projects. Narrow by project or batch when needed.</div>
         </div>
-        <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap scillm-ml-auto">
+        <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap">
           {projectOptions.length > 1 && (
             <select
               data-qid="scillm:scope:project"
@@ -1046,73 +1148,73 @@ function ActiveCreateQrasTable({
             className="scillm-search-box scillm-min-w-280"
             style={{
               position: "relative",
-              minWidth: 420,
-              flex: "1 1 420px",
+              minWidth: 360,
+              flex: "0 1 520px",
               flexWrap: "wrap",
               alignItems: "center",
               gap: 8,
             }}
           >
-            <Search size={12} color={EMBRY.dim} />
-            {selectedBatchLabel ? (
-              <button
-                data-qid="scillm:scope:batch:clear"
-                data-qs-action="SCILLM_SCOPE_BATCH_CLEAR"
-                title={`Clear batch scope ${selectedBatchLabel}`}
-                onClick={() => {
-                  setBatchScope("all");
-                  setBatchPickerOpen(true);
-                  searchInputRef.current?.focus();
+              <Search size={12} color={EMBRY.dim} />
+              {selectedBatchLabel ? (
+                <button
+                  data-qid="scillm:scope:batch:clear"
+                  data-qs-action="SCILLM_SCOPE_BATCH_CLEAR"
+                  title={`Clear batch scope ${selectedBatchLabel}`}
+                  onClick={() => {
+                    setBatchScope("all");
+                    setBatchPickerOpen(true);
+                    searchInputRef.current?.focus();
+                  }}
+                  className="press-scale scillm-focus scillm-chip"
+                  style={{
+                    border: `1px solid ${EMBRY.blue}55`,
+                    backgroundColor: `${EMBRY.blue}12`,
+                    color: EMBRY.blue,
+                    textTransform: "none",
+                    letterSpacing: "0.01em",
+                    fontSize: 10,
+                    gap: 6,
+                  }}
+                >
+                  <span style={{ color: EMBRY.dim }}>Batch</span>
+                  <span className="scillm-ellipsis" style={{ maxWidth: 220 }}>{selectedBatchLabel}</span>
+                  <X size={10} />
+                </button>
+              ) : null}
+              <input
+                ref={searchInputRef}
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                onFocus={() => {
+                  if (batchOptions.length > 0) setBatchPickerOpen(true);
                 }}
-                className="press-scale scillm-focus scillm-chip"
-                style={{
-                  border: `1px solid ${EMBRY.blue}55`,
-                  backgroundColor: `${EMBRY.blue}12`,
-                  color: EMBRY.blue,
-                  textTransform: "none",
-                  letterSpacing: "0.01em",
-                  fontSize: 10,
-                  gap: 6,
+                onKeyDown={(event) => {
+                  if (event.key === "Backspace" && !search && batchScope !== "all") {
+                    event.preventDefault();
+                    setBatchScope("all");
+                    setBatchPickerOpen(true);
+                  }
+                  if (event.key === "Escape") {
+                    setBatchPickerOpen(false);
+                  }
                 }}
-              >
-                <span style={{ color: EMBRY.dim }}>Batch</span>
-                <span className="scillm-ellipsis" style={{ maxWidth: 220 }}>{selectedBatchLabel}</span>
-                <X size={10} />
-              </button>
-            ) : null}
-            <input
-              ref={searchInputRef}
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              onFocus={() => {
-                if (batchOptions.length > 0) setBatchPickerOpen(true);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Backspace" && !search && batchScope !== "all") {
-                  event.preventDefault();
-                  setBatchScope("all");
-                  setBatchPickerOpen(true);
-                }
-                if (event.key === "Escape") {
-                  setBatchPickerOpen(false);
-                }
-              }}
-              placeholder={selectedBatchLabel ? "Search prompts, responses, errors within batch..." : "Search all calls or pick a batch scope..."}
-              className="scillm-input"
-              style={{ minWidth: 180 }}
-            />
-            {search && (
-              <button
-                data-qid="scillm:search:clear"
-                data-qs-action="SCILLM_CLEAR_SEARCH"
-                title="Clear search"
-                onClick={() => setSearch("")}
-                className="press-scale scillm-focus scillm-button--icon"
-              >
-                <X size={12} />
-              </button>
-            )}
-            {batchPickerOpen && batchScope === "all" && batchSuggestions.length > 0 ? (
+                placeholder={selectedBatchLabel ? "Search prompts, responses, errors within batch..." : "Search all calls or pick a batch scope..."}
+                className="scillm-input"
+                style={{ minWidth: 180 }}
+              />
+              {search && (
+                <button
+                  data-qid="scillm:search:clear"
+                  data-qs-action="SCILLM_CLEAR_SEARCH"
+                  title="Clear search"
+                  onClick={() => setSearch("")}
+                  className="press-scale scillm-focus scillm-button--icon"
+                >
+                  <X size={12} />
+                </button>
+              )}
+              {batchPickerOpen && batchScope === "all" && batchSuggestions.length > 0 ? (
               <div
                 style={{
                   position: "absolute",
@@ -1163,9 +1265,9 @@ function ActiveCreateQrasTable({
                     <span className="scillm-ellipsis">{batchId}</span>
                     <span style={{ color: EMBRY.dim }}>Scope</span>
                   </button>
-                ))}
-              </div>
-            ) : null}
+                  ))}
+                </div>
+              ) : null}
           </div>
           <button
             data-qid="scillm:inspect:batch"
@@ -1186,10 +1288,8 @@ function ActiveCreateQrasTable({
             <Eye size={12} />
             Inspect Batch
           </button>
-        </div>
-      </div>
-      <>
-          <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap">
+          <span className="scillm-control-divider" aria-hidden="true" />
+          <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap scillm-control-filter-group">
             {[
               { key: "all", label: `All (${rows.length})` },
               { key: "complete", label: `Complete (${rows.filter((row: IncomingCallRow) => row.outcome.status === "ok").length})` },
@@ -1211,6 +1311,9 @@ function ActiveCreateQrasTable({
               </button>
             ))}
           </div>
+        </div>
+      </div>
+      <>
           <div className="scillm-meta">
             Filters: <span className="scillm-text-red">Transport</span> means the proxy call itself failed. <span className="scillm-text-amber">Schema</span> and <span className="scillm-text-amber">Empty</span> mean the returned payload was malformed or empty.
           </div>
@@ -1329,14 +1432,20 @@ function ActiveCreateQrasTable({
                             {promptPreview}
                           </button>
                         </td>
-                        <td
-                          title={evidenceText}
-                          className="scillm-td"
-                          style={{ color: row.outcome.status === "ok" ? EMBRY.white : EMBRY.dim }}
-                        >
-                          <div className="scillm-line-clamp-2">
-                            {evidenceText}
-                          </div>
+                        <td className="scillm-td" style={{ color: row.outcome.status === "ok" ? EMBRY.white : EMBRY.dim }}>
+                          <ResponsePreview
+                            log={row.log}
+                            outcome={row.outcome}
+                            fallback={evidenceText}
+                            onOpen={() => {
+                              setContentDialog({
+                                title: row.itemLabel,
+                                label: "Formatted response",
+                                content: formatDialogContent(row.log, "response", evidenceText),
+                                contentKind: parseResponseJson(row.log) ? "json" : "text",
+                              });
+                            }}
+                          />
                         </td>
                         <td
                           title={evidenceCaseText}
@@ -1448,6 +1557,7 @@ function ActiveCreateQrasTable({
           title={contentDialog.title}
           label={contentDialog.label}
           content={contentDialog.content}
+          contentKind={contentDialog.contentKind}
           onClose={() => setContentDialog(null)}
         />
       )}
@@ -1464,8 +1574,13 @@ function OrchestratorStrip({
   poolStatus: ModelPoolStatus | null;
   onInspect: (job: BatchJobState) => void;
 }) {
-  const visibleJobs = getVisibleOrchestrators(batchJobs);
-  if (visibleJobs.length === 0) return null;
+  const [showStalled, setShowStalled] = useState(false);
+  const allVisibleJobs = getVisibleOrchestrators(batchJobs);
+  const hiddenStalledJobs = allVisibleJobs.filter(isHiddenStalledByDefault);
+  const visibleJobs = showStalled
+    ? allVisibleJobs
+    : allVisibleJobs.filter((job) => !isHiddenStalledByDefault(job));
+  if (allVisibleJobs.length === 0) return null;
 
   return (
     <section
@@ -1479,9 +1594,33 @@ function OrchestratorStrip({
         <span className="scillm-meta">
           Manifest items, LLM calls, stored QRAs, and skips are separate counters. Inspect opens the full diagnostic dossier.
         </span>
+        {hiddenStalledJobs.length > 0 ? (
+          <button
+            data-qid="scillm:orchestrator:toggle-stalled"
+            data-qs-action="SCILLM_TOGGLE_STALLED_BATCHES"
+            title={showStalled ? "Hide legacy stalled batch rows" : "Show legacy stalled batch rows"}
+            className="press-scale scillm-focus scillm-button"
+            style={{
+              marginLeft: "auto",
+              minHeight: 28,
+              padding: "5px 9px",
+              border: `1px solid ${showStalled ? EMBRY.amber : EMBRY.border}`,
+              background: showStalled ? `${EMBRY.amber}12` : EMBRY.bgPanel,
+              color: showStalled ? EMBRY.amber : EMBRY.dim,
+              fontSize: 10,
+            }}
+            onClick={() => setShowStalled((value) => !value)}
+          >
+            {showStalled ? "Hide legacy stalled" : `Show stalled (${hiddenStalledJobs.length})`}
+          </button>
+        ) : null}
       </div>
 
-      {visibleJobs.map((job, index) => {
+      {visibleJobs.length === 0 ? (
+        <div className="scillm-meta" style={{ padding: "12px 16px", borderTop: `1px solid ${EMBRY.border}` }}>
+          All batch rows are stalled and currently hidden.
+        </div>
+      ) : visibleJobs.map((job, index) => {
         const state = job.state;
         const color = getOrchestratorStatusColor(job);
         const rollout = inferTonightRolloutPreview(job);
@@ -1536,7 +1675,7 @@ function OrchestratorStrip({
                 <div style={glowDot(color)} />
                 <div className="scillm-heading scillm-min-w-0">{job.name}</div>
                 <div
-                  className="scillm-chip--status"
+                  className={`scillm-chip--status${stallRisk.stalled ? " scillm-stall-pulse" : ""}`}
                   style={{
                     border: `1px solid ${(stallRisk.stalled ? EMBRY.amber : color)}55`,
                     backgroundColor: `${stallRisk.stalled ? EMBRY.amber : color}12`,
@@ -1590,7 +1729,7 @@ function OrchestratorStrip({
               </button>
             </div>
 
-            <div className="scillm-progress-track">
+              <div className={`scillm-progress-track${stallRisk.stalled ? " scillm-progress-track--stalled" : ""}`}>
               <div
                 className="scillm-progress-fill"
                 style={{
@@ -1600,21 +1739,12 @@ function OrchestratorStrip({
               />
             </div>
 
-            <div
-              className="tabular-nums scillm-mono"
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 14,
-                fontSize: 12,
-                color: EMBRY.white,
-              }}
-            >
-              <span><span style={{ color: EMBRY.dim }}>Stored</span> <span style={{ color: EMBRY.green }}>{state?.stored_qras ?? 0}</span></span>
-              <span><span style={{ color: EMBRY.dim }}>Fail</span> <span style={{ color: failedJobs > 0 ? EMBRY.red : EMBRY.dim }}>{failedJobs}</span></span>
-              <span><span style={{ color: EMBRY.dim }}>Skipped</span> <span style={{ color: skippedJobs > 0 ? EMBRY.amber : EMBRY.dim }}>{skippedJobs}</span></span>
-              <span><span style={{ color: EMBRY.dim }}>Total</span> {totalJobs}</span>
-              <span><span style={{ color: EMBRY.dim }}>Calls</span> <span style={{ color: EMBRY.blue }}>{llmCallsLabel}</span></span>
+            <div className="scillm-batch-metrics">
+              <BatchMetricPill label="Stored" value={state?.stored_qras ?? 0} color={EMBRY.green} active={(state?.stored_qras ?? 0) > 0} />
+              <BatchMetricPill label="Fail" value={failedJobs} color={EMBRY.red} active={failedJobs > 0} />
+              <BatchMetricPill label="Skipped" value={skippedJobs} color={EMBRY.amber} active={skippedJobs > 0} />
+              <BatchMetricPill label="Total" value={totalJobs} color={EMBRY.white} active={totalJobs > 0} />
+              <BatchMetricPill label="Calls" value={llmCallsLabel} color={EMBRY.blue} active={llmCalls != null} />
             </div>
 
             <div
@@ -2054,6 +2184,7 @@ export function ScillmDashboard() {
   const { logs, error } = useScillmData();
   const { auth } = useProviderAuth();
   const { batchJobs } = useBatchJobState();
+  const { runtime } = useScillmRuntime();
   const [search, setSearch] = useState("");
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
   const [selectedJob, setSelectedJob] = useState<BatchJobState | null>(null);
@@ -2071,10 +2202,10 @@ export function ScillmDashboard() {
   useRegisterAction("scillm:orchestrator:inspect", { app: "ux-lab", action: "SCILLM_INSPECT_JOB", label: "Inspect Job", description: "Inspect batch job details" });
 
   const activeCreateQrasJob = useMemo(
-    () =>
-      batchJobs.find((job) => job.name === "create-qras-manifest" && getOrchestratorDisplayStatus(job) === "running") ||
-      batchJobs.find((job) => job.name === "create-qras-manifest") ||
-      null,
+    () => {
+      const candidates = getVisibleOrchestrators(batchJobs).filter(isCreateQrasMonitorJob);
+      return candidates.find((job) => getOrchestratorDisplayStatus(job) === "running") || candidates[0] || null;
+    },
     [batchJobs],
   );
   const { detail: activeCreateQrasDetail } = useOrchestratorDetail(activeCreateQrasJob?.name || null);
@@ -2093,20 +2224,28 @@ export function ScillmDashboard() {
   const activeQueueDepth =
     Number(activeCreateQrasDetail?.state?.pending_jobs || 0) ||
     inferQueueDepth(activeCreateQrasJob);
+  const activeExecutionMode = String(activeCreateQrasDetail?.state?.execution_mode || activeCreateQrasJob?.state?.execution_mode || "").trim();
   const activeModelPool =
-    String(activeCreateQrasDetail?.state?.model_pool || activeCreateQrasJob?.state?.model_pool || "").trim() || null;
+    String(activeCreateQrasDetail?.state?.model_pool || activeCreateQrasJob?.state?.model_pool || "").trim() ||
+    (activeExecutionMode === "create-evidence-case" ? "qra-deepseek-pool" : null);
   const { status: activeModelPoolStatus } = useModelPoolStatus(activeModelPool);
   const activeAggregatePoolConcurrency = useMemo(
     () => getAggregatePoolConcurrency(activeModelPoolStatus),
     [activeModelPoolStatus],
   );
+  const runtimeInFlight = Number(runtime?.live_in_flight ?? runtime?.active?.length ?? 0);
+  const activePoolLiveInFlight = activeModelPoolStatus
+    ? Number(activeModelPoolStatus.live_in_flight ?? activeModelPoolStatus.actual_in_flight ?? activeModelPoolStatus.in_flight ?? 0)
+    : null;
+  const liveInFlight = activePoolLiveInFlight ?? runtimeInFlight ?? activeInFlight;
+  const liveConcurrencyLimit = activeModelPoolStatus?.limit || activeConcurrencyLimit;
   const topConcurrencyLabel = activeModelPool ? "Concurrency" : "In Flight";
   const topConcurrencyValue =
     activeModelPool
       ? (activeAggregatePoolConcurrency?.value ?? "—")
       : activeConcurrencyLimit
-        ? `${activeInFlight}/${activeConcurrencyLimit}`
-        : `${activeInFlight}`;
+        ? `${liveInFlight}/${activeConcurrencyLimit}`
+        : `${liveInFlight}`;
   const topConcurrencyTitle =
     activeModelPool && activeAggregatePoolConcurrency?.title
       ? activeAggregatePoolConcurrency.title
@@ -2119,11 +2258,11 @@ export function ScillmDashboard() {
       : `${activeQueueDepth}`;
   const topConcurrencyColor = activeModelPool
     ? activeModelPoolStatus
-      ? activeModelPoolStatus.in_flight > 0
+      ? liveInFlight > 0
         ? EMBRY.blue
         : EMBRY.dim
       : EMBRY.dim
-    : activeInFlight > 0
+    : liveInFlight > 0
       ? EMBRY.blue
       : EMBRY.dim;
   const topQueueColor = activeModelPool
@@ -2136,8 +2275,8 @@ export function ScillmDashboard() {
       ? EMBRY.amber
       : EMBRY.dim;
   const activeUtilization =
-    activeConcurrencyLimit && activeConcurrencyLimit > 0
-      ? Math.max(0, Math.min(activeInFlight / activeConcurrencyLimit, 1))
+    liveConcurrencyLimit && liveConcurrencyLimit > 0
+      ? Math.max(0, Math.min(liveInFlight / liveConcurrencyLimit, 1))
       : null;
 
   useEffect(() => {
@@ -2205,9 +2344,9 @@ export function ScillmDashboard() {
     const totalTokens = recent.reduce((sum, l) => sum + (l.total_tokens || 0), 0);
     const hasLiveManifestActivity =
       activeCreateQrasState?.status === "running" &&
-      (activeInFlight > 0 || Number(activeCreateQrasState.llm_calls_started || 0) > 0);
+      (liveInFlight > 0 || Number(activeCreateQrasState.llm_calls_started || 0) > 0);
     const throughputValue = hasLiveManifestActivity
-      ? activeInFlight
+      ? liveInFlight
       : totalTokens > 0
         ? Math.round(totalTokens / 10)
         : recent.length * 6;
@@ -2224,7 +2363,7 @@ export function ScillmDashboard() {
       .reduce((sum, l) => sum + (l.cost_usd || 0), 0);
 
     return { total, errors, errorRate, avgLatency, throughputValue, throughputUnit, throughputLabel, dailyCost };
-  }, [activeCreateQrasState?.llm_calls_started, activeCreateQrasState?.status, activeInFlight, monitorLogs]);
+  }, [activeCreateQrasState?.llm_calls_started, activeCreateQrasState?.status, liveInFlight, monitorLogs]);
   const budgetPercent = Math.min((metrics.dailyCost / DAILY_BUDGET_USD) * 100, 100);
   const budgetColor =
     budgetPercent > 90 ? EMBRY.red : budgetPercent > 70 ? EMBRY.amber : EMBRY.green;
@@ -2243,7 +2382,7 @@ export function ScillmDashboard() {
           <span className="scillm-heading-lg">scillm</span>
           <span className="scillm-heading-md">Monitor</span>
           <div style={glowDot(error ? EMBRY.red : EMBRY.green)} />
-          <LiveCallFlow activeCalls={activeInFlight} />
+          <ConcurrencyBadge activeCalls={liveInFlight} limit={liveConcurrencyLimit} />
           {activeBatchFailCount > 0 && (
             <div className="scillm-fail-badge">
               {activeBatchFailCount} fails

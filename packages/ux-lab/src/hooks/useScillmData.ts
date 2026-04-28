@@ -261,6 +261,11 @@ export interface BatchJobState {
 		last_message?: string;
 		last_error?: string | null;
 		manifest_path?: string;
+		candidate_manifest_path?: string;
+		output_manifest_path?: string;
+		non_generation_outcomes_path?: string;
+		monitor_report_path?: string;
+		log_path?: string;
 		review_status?: string;
 		started_at?: number;
 		total_jobs?: number;
@@ -296,6 +301,7 @@ export interface BatchJobState {
 		total_processed?: number;
 		total_amended?: number;
 		total_skipped?: number;
+		pid?: number | null;
 	} | null;
 	stateFile: string;
 	resumeCmd: string;
@@ -469,7 +475,7 @@ export interface AuthStatusResponse {
 	ollama?: { status: string };
 }
 
-const SCILLM_API = "http://localhost:4001";
+const SCILLM_API = `${API_BASE.replace("/memory", "")}/scillm`;
 const AUTH_POLL_INTERVAL = 30000; // 30s for auth status
 const RUNTIME_POLL_INTERVAL = 5000;
 
@@ -494,6 +500,8 @@ export interface ScillmProviderConcurrency {
 export interface ScillmRuntimeSnapshot {
 	active: ActiveScillmCall[];
 	concurrency: Record<string, ScillmProviderConcurrency>;
+	live_in_flight: number;
+	stale_active_calls: number;
 }
 
 export interface ModelPoolLaneStatus {
@@ -505,6 +513,8 @@ export interface ModelPoolLaneStatus {
 	configured_limit: number;
 	effective_limit: number;
 	in_flight: number;
+	actual_in_flight?: number;
+	live_in_flight?: number;
 	queued: number;
 	available: number;
 	paused: boolean;
@@ -519,6 +529,8 @@ export interface ModelPoolStatus {
 	name: string;
 	strategy: string;
 	in_flight: number;
+	actual_in_flight?: number;
+	live_in_flight?: number;
 	limit: number;
 	queued: number;
 	available: number;
@@ -570,10 +582,14 @@ export function useScillmRuntime() {
 			if (!healthResp.ok) throw new Error(`Health failed: ${healthResp.status}`);
 			if (!activeResp.ok) throw new Error(`Active calls failed: ${activeResp.status}`);
 			const healthData: { concurrency?: Record<string, ScillmProviderConcurrency> } = await healthResp.json();
-			const activeData: { active?: ActiveScillmCall[] } = await activeResp.json();
+			const activeData: { active?: ActiveScillmCall[]; live_in_flight?: number; stale_active_calls?: number } =
+				await activeResp.json();
+			const active = Array.isArray(activeData.active) ? activeData.active : [];
 			setRuntime({
-				active: Array.isArray(activeData.active) ? activeData.active : [],
+				active,
 				concurrency: healthData.concurrency || {},
+				live_in_flight: Number(activeData.live_in_flight ?? active.length),
+				stale_active_calls: Number(activeData.stale_active_calls ?? 0),
 			});
 			setError(null);
 		} catch (e) {

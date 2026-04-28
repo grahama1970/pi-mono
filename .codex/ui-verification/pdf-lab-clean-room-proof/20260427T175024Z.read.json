@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  generic [e2]\n    button \"Open ambiguity queue\" [e3] [cursor=pointer]\n    generic \"Card 1 / 96\" [e4]\n    generic \"NIST SP 800-53 Rev. 5 \u00b7 Surgical Triage\" [e5]\n    button \"Generate Gemini review bundle\" [e6] [cursor=pointer]\n      generic \"Gemini Bundle\" [e7] [cursor=pointer]\n    button \"Enter full Audit/Repair mode\" [e8] [cursor=pointer]\n  main [e9]\n    generic \"PDF evidence viewport\" [e10]\n      generic \"Agentic PDF camera\" [e11]\n        generic \"Rendered PDF page\" [e12]\n        generic \"Active ambiguity bounding box\" [e13]\n    complementary [e14]\n      generic \"NIST \u203a APPX A \u203a GLOSSARY\" [e15]\n      generic \"high\" [e16]\n      heading \"Is this a real table, and are the extracted table bounds correct?\" [e17] [level=2]\n      paragraph \"pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox ...\" [e18]\n      textbox \"Type intent: table, move box up, split row...\" [e19]\n      button \"Reject this card (R)\" [e20] [cursor=pointer]\n      button \"Skip this card (S)\" [e21] [cursor=pointer]\n      button \"Confirm this card (A)\" [e22] [cursor=pointer]\n  generic [e23]\n    button \"Previous card\" [e24] [cursor=pointer]\n    button \"Next card\" [e25] [cursor=pointer]\n    generic \"USE ACCEPT \u00b7 REJECT \u00b7 SKIP\" [e26]\n    generic \"ZEN MODE ACTIVE\" [e27]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://localhost:3002/#pdf-lab/surgical-clean-room",
+  "title": "UX Lab \u2014 Embry OS"
+}

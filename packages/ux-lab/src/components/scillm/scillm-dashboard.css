@@ -379,9 +379,23 @@
   padding: 6px 10px;
   background: var(--scillm-bg-panel);
   border: 1px solid var(--scillm-border);
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    background-color 0.16s ease;
+}
+.scillm-search-box:focus-within {
+  border-color: rgba(74, 158, 255, 0.72);
+  background: #132033;
+  box-shadow:
+    0 0 0 1px rgba(74, 158, 255, 0.36),
+    0 0 18px rgba(74, 158, 255, 0.16);
 }
 .scillm-search-box--deep {
   background: var(--scillm-bg-deep);
+}
+.scillm-search-box--deep:focus-within {
+  background: #102039;
 }
 
 /* Pills / Chips */
@@ -435,6 +449,32 @@
   text-transform: uppercase;
   border-radius: 999px;
 }
+.scillm-batch-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.scillm-batch-metric {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+.scillm-batch-metric__label {
+  color: var(--scillm-dim);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.scillm-batch-metric__value {
+  color: inherit;
+}
 
 /* Progress */
 .scillm-progress-bg {
@@ -451,6 +491,10 @@
   background-color: var(--scillm-bg);
   border: 1px solid var(--scillm-border);
   overflow: hidden;
+}
+.scillm-progress-track--stalled {
+  border-color: rgba(255, 170, 0, 0.52);
+  box-shadow: 0 0 16px rgba(255, 170, 0, 0.14);
 }
 
 /* Panels / Surfaces */
@@ -563,6 +607,40 @@
 }
 .scillm-td--nowrap {
   white-space: nowrap;
+}
+.scillm-json-preview {
+  display: block;
+  color: var(--scillm-white);
+}
+.scillm-json-preview__key {
+  color: var(--scillm-blue);
+  font-weight: 800;
+}
+.scillm-json-preview__colon,
+.scillm-json-preview__sep {
+  color: var(--scillm-dim);
+}
+.scillm-json-preview__value {
+  color: #d8f6e8;
+}
+.scillm-response-preview {
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: zoom-in;
+}
+.scillm-response-preview:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.scillm-response-preview:hover:not(:disabled) .scillm-json-preview__key,
+.scillm-response-preview:focus-visible:not(:disabled) .scillm-json-preview__key {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .scillm-row-selected {
   background-color: rgba(74, 158, 255, 0.08);
@@ -690,6 +768,9 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+.scillm-dialog-body--json {
+  background: var(--scillm-bg-deep);
+}
 
 /* Resize grip */
 .scillm-resize-grip {
@@ -725,81 +806,66 @@
   border-bottom: 1px solid var(--scillm-border);
 }
 
-.scillm-live-call-flow {
+.scillm-concurrency-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-width: 104px;
-  height: 28px;
-  padding: 0 8px;
+  gap: 8px;
+  min-width: 154px;
+  height: 32px;
+  padding: 0 12px;
   border: 1px solid var(--scillm-border);
-  background: color-mix(in srgb, var(--scillm-bg-deep) 88%, transparent);
-  opacity: 0.46;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--scillm-bg-deep) 90%, transparent);
+  color: var(--scillm-dim);
 }
-.scillm-live-call-flow.is-active {
+.scillm-concurrency-badge.is-active {
   border-color: color-mix(in srgb, var(--scillm-green) 42%, var(--scillm-border));
-  box-shadow: 0 0 16px color-mix(in srgb, var(--scillm-green) 14%, transparent);
-  opacity: 1;
+  box-shadow:
+    0 0 16px color-mix(in srgb, var(--scillm-green) 14%, transparent),
+    inset 0 0 18px color-mix(in srgb, var(--scillm-green) 5%, transparent);
 }
-.scillm-live-call-flow__node {
+.scillm-concurrency-badge__label {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.scillm-concurrency-badge__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--scillm-dim);
+  opacity: 0.72;
 }
-.scillm-live-call-flow.is-active .scillm-live-call-flow__node {
+.scillm-concurrency-badge.is-active .scillm-concurrency-badge__dot {
   background: var(--scillm-green);
   box-shadow: 0 0 12px color-mix(in srgb, var(--scillm-green) 66%, transparent);
-}
-.scillm-live-call-flow__rail {
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 42px;
-  height: 2px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--scillm-dim) 42%, transparent);
-}
-.scillm-live-call-flow.is-active .scillm-live-call-flow__rail {
-  background: color-mix(in srgb, var(--scillm-green) 24%, transparent);
-}
-.scillm-live-call-flow__packet {
-  position: absolute;
-  top: -2px;
-  left: -8px;
-  width: 8px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--scillm-green);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--scillm-green) 70%, transparent);
-  opacity: 0;
-}
-.scillm-live-call-flow.is-active .scillm-live-call-flow__packet {
-  animation: scillm-live-call-packet 1.15s linear infinite;
   opacity: 1;
 }
-.scillm-live-call-flow.is-active .scillm-live-call-flow__packet--two {
-  animation-delay: 0.38s;
-}
-.scillm-live-call-flow.is-active .scillm-live-call-flow__packet--three {
-  animation-delay: 0.76s;
-}
-.scillm-live-call-flow__count {
-  min-width: 14px;
+.scillm-concurrency-badge__value {
+  min-width: 36px;
   color: var(--scillm-dim);
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 800;
   text-align: right;
 }
-.scillm-live-call-flow.is-active .scillm-live-call-flow__count {
+.scillm-concurrency-badge.is-active .scillm-concurrency-badge__label,
+.scillm-concurrency-badge.is-active .scillm-concurrency-badge__value {
   color: var(--scillm-green);
 }
 
-@keyframes scillm-live-call-packet {
-  from {
-    transform: translateX(0);
+.scillm-stall-pulse {
+  animation: scillm-stall-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scillm-stall-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 170, 0, 0);
   }
-  to {
-    transform: translateX(54px);
+  50% {
+    box-shadow: 0 0 14px rgba(255, 170, 0, 0.34);
   }
 }
 
@@ -940,6 +1006,26 @@
 .scillm-flex-1 { flex: 1; }
 .scillm-overflow-y { overflow-y: auto; }
 .scillm-min-w-280 { min-width: 280px; }
+.scillm-control-divider {
+  display: none;
+  width: 1px;
+  height: 28px;
+  flex: 0 0 1px;
+  margin: 0 4px;
+  background-color: var(--scillm-border);
+}
+.scillm-control-filter-group {
+  margin-left: 4px;
+}
+
+@media (min-width: 1500px) {
+  .scillm-control-divider {
+    display: block;
+  }
+  .scillm-control-filter-group {
+    margin-left: 0;
+  }
+}
 
 /* Jobs table specific */
 .scillm-jobs-header {

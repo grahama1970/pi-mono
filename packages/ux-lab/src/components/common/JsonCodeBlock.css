@@ -1,0 +1,34 @@
+.ux-json-code-block {
+  margin: 0;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  tab-size: 2;
+}
+
+.ux-json-code-block__key {
+  color: var(--scillm-blue, #4a9eff);
+  font-weight: 800;
+}
+
+.ux-json-code-block__string {
+  color: #d8f6e8;
+}
+
+.ux-json-code-block__number {
+  color: var(--scillm-amber, #ffaa00);
+}
+
+.ux-json-code-block__boolean {
+  color: var(--scillm-green, #00ff88);
+  font-weight: 700;
+}
+
+.ux-json-code-block__null {
+  color: var(--scillm-dim, #8a94a6);
+  font-style: italic;
+}
+
+.ux-json-code-block__punctuation {
+  color: color-mix(in srgb, var(--scillm-white, #ffffff) 62%, var(--scillm-dim, #8a94a6));
+}

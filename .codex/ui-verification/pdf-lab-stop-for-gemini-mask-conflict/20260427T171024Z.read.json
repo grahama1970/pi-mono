@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e28]\n  generic [e29]\n    button \"Show ambiguity queue\" [e30] [cursor=pointer]\n    generic \"Card 1 / 96\" [e31]\n    generic \"NIST SP 800-53 Rev. 5 \u00b7 Surgical Triage\" [e32]\n    button \"Generate Gemini review bundle\" [e33] [cursor=pointer]\n      generic \"Gemini Bundle\" [e34] [cursor=pointer]\n    button \"Enter full Audit/Repair mode\" [e35] [cursor=pointer]\n  main [e36]\n    generic \"PDF surgical viewport\" [e37]\n      generic \"Page Wrapper\" [e38]\n        generic \"PDF page canvas\" [e39]\n        generic \"Active thread dot\" [e40]\n    complementary [e41]\n      generic \"NIST \u203a APPX A \u203a GLOSSARY\" [e42]\n      generic \"high\" [e43]\n      heading \"Is this a real table, and are the extracted table bounds correct?\" [e44] [level=2]\n      paragraph \"pdf_oxide emitted a table object. In Zen Mode, the reviewer should confirm table/not-table and bbox ...\" [e45]\n      textbox \"Type intent: table, move box up, split row...\" [e46]\n      button \"Reject this card (R)\" [e47] [cursor=pointer]\n      button \"Skip this card (S)\" [e48] [cursor=pointer]\n      button \"Confirm this card (A)\" [e49] [cursor=pointer]\n  generic [e50]\n    button \"Previous card\" [e51] [cursor=pointer]\n    button \"Next card\" [e52] [cursor=pointer]\n    generic \"USE ACCEPT \u00b7 REJECT \u00b7 SKIP\" [e53]\n    generic \"ZEN MODE ACTIVE\" [e54]\ngeneric \"Uncaught ReferenceError: RectangularSurgicalMask is not defined @ PdfCanvas.tsx?t=1777309757759:221 ...\" [e55]\n  generic \"CRASH LOG\" [e56]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://localhost:3002/#pdf-lab",
+  "title": "UX Lab \u2014 Embry OS"
+}

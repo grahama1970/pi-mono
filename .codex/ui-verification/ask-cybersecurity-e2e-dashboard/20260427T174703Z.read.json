@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  generic [e2]\n    generic \"/ask validation evidence\" [e3]\n    heading \"Cybersecurity E2E questions and actual answers\" [e4] [level=1]\n    paragraph \"This dashboard now proves the actual intended `$ask` usage path: space cybersecurity, Brandon person...\" [e5]\n    paragraph \"Generated at .\" [e6]\n      generic \"2026-04-27T17:46:51.848234+00:00\" [e7]\n    heading \"Readiness Snapshot\" [e8] [level=2]\n    generic \"3/3\" [e9]\n    generic \"cybersecurity E2E passed\" [e10]\n    generic \"32/32\" [e11]\n    generic \"total displayed E2E passed\" [e12]\n    generic \"captured `$ask` Q&A responses\" [e13]\n    generic \"current blocking failures\" [e14]\n  generic [e15]\n    heading \"Real Questions\" [e16] [level=2]\n    paragraph \"Includes the exact space cybersecurity 2026 question and Brandon 2016 persona question.\" [e17]\n    heading \"Real Roundtable\" [e18] [level=2]\n    paragraph \"Runs Brandon, Margaret, and Jennifer with adversarial protocol roles.\" [e19]\n    heading \"Semantic Gate\" [e20] [level=2]\n    paragraph \"Empty answers, refusal-style non-answers, missing domain grounding, or missing personas now fail.\" [e21]\n  generic [e22]\n    heading \"E2E `$ask` Questions and Responses\" [e23] [level=2]\n    group [e24]\n      generic [e25] [cursor=pointer]\n        generic \"Cybersecurity E2E / cybersecurity oracle\" [e26] [cursor=pointer]\n        generic \"Q: What is the state of space-based cybersecurity in 2026?\" [e27] [cursor=pointer]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:8766/index.html",
+  "title": "/ask Cybersecurity E2E Evidence"
+}
