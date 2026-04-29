@@ -930,114 +930,11 @@ async function readLatestArtifactSummary() {
 }
 
 async function auditSpartaPrompts() {
-  const promptRoot = resolve(CREATE_QRAS_SKILL_ROOT, 'prompts/sparta')
-  const sharedBase = await readFile(resolve(promptRoot, '_shared_base.txt'), 'utf8').catch(() => '')
-  const specs = [
-    ['sparta_tactic_canonical', 'canonical/tactic_canonical'],
-    ['sparta_technique_canonical', 'canonical/technique_canonical'],
-    ['sparta_countermeasure_canonical', 'canonical/countermeasure_canonical'],
-    ['sparta_tactic_technique_relationship', 'relationship/tactic_technique_relationship'],
-    ['sparta_technique_countermeasure_relationship', 'relationship/technique_countermeasure_relationship'],
-    ['sparta_technique_related_controls_relationship', 'relationship/technique_related_controls_relationship'],
-    ['sparta_url_excerpt', 'standalone/url_excerpt'],
-  ]
-  const banned = ['relevant', 'appropriate', 'comprehensive', 'thorough', 'important', 'ensure', 'consider', 'properly', 'meaningful', 'high-quality', 'as needed', 'various', 'leverage', 'utilize']
-
-  const auditText = (text: string) => {
-    const lower = text.toLowerCase()
-    const checks = {
-      rationale: lower.includes('# rationale') && lower.includes('# purpose:') && lower.includes('# consumer:') && lower.includes('# why'),
-      inputOutput: lower.includes('# input:') && lower.includes('# output:'),
-      exactJson: lower.includes('json schema') && lower.includes('return exactly one top-level json object'),
-      grounding: lower.includes('admissible source') && lower.includes('evidence_quote'),
-      rejectionCriteria: ['omit', 'must not', 'zero pairs', 'skipped_reason'].some((needle) => lower.includes(needle)),
-    }
-    const bannedHits = banned.filter((word) => lower.includes(word))
-    const failures = [
-      ...Object.entries(checks).filter(([, ok]) => !ok).map(([name]) => name),
-      ...bannedHits.map((word) => `banned_word:${word}`),
-    ]
-    return { checks, bannedHits, failures }
-  }
-
-  const rows = await Promise.all(specs.map(async ([promptKind, stem]) => {
-    const systemPath = resolve(promptRoot, `${stem}_system.txt`)
-    const userPath = resolve(promptRoot, `${stem}_user.txt`)
-    const [systemText, userText] = await Promise.all([
-      readFile(systemPath, 'utf8').catch(() => ''),
-      readFile(userPath, 'utf8').catch(() => ''),
-    ])
-    const text = `${systemText.replace('{_shared_base}', sharedBase)}\n${userText.replace('{_shared_base}', sharedBase)}`
-    const { checks, bannedHits, failures } = auditText(text)
-    return {
-      source: 'create-qras-active-sparta',
-      prompt_kind: promptKind,
-      system_path: systemPath,
-      user_path: userPath,
-      status: failures.length === 0 ? 'pass' : 'fail',
-      failures,
-      checks,
-      banned_words: bannedHits,
-    }
-  }))
-
-  async function walkPromptFiles(root: string, include: (path: string) => boolean): Promise<string[]> {
-    const out: string[] = []
-    async function walk(dir: string) {
-      const entries = await readdir(dir, { withFileTypes: true }).catch(() => [])
-      for (const entry of entries) {
-        const path = resolve(dir, entry.name)
-        if (entry.isDirectory()) {
-          if (path.includes('/__pycache__') || path.includes('/.git/') || path.includes('/node_modules/') || path.includes('/.venv') || path.includes('/venv/')) continue
-          await walk(path)
-        } else if (include(path)) {
-          out.push(path)
-        }
-      }
-    }
-    await walk(root)
-    return out.sort()
-  }
-
-  const createQrasFiles = await walkPromptFiles(resolve(CREATE_QRAS_SKILL_ROOT, 'prompts'), (path) =>
-    /\.(txt|md)$/i.test(path) && !path.includes('/.archive/')
-  )
-  const spartaFiles = await walkPromptFiles(SPARTA_PROJECT_ROOT, (path) =>
-    /prompt/i.test(path) &&
-    /\.(txt|md|py)$/i.test(path) &&
-    !path.includes('/data/runs/') &&
-    !path.includes('/data/audit/') &&
-    !path.includes('/backup/') &&
-    !path.includes('/__pycache__/')
-  )
-
-  const auditFileRows = await Promise.all([
-    ...createQrasFiles.map(async (path) => {
-      const text = (await readFile(path, 'utf8').catch(() => '')).replace('{_shared_base}', sharedBase)
-      const { checks, bannedHits, failures } = auditText(text)
-      return { source: 'create-qras', prompt_kind: path.replace(`${CREATE_QRAS_SKILL_ROOT}/`, ''), path, status: failures.length === 0 ? 'pass' : 'fail', failures, checks, banned_words: bannedHits }
-    }),
-    ...spartaFiles.map(async (path) => {
-      const text = await readFile(path, 'utf8').catch(() => '')
-      const { checks, bannedHits, failures } = auditText(text)
-      return { source: 'sparta-project', prompt_kind: path.replace(`${SPARTA_PROJECT_ROOT}/`, ''), path, status: failures.length === 0 ? 'pass' : 'fail', failures, checks, banned_words: bannedHits }
-    }),
-  ])
-  const allRows = auditFileRows
-  return {
-    generated_at: new Date().toISOString(),
-    passed: rows.filter((row) => row.status === 'pass').length,
-    total: rows.length,
-    all_passed: allRows.filter((row) => row.status === 'pass').length,
-    all_total: allRows.length,
-    rows,
-    allRows,
-    scopes: [
-      { source: 'create-qras-active-sparta', passed: rows.filter((row) => row.status === 'pass').length, total: rows.length },
-      { source: 'create-qras', passed: allRows.filter((row) => row.source === 'create-qras' && row.status === 'pass').length, total: allRows.filter((row) => row.source === 'create-qras').length },
-      { source: 'sparta-project', passed: allRows.filter((row) => row.source === 'sparta-project' && row.status === 'pass').length, total: allRows.filter((row) => row.source === 'sparta-project').length },
-    ],
-  }
+  return await runCommandJson('uv', ['run', 'python', 'scripts/validation/prompt_health_coverage.py', '--json'], {
+    cwd: MEMORY_REPO_ROOT,
+    env: { PYTHONPATH: 'scripts/validation:src' },
+    timeout: 60_000,
+  })
 }
 
 async function readSpartaCoverageSnapshot(): Promise<JsonRecord | null> {
@@ -2136,6 +2033,7 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
   const topK = Number(body.topK ?? 5)
   const maxIterations = Number(body.maxIterations ?? 1)
   const target = Number(body.target ?? 0.95)
+  const fullExtract = body.fullExtract === true
   const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${pdfLabStamp()}`
   const inheritedPythonPath = process.env.PYTHONPATH && !process.env.PYTHONPATH.startsWith('./')
     ? process.env.PYTHONPATH
@@ -2144,7 +2042,7 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     PDF_LAB_PDF_OXIDE_ROOT,
     inheritedPythonPath,
   ].filter(Boolean).join(':')
-  const command = [
+  const args = [
     PDF_LAB_SKILL_RUN,
     'agentic-extract',
     PDF_LAB_SOURCE_PDF,
@@ -2155,7 +2053,9 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     '--max-pages', String(maxPages),
     '--top-k', String(topK),
     '--json',
-  ].map(shellQuote).join(' ')
+  ]
+  if (fullExtract) args.splice(args.length - 1, 0, '--full-extract')
+  const command = args.map(shellQuote).join(' ')
   const { stdout } = await execAsync(
     command,
     {
@@ -2184,12 +2084,13 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
   }
 }
 
-function getPdfLabRunOptions(body: JsonRecord): { maxPages: number; topK: number; maxIterations: number; target: number } {
+function getPdfLabRunOptions(body: JsonRecord): { maxPages: number; topK: number; maxIterations: number; target: number; fullExtract: boolean } {
   const maxPages = Math.max(1, Math.min(492, Number(body.maxPages ?? 50)))
   const topK = Math.max(1, Math.min(50, Number(body.topK ?? 5)))
   const maxIterations = Math.max(1, Math.min(5, Number(body.maxIterations ?? 1)))
   const target = Math.max(0, Math.min(1, Number(body.target ?? 0.95)))
-  return { maxPages, topK, maxIterations, target }
+  const fullExtract = body.fullExtract === true
+  return { maxPages, topK, maxIterations, target, fullExtract }
 }
 
 function serializePdfLabJob(job: PdfLabExtractionJob): JsonRecord {
@@ -2258,7 +2159,7 @@ function startPdfLabExtractionJob(operation: string, body: JsonRecord): PdfLabEx
   if (!existsSync(PDF_LAB_SOURCE_PDF)) throw new Error(`Source PDF not found: ${PDF_LAB_SOURCE_PDF}`)
   if (!existsSync(PDF_LAB_NIST_PRESET)) throw new Error(`NIST preset not found: ${PDF_LAB_NIST_PRESET}`)
 
-  const { maxPages, topK, maxIterations, target } = getPdfLabRunOptions(body)
+  const { maxPages, topK, maxIterations, target, fullExtract } = getPdfLabRunOptions(body)
   const stamp = pdfLabStamp()
   const jobId = `${operation}-${stamp}`
   const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${stamp}`
@@ -2282,6 +2183,7 @@ function startPdfLabExtractionJob(operation: string, body: JsonRecord): PdfLabEx
     '--top-k', String(topK),
     '--json',
   ]
+  if (fullExtract) args.splice(args.length - 1, 0, '--full-extract')
   const now = new Date().toISOString()
   const job: PdfLabExtractionJob = {
     command: [PDF_LAB_SKILL_RUN, ...args],
