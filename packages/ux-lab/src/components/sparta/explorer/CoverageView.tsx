@@ -12,6 +12,7 @@ interface CoveragePayload {
   refreshing?: boolean
   supervisor?: SupervisorState | null
   corpus?: Record<string, number>
+  corpusInventory?: CorpusInventory
   monitor?: {
     checks?: MonitorCheck[]
     passed?: number
@@ -26,6 +27,24 @@ interface CoveragePayload {
     c2cAuditPath?: string
     nonC2cAuditPath?: string
   }
+}
+
+interface CorpusInventoryLane {
+  missing?: number
+  target?: number
+  with_content?: number
+  with_200_file?: number
+  distinct_urls?: number
+  qdrant_synced?: number
+  next?: string
+}
+
+interface CorpusInventory {
+  legacy_qras?: CorpusInventoryLane
+  relationships?: CorpusInventoryLane
+  urls?: CorpusInventoryLane
+  url_knowledge?: CorpusInventoryLane
+  datalake_chunks?: CorpusInventoryLane
 }
 
 interface SupervisorLane {
@@ -142,6 +161,7 @@ function compactForLocalCache(payload: CoveragePayload): CoveragePayload {
     stale: payload.stale,
     refreshing: payload.refreshing,
     corpus: payload.corpus,
+    corpusInventory: payload.corpusInventory,
     monitor: payload.monitor,
     bestPractices: payload.bestPractices,
     promptAudit: payload.promptAudit,
@@ -357,6 +377,7 @@ export function CoverageView() {
   const checks = data?.monitor?.checks ?? []
   const bestPractices = data?.bestPractices ?? []
   const corpus = data?.corpus ?? {}
+  const corpusInventory = data?.corpusInventory ?? {}
   const supervisorState = supervisor ?? data?.supervisor ?? null
   const supervisorHeartbeat = supervisorState?.heartbeat_at ? new Date(supervisorState.heartbeat_at) : null
   const heartbeatAgeSeconds = supervisorHeartbeat ? Math.max(0, Math.round((Date.now() - supervisorHeartbeat.getTime()) / 1000)) : null
@@ -402,11 +423,11 @@ export function CoverageView() {
     { lane: 'Controls', have: corpus.controls, missing: 0, next: 'Baseline inventory loaded.' },
     { lane: 'Canonical QRAs', have: corpus.qrasCanonical, missing: spartaNativeMissing, next: 'Run remaining SPARTA native QRA jobs.' },
     { lane: 'Relationship QRAs', have: corpus.qrasRelationship, missing: spartaRelationshipMissing, next: 'Run remaining SPARTA relationship + C2C jobs.' },
-    { lane: 'Legacy QRAs', have: corpus.qrasLegacy, missing: null, next: 'Legacy count is reference-only; do not use as completion proof.' },
-    { lane: 'Relationships', have: corpus.relationships, missing: null, next: 'Wire relationship target/coverage audit.' },
-    { lane: 'URLs', have: corpus.urls, missing: null, next: 'Wire source URL target/missing-page audit.' },
-    { lane: 'URL Knowledge', have: corpus.urlKnowledge, missing: null, next: 'Wire embedded-page/document coverage audit.' },
-    { lane: 'Datalake Chunks', have: corpus.datalakeChunks, missing: null, next: 'Wire corpus-specific embedded chunk target audit.' },
+    { lane: 'Legacy QRAs', have: corpus.qrasLegacy, missing: corpusInventory.legacy_qras?.missing ?? 0, next: corpusInventory.legacy_qras?.next ?? 'Reference-only legacy corpus; excluded from completion target.' },
+    { lane: 'Relationships', have: corpus.relationships, missing: corpusInventory.relationships?.missing ?? 0, next: corpusInventory.relationships?.next ?? 'Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative.' },
+    { lane: 'URLs', have: corpus.urls, missing: corpusInventory.urls?.missing ?? 0, next: corpusInventory.urls?.next ?? 'URL fetch/content audit wired from sparta_urls and sparta_url_content.' },
+    { lane: 'URL Knowledge', have: corpus.urlKnowledge, missing: corpusInventory.url_knowledge?.missing ?? 0, next: corpusInventory.url_knowledge?.next ?? 'URL knowledge inventory wired from sparta_url_knowledge.' },
+    { lane: 'Datalake Chunks', have: corpus.datalakeChunks, missing: corpusInventory.datalake_chunks?.missing ?? 0, next: corpusInventory.datalake_chunks?.next ?? 'Generic datalake is reference inventory; SPARTA source embedding coverage is audited separately.' },
   ]
   const qidCheck = bestPractices.find((check) => check.name === 'React data-qid coverage')
   const pythonCheck = bestPractices.find((check) => check.name === 'Python silent fallback scan')
@@ -623,7 +644,7 @@ export function CoverageView() {
       </Section>
 
       {hasData ? (
-        <Section title="SPARTA Corpora" subtitle="Compact have/missing inventory. `not wired` means this page does not yet have a defensible target count for that lane.">
+        <Section title="SPARTA Corpora" subtitle="Compact have/missing inventory. Reference-only corpora are explicit 0-missing lanes; actionable gaps must appear as numeric missing counts.">
           <div style={S.tableCard}>
             <table style={S.table}>
               <thead><tr><th style={S.th}>Lane</th><th style={S.th}>Have</th><th style={S.th}>Missing</th><th style={S.th}>Next Action</th></tr></thead>

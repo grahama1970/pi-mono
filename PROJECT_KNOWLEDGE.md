@@ -33,3 +33,12 @@
 ## Infrastructure State
 
 <!-- Auto-populated from /project-state --quick -->
+
+## 2026-04-29 - SPARTA Coverage Continuous Agent Contract
+
+- `monitor-sparta` is the continuous owner for Sparta Explorer Coverage: it should run scheduled audits plus push-triggered wakeups until actionable coverage is 100% or remaining work is explicitly human-blocked.
+- Sparta Explorer Coverage now treats legacy QRAs and generic datalake chunks as reference inventories, not actionable missing coverage proof.
+- SPARTA Corpora inventory is wired numerically: Relationships, URLs, URL Knowledge, and Datalake Chunks no longer display `not wired`; actionable gaps must be numeric and backed by a defensible target query.
+- URL inventory currently shows 6,854/6,854 normalized URLs with fetch records, 6,139 HTTP-200 file fetches, and 43,398 URL-knowledge chunks across 5,867 URLs.
+- Automatic remediation is safe for observe/read-only checks and approved idempotent fixes; destructive, ambiguous, high-cost, or schema-risk actions must create a human attention item with a concrete resume command.
+
