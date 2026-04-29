@@ -50,6 +50,12 @@ interface SupervisorState {
   command_status_counts?: Record<string, number>
   notification_channels?: Record<string, Record<string, unknown>>
   remediation_plans?: Array<Record<string, unknown>>
+  source_embedding_coverage?: {
+    status?: string
+    state?: string
+    resume_hint?: string
+    target_counts?: Record<string, number> | null
+  }
   lanes?: SupervisorLane[]
   active_jobs?: Array<Record<string, unknown>>
   blocked?: Array<Record<string, unknown>>
@@ -178,7 +184,7 @@ function getImmediateSteps(data: CoveragePayload | null): string[] {
 
 function statusColor(status: unknown, ok?: unknown): string {
   if (status === 'pass' || ok === true) return EMBRY.green
-  if (status === 'not_wired' || status === 'NOT WIRED' || status === 'OPEN') return EMBRY.amber
+  if (status === 'not_wired' || status === 'NOT WIRED' || status === 'OPEN' || status === 'BLOCKED') return EMBRY.amber
   return EMBRY.red
 }
 
@@ -348,6 +354,7 @@ export function CoverageView() {
   const notificationChannels = supervisorState?.notification_channels ?? {}
   const remediationPlans = supervisorState?.remediation_plans ?? []
   const slackState = notificationChannels.slack
+  const sourceEmbeddingCoverage = supervisorState?.source_embedding_coverage
   const voiceCount = commandSourceCounts.voice ?? 0
   const slackCount = commandSourceCounts.slack ?? 0
   const reviewRequiredCount = commandStatusCounts.review_required ?? 0
@@ -399,9 +406,9 @@ export function CoverageView() {
     },
     {
       lane: 'Prompt Health',
-      status: data?.promptAudit?.all_passed === data?.promptAudit?.all_total ? 'PASS' : 'FAIL',
-      value: `${formatNum(data?.promptAudit?.all_passed)} / ${formatNum(data?.promptAudit?.all_total)} pass`,
-      meaning: 'Local best-practices-prompt static gate across create-qras and SPARTA project prompt files.',
+      status: data?.promptAudit?.passed === data?.promptAudit?.total ? 'PASS' : 'FAIL',
+      value: `${formatNum(data?.promptAudit?.passed)} / ${formatNum(data?.promptAudit?.total)} pass`,
+      meaning: 'Active SPARTA create-qras prompt gate. Full prompt inventory remains advisory below.',
       action: 'Review',
     },
     {
@@ -427,10 +434,10 @@ export function CoverageView() {
     },
     {
       lane: 'Source/Embedding Coverage',
-      status: 'NOT WIRED',
-      value: 'missing target counts',
-      meaning: 'URL/page/doc/Qdrant missing-count audit still needs a defensible scanner.',
-      action: 'Not Wired',
+      status: sourceEmbeddingCoverage?.status === 'blocked' ? 'BLOCKED' : 'NOT WIRED',
+      value: sourceEmbeddingCoverage?.target_counts ? 'target counts wired' : (sourceEmbeddingCoverage?.state ?? 'missing target counts'),
+      meaning: sourceEmbeddingCoverage?.resume_hint ?? 'URL/page/doc/Qdrant missing-count audit still needs a defensible scanner.',
+      action: sourceEmbeddingCoverage?.status === 'blocked' ? 'Blocked' : 'Not Wired',
     },
   ]
 

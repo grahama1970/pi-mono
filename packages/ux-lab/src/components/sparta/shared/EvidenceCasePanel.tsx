@@ -101,7 +101,7 @@ export function EvidenceCasePanel({ open, onClose, onSubmit, prefillContext }: E
 
   return (
     <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000 }} />
+      <div data-qid="shared-evidencecasepanel:auto:104" data-qs-action="SHARED_EVIDENCECASEPANEL_AUTO_104" onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000 }} />
       <div role="dialog" aria-label="Evidence Case" aria-modal="true" style={{
         position: 'fixed', top: 0, right: 0, width: 480, height: '100vh',
         backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`,
@@ -117,23 +117,23 @@ export function EvidenceCasePanel({ open, onClose, onSubmit, prefillContext }: E
               </div>
             )}
           </div>
-          <button onClick={onClose} aria-label="Close panel" style={{ background: 'none', border: 'none', color: EMBRY.dim, fontSize: 18, cursor: 'pointer', padding: '4px 8px', fontFamily: 'monospace' }}>X</button>
+          <button data-qid="shared-evidencecasepanel:auto:120" data-qs-action="SHARED_EVIDENCECASEPANEL_AUTO_120" onClick={onClose} aria-label="Close panel" style={{ background: 'none', border: 'none', color: EMBRY.dim, fontSize: 18, cursor: 'pointer', padding: '4px 8px', fontFamily: 'monospace' }}>X</button>
         </div>
 
         {/* Content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
-            <label style={labelStyle}>Claim</label>
-            <textarea value={claim} onChange={(e) => setClaim(e.target.value)} placeholder="Enter the claim to evaluate..." rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+            <label data-qid="evidence-case:label:claim" style={labelStyle}>Claim</label>
+            <textarea data-qid="evidence-case:input:claim" data-qs-action="EDIT_EVIDENCE_CASE_CLAIM" value={claim} onChange={(e) => setClaim(e.target.value)} placeholder="Enter the claim to evaluate..." rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
 
           <div>
-            <label style={labelStyle}>Verdict</label>
+            <label data-qid="evidence-case:label:verdict" style={labelStyle}>Verdict</label>
             <div style={{ display: 'flex', gap: 8 }}>
               {VERDICT_OPTIONS.map((opt) => {
                 const sel = verdict === opt.value
                 return (
-                  <button key={opt.value} onClick={() => setVerdict(opt.value)} style={{
+                  <button data-qid="shared-evidencecasepanel:auto:136" data-qs-action="SHARED_EVIDENCECASEPANEL_AUTO_136" key={opt.value} onClick={() => setVerdict(opt.value)} style={{
                     flex: 1, padding: '6px 10px', fontSize: 11, fontWeight: sel ? 600 : 400, fontFamily: 'monospace', cursor: 'pointer',
                     border: `1px solid ${sel ? opt.color : EMBRY.border}`, borderRadius: 4,
                     backgroundColor: sel ? `${opt.color}1a` : 'transparent', color: sel ? opt.color : EMBRY.dim,
@@ -144,8 +144,8 @@ export function EvidenceCasePanel({ open, onClose, onSubmit, prefillContext }: E
           </div>
 
           <div>
-            <label style={labelStyle}>Confidence: <span style={{ color: EMBRY.white }}>{confidence}%</span></label>
-            <input type="range" min={0} max={100} value={confidence} onChange={(e) => setConfidence(Number(e.target.value))} style={{ width: '100%', accentColor: EMBRY.accent }} />
+            <label data-qid="evidence-case:label:confidence" style={labelStyle}>Confidence: <span style={{ color: EMBRY.white }}>{confidence}%</span></label>
+            <input data-qid="evidence-case:input:confidence" data-qs-action="SET_EVIDENCE_CASE_CONFIDENCE" type="range" min={0} max={100} value={confidence} onChange={(e) => setConfidence(Number(e.target.value))} style={{ width: '100%', accentColor: EMBRY.accent }} />
           </div>
 
           <div>
@@ -155,27 +155,27 @@ export function EvidenceCasePanel({ open, onClose, onSubmit, prefillContext }: E
                 {sources.map((src, idx) => (
                   <div key={`src-${idx}`} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', backgroundColor: EMBRY.bgDeep, borderRadius: 3, fontSize: 11, color: EMBRY.white }}>
                     <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{src}</span>
-                    <button onClick={() => setSources(sources.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 11, padding: '0 4px', fontFamily: 'monospace' }}>x</button>
+                    <button data-qid="shared-evidencecasepanel:auto:158" data-qs-action="SHARED_EVIDENCECASEPANEL_AUTO_158" onClick={() => setSources(sources.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 11, padding: '0 4px', fontFamily: 'monospace' }}>x</button>
                   </div>
                 ))}
               </div>
             )}
             <div style={{ display: 'flex', gap: 6 }}>
-              <input type="text" value={newSource} onChange={(e) => setNewSource(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') addSource() }} placeholder="Add source reference..." style={{ ...inputStyle, flex: 1 }} />
-              <button onClick={addSource} style={{ padding: '6px 12px', fontSize: 11, fontFamily: 'monospace', backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, color: EMBRY.dim, cursor: 'pointer', flexShrink: 0 }}>Add</button>
+              <input data-qid="evidence-case:input:source-reference" data-qs-action="EDIT_EVIDENCE_CASE_SOURCE_REFERENCE" type="text" value={newSource} onChange={(e) => setNewSource(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') addSource() }} placeholder="Add source reference..." style={{ ...inputStyle, flex: 1 }} />
+              <button data-qid="evidence-case:button:add-source" data-qs-action="ADD_EVIDENCE_CASE_SOURCE" onClick={addSource} style={{ padding: '6px 12px', fontSize: 11, fontFamily: 'monospace', backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`, borderRadius: 4, color: EMBRY.dim, cursor: 'pointer', flexShrink: 0 }}>Add</button>
             </div>
           </div>
 
           <div>
-            <label style={labelStyle}>Notes</label>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Additional notes..." rows={4} style={{ ...inputStyle, resize: 'vertical' }} />
+            <label data-qid="evidence-case:label:notes" style={labelStyle}>Notes</label>
+            <textarea data-qid="evidence-case:input:notes" data-qs-action="EDIT_EVIDENCE_CASE_NOTES" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Additional notes..." rows={4} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
         </div>
 
         {/* Footer */}
         <div style={{ padding: '12px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8, justifyContent: 'flex-end', flexShrink: 0 }}>
           <button onClick={onClose} style={{ padding: '8px 16px', fontSize: 12, fontFamily: 'monospace', backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 4, color: EMBRY.dim, cursor: 'pointer' }}>Cancel</button>
-          <button onClick={handleCreate} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, fontFamily: 'monospace', backgroundColor: EMBRY.accent, border: 'none', borderRadius: 4, color: '#000', cursor: 'pointer' }}>Create Case</button>
+          <button data-qid="shared-evidencecasepanel:auto:178" data-qs-action="SHARED_EVIDENCECASEPANEL_AUTO_178" onClick={handleCreate} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, fontFamily: 'monospace', backgroundColor: EMBRY.accent, border: 'none', borderRadius: 4, color: '#000', cursor: 'pointer' }}>Create Case</button>
         </div>
       </div>
     </>

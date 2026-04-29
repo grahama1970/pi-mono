@@ -297,7 +297,7 @@ export function ClassifierLabView({ initialTab }: { initialTab?: string } = {}) 
 
       {/* Create project dialog */}
       {showCreateDialog && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}
+        <div data-qid="classifier-lab:modal:create-backdrop" data-qs-action="CLOSE_CLASSIFIER_CREATE_MODAL" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}
           onClick={() => setShowCreateDialog(false)}>
           <div onClick={e => e.stopPropagation()} style={{ ...card, width: 480, padding: 32 }}>
             <div style={{ ...label, fontSize: 16, fontWeight: 900, marginBottom: 16 }}>New Classifier Project</div>

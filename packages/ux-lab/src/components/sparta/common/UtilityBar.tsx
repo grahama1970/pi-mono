@@ -15,6 +15,8 @@ export function UtilityBar({ controlId, name, framework, description, onToast }:
   return (
     <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
       <button
+        data-qid="control:utility:copy-link"
+        data-qs-action="COPY_CONTROL_LINK"
         onClick={() => copyControlLink(controlId).then(() => onToast('Link copied!'))}
         style={utilBtnStyle}
         onMouseEnter={e => { e.currentTarget.style.borderColor = '#4cc9f0'; e.currentTarget.style.color = '#fff' }}
@@ -22,7 +24,7 @@ export function UtilityBar({ controlId, name, framework, description, onToast }:
       >
         {'\uD83D\uDD17'} Copy Link
       </button>
-      <button
+      <button data-qid="common-utilitybar:auto:26" data-qs-action="COMMON_UTILITYBAR_AUTO_26"
         onClick={() => { exportControlCSV(controlId, name, framework, description); onToast('CSV exported!') }}
         style={utilBtnStyle}
         onMouseEnter={e => { e.currentTarget.style.borderColor = '#4cc9f0'; e.currentTarget.style.color = '#fff' }}

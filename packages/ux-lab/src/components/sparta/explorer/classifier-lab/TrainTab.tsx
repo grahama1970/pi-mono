@@ -351,7 +351,7 @@ export function TrainTab({ project, rows }: { project: Project; rows: TrainingRo
               <thead>
                 <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
                   {trainColumns.map(col => (
-                    <th
+                    <th data-qid="explorer-classifier-lab-traintab:auto:358" data-qs-action="EXPLORER_CLASSIFIER_LAB_TRAINTAB_AUTO_358"
                       key={col.id}
                       style={{ ...thStyle, cursor: col.sortable ? 'pointer' : 'help', userSelect: 'none' }}
                       title={col.tip}
@@ -452,7 +452,7 @@ export function TrainTab({ project, rows }: { project: Project; rows: TrainingRo
 
       {/* GPU picker */}
       <div style={{ ...label, marginBottom: 8 }}>RESOURCE ALLOCATION</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+      <div data-qid="explorer-classifier-lab-traintab:auto:465" data-qs-action="EXPLORER_CLASSIFIER_LAB_TRAINTAB_AUTO_465" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
         <GpuCard
           name={localGpu ? `LOCAL ${localGpu.name}` : 'LOCAL GPU'}
           vram={localGpu ? `${Math.round(localGpu.memoryTotal / 1024)}GB` : '—'}

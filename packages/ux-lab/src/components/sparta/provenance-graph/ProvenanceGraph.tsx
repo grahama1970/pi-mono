@@ -164,7 +164,7 @@ const NodeCircle: React.FC<NodeCircleProps> = ({
   }, [layoutNode.node, onSelect])
 
   return (
-    <g
+    <g data-qid="provenance-graph-provenancegraph:auto:169" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_169"
       transform={`translate(${layoutNode.x}, ${layoutNode.y})`}
       onClick={handleClick}
       style={{ cursor: 'pointer' }}
@@ -293,7 +293,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         Decay Horizon
       </label>
       <div className="flex items-center gap-2 mt-1">
-        <input
+        <input data-qid="provenance-graph-provenancegraph:auto:301" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_301"
           type="range"
           min={0}
           max={365}
@@ -315,7 +315,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       <div className="mt-1 space-y-1 max-h-32 overflow-y-auto">
         {suppliers.slice(0, 10).map(s => (
           <label key={s.id} className="flex items-center gap-2 text-sm">
-            <input
+            <input data-qid="provenance-graph-provenancegraph:auto:321" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_321"
               type="checkbox"
               checked={virtualTaints.has(s.id)}
               onChange={() => onTaintToggle(s.id)}
@@ -336,7 +336,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       </label>
       <div className="flex gap-1 mt-1">
         {[1, 2, 3].map(tier => (
-          <button
+          <button data-qid="provenance-graph-provenancegraph:auto:341" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_341"
             key={tier}
             onClick={() => onTierExpand(tier)}
             className={`px-3 py-1 rounded text-sm ${
@@ -374,7 +374,7 @@ const RemediationSidebar: React.FC<RemediationSidebarProps> = ({
 
       <div className="space-y-2 max-h-80 overflow-y-auto">
         {quickWins.map((action, i) => (
-          <button
+          <button data-qid="provenance-graph-provenancegraph:auto:379" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_379"
             key={action.node_id}
             onClick={() => onSelectNode(action.node_id)}
             className="w-full text-left p-2 rounded bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -728,7 +728,7 @@ export const ProvenanceGraph: React.FC<ProvenanceGraphProps> = ({
       style={{ minHeight: layout.bounds.height + SWIMLANE_HEADER_HEIGHT }}
     >
       {/* Canvas layer for edges (clickable for O(1) edge picking) */}
-      <canvas
+      <canvas data-qid="provenance-graph-provenancegraph:auto:736" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_736"
         ref={canvasRef}
         width={layout.bounds.width}
         height={layout.bounds.height}

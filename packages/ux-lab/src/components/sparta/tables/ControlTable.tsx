@@ -81,7 +81,7 @@ export function ControlTable({ controls, onSelect }: ControlTableProps) {
           <div style={heading}>Controls</div>
           <div style={{ ...label, marginTop: 2 }}>{filtered.length} of {controls.length}</div>
         </div>
-        <input
+        <input data-qid="tables-controltable:auto:86" data-qs-action="TABLES_CONTROLTABLE_AUTO_86"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search controls..."
@@ -106,6 +106,8 @@ export function ControlTable({ controls, onSelect }: ControlTableProps) {
         borderBottom: `1px solid ${EMBRY.border}`,
       }}>
         <button
+          data-qid="controls:filter:framework-all"
+          data-qs-action="FILTER_CONTROLS_FRAMEWORK_ALL"
           onClick={() => setFwFilter(null)}
           style={{
             ...fwBadge('all'),
@@ -118,7 +120,7 @@ export function ControlTable({ controls, onSelect }: ControlTableProps) {
           ALL
         </button>
         {frameworks.map((fw) => (
-          <button
+          <button data-qid="tables-controltable:auto:123" data-qs-action="TABLES_CONTROLTABLE_AUTO_123"
             key={fw}
             onClick={() => setFwFilter(fwFilter === fw ? null : fw)}
             style={{
@@ -137,18 +139,18 @@ export function ControlTable({ controls, onSelect }: ControlTableProps) {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th style={thStyle} onClick={() => handleSort('framework')}>FW{sortIcon('framework')}</th>
-              <th style={thStyle} onClick={() => handleSort('id')}>ID{sortIcon('id')}</th>
-              <th style={{ ...thStyle, width: '40%' }} onClick={() => handleSort('name')}>Name{sortIcon('name')}</th>
+              <th data-qid="controls:sort:framework" data-qs-action="SORT_CONTROLS_FRAMEWORK" style={thStyle} onClick={() => handleSort('framework')}>FW{sortIcon('framework')}</th>
+              <th data-qid="controls:sort:id" data-qs-action="SORT_CONTROLS_ID" style={thStyle} onClick={() => handleSort('id')}>ID{sortIcon('id')}</th>
+              <th data-qid="controls:sort:name" data-qs-action="SORT_CONTROLS_NAME" style={{ ...thStyle, width: '40%' }} onClick={() => handleSort('name')}>Name{sortIcon('name')}</th>
               <th style={thStyle}>URLs</th>
-              <th style={thStyle} onClick={() => handleSort('relCount')}>Rels{sortIcon('relCount')}</th>
+              <th data-qid="controls:sort:relationships" data-qs-action="SORT_CONTROLS_RELATIONSHIPS" style={thStyle} onClick={() => handleSort('relCount')}>Rels{sortIcon('relCount')}</th>
               <th style={thStyle}>Chunks</th>
-              <th style={thStyle} onClick={() => handleSort('issueCount')}>Issues{sortIcon('issueCount')}</th>
+              <th data-qid="controls:sort:issues" data-qs-action="SORT_CONTROLS_ISSUES" style={thStyle} onClick={() => handleSort('issueCount')}>Issues{sortIcon('issueCount')}</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((ctrl) => (
-              <tr
+              <tr data-qid="tables-controltable:auto:153" data-qs-action="TABLES_CONTROLTABLE_AUTO_153"
                 key={ctrl.id}
                 onClick={() => onSelect?.(ctrl)}
                 style={{ cursor: 'pointer' }}

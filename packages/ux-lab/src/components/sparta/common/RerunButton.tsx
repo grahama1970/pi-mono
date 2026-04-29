@@ -8,7 +8,7 @@ export function RerunButton({ projectId, disabled, onRerun, rerunOverrides }: {
   rerunOverrides?: Record<string, unknown>
 }) {
   return (
-    <RunButton onClick={() => onRerun?.()} disabled={disabled || !projectId} ariaLabel="Re-run">
+    <RunButton data-qid="sparta:rerun" data-qs-action="RERUN_SPARTA_TASK" onClick={() => onRerun?.()} disabled={disabled || !projectId} ariaLabel="Re-run">
       RE-RUN
     </RunButton>
   )

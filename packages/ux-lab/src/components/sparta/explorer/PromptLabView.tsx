@@ -726,7 +726,7 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                     Reject
                   </button>
                   <span style={{ flex: 1 }} />
-                  <button onClick={async () => {
+                  <button data-qid="prompt-lab:button:send-to-eval-lab" data-qs-action="EXPORT_PROMPT_TO_EVAL_LAB" onClick={async () => {
                     // Compute prompt hash for artifact lineage
                     const promptBytes = new TextEncoder().encode(fullPrompt)
                     const hashBuffer = await crypto.subtle.digest('SHA-256', promptBytes)
@@ -756,7 +756,6 @@ End with a 1-line overall verdict: READY / NEEDS WORK / MAJOR ISSUES.` },
                     window.location.hash = 'llm-eval-lab'
                   }}
                     aria-label="Send prompt and questions to LLM Eval Lab"
-                    data-qid="prompt-lab:button:send-to-eval-lab"
                     title="Export this prompt and test cases to LLM Eval Lab for multi-model comparison"
                     style={{
                       padding: '8px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 11, fontWeight: 700,

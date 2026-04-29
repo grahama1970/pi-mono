@@ -100,6 +100,8 @@ const ActionButton = memo(function ActionButton({
   icon: Icon,
   onClick,
   disabled,
+  'data-qid': dataQid,
+  'data-qs-action': dataQsAction,
 }: {
   variant: 'bless' | 'correct' | 'skip' | 'reject' | 'save' | 'cancel'
   label: string
@@ -107,6 +109,8 @@ const ActionButton = memo(function ActionButton({
   icon: typeof Check
   onClick: () => void
   disabled?: boolean
+  'data-qid'?: string
+  'data-qs-action'?: string
 }) {
   const colors: Record<string, { bg: string; border: string; text: string }> = {
     bless: { bg: `${NVIS.green}15`, border: `${NVIS.green}40`, text: NVIS.green },
@@ -120,8 +124,8 @@ const ActionButton = memo(function ActionButton({
 
   return (
     <button
-      data-qid={`qra:action:${variant}`}
-      data-qs-action={`QRA_${variant.toUpperCase()}`}
+      data-qid={dataQid ?? `qra:action:${variant}`}
+      data-qs-action={dataQsAction ?? `QRA_${variant.toUpperCase()}`}
       title={`${label} this QRA${shortcut ? ` (${shortcut})` : ''}`}
       onClick={onClick}
       disabled={disabled}
@@ -385,7 +389,7 @@ export const QRAReviewCard = memo(function QRAReviewCard({
             </div>
 
             {/* Correction actions */}
-            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+            <div data-qid="query-qrareviewcard:auto:390" data-qs-action="QUERY_QRAREVIEWCARD_AUTO_390" style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <ActionButton variant="cancel" label="Cancel" icon={X} onClick={handleCancelCorrection} />
               <ActionButton variant="save" label="Save Correction" icon={Check} onClick={handleSaveCorrection} disabled={!correctionReason.trim()} />
             </div>
@@ -500,7 +504,7 @@ export const QRAReviewCard = memo(function QRAReviewCard({
 
       {/* Review Actions */}
       {!isReviewed && !isCorrectMode && (
-        <div
+        <div data-qid="query-qrareviewcard:auto:513" data-qs-action="QUERY_QRAREVIEWCARD_AUTO_513"
           style={{
             display: 'flex',
             gap: 12,
@@ -511,8 +515,8 @@ export const QRAReviewCard = memo(function QRAReviewCard({
         >
           <ActionButton variant="bless" label="Bless" shortcut="B" icon={Check} onClick={handleBless} />
           <ActionButton variant="correct" label="Correct" shortcut="C" icon={Edit3} onClick={handleStartCorrect} />
-          <ActionButton variant="skip" label="Skip" shortcut="S" icon={SkipForward} onClick={handleSkip} />
-          <ActionButton variant="reject" label="Reject" shortcut="R" icon={X} onClick={handleReject} />
+          <ActionButton data-qid="qra-review:action:skip" data-qs-action="SKIP_QRA_REVIEW" variant="skip" label="Skip" shortcut="S" icon={SkipForward} onClick={handleSkip} />
+          <ActionButton data-qid="qra-review:action:reject" data-qs-action="REJECT_QRA_REVIEW" variant="reject" label="Reject" shortcut="R" icon={X} onClick={handleReject} />
         </div>
       )}
 

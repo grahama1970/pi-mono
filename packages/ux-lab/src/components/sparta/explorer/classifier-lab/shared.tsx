@@ -94,7 +94,7 @@ export function GpuCard({ name, vram, price, avail, active, onClick }: {
 }) {
   const barColor = avail < 10 ? EMBRY.red : avail < 40 ? EMBRY.amber : EMBRY.green
   return (
-    <div onClick={onClick} style={{
+    <div data-qid="explorer-classifier-lab-shared:auto:97" data-qs-action="EXPLORER_CLASSIFIER_LAB_SHARED_AUTO_97" onClick={onClick} style={{
       ...card, padding: 12, cursor: 'pointer',
       border: `1px solid ${active ? EMBRY.green + '66' : EMBRY.border}`,
       background: active ? 'rgba(0,255,136,0.04)' : EMBRY.bgCard,

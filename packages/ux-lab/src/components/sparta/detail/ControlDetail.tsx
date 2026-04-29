@@ -47,7 +47,7 @@ export function ControlDetail({ control, onClose }: ControlDetailProps) {
           <div style={{ ...heading, fontSize: 16 }}>{control.name}</div>
         </div>
         {onClose && (
-          <button
+          <button data-qid="detail-controldetail:auto:51" data-qs-action="DETAIL_CONTROLDETAIL_AUTO_51"
             onClick={onClose}
             style={{
               backgroundColor: 'transparent',

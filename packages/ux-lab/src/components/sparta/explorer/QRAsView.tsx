@@ -116,7 +116,7 @@ function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
   ]))
   const explicitMatches = explicitKeys
     .map((key) => byKey.get(key) || byQraId.get(key))
-    .filter((candidate): candidate is SpartaQRA => Boolean(candidate) && candidate._key !== current._key)
+    .filter((candidate): candidate is SpartaQRA => candidate !== undefined && candidate._key !== current._key)
 
   if (explicitMatches.length > 0) {
     return explicitMatches.slice(0, 4).map((candidate) => ({
@@ -294,7 +294,7 @@ export function QRAsView() {
         if (cancelled || !result.document) return
         setQraDetails((prev) => {
           const next = new Map(prev)
-          next.set(currentListItem._key, result.document as SpartaQRA)
+          next.set(currentListItem._key, result.document as unknown as SpartaQRA)
           return next
         })
       })
@@ -430,7 +430,7 @@ export function QRAsView() {
 
         <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <button
+          <button data-qid="explorer-qrasview:auto:434" data-qs-action="EXPLORER_QRASVIEW_AUTO_434"
             onClick={() => canPrevPage && setPage((prev) => prev - 1)}
             disabled={!canPrevPage || loading}
             className="press-scale"
@@ -450,7 +450,7 @@ export function QRAsView() {
           <div style={{ fontSize: 10, color: EMBRY.dim, minWidth: 54, textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>
             Page {page + 1}
           </div>
-          <button
+          <button data-qid="explorer-qrasview:auto:454" data-qs-action="EXPLORER_QRASVIEW_AUTO_454"
             onClick={() => canNextPage && setPage((prev) => prev + 1)}
             disabled={!canNextPage || loading}
             className="press-scale"
@@ -495,7 +495,7 @@ export function QRAsView() {
         }}>
            {leftCollapsed ? (
              <div style={{ padding: '16px 0', display: 'flex', justifyContent: 'center' }}>
-               <button title="Expand Left Panel" onClick={() => setLeftCollapsed(false)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 8, borderRadius: 6, transition: 'background-color 0.2s' }}>
+               <button data-qid="qras:pane:left-expand" data-qs-action="EXPAND_QRA_LEFT_PANE" title="Expand Left Panel" onClick={() => setLeftCollapsed(false)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 8, borderRadius: 6, transition: 'background-color 0.2s' }}>
                  <PanelLeft size={20} />
                </button>
              </div>
@@ -520,7 +520,7 @@ export function QRAsView() {
                         }}
                       />
                    </div>
-                   <button title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4, borderRadius: 6, transition: 'background-color 0.2s' }}>
+                   <button data-qid="qras:pane:left-collapse" data-qs-action="COLLAPSE_QRA_LEFT_PANE" title="Collapse Left Panel" onClick={() => setLeftCollapsed(true)} className="press-scale" style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4, borderRadius: 6, transition: 'background-color 0.2s' }}>
                      <PanelLeftClose size={18} />
                    </button>
                  </div>
@@ -533,7 +533,7 @@ export function QRAsView() {
                          const isActive = source === s
                          const sourceLabel = s === 'v2' ? 'v2' : s === 'legacy' ? 'Legacy' : 'All'
                          return (
-                           <button
+                           <button data-qid="explorer-qrasview:auto:538" data-qs-action="EXPLORER_QRASVIEW_AUTO_538"
                              key={s}
                              onClick={() => setSource(s)}
                              className="press-scale"
@@ -736,7 +736,7 @@ export function QRAsView() {
                     {current.control_id?.trim() ? (
                       <span style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.accent, backgroundColor: `${EMBRY.accent}0d`, padding: '3px 7px', borderRadius: 4, border: `1px solid ${EMBRY.accent}24` }}>{current.control_id}</span>
                     ) : null}
-                    <span
+                    <span data-qid="explorer-qrasview:auto:741" data-qs-action="EXPLORER_QRASVIEW_AUTO_741"
                       title="Click to copy _key"
                       onClick={() => navigator.clipboard.writeText(current._key)}
                       style={{ fontSize: 9, fontFamily: 'monospace', color: EMBRY.dim, cursor: 'pointer', padding: '2px 5px', borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.035)', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 420 }}
@@ -850,7 +850,7 @@ export function QRAsView() {
                     </div>
                   </div>
                   {current.run_id && (
-                    <button
+                    <button data-qid="explorer-qrasview:auto:854" data-qs-action="EXPLORER_QRASVIEW_AUTO_854"
                       onClick={() => setShowBatchModal(true)}
                       title={`View batch: ${current.run_id}`}
                       className="press-scale"
@@ -895,7 +895,7 @@ export function QRAsView() {
       {/* Batch Info Modal */}
       <AnimatePresence>
       {showBatchModal && current?.run_id && (
-        <motion.div
+        <motion.div data-qid="explorer-qrasview:auto:906" data-qs-action="EXPLORER_QRASVIEW_AUTO_906"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -925,7 +925,7 @@ export function QRAsView() {
                 <Layers size={18} color={EMBRY.accent} />
                 <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Batch Information</span>
               </div>
-              <button onClick={() => setShowBatchModal(false)} className="press-scale" style={{
+              <button data-qid="explorer-qrasview:auto:928" data-qs-action="EXPLORER_QRASVIEW_AUTO_928" onClick={() => setShowBatchModal(false)} className="press-scale" style={{
                 background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 4,
               }}>
                 <X size={18} />
@@ -986,7 +986,7 @@ export function QRAsView() {
                     const isCurrent = q._key === current._key
                     const qraIndex = qras.findIndex(qq => qq._key === q._key)
                     return (
-                      <div
+                      <div data-qid="explorer-qrasview:auto:991" data-qs-action="EXPLORER_QRASVIEW_AUTO_991"
                         key={q._key}
                         onClick={() => {
                           setCurrentIndex(qraIndex)

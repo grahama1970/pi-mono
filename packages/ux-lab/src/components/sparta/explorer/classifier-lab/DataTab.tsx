@@ -385,7 +385,7 @@ function NextStepsTeaser({ projectId }: { projectId: string }) {
       </div>
 
       {showModal && (
-        <div
+        <div data-qid="explorer-classifier-lab-datatab:auto:389" data-qs-action="EXPLORER_CLASSIFIER_LAB_DATATAB_AUTO_389"
           onClick={() => setShowModal(false)}
           style={{
             position: 'fixed', inset: 0, zIndex: 9999,
@@ -737,7 +737,7 @@ function DataFileTable({ projectId, classes }: { projectId: string; classes: str
               {table.getHeaderGroups().map(hg => (
                 <tr key={hg.id} style={{ background: 'rgba(255,255,255,0.03)', borderBottom: `1px solid ${EMBRY.border}` }}>
                   {hg.headers.map(h => (
-                    <th key={h.id} onClick={h.column.getToggleSortingHandler()}
+                    <th data-qid="explorer-classifier-lab-datatab:auto:740" data-qs-action="EXPLORER_CLASSIFIER_LAB_DATATAB_AUTO_740" key={h.id} onClick={h.column.getToggleSortingHandler()}
                       style={{ ...thStyle, cursor: h.column.getCanSort() ? 'pointer' : 'default' }}>
                       {flexRender(h.column.columnDef.header, h.getContext())}
                       {{ asc: ' ▲', desc: ' ▼' }[h.column.getIsSorted() as string] ?? ''}

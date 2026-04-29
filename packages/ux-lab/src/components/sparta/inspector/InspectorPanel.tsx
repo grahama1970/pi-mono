@@ -103,7 +103,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
           <div style={{ ...heading, fontSize: 16 }}>{node.label}</div>
         </div>
         {onClose && (
-          <button
+          <button data-qid="inspector-inspectorpanel:auto:107" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_107"
             onClick={onClose}
             style={{
               backgroundColor: 'transparent',
@@ -267,7 +267,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
           {availableParams.length > 1 && (
             <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
               {availableParams.map((p) => (
-                <button
+                <button data-qid="inspector-inspectorpanel:auto:272" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_272"
                   key={p.label}
                   onClick={() => setSelectedParam(p.label)}
                   style={{
@@ -295,7 +295,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
               </span>
 
               {currentParamDef.type === 'bool' && (
-                <button
+                <button data-qid="inspector-inspectorpanel:auto:299" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_299"
                   onClick={() => setBoolValue(!boolValue)}
                   style={{
                     padding: '4px 14px',
@@ -314,7 +314,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
 
               {currentParamDef.type === 'float' && (
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input
+                  <input data-qid="inspector-inspectorpanel:auto:323" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_323"
                     type="range"
                     min={0}
                     max={1}
@@ -338,7 +338,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
               {currentParamDef.type === 'enum' && (
                 <div style={{ display: 'flex', gap: 4 }}>
                   {['NOMINAL', 'DEGRADED', 'CRITICAL'].map((v) => (
-                    <button
+                    <button data-qid="inspector-inspectorpanel:auto:343" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_343"
                       key={v}
                       onClick={() => setEnumValue(v)}
                       style={{
@@ -361,7 +361,7 @@ export function InspectorPanel({ node, edges, onClose, onWhatIf, initialResults 
           )}
 
           {/* What-If trigger */}
-          <button
+          <button data-qid="inspector-inspectorpanel:auto:365" data-qs-action="INSPECTOR_INSPECTORPANEL_AUTO_365"
             onClick={handleWhatIf}
             disabled={loading || !onWhatIf}
             style={{

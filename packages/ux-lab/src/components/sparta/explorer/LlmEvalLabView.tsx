@@ -533,7 +533,7 @@ function LibraryTab({ allModels, onModelsChanged, goToResults }: { allModels: Re
 
       {/* Add/Edit/Import modal */}
       {editingQ && (
-        <div style={{
+        <div data-qid="llm-eval:modal:edit-backdrop" data-qs-action="CLOSE_LLM_EVAL_EDIT_MODAL" style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex',
           alignItems: 'center', justifyContent: 'center', zIndex: 1000,
         }} onClick={() => { setEditingQ(null); setImportText('') }}>

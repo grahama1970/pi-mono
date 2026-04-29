@@ -850,7 +850,7 @@ function TechniqueGraph({ techniques, tactics, onSelect }: {
           const isHovered = hovered === tech.id
           const radius = isHovered ? 10 : 7
           return (
-            <g
+            <g data-qid="shared-threatmatrix:auto:859" data-qs-action="SHARED_THREATMATRIX_AUTO_859"
               key={tech.id}
               transform={`translate(${pos.x}, ${pos.y})`}
               style={{ cursor: 'pointer' }}

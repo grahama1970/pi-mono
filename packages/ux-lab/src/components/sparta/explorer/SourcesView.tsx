@@ -678,7 +678,7 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
               const tier0 = q.tier0_pass as boolean | undefined
               const tier2 = q.tier2_pass as boolean | undefined
               return (
-                <div key={i} style={{
+                <div data-qid="explorer-sourcesview:auto:685" data-qs-action="EXPLORER_SOURCESVIEW_AUTO_685" key={i} style={{
                   padding: '6px 8px', borderRadius: 4, backgroundColor: EMBRY.bgDeep,
                   border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
                 }}

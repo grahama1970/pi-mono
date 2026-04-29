@@ -231,7 +231,7 @@ function ToggleSection({
 }) {
   return (
     <section style={{ border: `1px solid ${EMBRY.border}`, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.02)' }}>
-      <button
+      <button data-qid="shared-evidencecasetrace:auto:236" data-qs-action="SHARED_EVIDENCECASETRACE_AUTO_236"
         type="button"
         onClick={onToggle}
         className="press-scale"
