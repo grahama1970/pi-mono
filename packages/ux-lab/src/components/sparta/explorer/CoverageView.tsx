@@ -55,6 +55,9 @@ interface SupervisorState {
     state?: string
     resume_hint?: string
     target_counts?: Record<string, number> | null
+    observed_counts?: Record<string, number | null>
+    gaps?: Record<string, unknown>
+    backfill?: Record<string, unknown>
   }
   lanes?: SupervisorLane[]
   active_jobs?: Array<Record<string, unknown>>
@@ -396,6 +399,21 @@ export function CoverageView() {
   ]
   const qidCheck = bestPractices.find((check) => check.name === 'React data-qid coverage')
   const pythonCheck = bestPractices.find((check) => check.name === 'Python silent fallback scan')
+  const sourceEmbeddingStatus = String(sourceEmbeddingCoverage?.status ?? 'blocked').toLowerCase()
+  const sourceEmbeddingGaps = sourceEmbeddingCoverage?.gaps ?? {}
+  const sourceEmbeddingMissing = Number(sourceEmbeddingGaps.missing_vectors ?? 0)
+  const sourceEmbeddingStale = Number(sourceEmbeddingGaps.stale_vectors ?? 0)
+  const sourceEmbeddingBlocked = Array.isArray(sourceEmbeddingGaps.blocked_reasons) ? sourceEmbeddingGaps.blocked_reasons.length : 0
+  const sourceEmbeddingBackfill = sourceEmbeddingCoverage?.backfill as Record<string, unknown> | undefined
+  const sourceEmbeddingManifest = sourceEmbeddingBackfill?.manifest as Record<string, unknown> | null | undefined
+  const sourceEmbeddingValue = sourceEmbeddingStatus === 'pass'
+    ? `${formatNum(sourceEmbeddingCoverage?.observed_counts?.arango_synced_docs)} synced`
+    : sourceEmbeddingStatus === 'fail'
+      ? `${formatNum(sourceEmbeddingMissing + sourceEmbeddingStale)} vector gap(s)`
+      : sourceEmbeddingCoverage?.state ?? 'blocked'
+  const sourceEmbeddingMeaning = sourceEmbeddingManifest?.path
+    ? `${sourceEmbeddingCoverage?.resume_hint ?? 'Review generated backfill manifest.'} Manifest: ${sourceEmbeddingManifest.path}`
+    : sourceEmbeddingCoverage?.resume_hint ?? 'ArangoDB document/BM25/graph and Qdrant vector coverage scanner.'
   const aggregateRows = [
     {
       lane: 'QRA Generation',
@@ -434,10 +452,10 @@ export function CoverageView() {
     },
     {
       lane: 'Source/Embedding Coverage',
-      status: sourceEmbeddingCoverage?.status === 'blocked' ? 'BLOCKED' : 'NOT WIRED',
-      value: sourceEmbeddingCoverage?.target_counts ? 'target counts wired' : (sourceEmbeddingCoverage?.state ?? 'missing target counts'),
-      meaning: sourceEmbeddingCoverage?.resume_hint ?? 'URL/page/doc/Qdrant missing-count audit still needs a defensible scanner.',
-      action: sourceEmbeddingCoverage?.status === 'blocked' ? 'Blocked' : 'Not Wired',
+      status: sourceEmbeddingStatus === 'pass' ? 'PASS' : sourceEmbeddingStatus === 'fail' ? 'FAIL' : 'BLOCKED',
+      value: sourceEmbeddingValue,
+      meaning: sourceEmbeddingBlocked > 0 ? `${sourceEmbeddingMeaning} Backend block(s): ${sourceEmbeddingBlocked}.` : sourceEmbeddingMeaning,
+      action: sourceEmbeddingStatus === 'pass' ? 'Observe' : sourceEmbeddingStatus === 'fail' ? 'Review Backfill' : 'Blocked',
     },
   ]
 

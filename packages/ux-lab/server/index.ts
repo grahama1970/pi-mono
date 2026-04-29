@@ -18,11 +18,11 @@ import cookieParser from 'cookie-parser'
 import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
-import { execFile, exec } from 'child_process'
+import { execFile, exec, spawn } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
-import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream } from 'fs'
+import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream, createWriteStream } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 
@@ -1068,6 +1068,29 @@ async function readSpartaSupervisorState(): Promise<JsonRecord | null> {
   }
 }
 
+async function refreshSpartaSupervisorState(): Promise<JsonRecord | null> {
+  try {
+    const state = await runCommandJson('uv', [
+      'run',
+      'python',
+      'scripts/validation/monitor_sparta.py',
+      'supervisor',
+      '--once',
+      '--state-dir',
+      SPARTA_SUPERVISOR_STATE_DIR,
+      '--json',
+    ], {
+      cwd: MEMORY_REPO_ROOT,
+      env: { ...process.env, PYTHONPATH: 'src:scripts/validation' },
+      timeout: 180_000,
+    })
+    if (state && typeof state === 'object' && !Array.isArray(state)) return state as JsonRecord
+  } catch (err) {
+    console.error('[sparta/supervisor-state] refresh failed; using last snapshot if available', err)
+  }
+  return readSpartaSupervisorState()
+}
+
 async function readSpartaSupervisorCommands(limit: number): Promise<JsonRecord[]> {
   const text = await readFile(SPARTA_SUPERVISOR_COMMANDS_PATH, 'utf8').catch(() => '')
   if (!text) return []
@@ -1190,7 +1213,7 @@ print(json.dumps(payload, default=str))
     runBestPracticeAudit(),
     readLatestArtifactSummary(),
     auditSpartaPrompts(),
-    readSpartaSupervisorState(),
+    refreshSpartaSupervisorState(),
   ])
   const remaining = monitor && typeof monitor === 'object' && !Array.isArray(monitor)
     ? (monitor as JsonRecord).remaining as JsonRecord | undefined
@@ -1890,6 +1913,30 @@ const PDF_LAB_NIST_PRESET = '/home/graham/workspace/experiments/pdf_oxide/python
 const PDF_LAB_WORKFLOW_BUILD_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/build_pdf_lab_workflow_manifest.py'
 const PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/promote_pdf_lab_real_artifacts.py'
 
+type PdfLabJobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
+
+interface PdfLabExtractionJob {
+  command: string[]
+  completedAt?: string
+  createdAt: string
+  error?: string
+  exitCode?: number | null
+  id: string
+  logPath: string
+  operation: string
+  outputDir: string
+  pid?: number
+  promoted?: JsonRecord
+  runSummary?: JsonRecord
+  scriptPath?: string
+  signal?: string | null
+  status: PdfLabJobStatus
+  updatedAt: string
+}
+
+const pdfLabJobs = new Map<string, PdfLabExtractionJob>()
+let pdfLabLatestJobId: string | null = null
+
 function pdfLabPublicPath(relativeName: string): string {
   return resolve(__dirname, '../public', relativeName)
 }
@@ -2039,9 +2086,12 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
   const maxIterations = Number(body.maxIterations ?? 1)
   const target = Number(body.target ?? 0.95)
   const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${pdfLabStamp()}`
+  const inheritedPythonPath = process.env.PYTHONPATH && !process.env.PYTHONPATH.startsWith('./')
+    ? process.env.PYTHONPATH
+    : ''
   const pythonPath = [
-    resolve(PDF_LAB_PDF_OXIDE_ROOT, 'python'),
-    process.env.PYTHONPATH || '',
+    PDF_LAB_PDF_OXIDE_ROOT,
+    inheritedPythonPath,
   ].filter(Boolean).join(':')
   const command = [
     PDF_LAB_SKILL_RUN,
@@ -2060,6 +2110,7 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     {
       cwd: PDF_LAB_PDF_OXIDE_ROOT,
       env: {
+        ...process.env,
         HOME: process.env.HOME || '/home/graham',
         USER: process.env.USER || 'graham',
         PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin',
@@ -2080,6 +2131,160 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     runSummary,
     promoted,
   }
+}
+
+function getPdfLabRunOptions(body: JsonRecord): { maxPages: number; topK: number; maxIterations: number; target: number } {
+  const maxPages = Math.max(1, Math.min(492, Number(body.maxPages ?? 50)))
+  const topK = Math.max(1, Math.min(50, Number(body.topK ?? 5)))
+  const maxIterations = Math.max(1, Math.min(5, Number(body.maxIterations ?? 1)))
+  const target = Math.max(0, Math.min(1, Number(body.target ?? 0.95)))
+  return { maxPages, topK, maxIterations, target }
+}
+
+function serializePdfLabJob(job: PdfLabExtractionJob): JsonRecord {
+  return {
+    id: job.id,
+    operation: job.operation,
+    status: job.status,
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
+    completedAt: job.completedAt,
+    outputDir: job.outputDir,
+    logPath: job.logPath,
+    pid: job.pid,
+    scriptPath: job.scriptPath,
+    exitCode: job.exitCode,
+    signal: job.signal,
+    error: job.error,
+    runSummary: job.runSummary,
+    promoted: job.promoted,
+  }
+}
+
+function isPidRunning(pid?: number): boolean {
+  if (!pid) return false
+  try {
+    process.kill(pid, 0)
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function refreshPdfLabJobStatus(job: PdfLabExtractionJob): Promise<void> {
+  if (job.status !== 'running' && job.status !== 'queued') return
+  if (isPidRunning(job.pid)) return
+
+  const summaryPath = resolve(job.outputDir, 'agentic_extract_summary.json')
+  const comparisonPath = resolve(job.outputDir, 'iteration_01', 'comparison.json')
+  const actualPath = resolve(job.outputDir, 'iteration_01', 'actual_elements.json')
+  job.updatedAt = new Date().toISOString()
+  job.completedAt = job.updatedAt
+
+  try {
+    if (!existsSync(summaryPath) || !existsSync(comparisonPath) || !existsSync(actualPath)) {
+      throw new Error(`pdf_oxide job ended before complete artifacts were written. Log: ${job.logPath}`)
+    }
+    job.runSummary = await readJsonFile<JsonRecord>(summaryPath)
+    job.promoted = await promotePdfLabAgenticOutput(job.outputDir)
+    job.status = 'succeeded'
+    job.updatedAt = new Date().toISOString()
+    job.completedAt = job.updatedAt
+  } catch (err) {
+    job.status = 'failed'
+    job.error = err instanceof Error ? err.message : String(err)
+  }
+}
+
+function prunePdfLabJobs(): void {
+  const jobs = Array.from(pdfLabJobs.values()).sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+  for (const staleJob of jobs.slice(25)) {
+    pdfLabJobs.delete(staleJob.id)
+  }
+}
+
+function startPdfLabExtractionJob(operation: string, body: JsonRecord): PdfLabExtractionJob {
+  if (!existsSync(PDF_LAB_SOURCE_PDF)) throw new Error(`Source PDF not found: ${PDF_LAB_SOURCE_PDF}`)
+  if (!existsSync(PDF_LAB_NIST_PRESET)) throw new Error(`NIST preset not found: ${PDF_LAB_NIST_PRESET}`)
+
+  const { maxPages, topK, maxIterations, target } = getPdfLabRunOptions(body)
+  const stamp = pdfLabStamp()
+  const jobId = `${operation}-${stamp}`
+  const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${stamp}`
+  const logPath = `/tmp/pdf-lab-agentic-nist-${operation}-${stamp}.log`
+  const scriptPath = `/tmp/pdf-lab-agentic-nist-${operation}-${stamp}.sh`
+  const inheritedPythonPath = process.env.PYTHONPATH && !process.env.PYTHONPATH.startsWith('./')
+    ? process.env.PYTHONPATH
+    : ''
+  const pythonPath = [
+    PDF_LAB_PDF_OXIDE_ROOT,
+    inheritedPythonPath,
+  ].filter(Boolean).join(':')
+  const args = [
+    'agentic-extract',
+    PDF_LAB_SOURCE_PDF,
+    '--preset', PDF_LAB_NIST_PRESET,
+    '--out', outputDir,
+    '--target', String(target),
+    '--max-iterations', String(maxIterations),
+    '--max-pages', String(maxPages),
+    '--top-k', String(topK),
+    '--json',
+  ]
+  const now = new Date().toISOString()
+  const job: PdfLabExtractionJob = {
+    command: [PDF_LAB_SKILL_RUN, ...args],
+    createdAt: now,
+    id: jobId,
+    logPath,
+    operation,
+    outputDir,
+    scriptPath,
+    status: 'queued',
+    updatedAt: now,
+  }
+  pdfLabJobs.set(jobId, job)
+  pdfLabLatestJobId = jobId
+  prunePdfLabJobs()
+
+const script = `#!/usr/bin/env bash
+set -euo pipefail
+exec >> ${shellQuote(logPath)} 2>&1
+cd ${shellQuote(PDF_LAB_PDF_OXIDE_ROOT)}
+export PDF_OXIDE_ROOT=${shellQuote(PDF_LAB_PDF_OXIDE_ROOT)}
+export PYTHONPATH=${shellQuote(pythonPath)}
+echo "[${now}] START ${job.command.map(shellQuote).join(' ')}"
+${job.command.map(shellQuote).join(' ')}
+echo "[$(date -Is)] DONE"
+`
+  writeFileSync(scriptPath, script, { encoding: 'utf-8', mode: 0o755 })
+  writeFileSync(logPath, '', 'utf-8')
+
+  const child = spawn('bash', [scriptPath], {
+    cwd: PDF_LAB_PDF_OXIDE_ROOT,
+    env: {
+      ...process.env,
+      HOME: process.env.HOME || '/home/graham',
+      USER: process.env.USER || 'graham',
+      PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin',
+      XDG_CACHE_HOME: process.env.XDG_CACHE_HOME || resolve(process.env.HOME || '/home/graham', '.cache'),
+      PDF_OXIDE_ROOT: PDF_LAB_PDF_OXIDE_ROOT,
+      PYTHONPATH: pythonPath,
+    },
+    stdio: 'ignore',
+    detached: true,
+  })
+  child.unref()
+  job.pid = child.pid
+  job.status = 'running'
+  job.updatedAt = new Date().toISOString()
+  child.on('error', (err) => {
+    job.status = 'failed'
+    job.error = err.message
+    job.updatedAt = new Date().toISOString()
+  })
+
+  return job
 }
 
 function fencedCode(path: string, content: string, language = ''): string {
@@ -2469,10 +2674,40 @@ ${sourceSections.join('\n')}
   }
 })
 
+app.get('/api/pdf-lab/jobs/latest', async (_req, res) => {
+  const job = pdfLabLatestJobId ? pdfLabJobs.get(pdfLabLatestJobId) : null
+  if (job) await refreshPdfLabJobStatus(job)
+  return res.json({ ok: true, job: job ? serializePdfLabJob(job) : null })
+})
+
+app.get('/api/pdf-lab/jobs/:jobId', async (req, res) => {
+  const job = pdfLabJobs.get(req.params.jobId)
+  if (!job) return res.status(404).json({ error: 'PDF Lab job not found', detail: req.params.jobId })
+  await refreshPdfLabJobStatus(job)
+  const logTail = (await readUtf8IfExists(job.logPath)).slice(-12_000)
+  return res.json({ ok: true, job: serializePdfLabJob(job), logTail })
+})
+
+app.post('/api/pdf-lab/jobs/promote-output', async (req, res) => {
+  try {
+    const body = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
+    const outputDir = typeof body.outputDir === 'string' ? body.outputDir : ''
+    if (!outputDir.startsWith('/tmp/pdf-lab-')) throw new Error(`Refusing to promote non-PDF-Lab output directory: ${outputDir}`)
+    if (!existsSync(outputDir)) throw new Error(`Output directory not found: ${outputDir}`)
+    const promoted = await promotePdfLabAgenticOutput(outputDir)
+    return res.json({ ok: true, outputDir, promoted })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to promote direct pdf_oxide output',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
 app.post('/api/pdf-lab/commit-sweep-to-run', async (req, res) => {
   try {
-    const result = await runPdfLabAgenticExtraction('commit-sweep', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
-    return res.json(result)
+    const job = startPdfLabExtractionJob('commit-sweep', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
+    return res.status(202).json({ ok: true, async: true, job: serializePdfLabJob(job) })
   } catch (e) {
     return res.status(500).json({
       error: 'Failed to commit sweep to real pdf_oxide run',
@@ -2483,8 +2718,8 @@ app.post('/api/pdf-lab/commit-sweep-to-run', async (req, res) => {
 
 app.post('/api/pdf-lab/bulk-repair-rerun', async (req, res) => {
   try {
-    const result = await runPdfLabAgenticExtraction('bulk-rerun', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
-    return res.json(result)
+    const job = startPdfLabExtractionJob('bulk-rerun', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
+    return res.status(202).json({ ok: true, async: true, job: serializePdfLabJob(job) })
   } catch (e) {
     return res.status(500).json({
       error: 'Failed to run real bulk repair/re-run',
