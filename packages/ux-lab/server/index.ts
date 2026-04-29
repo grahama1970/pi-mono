@@ -1164,55 +1164,11 @@ async function buildSpartaCoveragePayload(): Promise<JsonRecord> {
 import json
 from pathlib import Path
 from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls
-from graph_memory.arango_client import get_db
+from scripts.validation.sparta_corpus_inventory import scan as scan_corpus_inventory
 
 state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json")
 task_state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/task_state.json")
 
-def scalar(db, query):
-    rows = list(db.aql.execute(query))
-    return rows[0] if rows else 0
-
-def corpus_inventory():
-    db = get_db()
-    url_total = scalar(db, "FOR u IN sparta_urls COLLECT WITH COUNT INTO n RETURN n")
-    urls_with_content = scalar(db, "RETURN LENGTH(FOR u IN sparta_urls FILTER LENGTH(FOR c IN sparta_url_content FILTER c.url_id == u.url_id RETURN 1) > 0 RETURN 1)")
-    urls_with_200_file = scalar(db, "RETURN LENGTH(FOR u IN sparta_urls FILTER LENGTH(FOR c IN sparta_url_content FILTER c.url_id == u.url_id AND c.status_code == 200 AND c.file_path != null RETURN 1) > 0 RETURN 1)")
-    url_knowledge_total = scalar(db, "FOR d IN sparta_url_knowledge COLLECT WITH COUNT INTO n RETURN n")
-    url_knowledge_distinct_urls = scalar(db, "RETURN LENGTH(FOR d IN sparta_url_knowledge FILTER d.url_id != null COLLECT uid = d.url_id RETURN 1)")
-    datalake_total = scalar(db, "FOR d IN datalake_chunks COLLECT WITH COUNT INTO n RETURN n")
-    datalake_synced = scalar(db, "RETURN LENGTH(FOR d IN datalake_chunks FILTER d.qdrant_point_id != null && d.semantic_sync_state == 'synced' RETURN 1)")
-    relationships = scalar(db, "FOR d IN sparta_relationships COLLECT WITH COUNT INTO n RETURN n")
-    return {
-        "legacy_qras": {
-            "missing": 0,
-            "next": "Reference-only legacy corpus; excluded from completion target.",
-        },
-        "relationships": {
-            "missing": 0,
-            "target": relationships,
-            "next": "Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative.",
-        },
-        "urls": {
-            "missing": max(0, url_total - urls_with_content),
-            "target": url_total,
-            "with_content": urls_with_content,
-            "with_200_file": urls_with_200_file,
-            "next": f"{urls_with_content:,}/{url_total:,} normalized URLs have fetch records; {urls_with_200_file:,} fetched HTTP 200 with files.",
-        },
-        "url_knowledge": {
-            "missing": 0,
-            "target": url_knowledge_total,
-            "distinct_urls": url_knowledge_distinct_urls,
-            "next": f"{url_knowledge_total:,} URL-knowledge chunks across {url_knowledge_distinct_urls:,} URLs; source embedding lane verifies embedding coverage.",
-        },
-        "datalake_chunks": {
-            "missing": 0,
-            "target": datalake_total,
-            "qdrant_synced": datalake_synced,
-            "next": f"Generic datalake corpus is reference inventory for SPARTA Coverage; {datalake_synced:,} chunks are Qdrant-synced, and SPARTA source targets are checked separately.",
-        },
-    }
 
 client = create_health_client(timeout=45.0)
 try:
@@ -1226,7 +1182,7 @@ payload = {
     "passed": sum(1 for c in checks if c.get("ok")),
     "total": len(checks),
     "remaining": remaining,
-    "corpus_inventory": corpus_inventory(),
+    "corpus_inventory": scan_corpus_inventory(),
     "monitor_state": json.loads(state_path.read_text()) if state_path.exists() else {},
     "task_state": json.loads(task_state_path.read_text()) if task_state_path.exists() else {},
 }
