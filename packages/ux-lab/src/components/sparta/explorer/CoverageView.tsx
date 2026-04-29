@@ -59,6 +59,16 @@ interface SupervisorState {
     gaps?: Record<string, unknown>
     backfill?: Record<string, unknown>
   }
+  source_text_qra_coverage?: {
+    status?: string
+    state?: string
+    resume_hint?: string
+    summary?: Record<string, number>
+    controls?: Record<string, number | boolean>
+    urls?: Record<string, number | boolean>
+    gaps?: Record<string, unknown>
+    backfill?: Record<string, unknown>
+  }
   lanes?: SupervisorLane[]
   active_jobs?: Array<Record<string, unknown>>
   blocked?: Array<Record<string, unknown>>
@@ -358,6 +368,7 @@ export function CoverageView() {
   const remediationPlans = supervisorState?.remediation_plans ?? []
   const slackState = notificationChannels.slack
   const sourceEmbeddingCoverage = supervisorState?.source_embedding_coverage
+  const sourceTextQraCoverage = supervisorState?.source_text_qra_coverage
   const voiceCount = commandSourceCounts.voice ?? 0
   const slackCount = commandSourceCounts.slack ?? 0
   const reviewRequiredCount = commandStatusCounts.review_required ?? 0
@@ -414,6 +425,29 @@ export function CoverageView() {
   const sourceEmbeddingMeaning = sourceEmbeddingManifest?.path
     ? `${sourceEmbeddingCoverage?.resume_hint ?? 'Review generated backfill manifest.'} Manifest: ${sourceEmbeddingManifest.path}`
     : sourceEmbeddingCoverage?.resume_hint ?? 'ArangoDB document/BM25/graph and Qdrant vector coverage scanner.'
+  const sourceTextStatus = String(sourceTextQraCoverage?.status ?? 'blocked').toLowerCase()
+  const sourceTextSummary = sourceTextQraCoverage?.summary ?? {}
+  const sourceTextBackfill = sourceTextQraCoverage?.backfill as Record<string, unknown> | undefined
+  const sourceTextManifest = sourceTextBackfill?.manifest as Record<string, unknown> | null | undefined
+  const sourceTextMeaning = sourceTextManifest?.path
+    ? `${sourceTextQraCoverage?.resume_hint ?? 'Review generated source text/QRA manifest.'} Manifest: ${sourceTextManifest.path}`
+    : sourceTextQraCoverage?.resume_hint ?? 'Controls and valid URLs need non-stub text and valid QRAs.'
+  const sourceTextRow = (
+    lane: string,
+    gapKey: string,
+    passValue: string,
+    failSuffix: string,
+    meaning: string,
+  ) => {
+    const gaps = Number(sourceTextSummary[gapKey] ?? 0)
+    return {
+      lane,
+      status: sourceTextStatus === 'blocked' ? 'BLOCKED' : gaps === 0 ? 'PASS' : 'FAIL',
+      value: gaps === 0 ? passValue : `${formatNum(gaps)} ${failSuffix}`,
+      meaning: gaps === 0 ? meaning : `${meaning} ${sourceTextMeaning}`,
+      action: gaps === 0 ? 'Observe' : 'Review Backfill',
+    }
+  }
   const aggregateRows = [
     {
       lane: 'QRA Generation',
@@ -450,6 +484,34 @@ export function CoverageView() {
       meaning: 'Silent failure scanner result.',
       action: 'Review',
     },
+    sourceTextRow(
+      'Control Text Coverage',
+      'control_text_missing_or_stub',
+      `${formatNum(sourceTextQraCoverage?.controls?.text_ok)} text ok`,
+      'missing/stubbed',
+      'Every control should have non-stub name/description text.',
+    ),
+    sourceTextRow(
+      'Control QRA Coverage',
+      'control_qra_missing',
+      `${formatNum(sourceTextQraCoverage?.controls?.qra_ok)} QRA covered`,
+      'missing QRA',
+      'Every in-scope text-backed control should have at least one valid QRA.',
+    ),
+    sourceTextRow(
+      'URL Text Coverage',
+      'url_text_missing_or_stub',
+      `${formatNum(sourceTextQraCoverage?.urls?.text_ok)} URL text ok`,
+      'missing/stubbed',
+      'Every valid URL should have fetched non-stub page text.',
+    ),
+    sourceTextRow(
+      'URL QRA Coverage',
+      'url_qra_missing',
+      `${formatNum(sourceTextQraCoverage?.urls?.qra_ok)} URL QRA covered`,
+      'missing QRA',
+      'Every valid text-backed URL should have at least one URL-derived QRA.',
+    ),
     {
       lane: 'Source/Embedding Coverage',
       status: sourceEmbeddingStatus === 'pass' ? 'PASS' : sourceEmbeddingStatus === 'fail' ? 'FAIL' : 'BLOCKED',
