@@ -77,11 +77,22 @@ const ARCH_SCOPE = 'architecture'
 const RE_QUESTION_SKILL = '/home/graham/workspace/experiments/agent-skills/skills/review-question'
 const WORKSHEETS_PATH = process.env.WORKSHEETS_YAML ?? resolve(__dirname, '../fixtures/sparta-reference/worksheets.yaml')
 const WORKSHEETS_CACHE_TTL_MS = 60_000
+const MEMORY_REPO_ROOT = process.env.MEMORY_REPO_ROOT ?? '/home/graham/workspace/experiments/memory'
+const CREATE_QRAS_SKILL_ROOT = process.env.CREATE_QRAS_SKILL_ROOT ?? '/home/graham/workspace/experiments/agent-skills/skills/create-qras'
+const SPARTA_PROJECT_ROOT = process.env.SPARTA_PROJECT_ROOT ?? '/home/graham/workspace/experiments/sparta'
+const SPARTA_COVERAGE_CACHE_TTL_MS = 30_000
+const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH ?? resolve(__dirname, '../.cache/sparta-coverage-health.json')
+const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
+const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'status.json')
+const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
 
 type JsonRecord = Record<string, unknown>
 type WorksheetConfig = { description_source?: string } & Record<string, unknown>
 
 let worksheetsCache: { expiresAt: number; worksheets: Record<string, WorksheetConfig> } | null = null
+let spartaCoverageCache: { expiresAt: number; payload: JsonRecord } | null = null
+let spartaCoverageRefresh: Promise<JsonRecord> | null = null
+let broadcastWs: (msg: JsonRecord) => void = () => {}
 const execFileAsync = promisify(execFile)
 const execAsync = promisify(exec)
 
@@ -797,6 +808,483 @@ app.get('/api/sparta/counts', async (_req, res) => {
   }
 })
 
+async function runCommandJson(command: string, args: string[], options: { cwd: string; env?: NodeJS.ProcessEnv; timeout?: number }) {
+  const { stdout, stderr } = await execFileAsync(command, args, {
+    cwd: options.cwd,
+    env: { ...process.env, ...(options.env ?? {}) },
+    timeout: options.timeout ?? 60_000,
+    maxBuffer: 50 * 1024 * 1024,
+  })
+  try {
+    return JSON.parse(stdout)
+  } catch (err) {
+    throw new Error(`Failed to parse JSON from ${command}: ${err instanceof Error ? err.message : String(err)}; stderr=${stderr.slice(-1000)}; stdout=${stdout.slice(0, 1000)}`)
+  }
+}
+
+function commandOutput(err: unknown) {
+  if (err && typeof err === 'object') {
+    const maybe = err as { stdout?: unknown; stderr?: unknown }
+    return `${typeof maybe.stdout === 'string' ? maybe.stdout : ''}${typeof maybe.stderr === 'string' ? maybe.stderr : ''}`.trim()
+  }
+  return ''
+}
+
+async function runBestPracticeAudit() {
+  const uxRoot = resolve(__dirname, '..')
+  const checks: Array<Record<string, unknown>> = []
+
+  try {
+    const result = await execFileAsync('python3', ['scripts/verify-data-qid.py', 'src/components/sparta'], {
+      cwd: uxRoot,
+      timeout: 30_000,
+      maxBuffer: 1024 * 1024,
+    })
+    const match = result.stdout.match(/data-qid coverage:\s*(\d+)\/(\d+)\s*\((\d+)%\)/)
+    checks.push({
+      name: 'React data-qid coverage',
+      skill: 'best-practices-react',
+      ok: true,
+      status: 'pass',
+      message: result.stdout.trim().split('\n')[0] || 'data-qid scan passed',
+      covered: match ? Number(match[1]) : null,
+      total: match ? Number(match[2]) : null,
+      percent: match ? Number(match[3]) : null,
+    })
+  } catch (err) {
+    const output = commandOutput(err)
+    const match = output.match(/data-qid coverage:\s*(\d+)\/(\d+)\s*\((\d+)%\)/)
+    checks.push({
+      name: 'React data-qid coverage',
+      skill: 'best-practices-react',
+      ok: false,
+      status: 'fail',
+      message: output.split('\n')[0] || 'data-qid scan failed',
+      covered: match ? Number(match[1]) : null,
+      total: match ? Number(match[2]) : null,
+      percent: match ? Number(match[3]) : null,
+      detail: output.slice(0, 4000),
+    })
+  }
+
+  try {
+    const result = await execFileAsync('uv', ['run', 'python', 'scripts/validation/silent_fallback_scanner.py', 'scan'], {
+      cwd: MEMORY_REPO_ROOT,
+      env: { ...process.env, PYTHONPATH: 'src' },
+      timeout: 60_000,
+      maxBuffer: 2 * 1024 * 1024,
+    })
+    checks.push({
+      name: 'Python silent fallback scan',
+      skill: 'best-practices-python',
+      ok: true,
+      status: 'pass',
+      message: 'No silent fallback violations found',
+      detail: `${result.stdout}${result.stderr}`.trim().slice(0, 4000),
+    })
+  } catch (err) {
+    const output = commandOutput(err)
+    checks.push({
+      name: 'Python silent fallback scan',
+      skill: 'best-practices-python',
+      ok: false,
+      status: 'fail',
+      message: output.split('\n').find((line: string) => line.includes('violation')) || 'Silent fallback scan failed',
+      detail: output.slice(0, 4000),
+    })
+  }
+
+  checks.push(
+    {
+      name: 'ArangoDB best-practice static scan',
+      skill: 'best-practices-arangodb',
+      ok: false,
+      status: 'not_wired',
+      message: 'No dedicated static scanner is wired yet; monitor health still covers Arango-backed corpus and backlog checks.',
+    },
+    {
+      name: 'Prompt best-practice static scan',
+      skill: 'best-practices-prompt',
+      ok: false,
+      status: 'not_wired',
+      message: 'No prompt-template scanner is wired yet; prompt quality must not be inferred from corpus health.',
+    },
+  )
+
+  return checks
+}
+
+async function readLatestArtifactSummary() {
+  const artifactDir = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
+  const files = await readdir(artifactDir).catch(() => [])
+  const interesting = files
+    .filter((name) => /final_audit|backfill_summary|remaining_manifest|comparison_gated_manifest|failures/.test(name))
+    .sort()
+    .slice(-20)
+    .map((name) => `artifacts/monitor_sparta_gap_plan/${name}`)
+  return {
+    recent: interesting,
+    c2cAuditPath: 'artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json',
+    nonC2cAuditPath: 'artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json',
+  }
+}
+
+async function auditSpartaPrompts() {
+  const promptRoot = resolve(CREATE_QRAS_SKILL_ROOT, 'prompts/sparta')
+  const sharedBase = await readFile(resolve(promptRoot, '_shared_base.txt'), 'utf8').catch(() => '')
+  const specs = [
+    ['sparta_tactic_canonical', 'canonical/tactic_canonical'],
+    ['sparta_technique_canonical', 'canonical/technique_canonical'],
+    ['sparta_countermeasure_canonical', 'canonical/countermeasure_canonical'],
+    ['sparta_tactic_technique_relationship', 'relationship/tactic_technique_relationship'],
+    ['sparta_technique_countermeasure_relationship', 'relationship/technique_countermeasure_relationship'],
+    ['sparta_technique_related_controls_relationship', 'relationship/technique_related_controls_relationship'],
+    ['sparta_url_excerpt', 'standalone/url_excerpt'],
+  ]
+  const banned = ['relevant', 'appropriate', 'comprehensive', 'thorough', 'important', 'ensure', 'consider', 'properly', 'meaningful', 'high-quality', 'as needed', 'various', 'leverage', 'utilize']
+
+  const auditText = (text: string) => {
+    const lower = text.toLowerCase()
+    const checks = {
+      rationale: lower.includes('# rationale') && lower.includes('# purpose:') && lower.includes('# consumer:') && lower.includes('# why'),
+      inputOutput: lower.includes('# input:') && lower.includes('# output:'),
+      exactJson: lower.includes('json schema') && lower.includes('return exactly one top-level json object'),
+      grounding: lower.includes('admissible source') && lower.includes('evidence_quote'),
+      rejectionCriteria: ['omit', 'must not', 'zero pairs', 'skipped_reason'].some((needle) => lower.includes(needle)),
+    }
+    const bannedHits = banned.filter((word) => lower.includes(word))
+    const failures = [
+      ...Object.entries(checks).filter(([, ok]) => !ok).map(([name]) => name),
+      ...bannedHits.map((word) => `banned_word:${word}`),
+    ]
+    return { checks, bannedHits, failures }
+  }
+
+  const rows = await Promise.all(specs.map(async ([promptKind, stem]) => {
+    const systemPath = resolve(promptRoot, `${stem}_system.txt`)
+    const userPath = resolve(promptRoot, `${stem}_user.txt`)
+    const [systemText, userText] = await Promise.all([
+      readFile(systemPath, 'utf8').catch(() => ''),
+      readFile(userPath, 'utf8').catch(() => ''),
+    ])
+    const text = `${systemText.replace('{_shared_base}', sharedBase)}\n${userText.replace('{_shared_base}', sharedBase)}`
+    const { checks, bannedHits, failures } = auditText(text)
+    return {
+      source: 'create-qras-active-sparta',
+      prompt_kind: promptKind,
+      system_path: systemPath,
+      user_path: userPath,
+      status: failures.length === 0 ? 'pass' : 'fail',
+      failures,
+      checks,
+      banned_words: bannedHits,
+    }
+  }))
+
+  async function walkPromptFiles(root: string, include: (path: string) => boolean): Promise<string[]> {
+    const out: string[] = []
+    async function walk(dir: string) {
+      const entries = await readdir(dir, { withFileTypes: true }).catch(() => [])
+      for (const entry of entries) {
+        const path = resolve(dir, entry.name)
+        if (entry.isDirectory()) {
+          if (path.includes('/__pycache__') || path.includes('/.git/') || path.includes('/node_modules/') || path.includes('/.venv') || path.includes('/venv/')) continue
+          await walk(path)
+        } else if (include(path)) {
+          out.push(path)
+        }
+      }
+    }
+    await walk(root)
+    return out.sort()
+  }
+
+  const createQrasFiles = await walkPromptFiles(resolve(CREATE_QRAS_SKILL_ROOT, 'prompts'), (path) =>
+    /\.(txt|md)$/i.test(path) && !path.includes('/.archive/')
+  )
+  const spartaFiles = await walkPromptFiles(SPARTA_PROJECT_ROOT, (path) =>
+    /prompt/i.test(path) &&
+    /\.(txt|md|py)$/i.test(path) &&
+    !path.includes('/data/runs/') &&
+    !path.includes('/data/audit/') &&
+    !path.includes('/backup/') &&
+    !path.includes('/__pycache__/')
+  )
+
+  const auditFileRows = await Promise.all([
+    ...createQrasFiles.map(async (path) => {
+      const text = (await readFile(path, 'utf8').catch(() => '')).replace('{_shared_base}', sharedBase)
+      const { checks, bannedHits, failures } = auditText(text)
+      return { source: 'create-qras', prompt_kind: path.replace(`${CREATE_QRAS_SKILL_ROOT}/`, ''), path, status: failures.length === 0 ? 'pass' : 'fail', failures, checks, banned_words: bannedHits }
+    }),
+    ...spartaFiles.map(async (path) => {
+      const text = await readFile(path, 'utf8').catch(() => '')
+      const { checks, bannedHits, failures } = auditText(text)
+      return { source: 'sparta-project', prompt_kind: path.replace(`${SPARTA_PROJECT_ROOT}/`, ''), path, status: failures.length === 0 ? 'pass' : 'fail', failures, checks, banned_words: bannedHits }
+    }),
+  ])
+  const allRows = auditFileRows
+  return {
+    generated_at: new Date().toISOString(),
+    passed: rows.filter((row) => row.status === 'pass').length,
+    total: rows.length,
+    all_passed: allRows.filter((row) => row.status === 'pass').length,
+    all_total: allRows.length,
+    rows,
+    allRows,
+    scopes: [
+      { source: 'create-qras-active-sparta', passed: rows.filter((row) => row.status === 'pass').length, total: rows.length },
+      { source: 'create-qras', passed: allRows.filter((row) => row.source === 'create-qras' && row.status === 'pass').length, total: allRows.filter((row) => row.source === 'create-qras').length },
+      { source: 'sparta-project', passed: allRows.filter((row) => row.source === 'sparta-project' && row.status === 'pass').length, total: allRows.filter((row) => row.source === 'sparta-project').length },
+    ],
+  }
+}
+
+async function readSpartaCoverageSnapshot(): Promise<JsonRecord | null> {
+  const text = await readFile(SPARTA_COVERAGE_SNAPSHOT_PATH, 'utf8').catch(() => null)
+  if (!text) return null
+  try {
+    return JSON.parse(text)
+  } catch {
+    return null
+  }
+}
+
+async function readSpartaSupervisorState(): Promise<JsonRecord | null> {
+  const text = await readFile(SPARTA_SUPERVISOR_STATUS_PATH, 'utf8').catch(() => null)
+  if (!text) return null
+  try {
+    const parsed = JSON.parse(text)
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed as JsonRecord : null
+  } catch {
+    return null
+  }
+}
+
+function normalizeSupervisorCommand(body: unknown): JsonRecord {
+  const raw = body && typeof body === 'object' && !Array.isArray(body) ? body as JsonRecord : {}
+  const intent = typeof raw.intent === 'string' && raw.intent.trim() ? raw.intent.trim() : 'status'
+  const source = typeof raw.source === 'string' && raw.source.trim() ? raw.source.trim() : 'ui'
+  const targetLane = typeof raw.target_lane === 'string' ? raw.target_lane : ''
+  const risk = typeof raw.risk === 'string' && raw.risk.trim() ? raw.risk.trim() : 'read_only'
+  const safeIntents = new Set(['status', 'refresh', 'run_audit_now', 'ack'])
+  const status = risk === 'read_only' && safeIntents.has(intent) ? 'queued' : 'review_required'
+  return {
+    command_id: `cmd-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    created_at: new Date().toISOString(),
+    source,
+    intent,
+    target_lane: targetLane,
+    risk,
+    status,
+    payload: raw.payload && typeof raw.payload === 'object' && !Array.isArray(raw.payload) ? raw.payload : {},
+    safe_default: 'observe_only',
+    resume_hint: 'Human review required before any mutation-capable remediation.',
+  }
+}
+
+async function appendSpartaSupervisorCommand(command: JsonRecord) {
+  await mkdir(dirname(SPARTA_SUPERVISOR_COMMANDS_PATH), { recursive: true })
+  await writeFile(SPARTA_SUPERVISOR_COMMANDS_PATH, `${JSON.stringify(command)}\n`, { flag: 'a' })
+}
+
+async function writeSpartaCoverageSnapshot(payload: JsonRecord) {
+  await mkdir(dirname(SPARTA_COVERAGE_SNAPSHOT_PATH), { recursive: true })
+  await writeFile(SPARTA_COVERAGE_SNAPSHOT_PATH, JSON.stringify(payload, null, 2))
+}
+
+async function buildSpartaCoveragePayload(): Promise<JsonRecord> {
+  const auditScript = `
+import json
+from pathlib import Path
+from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls
+
+state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json")
+task_state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/task_state.json")
+
+client = create_health_client(timeout=45.0)
+try:
+    checks = [r.to_dict() for r in run_all_checks(client)]
+finally:
+    client.close()
+
+remaining = check_create_qras_remaining_calls().to_dict()
+payload = {
+    "checks": checks,
+    "passed": sum(1 for c in checks if c.get("ok")),
+    "total": len(checks),
+    "remaining": remaining,
+    "monitor_state": json.loads(state_path.read_text()) if state_path.exists() else {},
+    "task_state": json.loads(task_state_path.read_text()) if task_state_path.exists() else {},
+}
+print(json.dumps(payload, default=str))
+`.trim()
+
+  const [
+    monitor,
+    counts,
+    bestPractices,
+    artifacts,
+    promptAudit,
+    supervisor,
+  ] = await Promise.all([
+    runCommandJson('uv', ['run', 'python', '-c', auditScript], {
+      cwd: MEMORY_REPO_ROOT,
+      env: { PYTHONPATH: 'src', MEMORY_SERVICE_URL: 'http://127.0.0.1:8601' },
+      timeout: 180_000,
+    }),
+    Promise.all([
+      proxyPost('/count', { collection: 'sparta_controls' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_qra' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_qra_canonical' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_qra_relationship' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_relationships' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_urls' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'sparta_url_knowledge' }).catch(() => ({ count: 0 })),
+      proxyPost('/count', { collection: 'datalake_chunks' }).catch(() => ({ count: 0 })),
+    ]),
+    runBestPracticeAudit(),
+    readLatestArtifactSummary(),
+    auditSpartaPrompts(),
+    readSpartaSupervisorState(),
+  ])
+  const remaining = monitor && typeof monitor === 'object' && !Array.isArray(monitor)
+    ? (monitor as JsonRecord).remaining as JsonRecord | undefined
+    : undefined
+  const compactMonitor = monitor && typeof monitor === 'object' && !Array.isArray(monitor)
+    ? {
+      passed: (monitor as JsonRecord).passed,
+      total: (monitor as JsonRecord).total,
+      checks: Array.isArray((monitor as JsonRecord).checks)
+        ? ((monitor as JsonRecord).checks as JsonRecord[]).map((check) => ({
+          ok: check.ok,
+          dimension: check.dimension,
+          message: typeof check.message === 'string' ? check.message.slice(0, 1000) : check.message,
+        }))
+        : [],
+      remaining: remaining ? {
+        ok: remaining.ok,
+        dimension: remaining.dimension,
+        message: remaining.message,
+        native_remaining_any_collection_total: remaining.native_remaining_any_collection_total,
+        native_remaining_non_sparta_total: remaining.native_remaining_non_sparta_total,
+        native_remaining_sparta_any_collection: remaining.native_remaining_sparta_any_collection,
+        native_by_framework: remaining.native_by_framework,
+        sparta_v2_remaining_total: remaining.sparta_v2_remaining_total,
+        sparta_v2_native_remaining_target_collection: remaining.sparta_v2_native_remaining_target_collection,
+        sparta_v2_contextual_remaining_target_collection: remaining.sparta_v2_contextual_remaining_target_collection,
+        sparta_v2_remaining_prompt_kinds: remaining.sparta_v2_remaining_prompt_kinds,
+        sparta_control_to_control_raw_candidate_pairs: remaining.sparta_control_to_control_raw_candidate_pairs,
+        sparta_control_to_control_gated_pairs: remaining.sparta_control_to_control_gated_pairs,
+        sparta_control_to_control_gated_skip_reasons: remaining.sparta_control_to_control_gated_skip_reasons,
+        implemented_backlog_total_if_legacy_sparta_native_counts_as_done: remaining.implemented_backlog_total_if_legacy_sparta_native_counts_as_done,
+        implemented_backlog_total_if_v2_sparta_native_required: remaining.implemented_backlog_total_if_v2_sparta_native_required,
+        exact_remaining_calls_total: remaining.exact_remaining_calls_total,
+        total_with_raw_comparison_candidates: remaining.total_with_raw_comparison_candidates,
+      } : undefined,
+    }
+    : monitor
+
+  return {
+    generated_at: new Date().toISOString(),
+    stale: false,
+    refreshing: false,
+    corpus: {
+      controls: counts[0]?.count ?? 0,
+      qrasLegacy: counts[1]?.count ?? 0,
+      qrasCanonical: counts[2]?.count ?? 0,
+      qrasRelationship: counts[3]?.count ?? 0,
+      qrasTotal: (counts[1]?.count ?? 0) + (counts[2]?.count ?? 0) + (counts[3]?.count ?? 0),
+      relationships: counts[4]?.count ?? 0,
+      urls: counts[5]?.count ?? 0,
+      urlKnowledge: counts[6]?.count ?? 0,
+      datalakeChunks: counts[7]?.count ?? 0,
+    },
+    monitor: compactMonitor,
+    bestPractices,
+    promptAudit,
+    artifacts,
+    supervisor,
+  }
+}
+
+function refreshSpartaCoverageInBackground() {
+  if (spartaCoverageRefresh) return spartaCoverageRefresh
+  spartaCoverageRefresh = buildSpartaCoveragePayload()
+    .then(async (payload) => {
+      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
+      await writeSpartaCoverageSnapshot(payload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
+      return payload
+    })
+    .finally(() => {
+      spartaCoverageRefresh = null
+    })
+  return spartaCoverageRefresh
+}
+
+app.get('/api/sparta/coverage-health', async (req, res) => {
+  try {
+    if (spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
+      return res.json(spartaCoverageCache.payload)
+    }
+
+    const waitForRefresh = req.query.wait === '1'
+    const snapshot = spartaCoverageCache?.payload ?? await readSpartaCoverageSnapshot()
+
+    if (snapshot && !waitForRefresh) {
+      refreshSpartaCoverageInBackground().catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
+      return res.json({ ...snapshot, stale: true, refreshing: true })
+    }
+
+    const payload = await refreshSpartaCoverageInBackground()
+    return res.json(payload)
+  } catch (err) {
+    console.error('[sparta/coverage-health] failed', err)
+    return res.status(502).json({
+      error: 'sparta_coverage_health_failed',
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
+app.get('/api/sparta/supervisor-state', async (_req, res) => {
+  try {
+    const supervisor = await readSpartaSupervisorState()
+    if (!supervisor) {
+      return res.status(404).json({
+        error: 'sparta_supervisor_state_missing',
+        detail: `No supervisor state found at ${SPARTA_SUPERVISOR_STATUS_PATH}`,
+      })
+    }
+    return res.json(supervisor)
+  } catch (err) {
+    console.error('[sparta/supervisor-state] failed', err)
+    return res.status(502).json({
+      error: 'sparta_supervisor_state_failed',
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
+app.post('/api/sparta/supervisor-command', async (req, res) => {
+  try {
+    const command = normalizeSupervisorCommand(req.body)
+    await appendSpartaSupervisorCommand(command)
+    broadcastWs({
+      type: 'sparta-supervisor-command',
+      timestamp: Date.now(),
+      command,
+    })
+    return res.status(202).json(command)
+  } catch (err) {
+    console.error('[sparta/supervisor-command] failed', err)
+    return res.status(502).json({
+      error: 'sparta_supervisor_command_failed',
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
 // Legacy posture endpoints (kept for backward compat)
 app.get('/api/posture/frameworks', async (_req, res) => {
   try {
@@ -1351,6 +1839,202 @@ async function readUtf8IfExists(path: string): Promise<string> {
   return readFile(path, 'utf-8')
 }
 
+const PDF_LAB_SKILL_RUN = '/home/graham/workspace/experiments/agent-skills/skills/pdf-lab/run.sh'
+const PDF_LAB_PDF_OXIDE_ROOT = '/home/graham/workspace/experiments/pdf_oxide'
+const PDF_LAB_SOURCE_PDF = process.env.PDF_LAB_SOURCE_PDF || '/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf'
+const PDF_LAB_NIST_PRESET = '/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json'
+const PDF_LAB_WORKFLOW_BUILD_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/build_pdf_lab_workflow_manifest.py'
+const PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/promote_pdf_lab_real_artifacts.py'
+
+function pdfLabPublicPath(relativeName: string): string {
+  return resolve(__dirname, '../public', relativeName)
+}
+
+function pdfLabStamp(): string {
+  return new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
+}
+
+async function readJsonFile<T = JsonRecord>(path: string): Promise<T> {
+  return JSON.parse(await readFile(path, 'utf-8')) as T
+}
+
+async function writeJsonFile(path: string, data: unknown): Promise<void> {
+  await writeFile(path, `${JSON.stringify(data, null, 2)}\n`, 'utf-8')
+}
+
+function parseJsonStdout<T = JsonRecord>(stdout: string): T {
+  const trimmed = stdout.trim()
+  if (!trimmed) return {} as T
+  try {
+    return JSON.parse(trimmed) as T
+  } catch {
+    const start = trimmed.indexOf('{')
+    const end = trimmed.lastIndexOf('}')
+    if (start === -1 || end === -1 || end <= start) throw new Error(`Command did not emit a JSON object: ${trimmed.slice(0, 240)}`)
+    return JSON.parse(trimmed.slice(start, end + 1)) as T
+  }
+}
+
+async function refreshPdfLabCandidateInventoryFromPresetScan(manifestPath: string): Promise<number> {
+  const fullExtractionPath = pdfLabPublicPath('pdf-lab-nist-full-extraction.json')
+  const triagePath = pdfLabPublicPath('pdf-lab-nist-human-triage-queue.json')
+  const presetScanDir = pdfLabPublicPath('pdf-lab-nist-preset-scan')
+  if (!existsSync(fullExtractionPath) || !existsSync(presetScanDir)) return 0
+
+  const pageNumbers = (await readdir(presetScanDir))
+    .map((fileName) => fileName.match(/^page_(\d+)\.png$/i)?.[1])
+    .filter((page): page is string => Boolean(page))
+    .map((page) => Number(page))
+    .sort((left, right) => left - right)
+  if (pageNumbers.length === 0) return 0
+
+  const fullExtraction = await readJsonFile<JsonRecord>(fullExtractionPath)
+  const triage = existsSync(triagePath) ? await readJsonFile<JsonRecord>(triagePath) : null
+  const elements = Array.isArray(fullExtraction.elements) ? fullExtraction.elements as JsonRecord[] : []
+  const tasks = triage && Array.isArray(triage.human_triage_queue) ? triage.human_triage_queue as JsonRecord[] : []
+  const pageSet = new Set(pageNumbers)
+  const elementsByPage = new Map<number, JsonRecord[]>()
+  const tasksByPage = new Map<number, JsonRecord[]>()
+  for (const element of elements) {
+    const page = typeof element.page === 'number' ? element.page : null
+    if (page === null || !pageSet.has(page)) continue
+    const rows = elementsByPage.get(page) ?? []
+    rows.push(element)
+    elementsByPage.set(page, rows)
+  }
+  for (const task of tasks) {
+    const page = typeof task.page === 'number' ? task.page : null
+    if (page === null) continue
+    const rows = tasksByPage.get(page) ?? []
+    rows.push(task)
+    tasksByPage.set(page, rows)
+  }
+
+  const countTypes = (records: JsonRecord[]) => {
+    const counts: Record<string, number> = {}
+    for (const record of records) {
+      const type = typeof record.type === 'string' ? record.type : 'unknown'
+      counts[type] = (counts[type] ?? 0) + 1
+    }
+    return Object.fromEntries(Object.entries(counts).sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0])))
+  }
+  const severityRank: Record<string, number> = { high: 3, medium: 2, low: 1 }
+  const manifest = await readJsonFile<JsonRecord>(manifestPath)
+  const evidenceElementsByPage: Record<string, JsonRecord[]> = {}
+  const candidatePages = pageNumbers.map((page) => {
+    const pageElements = elementsByPage.get(page) ?? []
+    const pageTasks = tasksByPage.get(page) ?? []
+    const taskKinds: Record<string, number> = {}
+    for (const task of pageTasks) {
+      const kind = typeof task.kind === 'string' ? task.kind : 'unknown'
+      taskKinds[kind] = (taskKinds[kind] ?? 0) + 1
+    }
+    const severity = pageTasks
+      .map((task) => typeof task.severity === 'string' ? task.severity : 'none')
+      .sort((left, right) => (severityRank[right] ?? 0) - (severityRank[left] ?? 0))[0] ?? 'none'
+    evidenceElementsByPage[String(page)] = pageElements.slice(0, 120).map((element) => ({
+      bbox: element.bbox,
+      confidence: element.confidence,
+      id: element.id,
+      page,
+      source: element.source,
+      text: element.text,
+      type: element.type,
+    }))
+    return {
+      element_count: pageElements.length,
+      element_types: countTypes(pageElements),
+      gate_status: 'candidate_selected_for_extraction',
+      inferred_match_score: null,
+      page,
+      severity,
+      source: 'agentic_preset_scan_png + full_extraction',
+      task_count: pageTasks.length,
+      task_kinds: taskKinds,
+    }
+  })
+
+  manifest.candidate_inventory = {
+    candidate_page_count: candidatePages.length,
+    candidate_pages: candidatePages,
+    source: '/pdf-lab-nist-preset-scan/*.png + /pdf-lab-nist-full-extraction.json',
+  }
+  manifest.evidence_elements_by_page = evidenceElementsByPage
+  await writeJsonFile(manifestPath, manifest)
+  await writeJsonFile(pdfLabPublicPath('pdf-lab-nist-preset-scan-index.json'), {
+    count: pageNumbers.length,
+    pages: pageNumbers,
+    source: 'pdf-lab-nist-preset-scan',
+  })
+  return pageNumbers.length
+}
+
+async function promotePdfLabAgenticOutput(outputDir: string): Promise<JsonRecord> {
+  if (!existsSync(PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT)) {
+    throw new Error(`Promotion script not found: ${PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT}`)
+  }
+  const { stdout } = await execFileAsync(
+    'python3',
+    [
+      PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT,
+      '--run-dir',
+      outputDir,
+      '--public-dir',
+      resolve(__dirname, '../public'),
+    ],
+    { timeout: 180_000, maxBuffer: 40 * 1024 * 1024 },
+  )
+  return JSON.parse(stdout.trim() || '{}') as JsonRecord
+}
+
+async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): Promise<JsonRecord> {
+  if (!existsSync(PDF_LAB_SOURCE_PDF)) throw new Error(`Source PDF not found: ${PDF_LAB_SOURCE_PDF}`)
+  if (!existsSync(PDF_LAB_NIST_PRESET)) throw new Error(`NIST preset not found: ${PDF_LAB_NIST_PRESET}`)
+  const maxPages = Number(body.maxPages ?? 50)
+  const topK = Number(body.topK ?? 5)
+  const maxIterations = Number(body.maxIterations ?? 1)
+  const target = Number(body.target ?? 0.95)
+  const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${pdfLabStamp()}`
+  const pythonPath = [
+    resolve(PDF_LAB_PDF_OXIDE_ROOT, 'python'),
+    process.env.PYTHONPATH || '',
+  ].filter(Boolean).join(':')
+  const command = [
+    PDF_LAB_SKILL_RUN,
+    'agentic-extract',
+    PDF_LAB_SOURCE_PDF,
+    '--preset', PDF_LAB_NIST_PRESET,
+    '--out', outputDir,
+    '--target', String(target),
+    '--max-iterations', String(maxIterations),
+    '--max-pages', String(maxPages),
+    '--top-k', String(topK),
+    '--json',
+  ].map(shellQuote).join(' ')
+  const { stdout } = await execAsync(
+    command,
+    {
+      cwd: PDF_LAB_PDF_OXIDE_ROOT,
+      env: {
+        ...process.env,
+        PDF_OXIDE_ROOT: PDF_LAB_PDF_OXIDE_ROOT,
+        PYTHONPATH: pythonPath,
+      },
+      timeout: 600_000,
+      maxBuffer: 40 * 1024 * 1024,
+    },
+  )
+  const runSummary = parseJsonStdout<JsonRecord>(stdout)
+  const promoted = await promotePdfLabAgenticOutput(outputDir)
+  return {
+    ok: true,
+    operation,
+    outputDir,
+    runSummary,
+    promoted,
+  }
+}
+
 function fencedCode(path: string, content: string, language = ''): string {
   return `### ${path}\n\n\`\`\`${language}\n${content.trimEnd()}\n\`\`\`\n`
 }
@@ -1733,6 +2417,140 @@ ${sourceSections.join('\n')}
   } catch (e) {
     return res.status(500).json({
       error: 'Failed to generate Gemini review bundle',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.post('/api/pdf-lab/commit-sweep-to-run', async (req, res) => {
+  try {
+    const result = await runPdfLabAgenticExtraction('commit-sweep', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
+    return res.json(result)
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to commit sweep to real pdf_oxide run',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.post('/api/pdf-lab/bulk-repair-rerun', async (req, res) => {
+  try {
+    const result = await runPdfLabAgenticExtraction('bulk-rerun', req.body && typeof req.body === 'object' ? req.body as JsonRecord : {})
+    return res.json(result)
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to run real bulk repair/re-run',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.post('/api/pdf-lab/eject-mismatches-to-triage', async (req, res) => {
+  try {
+    const comparisonPath = pdfLabPublicPath('pdf-lab-nist-comparison.json')
+    const extractionPath = pdfLabPublicPath('pdf-lab-nist-full-extraction.json')
+    const triagePath = pdfLabPublicPath('pdf-lab-nist-human-triage-queue.json')
+    const manifestPath = pdfLabPublicPath('pdf-lab-nist-workflow-manifest.json')
+    if (!existsSync(comparisonPath)) throw new Error(`Comparison artifact missing: ${comparisonPath}`)
+    if (!existsSync(extractionPath)) throw new Error(`Full extraction artifact missing: ${extractionPath}`)
+
+    const outputDir = `/tmp/pdf-lab-final-pass-${pdfLabStamp()}`
+    const { stdout } = await execFileAsync(
+      PDF_LAB_SKILL_RUN,
+      [
+        'final-pass',
+        extractionPath,
+        '--out', outputDir,
+        '--comparison', comparisonPath,
+        '--preset', PDF_LAB_NIST_PRESET,
+        '--json',
+      ],
+      { timeout: 120_000, maxBuffer: 40 * 1024 * 1024 },
+    )
+    const runSummary = parseJsonStdout<JsonRecord>(stdout)
+    const generatedTriagePath = resolve(outputDir, 'human_triage_queue.json')
+    if (!existsSync(generatedTriagePath)) throw new Error(`Final pass did not emit ${generatedTriagePath}`)
+    const generatedTriage = await readJsonFile<JsonRecord>(generatedTriagePath)
+    generatedTriage.page_count = generatedTriage.page_count ?? 492
+    generatedTriage.source_comparison = '/pdf-lab-nist-comparison.json'
+    generatedTriage.source_extraction = '/pdf-lab-nist-actual-elements.json'
+    await writeJsonFile(triagePath, generatedTriage)
+    const manifest = await readJsonFile<JsonRecord>(manifestPath)
+    manifest.source_comparison = '/pdf-lab-nist-comparison.json'
+    manifest.human_triage = {
+      task_count: Number(generatedTriage.task_count ?? 0),
+      summary: generatedTriage.summary ?? {},
+      page_groups: Array.isArray(generatedTriage.page_groups) ? generatedTriage.page_groups : [],
+    }
+    if (Array.isArray(manifest.phases)) {
+      manifest.phases = manifest.phases.map((phase: unknown) => {
+        if (!phase || typeof phase !== 'object' || !['human_triage', 'surgical_triage'].includes(String((phase as JsonRecord).id))) return phase
+        return {
+          ...(phase as JsonRecord),
+          status: Number(generatedTriage.task_count ?? 0) > 0 ? 'ready' : 'empty',
+          summary: `${String(generatedTriage.task_count ?? 0)} real ambiguity tasks generated from the current comparison.`,
+          details: generatedTriage.summary ?? {},
+        }
+      })
+    }
+    await writeJsonFile(manifestPath, manifest)
+    const triage = await readJsonFile<JsonRecord>(triagePath)
+
+    return res.json({
+      ok: true,
+      operation: 'eject-mismatches-to-triage',
+      outputDir,
+      runSummary,
+      publicTriagePath: triagePath,
+      publicManifestPath: manifestPath,
+      taskCount: triage.task_count,
+      summary: triage.summary,
+    })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to eject real mismatches to triage',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.post('/api/pdf-lab/triage-decision', async (req, res) => {
+  try {
+    const body = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
+    const taskId = typeof body.taskId === 'string' ? body.taskId : ''
+    const decision = typeof body.decision === 'string' ? body.decision : ''
+    if (!taskId) throw new Error('taskId is required')
+    if (!['accept', 'reject', 'skip', 'undo'].includes(decision)) {
+      throw new Error(`Unsupported decision: ${decision || 'missing'}`)
+    }
+
+    const now = new Date().toISOString()
+    const eventKey = `${taskId}_${decision}_${Date.now()}`.replace(/[^a-zA-Z0-9._:-]+/g, '_')
+    const baseRecord = {
+      task_id: taskId,
+      decision,
+      intent: typeof body.intent === 'string' ? body.intent : '',
+      page: typeof body.page === 'number' ? body.page : null,
+      task: body.task && typeof body.task === 'object' ? body.task : null,
+      proposed_json_delta: body.proposedJsonDelta && typeof body.proposedJsonDelta === 'object' ? body.proposedJsonDelta : null,
+      updated_at: now,
+      source: 'pdf-lab-production-workflow',
+    }
+
+    await proxyPost('/upsert', {
+      collection: 'pdf_lab_triage_decisions',
+      documents: [{ _key: taskId.replace(/[^a-zA-Z0-9._:-]+/g, '_'), ...baseRecord }],
+    })
+    await proxyPost('/upsert', {
+      collection: 'pdf_lab_triage_decision_events',
+      documents: [{ _key: eventKey, ...baseRecord, created_at: now }],
+    })
+
+    return res.json({ ok: true, taskId, decision, eventKey })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to persist PDF Lab triage decision',
       detail: e instanceof Error ? e.message : String(e),
     })
   }
@@ -6225,6 +7043,7 @@ const broadcast = (msg: any) => {
   const data = JSON.stringify(msg)
   for (const c of clients) { if (c.readyState === WebSocket.OPEN) c.send(data) }
 }
+broadcastWs = broadcast
 
 registerTestRunnerRoutes(app, broadcast)
 
