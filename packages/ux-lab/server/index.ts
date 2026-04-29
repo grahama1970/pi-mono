@@ -1055,10 +1055,44 @@ async function readSpartaSupervisorState(): Promise<JsonRecord | null> {
   if (!text) return null
   try {
     const parsed = JSON.parse(text)
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed as JsonRecord : null
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null
+    const commands = await readSpartaSupervisorCommands(100)
+    return {
+      ...(parsed as JsonRecord),
+      recent_commands: commands.slice(-25),
+      command_source_counts: countBy(commands, 'source', ['ui', 'cli', 'discord', 'slack', 'voice']),
+      command_status_counts: countBy(commands, 'status', ['queued', 'dry_run', 'review_required', 'blocked']),
+    }
   } catch {
     return null
   }
+}
+
+async function readSpartaSupervisorCommands(limit: number): Promise<JsonRecord[]> {
+  const text = await readFile(SPARTA_SUPERVISOR_COMMANDS_PATH, 'utf8').catch(() => '')
+  if (!text) return []
+  return text
+    .trim()
+    .split('\n')
+    .slice(-limit)
+    .map((line) => {
+      try {
+        const parsed = JSON.parse(line)
+        return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed as JsonRecord : null
+      } catch {
+        return null
+      }
+    })
+    .filter((row): row is JsonRecord => Boolean(row))
+}
+
+function countBy(rows: JsonRecord[], field: string, known: string[]): Record<string, number> {
+  const counts: Record<string, number> = Object.fromEntries(known.map((key) => [key, 0]))
+  for (const row of rows) {
+    const key = typeof row[field] === 'string' ? row[field] : 'unknown'
+    counts[key] = (counts[key] ?? 0) + 1
+  }
+  return counts
 }
 
 function normalizeSupervisorCommand(body: unknown): JsonRecord {
@@ -1067,18 +1101,28 @@ function normalizeSupervisorCommand(body: unknown): JsonRecord {
   const source = typeof raw.source === 'string' && raw.source.trim() ? raw.source.trim() : 'ui'
   const targetLane = typeof raw.target_lane === 'string' ? raw.target_lane : ''
   const risk = typeof raw.risk === 'string' && raw.risk.trim() ? raw.risk.trim() : 'read_only'
-  const safeIntents = new Set(['status', 'refresh', 'run_audit_now', 'ack'])
-  const status = risk === 'read_only' && safeIntents.has(intent) ? 'queued' : 'review_required'
+  const normalizedIntent = intent.toLowerCase()
+  const safeIntents = new Set(['status', 'refresh', 'run_audit_now', 'ack', 'list', 'audit'])
+  const mutationHints = ['fix', 'remediate', 'repair', 'execute', 'rewrite', 'delete', 'update', 'patch', 'backfill', 'send']
+  const hasMutationHint = mutationHints.some((hint) => normalizedIntent.includes(hint))
+  const status = risk === 'read_only' && safeIntents.has(normalizedIntent) && !hasMutationHint ? 'queued' : 'review_required'
   return {
     command_id: `cmd-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     created_at: new Date().toISOString(),
     source,
     intent,
     target_lane: targetLane,
-    risk,
+    risk: status === 'queued' ? 'read_only' : risk === 'read_only' ? 'mutation' : risk,
     status,
+    action_state: status === 'queued' ? 'queued' : 'review_required',
     payload: raw.payload && typeof raw.payload === 'object' && !Array.isArray(raw.payload) ? raw.payload : {},
+    transcript: typeof raw.transcript === 'string' ? raw.transcript : undefined,
+    confidence: typeof raw.confidence === 'number' ? raw.confidence : undefined,
+    operator: typeof raw.operator === 'string' ? raw.operator : undefined,
+    session_id: typeof raw.session_id === 'string' ? raw.session_id : undefined,
     safe_default: 'observe_only',
+    operator_approval_required: status !== 'queued',
+    checkpoint_required: status !== 'queued',
     resume_hint: 'Human review required before any mutation-capable remediation.',
   }
 }
@@ -2016,7 +2060,10 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     {
       cwd: PDF_LAB_PDF_OXIDE_ROOT,
       env: {
-        ...process.env,
+        HOME: process.env.HOME || '/home/graham',
+        USER: process.env.USER || 'graham',
+        PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin',
+        XDG_CACHE_HOME: process.env.XDG_CACHE_HOME || resolve(process.env.HOME || '/home/graham', '.cache'),
         PDF_OXIDE_ROOT: PDF_LAB_PDF_OXIDE_ROOT,
         PYTHONPATH: pythonPath,
       },

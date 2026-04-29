@@ -44,6 +44,12 @@ interface SupervisorState {
   status?: string
   phase?: string
   remediation_enabled?: boolean
+  operator_approval_required?: boolean
+  checkpoint_required?: boolean
+  command_source_counts?: Record<string, number>
+  command_status_counts?: Record<string, number>
+  notification_channels?: Record<string, Record<string, unknown>>
+  remediation_plans?: Array<Record<string, unknown>>
   lanes?: SupervisorLane[]
   active_jobs?: Array<Record<string, unknown>>
   blocked?: Array<Record<string, unknown>>
@@ -180,6 +186,10 @@ function gateLabel(ok: boolean | undefined): string {
   if (ok === true) return 'PASS'
   if (ok === false) return 'FAIL'
   return 'UNKNOWN'
+}
+
+function formatCountMap(counts: Record<string, number> | undefined, keys: string[]): string {
+  return keys.map((key) => `${key}:${counts?.[key] ?? 0}`).join(' · ')
 }
 
 function StatCard({ label, value, tone = EMBRY.blue, note }: { label: string; value: unknown; tone?: string; note?: string }) {
@@ -333,6 +343,14 @@ export function CoverageView() {
   const heartbeatAgeSeconds = supervisorHeartbeat ? Math.max(0, Math.round((Date.now() - supervisorHeartbeat.getTime()) / 1000)) : null
   const heartbeatFresh = heartbeatAgeSeconds != null && heartbeatAgeSeconds <= 120
   const attentionCount = (supervisorState?.needs_attention?.length ?? supervisorState?.blocked?.length ?? 0)
+  const commandSourceCounts = supervisorState?.command_source_counts ?? {}
+  const commandStatusCounts = supervisorState?.command_status_counts ?? {}
+  const notificationChannels = supervisorState?.notification_channels ?? {}
+  const remediationPlans = supervisorState?.remediation_plans ?? []
+  const slackState = notificationChannels.slack
+  const voiceCount = commandSourceCounts.voice ?? 0
+  const slackCount = commandSourceCounts.slack ?? 0
+  const reviewRequiredCount = commandStatusCounts.review_required ?? 0
   const liveLabel = liveState === 'connected' && heartbeatFresh
     ? 'Live'
     : liveState === 'connected'
@@ -465,11 +483,24 @@ export function CoverageView() {
           <StatCard label="Heartbeat Age" value={heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`} tone={heartbeatFresh ? EMBRY.green : EMBRY.amber} note={supervisorState?.heartbeat_at ?? 'no heartbeat'} />
           <StatCard label="Active Jobs" value={supervisorState?.active_jobs?.length ?? 0} tone={EMBRY.blue} note="Queued/running/review-required commands" />
           <StatCard label="Attention" value={attentionCount} tone={attentionCount ? EMBRY.amber : EMBRY.green} note="needs_attention / review gates" />
+          <StatCard label="Review Gates" value={reviewRequiredCount} tone={reviewRequiredCount ? EMBRY.amber : EMBRY.green} note="review_required commands" />
+          <StatCard label="Slack/Voice" value={`${slackCount}/${voiceCount}`} tone={slackCount || voiceCount ? EMBRY.blue : EMBRY.dim} note="queued Slack / voice commands" />
+          <StatCard label="Dry-Run Plans" value={remediationPlans.length} tone={remediationPlans.length ? EMBRY.amber : EMBRY.green} note="observe-only remediation plans" />
         </div>
         <div style={S.metaLine}>
           Next: {typeof nextScheduled?.action === 'string' ? nextScheduled.action : 'not scheduled'} ·
           Phase: {supervisorState?.phase ?? 'not loaded'} ·
-          Remediation: {supervisorState?.remediation_enabled ? 'enabled' : 'disabled'}
+          Remediation: {supervisorState?.remediation_enabled ? 'enabled' : 'disabled'} ·
+          Approval: {supervisorState?.operator_approval_required ? 'required' : 'not required'}
+        </div>
+        <div data-qid="coverage:supervisor:command-sources" data-qs-action="INSPECT_SUPERVISOR_COMMAND_SOURCES" style={S.metaLine}>
+          Sources: {formatCountMap(commandSourceCounts, ['ui', 'cli', 'discord', 'slack', 'voice'])}
+        </div>
+        <div data-qid="coverage:supervisor:command-gates" data-qs-action="INSPECT_SUPERVISOR_COMMAND_GATES" style={S.metaLine}>
+          Gates: {formatCountMap(commandStatusCounts, ['queued', 'dry_run', 'review_required', 'blocked'])} ·
+          Slack: {String(slackState?.blocked ? 'blocked' : slackState?.mode ?? 'dry_run')} ·
+          Voice: {voiceCount} queued transcript(s) ·
+          Checkpoint: {supervisorState?.checkpoint_required ? 'required' : 'not required'}
         </div>
       </Section>
       {!hasData ? (
