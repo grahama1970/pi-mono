@@ -503,14 +503,14 @@ export function CoverageView() {
       'url_text_missing_or_stub',
       `${formatNum(sourceTextQraCoverage?.urls?.text_ok)} URL text ok`,
       'missing/stubbed',
-      'Every valid URL should have fetched non-stub page text.',
+      'Every SPARTA QRA-scope URL should have fetched non-stub page text; the full sparta_urls table is a broader normalized corpus inventory.',
     ),
     sourceTextRow(
       'URL QRA Coverage',
       'url_qra_missing',
       `${formatNum(sourceTextQraCoverage?.urls?.qra_ok)} URL QRA covered`,
       'missing QRA',
-      'Covered means a direct create-qras standalone URL QRA via source_doc/source_url/url_id, or a mediated control QRA through sparta_url_knowledge.control_ids.',
+      'SPARTA URL-QRA scope follows the preflight inventory, not all sparta_urls rows; covered means direct standalone URL QRA or mediated control QRA through sparta_url_knowledge.control_ids.',
     ),
     {
       lane: 'Source/Embedding Coverage',
