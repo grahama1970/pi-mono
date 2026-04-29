@@ -2033,7 +2033,6 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
   const topK = Number(body.topK ?? 5)
   const maxIterations = Number(body.maxIterations ?? 1)
   const target = Number(body.target ?? 0.95)
-  const fullExtract = body.fullExtract === true
   const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${pdfLabStamp()}`
   const inheritedPythonPath = process.env.PYTHONPATH && !process.env.PYTHONPATH.startsWith('./')
     ? process.env.PYTHONPATH
@@ -2042,7 +2041,7 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     PDF_LAB_PDF_OXIDE_ROOT,
     inheritedPythonPath,
   ].filter(Boolean).join(':')
-  const args = [
+  const command = [
     PDF_LAB_SKILL_RUN,
     'agentic-extract',
     PDF_LAB_SOURCE_PDF,
@@ -2053,9 +2052,7 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
     '--max-pages', String(maxPages),
     '--top-k', String(topK),
     '--json',
-  ]
-  if (fullExtract) args.splice(args.length - 1, 0, '--full-extract')
-  const command = args.map(shellQuote).join(' ')
+  ].map(shellQuote).join(' ')
   const { stdout } = await execAsync(
     command,
     {
@@ -2084,13 +2081,12 @@ async function runPdfLabAgenticExtraction(operation: string, body: JsonRecord): 
   }
 }
 
-function getPdfLabRunOptions(body: JsonRecord): { maxPages: number; topK: number; maxIterations: number; target: number; fullExtract: boolean } {
+function getPdfLabRunOptions(body: JsonRecord): { maxPages: number; topK: number; maxIterations: number; target: number } {
   const maxPages = Math.max(1, Math.min(492, Number(body.maxPages ?? 50)))
   const topK = Math.max(1, Math.min(50, Number(body.topK ?? 5)))
   const maxIterations = Math.max(1, Math.min(5, Number(body.maxIterations ?? 1)))
   const target = Math.max(0, Math.min(1, Number(body.target ?? 0.95)))
-  const fullExtract = body.fullExtract === true
-  return { maxPages, topK, maxIterations, target, fullExtract }
+  return { maxPages, topK, maxIterations, target }
 }
 
 function serializePdfLabJob(job: PdfLabExtractionJob): JsonRecord {
@@ -2159,7 +2155,7 @@ function startPdfLabExtractionJob(operation: string, body: JsonRecord): PdfLabEx
   if (!existsSync(PDF_LAB_SOURCE_PDF)) throw new Error(`Source PDF not found: ${PDF_LAB_SOURCE_PDF}`)
   if (!existsSync(PDF_LAB_NIST_PRESET)) throw new Error(`NIST preset not found: ${PDF_LAB_NIST_PRESET}`)
 
-  const { maxPages, topK, maxIterations, target, fullExtract } = getPdfLabRunOptions(body)
+  const { maxPages, topK, maxIterations, target } = getPdfLabRunOptions(body)
   const stamp = pdfLabStamp()
   const jobId = `${operation}-${stamp}`
   const outputDir = `/tmp/pdf-lab-agentic-nist-${operation}-${stamp}`
@@ -2183,7 +2179,6 @@ function startPdfLabExtractionJob(operation: string, body: JsonRecord): PdfLabEx
     '--top-k', String(topK),
     '--json',
   ]
-  if (fullExtract) args.splice(args.length - 1, 0, '--full-extract')
   const now = new Date().toISOString()
   const job: PdfLabExtractionJob = {
     command: [PDF_LAB_SKILL_RUN, ...args],
