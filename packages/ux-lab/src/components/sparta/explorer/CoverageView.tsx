@@ -510,7 +510,7 @@ export function CoverageView() {
       'url_qra_missing',
       `${formatNum(sourceTextQraCoverage?.urls?.qra_ok)} URL QRA covered`,
       'missing QRA',
-      'Every valid text-backed URL should have at least one URL-derived QRA.',
+      'Covered means a direct create-qras standalone URL QRA via source_doc/source_url/url_id, or a mediated control QRA through sparta_url_knowledge.control_ids.',
     ),
     {
       lane: 'Source/Embedding Coverage',
