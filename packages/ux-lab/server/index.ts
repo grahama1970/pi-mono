@@ -894,24 +894,56 @@ async function runBestPracticeAudit() {
     })
   }
 
-  checks.push(
-    {
-      name: 'ArangoDB best-practice static scan',
-      skill: 'best-practices-arangodb',
-      ok: false,
-      status: 'not_wired',
-      message: 'No dedicated static scanner is wired yet; monitor health still covers Arango-backed corpus and backlog checks.',
-    },
-    {
-      name: 'Prompt best-practice static scan',
-      skill: 'best-practices-prompt',
-      ok: false,
-      status: 'not_wired',
-      message: 'No prompt-template scanner is wired yet; prompt quality must not be inferred from corpus health.',
-    },
-  )
-
   return checks
+}
+
+function deriveBestPracticeAudit(
+  checks: Array<Record<string, unknown>>,
+  promptAudit: unknown,
+  supervisor: unknown,
+): Array<Record<string, unknown>> {
+  const rows = [...checks]
+  const prompt = promptAudit && typeof promptAudit === 'object' && !Array.isArray(promptAudit)
+    ? promptAudit as JsonRecord
+    : {}
+  const promptPassed = Number(prompt.passed ?? 0)
+  const promptTotal = Number(prompt.total ?? 0)
+  const allPromptPassed = Number(prompt.all_passed ?? 0)
+  const allPromptTotal = Number(prompt.all_total ?? 0)
+  const promptOk = promptTotal > 0 && promptPassed === promptTotal && allPromptPassed === allPromptTotal
+  rows.push({
+    name: 'Prompt best-practice static scan',
+    skill: 'best-practices-prompt',
+    ok: promptOk,
+    status: promptOk ? 'pass' : 'fail',
+    message: `${allPromptPassed}/${allPromptTotal} scanned prompt files pass; ${promptPassed}/${promptTotal} active prompt units pass.`,
+  })
+
+  const supervisorState = supervisor && typeof supervisor === 'object' && !Array.isArray(supervisor)
+    ? supervisor as JsonRecord
+    : {}
+  const sourceEmbedding = supervisorState.source_embedding_coverage && typeof supervisorState.source_embedding_coverage === 'object'
+    ? supervisorState.source_embedding_coverage as JsonRecord
+    : {}
+  const sourceStatus = String(sourceEmbedding.status ?? 'blocked').toLowerCase()
+  const gaps = sourceEmbedding.gaps && typeof sourceEmbedding.gaps === 'object'
+    ? sourceEmbedding.gaps as JsonRecord
+    : {}
+  const observed = sourceEmbedding.observed_counts && typeof sourceEmbedding.observed_counts === 'object'
+    ? sourceEmbedding.observed_counts as JsonRecord
+    : {}
+  const vectorGaps = Number(gaps.missing_vectors ?? 0) + Number(gaps.stale_vectors ?? 0)
+  rows.push({
+    name: 'Arango/Qdrant source embedding coverage',
+    skill: 'best-practices-arangodb',
+    ok: sourceStatus === 'pass',
+    status: sourceStatus === 'pass' ? 'pass' : sourceStatus === 'fail' ? 'fail' : 'blocked',
+    message: sourceStatus === 'pass'
+      ? `${Number(observed.arango_synced_docs ?? 0).toLocaleString()} Arango docs synced; ${Number(observed.qdrant_vectors ?? 0).toLocaleString()} Qdrant vectors observed.`
+      : `${vectorGaps.toLocaleString()} Arango/Qdrant vector gap(s). ${String(sourceEmbedding.resume_hint ?? 'Review source embedding coverage.')}`,
+  })
+
+  return rows
 }
 
 async function readLatestArtifactSummary() {
@@ -1134,7 +1166,7 @@ print(json.dumps(payload, default=str))
   const [
     monitor,
     counts,
-    bestPractices,
+    bestPracticeBase,
     artifacts,
     promptAudit,
     supervisor,
@@ -1216,7 +1248,7 @@ print(json.dumps(payload, default=str))
       ? (compactMonitor as JsonRecord).corpus_inventory
       : undefined,
     monitor: compactMonitor,
-    bestPractices,
+    bestPractices: deriveBestPracticeAudit(bestPracticeBase as Array<Record<string, unknown>>, promptAudit, supervisor),
     promptAudit,
     artifacts,
     supervisor,

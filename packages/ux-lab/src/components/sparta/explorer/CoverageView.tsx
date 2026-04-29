@@ -227,6 +227,15 @@ function gateLabel(ok: boolean | undefined): string {
   return 'UNKNOWN'
 }
 
+function promptAuditKeys(row: PromptAuditRow): string[] {
+  const kind = row.prompt_kind
+  if (!kind) return []
+  const keys = new Set([kind])
+  const spartaMatch = kind.match(/^sparta\/(?:canonical|relationship|standalone)\/(.+)$/)
+  if (spartaMatch) keys.add(`sparta_${spartaMatch[1]}`)
+  return [...keys]
+}
+
 function formatCountMap(counts: Record<string, number> | undefined, keys: string[]): string {
   return keys.map((key) => `${key}:${counts?.[key] ?? 0}`).join(' · ')
 }
@@ -408,7 +417,7 @@ export function CoverageView() {
   const promptKinds = remaining.sparta_v2_remaining_prompt_kinds ?? {}
   const promptAuditRows = data?.promptAudit?.rows ?? []
   const allPromptRows = data?.promptAudit?.allRows ?? promptAuditRows
-  const promptAuditByKind = Object.fromEntries(promptAuditRows.map((row) => [row.prompt_kind, row]))
+  const promptAuditByKind = Object.fromEntries(promptAuditRows.flatMap((row) => promptAuditKeys(row).map((key) => [key, row])))
   const hasData = Boolean(data?.corpus || data?.monitor || data?.bestPractices)
   const immediateSteps = getImmediateSteps(data)
   const spartaNativeMissing =
@@ -755,7 +764,7 @@ export function CoverageView() {
         </div>
       </Section> : null}
 
-      {hasData ? <Section title="Best Practices & UX Coverage" subtitle="Reports wired checks and explicitly marks scanners that are not yet integrated.">
+      {hasData ? <Section title="Best Practices & UX Coverage" subtitle="Reports wired lane scanners only; blocked work must appear as FAIL/BLOCKED with a concrete owner, never as an unwired placeholder.">
         <div style={S.tableCard}>
           <table style={S.table}>
             <thead><tr><th style={S.th}>Status</th><th style={S.th}>Lane</th><th style={S.th}>Skill</th><th style={S.th}>Message</th></tr></thead>
