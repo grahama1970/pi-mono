@@ -41,4 +41,4 @@
 - SPARTA Corpora inventory is wired numerically: Relationships, URLs, URL Knowledge, and Datalake Chunks no longer display `not wired`; actionable gaps must be numeric and backed by a defensible target query.
 - URL inventory currently shows 6,854/6,854 normalized URLs with fetch records, 6,139 HTTP-200 file fetches, and 43,398 URL-knowledge chunks across 5,867 URLs.
 - Automatic remediation is safe for observe/read-only checks and approved idempotent fixes; destructive, ambiguous, high-cost, or schema-risk actions must create a human attention item with a concrete resume command.
-
+- Runtime instance started as user-systemd transient observe-only services `sparta-coverage-observe-loop.service` and `sparta-coverage-observe-watchdog.service`; loop cadence is 300s and watchdog report is `/tmp/sparta_coverage_observe_loop_report.txt`.
