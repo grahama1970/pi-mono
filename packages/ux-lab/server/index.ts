@@ -22,7 +22,7 @@ import { execFile, exec, spawn } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
-import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream, createWriteStream } from 'fs'
+import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream, createWriteStream, watch } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 
@@ -93,6 +93,8 @@ let worksheetsCache: { expiresAt: number; worksheets: Record<string, WorksheetCo
 let spartaCoverageCache: { expiresAt: number; payload: JsonRecord } | null = null
 let spartaCoverageRefresh: Promise<JsonRecord> | null = null
 let broadcastWs: (msg: JsonRecord) => void = () => {}
+let lastBroadcastSupervisorSignature = ''
+let lastBroadcastCoverageSignature = ''
 const execFileAsync = promisify(execFile)
 const execAsync = promisify(exec)
 
@@ -997,6 +999,62 @@ async function readSpartaSupervisorState(): Promise<JsonRecord | null> {
   }
 }
 
+function spartaSupervisorSignature(state: JsonRecord | null): string {
+  if (!state) return ''
+  return [
+    state.generated_at,
+    state.heartbeat_at,
+    state.status,
+    state.phase,
+    JSON.stringify(state.command_status_counts ?? {}),
+  ].join('|')
+}
+
+function spartaCoverageSignature(payload: JsonRecord | null): string {
+  if (!payload) return ''
+  const supervisor = payload.supervisor && typeof payload.supervisor === 'object' && !Array.isArray(payload.supervisor)
+    ? payload.supervisor as JsonRecord
+    : {}
+  const monitor = payload.monitor && typeof payload.monitor === 'object' && !Array.isArray(payload.monitor)
+    ? payload.monitor as JsonRecord
+    : {}
+  const prompt = payload.promptAudit && typeof payload.promptAudit === 'object' && !Array.isArray(payload.promptAudit)
+    ? payload.promptAudit as JsonRecord
+    : {}
+  return [
+    payload.generated_at,
+    supervisor.heartbeat_at,
+    monitor.passed,
+    monitor.total,
+    prompt.passed,
+    prompt.total,
+  ].join('|')
+}
+
+async function broadcastSpartaSupervisorState(force = false): Promise<void> {
+  const state = await readSpartaSupervisorState()
+  if (!state) return
+  const signature = spartaSupervisorSignature(state)
+  if (!force && signature && signature === lastBroadcastSupervisorSignature) return
+  lastBroadcastSupervisorSignature = signature
+  broadcastWs({
+    type: 'sparta-supervisor-state',
+    timestamp: Date.now(),
+    state,
+  })
+}
+
+function broadcastSpartaCoverageHealth(payload: JsonRecord, force = false): void {
+  const signature = spartaCoverageSignature(payload)
+  if (!force && signature && signature === lastBroadcastCoverageSignature) return
+  lastBroadcastCoverageSignature = signature
+  broadcastWs({
+    type: 'sparta-coverage-health',
+    timestamp: Date.now(),
+    payload,
+  })
+}
+
 async function refreshSpartaSupervisorState(): Promise<JsonRecord | null> {
   try {
     const state = await runCommandJson('uv', [
@@ -1013,7 +1071,19 @@ async function refreshSpartaSupervisorState(): Promise<JsonRecord | null> {
       env: { ...process.env, PYTHONPATH: 'src:scripts/validation' },
       timeout: 180_000,
     })
-    if (state && typeof state === 'object' && !Array.isArray(state)) return state as JsonRecord
+    if (state && typeof state === 'object' && !Array.isArray(state)) {
+      const supervisor = state as JsonRecord
+      const signature = spartaSupervisorSignature(supervisor)
+      if (signature !== lastBroadcastSupervisorSignature) {
+        lastBroadcastSupervisorSignature = signature
+        broadcastWs({
+          type: 'sparta-supervisor-state',
+          timestamp: Date.now(),
+          state: supervisor,
+        })
+      }
+      return supervisor
+    }
   } catch (err) {
     console.error('[sparta/supervisor-state] refresh failed; using last snapshot if available', err)
   }
@@ -1261,12 +1331,42 @@ function refreshSpartaCoverageInBackground() {
     .then(async (payload) => {
       spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
       await writeSpartaCoverageSnapshot(payload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
+      broadcastSpartaCoverageHealth(payload)
       return payload
     })
     .finally(() => {
       spartaCoverageRefresh = null
     })
   return spartaCoverageRefresh
+}
+
+function startSpartaCoveragePushBridge(): void {
+  const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>()
+  const schedule = (key: string, fn: () => void | Promise<void>) => {
+    const existing = debounceTimers.get(key)
+    if (existing) clearTimeout(existing)
+    debounceTimers.set(key, setTimeout(() => {
+      debounceTimers.delete(key)
+      void Promise.resolve(fn()).catch((err) => console.error(`[sparta/push] ${key} broadcast failed`, err))
+    }, 250))
+  }
+
+  const watchFile = (path: string, key: string, fn: () => void | Promise<void>) => {
+    try {
+      watch(path, { persistent: false }, () => schedule(key, fn))
+    } catch (err) {
+      console.warn(`[sparta/push] failed to watch ${path}`, err)
+    }
+  }
+
+  watchFile(SPARTA_SUPERVISOR_STATUS_PATH, 'supervisor-state', () => broadcastSpartaSupervisorState())
+  watchFile(SPARTA_COVERAGE_SNAPSHOT_PATH, 'coverage-health', async () => {
+    const snapshot = await readSpartaCoverageSnapshot()
+    if (snapshot) {
+      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload: snapshot }
+      broadcastSpartaCoverageHealth(snapshot)
+    }
+  })
 }
 
 app.get('/api/sparta/coverage-health', async (req, res) => {
@@ -7306,6 +7406,7 @@ const broadcast = (msg: any) => {
   for (const c of clients) { if (c.readyState === WebSocket.OPEN) c.send(data) }
 }
 broadcastWs = broadcast
+startSpartaCoveragePushBridge()
 
 registerTestRunnerRoutes(app, broadcast)
 

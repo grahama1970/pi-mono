@@ -336,6 +336,17 @@ export function CoverageView() {
         const message = JSON.parse(String(event.data))
         if (message?.type === 'sparta-supervisor-state' && message.state) {
           setSupervisor(message.state)
+          setData((current) => {
+            if (!current) return current
+            const next = { ...current, supervisor: message.state }
+            writeLocalCache(next)
+            return next
+          })
+        }
+        if (message?.type === 'sparta-coverage-health' && message.payload) {
+          setData(message.payload)
+          if (message.payload.supervisor) setSupervisor(message.payload.supervisor)
+          writeLocalCache(message.payload)
         }
         if (message?.type === 'sparta-supervisor-command') {
           setCommandMessage('Supervisor command queued.')
