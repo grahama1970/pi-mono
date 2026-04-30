@@ -238,16 +238,16 @@ tasks:
       assertion: "The ux-lab TypeScript build succeeds with typed evidence-run events and existing chat behavior still compiling."
 
   - id: T3
-    title: "Add deterministic evidence-case streaming endpoint"
+    title: "Validate deterministic evidence-case streaming endpoint"
     lane: backend
     gate: "Typed SSE endpoint compiles, emits deterministic evidence-run states, and persists run metadata without altering React components."
-    runner: code-runner
-    backend: text
-    mode: iterative
-    dirty_worktree_policy: allow_if_allowlist_clean
+    runner: local
+    backend: ""
+    mode: ""
     agent: backend-integration
     depends_on:
       - T1
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && curl -N -sS -X POST http://localhost:3002/api/evidence-case/stream -H 'Content-Type: application/json' --data '{\"question\":\"Given third-party FPGA vendors, which SPARTA supply-chain controls should we prioritize for CMMC Level 3?\",\"controlId\":\"CMMC-L3\",\"nodeLabel\":\"Third-party FPGA vendors\"}' --max-time 30 | rg 'event: run_started|event: gate|event: diagnostics|event: result|event: run_completed|server_deterministic_gate|enable_llm'"
     skills:
       - create-evidence-case
       - extract-entities
