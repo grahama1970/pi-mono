@@ -149,6 +149,9 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     ready: false,
     warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
   })
+  const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
+  const [evidenceStreaming, setEvidenceStreaming] = useState(false)
+  const [evidenceStreamingSteps, setEvidenceStreamingSteps] = useState<StreamingStep[]>([])
   const sessionId = useState(() => crypto.randomUUID())[0]
   const msgIdRef = useRef(0)
 
@@ -381,10 +384,18 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   }, [])
   const runTypedEvidenceCaseStream = useCallback(async (query: string) => {
     const question = query.replace(EVIDENCE_CASE_COMMAND_RE, '').trim() || query.trim()
-    const requestId = `ec-${Date.now()}-${++msgIdRef.current}`
-    addMsg({ role: 'user', content: query, type: 'natural', skillUsed: 'create-evidence-case' })
+    const userMsg = addMsg({ role: 'user', content: query, type: 'natural', skillUsed: 'create-evidence-case' })
+    const requestId = userMsg.id ?? `ec-${Date.now()}-${++msgIdRef.current}`
     setEvidenceCaseLoading(requestId)
-    setEvidenceStreamingSteps([])
+    setEvidenceStreamingSteps([
+      { id: 'extract_entities', type: 'tool', skill: 'extract-entities', status: 'running', summary: '/extract-entities', detail: 'Finding explicit SPARTA, vendor, CMMC, and control spans.' },
+      { id: 'memory_recall', type: 'tool', skill: 'memory', status: 'pending', summary: '/memory recall', detail: 'Waiting for evidence and QRA recall.' },
+      { id: 'same_technique', type: 'gate', status: 'pending', summary: 'same-technique check', detail: 'Waiting for relationship crosswalks.' },
+      { id: 'memory_clarify', type: 'tool', skill: 'memory', status: 'pending', summary: '/memory clarify', detail: 'Waiting for ambiguity gate.' },
+      { id: 'lean_proof', type: 'tool', skill: 'lean4-prove', status: 'pending', summary: '/lean4-prove', detail: 'Runs only when a claim is formalizable.' },
+      { id: 'verdict_synthesis', type: 'synthesis', status: 'pending', summary: 'verdict synthesis', detail: 'Waiting for deterministic gate results.' },
+      { id: 'candidate_review', type: 'review', status: 'pending', summary: 'candidate persistence / review form', detail: 'Reviewer checkpoint required before persistence.' },
+    ])
     setEvidenceStreaming(true)
 
     const upsertStep = (step: StreamingStep) => {
@@ -398,16 +409,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     }
 
     try {
-      const res = await fetch(`${API}/api/agent/ask`, {
+      const res = await fetch(`${API}/api/evidence-case/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `/create-evidence-case ${question}`,
-          skill: 'create-evidence-case',
-          request_id: requestId,
-          scope,
-          gate_depth: gateDepth,
-        }),
+        body: JSON.stringify({ question, nodeLabel: activeTab }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const reader = res.body?.getReader()
@@ -416,48 +421,44 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       const decoder = new TextDecoder()
       let buffer = ''
       let eventType = ''
-      let textAcc = ''
-      let finalMessage: ChatMessage | null = null
+      let finalPayload: any = null
 
       const handleEvent = (type: string, data: any) => {
-        if (type === 'step' && Array.isArray(data?.steps)) {
-          setEvidenceStreamingSteps(data.steps.map((s: any, i: number) => ({
-            id: String(s.id ?? `step-${i}`),
-            type: String(s.type ?? s.skill ?? 'step'),
-            skill: s.skill,
-            status: (['pending', 'running', 'done', 'failed'].includes(s.status) ? s.status : 'running') as StreamingStep['status'],
-            summary: String(s.summary ?? s.label ?? s.type ?? 'Evidence step'),
-            detail: s.detail,
-            duration: s.duration,
-            startedAt: s.startedAt,
-          })))
+        if (type === 'run_started') {
+          upsertStep({ id: 'extract_entities', type: 'tool', skill: 'extract-entities', status: 'running', summary: '/extract-entities', detail: 'Evidence case run started.' })
           return
         }
-        if (type === 'evidence_run_started') {
-          upsertStep({ id: data.runId ?? requestId, type: 'evidence_run', skill: data.skill ?? 'create-evidence-case', status: 'running', summary: 'Evidence case run started', startedAt: data.timestamp ?? Date.now() })
-          return
-        }
-        if (type === 'evidence_gate') {
+        if (type === 'gate') {
+          const gate = data?.gate ?? {}
+          const gateName = String(gate.gate ?? gate.name ?? 'gate')
+          const stepId = gateName === 'ambiguous_referent' ? 'memory_clarify'
+            : gateName === 'extract_entities' ? 'extract_entities'
+            : gateName === 'crosswalk' || gateName === 'framework' ? 'same_technique'
+            : gateName === 'qra_recall' ? 'memory_recall'
+            : gateName
           upsertStep({
-            id: `${data.runId ?? requestId}:${data.gate ?? 'gate'}`,
+            id: stepId,
             type: 'gate',
-            status: data.status === 'failed' ? 'failed' : data.status === 'done' || data.passed != null ? 'done' : 'running',
-            summary: String(data.gate ?? 'Evidence gate'),
-            detail: data.detail,
-            duration: data.duration,
+            status: gate.passed === false ? 'failed' : 'done',
+            summary: gateName === 'ambiguous_referent' ? '/memory clarify' : gateName.replace(/_/g, ' '),
+            detail: gate.detail,
+            duration: gate.duration,
           })
           return
         }
-        if (type === 'text') {
-          textAcc += data?.text ?? ''
+        if (type === 'diagnostics') {
+          upsertStep({ id: 'lean_proof', type: 'tool', skill: 'lean4-prove', status: 'done', summary: '/lean4-prove', detail: 'Skipped: no formalizable Lean claim was emitted by this evidence case.' })
           return
         }
-        if (type === 'message') {
-          finalMessage = data as ChatMessage
+        if (type === 'result') {
+          finalPayload = data?.result
+          const gates = Array.isArray(finalPayload?.gate_trace) ? finalPayload.gate_trace : []
+          upsertStep({ id: 'verdict_synthesis', type: 'synthesis', status: 'done', summary: 'verdict synthesis', detail: `${gates.filter((g: any) => g.passed).length}/${gates.length} gates passed.` })
+          upsertStep({ id: 'candidate_review', type: 'review', status: 'done', summary: 'candidate persistence / review form', detail: 'Generated for reviewer action; not approved automatically.' })
           return
         }
-        if (type === 'evidence_run_failed' || type === 'error') {
-          throw new Error(data?.message ?? 'Evidence case stream failed')
+        if (type === 'error') {
+          throw new Error(data?.detail ?? data?.error ?? 'Evidence case stream failed')
         }
       }
 
@@ -476,25 +477,61 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         }
       }
 
-      if (finalMessage) {
-        addMsg({ ...finalMessage, role: finalMessage.role ?? 'system', content: finalMessage.content ?? textAcc, type: finalMessage.type ?? 'natural', skillUsed: finalMessage.skillUsed ?? 'create-evidence-case' })
+      if (finalPayload) {
+        const gates: EvidenceGate[] = (finalPayload.gate_trace ?? []).map((g: any) => ({
+          gate: g.gate ?? g.name ?? '?',
+          passed: !!g.passed,
+          detail: g.detail ?? '',
+          duration: g.duration,
+        }))
+        const verdict = String(finalPayload.verdict?.state ?? 'inconclusive')
+        const glossaryEntities: EntityRef[] = (Array.isArray(finalPayload.glossary) ? finalPayload.glossary : []).slice(0, 16).map((g: any) => ({
+          id: String(g.term ?? g.id ?? g.name),
+          label: String(g.term ?? g.name ?? g.id),
+          type: g.type === 'control' ? 'control' : g.type === 'cwe_weakness' ? 'cwe' : g.type === 'attack_technique' ? 'attack' : 'domain',
+          exists: true,
+          source: 'structured',
+        }))
+        setMessages(prev => prev.map(m => m.id === userMsg.id ? { ...m, entities: glossaryEntities } : m))
+        addMsg({
+          role: 'system',
+          content: `Evidence Case: ${verdict.toUpperCase()}\n${finalPayload.answer ?? ''}`,
+          type: 'natural',
+          cascadeLayer: 'intent',
+          skillUsed: 'create-evidence-case',
+          entities: glossaryEntities,
+          verdict: { state: verdict.toUpperCase(), gates },
+          evidenceCase: {
+            verdict,
+            grade: finalPayload.verdict?.grade ?? 'C',
+            gates_passed: gates.filter(g => g.passed).length,
+            gates_total: gates.length,
+            gate_summary: `${gates.filter(g => g.passed).length}/${gates.length} gates passed`,
+            gate_trace: gates,
+            control_ids: finalPayload.context?.control_ids ?? [],
+            tier: finalPayload.diagnostics?.mode ?? 'deterministic',
+            answer: finalPayload.answer ?? '',
+            response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
+            glossary: finalPayload.glossary ?? [],
+          },
+        })
       } else {
-        addMsg({ role: 'system', content: textAcc || 'Evidence case completed.', type: 'natural', skillUsed: 'create-evidence-case' })
+        addMsg({ role: 'system', content: 'Evidence case completed without a final result payload.', type: 'natural', skillUsed: 'create-evidence-case' })
       }
     } catch (err) {
+      upsertStep({ id: 'stream_error', type: 'error', status: 'failed', summary: 'evidence stream error', detail: err instanceof Error ? err.message : String(err) })
       addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural', skillUsed: 'create-evidence-case' })
     } finally {
       setEvidenceStreaming(false)
       setEvidenceCaseLoading(null)
     }
-  }, [addMsg, gateDepth, scope])
+  }, [activeTab, addMsg])
 
   const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
     if (type === 'natural' && EVIDENCE_CASE_COMMAND_RE.test(query)) {
       await runTypedEvidenceCaseStream(query)
       return
     }
-  const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
     addMsg({ role: 'user', content: query, type })
 
     if (type === 'aql') {
@@ -657,7 +694,6 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const handleClarify = useCallback((q: string) => { handleSend(q, 'natural') }, [handleSend])
 
   // ── Evidence Case ───────────────────────────────────────────────────────
-  const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
 
   const handleRunEvidenceCase = useCallback(async (msg: ChatMessage) => {
     // Find the user query that preceded this system message
@@ -876,7 +912,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               </div>
             </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
-              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} />
+              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} isStreaming={evidenceStreaming} streamingSteps={evidenceStreamingSteps} />
             </div>
           </div>
         )}

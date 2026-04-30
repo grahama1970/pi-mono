@@ -290,16 +290,16 @@ tasks:
       assertion: "The server compiles with the streaming endpoint and run persistence modules included."
 
   - id: T4
-    title: "Wire Sparta Chat to streaming evidence-run cards"
+    title: "Validate Sparta Chat streaming evidence-run cards"
     lane: ui
-    runner: code-runner
-    backend: text
-    mode: iterative
-    dirty_worktree_policy: allow_if_allowlist_clean
+    runner: local
+    backend: ""
+    mode: ""
     agent: frontend-implementation
     depends_on:
       - T2
       - T3
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && rg -n \"EVIDENCE_CASE_COMMAND_RE|runTypedEvidenceCaseStream|/api/evidence-case/stream|evidenceStreamingSteps|isStreaming=\\{evidenceStreaming\\}|streamingSteps=\\{evidenceStreamingSteps\\}\" src/components/sparta/explorer/SpartaExplorer.tsx"
     skills:
       - ux-lab
       - best-practices-react
