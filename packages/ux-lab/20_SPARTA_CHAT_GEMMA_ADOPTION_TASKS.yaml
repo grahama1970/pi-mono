@@ -83,7 +83,7 @@ capability_overlap:
     Do not copy Gemma's generic code-generation identity or runtime setup UI.
 
 execution:
-  max_concurrency: 2
+  max_concurrency: 1
   scheduling_policy: dependency_only
   wave_barrier: false
   notes:
