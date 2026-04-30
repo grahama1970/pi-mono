@@ -33,6 +33,14 @@ pi-*.html
 out.html
 local/
 
+# Local orchestration and verification artifacts
+.batch_state.json
+.code-runner-skills-*.md
+.codex/
+*_task_state.json
+packages/ux-lab/public/pdf-lab-evidence/
+packages/ux-lab/public/pdf-lab-nist-preset-scan/
+
 # Fork-specific local files (not for upstream)
 .pi/skills/
 .agent/skills/

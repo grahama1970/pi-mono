@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
-import { EvidenceCaseTrace } from '../sparta/shared';
+import React, { lazy, Suspense, useMemo } from 'react';
+
+const EvidenceCaseTrace = lazy(() => import('../sparta/shared/EvidenceCaseTrace'));
 
 interface EvidenceCaseData {
   verdict: string;
@@ -57,7 +58,8 @@ export default function ReasoningBlock({
   }, [data.gate_trace, data.gate_summary]);
 
   return (
-    <EvidenceCaseTrace
+    <Suspense fallback={<div style={{ color: '#94a3b8', fontSize: 12 }}>Loading evidence trace…</div>}>
+      <EvidenceCaseTrace
       variant="chat"
       questionNode={data.description ? <span>{data.description}</span> : <span>Evidence case for {data.control_ids.join(', ') || 'the current claim'}.</span>}
       reviewStatus={data.verdict || data.grade || 'pending'}
@@ -80,5 +82,6 @@ export default function ReasoningBlock({
       error={undefined}
       onNavigateToControl={(id) => onNavigateToControl?.(id)}
     />
+    </Suspense>
   );
 }

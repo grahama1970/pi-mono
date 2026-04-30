@@ -83,11 +83,19 @@ export interface EvidenceRunFailedEvent {
 	message?: string;
 }
 
+export interface EvidenceRunTextEvent {
+	type: "evidence_run_text";
+	runId: string;
+	timestamp: number;
+	text: string;
+}
+
 export type EvidenceRunEvent =
 	| EvidenceRunStartedEvent
 	| EvidenceRunGateEvent
 	| EvidenceRunCompletedEvent
-	| EvidenceRunFailedEvent;
+	| EvidenceRunFailedEvent
+	| EvidenceRunTextEvent;
 
 export interface EvidenceRunTrace {
 	runId: string;
@@ -144,7 +152,6 @@ export class RequestAssembler {
 	private textChunks: string[] = [];
 	private toolCalls: Array<{ tool: string; args: Record<string, unknown> }> = [];
 	private steps: ReasoningStep[] = [];
-	private steps: ReasoningStep[] = [];
 	private gateSteps: Map<string, ReasoningStep> = new Map();
 	private evidenceRunEvents: EvidenceRunEvent[] = [];
 	private evidenceRunId?: string;
@@ -153,17 +160,33 @@ export class RequestAssembler {
 	private evidenceRunStartedAt?: number;
 	private evidenceRunCompletedAt?: number;
 	private done = false;
+
+	constructor(requestId: string) {
+		this.requestId = requestId;
 	}
+
+	/** Consume one Pi event. Returns true once the request is complete. */
+	ingest(event: PiEvent): boolean {
+		return this.handle(event);
+	}
+
+	/** Consume one Pi event. Returns true once the request is complete. */
+	handle(event: PiEvent): boolean {
+		if (event.requestId !== this.requestId) return this.done;
+
 		switch (event.type) {
 			case "message_update":
 				if (event.text) {
 					this.textChunks.push(event.text);
 					this.parseGateProgress(event.text);
-				}
-				break;
-				if (event.text) {
-					this.textChunks.push(event.text);
-					this.parseGateProgress(event.text);
+					if (this.evidenceRunId) {
+						this.appendEvidenceRunEvent({
+							type: "evidence_run_text",
+							runId: this.evidenceRunId,
+							timestamp: Date.now(),
+							text: event.text,
+						});
+					}
 				}
 				break;
 
@@ -174,7 +197,6 @@ export class RequestAssembler {
 				} catch {
 					/* malformed */
 				}
-				// Extract actual skill name from bash command args
 				const skillName = this.extractSkillFromBash(event.tool ?? "unknown", args);
 				this.toolCalls.push({ tool: skillName, args });
 				this.steps.push({
@@ -184,33 +206,45 @@ export class RequestAssembler {
 					status: "running",
 					summary: skillName !== "bash" ? `/${skillName}` : `Running ${event.tool}`,
 					startedAt: Date.now(),
-					});
-					if (skillName === "create-evidence-case") {
-						this.ensureEvidenceRunStarted(skillName);
-					}
+				});
+				if (skillName === "create-evidence-case") {
+					this.ensureEvidenceRunStarted(skillName);
+				}
 				break;
 			}
 
 			case "agent_end":
+				if (event.response) {
+					this.textChunks.push(event.response);
+				}
 				this.done = true;
-				// Mark all running steps as done
-				for (const s of this.steps) {
-					if (s.status === "running") s.status = "done";
+				for (const step of this.steps) {
+					if (step.status === "running") step.status = "done";
+				}
+				if (this.evidenceRunEvents.length > 0 && this.evidenceRunStatus === "running") {
+					this.appendEvidenceRunEvent({
+						type: "evidence_run_completed",
+						runId: this.ensureEvidenceRunStarted("create-evidence-case"),
+						timestamp: Date.now(),
+					});
 				}
 				break;
 
 			case "error":
-					}
-					if (this.evidenceRunEvents.length > 0) {
-						this.appendEvidenceRunEvent({
-							type: "evidence_run_failed",
-							runId: this.ensureEvidenceRunStarted("create-evidence-case"),
-							timestamp: Date.now(),
-							message: "Pi request failed",
-						});
-					}
-				for (const s of this.steps) {
-					if (s.status === "running") s.status = "failed";
+				this.done = true;
+				if (event.message) {
+					this.textChunks.push(event.message);
+				}
+				if (this.evidenceRunEvents.length > 0) {
+					this.appendEvidenceRunEvent({
+						type: "evidence_run_failed",
+						runId: this.ensureEvidenceRunStarted("create-evidence-case"),
+						timestamp: Date.now(),
+						message: event.message ?? "Pi request failed",
+					});
+				}
+				for (const step of this.steps) {
+					if (step.status === "running") step.status = "failed";
 				}
 				break;
 		}
@@ -257,12 +291,12 @@ export class RequestAssembler {
 					state: ec.verdict.toUpperCase(),
 					gates: ec.gate_trace ?? [],
 					tier: ec.tier,
-					};
-					this.appendEvidenceRunCompletion(ec);
-				} else if (this.evidenceRunEvents.length > 0 && this.evidenceRunStatus === "running") {
-					this.evidenceRunStatus = "done";
-		// Regex entity extraction is display-only. It is not used as evidence grounding.
-				}
+				};
+				this.appendEvidenceRunCompletion(ec);
+			} else if (this.evidenceRunEvents.length > 0 && this.evidenceRunStatus === "running") {
+				this.evidenceRunStatus = "done";
+				this.evidenceRunCompletedAt = Date.now();
+			}
 		}
 
 		// Always extract entities from response text
@@ -276,7 +310,7 @@ export class RequestAssembler {
 			msg.evidenceRun = evidenceRun;
 		}
 
-		return msg;
+		const reasoningSteps = this.currentSteps();
 		if (reasoningSteps.length > 0) {
 			msg.reasoningSteps = reasoningSteps;
 		}
@@ -346,6 +380,61 @@ export class RequestAssembler {
 		return [...this.steps];
 	}
 
+	private ensureEvidenceRunStarted(skill?: string): string {
+		if (!this.evidenceRunId) {
+			this.evidenceRunId = `evidence-run-${this.requestId}`;
+			this.evidenceRunSkill = skill;
+			this.evidenceRunStatus = "running";
+			this.evidenceRunStartedAt = Date.now();
+			this.appendEvidenceRunEvent({
+				type: "evidence_run_started",
+				runId: this.evidenceRunId,
+				timestamp: this.evidenceRunStartedAt,
+				skill,
+				requestId: this.requestId,
+			});
+		}
+		return this.evidenceRunId;
+	}
+
+	private appendEvidenceRunEvent(event: EvidenceRunEvent): void {
+		this.evidenceRunEvents.push(event);
+		if (event.type === "evidence_run_completed") {
+			this.evidenceRunStatus = "done";
+			this.evidenceRunCompletedAt = event.timestamp;
+		}
+		if (event.type === "evidence_run_failed") {
+			this.evidenceRunStatus = "failed";
+			this.evidenceRunCompletedAt = event.timestamp;
+		}
+	}
+
+	private appendEvidenceRunCompletion(ec: EvidenceCaseData): void {
+		this.appendEvidenceRunEvent({
+			type: "evidence_run_completed",
+			runId: this.ensureEvidenceRunStarted("create-evidence-case"),
+			timestamp: Date.now(),
+			verdict: ec.verdict,
+			grade: ec.grade,
+			gatesPassed: ec.gates_passed,
+			gatesTotal: ec.gates_total,
+			tier: ec.tier,
+		});
+	}
+
+	private currentEvidenceRun(): EvidenceRunTrace | undefined {
+		if (!this.evidenceRunId || this.evidenceRunEvents.length === 0) return undefined;
+		return {
+			runId: this.evidenceRunId,
+			requestId: this.requestId,
+			skill: this.evidenceRunSkill,
+			status: this.evidenceRunStatus,
+			startedAt: this.evidenceRunStartedAt,
+			completedAt: this.evidenceRunCompletedAt,
+			events: this.evidenceRunEvents,
+		};
+	}
+
 	/**
 	 * Parse GATE_PROGRESS lines from streaming text.
 	 * Format: GATE_PROGRESS:{"type":"gate_progress","gate":"...","status":"...","detail":"..."}
@@ -364,6 +453,7 @@ export class RequestAssembler {
 				};
 				const existing = this.gateSteps.get(data.gate);
 				const status = data.status === "running" ? "running" : data.status === "done" ? "done" : "failed";
+				const runId = this.ensureEvidenceRunStarted("create-evidence-case");
 				if (existing) {
 					existing.status = status;
 					existing.detail = data.detail ?? existing.detail;
@@ -381,6 +471,15 @@ export class RequestAssembler {
 						startedAt: status === "running" ? Date.now() : undefined,
 					});
 				}
+				this.appendEvidenceRunEvent({
+					type: "evidence_gate",
+					runId,
+					timestamp: Date.now(),
+					gate: data.gate,
+					status,
+					passed: data.passed,
+					detail: data.detail,
+				});
 			} catch {
 				/* malformed gate progress line */
 			}
@@ -441,7 +540,9 @@ export class RequestAssembler {
 						id,
 						label: id,
 						type: id.startsWith("CWE") ? "cwe" : "control",
-						exists: true, // Pi already grounded these
+						exists: false,
+						displayOnly: true,
+						source: "regex",
 					});
 				}
 			}

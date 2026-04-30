@@ -29,6 +29,9 @@ export interface EntityRef {
 	label: string;
 	type?: EntityType;
 	exists: boolean;
+	/** Regex-derived references are display-only and are not source-grounded evidence. */
+	displayOnly?: boolean;
+	source?: "regex" | "structured" | string;
 }
 
 export interface EvidenceGate {
@@ -60,6 +63,59 @@ export interface ReasoningStep {
 	confidence?: number;
 	recallItems?: RecallItem[];
 	children?: ReasoningStep[];
+}
+
+export type EvidenceRunEventStatus = "pending" | "running" | "done" | "failed";
+
+export type EvidenceRunEvent =
+	| {
+			type: "evidence_run_started";
+			runId: string;
+			timestamp: number;
+			skill?: string;
+			requestId?: string;
+	  }
+	| {
+			type: "evidence_gate";
+			runId: string;
+			timestamp: number;
+			gate: string;
+			status: EvidenceRunEventStatus;
+			passed?: boolean;
+			detail?: string;
+			duration?: number;
+	  }
+	| {
+			type: "evidence_run_completed";
+			runId: string;
+			timestamp: number;
+			verdict?: string;
+			grade?: string;
+			gatesPassed?: number;
+			gatesTotal?: number;
+			tier?: string;
+	  }
+	| {
+			type: "evidence_run_failed";
+			runId: string;
+			timestamp: number;
+			message?: string;
+	  }
+	| {
+			type: "evidence_run_text";
+			runId: string;
+			timestamp: number;
+			text: string;
+	  };
+
+export interface EvidenceRunTrace {
+	runId: string;
+	requestId?: string;
+	skill?: string;
+	status: EvidenceRunEventStatus;
+	startedAt?: number;
+	completedAt?: number;
+	events: EvidenceRunEvent[];
 }
 
 export interface FigureSpec {
@@ -152,6 +208,7 @@ export interface ChatMessage {
 	verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
 	matrixSummary?: ThreatMatrixSummary;
 	evidenceCase?: EvidenceCaseData;
+	evidenceRun?: EvidenceRunTrace;
 	// Entity + classification
 	entities?: EntityRef[];
 	cascadeLayer?: CascadeLayer;

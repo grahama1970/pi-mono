@@ -588,7 +588,7 @@ app.get('/api/qra/coverage', async (_req, res) => {
 
 app.post('/api/qra/feed', async (req, res) => {
   const limitRaw = Number(req.body?.limit)
-  const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, limitRaw)) : 50
+  const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(200, limitRaw)) : 50
   const offsetRaw = Number(req.body?.offset)
   const offset = Number.isFinite(offsetRaw) ? Math.max(0, offsetRaw) : 0
   const source = String(req.body?.source || 'legacy').toLowerCase()

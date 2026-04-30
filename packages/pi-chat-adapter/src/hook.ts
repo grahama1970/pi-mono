@@ -19,6 +19,8 @@ export interface EntityRef {
 	label: string;
 	type?: string;
 	exists: boolean;
+	displayOnly?: boolean;
+	source?: "regex" | "structured" | string;
 }
 export interface EvidenceGate {
 	gate: string;
@@ -49,6 +51,60 @@ export interface ReasoningStep {
 	duration?: number;
 	startedAt?: number;
 }
+
+export type EvidenceRunEventStatus = "pending" | "running" | "done" | "failed";
+
+export type EvidenceRunEvent =
+	| {
+			type: "evidence_run_started";
+			runId: string;
+			timestamp: number;
+			skill?: string;
+			requestId?: string;
+	  }
+	| {
+			type: "evidence_gate";
+			runId: string;
+			timestamp: number;
+			gate: string;
+			status: EvidenceRunEventStatus;
+			passed?: boolean;
+			detail?: string;
+			duration?: number;
+	  }
+	| {
+			type: "evidence_run_completed";
+			runId: string;
+			timestamp: number;
+			verdict?: string;
+			grade?: string;
+			gatesPassed?: number;
+			gatesTotal?: number;
+			tier?: string;
+	  }
+	| {
+			type: "evidence_run_failed";
+			runId: string;
+			timestamp: number;
+			message?: string;
+	  }
+	| {
+			type: "evidence_run_text";
+			runId: string;
+			timestamp: number;
+			text: string;
+	  };
+
+export interface EvidenceRunTrace {
+	runId: string;
+	requestId?: string;
+	skill?: string;
+	status: EvidenceRunEventStatus;
+	startedAt?: number;
+	completedAt?: number;
+	events: EvidenceRunEvent[];
+}
+
 export type CascadeLayer = "recall" | "intent" | "llm" | "aql";
 
 export interface ChatMessage {
@@ -62,6 +118,7 @@ export interface ChatMessage {
 	cascadeLayer?: CascadeLayer;
 	verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
 	evidenceCase?: EvidenceCaseData;
+	evidenceRun?: EvidenceRunTrace;
 	reasoningSteps?: ReasoningStep[];
 	recallItems?: unknown[];
 	resultCount?: number;

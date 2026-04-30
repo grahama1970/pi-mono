@@ -19,6 +19,9 @@ export type {
 	EntityRef,
 	EvidenceCaseData,
 	EvidenceGate,
+	EvidenceRunEvent,
+	EvidenceRunEventStatus,
+	EvidenceRunTrace,
 	ReasoningStep,
 } from "./message-assembler.js";
 export { RequestAssembler } from "./message-assembler.js";

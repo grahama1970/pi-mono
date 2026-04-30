@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-30T18:43:49.824Z",
+  "generated_at": "2026-04-30T19:01:43.064Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-04-30T18:43:38Z",
+    "generated_at": "2026-04-30T19:01:41Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -595,7 +595,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-04-30T18:43:38Z",
+      "generated_at": "2026-04-30T19:01:41Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -650,16 +650,16 @@
     {
       "name": "Prompt best-practice static scan",
       "skill": "best-practices-prompt",
-      "ok": true,
-      "status": "pass",
-      "message": "16/16 scanned prompt files pass; 7/7 active prompt units pass."
+      "ok": false,
+      "status": "fail",
+      "message": "16/17 scanned prompt files pass; 7/8 active prompt units pass."
     },
     {
       "name": "Arango/Qdrant source embedding coverage",
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 544,929 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 544,931 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -922,6 +922,29 @@
       {
         "banned_words": [],
         "checks": {
+          "exactJson": false,
+          "grounding": false,
+          "inputOutput": false,
+          "rationale": false,
+          "rejectionCriteria": false
+        },
+        "failures": [
+          "rationale",
+          "inputOutput",
+          "exactJson",
+          "grounding",
+          "rejectionCriteria"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
           "exactJson": true,
           "grounding": true,
           "inputOutput": true,
@@ -938,7 +961,7 @@
       }
     ],
     "all_passed": 16,
-    "all_total": 16,
+    "all_total": 17,
     "autofix": {
       "mode": "review_required",
       "resume_hint": "Run review-prompt for failed prompt units, then apply only passing mechanical patches.",
@@ -953,7 +976,31 @@
         "generate review-prompt dry-run payloads"
       ]
     },
-    "failed_rows": [],
+    "failed_rows": [
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": false,
+          "grounding": false,
+          "inputOutput": false,
+          "rationale": false,
+          "rejectionCriteria": false
+        },
+        "failures": [
+          "rationale",
+          "inputOutput",
+          "exactJson",
+          "grounding",
+          "rejectionCriteria"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt"
+      }
+    ],
     "passed": 7,
     "rows": [
       {
@@ -1061,6 +1108,29 @@
       {
         "banned_words": [],
         "checks": {
+          "exactJson": false,
+          "grounding": false,
+          "inputOutput": false,
+          "rationale": false,
+          "rejectionCriteria": false
+        },
+        "failures": [
+          "rationale",
+          "inputOutput",
+          "exactJson",
+          "grounding",
+          "rejectionCriteria"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
           "exactJson": true,
           "grounding": true,
           "inputOutput": true,
@@ -1081,7 +1151,7 @@
       {
         "passed": 7,
         "source": "create-qras-active-sparta",
-        "total": 7
+        "total": 8
       },
       {
         "passed": 9,
@@ -1089,9 +1159,9 @@
         "total": 9
       }
     ],
-    "state": "covered",
-    "status": "pass",
-    "total": 7
+    "state": "active_prompt_failures",
+    "status": "fail",
+    "total": 8
   },
   "artifacts": {
     "recent": [
@@ -1122,9 +1192,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-04-30T18:41:37.813929Z",
-    "heartbeat_at": "2026-04-30T18:41:37.813929Z",
-    "snapshot_age_seconds": 112,
+    "generated_at": "2026-04-30T18:59:47.438533Z",
+    "heartbeat_at": "2026-04-30T18:59:47.438533Z",
+    "snapshot_age_seconds": 63,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -1496,12 +1566,12 @@
     ],
     "prompt_health_coverage": {
       "schema_version": 1,
-      "status": "pass",
-      "state": "covered",
+      "status": "fail",
+      "state": "active_prompt_failures",
       "passed": 7,
-      "total": 7,
+      "total": 8,
       "all_passed": 16,
-      "all_total": 16,
+      "all_total": 17,
       "rows": [
         {
           "source": "create-qras-active-sparta",
@@ -1604,6 +1674,29 @@
           },
           "banned_words": [],
           "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": false,
+            "inputOutput": false,
+            "exactJson": false,
+            "grounding": false,
+            "rejectionCriteria": false
+          },
+          "banned_words": [],
+          "failures": [
+            "rationale",
+            "inputOutput",
+            "exactJson",
+            "grounding",
+            "rejectionCriteria"
+          ]
         },
         {
           "source": "create-qras-active-sparta",
@@ -1881,6 +1974,29 @@
         },
         {
           "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": false,
+            "inputOutput": false,
+            "exactJson": false,
+            "grounding": false,
+            "rejectionCriteria": false
+          },
+          "banned_words": [],
+          "failures": [
+            "rationale",
+            "inputOutput",
+            "exactJson",
+            "grounding",
+            "rejectionCriteria"
+          ]
+        },
+        {
+          "source": "create-qras-active-sparta",
           "prompt_kind": "sparta/standalone/url_excerpt",
           "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
           "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
@@ -1897,12 +2013,36 @@
           "failures": []
         }
       ],
-      "failed_rows": [],
+      "failed_rows": [
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/repair/ambiguous_qra_repair",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": false,
+            "inputOutput": false,
+            "exactJson": false,
+            "grounding": false,
+            "rejectionCriteria": false
+          },
+          "banned_words": [],
+          "failures": [
+            "rationale",
+            "inputOutput",
+            "exactJson",
+            "grounding",
+            "rejectionCriteria"
+          ]
+        }
+      ],
       "scopes": [
         {
           "source": "create-qras-active-sparta",
           "passed": 7,
-          "total": 7
+          "total": 8
         },
         {
           "source": "create-qras-production",
@@ -1927,7 +2067,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-04-30T18:42:19Z",
+      "generated_at": "2026-04-30T19:00:26Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1961,20 +2101,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-04-30T18:42:19Z",
+      "generated_at": "2026-04-30T19:00:26Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1193,
-        "end": 1335
+        "start": 1218,
+        "end": 1360
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-04-30T18:41:37Z",
+      "generated_at": "2026-04-30T18:59:47Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -1984,7 +2124,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 544929
+        "qdrant_vectors": 544931
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2054,7 +2194,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 544929,
+        "point_count": 544931,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 0
         }
@@ -2069,7 +2209,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-04-30T18:42:17Z",
+      "generated_at": "2026-04-30T19:00:24Z",
       "status": "pass",
       "state": "covered",
       "summary": {
