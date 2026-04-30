@@ -443,17 +443,17 @@ tasks:
       assertion: "Verdict and reviewer controls compile with review state separated from evidence verdict state."
 
   - id: T7
-    title: "Expose diagnostics for raw tool events and parser failures"
+    title: "Validate diagnostics for raw tool events and parser failures"
     lane: ui
-    runner: code-runner
-    backend: text
-    mode: iterative
-    dirty_worktree_policy: allow_if_allowlist_clean
+    runner: local
+    backend: ""
+    mode: ""
     agent: frontend-implementation
     depends_on:
       - T3
       - T5
       - T6
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && rg -n \"Diagnostics|raw_tool_input|raw_tool_output|parser_errors|prompt_metadata|source_event_ids|diagnostics\" src/components/sparta/explorer/EvidenceWorkspace.tsx src/components/sparta/explorer/SpartaExplorer.tsx src/components/shared-chat/types.ts"
     skills:
       - ux-lab
       - best-practices-react

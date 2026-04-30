@@ -36,6 +36,8 @@ function statusText(message?: ChatMessage, isStreaming?: boolean) {
 export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps = [], onClose }: EvidenceWorkspaceProps) {
   const [activeTab, setActiveTab] = useState<EvidenceWorkspaceTab>('Trace')
   const [reviewDecision, setReviewDecision] = useState<'NEEDS_VERIFICATION' | 'APPROVED' | 'EDITING' | 'DEFERRED' | 'REJECTED'>('NEEDS_VERIFICATION')
+  const [paused, setPaused] = useState(false)
+  const [rerunRequest, setRerunRequest] = useState<string | null>(null)
   const evidence = message?.evidenceCase
   const gates = evidence?.gate_trace ?? message?.verdict?.gates ?? []
   const glossary = evidence?.glossary ?? []
@@ -52,6 +54,29 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
     export_ready: false,
     note: 'OSCAL/SACM preview only. Reviewer approval is required before persistence or signoff.',
   }), [controlIds, evidence?.gates_passed, evidence?.gates_total, gates, verdict])
+  const diagnosticsPreview = useMemo(() => ({
+    run_id: message?.id ?? null,
+    prompt: message?.content ?? null,
+    raw_tool_input: {
+      workflow: 'create-evidence-case',
+      question: message?.content?.replace(/^\s*\/create-evidence-case\s*/i, '') ?? null,
+    },
+    raw_tool_output: evidence ?? null,
+    prompt_metadata: {
+      review_state: reviewDecision,
+      evidence_verdict: verdict ?? null,
+      gate_count: gates.length,
+    },
+    parser_errors: [],
+    elapsed_steps: streamingSteps.map(step => ({
+      id: step.id,
+      status: step.status,
+      duration: step.duration ?? null,
+      started_at: step.startedAt ?? null,
+    })),
+    source_event_ids: streamingSteps.map(step => step.id),
+    daemon_diagnostics: evidence?.diagnostics ?? 'unavailable',
+  }), [evidence, gates.length, message?.content, message?.id, reviewDecision, streamingSteps, verdict])
 
   const renderTab = () => {
     if (activeTab === 'Trace') {
@@ -138,6 +163,10 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
       <div style={S.stack}>
         <div style={S.sectionTitle}>OSCAL/SACM preview</div>
         <pre style={S.pre}>{JSON.stringify(exportPreview, null, 2)}</pre>
+        <details style={S.details}>
+          <summary style={S.summary}>Diagnostics</summary>
+          <pre style={S.pre}>{JSON.stringify(diagnosticsPreview, null, 2)}</pre>
+        </details>
       </div>
     )
   }
@@ -183,7 +212,16 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
             <X size={14} />
             Reject
           </button>
+          <button type="button" title="Pause evidence run review" onClick={() => setPaused(value => !value)} style={{ ...S.actionBtn, ...(paused ? S.actionActive : {}) }}>
+            <Clock size={14} />
+            {paused ? 'Resume' : 'Pause'}
+          </button>
+          <button type="button" title="Request rerun of the latest evidence step" onClick={() => setRerunRequest(new Date().toISOString())} style={S.actionBtn}>
+            <GitBranch size={14} />
+            Rerun
+          </button>
         </div>
+        {rerunRequest && <div style={{ ...S.muted, marginTop: 8 }}>Rerun requested at {rerunRequest}; execution remains gated by reviewer workflow.</div>}
         {reviewDecision === 'EDITING' && (
           <textarea
             aria-label="Reviewer edited answer"
@@ -280,7 +318,7 @@ const S: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   tabActive: { color: EMBRY.white, backgroundColor: EMBRY.bgCard },
-  actions: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginTop: 10 },
+  actions: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginTop: 10 },
   actionBtn: {
     minHeight: 44,
     border: `1px solid ${EMBRY.border}`,
@@ -335,6 +373,8 @@ const S: Record<string, React.CSSProperties> = {
     lineHeight: 1.45,
     overflow: 'auto',
   },
+  details: { border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgCard },
+  summary: { minHeight: 44, padding: '0 12px', display: 'flex', alignItems: 'center', color: EMBRY.white, fontSize: 12, fontWeight: 800, cursor: 'pointer' },
 }
 
 export default EvidenceWorkspace

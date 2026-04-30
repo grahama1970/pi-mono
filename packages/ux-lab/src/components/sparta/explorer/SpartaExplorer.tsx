@@ -515,6 +515,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             answer: finalPayload.answer ?? '',
             response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
             glossary: finalPayload.glossary ?? [],
+            diagnostics: finalPayload.diagnostics ?? {},
           },
         })
       } else {

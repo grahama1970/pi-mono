@@ -179,6 +179,7 @@ export interface EvidenceCaseData {
 	answer?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
 	glossary?: GlossaryTerm[];
+	diagnostics?: Record<string, unknown>;
 	metadata?: {
 		gates_passed?: number;
 		gates_total?: number;
