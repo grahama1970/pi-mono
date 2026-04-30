@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { FileText, GitBranch, ListChecks, PackageCheck, ShieldCheck, X } from 'lucide-react'
+import { Check, Clock, FileText, GitBranch, ListChecks, PackageCheck, Pencil, ShieldCheck, X } from 'lucide-react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import type { ChatMessage } from '../../shared-chat'
 import type { StreamingStep } from '../../shared-chat/ChatWell'
@@ -35,6 +35,7 @@ function statusText(message?: ChatMessage, isStreaming?: boolean) {
 
 export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps = [], onClose }: EvidenceWorkspaceProps) {
   const [activeTab, setActiveTab] = useState<EvidenceWorkspaceTab>('Trace')
+  const [reviewDecision, setReviewDecision] = useState<'NEEDS_VERIFICATION' | 'APPROVED' | 'EDITING' | 'DEFERRED' | 'REJECTED'>('NEEDS_VERIFICATION')
   const evidence = message?.evidenceCase
   const gates = evidence?.gate_trace ?? message?.verdict?.gates ?? []
   const glossary = evidence?.glossary ?? []
@@ -154,7 +155,42 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
       </div>
       <div style={S.verdictBar}>
         <span style={{ ...S.verdict, color: verdictColor(verdict) }}>{statusText(message, isStreaming)}</span>
-        <span style={S.muted}>Review state: NEEDS_VERIFICATION</span>
+        <span style={S.muted}>Review state: {reviewDecision}</span>
+      </div>
+      <div style={S.verdictCard}>
+        <div style={S.itemHead}>
+          <span style={S.rowTitle}>Final verdict</span>
+          <span style={{ ...S.status, color: verdictColor(verdict) }}>{statusText(message, isStreaming)}</span>
+        </div>
+        <div style={S.muted}>
+          {(evidence?.gate_summary || `${gates.filter(g => g.passed).length}/${gates.length} gates passed`) || 'Waiting for gates.'}
+          {' '}Reviewer action is required before persistence, export readiness, or signoff.
+        </div>
+        <div style={S.actions} aria-label="Reviewer actions">
+          <button type="button" title="Approve evidence case" onClick={() => setReviewDecision('APPROVED')} style={{ ...S.actionBtn, ...(reviewDecision === 'APPROVED' ? S.actionActive : {}) }}>
+            <Check size={14} />
+            Approve
+          </button>
+          <button type="button" title="Edit reviewer answer" onClick={() => setReviewDecision('EDITING')} style={{ ...S.actionBtn, ...(reviewDecision === 'EDITING' ? S.actionActive : {}) }}>
+            <Pencil size={14} />
+            Edit
+          </button>
+          <button type="button" title="Defer reviewer decision" onClick={() => setReviewDecision('DEFERRED')} style={{ ...S.actionBtn, ...(reviewDecision === 'DEFERRED' ? S.actionActive : {}) }}>
+            <Clock size={14} />
+            Defer
+          </button>
+          <button type="button" title="Reject evidence case" onClick={() => setReviewDecision('REJECTED')} style={{ ...S.actionBtn, ...(reviewDecision === 'REJECTED' ? S.actionDanger : {}) }}>
+            <X size={14} />
+            Reject
+          </button>
+        </div>
+        {reviewDecision === 'EDITING' && (
+          <textarea
+            aria-label="Reviewer edited answer"
+            defaultValue={evidence?.answer || message?.content || ''}
+            style={S.textarea}
+          />
+        )}
       </div>
       <div style={S.tabs} role="tablist" aria-label="Evidence workspace tabs">
         {TABS.map(tab => {
@@ -219,6 +255,14 @@ const S: Record<string, React.CSSProperties> = {
     gap: 12,
     borderBottom: `1px solid ${EMBRY.border}`,
   },
+  verdictCard: {
+    margin: 12,
+    marginBottom: 0,
+    padding: 12,
+    border: `1px solid ${EMBRY.border}`,
+    backgroundColor: EMBRY.bgCard,
+    borderRadius: 6,
+  },
   verdict: { fontSize: 12, fontWeight: 900 },
   tabs: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', borderBottom: `1px solid ${EMBRY.border}` },
   tab: {
@@ -236,6 +280,37 @@ const S: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   tabActive: { color: EMBRY.white, backgroundColor: EMBRY.bgCard },
+  actions: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginTop: 10 },
+  actionBtn: {
+    minHeight: 44,
+    border: `1px solid ${EMBRY.border}`,
+    borderRadius: 6,
+    backgroundColor: 'transparent',
+    color: EMBRY.dim,
+    fontSize: 11,
+    fontWeight: 800,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    cursor: 'pointer',
+  },
+  actionActive: { color: EMBRY.green, backgroundColor: EMBRY.bgPanel },
+  actionDanger: { color: EMBRY.red, backgroundColor: EMBRY.bgPanel },
+  textarea: {
+    marginTop: 10,
+    width: '100%',
+    minHeight: 96,
+    resize: 'vertical',
+    border: `1px solid ${EMBRY.border}`,
+    borderRadius: 6,
+    backgroundColor: EMBRY.bgPanel,
+    color: EMBRY.white,
+    fontSize: 12,
+    lineHeight: 1.5,
+    padding: 10,
+    boxSizing: 'border-box',
+  },
   content: { flex: 1, overflow: 'auto', padding: 14 },
   stack: { display: 'flex', flexDirection: 'column', gap: 10 },
   sectionTitle: { fontSize: 10, color: EMBRY.dim, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.08em' },

@@ -394,16 +394,16 @@ tasks:
       assertion: "The Evidence Workspace tabs compile and are integrated into the active SpartaExplorer route."
 
   - id: T6
-    title: "Add final verdict card and reviewer controls"
+    title: "Validate final verdict card and reviewer controls"
     lane: ui
-    runner: code-runner
-    backend: text
-    mode: iterative
-    dirty_worktree_policy: allow_if_allowlist_clean
+    runner: local
+    backend: ""
+    mode: ""
     agent: frontend-implementation
     depends_on:
       - T4
       - T5
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && rg -n \"Final verdict|Reviewer actions|Approve|Edit|Defer|Reject|NEEDS_VERIFICATION|reviewDecision\" src/components/sparta/explorer/EvidenceWorkspace.tsx"
     skills:
       - ux-lab
       - qra-review
