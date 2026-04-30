@@ -11,6 +11,7 @@ import EntitySpanViewer from '../../shared-chat/EntitySpanViewer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import PostureDashboard from '../dashboard/PostureDashboard'
 import { OverviewLanding } from './OverviewLanding'
+import { EvidenceWorkspace } from './EvidenceWorkspace'
 import { useReducedMotion } from 'motion/react'
 
 export type Scope = 'sparta' | 'f36' | 'both'
@@ -152,6 +153,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
   const [evidenceStreaming, setEvidenceStreaming] = useState(false)
   const [evidenceStreamingSteps, setEvidenceStreamingSteps] = useState<StreamingStep[]>([])
+  const [evidenceWorkspaceDismissedId, setEvidenceWorkspaceDismissedId] = useState<string | null>(null)
   const sessionId = useState(() => crypto.randomUUID())[0]
   const msgIdRef = useRef(0)
 
@@ -788,6 +790,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       )
     )
     : (views[activeTab] ?? <TabPlaceholder name={activeTab} />)
+  const latestEvidenceMessage = [...messages].reverse().find(msg => Boolean(msg.evidenceCase))
+  const evidenceWorkspaceMessage = latestEvidenceMessage && latestEvidenceMessage.id !== evidenceWorkspaceDismissedId
+    ? latestEvidenceMessage
+    : undefined
+  const showEvidenceWorkspace = evidenceStreaming || Boolean(evidenceWorkspaceMessage)
 
   return (
     <div style={S.container}>
@@ -928,6 +935,14 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           </SpartaNavContext.Provider>
 
         </div>
+        {showEvidenceWorkspace && (
+          <EvidenceWorkspace
+            message={evidenceWorkspaceMessage}
+            isStreaming={evidenceStreaming}
+            streamingSteps={evidenceStreamingSteps}
+            onClose={() => setEvidenceWorkspaceDismissedId(evidenceWorkspaceMessage?.id ?? 'streaming')}
+          />
+        )}
       </div>
 
       {/* Shared status bar */}
