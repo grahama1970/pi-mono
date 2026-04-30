@@ -146,6 +146,35 @@
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.8);
 }
 
+.pdf-lab-cr-thread-dot::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  width: 420px;
+  height: 2px;
+  background: rgba(245, 158, 11, 0.9);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.55);
+}
+
+.pdf-lab-cr-bbox-thread-left .pdf-lab-cr-thread-dot {
+  left: -7px;
+  right: auto;
+}
+
+.pdf-lab-cr-bbox-thread-left .pdf-lab-cr-thread-dot::after {
+  left: auto;
+  right: 10px;
+}
+
+.pdf-lab-cr-bbox-thread-below .pdf-lab-cr-thread-dot {
+  right: -8px;
+}
+
+.pdf-lab-cr-bbox-thread-below .pdf-lab-cr-thread-dot::after {
+  width: 240px;
+}
+
 .pdf-lab-cr-hud {
   position: absolute;
   top: 50%;
@@ -170,6 +199,13 @@
 
 .pdf-lab-cr-hud-left {
   left: 40px;
+}
+
+.pdf-lab-cr-hud-below {
+  top: auto;
+  right: 40px;
+  bottom: 64px;
+  transform: none;
 }
 
 .pdf-lab-cr-meta {

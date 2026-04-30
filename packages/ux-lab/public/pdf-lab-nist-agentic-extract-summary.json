@@ -1,0 +1,16 @@
+{
+  "schema_version": "pdf-lab.agentic-extract-summary.v1",
+  "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "created_at": "2026-04-29T18:07:27Z",
+  "target": 0.95,
+  "passed": true,
+  "accuracy": 0.9895494986583816,
+  "iterations": 1,
+  "expected_elements": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/expected_elements.json",
+  "actual_elements": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/iteration_01/actual_elements.json",
+  "comparison": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/iteration_01/comparison.json",
+  "preset_update_plan": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/preset_update_plan.json",
+  "document_family_preset": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+  "full_extraction": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/final_extraction.json",
+  "next_step": "Run final-pass to produce human_triage_queue.json."
+}

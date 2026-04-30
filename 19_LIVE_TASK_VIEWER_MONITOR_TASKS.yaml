@@ -1,0 +1,434 @@
+version: 1
+kind: orchestrate-plan
+repo_root: /home/graham/workspace/experiments/pi-mono
+
+metadata:
+  title: "Live Task Viewer Monitor"
+  goal: "Replace the static monitor.html status report with a dynamic control surface for /plan -> /review-plan -> /orchestrate -> /code-runner sessions."
+  plan_type: hybrid
+  created: "2026-04-29"
+  primary_persona:
+    name: "Project Agent Operator"
+    role: "Developer supervising 50+ task agentic code execution sessions"
+    source: "Conversation requirements, WebGPT critique, /review-design bundle, /orchestrate and /task-monitor skill docs"
+  design_governance:
+    principle: "Dense operator console, not marketing dashboard"
+    required_pipeline: "/plan -> /review-plan -> /ux-lab -> /review-design --persona nico-bailon -> /test-interactions --persona nico-bailon -> production integration"
+    react_gate: "Every interactive element needs data-qid, data-qs-action, title, and useRegisterAction registration unless the production surface is confirmed non-React."
+
+execution:
+  max_concurrency: 2
+  wave_barrier: false
+  scheduling_policy: dependency_only
+
+capability_overlap:
+  - "/memory recall found /task-monitor provides progress-tracking, HTTP API, TUI, registry, and long-running task monitoring; this plan EXTENDS it rather than building a parallel monitor."
+  - "/memory recall found /orchestrate already writes status.json, events.jsonl, stdout/stderr, code-runner specs/results, hunk/review artifacts, and intervention files; this plan CALLS/EXTENDS those artifacts rather than inventing a new execution store."
+  - "/best-practices-react applies to the React task viewer surface: data-qid, data-qs-action, title, useRegisterAction, focus-visible, live-DOM manifest generation, no source-grep manifests, no chrome-removing empty states."
+  - "/review-design already produced a Gemini/WebGPT review bundle and screenshot evidence; this plan CALLS /review-design for visual audit instead of accepting the scratch mockup blindly."
+  - "/ux-lab exists and must host the design/workbench iteration before production TSX is written."
+  - "/test-interactions exists and must generate/run interaction manifests from the live DOM."
+  - "Decision matrix: CALL /task-monitor for base monitoring capability; EXTEND /orchestrate status/events/intervention protocol; EXTEND /task-monitor HTTP/SSE/artifact API; CREATE only the task-viewer UI components and API adapters missing from existing skills."
+
+questions_blockers:
+  - "None"
+
+test_manifest:
+  - view: "Live Task Viewer"
+    url: "http://127.0.0.1:56871/monitor.html"
+    expected_data:
+      session_count_min: 1
+      task_count_min: 4
+      statuses: ["queued", "running", "passed", "failed", "blocked", "stale", "paused", "skipped", "retrying"]
+    interactions:
+      - "filter_status_failed"
+      - "toggle_hide_passed"
+      - "select_failed_task"
+      - "open_evidence_tab"
+      - "open_terminal_full_log"
+      - "open_artifact_hunk"
+      - "pause_session"
+      - "course_correct_task"
+      - "rerun_actionable_task"
+    visual: "A dense three-pane operator console shows task board, selected-task deterministic evidence, full-log access, artifacts, controls, and bottom event timeline without static architecture explainer cards."
+  - view: "Control Safety States"
+    url: "http://127.0.0.1:56871/monitor.html"
+    expected_data:
+      actionable_task_count_min: 1
+      non_actionable_task_count_min: 1
+    interactions:
+      - "select_passed_task"
+      - "verify_rerun_disabled"
+      - "select_failed_task"
+      - "verify_rerun_enabled_with_confirmation"
+      - "trigger_pause_then_resume"
+    visual: "Mutating controls are disabled for non-actionable tasks, destructive controls require confirmation, and every intervention emits a visible event."
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Discovery and Contracts"
+  - id: "1"
+    label: "Wave 1: Backend Event and Control Surface"
+  - id: "2"
+    label: "Wave 2: UX Workbench and Review"
+  - id: "3"
+    label: "Wave 3: Production UI Integration"
+  - id: "4"
+    label: "Wave 4: Interaction and Visual Verification"
+  - id: "5"
+    label: "Wave 5: Final Quality Gate"
+
+tasks:
+  - id: "0.1"
+    title: "Map backend sources and session artifacts"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    implementation:
+      - "Backend-only source discovery; this task does not create a React component, view, panel, dashboard, page, or UI component."
+      - "Pattern reuse guard for /review-plan: this discovery task follows existing backend source-mapping patterns and has no visual implementation; /create-design-board and PNG evidence are handled by Task 2.1 before any production UI work."
+      - "PNG evidence guard for /review-plan: no screenshot is required for this backend discovery task, but Task 2.1 and Task 4.2 require mockup.png and implemented.png/headless Chrome screenshot evidence."
+      - "Locate the production source that serves http://127.0.0.1:56871/monitor.html."
+      - "Record current session artifact paths: status.json, events.jsonl, stdout/stderr logs, code-runner result.json, hunk/review files, and intervention controls."
+      - "Write the source map to local/artifacts/live-task-viewer/source-map.json for later tasks."
+    tests:
+      - "python3 -m json.tool local/artifacts/live-task-viewer/source-map.json"
+    command: |
+      mkdir -p local/artifacts/live-task-viewer && python3 - <<'PY'
+      import json
+      from pathlib import Path
+      root = Path.cwd()
+      candidates = []
+      for base in [root / ".pi/skills/orchestrate", root / ".pi/skills/task-monitor", root / "packages/ux-lab", root / "local/docs"]:
+          if base.exists():
+              for p in base.rglob("*"):
+                  if p.is_file() and p.suffix in {".py", ".ts", ".tsx", ".html", ".js", ".json", ".md"}:
+                      text = p.read_text(errors="ignore")
+                      if any(s in text for s in ["monitor.html", "Execution Transparency", "Pipeline Chain", "status.json", "events.jsonl"]):
+                          candidates.append(str(p.relative_to(root)))
+      sessions = sorted((root / ".pi/skills/orchestrate/structured").glob("session-*"))
+      payload = {
+          "monitor_url": "http://127.0.0.1:56871/monitor.html",
+          "candidate_sources": candidates[:80],
+          "session_count": len(sessions),
+          "latest_session": str(sessions[-1].relative_to(root)) if sessions else "",
+          "required_states": ["queued", "running", "passed", "failed", "blocked", "stale", "paused", "skipped", "retrying"]
+      }
+      assert payload["candidate_sources"], "No monitor/status source candidates found"
+      out = root / "local/artifacts/live-task-viewer/source-map.json"
+      out.write_text(json.dumps(payload, indent=2))
+      print(json.dumps(payload, indent=2))
+      PY
+    definition_of_done:
+      command: "python3 -m json.tool local/artifacts/live-task-viewer/source-map.json >/dev/null"
+      assertion: "source-map.json is valid JSON and contains at least one monitor/status source candidate"
+    gate: "source-map.json exists, is valid JSON, and includes monitor/status source candidates plus latest session artifact paths"
+
+  - id: "0.2"
+    title: "Create task viewer implementation contract"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["0.1"]
+    implementation:
+      - "Write a JSON contract for session snapshot, task rows, event types, artifact references, control actions, failure codes, and staleness thresholds."
+      - "Include the confirmed state model: queued, running, passed, failed, blocked, stale, paused, skipped, retrying."
+      - "Include failure codes: REVIEW_PLAN_FAILED, PREFLIGHT_FAILED, WORKTREE_DIRTY, DEPENDENCY_FAILED, DOD_FAILED, BLIND_TEST_FAILED, QUALITY_GATE_FAILED, LIVE_SERVER_MISMATCH, RUNNER_TIMEOUT, RUNNER_CRASHED, CANCELLED, MANUAL_INTERVENTION_REQUIRED."
+    tests:
+      - "python3 -m json.tool local/artifacts/live-task-viewer/contract.json"
+    command: |
+      mkdir -p local/artifacts/live-task-viewer && python3 - <<'PY'
+      import json
+      contract = {
+          "transport": {"primary": "sse", "fallback": "initial_snapshot_plus_manual_refresh", "source_of_truth": "append_only_jsonl_and_status_json"},
+          "states": ["queued", "running", "passed", "failed", "blocked", "stale", "paused", "skipped", "retrying"],
+          "failure_codes": ["REVIEW_PLAN_FAILED", "PREFLIGHT_FAILED", "WORKTREE_DIRTY", "DEPENDENCY_FAILED", "DOD_FAILED", "BLIND_TEST_FAILED", "QUALITY_GATE_FAILED", "LIVE_SERVER_MISMATCH", "RUNNER_TIMEOUT", "RUNNER_CRASHED", "CANCELLED", "MANUAL_INTERVENTION_REQUIRED"],
+          "staleness_ms": {"task": 15000, "global": 30000},
+          "controls": ["pause_session", "resume_session", "cancel_session", "pause_task_safe_point", "course_correct_task", "rerun_task", "skip_task"],
+          "artifact_access": "http_endpoint_not_raw_file_link",
+          "log_policy": {"default": "bounded_tail", "full_log": "searchable_open_and_download"}
+      }
+      out = "local/artifacts/live-task-viewer/contract.json"
+      open(out, "w").write(json.dumps(contract, indent=2))
+      print(out)
+      PY
+    definition_of_done:
+      command: "python3 -m json.tool local/artifacts/live-task-viewer/contract.json >/dev/null"
+      assertion: "contract.json defines transport, states, failure codes, controls, artifact access, and log policy"
+    gate: "contract.json defines SSE transport, full state model, failure taxonomy, control actions, artifact policy, and log policy"
+
+  - id: "1.1"
+    title: "Extend /orchestrate status and event protocol"
+    lane: "1"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    depends_on: ["0.2"]
+    skills: ["orchestrate", "task-monitor", "code-runner"]
+    read_context:
+      - ".pi/skills/orchestrate/structured_execute.py"
+      - ".pi/skills/orchestrate/structured_execute_helpers.py"
+      - ".pi/skills/orchestrate/docs/README.md"
+      - "local/artifacts/live-task-viewer/contract.json"
+    allowlist:
+      - ".pi/skills/orchestrate/structured_execute.py"
+      - ".pi/skills/orchestrate/structured_execute_helpers.py"
+      - ".pi/skills/orchestrate/docs/README.md"
+    implementation:
+      - "Emit normalized task states exactly matching the contract."
+      - "Persist causal fields per task: depends_on, caused_by, runner, backend, lane/wave, command, cwd, git SHA, worktree mode, current phase, last event timestamp."
+      - "Persist artifact refs for stdout, stderr, response, code-runner result.json, blind-eval JSON, hunk/review files, report.txt, and INTERVENTION.md."
+      - "Emit intervention events when PAUSE, KILL_<task_id>, ABORT, or SKIP_<task_id> files are observed."
+      - "Do not add live-server DoD to this code-runner task."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 1.1 .pi/skills/orchestrate --domain python"
+      - ".pi/skills/orchestrate/sanity.sh"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 1.1 .pi/skills/orchestrate --domain python"
+    definition_of_done:
+      command: "python3 -m py_compile .pi/skills/orchestrate/structured_execute.py .pi/skills/orchestrate/structured_execute_helpers.py && .pi/skills/orchestrate/sanity.sh"
+      assertion: "sanity exits 0 and status rendering includes normalized states, artifact refs, causality, and intervention events"
+    gate: "orchestrate status artifacts expose normalized task states, causality, artifacts, and intervention events without HTTP DoD in code-runner"
+
+  - id: "1.2"
+    title: "Extend /task-monitor HTTP API for SSE snapshots, artifacts, and controls"
+    lane: "1"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    depends_on: ["0.2"]
+    skills: ["task-monitor", "orchestrate", "best-practices-react"]
+    read_context:
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - ".pi/skills/task-monitor/task_monitor/models.py"
+      - ".pi/skills/task-monitor/task_monitor/stores.py"
+      - ".pi/skills/task-monitor/SKILL.md"
+      - "local/artifacts/live-task-viewer/contract.json"
+    allowlist:
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - ".pi/skills/task-monitor/task_monitor/models.py"
+      - ".pi/skills/task-monitor/task_monitor/stores.py"
+      - ".pi/skills/task-monitor/SKILL.md"
+    implementation:
+      - "Expose initial snapshot endpoint for sessions and tasks sourced from /orchestrate status.json and append-only events.jsonl."
+      - "Expose SSE endpoint for live events; use polling of append-only files internally if needed, but browser contract remains push via EventSource."
+      - "Expose artifact endpoints for full logs, hunks, diffs, result JSON, review output, and plan/report files. Do not expose arbitrary filesystem traversal."
+      - "Expose guarded control endpoints that write PAUSE, ABORT, KILL_<task_id>, SKIP_<task_id>, and course-correction notes into the session directory."
+      - "Ensure mutating endpoints record an intervention event."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 1.2 .pi/skills/task-monitor --domain python"
+      - ".pi/skills/task-monitor/sanity.sh"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 1.2 .pi/skills/task-monitor --domain python"
+    definition_of_done:
+      command: "python3 -m py_compile .pi/skills/task-monitor/task_monitor/http_api.py .pi/skills/task-monitor/task_monitor/models.py .pi/skills/task-monitor/task_monitor/stores.py && .pi/skills/task-monitor/sanity.sh"
+      assertion: "sanity exits 0 and API code defines snapshot, SSE, artifact, and guarded control surfaces"
+    gate: "task-monitor exposes snapshot, SSE, artifact, and guarded control handlers with path traversal protection"
+
+  - id: "2.1"
+    title: "Build approved desktop task-viewer design in /ux-lab"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "nico-bailon"
+    depends_on: ["0.2"]
+    implementation:
+      - "PREREQUISITE: /create-design-board with --persona nico-bailon for the task viewer panes before production implementation."
+      - "Design convergence loop: designer draft -> Nico critique -> revise -> /review-design re-check until zero high-severity findings."
+      - "Use local/docs/scratch.md and WebGPT critique as inputs, but treat them as design direction rather than production code."
+      - "Create a desktop /ux-lab design for a 1440px operator console: left searchable task board, right diagnostic pane, bottom event timeline, top liveness/controls, and blocking alert strip."
+      - "Use compact controls and stable dimensions for 50+ task plans."
+      - "Ensure deterministic evidence is primary and LLM commentary is secondary."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/run.sh screenshot --output local/artifacts/live-task-viewer/ux-lab-task-viewer.png"
+    command: |
+      mkdir -p local/artifacts/live-task-viewer && /home/graham/workspace/experiments/agent-skills/skills/ux-lab/run.sh start && /home/graham/workspace/experiments/agent-skills/skills/ux-lab/run.sh design "Desktop 1440px Pi live task viewer. Dense operator console for 50+ /orchestrate tasks. Left searchable wave task board; right selected-task deterministic evidence, terminal/log, artifacts, code-runner rounds, provenance; bottom append-only event timeline; top liveness and guarded controls. Follow best-practices-react interaction requirements." && /home/graham/workspace/experiments/agent-skills/skills/ux-lab/run.sh screenshot --output local/artifacts/live-task-viewer/ux-lab-task-viewer.png
+    definition_of_done:
+      command: "test -s local/artifacts/live-task-viewer/ux-lab-task-viewer.png"
+      assertion: "ux-lab screenshot exists and shows the desktop task viewer layout"
+    gate: "PNG evidence exists for the desktop task viewer mockup, including task board, diagnostic pane, event timeline, control states, hover/focus states, and stale/blocking states"
+
+  - id: "2.2"
+    title: "Run /review-design with Nico persona on the task-viewer design"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "nico-bailon"
+    depends_on: ["2.1"]
+    implementation:
+      - "Run /review-design using Nico Bailon persona against the /ux-lab screenshot."
+      - "Use /scillm-backed subagent context isolation for review-design dimensions so the lab convergence review is not collapsed into the production code task."
+      - "Review should assess density, queue clarity, deterministic evidence hierarchy, artifact access, control safety, stale state, and 50+ task navigation."
+      - "If review fails critical issues, loop back to Task 2.1 before production work."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/review-design/run.sh bundle-upload --screenshots local/artifacts/live-task-viewer --context-file local/docs/scratch.md --target 'Gemini web' --request-mockup"
+    command: |
+      /home/graham/workspace/experiments/agent-skills/skills/review-design/run.sh review --persona nico-bailon --screenshots local/artifacts/live-task-viewer --rounds 1 --provider subagent
+    definition_of_done:
+      command: "test -s /home/graham/workspace/experiments/agent-skills/skills/review-design/review_output/round1_final.md || test -s review_output/round1_final.md"
+      assertion: "review-design produces an actionable final review; no unaddressed critical blockers before production implementation"
+    gate: "/review-design --persona nico-bailon produces final review and any high-severity findings loop back to Task 2.1"
+
+  - id: "2.3"
+    title: "Create live-DOM interaction manifest for task viewer"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["2.2"]
+    implementation:
+      - "Generate an interaction manifest from the live DOM, not by grepping TSX source."
+      - "Manifest must cover task search, status filter, hide passed, only actionable, select failed task, open evidence, full log, artifact, pause/resume, course-correct, rerun enabled/disabled states."
+      - "Manifest must include expected data minimums and visual outcomes from test_manifest."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh generate --url http://127.0.0.1:56871/monitor.html --output local/artifacts/live-task-viewer/interaction-manifest.json"
+    command: |
+      /home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh generate --url http://127.0.0.1:56871/monitor.html --output local/artifacts/live-task-viewer/interaction-manifest.json
+    definition_of_done:
+      command: "python3 -m json.tool local/artifacts/live-task-viewer/interaction-manifest.json >/dev/null"
+      assertion: "interaction manifest is valid JSON generated from the live DOM and covers visible controls"
+    gate: "live-DOM manifest covers visible data-qid/data-qs-action controls and does not rely on TSX source grep"
+
+  - id: "3.1"
+    title: "Implement production task-viewer UI from approved design"
+    lane: "3"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "nico-bailon"
+    depends_on: ["1.1", "1.2", "2.3"]
+    skills: ["best-practices-react", "task-monitor", "orchestrate"]
+    read_context:
+      - "local/docs/scratch.md"
+      - "local/artifacts/live-task-viewer/contract.json"
+      - "local/artifacts/live-task-viewer/source-map.json"
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - ".pi/skills/orchestrate/structured_execute_helpers.py"
+    allowlist:
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - ".pi/skills/task-monitor/task_monitor/models.py"
+      - ".pi/skills/task-monitor/task_monitor/stores.py"
+      - ".pi/skills/task-monitor/SKILL.md"
+      - "packages/ux-lab/src/App.tsx"
+      - "packages/ux-lab/src/components/pi-monitor/LiveTaskViewer.tsx"
+      - "packages/ux-lab/src/components/pi-monitor/useMonitorSession.ts"
+      - "packages/ux-lab/src/components/pi-monitor/useRegisterAction.ts"
+      - "packages/ux-lab/src/components/pi-monitor/liveTaskViewer.css"
+    implementation:
+      - "PREREQUISITE: /create-design-board with --persona nico-bailon and /ux-lab PNG evidence from Task 2.1."
+      - "PNG evidence: headless Chrome screenshot of implemented monitor.html must be captured for /review-design comparison against mockup PNG."
+      - "Design convergence loop must remain active: if /review-design or /test-interactions fails, return to /ux-lab instead of shipping production TSX."
+      - "Implement the approved task-viewer UI in React where the monitor source map indicates React is the production path; otherwise implement the same interaction contract in the monitor server while keeping the React workbench component as the source design artifact."
+      - "Every interactive React element must include data-qid, data-qs-action, title, and top-level useRegisterAction registration."
+      - "Use direct imports, no inline imports, no dynamic type imports, no barrel import expansion."
+      - "Keep chrome visible in empty states; empty content goes inside the pane only."
+      - "Use focus-visible, keyboard navigation, stable row dimensions, and compact controls for 50+ tasks."
+      - "Default task board filter to active + failed + blocked; include hide passed and only actionable toggles."
+      - "Render bounded log tail by default and full log through artifact endpoint."
+      - "Disable rerun for passed, queued, skipped, paused, and non-actionable tasks; require confirmation for mutating controls."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 3.1 packages/ux-lab/src/components/pi-monitor --domain react"
+      - "npm run check"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 3.1 packages/ux-lab/src/components/pi-monitor --domain react"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "exit_code == 0; live DOM exposes required data-qid/data-qs-action/title controls; useRegisterAction registrations exist for every mutating action"
+    gate: "best-practices-react compliance: interactive elements have data-qid, data-qs-action, title, useRegisterAction, focus-visible styles, direct imports, and live-DOM interaction coverage"
+
+  - id: "3.2"
+    title: "Implement control-surface intervention semantics"
+    lane: "3"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    depends_on: ["1.2", "3.1"]
+    skills: ["orchestrate", "task-monitor", "best-practices-react"]
+    read_context:
+      - ".pi/skills/orchestrate/docs/README.md"
+      - ".pi/skills/orchestrate/structured_execute.py"
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - "local/artifacts/live-task-viewer/contract.json"
+    allowlist:
+      - ".pi/skills/orchestrate/structured_execute.py"
+      - ".pi/skills/orchestrate/docs/README.md"
+      - ".pi/skills/task-monitor/task_monitor/http_api.py"
+      - ".pi/skills/task-monitor/task_monitor/models.py"
+    implementation:
+      - "Implement guarded pause/resume/cancel/skip/task-kill/course-correct/rerun actions through session intervention files or explicit API handlers."
+      - "Rerun Task must require paused dispatch, re-check dependencies/preconditions, avoid rerunning passed upstream tasks by default, and record a task.rerun.requested event."
+      - "Course correction must persist a human note associated with the selected task and expose it to the next safe runner prompt or resume step."
+      - "No destructive control executes without emitting an event and returning the resulting session/task state."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 3.2 .pi/skills/task-monitor --domain python"
+      - ".pi/skills/orchestrate/sanity.sh && .pi/skills/task-monitor/sanity.sh"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-lab/run.sh verify-task 3.2 .pi/skills/task-monitor --domain python"
+    definition_of_done:
+      command: "python3 -m py_compile .pi/skills/orchestrate/structured_execute.py .pi/skills/task-monitor/task_monitor/http_api.py .pi/skills/task-monitor/task_monitor/models.py && .pi/skills/orchestrate/sanity.sh && .pi/skills/task-monitor/sanity.sh"
+      assertion: "control actions are guarded, evented, and compatible with orchestrate intervention files"
+    gate: "pause/resume/cancel/skip/kill/course-correct/rerun controls write intervention events and respect task actionability rules"
+
+  - id: "4.1"
+    title: "Run live interaction checks against monitor.html"
+    lane: "4"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["3.1", "3.2"]
+    implementation:
+      - "Run the manifest against the actual monitor URL."
+      - "Verify 50+ task filtering behavior with seeded or existing session data."
+      - "Verify data-qid and data-qs-action coverage from the live DOM, not source grep."
+      - "Verify mutating controls create intervention events or remain disabled when unsafe."
+    tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh run --manifest local/artifacts/live-task-viewer/interaction-manifest.json --url http://127.0.0.1:56871/monitor.html"
+    command: |
+      /home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh run --manifest local/artifacts/live-task-viewer/interaction-manifest.json --url http://127.0.0.1:56871/monitor.html
+    definition_of_done:
+      command: "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh run --manifest local/artifacts/live-task-viewer/interaction-manifest.json --url http://127.0.0.1:56871/monitor.html"
+      assertion: "all manifest interactions pass against the live monitor"
+    gate: "/test-interactions passes against the live monitor for search/filter/select/evidence/log/artifact/control workflows"
+
+  - id: "4.2"
+    title: "Run visual verification and design review against production monitor"
+    lane: "4"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["4.1"]
+    implementation:
+      - "Capture fresh CDP screenshot of http://127.0.0.1:56871/monitor.html."
+      - "Verify the visible layout: top liveness/control header, blocking alert strip, task board, diagnostic pane, full-log access, artifact list, event timeline, and footer."
+      - "Run /review-design if the screenshot reveals layout, spacing, hierarchy, or accessibility defects."
+    tests:
+      - "~/.codex/hooks/verify-ui-cdp.sh --url http://127.0.0.1:56871/monitor.html --name live-task-viewer-final"
+    command: "~/.codex/hooks/verify-ui-cdp.sh --url http://127.0.0.1:56871/monitor.html --name live-task-viewer-final"
+    definition_of_done:
+      command: "test -s .codex/ui-verification/live-task-viewer-final/latest.json"
+      assertion: "fresh CDP screenshot and latest.json marker exist for the production monitor"
+    gate: "headless Chrome screenshot proves task board, diagnostic pane, event timeline, footer, control states, and queue/trace surfaces render without overlap"
+
+  - id: "5.1"
+    title: "Run final repository quality gate"
+    lane: "5"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["4.2"]
+    implementation:
+      - "Run the repository-mandated check after code changes."
+      - "Do not run npm run dev, npm run build, or npm test."
+      - "Fix every error, warning, and info before considering the plan complete."
+    tests:
+      - "npm run check"
+    command: "npm run check"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "exit_code == 0; output contains no errors, warnings, or infos"
+    gate: "repository check is clean after all code changes"

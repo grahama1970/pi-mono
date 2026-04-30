@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"ask\" [e1] [level=1]\nparagraph \"src=\\\"docs/assets/ask-banner.png\\\" alt=\\\"ask skill banner showing an arcade-style oracle console wi...\" [e2]\ngeneric \"Ask, Argue and Roundtable\" [e3]\nparagraph \"Agents accumulate a lot of context over time: run logs, stored lessons, persona profiles, source bun...\" [e4]\nparagraph \"That is what `ask` is for. You write the question in plain language. `/ask` figures out the rest: wh...\" [e5]\nparagraph \"Use it for questions like:\" [e6]\nlist [e7]\n  listitem \"\\\"What did we decide about this?\\\"\" [e8]\n  listitem \"\\\"Which persona should critique this plan?\\\"\" [e9]\n  listitem \"\\\"Is this implementation safe to proceed?\\\"\" [e10]\n  listitem \"\\\"What evidence backs this claim?\\\"\" [e11]\ngeneric \"human asks naturally \u2193 /ask resolves intent \u2193 /memory provides durable context \u2193 o...\" [e12]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:48766/",
+  "title": "ask README applied"
+}

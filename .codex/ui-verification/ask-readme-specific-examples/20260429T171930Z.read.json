@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"ask \u2014 Ask, Argue and Roundtable\" [e1] [level=1]\nparagraph \"src=\\\"docs/assets/ask-banner.png\\\" alt=\\\"ask skill banner showing an arcade-style oracle console wi...\" [e2]\nparagraph \"Agents accumulate a lot of context over time: run logs, stored lessons, persona profiles, source bun...\" [e3]\nparagraph \"That is what is for. You write the question in plain language. figures out the rest: whether to pu...\" [e4]\n  generic \"ask\" [e5]\n  generic \"/ask\" [e6]\nparagraph \"Use it for questions like:\" [e7]\nlist [e8]\n  listitem \"\\\"What did we decide about idempotent token refresh under concurrent auth retries?\\\"\" [e9]\n  listitem \"\\\"Ask the reliability architect whether the queue fallback fails closed when Redis quorum is lost.\\\"\" [e10]\n  listitem \"\\\"Have the tester and maintainer roundtable the cache invalidation migration risk for cross-region wr...\" [e11]\n  listitem \"\\\"What file, test, or artifact backs the claim that replayed webhook deliveries cannot double-charge ...\" [e12]\ngeneric \"human asks naturally \u2193 /ask resolves intent \u2193 /memory provides durable context \u2193 o...\" [e13]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:48769/",
+  "title": "ask examples preview"
+}

@@ -1,0 +1,573 @@
+version: 1
+kind: orchestrate-plan
+repo_root: /home/graham/workspace/experiments/pi-mono
+
+metadata:
+  title: "SPARTA Chat: evidence-run observability and workspace adoption"
+  created: "2026-04-30"
+  plan_type: hybrid
+  goal: >
+    Adopt the most useful Gemma Chat mechanics in Sparta Chat: observable
+    tool runs, a persistent evidence workspace, diagnostics, and reviewer
+    controls, while keeping SPARTA evidence gates and human review as the
+    source of authority.
+  primary_surface: "http://localhost:3002/#sparta-explorer/"
+  primary_persona:
+    name: Brandon Bailey
+    role: compliance and cyber assessment reviewer
+    concern: >
+      Needs a fast, inspectable evidence case workflow for CMMC Level 3
+      control prioritization without treating model prose as signoff.
+
+questions_blockers:
+  - none
+
+compliance_governance:
+  principle: "Analyst workbench, not truth engine"
+  verdict_authority: >
+    Evidence-case gates, source references, spans, proof status, and reviewer
+    decisions are authoritative. LLM text may summarize but may not override
+    deterministic gate state.
+  default_review_state: "NEEDS_VERIFICATION until a reviewer explicitly approves, edits, defers, or rejects"
+  prohibited_claims:
+    - "Do not claim certified, compliant, approved, or audit-ready status from chat output alone."
+    - "Do not persist a QRA/evidence-case promotion without a reviewer checkpoint."
+    - "Do not hide pre-signoff warnings behind friendly assistant copy."
+  reviewer_checkpoints:
+    - "Before status changes from NEEDS_VERIFICATION."
+    - "Before candidate persistence to QRA review queues."
+    - "Before OSCAL/SACM export is marked ready."
+
+capability_overlap:
+  - >
+    /memory recall was attempted before plan creation for prior SPARTA Chat and
+    Gemma adoption work, but the local recall command stalled and was killed.
+    The plan therefore relies on local source inspection and the stale but
+    available pi-mono skill manifest as capability evidence.
+  - >
+    CALL /create-evidence-case for evidence case generation and gate semantics.
+    Do not reimplement its gates in ChatWell or SpartaExplorer.
+  - >
+    CALL /extract-entities for spans and unresolved terms. Do not use regex
+    entity extraction as evidence authority.
+  - >
+    CALL /memory recall and /memory clarify through existing memory APIs for
+    component-specific context and term clarification.
+  - >
+    CALL /lean4-prove only when the evidence case has a formalizable claim;
+    skipped proof attempts must be explicit timeline events.
+  - >
+    CALL /export-oscal for OSCAL/SACM preview. The UI displays preview state,
+    not compliance approval.
+  - >
+    EXTEND packages/pi-chat-adapter/src/hook.ts and message-assembler.ts for
+    typed evidence-run events instead of creating a second chat stream client.
+  - >
+    EXTEND packages/ux-lab/src/components/shared-chat/ChatWell.tsx and
+    BuildingEvidenceCase cards for evidence-run tool rendering instead of
+    replacing shared chat.
+  - >
+    EXTEND packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+    and packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx for
+    trace, gates, proof, spans, SACM, edit, rerun, and refine affordances.
+  - >
+    EXTEND packages/ux-lab/server/index.ts: /api/evidence-case/run already
+    invokes the evidence case pipeline but is non-streaming; add a streaming
+    endpoint rather than creating a parallel daemon bridge.
+  - >
+    GLUE the active route target in SpartaExplorer.tsx. ChatTab.tsx exists but
+    is not the active #sparta-explorer surface.
+  - >
+    REFERENCE Gemma Chat files for mechanics only: src/main/index.ts,
+    src/main/tools.ts, src/main/workspace.ts, Canvas.tsx, and Message.tsx.
+    Do not copy Gemma's generic code-generation identity or runtime setup UI.
+
+execution:
+  max_concurrency: 2
+  scheduling_policy: dependency_only
+  wave_barrier: false
+  notes:
+    - "Run /review-plan before /orchestrate."
+    - "Do not run /orchestrate until the plan review passes."
+    - "Start the ux-lab dev server before UI implementation or visual checks."
+
+lanes:
+  - id: discovery
+    label: "Contract and baseline verification"
+  - id: backend
+    label: "Evidence run stream and persistence"
+  - id: adapter
+    label: "Shared chat event model"
+  - id: ui
+    label: "Sparta Chat workspace UX"
+  - id: qa
+    label: "Design review and interaction verification"
+
+test_manifest:
+  surface: "Sparta Explorer"
+  url: "http://localhost:3002/#sparta-explorer/"
+  entries:
+    - id: chat-open
+      view: "Ask Embry drawer"
+      expected_data:
+        collection: "sparta evidence case fixtures or live memory-backed evidence case response"
+        min_rows: 1
+      interactions:
+        - "open Ask Embry drawer"
+        - "submit '$create-evidence-case Given third-party FPGA vendors, which SPARTA supply-chain controls should we prioritize for CMMC Level 3?'"
+      visual: "User question displays span highlights; live evidence-run step cards appear in order."
+    - id: evidence-workspace-tabs
+      view: "Right-side Evidence Workspace"
+      expected_data:
+        collection: "evidence case trace, sources, entities, proof, export preview"
+        min_rows: 1
+      interactions:
+        - "switch Trace, Sources, Entities, Proof, Export tabs"
+        - "inspect unresolved terms and proof status"
+      visual: "Tabs stay readable, panels do not overlap, each tab shows real or clearly marked pending/skipped state."
+    - id: reviewer-controls
+      view: "Final verdict card"
+      expected_data:
+        collection: "evidence case verdict and reviewer actions"
+        min_rows: 1
+      interactions:
+        - "click defer"
+        - "click edit"
+        - "click rerun step"
+      visual: "Verdict remains NEEDS_VERIFICATION before reviewer approval; reviewer controls are visible and deterministic."
+    - id: diagnostics
+      view: "Evidence diagnostics"
+      expected_data:
+        collection: "raw tool inputs, raw outputs, prompt metadata, parser errors"
+        min_rows: 1
+      interactions:
+        - "open diagnostics details"
+        - "copy or expand a raw event"
+      visual: "Diagnostics are inspectable without crowding the main verdict."
+
+tasks:
+  - id: T0
+    title: "Start ux-lab dev server and capture baseline route state"
+    lane: discovery
+    runner: local
+    backend: ""
+    mode: ""
+    agent: general-purpose
+    depends_on: []
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && (npm run dev > /tmp/ux-lab-sparta-chat-gemma-adoption.log 2>&1 & echo $! > /tmp/ux-lab-sparta-chat-gemma-adoption.pid) && sleep 5 && xdg-open http://localhost:3002/#sparta-explorer/ >/tmp/ux-lab-sparta-chat-xdg-open.log 2>&1 || true && curl -fsS http://localhost:3001/api/health"
+    implementation:
+      - "Launch the existing Vite/API workbench before any UI work."
+      - "Open the active Sparta Explorer route so subsequent tasks can visually inspect it."
+      - "Record the background process PID for cleanup."
+    tests:
+      - "curl -fsS http://localhost:3001/api/health"
+    definition_of_done:
+      command: "test -s /tmp/ux-lab-sparta-chat-gemma-adoption.pid && curl -fsS http://localhost:3001/api/health"
+      assertion: "The dev server is running and the API health endpoint returns success."
+
+  - id: T1
+    title: "Freeze the active Sparta Chat target and evidence-run contract"
+    lane: discovery
+    runner: local
+    backend: ""
+    mode: ""
+    agent: planning-specialist
+    depends_on:
+      - T0
+    command: "test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx && test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/shared-chat/ChatWell.tsx && rg -n \"#sparta-explorer|SpartaExplorer|Ask Embry|ChatWell\" /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/App.tsx /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx"
+    context_boundary: >
+      Read-only contract verification task; do not edit source files. This
+      follows existing SpartaExplorer route and shared-chat pattern and
+      creates no new UI component.
+    implementation:
+      - "Read-only verification only; follows existing SpartaExplorer route pattern and creates no new UI component."
+      - "Inspect SpartaExplorer.tsx, ChatTab.tsx, ChatWell.tsx, EvidenceView.tsx, EvidenceCaseTrace.tsx, pi-chat-adapter hook.ts, and server/index.ts."
+      - "Confirm the plan's implementation contract for typed evidence-run events: run_started, step_started, step_output, step_done, step_skipped, parser_error, verdict_ready, review_state_changed, run_done, run_error."
+      - "Map the target example prompt to required timeline steps: /extract-entities, /memory recall per component, same-technique check, /memory clarify, /lean4-prove if applicable, verdict synthesis, candidate persistence or review form generation."
+      - "State which files should be extended and which Gemma mechanics are reference-only."
+    tests:
+      - "Contract references only existing files and the active #sparta-explorer route."
+    definition_of_done:
+      command: "test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx && test -f /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/shared-chat/ChatWell.tsx && test -f /home/graham/workspace/experiments/pi-mono/packages/pi-chat-adapter/src/hook.ts"
+      assertion: "All contract target files exist and no inactive ChatTab-only path is treated as the active implementation target."
+
+  - id: T2
+    title: "Add typed evidence-run events to the shared chat adapter"
+    lane: adapter
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: frontend-infrastructure
+    depends_on:
+      - T1
+    skills:
+      - ux-lab
+      - best-practices-react
+    allowlist:
+      - packages/pi-chat-adapter/src/hook.ts
+      - packages/pi-chat-adapter/src/message-assembler.ts
+      - packages/pi-chat-adapter/src/index.ts
+      - packages/ux-lab/src/components/shared-chat/types.ts
+      - packages/ux-lab/src/components/shared-chat/ReasoningBlock.tsx
+    read_context:
+      - packages/ux-lab/src/components/shared-chat/ChatWell.tsx
+      - packages/ux-lab/src/components/shared-chat/BuildingEvidenceCase.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+    context_boundary: >
+      Own only the shared event model and adapter mapping. Do not change
+      SpartaExplorer layout or server endpoints in this task.
+    prompt: >
+      Implement a typed evidence-run event model in the shared chat adapter and
+      map existing SSE output into it without changing the active SpartaExplorer
+      layout or backend endpoints. Keep regex entity extraction display-only and
+      preserve normal chat and QRA behavior.
+    implementation:
+      - "Introduce a typed EvidenceRunEvent/EvidenceRunStep model consumed by ChatWell and evidence cards."
+      - "Map existing SSE event names to the typed model without breaking current agent ask streaming."
+      - "Demote regex entity extraction in message-assembler.ts to display-only hints; never set authoritative exists=true from regex parsing."
+      - "Preserve existing QRA and normal chat behavior."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "The ux-lab TypeScript build succeeds with typed evidence-run events and existing chat behavior still compiling."
+
+  - id: T3
+    title: "Add deterministic evidence-case streaming endpoint"
+    lane: backend
+    gate: "Typed SSE endpoint compiles, emits deterministic evidence-run states, and persists run metadata without altering React components."
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: backend-integration
+    depends_on:
+      - T1
+    skills:
+      - create-evidence-case
+      - extract-entities
+      - memory
+      - lean4-prove
+      - export-oscal
+    allowlist:
+      - packages/ux-lab/server/index.ts
+      - packages/ux-lab/server/evidence-case-stream.ts
+      - packages/ux-lab/server/evidence-run-store.ts
+      - packages/ux-lab/server/types.ts
+    read_context:
+      - packages/ux-lab/EVIDENCE_CASE.md
+      - packages/ux-lab/PROJECT_STATE_SPARTA_EXPLORER.md
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+    context_boundary: >
+      Own server-side streaming, event normalization, and lightweight local
+      persistence only. Do not change React components in this task.
+    prompt: >
+      Add a deterministic server-side evidence-case streaming endpoint and
+      lightweight run history in ux-lab. Emit typed SSE events for the
+      create-evidence-case workflow, preserve deterministic gate authority, and
+      expose diagnostics payloads for later UI rendering.
+    implementation:
+      - "Extend /api/evidence-case/run with a companion streaming endpoint such as POST /api/evidence-case/stream."
+      - "Emit ordered typed SSE events for the target evidence-case workflow."
+      - "Use deterministic gate state from /create-evidence-case output or existing fallback mapping; never synthesize SATISFIED from model prose."
+      - "Represent unavailable Lean proof attempts as step_skipped with reason, not as hidden omissions."
+      - "Include raw tool input/output references and parser errors in diagnostics payloads."
+      - "Persist run metadata by evidence_case_id and optional qra_id in a lightweight store suitable for local ux-lab."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "The server compiles with the streaming endpoint and run persistence modules included."
+
+  - id: T4
+    title: "Wire Sparta Chat to streaming evidence-run cards"
+    lane: ui
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: frontend-implementation
+    depends_on:
+      - T2
+      - T3
+    skills:
+      - ux-lab
+      - best-practices-react
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx
+      - packages/ux-lab/src/components/shared-chat/ChatWell.tsx
+      - packages/ux-lab/src/components/shared-chat/BuildingEvidenceCase.tsx
+      - packages/ux-lab/src/components/shared-chat/ReasoningBlock.tsx
+      - packages/ux-lab/src/components/shared-chat/types.ts
+      - packages/ux-lab/component-manifest.json
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/ChatTab.tsx
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/test-manifests/sparta-explorer-chat.json
+    context_boundary: >
+      Own chat drawer and shared chat rendering. Do not modify backend stream
+      mechanics beyond adapting to the typed endpoint contract.
+    prompt: >
+      Wire the active SpartaExplorer chat drawer and shared ChatWell rendering
+      to the typed evidence-case stream. Detect /create-evidence-case prompts,
+      render highlighted user questions and live step cards, and leave normal
+      chat prompts on the existing path.
+    implementation:
+      - "Detect /create-evidence-case prompts and route them to the evidence-case stream."
+      - "Render the user question with entity/span highlights once authoritative spans arrive."
+      - "Render live step cards for extract entities, memory recall, same-technique check, clarify, Lean proof, synthesis, and persistence/review generation."
+      - "Show running, completed, skipped, warning, and failed states without layout shift."
+      - "Keep non-evidence chat prompts on the existing agent ask path."
+      - "Update component-manifest.json for changed shared chat entry points."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest packages/ux-lab/test-manifests/sparta-explorer-chat.json"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "The active SpartaExplorer chat drawer builds with streaming evidence-run cards and unchanged normal chat support."
+
+  - id: T5
+    title: "Add the right-side Evidence Workspace tabs"
+    lane: ui
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: frontend-implementation
+    depends_on:
+      - T3
+      - T4
+    skills:
+      - ux-lab
+      - best-practices-react
+      - evidence-case-viewer
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceWorkspace.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/src/components/shared-chat/types.ts
+      - packages/ux-lab/component-manifest.json
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx
+      - packages/ux-lab/src/components/sparta/common/EmbryStyle.ts
+    context_boundary: >
+      Own the Evidence Workspace shell and its integration into the active
+      SpartaExplorer route. Reuse EvidenceCaseTrace/EvidenceView where possible.
+    prompt: >
+      Add an Evidence Workspace to the active SpartaExplorer route using
+      existing SPARTA evidence components where possible. Implement Trace,
+      Sources, Entities, Proof, and Export tabs tied to the selected
+      evidence-run ID without creating a generic Gemma-style canvas.
+    implementation:
+      - "Add a right-side workspace that opens for evidence-case runs and remains tied to the selected run ID."
+      - "Implement tabs: Trace, Sources, Entities, Proof, Export."
+      - "Trace tab uses CAE tree/subclaims and gate state from EvidenceCaseTrace."
+      - "Sources tab shows QRA hits and relationship hits with source grounding status."
+      - "Entities tab shows spans, glossary entries, unresolved terms, and confidence without regex authority."
+      - "Proof tab shows Lean/proof attempt status, skipped reason, errors, and result."
+      - "Export tab shows OSCAL/SACM preview and reviewer readiness, not compliance approval."
+      - "Keep the workspace dense, workbench-like, and readable on the active route."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest packages/ux-lab/test-manifests/sparta-explorer-chat.json"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "The Evidence Workspace tabs compile and are integrated into the active SpartaExplorer route."
+
+  - id: T6
+    title: "Add final verdict card and reviewer controls"
+    lane: ui
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: frontend-implementation
+    depends_on:
+      - T4
+      - T5
+    skills:
+      - ux-lab
+      - qra-review
+      - cmmc-assessor
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/SpartaExplorer.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceWorkspace.tsx
+      - packages/ux-lab/src/components/shared-chat/ChatWell.tsx
+      - packages/ux-lab/src/components/shared-chat/BuildingEvidenceCase.tsx
+      - packages/ux-lab/src/components/shared-chat/types.ts
+      - packages/ux-lab/component-manifest.json
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/EVIDENCE_CASE.md
+    context_boundary: >
+      Own reviewer-facing controls and state transitions in UI only. Backend
+      persistence APIs may be called but not redefined in this task.
+    prompt: >
+      Add the final verdict card and reviewer controls for evidence-case runs.
+      Keep evidence verdicts separate from review state, default to
+      NEEDS_VERIFICATION, and require explicit reviewer action for approval.
+    implementation:
+      - "Render final verdict values SATISFIED, INCONCLUSIVE, NOT_SATISFIED, plus explicit NEEDS_VERIFICATION review state."
+      - "Show gate-by-gate explanation with warnings surfaced before any approving copy."
+      - "Add reviewer actions: approve, edit, defer, reject, pause, rerun step."
+      - "Ensure approve requires an explicit reviewer action and does not occur from stream completion."
+      - "Route edit/defer/reject states to QRA review context when qra_id is present."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest packages/ux-lab/test-manifests/sparta-explorer-chat.json"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "Verdict and reviewer controls compile with review state separated from evidence verdict state."
+
+  - id: T7
+    title: "Expose diagnostics for raw tool events and parser failures"
+    lane: ui
+    runner: code-runner
+    backend: text
+    mode: iterative
+    agent: frontend-implementation
+    depends_on:
+      - T3
+      - T5
+      - T6
+    skills:
+      - ux-lab
+      - best-practices-react
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceWorkspace.tsx
+      - packages/ux-lab/src/components/shared-chat/ChatWell.tsx
+      - packages/ux-lab/src/components/shared-chat/BuildingEvidenceCase.tsx
+      - packages/ux-lab/src/components/shared-chat/types.ts
+      - packages/ux-lab/component-manifest.json
+    read_context:
+      - packages/ux-lab/src/components/shared-chat/ReasoningBlock.tsx
+      - packages/pi-chat-adapter/src/message-assembler.ts
+    context_boundary: >
+      Own diagnostic display only. Do not alter evidence gate semantics or
+      server-side parser behavior in this task.
+    prompt: >
+      Add a collapsed diagnostics view for evidence-run raw inputs, outputs,
+      prompt metadata, parser errors, elapsed time, and event IDs. Keep
+      diagnostics visually separate from authoritative verdict and gate UI.
+    implementation:
+      - "Add diagnostics access from evidence step cards and the Evidence Workspace."
+      - "Show raw tool input, raw output, prompt metadata, parse errors, elapsed time, and source event IDs."
+      - "Keep diagnostics collapsed by default and visibly separate from authoritative verdict/gate UI."
+      - "Handle missing raw payloads with explicit unavailable states."
+    tests:
+      - "cd packages/ux-lab && npm run build"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest packages/ux-lab/test-manifests/sparta-explorer-chat.json"
+    blind_tests:
+      - "/home/graham/workspace/experiments/agent-skills/skills/ux-lab/sanity.sh"
+      - "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/sanity.sh"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "Diagnostics UI compiles and remains separate from verdict authority."
+
+  - id: T8
+    title: "Run focused unit and integration tests"
+    lane: qa
+    gate: "ux-lab build and test suite pass after all implementation tasks."
+    runner: local
+    backend: ""
+    mode: ""
+    agent: verifier
+    depends_on:
+      - T2
+      - T3
+      - T4
+      - T5
+      - T6
+      - T7
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npm test"
+    implementation:
+      - "Run TypeScript build and existing Vitest tests after implementation tasks."
+      - "Triage any failures as implementation blockers, not post-hoc caveats."
+    tests:
+      - "npm run build"
+      - "npm test"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npm test"
+      assertion: "The ux-lab build and test suite pass."
+
+  - id: T9
+    title: "Run /review-design for the evidence workspace UX"
+    lane: qa
+    runner: local
+    backend: ""
+    mode: ""
+    agent: design-reviewer
+    depends_on:
+      - T5
+      - T6
+      - T7
+      - T8
+    command: "/home/graham/workspace/experiments/agent-skills/skills/review-design/run.sh --url http://localhost:3002/#sparta-explorer/ --persona 'Brandon Bailey' --focus 'Sparta Chat evidence-run timeline, right-side Evidence Workspace tabs, verdict card, reviewer actions, diagnostics' --output /tmp/sparta-chat-gemma-adoption-review-design.md"
+    implementation:
+      - "Review the rendered surface as a compliance reviewer, not a generic chatbot user."
+      - "Check density, readable gate state, warnings, workspace tabs, and action affordances."
+      - "Require remediation if warnings are hidden, actions are ambiguous, or the workspace looks like generic code-generation UI."
+    tests:
+      - "/review-design rendered surface review"
+    definition_of_done:
+      command: "test -s /tmp/sparta-chat-gemma-adoption-review-design.md"
+      assertion: "A review-design report exists and does not contain unresolved blocking findings."
+
+  - id: T10
+    title: "Run /test-interactions against the Sparta Chat adoption manifest"
+    lane: qa
+    runner: local
+    backend: ""
+    mode: ""
+    agent: interaction-verifier
+    depends_on:
+      - T8
+      - T9
+    command: "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest /home/graham/workspace/experiments/pi-mono/packages/ux-lab/test-manifests/sparta-explorer-chat.json --output /tmp/sparta-chat-gemma-adoption-test-interactions"
+    implementation:
+      - "Verify chat-open, evidence-workspace-tabs, reviewer-controls, and diagnostics interactions."
+      - "Capture screenshots for each manifest entry and check for layout overlap, missing data, and invisible controls."
+      - "Treat missing real evidence data as a blocker unless the UI explicitly shows a pending/skipped state tied to a run event."
+    tests:
+      - "/test-interactions manifest entries pass"
+    definition_of_done:
+      command: "test -d /tmp/sparta-chat-gemma-adoption-test-interactions"
+      assertion: "Interaction artifacts exist for the active Sparta Explorer route and cover the manifest entries."
+
+  - id: T11
+    title: "Run final CDP verification and capture screenshot artifact"
+    lane: qa
+    runner: local
+    backend: ""
+    mode: ""
+    agent: verifier
+    depends_on:
+      - T10
+    command: "~/.codex/hooks/verify-ui-cdp.sh --url http://localhost:3002/#sparta-explorer/ --name sparta-chat-gemma-adoption"
+    implementation:
+      - "Use the required SPARTA UI verification hook on the active route."
+      - "Inspect layout, spacing, footer/status bar, queue state, trace/readiness context, and action affordances."
+      - "Include the fresh screenshot artifact path in the implementation final response."
+    tests:
+      - "CDP screenshot artifact exists"
+    definition_of_done:
+      command: "test -f /home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json"
+      assertion: "latest.json points to a fresh sparta-chat-gemma-adoption screenshot artifact from the active route."

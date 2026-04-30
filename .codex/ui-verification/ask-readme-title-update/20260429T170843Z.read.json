@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"ask \u2014 Ask, Argue and Roundtable\" [e1] [level=1]\nparagraph \"src=\\\"docs/assets/ask-banner.png\\\" alt=\\\"ask skill banner showing an arcade-style oracle console wi...\" [e2]\nparagraph \"Agents accumulate a lot of context over time: run logs, stored lessons, persona profiles, source bun...\" [e3]\nparagraph \"That is what is for. You write the question in plain language. figures out the rest: whether to pu...\" [e4]\n  generic \"ask\" [e5]\n  generic \"/ask\" [e6]\nparagraph \"Use it for questions like:\" [e7]\nlist [e8]\n  listitem \"\\\"What did we decide about this?\\\"\" [e9]\n  listitem \"\\\"Which persona should critique this plan?\\\"\" [e10]\n  listitem \"\\\"Is this implementation safe to proceed?\\\"\" [e11]\n  listitem \"\\\"What evidence backs this claim?\\\"\" [e12]\ngeneric \"human asks naturally \u2193 /ask resolves intent \u2193 /memory provides durable context \u2193 o...\" [e13]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:48768/",
+  "title": "ask title preview"
+}

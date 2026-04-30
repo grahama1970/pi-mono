@@ -57,6 +57,10 @@ export interface ChatWellProps {
   onEntityClick?: (entity: string, type: string) => void
   /** Starter questions from sparta_qra — replaces hardcoded defaults when provided */
   starterQuestions?: string[]
+  /** Warning shown when chat is available only for verification/pre-signoff use */
+  preSignoffWarning?: string
+  /** Downgrades default starters to verification-only prompts before data-quality signoff */
+  starterMode?: 'normal' | 'verification'
   /** True when agent is streaming a response */
   isStreaming?: boolean
   /** Live steps during evidence case/agent execution */
@@ -291,7 +295,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions, isStreaming, streamingSteps }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions, preSignoffWarning, starterMode = 'normal', isStreaming, streamingSteps }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [showPalette, setShowPalette] = useState(false)
   const [skillFilter, setSkillFilter] = useState('')
@@ -356,15 +360,27 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
       }}>
         {messages.length === 0 && (
           <div style={{ padding: '0', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center', marginBottom: 0 }}>
-            <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Ask a question</div>
-            {(starterQuestions ?? [
+            {preSignoffWarning ? (
+              <div data-qid="chat:readiness:warning" style={{ width: '100%', border: `1px solid ${EMBRY.amber}66`, background: '#241a06', color: EMBRY.amber, padding: '10px 12px', borderRadius: 8, fontSize: 11, lineHeight: 1.45 }}>
+                {preSignoffWarning}
+              </div>
+            ) : null}
+            <div style={{ color: EMBRY.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
+              {starterMode === 'verification' ? 'Verification prompts only' : 'Ask a question'}
+            </div>
+            {(starterQuestions ?? (starterMode === 'verification' ? [
+              'Verify current coverage blockers before answering broadly',
+              'Inspect the ISO and ATT&CK Mobile quality gaps',
+              'Show the evidence gates required before conversation-lab',
+              'Run a read-only readiness check for Brandon, Margaret, and Jennifer',
+            ] : [
               'Show me the F-36 threat matrix',
               'What SPARTA controls cover supply chain attacks?',
               'Which controls have no evidence cases?',
               'Run an evidence case for firmware tampering on avionics',
               'What is our CMMC Level 2 compliance posture?',
               'Show controls related to CWE-287 authentication bypass',
-            ]).map((q, i) => (
+            ])).map((q, i) => (
               <button key={q} data-qid={`chat:starter:${i}`} data-qs-action="send-starter-question" title={q} onClick={() => onSend?.(q, 'natural')} style={{
                 background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`,
                 borderRadius: 8, padding: '10px 16px', cursor: 'pointer',

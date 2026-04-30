@@ -1,0 +1,9 @@
+{
+  "pageContent": "main [e1]\n  heading \"ask Release Readiness Report\" [e2] [level=1]\n  paragraph \"Created 2026-04-30T13:21:59.509355+00:00 \u00b7 profile \u00b7 report dir\" [e3]\n    generic \"release\" [e4]\n    generic \"/home/graham/workspace/experiments/agent-skills/skills/ask/.ask_artifacts/live-sanity/20260430T13214...\" [e5]\n  generic \"Overall Readiness\" [e6]\n  generic \"not_established\" [e7]\n  generic \"Release Readiness\" [e8]\n  generic \"not_established\" [e9]\n  generic \"Total\" [e10]\n  generic \"Passed\" [e11]\n  generic \"Required Failed\" [e12]\n  generic \"Optional Failed\" [e13]\n  generic \"Skipped/Planned\" [e14]\n  heading \"Feature Readiness Matrix\" [e15] [level=2]\n  table \"Feature readiness matrix\" [e16]\n    rowgroup [e17]\n      row [e18]\n        columnheader \"Feature\" [e19]\n        columnheader \"Readiness\" [e20]\n        columnheader \"Required\" [e21]\n        columnheader \"Passed\" [e22]\n        columnheader \"Gaps\" [e23]\n        columnheader \"Notes\" [e24]\n    rowgroup [e25]\n      row [e26]\n        cell \"doctor-preflight\" [e27]\n        cell \"ready\" [e28]\n        cell [e29]\n        cell [e30]\n        cell [e31]\n        cell [e32]\n      row [e33]\n        cell \"release-config\" [e34]\n        cell \"ready\" [e35]\n        cell [e36]\n        cell [e37]\n        cell [e38]\n        cell [e39]\n  heading \"Findings\" [e40] [level=2]\n  heading \"Blocking Bug Findings and Error Findings\" [e41] [level=3]\n  paragraph \"None.\" [e42]\n  heading \"Warnings\" [e43] [level=3]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:8779/index.html",
+  "title": "ask Release Readiness Report"
+}

@@ -12,6 +12,8 @@ import { ReviewBundleButton } from '../common/ReviewBundleButton'
 import { SurgicalTriageFixture } from './SurgicalTriageFixture'
 import { SurgicalTriageCleanRoom } from './SurgicalTriageCleanRoom'
 import { SurgicalTriageStaticProof } from './SurgicalTriageStaticProof'
+import { PdfLabProductionWorkflow } from './PdfLabProductionWorkflow'
+import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import './PdfLabView.css'
 
@@ -262,6 +264,17 @@ const PDF_LAB_WORKFLOW_DATA_VERSION = '20260426c'
 const PDF_LAB_WORKFLOW_MANIFEST_URL = `/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
 const PDF_LAB_HUMAN_TRIAGE_URL = `/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
 const PDF_LAB_REAL_NIST_PDF_URL = '/NIST_SP_800-53r5.pdf'
+
+type PdfLabProductionStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage'
+
+function resolveProductionStage(subpath: string | undefined): PdfLabProductionStage | undefined {
+  if (subpath === 'initial-sweep') return 'initial-sweep'
+  if (subpath === 'parity-audit') return 'parity-audit'
+  if (subpath === 'surgical-triage' || subpath === 'triage') return 'surgical-triage'
+  if (subpath === 'evidence-qa' || subpath === 'nico-qa') return 'evidence-qa'
+  if (subpath === 'coverage' || subpath === 'status') return 'coverage'
+  return undefined
+}
 
 async function fetchPdfLabJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
@@ -730,7 +743,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
   const [reviewNavMode, setReviewNavMode] = useState(false)
   const [bboxFixTaskIds, setBboxFixTaskIds] = useState<Set<string>>(new Set())
   const [, setPreviewGridBlockId] = useState<string | null>(null)
-  const [workflowShellEnabled, setWorkflowShellEnabled] = useState(true)
+  const [workflowShellEnabled, setWorkflowShellEnabled] = useState(initialSubpath === 'legacy-workflow')
   const [workflowStageId, setWorkflowStageId] = useState('agent_scan')
   const [workflowManifest, setWorkflowManifest] = useState<PdfLabWorkflowManifest | null>(null)
   const [workflowExtraction, setWorkflowExtraction] = useState<PdfLabFullExtraction | null>(null)
@@ -1775,7 +1788,15 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
     return <SurgicalTriageStaticProof />
   }
 
+  if (initialSubpath === 'evidence-qa' || initialSubpath === 'nico-qa') {
+    return <PdfLabEvidenceQA />
+  }
+
   if (initialSubpath === 'surgical-clean-room') {
+    if (workflowTasks.length === 0) {
+      return <PdfLabEvidenceQA />
+    }
+
     return (
       <SurgicalTriageCleanRoom
         pdfUrl={PDF_LAB_REAL_NIST_PDF_URL}
@@ -1801,6 +1822,10 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
         onOpenQueue={() => undefined}
       />
     )
+  }
+
+  if (initialSubpath !== 'legacy-workflow') {
+    return <PdfLabProductionWorkflow initialStage={resolveProductionStage(initialSubpath)} />
   }
 
   if (workflowShellEnabled) {
@@ -1893,7 +1918,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
               <div style={{ ...workflowHeaderProgressFillStyle, width: `${triageProgressPercent}%` }} />
             </div>
             <span style={workflowHeaderProgressLabelStyle}>
-              Card {workflowTaskIndex + 1} / {workflowTasks.length} · {workflowTriage.summary.pages_with_tasks ?? 0} pages with final ambiguities
+              Card {workflowTaskIndex + 1} / {workflowTasks.length} · {workflowTriage!.summary.pages_with_tasks ?? 0} pages with final ambiguities
             </span>
           </div>
           <div style={workflowHeaderTitleStyle}>
@@ -1919,7 +1944,7 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
               style={workflowReviewBundleButtonStyle}
             />
             <span style={{ ...workflowStatusPillStyle, color: EMBRY.green, borderColor: `${EMBRY.green}55` }}>
-              {currentGateAccuracy ? `${(currentGateAccuracy * 100).toFixed(1)}% gate` : 'gate passed'}
+              {currentGateAccuracy !== null ? `${(currentGateAccuracy! * 100).toFixed(1)}% gate` : 'gate passed'}
             </span>
             <span style={workflowStatusPillStyle}>
               {highSeverityCount} high · {mediumSeverityCount} medium
@@ -1939,13 +1964,13 @@ export function PdfLabView({ pdfUrl: propPdfUrl, extractionUrl: propExtractionUr
                   <span style={workflowPanelMetaStyle}>hidden during triage</span>
                 </div>
                 <div style={workflowDiagnosticsGridStyle}>
-                  <span>Elements</span><strong>{formatCount(workflowManifest.element_summary.total_elements)}</strong>
-                  <span>Candidate pages</span><strong>{workflowManifest.candidate_inventory.candidate_page_count}</strong>
-                  <span>95% gate</span><strong>{currentGateAccuracy ? `${(currentGateAccuracy * 100).toFixed(2)}%` : 'passed'}</strong>
-                  <span>Artifact gaps</span><strong>{workflowManifest.artifact_gaps.length}</strong>
+                  <span>Elements</span><strong>{formatCount(workflowManifest!.element_summary.total_elements)}</strong>
+                  <span>Candidate pages</span><strong>{workflowManifest!.candidate_inventory.candidate_page_count}</strong>
+                  <span>95% gate</span><strong>{currentGateAccuracy !== null ? `${(currentGateAccuracy! * 100).toFixed(2)}%` : 'passed'}</strong>
+                  <span>Artifact gaps</span><strong>{workflowManifest!.artifact_gaps.length}</strong>
                 </div>
                 <div style={workflowDiagnosticsPhaseListStyle}>
-                  {workflowManifest.phases.map(phase => (
+                  {workflowManifest!.phases.map(phase => (
                     <button
                       key={phase.id}
                       className="pdf-lab-btn"

@@ -45,6 +45,12 @@ export function SurgicalTriageStaticProof() {
     label: 'Confirm',
     description: 'Confirm the active static surgical triage card',
   })
+  useRegisterAction('pdf-lab:static-proof:undo-last-decision', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_STATIC_PROOF_UNDO_LAST_DECISION',
+    label: 'Undo Last Decision',
+    description: 'Undo the last triage decision without leaving the active deck',
+  })
   useRegisterAction('pdf-lab:static-proof:intent', {
     app: 'pdf-lab',
     action: 'PDF_LAB_STATIC_PROOF_INTENT',
@@ -199,7 +205,19 @@ export function SurgicalTriageStaticProof() {
         <div className="pdf-lab-static-proof-hotkeys">
           USE <kbd>A</kbd> ACCEPT · <kbd>R</kbd> REJECT · <kbd>S</kbd> SKIP
         </div>
-        <div className="pdf-lab-static-proof-zen">ZEN MODE ACTIVE</div>
+        <div className="pdf-lab-static-proof-footer-right">
+          <button
+            className="pdf-lab-static-proof-undo"
+            data-qid="pdf-lab:static-proof:undo-last-decision"
+            data-qs-action="PDF_LAB_STATIC_PROOF_UNDO_LAST_DECISION"
+            aria-label="Undo last decision"
+            title="Undo the last triage decision"
+            type="button"
+          >
+            Undo Last Decision
+          </button>
+          <span className="pdf-lab-static-proof-zen">ACTIVE TRIAGE DECK</span>
+        </div>
       </footer>
     </div>
   )

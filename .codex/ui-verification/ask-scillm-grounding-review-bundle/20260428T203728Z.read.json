@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"This site can\u2019t be reached\" [e1] [level=1]\n  generic \"This site can\u2019t be reached\" [e2]\nparagraph \"Check if there is a typo in .\" [e3]\n  generic \"file\" [e4]\ngeneric \"DNS_PROBE_FINISHED_NXDOMAIN\" [e5]\nbutton \"Reload\" [e6] [cursor=pointer]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "chrome-error://chromewebdata/",
+  "title": "file"
+}

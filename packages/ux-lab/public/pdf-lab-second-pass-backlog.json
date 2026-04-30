@@ -1,0 +1,433 @@
+{
+  "backlog": [
+    {
+      "affected_pages": [
+        4,
+        5,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        30,
+        32,
+        33,
+        36,
+        45,
+        46,
+        47,
+        48,
+        54,
+        60,
+        67,
+        68,
+        70,
+        78,
+        80,
+        83,
+        85,
+        94,
+        99,
+        106,
+        117,
+        119,
+        132,
+        137,
+        140,
+        143,
+        144,
+        149,
+        156,
+        164,
+        165,
+        186,
+        190,
+        204,
+        205,
+        207,
+        210,
+        212,
+        214,
+        219,
+        223,
+        235,
+        239,
+        240,
+        245,
+        251,
+        254,
+        257,
+        260,
+        261,
+        265,
+        272,
+        279,
+        280,
+        281,
+        283,
+        292,
+        308,
+        309,
+        310,
+        322,
+        332,
+        333,
+        337,
+        339,
+        347,
+        351,
+        361,
+        370,
+        376,
+        396,
+        403,
+        405,
+        406,
+        409,
+        415,
+        421,
+        434,
+        445,
+        447,
+        455,
+        458,
+        459,
+        466,
+        470,
+        477,
+        479,
+        490
+      ],
+      "backlog_id": "pdf_lab_second_pass_001",
+      "finding_count": 148,
+      "human_triage_policy": "do_not_send_to_human_unless_agent_cannot_resolve",
+      "kind": "noisy_text_or_bbox_match",
+      "owner": "project-agent",
+      "rationale": "These findings were resolved by the agent second pass and suppressed from human triage. They must become deterministic preset/core fixes or explicitly remain tracked backlog.",
+      "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+      "sample_findings": [
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "text_similarity_below_threshold",
+            "iou": 0.5146,
+            "overlapping_actual_text": "This publication is government, available free and of charge academic from: organizations.",
+            "text": "government, and academic organizations.",
+            "text_similarity": 0.6047,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p4_line_14",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 4,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147041,
+            0.279268,
+            0.452624,
+            0.297818
+          ],
+          "target_id": "expected:p4:line:14"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "bbox_iou_below_threshold",
+            "iou": 0.0,
+            "overlapping_actual_text": "This publication is Dana available Deasy free of charge from: Chief Information Officer",
+            "text": "Dana Deasy",
+            "text_similarity": 0.5217,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_14",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147059,
+            0.284477,
+            0.217159,
+            0.299682
+          ],
+          "target_id": "expected:p5:line:14"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "text_similarity_below_threshold",
+            "iou": 0.4906,
+            "overlapping_actual_text": "https/d/:oi.org0.1/T.SIN/8206P.S008 Acting Cybersecurity Advisor, ITL",
+            "text": "Acting Cybersecurity Advisor, ITL",
+            "text_similarity": 0.6471,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_39",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147059,
+            0.519481,
+            0.340315,
+            0.534277
+          ],
+          "target_id": "expected:p5:line:39"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "text_similarity_below_threshold",
+            "iou": 0.3579,
+            "overlapping_actual_text": "The MITRE Corporation Booz Allen Hamilton",
+            "text": "The MITRE Corporation",
+            "text_similarity": 0.6774,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_64",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147074,
+            0.726,
+            0.285331,
+            0.740795
+          ],
+          "target_id": "expected:p5:line:64"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "text_similarity_below_threshold",
+            "iou": 0.3136,
+            "overlapping_actual_text": "The MITRE Corporation Booz Allen Hamilton",
+            "text": "Booz Allen Hamilton",
+            "text_similarity": 0.6333,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_66",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.340235,
+            0.726,
+            0.46065,
+            0.740795
+          ],
+          "target_id": "expected:p5:line:66"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "bbox_iou_below_threshold",
+            "iou": 0.0,
+            "overlapping_actual_text": "The MITRE Corporation The MITRE Corporation",
+            "text": "The MITRE Corporation",
+            "text_similarity": 1.0,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_72",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147088,
+            0.761307,
+            0.28534,
+            0.776102
+          ],
+          "target_id": "expected:p5:line:72"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "bbox_iou_below_threshold",
+            "iou": 0.0,
+            "overlapping_actual_text": "The MITRE Corporation The MITRE Corporation",
+            "text": "The MITRE Corporation",
+            "text_similarity": 1.0,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_74",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.34025,
+            0.761307,
+            0.478497,
+            0.776102
+          ],
+          "target_id": "expected:p5:line:74"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "comparison_reason": "text_similarity_below_threshold",
+            "iou": 0.3432,
+            "overlapping_actual_text": "The MITRE Corporation The MITRE Corporation",
+            "text": "The MITRE Corporation",
+            "text_similarity": 0.6562,
+            "type": "paragraph",
+            "type_compatible": true
+          },
+          "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p5_line_80",
+          "kind": "noisy_text_or_bbox_match",
+          "page": 5,
+          "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+          "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+          "severity": "medium",
+          "target_bbox": [
+            0.147088,
+            0.796614,
+            0.285346,
+            0.811409
+          ],
+          "target_id": "expected:p5:line:80"
+        }
+      ],
+      "severity": "medium",
+      "status": "open"
+    },
+    {
+      "affected_pages": [
+        23,
+        457,
+        458
+      ],
+      "backlog_id": "pdf_lab_second_pass_002",
+      "finding_count": 4,
+      "human_triage_policy": "do_not_send_to_human_unless_agent_cannot_resolve",
+      "kind": "table_row_fragment",
+      "owner": "project-agent",
+      "rationale": "These findings were resolved by the agent second pass and suppressed from human triage. They must become deterministic preset/core fixes or explicitly remain tracked backlog.",
+      "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+      "sample_findings": [
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "bbox_height": 0.016257999999999995,
+            "col_count": 12,
+            "row_count": 1,
+            "source": "pdf_oxide.extract_tables"
+          },
+          "finding_id": "agent_resolved:table_row_fragment:actual_p23_table_0",
+          "kind": "table_row_fragment",
+          "page": 23,
+          "reason": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+          "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+          "severity": "high",
+          "target_bbox": [
+            0.14556,
+            0.277439,
+            0.854049,
+            0.293697
+          ],
+          "target_id": "actual:p23:table:0"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "bbox_height": 0.02004499999999998,
+            "col_count": 12,
+            "row_count": 1,
+            "source": "pdf_oxide.extract_tables"
+          },
+          "finding_id": "agent_resolved:table_row_fragment:actual_p457_table_0",
+          "kind": "table_row_fragment",
+          "page": 457,
+          "reason": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+          "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+          "severity": "high",
+          "target_bbox": [
+            0.14556,
+            0.249106,
+            0.854049,
+            0.269151
+          ],
+          "target_id": "actual:p457:table:0"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "bbox_height": 0.02004399999999995,
+            "col_count": 12,
+            "row_count": 1,
+            "source": "pdf_oxide.extract_tables"
+          },
+          "finding_id": "agent_resolved:table_row_fragment:actual_p458_table_0",
+          "kind": "table_row_fragment",
+          "page": 458,
+          "reason": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+          "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+          "severity": "high",
+          "target_bbox": [
+            0.14556,
+            0.824941,
+            0.854049,
+            0.844985
+          ],
+          "target_id": "actual:p458:table:0"
+        },
+        {
+          "agent_resolution": "suppressed_from_human_triage",
+          "evidence": {
+            "bbox_height": 0.020046000000000008,
+            "col_count": 12,
+            "row_count": 1,
+            "source": "pdf_oxide.extract_tables"
+          },
+          "finding_id": "agent_resolved:table_row_fragment:actual_p458_table_1",
+          "kind": "table_row_fragment",
+          "page": 458,
+          "reason": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+          "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+          "severity": "high",
+          "target_bbox": [
+            0.14556,
+            0.688727,
+            0.854049,
+            0.708773
+          ],
+          "target_id": "actual:p458:table:1"
+        }
+      ],
+      "severity": "high",
+      "status": "open"
+    }
+  ],
+  "backlog_count": 2,
+  "finding_count": 152,
+  "generated_at": "2026-04-30T17:33:54.297362+00:00",
+  "policy": {
+    "agent_boundary": "Obvious table-row fragments, watermark/sidebar bleed, and bbox-only misses are agent/preset/core extraction work.",
+    "human_boundary": "Humans only resolve residual ambiguities that the agent cannot decide from PDF evidence."
+  },
+  "schema_version": "pdf_lab_second_pass_backlog.v1",
+  "source_triage": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/iteration_01/comparison.json"
+}

@@ -80,6 +80,8 @@ export interface SpartaControl {
 export interface EvidenceSpan {
 	text: string;
 	span: [number, number];
+	start?: number;
+	end?: number;
 	kind: "control_id" | "aerospace_term" | "phrase";
 	framework?: string;
 	name?: string;
@@ -178,6 +180,7 @@ export interface SpartaQRA {
 	tier15_pass?: boolean;
 	tier2_pass?: boolean;
 	source_framework?: string;
+	review_status?: "auto" | "approved" | "rejected" | "pending" | "pass" | "passed" | "fail" | "failed" | string;
 	evidence_quotes?: Array<{ quote: string; relevance?: string }>;
 	crosswalk_chain?: string[];
 	qra_type?: string;

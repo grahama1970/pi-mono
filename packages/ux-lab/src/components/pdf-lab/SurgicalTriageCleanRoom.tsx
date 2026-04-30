@@ -29,6 +29,7 @@ interface SurgicalTriageCleanRoomProps {
   onSkip: () => void
   onPrevious: () => void
   onNext: () => void
+  onUndoLastDecision?: () => void
   onOpenAudit: () => void
   onOpenQueue: () => void
 }
@@ -40,9 +41,20 @@ interface PageDims {
 
 const MIN_SCALE = 1.15
 const MAX_SCALE = 1.9
+type HudPlacement = 'left' | 'right' | 'below'
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value))
+}
+
+function isBroadBBox(bbox: [number, number, number, number]): boolean {
+  const [x1, , x2] = bbox
+  return x1 < 0.08 && x2 > 0.92
+}
+
+function getHudPlacement(bbox: [number, number, number, number]): HudPlacement {
+  if (isBroadBBox(bbox)) return 'below'
+  return bbox[2] > 0.9 ? 'left' : 'right'
 }
 
 function getVisibleStageSize(node: HTMLDivElement | null): PageDims {
@@ -109,6 +121,12 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
     label: 'Next Card',
     description: 'Move to the next PDF Lab ambiguity card',
   })
+  useRegisterAction('pdf-lab:clean-room:undo', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CLEAN_ROOM_UNDO_LAST_DECISION',
+    label: 'Undo Last Decision',
+    description: 'Undo the previous PDF Lab triage decision',
+  })
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -127,7 +145,7 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
     inputRef.current?.focus()
   }, [props.task?.id])
 
-  const hudSide = props.task && props.task.bbox[2] > 0.72 ? 'left' : 'right'
+  const hudPlacement = props.task ? getHudPlacement(props.task.bbox) : 'right'
 
   if (!props.task) return null
 
@@ -182,9 +200,9 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
           pdfUrl={props.pdfUrl}
           pageNumber={props.pageNumber}
           bbox={props.task.bbox}
-          hudSide={hudSide}
+          hudPlacement={hudPlacement}
         />
-        <aside className={`pdf-lab-cr-hud pdf-lab-cr-hud-${hudSide}`} data-qid="pdf-lab:clean-room:hud">
+        <aside className={`pdf-lab-cr-hud pdf-lab-cr-hud-${hudPlacement}`} data-qid="pdf-lab:clean-room:hud">
           <div className="pdf-lab-cr-meta">
             <span className="pdf-lab-cr-path">{props.task.path}</span>
             <span className={`pdf-lab-cr-severity ${props.task.severity.toLowerCase()}`}>{props.task.severity}</span>
@@ -251,11 +269,21 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
           >
             →
           </button>
+          {props.onUndoLastDecision && (
+            <button
+              data-qid="pdf-lab:clean-room:undo"
+              data-qs-action="PDF_LAB_CLEAN_ROOM_UNDO_LAST_DECISION"
+              title="Undo last triage decision"
+              onClick={props.onUndoLastDecision}
+            >
+              Undo
+            </button>
+          )}
         </div>
         <div className="pdf-lab-cr-hotkeys">
           USE <kbd>A</kbd> ACCEPT · <kbd>R</kbd> REJECT · <kbd>S</kbd> SKIP
         </div>
-        <div>ZEN MODE ACTIVE</div>
+        <div>ACTIVE TRIAGE DECK</div>
       </footer>
     </div>
   )
@@ -265,12 +293,12 @@ function CleanPdfEvidence({
   pdfUrl,
   pageNumber,
   bbox,
-  hudSide,
+  hudPlacement,
 }: {
   pdfUrl: string
   pageNumber: number
   bbox: [number, number, number, number]
-  hudSide: 'left' | 'right'
+  hudPlacement: HudPlacement
 }) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -344,6 +372,11 @@ function CleanPdfEvidence({
   const renderScale = useMemo(() => {
     if (!basePage) return 2.2
     const [x1, y1, x2, y2] = bbox
+    if (isBroadBBox(bbox)) {
+      const fitHeightScale = (stageSize.height * 0.92) / basePage.height
+      const fitWidthScale = (stageSize.width * 0.58) / basePage.width
+      return clamp(Math.min(fitHeightScale, fitWidthScale), 0.72, 1.25)
+    }
     const bboxWidth = Math.max(0.04, x2 - x1)
     const bboxHeight = Math.max(0.04, y2 - y1)
     const targetBBoxWidth = Math.min(stageSize.width * 0.36, 470)
@@ -375,12 +408,14 @@ function CleanPdfEvidence({
     const [x1, y1, x2, y2] = bbox
     const focusCenterX = ((x1 + x2) / 2) * canvasSize.width
     const focusCenterY = ((y1 + y2) / 2) * canvasSize.height
-    const targetX = stageSize.width * (hudSide === 'right' ? 0.36 : 0.64)
-    const targetY = stageSize.height * 0.6
+    const broadBBox = isBroadBBox(bbox)
+    const targetXFactor = hudPlacement === 'right' ? 0.31 : hudPlacement === 'left' ? 0.69 : 0.42
+    const targetX = stageSize.width * targetXFactor
+    const targetY = stageSize.height * (broadBBox ? 0.5 : 0.6)
     return {
       transform: `translate3d(${targetX - focusCenterX}px, ${targetY - focusCenterY}px, 0)`,
     }
-  }, [basePage, bbox, canvasSize.height, canvasSize.width, hudSide, stageSize.height, stageSize.width])
+  }, [basePage, bbox, canvasSize.height, canvasSize.width, hudPlacement, stageSize.height, stageSize.width])
 
   if (error) return <div className="pdf-lab-cr-error">{error}</div>
 
@@ -402,14 +437,14 @@ function CleanPdfEvidence({
             className="pdf-lab-cr-page-canvas"
             data-qid="pdf-lab:clean-room:canvas"
           />
-          <RectangularMask bbox={bbox} />
+          <RectangularMask bbox={bbox} hudPlacement={hudPlacement} />
         </div>
       )}
     </div>
   )
 }
 
-function RectangularMask({ bbox }: { bbox: [number, number, number, number] }) {
+function RectangularMask({ bbox, hudPlacement }: { bbox: [number, number, number, number]; hudPlacement: HudPlacement }) {
   const [x1, y1, x2, y2] = bbox
   return (
     <div
@@ -448,7 +483,7 @@ function RectangularMask({ bbox }: { bbox: [number, number, number, number] }) {
         }}
       />
       <div
-        className="pdf-lab-cr-bbox"
+        className={`pdf-lab-cr-bbox pdf-lab-cr-bbox-thread-${hudPlacement}`}
         data-qid="pdf-lab:clean-room:bbox"
         style={{
           left: `${clamp(x1, 0, 1) * 100}%`,

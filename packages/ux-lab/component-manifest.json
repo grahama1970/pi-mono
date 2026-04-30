@@ -291,18 +291,21 @@
     "id": "pdf-lab-agentic-workflow",
     "name": "PdfLabView",
     "file": "src/components/pdf-lab/PdfLabView.tsx",
-    "description": "Default PDF Lab surface now presents the real-data agentic workflow: agent scan, representative samples, deterministic extraction, parity comparison, preset/code improvement, 95% gate, full extraction, and human triage.",
-    "composition": "Surgical evidence viewport with shared collapsible LeftPane ambiguity queue, default-collapsed queue chrome, and compact floating command HUD positioned away from the active evidence.",
+    "description": "Default PDF Lab surface now presents the real-data agentic workflow: agent scan, representative samples, deterministic extraction, parity comparison, preset/code improvement, 95% gate, full extraction, human triage, and Nico evidence QA.",
+    "composition": "Surgical evidence viewport with shared collapsible LeftPane ambiguity queue when human ambiguity exists; otherwise routes to PdfLabEvidenceQA for artifact-grounded post-triage sampling.",
     "data_sources": [
       "public/pdf-lab-nist-workflow-manifest.json",
       "public/pdf-lab-nist-full-extraction.json",
       "public/pdf-lab-nist-human-triage-queue.json",
+      "GET /api/pdf-lab/nico-qa-report",
+      "POST /api/pdf-lab/evidence-query",
       "public/NIST_SP_800-53r5.pdf"
     ],
     "artifact_contract": {
       "workflow_manifest": "Browser-oriented phase/candidate/gate summary derived from real full-batch artifacts.",
       "full_extraction": "Deterministic pdf_oxide full-document extraction.",
       "human_triage_queue": "Final ambiguity cards only; no solved pages should become human work.",
+      "nico_qa": "Post-triage stratified random sample that compares extracted JSON against original page/crop artifacts for Nico/persona-style compliance checks.",
       "gemini_review_bundle": "Top-bar shared ReviewBundleButton calls POST /api/pdf-lab/gemini-review-bundle, writes /tmp/pdf-lab-gemini-review-bundle-latest.md, and copies the complete review/fix prompt with xclip."
     },
     "test_status": "TypeScript + CDP visual verification required after every layout change"

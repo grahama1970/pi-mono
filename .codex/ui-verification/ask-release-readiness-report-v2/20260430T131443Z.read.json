@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"This site can\u2019t be reached\" [e1] [level=1]\n  generic \"This site can\u2019t be reached\" [e2]\nparagraph \"refused to connect.\" [e3]\n  generic \"127.0.0.1\" [e4]\nparagraph \"Try:\" [e5]\nlist [e6]\n  listitem \"Checking the connection\" [e7]\n  listitem [e8]\n    link \"Checking the proxy and the firewall\" [e9] [cursor=pointer] href=\"#buttons\"\ngeneric \"ERR_CONNECTION_REFUSED\" [e10]\nbutton \"Reload\" [e11] [cursor=pointer]\nbutton \"Details\" [e12] [cursor=pointer]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "chrome-error://chromewebdata/",
+  "title": "127.0.0.1"
+}

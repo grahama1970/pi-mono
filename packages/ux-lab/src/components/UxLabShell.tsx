@@ -10,6 +10,7 @@ import { SourcesView } from './sparta/explorer/SourcesView'
 import { ControlsView } from './sparta/explorer/ControlsView'
 import { URLsView } from './sparta/explorer/URLsView'
 import { QRAsView } from './sparta/explorer/QRAsView'
+import { CoverageView } from './sparta/explorer/CoverageView'
 import { ThreatMatrixView } from './sparta/explorer/ThreatMatrixView'
 import { SupplyChainView } from './sparta/explorer/SupplyChainView'
 import { MusicLabWorkbench } from './music-lab/MusicLabWorkbench'
@@ -164,6 +165,7 @@ export function UxLabShell() {
           {activeTab === 'mockups' && activeProject === 'sparta' && (
             <SpartaExplorer
               views={{
+                Coverage: <CoverageView />,
                 Sources: <SourcesView />,
                 Controls: <ControlsView />,
                 URLs: <URLsView />,

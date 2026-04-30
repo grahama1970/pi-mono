@@ -27,6 +27,8 @@ read README.md, then ask which module(s) to work on. Based on the answer, read t
 - Run tests from the package root, not the repo root.
 - If you create or modify a test file, you MUST run that test file and iterate until it passes.
 - When writing tests, run them, identify issues in either the test or implementation, and iterate until fixed.
+- Do not claim a feature is validated from mocked tests alone. Mocked/unit tests are acceptable for fast regression coverage, but every new user-visible integration path must also have at least one real non-mocked smoke/E2E check against the actual composed service or CLI. If the real check cannot run, state exactly why and do not describe the feature as validated.
+- For skill composition work, validate the composition boundary with the real downstream skill whenever practical. Example: if a feature composes `/scillm`, run at least one live `/scillm` smoke/E2E path; if it composes `/code-runner`, run or explicitly defer a bounded `/code-runner` check.
 - NEVER commit unless user asks
 
 ## GitHub Issues

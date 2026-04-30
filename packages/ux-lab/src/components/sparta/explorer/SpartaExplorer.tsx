@@ -6,7 +6,7 @@ import { ChatWell } from '../query/ChatWell'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
 import { useMemoryHealth } from '../../../hooks/useMemoryHealth'
-import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, ChevronLeft, Sparkles } from 'lucide-react'
+import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, ChevronLeft, Sparkles, Activity } from 'lucide-react'
 import EntitySpanViewer from '../../shared-chat/EntitySpanViewer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import PostureDashboard from '../dashboard/PostureDashboard'
@@ -20,7 +20,7 @@ const API = 'http://localhost:3001'
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
 const TABS = [
-  'Posture', 'Threat Matrix', 'Controls', 'QRAs', 'Sources', 'URLs', 'Supply Chain',
+  'Posture', 'Coverage', 'Threat Matrix', 'Controls', 'QRAs', 'Sources', 'URLs', 'Supply Chain',
 ] as const
 
 export type TabName = (typeof TABS)[number]
@@ -53,6 +53,7 @@ export function useSpartaNav(): SpartaNavContextValue {
 // Lucide icons for the global nav strip
 const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
   'Posture': ShieldCheck,
+  'Coverage': Activity,
   'Threat Matrix': Target,
   'Controls': Shield,
   'QRAs': HelpCircle,
@@ -143,6 +144,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [chatReadiness, setChatReadiness] = useState<{ ready: boolean; warning?: string }>({
+    ready: false,
+    warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
+  })
   const sessionId = useState(() => crypto.randomUUID())[0]
   const msgIdRef = useRef(0)
 
@@ -314,6 +319,51 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     const interval = setInterval(checkHealth, 30_000)
     return () => clearInterval(interval)
   }, [checkHealth])
+
+  const checkChatReadiness = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/api/sparta/coverage-health`)
+      const body = await res.json()
+      if (!res.ok) throw new Error(body?.detail || body?.error || `HTTP ${res.status}`)
+      const supervisor = body?.supervisor ?? {}
+      const heartbeatAt = typeof supervisor.heartbeat_at === 'string' ? new Date(supervisor.heartbeat_at) : null
+      const heartbeatAgeSeconds = heartbeatAt ? Math.max(0, Math.round((Date.now() - heartbeatAt.getTime()) / 1000)) : null
+      const heartbeatFresh = heartbeatAgeSeconds != null && heartbeatAgeSeconds <= 120
+      const qualityGaps = Array.isArray(body?.controlFrameworks)
+        ? body.controlFrameworks.reduce((total: number, row: { quality_gaps?: number }) => total + Number(row.quality_gaps ?? 0), 0)
+        : 0
+      const reviewRequired = Number(supervisor.command_status_counts?.review_required ?? 0)
+      const attention = Array.isArray(supervisor.needs_attention)
+        ? supervisor.needs_attention.length
+        : Array.isArray(supervisor.blocked)
+          ? supervisor.blocked.length
+          : 0
+      const blockers = [
+        body?.stale ? 'snapshot is stale' : '',
+        !heartbeatFresh ? `heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}` : '',
+        reviewRequired > 0 ? `${reviewRequired} review gate(s)` : '',
+        attention > 0 ? `${attention} attention item(s)` : '',
+        qualityGaps > 0 ? `${qualityGaps} control-quality gap(s)` : '',
+      ].filter(Boolean)
+      setChatReadiness({
+        ready: blockers.length === 0,
+        warning: blockers.length
+          ? `Pre-signoff mode: ${blockers.join('; ')}. Use chat for verification only; conversation-lab is not approved.`
+          : undefined,
+      })
+    } catch {
+      setChatReadiness({
+        ready: false,
+        warning: 'Coverage readiness could not be verified. Chat is verification-only; conversation-lab is not approved.',
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    checkChatReadiness()
+    const interval = setInterval(checkChatReadiness, 60_000)
+    return () => clearInterval(interval)
+  }, [checkChatReadiness])
 
   // ── Chat cascade pipeline ────────────────────────────────────────────────
 
@@ -550,6 +600,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const openChatWithContext = useCallback(() => {
     const contextPrompts: Record<TabName, string> = {
       'Posture': 'You\'re viewing the Posture Dashboard. Want me to explain any compliance scores or trace evidence gaps?',
+      'Coverage': 'You\'re viewing SPARTA Coverage & Health. Want me to reconcile outstanding corpus gaps, audit failures, or generation backlog?',
       'Threat Matrix': 'You\'re viewing the SPARTA Threat Matrix. Want me to analyze coverage gaps or trace techniques to countermeasures?',
       'Controls': 'You\'re viewing the Controls table. Want me to find related controls or check evidence case status?',
       'QRAs': 'You\'re reviewing QRA items. Want me to validate grounding or suggest improvements?',
@@ -710,7 +761,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               </div>
             </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
-              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} />
+              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} />
             </div>
           </div>
         )}

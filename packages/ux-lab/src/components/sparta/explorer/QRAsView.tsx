@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EMBRY, label } from '../common/EmbryStyle'
-import { qraDetailPost, useQRAs } from '../../../hooks/useSpartaCollections'
+import { qraDetailPost, useCollectionCounts, useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
@@ -36,8 +36,12 @@ function minEmphasisForMode(mode: EntityViewMode): HighlightEmphasis {
 }
 
 const PANE_PADDING = 16
-const QRA_PAGE_SIZE = 25
+const QRA_PAGE_SIZE = 100
 type EvidenceFilter = 'all' | 'failed' | 'passed'
+
+function formatCount(value: number | undefined) {
+  return Number(value ?? 0).toLocaleString()
+}
 
 function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
   const reviewStatus = (q.review_status || '').trim().toLowerCase()
@@ -173,21 +177,44 @@ export function QRAsView() {
   // Source filter (v2 vs legacy collections) - must be declared before useQRAs
   const [source, setSource] = useState<QRASource>('all')
   const [evidenceFilter, setEvidenceFilter] = useState<EvidenceFilter>('all')
-  const [page, setPage] = useState(0)
+  const [pagination, setPagination] = useState<{ feedKey: string; page: number }>({ feedKey: '', page: 0 })
+  const corpusCounts = useCollectionCounts()
+  const queueScrollRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500)
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  useEffect(() => {
-    setPage(0)
-  }, [controlFilter, debouncedSearch, source])
-
-  const { data: qras = [], total: qraTotal, loading, error } = useQRAs(debouncedSearch, controlFilter, source, page, QRA_PAGE_SIZE)
+  const queueFeedKey = useMemo(
+    () => JSON.stringify({ controlFilter: controlFilter ?? '', query: debouncedSearch, source }),
+    [controlFilter, debouncedSearch, source],
+  )
+  const page = pagination.feedKey === queueFeedKey ? pagination.page : 0
+  const { data: pageQras = [], total: qraTotal, loading, error } = useQRAs(debouncedSearch, controlFilter, source, page, QRA_PAGE_SIZE)
+  const [loadedQras, setLoadedQras] = useState<SpartaQRA[]>([])
+  const qras = loadedQras
   const [currentIndex, setCurrentIndexRaw] = useState(0)
   const [qraDetails, setQraDetails] = useState<Map<string, SpartaQRA>>(new Map())
   const [detailLoadingKey, setDetailLoadingKey] = useState<string | null>(null)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- filter/feed changes must clear the accumulated queue before the next async page arrives.
+    setLoadedQras([])
+    setCurrentIndexRaw(0)
+    queueScrollRef.current?.scrollTo({ top: 0 })
+  }, [queueFeedKey])
+
+  useEffect(() => {
+    if (loading) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- append the completed backend page into the persistent visible queue.
+    setLoadedQras((prev) => {
+      if (page === 0) return pageQras
+      const seen = new Set(prev.map((entry) => entry._key))
+      const nextPage = pageQras.filter((entry) => !seen.has(entry._key))
+      return nextPage.length > 0 ? [...prev, ...nextPage] : prev
+    })
+  }, [loading, page, pageQras])
 
   // Wrapper that also syncs URL when selection changes
   const setCurrentIndex = useCallback((idx: number | ((prev: number) => number)) => {
@@ -199,15 +226,14 @@ export function QRAsView() {
     })
   }, [qras])
 
-  // Reset index when filter changes, or auto-select by qraKey
+  // Auto-select by qraKey as loaded batches arrive.
   useEffect(() => {
     if (qraKeyFilter && qras.length > 0) {
       const idx = qras.findIndex(q => q._key === qraKeyFilter)
-      setCurrentIndexRaw(idx >= 0 ? idx : 0)
-    } else {
-      setCurrentIndexRaw(0)
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- URL-selected QRA should become selected once its batch has loaded.
+      if (idx >= 0) setCurrentIndexRaw(idx)
     }
-  }, [controlFilter, debouncedSearch, qraKeyFilter, qras, source])
+  }, [qraKeyFilter, qras])
   const [decisions, setDecisions] = useState<Map<string, 'accept' | 'reject'>>(new Map())
   const [undoTimer, setUndoTimer] = useState<{ key: string; timer: number } | null>(null)
 
@@ -249,10 +275,25 @@ export function QRAsView() {
   const currentListItem = qras[currentIndex] as SpartaQRA | undefined
   const current = currentListItem ? (qraDetails.get(currentListItem._key) ?? currentListItem) : undefined
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
-  const pageStart = qraTotal === 0 ? 0 : page * QRA_PAGE_SIZE + 1
-  const pageEnd = qraTotal === 0 ? 0 : page * QRA_PAGE_SIZE + qras.length
-  const canPrevPage = page > 0
-  const canNextPage = pageEnd < qraTotal
+  const loadedStart = qraTotal === 0 || qras.length === 0 ? 0 : 1
+  const loadedEnd = qras.length
+  const canLoadMore = qras.length < qraTotal
+  const sourceTotals: Record<QRASource, number> = {
+    legacy: corpusCounts.qras,
+    v2: corpusCounts.qrasCanonical + corpusCounts.qrasRelationship,
+    all: corpusCounts.qrasTotal || qraTotal,
+  }
+
+  const loadNextPage = useCallback(() => {
+    if (loading || !canLoadMore) return
+    setPagination({ feedKey: queueFeedKey, page: page + 1 })
+  }, [canLoadMore, loading, page, queueFeedKey])
+
+  const handleQueueScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget
+    const distanceFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight
+    if (distanceFromBottom < 360) loadNextPage()
+  }, [loadNextPage])
 
   useRegisterAction('qras:action:accept', { app: 'sparta-explorer', action: 'ACCEPT_QRA', label: 'Accept QRA', description: 'Mark the current QRA as accepted' })
   useRegisterAction('qras:action:reject', { app: 'sparta-explorer', action: 'REJECT_QRA', label: 'Reject QRA', description: 'Mark the current QRA as rejected' })
@@ -418,7 +459,10 @@ export function QRAsView() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: `8px ${PANE_PADDING}px`, borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, backgroundColor: EMBRY.bgDeep }}>
         <div style={{ fontSize: 12, fontWeight: 800, color: EMBRY.white, letterSpacing: 0.8 }}>QRA</div>
         <div style={{ ...label, backgroundColor: EMBRY.bgPanel, padding: '3px 7px', borderRadius: 4, fontSize: 9 }}>
-          <span style={{ fontVariantNumeric: "tabular-nums" }}>{pageStart}-{pageEnd}</span> of {qraTotal.toLocaleString()}
+          Loaded <span style={{ fontVariantNumeric: "tabular-nums" }}>{loadedStart}-{loadedEnd}</span> of {formatCount(qraTotal)}
+        </div>
+        <div title="Corpus totals by QRA collection; status chips below count only the loaded queue slice." style={{ ...label, backgroundColor: EMBRY.bgPanel, padding: '3px 7px', borderRadius: 4, fontSize: 9, color: EMBRY.dim }}>
+          Corpus: {corpusCounts.loading ? 'loading…' : `${formatCount(corpusCounts.qrasTotal)} total · ${formatCount(corpusCounts.qras)} legacy · ${formatCount(corpusCounts.qrasCanonical + corpusCounts.qrasRelationship)} v2`}
         </div>
         
         {controlFilter && (
@@ -429,44 +473,8 @@ export function QRAsView() {
         )}
 
         <div style={{ flex: 1 }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <button data-qid="explorer-qrasview:auto:434" data-qs-action="EXPLORER_QRASVIEW_AUTO_434"
-            onClick={() => canPrevPage && setPage((prev) => prev - 1)}
-            disabled={!canPrevPage || loading}
-            className="press-scale"
-            style={{
-              fontSize: 10,
-              padding: '4px 8px',
-              borderRadius: 4,
-              border: `1px solid ${EMBRY.border}`,
-              backgroundColor: EMBRY.bgPanel,
-              color: canPrevPage && !loading ? EMBRY.white : EMBRY.dim,
-              cursor: canPrevPage && !loading ? 'pointer' : 'not-allowed',
-              opacity: canPrevPage && !loading ? 1 : 0.55,
-            }}
-          >
-            Prev
-          </button>
-          <div style={{ fontSize: 10, color: EMBRY.dim, minWidth: 54, textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>
-            Page {page + 1}
-          </div>
-          <button data-qid="explorer-qrasview:auto:454" data-qs-action="EXPLORER_QRASVIEW_AUTO_454"
-            onClick={() => canNextPage && setPage((prev) => prev + 1)}
-            disabled={!canNextPage || loading}
-            className="press-scale"
-            style={{
-              fontSize: 10,
-              padding: '4px 8px',
-              borderRadius: 4,
-              border: `1px solid ${EMBRY.border}`,
-              backgroundColor: EMBRY.bgPanel,
-              color: canNextPage && !loading ? EMBRY.white : EMBRY.dim,
-              cursor: canNextPage && !loading ? 'pointer' : 'not-allowed',
-              opacity: canNextPage && !loading ? 1 : 0.55,
-            }}
-          >
-            Next
-          </button>
+        <div style={{ fontSize: 10, color: EMBRY.dim, fontVariantNumeric: 'tabular-nums' }}>
+          Batch {page + 1} · {loading && qras.length > 0 ? 'loading more…' : canLoadMore ? 'scroll to load' : 'all loaded'}
         </div>
         <span style={{ fontSize: 9, color: EMBRY.dim }}>
           A accept · R reject · E edit · ←→ move
@@ -532,6 +540,7 @@ export function QRAsView() {
                        {(['legacy', 'v2', 'all'] as QRASource[]).map(s => {
                          const isActive = source === s
                          const sourceLabel = s === 'v2' ? 'v2' : s === 'legacy' ? 'Legacy' : 'All'
+                         const sourceTotal = sourceTotals[s]
                          return (
                            <button data-qid="explorer-qrasview:auto:538" data-qs-action="EXPLORER_QRASVIEW_AUTO_538"
                              key={s}
@@ -552,14 +561,17 @@ export function QRAsView() {
                              }}
                            >
                              {sourceLabel}
+                             <span style={{ marginLeft: 4, opacity: 0.72, fontVariantNumeric: 'tabular-nums' }}>
+                               {corpusCounts.loading ? '…' : formatCount(sourceTotal)}
+                             </span>
                            </button>
                          )
                        })}
                      </div>
                    </div>
 
-                   <div style={{ display: 'flex', gap: 4, backgroundColor: `${EMBRY.bg}66`, padding: 2, borderRadius: 6 }}>
-                     {EVIDENCE_FILTERS.map(status => {
+	                   <div style={{ display: 'flex', gap: 4, backgroundColor: `${EMBRY.bg}66`, padding: 2, borderRadius: 6 }}>
+	                     {EVIDENCE_FILTERS.map(status => {
                        const isActive = evidenceFilter === status
                        const count = evidenceCounts[status]
                        return (
@@ -584,13 +596,57 @@ export function QRAsView() {
                              textTransform: 'uppercase',
                            }}
                          >
-                           {status} <span style={{ opacity: 0.72, fontVariantNumeric: "tabular-nums" }}>{count}</span>
+                          Loaded {status} <span style={{ opacity: 0.72, fontVariantNumeric: "tabular-nums" }}>{count}</span>
                          </button>
                        )
-                     })}
+	                     })}
+	                   </div>
+
+                   <div style={{
+                     display: 'grid',
+                     gridTemplateColumns: '1fr auto',
+                     alignItems: 'center',
+                     gap: 6,
+                     padding: '4px 0 2px',
+                   }}>
+                     <div
+                       title="The queue keeps loaded QRAs visible and fetches the next backend batch near the bottom."
+                       style={{
+                         color: EMBRY.dim,
+                         fontSize: 9,
+                         fontWeight: 700,
+                         letterSpacing: 0.45,
+                         textTransform: 'uppercase',
+                         fontVariantNumeric: 'tabular-nums',
+                       }}
+                     >
+                       Loaded {formatCount(qras.length)} of {formatCount(qraTotal)} · auto-load on scroll
+                     </div>
+                     <button
+                       data-qid="qras:pager:load-more"
+                       data-qs-action="LOAD_MORE_QRAS"
+                       onClick={loadNextPage}
+                       disabled={!canLoadMore || loading}
+                       title="Load the next QRA batch"
+                       className="press-scale"
+                       style={{
+                         fontSize: 9,
+                         fontWeight: 800,
+                         padding: '4px 7px',
+                         borderRadius: 5,
+                         border: `1px solid ${EMBRY.border}`,
+                         backgroundColor: EMBRY.bgPanel,
+                         color: canLoadMore && !loading ? EMBRY.white : EMBRY.dim,
+                         cursor: canLoadMore && !loading ? 'pointer' : 'not-allowed',
+                         opacity: canLoadMore && !loading ? 1 : 0.48,
+                         textTransform: 'uppercase',
+                       }}
+                     >
+                       {loading && qras.length > 0 ? 'Loading' : canLoadMore ? 'Load more' : 'End'}
+                     </button>
                    </div>
 
-                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+	                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                      {MIND_TAGS.map(tag => {
                        const isActive = mindFilter === tag
                        return (
@@ -624,8 +680,12 @@ export function QRAsView() {
                  </div>
                </div>
 
-               <div style={{ flex: 1, overflowY: 'auto' }}>
-                  {loading && (
+               <div
+                 ref={queueScrollRef}
+                 onScroll={handleQueueScroll}
+                 style={{ flex: 1, overflowY: 'auto' }}
+               >
+                  {loading && qras.length === 0 && (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '32px 16px', color: EMBRY.dim }}>
                       <div className="nvis-spinner nvis-spinner-lg" />
                       <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase' }}>Loading QRAs</span>
@@ -702,6 +762,40 @@ export function QRAsView() {
                         </motion.div>
                      )
                   })}
+                  {qras.length > 0 && (
+                    <div style={{ padding: '10px 12px 14px', display: 'flex', justifyContent: 'center', borderTop: `1px solid ${EMBRY.border}` }}>
+                      {loading ? (
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: EMBRY.dim, fontSize: 9, fontWeight: 800, letterSpacing: 0.55, textTransform: 'uppercase' }}>
+                          <div className="nvis-spinner" />
+                          Loading next QRAs
+                        </div>
+                      ) : canLoadMore ? (
+                        <button
+                          data-qid="qras:pager:load-more-footer"
+                          data-qs-action="LOAD_MORE_QRAS"
+                          onClick={loadNextPage}
+                          className="press-scale"
+                          style={{
+                            fontSize: 9,
+                            fontWeight: 800,
+                            padding: '6px 10px',
+                            borderRadius: 6,
+                            border: `1px solid ${EMBRY.border}`,
+                            backgroundColor: EMBRY.bgPanel,
+                            color: EMBRY.white,
+                            cursor: 'pointer',
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          Load more · {formatCount(qras.length)} / {formatCount(qraTotal)}
+                        </button>
+                      ) : (
+                        <div style={{ color: EMBRY.dim, fontSize: 9, fontWeight: 800, letterSpacing: 0.55, textTransform: 'uppercase' }}>
+                          End of loaded corpus slice
+                        </div>
+                      )}
+                    </div>
+                  )}
                </div>
              </>
            )}

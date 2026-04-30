@@ -349,6 +349,7 @@ const QRA_SUMMARY_FIELDS = [
   'difficulty',
   'created_at',
   'review_status',
+  'evidence_case',
 ] as const
 
 function normalizeQraDocument(doc: Record<string, any> | null | undefined, collection?: string) {
@@ -1159,11 +1160,41 @@ async function writeSpartaCoverageSnapshot(payload: JsonRecord) {
   await writeFile(SPARTA_COVERAGE_SNAPSHOT_PATH, JSON.stringify(payload, null, 2))
 }
 
+function qraTrustStatus(corpus?: JsonRecord): JsonRecord {
+  const legacy = Number(corpus?.qrasLegacy ?? 0)
+  const canonical = Number(corpus?.qrasCanonical ?? 0)
+  const relationship = Number(corpus?.qrasRelationship ?? 0)
+  return {
+    status: 'plausible_for_system_test',
+    label: 'System-Test Ready',
+    expert_blessed: false,
+    reviewer: null,
+    blessed_at: null,
+    scope: ['legacy', 'canonical', 'relationship'],
+    counts: {
+      legacy,
+      canonical,
+      relationship,
+      total: legacy + canonical + relationship,
+    },
+    use_policy: 'Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.',
+    next_action: 'After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata.',
+  }
+}
+
+function attachQraTrustStatus(payload: JsonRecord): JsonRecord {
+  if (payload.qraTrust && typeof payload.qraTrust === 'object' && !Array.isArray(payload.qraTrust)) return payload
+  const corpus = payload.corpus && typeof payload.corpus === 'object' && !Array.isArray(payload.corpus)
+    ? payload.corpus as JsonRecord
+    : undefined
+  return { ...payload, qraTrust: qraTrustStatus(corpus) }
+}
+
 async function buildSpartaCoveragePayload(): Promise<JsonRecord> {
   const auditScript = `
 import json
 from pathlib import Path
-from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls
+from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls, get_sparta_control_framework_inventory
 from scripts.validation.sparta_corpus_inventory import scan as scan_corpus_inventory
 
 state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json")
@@ -1183,6 +1214,7 @@ payload = {
     "total": len(checks),
     "remaining": remaining,
     "corpus_inventory": scan_corpus_inventory(),
+    "control_frameworks": get_sparta_control_framework_inventory(),
     "monitor_state": json.loads(state_path.read_text()) if state_path.exists() else {},
     "task_state": json.loads(task_state_path.read_text()) if task_state_path.exists() else {},
 }
@@ -1270,9 +1302,28 @@ print(json.dumps(payload, default=str))
       urlKnowledge: counts[6]?.count ?? 0,
       datalakeChunks: counts[7]?.count ?? 0,
     },
+    qraTrust: {
+      status: 'plausible_for_system_test',
+      label: 'System-Test Ready',
+      expert_blessed: false,
+      reviewer: null,
+      blessed_at: null,
+      scope: ['legacy', 'canonical', 'relationship'],
+      counts: {
+        legacy: counts[1]?.count ?? 0,
+        canonical: counts[2]?.count ?? 0,
+        relationship: counts[3]?.count ?? 0,
+        total: (counts[1]?.count ?? 0) + (counts[2]?.count ?? 0) + (counts[3]?.count ?? 0),
+      },
+      use_policy: 'Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.',
+      next_action: 'After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata.',
+    },
     corpusInventory: compactMonitor && typeof compactMonitor === 'object' && !Array.isArray(compactMonitor)
       ? (compactMonitor as JsonRecord).corpus_inventory
       : undefined,
+    controlFrameworks: monitor && typeof monitor === 'object' && !Array.isArray(monitor) && Array.isArray((monitor as JsonRecord).control_frameworks)
+      ? (monitor as JsonRecord).control_frameworks
+      : [],
     monitor: compactMonitor,
     bestPractices: deriveBestPracticeAudit(bestPracticeBase as Array<Record<string, unknown>>, promptAudit, supervisor),
     promptAudit,
@@ -1285,10 +1336,11 @@ function refreshSpartaCoverageInBackground() {
   if (spartaCoverageRefresh) return spartaCoverageRefresh
   spartaCoverageRefresh = buildSpartaCoveragePayload()
     .then(async (payload) => {
-      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
-      await writeSpartaCoverageSnapshot(payload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
-      broadcastSpartaCoverageHealth(payload)
-      return payload
+      const normalizedPayload = attachQraTrustStatus(payload)
+      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload: normalizedPayload }
+      await writeSpartaCoverageSnapshot(normalizedPayload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
+      broadcastSpartaCoverageHealth(normalizedPayload)
+      return normalizedPayload
     })
     .finally(() => {
       spartaCoverageRefresh = null
@@ -1328,7 +1380,7 @@ function startSpartaCoveragePushBridge(): void {
 app.get('/api/sparta/coverage-health', async (req, res) => {
   try {
     if (spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
-      return res.json(spartaCoverageCache.payload)
+      return res.json(attachQraTrustStatus(spartaCoverageCache.payload))
     }
 
     const waitForRefresh = req.query.wait === '1'
@@ -1336,7 +1388,7 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
 
     if (snapshot && !waitForRefresh) {
       refreshSpartaCoverageInBackground().catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
-      return res.json({ ...snapshot, stale: true, refreshing: true })
+      return res.json(attachQraTrustStatus({ ...snapshot, stale: true, refreshing: true }))
     }
 
     const payload = await refreshSpartaCoverageInBackground()
@@ -1948,6 +2000,7 @@ const PDF_LAB_SOURCE_PDF = process.env.PDF_LAB_SOURCE_PDF || '/mnt/storage12tb/e
 const PDF_LAB_NIST_PRESET = '/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json'
 const PDF_LAB_WORKFLOW_BUILD_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/build_pdf_lab_workflow_manifest.py'
 const PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/promote_pdf_lab_real_artifacts.py'
+const PDF_LAB_NICO_QA_REPORT_SCRIPT = '/home/graham/workspace/experiments/pdf_oxide/scripts/build_pdf_lab_nico_qa_report.py'
 
 type PdfLabJobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 
@@ -1987,6 +2040,30 @@ async function readJsonFile<T = JsonRecord>(path: string): Promise<T> {
 
 async function writeJsonFile(path: string, data: unknown): Promise<void> {
   await writeFile(path, `${JSON.stringify(data, null, 2)}\n`, 'utf-8')
+}
+
+function pdfLabPublicUrlFromPath(pathValue: unknown): string | null {
+  if (typeof pathValue !== 'string' || pathValue.length === 0) return null
+  const publicRoot = resolve(__dirname, '../public')
+  const absolute = resolve(pathValue)
+  if (!absolute.startsWith(publicRoot)) return pathValue.startsWith('/') ? pathValue : null
+  return `/${absolute.slice(publicRoot.length + 1).replace(/\\/g, '/')}`
+}
+
+function pdfLabQuestionPage(question: string): number | null {
+  const match = question.match(/\bpage\s+(\d+)\b/i)
+  return match ? Number(match[1]) : null
+}
+
+function pdfLabQuestionElementType(question: string): string | null {
+  const lower = question.toLowerCase()
+  if (lower.includes('table')) return 'table'
+  if (lower.includes('figure')) return 'figure'
+  if (lower.includes('equation')) return 'equation'
+  if (lower.includes('requirement')) return 'requirement'
+  if (lower.includes('section')) return 'section_header'
+  if (lower.includes('definition')) return 'definition_list'
+  return null
 }
 
 function parseJsonStdout<T = JsonRecord>(stdout: string): T {
@@ -2705,6 +2782,167 @@ ${sourceSections.join('\n')}
   } catch (e) {
     return res.status(500).json({
       error: 'Failed to generate Gemini review bundle',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.post('/api/pdf-lab/evidence-query', async (req, res) => {
+  try {
+    const body = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
+    const question = typeof body.question === 'string' ? body.question : ''
+    const requestedPage = typeof body.page === 'number' ? body.page : pdfLabQuestionPage(question)
+    const requestedType = typeof body.elementType === 'string' ? body.elementType : pdfLabQuestionElementType(question)
+    const requestedElementId = typeof body.elementId === 'string' ? body.elementId : null
+    const warnings: string[] = []
+
+    const extractionPath = pdfLabPublicPath('pdf-lab-nist-full-extraction.json')
+    const workflowManifestPath = pdfLabPublicPath('pdf-lab-nist-workflow-manifest.json')
+    if (!existsSync(extractionPath)) {
+      return res.json({
+        ok: false,
+        answer: null,
+        uncertainty: 'missing_artifact',
+        warnings: [`missing_artifact: ${extractionPath}`],
+        citations: [],
+      })
+    }
+
+    const extraction = await readJsonFile<JsonRecord>(extractionPath)
+    const elements = Array.isArray(extraction.elements) ? extraction.elements as JsonRecord[] : []
+    let candidateElements = elements
+    if (requestedPage !== null) {
+      candidateElements = candidateElements.filter((element) => Number(element.page) === requestedPage)
+    }
+    if (requestedElementId) {
+      candidateElements = candidateElements.filter((element) => String(element.id ?? element.element_id ?? '') === requestedElementId)
+    }
+    if (requestedType) {
+      candidateElements = candidateElements.filter((element) => String(element.type ?? '') === requestedType)
+    }
+
+    let workflowManifest: JsonRecord | null = null
+    if (existsSync(workflowManifestPath)) {
+      workflowManifest = await readJsonFile<JsonRecord>(workflowManifestPath)
+    } else {
+      warnings.push(`missing_artifact: ${workflowManifestPath}`)
+    }
+    const evidenceArtifacts = workflowManifest && typeof workflowManifest.evidence_artifacts === 'object'
+      ? workflowManifest.evidence_artifacts as JsonRecord
+      : null
+    const evidenceManifestUri = typeof evidenceArtifacts?.manifest_uri === 'string' ? evidenceArtifacts.manifest_uri : null
+    const evidenceManifestPath = evidenceManifestUri ? pdfLabPublicPath(evidenceManifestUri.replace(/^\/+/, '')) : null
+    const evidenceManifest = evidenceManifestPath && existsSync(evidenceManifestPath)
+      ? await readJsonFile<JsonRecord>(evidenceManifestPath)
+      : null
+    if (evidenceManifestPath && !existsSync(evidenceManifestPath)) warnings.push(`missing_artifact: ${evidenceManifestPath}`)
+    if (!evidenceManifestPath) warnings.push('missing_artifact: evidence crop manifest is not promoted')
+    const evidenceElements = evidenceManifest && Array.isArray(evidenceManifest.elements) ? evidenceManifest.elements as JsonRecord[] : []
+
+    const selected = candidateElements.slice(0, 12)
+    const citations = selected.map((element) => {
+      const elementId = String(element.id ?? element.element_id ?? '')
+      const evidence = evidenceElements.find((candidate) => String(candidate.element_id ?? '') === elementId)
+      if (!evidence) warnings.push(`missing_artifact: crop evidence for ${elementId || 'unknown_element'}`)
+      return {
+        element_id: elementId,
+        page: element.page,
+        type: element.type,
+        bbox: element.bbox,
+        json_pointer: evidence?.json_pointer ?? null,
+        page_image_uri: pdfLabPublicUrlFromPath(evidence?.page_image_uri) ?? null,
+        crop_uri: pdfLabPublicUrlFromPath(evidence?.crop_uri) ?? null,
+        text: String(element.text ?? '').slice(0, 500),
+      }
+    })
+
+    const typeLabel = requestedType ?? 'element'
+    const pageLabel = requestedPage !== null ? ` on page ${requestedPage}` : ''
+    return res.json({
+      ok: true,
+      answer: selected.length
+        ? `Found ${selected.length} extracted ${typeLabel}${selected.length === 1 ? '' : 's'}${pageLabel}. Verify against cited page/crop artifacts before treating the answer as final.`
+        : `No extracted ${typeLabel}${pageLabel} was found in the current real extraction artifact.`,
+      uncertainty: warnings.length ? 'artifact_warnings' : 'artifact_grounded',
+      warnings: [...new Set(warnings)],
+      citations,
+      extracted_json_fragments: selected,
+      source_extraction: '/pdf-lab-nist-full-extraction.json',
+      source_workflow_manifest: existsSync(workflowManifestPath) ? '/pdf-lab-nist-workflow-manifest.json' : null,
+      similar_elements: [],
+    })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to answer PDF Lab evidence query',
+      detail: e instanceof Error ? e.message : String(e),
+    })
+  }
+})
+
+app.get('/api/pdf-lab/nico-qa-report', async (_req, res) => {
+  try {
+    const reportPath = '/tmp/pdf-lab-nico-qa-report-smoke.json'
+    const extractionPath = pdfLabPublicPath('pdf-lab-nist-full-extraction.json')
+    const workflowManifestPath = pdfLabPublicPath('pdf-lab-nist-workflow-manifest.json')
+    const evidenceManifestPath = '/tmp/pdf-lab-evidence-artifacts-smoke/manifest.json'
+    if (!existsSync(reportPath)) {
+      if (!existsSync(extractionPath)) throw new Error(`missing_artifact: ${extractionPath}`)
+      if (!existsSync(evidenceManifestPath)) throw new Error(`missing_artifact: ${evidenceManifestPath}`)
+      await execFileAsync(
+        PDF_OXIDE_PYTHON,
+        [
+          PDF_LAB_NICO_QA_REPORT_SCRIPT,
+          '--extraction', extractionPath,
+          '--evidence-manifest', evidenceManifestPath,
+          '--out', reportPath,
+          '--sample-size', '12',
+          '--seed', '53',
+        ],
+        { timeout: 120_000, maxBuffer: 20 * 1024 * 1024 },
+      )
+    }
+    const report = await readJsonFile<JsonRecord>(reportPath)
+    const workflowManifest = existsSync(workflowManifestPath)
+      ? await readJsonFile<JsonRecord>(workflowManifestPath)
+      : null
+    const evidenceArtifacts = workflowManifest && typeof workflowManifest.evidence_artifacts === 'object'
+      ? workflowManifest.evidence_artifacts as JsonRecord
+      : null
+    const promotedManifestUri = typeof evidenceArtifacts?.manifest_uri === 'string'
+      ? evidenceArtifacts.manifest_uri
+      : null
+    const promotedManifestPath = promotedManifestUri
+      ? pdfLabPublicPath(promotedManifestUri.replace(/^\/+/, ''))
+      : null
+    const promotedManifest = promotedManifestPath && existsSync(promotedManifestPath)
+      ? await readJsonFile<JsonRecord>(promotedManifestPath)
+      : null
+    const promotedElements = promotedManifest && Array.isArray(promotedManifest.elements)
+      ? promotedManifest.elements as JsonRecord[]
+      : []
+    const promotedByElementId = new Map(
+      promotedElements
+        .filter((element) => typeof element.element_id === 'string')
+        .map((element) => [String(element.element_id), element]),
+    )
+    if (Array.isArray(report.samples)) {
+      report.samples = report.samples.map((sample): JsonRecord => {
+        if (!sample || typeof sample !== 'object') return sample as JsonRecord
+        const record = sample as JsonRecord
+        const promoted = promotedByElementId.get(String(record.element_id ?? ''))
+        if (!promoted) return record
+        return {
+          ...record,
+          page_image_uri: pdfLabPublicUrlFromPath(promoted.page_image_uri) ?? record.page_image_uri,
+          crop_uri: pdfLabPublicUrlFromPath(promoted.crop_uri) ?? record.crop_uri,
+          extracted_json_fragment: promoted,
+        }
+      })
+    }
+    return res.json({ ok: true, report, source: reportPath })
+  } catch (e) {
+    return res.status(500).json({
+      error: 'Failed to load PDF Lab Nico QA report',
       detail: e instanceof Error ? e.message : String(e),
     })
   }

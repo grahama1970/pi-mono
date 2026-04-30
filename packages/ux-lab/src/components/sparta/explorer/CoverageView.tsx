@@ -12,7 +12,9 @@ interface CoveragePayload {
   refreshing?: boolean
   supervisor?: SupervisorState | null
   corpus?: Record<string, number>
+  qraTrust?: QraTrustStatus
   corpusInventory?: CorpusInventory
+  controlFrameworks?: ControlFrameworkRow[]
   monitor?: {
     checks?: MonitorCheck[]
     passed?: number
@@ -27,6 +29,23 @@ interface CoveragePayload {
     c2cAuditPath?: string
     nonC2cAuditPath?: string
   }
+}
+
+interface QraTrustStatus {
+  status?: string
+  label?: string
+  expert_blessed?: boolean
+  reviewer?: string | null
+  blessed_at?: string | null
+  scope?: string[]
+  counts?: {
+    legacy?: number
+    canonical?: number
+    relationship?: number
+    total?: number
+  }
+  use_policy?: string
+  next_action?: string
 }
 
 interface CorpusInventoryLane {
@@ -45,6 +64,30 @@ interface CorpusInventory {
   urls?: CorpusInventoryLane
   url_knowledge?: CorpusInventoryLane
   datalake_chunks?: CorpusInventoryLane
+}
+
+interface ControlFrameworkRow {
+  framework?: string
+  controls?: number
+  quality_gaps?: number
+  missing_descriptions?: number
+  missing_embeddings?: number
+  raw_frameworks?: string[]
+  defects?: ControlFrameworkDefect[]
+  status?: string
+  action_code?: string
+  action_label?: string
+  risk?: string
+  safe_default?: string
+  requires_checkpoint?: boolean
+  command_payload?: Record<string, unknown>
+}
+
+interface ControlFrameworkDefect {
+  control_id?: string
+  title?: string
+  gap_types?: string[]
+  description_length?: number
 }
 
 interface SupervisorLane {
@@ -161,7 +204,9 @@ function compactForLocalCache(payload: CoveragePayload): CoveragePayload {
     stale: payload.stale,
     refreshing: payload.refreshing,
     corpus: payload.corpus,
+    qraTrust: payload.qraTrust,
     corpusInventory: payload.corpusInventory,
+    controlFrameworks: payload.controlFrameworks,
     monitor: payload.monitor,
     bestPractices: payload.bestPractices,
     promptAudit: payload.promptAudit,
@@ -187,7 +232,50 @@ function formatMaybe(value: unknown): string {
   return formatNum(value)
 }
 
-function getImmediateSteps(data: CoveragePayload | null): string[] {
+function frameworkSlug(value: unknown): string {
+  return String(value ?? 'unknown')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'unknown'
+}
+
+function frameworkRank(value: unknown): number {
+  const framework = String(value ?? '').toLowerCase()
+  if (framework.includes('sparta')) return 10
+  if (framework.includes('nist')) return 20
+  if (framework.includes('iso')) return 21
+  if (framework.includes('att&ck') || framework.includes('attck') || framework.includes('attack')) return 30
+  if (framework.includes('capec')) return 31
+  if (framework.includes('cwe')) return 32
+  if (framework.includes('d3fend')) return 40
+  if (framework.includes('esa')) return 41
+  if (framework.includes('nvd') || framework.includes('cve')) return 50
+  if (framework.includes('nasa')) return 60
+  return 99
+}
+
+interface ImmediateStepInput {
+  data: CoveragePayload | null
+  heartbeatFresh: boolean
+  heartbeatAgeSeconds: number | null
+  reviewRequiredCount: number
+  attentionCount: number
+  dryRunPlanCount: number
+  controlQualityGaps: number
+  qualityGapFrameworks: string[]
+}
+
+function getImmediateSteps({
+  data,
+  heartbeatFresh,
+  heartbeatAgeSeconds,
+  reviewRequiredCount,
+  attentionCount,
+  dryRunPlanCount,
+  controlQualityGaps,
+  qualityGapFrameworks,
+}: ImmediateStepInput): string[] {
   const remaining = data?.monitor?.remaining ?? {}
   const failedChecks = data?.monitor?.checks?.filter((check) => !check.ok) ?? []
   const steps: string[] = []
@@ -195,6 +283,21 @@ function getImmediateSteps(data: CoveragePayload | null): string[] {
   const implemented = remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0
   const comparison = remaining.sparta_control_to_control_gated_pairs ?? 0
 
+  if (data?.stale || !heartbeatFresh) {
+    steps.push(`Refresh or rerun the read-only audit before signoff; snapshot is ${data?.stale ? 'stale' : 'not yet trusted'} and heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}.`)
+  }
+  if (reviewRequiredCount > 0) {
+    steps.push(`Review ${formatNum(reviewRequiredCount)} supervisor-gated command(s) before mutation-capable remediation.`)
+  }
+  if (attentionCount > 0) {
+    steps.push(`Triage ${formatNum(attentionCount)} attention item(s) before treating the project as clean.`)
+  }
+  if (dryRunPlanCount > 0) {
+    steps.push(`Inspect ${formatNum(dryRunPlanCount)} dry-run remediation plan(s); do not execute repairs without an explicit checkpoint/review gate.`)
+  }
+  if (controlQualityGaps > 0) {
+    steps.push(`Repair or explicitly waive ${formatNum(controlQualityGaps)} control-quality gap(s): ${qualityGapFrameworks.join(', ')}.`)
+  }
   if (exactRemaining > 0) {
     steps.push(`Run the remaining /create-qras work: ${formatNum(exactRemaining)} exact calls (${formatNum(implemented)} implemented + ${formatNum(comparison)} comparison).`)
   }
@@ -274,8 +377,32 @@ export function CoverageView() {
   useRegisterAction('coverage:button:run-audit', {
     app: 'sparta-explorer',
     action: 'QUEUE_SUPERVISOR_AUDIT',
-    label: 'Run Audit Now',
+    label: 'Run Read-Only Audit',
     description: 'Queue a read-only SPARTA supervisor audit command',
+  })
+  useRegisterAction('coverage:action:inspect-row', {
+    app: 'sparta-explorer',
+    action: 'INSPECT_COVERAGE_ROW',
+    label: 'Inspect Row',
+    description: 'Inspect a SPARTA coverage row without mutating data',
+  })
+  useRegisterAction('coverage:action:verify-row', {
+    app: 'sparta-explorer',
+    action: 'VERIFY_COVERAGE_ROW',
+    label: 'Verify Row',
+    description: 'Queue a read-only verification for a SPARTA coverage row',
+  })
+  useRegisterAction('coverage:action:plan-repair', {
+    app: 'sparta-explorer',
+    action: 'PLAN_REPAIR',
+    label: 'Plan Repair',
+    description: 'Queue a review-gated repair plan without executing mutations',
+  })
+  useRegisterAction('coverage:action:plan-all-repairs', {
+    app: 'sparta-explorer',
+    action: 'PLAN_ALL_REPAIRS',
+    label: 'Plan All Repairs',
+    description: 'Queue review-gated repair planning for all current coverage gaps',
   })
 
   const [data, setData] = useState<CoveragePayload | null>(() => readLocalCache())
@@ -393,11 +520,30 @@ export function CoverageView() {
     }
   }, [loadSupervisor])
 
+  const queueSupervisorCommand = useCallback(async (command: Record<string, unknown>, successLabel: string) => {
+    setCommandMessage(null)
+    try {
+      const res = await fetch(`${API}/api/sparta/supervisor-command`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(command),
+      })
+      const body = await res.json()
+      if (!res.ok) throw new Error(body?.detail || body?.error || `HTTP ${res.status}`)
+      setCommandMessage(`${successLabel}: ${body.command_id ?? 'supervisor command'}.`)
+      loadSupervisor()
+    } catch (err) {
+      setCommandMessage(err instanceof Error ? err.message : String(err))
+    }
+  }, [loadSupervisor])
+
   const remaining: RemainingSummary = data?.monitor?.remaining ?? {}
   const checks = data?.monitor?.checks ?? []
   const bestPractices = data?.bestPractices ?? []
   const corpus = data?.corpus ?? {}
+  const qraTrust = data?.qraTrust
   const corpusInventory = data?.corpusInventory ?? {}
+  const controlFrameworks = data?.controlFrameworks ?? []
   const supervisorState = supervisor ?? data?.supervisor ?? null
   const supervisorHeartbeat = supervisorState?.heartbeat_at ? new Date(supervisorState.heartbeat_at) : null
   const heartbeatAgeSeconds = supervisorHeartbeat ? Math.max(0, Math.round((Date.now() - supervisorHeartbeat.getTime()) / 1000)) : null
@@ -430,7 +576,6 @@ export function CoverageView() {
   const allPromptRows = data?.promptAudit?.allRows ?? promptAuditRows
   const promptAuditByKind = Object.fromEntries(promptAuditRows.flatMap((row) => promptAuditKeys(row).map((key) => [key, row])))
   const hasData = Boolean(data?.corpus || data?.monitor || data?.bestPractices)
-  const immediateSteps = getImmediateSteps(data)
   const spartaNativeMissing =
     (promptKinds.sparta_tactic_canonical ?? 0) +
     (promptKinds.sparta_technique_canonical ?? 0) +
@@ -439,15 +584,178 @@ export function CoverageView() {
     (promptKinds.sparta_tactic_technique_relationship ?? 0) +
     (promptKinds.sparta_technique_countermeasure_relationship ?? 0) +
     (remaining.sparta_control_to_control_gated_pairs ?? 0)
-  const corpusRows = [
-    { lane: 'Controls', have: corpus.controls, missing: 0, next: 'Baseline inventory loaded.' },
-    { lane: 'Canonical QRAs', have: corpus.qrasCanonical, missing: spartaNativeMissing, next: 'Run remaining SPARTA native QRA jobs.' },
-    { lane: 'Relationship QRAs', have: corpus.qrasRelationship, missing: spartaRelationshipMissing, next: 'Run remaining SPARTA relationship + C2C jobs.' },
-    { lane: 'Legacy QRAs', have: corpus.qrasLegacy, missing: corpusInventory.legacy_qras?.missing ?? 0, next: corpusInventory.legacy_qras?.next ?? 'Reference-only legacy corpus; excluded from completion target.' },
-    { lane: 'Relationships', have: corpus.relationships, missing: corpusInventory.relationships?.missing ?? 0, next: corpusInventory.relationships?.next ?? 'Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative.' },
-    { lane: 'URLs', have: corpus.urls, missing: corpusInventory.urls?.missing ?? 0, next: corpusInventory.urls?.next ?? 'URL fetch/content audit wired from sparta_urls and sparta_url_content.' },
-    { lane: 'URL Knowledge', have: corpus.urlKnowledge, missing: corpusInventory.url_knowledge?.missing ?? 0, next: corpusInventory.url_knowledge?.next ?? 'URL knowledge inventory wired from sparta_url_knowledge.' },
-    { lane: 'Datalake Chunks', have: corpus.datalakeChunks, missing: corpusInventory.datalake_chunks?.missing ?? 0, next: corpusInventory.datalake_chunks?.next ?? 'Generic datalake is reference inventory; SPARTA source embedding coverage is audited separately.' },
+  const sortedControlFrameworks = [...controlFrameworks].sort((left, right) => {
+    const rankDelta = frameworkRank(left.framework) - frameworkRank(right.framework)
+    if (rankDelta !== 0) return rankDelta
+    return String(left.framework ?? '').localeCompare(String(right.framework ?? ''))
+  })
+  const controlFrameworkRows = sortedControlFrameworks.map((row) => {
+      const qualityGaps = Number(row.quality_gaps ?? 0)
+      const missingDescriptions = Number(row.missing_descriptions ?? 0)
+      const missingEmbeddings = Number(row.missing_embeddings ?? 0)
+      return {
+        framework: row.framework ?? 'UNKNOWN',
+        frameworkSlug: frameworkSlug(row.framework),
+        controls: Number(row.controls ?? 0),
+        missingDescriptions,
+        missingEmbeddings,
+        qualityGaps,
+        rawFrameworks: row.raw_frameworks ?? [],
+        defects: row.defects ?? [],
+        actionCode: row.action_code ?? (qualityGaps === 0 ? 'inspect_control_framework' : 'repair_control_quality'),
+        actionLabel: row.action_label ?? (qualityGaps === 0 ? 'Inspect' : 'Plan Repair'),
+        risk: row.risk ?? (qualityGaps === 0 ? 'read_only' : 'review_required'),
+        safeDefault: row.safe_default ?? 'observe_only',
+        requiresCheckpoint: row.requires_checkpoint ?? qualityGaps > 0,
+        commandPayload: row.command_payload ?? { framework: row.framework, gap_count: qualityGaps },
+        next: qualityGaps === 0
+          ? 'Observe — framework inventory loaded; no quality gaps detected.'
+          : `Repair quality gaps — ${formatNum(missingDescriptions)} short description(s), ${formatNum(missingEmbeddings)} missing embedding(s).`,
+      }
+    })
+  const controlFrameworkSummary = controlFrameworkRows.reduce(
+    (summary, row) => ({
+      controls: summary.controls + row.controls,
+      missingDescriptions: summary.missingDescriptions + row.missingDescriptions,
+      missingEmbeddings: summary.missingEmbeddings + row.missingEmbeddings,
+      qualityGaps: summary.qualityGaps + row.qualityGaps,
+    }),
+    { controls: 0, missingDescriptions: 0, missingEmbeddings: 0, qualityGaps: 0 },
+  )
+  const qualityGapFrameworks = controlFrameworkRows.filter((row) => row.qualityGaps > 0).map((row) => row.framework)
+  const immediateSteps = getImmediateSteps({
+    data,
+    heartbeatFresh,
+    heartbeatAgeSeconds,
+    reviewRequiredCount,
+    attentionCount,
+    dryRunPlanCount: remediationPlans.length,
+    controlQualityGaps: controlFrameworkSummary.qualityGaps,
+    qualityGapFrameworks,
+  })
+  const readinessBlockers = immediateSteps.filter((step) => !step.startsWith('Loading the first coverage snapshot') && !step.startsWith('Run the remaining /create-qras work'))
+  const chatReady = hasData && readinessBlockers.length === 0 && controlFrameworkSummary.qualityGaps === 0
+  const readinessStatus = chatReady ? 'READY' : 'BLOCKED'
+  const readinessReason = chatReady
+    ? 'All visible coverage and supervisor readiness gates are clean.'
+    : readinessBlockers.slice(0, 3).join(' ')
+  const personaReadinessRows = [
+    {
+      persona: 'Brandon Bailey',
+      evidence: 'SPARTA source fidelity, CWE relevance, C2C grounding',
+      blocking: controlFrameworkSummary.qualityGaps > 0 ? `${formatNum(controlFrameworkSummary.qualityGaps)} control-quality gap(s)` : readinessStatus === 'BLOCKED' ? 'Supervisor/readiness gates open' : 'none',
+      action: 'Verify Brandon sample',
+      command: 'conversation-lab readiness --persona brandon-bailey --dry-run',
+    },
+    {
+      persona: 'Margaret Chen',
+      evidence: 'Extraction fidelity, traceability, formalizable requirements',
+      blocking: readinessStatus === 'BLOCKED' ? 'Trace/source sample signoff pending' : 'none',
+      action: 'Verify V&V sample',
+      command: 'conversation-lab readiness --persona margaret-chen --dry-run',
+    },
+    {
+      persona: 'Jennifer Cheung',
+      evidence: 'NIST/CMMC/CUI framing, RMF mission assurance',
+      blocking: readinessStatus === 'BLOCKED' ? 'Compliance readiness sample pending' : 'none',
+      action: 'Verify compliance sample',
+      command: 'conversation-lab readiness --persona jennifer-cheung --dry-run',
+    },
+  ]
+  const handleFrameworkAction = (row: (typeof controlFrameworkRows)[number]) => {
+    const isRepair = row.qualityGaps > 0
+    void queueSupervisorCommand({
+      source: 'ui',
+      intent: isRepair ? 'plan_control_quality_repair' : 'inspect_control_framework_quality',
+      risk: isRepair ? 'mutation' : 'read_only',
+      target_lane: 'control_quality',
+      payload: {
+        ...row.commandPayload,
+        framework: row.framework,
+        action_code: row.actionCode,
+        safe_default: row.safeDefault,
+        requires_checkpoint: row.requiresCheckpoint,
+      },
+    }, isRepair ? 'Queued review-gated repair plan' : 'Queued read-only inspection')
+  }
+  const handlePlanAllRepairs = () => {
+    const rows = controlFrameworkRows.filter((row) => row.qualityGaps > 0)
+    void queueSupervisorCommand({
+      source: 'ui',
+      intent: 'plan_all_control_quality_repairs',
+      risk: 'mutation',
+      target_lane: 'control_quality',
+      payload: {
+        safe_default: 'observe_only',
+        requires_checkpoint: true,
+        affected_frameworks: rows.map((row) => ({
+          framework: row.framework,
+          quality_gaps: row.qualityGaps,
+          defects: row.defects,
+        })),
+      },
+    }, 'Queued review-gated plan for all repairs')
+  }
+  const handlePersonaVerify = (persona: string) => {
+    void queueSupervisorCommand({
+      source: 'ui',
+      intent: 'verify_persona_conversation_readiness',
+      risk: 'read_only',
+      target_lane: 'conversation_lab_readiness',
+      payload: {
+        persona,
+        blockers: readinessBlockers,
+        safe_default: 'observe_only',
+      },
+    }, `Queued ${persona} readiness verification`)
+  }
+  const qraTrustLabel = qraTrust?.label ?? 'System-Test Ready'
+  const qraTrustStatus = qraTrust?.status ?? 'plausible_for_system_test'
+  const qraEvidenceRows = [
+    {
+      lane: 'Current QRA Trust',
+      status: qraTrustLabel,
+      value: qraTrustStatus,
+      meaning: qraTrust?.use_policy ?? 'Current QRAs are plausible corpus artifacts for system testing; they are not yet Aerospace Corp expert-blessed answers.',
+      action: qraTrust?.next_action ?? 'Use for verification-only system tests until expert blessing metadata exists.',
+    },
+    {
+      lane: 'Expert Blessing',
+      status: qraTrust?.expert_blessed ? 'EXPERT BLESSED' : 'NOT YET BLESSED',
+      value: qraTrust?.expert_blessed ? (qraTrust.reviewer ?? 'reviewed') : 'pending Aerospace Corp review',
+      meaning: qraTrust?.expert_blessed
+        ? `Blessed at ${qraTrust.blessed_at ?? 'unknown time'}.`
+        : 'Aerospace Corp cybersecurity experts will evaluate and bless QRAs after SPARTA Corpora and Explorer surfaces are complete.',
+      action: qraTrust?.expert_blessed ? 'Inspect blessing provenance.' : 'Do not present as final expert-approved evidence.',
+    },
+    {
+      lane: 'QRA Evidence Inventory',
+      status: 'OBSERVE',
+      value: `${formatNum(qraTrust?.counts?.total ?? corpus.qrasTotal)} total`,
+      meaning: `${formatNum(qraTrust?.counts?.canonical ?? corpus.qrasCanonical)} canonical · ${formatNum(qraTrust?.counts?.relationship ?? corpus.qrasRelationship)} relationship · ${formatNum(qraTrust?.counts?.legacy ?? corpus.qrasLegacy)} legacy.`,
+      action: 'Verify retrieval, evidence-case samples, and answer/clarify/deflect behavior before broad Chat use.',
+    },
+  ]
+  const otherCorpusRows = [
+    {
+      lane: 'Canonical QRAs',
+      have: corpus.qrasCanonical,
+      gapType: 'generation',
+      gapCount: spartaNativeMissing,
+      next: spartaNativeMissing > 0 ? 'Run remaining SPARTA native QRA jobs.' : 'Observe — SPARTA native QRA backlog is complete.',
+    },
+    {
+      lane: 'Relationship QRAs',
+      have: corpus.qrasRelationship,
+      gapType: 'generation',
+      gapCount: spartaRelationshipMissing,
+      next: spartaRelationshipMissing > 0 ? 'Run remaining SPARTA relationship + C2C jobs.' : 'Observe — relationship and C2C QRA backlog is complete.',
+    },
+    { lane: 'Legacy QRAs', have: corpus.qrasLegacy, gapType: 'reference', gapCount: corpusInventory.legacy_qras?.missing ?? 0, next: corpusInventory.legacy_qras?.next ?? 'Reference-only legacy corpus; excluded from completion target.' },
+    { lane: 'Relationships', have: corpus.relationships, gapType: 'graph', gapCount: corpusInventory.relationships?.missing ?? 0, next: corpusInventory.relationships?.next ?? 'Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative.' },
+    { lane: 'URLs', have: corpus.urls, gapType: 'content', gapCount: corpusInventory.urls?.missing ?? 0, next: corpusInventory.urls?.next ?? 'URL fetch/content audit wired from sparta_urls and sparta_url_content.' },
+    { lane: 'URL Knowledge', have: corpus.urlKnowledge, gapType: 'source text', gapCount: corpusInventory.url_knowledge?.missing ?? 0, next: corpusInventory.url_knowledge?.next ?? 'URL knowledge inventory wired from sparta_url_knowledge.' },
+    { lane: 'Datalake Chunks', have: corpus.datalakeChunks, gapType: 'reference', gapCount: corpusInventory.datalake_chunks?.missing ?? 0, next: corpusInventory.datalake_chunks?.next ?? 'Generic datalake is reference inventory; SPARTA source embedding coverage is audited separately.' },
   ]
   const qidCheck = bestPractices.find((check) => check.name === 'React data-qid coverage')
   const pythonCheck = bestPractices.find((check) => check.name === 'Python silent fallback scan')
@@ -495,7 +803,7 @@ export function CoverageView() {
       status: (remaining.exact_remaining_calls_total ?? 0) === 0 ? 'PASS' : 'OPEN',
       value: `${formatNum(remaining.exact_remaining_calls_total)} calls remaining`,
       meaning: `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} implemented + ${formatNum(remaining.sparta_control_to_control_gated_pairs)} comparison.`,
-      action: 'Auto Observe',
+      action: 'Observe',
     },
     {
       lane: 'Prompt Health',
@@ -509,7 +817,7 @@ export function CoverageView() {
       status: data?.monitor?.passed === data?.monitor?.total ? 'PASS' : 'FAIL',
       value: `${formatNum(data?.monitor?.passed)} / ${formatNum(data?.monitor?.total)} pass`,
       meaning: 'monitor-sparta full audit dimensions.',
-      action: 'Auto Observe',
+      action: 'Observe',
     },
     {
       lane: 'UX Coverage',
@@ -588,7 +896,7 @@ export function CoverageView() {
             onClick={runAuditNow}
             style={S.refresh}
           >
-            Run Audit Now
+            Run Read-Only Audit
           </button>
           <button
             data-qid="coverage:button:refresh"
@@ -605,38 +913,33 @@ export function CoverageView() {
 
       {error ? <div style={S.error}>Coverage API failed: {error}</div> : null}
       {commandMessage ? <div style={S.info}>{commandMessage}</div> : null}
-      <Section title="Supervisor Live State" subtitle="Browser WebSocket status, durable monitor-sparta heartbeat, and queued action visibility.">
-        <div style={S.supervisorGrid}>
-          <StatCard label="Connection" value={liveLabel} tone={liveTone} note="WebSocket + heartbeat freshness" />
-          <StatCard label="Heartbeat Age" value={heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`} tone={heartbeatFresh ? EMBRY.green : EMBRY.amber} note={supervisorState?.heartbeat_at ?? 'no heartbeat'} />
-          <StatCard label="Active Jobs" value={supervisorState?.active_jobs?.length ?? 0} tone={EMBRY.blue} note="Queued/running/review-required commands" />
-          <StatCard label="Attention" value={attentionCount} tone={attentionCount ? EMBRY.amber : EMBRY.green} note="needs_attention / review gates" />
-          <StatCard label="Review Gates" value={reviewRequiredCount} tone={reviewRequiredCount ? EMBRY.amber : EMBRY.green} note="review_required commands" />
-          <StatCard label="Slack/Voice" value={`${slackCount}/${voiceCount}`} tone={slackCount || voiceCount ? EMBRY.blue : EMBRY.dim} note="queued Slack / voice commands" />
-          <StatCard label="Dry-Run Plans" value={remediationPlans.length} tone={remediationPlans.length ? EMBRY.amber : EMBRY.green} note="observe-only remediation plans" />
+      <section data-qid="coverage:project-status-strip" data-entity-type="project-status" style={{ ...S.statusStrip, borderColor: `${liveTone}66` }}>
+        <div>
+          <div style={S.statusEyebrow}>Project Status</div>
+          <strong style={{ ...S.statusTitle, color: liveTone }}>{liveLabel === 'Live' ? 'Live snapshot' : `${liveLabel} snapshot`}</strong>
+          <span style={S.statusText}>
+            heartbeat {heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`} · snapshot {data?.generated_at ? new Date(data.generated_at).toLocaleString() : 'not loaded'} · next {typeof nextScheduled?.action === 'string' ? nextScheduled.action : 'not scheduled'}
+          </span>
         </div>
-        <div style={S.metaLine}>
-          Next: {typeof nextScheduled?.action === 'string' ? nextScheduled.action : 'not scheduled'} ·
-          Phase: {supervisorState?.phase ?? 'not loaded'} ·
-          Remediation: {supervisorState?.remediation_enabled ? 'enabled' : 'disabled'} ·
-          Approval: {supervisorState?.operator_approval_required ? 'required' : 'not required'}
+        <div style={S.statusMetrics}>
+          <span style={S.statusMetric}><b>{supervisorState?.active_jobs?.length ?? 0}</b> active jobs</span>
+          <span style={S.statusMetric}><b>{reviewRequiredCount}</b> review gates</span>
+          <span style={S.statusMetric}><b>{attentionCount}</b> attention</span>
+          <span style={S.statusMetric}><b>{remediationPlans.length}</b> dry-run plans</span>
         </div>
-        <div data-qid="coverage:supervisor:command-sources" data-qs-action="INSPECT_SUPERVISOR_COMMAND_SOURCES" style={S.metaLine}>
-          Sources: {formatCountMap(commandSourceCounts, ['ui', 'cli', 'discord', 'slack', 'voice'])}
-        </div>
-        <div data-qid="coverage:supervisor:command-gates" data-qs-action="INSPECT_SUPERVISOR_COMMAND_GATES" style={S.metaLine}>
-          Gates: {formatCountMap(commandStatusCounts, ['queued', 'dry_run', 'review_required', 'blocked'])} ·
-          Slack: {String(slackState?.blocked ? 'blocked' : slackState?.mode ?? 'dry_run')} ·
-          Voice: {voiceCount} queued transcript(s) ·
-          Checkpoint: {supervisorState?.checkpoint_required ? 'required' : 'not required'}
-        </div>
-      </Section>
+      </section>
       {!hasData ? (
         <div style={S.loadingPanel}>
           <strong>Loading coverage snapshot.</strong>
           <span>The full monitor-sparta audit is slow. This page will not render empty metric boxes as evidence.</span>
         </div>
       ) : null}
+
+      <Section title="Immediate Next Steps" subtitle="Actionable blockers derived from the current live audit snapshot.">
+        <ol style={S.steps}>
+          {immediateSteps.map((step) => <li key={step} style={S.step}>{step}</li>)}
+        </ol>
+      </Section>
 
       {hasData ? <Section title="State At A Glance" subtitle="Aggregate status first; details follow below.">
         <div style={S.tableCard}>
@@ -657,23 +960,146 @@ export function CoverageView() {
         </div>
       </Section> : null}
 
-      <Section title="Immediate Next Steps" subtitle="Actionable blockers derived from the current live audit snapshot.">
-        <ol style={S.steps}>
-          {immediateSteps.map((step) => <li key={step} style={S.step}>{step}</li>)}
-        </ol>
-      </Section>
+      {hasData ? <Section title="Chat / Conversation-Lab Readiness" subtitle="Persona conversations remain blocked until visible data-quality and supervisor gates are clean.">
+        <div style={S.tableCard}>
+          <table style={S.table}>
+            <thead><tr><th style={S.th}>Persona</th><th style={S.th}>Required Evidence</th><th style={S.th}>Status</th><th style={S.th}>Blocking Gaps</th><th style={S.th}>Next Action</th></tr></thead>
+            <tbody>
+              {personaReadinessRows.map((row) => (
+                <tr key={row.persona} data-qid={`coverage:readiness:${frameworkSlug(row.persona)}`} data-entity-type="persona-readiness" data-status={readinessStatus}>
+                  <td style={S.td}>{row.persona}</td>
+                  <td style={S.td}>{row.evidence}</td>
+                  <td style={S.td}><span style={{ ...S.pill, color: chatReady ? EMBRY.green : EMBRY.amber, borderColor: `${chatReady ? EMBRY.green : EMBRY.amber}66` }}>{readinessStatus}</span></td>
+                  <td style={S.td}>{row.blocking}</td>
+                  <td style={S.td}>
+                    <button data-qid={`coverage:readiness:verify:${frameworkSlug(row.persona)}`} data-qs-action="VERIFY_PERSONA_READINESS" title={`${row.action}: ${row.command}`} onClick={() => handlePersonaVerify(row.persona)} style={S.rowButton}>Verify</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ ...S.metaLine, color: chatReady ? EMBRY.green : EMBRY.amber }}>
+          {chatReady ? 'Chat is ready for normal SPARTA use.' : `Pre-signoff mode: ${readinessReason}`}
+        </div>
+      </Section> : null}
 
       {hasData ? (
-        <Section title="SPARTA Corpora" subtitle="Compact have/missing inventory. Reference-only corpora are explicit 0-missing lanes; actionable gaps must appear as numeric missing counts.">
+        <Section title="SPARTA Corpora" subtitle="Inventory composition and actionable gaps by corpus type. Control rows show quality gaps only; QRA rows show generation backlog.">
           <div style={S.tableCard}>
+            <div style={S.tableTitleRow}>
+              <h3 style={S.tableTitleInline}>Controls by Source Framework</h3>
+              <button data-qid="coverage:corpora:controls:plan-all-repairs" data-qs-action="PLAN_ALL_REPAIRS" title="Plan all current control-quality repairs behind supervisor review" disabled={controlFrameworkSummary.qualityGaps === 0} onClick={handlePlanAllRepairs} style={{ ...S.rowButton, opacity: controlFrameworkSummary.qualityGaps === 0 ? 0.45 : 1, cursor: controlFrameworkSummary.qualityGaps === 0 ? 'not-allowed' : 'pointer' }}>
+                Plan All Repairs
+              </button>
+            </div>
+            <div style={S.tableNote}>Counts show source-framework inventory composition, not coverage quality or framework priority.</div>
             <table style={S.table}>
-              <thead><tr><th style={S.th}>Lane</th><th style={S.th}>Have</th><th style={S.th}>Missing</th><th style={S.th}>Next Action</th></tr></thead>
+              <thead><tr><th style={S.th}>Framework</th><th style={S.th}>Controls</th><th style={S.th}>Short Desc</th><th style={S.th}>Embedding</th><th style={S.th}>Quality Gaps</th><th style={S.th}>Next Action</th></tr></thead>
               <tbody>
-                {corpusRows.map((row) => (
-                  <tr key={row.lane}>
+                {controlFrameworkRows.length > 0 ? (
+                  <>
+                    <tr data-qid="coverage:corpora:controls:all-frameworks" data-entity-type="control-framework-summary" data-controls={controlFrameworkSummary.controls} data-quality-gaps={controlFrameworkSummary.qualityGaps} data-action-code={controlFrameworkSummary.qualityGaps === 0 ? 'observe' : 'repair_control_quality'} style={S.summaryRow}>
+                      <td style={S.td}>Controls, all frameworks</td>
+                      <td style={S.tdStrong}>{formatNum(controlFrameworkSummary.controls)}</td>
+                      <td style={S.tdStrong}>{formatNum(controlFrameworkSummary.missingDescriptions)}</td>
+                      <td style={S.tdStrong}>{formatNum(controlFrameworkSummary.missingEmbeddings)}</td>
+                      <td style={{ ...S.tdStrong, color: controlFrameworkSummary.qualityGaps === 0 ? EMBRY.dim : EMBRY.amber }}>{formatNum(controlFrameworkSummary.qualityGaps)}</td>
+                      <td style={S.td}>Inventory loaded; inspect framework composition below.</td>
+                    </tr>
+                    {controlFrameworkRows.map((row) => (
+                      <tr
+                        key={row.framework}
+                        data-qid={`coverage:corpora:controls:${row.frameworkSlug}`}
+                        data-entity-type="control-framework"
+                        data-framework={row.framework}
+                        data-controls={row.controls}
+                        data-quality-gaps={row.qualityGaps}
+                        data-missing-descriptions={row.missingDescriptions}
+                        data-missing-embeddings={row.missingEmbeddings}
+                        data-action-code={row.actionCode}
+                        data-raw-frameworks={row.rawFrameworks.join('|')}
+                      >
+                        <td style={S.td} title={row.rawFrameworks.length ? `Raw aliases: ${row.rawFrameworks.join(', ')}` : undefined}>
+                          <span style={S.frameworkLabel}>{row.framework}</span>
+                        </td>
+                        <td style={S.tdStrong}>{formatNum(row.controls)}</td>
+                        <td style={S.tdStrong}>{formatNum(row.missingDescriptions)}</td>
+                        <td style={S.tdStrong}>{formatNum(row.missingEmbeddings)}</td>
+                        <td style={{ ...S.tdStrong, color: row.qualityGaps === 0 ? EMBRY.dim : EMBRY.amber }}>{formatNum(row.qualityGaps)}</td>
+                        <td style={S.td}>
+                          <div style={S.actionStack}>
+                            <span>{row.next}</span>
+                            <div style={S.actionButtons}>
+                              <button data-qid={`coverage:corpora:controls:${row.frameworkSlug}:inspect`} data-qs-action="INSPECT_COVERAGE_ROW" title={`Inspect ${row.framework} evidence and inventory`} onClick={() => handleFrameworkAction({ ...row, qualityGaps: 0, actionCode: 'inspect_control_framework', actionLabel: 'Inspect' })} style={S.rowButton}>Inspect</button>
+                              <button data-qid={`coverage:corpora:controls:${row.frameworkSlug}:verify`} data-qs-action="VERIFY_COVERAGE_ROW" title={`Run read-only verification for ${row.framework}`} onClick={() => handleFrameworkAction({ ...row, qualityGaps: 0, actionCode: 'verify_control_framework', actionLabel: 'Verify' })} style={S.rowButton}>Verify</button>
+                              {row.qualityGaps > 0 ? <button data-qid={`coverage:corpora:controls:${row.frameworkSlug}:plan-repair`} data-qs-action="PLAN_REPAIR" title={`Plan review-gated repair for ${row.framework}`} onClick={() => handleFrameworkAction(row)} style={{ ...S.rowButton, color: EMBRY.amber, borderColor: `${EMBRY.amber}66` }}>Plan Repair</button> : null}
+                            </div>
+                            {row.defects.length ? (
+                              <div style={S.defectList}>
+                                {row.defects.map((defect) => (
+                                  <div key={`${row.framework}-${defect.control_id}-${defect.gap_types?.join('-')}`} style={S.defectItem}>
+                                    <code style={S.inlineCode}>{defect.control_id ?? 'unknown'}</code>
+                                    {' '}· {defect.gap_types?.join(', ') ?? 'quality_gap'}
+                                    {' '}· desc len {formatNum(defect.description_length)}
+                                    {defect.title ? ` · ${defect.title}` : ''}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                  <tr data-qid="coverage:corpora:controls:framework-inventory-missing" data-entity-type="control-framework-diagnostic" data-action-code="inspect_api_mapping">
+                    <td style={S.td}>Controls by Framework</td>
+                    <td style={S.tdStrong}>not loaded</td>
+                    <td style={S.tdStrong}>not loaded</td>
+                    <td style={S.tdStrong}>not loaded</td>
+                    <td style={{ ...S.tdStrong, color: EMBRY.amber }}>not loaded</td>
+                    <td style={S.td}>Framework inventory missing from payload; inspect <code style={S.inlineCode}>/api/sparta/coverage-health.controlFrameworks</code>.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ ...S.tableCard, marginTop: 12 }}>
+            <h3 style={S.tableTitle}>QRA Evidence Layer</h3>
+            <div style={S.tableNote}>Current QRAs are system-test artifacts until Aerospace Corp cybersecurity experts complete blessing review.</div>
+            <table style={S.table}>
+              <thead><tr><th style={S.th}>Lane</th><th style={S.th}>Status</th><th style={S.th}>Value</th><th style={S.th}>Meaning</th><th style={S.th}>Next Action</th></tr></thead>
+              <tbody>
+                {qraEvidenceRows.map((row) => (
+                  <tr
+                    key={row.lane}
+                    data-qid={`coverage:qra-trust:${frameworkSlug(row.lane)}`}
+                    data-entity-type="qra-trust"
+                    data-trust-status={qraTrustStatus}
+                    data-expert-blessed={qraTrust?.expert_blessed ? 'true' : 'false'}
+                  >
+                    <td style={S.td}>{row.lane}</td>
+                    <td style={S.td}><span style={{ ...S.pill, color: row.status === 'System-Test Ready' ? EMBRY.amber : qraTrust?.expert_blessed ? EMBRY.green : EMBRY.dim, borderColor: `${row.status === 'System-Test Ready' ? EMBRY.amber : qraTrust?.expert_blessed ? EMBRY.green : EMBRY.dim}66` }}>{row.status}</span></td>
+                    <td style={S.tdStrong}>{row.value}</td>
+                    <td style={S.td}>{row.meaning}</td>
+                    <td style={S.td}>{row.action}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ ...S.tableCard, marginTop: 12 }}>
+            <h3 style={S.tableTitle}>Other Corpora and QRA Backlog</h3>
+            <table style={S.table}>
+              <thead><tr><th style={S.th}>Framework / Corpus</th><th style={S.th}>Have</th><th style={S.th}>Gap Type</th><th style={S.th}>Gap Count</th><th style={S.th}>Next Action</th></tr></thead>
+              <tbody>
+                {otherCorpusRows.map((row) => (
+                  <tr key={row.lane} data-qid={`coverage:corpora:other:${frameworkSlug(row.lane)}`} data-entity-type="corpus-inventory" data-gap-type={row.gapType} data-gap-count={row.gapCount}>
                     <td style={S.td}>{row.lane}</td>
                     <td style={S.tdStrong}>{formatNum(row.have)}</td>
-                    <td style={S.tdStrong}>{formatMaybe(row.missing)}</td>
+                    <td style={S.td}>{row.gapType}</td>
+                    <td style={S.tdStrong}>{formatMaybe(row.gapCount)}</td>
                     <td style={S.td}>{row.next}</td>
                   </tr>
                 ))}
@@ -731,6 +1157,33 @@ export function CoverageView() {
           </div>
         </div>
       </Section> : null}
+
+      <Section title="Supervisor Details" subtitle="Browser WebSocket status, durable monitor-sparta heartbeat, and queued action visibility.">
+        <div style={S.supervisorGrid}>
+          <StatCard label="Connection" value={liveLabel} tone={liveTone} note="WebSocket + heartbeat freshness" />
+          <StatCard label="Heartbeat Age" value={heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`} tone={heartbeatFresh ? EMBRY.green : EMBRY.amber} note={supervisorState?.heartbeat_at ?? 'no heartbeat'} />
+          <StatCard label="Active Jobs" value={supervisorState?.active_jobs?.length ?? 0} tone={EMBRY.blue} note="Queued/running/review-required commands" />
+          <StatCard label="Attention" value={attentionCount} tone={attentionCount ? EMBRY.amber : EMBRY.green} note="needs_attention / review gates" />
+          <StatCard label="Review Gates" value={reviewRequiredCount} tone={reviewRequiredCount ? EMBRY.amber : EMBRY.green} note="review_required commands" />
+          <StatCard label="Slack/Voice" value={`${slackCount}/${voiceCount}`} tone={slackCount || voiceCount ? EMBRY.blue : EMBRY.dim} note="queued Slack / voice commands" />
+          <StatCard label="Dry-Run Plans" value={remediationPlans.length} tone={remediationPlans.length ? EMBRY.amber : EMBRY.green} note="observe-only remediation plans" />
+        </div>
+        <div style={S.metaLine}>
+          Next: {typeof nextScheduled?.action === 'string' ? nextScheduled.action : 'not scheduled'} ·
+          Phase: {supervisorState?.phase ?? 'not loaded'} ·
+          Remediation: {supervisorState?.remediation_enabled ? 'enabled' : 'disabled'} ·
+          Approval: {supervisorState?.operator_approval_required ? 'required' : 'not required'}
+        </div>
+        <div data-qid="coverage:supervisor:command-sources" data-qs-action="INSPECT_SUPERVISOR_COMMAND_SOURCES" style={S.metaLine}>
+          Sources: {formatCountMap(commandSourceCounts, ['ui', 'cli', 'discord', 'slack', 'voice'])}
+        </div>
+        <div data-qid="coverage:supervisor:command-gates" data-qs-action="INSPECT_SUPERVISOR_COMMAND_GATES" style={S.metaLine}>
+          Gates: {formatCountMap(commandStatusCounts, ['queued', 'dry_run', 'review_required', 'blocked'])} ·
+          Slack: {String(slackState?.blocked ? 'blocked' : slackState?.mode ?? 'dry_run')} ·
+          Voice: {voiceCount} queued transcript(s) ·
+          Checkpoint: {supervisorState?.checkpoint_required ? 'required' : 'not required'}
+        </div>
+      </Section>
 
       {hasData ? <Section title="SPARTA Prompt Inventory" subtitle={`${data?.promptAudit?.all_passed ?? 0}/${data?.promptAudit?.all_total ?? 0} scanned prompt files pass the local best-practices-prompt gate; active generation prompts are tracked separately above.`}>
         <div style={S.tableCard}>
@@ -812,6 +1265,12 @@ const S: Record<string, React.CSSProperties> = {
   error: { border: `1px solid ${EMBRY.red}`, color: EMBRY.red, background: '#2a1111', padding: 12, marginBottom: 16 },
   info: { border: `1px solid ${EMBRY.blue}`, color: EMBRY.blue, background: '#081626', padding: 12, marginBottom: 16 },
   loadingPanel: { display: 'grid', gap: 6, border: `1px solid ${EMBRY.amber}`, color: EMBRY.amber, background: '#1f1705', padding: 12, marginBottom: 16 },
+  statusStrip: { display: 'flex', justifyContent: 'space-between', gap: 16, alignItems: 'center', flexWrap: 'wrap', border: '1px solid', background: EMBRY.bgPanel, padding: '12px 14px', marginBottom: 14 },
+  statusEyebrow: { fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: EMBRY.dim, fontWeight: 800 },
+  statusTitle: { display: 'block', fontSize: 18, lineHeight: 1.25 },
+  statusText: { display: 'block', color: EMBRY.muted, fontSize: 12, marginTop: 3 },
+  statusMetrics: { display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' },
+  statusMetric: { border: `1px solid ${EMBRY.border}`, padding: '3px 7px', fontSize: 11, background: '#172033', color: EMBRY.white },
   section: { border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, padding: 16, marginBottom: 18 },
   sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14 },
   heading: { margin: 0, fontSize: 17, color: EMBRY.white },
@@ -825,11 +1284,21 @@ const S: Record<string, React.CSSProperties> = {
   twoCol: { display: 'grid', gridTemplateColumns: '1fr', gap: 12, marginTop: 12 },
   tableCard: { background: EMBRY.bgCard, border: `1px solid ${EMBRY.border}`, overflow: 'auto' },
   tableTitle: { fontSize: 12, margin: 0, padding: 12, color: EMBRY.white, borderBottom: `1px solid ${EMBRY.border}` },
+  tableTitleRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: 12, borderBottom: `1px solid ${EMBRY.border}` },
+  tableTitleInline: { fontSize: 12, margin: 0, color: EMBRY.white },
+  tableNote: { padding: '10px 12px', color: EMBRY.muted, fontSize: 12, borderBottom: `1px solid ${EMBRY.border}` },
   table: { width: '100%', borderCollapse: 'collapse', fontSize: 12 },
   th: { padding: '10px 12px', color: EMBRY.dim, textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase' },
   td: { padding: '10px 12px', color: EMBRY.white, borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: 'top' },
   tdStrong: { padding: '10px 12px', color: EMBRY.white, borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: 'top', fontSize: 15, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' },
+  summaryRow: { background: 'rgba(148, 163, 184, 0.06)' },
+  frameworkLabel: { display: 'inline-flex', paddingLeft: 10, borderLeft: `3px solid ${EMBRY.blue}`, minHeight: 18, alignItems: 'center' },
   pill: { display: 'inline-flex', border: '1px solid', padding: '3px 7px', fontSize: 10, fontWeight: 800, letterSpacing: '0.08em' },
+  actionStack: { display: 'grid', gap: 8 },
+  actionButtons: { display: 'flex', flexWrap: 'wrap', gap: 6 },
+  rowButton: { border: `1px solid ${EMBRY.border}`, background: '#172033', color: EMBRY.white, padding: '5px 8px', minHeight: 30, fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer' },
+  defectList: { display: 'grid', gap: 4, paddingTop: 4 },
+  defectItem: { color: EMBRY.muted, fontSize: 11, lineHeight: 1.45 },
   artifacts: { display: 'grid', gap: 8 },
   code: { display: 'block', padding: 10, background: '#0b0b0b', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, whiteSpace: 'pre-wrap', wordBreak: 'break-word' },
   inlineCode: { color: EMBRY.dim, fontSize: 10, whiteSpace: 'pre-wrap', wordBreak: 'break-word' },

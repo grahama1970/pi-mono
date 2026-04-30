@@ -46,6 +46,8 @@ const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaV
 const ScillmMonitor = React.lazy(() => import('./components/scillm/ScillmDashboard').then(m => ({ default: m.ScillmDashboard })));
 const ComponentGalleryView = React.lazy(() => import('./components/gallery/ComponentGallery').then(m => ({ default: m.ComponentGallery })));
 const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m => ({ default: m.PdfLabView })));
+const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/InitialSweepStaticProof').then(m => ({ default: m.InitialSweepStaticProof })));
+const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
 
@@ -55,6 +57,7 @@ const SourcesView = React.lazy(() => import('./components/sparta/explorer/Source
 const ControlsView = React.lazy(() => import('./components/sparta/explorer/ControlsView').then(m => ({ default: m.ControlsView })));
 const URLsView = React.lazy(() => import('./components/sparta/explorer/URLsView').then(m => ({ default: m.URLsView })));
 const QRAsView = React.lazy(() => import('./components/sparta/explorer/QRAsView').then(m => ({ default: m.QRAsView })));
+const CoverageView = React.lazy(() => import('./components/sparta/explorer/CoverageView').then(m => ({ default: m.CoverageView })));
 const ThreatMatrixView = React.lazy(() => import('./components/sparta/explorer/ThreatMatrixView').then(m => ({ default: m.ThreatMatrixView })));
 const SupplyChainView = React.lazy(() => import('./components/sparta/explorer/SupplyChainView').then(m => ({ default: m.SupplyChainView })));
 import { motion, AnimatePresence } from 'motion/react';
@@ -72,12 +75,14 @@ type View = 'mockups' | 'components' | 'design-board' | 'reviews' | 'testing' | 
 const Mockups = ({ projectId }: { projectId: string }) => {
   const [mockups, setMockups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activePdfMockup, setActivePdfMockup] = useState('initial-sweep');
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
     '[INIT] CDP_SESSION_START: 0x7FF821',
     '[INFO] SOCKET_CONNECTED: ws://localhost:3001/ws',
   ]);
   useRegisterAction('mockups:button:refresh', { app: 'ux-lab', action: 'MOCKUPS_REFRESH', label: 'Refresh Mockups', description: 'Reload mockup assets for the current project' });
   useRegisterAction('mockups:button:download', { app: 'ux-lab', action: 'MOCKUPS_DOWNLOAD', label: 'Download Mockups', description: 'Download all mockup assets for the current project' });
+  useRegisterAction('mockups:item:pdf-lab-select', { app: 'ux-lab', action: 'PDF_LAB_MOCKUP_SELECT', label: 'Select PDF Lab mockup', description: 'Switch the active PDF Lab mockup preview' });
 
   useEffect(() => {
     const fetchMockups = async () => {
@@ -97,6 +102,42 @@ const Mockups = ({ projectId }: { projectId: string }) => {
     fetchMockups();
   }, [projectId]);
 
+  const pdfLabMockups = [
+    {
+      id: 'initial-sweep',
+      title: 'Initial Sweep',
+      status: 'Verified fixture',
+      description: 'Elements, candidate pages, and evidence preview',
+      heading: 'Initial Sweep Static Proof',
+      details: 'Container-sized React mount of the approved Initial Sweep HTML/CSS fixture.',
+    },
+    {
+      id: 'parity-audit',
+      title: 'Parity Audit',
+      status: 'Verified fixture',
+      description: 'Candidate run, expected-vs-actual nodes, triage output',
+      heading: 'Parity Audit Static Proof',
+      details: 'Container-sized React mount of the deterministic extraction and JSON parity gate.',
+    },
+    {
+      id: 'surgical-triage-static-proof',
+      title: 'Surgical Triage',
+      status: 'Verified fixture',
+      description: 'Rectangular mask, real NIST page, satellite HUD',
+      heading: 'Surgical Triage Static Proof',
+      details: 'Container-sized React mount of the verified final human ambiguity deck fixture.',
+    },
+    {
+      id: 'candidate-inventory',
+      title: 'Candidate Inventory',
+      status: 'Next',
+      description: 'Agent sweep pages and supported pdf_oxide elements',
+      heading: 'Candidate Inventory Slot',
+      details: 'Reserved mockup slot. Final Site remains separate.',
+    },
+  ]
+  const activePdfMockupMeta = pdfLabMockups.find(item => item.id === activePdfMockup) ?? pdfLabMockups[0]
+
   return (
     <div className="h-full flex flex-col bg-surface-base">
       <div className="p-4 border-b border-white/10 flex items-center justify-between bg-surface-low">
@@ -107,17 +148,74 @@ const Mockups = ({ projectId }: { projectId: string }) => {
         </div>
       </div>
       
-      <div className="flex-1 overflow-auto p-6">
+      <div className={cn("flex-1 min-h-0", projectId === 'pdf-lab' ? "overflow-hidden" : "overflow-auto p-6")}>
         {projectId === 'pdf-lab' ? (
-          <div className="h-full min-h-[720px] grid grid-rows-[auto_minmax(0,1fr)] gap-4">
-            <div className="border border-tactical-primary/30 bg-black/40 p-3">
-              <div className="text-[10px] font-mono uppercase tracking-widest text-tactical-primary">Mockup · Surgical Triage Static Proof</div>
-              <div className="mt-1 text-xs text-slate-400">Verified HTML/CSS fixture mounted inside the mockup lane. Final Site remains separate.</div>
-            </div>
-            <div className="min-h-0 overflow-hidden border border-white/10 bg-black">
-              <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PDF_LAB_MOCKUP...</div>}>
-                <PdfLab initialSubpath="static-proof" />
-              </React.Suspense>
+          <div className="h-full min-h-0 grid grid-cols-[260px_minmax(0,1fr)] bg-black">
+            <aside className="min-h-0 border-r border-white/10 bg-surface-low/80 flex flex-col">
+              <div className="px-4 py-3 border-b border-white/10">
+                <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-slate-500">PDF Lab Mockups</div>
+                <div className="mt-1 text-[11px] text-slate-400">Design proofs before production wiring.</div>
+              </div>
+              <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
+                {pdfLabMockups.map(item => (
+                  <button
+                    key={item.id}
+                    data-qid={`mockups:item:pdf-lab-${item.id}`}
+                    data-qs-action="PDF_LAB_MOCKUP_SELECT"
+                    title={`Open ${item.title} mockup`}
+                    onClick={() => setActivePdfMockup(item.id)}
+                    className={cn(
+                      "w-full min-h-[72px] text-left p-3 border rounded-sm transition-colors",
+                      activePdfMockup === item.id
+                        ? "border-tactical-primary/70 bg-tactical-primary/10"
+                        : "border-white/10 bg-black/30 hover:border-tactical-primary/35"
+                    )}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[11px] font-headline font-bold text-white">{item.title}</span>
+                      <span className="text-[9px] font-mono uppercase text-tactical-primary">{item.status}</span>
+                    </div>
+                    <div className="mt-1 text-[10px] leading-snug text-slate-500">{item.description}</div>
+                  </button>
+                ))}
+              </div>
+            </aside>
+
+            <div className="min-w-0 min-h-0 grid grid-rows-[auto_minmax(0,1fr)]">
+              <div className="border-b border-tactical-primary/30 bg-black/40 p-3">
+                <div className="text-[10px] font-mono uppercase tracking-widest text-tactical-primary">
+                  Mockup · {activePdfMockupMeta.heading}
+                </div>
+                <div className="mt-1 text-xs text-slate-400">
+                  {activePdfMockupMeta.details}
+                </div>
+              </div>
+              <div className="min-h-0 overflow-hidden bg-black">
+                {activePdfMockup === 'surgical-triage-static-proof' ? (
+                  <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PDF_LAB_MOCKUP...</div>}>
+                    <PdfLab initialSubpath="static-proof" />
+                  </React.Suspense>
+                ) : activePdfMockup === 'initial-sweep' ? (
+                  <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PDF_LAB_INITIAL_SWEEP...</div>}>
+                    <div className="pdf-lab-initial-sweep-mockup-frame">
+                      <PdfLabInitialSweepProof />
+                    </div>
+                  </React.Suspense>
+                ) : activePdfMockup === 'parity-audit' ? (
+                  <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PDF_LAB_PARITY_AUDIT...</div>}>
+                    <div className="pdf-lab-parity-mockup-frame">
+                      <PdfLabParityAuditProof />
+                    </div>
+                  </React.Suspense>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-center">
+                    <div>
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-tactical-primary">Mockup Slot Reserved</div>
+                      <div className="mt-2 max-w-md text-sm text-slate-400">This left rail is now the project-level mockup store. The selected proof will be added here instead of mixing mockups into the Final Site route.</div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ) : loading ? (
@@ -149,33 +247,33 @@ const Mockups = ({ projectId }: { projectId: string }) => {
         )}
       </div>
 
-      <div className="h-32 bg-black border-t border-white/10 p-4 font-mono text-[10px] text-tactical-primary/60 overflow-y-auto custom-scrollbar">
-        {terminalLogs.map((log, i) => (
-          <div key={i} className="mb-1">{log}</div>
-        ))}
-      </div>
+      {projectId !== 'pdf-lab' && (
+        <div className="h-32 bg-black border-t border-white/10 p-4 font-mono text-[10px] text-tactical-primary/60 overflow-y-auto custom-scrollbar">
+          {terminalLogs.map((log, i) => (
+            <div key={i} className="mb-1">{log}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
-  const hideFinalSiteChrome = projectId === 'pdf-lab';
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
-      {!hideFinalSiteChrome && (
-        <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
-          <div className="flex items-center gap-4 px-2">
-            <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
-            <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
-              <Activity className="w-3 h-3" /> LIVE_RENDER
-            </div>
+      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
+        <div className="flex items-center gap-4 px-2">
+          <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
+          <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
+            <Activity className="w-3 h-3" /> LIVE_RENDER
           </div>
         </div>
-      )}
+      </div>
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
             <SpartaExplorerView initialTab={subpath} views={{
+              Coverage: <React.Suspense fallback={null}><CoverageView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
               Controls: <React.Suspense fallback={null}><ControlsView /></React.Suspense>,
               URLs: <React.Suspense fallback={null}><URLsView /></React.Suspense>,
@@ -1512,7 +1610,8 @@ export default function App() {
     if (!normalizedPath) return { project: 'music-lab-pipeline', view: 'design-board' as View };
     const [first, ...rest] = normalizedPath.split('/');
     const viewNames = new Set<View>(['mockups', 'components', 'design-board', 'reviews', 'testing', 'final-site']);
-    const requestedView = viewNames.has(rest[0] as View) ? rest[0] as View : undefined;
+    const viewAlias = rest[0] === 'final_site' ? 'final-site' : rest[0];
+    const requestedView = viewNames.has(viewAlias as View) ? viewAlias as View : undefined;
     // Deep links to projects should default to 'final-site' (interactive implementation)
     // except for projects that don't have a final-site view
     const componentsOnlyProjects: string[] = [];
@@ -1528,7 +1627,9 @@ export default function App() {
   const [activeView, setActiveView] = useState<View>(initial.view);
   const [hashSubpath, setHashSubpath] = useState<string>(initial.subpath || '');
   const systemHealth = useSystemHealth();
-  const isPdfLabFocus = activeProjectId === 'pdf-lab' && activeView === 'final-site';
+  const isPdfLabFocus = activeProjectId === 'pdf-lab'
+    && activeView === 'final-site'
+    && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage');
 
   // Sync hash → state on popstate (back/forward)
   useEffect(() => {
@@ -1549,6 +1650,12 @@ export default function App() {
     setActiveProjectId(id);
     window.location.hash = id;
   }, []);
+
+  const handleViewChange = useCallback((view: View) => {
+    setActiveView(view);
+    setHashSubpath('');
+    window.location.hash = `${activeProjectId}/${view}`;
+  }, [activeProjectId]);
 
   useEffect(() => {
     if (toast) {
@@ -1581,7 +1688,7 @@ export default function App() {
         {!isPdfLabFocus && (
           <ViewHeader 
             activeView={activeView} 
-            onViewChange={setActiveView} 
+            onViewChange={handleViewChange}
             systemHealth={systemHealth}
           />
         )}

@@ -1,0 +1,2182 @@
+{
+  "generated_at": "2026-04-30T18:37:38.516Z",
+  "stale": false,
+  "refreshing": false,
+  "corpus": {
+    "controls": 12321,
+    "qrasLegacy": 245975,
+    "qrasCanonical": 2239,
+    "qrasRelationship": 2057,
+    "qrasTotal": 250271,
+    "relationships": 262426,
+    "urls": 6854,
+    "urlKnowledge": 43398,
+    "datalakeChunks": 1696127
+  },
+  "qraTrust": {
+    "status": "plausible_for_system_test",
+    "label": "System-Test Ready",
+    "expert_blessed": false,
+    "reviewer": null,
+    "blessed_at": null,
+    "scope": [
+      "legacy",
+      "canonical",
+      "relationship"
+    ],
+    "counts": {
+      "legacy": 245975,
+      "canonical": 2239,
+      "relationship": 2057,
+      "total": 250271
+    },
+    "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
+    "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
+  },
+  "corpusInventory": {
+    "schema_version": 1,
+    "generated_at": "2026-04-30T18:37:37Z",
+    "source": "sparta_corpus_inventory",
+    "status": "pass",
+    "legacy_qras": {
+      "missing": 0,
+      "next": "Reference-only legacy corpus; excluded from completion target."
+    },
+    "relationships": {
+      "missing": 0,
+      "target": 262426,
+      "next": "Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative."
+    },
+    "urls": {
+      "missing": 0,
+      "target": 6854,
+      "with_content": 6854,
+      "with_200_file": 6139,
+      "next": "6,854/6,854 normalized URLs have fetch records; 6,139 fetched HTTP 200 with files."
+    },
+    "url_knowledge": {
+      "missing": 0,
+      "target": 43398,
+      "distinct_urls": 5867,
+      "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+    },
+    "datalake_chunks": {
+      "missing": 0,
+      "target": 1696127,
+      "qdrant_synced": 519758,
+      "next": "Generic datalake corpus is reference inventory for SPARTA Coverage; 519,758 chunks are Qdrant-synced, and SPARTA source targets are checked separately."
+    }
+  },
+  "controlFrameworks": [
+    {
+      "framework": "NVD/CVE",
+      "controls": 4830,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "NVD"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "NVD/CVE",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "NIST",
+      "controls": 1905,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "NIST",
+        "nist"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "NIST",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "ATT&CK Enterprise",
+      "controls": 1273,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "ATT_CK_Enterprise"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "ATT&CK Enterprise",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "SPARTA",
+      "controls": 1109,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "SPARTA",
+        "sparta"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "SPARTA",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "CWE",
+      "controls": 974,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "CWE",
+        "cwe"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "CWE",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "CAPEC",
+      "controls": 615,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "CAPEC"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "CAPEC",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "ATT&CK",
+      "controls": 524,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "attack"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "ATT&CK",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "D3FEND",
+      "controls": 424,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "D3FEND",
+        "d3fend"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "D3FEND",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "ESA",
+      "controls": 274,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "ESA",
+        "ESA_Shield"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "ESA",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "ATT&CK Mobile",
+      "controls": 225,
+      "missing_descriptions": 1,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "ATT_CK_Mobile"
+      ],
+      "defects": [
+        {
+          "control_id": "T1454",
+          "title": "Malicious SMS Message",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 4
+        }
+      ],
+      "quality_gaps": 1,
+      "status": "needs_repair",
+      "action_code": "repair_control_quality",
+      "action_label": "Plan Repair",
+      "risk": "review_required",
+      "safe_default": "observe_only",
+      "requires_checkpoint": true,
+      "command_payload": {
+        "framework": "ATT&CK Mobile",
+        "gap_type": "control_quality",
+        "gap_count": 1,
+        "defects": [
+          {
+            "control_id": "T1454",
+            "title": "Malicious SMS Message",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 4
+          }
+        ]
+      }
+    },
+    {
+      "framework": "ATT&CK ICS",
+      "controls": 131,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "ATT_CK_ICS"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "ATT&CK ICS",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    },
+    {
+      "framework": "ISO",
+      "controls": 23,
+      "missing_descriptions": 1,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "ISO",
+        "iso"
+      ],
+      "defects": [
+        {
+          "control_id": "10",
+          "title": "Improvement",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 11
+        }
+      ],
+      "quality_gaps": 1,
+      "status": "needs_repair",
+      "action_code": "repair_control_quality",
+      "action_label": "Plan Repair",
+      "risk": "review_required",
+      "safe_default": "observe_only",
+      "requires_checkpoint": true,
+      "command_payload": {
+        "framework": "ISO",
+        "gap_type": "control_quality",
+        "gap_count": 1,
+        "defects": [
+          {
+            "control_id": "10",
+            "title": "Improvement",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 11
+          }
+        ]
+      }
+    },
+    {
+      "framework": "NASA",
+      "controls": 14,
+      "missing_descriptions": 0,
+      "missing_embeddings": 0,
+      "raw_frameworks": [
+        "NASA",
+        "nasa"
+      ],
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
+      "safe_default": "observe_only",
+      "requires_checkpoint": false,
+      "command_payload": {
+        "framework": "NASA",
+        "gap_type": "control_quality",
+        "gap_count": 0
+      }
+    }
+  ],
+  "monitor": {
+    "passed": 16,
+    "total": 16,
+    "checks": [
+      {
+        "ok": true,
+        "dimension": "description_audit",
+        "message": "0 fails"
+      },
+      {
+        "ok": true,
+        "dimension": "upstream_version",
+        "message": "Spreadsheet: v3.1 / 2026-04-09 (sha:9cbd7eef1254) - download check failed (non-blocking)"
+      },
+      {
+        "ok": true,
+        "dimension": "source_control_parity",
+        "message": "All 1,596 source control IDs present"
+      },
+      {
+        "ok": true,
+        "dimension": "control_description_coverage",
+        "message": "All 12,321 controls have descriptions"
+      },
+      {
+        "ok": true,
+        "dimension": "relationship_coverage",
+        "message": "44/44 threats covered"
+      },
+      {
+        "ok": true,
+        "dimension": "taxonomy_backfill",
+        "message": "All SPARTA controls have mind tags"
+      },
+      {
+        "ok": true,
+        "dimension": "embedding_gaps",
+        "message": "All documents have embeddings"
+      },
+      {
+        "ok": true,
+        "dimension": "corpus_completeness",
+        "message": "All collections healthy (245,975 QRAs)"
+      },
+      {
+        "ok": true,
+        "dimension": "description_preservation",
+        "message": "25 enriched descriptions (25 BRAVE-SEARCH, 0 INFERRED) out of 12321 total"
+      },
+      {
+        "ok": true,
+        "dimension": "requirement_quality",
+        "message": "235 FORMAL_REQUIREMENT controls (673 Stage 2 pass, 21.4%)"
+      },
+      {
+        "ok": true,
+        "dimension": "formalizability_coverage",
+        "message": "3151/3151 scored (100.0%), 3073 non-zero"
+      },
+      {
+        "ok": true,
+        "dimension": "qra_evidence_coverage",
+        "message": "245,975/245,975 with evidence_case (100.0%), 245,975/245,975 structurally complete (100.0%)"
+      },
+      {
+        "ok": true,
+        "dimension": "qra_reasoning_coverage",
+        "message": "245,975/245,975 QRAs have valid reasoning (100.0%)"
+      },
+      {
+        "ok": true,
+        "dimension": "crosswalk_edges",
+        "message": "262,426 edges (31 paths)"
+      },
+      {
+        "ok": true,
+        "dimension": "crosswalk_chain_schema",
+        "message": "15 relationship QRAs with chains (0 violations)"
+      },
+      {
+        "ok": true,
+        "dimension": "create_qras_remaining_calls",
+        "message": "0 implemented calls remain; 0 comparison calls remain after deterministic evidence gating (8,107 raw candidates)"
+      }
+    ],
+    "remaining": {
+      "ok": true,
+      "dimension": "create_qras_remaining_calls",
+      "message": "0 implemented calls remain; 0 comparison calls remain after deterministic evidence gating (8,107 raw candidates)",
+      "native_remaining_any_collection_total": 0,
+      "native_remaining_non_sparta_total": 0,
+      "native_remaining_sparta_any_collection": 0,
+      "native_by_framework": [
+        {
+          "framework": "ATT&CK",
+          "expected_calls": 524,
+          "completed_calls_any_collection": 524,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "ATT_CK_Enterprise",
+          "expected_calls": 1273,
+          "completed_calls_any_collection": 1273,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "ATT_CK_ICS",
+          "expected_calls": 131,
+          "completed_calls_any_collection": 131,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "ATT_CK_Mobile",
+          "expected_calls": 225,
+          "completed_calls_any_collection": 225,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "CAPEC",
+          "expected_calls": 615,
+          "completed_calls_any_collection": 615,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "CWE",
+          "expected_calls": 974,
+          "completed_calls_any_collection": 974,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "D3FEND",
+          "expected_calls": 424,
+          "completed_calls_any_collection": 424,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "ESA",
+          "expected_calls": 137,
+          "completed_calls_any_collection": 137,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "NIST",
+          "expected_calls": 1905,
+          "completed_calls_any_collection": 1905,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "NVD",
+          "expected_calls": 4830,
+          "completed_calls_any_collection": 4830,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        },
+        {
+          "framework": "SPARTA",
+          "expected_calls": 315,
+          "completed_calls_any_collection": 315,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
+        }
+      ],
+      "sparta_v2_remaining_total": 0,
+      "sparta_v2_native_remaining_target_collection": 0,
+      "sparta_v2_contextual_remaining_target_collection": 0,
+      "sparta_v2_remaining_prompt_kinds": {
+        "sparta_tactic_canonical": 0,
+        "sparta_technique_canonical": 0,
+        "sparta_countermeasure_canonical": 0,
+        "sparta_tactic_technique_relationship": 0,
+        "sparta_technique_countermeasure_relationship": 0
+      },
+      "sparta_control_to_control_raw_candidate_pairs": 8107,
+      "sparta_control_to_control_gated_pairs": 0,
+      "sparta_control_to_control_gated_skip_reasons": {
+        "no_grounded_overlap": 2025,
+        "non_substantive_node": 5968,
+        "already_materialized": 114
+      },
+      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
+      "implemented_backlog_total_if_v2_sparta_native_required": 0,
+      "exact_remaining_calls_total": 0,
+      "total_with_raw_comparison_candidates": 8107
+    },
+    "corpus_inventory": {
+      "schema_version": 1,
+      "generated_at": "2026-04-30T18:37:37Z",
+      "source": "sparta_corpus_inventory",
+      "status": "pass",
+      "legacy_qras": {
+        "missing": 0,
+        "next": "Reference-only legacy corpus; excluded from completion target."
+      },
+      "relationships": {
+        "missing": 0,
+        "target": 262426,
+        "next": "Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative."
+      },
+      "urls": {
+        "missing": 0,
+        "target": 6854,
+        "with_content": 6854,
+        "with_200_file": 6139,
+        "next": "6,854/6,854 normalized URLs have fetch records; 6,139 fetched HTTP 200 with files."
+      },
+      "url_knowledge": {
+        "missing": 0,
+        "target": 43398,
+        "distinct_urls": 5867,
+        "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+      },
+      "datalake_chunks": {
+        "missing": 0,
+        "target": 1696127,
+        "qdrant_synced": 519758,
+        "next": "Generic datalake corpus is reference inventory for SPARTA Coverage; 519,758 chunks are Qdrant-synced, and SPARTA source targets are checked separately."
+      }
+    }
+  },
+  "bestPractices": [
+    {
+      "name": "React data-qid coverage",
+      "skill": "best-practices-react",
+      "ok": true,
+      "status": "pass",
+      "message": "data-qid coverage: 335/335 (100%)",
+      "covered": 335,
+      "total": 335,
+      "percent": 100
+    },
+    {
+      "name": "Python silent fallback scan",
+      "skill": "best-practices-python",
+      "ok": true,
+      "status": "pass",
+      "message": "No silent fallback violations found",
+      "detail": "INFO     | Scanning 242 files under /home/graham/workspace/experiments/memory/src/graph_memory\nINFO     | No silent fallback violations found."
+    },
+    {
+      "name": "Prompt best-practice static scan",
+      "skill": "best-practices-prompt",
+      "ok": true,
+      "status": "pass",
+      "message": "16/16 scanned prompt files pass; 7/7 active prompt units pass."
+    },
+    {
+      "name": "Arango/Qdrant source embedding coverage",
+      "skill": "best-practices-arangodb",
+      "ok": true,
+      "status": "pass",
+      "message": "43,398 Arango docs synced; 544,889 Qdrant vectors observed."
+    }
+  ],
+  "promptAudit": {
+    "allRows": [
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
+        "prompt_kind": "frameworks/attack",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
+        "prompt_kind": "frameworks/capec",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
+        "prompt_kind": "frameworks/cve",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
+        "prompt_kind": "frameworks/cwe",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
+        "prompt_kind": "frameworks/d3fend",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
+        "prompt_kind": "frameworks/doc2qra",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
+        "prompt_kind": "frameworks/esa",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
+        "prompt_kind": "frameworks/nist",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
+        "prompt_kind": "review/sparta_reviewer",
+        "source": "create-qras-production",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/countermeasure_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/tactic_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/technique_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/tactic_technique_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+        "prompt_kind": "sparta/standalone/url_excerpt",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
+      }
+    ],
+    "all_passed": 16,
+    "all_total": 16,
+    "autofix": {
+      "mode": "review_required",
+      "resume_hint": "Run review-prompt for failed prompt units, then apply only passing mechanical patches.",
+      "review_required_actions": [
+        "apply prompt text edits",
+        "run production prompt canary",
+        "promote prompt changes to create-qras generation"
+      ],
+      "safe_auto_actions": [
+        "scan prompt units",
+        "classify best-practices-prompt failures",
+        "generate review-prompt dry-run payloads"
+      ]
+    },
+    "failed_rows": [],
+    "passed": 7,
+    "rows": [
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/countermeasure_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/tactic_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+        "prompt_kind": "sparta/canonical/technique_canonical",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/tactic_technique_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+        "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+        "prompt_kind": "sparta/standalone/url_excerpt",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
+      }
+    ],
+    "schema_version": 1,
+    "scopes": [
+      {
+        "passed": 7,
+        "source": "create-qras-active-sparta",
+        "total": 7
+      },
+      {
+        "passed": 9,
+        "source": "create-qras-production",
+        "total": 9
+      }
+    ],
+    "state": "covered",
+    "status": "pass",
+    "total": 7
+  },
+  "artifacts": {
+    "recent": [
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_225140.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_225926.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_230011.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_231527.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_231643.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_232229.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_232308.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_233400.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_233541.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260428_235820.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260429_111343.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_retry_failures_20260428T114814Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/relationship_pooled_c2c_295_failed_retry2_failures_20260427T215411Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/relationship_pooled_c2c_295_failed_retry3_failures_20260427T215707Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/relationship_pooled_c2c_295_failed_retry4_failures_20260427T220548Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/relationship_pooled_c2c_295_failed_retry_failures_20260427T214100Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/relationship_pooled_c2c_295_merged_failures_20260427T205346Z.jsonl",
+      "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json",
+      "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.md",
+      "artifacts/monitor_sparta_gap_plan/sparta_v2_exact_remaining_manifest.json"
+    ],
+    "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
+    "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
+  },
+  "supervisor": {
+    "schema_version": 2,
+    "source": "monitor-sparta-supervisor",
+    "generated_at": "2026-04-30T18:35:47.520943Z",
+    "heartbeat_at": "2026-04-30T18:35:47.520943Z",
+    "snapshot_age_seconds": 175,
+    "status": "observing",
+    "phase": "phase2_3_gated_supervisor",
+    "gate_policy": {
+      "schema_version": 1,
+      "principle": "observe and queue before execution",
+      "action_states": [
+        "observed",
+        "queued",
+        "dry_run",
+        "review_required",
+        "blocked",
+        "executed"
+      ],
+      "remediation_enabled": false,
+      "operator_approval_required": true,
+      "checkpoint_required": true,
+      "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+      "compliance_guardrail": "Analyst workbench only; no compliance verdict is promoted without human review."
+    },
+    "notification_channels": {
+      "discord": {
+        "enabled": false,
+        "mode": "dry_run",
+        "credential_env": "DISCORD_WEBHOOK_URL",
+        "operator_approval_required": true
+      },
+      "slack": {
+        "enabled": false,
+        "mode": "dry_run",
+        "credential_env": "SLACK_WEBHOOK_URL",
+        "operator_approval_required": true
+      },
+      "voice": {
+        "enabled": false,
+        "mode": "ingress_queue_only",
+        "credential_env": null,
+        "operator_approval_required": true
+      }
+    },
+    "remediation_enabled": false,
+    "operator_approval_required": true,
+    "checkpoint_required": true,
+    "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+    "commands_path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/commands.jsonl",
+    "events_path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/events.jsonl",
+    "state_path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/status.json",
+    "lanes": [
+      {
+        "id": "qra_generation",
+        "label": "QRA Generation",
+        "status": "observing",
+        "risk": "auto_observe",
+        "owner": "monitor-sparta",
+        "next_action": "Observe create-qras backlog; queue only in Phase 1."
+      },
+      {
+        "id": "prompt_health",
+        "label": "Prompt Health",
+        "status": "review_gated",
+        "risk": "review_required",
+        "owner": "code-runner",
+        "next_action": "Continuously scan prompt units; auto-prepare best-practices/review-prompt fixes; apply only reviewed or mechanical passing patches."
+      },
+      {
+        "id": "monitor_health",
+        "label": "Monitor Health",
+        "status": "observing",
+        "risk": "auto_observe",
+        "owner": "monitor-sparta",
+        "next_action": "Publish latest monitor-sparta health snapshot."
+      },
+      {
+        "id": "ux_coverage",
+        "label": "UX Coverage",
+        "status": "review_gated",
+        "risk": "review_required",
+        "owner": "test-interactions",
+        "next_action": "Queue data-qid/test-interactions fixes for review."
+      },
+      {
+        "id": "python_fallbacks",
+        "label": "Python Fallbacks",
+        "status": "review_gated",
+        "risk": "review_required",
+        "owner": "best-practices-python",
+        "next_action": "Queue fallback fixes for reviewed code-runner tasks."
+      },
+      {
+        "id": "source_embedding_coverage",
+        "label": "Source/Embedding Coverage",
+        "status": "review_gated",
+        "risk": "review_required",
+        "owner": "monitor-sparta",
+        "next_action": "Observe Arango/Qdrant gaps and queue reviewed backfill manifests."
+      },
+      {
+        "id": "source_text_qra_coverage",
+        "label": "Source Text/QRA Coverage",
+        "status": "review_gated",
+        "risk": "review_required",
+        "owner": "monitor-sparta",
+        "next_action": "Observe control/URL text and QRA gaps; queue reviewed manifests."
+      },
+      {
+        "id": "repo_hygiene",
+        "label": "Repo Hygiene",
+        "status": "nightly_plan_only",
+        "risk": "review_required",
+        "owner": "cleanup",
+        "next_action": "Run cleanup observe/plan only; execution is human-gated."
+      }
+    ],
+    "active_jobs": [
+      {
+        "command_id": "cmd-ec625adb503f461c93dff1c7d847ae8f",
+        "created_at": "2026-04-29T12:22:03.761175Z",
+        "intent": "status",
+        "payload": {},
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "read_only",
+        "safe_default": "observe_only",
+        "source": "test",
+        "status": "queued",
+        "target_lane": ""
+      },
+      {
+        "command_id": "cmd-b22c5faed9d04b9487ab8eeca3ba649a",
+        "created_at": "2026-04-29T12:26:13.539414Z",
+        "intent": "status",
+        "payload": {},
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "read_only",
+        "safe_default": "observe_only",
+        "source": "test",
+        "status": "queued",
+        "target_lane": ""
+      },
+      {
+        "command_id": "cmd-1777465958315-0259ab3bc9ea5",
+        "created_at": "2026-04-29T12:32:38.315Z",
+        "source": "test",
+        "intent": "run_audit_now",
+        "target_lane": "monitor_health",
+        "risk": "read_only",
+        "status": "queued",
+        "payload": {},
+        "safe_default": "observe_only",
+        "resume_hint": "Human review required before any mutation-capable remediation."
+      },
+      {
+        "action_state": "queued",
+        "checkpoint_required": false,
+        "command_id": "cmd-a47328ff83ca471faef045e38a4fc529",
+        "confidence": 0.91,
+        "created_at": "2026-04-29T13:38:53.818644Z",
+        "intent": "status",
+        "operator": "graham",
+        "operator_approval_required": false,
+        "payload": {
+          "confidence": 0.91,
+          "operator": "graham",
+          "raw_transcript": "what is SPARTA status",
+          "session_id": "test-phase23",
+          "transcript": "what is SPARTA status"
+        },
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "read_only",
+        "rollback_hint": null,
+        "safe_default": "observe_only",
+        "session_id": "test-phase23",
+        "source": "voice",
+        "status": "queued",
+        "target_lane": "",
+        "transcript": "what is SPARTA status"
+      },
+      {
+        "action_state": "review_required",
+        "checkpoint_required": true,
+        "command_id": "cmd-0d4ccf635dc44a75b397ebac56661094",
+        "confidence": 0.85,
+        "created_at": "2026-04-29T13:38:54.097626Z",
+        "intent": "fix prompt health",
+        "operator": "graham",
+        "operator_approval_required": true,
+        "payload": {
+          "confidence": 0.85,
+          "operator": "graham",
+          "raw_transcript": "fix prompt health",
+          "session_id": "test-phase23",
+          "transcript": "fix prompt health"
+        },
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "mutation",
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "safe_default": "observe_only",
+        "session_id": "test-phase23",
+        "source": "voice",
+        "status": "review_required",
+        "target_lane": "",
+        "transcript": "fix prompt health"
+      }
+    ],
+    "blocked": [
+      {
+        "action_state": "review_required",
+        "checkpoint_required": true,
+        "command_id": "cmd-0d4ccf635dc44a75b397ebac56661094",
+        "confidence": 0.85,
+        "created_at": "2026-04-29T13:38:54.097626Z",
+        "intent": "fix prompt health",
+        "operator": "graham",
+        "operator_approval_required": true,
+        "payload": {
+          "confidence": 0.85,
+          "operator": "graham",
+          "raw_transcript": "fix prompt health",
+          "session_id": "test-phase23",
+          "transcript": "fix prompt health"
+        },
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "mutation",
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "safe_default": "observe_only",
+        "session_id": "test-phase23",
+        "source": "voice",
+        "status": "review_required",
+        "target_lane": "",
+        "transcript": "fix prompt health"
+      }
+    ],
+    "command_source_counts": {
+      "ui": 0,
+      "cli": 0,
+      "discord": 0,
+      "slack": 0,
+      "voice": 2,
+      "test": 3
+    },
+    "command_status_counts": {
+      "observed": 0,
+      "queued": 4,
+      "dry_run": 0,
+      "review_required": 1,
+      "blocked": 0,
+      "executed": 0
+    },
+    "review_required_count": 1,
+    "remediation_plans": [
+      {
+        "action_id": "plan-prompt_health",
+        "lane": "prompt_health",
+        "title": "Prompt Health remediation plan",
+        "action_state": "dry_run",
+        "status": "review_required",
+        "risk": "review_required",
+        "remediation_enabled": false,
+        "operator_approval_required": true,
+        "checkpoint_required": true,
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "rationale": "Prompt Health is a lane subagent: it may scan prompt units, classify best-practices-prompt failures, and prepare review-prompt payloads automatically; prompt text edits remain review-gated unless the patch is mechanical and all prompt gates pass.",
+        "target_files": [
+          "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/",
+          "/home/graham/workspace/experiments/sparta/src/sparta/prompts/"
+        ],
+        "suggested_checks": [
+          "uv run python scripts/validation/prompt_health_coverage.py --json",
+          "run best-practices-prompt against failed prompt units",
+          "run review-prompt for any non-mechanical prompt rewrite",
+          "run a prompt parity/canary before production QRA generation"
+        ],
+        "target_counts": null,
+        "resume_hint": "Let the Prompt Health lane generate review-prompt payloads; approve only narrow prompt edits with passing prompt-health and canary checks."
+      },
+      {
+        "action_id": "plan-ux_coverage",
+        "lane": "ux_coverage",
+        "title": "UX Coverage remediation plan",
+        "action_state": "dry_run",
+        "status": "review_required",
+        "risk": "review_required",
+        "remediation_enabled": false,
+        "operator_approval_required": true,
+        "checkpoint_required": true,
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "rationale": "Missing data-qid coverage should become narrow React/test-interactions tasks with CDP verification.",
+        "target_files": [
+          "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/sparta/explorer/",
+          "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/scripts/verify-data-qid.py"
+        ],
+        "suggested_checks": [
+          "npm run build",
+          "verify-data-qid.py against Sparta Explorer routes",
+          "fresh verify-ui-cdp marker"
+        ],
+        "target_counts": null,
+        "resume_hint": "Approve a narrow follow-up task before any mutation."
+      },
+      {
+        "action_id": "plan-python_fallbacks",
+        "lane": "python_fallbacks",
+        "title": "Python fallback remediation plan",
+        "action_state": "dry_run",
+        "status": "review_required",
+        "risk": "review_required",
+        "remediation_enabled": false,
+        "operator_approval_required": true,
+        "checkpoint_required": true,
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "rationale": "Silent fallback findings need grouped risk review before narrow Python edits.",
+        "target_files": [
+          "scripts/validation/",
+          "src/graph_memory/"
+        ],
+        "suggested_checks": [
+          "run Python silent fallback scan",
+          "add or update focused pytest coverage for each approved fallback removal"
+        ],
+        "target_counts": null,
+        "resume_hint": "Approve a narrow follow-up task before any mutation."
+      },
+      {
+        "action_id": "plan-source_embedding_coverage",
+        "lane": "source_embedding_coverage",
+        "title": "Source/Embedding coverage backfill plan",
+        "action_state": "dry_run",
+        "status": "review_required",
+        "risk": "review_required",
+        "remediation_enabled": false,
+        "operator_approval_required": true,
+        "checkpoint_required": true,
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "rationale": "ArangoDB document/BM25/graph gaps and Qdrant vector gaps are observed separately; mutations stay review-required.",
+        "target_files": [
+          "scripts/validation/monitor_sparta.py",
+          "scripts/validation/sparta_supervisor.py"
+        ],
+        "suggested_checks": [
+          "run scripts/validation/source_embedding_coverage.py",
+          "review generated source_embedding_backfill_manifest_*.json before any mutation",
+          "rerun coverage-health after reviewed Arango/Qdrant backfill"
+        ],
+        "target_counts": null,
+        "resume_hint": "Approve a generated backfill manifest before executing Arango or Qdrant mutations."
+      },
+      {
+        "action_id": "plan-source_text_qra_coverage",
+        "lane": "source_text_qra_coverage",
+        "title": "Source text and QRA coverage backfill plan",
+        "action_state": "dry_run",
+        "status": "review_required",
+        "risk": "review_required",
+        "remediation_enabled": false,
+        "operator_approval_required": true,
+        "checkpoint_required": true,
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "rationale": "Controls and valid URLs must have non-stub source text plus valid QRAs before the corpus is complete.",
+        "target_files": [
+          "scripts/validation/source_text_qra_coverage.py",
+          "scripts/validation/sparta_supervisor.py"
+        ],
+        "suggested_checks": [
+          "run scripts/validation/source_text_qra_coverage.py",
+          "review generated source_text_qra_backfill_manifest_*.json before any fetch or QRA generation",
+          "rerun coverage-health after reviewed control/url text and QRA backfills"
+        ],
+        "target_counts": null,
+        "resume_hint": "Approve a generated source text/QRA manifest before executing fetch or QRA-generation mutations."
+      }
+    ],
+    "prompt_health_coverage": {
+      "schema_version": 1,
+      "status": "pass",
+      "state": "covered",
+      "passed": 7,
+      "total": 7,
+      "all_passed": 16,
+      "all_total": 16,
+      "rows": [
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/countermeasure_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/tactic_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/technique_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/tactic_technique_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/standalone/url_excerpt",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        }
+      ],
+      "allRows": [
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/attack",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/capec",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/cve",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/cwe",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/d3fend",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/doc2qra",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/esa",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "frameworks/nist",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-production",
+          "prompt_kind": "review/sparta_reviewer",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/countermeasure_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/tactic_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/canonical/technique_canonical",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/tactic_technique_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/standalone/url_excerpt",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        }
+      ],
+      "failed_rows": [],
+      "scopes": [
+        {
+          "source": "create-qras-active-sparta",
+          "passed": 7,
+          "total": 7
+        },
+        {
+          "source": "create-qras-production",
+          "passed": 9,
+          "total": 9
+        }
+      ],
+      "autofix": {
+        "mode": "review_required",
+        "safe_auto_actions": [
+          "scan prompt units",
+          "classify best-practices-prompt failures",
+          "generate review-prompt dry-run payloads"
+        ],
+        "review_required_actions": [
+          "apply prompt text edits",
+          "run production prompt canary",
+          "promote prompt changes to create-qras generation"
+        ],
+        "resume_hint": "Run review-prompt for failed prompt units, then apply only passing mechanical patches."
+      }
+    },
+    "corpus_inventory": {
+      "schema_version": 1,
+      "generated_at": "2026-04-30T18:36:26Z",
+      "source": "sparta_corpus_inventory",
+      "status": "pass",
+      "legacy_qras": {
+        "missing": 0,
+        "next": "Reference-only legacy corpus; excluded from completion target."
+      },
+      "relationships": {
+        "missing": 0,
+        "target": 262426,
+        "next": "Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative."
+      },
+      "urls": {
+        "missing": 0,
+        "target": 6854,
+        "with_content": 6854,
+        "with_200_file": 6139,
+        "next": "6,854/6,854 normalized URLs have fetch records; 6,139 fetched HTTP 200 with files."
+      },
+      "url_knowledge": {
+        "missing": 0,
+        "target": 43398,
+        "distinct_urls": 5867,
+        "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+      },
+      "datalake_chunks": {
+        "missing": 0,
+        "target": 1696127,
+        "qdrant_synced": 519758,
+        "next": "Generic datalake corpus is reference inventory for SPARTA Coverage; 519,758 chunks are Qdrant-synced, and SPARTA source targets are checked separately."
+      }
+    },
+    "ui_coverage_aql_guard": {
+      "schema_version": 1,
+      "generated_at": "2026-04-30T18:36:26Z",
+      "status": "pass",
+      "state": "memory_owned",
+      "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
+      "coverage_block_lines": {
+        "start": 1193,
+        "end": 1335
+      },
+      "violations": [],
+      "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
+    },
+    "source_embedding_coverage": {
+      "schema_version": 1,
+      "generated_at": "2026-04-30T18:35:47Z",
+      "status": "pass",
+      "state": "reconciled",
+      "target_counts": {
+        "arango_embeddable_docs": 43398,
+        "source_embedding_targets": 43398
+      },
+      "observed_counts": {
+        "arango_embedding_docs": 43398,
+        "arango_synced_docs": 43398,
+        "qdrant_vectors": 544889
+      },
+      "gaps": {
+        "missing_vectors": 0,
+        "stale_vectors": 0,
+        "missing_bm25_views": [],
+        "missing_graph_collections": [],
+        "blocked_reasons": [],
+        "fail_reasons": []
+      },
+      "arango": {
+        "role": "documents_bm25_graph",
+        "collections": [
+          {
+            "collection": "sparta_url_knowledge",
+            "exists": true,
+            "kind": "source_pages",
+            "lane": "url_knowledge",
+            "text_fields": [
+              "text",
+              "knowledge",
+              "content",
+              "topic",
+              "name",
+              "description",
+              "url"
+            ],
+            "total_docs": 43398,
+            "embeddable_docs": 43398,
+            "embedded_docs": 43398,
+            "synced_docs": 43398,
+            "qdrant_pointer_docs": 0,
+            "missing_vectors": 0,
+            "stale_vectors": 0,
+            "manifest_candidates": [],
+            "manifest_truncated": false
+          }
+        ],
+        "required_views": [
+          "sparta_unified_search",
+          "sparta_relationships_search",
+          "sparta_qra_canonical_view",
+          "sparta_qra_relationship_view",
+          "sparta_qra_all_view",
+          "chunk_control_edges_search"
+        ],
+        "existing_required_views": [
+          "sparta_unified_search",
+          "sparta_relationships_search",
+          "sparta_qra_canonical_view",
+          "sparta_qra_relationship_view",
+          "sparta_qra_all_view",
+          "chunk_control_edges_search"
+        ],
+        "graph_collections": {
+          "sparta_relationships": {
+            "exists": true,
+            "count": 262426
+          },
+          "chunk_control_edges": {
+            "exists": true,
+            "count": 0
+          }
+        }
+      },
+      "qdrant": {
+        "role": "semantic_vectors",
+        "url": "http://127.0.0.1:6333",
+        "collection": "memory_chunks_mm_jina_v4_1024",
+        "reachable": true,
+        "point_count": 544889,
+        "points_by_arango_collection": {
+          "sparta_url_knowledge": 0
+        }
+      },
+      "backfill": {
+        "required": false,
+        "mode": "review_required",
+        "mutation_enabled": false,
+        "manifest": null
+      },
+      "resume_hint": "Review generated Arango/Qdrant backfill manifest before running any mutation."
+    },
+    "source_text_qra_coverage": {
+      "schema_version": 1,
+      "generated_at": "2026-04-30T18:36:24Z",
+      "status": "pass",
+      "state": "covered",
+      "summary": {
+        "control_text_missing_or_stub": 0,
+        "control_qra_missing": 0,
+        "url_text_missing_or_stub": 0,
+        "url_qra_missing": 0
+      },
+      "controls": {
+        "total": 12321,
+        "text_ok": 12321,
+        "text_missing_or_stub": 0,
+        "qra_scope": 11353,
+        "qra_ok": 11353,
+        "qra_missing": 0,
+        "manifest_truncated": false
+      },
+      "urls": {
+        "raw_total": 6854,
+        "total": 881,
+        "scope": "sparta_qra_url_knowledge",
+        "scope_rule": "sparta_url_knowledge.topic/url contains 'sparta'",
+        "scoped_url_ids": 881,
+        "valid_urls": 881,
+        "text_ok": 881,
+        "text_missing_or_stub": 0,
+        "qra_ok": 881,
+        "direct_qra_ok": 0,
+        "control_mediated_qra_ok": 881,
+        "direct_qra_attribution_missing": 881,
+        "qra_missing": 0,
+        "manifest_truncated": false
+      },
+      "qra_indexes": {
+        "control_ids_with_valid_qra": 11619,
+        "url_ids_with_direct_valid_qra": 0
+      },
+      "gaps": {
+        "control_text_missing_or_stub": 0,
+        "control_qra_missing": 0,
+        "url_text_missing_or_stub": 0,
+        "url_qra_missing": 0,
+        "url_direct_qra_attribution_missing": 881,
+        "fail_reasons": []
+      },
+      "backfill": {
+        "required": false,
+        "mode": "review_required",
+        "mutation_enabled": false,
+        "manifest": null
+      },
+      "resume_hint": "Review generated source text/QRA manifest before running any fetch, control backfill, or QRA generation."
+    },
+    "last_actions": [],
+    "next_scheduled_actions": [
+      {
+        "lane": "prompt_health",
+        "action": "prompt_health_coverage --json plus review-prompt payload generation",
+        "cadence": "push-triggered and nightly",
+        "phase": "Prompt Health lane subagent"
+      },
+      {
+        "lane": "monitor_health",
+        "action": "supervisor --once",
+        "cadence": "scheduler/systemd managed",
+        "phase": "Phase 2/3 gated"
+      },
+      {
+        "lane": "source_embedding_coverage",
+        "action": "sparta_corpus_inventory plus no_ui_coverage_aql guard",
+        "cadence": "push-triggered and nightly",
+        "phase": "memory-owned Coverage inventory"
+      },
+      {
+        "lane": "remediation_plans",
+        "action": "review dry-run remediation_plans",
+        "cadence": "operator approved only",
+        "phase": "Phase 3 observe-first"
+      }
+    ],
+    "needs_attention": [
+      {
+        "action_state": "review_required",
+        "checkpoint_required": true,
+        "command_id": "cmd-0d4ccf635dc44a75b397ebac56661094",
+        "confidence": 0.85,
+        "created_at": "2026-04-29T13:38:54.097626Z",
+        "intent": "fix prompt health",
+        "operator": "graham",
+        "operator_approval_required": true,
+        "payload": {
+          "confidence": 0.85,
+          "operator": "graham",
+          "raw_transcript": "fix prompt health",
+          "session_id": "test-phase23",
+          "transcript": "fix prompt health"
+        },
+        "resume_hint": "Human review required before any mutation-capable remediation.",
+        "risk": "mutation",
+        "rollback_hint": "Create or identify a narrow git checkpoint before any mutation-capable command is executed.",
+        "safe_default": "observe_only",
+        "session_id": "test-phase23",
+        "source": "voice",
+        "status": "review_required",
+        "target_lane": "",
+        "transcript": "fix prompt health"
+      }
+    ]
+  }
+}

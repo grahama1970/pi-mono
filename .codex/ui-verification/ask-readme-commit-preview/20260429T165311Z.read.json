@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"ask\" [e1] [level=1]\nparagraph \"src=\\\"docs/assets/ask-banner.png\\\" alt=\\\"ask skill banner showing an arcade-style oracle console wi...\" [e2]\ngeneric \"Ask, Argue and Roundtable\" [e3]\nparagraph \"Agents accumulate a lot of context over time: run logs, stored lessons, persona profiles, source bun...\" [e4]\nparagraph \"That is what is for. You write the question in plain language. figures out the rest: whether to pu...\" [e5]\n  generic \"ask\" [e6]\n  generic \"/ask\" [e7]\nparagraph \"Use it for questions like:\" [e8]\nlist [e9]\n  listitem \"\\\"What did we decide about this?\\\"\" [e10]\n  listitem \"\\\"Which persona should critique this plan?\\\"\" [e11]\n  listitem \"\\\"Is this implementation safe to proceed?\\\"\" [e12]\n  listitem \"\\\"What evidence backs this claim?\\\"\" [e13]\ngeneric \"human asks naturally \u2193 /ask resolves intent \u2193 /memory provides durable context \u2193 o...\" [e14]\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "http://127.0.0.1:48767/",
+  "title": "ask README commit preview"
+}

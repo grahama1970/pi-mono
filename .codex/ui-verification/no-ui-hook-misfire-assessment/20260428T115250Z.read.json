@@ -1,0 +1,9 @@
+{
+  "pageContent": "heading \"Example Domain\" [e1] [level=1]\nparagraph \"This domain is for use in documentation examples without needing permission. Avoid use in operations...\" [e2]\nparagraph [e3]\n  link \"Learn more\" [e4] [cursor=pointer] href=\"https://iana.org/domains/example\"\n\n[Viewport: 1280x813]",
+  "viewport": {
+    "width": 1280,
+    "height": 813
+  },
+  "url": "https://example.com/",
+  "title": "Example Domain"
+}

@@ -1,0 +1,27 @@
+{
+  "ingested_at": "2026-04-30T12:36:22.645391",
+  "path": "/home/graham/workspace/experiments/pi-mono",
+  "stem": "pi-mono",
+  "files_scanned": 279,
+  "knowledge_stored": 0,
+  "cwe_stored": 0,
+  "edges_stored": 0,
+  "code_index": {
+    "enabled": true,
+    "backend": "memory",
+    "collection": "code_symbols",
+    "treesitter": true,
+    "symbols_stored": 3078,
+    "lexical_terms": true,
+    "line_ranges": true,
+    "content_hashes": true,
+    "hybrid_retrieval_capable": true
+  },
+  "scope": "monitor-registered-projects",
+  "embedding_verification": {
+    "enabled": false,
+    "checked": 0,
+    "passed": 0,
+    "failed": 0
+  }
+}

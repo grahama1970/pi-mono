@@ -68,7 +68,7 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 16px', background: 'rgba(0, 209, 255, 0.04)', border: '1px solid rgba(0, 209, 255, 0.15)', borderRadius: 8 }}>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(0, 209, 255, 0.7)', marginBottom: 4 }}>Evidence Gap Analysis</div>
-            <div style={{ fontSize: 13, color: '#9ca3af' }}>Posture score {postureScore} with {missingCases} unresolved evidence gaps</div>
+            <div data-qid="dashboard-posturedashboard:auto:74" data-qs-action="DASHBOARD_POSTUREDASHBOARD_AUTO_74" style={{ fontSize: 13, color: '#9ca3af' }}>Posture score {postureScore} with {missingCases} unresolved evidence gaps</div>
           </div>
           <EvidenceNavigatorButton
             onClick={() => onAnalyzeProofChain(missingCases)}
@@ -391,7 +391,7 @@ export default function PostureDashboard({ onNavigateToControl, onAnalyzeProofCh
       </div>
       {/* Keep proof-chain action available regardless of active tab. */}
       {onAnalyzeProofChain && !loading && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div data-qid="dashboard-posturedashboard:auto:396" data-qs-action="DASHBOARD_POSTUREDASHBOARD_AUTO_396" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <EvidenceNavigatorButton
             onClick={() => onAnalyzeProofChain(Math.max(0, posture.totalCases - Math.round(posture.totalCases * (posture.postureScore / 100))))}
             label="Analyze Proof Chain"
