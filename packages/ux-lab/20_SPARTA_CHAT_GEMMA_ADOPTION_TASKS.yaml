@@ -192,15 +192,15 @@ tasks:
       assertion: "All contract target files exist and no inactive ChatTab-only path is treated as the active implementation target."
 
   - id: T2
-    title: "Add typed evidence-run events to the shared chat adapter"
+    title: "Validate typed evidence-run events in the shared chat adapter"
     lane: adapter
-    runner: code-runner
-    backend: text
-    mode: iterative
-    dirty_worktree_policy: allow_if_allowlist_clean
+    runner: local
+    backend: ""
+    mode: ""
     agent: frontend-infrastructure
     depends_on:
       - T1
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/pi-chat-adapter && npm run build && cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && rg -n \"EvidenceRunTrace|EvidenceRunEvent|displayOnly|evidence_gate|evidenceRun\" /home/graham/workspace/experiments/pi-mono/packages/pi-chat-adapter/src /home/graham/workspace/experiments/pi-mono/packages/ux-lab/src/components/shared-chat/types.ts"
     skills:
       - ux-lab
       - best-practices-react
