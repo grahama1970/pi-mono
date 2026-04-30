@@ -813,8 +813,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           {/* Embry AI Assistant — Trigger on left aligns with drawer opening left */}
           <button
             data-qid="sparta:button:embry-assistant"
-            data-qs-action="TOGGLE_CHAT"
-            onClick={toggleChat}
+            data-qs-action="OPEN_CHAT"
+            onClick={() => setChatOpen(true)}
             title="Ask Embry (⌘J)"
             style={{
               ...S.embryBtn,

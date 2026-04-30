@@ -233,10 +233,12 @@ function ToggleSection({
     <section style={{ border: `1px solid ${EMBRY.border}`, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.02)' }}>
       <button data-qid="shared-evidencecasetrace:auto:236" data-qs-action="SHARED_EVIDENCECASETRACE_AUTO_236"
         type="button"
+        title={`${open ? 'Collapse' : 'Expand'} ${label}`}
         onClick={onToggle}
         className="press-scale"
         style={{
           width: '100%',
+          minHeight: 44,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',

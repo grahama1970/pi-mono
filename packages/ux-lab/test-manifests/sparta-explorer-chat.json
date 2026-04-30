@@ -1,149 +1,121 @@
 {
   "version": 1,
-  "app": "SPARTA Explorer Chat Tab",
+  "app": "SPARTA Explorer Evidence Chat",
   "base_url": "http://localhost:3002/#sparta-explorer",
   "surfaces": [
     {
-      "name": "chat-tab-layout",
+      "name": "evidence-chat-workspace",
       "path": "/",
-      "wait_ready": "[data-qid='chat:composer']",
+      "wait_ready": "[data-qid='sparta:button:embry-assistant']",
       "qid_compliance": true,
       "elements": [
         {
-          "name": "page-header-visible",
+          "name": "open-chat-drawer",
           "interactions": [
-            {
-              "action": "screenshot",
-              "description": "Full page load - verify header FINAL_SITE is visible at top"
-            },
-            {
-              "action": "wait",
-              "target": "[data-qid='chat:composer']",
-              "timeout_ms": 5000,
-              "description": "Wait for chat composer to load"
-            }
-          ]
-        },
-        {
-          "name": "starter-questions",
-          "interactions": [
-            {
-              "action": "wait",
-              "target": "[data-qid='chat:starter:0']",
-              "timeout_ms": 5000,
-              "description": "Wait for starter questions to load"
-            },
-            {
-              "action": "screenshot",
-              "description": "Starter questions visible in chat area"
-            },
             {
               "action": "click",
-              "target": "[data-qid='chat:starter:0']",
-              "description": "Click first starter question",
+              "target": "[data-qid='sparta:button:embry-assistant']",
+              "description": "Open Ask Embry drawer",
               "screenshot_after": true,
-              "assert_min_size": {"selector": "[data-qid='chat:starter:0']", "min_width": 44, "min_height": 44},
-              "assert_title": "[data-qid='chat:starter:0']"
+              "assert_min_size": { "selector": "[data-qid='sparta:button:embry-assistant']", "min_width": 44, "min_height": 44 },
+              "assert_title": "[data-qid='sparta:button:embry-assistant']",
+              "assert_qs_action": "[data-qid='sparta:button:embry-assistant']"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='sparta:hud:input']",
+              "timeout_ms": 5000,
+              "description": "Wait for chat composer after drawer opens"
             }
           ]
         },
         {
-          "name": "chat-input",
+          "name": "submit-evidence-case",
           "interactions": [
-            {
-              "action": "click",
-              "target": "[data-qid='chat:input']",
-              "description": "Focus chat input field",
-              "assert_title": "[data-qid='chat:input']"
-            },
             {
               "action": "type",
-              "target": "[data-qid='chat:input']",
-              "value": "What controls cover supply chain?",
-              "description": "Type a test question"
-            },
-            {
-              "action": "screenshot",
-              "description": "Input filled with test question"
-            }
-          ]
-        },
-        {
-          "name": "send-button",
-          "interactions": [
-            {
-              "action": "screenshot",
-              "description": "Send button appearance - should be rectangular, not large circle"
+              "target": "[data-qid='sparta:hud:input']",
+              "value": "/create-evidence-case Given third-party FPGA vendors, which SPARTA supply-chain controls should we prioritize for CMMC Level 3?",
+              "description": "Type create-evidence-case prompt"
             },
             {
               "action": "click",
-              "target": "[data-qid='chat:send']",
-              "description": "Click send button",
+              "target": "[data-qid='sparta:hud:transmit']",
+              "description": "Submit evidence-case prompt",
               "screenshot_after": true,
-              "assert_min_size": {"selector": "[data-qid='chat:send']", "min_width": 44, "min_height": 44},
-              "assert_title": "[data-qid='chat:send']",
-              "assert_qs_action": "[data-qid='chat:send']"
-            }
-          ]
-        },
-        {
-          "name": "scroll-behavior",
-          "interactions": [
-            {
-              "action": "scroll",
-              "direction": "down",
-              "amount": 300,
-              "description": "Scroll down in chat area"
+              "assert_min_size": { "selector": "[data-qid='sparta:hud:transmit']", "min_width": 44, "min_height": 44 },
+              "assert_title": "[data-qid='sparta:hud:transmit']",
+              "assert_qs_action": "[data-qid='sparta:hud:transmit']"
             },
-            {
-              "action": "screenshot",
-              "description": "After scroll down - content should move"
-            },
-            {
-              "action": "scroll",
-              "direction": "up",
-              "amount": 500,
-              "description": "Scroll back to top"
-            },
-            {
-              "action": "screenshot",
-              "description": "After scroll to top - header should be visible"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "threat-matrix-panel",
-      "path": "/",
-      "wait_ready": "[data-qid='chat:datalake:f36']",
-      "qid_compliance": true,
-      "elements": [
-        {
-          "name": "datalake-selector",
-          "interactions": [
-            {
-              "action": "click",
-              "target": "[data-qid='chat:datalake:f36']",
-              "description": "Select F-36 datalake to show threat matrix",
-              "screenshot_after": true,
-              "assert_min_size": {"selector": "[data-qid='chat:datalake:f36']", "min_width": 44, "min_height": 44},
-              "assert_title": "[data-qid='chat:datalake:f36']"
-            }
-          ]
-        },
-        {
-          "name": "coverage-labels",
-          "interactions": [
             {
               "action": "wait",
-              "target": "[data-qid='threat-matrix:cell:REC-0001']",
-              "timeout_ms": 5000,
-              "description": "Wait for threat matrix cells to load"
+              "target": "[data-qid='sparta:evidence-workspace:tab-trace']",
+              "timeout_ms": 30000,
+              "description": "Wait for Evidence Workspace to open"
             },
             {
               "action": "screenshot",
-              "description": "Threat matrix with coverage percentage labels visible"
+              "description": "Evidence run timeline and workspace visible"
+            }
+          ]
+        },
+        {
+          "name": "workspace-tabs",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:tab-sources']",
+              "description": "Open Sources tab",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:tab-sources']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:tab-entities']",
+              "description": "Open Entities tab",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:tab-entities']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:tab-proof']",
+              "description": "Open Proof tab",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:tab-proof']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:tab-export']",
+              "description": "Open Export and diagnostics tab",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:tab-export']"
+            }
+          ]
+        },
+        {
+          "name": "reviewer-controls",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:defer']",
+              "description": "Defer evidence case",
+              "screenshot_after": true,
+              "assert_min_size": { "selector": "[data-qid='sparta:evidence-workspace:defer']", "min_width": 44, "min_height": 44 },
+              "assert_title": "[data-qid='sparta:evidence-workspace:defer']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:edit']",
+              "description": "Edit evidence case answer",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:edit']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:evidence-workspace:rerun']",
+              "description": "Request rerun of latest evidence step",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:evidence-workspace:rerun']"
             }
           ]
         }

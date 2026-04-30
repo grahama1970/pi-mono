@@ -172,13 +172,13 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
   }
 
   return (
-    <aside style={S.container} aria-label="Evidence Workspace">
+    <aside data-qid="sparta:evidence-workspace" style={S.container} aria-label="Evidence Workspace">
       <div style={S.header}>
         <div>
           <div style={S.kicker}>Evidence Workspace</div>
           <div style={S.title}>{runLabel}</div>
         </div>
-        <button type="button" title="Close evidence workspace" onClick={onClose} style={S.iconBtn}>
+        <button type="button" data-qid="sparta:evidence-workspace:close" data-qs-action="CLOSE_EVIDENCE_WORKSPACE" title="Close evidence workspace" onClick={onClose} style={S.iconBtn}>
           <X size={16} />
         </button>
       </div>
@@ -196,27 +196,27 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
           {' '}Reviewer action is required before persistence, export readiness, or signoff.
         </div>
         <div style={S.actions} aria-label="Reviewer actions">
-          <button type="button" title="Approve evidence case" onClick={() => setReviewDecision('APPROVED')} style={{ ...S.actionBtn, ...(reviewDecision === 'APPROVED' ? S.actionActive : {}) }}>
+          <button type="button" data-qid="sparta:evidence-workspace:approve" data-qs-action="APPROVE_EVIDENCE_CASE" title="Approve evidence case" onClick={() => setReviewDecision('APPROVED')} style={{ ...S.actionBtn, ...(reviewDecision === 'APPROVED' ? S.actionActive : {}) }}>
             <Check size={14} />
             Approve
           </button>
-          <button type="button" title="Edit reviewer answer" onClick={() => setReviewDecision('EDITING')} style={{ ...S.actionBtn, ...(reviewDecision === 'EDITING' ? S.actionActive : {}) }}>
+          <button type="button" data-qid="sparta:evidence-workspace:edit" data-qs-action="EDIT_EVIDENCE_CASE" title="Edit reviewer answer" onClick={() => setReviewDecision('EDITING')} style={{ ...S.actionBtn, ...(reviewDecision === 'EDITING' ? S.actionActive : {}) }}>
             <Pencil size={14} />
             Edit
           </button>
-          <button type="button" title="Defer reviewer decision" onClick={() => setReviewDecision('DEFERRED')} style={{ ...S.actionBtn, ...(reviewDecision === 'DEFERRED' ? S.actionActive : {}) }}>
+          <button type="button" data-qid="sparta:evidence-workspace:defer" data-qs-action="DEFER_EVIDENCE_CASE" title="Defer reviewer decision" onClick={() => setReviewDecision('DEFERRED')} style={{ ...S.actionBtn, ...(reviewDecision === 'DEFERRED' ? S.actionActive : {}) }}>
             <Clock size={14} />
             Defer
           </button>
-          <button type="button" title="Reject evidence case" onClick={() => setReviewDecision('REJECTED')} style={{ ...S.actionBtn, ...(reviewDecision === 'REJECTED' ? S.actionDanger : {}) }}>
+          <button type="button" data-qid="sparta:evidence-workspace:reject" data-qs-action="REJECT_EVIDENCE_CASE" title="Reject evidence case" onClick={() => setReviewDecision('REJECTED')} style={{ ...S.actionBtn, ...(reviewDecision === 'REJECTED' ? S.actionDanger : {}) }}>
             <X size={14} />
             Reject
           </button>
-          <button type="button" title="Pause evidence run review" onClick={() => setPaused(value => !value)} style={{ ...S.actionBtn, ...(paused ? S.actionActive : {}) }}>
+          <button type="button" data-qid="sparta:evidence-workspace:pause" data-qs-action="PAUSE_EVIDENCE_CASE_REVIEW" title="Pause evidence run review" onClick={() => setPaused(value => !value)} style={{ ...S.actionBtn, ...(paused ? S.actionActive : {}) }}>
             <Clock size={14} />
             {paused ? 'Resume' : 'Pause'}
           </button>
-          <button type="button" title="Request rerun of the latest evidence step" onClick={() => setRerunRequest(new Date().toISOString())} style={S.actionBtn}>
+          <button type="button" data-qid="sparta:evidence-workspace:rerun" data-qs-action="RERUN_EVIDENCE_CASE_STEP" title="Request rerun of the latest evidence step" onClick={() => setRerunRequest(new Date().toISOString())} style={S.actionBtn}>
             <GitBranch size={14} />
             Rerun
           </button>
@@ -235,7 +235,7 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
           const Icon = tab.icon
           const selected = tab.id === activeTab
           return (
-            <button key={tab.id} type="button" role="tab" aria-selected={selected} title={tab.id} onClick={() => setActiveTab(tab.id)} style={{ ...S.tab, ...(selected ? S.tabActive : {}) }}>
+            <button key={tab.id} type="button" role="tab" aria-selected={selected} data-qid={`sparta:evidence-workspace:tab-${tab.id.toLowerCase()}`} data-qs-action="SWITCH_EVIDENCE_WORKSPACE_TAB" title={tab.id} onClick={() => setActiveTab(tab.id)} style={{ ...S.tab, ...(selected ? S.tabActive : {}) }}>
               <Icon size={14} />
               <span>{tab.id}</span>
             </button>

@@ -548,7 +548,7 @@ tasks:
     depends_on:
       - T8
       - T9
-    command: "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh --url http://localhost:3002/#sparta-explorer/ --manifest /home/graham/workspace/experiments/pi-mono/packages/ux-lab/test-manifests/sparta-explorer-chat.json --output /tmp/sparta-chat-gemma-adoption-test-interactions"
+    command: "/home/graham/workspace/experiments/agent-skills/skills/test-interactions/run.sh run --manifest /home/graham/workspace/experiments/pi-mono/packages/ux-lab/test-manifests/sparta-explorer-chat.json --output-dir /tmp/sparta-chat-gemma-adoption-test-interactions --max-retries 2"
     implementation:
       - "Verify chat-open, evidence-workspace-tabs, reviewer-controls, and diagnostics interactions."
       - "Capture screenshots for each manifest entry and check for layout overlap, missing data, and invisible controls."
@@ -556,8 +556,8 @@ tasks:
     tests:
       - "/test-interactions manifest entries pass"
     definition_of_done:
-      command: "test -d /tmp/sparta-chat-gemma-adoption-test-interactions"
-      assertion: "Interaction artifacts exist for the active Sparta Explorer route and cover the manifest entries."
+      command: "jq -e '.failed == 0 and .passed >= 13' /tmp/sparta-chat-gemma-adoption-test-interactions/results.json"
+      assertion: "Interaction artifacts exist for the active Sparta Explorer route and all manifest entries pass."
 
   - id: T11
     title: "Run final CDP verification and capture screenshot artifact"

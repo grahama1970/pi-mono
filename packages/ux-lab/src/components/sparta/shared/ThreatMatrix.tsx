@@ -499,7 +499,7 @@ function Header() {
             title="Condensed View — show only IDs and status"
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: 44, height: 44, borderRadius: 8,
+              width: 44, height: 44, minWidth: 44, minHeight: 44, flex: '0 0 44px', borderRadius: 8,
               border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
               backgroundColor: state.condensedView ? `${EMBRY.blue}22` : 'transparent',
               color: state.condensedView ? EMBRY.blue : EMBRY.dim,
