@@ -44,6 +44,7 @@ function formatCount(value: number | undefined) {
 }
 
 function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
+  if (q.qra_quality?.issue_code === 'ambiguous_referent') return 'failed'
   const reviewStatus = (q.review_status || '').trim().toLowerCase()
   if (reviewStatus === 'approved' || reviewStatus === 'pass' || reviewStatus === 'passed') return 'passed'
   if (reviewStatus === 'rejected' || reviewStatus === 'fail' || reviewStatus === 'failed' || reviewStatus === 'pending') return 'failed'
@@ -57,12 +58,20 @@ function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
   return q.evidence_case ? 'failed' : 'failed'
 }
 
+function getQraQualityIssue(q: SpartaQRA | undefined) {
+  if (!q?.qra_quality?.issue_code) return null
+  return q.qra_quality
+}
+
 function statusIndicators(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) => void): React.ReactNode {
   const status = deriveEvidenceStatus(q)
-  const color = status === 'passed' ? EMBRY.green : EMBRY.red
-  const glow = status === 'passed' ? `${EMBRY.green}33` : `${EMBRY.red}33`
+  const qualityIssue = getQraQualityIssue(q)
+  const color = status === 'passed' ? EMBRY.green : qualityIssue?.issue_code === 'ambiguous_referent' ? EMBRY.amber : EMBRY.red
+  const glow = status === 'passed' ? `${EMBRY.green}33` : qualityIssue?.issue_code === 'ambiguous_referent' ? `${EMBRY.amber}33` : `${EMBRY.red}33`
   const title = status === 'passed'
     ? 'Evidence passed or was approved'
+    : qualityIssue?.issue_code === 'ambiguous_referent'
+      ? `Ambiguous referent: ${(qualityIssue.ambiguous_referents ?? []).join(', ')}. Retained for adversarial training; plan repair before use.`
     : q.evidence_case
       ? 'Evidence failed or needs review'
       : 'No evidence case attached'
@@ -274,6 +283,7 @@ export function QRAsView() {
 
   const currentListItem = qras[currentIndex] as SpartaQRA | undefined
   const current = currentListItem ? (qraDetails.get(currentListItem._key) ?? currentListItem) : undefined
+  const currentQualityIssue = getQraQualityIssue(current)
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
   const loadedStart = qraTotal === 0 || qras.length === 0 ? 0 : 1
   const loadedEnd = qras.length
@@ -857,6 +867,23 @@ export function QRAsView() {
                           {tag}
                         </span>
                       ))}
+                    </div>
+                  )}
+                  {currentQualityIssue?.issue_code === 'ambiguous_referent' && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      color: EMBRY.amber,
+                      fontSize: 9,
+                      fontWeight: 800,
+                      letterSpacing: 0.45,
+                      textTransform: 'uppercase',
+                    }}>
+                      <span>Ambiguous referent</span>
+                      <span style={{ color: EMBRY.dim, fontWeight: 700, textTransform: 'none' }}>
+                        {(currentQualityIssue.ambiguous_referents ?? []).join(', ')} · retained for adversarial training · plan repair
+                      </span>
                     </div>
                   )}
                 </div>

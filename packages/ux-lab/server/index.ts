@@ -330,6 +330,31 @@ function asRows(raw: Record<string, unknown>): any[] {
   return (raw.documents ?? raw.items ?? raw.data ?? raw.results ?? []) as any[]
 }
 
+const AMBIGUOUS_QRA_REFERENT_RE = /\b(?:this|that|these|those|above|following|provided|given)\s+(?:payload|technique|control|weakness|attack|pattern|countermeasure|relationship|document|excerpt|source|context|requirement|case|system|component|vendor)\b/gi
+
+function detectAmbiguousQraReferents(question: unknown): string[] {
+  if (typeof question !== 'string' || !question.trim()) return []
+  return Array.from(new Set(Array.from(question.matchAll(AMBIGUOUS_QRA_REFERENT_RE), (match) => match[0])))
+}
+
+function annotateQraQuality(doc: Record<string, any> | null | undefined) {
+  if (!doc) return doc
+  const ambiguousReferents = detectAmbiguousQraReferents(doc.question)
+  if (!ambiguousReferents.length) return doc
+  return {
+    ...doc,
+    qra_quality: {
+      ...(doc.qra_quality && typeof doc.qra_quality === 'object' ? doc.qra_quality : {}),
+      status: 'needs_repair',
+      issue_code: 'ambiguous_referent',
+      issue_label: 'Ambiguous referent',
+      ambiguous_referents: ambiguousReferents,
+      disposition: 'retain_for_adversarial_training',
+      safe_action: 'plan_repair',
+    },
+  }
+}
+
 const QRA_V2_COLLECTIONS = ['sparta_qra_canonical', 'sparta_qra_relationship'] as const
 const LEGACY_QRA_COLLECTION = 'sparta_qra' as const
 const QRA_COUNT_CACHE_TTL_MS = 30_000
@@ -357,7 +382,7 @@ function normalizeQraDocument(doc: Record<string, any> | null | undefined, colle
   const normalized = { ...doc } as Record<string, any>
   if (!normalized.control_id && normalized.source_control_id) normalized.control_id = normalized.source_control_id
   if (!normalized._collection && collection) normalized._collection = collection
-  return normalized
+  return annotateQraQuality(normalized)
 }
 
 async function fetchQraDocsByKeys(
@@ -7345,6 +7370,33 @@ app.post('/api/evidence-case/run', async (req, res) => {
   // Call daemon /create-evidence-case directly (no subprocess, <1s per best-practices-arangodb)
   const { question, controlId, nodeLabel } = req.body
   if (!question) return res.status(400).json({ error: 'question required' })
+  const ambiguousReferents = detectAmbiguousQraReferents(question)
+  if (ambiguousReferents.length > 0) {
+    return res.json({
+      verdict: { state: 'inconclusive', action: 'clarify', grade: 'C', score: 0.25 },
+      gate_trace: [
+        {
+          gate: 'ambiguous_referent',
+          passed: false,
+          detail: `Missing explicit referent for: ${ambiguousReferents.join(', ')}`,
+        },
+      ],
+      evidence: [],
+      glossary: [],
+      crosswalk_chains: [],
+      context: {},
+      qra_quality: {
+        status: 'needs_repair',
+        issue_code: 'ambiguous_referent',
+        issue_label: 'Ambiguous referent',
+        ambiguous_referents: ambiguousReferents,
+        disposition: 'retain_for_adversarial_training',
+        safe_action: 'plan_repair',
+      },
+      answer: `Clarify the missing context for ${ambiguousReferents.join(', ')} before an authoritative evidence case can be built.`,
+      cae_tree: null,
+    })
+  }
 
   try {
     // Direct daemon call — deterministic, no LLM by default

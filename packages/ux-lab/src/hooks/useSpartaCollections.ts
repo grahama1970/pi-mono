@@ -181,6 +181,14 @@ export interface SpartaQRA {
 	tier2_pass?: boolean;
 	source_framework?: string;
 	review_status?: "auto" | "approved" | "rejected" | "pending" | "pass" | "passed" | "fail" | "failed" | string;
+	qra_quality?: {
+		status?: "needs_repair" | "waived" | "deprecated" | "blocked" | string;
+		issue_code?: "ambiguous_referent" | string;
+		issue_label?: string;
+		ambiguous_referents?: string[];
+		disposition?: string;
+		safe_action?: string;
+	};
 	evidence_quotes?: Array<{ quote: string; relevance?: string }>;
 	crosswalk_chain?: string[];
 	qra_type?: string;

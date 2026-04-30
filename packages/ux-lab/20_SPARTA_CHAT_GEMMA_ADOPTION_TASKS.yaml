@@ -197,6 +197,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: frontend-infrastructure
     depends_on:
       - T1
@@ -243,6 +244,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: backend-integration
     depends_on:
       - T1
@@ -293,6 +295,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: frontend-implementation
     depends_on:
       - T2
@@ -343,6 +346,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: frontend-implementation
     depends_on:
       - T3
@@ -395,6 +399,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: frontend-implementation
     depends_on:
       - T4
@@ -443,6 +448,7 @@ tasks:
     runner: code-runner
     backend: text
     mode: iterative
+    dirty_worktree_policy: allow_if_allowlist_clean
     agent: frontend-implementation
     depends_on:
       - T3
