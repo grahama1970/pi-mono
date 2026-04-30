@@ -18,6 +18,9 @@ export interface EntityRef {
 	label: string;
 	type?: string;
 	exists: boolean;
+	/** Regex-derived references are for UI highlighting only; do not treat as graph-grounded evidence. */
+	displayOnly?: boolean;
+	source?: "regex" | "structured" | string;
 }
 
 export interface EvidenceGate {
@@ -39,6 +42,61 @@ export interface EvidenceCaseData {
 	drift?: { old_verdict: string; new_verdict: string; timestamp: string };
 	recall_count?: number;
 	source_traceability?: Record<string, number>;
+}
+
+export type EvidenceRunEventStatus = "pending" | "running" | "done" | "failed";
+
+export interface EvidenceRunStartedEvent {
+	type: "evidence_run_started";
+	runId: string;
+	timestamp: number;
+	skill?: string;
+	requestId?: string;
+}
+
+export interface EvidenceRunGateEvent {
+	type: "evidence_gate";
+	runId: string;
+	timestamp: number;
+	gate: string;
+	status: EvidenceRunEventStatus;
+	passed?: boolean;
+	detail?: string;
+	duration?: number;
+}
+
+export interface EvidenceRunCompletedEvent {
+	type: "evidence_run_completed";
+	runId: string;
+	timestamp: number;
+	verdict?: string;
+	grade?: string;
+	gatesPassed?: number;
+	gatesTotal?: number;
+	tier?: string;
+}
+
+export interface EvidenceRunFailedEvent {
+	type: "evidence_run_failed";
+	runId: string;
+	timestamp: number;
+	message?: string;
+}
+
+export type EvidenceRunEvent =
+	| EvidenceRunStartedEvent
+	| EvidenceRunGateEvent
+	| EvidenceRunCompletedEvent
+	| EvidenceRunFailedEvent;
+
+export interface EvidenceRunTrace {
+	runId: string;
+	requestId?: string;
+	skill?: string;
+	status: EvidenceRunEventStatus;
+	startedAt?: number;
+	completedAt?: number;
+	events: EvidenceRunEvent[];
 }
 
 export type CascadeLayer = "recall" | "intent" | "llm" | "aql";
@@ -64,6 +122,8 @@ export interface ChatMessage {
 	cascadeLayer?: CascadeLayer;
 	verdict?: { state: string; gates: EvidenceGate[]; tier?: string };
 	evidenceCase?: EvidenceCaseData;
+	/** Typed, append-only event model for evidence-case runs derived from existing Pi/SSE output. */
+	evidenceRun?: EvidenceRunTrace;
 	reasoningSteps?: ReasoningStep[];
 	recallItems?: unknown[];
 	resultCount?: number;
@@ -84,19 +144,23 @@ export class RequestAssembler {
 	private textChunks: string[] = [];
 	private toolCalls: Array<{ tool: string; args: Record<string, unknown> }> = [];
 	private steps: ReasoningStep[] = [];
+	private steps: ReasoningStep[] = [];
 	private gateSteps: Map<string, ReasoningStep> = new Map();
+	private evidenceRunEvents: EvidenceRunEvent[] = [];
+	private evidenceRunId?: string;
+	private evidenceRunSkill?: string;
+	private evidenceRunStatus: EvidenceRunEventStatus = "pending";
+	private evidenceRunStartedAt?: number;
+	private evidenceRunCompletedAt?: number;
 	private done = false;
-
-	constructor(requestId: string) {
-		this.requestId = requestId;
 	}
-
-	/** Process a D-Bus event. Returns true if this was the final event. */
-	ingest(event: PiEvent): boolean {
-		if (event.requestId !== this.requestId) return false;
-
 		switch (event.type) {
 			case "message_update":
+				if (event.text) {
+					this.textChunks.push(event.text);
+					this.parseGateProgress(event.text);
+				}
+				break;
 				if (event.text) {
 					this.textChunks.push(event.text);
 					this.parseGateProgress(event.text);
@@ -120,7 +184,10 @@ export class RequestAssembler {
 					status: "running",
 					summary: skillName !== "bash" ? `/${skillName}` : `Running ${event.tool}`,
 					startedAt: Date.now(),
-				});
+					});
+					if (skillName === "create-evidence-case") {
+						this.ensureEvidenceRunStarted(skillName);
+					}
 				break;
 			}
 
@@ -133,7 +200,15 @@ export class RequestAssembler {
 				break;
 
 			case "error":
-				this.done = true;
+					}
+					if (this.evidenceRunEvents.length > 0) {
+						this.appendEvidenceRunEvent({
+							type: "evidence_run_failed",
+							runId: this.ensureEvidenceRunStarted("create-evidence-case"),
+							timestamp: Date.now(),
+							message: "Pi request failed",
+						});
+					}
 				for (const s of this.steps) {
 					if (s.status === "running") s.status = "failed";
 				}
@@ -182,8 +257,12 @@ export class RequestAssembler {
 					state: ec.verdict.toUpperCase(),
 					gates: ec.gate_trace ?? [],
 					tier: ec.tier,
-				};
-			}
+					};
+					this.appendEvidenceRunCompletion(ec);
+				} else if (this.evidenceRunEvents.length > 0 && this.evidenceRunStatus === "running") {
+					this.evidenceRunStatus = "done";
+		// Regex entity extraction is display-only. It is not used as evidence grounding.
+				}
 		}
 
 		// Always extract entities from response text
@@ -191,7 +270,13 @@ export class RequestAssembler {
 		if (entities.length > 0) msg.entities = entities;
 
 		// Reasoning steps — with resolved skill names
-		const reasoningSteps = this.currentSteps();
+
+		const evidenceRun = this.currentEvidenceRun();
+		if (evidenceRun) {
+			msg.evidenceRun = evidenceRun;
+		}
+
+		return msg;
 		if (reasoningSteps.length > 0) {
 			msg.reasoningSteps = reasoningSteps;
 		}
