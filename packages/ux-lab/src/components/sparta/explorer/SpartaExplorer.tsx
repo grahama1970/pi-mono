@@ -2,8 +2,8 @@ import React, { createContext, useState, useEffect, useCallback, useRef, useCont
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { StatusBar } from '../../common/StatusBar'
 import { OfflineBanner } from '../../common/OfflineBanner'
-import { ChatWell } from '../query/ChatWell'
-import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../query/ChatWell'
+import { ChatWell, type StreamingStep } from '../../shared-chat'
+import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../../shared-chat'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
 import { useMemoryHealth } from '../../../hooks/useMemoryHealth'
 import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, ChevronLeft, Sparkles, Activity } from 'lucide-react'
@@ -17,6 +17,7 @@ export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
 
 const API = 'http://localhost:3001'
+const EVIDENCE_CASE_COMMAND_RE = /^\s*\/create-evidence-case(?:\s+|$)/i
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
 const TABS = [
@@ -378,7 +379,121 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     setMessages(prev => [...prev, m])
     return m
   }, [])
+  const runTypedEvidenceCaseStream = useCallback(async (query: string) => {
+    const question = query.replace(EVIDENCE_CASE_COMMAND_RE, '').trim() || query.trim()
+    const requestId = `ec-${Date.now()}-${++msgIdRef.current}`
+    addMsg({ role: 'user', content: query, type: 'natural', skillUsed: 'create-evidence-case' })
+    setEvidenceCaseLoading(requestId)
+    setEvidenceStreamingSteps([])
+    setEvidenceStreaming(true)
 
+    const upsertStep = (step: StreamingStep) => {
+      setEvidenceStreamingSteps(prev => {
+        const idx = prev.findIndex(s => s.id === step.id)
+        if (idx === -1) return [...prev, step]
+        const next = [...prev]
+        next[idx] = { ...next[idx], ...step }
+        return next
+      })
+    }
+
+    try {
+      const res = await fetch(`${API}/api/agent/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `/create-evidence-case ${question}`,
+          skill: 'create-evidence-case',
+          request_id: requestId,
+          scope,
+          gate_depth: gateDepth,
+        }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const reader = res.body?.getReader()
+      if (!reader) throw new Error('No response body')
+
+      const decoder = new TextDecoder()
+      let buffer = ''
+      let eventType = ''
+      let textAcc = ''
+      let finalMessage: ChatMessage | null = null
+
+      const handleEvent = (type: string, data: any) => {
+        if (type === 'step' && Array.isArray(data?.steps)) {
+          setEvidenceStreamingSteps(data.steps.map((s: any, i: number) => ({
+            id: String(s.id ?? `step-${i}`),
+            type: String(s.type ?? s.skill ?? 'step'),
+            skill: s.skill,
+            status: (['pending', 'running', 'done', 'failed'].includes(s.status) ? s.status : 'running') as StreamingStep['status'],
+            summary: String(s.summary ?? s.label ?? s.type ?? 'Evidence step'),
+            detail: s.detail,
+            duration: s.duration,
+            startedAt: s.startedAt,
+          })))
+          return
+        }
+        if (type === 'evidence_run_started') {
+          upsertStep({ id: data.runId ?? requestId, type: 'evidence_run', skill: data.skill ?? 'create-evidence-case', status: 'running', summary: 'Evidence case run started', startedAt: data.timestamp ?? Date.now() })
+          return
+        }
+        if (type === 'evidence_gate') {
+          upsertStep({
+            id: `${data.runId ?? requestId}:${data.gate ?? 'gate'}`,
+            type: 'gate',
+            status: data.status === 'failed' ? 'failed' : data.status === 'done' || data.passed != null ? 'done' : 'running',
+            summary: String(data.gate ?? 'Evidence gate'),
+            detail: data.detail,
+            duration: data.duration,
+          })
+          return
+        }
+        if (type === 'text') {
+          textAcc += data?.text ?? ''
+          return
+        }
+        if (type === 'message') {
+          finalMessage = data as ChatMessage
+          return
+        }
+        if (type === 'evidence_run_failed' || type === 'error') {
+          throw new Error(data?.message ?? 'Evidence case stream failed')
+        }
+      }
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() ?? ''
+        for (const line of lines) {
+          if (line.startsWith('event: ')) eventType = line.slice(7).trim()
+          else if (line.startsWith('data: ') && eventType) {
+            handleEvent(eventType, JSON.parse(line.slice(6)))
+            eventType = ''
+          }
+        }
+      }
+
+      if (finalMessage) {
+        addMsg({ ...finalMessage, role: finalMessage.role ?? 'system', content: finalMessage.content ?? textAcc, type: finalMessage.type ?? 'natural', skillUsed: finalMessage.skillUsed ?? 'create-evidence-case' })
+      } else {
+        addMsg({ role: 'system', content: textAcc || 'Evidence case completed.', type: 'natural', skillUsed: 'create-evidence-case' })
+      }
+    } catch (err) {
+      addMsg({ role: 'system', content: `Evidence case error: ${err instanceof Error ? err.message : String(err)}`, type: 'natural', skillUsed: 'create-evidence-case' })
+    } finally {
+      setEvidenceStreaming(false)
+      setEvidenceCaseLoading(null)
+    }
+  }, [addMsg, gateDepth, scope])
+
+  const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
+    if (type === 'natural' && EVIDENCE_CASE_COMMAND_RE.test(query)) {
+      await runTypedEvidenceCaseStream(query)
+      return
+    }
   const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
     addMsg({ role: 'user', content: query, type })
 
