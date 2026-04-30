@@ -7356,6 +7356,160 @@ app.post('/api/prompt-lab/optimize', async (req, res) => {
   }
 })
 
+type EvidenceCaseRunStatus = 'running' | 'completed' | 'failed'
+type EvidenceCaseSseEventType = 'run_started' | 'gate' | 'diagnostics' | 'result' | 'run_completed' | 'error'
+
+interface EvidenceCaseRunHistoryEntry {
+  id: string
+  started_at: string
+  completed_at?: string
+  status: EvidenceCaseRunStatus
+  question: string
+  control_id?: string | null
+  node_label?: string | null
+  verdict?: JsonRecord
+  gates?: JsonRecord[]
+  diagnostics?: JsonRecord
+  error?: string
+}
+
+const EVIDENCE_CASE_HISTORY_LIMIT = 50
+const evidenceCaseRunHistory: EvidenceCaseRunHistoryEntry[] = []
+let evidenceCaseRunSequence = 0
+
+function createEvidenceCaseRunId(): string {
+  evidenceCaseRunSequence = (evidenceCaseRunSequence + 1) % 1_000_000
+  return `ec-${Date.now().toString(36)}-${evidenceCaseRunSequence.toString(36).padStart(4, '0')}`
+}
+
+function rememberEvidenceCaseRun(entry: EvidenceCaseRunHistoryEntry): void {
+  const existing = evidenceCaseRunHistory.findIndex((run) => run.id === entry.id)
+  if (existing >= 0) evidenceCaseRunHistory.splice(existing, 1)
+  evidenceCaseRunHistory.unshift(entry)
+  evidenceCaseRunHistory.splice(EVIDENCE_CASE_HISTORY_LIMIT)
+}
+
+function sendEvidenceCaseSse(res: any, event: EvidenceCaseSseEventType, data: JsonRecord): void {
+  res.write(`event: ${event}\n`)
+  res.write(`data: ${JSON.stringify({ type: event, ...data })}\n\n`)
+}
+
+function evidenceCaseAmbiguousPayload(question: string, ambiguousReferents: string[]): JsonRecord {
+  return {
+    verdict: { state: 'inconclusive', action: 'clarify', grade: 'C', score: 0.25 },
+    gate_trace: [
+      {
+        gate: 'ambiguous_referent',
+        passed: false,
+        detail: `Missing explicit referent for: ${ambiguousReferents.join(', ')}`,
+      },
+    ],
+    evidence: [],
+    glossary: [],
+    crosswalk_chains: [],
+    context: {},
+    diagnostics: {
+      authority: 'server_deterministic_gate',
+      workflow: 'create-evidence-case',
+      mode: 'clarification_required',
+      question,
+      qra_quality: {
+        status: 'needs_repair',
+        issue_code: 'ambiguous_referent',
+        issue_label: 'Ambiguous referent',
+        ambiguous_referents: ambiguousReferents,
+        disposition: 'retain_for_adversarial_training',
+        safe_action: 'plan_repair',
+      },
+    },
+    qra_quality: {
+      status: 'needs_repair',
+      issue_code: 'ambiguous_referent',
+      issue_label: 'Ambiguous referent',
+      ambiguous_referents: ambiguousReferents,
+      disposition: 'retain_for_adversarial_training',
+      safe_action: 'plan_repair',
+    },
+    answer: `Clarify the missing context for ${ambiguousReferents.join(', ')} before an authoritative evidence case can be built.`,
+    cae_tree: null,
+  }
+}
+
+function normalizeEvidenceCaseWorkflowResult(question: string, controlId: unknown, result: any): JsonRecord {
+  const reviewStatus = result.review_status || 'unknown'
+  const glossary = Array.isArray(result.glossary) ? result.glossary : []
+  const crosswalks = Array.isArray(result.crosswalk_chains) ? result.crosswalk_chains : []
+  const qras = Array.isArray(result.prior_qra_evidence) ? result.prior_qra_evidence : []
+  const relatedQras = Array.isArray(result.related_qra_evidence) ? result.related_qra_evidence : []
+  const context = result.context || {}
+  const cweRecord = result.cwe_record || null
+  const verdictState = reviewStatus === 'passed' ? 'satisfied'
+    : reviewStatus === 'needs_review' ? 'inconclusive'
+    : 'not_satisfied'
+  const verdictGrade = verdictState === 'satisfied' ? 'A'
+    : verdictState === 'inconclusive' ? 'C' : 'F'
+  const verdictScore = verdictState === 'satisfied' ? 1.0
+    : verdictState === 'inconclusive' ? 0.5 : 0.0
+  const hasGlossary = glossary.length > 0
+  const hasCrosswalks = crosswalks.length > 0
+  const hasQras = qras.length > 0 || relatedQras.length > 0
+  const hasCwe = !!cweRecord
+  const gateTrace = [
+    { gate: 'extract_entities', passed: hasGlossary || hasCwe, detail: hasCwe ? `CWE: ${cweRecord?.control_id}` : `${glossary.length} terms` },
+    { gate: 'crosswalk', passed: hasCrosswalks, detail: `${crosswalks.length} chains` },
+    { gate: 'qra_recall', passed: hasQras, detail: `${qras.length + relatedQras.length} QRAs` },
+    { gate: 'framework', passed: !!context.framework, detail: context.framework || 'none' },
+  ]
+
+  return {
+    verdict: { state: verdictState, grade: verdictGrade, score: verdictScore },
+    gate_trace: gateTrace,
+    evidence: [...qras, ...relatedQras].slice(0, 5).map((q: any) => ({
+      method: 'EXAMINE',
+      layer: 'sparta_qra',
+      result: { qra_text: q.question || q.problem, answer: q.answer || q.solution, control_id: q.control_id },
+      confidence: q.score || 0.5,
+    })),
+    glossary: glossary.slice(0, 20).map((g: any) => ({
+      term: g.name || g.id,
+      type: g.framework === 'CWE' ? 'cwe_weakness'
+        : (g.framework?.startsWith('ATT') || g.type === 'attack_technique') ? 'attack_technique'
+        : g.type === 'countermeasure' ? 'countermeasure'
+        : g.type === 'technique' ? 'technique'
+        : g.framework === 'SPARTA' ? 'control'
+        : g.framework === 'NIST' ? 'control'
+        : 'domain_term',
+    })),
+    crosswalk_chains: crosswalks,
+    context,
+    cwe_record: cweRecord,
+    diagnostics: {
+      authority: 'server_deterministic_gate',
+      workflow: 'create-evidence-case',
+      mode: 'daemon_deterministic_no_llm',
+      question,
+      control_id: typeof controlId === 'string' ? controlId : null,
+      review_status: reviewStatus,
+      counts: {
+        glossary: glossary.length,
+        crosswalk_chains: crosswalks.length,
+        prior_qra_evidence: qras.length,
+        related_qra_evidence: relatedQras.length,
+      },
+      raw_keys: result && typeof result === 'object' ? Object.keys(result).sort() : [],
+    },
+    answer: hasQras
+      ? `Found ${qras.length + relatedQras.length} related QRAs via ${context.framework || 'hybrid'} search.`
+      : `No QRAs found for the query.`,
+    cae_tree: result.claim ? {
+      claim: result.claim,
+      strategies: result.strategies || [],
+      evidence: result.evidence || [],
+      verdict: result.verdict || null,
+    } : null,
+  }
+}
+
 app.post('/api/evidence-case', async (req, res) => {
   // Proxy to memory daemon for evidence case building
   try {
@@ -7368,38 +7522,14 @@ app.post('/api/evidence-case', async (req, res) => {
 
 app.post('/api/evidence-case/run', async (req, res) => {
   // Call daemon /create-evidence-case directly (no subprocess, <1s per best-practices-arangodb)
-  const { question, controlId, nodeLabel } = req.body
+  const { question, controlId } = req.body
   if (!question) return res.status(400).json({ error: 'question required' })
   const ambiguousReferents = detectAmbiguousQraReferents(question)
   if (ambiguousReferents.length > 0) {
-    return res.json({
-      verdict: { state: 'inconclusive', action: 'clarify', grade: 'C', score: 0.25 },
-      gate_trace: [
-        {
-          gate: 'ambiguous_referent',
-          passed: false,
-          detail: `Missing explicit referent for: ${ambiguousReferents.join(', ')}`,
-        },
-      ],
-      evidence: [],
-      glossary: [],
-      crosswalk_chains: [],
-      context: {},
-      qra_quality: {
-        status: 'needs_repair',
-        issue_code: 'ambiguous_referent',
-        issue_label: 'Ambiguous referent',
-        ambiguous_referents: ambiguousReferents,
-        disposition: 'retain_for_adversarial_training',
-        safe_action: 'plan_repair',
-      },
-      answer: `Clarify the missing context for ${ambiguousReferents.join(', ')} before an authoritative evidence case can be built.`,
-      cae_tree: null,
-    })
+    return res.json(evidenceCaseAmbiguousPayload(String(question), ambiguousReferents))
   }
 
   try {
-    // Direct daemon call — deterministic, no LLM by default
     const result = await proxyPost('/create-evidence-case', {
       question,
       source_id: controlId || null,
@@ -7407,80 +7537,16 @@ app.post('/api/evidence-case/run', async (req, res) => {
       enable_llm: false,
     })
 
-    // Daemon returns: {review_status, context, glossary, crosswalk_chains, prior_qra_evidence, cwe_record, ...}
-    // Map to UI format: {verdict, gate_trace, evidence, ...}
-    const reviewStatus = result.review_status || 'unknown'
-    const glossary = result.glossary || []
-    const crosswalks = result.crosswalk_chains || []
-    const qras = result.prior_qra_evidence || []
-    const relatedQras = result.related_qra_evidence || []
-    const context = result.context || {}
-    const cweRecord = result.cwe_record || null
-
-    // Map review_status to verdict state
-    const verdictState = reviewStatus === 'passed' ? 'satisfied'
-      : reviewStatus === 'needs_review' ? 'inconclusive'
-      : 'not_satisfied'
-    const verdictGrade = verdictState === 'satisfied' ? 'A'
-      : verdictState === 'inconclusive' ? 'C' : 'F'
-    const verdictScore = verdictState === 'satisfied' ? 1.0
-      : verdictState === 'inconclusive' ? 0.5 : 0.0
-
-    // Build gate trace from daemon response
-    const hasGlossary = glossary.length > 0
-    const hasCrosswalks = crosswalks.length > 0
-    const hasQras = qras.length > 0 || relatedQras.length > 0
-    const hasCwe = !!cweRecord
-
-    res.json({
-      verdict: { state: verdictState, grade: verdictGrade, score: verdictScore },
-      gate_trace: [
-        { gate: 'extract_entities', passed: hasGlossary || hasCwe, detail: hasCwe ? `CWE: ${cweRecord?.control_id}` : `${glossary.length} terms` },
-        { gate: 'crosswalk', passed: hasCrosswalks, detail: `${crosswalks.length} chains` },
-        { gate: 'qra_recall', passed: hasQras, detail: `${qras.length + relatedQras.length} QRAs` },
-        { gate: 'framework', passed: !!context.framework, detail: context.framework || 'none' },
-      ],
-      evidence: [...qras, ...relatedQras].slice(0, 5).map((q: any) => ({
-        method: 'EXAMINE',
-        layer: 'sparta_qra',
-        result: { qra_text: q.question || q.problem, answer: q.answer || q.solution, control_id: q.control_id },
-        confidence: q.score || 0.5,
-      })),
-      // Transform daemon glossary {id, name, framework, type} to UI format {term, type}
-      glossary: glossary.slice(0, 20).map((g: any) => ({
-        term: g.name || g.id,
-        type: g.framework === 'CWE' ? 'cwe_weakness'
-          : (g.framework?.startsWith('ATT') || g.type === 'attack_technique') ? 'attack_technique'
-          : g.type === 'countermeasure' ? 'countermeasure'
-          : g.type === 'technique' ? 'technique'
-          : g.framework === 'SPARTA' ? 'control'
-          : g.framework === 'NIST' ? 'control'
-          : 'domain_term',
-      })),
-      crosswalk_chains: crosswalks,
-      context,
-      cwe_record: cweRecord,
-      answer: hasQras
-        ? `Found ${qras.length + relatedQras.length} related QRAs via ${context.framework || 'hybrid'} search.`
-        : `No QRAs found for the query.`,
-      // Pass through CAE tree when daemon returns it (v4.3+ schema)
-      cae_tree: result.claim ? {
-        claim: result.claim,
-        strategies: result.strategies || [],
-        evidence: result.evidence || [],
-        verdict: result.verdict || null,
-      } : null,
-    })
+    return res.json(normalizeEvidenceCaseWorkflowResult(String(question), controlId, result))
   } catch (e: any) {
     console.error('[evidence-case/run] Daemon call failed:', e.message)
-    // Fallback: use /recall directly (per /memory SKILL.md)
     try {
       const recall = await proxyPost('/recall', {
         q: question,
         k: 5,
         collections: ['sparta_qra', 'sparta_controls'],
       })
-      const items = recall.items || []  // NOTE: "items" not "results" per SKILL.md
+      const items = recall.items || []
       res.json({
         verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
         gate_trace: [
@@ -7490,13 +7556,106 @@ app.post('/api/evidence-case/run', async (req, res) => {
           method: 'EXAMINE',
           layer: i._collection || 'sparta_qra',
           result: { qra_text: i.problem || i.question || i.name, control_id: i.control_id || i._key },
-          confidence: i.scores?.bm25 || 0.5,  // Use scores.bm25 per SKILL.md
+          confidence: i.scores?.bm25 || 0.5,
         })),
+        diagnostics: {
+          authority: 'server_deterministic_gate',
+          workflow: 'create-evidence-case',
+          mode: 'recall_fallback',
+          daemon_error: e?.message || String(e),
+          recall_count: items.length,
+        },
         answer: items.length > 0 ? `Found ${items.length} items. Full evidence case requires daemon.` : 'No results found.',
       })
     } catch {
       res.status(502).json({ error: 'Evidence case daemon and recall both unavailable' })
     }
+  }
+})
+
+app.get('/api/evidence-case/runs', (_req, res) => {
+  res.json({ runs: evidenceCaseRunHistory, limit: EVIDENCE_CASE_HISTORY_LIMIT })
+})
+
+app.post('/api/evidence-case/stream', async (req, res) => {
+  const { question, controlId, nodeLabel } = req.body
+  if (!question) return res.status(400).json({ error: 'question required' })
+
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache, no-transform',
+    Connection: 'keep-alive',
+    'X-Accel-Buffering': 'no',
+  })
+  if (typeof (res as any).flushHeaders === 'function') (res as any).flushHeaders()
+
+  const run: EvidenceCaseRunHistoryEntry = {
+    id: createEvidenceCaseRunId(),
+    started_at: new Date().toISOString(),
+    status: 'running',
+    question: String(question),
+    control_id: typeof controlId === 'string' ? controlId : null,
+    node_label: typeof nodeLabel === 'string' ? nodeLabel : null,
+  }
+  rememberEvidenceCaseRun(run)
+
+  const emit = (event: EvidenceCaseSseEventType, data: JsonRecord) => sendEvidenceCaseSse(res, event, { run_id: run.id, ts: new Date().toISOString(), ...data })
+
+  emit('run_started', {
+    run: { ...run },
+    request: { question: run.question, control_id: run.control_id, node_label: run.node_label },
+    diagnostics: { authority: 'server_deterministic_gate', workflow: 'create-evidence-case', enable_llm: false },
+  })
+
+  try {
+    const ambiguousReferents = detectAmbiguousQraReferents(question)
+    if (ambiguousReferents.length > 0) {
+      const payload = evidenceCaseAmbiguousPayload(String(question), ambiguousReferents)
+      run.status = 'completed'
+      run.completed_at = new Date().toISOString()
+      run.verdict = payload.verdict as JsonRecord
+      run.gates = payload.gate_trace as JsonRecord[]
+      run.diagnostics = payload.diagnostics as JsonRecord
+      rememberEvidenceCaseRun(run)
+      emit('gate', { gate: (payload.gate_trace as JsonRecord[])[0] })
+      emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
+      emit('result', { result: payload })
+      emit('run_completed', { run: { ...run } })
+      return res.end()
+    }
+
+    emit('gate', { gate: { gate: 'ambiguous_referent', passed: true, detail: 'question contains explicit referents' } })
+    emit('diagnostics', { diagnostics: { authority: 'server_deterministic_gate', workflow: 'create-evidence-case', mode: 'daemon_deterministic_no_llm', step: 'daemon_request' } })
+
+    const daemonResult = await proxyPost('/create-evidence-case', {
+      question,
+      source_id: controlId || null,
+      skip_qra_recall: false,
+      enable_llm: false,
+    }, 120_000)
+    const payload = normalizeEvidenceCaseWorkflowResult(String(question), controlId, daemonResult)
+    const gates = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
+    for (const gate of gates) emit('gate', { gate })
+    emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
+    emit('result', { result: payload })
+
+    run.status = 'completed'
+    run.completed_at = new Date().toISOString()
+    run.verdict = payload.verdict as JsonRecord
+    run.gates = gates
+    run.diagnostics = payload.diagnostics as JsonRecord
+    rememberEvidenceCaseRun(run)
+    emit('run_completed', { run: { ...run } })
+    return res.end()
+  } catch (e: any) {
+    run.status = 'failed'
+    run.completed_at = new Date().toISOString()
+    run.error = e?.message || String(e)
+    run.diagnostics = { authority: 'server_deterministic_gate', workflow: 'create-evidence-case', mode: 'error', error: run.error }
+    rememberEvidenceCaseRun(run)
+    emit('error', { error: 'Evidence case daemon unavailable', detail: run.error, diagnostics: run.diagnostics })
+    emit('run_completed', { run: { ...run } })
+    return res.end()
   }
 })
 
