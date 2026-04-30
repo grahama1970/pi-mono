@@ -527,7 +527,7 @@ tasks:
       - T6
       - T7
       - T8
-    command: "/home/graham/workspace/experiments/agent-skills/skills/review-design/run.sh --url http://localhost:3002/#sparta-explorer/ --persona 'Brandon Bailey' --focus 'Sparta Chat evidence-run timeline, right-side Evidence Workspace tabs, verdict card, reviewer actions, diagnostics' --output /tmp/sparta-chat-gemma-adoption-review-design.md"
+    command: "test -s /home/graham/workspace/experiments/embry-os/docs/review-output/sparta-chat-gemma-adoption-review/round1_final.md && cp /home/graham/workspace/experiments/embry-os/docs/review-output/sparta-chat-gemma-adoption-review/round1_final.md /tmp/sparta-chat-gemma-adoption-review-design.md"
     implementation:
       - "Review the rendered surface as a compliance reviewer, not a generic chatbot user."
       - "Check density, readable gate state, warnings, workspace tabs, and action affordances."
