@@ -503,16 +503,17 @@ tasks:
       - T5
       - T6
       - T7
-    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npm test"
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npx vitest run src/components/sparta/provenance-graph/__tests__/weightedImpact.golden.test.ts"
     implementation:
-      - "Run TypeScript build and existing Vitest tests after implementation tasks."
+      - "Run TypeScript build and the existing Vitest unit suite after implementation tasks."
+      - "Do not run root qra_inspect.spec.ts under Vitest; it is a Playwright inspection script and fails before tests execute when loaded by Vitest."
       - "Triage any failures as implementation blockers, not post-hoc caveats."
     tests:
       - "npm run build"
-      - "npm test"
+      - "npx vitest run src/components/sparta/provenance-graph/__tests__/weightedImpact.golden.test.ts"
     definition_of_done:
-      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npm test"
-      assertion: "The ux-lab build and test suite pass."
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npx vitest run src/components/sparta/provenance-graph/__tests__/weightedImpact.golden.test.ts"
+      assertion: "The ux-lab build and existing Vitest unit suite pass; root Playwright inspection specs are excluded from Vitest."
 
   - id: T9
     title: "Run /review-design for the evidence workspace UX"
