@@ -257,11 +257,12 @@ interface ComparisonActual {
 }
 
 const WORKFLOW_VERSION = '20260428-real-artifacts'
-const MANIFEST_URL = `/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
-const TRIAGE_URL = `/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
-const COMPARISON_URL = `/pdf-lab-nist-comparison.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
-const STATUS_REPORT_URL = `/pdf-lab-status-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
-const PDF_URL = '/NIST_SP_800-53r5.pdf'
+const PDF_LAB_ARTIFACT_BASE_URL = '/artifacts/pdf-lab'
+const MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const COMPARISON_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-comparison.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const STATUS_REPORT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-status-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
 const FAMILY_LABELS: Record<string, string> = {
   caption: 'Captions',
@@ -339,7 +340,7 @@ function getEvidenceForPage(manifest: WorkflowManifest, page: number): EvidenceE
 }
 
 function getPresetScanThumbnailUrl(page: number): string {
-  return `/pdf-lab-nist-preset-scan/page_${page}.png`
+  return `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-preset-scan/page_${page}.png`
 }
 
 function getBboxStyle(bbox?: [number, number, number, number]) {

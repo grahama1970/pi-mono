@@ -85,6 +85,9 @@ const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH 
 const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
 const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'status.json')
 const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
+const PUBLIC_ROOT = resolve(__dirname, '../public')
+const ARTIFACTS_ROOT = resolve(process.env.UX_LAB_ARTIFACTS_ROOT ?? process.env.ARTIFACTS_ROOT ?? '/mnt/storage12tb/pi-mono/artifacts')
+const PDF_LAB_ARTIFACTS_ROOT = resolve(process.env.PDF_LAB_ARTIFACTS_ROOT ?? resolve(ARTIFACTS_ROOT, 'pdf-lab'))
 
 type JsonRecord = Record<string, unknown>
 type WorksheetConfig = { description_source?: string } & Record<string, unknown>
@@ -136,16 +139,29 @@ function parseWorksheetsYaml(content: string): Record<string, WorksheetConfig> {
 
 const PDF_OXIDE_PYTHON = '/home/graham/workspace/experiments/pdf_oxide/.venv/bin/python3'
 
+function isPathInside(root: string, absolutePath: string): boolean {
+  const normalizedRoot = root.endsWith('/') ? root : `${root}/`
+  return absolutePath === root || absolutePath.startsWith(normalizedRoot)
+}
+
 function resolvePublicAssetPath(assetUrl: string, allowedExtensions: string[]): { relativePath: string; absolutePath: string } {
-  const relativePath = assetUrl.replace(/^\/+/, '')
+  const assetPath = assetUrl.split(/[?#]/)[0] ?? assetUrl
+  const relativePath = assetPath.replace(/^\/+/, '')
   const lowerRelativePath = relativePath.toLowerCase()
   if (!allowedExtensions.some((extension) => lowerRelativePath.endsWith(extension.toLowerCase()))) {
     throw new Error(`assetUrl must target one of: ${allowedExtensions.join(', ')}`)
   }
-  const publicRoot = resolve(__dirname, '../public')
-  const absolutePath = resolve(publicRoot, relativePath)
-  if (!absolutePath.startsWith(publicRoot)) {
-    throw new Error('extractionUrl escapes the public directory')
+  if (relativePath.startsWith('artifacts/')) {
+    const artifactRelativePath = relativePath.replace(/^artifacts\/+/, '')
+    const absolutePath = resolve(ARTIFACTS_ROOT, artifactRelativePath)
+    if (!isPathInside(ARTIFACTS_ROOT, absolutePath)) {
+      throw new Error('assetUrl escapes the artifacts directory')
+    }
+    return { relativePath, absolutePath }
+  }
+  const absolutePath = resolve(PUBLIC_ROOT, relativePath)
+  if (!isPathInside(PUBLIC_ROOT, absolutePath)) {
+    throw new Error('assetUrl escapes the public directory')
   }
   return { relativePath, absolutePath }
 }
@@ -189,6 +205,18 @@ app.get('/api/health', async (_req, res) => {
     status: 'ok',
     uptime: Math.floor((Date.now() - startTime) / 1000),
     memory_daemon: memoryOk ? 'connected' : 'unreachable',
+  })
+})
+
+app.get('/api/artifacts/health', async (_req, res) => {
+  const rootStatus = await stat(ARTIFACTS_ROOT).then((entry) => entry.isDirectory()).catch(() => false)
+  const pdfLabStatus = await stat(PDF_LAB_ARTIFACTS_ROOT).then((entry) => entry.isDirectory()).catch(() => false)
+  res.json({
+    ok: rootStatus,
+    artifactsRoot: ARTIFACTS_ROOT,
+    pdfLabArtifactsRoot: PDF_LAB_ARTIFACTS_ROOT,
+    artifactsRootExists: rootStatus,
+    pdfLabArtifactsRootExists: pdfLabStatus,
   })
 })
 
@@ -2052,7 +2080,15 @@ const pdfLabJobs = new Map<string, PdfLabExtractionJob>()
 let pdfLabLatestJobId: string | null = null
 
 function pdfLabPublicPath(relativeName: string): string {
-  return resolve(__dirname, '../public', relativeName)
+  const absolutePath = resolve(PDF_LAB_ARTIFACTS_ROOT, relativeName)
+  if (!isPathInside(PDF_LAB_ARTIFACTS_ROOT, absolutePath)) {
+    throw new Error(`PDF Lab artifact escapes artifact root: ${relativeName}`)
+  }
+  return absolutePath
+}
+
+function pdfLabPublicUrl(relativeName: string): string {
+  return `/artifacts/pdf-lab/${relativeName.replace(/^\/+/, '').split('/').map(encodeURIComponent).join('/')}`
 }
 
 function pdfLabStamp(): string {
@@ -2069,10 +2105,18 @@ async function writeJsonFile(path: string, data: unknown): Promise<void> {
 
 function pdfLabPublicUrlFromPath(pathValue: unknown): string | null {
   if (typeof pathValue !== 'string' || pathValue.length === 0) return null
-  const publicRoot = resolve(__dirname, '../public')
   const absolute = resolve(pathValue)
-  if (!absolute.startsWith(publicRoot)) return pathValue.startsWith('/') ? pathValue : null
-  return `/${absolute.slice(publicRoot.length + 1).replace(/\\/g, '/')}`
+  if (isPathInside(PDF_LAB_ARTIFACTS_ROOT, absolute)) {
+    return pdfLabPublicUrl(absolute.slice(PDF_LAB_ARTIFACTS_ROOT.length + 1).replace(/\\/g, '/'))
+  }
+  if (isPathInside(PUBLIC_ROOT, absolute)) {
+    return pdfLabPublicUrl(absolute.slice(PUBLIC_ROOT.length + 1).replace(/\\/g, '/'))
+  }
+  if (pathValue.startsWith('/artifacts/pdf-lab/')) return pathValue
+  if (pathValue.startsWith('/pdf-lab-') || pathValue === '/NIST_SP_800-53r5.pdf') {
+    return pdfLabPublicUrl(pathValue.replace(/^\/+/, ''))
+  }
+  return pathValue.startsWith('/') ? pathValue : null
 }
 
 function pdfLabQuestionPage(question: string): number | null {
@@ -2186,7 +2230,7 @@ async function refreshPdfLabCandidateInventoryFromPresetScan(manifestPath: strin
   manifest.candidate_inventory = {
     candidate_page_count: candidatePages.length,
     candidate_pages: candidatePages,
-    source: '/pdf-lab-nist-preset-scan/*.png + /pdf-lab-nist-full-extraction.json',
+    source: `${pdfLabPublicUrl('pdf-lab-nist-preset-scan')}/*.png + ${pdfLabPublicUrl('pdf-lab-nist-full-extraction.json')}`,
   }
   manifest.evidence_elements_by_page = evidenceElementsByPage
   await writeJsonFile(manifestPath, manifest)
@@ -2202,6 +2246,7 @@ async function promotePdfLabAgenticOutput(outputDir: string): Promise<JsonRecord
   if (!existsSync(PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT)) {
     throw new Error(`Promotion script not found: ${PDF_LAB_PROMOTE_REAL_ARTIFACTS_SCRIPT}`)
   }
+  await mkdir(PDF_LAB_ARTIFACTS_ROOT, { recursive: true })
   const { stdout } = await execFileAsync(
     'python3',
     [
@@ -2209,7 +2254,7 @@ async function promotePdfLabAgenticOutput(outputDir: string): Promise<JsonRecord
       '--run-dir',
       outputDir,
       '--public-dir',
-      resolve(__dirname, '../public'),
+      PDF_LAB_ARTIFACTS_ROOT,
     ],
     { timeout: 180_000, maxBuffer: 40 * 1024 * 1024 },
   )
@@ -2575,9 +2620,9 @@ app.post('/api/pdf-lab/gemini-review-bundle', async (req, res) => {
     ]
 
     const jsonFiles = [
-      { label: 'public/pdf-lab-nist-workflow-manifest.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-workflow-manifest.json') },
-      { label: 'public/pdf-lab-nist-human-triage-queue.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-human-triage-queue.json') },
-      { label: 'public/pdf-lab-nist-full-extraction.json', path: resolve(uxLabRoot, 'public/pdf-lab-nist-full-extraction.json') },
+      { label: 'artifacts/pdf-lab/pdf-lab-nist-workflow-manifest.json', path: pdfLabPublicPath('pdf-lab-nist-workflow-manifest.json') },
+      { label: 'artifacts/pdf-lab/pdf-lab-nist-human-triage-queue.json', path: pdfLabPublicPath('pdf-lab-nist-human-triage-queue.json') },
+      { label: 'artifacts/pdf-lab/pdf-lab-nist-full-extraction.json', path: pdfLabPublicPath('pdf-lab-nist-full-extraction.json') },
     ]
 
     const latestVerification = await readUtf8IfExists(latestVerificationPath)
@@ -2892,8 +2937,8 @@ app.post('/api/pdf-lab/evidence-query', async (req, res) => {
       warnings: [...new Set(warnings)],
       citations,
       extracted_json_fragments: selected,
-      source_extraction: '/pdf-lab-nist-full-extraction.json',
-      source_workflow_manifest: existsSync(workflowManifestPath) ? '/pdf-lab-nist-workflow-manifest.json' : null,
+      source_extraction: pdfLabPublicUrl('pdf-lab-nist-full-extraction.json'),
+      source_workflow_manifest: existsSync(workflowManifestPath) ? pdfLabPublicUrl('pdf-lab-nist-workflow-manifest.json') : null,
       similar_elements: [],
     })
   } catch (e) {
@@ -3054,11 +3099,11 @@ app.post('/api/pdf-lab/eject-mismatches-to-triage', async (req, res) => {
     if (!existsSync(generatedTriagePath)) throw new Error(`Final pass did not emit ${generatedTriagePath}`)
     const generatedTriage = await readJsonFile<JsonRecord>(generatedTriagePath)
     generatedTriage.page_count = generatedTriage.page_count ?? 492
-    generatedTriage.source_comparison = '/pdf-lab-nist-comparison.json'
-    generatedTriage.source_extraction = '/pdf-lab-nist-actual-elements.json'
+    generatedTriage.source_comparison = pdfLabPublicUrl('pdf-lab-nist-comparison.json')
+    generatedTriage.source_extraction = pdfLabPublicUrl('pdf-lab-nist-actual-elements.json')
     await writeJsonFile(triagePath, generatedTriage)
     const manifest = await readJsonFile<JsonRecord>(manifestPath)
-    manifest.source_comparison = '/pdf-lab-nist-comparison.json'
+    manifest.source_comparison = pdfLabPublicUrl('pdf-lab-nist-comparison.json')
     manifest.human_triage = {
       task_count: Number(generatedTriage.task_count ?? 0),
       summary: generatedTriage.summary ?? {},
@@ -7789,7 +7834,10 @@ app.post('/api/critical-path', async (req, res) => {
   }
 })
 
-// ── Static file serving for captures/screenshots ────────────────────────────
+// ── Static file serving for artifacts/captures/screenshots ──────────────────
+app.use('/artifacts', express.static(ARTIFACTS_ROOT))
+app.use('/artifacts/pdf-lab', express.static(PDF_LAB_ARTIFACTS_ROOT))
+app.use('/artifacts/pdf-lab', express.static(PUBLIC_ROOT))
 app.use('/captures', express.static(CAPTURES_DIR))
 app.use('/screenshots', express.static(SCREENSHOTS_DIR))
 
@@ -7841,5 +7889,7 @@ httpServer.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`UX Lab API on http://localhost:${PORT}`)
   console.log(`  Memory daemon: ${MEMORY_SOCKET}`)
   console.log(`  scillm: ${SCILLM_URL}`)
+  console.log(`  artifacts: ${ARTIFACTS_ROOT}`)
+  console.log(`  PDF Lab artifacts: ${PDF_LAB_ARTIFACTS_ROOT}`)
   console.log(`  Test runner: registered`)
 })

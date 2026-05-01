@@ -126,7 +126,7 @@ export function SurgicalTriageStaticProof() {
         <section className="pdf-lab-static-proof-page-well" aria-label="Original PDF page with static surgical overlay">
           <img
             className="pdf-lab-static-proof-page"
-            src="/pdf-lab-surgical-candidate-429.png"
+            src="/artifacts/pdf-lab/pdf-lab-surgical-candidate-429.png"
             alt="Original NIST SP 800-53 page 429 glossary definition-list page"
           />
           <div className="pdf-lab-static-proof-fog" aria-hidden="true">

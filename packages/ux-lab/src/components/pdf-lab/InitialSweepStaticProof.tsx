@@ -28,7 +28,7 @@ const elementFamilies = [
 const candidatePages: CandidatePage[] = [
   {
     page: '456',
-    image: '/pdf-lab-initial-sweep-page-456.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-456.png',
     alt: 'NIST page 456 requirement matrix candidate',
     elements: ['Table', 'Requirement'],
     preset: 'control_matrix',
@@ -37,7 +37,7 @@ const candidatePages: CandidatePage[] = [
   },
   {
     page: '482',
-    image: '/pdf-lab-initial-sweep-page-482.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-482.png',
     alt: 'NIST page 482 table candidate',
     elements: ['Table'],
     preset: 'spec_table',
@@ -46,7 +46,7 @@ const candidatePages: CandidatePage[] = [
   },
   {
     page: '429',
-    image: '/pdf-lab-initial-sweep-page-429.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-429.png',
     alt: 'NIST page 429 definition list candidate',
     elements: ['Definition List'],
     preset: 'def_list',
@@ -55,7 +55,7 @@ const candidatePages: CandidatePage[] = [
   },
   {
     page: '027',
-    image: '/pdf-lab-initial-sweep-page-027.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-027.png',
     alt: 'NIST page 27 caption candidate',
     elements: ['Captions'],
     preset: 'table_caption',
@@ -64,7 +64,7 @@ const candidatePages: CandidatePage[] = [
   },
   {
     page: '112',
-    image: '/pdf-lab-initial-sweep-page-456.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-456.png',
     alt: 'NIST page 112 compliance block proxy thumbnail',
     elements: ['Compliance Block'],
     preset: 'security_ctrl',
@@ -73,7 +73,7 @@ const candidatePages: CandidatePage[] = [
   },
   {
     page: '301',
-    image: '/pdf-lab-initial-sweep-page-429.png',
+    image: '/artifacts/pdf-lab/pdf-lab-initial-sweep-page-429.png',
     alt: 'NIST page 301 list and requirement proxy thumbnail',
     elements: ['List', 'Requirement'],
     preset: 'bullet_alpha',

@@ -241,8 +241,8 @@ const PDF_FILES: PdfFile[] = [
   { id: 'nist-sp-800-53r5-429-463-raw', name: 'NIST SP 800-53 Rev 5 Pages 429-463 (Raw v2)', pdfUrl: '/nist-sp-800-53r5-429-463.pdf', extractionUrl: '/nist-sp-800-53r5-429-463-raw-extraction.json' },
   { id: 'nist-like-full-page-reviewed', name: 'NIST-like Full Page (Reviewed v2)', pdfUrl: '/nist_like_full_page.pdf', extractionUrl: '/nist-like-full-page-reviewed-extraction.json' },
   { id: 'nist-like-full-page-raw', name: 'NIST-like Full Page (Raw v2)', pdfUrl: '/nist_like_full_page.pdf', extractionUrl: '/nist-like-full-page-raw-extraction.json' },
-  { id: 'nist-v6-loop', name: 'NIST v6 Loop Output (49 pages)', pdfUrl: '/NIST_SP_800-53r5.pdf', extractionUrl: '/nist-v6-loop-extraction.json' },
-  { id: 'nist-800-53', name: 'NIST SP 800-53 Rev 5 (Real)', pdfUrl: '/NIST_SP_800-53r5.pdf', extractionUrl: '/nist-800-53-extraction.json' },
+  { id: 'nist-v6-loop', name: 'NIST v6 Loop Output (49 pages)', pdfUrl: '/artifacts/pdf-lab/NIST_SP_800-53r5.pdf', extractionUrl: '/nist-v6-loop-extraction.json' },
+  { id: 'nist-800-53', name: 'NIST SP 800-53 Rev 5 (Real)', pdfUrl: '/artifacts/pdf-lab/NIST_SP_800-53r5.pdf', extractionUrl: '/nist-800-53-extraction.json' },
   { id: 'nist-real', name: 'NIST Clone (Real Sections)', pdfUrl: '/nist_clone_real.pdf', extractionUrl: '/nist-real-extraction.json' },
   { id: 'nist-full', name: 'NIST Clone (Full)', pdfUrl: '/nist_clone_full.pdf', extractionUrl: '/nist-clone-extraction.json' },
   { id: 'test-clone', name: 'Test Clone', pdfUrl: '/test-clone.pdf', extractionUrl: '/test-clone-extraction.json' },
@@ -261,9 +261,10 @@ const EDITABLE_BLOCK_TYPES: Array<BboxBlock['blockType']> = [
 ]
 
 const PDF_LAB_WORKFLOW_DATA_VERSION = '20260426c'
-const PDF_LAB_WORKFLOW_MANIFEST_URL = `/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
-const PDF_LAB_HUMAN_TRIAGE_URL = `/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
-const PDF_LAB_REAL_NIST_PDF_URL = '/NIST_SP_800-53r5.pdf'
+const PDF_LAB_ARTIFACT_BASE_URL = '/artifacts/pdf-lab'
+const PDF_LAB_WORKFLOW_MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
+const PDF_LAB_HUMAN_TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
+const PDF_LAB_REAL_NIST_PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
 type PdfLabProductionStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage'
 
