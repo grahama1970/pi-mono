@@ -142,6 +142,13 @@ interface MonitorCheck {
   dimension?: string
   ok?: boolean
   message?: string
+  malformed?: number
+  scanned?: number
+  course_corrected_non_generation?: number
+  course_corrected_by_collection?: Record<string, number>
+  malformed_by_collection?: Record<string, number>
+  rule_counts?: Record<string, number>
+  output_path?: string
 }
 
 interface NativeFrameworkRow {
@@ -711,7 +718,22 @@ export function CoverageView() {
   }
   const qraTrustLabel = qraTrust?.label ?? 'System-Test Ready'
   const qraTrustStatus = qraTrust?.status ?? 'plausible_for_system_test'
+  const qraQuestionSurface = checks.find((check) => check.dimension === 'qra_question_surface_quality')
+  const qraQuestionSurfaceMalformed = Number(qraQuestionSurface?.malformed ?? 0)
+  const qraQuestionSurfaceScanned = Number(qraQuestionSurface?.scanned ?? 0)
+  const qraQuestionSurfaceCorrected = Number(qraQuestionSurface?.course_corrected_non_generation ?? 0)
   const qraEvidenceRows = [
+    {
+      lane: 'Question Surface Guard',
+      status: qraQuestionSurface?.ok ? 'PASS' : qraQuestionSurface ? 'FAIL' : 'NOT LOADED',
+      value: qraQuestionSurface
+        ? `${formatNum(qraQuestionSurfaceMalformed)} malformed / ${formatNum(qraQuestionSurfaceScanned)} scanned; ${formatNum(qraQuestionSurfaceCorrected)} corrected`
+        : 'monitor dimension missing',
+      meaning: qraQuestionSurface?.output_path
+        ? `Deterministic scanner output: ${qraQuestionSurface.output_path}`
+        : 'Detects blank, title-only, control-ID-only, and opaque-key question surfaces.',
+      action: qraQuestionSurfaceMalformed > 0 ? 'Review quarantine dry-run' : 'Observe',
+    },
     {
       lane: 'Current QRA Trust',
       status: qraTrustLabel,

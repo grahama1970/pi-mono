@@ -1314,6 +1314,13 @@ print(json.dumps(payload, default=str))
           ok: check.ok,
           dimension: check.dimension,
           message: typeof check.message === 'string' ? check.message.slice(0, 1000) : check.message,
+          malformed: check.malformed,
+          scanned: check.scanned,
+          course_corrected_non_generation: check.course_corrected_non_generation,
+          course_corrected_by_collection: check.course_corrected_by_collection,
+          malformed_by_collection: check.malformed_by_collection,
+          rule_counts: check.rule_counts,
+          output_path: check.output_path,
         }))
         : [],
       remaining: remaining ? {
