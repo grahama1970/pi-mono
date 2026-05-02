@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-02T04:59:07.196Z",
+  "generated_at": "2026-05-02T05:19:51.234Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-02T04:59:06Z",
+    "generated_at": "2026-05-02T05:19:50Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -3940,7 +3940,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T04:59:06Z",
+      "generated_at": "2026-05-02T05:19:50Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -4004,7 +4004,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 602,186 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 602,154 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -4480,9 +4480,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-02T04:58:19.138917Z",
-    "heartbeat_at": "2026-05-02T04:58:19.138917Z",
-    "snapshot_age_seconds": 104,
+    "generated_at": "2026-05-02T05:19:02.035612Z",
+    "heartbeat_at": "2026-05-02T05:19:02.035612Z",
+    "snapshot_age_seconds": 115,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -5203,7 +5203,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T04:58:41Z",
+      "generated_at": "2026-05-02T05:19:26Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -5237,7 +5237,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T04:58:41Z",
+      "generated_at": "2026-05-02T05:19:26Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -5250,7 +5250,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T04:58:19Z",
+      "generated_at": "2026-05-02T05:19:02Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -5260,7 +5260,7 @@
       "observed_counts": {
         "arango_embedding_docs": 0,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 602186
+        "qdrant_vectors": 602154
       },
       "gaps": {
         "missing_vectors": 0,
@@ -5330,7 +5330,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 602186,
+        "point_count": 602154,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -5345,7 +5345,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T04:58:40Z",
+      "generated_at": "2026-05-02T05:19:24Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
@@ -5416,7 +5416,7 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260502T045840Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260502T051924Z.json",
           "status": "review_required",
           "candidate_count": 500,
           "truncated": false
