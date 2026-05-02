@@ -387,6 +387,8 @@ const QRA_V2_COLLECTIONS = ['sparta_qra_canonical', 'sparta_qra_relationship'] a
 const LEGACY_QRA_COLLECTION = 'sparta_qra' as const
 const QRA_COUNT_CACHE_TTL_MS = 30_000
 const QRA_COUNT_CACHE = new Map<string, { count: number; at: number }>()
+const QRA_STATUS_CACHE_TTL_MS = 60_000
+const QRA_STATUS_CACHE = new Map<string, { payload: QraStatusAggregate; at: number }>()
 const QRA_SUMMARY_FIELDS = [
   '_key',
   '_id',
@@ -404,6 +406,16 @@ const QRA_SUMMARY_FIELDS = [
   'review_status',
   'evidence_case',
 ] as const
+
+type QraEvidenceStatus = 'grounded' | 'review' | 'passed' | 'adversarial' | 'missing' | 'failed'
+
+interface QraStatusAggregate {
+  total: number
+  source_used: 'legacy' | 'v2' | 'all'
+  counts: Record<QraEvidenceStatus, number>
+  by_collection: Record<string, Record<QraEvidenceStatus, number> & { total: number }>
+  generated_at: string
+}
 
 function normalizeQraDocument(doc: Record<string, any> | null | undefined, collection?: string) {
   if (!doc) return null
@@ -431,6 +443,91 @@ async function fetchQraDocsByKeys(
 
 function qraCountCacheKey(collection: string, filters?: Record<string, unknown>): string {
   return JSON.stringify({ collection, filters: filters ?? null })
+}
+
+function emptyQraStatusCounts(): Record<QraEvidenceStatus, number> {
+  return { grounded: 0, review: 0, passed: 0, adversarial: 0, missing: 0, failed: 0 }
+}
+
+function qraCollectionsForSource(source: string): Array<'sparta_qra' | typeof QRA_V2_COLLECTIONS[number]> {
+  if (source === 'v2') return [...QRA_V2_COLLECTIONS]
+  if (source === 'legacy') return [LEGACY_QRA_COLLECTION]
+  return [LEGACY_QRA_COLLECTION, ...QRA_V2_COLLECTIONS]
+}
+
+async function countQraStatusesForCollection(collection: string): Promise<Record<QraEvidenceStatus, number> & { total: number }> {
+  const ambiguousReferentPattern = String.raw`\b(?:this|that|these|those|above|following|provided|given)\s+(?:payload|technique|control|weakness|attack|pattern|countermeasure|relationship|document|excerpt|source|context|requirement|case|system|component|vendor)\b`
+  const result = await proxyPost('/query', {
+    aql: `FOR doc IN ${collection}
+            LET reviewStatus = LOWER(TRIM(TO_STRING(NOT_NULL(doc.review_status, ""))))
+            LET verdict = LOWER(TRIM(TO_STRING(NOT_NULL(doc.evidence_case.verdict, ""))))
+            LET ecReviewStatus = LOWER(TRIM(TO_STRING(NOT_NULL(doc.evidence_case.review_status, ""))))
+            LET disposition = LOWER(TRIM(TO_STRING(NOT_NULL(doc.qra_quality.disposition, ""))))
+            LET issueCode = LOWER(TRIM(TO_STRING(NOT_NULL(doc.qra_quality.issue_code, ""))))
+            LET question = LOWER(TO_STRING(NOT_NULL(doc.question, "")))
+            LET hasEvidenceCase = doc.evidence_case != null
+            LET failedItems = IS_ARRAY(doc.evidence_case.failed_items) && LENGTH(doc.evidence_case.failed_items) > 0
+            LET hasEvidenceData = hasEvidenceCase && (
+              (IS_ARRAY(doc.evidence_case.chains) && LENGTH(doc.evidence_case.chains) > 0) ||
+              (IS_ARRAY(doc.evidence_case.crosswalk_chains) && LENGTH(doc.evidence_case.crosswalk_chains) > 0) ||
+              (IS_ARRAY(doc.evidence_case.glossary) && LENGTH(doc.evidence_case.glossary) > 0) ||
+              (IS_ARRAY(doc.evidence_case.resolved_entities) && LENGTH(doc.evidence_case.resolved_entities) > 0) ||
+              (IS_ARRAY(doc.evidence_case.spans) && LENGTH(doc.evidence_case.spans) > 0) ||
+              (IS_ARRAY(doc.evidence_case.control_ids) && LENGTH(doc.evidence_case.control_ids) > 0) ||
+              (IS_ARRAY(doc.evidence_case.prior_qra_evidence) && LENGTH(doc.evidence_case.prior_qra_evidence) > 0) ||
+              LENGTH(TRIM(TO_STRING(NOT_NULL(doc.evidence_case.answer, "")))) > 0 ||
+              LENGTH(TRIM(TO_STRING(NOT_NULL(doc.evidence_case.question_text, "")))) > 0
+            )
+            LET isAdversarial = issueCode == "ambiguous_referent" || CONTAINS(disposition, "adversarial") || REGEX_TEST(question, @ambiguousReferentPattern, false)
+            LET isPassed = reviewStatus IN ["approved", "pass", "passed"] || verdict IN ["satisfied", "pass", "passed"] || ecReviewStatus == "approved" || doc.evidence_case.formal_proof.success == true
+            LET isFailed = reviewStatus IN ["rejected", "fail", "failed"] || verdict IN ["not_satisfied", "fail", "failed", "rejected"] || ecReviewStatus == "rejected" || doc.evidence_case.failure_stage != null || doc.evidence_case.failure_reason != null || failedItems
+            LET status = isAdversarial ? "adversarial" :
+              isPassed ? "passed" :
+              isFailed ? "failed" :
+              verdict IN ["inconclusive", "auto", "qualified"] ? "review" :
+              !hasEvidenceCase ? "missing" :
+              hasEvidenceData ? "grounded" :
+              "review"
+            COLLECT qraStatus = status WITH COUNT INTO count
+            RETURN { status: qraStatus, count }`,
+    bind_vars: { ambiguousReferentPattern },
+  }, 90_000)
+  const counts = { ...emptyQraStatusCounts(), total: 0 }
+  for (const row of asRows(result)) {
+    const status = row?.status as QraEvidenceStatus | undefined
+    const count = Number(row?.count ?? 0)
+    if (status && status in counts) {
+      counts[status] = count
+      counts.total += count
+    }
+  }
+  return counts
+}
+
+async function getQraStatusAggregate(source: string): Promise<QraStatusAggregate> {
+  const sourceUsed = source === 'v2' ? 'v2' : source === 'legacy' ? 'legacy' : 'all'
+  const cached = QRA_STATUS_CACHE.get(sourceUsed)
+  if (cached && Date.now() - cached.at < QRA_STATUS_CACHE_TTL_MS) return cached.payload
+
+  const collections = qraCollectionsForSource(sourceUsed)
+  const collectionCounts = await Promise.all(collections.map(async (collection) => [collection, await countQraStatusesForCollection(collection)] as const))
+  const counts = emptyQraStatusCounts()
+  const by_collection: QraStatusAggregate['by_collection'] = {}
+  let total = 0
+  for (const [collection, collectionStatusCounts] of collectionCounts) {
+    by_collection[collection] = collectionStatusCounts
+    total += collectionStatusCounts.total
+    for (const status of Object.keys(counts) as QraEvidenceStatus[]) counts[status] += collectionStatusCounts[status]
+  }
+  const payload: QraStatusAggregate = {
+    total,
+    source_used: sourceUsed,
+    counts,
+    by_collection,
+    generated_at: new Date().toISOString(),
+  }
+  QRA_STATUS_CACHE.set(sourceUsed, { payload, at: Date.now() })
+  return payload
 }
 
 async function countQraDocs(collection: string, filters?: Record<string, unknown>): Promise<number> {
@@ -611,6 +708,16 @@ app.get('/api/qra/coverage', async (_req, res) => {
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
     res.status(500).json({ error: 'QRA coverage failed', detail: String(err) })
+  }
+})
+
+app.get('/api/qra/status-counts', async (req, res) => {
+  const source = String(req.query?.source || 'all').toLowerCase()
+  try {
+    res.json(await getQraStatusAggregate(source))
+  } catch (e) {
+    console.error('[qra/status-counts] failed', e)
+    res.status(502).json({ error: 'qra_status_counts_failed', detail: String(e) })
   }
 })
 
@@ -7409,22 +7516,42 @@ app.post('/api/prompt-lab/optimize', async (req, res) => {
 })
 
 type EvidenceCaseRunStatus = 'running' | 'completed' | 'failed'
-type EvidenceCaseSseEventType = 'run_started' | 'gate' | 'diagnostics' | 'result' | 'run_completed' | 'error'
+type EvidenceCaseSseEventType =
+  | 'run_started'
+  | 'gate'
+  | 'diagnostics'
+  | 'result'
+  | 'run_completed'
+  | 'error'
+  | 'gap_review_started'
+  | 'persona_review'
+  | 'judge_routing'
+  | 'correction_suggested'
+  | 'rerun_started'
+  | 'rerun_completed'
+  | 'human_intervention_requested'
+
+type EvidenceCaseHumanReviewState = 'not_requested' | 'requested' | 'queued' | 'in_review' | 'approved' | 'rejected'
 
 interface EvidenceCaseRunHistoryEntry {
   id: string
   started_at: string
   completed_at?: string
   status: EvidenceCaseRunStatus
+  evidence_run_status?: EvidenceCaseRunStatus
+  gap_review_status?: 'not_applicable' | 'candidate' | 'queued' | 'completed' | 'failed'
+  human_review_state?: EvidenceCaseHumanReviewState
   question: string
   control_id?: string | null
   node_label?: string | null
   verdict?: JsonRecord
   gates?: JsonRecord[]
   diagnostics?: JsonRecord
+  gap_review?: JsonRecord
+  proposed_correction?: JsonRecord
+  correction_lineage?: JsonRecord
   error?: string
 }
-
 const EVIDENCE_CASE_HISTORY_LIMIT = 50
 const evidenceCaseRunHistory: EvidenceCaseRunHistoryEntry[] = []
 let evidenceCaseRunSequence = 0
@@ -7472,7 +7599,88 @@ function evidenceCaseAmbiguousPayload(question: string, ambiguousReferents: stri
         ambiguous_referents: ambiguousReferents,
         disposition: 'retain_for_adversarial_training',
         safe_action: 'plan_repair',
-      },
+function createEvidenceCaseVersion(question: string, controlId: unknown, result?: any, previousVersion?: unknown): JsonRecord {
+  return {
+    id: createEvidenceCaseRunId(),
+    created_at: new Date().toISOString(),
+    question,
+    control_id: typeof controlId === 'string' ? controlId : null,
+    previous_version: previousVersion ?? null,
+    source: 'ux-lab-api',
+    advisory_only: true,
+    status_language: 'retrieved/found/suggested/queued',
+    result_ref: result && typeof result === 'object' ? {
+      review_status: result.review_status ?? null,
+      qra_key: result._key ?? result.qra_key ?? null,
+      run_id: result.run_id ?? null,
+    } : null,
+  }
+}
+
+function evidenceCaseNeedsGapReview(payload: JsonRecord | null | undefined): boolean {
+  const verdict = payload?.verdict as JsonRecord | undefined
+  const state = String(verdict?.state ?? '').toLowerCase()
+  const diagnostics = payload?.diagnostics as JsonRecord | undefined
+  return state === 'inconclusive' || state === 'not_satisfied' || diagnostics?.mode === 'error' || diagnostics?.mode === 'clarification_required'
+}
+
+function buildAdvisoryGapReview(question: string, controlId: unknown, payload: JsonRecord | null | undefined, opts: JsonRecord = {}): JsonRecord {
+  const diagnostics = (payload?.diagnostics && typeof payload.diagnostics === 'object') ? payload.diagnostics as JsonRecord : {}
+  const gates = Array.isArray(payload?.gate_trace) ? payload?.gate_trace as JsonRecord[] : []
+  const failedGates = gates.filter((gate) => gate?.passed === false)
+  const evidence = Array.isArray(payload?.evidence) ? payload?.evidence as JsonRecord[] : []
+  const reasons = failedGates.length
+    ? failedGates.map((gate) => `Gate ${String(gate.gate ?? 'unknown')} did not pass: ${String(gate.detail ?? 'no detail')}`)
+    : [String(diagnostics.mode ?? 'Evidence case was inconclusive or unavailable')]
+  const proposedCorrection = {
+    id: createEvidenceCaseRunId(),
+    status: 'suggested',
+  const evidenceCaseVersion = createEvidenceCaseVersion(question, controlId, result)
+  const basePayload: JsonRecord = {
+    corrected_question: String(opts.corrected_question ?? question).trim(),
+    source_control_id: typeof controlId === 'string' ? controlId : null,
+    rationale: reasons,
+    preserves_previous_version: opts.previous_version ?? null,
+  }
+  return {
+    review_id: createEvidenceCaseRunId(),
+    created_at: new Date().toISOString(),
+    advisory_only: true,
+    gap_review_status: 'completed',
+    human_review_state: opts.human_review_state ?? 'queued',
+    evidence_run_status: diagnostics.mode === 'error' ? 'failed' : 'completed',
+    question,
+    control_id: typeof controlId === 'string' ? controlId : null,
+    decision: evidence.length > 0 ? 'NEEDS_CLARIFICATION' : 'INSUFFICIENT_EVIDENCE',
+    retrieved_policy_evidence: [],
+    retrieved_technical_evidence: evidence,
+    control_catalog: typeof controlId === 'string' ? [{ control_id: controlId, retrieved_from: 'request' }] : [],
+    gap_review_candidate: true,
+    persona_review: {
+      status: 'suggested',
+      reviewer: 'cae-gap-review-advisory',
+      summary: 'Advisory-only CAE gap review queued for analyst review; no authoritative answer synthesized.',
+      findings: reasons,
+    },
+    judge_routing: {
+      route: 'human_review',
+      status: 'queued',
+      reason: 'failed_or_inconclusive_evidence_case',
+    },
+    proposed_correction: proposedCorrection,
+    correction_lineage: {
+      previous_version: opts.previous_version ?? null,
+      proposed_correction_id: proposedCorrection.id,
+      rerun_of: opts.rerun_of ?? null,
+    },
+    diagnostics: {
+      authority: 'server_advisory_gap_review',
+      workflow: 'cae-gap-review',
+      advisory_only: true,
+      source_diagnostics: diagnostics,
+    },
+  }
+}
     },
     qra_quality: {
       status: 'needs_repair',
