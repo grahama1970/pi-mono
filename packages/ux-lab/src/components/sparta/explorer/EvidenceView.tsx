@@ -244,7 +244,7 @@ interface EvidenceViewProps {
     controlId: string
     source: string
     question: string
-    verdict: 'all' | 'failed' | 'passed'
+    verdict: 'grounded' | 'review' | 'passed' | 'adversarial' | 'missing' | 'failed'
   }>
   onSelectRelatedQRA?: (qraKey: string) => void
 }

@@ -37,25 +37,72 @@ function minEmphasisForMode(mode: EntityViewMode): HighlightEmphasis {
 
 const PANE_PADDING = 16
 const QRA_PAGE_SIZE = 100
-type EvidenceFilter = 'all' | 'failed' | 'passed'
+type EvidenceStatus = 'grounded' | 'review' | 'passed' | 'adversarial' | 'missing' | 'failed'
+type EvidenceFilter = 'all' | EvidenceStatus
+
+const EVIDENCE_FILTERS: Array<{ status: EvidenceFilter; label: string; title: string }> = [
+  { status: 'all', label: 'Loaded', title: 'Show every QRA row currently loaded in the queue' },
+  { status: 'grounded', label: 'Has case', title: '$create-evidence-case data is attached with extracted entities, glossary entries, chains, or prior evidence' },
+  { status: 'review', label: 'Review', title: 'Evidence case exists but needs reviewer sign-off or a clearer verdict' },
+  { status: 'passed', label: 'Approved', title: 'Evidence case was approved, satisfied, or formally proved' },
+  { status: 'adversarial', label: 'Adversarial', title: 'Retained negative/adversarial fixture; repair before generation use' },
+  { status: 'missing', label: 'Missing', title: 'No evidence_case field is attached to this QRA' },
+  { status: 'failed', label: 'Rejected', title: 'Evidence case was explicitly rejected or failed a gate' },
+]
 
 function formatCount(value: number | undefined) {
   return Number(value ?? 0).toLocaleString()
 }
 
-function deriveEvidenceStatus(q: SpartaQRA): EvidenceFilter {
-  if (q.qra_quality?.issue_code === 'ambiguous_referent') return 'failed'
+function hasEvidenceCaseData(q: SpartaQRA): boolean {
+  const evidenceCase = q.evidence_case
+  if (!evidenceCase) return false
+  return Boolean(
+    evidenceCase.chains?.length
+    || evidenceCase.crosswalk_chains?.length
+    || evidenceCase.glossary?.length
+    || evidenceCase.resolved_entities?.length
+    || evidenceCase.spans?.length
+    || evidenceCase.control_ids?.length
+    || evidenceCase.prior_qra_evidence?.length
+    || evidenceCase.answer
+    || evidenceCase.question_text,
+  )
+}
+
+function deriveEvidenceStatus(q: SpartaQRA): EvidenceStatus {
+  if (q.qra_quality?.issue_code === 'ambiguous_referent' || q.qra_quality?.disposition === 'adversarial') return 'adversarial'
   const reviewStatus = (q.review_status || '').trim().toLowerCase()
   if (reviewStatus === 'approved' || reviewStatus === 'pass' || reviewStatus === 'passed') return 'passed'
-  if (reviewStatus === 'rejected' || reviewStatus === 'fail' || reviewStatus === 'failed' || reviewStatus === 'pending') return 'failed'
+  if (reviewStatus === 'rejected' || reviewStatus === 'fail' || reviewStatus === 'failed') return 'failed'
   const verdict = (q.evidence_case?.verdict || '').trim().toLowerCase()
   if (verdict === 'satisfied' || verdict === 'pass' || verdict === 'passed') return 'passed'
   if (verdict === 'not_satisfied' || verdict === 'fail' || verdict === 'failed' || verdict === 'rejected') return 'failed'
-  if (verdict === 'inconclusive' || verdict === 'auto' || verdict === 'qualified') return 'failed'
+  if (verdict === 'inconclusive' || verdict === 'auto' || verdict === 'qualified') return 'review'
   if (q.evidence_case?.review_status === 'approved' || q.evidence_case?.formal_proof?.success) return 'passed'
   if (q.evidence_case?.review_status === 'rejected') return 'failed'
-  if (q.evidence_case?.review_status === 'pending') return 'failed'
-  return q.evidence_case ? 'failed' : 'failed'
+  if (q.evidence_case?.failure_stage || q.evidence_case?.failure_reason || q.evidence_case?.failed_items?.length) return 'failed'
+  if (!q.evidence_case) return 'missing'
+  if (hasEvidenceCaseData(q)) return 'grounded'
+  return 'review'
+}
+
+function evidenceStatusMeta(status: EvidenceStatus) {
+  switch (status) {
+    case 'passed':
+      return { color: EMBRY.green, title: 'Evidence passed, was approved, or formal proof succeeded' }
+    case 'grounded':
+      return { color: EMBRY.blue, title: 'Evidence case attached and grounded to extracted entities, glossary entries, chains, or prior evidence; reviewer sign-off still required' }
+    case 'review':
+      return { color: EMBRY.amber, title: 'Evidence case attached but needs reviewer sign-off or a clearer verdict' }
+    case 'adversarial':
+      return { color: EMBRY.amber, title: 'Ambiguous/adversarial QRA retained as a negative example; repair before generation use' }
+    case 'missing':
+      return { color: EMBRY.red, title: 'No evidence case attached' }
+    case 'failed':
+    default:
+      return { color: EMBRY.red, title: 'Evidence case explicitly failed or was rejected' }
+  }
 }
 
 function getQraQualityIssue(q: SpartaQRA | undefined) {
@@ -66,15 +113,12 @@ function getQraQualityIssue(q: SpartaQRA | undefined) {
 function statusIndicators(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) => void): React.ReactNode {
   const status = deriveEvidenceStatus(q)
   const qualityIssue = getQraQualityIssue(q)
-  const color = status === 'passed' ? EMBRY.green : qualityIssue?.issue_code === 'ambiguous_referent' ? EMBRY.amber : EMBRY.red
-  const glow = status === 'passed' ? `${EMBRY.green}33` : qualityIssue?.issue_code === 'ambiguous_referent' ? `${EMBRY.amber}33` : `${EMBRY.red}33`
-  const title = status === 'passed'
-    ? 'Evidence passed or was approved'
-    : qualityIssue?.issue_code === 'ambiguous_referent'
+  const meta = evidenceStatusMeta(status)
+  const color = meta.color
+  const glow = `${color}33`
+  const title = qualityIssue?.issue_code === 'ambiguous_referent'
       ? `Ambiguous referent: ${(qualityIssue.ambiguous_referents ?? []).join(', ')}. Retained for adversarial training; plan repair before use.`
-    : q.evidence_case
-      ? 'Evidence failed or needs review'
-      : 'No evidence case attached'
+      : meta.title
 
   return (
     <button
@@ -100,7 +144,7 @@ function statusIndicators(q: SpartaQRA, onEvidenceClick?: (e: React.MouseEvent) 
         flexShrink: 0,
       }}
     >
-      <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: color, boxShadow: status === 'passed' ? 'none' : `0 0 8px ${EMBRY.red}44` }} />
+      <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: color, boxShadow: status === 'passed' ? 'none' : `0 0 8px ${color}44` }} />
     </button>
   )
 }
@@ -249,7 +293,6 @@ export function QRAsView() {
   // MIND category filter
   const [mindFilter, setMindFilter] = useState<string | null>(null)
   const MIND_TAGS = ['Detect', 'Harden', 'Isolate', 'Recover', 'Respond', 'Design']
-  const EVIDENCE_FILTERS: EvidenceFilter[] = ['all', 'failed', 'passed']
 
   // Resizable / Collapsible State
   const [leftWidth, setLeftWidth] = useState(280)
@@ -269,7 +312,15 @@ export function QRAsView() {
   )
 
   const evidenceCounts = useMemo(() => {
-    const counts: Record<EvidenceFilter, number> = { all: baseVisibleQras.length, failed: 0, passed: 0 }
+    const counts: Record<EvidenceFilter, number> = {
+      all: baseVisibleQras.length,
+      grounded: 0,
+      review: 0,
+      passed: 0,
+      adversarial: 0,
+      missing: 0,
+      failed: 0,
+    }
     baseVisibleQras.forEach(({ q }) => {
       counts[deriveEvidenceStatus(q)] += 1
     })
@@ -580,45 +631,52 @@ export function QRAsView() {
                      </div>
                    </div>
 
-	                   <div style={{ display: 'flex', gap: 4, backgroundColor: `${EMBRY.bg}66`, padding: 2, borderRadius: 6 }}>
-	                     {EVIDENCE_FILTERS.map(status => {
+                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, paddingTop: 2 }}>
+                       <span style={{ fontSize: 8.5, fontWeight: 800, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+                         Loaded-row status
+                       </span>
+                       <span style={{ fontSize: 8.5, fontWeight: 700, color: EMBRY.dim, fontVariantNumeric: 'tabular-nums' }}>
+                         {formatCount(qras.length)} shown
+                       </span>
+                     </div>
+
+	                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 4, backgroundColor: `${EMBRY.bg}66`, padding: 2, borderRadius: 6 }}>
+	                     {EVIDENCE_FILTERS.map(({ status, label, title }) => {
                        const isActive = evidenceFilter === status
                        const count = evidenceCounts[status]
+                       const color = status === 'all'
+                         ? EMBRY.dim
+                         : evidenceStatusMeta(status).color
                        return (
                          <button
                            key={status}
                            data-qid={`qras:filter:evidence:${status}`}
                            data-qs-action="FILTER_EVIDENCE"
-                           title={`Filter queue by ${status} evidence status`}
+                           title={title}
                            onClick={() => setEvidenceFilter(status)}
                            className="press-scale"
                            style={{
-                             flex: 1,
                              fontSize: 8.5,
                              fontWeight: 800,
-                             padding: '4px 0',
+                             padding: '4px 3px',
                              borderRadius: 4,
                              border: 'none',
                              backgroundColor: isActive ? EMBRY.bgPanel : 'transparent',
-                             color: status === 'failed' && !isActive ? EMBRY.red : isActive ? EMBRY.white : EMBRY.dim,
+                             color: isActive ? EMBRY.white : color,
                              cursor: 'pointer',
                              transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
                              textTransform: 'uppercase',
+                             minWidth: 0,
                            }}
                          >
-                          Loaded {status} <span style={{ opacity: 0.72, fontVariantNumeric: "tabular-nums" }}>{count}</span>
+                          <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
+                          <span style={{ opacity: 0.72, fontVariantNumeric: "tabular-nums" }}>{count}</span>
                          </button>
                        )
 	                     })}
 	                   </div>
 
-                   <div style={{
-                     display: 'grid',
-                     gridTemplateColumns: '1fr auto',
-                     alignItems: 'center',
-                     gap: 6,
-                     padding: '4px 0 2px',
-                   }}>
+                   <div style={{ padding: '4px 0 2px' }}>
                      <div
                        title="The queue keeps loaded QRAs visible and fetches the next backend batch near the bottom."
                        style={{
@@ -630,30 +688,8 @@ export function QRAsView() {
                          fontVariantNumeric: 'tabular-nums',
                        }}
                      >
-                       Loaded {formatCount(qras.length)} of {formatCount(qraTotal)} · auto-load on scroll
+                       {formatCount(qraTotal)} in corpus · scroll auto-loads more rows
                      </div>
-                     <button
-                       data-qid="qras:pager:load-more"
-                       data-qs-action="LOAD_MORE_QRAS"
-                       onClick={loadNextPage}
-                       disabled={!canLoadMore || loading}
-                       title="Load the next QRA batch"
-                       className="press-scale"
-                       style={{
-                         fontSize: 9,
-                         fontWeight: 800,
-                         padding: '4px 7px',
-                         borderRadius: 5,
-                         border: `1px solid ${EMBRY.border}`,
-                         backgroundColor: EMBRY.bgPanel,
-                         color: canLoadMore && !loading ? EMBRY.white : EMBRY.dim,
-                         cursor: canLoadMore && !loading ? 'pointer' : 'not-allowed',
-                         opacity: canLoadMore && !loading ? 1 : 0.48,
-                         textTransform: 'uppercase',
-                       }}
-                     >
-                       {loading && qras.length > 0 ? 'Loading' : canLoadMore ? 'Load more' : 'End'}
-                     </button>
                    </div>
 
 	                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
@@ -780,25 +816,9 @@ export function QRAsView() {
                           Loading next QRAs
                         </div>
                       ) : canLoadMore ? (
-                        <button
-                          data-qid="qras:pager:load-more-footer"
-                          data-qs-action="LOAD_MORE_QRAS"
-                          onClick={loadNextPage}
-                          className="press-scale"
-                          style={{
-                            fontSize: 9,
-                            fontWeight: 800,
-                            padding: '6px 10px',
-                            borderRadius: 6,
-                            border: `1px solid ${EMBRY.border}`,
-                            backgroundColor: EMBRY.bgPanel,
-                            color: EMBRY.white,
-                            cursor: 'pointer',
-                            textTransform: 'uppercase',
-                          }}
-                        >
-                          Load more · {formatCount(qras.length)} / {formatCount(qraTotal)}
-                        </button>
+                        <div style={{ color: EMBRY.dim, fontSize: 9, fontWeight: 800, letterSpacing: 0.55, textTransform: 'uppercase' }}>
+                          Scroll to continue · {formatCount(qras.length)} / {formatCount(qraTotal)}
+                        </div>
                       ) : (
                         <div style={{ color: EMBRY.dim, fontSize: 9, fontWeight: 800, letterSpacing: 0.55, textTransform: 'uppercase' }}>
                           End of loaded corpus slice

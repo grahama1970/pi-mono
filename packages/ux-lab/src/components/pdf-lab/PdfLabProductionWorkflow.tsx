@@ -161,6 +161,48 @@ interface ProductionData {
   triage: TriageQueue
   comparison: JsonComparison | null
   statusReport: PdfLabStatusReport | null
+  tocAudit: TocAudit | null
+}
+
+interface TocAudit {
+  generated_at: string
+  policy: {
+    human_boundary: string
+    match_threshold: number
+    page_window: number
+    purpose: string
+  }
+  rows: TocAuditRow[]
+  schema_version: string
+  summary: {
+    agent_resolved_pages: number
+    human_triage_pages: number
+    match_rate: number
+    matched_as_other_type: number
+    matched_as_section_header: number
+    matched_toc_entries: number
+    pdf_oxide_section_header_elements: number
+    toc_entries: number
+    unmatched_toc_entries: number
+  }
+}
+
+interface TocAuditRow {
+  action: string
+  level: number
+  page: number
+  pdf_oxide_match: {
+    element_id: string | null
+    matched: boolean
+    matched_as_section_header: boolean
+    page: number | null
+    score: number
+    text: string | null
+    type: string | null
+  }
+  second_pass_status: string
+  title: string
+  toc_id: string
 }
 
 interface PdfLabStatusReport {
@@ -193,7 +235,16 @@ interface PdfLabStatusReport {
     memory_qa_implemented?: boolean
     memory_qa_passed?: boolean
     memory_sample_checks?: number
+    memory_sample_checks_passed?: number
+    memory_text_indexed_total?: number
+    memory_visual_indexed_total?: number
+    memory_visual_indexed_pages?: number
+    memory_visual_indexed_sections?: number
     memory_text_indexed_elements?: number
+    memory_visual_required_elements?: number
+    memory_visual_indexed_required_elements?: number
+    memory_visual_optional_elements?: number
+    memory_visual_indexed_optional_elements?: number
     memory_visual_indexed_elements?: number
     total_expected_elements: number
     unmatched_actual_elements: number
@@ -257,11 +308,12 @@ interface ComparisonActual {
 }
 
 const WORKFLOW_VERSION = '20260428-real-artifacts'
-const PDF_LAB_ARTIFACT_BASE_URL = '/artifacts/pdf-lab'
+const PDF_LAB_ARTIFACT_BASE_URL = ''
 const MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const COMPARISON_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-comparison.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const STATUS_REPORT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-status-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const TOC_AUDIT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-toc-audit.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
 const FAMILY_LABELS: Record<string, string> = {
@@ -553,14 +605,15 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
 
   const loadArtifacts = useCallback(async (cancelled?: () => boolean) => {
     setError(null)
-    const [manifest, triage, comparison, statusReport] = await Promise.all([
+    const [manifest, triage, comparison, statusReport, tocAudit] = await Promise.all([
       fetchJson<WorkflowManifest>(MANIFEST_URL),
       fetchJson<TriageQueue>(TRIAGE_URL),
       fetchJson<JsonComparison>(COMPARISON_URL).catch(() => null),
       fetchJson<PdfLabStatusReport>(STATUS_REPORT_URL).catch(() => null),
+      fetchJson<TocAudit>(TOC_AUDIT_URL).catch(() => null),
     ])
     if (cancelled?.()) return
-    setData({ manifest, triage, comparison, statusReport })
+    setData({ manifest, triage, comparison, statusReport, tocAudit })
     setSelectedPage(current => current ?? manifest.candidate_inventory.candidate_pages[0]?.page ?? null)
   }, [])
 
@@ -988,6 +1041,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
           comparison={data.comparison}
           manifest={data.manifest}
           statusReport={data.statusReport}
+          tocAudit={data.tocAudit}
           triage={data.triage}
         />
       </div>
@@ -1367,11 +1421,13 @@ function CoverageStatusPane({
   comparison,
   manifest,
   statusReport,
+  tocAudit,
   triage,
 }: {
   comparison: JsonComparison | null
   manifest: WorkflowManifest
   statusReport: PdfLabStatusReport | null
+  tocAudit: TocAudit | null
   triage: TriageQueue
 }) {
   const summary = statusReport?.summary
@@ -1389,8 +1445,14 @@ function CoverageStatusPane({
   const agentResolvedCount = summary?.agent_resolved_count ?? triage.agent_resolved_summary?.finding_count ?? 0
   const memoryPassed = summary?.memory_qa_passed ?? false
   const memoryImplemented = summary?.memory_qa_implemented ?? false
-  const memoryTextIndexed = summary?.memory_text_indexed_elements ?? 0
-  const memoryVisualIndexed = summary?.memory_visual_indexed_elements ?? 0
+  const memoryTextIndexed = summary?.memory_text_indexed_total ?? summary?.memory_text_indexed_elements ?? 0
+  const memoryVisualIndexed = summary?.memory_visual_indexed_total ?? summary?.memory_visual_indexed_elements ?? 0
+  const memoryVisualPages = summary?.memory_visual_indexed_pages ?? 0
+  const memoryVisualSections = summary?.memory_visual_indexed_sections ?? 0
+  const memoryVisualRequired = summary?.memory_visual_required_elements ?? 0
+  const memoryVisualRequiredIndexed = summary?.memory_visual_indexed_required_elements ?? 0
+  const memorySampleChecks = summary?.memory_sample_checks ?? 0
+  const memorySampleChecksPassed = summary?.memory_sample_checks_passed ?? 0
   const memoryMetricValue = memoryPassed ? 'passed' : memoryImplemented ? 'blocked' : 'missing'
   const memoryQaTitle = memoryPassed
     ? 'Memory/Qdrant PDF-element recall QA passed'
@@ -1409,6 +1471,11 @@ function CoverageStatusPane({
   const humanSummaryDetail = humanTriageCount > 0
     ? 'Open Surgical Triage and resolve the remaining ambiguity cards before claiming the workflow is complete.'
     : 'The agent second pass cleared the human deck. Human review should focus on status blockers, evidence QA coverage, and whether agent-resolved patterns need deterministic fixes.'
+  const tocRows = tocAudit?.rows ?? []
+  const tocFollowUpRows = tocRows
+    .filter(row => row.action !== 'accept')
+    .slice(0, 14)
+  const tocSummary = tocAudit?.summary
 
   return (
     <main className="pdf-lab-prod-coverage">
@@ -1454,13 +1521,20 @@ function CoverageStatusPane({
           <span>Final Agent QA Gate</span>
           <h2>{memoryQaTitle}</h2>
           <p>
-            Final verification should store extracted elements, element crops, page images, second-pass notes, and provenance in ArangoDB memory;
-            index text and multimodal embeddings; then run stratified checks such as “what is the extracted table on page 47, and does the crop match the JSON?”
+            Final verification stores extracted elements, page images, TOC section crops, required table/figure/image crops, second-pass notes,
+            and provenance in ArangoDB memory; indexes text and multimodal embeddings; then runs stratified checks such as
+            “what is the extracted table on page 47, and does the crop match the JSON?”
           </p>
         </div>
         <div className="pdf-lab-prod-final-qa-metric">
           <b>{memoryTextIndexed.toLocaleString()} / {memoryVisualIndexed.toLocaleString()}</b>
           <small>text / visual indexed</small>
+        </div>
+        <div className="pdf-lab-prod-final-qa-detail">
+          <span>pages {memoryVisualPages.toLocaleString()}</span>
+          <span>TOC section crops {memoryVisualSections.toLocaleString()}</span>
+          <span>required element crops {memoryVisualRequiredIndexed.toLocaleString()} / {memoryVisualRequired.toLocaleString()}</span>
+          <span>recall {memorySampleChecksPassed.toLocaleString()} / {memorySampleChecks.toLocaleString()}</span>
         </div>
       </section>
 
@@ -1472,6 +1546,58 @@ function CoverageStatusPane({
         <StatusMetric label="Core Rust Changed" value={String(coreChanged)} detail="do not claim parser repair unless true" state={coreChanged ? 'ok' : 'warn'} />
         <StatusMetric label="NIST Preset Improved" value={String(presetImproved)} detail="document-family improvement is valid for NIST-like PDFs" state={presetImproved ? 'ok' : 'warn'} />
         <StatusMetric label="Memory/Qdrant QA" value={memoryMetricValue} detail="final PDF page ↔ JSON ↔ memory recall gate" state={memoryPassed ? 'ok' : 'bad'} />
+      </section>
+
+      <section className="pdf-lab-prod-coverage-panel pdf-lab-prod-toc-audit">
+        <PaneHeader
+          title="TOC Sweep → pdf_oxide Extraction → Second Pass"
+          detail="PDF outline entries compared against extracted text before human handoff"
+        />
+        {tocAudit && tocSummary ? (
+          <>
+            <div className="pdf-lab-prod-toc-summary">
+              <div><b>{tocSummary.toc_entries}</b><span>TOC entries</span></div>
+              <div><b>{tocSummary.matched_toc_entries}</b><span>text found</span></div>
+              <div><b>{tocSummary.matched_as_section_header}</b><span>section headers</span></div>
+              <div><b>{tocSummary.matched_as_other_type}</b><span>type repairs</span></div>
+              <div><b>{tocSummary.unmatched_toc_entries}</b><span>missing</span></div>
+            </div>
+            <div className="pdf-lab-prod-table-wrap">
+              <table className="pdf-lab-prod-toc-table">
+                <thead>
+                  <tr>
+                    <th>TOC</th>
+                    <th>Page</th>
+                    <th>pdf_oxide match</th>
+                    <th>Type</th>
+                    <th>Score</th>
+                    <th>Second pass</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(tocFollowUpRows.length > 0 ? tocFollowUpRows : tocRows.slice(0, 10)).map(row => (
+                    <tr key={row.toc_id}>
+                      <td>
+                        <small>L{row.level}</small>
+                        <b>{row.title}</b>
+                      </td>
+                      <td>{row.page}</td>
+                      <td>{row.pdf_oxide_match.text ?? '—'}</td>
+                      <td><code>{row.pdf_oxide_match.type ?? 'missing'}</code></td>
+                      <td>{(row.pdf_oxide_match.score * 100).toFixed(0)}%</td>
+                      <td>{row.second_pass_status.replaceAll('_', ' ')}</td>
+                      <td><span className={`pdf-lab-prod-toc-action ${row.action}`}>{row.action.replaceAll('_', ' ')}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="pdf-lab-prod-coverage-note">{tocAudit.policy.human_boundary}</p>
+          </>
+        ) : (
+          <div className="pdf-lab-prod-coverage-empty">TOC audit artifact missing. Generate <code>pdf-lab-toc-audit.json</code> before relying on TOC coverage.</div>
+        )}
       </section>
 
       <section className="pdf-lab-prod-coverage-columns">

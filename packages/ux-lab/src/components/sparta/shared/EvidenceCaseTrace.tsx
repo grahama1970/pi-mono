@@ -36,7 +36,7 @@ interface RelatedQRAEntry {
   controlId: string
   source: string
   question: string
-  verdict: 'all' | 'failed' | 'passed'
+  verdict: 'grounded' | 'review' | 'passed' | 'adversarial' | 'missing' | 'failed'
 }
 
 interface PriorQRAEvidenceEntry {
@@ -103,6 +103,7 @@ interface EvidenceCaseTraceProps {
 type OutcomeState = 'passed' | 'inconclusive' | 'failed' | 'pending'
 type StepStatus = 'passed' | 'failed' | 'blocked' | 'pending'
 type ResponseDisposition = 'answer' | 'deflect' | 'clarify' | 'needs_human_correction'
+type RelatedQRAVerdict = RelatedQRAEntry['verdict']
 
 const FW_COLORS: Record<string, string> = {
   SPARTA: EMBRY.accent,
@@ -111,6 +112,24 @@ const FW_COLORS: Record<string, string> = {
   ATTACK: EMBRY.red,
   'ATT&CK': EMBRY.red,
   D3FEND: EMBRY.blue,
+}
+
+function relatedQraVerdictMeta(verdict: RelatedQRAVerdict) {
+  switch (verdict) {
+    case 'passed':
+      return { color: EMBRY.green, label: 'Pass' }
+    case 'grounded':
+      return { color: EMBRY.blue, label: 'Grounded' }
+    case 'review':
+      return { color: EMBRY.amber, label: 'Review' }
+    case 'adversarial':
+      return { color: EMBRY.amber, label: 'Adversarial' }
+    case 'missing':
+      return { color: EMBRY.red, label: 'Missing' }
+    case 'failed':
+    default:
+      return { color: EMBRY.red, label: 'Failed' }
+  }
 }
 
 const RESPONSE_COPY: Record<ResponseDisposition, { label: string; color: string }> = {
@@ -725,7 +744,7 @@ export function EvidenceCaseTrace({
             {relatedQRAs.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {relatedQRAs.map((entry) => {
-                  const verdictColor = entry.verdict === 'passed' ? EMBRY.green : EMBRY.red
+                  const verdictMeta = relatedQraVerdictMeta(entry.verdict)
                   return (
                     <button
                       key={entry.key}
@@ -749,7 +768,7 @@ export function EvidenceCaseTrace({
                         cursor: onSelectRelatedQRA ? 'pointer' : 'default',
                       }}
                     >
-                      <span style={{ fontSize: 10, color: verdictColor, fontWeight: 700, textTransform: 'uppercase' }}>{entry.verdict === 'passed' ? 'Pass' : 'Needs review'}</span>
+                      <span style={{ fontSize: 10, color: verdictMeta.color, fontWeight: 700, textTransform: 'uppercase' }}>{verdictMeta.label}</span>
                       <span style={{ fontSize: 10, color: EMBRY.accent, fontFamily: 'monospace', fontWeight: 700 }}>{entry.controlId}</span>
                       <span style={{ fontSize: 11, color: EMBRY.white, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.question}</span>
                     </button>

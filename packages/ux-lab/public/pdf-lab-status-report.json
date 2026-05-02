@@ -6,7 +6,8 @@
     "Do not claim core Rust extractor changes unless core_pdf_oxide_changed == true.",
     "Treat agent-resolved findings as engineering backlog unless a deterministic fix is recorded.",
     "Treat Nico/Evidence QA as sample-only unless evidence crop count covers the full extraction.",
-    "Treat Memory/Qdrant recall QA as missing unless pdf-lab-memory-qa-report.json exists and passed is true."
+    "For v1 visual QA, require page images, TOC section crops, and table/figure/image element crops; paragraph/list/header/footer crop vectors are optional or on-demand.",
+    "Treat Memory/Qdrant recall QA as incomplete unless pdf-lab-memory-qa-report.json exists and passed is true."
   ],
   "artifact_errors": [],
   "artifact_paths": {
@@ -16,9 +17,9 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-comparison.json"
     },
     "evidence_manifest": {
-      "bytes": 40121418,
+      "bytes": 35767408,
       "exists": true,
-      "path": "/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-20260430T144118Z/manifest.json"
+      "path": "/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-toc-20260501T200945Z/manifest.json"
     },
     "extraction": {
       "bytes": 12708822,
@@ -26,12 +27,12 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json"
     },
     "manifest": {
-      "bytes": 5868961,
+      "bytes": 5869083,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json"
     },
     "memory_qa": {
-      "bytes": 10172,
+      "bytes": 7442,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json"
     },
@@ -39,6 +40,11 @@
       "bytes": 17303,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-second-pass-backlog.json"
+    },
+    "toc_audit": {
+      "bytes": 220731,
+      "exists": true,
+      "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-toc-audit.json"
     },
     "triage": {
       "bytes": 399761,
@@ -48,9 +54,15 @@
   },
   "blockers": [
     {
+      "area": "TOC Audit",
+      "detail": "PDF outline has 358 entries; 299 were found as non-section types and 1 were missing. Current section semantics are not clean enough for final Memory/Qdrant section QA.",
+      "next_action": "Repair NIST section typing or promote TOC-backed anchors, then regenerate evidence, Memory/Qdrant QA, and the status report.",
+      "severity": "high"
+    },
+    {
       "area": "Memory / Qdrant Final QA",
-      "detail": "Memory/Qdrant QA artifact exists but has not passed.",
-      "next_action": "Resolve failed recall or page-vs-JSON checks before claiming the PDF is fully verified.",
+      "detail": "Memory/Qdrant QA artifact exists but has not passed: text recall 5/8; visual pages 0/492; TOC section crops 0/357; required table/figure/image elements 0/8.",
+      "next_action": "Finish required TOC section crop visual vectors and repair failed recall checks before claiming the PDF is fully verified.",
       "severity": "high"
     }
   ],
@@ -66,7 +78,7 @@
     "preset_improved_pdf_oxide_behavior": true,
     "scope": "document_family_preset_and_second_pass_orchestration"
   },
-  "generated_at": "2026-04-30T18:14:33.086254+00:00",
+  "generated_at": "2026-05-01T20:26:25.007970+00:00",
   "memory_qa": {
     "errors": {
       "memory_upsert": null,
@@ -79,117 +91,76 @@
     },
     "gates": [
       {
-        "detail": "492 page images, 3724 section crops, and 27628 element crops for 27628 extracted elements.",
+        "detail": "492 page images, 357 section crops, and 27628 element crops for 27628 extracted elements.",
         "name": "full_crop_coverage",
         "passed": true
       },
       {
-        "detail": "ArangoDB memory upsert applied via canonical /upsert.",
+        "detail": "Run with --apply-memory to persist evidence metadata.",
         "name": "memory_upsert",
-        "passed": true
+        "passed": false
       },
       {
-        "detail": "pages 492/492, sections 3724/3724, elements 27628/27628 have text vectors; 3/8 element recall checks passed.",
+        "detail": "pages 0/492, sections 0/357, elements 27628/27628 have text vectors; 5/8 element recall checks passed.",
         "name": "text_qdrant_recall",
         "passed": false
       },
       {
-        "detail": "pages 135/492, sections 15/3724, elements 34/27628 have visual vectors.",
+        "detail": "pages 0/492, sections 0/357, required table/figure/image elements 0/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
         "name": "visual_qdrant_recall",
         "passed": false
       }
     ],
-    "generated_at": "2026-04-30T18:14:31.946446+00:00",
+    "generated_at": "2026-05-01T20:24:04.116748+00:00",
     "implemented": true,
     "notes": [
       "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
       "PNG assets remain on disk; ArangoDB memory stores paths, hashes, and provenance only.",
-      "The full final gate requires page images, section crops, and element crops to have matching Qdrant visual vectors."
+      "The v1 final visual gate requires page images, section crops, and table/figure/image element crops to have matching Qdrant visual vectors.",
+      "Paragraph, list, header, footer, and other text-element crop vectors are optional background/on-demand work."
     ],
     "passed": false,
-    "policy": "Final agent QA must store extracted page, section, and element metadata/crops in ArangoDB memory, index text and visual vectors in Qdrant, and verify stratified recall against original page/crop evidence.",
-    "run_id": "full-memory-qa-20260430T144118Z",
+    "policy": "Final agent QA must store extracted page, section, and element metadata/crops in ArangoDB memory, index text vectors for every extracted element, index visual vectors for pages, sections, tables, and figures/images, and verify stratified recall against original page/crop evidence. Paragraph/list/header/footer crop image vectors are optional background/on-demand work.",
+    "run_id": "full-memory-qa-toc-20260501T200945Z",
     "sample_checks": [
       {
-        "element_key": "elt:fc63bcd61715d018:1:7052ad2ab761118e",
-        "element_type": "paragraph",
-        "page": 1,
+        "element_key": "elt:fc63bcd61715d018:12:ecf9df308750838f",
+        "element_type": "table",
+        "page": 12,
         "returned_keys": [
-          "elt:fc63bcd61715d018:165:8084bedac0ff04ac",
-          "elt:fc63bcd61715d018:196:d94ef54647240f0a",
-          "elt:fc63bcd61715d018:178:5dbc5bb1b4352ee8",
-          "elt:fc63bcd61715d018:183:fe9738c0ea7ebf10",
-          "elt:fc63bcd61715d018:214:7fc57e33c670a7b5"
-        ],
-        "status": "failed",
-        "text_hash": "5a33398dea147379f9ad6ad3e37aab5a65c73d559e1a05550fcc4884744105a9"
-      },
-      {
-        "element_key": "elt:fc63bcd61715d018:1:8bd870937af7758d",
-        "element_type": "paragraph",
-        "page": 1,
-        "returned_keys": [
-          "elt:fc63bcd61715d018:1:8bd870937af7758d",
-          "elt:fc63bcd61715d018:1:8bd870937af7758d",
-          "elt:fc63bcd61715d018:2:0a22b058f8ae8add",
-          "elt:fc63bcd61715d018:11:40352c227af469c3",
-          "section:24:251bc34a36df25ce"
+          "elt:fc63bcd61715d018:12:ecf9df308750838f",
+          "elt:fc63bcd61715d018:12:ecf9df308750838f",
+          "section:12:5878e8265fe73207",
+          "section:12:5878e8265fe73207",
+          "section:12:5878e8265fe73207"
         ],
         "status": "passed",
-        "text_hash": "c3ec1b7799c62972c9cc3365d12a8188dc43bf71770614f35edf35441a354676"
+        "text_hash": "e2f1cb3066b359073ef8f57b807b31b422467bc07291ebcfbeabf8e7b8278b46"
       },
       {
-        "element_key": "elt:fc63bcd61715d018:1:8bb31d8dc324e46a",
-        "element_type": "paragraph",
-        "page": 1,
+        "element_key": "elt:fc63bcd61715d018:4:b831ba518164b4a0",
+        "element_type": "list_item",
+        "page": 4,
         "returned_keys": [
-          "elt:fc63bcd61715d018:141:49340a8fb56eedc8",
-          "elt:fc63bcd61715d018:129:ce6176ee2d09d17f",
-          "elt:fc63bcd61715d018:307:e6914330b7e8aa85",
-          "elt:fc63bcd61715d018:274:edb93a0cec12c2f5",
-          "elt:fc63bcd61715d018:76:825adc6a33ef8acc"
-        ],
-        "status": "failed",
-        "text_hash": "b2b1143d88ed7bd2b2650a779f42281b5fa3058eab0c99650ae81ca2e1a276ad"
-      },
-      {
-        "element_key": "elt:fc63bcd61715d018:1:d671e85f01e3461c",
-        "element_type": "paragraph",
-        "page": 1,
-        "returned_keys": [
-          "elt:fc63bcd61715d018:1:d671e85f01e3461c",
-          "elt:fc63bcd61715d018:1:d671e85f01e3461c",
-          "elt:fc63bcd61715d018:2:5094f9eec0448560",
-          "elt:fc63bcd61715d018:2:5094f9eec0448560",
-          "elt:fc63bcd61715d018:408:239275cca0a50195"
+          "elt:fc63bcd61715d018:4:b831ba518164b4a0",
+          "elt:fc63bcd61715d018:4:b831ba518164b4a0",
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+          "elt:fc63bcd61715d018:452:3f9b69a0dab5c12d"
         ],
         "status": "passed",
-        "text_hash": "da5c07d3432a341125b1fddeedc98b9de64f66a5add1f52be39287c78659fa06"
-      },
-      {
-        "element_key": "elt:fc63bcd61715d018:1:dba220842f398d07",
-        "element_type": "section_header",
-        "page": 1,
-        "returned_keys": [
-          "elt:fc63bcd61715d018:1:dba220842f398d07",
-          "elt:fc63bcd61715d018:1:dba220842f398d07",
-          "elt:fc63bcd61715d018:2:fa48a24b13c56419",
-          "elt:fc63bcd61715d018:2:fa48a24b13c56419",
-          "elt:fc63bcd61715d018:5:746c834842308be5"
-        ],
-        "status": "passed",
-        "text_hash": "c460616789fbdda9b778b6e9dcd7229591636b9cc93399bb4a20d0209120a844"
+        "text_hash": "58fabecde1256e1b068df4e4aaaf1583b33889022ce7066907fd2779c2ee4899"
       },
       {
         "element_key": "elt:fc63bcd61715d018:1:b1bf3b164a8ab3f0",
         "element_type": "paragraph",
         "page": 1,
         "returned_keys": [
-          "elt:fc63bcd61715d018:121:860451653896e736",
-          "elt:fc63bcd61715d018:91:6bba694cc80c7351",
-          "elt:fc63bcd61715d018:489:1de2db1d571bbcd2",
-          "elt:fc63bcd61715d018:121:860451653896e736",
-          "elt:fc63bcd61715d018:284:db4ea21680c66003"
+          "elt:fc63bcd61715d018:130:f159f507aa96e993",
+          "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
+          "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
+          "elt:fc63bcd61715d018:130:f159f507aa96e993",
+          "elt:fc63bcd61715d018:258:61f035d2000668bf"
         ],
         "status": "failed",
         "text_hash": "163ef8ec9556fcc2b01cf4ce5c60d76ad07f8ff87f8258b1ac1c0b4c739222fb"
@@ -199,28 +170,70 @@
         "element_type": "paragraph",
         "page": 1,
         "returned_keys": [
-          "elt:fc63bcd61715d018:409:b9d37f1e8c2f85ea",
-          "elt:fc63bcd61715d018:409:753fc92d72925c77",
-          "elt:fc63bcd61715d018:412:8e5a80727322a92e",
-          "elt:fc63bcd61715d018:264:774d3b927e1b3e04",
-          "elt:fc63bcd61715d018:197:4df5815ae2d53450"
+          "elt:fc63bcd61715d018:408:c8cd56119dceca51",
+          "elt:fc63bcd61715d018:410:2f85c930aca2d616",
+          "elt:fc63bcd61715d018:408:a4deb088e3986ef9",
+          "elt:fc63bcd61715d018:408:92f20a1e7eb9d73c",
+          "elt:fc63bcd61715d018:409:a55454ff873ee8f8"
         ],
         "status": "failed",
         "text_hash": "109710db4e714e9ceb644d041218df95b9437788fb27f938d8c8c2ca8de1963b"
       },
       {
-        "element_key": "elt:fc63bcd61715d018:2:4b9f2efc2464b59f",
+        "element_key": "elt:fc63bcd61715d018:2:06e296a9a6a54319",
+        "element_type": "section_header",
+        "page": 2,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:2:06e296a9a6a54319",
+          "section:2:06e296a9a6a54319",
+          "elt:fc63bcd61715d018:27:7e392512bb5b4b91",
+          "elt:fc63bcd61715d018:21:ef8121fd429686ef",
+          "elt:fc63bcd61715d018:26:5b3362515a70faf3"
+        ],
+        "status": "passed",
+        "text_hash": "14eb048e06511f2b275196c1ce6d5667779a85441386177bab59daee3a0d707a"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
         "element_type": "paragraph",
         "page": 2,
         "returned_keys": [
-          "elt:fc63bcd61715d018:165:8084bedac0ff04ac",
-          "elt:fc63bcd61715d018:196:d94ef54647240f0a",
-          "elt:fc63bcd61715d018:178:5dbc5bb1b4352ee8",
-          "elt:fc63bcd61715d018:183:fe9738c0ea7ebf10",
-          "elt:fc63bcd61715d018:214:7fc57e33c670a7b5"
+          "elt:fc63bcd61715d018:453:98e706d5b76ede84",
+          "elt:fc63bcd61715d018:3:412657beb6164d87",
+          "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
+          "elt:fc63bcd61715d018:5:85b058849a407bef",
+          "elt:fc63bcd61715d018:414:1fb89d0740182d0f"
+        ],
+        "status": "passed",
+        "text_hash": "0df93c9d75e13a9e94874c7f4268cbe7a86e8c853603bb339f481f0c697246f8"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:2:b3830618619ac456",
+        "element_type": "paragraph",
+        "page": 2,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:2:b3830618619ac456",
+          "308496622638",
+          "section:2:06e296a9a6a54319",
+          "section:2:06e296a9a6a54319",
+          "section:453:ee88a66b19b68cd1"
+        ],
+        "status": "passed",
+        "text_hash": "cb6c7c3a793c59c05b883ddee0ac0ce71fd0b97ef49788b0f75ae5dab8732d9f"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:b0b5a7de21e34168",
+        "element_type": "running_header",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:87:10d3e5057063e5a2",
+          "elt:fc63bcd61715d018:391:a66a4db6ac538529",
+          "elt:fc63bcd61715d018:206:fb89bf242c31590a",
+          "elt:fc63bcd61715d018:415:b28f2801065f7cbf",
+          "elt:fc63bcd61715d018:6:52d45aba44dd1593"
         ],
         "status": "failed",
-        "text_hash": "5a33398dea147379f9ad6ad3e37aab5a65c73d559e1a05550fcc4884744105a9"
+        "text_hash": "8293a12b49b18f723ffe5edd7822dc95a601d37f5386e84e8bccc0cade2fd6cf"
       }
     ],
     "schema_version": "pdf_lab_memory_qdrant_qa_report.v1",
@@ -228,162 +241,38 @@
     "summary": {
       "evidence_elements": 27628,
       "evidence_pages": 492,
-      "evidence_sections": 3724,
+      "evidence_sections": 357,
       "extraction_elements": 27628,
       "full_crop_coverage": true,
-      "memory_upsert_applied": true,
-      "memory_upserted_element_images": 27628,
-      "memory_upserted_elements": 27628,
-      "memory_upserted_page_images": 492,
-      "memory_upserted_pages": 492,
-      "memory_upserted_section_images": 3724,
-      "memory_upserted_sections": 3724,
+      "memory_upsert_applied": false,
+      "memory_upserted_element_images": 0,
+      "memory_upserted_elements": 0,
+      "memory_upserted_page_images": 0,
+      "memory_upserted_pages": 0,
+      "memory_upserted_section_images": 0,
+      "memory_upserted_sections": 0,
       "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
       "sample_checks": 8,
-      "sample_checks_passed": 3,
+      "sample_checks_passed": 5,
       "text_indexed_elements": 27628,
-      "text_indexed_pages": 492,
-      "text_indexed_sections": 3724,
-      "text_indexed_total": 31844,
-      "visual_indexed_elements": 34,
-      "visual_indexed_pages": 135,
-      "visual_indexed_sections": 15,
-      "visual_indexed_total": 184
+      "text_indexed_pages": 0,
+      "text_indexed_sections": 0,
+      "text_indexed_total": 27628,
+      "visual_indexed_elements": 0,
+      "visual_indexed_optional_elements": 0,
+      "visual_indexed_pages": 0,
+      "visual_indexed_required_elements": 0,
+      "visual_indexed_sections": 0,
+      "visual_indexed_total": 0,
+      "visual_optional_elements": 27620,
+      "visual_required_element_types": [
+        "figure",
+        "image",
+        "table"
+      ],
+      "visual_required_elements": 8
     },
-    "upsert_results": {
-      "pdf_element_has_image": {
-        "batches": 277,
-        "collection": "pdf_element_has_image",
-        "document_count": 27628,
-        "last_response": {
-          "collection": "pdf_element_has_image",
-          "errors": [],
-          "inserted": 0,
-          "total": 28,
-          "updated": 28
-        }
-      },
-      "pdf_element_images": {
-        "batches": 277,
-        "collection": "pdf_element_images",
-        "document_count": 27628,
-        "last_response": {
-          "collection": "pdf_element_images",
-          "errors": [],
-          "inserted": 0,
-          "total": 28,
-          "updated": 28
-        }
-      },
-      "pdf_elements": {
-        "batches": 277,
-        "collection": "pdf_elements",
-        "document_count": 27628,
-        "last_response": {
-          "collection": "pdf_elements",
-          "errors": [],
-          "inserted": 0,
-          "total": 28,
-          "updated": 28
-        }
-      },
-      "pdf_extraction_run_has_artifact": {
-        "batches": 319,
-        "collection": "pdf_extraction_run_has_artifact",
-        "document_count": 31844,
-        "last_response": {
-          "collection": "pdf_extraction_run_has_artifact",
-          "errors": [],
-          "inserted": 0,
-          "total": 44,
-          "updated": 44
-        }
-      },
-      "pdf_extraction_runs": {
-        "batches": 1,
-        "collection": "pdf_extraction_runs",
-        "document_count": 1,
-        "last_response": {
-          "collection": "pdf_extraction_runs",
-          "errors": [],
-          "inserted": 0,
-          "total": 1,
-          "updated": 1
-        }
-      },
-      "pdf_page_has_image": {
-        "batches": 5,
-        "collection": "pdf_page_has_image",
-        "document_count": 492,
-        "last_response": {
-          "collection": "pdf_page_has_image",
-          "errors": [],
-          "inserted": 0,
-          "total": 92,
-          "updated": 92
-        }
-      },
-      "pdf_page_images": {
-        "batches": 5,
-        "collection": "pdf_page_images",
-        "document_count": 492,
-        "last_response": {
-          "collection": "pdf_page_images",
-          "errors": [],
-          "inserted": 0,
-          "total": 92,
-          "updated": 92
-        }
-      },
-      "pdf_pages": {
-        "batches": 5,
-        "collection": "pdf_pages",
-        "document_count": 492,
-        "last_response": {
-          "collection": "pdf_pages",
-          "errors": [],
-          "inserted": 0,
-          "total": 92,
-          "updated": 92
-        }
-      },
-      "pdf_section_has_image": {
-        "batches": 38,
-        "collection": "pdf_section_has_image",
-        "document_count": 3724,
-        "last_response": {
-          "collection": "pdf_section_has_image",
-          "errors": [],
-          "inserted": 0,
-          "total": 24,
-          "updated": 24
-        }
-      },
-      "pdf_section_images": {
-        "batches": 38,
-        "collection": "pdf_section_images",
-        "document_count": 3724,
-        "last_response": {
-          "collection": "pdf_section_images",
-          "errors": [],
-          "inserted": 0,
-          "total": 24,
-          "updated": 24
-        }
-      },
-      "pdf_sections": {
-        "batches": 38,
-        "collection": "pdf_sections",
-        "document_count": 3724,
-        "last_response": {
-          "collection": "pdf_sections",
-          "errors": [],
-          "inserted": 0,
-          "total": 24,
-          "updated": 24
-        }
-      }
-    }
+    "upsert_results": {}
   },
   "schema_version": "pdf_lab_status_report.v1",
   "summary": {
@@ -401,22 +290,32 @@
     },
     "evidence_element_count": 27628,
     "evidence_page_count": 492,
-    "evidence_section_count": 3724,
+    "evidence_section_count": 357,
     "extraction_element_count": 27628,
     "human_triage_task_count": 0,
     "matched_expected_elements": 14014,
-    "memory_evidence_sections": 3724,
+    "memory_evidence_sections": 357,
     "memory_qa_implemented": true,
     "memory_qa_passed": false,
     "memory_sample_checks": 8,
+    "memory_sample_checks_passed": 5,
     "memory_text_indexed_elements": 27628,
-    "memory_text_indexed_pages": 492,
-    "memory_text_indexed_sections": 3724,
-    "memory_text_indexed_total": 31844,
-    "memory_visual_indexed_elements": 34,
-    "memory_visual_indexed_pages": 135,
-    "memory_visual_indexed_sections": 15,
-    "memory_visual_indexed_total": 184,
+    "memory_text_indexed_pages": 0,
+    "memory_text_indexed_sections": 0,
+    "memory_text_indexed_total": 27628,
+    "memory_visual_indexed_elements": 0,
+    "memory_visual_indexed_optional_elements": 0,
+    "memory_visual_indexed_pages": 0,
+    "memory_visual_indexed_required_elements": 0,
+    "memory_visual_indexed_sections": 0,
+    "memory_visual_indexed_total": 0,
+    "memory_visual_optional_elements": 27620,
+    "memory_visual_required_element_types": [
+      "figure",
+      "image",
+      "table"
+    ],
+    "memory_visual_required_elements": 8,
     "page_count": 492,
     "parity_accuracy": 0.9895494986583816,
     "parity_passed": true,
@@ -424,11 +323,18 @@
     "preset_improved_pdf_oxide_behavior": true,
     "second_pass_backlog_count": 2,
     "second_pass_backlog_tracked": true,
+    "toc_audit_passed": false,
+    "toc_entries": 358,
+    "toc_match_rate": 0.997207,
+    "toc_matched_as_section_header": 58,
+    "toc_matched_entries": 357,
+    "toc_missing_entries": 1,
+    "toc_type_repairs": 299,
     "total_expected_elements": 14162,
     "unmatched_actual_elements": 838,
     "unmatched_expected_elements": 148,
-    "workflow_evidence_element_count": 25,
-    "workflow_evidence_page_count": 3
+    "workflow_evidence_element_count": 27628,
+    "workflow_evidence_page_count": 492
   },
   "triage_summary": {
     "pages_with_tasks": 0,

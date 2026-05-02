@@ -261,7 +261,7 @@ const EDITABLE_BLOCK_TYPES: Array<BboxBlock['blockType']> = [
 ]
 
 const PDF_LAB_WORKFLOW_DATA_VERSION = '20260426c'
-const PDF_LAB_ARTIFACT_BASE_URL = '/artifacts/pdf-lab'
+const PDF_LAB_ARTIFACT_BASE_URL = ''
 const PDF_LAB_WORKFLOW_MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
 const PDF_LAB_HUMAN_TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
 const PDF_LAB_REAL_NIST_PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`

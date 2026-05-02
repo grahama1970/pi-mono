@@ -16,14 +16,14 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <body>
 <header>
 <h1>PDF Lab Status / Definition of Done</h1>
-<div class="sub">Artifact-derived status generated at 2026-04-30T18:14:33.086254+00:00. This report is designed to prevent hallucinated progress claims.</div>
+<div class="sub">Artifact-derived status generated at 2026-05-01T20:26:25.007970+00:00. This report is designed to prevent hallucinated progress claims.</div>
 </header>
 <main>
 <section class="grid">
 <div class="card"><div class="small">Pages extracted</div><div class="metric ok">492</div></div>
 <div class="card"><div class="small">Parity gate</div><div class="metric ok">98.95%</div><div class="small">target 95.00%</div></div>
 <div class="card"><div class="small">Human triage cards</div><div class="metric ok">0</div></div>
-<div class="card"><div class="small">Open blockers</div><div class="metric warn">1</div><div class="small">0 critical · 1 high · 0 medium</div></div>
+<div class="card"><div class="small">Open blockers</div><div class="metric warn">2</div><div class="small">0 critical · 2 high · 0 medium</div></div>
 </section>
 <section class="card">
 <h2>Current Interpretation</h2>
@@ -33,7 +33,8 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <section>
 <table>
 <thead><tr><th>Blocker Area</th><th>Severity</th><th>Artifact-Derived Detail</th><th>Required Next Action</th></tr></thead>
-<tbody><tr><td>Memory / Qdrant Final QA</td><td class="bad">high</td><td>Memory/Qdrant QA artifact exists but has not passed.</td><td>Resolve failed recall or page-vs-JSON checks before claiming the PDF is fully verified.</td></tr></tbody>
+<tbody><tr><td>TOC Audit</td><td class="bad">high</td><td>PDF outline has 358 entries; 299 were found as non-section types and 1 were missing. Current section semantics are not clean enough for final Memory/Qdrant section QA.</td><td>Repair NIST section typing or promote TOC-backed anchors, then regenerate evidence, Memory/Qdrant QA, and the status report.</td></tr>
+<tr><td>Memory / Qdrant Final QA</td><td class="bad">high</td><td>Memory/Qdrant QA artifact exists but has not passed: text recall 5/8; visual pages 0/492; TOC section crops 0/357; required table/figure/image elements 0/8.</td><td>Finish required TOC section crop visual vectors and repair failed recall checks before claiming the PDF is fully verified.</td></tr></tbody>
 </table>
 </section>
 <section class="grid">
@@ -41,23 +42,24 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <div class="card"><h2>Parity</h2><p><b>Matched:</b> 14,014 / 14,162</p><p><b>Unmatched expected:</b> 148</p><p><b>Unmatched actual:</b> 838</p></div>
 <div class="card"><h2>Second Pass</h2><p><b>Agent-resolved:</b> 152</p><table><tbody><tr><td><code>noisy_text_or_bbox_match</code></td><td>148</td></tr>
 <tr><td><code>table_row_fragment</code></td><td>4</td></tr></tbody></table></div>
-<div class="card"><h2>Evidence QA</h2><p><b>Pages:</b> 492</p><p><b>Sections:</b> 3,724</p><p><b>Elements:</b> 27,628</p></div>
+<div class="card"><h2>Evidence QA</h2><p><b>Pages:</b> 492</p><p><b>Sections:</b> 357</p><p><b>Elements:</b> 27,628</p></div>
 </section>
 <section class="grid">
-<div class="card"><h2>Memory/Qdrant</h2><p><b>Passed:</b> <code>False</code></p><p><b>Sample checks:</b> 8</p></div>
-<div class="card"><h2>Text Vectors</h2><p><b>Total:</b> 31,844</p><p><b>Pages:</b> 492 · <b>Sections:</b> 3,724 · <b>Elements:</b> 27,628</p></div>
-<div class="card"><h2>Visual Vectors</h2><p><b>Total:</b> 184</p><p><b>Pages:</b> 135 · <b>Sections:</b> 15 · <b>Elements:</b> 34</p></div>
+<div class="card"><h2>Memory/Qdrant</h2><p><b>Passed:</b> <code>False</code></p><p><b>Recall checks:</b> 5 / 8</p></div>
+<div class="card"><h2>Text Vectors</h2><p><b>Total:</b> 27,628</p><p><b>Pages:</b> 0 · <b>Sections:</b> 0 · <b>Elements:</b> 27,628</p></div>
+<div class="card"><h2>Visual Vectors</h2><p><b>Total:</b> 0</p><p><b>Pages:</b> 0 · <b>TOC section crops:</b> 0 · <b>Required elements:</b> 0 / 8</p></div>
 <div class="card"><h2>Asset Storage</h2><p>PNG assets remain on disk. Memory stores paths, hashes, and provenance; Qdrant stores text/image vectors.</p></div>
 </section>
 <section>
 <table>
 <thead><tr><th>Artifact</th><th>Path</th><th>Exists</th><th>Bytes</th></tr></thead>
-<tbody><tr><td>manifest</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json</td><td class="ok">True</td><td>5,868,961</td></tr>
+<tbody><tr><td>manifest</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json</td><td class="ok">True</td><td>5,869,083</td></tr>
 <tr><td>triage</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-human-triage-queue.json</td><td class="ok">True</td><td>399,761</td></tr>
 <tr><td>comparison</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-comparison.json</td><td class="ok">True</td><td>3,242,851</td></tr>
 <tr><td>extraction</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json</td><td class="ok">True</td><td>12,708,822</td></tr>
-<tr><td>evidence_manifest</td><td>/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-20260430T144118Z/manifest.json</td><td class="ok">True</td><td>40,121,418</td></tr>
-<tr><td>memory_qa</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json</td><td class="ok">True</td><td>10,172</td></tr>
+<tr><td>toc_audit</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-toc-audit.json</td><td class="ok">True</td><td>220,731</td></tr>
+<tr><td>evidence_manifest</td><td>/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-toc-20260501T200945Z/manifest.json</td><td class="ok">True</td><td>35,767,408</td></tr>
+<tr><td>memory_qa</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json</td><td class="ok">True</td><td>7,442</td></tr>
 <tr><td>second_pass_backlog</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-second-pass-backlog.json</td><td class="ok">True</td><td>17,303</td></tr></tbody>
 </table>
 </section>
@@ -69,7 +71,8 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <li>Do not claim core Rust extractor changes unless core_pdf_oxide_changed == true.</li>
 <li>Treat agent-resolved findings as engineering backlog unless a deterministic fix is recorded.</li>
 <li>Treat Nico/Evidence QA as sample-only unless evidence crop count covers the full extraction.</li>
-<li>Treat Memory/Qdrant recall QA as missing unless pdf-lab-memory-qa-report.json exists and passed is true.</li></ul>
+<li>For v1 visual QA, require page images, TOC section crops, and table/figure/image element crops; paragraph/list/header/footer crop vectors are optional or on-demand.</li>
+<li>Treat Memory/Qdrant recall QA as incomplete unless pdf-lab-memory-qa-report.json exists and passed is true.</li></ul>
 </section>
 </main>
 </body>
