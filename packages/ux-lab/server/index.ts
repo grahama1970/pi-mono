@@ -7599,6 +7599,21 @@ function evidenceCaseAmbiguousPayload(question: string, ambiguousReferents: stri
         ambiguous_referents: ambiguousReferents,
         disposition: 'retain_for_adversarial_training',
         safe_action: 'plan_repair',
+      },
+    },
+    qra_quality: {
+      status: 'needs_repair',
+      issue_code: 'ambiguous_referent',
+      issue_label: 'Ambiguous referent',
+      ambiguous_referents: ambiguousReferents,
+      disposition: 'retain_for_adversarial_training',
+      safe_action: 'plan_repair',
+    },
+    answer: `Clarify the missing context for ${ambiguousReferents.join(', ')} before an authoritative evidence case can be built.`,
+    cae_tree: null,
+  }
+}
+
 function createEvidenceCaseVersion(question: string, controlId: unknown, result?: any, previousVersion?: unknown): JsonRecord {
   return {
     id: createEvidenceCaseRunId(),
@@ -7626,17 +7641,15 @@ function evidenceCaseNeedsGapReview(payload: JsonRecord | null | undefined): boo
 
 function buildAdvisoryGapReview(question: string, controlId: unknown, payload: JsonRecord | null | undefined, opts: JsonRecord = {}): JsonRecord {
   const diagnostics = (payload?.diagnostics && typeof payload.diagnostics === 'object') ? payload.diagnostics as JsonRecord : {}
-  const gates = Array.isArray(payload?.gate_trace) ? payload?.gate_trace as JsonRecord[] : []
+  const gates = Array.isArray(payload?.gate_trace) ? payload.gate_trace as JsonRecord[] : []
   const failedGates = gates.filter((gate) => gate?.passed === false)
-  const evidence = Array.isArray(payload?.evidence) ? payload?.evidence as JsonRecord[] : []
+  const evidence = Array.isArray(payload?.evidence) ? payload.evidence as JsonRecord[] : []
   const reasons = failedGates.length
     ? failedGates.map((gate) => `Gate ${String(gate.gate ?? 'unknown')} did not pass: ${String(gate.detail ?? 'no detail')}`)
     : [String(diagnostics.mode ?? 'Evidence case was inconclusive or unavailable')]
   const proposedCorrection = {
     id: createEvidenceCaseRunId(),
     status: 'suggested',
-  const evidenceCaseVersion = createEvidenceCaseVersion(question, controlId, result)
-  const basePayload: JsonRecord = {
     corrected_question: String(opts.corrected_question ?? question).trim(),
     source_control_id: typeof controlId === 'string' ? controlId : null,
     rationale: reasons,
@@ -7673,25 +7686,13 @@ function buildAdvisoryGapReview(question: string, controlId: unknown, payload: J
       proposed_correction_id: proposedCorrection.id,
       rerun_of: opts.rerun_of ?? null,
     },
+    evidence_case_version: createEvidenceCaseVersion(question, controlId, payload, opts.previous_version),
     diagnostics: {
       authority: 'server_advisory_gap_review',
       workflow: 'cae-gap-review',
       advisory_only: true,
       source_diagnostics: diagnostics,
     },
-  }
-}
-    },
-    qra_quality: {
-      status: 'needs_repair',
-      issue_code: 'ambiguous_referent',
-      issue_label: 'Ambiguous referent',
-      ambiguous_referents: ambiguousReferents,
-      disposition: 'retain_for_adversarial_training',
-      safe_action: 'plan_repair',
-    },
-    answer: `Clarify the missing context for ${ambiguousReferents.join(', ')} before an authoritative evidence case can be built.`,
-    cae_tree: null,
   }
 }
 
