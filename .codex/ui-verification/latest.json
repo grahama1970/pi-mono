@@ -1,9 +1,9 @@
 {
-  "verified_at": "2026-05-01T12:08:04.655478+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "verified_at": "2026-05-02T17:07:00.539446+00:00",
+  "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
   "root": "/home/graham/workspace/experiments/pi-mono",
-  "url": "http://localhost:3301/artifacts/pdf-lab/pdf-lab-surgical-candidate-429.png",
-  "name": "ux-lab-artifacts-pdf-lab",
-  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/ux-lab-artifacts-pdf-lab/20260501T120730Z.png",
-  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/ux-lab-artifacts-pdf-lab/20260501T120730Z.read.json"
+  "url": "http://localhost:3002/#sparta-explorer/qras?qra=000a5d68cbd446e5",
+  "name": "sparta-qra-cae-gap-review-final",
+  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-qra-cae-gap-review-final/20260502T170655Z.png",
+  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-qra-cae-gap-review-final/20260502T170655Z.read.json"
 }

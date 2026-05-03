@@ -39,6 +39,17 @@ interface RelatedQRAEntry {
   verdict: 'grounded' | 'review' | 'passed' | 'adversarial' | 'missing' | 'failed'
 }
 
+type JsonRecord = Record<string, unknown>
+
+interface QraQualityIssue {
+  status?: string
+  issue_code?: string
+  issue_label?: string
+  ambiguous_referents?: string[]
+  disposition?: string
+  safe_action?: string
+}
+
 interface PriorQRAEvidenceEntry {
   _key?: string
   qra_id?: string
@@ -80,6 +91,12 @@ interface EvidenceCaseTraceProps {
   answerHelperText?: string
   unsupportedAnswerIds?: string[]
   verdictWhy?: string
+  qraQuality?: QraQualityIssue
+  gapReview?: JsonRecord
+  gapReviewStatus?: string
+  humanReviewState?: string
+  proposedCorrection?: JsonRecord
+  correctionLineage?: JsonRecord
   error?: string | null
   onNavigateToControl: (controlId: string) => void
   onRunValidation?: () => void
@@ -143,6 +160,27 @@ const PANE_PADDING = 16
 const TRACE_LINE_LEFT = 21
 const SURFACE_BORDER = 'rgba(255,255,255,0.06)'
 const SURFACE_FILL = 'rgba(255,255,255,0.018)'
+
+function asRecord(value: unknown): JsonRecord | null {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as JsonRecord : null
+}
+
+function asText(value: unknown): string {
+  if (typeof value === 'string') return value.trim()
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+  return ''
+}
+
+function asTextList(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(asText).filter(Boolean)
+  const text = asText(value)
+  return text ? [text] : []
+}
+
+function formatState(value: unknown, fallback = 'queued'): string {
+  const text = asText(value || fallback)
+  return text.replace(/_/g, ' ').toUpperCase()
+}
 
 function normalizeAgentResponse(text?: string): string {
   if (!text) return ''
@@ -312,6 +350,12 @@ export function EvidenceCaseTrace({
   answerHelperText,
   unsupportedAnswerIds = [],
   verdictWhy,
+  qraQuality,
+  gapReview,
+  gapReviewStatus,
+  humanReviewState,
+  proposedCorrection,
+  correctionLineage,
   error,
   onNavigateToControl,
   onRunValidation,
@@ -344,6 +388,7 @@ export function EvidenceCaseTrace({
   useRegisterAction('qras:evidence:source-control', { app: 'sparta-explorer', action: 'NAVIGATE_TO_CONTROL', label: 'Open Source Control', description: 'Open the selected source control in the Controls tab' })
   useRegisterAction('qras:evidence:related-qra', { app: 'sparta-explorer', action: 'SELECT_RELATED_QRA', label: 'Select Related QRA', description: 'Select a related QRA from the evidence trace' })
   useRegisterAction('qras:evidence:open-lean4', { app: 'sparta-explorer', action: 'OPEN_LEAN4_VIEWER', label: 'Open Lean4 Viewer', description: 'Open the Lean4 formal methods viewer for deeper proof inspection' })
+  useRegisterAction('qras:evidence:cae-gap-review', { app: 'sparta-explorer', action: 'VIEW_CAE_GAP_REVIEW', label: 'View CAE Gap Review', description: 'Inspect advisory CAE gap diagnosis for a blocked or ambiguous QRA' })
 
   const [expandedStep, setExpandedStep] = useState<string | null>(null)
   const [controlsOpen, setControlsOpen] = useState(false)
@@ -386,6 +431,29 @@ export function EvidenceCaseTrace({
     return acc
   }, {})
   const groupedFrameworks = Object.entries(groupedGroundedControls)
+  const gapReviewRecord = asRecord(gapReview)
+  const gapPersonaReview = asRecord(gapReviewRecord?.persona_review)
+  const gapJudgeRouting = asRecord(gapReviewRecord?.judge_routing)
+  const gapProposedCorrection = asRecord(proposedCorrection) || asRecord(gapReviewRecord?.proposed_correction)
+  const gapCorrectionLineage = asRecord(correctionLineage) || asRecord(gapReviewRecord?.correction_lineage)
+  const qualityIssueCode = qraQuality?.issue_code?.trim()
+  const qualityDisposition = qraQuality?.disposition?.trim()
+  const qualityReferents = qraQuality?.ambiguous_referents ?? []
+  const showCaeGapReview = Boolean(
+    gapReviewRecord
+      || qualityIssueCode
+      || qualityDisposition?.toLowerCase().includes('adversarial')
+      || (gapReviewStatus && gapReviewStatus !== 'not_applicable'),
+  )
+  const gapFindings = [
+    ...asTextList(gapPersonaReview?.findings),
+    ...(qualityIssueCode ? [`QRA quality issue: ${qraQuality?.issue_label || qualityIssueCode}.`] : []),
+    ...(qualityReferents.length > 0 ? [`Ambiguous referents: ${qualityReferents.join(', ')}.`] : []),
+  ]
+  const gapDecision = asText(gapReviewRecord?.decision) || (qualityIssueCode ? 'NEEDS_QRA_REPAIR' : 'NEEDS_VERIFICATION')
+  const gapRoute = asText(gapJudgeRouting?.route) || 'human_review'
+  const correctionQuestion = asText(gapProposedCorrection?.corrected_question)
+  const correctionRationale = asTextList(gapProposedCorrection?.rationale)
   const formalProofSnippet = useMemo(() => {
     const code = formalProof?.code?.trim()
     if (!code) return ''
@@ -1052,6 +1120,105 @@ export function EvidenceCaseTrace({
             })}
           </div>
         </section>
+
+        {showCaeGapReview && (
+          <section
+            data-qid="qras:evidence:cae-gap-review"
+            data-qs-action="VIEW_CAE_GAP_REVIEW"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              padding: '11px 13px',
+              borderRadius: 8,
+              border: `1px solid ${EMBRY.amber}33`,
+              backgroundColor: `${EMBRY.amber}0f`,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 10, color: EMBRY.white, fontWeight: 900, letterSpacing: 0.8, textTransform: 'uppercase' }}>CAE Gap Review</span>
+                  <span style={{ padding: '2px 6px', borderRadius: 4, border: `1px solid ${EMBRY.amber}44`, color: EMBRY.amber, backgroundColor: `${EMBRY.amber}14`, fontSize: 9, fontWeight: 900, textTransform: 'uppercase' }}>
+                    Advisory
+                  </span>
+                </div>
+                <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.45 }}>
+                  Advisory-only diagnosis. It does not mutate, approve, or human-bless this QRA; any correction must be followed by a fresh evidence case.
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                <span style={{ padding: '3px 6px', borderRadius: 4, border: `1px solid ${EMBRY.border}`, color: EMBRY.amber, fontSize: 9, fontWeight: 800 }}>
+                  {formatState(gapReviewStatus || gapReviewRecord?.gap_review_status || 'candidate')}
+                </span>
+                <span style={{ padding: '3px 6px', borderRadius: 4, border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, fontSize: 9, fontWeight: 800 }}>
+                  HUMAN {formatState(humanReviewState || gapReviewRecord?.human_review_state || 'queued')}
+                </span>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
+              <div style={{ padding: '8px 10px', borderRadius: 6, border: `1px solid ${SURFACE_BORDER}`, backgroundColor: 'rgba(0,0,0,0.16)' }}>
+                <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>Decision</div>
+                <div style={{ fontSize: 11, color: EMBRY.white, fontWeight: 800 }}>{formatState(gapDecision)}</div>
+              </div>
+              <div style={{ padding: '8px 10px', borderRadius: 6, border: `1px solid ${SURFACE_BORDER}`, backgroundColor: 'rgba(0,0,0,0.16)' }}>
+                <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>Judge Route</div>
+                <div style={{ fontSize: 11, color: EMBRY.white, fontWeight: 800 }}>{formatState(gapRoute)}</div>
+              </div>
+              <div style={{ padding: '8px 10px', borderRadius: 6, border: `1px solid ${SURFACE_BORDER}`, backgroundColor: 'rgba(0,0,0,0.16)' }}>
+                <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>Mutation Policy</div>
+                <div style={{ fontSize: 11, color: EMBRY.white, fontWeight: 800 }}>NO IN-PLACE REPAIR</div>
+              </div>
+            </div>
+
+            {qualityIssueCode && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+                <span style={{ fontSize: 10, color: EMBRY.amber, fontWeight: 900, textTransform: 'uppercase' }}>
+                  {qraQuality?.issue_label || qualityIssueCode}
+                </span>
+                {qualityDisposition && <span style={{ fontSize: 10, color: EMBRY.dim }}>{qualityDisposition.replace(/_/g, ' ')}</span>}
+                {qraQuality?.safe_action && <span style={{ fontSize: 10, color: EMBRY.dim }}>safe action: {qraQuality.safe_action.replace(/_/g, ' ')}</span>}
+              </div>
+            )}
+
+            {gapFindings.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8 }}>Findings</div>
+                {gapFindings.slice(0, 4).map((finding, idx) => (
+                  <div key={`cae-gap-finding-${idx}`} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', fontSize: 10.5, color: EMBRY.dim, lineHeight: 1.45 }}>
+                    <AlertCircle size={12} color={EMBRY.amber} style={{ flexShrink: 0, marginTop: 2 }} />
+                    <span>{finding}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {(correctionQuestion || correctionRationale.length > 0 || gapCorrectionLineage) && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: '9px 10px', borderRadius: 6, border: `1px solid ${SURFACE_BORDER}`, backgroundColor: 'rgba(0,0,0,0.14)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.8 }}>Suggested correction lineage</span>
+                  {asText(gapProposedCorrection?.id) && <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'monospace' }}>{asText(gapProposedCorrection?.id)}</span>}
+                </div>
+                {correctionQuestion && (
+                  <div style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.45 }}>
+                    {correctionQuestion}
+                  </div>
+                )}
+                {correctionRationale.length > 0 && (
+                  <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.45 }}>
+                    {correctionRationale[0]}
+                  </div>
+                )}
+                {asText(gapCorrectionLineage?.previous_version) && (
+                  <div style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'monospace' }}>
+                    Previous version: {asText(gapCorrectionLineage?.previous_version)}
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
 
         <ToggleSection open={controlsOpen} onToggle={() => setControlsOpen((value) => !value)} label="Grounded Controls">
           {groupedFrameworks.length > 0 ? (

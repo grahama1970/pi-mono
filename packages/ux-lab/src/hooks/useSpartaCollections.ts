@@ -155,6 +155,12 @@ export interface EvidenceCase {
 	failure_reason?: string;
 	failed_items?: string[];
 	skipped_checks?: string[];
+	gap_review_status?: "not_applicable" | "candidate" | "queued" | "completed" | "failed" | string;
+	human_review_state?: "not_requested" | "requested" | "queued" | "in_review" | "approved" | "rejected" | string;
+	gap_review?: Record<string, unknown>;
+	proposed_correction?: Record<string, unknown>;
+	correction_lineage?: Record<string, unknown>;
+	evidence_case_version?: Record<string, unknown>;
 
 	// Verification
 	formal_proof?: FormalProof;
@@ -222,6 +228,16 @@ export interface SpartaQRA {
 
 // v2 QRA collection sources
 export type QRASource = "v2" | "legacy" | "all";
+export type QRAEvidenceStatus = "grounded" | "review" | "passed" | "adversarial" | "missing" | "failed";
+
+export interface QRAStatusCounts {
+	total: number;
+	sourceUsed: QRASource;
+	counts: Record<QRAEvidenceStatus, number>;
+	loading: boolean;
+	error?: string | null;
+	generatedAt?: string;
+}
 
 async function qraFeedPost(body: {
 	source: QRASource;
@@ -264,6 +280,17 @@ export async function qraDetailPost(body: {
 		body: JSON.stringify(body),
 	});
 	if (!res.ok) throw new Error(`/qra/detail ${res.status}: ${await res.text()}`);
+	return res.json();
+}
+
+async function qraStatusCountsGet(source: QRASource): Promise<{
+	total?: number;
+	source_used?: QRASource;
+	counts?: Partial<Record<QRAEvidenceStatus, number>>;
+	generated_at?: string;
+}> {
+	const res = await fetch(`${API_ROOT}/qra/status-counts?source=${encodeURIComponent(source)}`);
+	if (!res.ok) throw new Error(`/qra/status-counts ${res.status}: ${await res.text()}`);
 	return res.json();
 }
 
@@ -534,6 +561,52 @@ export function useQRAs(
 	}, [fetchData]);
 
 	return { data, total, loading, error, refresh: () => fetchData({ force: true }) };
+}
+
+export function useQRAStatusCounts(source: QRASource = "all"): QRAStatusCounts {
+	const emptyCounts: Record<QRAEvidenceStatus, number> = {
+		grounded: 0,
+		review: 0,
+		passed: 0,
+		adversarial: 0,
+		missing: 0,
+		failed: 0,
+	};
+	const [statusCounts, setStatusCounts] = useState<QRAStatusCounts>({
+		total: 0,
+		sourceUsed: source,
+		counts: emptyCounts,
+		loading: true,
+		error: null,
+	});
+
+	useEffect(() => {
+		let cancelled = false;
+		setStatusCounts((prev) => ({ ...prev, sourceUsed: source, loading: true, error: null }));
+		qraStatusCountsGet(source)
+			.then((payload) => {
+				if (cancelled) return;
+				setStatusCounts({
+					total: Number(payload.total ?? 0),
+					sourceUsed: payload.source_used ?? source,
+					counts: { ...emptyCounts, ...(payload.counts ?? {}) },
+					loading: false,
+					error: null,
+					generatedAt: payload.generated_at,
+				});
+			})
+			.catch((err) => {
+				if (cancelled) return;
+				setStatusCounts((prev) => ({
+					...prev,
+					loading: false,
+					error: err instanceof Error ? err.message : String(err),
+				}));
+			});
+		return () => { cancelled = true; };
+	}, [source]);
+
+	return statusCounts;
 }
 
 // ── useRelationships ────────────────────────────────────────────────────────

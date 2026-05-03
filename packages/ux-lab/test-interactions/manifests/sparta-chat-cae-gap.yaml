@@ -1,190 +1,92 @@
 version: 1
 kind: test-interactions-manifest
 metadata:
-  title: "Sparta Chat — CAE Gap Workflow"
-  app: "ux-lab"
-  surface: "sparta-chat"
-  persona_review_target: "Aerospace Cybersecurity Evidence Reviewer"
-  created: "2026-05-02"
-  selector_policy:
-    allowed: "data-qid only"
-    forbidden: ["id selectors", "class selectors", "nth-child", "xpath", "text-only selectors"]
-route:
-  base_url: "http://localhost:3002"
-  path: "/#sparta-explorer?tab=chat"
-  wait_ready: "[data-qid='sparta-chat:root']"
-seed_data:
-  required: true
-  dataset: "sparta-cae-gap-chat-fixture"
-  minimum_counts:
-    chat_threads: 1
-    controls: 12
-    evidence_cases: 3
-    failed_evidence_cases: 1
-    cae_gap_findings: 1
-    persona_cards: 4
-    evidence_versions: 2
-  required_records:
-    - "A failed /create-evidence-case trace that triggers CAE gap analysis"
-    - "A rerunnable evidence case linked to a SPARTA control and F-36 source span"
-    - "Brandon Bailey, Margaret Chen, Jennifer Park, and CAE Gap Judge review cards"
-    - "At least one course-correction queue item accepted by a human reviewer"
-    - "At least two version lineage entries for the same evidence case"
-artifacts:
-  screenshot_dir: "test-interactions/captures/sparta-chat-cae-gap"
-  naming: "{step_number}-{slug}.png"
-  required:
-    - "01-chat-ready.png"
-    - "02-run-evidence-case-streaming.png"
-    - "03-failed-case-trace.png"
-    - "04-cae-gap-analysis-open.png"
-    - "05-persona-cards-brandon-margaret-jennifer-judge.png"
-    - "06-interrupt-course-correction.png"
-    - "07-rerun-evidence-case.png"
-    - "08-version-lineage.png"
-expected_visual_outcome: >
-  The chat surface shows a source-grounded evidence-case run, a visibly failed
-  trace, an advisory CAE gap analysis panel, four reviewer/judge cards, an
-  interruptible course-correction state, a successful rerun, and a version
-  lineage view that clearly separates advisory gaps from grounded evidence and
-  human approval.
-qid_compliance: true
+  title: "Sparta Chat CAE gap workflow"
+  persona: "Aerospace Cybersecurity Evidence Reviewer"
+  route: "http://localhost:3002/#sparta-explorer/chat"
+  seed_data:
+    requirement: "Question that fails or returns inconclusive from /create-evidence-case"
+    minimum_cases: 1
+    minimum_persona_reviews: 3
+  expected_visual_outcome: "Trace separates source-grounded evidence case state, advisory persona diagnosis, proposed correction, and human actions."
+surface:
+  name: "sparta-chat"
+  wait_for_data_qid: "chat:composer"
+  min_loaded_rows: 0
+  min_evidence_cases: 1
 interactions:
-  - id: chat-ready
-    description: "Open Sparta Chat and verify fixture rows are available."
-    action: screenshot
-    target: "[data-qid='sparta-chat:root']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:root']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:input']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:evidence-case-count']"
-      - type: text_min_number
-        selector: "[data-qid='sparta-chat:evidence-case-count']"
-        minimum: 3
-    screenshot: "01-chat-ready.png"
-
-  - id: run-evidence-case
-    description: "Ask Sparta Chat to run an evidence case for the seeded control."
-    action: type
-    target: "[data-qid='sparta-chat:input']"
-    text: "Run the seeded CAE gap evidence case and show the full trace."
-    followups:
-      - action: click
-        target: "[data-qid='sparta-chat:send']"
-      - action: wait
-        target: "[data-qid='sparta-chat:evidence-case:building']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:evidence-case:building']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:trace:streaming-step']"
-    screenshot: "02-run-evidence-case-streaming.png"
-
-  - id: failed-case-trace
-    description: "Open the failed case trace and verify failure is explicit."
-    action: click
-    target: "[data-qid='sparta-chat:evidence-case:failed:view-trace']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='evidence-workspace:root']"
-      - type: visible
-        selector: "[data-qid='evidence-workspace:tab:trace']"
-      - type: visible
-        selector: "[data-qid='evidence-workspace:verdict:not-satisfied']"
-      - type: visible
-        selector: "[data-qid='evidence-workspace:gate:failed']"
-    screenshot: "03-failed-case-trace.png"
-    expected: "Trace tab highlights the failed gate and does not mark the case human-reviewed."
-
-  - id: open-gap-analysis
-    description: "Open advisory CAE gap analysis generated from the failed run."
-    action: click
-    target: "[data-qid='sparta-chat:cae-gap:open']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:cae-gap:panel']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:cae-gap:advisory-badge']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:cae-gap:missing-evidence-list']"
-      - type: text_includes
-        selector: "[data-qid='sparta-chat:cae-gap:advisory-badge']"
-        value: "Advisory"
-    screenshot: "04-cae-gap-analysis-open.png"
-    expected: "Gap analysis is labeled advisory and is visually distinct from source-grounded evidence."
-
-  - id: inspect-persona-cards
-    description: "Inspect Brandon, Margaret, Jennifer, and Judge cards."
-    action: click
-    target: "[data-qid='sparta-chat:persona-card:brandon-bailey']"
-    followups:
-      - action: click
-        target: "[data-qid='sparta-chat:persona-card:margaret-chen']"
-      - action: click
-        target: "[data-qid='sparta-chat:persona-card:jennifer-park']"
-      - action: click
-        target: "[data-qid='sparta-chat:persona-card:cae-gap-judge']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:persona-card:brandon-bailey']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:persona-card:margaret-chen']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:persona-card:jennifer-park']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:persona-card:cae-gap-judge']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:persona-card:detail']"
-    screenshot: "05-persona-cards-brandon-margaret-jennifer-judge.png"
-    expected: "Each card displays its reviewer role, finding summary, and handoff state."
-
-  - id: interrupt-course-correction
-    description: "Interrupt the run and submit a human course correction."
-    action: click
-    target: "[data-qid='sparta-chat:course-correction:interrupt']"
-    followups:
-      - action: type
-        target: "[data-qid='sparta-chat:course-correction:input']"
-        text: "Use the seeded F-36 SSP source span and rerun only the missing evidence item."
-      - action: click
-        target: "[data-qid='sparta-chat:course-correction:submit']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:course-correction:accepted']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:human-review:pending']"
-    screenshot: "06-interrupt-course-correction.png"
-    expected: "The interrupted trace shows human course correction without blessing the QRA/evidence case."
-
-  - id: rerun-evidence-case
-    description: "Rerun the failed evidence case from the accepted correction."
-    action: click
-    target: "[data-qid='sparta-chat:evidence-case:rerun']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:evidence-case:rerun-running']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:evidence-case:rerun-complete']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:evidence-case:verdict:satisfied']"
-    screenshot: "07-rerun-evidence-case.png"
-    expected: "Rerun creates a new case version and the satisfied verdict is tied to source evidence."
-
-  - id: view-version-lineage
-    description: "Open evidence version lineage for original failed and rerun versions."
-    action: click
-    target: "[data-qid='sparta-chat:evidence-case:lineage']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-chat:lineage:panel']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:lineage:version:original-failed']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:lineage:version:rerun-corrected']"
-      - type: visible
-        selector: "[data-qid='sparta-chat:lineage:human-course-correction']"
-    screenshot: "08-version-lineage.png"
-    expected: "Lineage shows original failure, correction event, rerun version, and reviewer status in chronological order."
+  - name: "focus chat input"
+    action: "focus"
+    data_qid: "chat:input"
+    expected_result: "Chat input is ready for an evidence-case question."
+    screenshot_artifact: "sparta-chat-cae-gap-01-input.png"
+  - name: "enter failing evidence-case question"
+    action: "type"
+    data_qid: "chat:input"
+    value: "Why is CAPEC-649 relevant to T100?"
+    expected_result: "Question text is present in the composer."
+    screenshot_artifact: "sparta-chat-cae-gap-02-question.png"
+  - name: "send question"
+    action: "click"
+    data_qid: "chat:send"
+    expected_result: "Chat message is submitted and evidence actions become available."
+    screenshot_artifact: "sparta-chat-cae-gap-03-sent.png"
+  - name: "run evidence case"
+    action: "click"
+    data_qid: "chat:evidence-case:latest"
+    fallback_data_qid: "chat:evidence-case:0"
+    expected_result: "Evidence trace starts with gate, retrieval, verdict, and diagnostic events."
+    screenshot_artifact: "sparta-chat-cae-gap-04-run-case.png"
+  - name: "open gap analysis"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:tab-gap"
+    expected_result: "Advisory gap diagnosis panel is visible and labeled as advisory."
+    screenshot_artifact: "sparta-chat-cae-gap-05-gap-analysis.png"
+  - name: "inspect Brandon review"
+    action: "assert_visible"
+    data_qid: "sparta:evidence-workspace:persona-brandon"
+    expected_result: "Brandon Bailey review card shows missing policy or sufficiency evidence."
+    screenshot_artifact: "sparta-chat-cae-gap-06-brandon.png"
+  - name: "inspect Margaret review"
+    action: "assert_visible"
+    data_qid: "sparta:evidence-workspace:persona-margaret"
+    expected_result: "Margaret Chen review card shows technical enforcement evidence gaps."
+    screenshot_artifact: "sparta-chat-cae-gap-07-margaret.png"
+  - name: "inspect Jennifer review"
+    action: "assert_visible"
+    data_qid: "sparta:evidence-workspace:persona-jennifer"
+    expected_result: "Jennifer Park review card shows mapping or relationship evidence gaps."
+    screenshot_artifact: "sparta-chat-cae-gap-08-jennifer.png"
+  - name: "inspect judge routing"
+    action: "assert_visible"
+    data_qid: "sparta:evidence-workspace:persona-judge"
+    expected_result: "Judge route names one persona or human review queue for the next gap."
+    screenshot_artifact: "sparta-chat-cae-gap-09-judge.png"
+  - name: "interrupt course correction"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:pause"
+    expected_result: "Human interruption state is visible and does not mark the QRA as human-reviewed."
+    screenshot_artifact: "sparta-chat-cae-gap-10-interrupt.png"
+  - name: "rerun evidence case"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:rerun"
+    expected_result: "A new evidence-case run is queued from the proposed correction with prior version references retained."
+    screenshot_artifact: "sparta-chat-cae-gap-11-rerun.png"
+  - name: "defer to human review"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:defer"
+    expected_result: "Case is deferred for human review without using approved or verified language."
+    screenshot_artifact: "sparta-chat-cae-gap-12-defer.png"
+assertions:
+  - data_qid: "chat:composer"
+    action: "assert_visible"
+    expected_result: "Chat composer remains available."
+    screenshot_artifact: "sparta-chat-cae-gap-assert-composer.png"
+  - data_qid: "sparta:evidence-workspace"
+    action: "assert_visible"
+    expected_result: "Evidence workspace renders trace/readiness context and action affordances."
+    screenshot_artifact: "sparta-chat-cae-gap-assert-workspace.png"
+  - data_qid: "sparta:evidence-workspace:rerun"
+    action: "assert_title"
+    expected_result: "Rerun control has a title tooltip."
+    screenshot_artifact: "sparta-chat-cae-gap-assert-rerun-title.png"

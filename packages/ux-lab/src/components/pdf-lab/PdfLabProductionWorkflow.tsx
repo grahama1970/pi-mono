@@ -224,6 +224,7 @@ interface PdfLabStatusReport {
     document_family_preset?: { name?: string; path?: string; schema_version?: string } | string
     evidence_element_count: number
     evidence_page_count: number
+    evidence_section_count?: number
     extraction_element_count: number
     human_triage_task_count: number
     matched_expected_elements: number
@@ -246,6 +247,14 @@ interface PdfLabStatusReport {
     memory_visual_optional_elements?: number
     memory_visual_indexed_optional_elements?: number
     memory_visual_indexed_elements?: number
+    second_pass_backlog_count?: number
+    toc_entries?: number
+    toc_matched_entries?: number
+    toc_matched_as_section_header?: number
+    toc_type_repairs?: number
+    toc_missing_entries?: number
+    toc_match_rate?: number
+    toc_audit_passed?: boolean
     total_expected_elements: number
     unmatched_actual_elements: number
     unmatched_expected_elements: number
@@ -1476,43 +1485,176 @@ function CoverageStatusPane({
     .filter(row => row.action !== 'accept')
     .slice(0, 14)
   const tocSummary = tocAudit?.summary
+  const tocTypeRepairs = summary?.toc_type_repairs ?? tocSummary?.matched_as_other_type ?? 0
+  const tocMissing = summary?.toc_missing_entries ?? tocSummary?.unmatched_toc_entries ?? 0
+  const tocMatched = summary?.toc_matched_entries ?? tocSummary?.matched_toc_entries ?? 0
+  const tocEntries = summary?.toc_entries ?? tocSummary?.toc_entries ?? 0
+  const sectionCropCount = summary?.evidence_section_count ?? 0
+  const secondPassBacklogCount = summary?.second_pass_backlog_count ?? 0
+  const workflowStages = [
+    {
+      artifact: 'pdf-lab-toc-audit.json',
+      detail: `${tocMatched.toLocaleString()} / ${tocEntries.toLocaleString()} TOC entries matched; ${tocTypeRepairs.toLocaleString()} type repairs remain.`,
+      owner: 'Agent',
+      stage: '1 · Agent Sweep',
+      state: tocMissing === 0 ? 'working' : 'blocked',
+      task: 'Find TOC, preset hits, candidate pages, and element-family coverage before extraction.',
+    },
+    {
+      artifact: 'pdf-lab-nist-full-extraction.json',
+      detail: `${extractionCount.toLocaleString()} elements emitted from ${manifest.page_count.toLocaleString()} pages using the NIST preset.`,
+      owner: 'pdf_oxide',
+      stage: '2 · Deterministic Extraction',
+      state: extractionCount > 0 ? 'working' : 'blocked',
+      task: 'Run deterministic extraction; do not ask humans to classify obvious tables, rows, headers, or text spans.',
+    },
+    {
+      artifact: 'pdf-lab-nist-comparison.json',
+      detail: parityAccuracy === null ? 'comparison missing' : `${(parityAccuracy * 100).toFixed(2)}% parity against ${((parityTarget ?? 0) * 100).toFixed(0)}% target.`,
+      owner: 'Agent',
+      stage: '3 · Parity Audit',
+      state: parityPassed ? 'working' : 'blocked',
+      task: 'Compare expected agent nodes to emitted JSON and classify misses as fixable extraction defects or ambiguity.',
+    },
+    {
+      artifact: 'pdf-lab-nist-human-triage-queue.json',
+      detail: `${agentResolvedCount.toLocaleString()} findings resolved by agent; ${humanTriageCount.toLocaleString()} cards left for humans.`,
+      owner: 'Agent → Human',
+      stage: '4 · Agent Correction → Human Resolve',
+      state: humanTriageCount === 0 ? 'working' : 'blocked',
+      task: 'Agent suppresses obvious/canonicalizable defects; humans only receive unresolved ambiguity.',
+    },
+    {
+      artifact: 'pdf-lab-memory-qa-report.json',
+      detail: `${memorySampleChecksPassed.toLocaleString()} / ${memorySampleChecks.toLocaleString()} recall checks; visual pages ${memoryVisualPages.toLocaleString()} / ${manifest.page_count.toLocaleString()}.`,
+      owner: 'Agent',
+      stage: '5 · Memory/Qdrant QA',
+      state: memoryPassed ? 'working' : 'blocked',
+      task: 'Verify PDF page/crop evidence against extracted JSON and indexed memory recall before claiming completion.',
+    },
+  ]
+  const primaryBlocker = blockers[0] ?? null
+  const isFinalBlocked = blockers.length > 0 || !parityPassed || !memoryPassed
+  const topStatusTitle = isFinalBlocked
+    ? 'Not final: agent engineering work remains'
+    : 'All artifact gates passed'
+  const topStatusDetail = primaryBlocker
+    ? primaryBlocker.detail
+    : isFinalBlocked
+      ? 'One or more artifact gates are not proven. Review the proof gates below before claiming completion.'
+      : 'Coverage artifacts report no open blockers.'
+  const humanNextStep = humanTriageCount > 0
+    ? `Open Surgical Triage and resolve ${humanTriageCount.toLocaleString()} card${humanTriageCount === 1 ? '' : 's'}.`
+    : 'No human triage work right now. Do not send obvious extractor defects to the human.'
+  const agentNextStep = primaryBlocker?.next_action
+    ?? (memoryPassed && parityPassed
+      ? 'No agent blocker reported by the status artifact.'
+      : 'Regenerate the failing artifact gate and rerun Coverage.')
+  const proofGates = [
+    { label: 'Parity', value: parityAccuracy === null ? 'missing' : `${(parityAccuracy * 100).toFixed(2)}%`, state: parityPassed ? 'ok' : 'bad' },
+    { label: 'Human cards', value: humanTriageCount.toLocaleString(), state: humanTriageCount === 0 ? 'ok' : 'bad' },
+    { label: 'Memory/Qdrant', value: memoryPassed ? 'passed' : memoryImplemented ? 'blocked' : 'missing', state: memoryPassed ? 'ok' : 'bad' },
+    { label: 'TOC repairs', value: tocTypeRepairs.toLocaleString(), state: tocTypeRepairs === 0 && tocMissing === 0 ? 'ok' : 'bad' },
+    { label: 'TOC missing', value: tocMissing.toLocaleString(), state: tocMissing === 0 ? 'ok' : 'bad' },
+    { label: 'Core Rust changed', value: String(coreChanged), state: coreChanged ? 'ok' : 'warn' },
+  ]
 
   return (
     <main className="pdf-lab-prod-coverage">
-      <section className="pdf-lab-prod-coverage-hero">
-        <div>
-          <span className="pdf-lab-prod-coverage-kicker">Artifact-derived status</span>
-          <h1>PDF Lab Coverage / Outstanding Work</h1>
-          <p>
-            This page is backed by the generated <code>pdf-lab-status-report.json</code>.
-            If a gate is not proven by artifacts, it remains open here.
-          </p>
+      <section
+        className={`pdf-lab-prod-next-steps ${isFinalBlocked ? 'blocked' : 'ready'}`}
+        data-qid="pdf-lab:coverage:next-steps"
+      >
+        <div className="pdf-lab-prod-next-steps-head">
+          <div>
+            <span className="pdf-lab-prod-coverage-kicker">Next steps · artifact-derived Definition of Done</span>
+            <h1>{topStatusTitle}</h1>
+            <p>
+              This is the first thing to read. Coverage is only final when every proof gate passes from
+              real artifacts. Do not treat the artifact list below as the next-step summary.
+            </p>
+          </div>
+          <div className="pdf-lab-prod-next-steps-generated">
+            <b>{blockers.length === 0 ? '0 blockers' : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
+            <span>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</span>
+          </div>
         </div>
-        <div className="pdf-lab-prod-coverage-status">
-          <b>{blockers.length === 0 ? 'No open blockers' : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
-          <span>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status report artifact missing'}</span>
+
+        <div className="pdf-lab-prod-next-steps-grid">
+          <article className="pdf-lab-prod-next-card human">
+            <span>Human needs to do</span>
+            <h2>{humanTriageCount.toLocaleString()}</h2>
+            <p>{humanNextStep}</p>
+            <small>{humanSummaryTitle}. {humanSummaryDetail}</small>
+          </article>
+
+          <article className="pdf-lab-prod-next-card agent">
+            <span>Agent must do next</span>
+            <h2>{primaryBlocker?.area ?? 'No blocker reported'}</h2>
+            <p>{agentNextStep}</p>
+            <small>{topStatusDetail}</small>
+          </article>
+
+          <article className="pdf-lab-prod-next-card blocker">
+            <span>Why not final</span>
+            <h2>{tocTypeRepairs.toLocaleString()} TOC type repairs · {tocMissing.toLocaleString()} missing</h2>
+            <p>
+              The PDF outline has {tocEntries.toLocaleString()} entries; {tocMatched.toLocaleString()} were text-matched,
+              but only {(summary?.toc_matched_as_section_header ?? tocSummary?.matched_as_section_header ?? 0).toLocaleString()} are typed as section headers.
+            </p>
+            <small>This is preset/section-builder engineering work, not human ambiguity triage.</small>
+          </article>
+
+          <article className="pdf-lab-prod-next-card proof">
+            <span>Proof gates</span>
+            <div className="pdf-lab-prod-proof-gates">
+              {proofGates.map(gate => (
+                <div key={gate.label} className={`pdf-lab-prod-proof-gate ${gate.state}`}>
+                  <b>{gate.value}</b>
+                  <small>{gate.label}</small>
+                </div>
+              ))}
+            </div>
+          </article>
         </div>
       </section>
 
-      <section className={`pdf-lab-prod-human-summary ${humanTriageCount > 0 ? 'needs-human' : 'no-human'}`}>
-        <div>
-          <span>Human Action Summary</span>
-          <h2>{humanSummaryTitle}</h2>
-          <p>{humanSummaryDetail}</p>
+      <section className="pdf-lab-prod-workflow-contract">
+        <PaneHeader
+          title="PDF Lab Workflow Contract"
+          detail="Written operating model for the project agent and human reviewer"
+        />
+        <div className="pdf-lab-prod-workflow-intro">
+          <div>
+            <b>Primary rule</b>
+            <p>
+              PDF Lab is agent-first. The agent performs sweep, deterministic extraction, parity audit,
+              obvious correction, and final Memory/Qdrant QA. Humans only resolve residual ambiguity
+              that cannot be proven from PDF evidence and extracted JSON.
+            </p>
+          </div>
+          <div>
+            <b>Current boundary</b>
+            <p>
+              This run has <strong>{humanTriageCount.toLocaleString()}</strong> human cards.
+              Remaining work is engineering/QA: TOC semantic repair debt
+              {memoryPassed ? '.' : ', Memory/Qdrant visual indexing, and recall checks.'}
+              {' '}Obvious table rows, bbox misses, and text spans are agent work.
+            </p>
+          </div>
         </div>
-        <div className="pdf-lab-prod-human-summary-metrics">
-          <div>
-            <b>{humanTriageCount}</b>
-            <small>human cards</small>
-          </div>
-          <div>
-            <b>{agentResolvedCount}</b>
-            <small>agent-resolved</small>
-          </div>
-          <div>
-            <b>{blockers.length}</b>
-            <small>status blockers</small>
-          </div>
+        <div className="pdf-lab-prod-workflow-steps">
+          {workflowStages.map(stage => (
+            <article key={stage.stage} className={`pdf-lab-prod-workflow-step ${stage.state}`}>
+              <div>
+                <span>{stage.owner}</span>
+                <b>{stage.stage}</b>
+              </div>
+              <p>{stage.task}</p>
+              <small>{stage.detail}</small>
+              <code>{stage.artifact}</code>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -1546,6 +1688,32 @@ function CoverageStatusPane({
         <StatusMetric label="Core Rust Changed" value={String(coreChanged)} detail="do not claim parser repair unless true" state={coreChanged ? 'ok' : 'warn'} />
         <StatusMetric label="NIST Preset Improved" value={String(presetImproved)} detail="document-family improvement is valid for NIST-like PDFs" state={presetImproved ? 'ok' : 'warn'} />
         <StatusMetric label="Memory/Qdrant QA" value={memoryMetricValue} detail="final PDF page ↔ JSON ↔ memory recall gate" state={memoryPassed ? 'ok' : 'bad'} />
+      </section>
+
+      <section className="pdf-lab-prod-coverage-columns pdf-lab-prod-learning-row">
+        <div className="pdf-lab-prod-coverage-panel">
+          <PaneHeader title="Agent Learning Backlog" detail="Defects to convert into deterministic extraction behavior" />
+          <div className="pdf-lab-prod-kind-list">
+            <div><code>toc_type_repairs</code><b>{tocTypeRepairs.toLocaleString()}</b></div>
+            <div><code>toc_missing_entries</code><b>{tocMissing.toLocaleString()}</b></div>
+            <div><code>second_pass_backlog</code><b>{secondPassBacklogCount.toLocaleString()}</b></div>
+            <div><code>toc_backed_sections</code><b>{sectionCropCount.toLocaleString()}</b></div>
+          </div>
+          <p className="pdf-lab-prod-coverage-note">
+            These are not ordinary human triage tasks. They are evidence that the NIST preset, TOC-backed
+            section model, or core extractor should learn from this PDF so the next NIST-like PDF extracts
+            more deterministically.
+          </p>
+        </div>
+
+        <div className="pdf-lab-prod-coverage-panel">
+          <PaneHeader title="Human Boundary" detail="What should and should not reach the reviewer" />
+          <div className="pdf-lab-prod-boundary-list">
+            <div><b>Agent must resolve</b><span>table row fragments, bbox-only misses, sidebar bleed, TOC/header typing, obvious text matches</span></div>
+            <div><b>Human may resolve</b><span>genuine semantic ambiguity where PDF evidence cannot prove node type or bounds</span></div>
+            <div><b>Never claim done</b><span>until Memory/Qdrant page/crop/JSON recall QA passes from artifacts</span></div>
+          </div>
+        </div>
       </section>
 
       <section className="pdf-lab-prod-coverage-panel pdf-lab-prod-toc-audit">

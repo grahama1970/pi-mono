@@ -79,6 +79,11 @@ const SUBPATH_TO_TAB: Record<string, TabName> = Object.fromEntries(
   TABS.map(t => [t.toLowerCase().replace(/\s+/g, '-'), t])
 )
 
+function hashRequestsChat() {
+  const parts = (window.location.hash || '').split('?')[0].replace('#', '').split('/')
+  return parts[1] === 'chat'
+}
+
 export interface SpartaExplorerProps {
   views?: Partial<Record<TabName, ReactNode>>
   loadingTabs?: Partial<Record<TabName, boolean>>
@@ -287,7 +292,16 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   }
 
   // Chat panel state
-  const [chatOpen, setChatOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(() => hashRequestsChat())
+
+  useEffect(() => {
+    const syncChatHash = () => {
+      if (hashRequestsChat()) setChatOpen(true)
+    }
+    syncChatHash()
+    window.addEventListener('hashchange', syncChatHash)
+    return () => window.removeEventListener('hashchange', syncChatHash)
+  }, [])
 
   // Keep chat panel mounted only when open so hidden controls are not left in the DOM.
   const toggleChat = useCallback(() => {
@@ -452,6 +466,27 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           upsertStep({ id: 'lean_proof', type: 'tool', skill: 'lean4-prove', status: 'done', summary: '/lean4-prove', detail: 'Skipped: no formalizable Lean claim was emitted by this evidence case.' })
           return
         }
+        if (type === 'gap_review_started') {
+          upsertStep({ id: 'cae_gap_review', type: 'review', skill: 'ask cae-gap-review', status: 'running', summary: 'advisory CAE gap review', detail: 'Failed or inconclusive evidence case queued for persona diagnosis.' })
+          return
+        }
+        if (type === 'persona_review') {
+          const persona = String(data?.persona ?? 'persona')
+          upsertStep({ id: `cae_persona_${persona.toLowerCase().replace(/[^a-z0-9]+/g, '_')}`, type: 'review', skill: 'ask cae-gap-review', status: 'done', summary: persona, detail: 'Advisory persona gap review received.' })
+          return
+        }
+        if (type === 'judge_routing') {
+          upsertStep({ id: 'cae_gap_judge', type: 'review', skill: 'ask cae-gap-review', status: 'done', summary: 'CAE gap judge routing', detail: String(data?.judge_routing?.reason ?? 'Next action routed for human review.') })
+          return
+        }
+        if (type === 'correction_suggested') {
+          upsertStep({ id: 'correction_suggested', type: 'review', status: 'done', summary: 'correction suggested', detail: 'Recommendation requires a new evidence-case run before use.' })
+          return
+        }
+        if (type === 'human_intervention_requested') {
+          upsertStep({ id: 'human_intervention', type: 'review', status: 'done', summary: 'human intervention requested', detail: String(data?.human_review_state ?? 'queued') })
+          return
+        }
         if (type === 'result') {
           finalPayload = data?.result
           const gates = Array.isArray(finalPayload?.gate_trace) ? finalPayload.gate_trace : []
@@ -516,6 +551,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
             glossary: finalPayload.glossary ?? [],
             diagnostics: finalPayload.diagnostics ?? {},
+            evidence_case_version: finalPayload.evidence_case_version,
+            gap_review: finalPayload.gap_review,
+            gap_review_status: finalPayload.gap_review_status,
+            human_review_state: finalPayload.human_review_state,
+            proposed_correction: finalPayload.proposed_correction,
+            correction_lineage: finalPayload.correction_lineage,
           },
         })
       } else {
@@ -739,6 +780,13 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           answer: data.answer ?? '',
           response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
           glossary: data.glossary ?? [],
+          diagnostics: data.diagnostics ?? {},
+          evidence_case_version: data.evidence_case_version,
+          gap_review: data.gap_review,
+          gap_review_status: data.gap_review_status,
+          human_review_state: data.human_review_state,
+          proposed_correction: data.proposed_correction,
+          correction_lineage: data.correction_lineage,
         },
       })
     } catch (err) {

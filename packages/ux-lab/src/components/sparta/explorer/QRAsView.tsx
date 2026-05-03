@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EMBRY, label } from '../common/EmbryStyle'
-import { qraDetailPost, useCollectionCounts, useQRAs } from '../../../hooks/useSpartaCollections'
+import { qraDetailPost, useCollectionCounts, useQRAs, useQRAStatusCounts } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
@@ -41,7 +41,7 @@ type EvidenceStatus = 'grounded' | 'review' | 'passed' | 'adversarial' | 'missin
 type EvidenceFilter = 'all' | EvidenceStatus
 
 const EVIDENCE_FILTERS: Array<{ status: EvidenceFilter; label: string; title: string }> = [
-  { status: 'all', label: 'Loaded', title: 'Show every QRA row currently loaded in the queue' },
+  { status: 'all', label: 'Total', title: 'Show all QRAs in the selected source corpus' },
   { status: 'grounded', label: 'Has case', title: '$create-evidence-case data is attached with extracted entities, glossary entries, chains, or prior evidence' },
   { status: 'review', label: 'Review', title: 'Evidence case exists but needs reviewer sign-off or a clearer verdict' },
   { status: 'passed', label: 'Approved', title: 'Evidence case was approved, satisfied, or formally proved' },
@@ -245,6 +245,7 @@ export function QRAsView() {
   )
   const page = pagination.feedKey === queueFeedKey ? pagination.page : 0
   const { data: pageQras = [], total: qraTotal, loading, error } = useQRAs(debouncedSearch, controlFilter, source, page, QRA_PAGE_SIZE)
+  const qraStatusCounts = useQRAStatusCounts(source)
   const [loadedQras, setLoadedQras] = useState<SpartaQRA[]>([])
   const qras = loadedQras
   const [currentIndex, setCurrentIndexRaw] = useState(0)
@@ -262,12 +263,42 @@ export function QRAsView() {
     if (loading) return
     // eslint-disable-next-line react-hooks/set-state-in-effect -- append the completed backend page into the persistent visible queue.
     setLoadedQras((prev) => {
-      if (page === 0) return pageQras
+      if (page === 0) {
+        const selected = qraKeyFilter ? prev.find((entry) => entry._key === qraKeyFilter || entry.qra_id === qraKeyFilter) : undefined
+        if (selected && !pageQras.some((entry) => entry._key === selected._key)) return [selected, ...pageQras]
+        return pageQras
+      }
       const seen = new Set(prev.map((entry) => entry._key))
       const nextPage = pageQras.filter((entry) => !seen.has(entry._key))
       return nextPage.length > 0 ? [...prev, ...nextPage] : prev
     })
-  }, [loading, page, pageQras])
+  }, [loading, page, pageQras, qraKeyFilter])
+
+  useEffect(() => {
+    if (!qraKeyFilter) return
+    if (qras.some((entry) => entry._key === qraKeyFilter || entry.qra_id === qraKeyFilter)) return
+
+    let cancelled = false
+    setDetailLoadingKey(qraKeyFilter)
+    qraDetailPost({ source, key: qraKeyFilter, qraId: qraKeyFilter })
+      .then((result) => {
+        if (cancelled || !result.document) return
+        const detail = result.document as unknown as SpartaQRA
+        setQraDetails((prev) => {
+          const next = new Map(prev)
+          next.set(detail._key, detail)
+          return next
+        })
+        setLoadedQras((prev) => prev.some((entry) => entry._key === detail._key) ? prev : [detail, ...prev])
+        setCurrentIndexRaw(0)
+      })
+      .catch(() => { /* keep the normal queue loader in control */ })
+      .finally(() => {
+        if (!cancelled) setDetailLoadingKey((prev) => (prev === qraKeyFilter ? null : prev))
+      })
+
+    return () => { cancelled = true }
+  }, [qraKeyFilter, qras, source])
 
   // Wrapper that also syncs URL when selection changes
   const setCurrentIndex = useCallback((idx: number | ((prev: number) => number)) => {
@@ -311,21 +342,15 @@ export function QRAsView() {
     [mindFilter, qras],
   )
 
-  const evidenceCounts = useMemo(() => {
-    const counts: Record<EvidenceFilter, number> = {
-      all: baseVisibleQras.length,
-      grounded: 0,
-      review: 0,
-      passed: 0,
-      adversarial: 0,
-      missing: 0,
-      failed: 0,
-    }
-    baseVisibleQras.forEach(({ q }) => {
-      counts[deriveEvidenceStatus(q)] += 1
-    })
-    return counts
-  }, [baseVisibleQras])
+  const evidenceCounts = useMemo(() => ({
+    all: qraStatusCounts.total,
+    grounded: qraStatusCounts.counts.grounded,
+    review: qraStatusCounts.counts.review,
+    passed: qraStatusCounts.counts.passed,
+    adversarial: qraStatusCounts.counts.adversarial,
+    missing: qraStatusCounts.counts.missing,
+    failed: qraStatusCounts.counts.failed,
+  }), [qraStatusCounts])
 
   const visibleQras = useMemo(
     () => baseVisibleQras.filter(({ q }) => evidenceFilter === 'all' || deriveEvidenceStatus(q) === evidenceFilter),
@@ -633,10 +658,10 @@ export function QRAsView() {
 
                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, paddingTop: 2 }}>
                        <span style={{ fontSize: 8.5, fontWeight: 800, color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: 0.6 }}>
-                         Loaded-row status
+                         Corpus evidence status
                        </span>
                        <span style={{ fontSize: 8.5, fontWeight: 700, color: EMBRY.dim, fontVariantNumeric: 'tabular-nums' }}>
-                         {formatCount(qras.length)} shown
+                         {qraStatusCounts.loading ? 'loading' : `${formatCount(qraStatusCounts.total)} total`}
                        </span>
                      </div>
 
@@ -688,7 +713,7 @@ export function QRAsView() {
                          fontVariantNumeric: 'tabular-nums',
                        }}
                      >
-                       {formatCount(qraTotal)} in corpus · scroll auto-loads more rows
+                       {formatCount(qras.length)} rows loaded · scroll auto-loads more rows
                      </div>
                    </div>
 
@@ -1020,6 +1045,7 @@ export function QRAsView() {
                   storedEvidenceCase={current.evidence_case as any}
                   qraFormalProof={current.formal_proof}
                   qraSacmRef={current.sacm_ref}
+                  qraQuality={current.qra_quality}
                   upstreamQRAKeys={current.lineage?.upstream_qra_keys || []}
                   priorQRAEvidence={current.evidence_case?.prior_qra_evidence || []}
                   minHighlightEmphasis={minHighlightEmphasis}

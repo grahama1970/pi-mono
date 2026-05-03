@@ -720,6 +720,207 @@
   background: var(--prod-bg);
 }
 
+.pdf-lab-prod-next-steps {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 2px solid rgba(248, 113, 113, 0.62);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(248, 113, 113, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(139, 92, 246, 0.05)),
+    var(--prod-panel);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.34);
+}
+
+.pdf-lab-prod-next-steps.ready {
+  border-color: rgba(25, 195, 125, 0.58);
+  background:
+    radial-gradient(circle at top left, rgba(25, 195, 125, 0.14), transparent 34%),
+    var(--prod-panel);
+}
+
+.pdf-lab-prod-next-steps-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pdf-lab-prod-next-steps-head h1 {
+  margin: 8px 0;
+  color: var(--prod-text);
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.pdf-lab-prod-next-steps-head p {
+  max-width: 900px;
+  margin: 0;
+  color: var(--prod-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.pdf-lab-prod-next-steps-generated {
+  min-width: 250px;
+  padding: 12px;
+  border: 1px solid rgba(248, 113, 113, 0.36);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.26);
+  text-align: right;
+}
+
+.pdf-lab-prod-next-steps.ready .pdf-lab-prod-next-steps-generated {
+  border-color: rgba(25, 195, 125, 0.34);
+}
+
+.pdf-lab-prod-next-steps-generated b,
+.pdf-lab-prod-next-steps-generated span {
+  display: block;
+}
+
+.pdf-lab-prod-next-steps-generated b {
+  color: #f87171;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.pdf-lab-prod-next-steps.ready .pdf-lab-prod-next-steps-generated b {
+  color: var(--prod-success);
+}
+
+.pdf-lab-prod-next-steps-generated span {
+  margin-top: 6px;
+  color: var(--prod-muted);
+  font-size: 11px;
+}
+
+.pdf-lab-prod-next-steps-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.35fr 1.35fr 1.1fr;
+  gap: 12px;
+}
+
+.pdf-lab-prod-next-card {
+  min-height: 172px;
+  padding: 16px;
+  border: 1px solid var(--prod-line);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.26);
+}
+
+.pdf-lab-prod-next-card.human {
+  border-color: rgba(25, 195, 125, 0.32);
+}
+
+.pdf-lab-prod-next-card.agent,
+.pdf-lab-prod-next-card.blocker {
+  border-color: rgba(248, 113, 113, 0.36);
+}
+
+.pdf-lab-prod-next-card.proof {
+  border-color: rgba(139, 92, 246, 0.32);
+}
+
+.pdf-lab-prod-next-card span {
+  display: block;
+  color: var(--prod-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-prod-next-card.human span {
+  color: var(--prod-success);
+}
+
+.pdf-lab-prod-next-card.agent span,
+.pdf-lab-prod-next-card.blocker span {
+  color: #f87171;
+}
+
+.pdf-lab-prod-next-card h2 {
+  margin: 8px 0;
+  color: var(--prod-text);
+  font-size: 24px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.pdf-lab-prod-next-card p,
+.pdf-lab-prod-next-card small {
+  margin: 0;
+  color: var(--prod-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pdf-lab-prod-next-card small {
+  display: block;
+  margin-top: 10px;
+}
+
+.pdf-lab-prod-proof-gates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pdf-lab-prod-proof-gate {
+  padding: 10px;
+  border: 1px solid var(--prod-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.pdf-lab-prod-proof-gate.ok {
+  border-color: rgba(25, 195, 125, 0.34);
+}
+
+.pdf-lab-prod-proof-gate.warn {
+  border-color: rgba(245, 158, 11, 0.36);
+}
+
+.pdf-lab-prod-proof-gate.bad {
+  border-color: rgba(248, 113, 113, 0.42);
+}
+
+.pdf-lab-prod-proof-gate b,
+.pdf-lab-prod-proof-gate small {
+  display: block;
+}
+
+.pdf-lab-prod-proof-gate b {
+  color: var(--prod-text);
+  font-size: 15px;
+}
+
+.pdf-lab-prod-proof-gate.ok b {
+  color: var(--prod-success);
+}
+
+.pdf-lab-prod-proof-gate.warn b {
+  color: #fbbf24;
+}
+
+.pdf-lab-prod-proof-gate.bad b {
+  color: #f87171;
+}
+
+.pdf-lab-prod-proof-gate small {
+  margin-top: 4px;
+  color: var(--prod-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .pdf-lab-prod-coverage-hero {
   display: flex;
   align-items: flex-start;
@@ -780,6 +981,106 @@
   margin-top: 3px;
   color: var(--prod-muted);
   font-size: 11px;
+}
+
+.pdf-lab-prod-workflow-contract {
+  margin-top: 14px;
+  border: 1px solid rgba(139, 92, 246, 0.34);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at top left, rgba(139, 92, 246, 0.11), transparent 36%),
+    var(--prod-panel);
+  overflow: hidden;
+}
+
+.pdf-lab-prod-workflow-intro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.pdf-lab-prod-workflow-intro div,
+.pdf-lab-prod-workflow-step,
+.pdf-lab-prod-boundary-list div {
+  border: 1px solid var(--prod-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.pdf-lab-prod-workflow-intro div {
+  padding: 13px;
+}
+
+.pdf-lab-prod-workflow-intro b {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--prod-text);
+}
+
+.pdf-lab-prod-workflow-intro p,
+.pdf-lab-prod-workflow-step p,
+.pdf-lab-prod-workflow-step small {
+  margin: 0;
+  color: var(--prod-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.pdf-lab-prod-workflow-intro strong {
+  color: var(--prod-success);
+}
+
+.pdf-lab-prod-workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.pdf-lab-prod-workflow-step {
+  min-height: 178px;
+  padding: 12px;
+}
+
+.pdf-lab-prod-workflow-step.working {
+  border-color: rgba(25, 195, 125, 0.28);
+}
+
+.pdf-lab-prod-workflow-step.blocked {
+  border-color: rgba(248, 113, 113, 0.34);
+}
+
+.pdf-lab-prod-workflow-step div {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.pdf-lab-prod-workflow-step span {
+  color: var(--prod-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-prod-workflow-step b {
+  color: var(--prod-text);
+  font-size: 13px;
+}
+
+.pdf-lab-prod-workflow-step small {
+  display: block;
+  margin-top: 9px;
+}
+
+.pdf-lab-prod-workflow-step code {
+  display: block;
+  margin-top: 9px;
+  overflow-wrap: anywhere;
+  color: #c4b5fd;
 }
 
 .pdf-lab-prod-human-summary {
@@ -1116,6 +1417,10 @@
   margin-top: 14px;
 }
 
+.pdf-lab-prod-learning-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
 .pdf-lab-prod-coverage-panel,
 .pdf-lab-prod-coverage-rule {
   border: 1px solid var(--prod-line);
@@ -1205,6 +1510,29 @@
   text-transform: uppercase;
 }
 
+.pdf-lab-prod-boundary-list {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+}
+
+.pdf-lab-prod-boundary-list div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  padding: 11px 12px;
+}
+
+.pdf-lab-prod-boundary-list b {
+  color: var(--prod-text);
+}
+
+.pdf-lab-prod-boundary-list span {
+  color: var(--prod-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .pdf-lab-prod-artifact-list .bad {
   color: #f87171;
 }
@@ -1255,7 +1583,9 @@
   }
 
   .pdf-lab-prod-coverage-grid,
-  .pdf-lab-prod-coverage-columns {
+  .pdf-lab-prod-coverage-columns,
+  .pdf-lab-prod-workflow-intro,
+  .pdf-lab-prod-workflow-steps {
     grid-template-columns: 1fr 1fr;
   }
 

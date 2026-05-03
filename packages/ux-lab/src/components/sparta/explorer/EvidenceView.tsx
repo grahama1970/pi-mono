@@ -222,6 +222,21 @@ interface LiveEvidenceCase {
   verdict_state?: string
   answer?: string
   response_action?: string
+  gap_review?: Record<string, unknown>
+  gap_review_status?: string
+  human_review_state?: string
+  proposed_correction?: Record<string, unknown>
+  correction_lineage?: Record<string, unknown>
+  evidence_case_version?: Record<string, unknown>
+}
+
+interface QraQualityIssue {
+  status?: string
+  issue_code?: string
+  issue_label?: string
+  ambiguous_referents?: string[]
+  disposition?: string
+  safe_action?: string
 }
 
 interface EvidenceViewProps {
@@ -233,6 +248,7 @@ interface EvidenceViewProps {
   storedEvidenceCase?: EvidenceCase | null
   qraFormalProof?: EvidenceCase['formal_proof']
   qraSacmRef?: EvidenceCase['sacm_ref']
+  qraQuality?: QraQualityIssue
   minHighlightEmphasis?: HighlightEmphasis
   onClose?: () => void
   reviewActions?: React.ReactNode
@@ -257,6 +273,7 @@ export function EvidenceView({
   storedEvidenceCase,
   qraFormalProof,
   qraSacmRef,
+  qraQuality,
   minHighlightEmphasis = 'medium',
   reviewActions,
   upstreamQRAKeys = [],
@@ -411,6 +428,9 @@ export function EvidenceView({
   const liveVerdict = typeof liveData?.verdict === 'string'
     ? liveData.verdict
     : (liveData?.verdict?.state || liveData?.verdict_state)
+  const gapReview = ec?.gap_review || liveData?.gap_review
+  const proposedCorrection = ec?.proposed_correction || liveData?.proposed_correction || (gapReview?.proposed_correction as Record<string, unknown> | undefined)
+  const correctionLineage = ec?.correction_lineage || liveData?.correction_lineage || (gapReview?.correction_lineage as Record<string, unknown> | undefined)
   const normalizedSpans: EvidenceSpan[] = Array.isArray(ec?.spans)
     ? ec.spans
       .map((span) => {
@@ -518,6 +538,12 @@ export function EvidenceView({
       answerHelperText={answerHelperText}
       unsupportedAnswerIds={unsupportedAnswerIds}
       verdictWhy={verdictWhy}
+      qraQuality={qraQuality}
+      gapReview={gapReview}
+      gapReviewStatus={ec?.gap_review_status || liveData?.gap_review_status || (gapReview?.gap_review_status as string | undefined)}
+      humanReviewState={ec?.human_review_state || liveData?.human_review_state || (gapReview?.human_review_state as string | undefined)}
+      proposedCorrection={proposedCorrection}
+      correctionLineage={correctionLineage}
       error={error}
       onNavigateToControl={navigateToControl}
       onRunValidation={runValidation}

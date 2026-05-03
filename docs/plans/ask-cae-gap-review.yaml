@@ -1,0 +1,295 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pi-mono"
+
+metadata:
+  title: "Ask CAE Gap Review"
+  goal: "Compose existing /ask reviewer protocols with /create-evidence-case into judge-routed CAE evidence gap review."
+  plan_type: code
+  created: "2026-05-02"
+  primary_persona:
+    name: "Compliance analyst"
+    role: "Uses /ask to inspect whether a frozen evidence case is ready for human review."
+    source: "/ask + /create-evidence-case workflow"
+  compliance_governance:
+    principle: "Analyst workbench, not truth engine"
+    verdicts: "All CAE outputs default to NEEDS_VERIFICATION or evidence-gap states"
+    human_gate: "Compliance officer reviews before any status change"
+
+execution:
+  max_concurrency: 1
+  wave_barrier: false
+  scheduling_policy: dependency_only
+
+capability_overlap:
+  - "/ask already has natural persona routing in .pi/skills/ask/src/ask/ask_routing.py."
+  - "/ask already has parallel and roundtable protocol execution in .pi/skills/ask/src/ask/ask_oracle.py."
+  - "/ask already separates persona from protocol role in .pi/skills/ask/src/ask/review_protocols/adversarial_review.py."
+  - "/ask already loads reviewer prompt-role specs from .pi/skills/ask/docs/reviewers via .pi/skills/ask/src/ask/reviewer_specs.py."
+  - "/create-evidence-case already freezes claim/evidence and exposes review_status/failure fields from .pi/skills/create-evidence-case/runner.py."
+  - "New code should only add CAE gap routing: judge chooses one missing evidence item, routes one reviewer/tool, then halts on final decision, repeat gap, or max rounds."
+
+questions_blockers:
+  - "None"
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Contract and Prompts"
+  - id: "1"
+    label: "Wave 1: Routing"
+  - id: "2"
+    label: "Wave 2: Protocol Loop"
+  - id: "3"
+    label: "Wave 3: Tests and Docs"
+
+tasks:
+  - id: "1"
+    title: "Write CAE contract and prompt templates"
+    lane: "0"
+    runner: code-runner
+    backend: gpt-5.3-codex
+    mode: iterative
+    skills:
+      - ask
+      - create-evidence-case
+      - best-practices-prompt
+    gate: "Contract and prompt-role specs pass /best-practices-prompt constraints and do not create a new orchestration engine."
+    dirty_worktree_policy: allow_if_allowlist_clean
+    depends_on: []
+    read_context:
+      - ".pi/skills/ask/src/ask/review_protocols/adversarial_review.py"
+      - ".pi/skills/ask/src/ask/reviewer_specs.py"
+      - ".pi/skills/create-evidence-case/runner.py"
+      - ".pi/skills/ask/docs/ASK_SPARTA_PREFLIGHT_CONTRACT.md"
+      - "/home/graham/workspace/experiments/agent-skills/skills/best-practices-prompt/SKILL.md"
+    allowlist:
+      - ".pi/skills/ask/docs/ASK_CAE_GAP_REVIEW_CONTRACT.md"
+      - ".pi/skills/ask/docs/reviewers/cae-policy-evidence.md"
+      - ".pi/skills/ask/docs/reviewers/cae-technical-enforcement.md"
+      - ".pi/skills/ask/docs/reviewers/cae-control-mapping.md"
+      - ".pi/skills/ask/docs/reviewers/cae-gap-judge.md"
+    prompt: |
+      Agent: ask implementation planner.
+      - **Gate**: Contract and prompt-role specs pass /best-practices-prompt constraints and do not create a new orchestration engine.
+
+      COMPLIANCE GOVERNANCE: This is an analyst workbench, not a truth engine.
+      - All outputs default to NEEDS_VERIFICATION, INSUFFICIENT_EVIDENCE, or NEEDS_CLARIFICATION.
+      - Never emit compliant, approved, certified, or PASS as a compliance status.
+      - Use retrieval language: retrieved, found, extracted, cited.
+
+      Create the CAE gap review contract and four prompt-role specs using /best-practices-prompt.
+      Role specs are prompt presets, not personas:
+      - cae-policy-evidence
+      - cae-technical-enforcement
+      - cae-control-mapping
+      - cae-gap-judge
+
+      Each prompt file must include a rationale header, exact input fields, exact JSON schema, one complete input/output example, rejection criteria, and closed vocabularies.
+      The judge JSON schema must include: decision, missing_evidence, route_to, stop_reason, final_status.
+    tests:
+      - "python3 -m pytest .pi/skills/ask/tests/test_review_protocols.py -q"
+    definition_of_done:
+      command: "test -s .pi/skills/ask/docs/ASK_CAE_GAP_REVIEW_CONTRACT.md && test -s .pi/skills/ask/docs/reviewers/cae-gap-judge.md"
+      assertion: "Contract and prompt-role specs exist with CAE status vocabulary."
+    blind_tests:
+      - "Prompt files reject output that invents evidence outside the evidence-case payload."
+      - "Judge prompt requires exactly one route_to when decision is clarify."
+      - "Prompt files contain no weasel instructions such as relevant or appropriate."
+
+  - id: "2"
+    title: "Add CLI and natural route"
+    lane: "1"
+    runner: code-runner
+    backend: gpt-5.3-codex
+    mode: iterative
+    skills:
+      - ask
+      - memory
+    gate: "CAE routing is added without changing existing roundtable, parallel-review, argue, or deep-review routes."
+    dirty_worktree_policy: allow_if_allowlist_clean
+    depends_on: ["1"]
+    read_context:
+      - ".pi/skills/ask/src/ask/ask.py"
+      - ".pi/skills/ask/src/ask/ask_routing.py"
+      - ".pi/skills/ask/tests/test_ask_cli_protocols.py"
+      - ".pi/skills/ask/tests/test_human_chat_examples.py"
+      - ".pi/skills/ask/docs/ASK_CAE_GAP_REVIEW_CONTRACT.md"
+    allowlist:
+      - ".pi/skills/ask/src/ask/ask.py"
+      - ".pi/skills/ask/src/ask/ask_routing.py"
+      - ".pi/skills/ask/tests/test_ask_cli_protocols.py"
+      - ".pi/skills/ask/tests/test_human_chat_examples.py"
+    prompt: |
+      Agent: ask implementation planner.
+      - **Gate**: CAE routing is added without changing existing roundtable, parallel-review, argue, or deep-review routes.
+
+      Add CAE gap review route parsing without changing existing roundtable, parallel-review, argue, or deep-review behavior.
+      Add options:
+      - --cae-gap-review
+      - --cae-evidence-case <path-or-id>
+      - --cae-reviewers <persona:role,...>
+      - --cae-judge <persona-or-role>
+      - --cae-max-rounds <n>
+
+      Natural prompt example:
+      $ask cae gap review "Does this evidence prove MFA is enforced for admin logins?" with Brandon:cae-policy-evidence, Margaret:cae-technical-enforcement, Jennifer:cae-control-mapping judge="CAE evidence judge" max_rounds=3
+
+      Defaults:
+      - cae_reviewers = Brandon:cae-policy-evidence,Margaret:cae-technical-enforcement,Jennifer:cae-control-mapping
+      - cae_judge = cae-gap-judge
+      - cae_max_rounds = 3
+
+      Fail closed if max rounds < 1 or reviewer spec has an unknown lower-case persona/role ambiguity.
+    tests:
+      - "python3 -m pytest .pi/skills/ask/tests/test_ask_cli_protocols.py .pi/skills/ask/tests/test_human_chat_examples.py -q"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "Routing tests and repo checks pass without changing existing review protocol routes."
+    blind_tests:
+      - "Existing '$ask Brandon, Margaret, and Jennifer to debate X' still maps to roundtable."
+      - "CAE natural prompt maps to cae_gap_review and preserves reviewer persona names and role keys."
+      - "Typo 'Marjaret' does not fabricate a persona; it returns needs_attention or clear validation failure."
+
+  - id: "3"
+    title: "Implement CAE gap protocol loop"
+    lane: "2"
+    runner: code-runner
+    backend: gpt-5.3-codex
+    mode: iterative
+    skills:
+      - ask
+      - create-evidence-case
+      - memory
+      - dogpile
+      - scillm
+    gate: "The loop changes state between rounds by adding one routed reviewer/tool response, then halts on a typed stop condition."
+    dirty_worktree_policy: allow_if_allowlist_clean
+    depends_on: ["2"]
+    read_context:
+      - ".pi/skills/ask/src/ask/ask.py"
+      - ".pi/skills/ask/src/ask/ask_oracle.py"
+      - ".pi/skills/ask/src/ask/ask_results.py"
+      - ".pi/skills/ask/src/ask/review_protocols/adversarial_review.py"
+      - ".pi/skills/ask/src/ask/run_state.py"
+      - ".pi/skills/ask/src/ask/oracle_adapters.py"
+      - ".pi/skills/create-evidence-case/runner.py"
+      - ".pi/skills/ask/docs/ASK_CAE_GAP_REVIEW_CONTRACT.md"
+    allowlist:
+      - ".pi/skills/ask/src/ask/ask.py"
+      - ".pi/skills/ask/src/ask/ask_oracle.py"
+      - ".pi/skills/ask/src/ask/ask_results.py"
+      - ".pi/skills/ask/src/ask/review_protocols/adversarial_review.py"
+      - ".pi/skills/ask/src/ask/cae_gap_review.py"
+      - ".pi/skills/ask/tests/test_cae_gap_review.py"
+    prompt: |
+      Agent: ask implementation planner.
+      - **Gate**: The loop changes state between rounds by adding one routed reviewer/tool response, then halts on a typed stop condition.
+
+      Implement CAE gap review as a composition of existing /ask protocol execution, not a new OpenMythos engine.
+      Required behavior:
+      1. Load or receive a frozen evidence-case payload.
+      2. Run configured reviewers once against the same frozen claim/evidence packet.
+      3. Run the judge prompt.
+      4. If judge decision is clarify, route exactly one follow-up turn to the reviewer/tool named in route_to.
+      5. Re-run the judge on the updated evidence packet.
+      6. Stop on sufficient_for_human_review, insufficient_evidence, repeated missing_evidence, invalid judge JSON, or max rounds.
+      7. Record compact loop state; do not persist full prompt bodies by default.
+      8. Persona subagents may access memory and dogpile only through the existing subagent env contract, and each turn must disclose whether it used memory, dogpile, scillm peer check, or inference.
+    tests:
+      - "python3 -m pytest .pi/skills/ask/tests/test_cae_gap_review.py -q"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "CAE loop state is represented in results and runtime artifacts; existing checks pass."
+    blind_tests:
+      - "Judge clarify for missing technical logs routes only Margaret:cae-technical-enforcement on the next round."
+      - "Same missing_evidence repeated twice halts with INSUFFICIENT_EVIDENCE."
+      - "Invalid judge JSON halts with NEEDS_CLARIFICATION and does not continue reviewer calls."
+
+  - id: "4"
+    title: "Persist runtime artifacts"
+    lane: "2"
+    runner: code-runner
+    backend: gpt-5.3-codex
+    mode: iterative
+    skills:
+      - ask
+      - memory
+    gate: "Runtime artifacts expose compact CAE loop state without persisting full prompt bodies by default."
+    dirty_worktree_policy: allow_if_allowlist_clean
+    depends_on: ["3"]
+    read_context:
+      - ".pi/skills/ask/src/ask/run_state.py"
+      - ".pi/skills/ask/src/ask/runtime_schema.py"
+      - ".pi/skills/ask/src/ask/status.py"
+      - ".pi/skills/ask/src/ask/cae_gap_review.py"
+    allowlist:
+      - ".pi/skills/ask/src/ask/run_state.py"
+      - ".pi/skills/ask/src/ask/runtime_schema.py"
+      - ".pi/skills/ask/src/ask/status.py"
+      - ".pi/skills/ask/src/ask/cae_gap_review.py"
+      - ".pi/skills/ask/tests/test_run_state_protocol.py"
+      - ".pi/skills/ask/tests/test_cae_gap_review.py"
+    prompt: |
+      Agent: ask implementation planner.
+      - **Gate**: Runtime artifacts expose compact CAE loop state without persisting full prompt bodies by default.
+
+      Add inspectable CAE gap review artifacts to the existing ask runtime directory.
+      Required artifact names:
+      - cae_gap_review.request.json
+      - cae_gap_review.rounds.jsonl
+      - cae_gap_review.final.json
+      Status output must expose these paths under runtime_artifacts when --cae-gap-review runs.
+      Store compact fields only: round, actor, persona, role, decision, missing_evidence, route_to, evidence_added_summary, tool_use_disclosure, stop_reason.
+    tests:
+      - "python3 -m pytest .pi/skills/ask/tests/test_run_state_protocol.py .pi/skills/ask/tests/test_cae_gap_review.py -q"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "Runtime artifacts are deterministic, status-visible, and covered by tests."
+    blind_tests:
+      - "Dry run shows planned CAE reviewers/judge without invoking oracle calls."
+      - "Runtime artifact does not persist full evidence payload when summary persistence is selected."
+      - "Final artifact includes stop_reason for max rounds and repeated missing evidence."
+
+  - id: "5"
+    title: "Document prompts and examples"
+    lane: "3"
+    runner: code-runner
+    backend: gpt-5.3-codex
+    mode: iterative
+    skills:
+      - ask
+      - create-evidence-case
+      - best-practices-prompt
+    gate: "Documentation examples match tested CLI routes and distinguish personas from prompt-role presets."
+    dirty_worktree_policy: allow_if_allowlist_clean
+    depends_on: ["4"]
+    read_context:
+      - ".pi/skills/ask/SKILL.md"
+      - ".pi/skills/ask/README.md"
+      - ".pi/skills/ask/docs/ASK_CAE_GAP_REVIEW_CONTRACT.md"
+      - ".pi/skills/ask/tests/test_human_chat_examples.py"
+    allowlist:
+      - ".pi/skills/ask/SKILL.md"
+      - ".pi/skills/ask/README.md"
+      - ".pi/skills/ask/tests/test_human_chat_examples.py"
+    prompt: |
+      Agent: ask implementation planner.
+      - **Gate**: Documentation examples match tested CLI routes and distinguish personas from prompt-role presets.
+
+      Document CAE gap review as a composition feature.
+      Explain clearly:
+      - Brandon/Margaret/Jennifer are personas.
+      - cae-policy-evidence, cae-technical-enforcement, and cae-control-mapping are prompt-role presets.
+      - cae-gap-judge is the judge prompt-role preset unless overridden.
+      - The judge controls rerouting for up to N rounds.
+      - Persona access to memory/dogpile is allowed only through the existing subagent tool environment and must be disclosed per turn.
+      Add human chat examples and route coverage.
+    tests:
+      - "python3 -m pytest .pi/skills/ask/tests/test_human_chat_examples.py -q"
+    definition_of_done:
+      command: "npm run check"
+      assertion: "Documentation examples match tested CLI routes and governance language."
+    blind_tests:
+      - "Docs do not describe this as OpenMythos mode."
+      - "Docs distinguish persona from prompt-role preset."
+      - "Docs state outputs are analyst workbench states, not compliance approval."

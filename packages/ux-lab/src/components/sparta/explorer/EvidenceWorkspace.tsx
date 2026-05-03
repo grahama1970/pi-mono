@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Check, Clock, FileText, GitBranch, ListChecks, PackageCheck, Pencil, ShieldCheck, X } from 'lucide-react'
+import { Check, Clock, FileText, GitBranch, ListChecks, PackageCheck, Pencil, SearchCheck, ShieldCheck, X } from 'lucide-react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import type { ChatMessage } from '../../shared-chat'
 import type { StreamingStep } from '../../shared-chat/ChatWell'
 
-type EvidenceWorkspaceTab = 'Trace' | 'Sources' | 'Entities' | 'Proof' | 'Export'
+type EvidenceWorkspaceTab = 'Trace' | 'Gap' | 'Sources' | 'Entities' | 'Proof' | 'Export'
 
 const TABS: Array<{ id: EvidenceWorkspaceTab; icon: typeof GitBranch }> = [
   { id: 'Trace', icon: GitBranch },
+  { id: 'Gap', icon: SearchCheck },
   { id: 'Sources', icon: FileText },
   { id: 'Entities', icon: ListChecks },
   { id: 'Proof', icon: ShieldCheck },
@@ -33,12 +34,30 @@ function statusText(message?: ChatMessage, isStreaming?: boolean) {
   return message?.evidenceCase?.verdict?.toUpperCase() || message?.verdict?.state || 'NEEDS_VERIFICATION'
 }
 
+function asRecord(value: unknown): Record<string, any> {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, any> : {}
+}
+
 export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps = [], onClose }: EvidenceWorkspaceProps) {
   const [activeTab, setActiveTab] = useState<EvidenceWorkspaceTab>('Trace')
   const [reviewDecision, setReviewDecision] = useState<'NEEDS_VERIFICATION' | 'APPROVED' | 'EDITING' | 'DEFERRED' | 'REJECTED'>('NEEDS_VERIFICATION')
   const [paused, setPaused] = useState(false)
   const [rerunRequest, setRerunRequest] = useState<string | null>(null)
   const evidence = message?.evidenceCase
+  const gapReview = asRecord(evidence?.gap_review)
+  const proposedCorrection = asRecord(evidence?.proposed_correction ?? gapReview.proposed_correction)
+  const correctionLineage = asRecord(evidence?.correction_lineage ?? gapReview.correction_lineage)
+  const judgeRouting = asRecord(gapReview.judge_routing)
+  const personaReview = asRecord(gapReview.persona_review)
+  const missingEvidence = Array.isArray(gapReview.missing_evidence) ? gapReview.missing_evidence
+    : Array.isArray(personaReview.findings) ? personaReview.findings
+    : []
+  const gapPersonas = [
+    { id: 'brandon', name: 'Brandon Bailey', focus: 'Policy sufficiency', detail: missingEvidence[0] ?? 'No policy evidence gap reported yet.' },
+    { id: 'margaret', name: 'Margaret Chen', focus: 'Technical enforcement', detail: missingEvidence[1] ?? missingEvidence[0] ?? 'No technical enforcement gap reported yet.' },
+    { id: 'jennifer', name: 'Jennifer Park', focus: 'Control mapping', detail: missingEvidence[2] ?? missingEvidence[0] ?? 'No relationship mapping gap reported yet.' },
+    { id: 'judge', name: 'CAE Gap Judge', focus: 'Next route', detail: judgeRouting.reason ?? gapReview.decision ?? 'No judge route emitted yet.' },
+  ]
   const gates = evidence?.gate_trace ?? message?.verdict?.gates ?? []
   const glossary = evidence?.glossary ?? []
   const controlIds = evidence?.control_ids ?? []
@@ -105,6 +124,53 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
               <div style={S.muted}>{gate.detail}</div>
             </div>
           )) : <EmptyState text="Trace will populate as deterministic gates complete." />}
+        </div>
+      )
+    }
+
+    if (activeTab === 'Gap') {
+      return (
+        <div style={S.stack}>
+          <div style={S.sectionTitle}>Advisory gap diagnosis</div>
+          <div style={S.item}>
+            <div style={S.itemHead}>
+              <span style={S.rowTitle}>Trust boundary</span>
+              <span style={{ ...S.status, color: EMBRY.amber }}>{gapReview.advisory_only === false ? 'REVIEW' : 'ADVISORY'}</span>
+            </div>
+            <div style={S.muted}>
+              Persona output is diagnostic only. A proposed correction must pass a new source-grounded evidence-case run before review.
+            </div>
+          </div>
+          <div style={S.personaGrid}>
+            {gapPersonas.map(persona => (
+              <div key={persona.id} data-qid={`sparta:evidence-workspace:persona-${persona.id}`} data-qs-action="INSPECT_CAE_GAP_PERSONA" title={`Inspect ${persona.name} advisory gap review`} style={S.personaCard}>
+                <div style={S.itemHead}>
+                  <span style={S.rowTitle}>{persona.name}</span>
+                  <span style={S.status}>{persona.focus}</span>
+                </div>
+                <div style={S.muted}>{String(persona.detail)}</div>
+              </div>
+            ))}
+          </div>
+          <div style={S.item}>
+            <div style={S.itemHead}>
+              <span style={S.rowTitle}>Proposed correction</span>
+              <span style={S.status}>{String(proposedCorrection.status ?? 'not proposed')}</span>
+            </div>
+            <div style={S.body}>{String(proposedCorrection.corrected_question ?? proposedCorrection.question ?? 'No corrected question has been suggested.')}</div>
+            <div style={S.muted}>Requires new evidence case: {String(proposedCorrection.requires_new_evidence_case ?? true)}</div>
+          </div>
+          <div style={S.item}>
+            <div style={S.itemHead}>
+              <span style={S.rowTitle}>Correction lineage</span>
+              <span style={S.status}>{String(evidence?.human_review_state ?? gapReview.human_review_state ?? 'queued')}</span>
+            </div>
+            <pre style={S.pre}>{JSON.stringify({
+              evidence_case_version: evidence?.evidence_case_version ?? gapReview.evidence_case_version ?? null,
+              correction_lineage: correctionLineage,
+              gap_review_status: evidence?.gap_review_status ?? gapReview.gap_review_status ?? null,
+            }, null, 2)}</pre>
+          </div>
         </div>
       )
     }
@@ -302,7 +368,7 @@ const S: Record<string, React.CSSProperties> = {
     borderRadius: 6,
   },
   verdict: { fontSize: 12, fontWeight: 900 },
-  tabs: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', borderBottom: `1px solid ${EMBRY.border}` },
+  tabs: { display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', borderBottom: `1px solid ${EMBRY.border}` },
   tab: {
     minHeight: 44,
     border: 0,
@@ -356,6 +422,8 @@ const S: Record<string, React.CSSProperties> = {
   timelineRow: { display: 'grid', gridTemplateColumns: '12px 1fr', gap: 8, alignItems: 'start' },
   dot: { width: 8, height: 8, borderRadius: 8, marginTop: 4 },
   item: { border: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgCard, borderRadius: 6, padding: 10 },
+  personaGrid: { display: 'grid', gridTemplateColumns: '1fr', gap: 8 },
+  personaCard: { border: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgCard, borderRadius: 6, padding: 10 },
   itemHead: { display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center', marginBottom: 4 },
   rowTitle: { color: EMBRY.white, fontSize: 12, fontWeight: 800 },
   status: { color: EMBRY.dim, fontSize: 10, fontWeight: 900, textTransform: 'uppercase' },

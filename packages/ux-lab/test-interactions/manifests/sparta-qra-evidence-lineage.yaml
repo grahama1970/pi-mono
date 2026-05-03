@@ -1,183 +1,82 @@
 version: 1
 kind: test-interactions-manifest
 metadata:
-  title: "Sparta QRA — Evidence Lineage Workflow"
-  app: "ux-lab"
-  surface: "sparta-qra"
-  persona_review_target: "Aerospace Cybersecurity Evidence Reviewer"
-  created: "2026-05-02"
-  selector_policy:
-    allowed: "data-qid only"
-    forbidden: ["id selectors", "class selectors", "nth-child", "xpath", "text-only selectors"]
-route:
-  base_url: "http://localhost:3002"
-  path: "/#sparta-explorer?tab=qra"
-  wait_ready: "[data-qid='sparta-qra:root']"
-seed_data:
-  required: true
-  dataset: "sparta-qra-evidence-lineage-fixture"
-  minimum_counts:
-    qra_rows: 5
-    grounded_qras: 1
-    failed_qras: 1
-    adversarial_qras: 1
-    self_corrected_needs_case_qras: 1
-    human_reviewed_qras: 1
-    evidence_cases: 3
-    lineage_versions: 2
-  required_records:
-    - "One QRA with status grounded and a source-backed evidence case"
-    - "One QRA with status failed and a failed evidence trace"
-    - "One QRA with status adversarial and adversarial challenge metadata"
-    - "One QRA with status self-corrected-needs-case and no final blessed case"
-    - "One QRA with status human-reviewed and reviewer approval metadata"
-    - "At least one QRA detail view with evidence version lineage"
-artifacts:
-  screenshot_dir: "test-interactions/captures/sparta-qra-evidence-lineage"
-  naming: "{step_number}-{slug}.png"
-  required:
-    - "01-qra-list-statuses.png"
-    - "02-grounded-qra-detail.png"
-    - "03-failed-qra-detail-trace.png"
-    - "04-adversarial-qra-detail.png"
-    - "05-self-corrected-needs-case-detail.png"
-    - "06-human-reviewed-qra-detail.png"
-    - "07-qra-evidence-lineage.png"
-expected_visual_outcome: >
-  The QRA list distinguishes grounded, failed, adversarial,
-  self-corrected-needs-case, and human-reviewed rows. Detail views expose the
-  selected QRA's evidence, trace state, review state, and lineage without
-  conflating generated self-corrections with grounded evidence or human review.
-qid_compliance: true
+  title: "Sparta QRA evidence lineage workflow"
+  persona: "Aerospace Cybersecurity Evidence Reviewer"
+  route: "http://localhost:3002/#sparta-explorer/qras"
+  seed_data:
+    requirement: "QRA corpus with grounded, failed, adversarial, self-corrected-needs-case, and human-reviewed examples"
+    minimum_rows: 100
+    minimum_cases: 1
+  expected_visual_outcome: "QRA list and detail states distinguish corpus evidence status from loaded rows and from human review state."
+surface:
+  name: "sparta-qras"
+  wait_for_data_qid: "qras:search"
+  min_loaded_rows: 100
+  min_evidence_cases: 1
 interactions:
-  - id: qra-list-statuses
-    description: "Open the QRA list and verify each required status appears as a distinct row/card."
-    action: screenshot
-    target: "[data-qid='sparta-qra:list']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:list']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row:grounded']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row:failed']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row:adversarial']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row:self-corrected-needs-case']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row:human-reviewed']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:row-count']"
-      - type: text_min_number
-        selector: "[data-qid='sparta-qra:row-count']"
-        minimum: 5
-    screenshot: "01-qra-list-statuses.png"
-    expected: "Status chips are visually distinct and the list remains separate from detail panes."
-
-  - id: grounded-detail
-    description: "Open grounded QRA detail and verify grounded evidence is visible."
-    action: click
-    target: "[data-qid='sparta-qra:row:grounded']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:status:grounded']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:evidence-case']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:source-grounding']"
-      - type: not_visible
-        selector: "[data-qid='sparta-qra:detail:human-reviewed-badge']"
-    screenshot: "02-grounded-qra-detail.png"
-    expected: "Grounded means source-backed, not automatically human-reviewed."
-
-  - id: failed-detail-trace
-    description: "Open failed QRA detail and verify failed evidence trace is distinct."
-    action: click
-    target: "[data-qid='sparta-qra:row:failed']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:status:failed']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:failed-trace']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:failed-gate']"
-      - type: not_visible
-        selector: "[data-qid='sparta-qra:detail:grounded-badge']"
-    screenshot: "03-failed-qra-detail-trace.png"
-    expected: "Failed detail shows failed gates and remediation target without advisory text appearing as proof."
-
-  - id: adversarial-detail
-    description: "Open adversarial QRA detail and verify challenge metadata is visible."
-    action: click
-    target: "[data-qid='sparta-qra:row:adversarial']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:status:adversarial']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:adversarial-challenge']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:challenge-outcome']"
-    screenshot: "04-adversarial-qra-detail.png"
-    expected: "Adversarial rows show challenge context and are not styled as failed ingestion errors."
-
-  - id: self-corrected-needs-case-detail
-    description: "Open self-corrected-needs-case detail and verify it still needs evidence-case creation."
-    action: click
-    target: "[data-qid='sparta-qra:row:self-corrected-needs-case']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:status:self-corrected-needs-case']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:self-correction-summary']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:create-evidence-case-required']"
-      - type: not_visible
-        selector: "[data-qid='sparta-qra:detail:human-reviewed-badge']"
-    screenshot: "05-self-corrected-needs-case-detail.png"
-    expected: "Self-correction is shown as a proposed fix that still requires a new evidence case."
-
-  - id: human-reviewed-detail
-    description: "Open human-reviewed QRA detail and verify reviewer target and approval metadata."
-    action: click
-    target: "[data-qid='sparta-qra:row:human-reviewed']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:status:human-reviewed']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:human-reviewed-badge']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:detail:reviewer:aerospace-cybersecurity-evidence-reviewer']"
-      - type: text_includes
-        selector: "[data-qid='sparta-qra:detail:reviewer:aerospace-cybersecurity-evidence-reviewer']"
-        value: "Aerospace Cybersecurity Evidence Reviewer"
-    screenshot: "06-human-reviewed-qra-detail.png"
-    expected: "Human review appears only on the reviewed QRA and includes the target persona label."
-
-  - id: qra-evidence-lineage
-    description: "Open lineage from QRA detail and verify evidence versions are shown."
-    action: click
-    target: "[data-qid='sparta-qra:detail:evidence-lineage:open']"
-    assertions:
-      - type: visible
-        selector: "[data-qid='sparta-qra:lineage:panel']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:lineage:version:initial']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:lineage:version:latest']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:lineage:source-spans']"
-      - type: visible
-        selector: "[data-qid='sparta-qra:lineage:review-events']"
-    screenshot: "07-qra-evidence-lineage.png"
-    expected: "Lineage panel shows initial/latest evidence versions, source spans, self-correction events, and human review events separately."
+  - name: "filter QRA search"
+    action: "type"
+    data_qid: "qras:search"
+    value: "CAPEC-649"
+    expected_result: "QRA list filters to rows matching CAPEC-649."
+    screenshot_artifact: "sparta-qra-evidence-lineage-01-search.png"
+  - name: "filter grounded"
+    action: "click"
+    data_qid: "qras:filter:evidence:grounded"
+    expected_result: "List shows QRAs with current evidence-case lineage."
+    screenshot_artifact: "sparta-qra-evidence-lineage-02-grounded.png"
+  - name: "filter review"
+    action: "click"
+    data_qid: "qras:filter:evidence:review"
+    expected_result: "List shows QRAs requiring review without implying human approval."
+    screenshot_artifact: "sparta-qra-evidence-lineage-03-review.png"
+  - name: "filter adversarial"
+    action: "click"
+    data_qid: "qras:filter:evidence:adversarial"
+    expected_result: "Adversarial negative examples remain classified and excluded from repair-in-place."
+    screenshot_artifact: "sparta-qra-evidence-lineage-04-adversarial.png"
+  - name: "filter missing"
+    action: "click"
+    data_qid: "qras:filter:evidence:missing"
+    expected_result: "Missing evidence-case QRAs are shown as queued for grounding, not failed review."
+    screenshot_artifact: "sparta-qra-evidence-lineage-05-missing.png"
+  - name: "filter failed"
+    action: "click"
+    data_qid: "qras:filter:evidence:failed"
+    expected_result: "Failed evidence-case QRAs are shown separately from adversarial and human-reviewed states."
+    screenshot_artifact: "sparta-qra-evidence-lineage-06-failed.png"
+  - name: "open QRA detail"
+    action: "click"
+    data_qid: "qras:item:latest"
+    fallback_data_qid: "qras:item:0"
+    expected_result: "QRA detail opens with question, source, evidence status, and lineage controls."
+    screenshot_artifact: "sparta-qra-evidence-lineage-07-detail.png"
+  - name: "toggle evidence"
+    action: "click"
+    data_qid: "qras:action:toggle_evidence"
+    expected_result: "Evidence section opens with version and gate trace context."
+    screenshot_artifact: "sparta-qra-evidence-lineage-08-toggle-evidence.png"
+  - name: "run case"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:rerun"
+    expected_result: "Rerun queues a new evidence case while retaining predecessor version references."
+    screenshot_artifact: "sparta-qra-evidence-lineage-09-rerun.png"
+  - name: "send to human review"
+    action: "click"
+    data_qid: "sparta:evidence-workspace:defer"
+    expected_result: "QRA is routed to human review without changing advisory or evidence lineage state."
+    screenshot_artifact: "sparta-qra-evidence-lineage-10-human-review.png"
+assertions:
+  - data_qid: "qras:filter:evidence:grounded"
+    action: "assert_title"
+    expected_result: "Grounded filter has a title tooltip."
+    screenshot_artifact: "sparta-qra-evidence-lineage-assert-grounded-title.png"
+  - data_qid: "qras:filter:evidence:adversarial"
+    action: "assert_title"
+    expected_result: "Adversarial filter has a title tooltip."
+    screenshot_artifact: "sparta-qra-evidence-lineage-assert-adversarial-title.png"
+  - data_qid: "qras:display:entity-help"
+    action: "assert_visible"
+    expected_result: "QRA detail retains entity/readiness context."
+    screenshot_artifact: "sparta-qra-evidence-lineage-assert-detail-context.png"

@@ -7798,7 +7798,17 @@ app.post('/api/evidence-case/run', async (req, res) => {
       enable_llm: false,
     })
 
-    return res.json(normalizeEvidenceCaseWorkflowResult(String(question), controlId, result))
+    const payload = normalizeEvidenceCaseWorkflowResult(String(question), controlId, result)
+    if (evidenceCaseNeedsGapReview(payload)) {
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+    }
+    return res.json(payload)
   } catch (e: any) {
     console.error('[evidence-case/run] Daemon call failed:', e.message)
     try {
@@ -7808,7 +7818,7 @@ app.post('/api/evidence-case/run', async (req, res) => {
         collections: ['sparta_qra', 'sparta_controls'],
       })
       const items = recall.items || []
-      res.json({
+      const payload: JsonRecord = {
         verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
         gate_trace: [
           { gate: 'recall_fallback', passed: items.length > 0, detail: `${items.length} items via /recall` },
@@ -7827,7 +7837,15 @@ app.post('/api/evidence-case/run', async (req, res) => {
           recall_count: items.length,
         },
         answer: items.length > 0 ? `Found ${items.length} items. Full evidence case requires daemon.` : 'No results found.',
-      })
+      }
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+      res.json(payload)
     } catch {
       res.status(502).json({ error: 'Evidence case daemon and recall both unavailable' })
     }
@@ -7872,14 +7890,33 @@ app.post('/api/evidence-case/stream', async (req, res) => {
     const ambiguousReferents = detectAmbiguousQraReferents(question)
     if (ambiguousReferents.length > 0) {
       const payload = evidenceCaseAmbiguousPayload(String(question), ambiguousReferents)
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
       run.status = 'completed'
       run.completed_at = new Date().toISOString()
       run.verdict = payload.verdict as JsonRecord
       run.gates = payload.gate_trace as JsonRecord[]
       run.diagnostics = payload.diagnostics as JsonRecord
+      run.gap_review = gapReview
+      run.proposed_correction = gapReview.proposed_correction as JsonRecord
+      run.correction_lineage = gapReview.correction_lineage as JsonRecord
+      run.gap_review_status = 'completed'
+      run.human_review_state = 'queued'
       rememberEvidenceCaseRun(run)
       emit('gate', { gate: (payload.gate_trace as JsonRecord[])[0] })
       emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
+      emit('gap_review_started', { gap_review_candidate: true, advisory_only: true })
+      emit('persona_review', { persona: 'Brandon Bailey', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Margaret Chen', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Jennifer Park', review: gapReview.persona_review })
+      emit('judge_routing', { judge_routing: gapReview.judge_routing })
+      emit('correction_suggested', { proposed_correction: gapReview.proposed_correction, correction_lineage: gapReview.correction_lineage })
+      emit('human_intervention_requested', { human_review_state: gapReview.human_review_state })
       emit('result', { result: payload })
       emit('run_completed', { run: { ...run } })
       return res.end()
@@ -7895,6 +7932,22 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       enable_llm: false,
     }, 120_000)
     const payload = normalizeEvidenceCaseWorkflowResult(String(question), controlId, daemonResult)
+    if (evidenceCaseNeedsGapReview(payload)) {
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+      emit('gap_review_started', { gap_review_candidate: true, advisory_only: true })
+      emit('persona_review', { persona: 'Brandon Bailey', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Margaret Chen', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Jennifer Park', review: gapReview.persona_review })
+      emit('judge_routing', { judge_routing: gapReview.judge_routing })
+      emit('correction_suggested', { proposed_correction: gapReview.proposed_correction, correction_lineage: gapReview.correction_lineage })
+      emit('human_intervention_requested', { human_review_state: gapReview.human_review_state })
+    }
     const gates = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
     for (const gate of gates) emit('gate', { gate })
     emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
@@ -7905,6 +7958,11 @@ app.post('/api/evidence-case/stream', async (req, res) => {
     run.verdict = payload.verdict as JsonRecord
     run.gates = gates
     run.diagnostics = payload.diagnostics as JsonRecord
+    run.gap_review = payload.gap_review as JsonRecord | undefined
+    run.proposed_correction = payload.proposed_correction as JsonRecord | undefined
+    run.correction_lineage = payload.correction_lineage as JsonRecord | undefined
+    run.gap_review_status = payload.gap_review_status as EvidenceCaseRunHistoryEntry['gap_review_status']
+    run.human_review_state = payload.human_review_state as EvidenceCaseHumanReviewState | undefined
     rememberEvidenceCaseRun(run)
     emit('run_completed', { run: { ...run } })
     return res.end()

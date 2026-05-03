@@ -32,7 +32,7 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json"
     },
     "memory_qa": {
-      "bytes": 7442,
+      "bytes": 10654,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json"
     },
@@ -58,12 +58,6 @@
       "detail": "PDF outline has 358 entries; 299 were found as non-section types and 1 were missing. Current section semantics are not clean enough for final Memory/Qdrant section QA.",
       "next_action": "Repair NIST section typing or promote TOC-backed anchors, then regenerate evidence, Memory/Qdrant QA, and the status report.",
       "severity": "high"
-    },
-    {
-      "area": "Memory / Qdrant Final QA",
-      "detail": "Memory/Qdrant QA artifact exists but has not passed: text recall 5/8; visual pages 0/492; TOC section crops 0/357; required table/figure/image elements 0/8.",
-      "next_action": "Finish required TOC section crop visual vectors and repair failed recall checks before claiming the PDF is fully verified.",
-      "severity": "high"
     }
   ],
   "current_interpretation": "The run is usable for final QA if the parity gate is passed and the human triage deck is empty. Do not claim core extractor repair unless core_pdf_oxide_changed is true. Agent-resolved findings are engineering backlog, not human ambiguity.",
@@ -78,7 +72,7 @@
     "preset_improved_pdf_oxide_behavior": true,
     "scope": "document_family_preset_and_second_pass_orchestration"
   },
-  "generated_at": "2026-05-01T20:26:25.007970+00:00",
+  "generated_at": "2026-05-02T14:02:12.651732+00:00",
   "memory_qa": {
     "errors": {
       "memory_upsert": null,
@@ -96,22 +90,22 @@
         "passed": true
       },
       {
-        "detail": "Run with --apply-memory to persist evidence metadata.",
+        "detail": "ArangoDB memory upsert applied via canonical /upsert.",
         "name": "memory_upsert",
-        "passed": false
+        "passed": true
       },
       {
-        "detail": "pages 0/492, sections 0/357, elements 27628/27628 have text vectors; 5/8 element recall checks passed.",
+        "detail": "pages 492/492, sections 357/357, elements 27628/27628 have text vectors; 8/8 element recall checks passed.",
         "name": "text_qdrant_recall",
-        "passed": false
+        "passed": true
       },
       {
-        "detail": "pages 0/492, sections 0/357, required table/figure/image elements 0/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
+        "detail": "pages 492/492, sections 357/357, required table/figure/image elements 8/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
         "name": "visual_qdrant_recall",
-        "passed": false
+        "passed": true
       }
     ],
-    "generated_at": "2026-05-01T20:24:04.116748+00:00",
+    "generated_at": "2026-05-02T14:01:40.785566+00:00",
     "implemented": true,
     "notes": [
       "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
@@ -119,7 +113,7 @@
       "The v1 final visual gate requires page images, section crops, and table/figure/image element crops to have matching Qdrant visual vectors.",
       "Paragraph, list, header, footer, and other text-element crop vectors are optional background/on-demand work."
     ],
-    "passed": false,
+    "passed": true,
     "policy": "Final agent QA must store extracted page, section, and element metadata/crops in ArangoDB memory, index text vectors for every extracted element, index visual vectors for pages, sections, tables, and figures/images, and verify stratified recall against original page/crop evidence. Paragraph/list/header/footer crop image vectors are optional background/on-demand work.",
     "run_id": "full-memory-qa-toc-20260501T200945Z",
     "sample_checks": [
@@ -130,7 +124,7 @@
         "returned_keys": [
           "elt:fc63bcd61715d018:12:ecf9df308750838f",
           "elt:fc63bcd61715d018:12:ecf9df308750838f",
-          "section:12:5878e8265fe73207",
+          "elt:fc63bcd61715d018:12:ecf9df308750838f",
           "section:12:5878e8265fe73207",
           "section:12:5878e8265fe73207"
         ],
@@ -144,9 +138,9 @@
         "returned_keys": [
           "elt:fc63bcd61715d018:4:b831ba518164b4a0",
           "elt:fc63bcd61715d018:4:b831ba518164b4a0",
+          "elt:fc63bcd61715d018:4:b831ba518164b4a0",
           "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
-          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
-          "elt:fc63bcd61715d018:452:3f9b69a0dab5c12d"
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926"
         ],
         "status": "passed",
         "text_hash": "58fabecde1256e1b068df4e4aaaf1583b33889022ce7066907fd2779c2ee4899"
@@ -156,13 +150,13 @@
         "element_type": "paragraph",
         "page": 1,
         "returned_keys": [
-          "elt:fc63bcd61715d018:130:f159f507aa96e993",
-          "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
           "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
           "elt:fc63bcd61715d018:130:f159f507aa96e993",
+          "elt:fc63bcd61715d018:130:f159f507aa96e993",
+          "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
           "elt:fc63bcd61715d018:258:61f035d2000668bf"
         ],
-        "status": "failed",
+        "status": "passed",
         "text_hash": "163ef8ec9556fcc2b01cf4ce5c60d76ad07f8ff87f8258b1ac1c0b4c739222fb"
       },
       {
@@ -174,9 +168,9 @@
           "elt:fc63bcd61715d018:410:2f85c930aca2d616",
           "elt:fc63bcd61715d018:408:a4deb088e3986ef9",
           "elt:fc63bcd61715d018:408:92f20a1e7eb9d73c",
-          "elt:fc63bcd61715d018:409:a55454ff873ee8f8"
+          "elt:fc63bcd61715d018:1:f404ae653edb2493"
         ],
-        "status": "failed",
+        "status": "passed",
         "text_hash": "109710db4e714e9ceb644d041218df95b9437788fb27f938d8c8c2ca8de1963b"
       },
       {
@@ -186,9 +180,9 @@
         "returned_keys": [
           "elt:fc63bcd61715d018:2:06e296a9a6a54319",
           "section:2:06e296a9a6a54319",
-          "elt:fc63bcd61715d018:27:7e392512bb5b4b91",
-          "elt:fc63bcd61715d018:21:ef8121fd429686ef",
-          "elt:fc63bcd61715d018:26:5b3362515a70faf3"
+          "elt:fc63bcd61715d018:20:0da21163600473fd",
+          "elt:fc63bcd61715d018:19:2a6db81d809e6d2c",
+          "elt:fc63bcd61715d018:19:387fc3c201b5aa5d"
         ],
         "status": "passed",
         "text_hash": "14eb048e06511f2b275196c1ce6d5667779a85441386177bab59daee3a0d707a"
@@ -202,7 +196,7 @@
           "elt:fc63bcd61715d018:3:412657beb6164d87",
           "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
           "elt:fc63bcd61715d018:5:85b058849a407bef",
-          "elt:fc63bcd61715d018:414:1fb89d0740182d0f"
+          "elt:fc63bcd61715d018:411:7fecdc52e4e2c8fb"
         ],
         "status": "passed",
         "text_hash": "0df93c9d75e13a9e94874c7f4268cbe7a86e8c853603bb339f481f0c697246f8"
@@ -213,27 +207,27 @@
         "page": 2,
         "returned_keys": [
           "elt:fc63bcd61715d018:2:b3830618619ac456",
+          "elt:fc63bcd61715d018:2:b3830618619ac456",
           "308496622638",
           "section:2:06e296a9a6a54319",
-          "section:2:06e296a9a6a54319",
-          "section:453:ee88a66b19b68cd1"
+          "section:2:06e296a9a6a54319"
         ],
         "status": "passed",
         "text_hash": "cb6c7c3a793c59c05b883ddee0ac0ce71fd0b97ef49788b0f75ae5dab8732d9f"
       },
       {
-        "element_key": "elt:fc63bcd61715d018:3:b0b5a7de21e34168",
-        "element_type": "running_header",
+        "element_key": "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
+        "element_type": "paragraph",
         "page": 3,
         "returned_keys": [
-          "elt:fc63bcd61715d018:87:10d3e5057063e5a2",
-          "elt:fc63bcd61715d018:391:a66a4db6ac538529",
-          "elt:fc63bcd61715d018:206:fb89bf242c31590a",
-          "elt:fc63bcd61715d018:415:b28f2801065f7cbf",
-          "elt:fc63bcd61715d018:6:52d45aba44dd1593"
+          "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
+          "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "uk__3323__8"
         ],
-        "status": "failed",
-        "text_hash": "8293a12b49b18f723ffe5edd7822dc95a601d37f5386e84e8bccc0cade2fd6cf"
+        "status": "passed",
+        "text_hash": "2da474b78d68ad49549304b114578f444f515aab9be37c56564a36edf8856274"
       }
     ],
     "schema_version": "pdf_lab_memory_qdrant_qa_report.v1",
@@ -244,26 +238,26 @@
       "evidence_sections": 357,
       "extraction_elements": 27628,
       "full_crop_coverage": true,
-      "memory_upsert_applied": false,
-      "memory_upserted_element_images": 0,
-      "memory_upserted_elements": 0,
-      "memory_upserted_page_images": 0,
-      "memory_upserted_pages": 0,
-      "memory_upserted_section_images": 0,
-      "memory_upserted_sections": 0,
+      "memory_upsert_applied": true,
+      "memory_upserted_element_images": 27628,
+      "memory_upserted_elements": 27628,
+      "memory_upserted_page_images": 492,
+      "memory_upserted_pages": 492,
+      "memory_upserted_section_images": 357,
+      "memory_upserted_sections": 357,
       "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
       "sample_checks": 8,
-      "sample_checks_passed": 5,
+      "sample_checks_passed": 8,
       "text_indexed_elements": 27628,
-      "text_indexed_pages": 0,
-      "text_indexed_sections": 0,
-      "text_indexed_total": 27628,
-      "visual_indexed_elements": 0,
+      "text_indexed_pages": 492,
+      "text_indexed_sections": 357,
+      "text_indexed_total": 28477,
+      "visual_indexed_elements": 8,
       "visual_indexed_optional_elements": 0,
-      "visual_indexed_pages": 0,
-      "visual_indexed_required_elements": 0,
-      "visual_indexed_sections": 0,
-      "visual_indexed_total": 0,
+      "visual_indexed_pages": 492,
+      "visual_indexed_required_elements": 8,
+      "visual_indexed_sections": 357,
+      "visual_indexed_total": 857,
       "visual_optional_elements": 27620,
       "visual_required_element_types": [
         "figure",
@@ -272,7 +266,140 @@
       ],
       "visual_required_elements": 8
     },
-    "upsert_results": {}
+    "upsert_results": {
+      "pdf_element_has_image": {
+        "batches": 277,
+        "collection": "pdf_element_has_image",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_element_has_image",
+          "errors": [],
+          "inserted": 0,
+          "total": 28,
+          "updated": 28
+        }
+      },
+      "pdf_element_images": {
+        "batches": 277,
+        "collection": "pdf_element_images",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_element_images",
+          "errors": [],
+          "inserted": 0,
+          "total": 28,
+          "updated": 28
+        }
+      },
+      "pdf_elements": {
+        "batches": 277,
+        "collection": "pdf_elements",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_elements",
+          "errors": [],
+          "inserted": 0,
+          "total": 28,
+          "updated": 28
+        }
+      },
+      "pdf_extraction_run_has_artifact": {
+        "batches": 285,
+        "collection": "pdf_extraction_run_has_artifact",
+        "document_count": 28477,
+        "last_response": {
+          "collection": "pdf_extraction_run_has_artifact",
+          "errors": [],
+          "inserted": 0,
+          "total": 77,
+          "updated": 77
+        }
+      },
+      "pdf_extraction_runs": {
+        "batches": 1,
+        "collection": "pdf_extraction_runs",
+        "document_count": 1,
+        "last_response": {
+          "collection": "pdf_extraction_runs",
+          "errors": [],
+          "inserted": 0,
+          "total": 1,
+          "updated": 1
+        }
+      },
+      "pdf_page_has_image": {
+        "batches": 5,
+        "collection": "pdf_page_has_image",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_page_has_image",
+          "errors": [],
+          "inserted": 0,
+          "total": 92,
+          "updated": 92
+        }
+      },
+      "pdf_page_images": {
+        "batches": 5,
+        "collection": "pdf_page_images",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_page_images",
+          "errors": [],
+          "inserted": 0,
+          "total": 92,
+          "updated": 92
+        }
+      },
+      "pdf_pages": {
+        "batches": 5,
+        "collection": "pdf_pages",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_pages",
+          "errors": [],
+          "inserted": 0,
+          "total": 92,
+          "updated": 92
+        }
+      },
+      "pdf_section_has_image": {
+        "batches": 4,
+        "collection": "pdf_section_has_image",
+        "document_count": 357,
+        "last_response": {
+          "collection": "pdf_section_has_image",
+          "errors": [],
+          "inserted": 0,
+          "total": 57,
+          "updated": 57
+        }
+      },
+      "pdf_section_images": {
+        "batches": 4,
+        "collection": "pdf_section_images",
+        "document_count": 357,
+        "last_response": {
+          "collection": "pdf_section_images",
+          "errors": [],
+          "inserted": 0,
+          "total": 57,
+          "updated": 57
+        }
+      },
+      "pdf_sections": {
+        "batches": 4,
+        "collection": "pdf_sections",
+        "document_count": 357,
+        "last_response": {
+          "collection": "pdf_sections",
+          "errors": [],
+          "inserted": 0,
+          "total": 57,
+          "updated": 57
+        }
+      }
+    }
   },
   "schema_version": "pdf_lab_status_report.v1",
   "summary": {
@@ -296,19 +423,19 @@
     "matched_expected_elements": 14014,
     "memory_evidence_sections": 357,
     "memory_qa_implemented": true,
-    "memory_qa_passed": false,
+    "memory_qa_passed": true,
     "memory_sample_checks": 8,
-    "memory_sample_checks_passed": 5,
+    "memory_sample_checks_passed": 8,
     "memory_text_indexed_elements": 27628,
-    "memory_text_indexed_pages": 0,
-    "memory_text_indexed_sections": 0,
-    "memory_text_indexed_total": 27628,
-    "memory_visual_indexed_elements": 0,
+    "memory_text_indexed_pages": 492,
+    "memory_text_indexed_sections": 357,
+    "memory_text_indexed_total": 28477,
+    "memory_visual_indexed_elements": 8,
     "memory_visual_indexed_optional_elements": 0,
-    "memory_visual_indexed_pages": 0,
-    "memory_visual_indexed_required_elements": 0,
-    "memory_visual_indexed_sections": 0,
-    "memory_visual_indexed_total": 0,
+    "memory_visual_indexed_pages": 492,
+    "memory_visual_indexed_required_elements": 8,
+    "memory_visual_indexed_sections": 357,
+    "memory_visual_indexed_total": 857,
     "memory_visual_optional_elements": 27620,
     "memory_visual_required_element_types": [
       "figure",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-02T05:19:51.234Z",
+  "generated_at": "2026-05-03T04:58:20.688Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-02T05:19:50Z",
+    "generated_at": "2026-05-03T04:58:20Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -72,2067 +72,224 @@
       "framework": "NVD/CVE",
       "controls": 4830,
       "missing_descriptions": 0,
-      "missing_embeddings": 4830,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "NVD"
       ],
-      "defects": [
-        {
-          "control_id": "CVE-1999-0073",
-          "title": "CVE-1999-0073",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 170
-        },
-        {
-          "control_id": "CVE-2006-3730",
-          "title": "CVE-2006-3730",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 282
-        },
-        {
-          "control_id": "CVE-2015-10105",
-          "title": "CVE-2015-10105",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 589
-        },
-        {
-          "control_id": "CVE-2015-6420",
-          "title": "CVE-2015-6420",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 606
-        },
-        {
-          "control_id": "CVE-2015-9354",
-          "title": "CVE-2015-9354",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 56
-        },
-        {
-          "control_id": "CVE-2017-5225",
-          "title": "CVE-2017-5225",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 151
-        },
-        {
-          "control_id": "CVE-2017-7921",
-          "title": "CVE-2017-7921",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 759
-        },
-        {
-          "control_id": "CVE-2018-12234",
-          "title": "CVE-2018-12234",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 259
-        },
-        {
-          "control_id": "CVE-2018-12650",
-          "title": "CVE-2018-12650",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 171
-        },
-        {
-          "control_id": "CVE-2018-12651",
-          "title": "CVE-2018-12651",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 275
-        },
-        {
-          "control_id": "CVE-2018-12652",
-          "title": "CVE-2018-12652",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 275
-        },
-        {
-          "control_id": "CVE-2018-12653",
-          "title": "CVE-2018-12653",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 194
-        }
-      ],
-      "quality_gaps": 4830,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "NVD/CVE",
         "gap_type": "control_quality",
-        "gap_count": 4830,
-        "defects": [
-          {
-            "control_id": "CVE-1999-0073",
-            "title": "CVE-1999-0073",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 170
-          },
-          {
-            "control_id": "CVE-2006-3730",
-            "title": "CVE-2006-3730",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 282
-          },
-          {
-            "control_id": "CVE-2015-10105",
-            "title": "CVE-2015-10105",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 589
-          },
-          {
-            "control_id": "CVE-2015-6420",
-            "title": "CVE-2015-6420",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 606
-          },
-          {
-            "control_id": "CVE-2015-9354",
-            "title": "CVE-2015-9354",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 56
-          },
-          {
-            "control_id": "CVE-2017-5225",
-            "title": "CVE-2017-5225",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 151
-          },
-          {
-            "control_id": "CVE-2017-7921",
-            "title": "CVE-2017-7921",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 759
-          },
-          {
-            "control_id": "CVE-2018-12234",
-            "title": "CVE-2018-12234",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 259
-          },
-          {
-            "control_id": "CVE-2018-12650",
-            "title": "CVE-2018-12650",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 171
-          },
-          {
-            "control_id": "CVE-2018-12651",
-            "title": "CVE-2018-12651",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 275
-          },
-          {
-            "control_id": "CVE-2018-12652",
-            "title": "CVE-2018-12652",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 275
-          },
-          {
-            "control_id": "CVE-2018-12653",
-            "title": "CVE-2018-12653",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 194
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "NIST",
       "controls": 1905,
       "missing_descriptions": 0,
-      "missing_embeddings": 1905,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "NIST",
         "nist"
       ],
-      "defects": [
-        {
-          "control_id": "AC-11.1",
-          "title": "Pattern-hiding Displays",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 107
-        },
-        {
-          "control_id": "AC-12.1",
-          "title": "User-initiated Logouts",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 155
-        },
-        {
-          "control_id": "AC-12.2",
-          "title": "Termination Message",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 112
-        },
-        {
-          "control_id": "AC-12.3",
-          "title": "Timeout Warning Message",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 111
-        },
-        {
-          "control_id": "AC-13",
-          "title": "Supervision and Review — Access Control",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 179
-        },
-        {
-          "control_id": "AC-14.1",
-          "title": "Necessary Uses",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 114
-        },
-        {
-          "control_id": "AC-15",
-          "title": "Automated Marking",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 36
-        },
-        {
-          "control_id": "AC-16.1",
-          "title": "Dynamic Attribute Association",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 232
-        },
-        {
-          "control_id": "AC-16.10",
-          "title": "Attribute Configuration by Authorized Individuals",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 172
-        },
-        {
-          "control_id": "AC-16.2",
-          "title": "Attribute Value Changes by Authorized Individuals",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 169
-        },
-        {
-          "control_id": "AC-16.3",
-          "title": "Maintenance of Attribute Associations by System",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 115
-        },
-        {
-          "control_id": "AC-16.4",
-          "title": "Association of Attributes by Authorized Individuals",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 184
-        }
-      ],
-      "quality_gaps": 1905,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "NIST",
         "gap_type": "control_quality",
-        "gap_count": 1905,
-        "defects": [
-          {
-            "control_id": "AC-11.1",
-            "title": "Pattern-hiding Displays",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 107
-          },
-          {
-            "control_id": "AC-12.1",
-            "title": "User-initiated Logouts",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 155
-          },
-          {
-            "control_id": "AC-12.2",
-            "title": "Termination Message",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 112
-          },
-          {
-            "control_id": "AC-12.3",
-            "title": "Timeout Warning Message",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 111
-          },
-          {
-            "control_id": "AC-13",
-            "title": "Supervision and Review — Access Control",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 179
-          },
-          {
-            "control_id": "AC-14.1",
-            "title": "Necessary Uses",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 114
-          },
-          {
-            "control_id": "AC-15",
-            "title": "Automated Marking",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 36
-          },
-          {
-            "control_id": "AC-16.1",
-            "title": "Dynamic Attribute Association",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 232
-          },
-          {
-            "control_id": "AC-16.10",
-            "title": "Attribute Configuration by Authorized Individuals",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 172
-          },
-          {
-            "control_id": "AC-16.2",
-            "title": "Attribute Value Changes by Authorized Individuals",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 169
-          },
-          {
-            "control_id": "AC-16.3",
-            "title": "Maintenance of Attribute Associations by System",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 115
-          },
-          {
-            "control_id": "AC-16.4",
-            "title": "Association of Attributes by Authorized Individuals",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 184
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "ATT&CK Enterprise",
       "controls": 1273,
       "missing_descriptions": 0,
-      "missing_embeddings": 1273,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "ATT_CK_Enterprise"
       ],
-      "defects": [
-        {
-          "control_id": "M1015",
-          "title": "Active Directory Configuration",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1016",
-          "title": "Vulnerability Scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1017",
-          "title": "User Training",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1781
-        },
-        {
-          "control_id": "M1018",
-          "title": "User Account Management",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1019",
-          "title": "Threat Intelligence Program",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1020",
-          "title": "SSL/TLS Inspection",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1532
-        },
-        {
-          "control_id": "M1021",
-          "title": "Restrict Web-Based Content",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1435
-        },
-        {
-          "control_id": "M1022",
-          "title": "Restrict File and Directory Permissions",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1875
-        },
-        {
-          "control_id": "M1024",
-          "title": "Restrict Registry Permissions",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1025",
-          "title": "Privileged Process Integrity",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1026",
-          "title": "Privileged Account Management",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
-        },
-        {
-          "control_id": "M1027",
-          "title": "Password Policies",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1940
-        }
-      ],
-      "quality_gaps": 1273,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ATT&CK Enterprise",
         "gap_type": "control_quality",
-        "gap_count": 1273,
-        "defects": [
-          {
-            "control_id": "M1015",
-            "title": "Active Directory Configuration",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1016",
-            "title": "Vulnerability Scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1017",
-            "title": "User Training",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1781
-          },
-          {
-            "control_id": "M1018",
-            "title": "User Account Management",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1019",
-            "title": "Threat Intelligence Program",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1020",
-            "title": "SSL/TLS Inspection",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1532
-          },
-          {
-            "control_id": "M1021",
-            "title": "Restrict Web-Based Content",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1435
-          },
-          {
-            "control_id": "M1022",
-            "title": "Restrict File and Directory Permissions",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1875
-          },
-          {
-            "control_id": "M1024",
-            "title": "Restrict Registry Permissions",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1025",
-            "title": "Privileged Process Integrity",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1026",
-            "title": "Privileged Account Management",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
-          },
-          {
-            "control_id": "M1027",
-            "title": "Password Policies",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1940
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "SPARTA",
       "controls": 1109,
       "missing_descriptions": 0,
-      "missing_embeddings": 1109,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "SPARTA",
         "sparta"
       ],
-      "defects": [
-        {
-          "control_id": "CM0000",
-          "title": "Countermeasure Not Identified",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 60
-        },
-        {
-          "control_id": "CM0001",
-          "title": "Protect Sensitive Information",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 1763
-        },
-        {
-          "control_id": "CM0002",
-          "title": "COMSEC",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 940
-        },
-        {
-          "control_id": "CM0003",
-          "title": "TEMPEST",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 317
-        },
-        {
-          "control_id": "CM0007",
-          "title": "Software Version Numbers",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 206
-        },
-        {
-          "control_id": "CM0008",
-          "title": "Security Testing Results",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 347
-        },
-        {
-          "control_id": "CM0010",
-          "title": "Update Software",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 489
-        },
-        {
-          "control_id": "CM0011",
-          "title": "Vulnerability Scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 630
-        },
-        {
-          "control_id": "CM0016",
-          "title": "CWE List",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 217
-        },
-        {
-          "control_id": "CM0017",
-          "title": "Coding Standard",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 558
-        },
-        {
-          "control_id": "CM0018",
-          "title": "Dynamic Testing",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 752
-        },
-        {
-          "control_id": "CM0019",
-          "title": "Static Analysis",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 168
-        }
-      ],
-      "quality_gaps": 1109,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "SPARTA",
         "gap_type": "control_quality",
-        "gap_count": 1109,
-        "defects": [
-          {
-            "control_id": "CM0000",
-            "title": "Countermeasure Not Identified",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 60
-          },
-          {
-            "control_id": "CM0001",
-            "title": "Protect Sensitive Information",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 1763
-          },
-          {
-            "control_id": "CM0002",
-            "title": "COMSEC",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 940
-          },
-          {
-            "control_id": "CM0003",
-            "title": "TEMPEST",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 317
-          },
-          {
-            "control_id": "CM0007",
-            "title": "Software Version Numbers",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 206
-          },
-          {
-            "control_id": "CM0008",
-            "title": "Security Testing Results",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 347
-          },
-          {
-            "control_id": "CM0010",
-            "title": "Update Software",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 489
-          },
-          {
-            "control_id": "CM0011",
-            "title": "Vulnerability Scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 630
-          },
-          {
-            "control_id": "CM0016",
-            "title": "CWE List",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 217
-          },
-          {
-            "control_id": "CM0017",
-            "title": "Coding Standard",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 558
-          },
-          {
-            "control_id": "CM0018",
-            "title": "Dynamic Testing",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 752
-          },
-          {
-            "control_id": "CM0019",
-            "title": "Static Analysis",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 168
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "CWE",
       "controls": 974,
       "missing_descriptions": 0,
-      "missing_embeddings": 974,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "CWE",
         "cwe"
       ],
-      "defects": [
-        {
-          "control_id": "CWE-1004",
-          "title": "Sensitive Cookie Without 'HttpOnly' Flag",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 110
-        },
-        {
-          "control_id": "CWE-1007",
-          "title": "Insufficient Visual Distinction of Homoglyphs Presented to User",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 286
-        },
-        {
-          "control_id": "CWE-102",
-          "title": "Struts: Duplicate Validation Forms",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 157
-        },
-        {
-          "control_id": "CWE-1021",
-          "title": "Improper Restriction of Rendered UI Layers or Frames",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 220
-        },
-        {
-          "control_id": "CWE-1022",
-          "title": "Use of Web Link to Untrusted Target with window.opener Access",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 251
-        },
-        {
-          "control_id": "CWE-1023",
-          "title": "Incomplete Comparison with Missing Factors",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 187
-        },
-        {
-          "control_id": "CWE-1024",
-          "title": "Comparison of Incompatible Types",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 195
-        },
-        {
-          "control_id": "CWE-1025",
-          "title": "Comparison Using Wrong Factors",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 196
-        },
-        {
-          "control_id": "CWE-103",
-          "title": "Struts: Incomplete validate() Method Definition",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 148
-        },
-        {
-          "control_id": "CWE-1037",
-          "title": "Processor Optimization Removal or Modification of Security-critical Code",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 185
-        },
-        {
-          "control_id": "CWE-1038",
-          "title": "Insecure Automated Optimizations",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 226
-        },
-        {
-          "control_id": "CWE-1039",
-          "title": "Inadequate Detection or Handling of Adversarial Input Perturbations in Automated Recognition Mechanism",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 321
-        }
-      ],
-      "quality_gaps": 974,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "CWE",
         "gap_type": "control_quality",
-        "gap_count": 974,
-        "defects": [
-          {
-            "control_id": "CWE-1004",
-            "title": "Sensitive Cookie Without 'HttpOnly' Flag",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 110
-          },
-          {
-            "control_id": "CWE-1007",
-            "title": "Insufficient Visual Distinction of Homoglyphs Presented to User",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 286
-          },
-          {
-            "control_id": "CWE-102",
-            "title": "Struts: Duplicate Validation Forms",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 157
-          },
-          {
-            "control_id": "CWE-1021",
-            "title": "Improper Restriction of Rendered UI Layers or Frames",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 220
-          },
-          {
-            "control_id": "CWE-1022",
-            "title": "Use of Web Link to Untrusted Target with window.opener Access",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 251
-          },
-          {
-            "control_id": "CWE-1023",
-            "title": "Incomplete Comparison with Missing Factors",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 187
-          },
-          {
-            "control_id": "CWE-1024",
-            "title": "Comparison of Incompatible Types",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 195
-          },
-          {
-            "control_id": "CWE-1025",
-            "title": "Comparison Using Wrong Factors",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 196
-          },
-          {
-            "control_id": "CWE-103",
-            "title": "Struts: Incomplete validate() Method Definition",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 148
-          },
-          {
-            "control_id": "CWE-1037",
-            "title": "Processor Optimization Removal or Modification of Security-critical Code",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 185
-          },
-          {
-            "control_id": "CWE-1038",
-            "title": "Insecure Automated Optimizations",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 226
-          },
-          {
-            "control_id": "CWE-1039",
-            "title": "Inadequate Detection or Handling of Adversarial Input Perturbations in Automated Recognition Mechanism",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 321
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "CAPEC",
       "controls": 615,
       "missing_descriptions": 0,
-      "missing_embeddings": 615,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "CAPEC"
       ],
-      "defects": [
-        {
-          "control_id": "CAPEC-1",
-          "title": "Accessing Functionality Not Properly Constrained by ACLs",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 769
-        },
-        {
-          "control_id": "CAPEC-10",
-          "title": "Buffer Overflow via Environment Variables",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 293
-        },
-        {
-          "control_id": "CAPEC-100",
-          "title": "Overflow Buffers",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 346
-        },
-        {
-          "control_id": "CAPEC-101",
-          "title": "Server Side Include (SSI) Injection",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 524
-        },
-        {
-          "control_id": "CAPEC-102",
-          "title": "Session Sidejacking",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 682
-        },
-        {
-          "control_id": "CAPEC-103",
-          "title": "Clickjacking",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 204
-        },
-        {
-          "control_id": "CAPEC-104",
-          "title": "Cross Zone Scripting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 328
-        },
-        {
-          "control_id": "CAPEC-105",
-          "title": "HTTP Request Splitting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 497
-        },
-        {
-          "control_id": "CAPEC-106",
-          "title": "DEPRECATED: XSS through Log Files",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 223
-        },
-        {
-          "control_id": "CAPEC-107",
-          "title": "Cross Site Tracing",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 251
-        },
-        {
-          "control_id": "CAPEC-108",
-          "title": "Command Line Execution through SQL Injection",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 629
-        },
-        {
-          "control_id": "CAPEC-109",
-          "title": "Object Relational Mapping Injection",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 808
-        }
-      ],
-      "quality_gaps": 615,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "CAPEC",
         "gap_type": "control_quality",
-        "gap_count": 615,
-        "defects": [
-          {
-            "control_id": "CAPEC-1",
-            "title": "Accessing Functionality Not Properly Constrained by ACLs",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 769
-          },
-          {
-            "control_id": "CAPEC-10",
-            "title": "Buffer Overflow via Environment Variables",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 293
-          },
-          {
-            "control_id": "CAPEC-100",
-            "title": "Overflow Buffers",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 346
-          },
-          {
-            "control_id": "CAPEC-101",
-            "title": "Server Side Include (SSI) Injection",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 524
-          },
-          {
-            "control_id": "CAPEC-102",
-            "title": "Session Sidejacking",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 682
-          },
-          {
-            "control_id": "CAPEC-103",
-            "title": "Clickjacking",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 204
-          },
-          {
-            "control_id": "CAPEC-104",
-            "title": "Cross Zone Scripting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 328
-          },
-          {
-            "control_id": "CAPEC-105",
-            "title": "HTTP Request Splitting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 497
-          },
-          {
-            "control_id": "CAPEC-106",
-            "title": "DEPRECATED: XSS through Log Files",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 223
-          },
-          {
-            "control_id": "CAPEC-107",
-            "title": "Cross Site Tracing",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 251
-          },
-          {
-            "control_id": "CAPEC-108",
-            "title": "Command Line Execution through SQL Injection",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 629
-          },
-          {
-            "control_id": "CAPEC-109",
-            "title": "Object Relational Mapping Injection",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 808
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "ATT&CK",
       "controls": 524,
       "missing_descriptions": 0,
-      "missing_embeddings": 524,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "attack"
       ],
-      "defects": [
-        {
-          "control_id": "T0800",
-          "title": "T0800",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0804",
-          "title": "T0804",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0805",
-          "title": "T0805",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0806",
-          "title": "T0806",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0809",
-          "title": "T0809",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0812",
-          "title": "T0812",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0813",
-          "title": "T0813",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0814",
-          "title": "T0814",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0815",
-          "title": "T0815",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0816",
-          "title": "T0816",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0820",
-          "title": "T0820",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "T0821",
-          "title": "T0821",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        }
-      ],
-      "quality_gaps": 524,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ATT&CK",
         "gap_type": "control_quality",
-        "gap_count": 524,
-        "defects": [
-          {
-            "control_id": "T0800",
-            "title": "T0800",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0804",
-            "title": "T0804",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0805",
-            "title": "T0805",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0806",
-            "title": "T0806",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0809",
-            "title": "T0809",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0812",
-            "title": "T0812",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0813",
-            "title": "T0813",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0814",
-            "title": "T0814",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0815",
-            "title": "T0815",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0816",
-            "title": "T0816",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0820",
-            "title": "T0820",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "T0821",
-            "title": "T0821",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "D3FEND",
       "controls": 424,
       "missing_descriptions": 0,
-      "missing_embeddings": 424,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "D3FEND",
         "d3fend"
       ],
-      "defects": [
-        {
-          "control_id": "D3-AL",
-          "title": "Account Locking",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 73
-        },
-        {
-          "control_id": "D3-BSE",
-          "title": "Byte Sequence Emulation",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 90
-        },
-        {
-          "control_id": "D3-CR",
-          "title": "Credential Revoking",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 90
-        },
-        {
-          "control_id": "D3-DAM",
-          "title": "Domain Account Monitoring",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 63
-        },
-        {
-          "control_id": "D3-DEM",
-          "title": "Data Exchange Mapping",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 174
-        },
-        {
-          "control_id": "D3-DNR",
-          "title": "Decoy Network Resource",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 72
-        },
-        {
-          "control_id": "D3-DNRA",
-          "title": "Domain Name Reputation Analysis",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 42
-        },
-        {
-          "control_id": "D3-DNSAL",
-          "title": "DNS Allowlisting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 69
-        },
-        {
-          "control_id": "D3-DNSDL",
-          "title": "DNS Denylisting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 98
-        },
-        {
-          "control_id": "D3-DQSA",
-          "title": "Database Query String Analysis",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 103
-        },
-        {
-          "control_id": "D3-DST",
-          "title": "Decoy Session Token",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 75
-        },
-        {
-          "control_id": "D3-EDL",
-          "title": "Executable Denylisting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 94
-        }
-      ],
-      "quality_gaps": 424,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "D3FEND",
         "gap_type": "control_quality",
-        "gap_count": 424,
-        "defects": [
-          {
-            "control_id": "D3-AL",
-            "title": "Account Locking",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 73
-          },
-          {
-            "control_id": "D3-BSE",
-            "title": "Byte Sequence Emulation",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 90
-          },
-          {
-            "control_id": "D3-CR",
-            "title": "Credential Revoking",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 90
-          },
-          {
-            "control_id": "D3-DAM",
-            "title": "Domain Account Monitoring",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 63
-          },
-          {
-            "control_id": "D3-DEM",
-            "title": "Data Exchange Mapping",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 174
-          },
-          {
-            "control_id": "D3-DNR",
-            "title": "Decoy Network Resource",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 72
-          },
-          {
-            "control_id": "D3-DNRA",
-            "title": "Domain Name Reputation Analysis",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 42
-          },
-          {
-            "control_id": "D3-DNSAL",
-            "title": "DNS Allowlisting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 69
-          },
-          {
-            "control_id": "D3-DNSDL",
-            "title": "DNS Denylisting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 98
-          },
-          {
-            "control_id": "D3-DQSA",
-            "title": "Database Query String Analysis",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 103
-          },
-          {
-            "control_id": "D3-DST",
-            "title": "Decoy Session Token",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 75
-          },
-          {
-            "control_id": "D3-EDL",
-            "title": "Executable Denylisting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 94
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "ESA",
       "controls": 274,
       "missing_descriptions": 0,
-      "missing_embeddings": 274,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "ESA",
         "ESA_Shield"
       ],
-      "defects": [
-        {
-          "control_id": "ESA-T1489.001",
-          "title": "Service Stop: Ground system loss",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 239
-        },
-        {
-          "control_id": "ESA-T1489.002",
-          "title": "Service Stop: Disabling Payload Service",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 233
-        },
-        {
-          "control_id": "ESA-T1591.005",
-          "title": "Gather Victim Org Information: Search Closed Sources",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 440
-        },
-        {
-          "control_id": "ESA-T1591.006",
-          "title": "Gather Victim Org Information: Open Source Intelligence (OSINT)",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 160
-        },
-        {
-          "control_id": "ESA-T1591.007",
-          "title": "Gather Victim Org Information: Spear Phishing attacks",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 234
-        },
-        {
-          "control_id": "ESA-T1611.001",
-          "title": "Escape to Host: Exploitation of vulnerabilities",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 84
-        },
-        {
-          "control_id": "ESA-T2001",
-          "title": "Active Scanning (RF/Optical)",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 758
-        },
-        {
-          "control_id": "ESA-T2001.001",
-          "title": "Active Scanning (RF/Optical): Telecommand Protocol Scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 158
-        },
-        {
-          "control_id": "ESA-T2001.002",
-          "title": "Active Scanning (RF/Optical): Telemetry Protocol Scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 156
-        },
-        {
-          "control_id": "ESA-T2001.003",
-          "title": "Active Scanning (RF/Optical): Mission specific channel scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 311
-        },
-        {
-          "control_id": "ESA-T2001.004",
-          "title": "Active Scanning (RF/Optical): Remote Vulnerability Scanning",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 169
-        },
-        {
-          "control_id": "ESA-T2002",
-          "title": "Gather Victim Mission Information",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 584
-        }
-      ],
-      "quality_gaps": 274,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ESA",
         "gap_type": "control_quality",
-        "gap_count": 274,
-        "defects": [
-          {
-            "control_id": "ESA-T1489.001",
-            "title": "Service Stop: Ground system loss",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 239
-          },
-          {
-            "control_id": "ESA-T1489.002",
-            "title": "Service Stop: Disabling Payload Service",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 233
-          },
-          {
-            "control_id": "ESA-T1591.005",
-            "title": "Gather Victim Org Information: Search Closed Sources",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 440
-          },
-          {
-            "control_id": "ESA-T1591.006",
-            "title": "Gather Victim Org Information: Open Source Intelligence (OSINT)",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 160
-          },
-          {
-            "control_id": "ESA-T1591.007",
-            "title": "Gather Victim Org Information: Spear Phishing attacks",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 234
-          },
-          {
-            "control_id": "ESA-T1611.001",
-            "title": "Escape to Host: Exploitation of vulnerabilities",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 84
-          },
-          {
-            "control_id": "ESA-T2001",
-            "title": "Active Scanning (RF/Optical)",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 758
-          },
-          {
-            "control_id": "ESA-T2001.001",
-            "title": "Active Scanning (RF/Optical): Telecommand Protocol Scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 158
-          },
-          {
-            "control_id": "ESA-T2001.002",
-            "title": "Active Scanning (RF/Optical): Telemetry Protocol Scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 156
-          },
-          {
-            "control_id": "ESA-T2001.003",
-            "title": "Active Scanning (RF/Optical): Mission specific channel scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 311
-          },
-          {
-            "control_id": "ESA-T2001.004",
-            "title": "Active Scanning (RF/Optical): Remote Vulnerability Scanning",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 169
-          },
-          {
-            "control_id": "ESA-T2002",
-            "title": "Gather Victim Mission Information",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 584
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "ATT&CK Mobile",
       "controls": 225,
       "missing_descriptions": 1,
-      "missing_embeddings": 225,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "ATT_CK_Mobile"
       ],
       "defects": [
         {
-          "control_id": "M1001",
-          "title": "Security Updates",
+          "control_id": "T1454",
+          "title": "Malicious SMS Message",
           "gap_types": [
-            "missing_embedding"
+            "short_description"
           ],
-          "description_length": 540
-        },
-        {
-          "control_id": "M1002",
-          "title": "Attestation",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 198
-        },
-        {
-          "control_id": "M1003",
-          "title": "Lock Bootloader",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 202
-        },
-        {
-          "control_id": "M1004",
-          "title": "System Partition Integrity",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 158
-        },
-        {
-          "control_id": "M1005",
-          "title": "Application Vetting",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 731
-        },
-        {
-          "control_id": "M1006",
-          "title": "Use Recent OS Version",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 339
-        },
-        {
-          "control_id": "M1007",
-          "title": "Caution with Device Administrator Access",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 380
-        },
-        {
-          "control_id": "M1009",
-          "title": "Encrypt Network Traffic",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 969
-        },
-        {
-          "control_id": "M1010",
-          "title": "Deploy Compromised Device Detection Method",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 408
-        },
-        {
-          "control_id": "M1011",
-          "title": "User Guidance",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 137
-        },
-        {
-          "control_id": "M1012",
-          "title": "Enterprise Policy",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 191
-        },
-        {
-          "control_id": "M1013",
-          "title": "Application Developer Guidance",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 2000
+          "description_length": 4
         }
       ],
-      "quality_gaps": 226,
+      "quality_gaps": 1,
       "status": "needs_repair",
       "action_code": "repair_control_quality",
       "action_label": "Plan Repair",
@@ -2142,103 +299,15 @@
       "command_payload": {
         "framework": "ATT&CK Mobile",
         "gap_type": "control_quality",
-        "gap_count": 226,
+        "gap_count": 1,
         "defects": [
           {
-            "control_id": "M1001",
-            "title": "Security Updates",
+            "control_id": "T1454",
+            "title": "Malicious SMS Message",
             "gap_types": [
-              "missing_embedding"
+              "short_description"
             ],
-            "description_length": 540
-          },
-          {
-            "control_id": "M1002",
-            "title": "Attestation",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 198
-          },
-          {
-            "control_id": "M1003",
-            "title": "Lock Bootloader",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 202
-          },
-          {
-            "control_id": "M1004",
-            "title": "System Partition Integrity",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 158
-          },
-          {
-            "control_id": "M1005",
-            "title": "Application Vetting",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 731
-          },
-          {
-            "control_id": "M1006",
-            "title": "Use Recent OS Version",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 339
-          },
-          {
-            "control_id": "M1007",
-            "title": "Caution with Device Administrator Access",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 380
-          },
-          {
-            "control_id": "M1009",
-            "title": "Encrypt Network Traffic",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 969
-          },
-          {
-            "control_id": "M1010",
-            "title": "Deploy Compromised Device Detection Method",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 408
-          },
-          {
-            "control_id": "M1011",
-            "title": "User Guidance",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 137
-          },
-          {
-            "control_id": "M1012",
-            "title": "Enterprise Policy",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 191
-          },
-          {
-            "control_id": "M1013",
-            "title": "Application Developer Guidance",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 2000
+            "description_length": 4
           }
         ]
       }
@@ -2247,224 +316,29 @@
       "framework": "ATT&CK ICS",
       "controls": 131,
       "missing_descriptions": 0,
-      "missing_embeddings": 131,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "ATT_CK_ICS"
       ],
-      "defects": [
-        {
-          "control_id": "M0800",
-          "title": "Authorization Enforcement",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 631
-        },
-        {
-          "control_id": "M0801",
-          "title": "Access Management",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 552
-        },
-        {
-          "control_id": "M0802",
-          "title": "Communication Authenticity",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 306
-        },
-        {
-          "control_id": "M0803",
-          "title": "Data Loss Prevention",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 535
-        },
-        {
-          "control_id": "M0804",
-          "title": "Human User Authentication",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 922
-        },
-        {
-          "control_id": "M0805",
-          "title": "Mechanical Protection Layers",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 303
-        },
-        {
-          "control_id": "M0806",
-          "title": "Minimize Wireless Signal Propagation",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 412
-        },
-        {
-          "control_id": "M0807",
-          "title": "Network Allowlists",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 379
-        },
-        {
-          "control_id": "M0808",
-          "title": "Encrypt Network Traffic",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 105
-        },
-        {
-          "control_id": "M0809",
-          "title": "Operational Information Confidentiality",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 292
-        },
-        {
-          "control_id": "M0810",
-          "title": "Out-of-Band Communications Channel",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 244
-        },
-        {
-          "control_id": "M0811",
-          "title": "Redundancy of Service",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 113
-        }
-      ],
-      "quality_gaps": 131,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ATT&CK ICS",
         "gap_type": "control_quality",
-        "gap_count": 131,
-        "defects": [
-          {
-            "control_id": "M0800",
-            "title": "Authorization Enforcement",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 631
-          },
-          {
-            "control_id": "M0801",
-            "title": "Access Management",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 552
-          },
-          {
-            "control_id": "M0802",
-            "title": "Communication Authenticity",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 306
-          },
-          {
-            "control_id": "M0803",
-            "title": "Data Loss Prevention",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 535
-          },
-          {
-            "control_id": "M0804",
-            "title": "Human User Authentication",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 922
-          },
-          {
-            "control_id": "M0805",
-            "title": "Mechanical Protection Layers",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 303
-          },
-          {
-            "control_id": "M0806",
-            "title": "Minimize Wireless Signal Propagation",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 412
-          },
-          {
-            "control_id": "M0807",
-            "title": "Network Allowlists",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 379
-          },
-          {
-            "control_id": "M0808",
-            "title": "Encrypt Network Traffic",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 105
-          },
-          {
-            "control_id": "M0809",
-            "title": "Operational Information Confidentiality",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 292
-          },
-          {
-            "control_id": "M0810",
-            "title": "Out-of-Band Communications Channel",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 244
-          },
-          {
-            "control_id": "M0811",
-            "title": "Redundancy of Service",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 113
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "ISO",
       "controls": 23,
       "missing_descriptions": 1,
-      "missing_embeddings": 23,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "ISO",
         "iso"
@@ -2474,101 +348,12 @@
           "control_id": "10",
           "title": "Improvement",
           "gap_types": [
-            "short_description",
-            "missing_embedding"
+            "short_description"
           ],
           "description_length": 11
-        },
-        {
-          "control_id": "A.6.1",
-          "title": "Screening",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 112
-        },
-        {
-          "control_id": "A.8.1",
-          "title": "User end point devices",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 984
-        },
-        {
-          "control_id": "10.1",
-          "title": "Continual improvement",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 101
-        },
-        {
-          "control_id": "4",
-          "title": "Context of the Organization",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 104
-        },
-        {
-          "control_id": "4.1",
-          "title": "Understanding the organization and its context",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 191
-        },
-        {
-          "control_id": "5.1",
-          "title": "Leadership and commitment",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 196
-        },
-        {
-          "control_id": "6.1",
-          "title": "Actions to address risks and opportunities",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 206
-        },
-        {
-          "control_id": "6.1.2",
-          "title": "Information security risk assessment",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 117
-        },
-        {
-          "control_id": "6.1.3",
-          "title": "Information security risk treatment",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 116
-        },
-        {
-          "control_id": "6.2",
-          "title": "Information security objectives and planning to achieve them",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 159
-        },
-        {
-          "control_id": "7.1",
-          "title": "Resources",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 88
         }
       ],
-      "quality_gaps": 24,
+      "quality_gaps": 1,
       "status": "needs_repair",
       "action_code": "repair_control_quality",
       "action_label": "Plan Repair",
@@ -2578,104 +363,15 @@
       "command_payload": {
         "framework": "ISO",
         "gap_type": "control_quality",
-        "gap_count": 24,
+        "gap_count": 1,
         "defects": [
           {
             "control_id": "10",
             "title": "Improvement",
             "gap_types": [
-              "short_description",
-              "missing_embedding"
+              "short_description"
             ],
             "description_length": 11
-          },
-          {
-            "control_id": "A.6.1",
-            "title": "Screening",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 112
-          },
-          {
-            "control_id": "A.8.1",
-            "title": "User end point devices",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 984
-          },
-          {
-            "control_id": "10.1",
-            "title": "Continual improvement",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 101
-          },
-          {
-            "control_id": "4",
-            "title": "Context of the Organization",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 104
-          },
-          {
-            "control_id": "4.1",
-            "title": "Understanding the organization and its context",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 191
-          },
-          {
-            "control_id": "5.1",
-            "title": "Leadership and commitment",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 196
-          },
-          {
-            "control_id": "6.1",
-            "title": "Actions to address risks and opportunities",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 206
-          },
-          {
-            "control_id": "6.1.2",
-            "title": "Information security risk assessment",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 117
-          },
-          {
-            "control_id": "6.1.3",
-            "title": "Information security risk treatment",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 116
-          },
-          {
-            "control_id": "6.2",
-            "title": "Information security objectives and planning to achieve them",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 159
-          },
-          {
-            "control_id": "7.1",
-            "title": "Resources",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 88
           }
         ]
       }
@@ -2684,223 +380,28 @@
       "framework": "NASA",
       "controls": 14,
       "missing_descriptions": 0,
-      "missing_embeddings": 14,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "NASA",
         "nasa"
       ],
-      "defects": [
-        {
-          "control_id": "MI-AUTH-02",
-          "title": "Comprehensive Authentication & Authorization Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 140
-        },
-        {
-          "control_id": "MI-MALW-02",
-          "title": "Mission Software, Programmable Logic Devices, and Firmware Integrity Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 210
-        },
-        {
-          "control_id": "MI-ARCH-01",
-          "title": "Mission Essential Data Flow Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 123
-        },
-        {
-          "control_id": "MI-ARCH-02",
-          "title": "Mission Least Privilege Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 119
-        },
-        {
-          "control_id": "MI-AUTH-01",
-          "title": "Boundary Protection Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 115
-        },
-        {
-          "control_id": "MI-DCO-01",
-          "title": "Mission Adversarial Actions Detection Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 132
-        },
-        {
-          "control_id": "MI-DCO-02",
-          "title": "Mission Fault Management",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 110
-        },
-        {
-          "control_id": "MI-INTG-01",
-          "title": "Communications Survivability Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 124
-        },
-        {
-          "control_id": "MI-INTG-02",
-          "title": "PNT Survivability Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 113
-        },
-        {
-          "control_id": "MI-MA-01",
-          "title": "Mission Recovery Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 110
-        },
-        {
-          "control_id": "MI-MA-02",
-          "title": "Cyber-Safe State Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 110
-        },
-        {
-          "control_id": "MI-MALW-01",
-          "title": "Mission Malware Protection Function",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 122
-        }
-      ],
-      "quality_gaps": 14,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "NASA",
         "gap_type": "control_quality",
-        "gap_count": 14,
-        "defects": [
-          {
-            "control_id": "MI-AUTH-02",
-            "title": "Comprehensive Authentication & Authorization Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 140
-          },
-          {
-            "control_id": "MI-MALW-02",
-            "title": "Mission Software, Programmable Logic Devices, and Firmware Integrity Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 210
-          },
-          {
-            "control_id": "MI-ARCH-01",
-            "title": "Mission Essential Data Flow Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 123
-          },
-          {
-            "control_id": "MI-ARCH-02",
-            "title": "Mission Least Privilege Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 119
-          },
-          {
-            "control_id": "MI-AUTH-01",
-            "title": "Boundary Protection Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 115
-          },
-          {
-            "control_id": "MI-DCO-01",
-            "title": "Mission Adversarial Actions Detection Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 132
-          },
-          {
-            "control_id": "MI-DCO-02",
-            "title": "Mission Fault Management",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 110
-          },
-          {
-            "control_id": "MI-INTG-01",
-            "title": "Communications Survivability Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 124
-          },
-          {
-            "control_id": "MI-INTG-02",
-            "title": "PNT Survivability Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 113
-          },
-          {
-            "control_id": "MI-MA-01",
-            "title": "Mission Recovery Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 110
-          },
-          {
-            "control_id": "MI-MA-02",
-            "title": "Cyber-Safe State Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 110
-          },
-          {
-            "control_id": "MI-MALW-01",
-            "title": "Mission Malware Protection Function",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 122
-          }
-        ]
+        "gap_count": 0
       }
     }
   ],
   "monitor": {
-    "passed": 14,
+    "passed": 15,
     "total": 17,
     "checks": [
       {
@@ -2934,9 +435,9 @@
         "message": "All SPARTA controls have mind tags"
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "embedding_gaps",
-        "message": "3 collections with embedding gaps: sparta_controls=12321, sparta_qra=245975, sparta_url_knowledge=43398"
+        "message": "All documents have embeddings"
       },
       {
         "ok": true,
@@ -3940,7 +1441,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T05:19:50Z",
+      "generated_at": "2026-05-03T04:58:20Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -4004,7 +1505,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 602,154 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 631,543 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -4480,9 +1981,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-02T05:19:02.035612Z",
-    "heartbeat_at": "2026-05-02T05:19:02.035612Z",
-    "snapshot_age_seconds": 115,
+    "generated_at": "2026-05-03T04:57:29.702829Z",
+    "heartbeat_at": "2026-05-03T04:57:29.702829Z",
+    "snapshot_age_seconds": 112,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -5203,7 +2704,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T05:19:26Z",
+      "generated_at": "2026-05-03T04:57:57Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -5237,20 +2738,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T05:19:26Z",
+      "generated_at": "2026-05-03T04:57:57Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1246,
-        "end": 1395
+        "start": 1353,
+        "end": 1502
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T05:19:02Z",
+      "generated_at": "2026-05-03T04:57:29Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -5258,9 +2759,9 @@
         "source_embedding_targets": 43398
       },
       "observed_counts": {
-        "arango_embedding_docs": 0,
+        "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 602154
+        "qdrant_vectors": 631543
       },
       "gaps": {
         "missing_vectors": 0,
@@ -5289,7 +2790,7 @@
             ],
             "total_docs": 43398,
             "embeddable_docs": 43398,
-            "embedded_docs": 0,
+            "embedded_docs": 43398,
             "synced_docs": 43398,
             "qdrant_pointer_docs": 43398,
             "missing_vectors": 0,
@@ -5330,7 +2831,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 602154,
+        "point_count": 631543,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -5345,7 +2846,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-02T05:19:24Z",
+      "generated_at": "2026-05-03T04:57:56Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
@@ -5416,7 +2917,7 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260502T051924Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260503T045756Z.json",
           "status": "review_required",
           "candidate_count": 500,
           "truncated": false

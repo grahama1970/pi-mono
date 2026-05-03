@@ -180,6 +180,12 @@ export interface EvidenceCaseData {
 	response_action?: "answer" | "deflect" | "clarify" | string;
 	glossary?: GlossaryTerm[];
 	diagnostics?: Record<string, unknown>;
+	evidence_case_version?: Record<string, unknown>;
+	gap_review?: Record<string, unknown>;
+	gap_review_status?: string;
+	human_review_state?: string;
+	proposed_correction?: Record<string, unknown>;
+	correction_lineage?: Record<string, unknown>;
 	metadata?: {
 		gates_passed?: number;
 		gates_total?: number;
