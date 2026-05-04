@@ -844,6 +844,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     ? latestEvidenceMessage
     : undefined
   const showEvidenceWorkspace = evidenceStreaming || Boolean(evidenceWorkspaceMessage)
+  const qraFocus = activeTab === 'QRAs'
 
   return (
     <div style={S.container}>
@@ -856,7 +857,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       />
 
       {/* Horizontal Tab Strip */}
-      <div style={S.tabStrip} role="tablist" aria-label="Sparta Explorer Tabs">
+      {!qraFocus && <div style={S.tabStrip} role="tablist" aria-label="Sparta Explorer Tabs">
         <div style={S.tabStripLeft}>
           {/* Embry AI Assistant — Trigger on left aligns with drawer opening left */}
           <button
@@ -920,7 +921,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             <Settings size={16} />
           </button>
         </div>
-      </div>
+      </div>}
 
       {/* Main Split Layout */}
       <div style={S.splitContainer}>
@@ -995,7 +996,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       </div>
 
       {/* Shared status bar */}
-      <StatusBar
+      {!qraFocus && <StatusBar
         projectId="sparta-explorer"
         connected={daemonHealth.ok}
         connectionLabel="daemon connected"
@@ -1012,7 +1013,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           { label: `gate: ${gateDepth}` },
           { label: '1-8 switch tabs', color: EMBRY.muted },
         ]}
-      />
+      />}
 
       {/* Settings modal */}
       {settingsOpen && (

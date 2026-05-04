@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-03T05:19:10.074Z",
+  "generated_at": "2026-05-04T04:59:23.021Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
-    "controls": 12321,
-    "qrasLegacy": 245975,
-    "qrasCanonical": 168,
-    "qrasRelationship": 1190,
-    "qrasTotal": 247333,
-    "relationships": 262426,
-    "urls": 6854,
-    "urlKnowledge": 43398,
-    "datalakeChunks": 2529120
+    "controls": 0,
+    "qrasLegacy": 0,
+    "qrasCanonical": 0,
+    "qrasRelationship": 0,
+    "qrasTotal": 0,
+    "relationships": 0,
+    "urls": 0,
+    "urlKnowledge": 0,
+    "datalakeChunks": 0
   },
   "qraTrust": {
     "status": "plausible_for_system_test",
@@ -25,17 +25,17 @@
       "relationship"
     ],
     "counts": {
-      "legacy": 245975,
-      "canonical": 168,
-      "relationship": 1190,
-      "total": 247333
+      "legacy": 0,
+      "canonical": 0,
+      "relationship": 0,
+      "total": 0
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-03T05:19:09Z",
+    "generated_at": "2026-05-04T04:59:22Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -427,7 +427,7 @@
       {
         "ok": true,
         "dimension": "relationship_coverage",
-        "message": "44/44 threats covered"
+        "message": "0/0 threats covered"
       },
       {
         "ok": true,
@@ -447,7 +447,7 @@
       {
         "ok": true,
         "dimension": "description_preservation",
-        "message": "25 enriched descriptions (25 BRAVE-SEARCH, 0 INFERRED) out of 12321 total"
+        "message": "0 enriched descriptions (0 BRAVE-SEARCH, 0 INFERRED) out of 0 total"
       },
       {
         "ok": true,
@@ -1441,7 +1441,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-03T05:19:09Z",
+      "generated_at": "2026-05-04T04:59:22Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1478,12 +1478,13 @@
     {
       "name": "React data-qid coverage",
       "skill": "best-practices-react",
-      "ok": true,
-      "status": "pass",
-      "message": "data-qid coverage: 341/341 (100%)",
-      "covered": 341,
-      "total": 341,
-      "percent": 100
+      "ok": false,
+      "status": "fail",
+      "message": "data-qid coverage: 353/359 (98%)",
+      "covered": 353,
+      "total": 359,
+      "percent": 98,
+      "detail": "data-qid coverage: 353/359 (98%)\n\nMISSING (6):\n  explorer/QRAsView.tsx:1401 — <span>QRA key: <button type=\"button\" onClick={() => navigator.clipboard.writeTex\n  shared/EvidenceCaseTrace.tsx:1165 — <button key={`control-pill-${id}`} type=\"button\" onClick={() => onNavigateToCont\n  shared/EvidenceCaseTrace.tsx:1341 — <button type=\"button\" onClick={() => setExpandedStep(expandedStep ? null : 'gate\n  shared/EvidenceCaseTrace.tsx:1358 — <div\n  shared/EvidenceCaseTrace.tsx:1414 — {onCancelEdit && <button type=\"button\" onClick={onCancelEdit} style={{ height: 4\n  shared/EvidenceCaseTrace.tsx:1415 — {onSaveAndRerun && <button type=\"button\" onClick={onSaveAndRerun} disabled={vali\n\nFAIL: 6 interactive elements without data-qid"
     },
     {
       "name": "Python silent fallback scan",
@@ -1505,7 +1506,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 631,521 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 632,545 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1981,9 +1982,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-03T05:18:17.229322Z",
-    "heartbeat_at": "2026-05-03T05:18:17.229322Z",
-    "snapshot_age_seconds": 102,
+    "generated_at": "2026-05-04T04:56:45.235929Z",
+    "heartbeat_at": "2026-05-04T04:56:45.235929Z",
+    "snapshot_age_seconds": 219,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2704,7 +2705,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-03T05:18:46Z",
+      "generated_at": "2026-05-04T04:57:15Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2738,7 +2739,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-03T05:18:46Z",
+      "generated_at": "2026-05-04T04:57:15Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -2751,7 +2752,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-03T05:18:17Z",
+      "generated_at": "2026-05-04T04:56:45Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2761,7 +2762,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 631521
+        "qdrant_vectors": 632545
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2831,7 +2832,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 631521,
+        "point_count": 632545,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -2846,7 +2847,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-03T05:18:45Z",
+      "generated_at": "2026-05-04T04:57:13Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
@@ -2917,7 +2918,7 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260503T051845Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260504T045713Z.json",
           "status": "review_required",
           "candidate_count": 500,
           "truncated": false

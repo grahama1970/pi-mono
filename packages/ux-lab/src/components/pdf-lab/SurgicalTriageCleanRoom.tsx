@@ -42,6 +42,7 @@ interface PageDims {
 const MIN_SCALE = 1.15
 const MAX_SCALE = 1.9
 type HudPlacement = 'left' | 'right' | 'below'
+type EvidenceViewMode = 'focus' | 'full-page'
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value))
@@ -66,6 +67,8 @@ function getVisibleStageSize(node: HTMLDivElement | null): PageDims {
 
 export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [viewMode, setViewMode] = useState<EvidenceViewMode>('focus')
+  const [zoomStep, setZoomStep] = useState(0)
 
   useRegisterAction('pdf-lab:clean-room:queue', {
     app: 'pdf-lab',
@@ -127,6 +130,30 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
     label: 'Undo Last Decision',
     description: 'Undo the previous PDF Lab triage decision',
   })
+  useRegisterAction('pdf-lab:clean-room:view-focus', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CLEAN_ROOM_VIEW_FOCUS',
+    label: 'Focus Evidence',
+    description: 'Return the PDF evidence viewport to the focused ambiguity region',
+  })
+  useRegisterAction('pdf-lab:clean-room:view-full-page', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CLEAN_ROOM_VIEW_FULL_PAGE',
+    label: 'View Full Page',
+    description: 'Fit the full PDF page in the evidence viewport',
+  })
+  useRegisterAction('pdf-lab:clean-room:zoom-in', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CLEAN_ROOM_ZOOM_IN',
+    label: 'Zoom In',
+    description: 'Zoom into the active PDF evidence view',
+  })
+  useRegisterAction('pdf-lab:clean-room:zoom-out', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CLEAN_ROOM_ZOOM_OUT',
+    label: 'Zoom Out',
+    description: 'Zoom out of the active PDF evidence view',
+  })
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -143,6 +170,11 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
 
   useEffect(() => {
     inputRef.current?.focus()
+  }, [props.task?.id])
+
+  useEffect(() => {
+    setViewMode('focus')
+    setZoomStep(0)
   }, [props.task?.id])
 
   const hudPlacement = props.task ? getHudPlacement(props.task.bbox) : 'right'
@@ -163,6 +195,7 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
             ☰
           </button>
           <span>Card {props.taskIndex + 1} / {props.taskCount}</span>
+          <code className="pdf-lab-cr-task-id">{props.task.id}</code>
         </div>
         <div className="pdf-lab-cr-title">NIST SP 800-53 Rev. 5 · Surgical Triage</div>
         <div className="pdf-lab-cr-header-actions">
@@ -201,6 +234,8 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
           pageNumber={props.pageNumber}
           bbox={props.task.bbox}
           hudPlacement={hudPlacement}
+          viewMode={viewMode}
+          zoomStep={zoomStep}
         />
         <aside className={`pdf-lab-cr-hud pdf-lab-cr-hud-${hudPlacement}`} data-qid="pdf-lab:clean-room:hud">
           <div className="pdf-lab-cr-meta">
@@ -280,6 +315,42 @@ export function SurgicalTriageCleanRoom(props: SurgicalTriageCleanRoomProps) {
             </button>
           )}
         </div>
+        <div className="pdf-lab-cr-view-controls" data-qid="pdf-lab:clean-room:view-controls">
+          <button
+            className={viewMode === 'focus' ? 'active' : ''}
+            data-qid="pdf-lab:clean-room:view-focus"
+            data-qs-action="PDF_LAB_CLEAN_ROOM_VIEW_FOCUS"
+            title="Focus the evidence region"
+            onClick={() => setViewMode('focus')}
+          >
+            Focus
+          </button>
+          <button
+            className={viewMode === 'full-page' ? 'active' : ''}
+            data-qid="pdf-lab:clean-room:view-full-page"
+            data-qs-action="PDF_LAB_CLEAN_ROOM_VIEW_FULL_PAGE"
+            title="Fit the full PDF page"
+            onClick={() => setViewMode('full-page')}
+          >
+            Full Page
+          </button>
+          <button
+            data-qid="pdf-lab:clean-room:zoom-out"
+            data-qs-action="PDF_LAB_CLEAN_ROOM_ZOOM_OUT"
+            title="Zoom out"
+            onClick={() => setZoomStep(step => clamp(step - 1, -3, 4))}
+          >
+            −
+          </button>
+          <button
+            data-qid="pdf-lab:clean-room:zoom-in"
+            data-qs-action="PDF_LAB_CLEAN_ROOM_ZOOM_IN"
+            title="Zoom in"
+            onClick={() => setZoomStep(step => clamp(step + 1, -3, 4))}
+          >
+            +
+          </button>
+        </div>
         <div className="pdf-lab-cr-hotkeys">
           USE <kbd>A</kbd> ACCEPT · <kbd>R</kbd> REJECT · <kbd>S</kbd> SKIP
         </div>
@@ -294,11 +365,15 @@ function CleanPdfEvidence({
   pageNumber,
   bbox,
   hudPlacement,
+  viewMode,
+  zoomStep,
 }: {
   pdfUrl: string
   pageNumber: number
   bbox: [number, number, number, number]
   hudPlacement: HudPlacement
+  viewMode: EvidenceViewMode
+  zoomStep: number
 }) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -371,11 +446,18 @@ function CleanPdfEvidence({
 
   const renderScale = useMemo(() => {
     if (!basePage) return 2.2
+    const zoomMultiplier = 1 + zoomStep * 0.14
+    if (viewMode === 'full-page') {
+      const reservedWidthFactor = hudPlacement === 'below' ? 0.92 : 0.56
+      const fitHeightScale = (stageSize.height * 0.9) / basePage.height
+      const fitWidthScale = (stageSize.width * reservedWidthFactor) / basePage.width
+      return clamp(Math.min(fitHeightScale, fitWidthScale) * zoomMultiplier, 0.52, 1.65)
+    }
     const [x1, y1, x2, y2] = bbox
     if (isBroadBBox(bbox)) {
       const fitHeightScale = (stageSize.height * 0.92) / basePage.height
       const fitWidthScale = (stageSize.width * 0.58) / basePage.width
-      return clamp(Math.min(fitHeightScale, fitWidthScale), 0.72, 1.25)
+      return clamp(Math.min(fitHeightScale, fitWidthScale) * zoomMultiplier, 0.72, 1.45)
     }
     const bboxWidth = Math.max(0.04, x2 - x1)
     const bboxHeight = Math.max(0.04, y2 - y1)
@@ -383,8 +465,8 @@ function CleanPdfEvidence({
     const targetBBoxHeight = Math.min(stageSize.height * 0.32, 260)
     const widthScale = targetBBoxWidth / (basePage.width * bboxWidth)
     const heightScale = targetBBoxHeight / (basePage.height * bboxHeight)
-    return clamp(Math.min(widthScale, heightScale), MIN_SCALE, MAX_SCALE)
-  }, [basePage, bbox, stageSize.height, stageSize.width])
+    return clamp(Math.min(widthScale, heightScale) * zoomMultiplier, MIN_SCALE, MAX_SCALE)
+  }, [basePage, bbox, hudPlacement, stageSize.height, stageSize.width, viewMode, zoomStep])
 
   useEffect(() => {
     if (!page || !canvasRef.current) return
@@ -405,17 +487,25 @@ function CleanPdfEvidence({
 
   const cameraStyle = useMemo(() => {
     if (!basePage) return undefined
+    if (viewMode === 'full-page') {
+      const xMargin = hudPlacement === 'right' ? Math.max(28, stageSize.width * 0.06) : Math.max(28, stageSize.width * 0.32)
+      const yMargin = Math.max(18, (stageSize.height - canvasSize.height) / 2)
+      return {
+        transform: `translate3d(${xMargin}px, ${yMargin}px, 0)`,
+      }
+    }
     const [x1, y1, x2, y2] = bbox
     const focusCenterX = ((x1 + x2) / 2) * canvasSize.width
     const focusCenterY = ((y1 + y2) / 2) * canvasSize.height
     const broadBBox = isBroadBBox(bbox)
     const targetXFactor = hudPlacement === 'right' ? 0.31 : hudPlacement === 'left' ? 0.69 : 0.42
     const targetX = stageSize.width * targetXFactor
-    const targetY = stageSize.height * (broadBBox ? 0.5 : 0.6)
+    const desiredTargetY = stageSize.height * (broadBBox ? 0.5 : 0.56)
+    const targetY = Math.min(desiredTargetY, focusCenterY + 110)
     return {
       transform: `translate3d(${targetX - focusCenterX}px, ${targetY - focusCenterY}px, 0)`,
     }
-  }, [basePage, bbox, canvasSize.height, canvasSize.width, hudPlacement, stageSize.height, stageSize.width])
+  }, [basePage, bbox, canvasSize.height, canvasSize.width, hudPlacement, stageSize.height, stageSize.width, viewMode])
 
   if (error) return <div className="pdf-lab-cr-error">{error}</div>
 

@@ -78,6 +78,15 @@
   font-size: 16px;
 }
 
+.pdf-lab-cr-task-id {
+  max-width: 260px;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .pdf-lab-cr-stage {
   position: relative;
   flex: 1 1 auto;
@@ -91,6 +100,44 @@
   inset: 0;
   overflow: hidden;
   background: #000;
+}
+
+.pdf-lab-cr-view-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  justify-self: center;
+  padding: 4px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.58);
+  backdrop-filter: blur(16px);
+}
+
+.pdf-lab-cr-view-controls button {
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.6);
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 850;
+  cursor: pointer;
+  transition-property: transform, border-color, background-color, color;
+  transition-duration: 120ms;
+}
+
+.pdf-lab-cr-view-controls button:hover,
+.pdf-lab-cr-view-controls button.active {
+  border-color: rgba(139, 92, 246, 0.72);
+  background: rgba(139, 92, 246, 0.18);
+  color: #fff;
+}
+
+.pdf-lab-cr-view-controls button:active {
+  transform: scale(0.96);
 }
 
 .pdf-lab-cr-camera {
@@ -151,7 +198,7 @@
   position: absolute;
   top: 4px;
   left: 10px;
-  width: 420px;
+  width: 72vw;
   height: 2px;
   background: rgba(245, 158, 11, 0.9);
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.55);
@@ -172,7 +219,7 @@
 }
 
 .pdf-lab-cr-bbox-thread-below .pdf-lab-cr-thread-dot::after {
-  width: 240px;
+  width: 42vw;
 }
 
 .pdf-lab-cr-hud {
@@ -303,9 +350,10 @@
 .pdf-lab-cr-footer {
   height: 44px;
   flex: 0 0 44px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   padding: 0 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(10, 12, 16, 0.96);
@@ -313,6 +361,11 @@
   font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.06em;
+}
+
+.pdf-lab-cr-hotkeys {
+  justify-self: center;
+  white-space: nowrap;
 }
 
 .pdf-lab-cr-hotkeys kbd {

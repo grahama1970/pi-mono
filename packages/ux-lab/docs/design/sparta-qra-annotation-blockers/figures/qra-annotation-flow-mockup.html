@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SPARTA QRA Annotation Flow Mockup</title>
+<style>
+  :root{--bg:#07101c;--panel:#0d1624;--panel2:#111c2d;--line:#2b3a52;--text:#f1f6ff;--muted:#91a5c5;--blue:#5aa7ff;--green:#37e586;--amber:#ffbd3d;--red:#ff5a67;--violet:#7c5cff}
+  *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#10213a 0,#07101c 34%,#05080f 100%);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}
+  .app{height:100vh;display:grid;grid-template-columns:330px minmax(0,1fr) 340px;gap:16px;padding:16px}.panel{background:#0b1422e8;border:1px solid var(--line);border-radius:8px;box-shadow:0 18px 60px #0008}
+  .queue{display:grid;grid-template-rows:auto auto 1fr;padding:14px;gap:12px}.queue h1,.flow h2{margin:0;font-size:18px}.search{height:38px;border:1px solid var(--line);border-radius:7px;background:#070c15;color:var(--muted);padding:0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--line);border-radius:6px;padding:7px 10px;font-weight:800;color:var(--muted)}.chip.blue{color:var(--blue);border-color:#3d86ff99}.chip.amber{color:var(--amber);border-color:#ffbd3d88}.chip.red{color:var(--red);border-color:#ff5a6788}
+  .row{padding:12px;border:1px solid #26344a;border-radius:7px;background:#08111e;margin-bottom:9px}.row.active{outline:2px solid var(--blue);background:#101b31}.row b{display:block}.row small{color:var(--muted)}
+  .main{display:grid;grid-template-rows:auto auto 1fr auto;gap:12px}.top{padding:14px}.crumb{color:var(--muted);font-size:12px}.title{font-size:24px;font-weight:900;margin:8px 0}.health{padding:10px 12px;border:1px solid #2f8c5b;border-radius:7px;background:#12332266;color:#bff8d5}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{padding:16px;background:var(--panel2);border:1px solid var(--line);border-radius:8px}.card.fail{border-color:#b92c3f;background:#25121b}.card.warn{border-color:#aa7612;background:#241d10}.card h2{margin:0 0 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.card strong{font-size:20px}
+  .trace{padding:14px;overflow:auto}.trace-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.step{display:grid;grid-template-columns:34px 170px 1fr 80px;gap:12px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:7px;background:#0a1321;margin-bottom:8px}.step.fail{border-color:#bb3348;background:#23131c}.num{width:27px;height:27px;border-radius:50%;border:1px solid var(--blue);display:grid;place-items:center;color:var(--blue);font-weight:900}.status.pass{color:var(--green)}.status.review{color:var(--amber)}.status.fail{color:var(--red)}
+  .footer{display:flex;gap:12px;padding:12px;border-top:1px solid var(--line)}button{border:1px solid var(--line);background:#111c2d;color:var(--text);border-radius:7px;padding:10px 14px;font-weight:900}button.primary{background:#174cb8;border-color:#3478ff}button.danger{background:#35131b;border-color:#bd3344;color:#ffb9c0}button:disabled{opacity:.4}
+  .flow{padding:16px;position:relative}.node{width:160px;margin:0 auto 10px;padding:10px;text-align:center;border:1px solid var(--blue);border-radius:6px;background:#10213a}.node.good{border-color:#35c270}.node.warn{border-color:#d59324}.node.fail{border-color:#de4053}.arrow{text-align:center;color:#c6d7f3;margin:-5px 0 5px}.advisory{margin-top:12px;border:1px dashed var(--red);border-radius:8px;padding:10px}.advisory .node{border-style:dashed}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="panel queue">
+    <h1>QRA Queue</h1>
+    <input class="search" value="Search queue..." readonly />
+    <div class="chips"><span class="chip blue">All 78</span><span class="chip amber">Review 28</span><span class="chip red">Failed 17</span><span class="chip">Missing 9</span><span class="chip">Adversarial 6</span></div>
+    <div>
+      <div class="row active"><b>QRA-2025-0519 <span class="chip red">Failed gate</span></b><small>Does Control AC-3 require MFA for privileged access?</small></div>
+      <div class="row"><b>QRA-2025-0518 <span class="chip amber">Review</span></b><small>Is encryption required for data at rest under SC-28?</small></div>
+      <div class="row"><b>QRA-2025-0517 <span class="chip">Missing</span></b><small>Does IA-5(1) require re-auth after 30 minutes?</small></div>
+    </div>
+  </aside>
+  <main class="main">
+    <section class="panel top">
+      <div class="crumb">QRA Queue / QRA-2025-0519 / Failed gate</div>
+      <div class="title">Does Control AC-3 require MFA for privileged access?</div>
+      <div class="health">Corpus counts healthy · Detail loaded · Evidence case current · Last hydrated 2m ago</div>
+    </section>
+    <section class="cards">
+      <div class="card fail"><h2>Verdict</h2><strong>Blocked by unsupported answer claims</strong><p>One or more answer claims are not fully supported by grounded evidence or policy.</p></div>
+      <div class="card warn"><h2>Recommended action</h2><strong>Correct & rerun</strong><p>Address unsupported claims, then rerun the evidence case.</p></div>
+    </section>
+    <section class="panel trace">
+      <div class="trace-head"><h2>Evidence Trace</h2><button>Expand all</button></div>
+      <div class="step"><div class="num">1</div><b>Question Claim</b><span>Does Control AC-3 require MFA for privileged access?</span><span class="status review">Identity</span></div>
+      <div class="step"><div class="num">2</div><b>Extracted Entities</b><span>AC-3 · MFA · privileged access</span><span class="status pass">Pass</span></div>
+      <div class="step"><div class="num">3</div><b>Grounded Controls</b><span>AC-3 matched · IA-2 partially related</span><span class="status review">Review</span></div>
+      <div class="step"><div class="num">4</div><b>Evidence Sources</b><span>NIST SP 800-53 Rev. 5 · Prior QRA · Enterprise Glossary</span><span class="status pass">Pass</span></div>
+      <div class="step fail"><div class="num">5</div><b>Answer Claims</b><span>AC-3 requires MFA for privileged access: supported. MFA always required for all users: unsupported.</span><span class="status fail">Fail</span></div>
+      <div class="step fail"><div class="num">6</div><b>Gates</b><span>Grounding gate passes. Policy alignment gate fails.</span><span class="status fail">Fail</span></div>
+      <div class="step"><div class="num">7</div><b>Disposition</b><span>Review required: correct and rerun.</span><span class="status review">Review</span></div>
+    </section>
+    <footer class="panel footer"><button disabled>Approve blocked: gates failed</button><button class="danger">Reject</button><button class="primary">Correct & rerun</button><button>Escalate</button></footer>
+  </main>
+  <aside class="panel flow">
+    <h2>Evidence Flow</h2>
+    <div class="node">Question</div><div class="arrow">↓</div>
+    <div class="node">Extracted Entities</div><div class="arrow">↓</div>
+    <div class="node warn">Grounded Controls</div><div class="arrow">↓</div>
+    <div class="node good">Evidence Sources</div><div class="arrow">↓</div>
+    <div class="node fail">Answer Claims</div><div class="arrow">↓</div>
+    <div class="node fail">Gates</div><div class="arrow">↓</div>
+    <div class="node warn">Disposition</div>
+    <div class="advisory"><div class="node fail">Advisory: Failed Gate</div><div class="arrow">↓</div><div class="node">Persona Gap Reviews</div><div class="arrow">↓</div><div class="node">Judge Recommendation</div><div class="arrow">↓</div><div class="node">Proposed Correction</div><div class="arrow">↓</div><div class="node">Rerun Evidence Case</div></div>
+  </aside>
+</div>
+</body>
+</html>

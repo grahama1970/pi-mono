@@ -5,10 +5,22 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronRight,
-  CircleDot,
+  Expand,
+  FileCheck2,
+  FileStack,
+  Gavel,
+  Info,
+  Link2,
+  ListTree,
   Loader2,
+  MessageSquare,
+  MessageSquarePlus,
   MessageSquareText,
+  PanelTop,
   RefreshCw,
+  ShieldAlert,
+  ShieldCheck,
+  UserRoundPlus,
   XCircle,
 } from 'lucide-react'
 import { EMBRY } from '../common/EmbryStyle'
@@ -182,6 +194,16 @@ function formatState(value: unknown, fallback = 'queued'): string {
   return text.replace(/_/g, ' ').toUpperCase()
 }
 
+interface EvidenceFlowNode {
+  id: string
+  label: string
+  status: StepStatus
+  targetStep?: string
+  advisory?: boolean
+  detail: string
+  evidence?: string[]
+}
+
 function normalizeAgentResponse(text?: string): string {
   if (!text) return ''
   return text
@@ -273,6 +295,105 @@ function statusTone(status: StepStatus) {
   if (status === 'failed') return { color: EMBRY.red, bg: `${EMBRY.red}14`, border: `${EMBRY.red}33`, label: 'Fail', Icon: XCircle }
   if (status === 'blocked') return { color: EMBRY.amber, bg: `${EMBRY.amber}14`, border: `${EMBRY.amber}33`, label: 'Blocked', Icon: Ban }
   return { color: EMBRY.dim, bg: `${EMBRY.dim}14`, border: `${EMBRY.dim}33`, label: 'Pending', Icon: Loader2 }
+}
+
+function EvidencePathSummary({
+  nodes,
+  advisoryNodes,
+  reviewerFocus,
+  onOpenStep,
+}: {
+  nodes: EvidenceFlowNode[]
+  advisoryNodes: EvidenceFlowNode[]
+  reviewerFocus: { title: string; detail: string; status: StepStatus }
+  onOpenStep: (stepId: string) => void
+}) {
+  const focusTone = statusTone(reviewerFocus.status)
+  const renderNode = (node: EvidenceFlowNode) => {
+    const tone = statusTone(node.status)
+    return (
+      <button
+        key={node.id}
+        type="button"
+        data-qid={`qras:evidence-flow:${node.id}`}
+        data-qs-action={node.advisory ? 'OPEN_ADVISORY_EVIDENCE_FLOW_NODE' : 'OPEN_EVIDENCE_FLOW_NODE'}
+        title={`${node.label}: ${node.advisory ? 'advisory repair guidance, not source evidence' : node.detail}`}
+        onClick={() => node.targetStep && onOpenStep(node.targetStep)}
+        className="press-scale"
+        style={{
+          width: '100%',
+          minHeight: 42,
+          padding: '7px 10px',
+          borderRadius: 9,
+          border: `${node.advisory ? '1px dashed' : '1px solid'} ${tone.border}`,
+          backgroundColor: tone.bg,
+          color: EMBRY.white,
+          cursor: node.targetStep ? 'pointer' : 'default',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          fontSize: 12,
+          fontWeight: 900,
+        }}
+      >
+        {node.label}
+      </button>
+    )
+  }
+
+  return (
+    <section data-qid="qras:evidence-flow" style={{ display: 'flex', flexDirection: 'column', gap: 14, minHeight: 0, overflow: 'hidden' }}>
+      <div data-qid="qras:evidence-flow:reviewer-focus" style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: '10px 11px', borderRadius: 9, border: `1px solid ${focusTone.border}`, backgroundColor: focusTone.bg }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+          <span style={{ fontSize: 10, color: EMBRY.white, fontWeight: 900, letterSpacing: 0.8, textTransform: 'uppercase' }}>Reviewer focus</span>
+          <span style={{ color: focusTone.color, fontSize: 10, fontWeight: 900, textTransform: 'uppercase' }}>{focusTone.label}</span>
+        </div>
+        <div style={{ fontSize: 13, color: EMBRY.white, fontWeight: 850, lineHeight: 1.35 }}>{reviewerFocus.title}</div>
+        <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.45 }}>{reviewerFocus.detail}</div>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', display: 'grid', gridTemplateColumns: '1fr', gap: 12, padding: '4px 0 8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', minWidth: 0 }}>
+          <span style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>Source-grounded evidence path</span>
+          {nodes.map((node, idx) => (
+            <div key={`flow-main-${node.id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+              {renderNode(node)}
+              {node.evidence && node.evidence.length > 0 && (
+                <div style={{ marginTop: 5, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 4 }}>
+                  {node.evidence.slice(0, 3).map((item) => (
+                    <span key={`${node.id}-${item}`} style={{ padding: '2px 5px', borderRadius: 999, border: `1px solid ${statusTone(node.status).border}`, backgroundColor: 'rgba(0,0,0,0.18)', color: EMBRY.white, fontSize: 9, fontFamily: 'monospace' }}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {idx < nodes.length - 1 && <ChevronDown size={20} color={EMBRY.dim} style={{ margin: '5px 0' }} />}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ position: 'relative', border: `1px dashed ${EMBRY.red}aa`, borderRadius: 13, padding: '20px 10px 14px', display: 'flex', flexDirection: 'column', alignItems: 'stretch', backgroundColor: `${EMBRY.red}08`, minWidth: 0 }}>
+          <span style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: '#fb7185', color: '#450a0a', fontWeight: 900, fontSize: 12, padding: '3px 9px', borderRadius: 999 }}>Advisory</span>
+          <span style={{ position: 'absolute', top: -13, right: 10, padding: '2px 7px', borderRadius: 999, border: `1px dashed ${EMBRY.red}88`, color: EMBRY.red, background: EMBRY.bgDeep, fontSize: 9, fontWeight: 900, textTransform: 'uppercase' }}>not evidence</span>
+          {advisoryNodes.map((node, idx) => (
+            <div key={`flow-adv-${node.id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+              {renderNode(node)}
+              {!idx && node.detail && (
+                <span style={{ maxWidth: 150, marginTop: 4, color: EMBRY.red, fontSize: 9, textAlign: 'center', lineHeight: 1.25 }}>{node.detail}</span>
+              )}
+              {idx < advisoryNodes.length - 1 && <ChevronDown size={18} color={EMBRY.red} style={{ margin: '4px 0' }} />}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9, color: EMBRY.dim, fontSize: 13, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 14, marginTop: 'auto' }}>
+        <Info size={16} />
+        Click a node to open the matching trace section. Advisory nodes are repair guidance, not evidence.
+      </div>
+    </section>
+  )
 }
 
 function ToggleSection({
@@ -397,26 +518,41 @@ export function EvidenceCaseTrace({
 
   const effectiveGatesPassed = gatesPassed ?? (liveGates.length > 0 ? liveGates.filter((gate) => gate.passed).length : undefined)
   const effectiveGatesTotal = gatesTotal ?? (liveGates.length > 0 ? liveGates.length : undefined)
+  const gapReviewRecord = asRecord(gapReview)
+  const gapPersonaReview = asRecord(gapReviewRecord?.persona_review)
+  const gapJudgeRouting = asRecord(gapReviewRecord?.judge_routing)
+  const gapProposedCorrection = asRecord(proposedCorrection) || asRecord(gapReviewRecord?.proposed_correction)
+  const gapCorrectionLineage = asRecord(correctionLineage) || asRecord(gapReviewRecord?.correction_lineage)
+  const qualityIssueCode = qraQuality?.issue_code?.trim()
+  const qualityDisposition = qraQuality?.disposition?.trim()
+  const qualityReferents = qraQuality?.ambiguous_referents ?? []
+  const hasBlockingQualityIssue = Boolean(
+    qualityIssueCode === 'ambiguous_referent'
+      || qualityDisposition?.toLowerCase().includes('adversarial')
+  )
   const baseOutcome = deriveOutcome(evidenceVerdict || reviewStatus, effectiveGatesPassed, effectiveGatesTotal)
-  const outcome = unsupportedAnswerIds.length > 0
+  const outcome = hasBlockingQualityIssue || unsupportedAnswerIds.length > 0
     ? { ...baseOutcome, state: 'failed' as OutcomeState, label: 'FAIL', color: EMBRY.red, Icon: XCircle }
     : baseOutcome
   const cweCrosswalk = useMemo(() => deriveCweCrosswalk(chains), [chains])
-  const disposition = deriveDisposition(responseAction, outcome.state, unsupportedAnswerIds)
+  const disposition = hasBlockingQualityIssue ? 'needs_human_correction' : deriveDisposition(responseAction, outcome.state, unsupportedAnswerIds)
   const responseMeta = RESPONSE_COPY[disposition]
   const responseText = normalizeAgentResponse(agentResponse)
   const questionHasGrounding = questionEntityRefs.length > 0 || questionAnchorIds.length > 0
-  const answerStatus: StepStatus = !questionHasGrounding ? 'blocked' : unsupportedAnswerIds.length > 0 ? 'failed' : 'passed'
-  const verifyStatus: StepStatus = !questionHasGrounding || unsupportedAnswerIds.length > 0
+  const questionStatus: StepStatus = hasBlockingQualityIssue ? 'failed' : questionHasGrounding ? 'passed' : 'failed'
+  const answerStatus: StepStatus = !questionHasGrounding ? 'blocked' : hasBlockingQualityIssue || unsupportedAnswerIds.length > 0 ? 'failed' : 'passed'
+  const verifyStatus: StepStatus = !questionHasGrounding || hasBlockingQualityIssue || unsupportedAnswerIds.length > 0
     ? 'blocked'
     : cweCrosswalk.found || outcome.state === 'passed'
       ? 'passed'
       : liveGates.length > 0 || effectiveGatesTotal
         ? 'failed'
         : 'pending'
-  const dispositionStatus: StepStatus = !questionHasGrounding ? 'blocked' : unsupportedAnswerIds.length > 0 ? 'failed' : outcome.state === 'passed' ? 'passed' : outcome.state === 'pending' ? 'pending' : 'blocked'
+  const dispositionStatus: StepStatus = !questionHasGrounding ? 'blocked' : hasBlockingQualityIssue || unsupportedAnswerIds.length > 0 ? 'failed' : outcome.state === 'passed' ? 'passed' : outcome.state === 'pending' ? 'pending' : 'blocked'
   const verdictReason = verdictWhy
-    || (unsupportedAnswerIds.length > 0
+    || (hasBlockingQualityIssue
+      ? `FAIL — QRA question is not standalone; unresolved referent(s): ${qualityReferents.length > 0 ? summarizeIds(qualityReferents) : qraQuality?.issue_label || qualityIssueCode}.`
+      : unsupportedAnswerIds.length > 0
       ? `FAIL — Answer introduces ${summarizeIds(unsupportedAnswerIds)}, which is not supported by the grounded scope.`
       : cweCrosswalk.found
         ? `PASS — Verified path to ${cweCrosswalk.targetId}.`
@@ -431,14 +567,6 @@ export function EvidenceCaseTrace({
     return acc
   }, {})
   const groupedFrameworks = Object.entries(groupedGroundedControls)
-  const gapReviewRecord = asRecord(gapReview)
-  const gapPersonaReview = asRecord(gapReviewRecord?.persona_review)
-  const gapJudgeRouting = asRecord(gapReviewRecord?.judge_routing)
-  const gapProposedCorrection = asRecord(proposedCorrection) || asRecord(gapReviewRecord?.proposed_correction)
-  const gapCorrectionLineage = asRecord(correctionLineage) || asRecord(gapReviewRecord?.correction_lineage)
-  const qualityIssueCode = qraQuality?.issue_code?.trim()
-  const qualityDisposition = qraQuality?.disposition?.trim()
-  const qualityReferents = qraQuality?.ambiguous_referents ?? []
   const showCaeGapReview = Boolean(
     gapReviewRecord
       || qualityIssueCode
@@ -465,8 +593,10 @@ export function EvidenceCaseTrace({
       id: 'question',
       number: 1,
       title: 'Question Grounding',
-      status: questionHasGrounding ? 'passed' as StepStatus : 'failed' as StepStatus,
-      summary: questionGroundingSummary || 'Question grounding has not been evaluated.',
+      status: questionStatus,
+      summary: hasBlockingQualityIssue
+        ? `QRA is not standalone: ${qualityReferents.length > 0 ? summarizeIds(qualityReferents) : qraQuality?.issue_label || qualityIssueCode}.`
+        : questionGroundingSummary || 'Question grounding has not been evaluated.',
       detail: (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.55 }}>{questionGroundingSummary}</div>
@@ -885,12 +1015,429 @@ export function EvidenceCaseTrace({
     },
   ]
 
+  const groundedControlIds = groundedControls.map((entry) => entry.id).filter(Boolean)
+  const evidenceSourceLabels = [
+    ...methods,
+    ...priorQRAEvidence.map((entry) => entry.citation_id || entry.qra_id || entry._key || '').filter(Boolean),
+    ...chains.map((chain) => chain.method || chain.relationship || chain.source || chain.from || '').filter(Boolean),
+  ]
+  const failedGates = liveGates.filter((gate) => !gate.passed)
+  const passedGates = liveGates.filter((gate) => gate.passed)
+  const referentSummary = qualityReferents.length > 0 ? summarizeIds(qualityReferents) : qraQuality?.issue_label || qualityIssueCode || 'unresolved referent'
+  const anchorSummary = summarizeIds([...new Set([...questionAnchorIds, ...controlIds])], 3)
+  const evidenceFlowNodes: EvidenceFlowNode[] = [
+    {
+      id: 'question',
+      label: 'Question',
+      status: questionStatus,
+      targetStep: 'question',
+      detail: hasBlockingQualityIssue
+        ? `Blocked: ${referentSummary} is not supplied, so ${anchorSummary || 'the extracted IDs'} cannot be evaluated.`
+        : questionHasGrounding ? 'Specific anchors were extracted from the question.' : 'No reliable question anchors were found.',
+      evidence: hasBlockingQualityIssue && qualityReferents.length > 0
+        ? qualityReferents
+        : questionAnchorIds.length > 0 ? questionAnchorIds : questionEntityRefs.map((entry) => entry.id).filter(Boolean),
+    },
+    {
+      id: 'controls',
+      label: 'Grounded Controls',
+      status: groundedControlIds.length > 0 || questionAnchorIds.length > 0 || controlIds.length > 0 ? 'passed' : 'failed',
+      targetStep: 'question',
+      detail: groundedControlIds.length > 0 ? `${groundedControlIds.length} grounded control reference(s) attached.` : 'Using extracted anchors/control IDs only.',
+      evidence: groundedControlIds.length > 0 ? groundedControlIds : controlIds,
+    },
+    {
+      id: 'sources',
+      label: 'Evidence Sources',
+      status: chains.length > 0 || priorQRAEvidence.length > 0 || methods.length > 0 ? 'passed' : 'pending',
+      targetStep: 'verify',
+      detail: evidenceSourceLabels.length > 0 ? `${evidenceSourceLabels.length} source/method signal(s) available.` : 'No source method, prior QRA, or crosswalk chain is attached.',
+      evidence: evidenceSourceLabels,
+    },
+    {
+      id: 'claims',
+      label: 'Answer Claims',
+      status: answerStatus,
+      targetStep: 'answer',
+      detail: unsupportedAnswerIds.length > 0 ? `Unsupported answer ID(s): ${summarizeIds(unsupportedAnswerIds)}.` : 'Answer stayed within the grounded scope.',
+      evidence: unsupportedAnswerIds.length > 0 ? unsupportedAnswerIds : answerEntityRefs.map((entry) => entry.id).filter(Boolean),
+    },
+    {
+      id: 'gates',
+      label: 'Gates',
+      status: verifyStatus,
+      targetStep: 'verify',
+      detail: failedGates.length > 0 ? `${failedGates.length} failed gate(s): ${summarizeIds(failedGates.map((gate) => formatGateLabel(gate.gate)), 2)}.` : liveGates.length > 0 ? `${passedGates.length}/${liveGates.length} gates passed.` : 'No live gate rows are attached.',
+      evidence: failedGates.length > 0 ? failedGates.map((gate) => formatGateLabel(gate.gate)) : liveGates.map((gate) => formatGateLabel(gate.gate)),
+    },
+    {
+      id: 'disposition',
+      label: 'Disposition',
+      status: dispositionStatus,
+      targetStep: 'disposition',
+      detail: `Recommended action: ${responseMeta.label}.`,
+      evidence: [formatState(humanReviewState || gapReviewRecord?.human_review_state || 'queued')],
+    },
+  ]
+  const advisoryFlowNodes: EvidenceFlowNode[] = [
+    { id: 'failed-gate', label: failedGates.length > 0 ? `${failedGates.length} failed gate(s)` : 'Gate advisory', status: verifyStatus === 'passed' ? 'pending' : 'failed', targetStep: 'verify', advisory: true, detail: failedGates.length > 0 ? summarizeIds(failedGates.map((gate) => formatGateLabel(gate.gate)), 2) : 'No failed gate details attached.' },
+    { id: 'persona-gap-reviews', label: 'Persona review', status: showCaeGapReview ? 'blocked' : 'pending', advisory: true, detail: showCaeGapReview ? gapDecision : 'No CAE gap review attached.' },
+    { id: 'judge-recommendation', label: 'Judge route', status: showCaeGapReview ? 'blocked' : 'pending', advisory: true, detail: gapRoute },
+    { id: 'proposed-correction', label: correctionQuestion ? 'Correction drafted' : 'No correction', status: correctionQuestion ? 'blocked' : 'pending', advisory: true, detail: correctionQuestion || 'No proposed correction is attached.' },
+    { id: 'rerun-evidence-case', label: 'Rerun required', status: 'pending', advisory: true, detail: 'Any correction requires a fresh evidence case.' },
+  ]
+  const reviewerFocus = hasBlockingQualityIssue
+    ? {
+        title: `Ask for missing context: ${referentSummary}`,
+        detail: `${anchorSummary || 'The extracted entities'} are present, but the QRA cannot determine relevance because the referenced payload is absent. Agent response: "What do you mean by 'this payload'?"`,
+        status: 'failed' as StepStatus,
+      }
+    : unsupportedAnswerIds.length > 0
+    ? {
+        title: `Unsupported answer IDs: ${summarizeIds(unsupportedAnswerIds)}`,
+        detail: 'The reviewer should correct the answer or route the QRA through repair before approval.',
+        status: 'failed' as StepStatus,
+      }
+    : failedGates.length > 0
+      ? {
+          title: `Failed gates: ${summarizeIds(failedGates.map((gate) => formatGateLabel(gate.gate)), 2)}`,
+          detail: failedGates[0]?.detail || 'At least one evidence gate failed.',
+          status: 'failed' as StepStatus,
+        }
+      : !questionHasGrounding
+        ? {
+            title: 'Question grounding is missing',
+            detail: 'The reviewer should clarify or repair the QRA before relying on the answer.',
+            status: 'blocked' as StepStatus,
+          }
+        : {
+            title: `Recommended: ${responseMeta.label}`,
+            detail: verdictReason,
+            status: dispositionStatus,
+          }
+
   const primaryActionCount = shouldPromoteChat
     ? 1
     : isEditing
       ? [Boolean(onCancelEdit), Boolean(onSaveAndRerun)].filter(Boolean).length
       : [showRerunAction, Boolean(onEscalateToChat), Boolean(reviewActions)].filter(Boolean).length
   const footerColumns = variant === 'chat' || primaryActionCount <= 1 ? '1fr' : 'repeat(2, minmax(0, 1fr))'
+
+  if (variant === 'explorer') {
+    const traceRows = [
+      {
+        id: 'question',
+        number: 1,
+        Icon: MessageSquare,
+        title: 'Question Claim',
+        content: questionNode ?? <span style={{ color: EMBRY.dim }}>No question attached.</span>,
+        status: questionStatus,
+        label: hasBlockingQualityIssue ? 'Fail' : 'Identity',
+        detail: stepRows[0]?.detail,
+      },
+      {
+        id: 'entities',
+        number: 2,
+        Icon: ListTree,
+        title: 'Extracted Entities',
+        content: (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {(questionAnchorIds.length > 0 ? questionAnchorIds : questionEntityRefs.map((entry) => entry.id)).slice(0, 8).map((id) => (
+              <span key={`entity-pill-${id}`} style={{ borderRadius: 8, border: `1px solid ${EMBRY.blue}66`, background: `${EMBRY.blue}18`, color: '#bfdbfe', padding: '4px 8px', fontSize: 13, fontWeight: 750 }}>
+                {id}
+              </span>
+            ))}
+            {questionAnchorIds.length === 0 && questionEntityRefs.length === 0 && <span style={{ color: EMBRY.red }}>No reliable anchors resolved.</span>}
+          </div>
+        ),
+        status: questionStatus,
+        label: questionStatus === 'passed' ? 'Pass' : 'Fail',
+        detail: stepRows[0]?.detail,
+      },
+      {
+        id: 'controls',
+        number: 3,
+        Icon: Link2,
+        title: 'Grounded Controls',
+        content: (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {(groundedControlIds.length > 0 ? groundedControlIds : controlIds).slice(0, 6).map((id) => (
+              <button key={`control-pill-${id}`} type="button" onClick={() => onNavigateToControl(id)} style={{ borderRadius: 8, border: `1px solid ${EMBRY.green}66`, background: `${EMBRY.green}18`, color: '#bbf7d0', padding: '4px 8px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
+                {id}
+              </button>
+            ))}
+            {groundedControlIds.length === 0 && controlIds.length === 0 && <span style={{ color: EMBRY.red }}>No grounded controls available.</span>}
+          </div>
+        ),
+        status: groundedControlIds.length > 0 || controlIds.length > 0 ? 'passed' as StepStatus : 'failed' as StepStatus,
+        label: groundedControlIds.length > 0 || controlIds.length > 0 ? 'Pass' : 'Fail',
+        detail: stepRows[0]?.detail,
+      },
+      {
+        id: 'sources',
+        number: 4,
+        Icon: FileCheck2,
+        title: 'Evidence Sources',
+        content: (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {evidenceSourceLabels.slice(0, 5).map((source, idx) => (
+              <span key={`source-pill-${source}-${idx}`} style={{ borderRadius: 8, border: `1px solid ${EMBRY.green}55`, background: `${EMBRY.green}14`, color: '#bbf7d0', padding: '4px 8px', fontSize: 13, fontWeight: 750 }}>
+                {source}
+              </span>
+            ))}
+            {evidenceSourceLabels.length === 0 && <span style={{ color: EMBRY.amber }}>No source citations attached.</span>}
+          </div>
+        ),
+        status: evidenceSourceLabels.length > 0 ? 'passed' as StepStatus : 'pending' as StepStatus,
+        label: evidenceSourceLabels.length > 0 ? 'Pass' : 'Pending',
+        detail: stepRows[2]?.detail,
+      },
+      {
+        id: 'answer',
+        number: 5,
+        Icon: FileStack,
+        title: 'Answer Claims',
+        content: isEditing ? (
+          <textarea
+            value={editedAnswer}
+            onChange={(event) => onEditedAnswerChange?.(event.target.value)}
+            disabled={validating}
+            data-qid="qras:evidence:answer-editor"
+            data-qs-action="EDIT_ANSWER"
+            title="Edit answer draft"
+            style={{ width: '100%', minHeight: 92, resize: 'vertical', background: 'rgba(0,0,0,0.18)', border: `1px solid ${EMBRY.border}`, borderRadius: 8, color: EMBRY.white, fontSize: 13, lineHeight: 1.55, padding: 10, fontFamily: 'inherit' }}
+          />
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+            <div style={{ color: answerStatus === 'failed' ? '#fecaca' : EMBRY.white, lineHeight: 1.5 }}>
+              {answerNode || (responseText ? <MarkdownRenderer content={responseText} /> : <span style={{ color: EMBRY.dim }}>No answer attached.</span>)}
+            </div>
+            {unsupportedAnswerIds.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {unsupportedAnswerIds.map((id) => (
+                  <span key={`unsupported-claim-${id}`} style={{ borderRadius: 8, border: `1px solid ${EMBRY.red}66`, background: `${EMBRY.red}18`, color: '#fecaca', padding: '4px 8px', fontSize: 13, fontWeight: 750 }}>
+                    Unsupported: {id}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        ),
+        status: answerStatus,
+        label: answerStatus === 'passed' ? 'Pass' : answerStatus === 'blocked' ? 'Blocked' : 'Fail',
+        detail: stepRows[1]?.detail,
+      },
+      {
+        id: 'gates',
+        number: 6,
+        Icon: ShieldCheck,
+        title: 'Gates',
+        content: (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+            {liveGates.length > 0 ? liveGates.map((gate, idx) => (
+              <div key={`gate-row-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, color: gate.passed ? '#bbf7d0' : '#fecaca' }}>
+                {gate.passed ? <CheckCircle2 size={17} /> : <XCircle size={17} />}
+                <span>{formatGateLabel(gate.gate)}: {gate.detail}</span>
+              </div>
+            )) : (
+              <span style={{ color: verifyStatus === 'failed' ? '#fecaca' : EMBRY.dim }}>{verdictReason}</span>
+            )}
+          </div>
+        ),
+        status: verifyStatus,
+        label: verifyStatus === 'passed' ? 'Pass' : verifyStatus === 'pending' ? 'Pending' : 'Fail',
+        detail: stepRows[2]?.detail,
+      },
+      {
+        id: 'disposition',
+        number: 7,
+        Icon: Gavel,
+        title: 'Disposition',
+        content: (
+          <div>
+            <strong style={{ color: dispositionStatus === 'passed' ? EMBRY.green : EMBRY.amber }}>
+              {responseMeta.label === 'Needs Human Correction' ? 'Review required' : responseMeta.label}
+            </strong>
+            <br />
+            <span style={{ color: EMBRY.dim }}>{verdictReason}</span>
+          </div>
+        ),
+        status: dispositionStatus,
+        label: dispositionStatus === 'passed' ? 'Pass' : 'Review',
+        detail: stepRows[3]?.detail,
+      },
+    ]
+
+    const toneForLabel = (status: StepStatus) => statusTone(validating ? 'pending' : status)
+    const currentConfidence = confidence !== null ? Math.max(0, Math.min(100, Math.round(confidence))) : 0
+    const recommendedAction = hasBlockingQualityIssue || responseMeta.label === 'Clarify'
+      ? 'Clarify & rerun'
+      : unsupportedAnswerIds.length > 0 || failedGates.length > 0 || verifyStatus === 'failed'
+        ? 'Correct & rerun'
+        : outcome.state === 'passed'
+          ? 'Approve'
+          : 'Review'
+
+    return (
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', height: '100%', minHeight: 0, background: 'transparent', fontFamily: 'Inter, system-ui, sans-serif' }}>
+        <div style={{ padding: '0 18px 0', display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <section style={{ height: 46, borderRadius: 12, border: `1px solid ${EMBRY.green}55`, background: `linear-gradient(90deg, ${EMBRY.green}18, rgba(15,23,42,0.58))`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 13px', color: '#d6f7df', fontSize: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <CheckCircle2 size={17} />
+              <span>Corpus counts {error ? 'degraded' : 'healthy'}</span>
+              <span style={{ color: 'rgba(214,247,223,0.55)' }}>•</span>
+              <span>Detail loaded</span>
+              <span style={{ color: 'rgba(214,247,223,0.55)' }}>•</span>
+              <span>Evidence case {validating ? 'rerunning' : 'current'}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#b7c4d7' }}>
+              <span>{validating ? 'Rerunning now' : 'Last hydrated: just now'}</span>
+              <CheckCircle2 size={17} />
+            </div>
+          </section>
+
+          <section style={{ display: 'grid', gridTemplateColumns: '1.05fr .95fr', gap: 14 }}>
+            <article style={{ minHeight: 112, borderRadius: 14, border: `1px solid ${outcome.color}88`, background: `linear-gradient(180deg, ${outcome.color}14, rgba(10,16,26,0.76))`, padding: 18, display: 'flex', gap: 16, alignItems: 'center', overflow: 'hidden' }}>
+              <div style={{ width: 40, height: 40, display: 'grid', placeItems: 'center', borderRadius: 12, color: outcome.color, background: `${outcome.color}14`, flexShrink: 0 }}>
+                <ShieldAlert size={22} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 13, color: '#b7c4d7', marginBottom: 4 }}>Verdict</div>
+                <div style={{ fontSize: 20, fontWeight: 850, letterSpacing: -0.35, color: EMBRY.white, marginBottom: 5 }}>
+                  {hasBlockingQualityIssue ? 'QRA question is not standalone' : unsupportedAnswerIds.length > 0 ? 'Blocked by unsupported answer claims' : outcome.state === 'passed' ? 'Evidence gates passed' : 'Evidence requires review'}
+                </div>
+                <div style={{ fontSize: 13, color: '#b9c5d5', lineHeight: 1.45 }}>{verdictReason}</div>
+              </div>
+              <div style={{ marginLeft: 'auto', width: 78, height: 78, borderRadius: 999, display: 'grid', placeItems: 'center', background: `conic-gradient(${outcome.color} 0 ${Math.round(currentConfidence * 3.6)}deg, rgba(148,163,184,0.18) ${Math.round(currentConfidence * 3.6) + 1}deg 360deg)`, position: 'relative', flexShrink: 0 }}>
+                <div style={{ position: 'absolute', inset: 8, background: '#111827', borderRadius: 999 }} />
+                <span style={{ position: 'relative', zIndex: 1, fontWeight: 850, fontSize: 20 }}>{currentConfidence}%</span>
+              </div>
+            </article>
+            <article style={{ minHeight: 112, borderRadius: 14, border: `1px solid ${EMBRY.amber}88`, background: `linear-gradient(180deg, ${EMBRY.amber}14, rgba(10,16,26,0.76))`, padding: 18, display: 'flex', gap: 16, alignItems: 'center' }}>
+              <div style={{ width: 40, height: 40, display: 'grid', placeItems: 'center', borderRadius: 12, color: EMBRY.amber, background: `${EMBRY.amber}14`, flexShrink: 0 }}>
+                <RefreshCw size={22} />
+              </div>
+              <div>
+                <div style={{ fontSize: 13, color: EMBRY.amber, marginBottom: 4, fontWeight: 750 }}>Recommended action</div>
+                <div style={{ fontSize: 20, fontWeight: 850, letterSpacing: -0.35, color: EMBRY.white, marginBottom: 5 }}>{recommendedAction}</div>
+                <div style={{ fontSize: 13, color: '#b9c5d5', lineHeight: 1.45 }}>
+                  {recommendedAction === 'Approve' ? 'Evidence is aligned enough for approval.' : 'Repair the question or answer, then rerun the evidence case before approval.'}
+                </div>
+              </div>
+              <span style={{ marginLeft: 'auto', borderRadius: 7, padding: '4px 7px', fontSize: 12, fontWeight: 850, color: EMBRY.amber, border: `1px solid ${EMBRY.amber}77`, background: `${EMBRY.amber}18` }}>
+                {outcome.label === 'PASS' ? 'Pass' : 'Failed gate'}
+              </span>
+            </article>
+          </section>
+        </div>
+
+        <div style={{ minHeight: 0, padding: '14px 18px 0', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(280px, 320px)', gap: 14, overflow: 'hidden' }}>
+          <section style={{ minHeight: 0, borderRadius: 14, border: `1px solid ${EMBRY.border}`, background: 'rgba(12,19,31,0.68)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px', borderBottom: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.42)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9, fontWeight: 850, color: EMBRY.white }}>
+                Evidence Trace <Info size={14} color={EMBRY.dim} /> <small style={{ color: EMBRY.dim, fontWeight: 650 }}>7 sections</small>
+              </div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                <button type="button" onClick={() => setExpandedStep(expandedStep ? null : 'gates')} style={{ height: 34, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0 10px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
+                  <Expand size={15} /> Expand all
+                </button>
+                <button type="button" aria-label="Collapse trace panel" style={{ width: 34, height: 34, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.dim, display: 'grid', placeItems: 'center' }}>
+                  <PanelTop size={15} />
+                </button>
+              </div>
+            </div>
+            <div style={{ padding: 8, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 7 }}>
+              {traceRows.map((step) => {
+                const tone = toneForLabel(step.status)
+                const open = expandedStep === step.id
+                return (
+                  <section key={step.id} style={{ flexShrink: 0, borderRadius: 12, border: `1px solid ${step.status === 'failed' ? EMBRY.red : EMBRY.border}`, background: step.status === 'failed' ? `linear-gradient(180deg, ${EMBRY.red}14, rgba(17,27,43,0.72))` : 'linear-gradient(180deg, rgba(17,27,43,0.78), rgba(14,22,35,0.70))', overflow: 'hidden' }}>
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setExpandedStep(open ? null : step.id)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault()
+                          setExpandedStep(open ? null : step.id)
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        minHeight: step.id === 'answer' || step.id === 'gates' ? 86 : 58,
+                        display: 'grid',
+                        gridTemplateColumns: '40px 38px 160px minmax(260px,1fr) 110px 32px',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '10px 12px',
+                        color: EMBRY.white,
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <span style={{ width: 28, height: 28, display: 'grid', placeItems: 'center', borderRadius: 999, color: step.status === 'failed' ? '#fecaca' : '#bfdbfe', border: `1px solid ${step.status === 'failed' ? EMBRY.red : EMBRY.blue}88`, background: `${step.status === 'failed' ? EMBRY.red : EMBRY.blue}18`, fontWeight: 850 }}>{step.number}</span>
+                      <span style={{ color: '#c8d4e5', display: 'grid', placeItems: 'center' }}><step.Icon size={21} /></span>
+                      <span style={{ fontWeight: 850, fontSize: 14 }}>{step.title}</span>
+                      <div style={{ color: '#d2dce9', fontSize: 14, lineHeight: 1.55, minWidth: 0 }}>{step.content}</div>
+                      <span style={{ display: 'inline-flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, color: tone.color, fontWeight: 850, fontSize: 13 }}><span style={{ width: 9, height: 9, borderRadius: 999, background: tone.color }} />{step.label}</span>
+                      <ChevronDown size={16} style={{ color: EMBRY.dim, transform: open ? 'rotate(180deg)' : undefined }} />
+                    </div>
+                    {open && <div style={{ padding: '0 14px 14px 88px' }}>{step.detail}</div>}
+                  </section>
+                )
+              })}
+              {error && (
+                <div style={{ display: 'flex', gap: 8, padding: '10px 12px', borderRadius: 8, border: `1px solid ${EMBRY.red}55`, backgroundColor: `${EMBRY.red}10`, color: EMBRY.red, fontSize: 12, lineHeight: 1.45 }}>
+                  <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 1 }} />
+                  <span>{error}</span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section style={{ minHeight: 0, borderRadius: 14, border: `1px solid ${EMBRY.border}`, background: 'linear-gradient(180deg, rgba(13,21,34,0.88), rgba(8,13,22,0.78))', padding: 18, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <div style={{ display: 'flex', gap: 9, alignItems: 'center', fontWeight: 900, fontSize: 17, color: EMBRY.white }}>Evidence Flow <Info size={14} color={EMBRY.dim} /></div>
+            </div>
+            <EvidencePathSummary nodes={evidenceFlowNodes} advisoryNodes={advisoryFlowNodes} reviewerFocus={reviewerFocus} onOpenStep={(stepId) => setExpandedStep(stepId)} />
+          </section>
+        </div>
+
+        <footer style={{ margin: '14px 18px 16px', minHeight: 86, border: `1px solid ${EMBRY.border}`, borderRadius: 14, background: 'rgba(13,21,34,0.86)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px', boxShadow: '0 -8px 36px rgba(0,0,0,0.18)' }}>
+          <button type="button" style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 9, padding: '0 14px', fontSize: 14, fontWeight: 750 }}>
+            <MessageSquarePlus size={16} /> Add internal note
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {reviewActions}
+            {isEditing ? (
+              <>
+                {onCancelEdit && <button type="button" onClick={onCancelEdit} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.dim, padding: '0 14px', fontWeight: 800 }}>Cancel</button>}
+                {onSaveAndRerun && <button type="button" onClick={onSaveAndRerun} disabled={validating} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.blue}88`, background: EMBRY.blue, color: EMBRY.white, padding: '0 16px', fontWeight: 850 }}>Save & rerun</button>}
+              </>
+            ) : (
+              <>
+                {!showEditAction && onRunValidation && (
+                  <button type="button" data-qid="qras:action:validate-evidence" data-qs-action="VALIDATE_EVIDENCE" onClick={onRunValidation} disabled={validating} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.blue}88`, background: EMBRY.blue, color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 9, padding: '0 16px', fontSize: 14, fontWeight: 850, cursor: validating ? 'wait' : 'pointer' }}>
+                    <RefreshCw size={16} /> {validating ? 'Rerunning' : 'Correct & rerun'}
+                  </button>
+                )}
+                {onStartEdit && (
+                  <button type="button" data-qid="qras:action:edit-answer" data-qs-action="EDIT_ANSWER" onClick={onStartEdit} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.blue}88`, background: EMBRY.blue, color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 9, padding: '0 16px', fontSize: 14, fontWeight: 850, cursor: 'pointer' }}>
+                    <RefreshCw size={16} /> Correct & rerun
+                  </button>
+                )}
+                {onEscalateToChat && (
+                  <button type="button" data-qid="qras:action:refine-in-chat" data-qs-action="REFINE_IN_CHAT" onClick={onEscalateToChat} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 9, padding: '0 14px', fontSize: 14, fontWeight: 750 }}>
+                    <UserRoundPlus size={16} /> Escalate
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </footer>
+      </div>
+    )
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, backgroundColor: EMBRY.bg }}>
@@ -1120,6 +1667,13 @@ export function EvidenceCaseTrace({
             })}
           </div>
         </section>
+
+        <EvidencePathSummary
+          nodes={evidenceFlowNodes}
+          advisoryNodes={advisoryFlowNodes}
+          reviewerFocus={reviewerFocus}
+          onOpenStep={(stepId) => setExpandedStep(stepId)}
+        />
 
         {showCaeGapReview && (
           <section

@@ -176,6 +176,9 @@
 .press-scale:active {
   transform: scale(0.96);
 }
+.press-scale:hover {
+  filter: brightness(1.08);
+}
 
 /* Row hover with interruptible transition (replaces inline mutation) */
 .scillm-row {
@@ -195,6 +198,13 @@
 .scillm-focus:focus-visible {
   outline: 2px solid #4a9eff;
   outline-offset: 2px;
+}
+
+/* Global keyboard affordance for dark operational surfaces. */
+:where(button, [role="button"], input, textarea, select, a, summary, [tabindex]):focus-visible {
+  outline: 2px solid #62a8ff !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(98, 168, 255, 0.18) !important;
 }
 
 /* Text wrapping helpers */

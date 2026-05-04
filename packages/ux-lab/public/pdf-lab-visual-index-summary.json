@@ -1,0 +1,16 @@
+{
+  "cache_only": false,
+  "cached_image_reused": 0,
+  "cached_image_written": 858,
+  "collection": "memory_chunks_mm_jina_v4_1024",
+  "image_cache_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-evidence/pdf-lab-toc-repair-20260503T124447Z/vector-cache/jina-v4-image-mm-1024",
+  "indexed_image": 858,
+  "indexed_text": 0,
+  "mode": "apply",
+  "remaining_image_after_skip": 858,
+  "remaining_text_after_skip": 0,
+  "skipped_existing_image": 0,
+  "skipped_existing_text": 0,
+  "skipped_uncached_image": 0,
+  "upsert_cached_only": false
+}

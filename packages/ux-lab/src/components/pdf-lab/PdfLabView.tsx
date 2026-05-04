@@ -269,11 +269,12 @@ const PDF_LAB_REAL_NIST_PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5
 type PdfLabProductionStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage'
 
 function resolveProductionStage(subpath: string | undefined): PdfLabProductionStage | undefined {
-  if (subpath === 'initial-sweep') return 'initial-sweep'
-  if (subpath === 'parity-audit') return 'parity-audit'
-  if (subpath === 'surgical-triage' || subpath === 'triage') return 'surgical-triage'
-  if (subpath === 'evidence-qa' || subpath === 'nico-qa') return 'evidence-qa'
-  if (subpath === 'coverage' || subpath === 'status') return 'coverage'
+  const stage = subpath?.split('/')[0]
+  if (stage === 'initial-sweep') return 'initial-sweep'
+  if (stage === 'parity-audit') return 'parity-audit'
+  if (stage === 'surgical-triage' || stage === 'triage') return 'surgical-triage'
+  if (stage === 'evidence-qa' || stage === 'nico-qa') return 'evidence-qa'
+  if (stage === 'coverage' || stage === 'status') return 'coverage'
   return undefined
 }
 

@@ -1,0 +1,479 @@
+version: 1
+kind: orchestrate-plan
+repo_root: /home/graham/workspace/experiments/pi-mono
+
+metadata:
+  title: "SPARTA QRA Annotation: blocker fixes before React page update"
+  created: "2026-05-03"
+  plan_type: hybrid
+  goal: >
+    Make the SPARTA QRA page safe and usable as a high-throughput annotation
+    surface by fixing keyboard accessibility, recovery diagnostics, source-vs-
+    advisory evidence separation, stale corpus counts, and blocked approval
+    affordances before broader redesign implementation.
+  primary_surface: "http://localhost:3002/#sparta-explorer/qras"
+  governance_report: "/mnt/storage12tb/skills/governance/reports/e0813c5823270a6e/20260503T143711Z/report.json"
+  primary_persona:
+    name: Brandon Bailey
+    role: Aerospace cybersecurity and compliance assessment reviewer
+    concern: >
+      Needs to evaluate LLM-generated QRAs quickly without confusing source-
+      grounded evidence, advisory persona repair reasoning, pipeline failures,
+      and human approval state.
+
+questions_blockers:
+  - none
+
+compliance_governance:
+  principle: "Annotation workbench, not truth engine"
+  verdict_authority: >
+    Source-grounded evidence-case gates, cited controls, deterministic fetch
+    status, and explicit human review decisions are authoritative. Persona
+    recommendations and gap-review prose are advisory repair guidance only.
+  default_review_state: "NOT_HUMAN_APPROVED until a reviewer explicitly approves after evidence gates allow it"
+  prohibited_claims:
+    - "Do not show failed or unavailable corpus counts as true zeroes."
+    - "Do not enable Approve when the QRA body is missing, evidence is failed, or gates are blocked."
+    - "Do not visually merge persona gap-review recommendations with source-grounded evidence."
+    - "Do not advance to the next QRA after a review write fails."
+  reviewer_checkpoints:
+    - "Before approval is persisted."
+    - "Before an adversarial fixture is retained as training data."
+    - "Before a corrected QRA is treated as a new candidate for blessing."
+    - "Before evidence-case failure is escalated as a corpus/data issue."
+
+capability_overlap:
+  - >
+    /memory recall found the existing /create-evidence-case CAE architecture:
+    question/control ID -> /extract-entities -> graph traversal -> crosswalk
+    chains -> gates -> optional Lean4 and GSN/SACM outputs. The QRA page must
+    CALL that evidence model and must not reimplement evidence authority in UI.
+  - >
+    /memory recall found qra-review as the human-in-the-loop review capability.
+    The page should EXTEND the QRA review workflow, not create a parallel approval
+    vocabulary.
+  - >
+    EXTEND packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx for
+    queue state, deep-link recovery, keyboard behavior, evidence filters, action
+    gating, and review-write feedback.
+  - >
+    EXTEND packages/ux-lab/src/hooks/useSpartaCollections.ts for status-count
+    error/staleness metadata and filtered query support if server-side evidence
+    filtering is added.
+  - >
+    EXTEND packages/ux-lab/server/index.ts for explicit QRA diagnostics/export
+    and any status-count metadata required to distinguish stale, failed, and true
+    zero states.
+  - >
+    EXTEND packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx and
+    packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx for
+    source-grounded vs advisory separation, blocked rationale, and the compact
+    evidence-flow DAG.
+  - >
+    CALL /review-design after implementation because the page is an operator
+    annotation surface with nontrivial visual hierarchy and action safety risks.
+  - >
+    CALL /test-interactions and the repository CDP hook for rendered route
+    verification before claiming completion.
+
+execution:
+  max_concurrency: 1
+  scheduling_policy: dependency_only
+  wave_barrier: false
+  dirty_worktree_notice: >
+    Governance observed existing local modifications in QRAsView.tsx and
+    useSpartaCollections.ts. Implementers must read current file contents and
+    preserve unrelated user changes; do not revert the dirty worktree.
+  notes:
+    - "Run /review-plan before /orchestrate."
+    - "Do not start React implementation until this plan validates."
+    - "For any task that is expected to run longer than 5 minutes, set up watchdog monitoring per SPARTA AGENTS.md."
+
+lanes:
+  - id: baseline
+    label: "Baseline and contracts"
+  - id: code
+    label: "Bounded implementation"
+  - id: qa
+    label: "Validation and design review"
+
+test_manifest:
+  surface: "SPARTA QRA Annotation"
+  url: "http://localhost:3002/#sparta-explorer/qras?qra=000a5d68cbd446e5"
+  required_states:
+    - id: blocked-deeplink
+      visual: "Center pane shows recovery trace, not passive empty evidence UI."
+      interactions:
+        - "Retry hydrate"
+        - "Clear filters"
+        - "Try all sources"
+        - "Copy QRA key"
+        - "Open diagnostics"
+        - "Escalate missing/deep-link failure"
+    - id: loaded-evidence-failed
+      visual: "QRA body is visible; Approve is disabled with an explicit gate rationale; Reject/Correct/Escalate remain available as appropriate."
+      interactions:
+        - "Open failed gate"
+        - "Correct & rerun"
+        - "Keyboard shortcut does not approve blocked QRA"
+    - id: stale-counts
+      visual: "Corpus count failures or queue/count conflicts show stale/ERR/unknown states, never true zeroes."
+      interactions:
+        - "Retry counts"
+        - "Open diagnostics/export"
+    - id: evidence-advisory-separation
+      visual: "Source-grounded trace and dashed advisory persona repair branch are visually and semantically distinct."
+      interactions:
+        - "Click evidence-flow nodes to open matching trace sections"
+    - id: keyboard-focus
+      visual: "All actionable buttons, rows, chips, and trace nodes expose a visible focus ring."
+      interactions:
+        - "Tab through queue, trace, evidence-flow, and footer actions"
+
+tasks:
+  - id: T00
+    title: "Confirm QRA annotation design-board and PNG evidence prerequisite"
+    lane: baseline
+    runner: local
+    backend: ""
+    mode: ""
+    agent: design-reviewer
+    depends_on: []
+    command: "cd /home/graham/workspace/experiments/pi-mono && test -s packages/ux-lab/docs/design/sparta-qra-annotation-blockers/DESIGN_BOARD.md && test -s packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.html && test -s packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.png"
+    implementation:
+      - "PREREQUISITE: /create-design-board evidence exists before implementation begins."
+      - "PNG evidence: packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.png."
+      - "Agent: Brandon Bailey."
+      - "**Gate**: design board includes functional spec, persona rationale, visual mockup, source/advisory separation, blocked approval, and recovery-trace expectations."
+    tests:
+      - "test -s packages/ux-lab/docs/design/sparta-qra-annotation-blockers/DESIGN_BOARD.md"
+      - "test -s packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.png"
+    definition_of_done:
+      command: "test -s /home/graham/workspace/experiments/pi-mono/packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.png"
+      assertion: "exit_code == 0"
+
+  - id: T0
+    title: "Verify active QRA route, API health, and source contracts"
+    lane: baseline
+    runner: local
+    backend: ""
+    mode: ""
+    agent: planning-specialist
+    depends_on:
+      - T00
+    command: "cd /home/graham/workspace/experiments/pi-mono && test -f packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx && test -f packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx && test -f packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx && test -f packages/ux-lab/src/hooks/useSpartaCollections.ts && test -f packages/ux-lab/server/index.ts && curl -fsS http://localhost:3001/api/health >/tmp/sparta-qra-health.json"
+    implementation:
+      - "PREREQUISITE: /create-design-board evidence from T00 exists before this UI source contract check dispatches implementation work."
+      - "**PNG evidence**: packages/ux-lab/docs/design/sparta-qra-annotation-blockers/figures/qra-annotation-flow-mockup.png; implemented route screenshot will be captured by T7 for /review-design comparison."
+      - "Confirm the implementation target is packages/ux-lab, not the SPARTA Python repo."
+      - "Confirm the active QRA page source, evidence trace, hook, and server endpoint files exist."
+      - "Check API health without requiring status-count success, because count failure is one of the states being designed."
+      - "**Gate**: implementation source files exist and API health responds before code edits are dispatched."
+    tests:
+      - "curl -fsS http://localhost:3001/api/health"
+    definition_of_done:
+      command: "test -s /tmp/sparta-qra-health.json"
+      assertion: "exit_code == 0"
+
+  - id: T1
+    title: "Add QRA accessibility and keyboard foundation"
+    lane: code
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    agent: frontend-accessibility
+    depends_on:
+      - T0
+    dirty_worktree_policy: isolated_worktree
+    max_rounds: 4
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/src/index.css
+      - packages/ux-lab/src/App.css
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/src/index.css
+      - packages/ux-lab/src/App.css
+    context_boundary: >
+      Own focus visibility, ARIA semantics, row/button keyboard behavior, and
+      safe shortcut routing. Do not change backend contracts or review-write
+      persistence in this task.
+    prompt: >
+      Implement a QRA-page accessibility foundation. Add global visible
+      :focus-visible treatment that is not hidden by dark theme styling. Ensure
+      queue rows, status filters, trace rows, evidence-flow nodes, and footer
+      actions have keyboard semantics, labels, and stable focus order. Route
+      keyboard shortcuts through the same action eligibility checks used by
+      buttons, so blocked approval cannot be triggered from the keyboard.
+    implementation:
+      - "Add consistent visible focus styles for dark UI controls."
+      - "Make row and trace interactions keyboard reachable with clear accessible labels."
+      - "Centralize shortcut handling behind action eligibility predicates."
+      - "**Gate**: keyboard focus is visible and blocked approval cannot be triggered by shortcut."
+    skills:
+      - best-practices-react
+      - web-design-guidelines
+      - test-interactions
+    tests:
+      - "npm run build"
+      - "Keyboard blind check: Tab reaches queue, trace, evidence-flow, and footer actions in sensible order."
+    blind_tests:
+      - "Run a Playwright keyboard-only traversal of #sparta-explorer/qras and assert focused elements remain visible."
+      - "Attempt approve shortcut on a blocked evidence case and assert no approval write is issued."
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "exit_code == 0"
+
+  - id: T2
+    title: "Implement recovery diagnostics and stale-count semantics"
+    lane: code
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    agent: frontend-backend-integration
+    depends_on:
+      - T1
+    dirty_worktree_policy: isolated_worktree
+    max_rounds: 5
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/hooks/useSpartaCollections.ts
+      - packages/ux-lab/server/index.ts
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/hooks/useSpartaCollections.ts
+      - packages/ux-lab/server/index.ts
+      - packages/ux-lab/package.json
+    context_boundary: >
+      Own operational data state: deep-link hydration failures, status-count
+      errors, stale/conflicting corpus counts, diagnostics export payloads, and
+      recovery controls. Do not redesign the normal evidence trace visuals in
+      this task.
+    prompt: >
+      Make blocked deep-link and count-failure states audit-grade. When a deep
+      link cannot hydrate a QRA document, render a recovery trace with Retry
+      hydrate, Clear filters, Try all sources, Copy QRA key, Open diagnostics,
+      and Escalate actions. Add explicit status-count error/stale metadata so
+      unavailable counts render as ERR/unknown/stale, never as true zero. Add
+      a diagnostics/export payload that includes requested key, source, filters,
+      endpoint statuses, timestamps, loaded row count, corpus total/count state,
+      and last detail/count error.
+    implementation:
+      - "Expose count error/stale metadata from useQRAStatusCounts."
+      - "Add or extend server diagnostics endpoint if existing route data is insufficient."
+      - "Render deep-link recovery trace as the center pane when !current && deepLinkKey."
+      - "Show stale count indicators when queue data and corpus count state disagree."
+      - "**Gate**: unavailable or stale count data renders as ERR/unknown/stale and diagnostics export includes endpoint status."
+    skills:
+      - best-practices-react
+      - qra-review
+      - test-interactions
+    tests:
+      - "npm run build"
+      - "Manual curl of diagnostics endpoint after implementation."
+    blind_tests:
+      - "Force /api/qra/status-counts to return 502 and assert UI shows ERR/stale, not 0."
+      - "Open a missing qra deep link and assert document-specific actions are hidden."
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "exit_code == 0"
+
+  - id: T3
+    title: "Gate QRA annotation actions by loaded document and evidence state"
+    lane: code
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    agent: frontend-workflow
+    depends_on:
+      - T2
+    dirty_worktree_policy: isolated_worktree
+    max_rounds: 5
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/src/hooks/useSpartaCollections.ts
+    context_boundary: >
+      Own action eligibility and persistence feedback for annotation actions.
+      Do not alter evidence-case generation logic or source-count APIs in this
+      task.
+    prompt: >
+      Implement safe QRA action semantics. Hide Approve, Reject, Correct & rerun,
+      and evidence-case actions when the QRA document is not loaded. When the QRA
+      is loaded but evidence is pending/failed/blocked/adversarial, show document
+      actions with explicit disabled reasons and promote Correct & rerun,
+      Reject, Retain as adversarial fixture, or Escalate as appropriate. Block
+      approval in both buttons and keyboard shortcuts until the QRA body is loaded
+      and evidence gates allow approval. Persist review decisions through an
+      explicit success/failure path and do not auto-advance if persistence fails.
+    implementation:
+      - "Create a single action eligibility model used by footer buttons and shortcuts."
+      - "Render blocked-Approve rationale in the footer and header/action area."
+      - "Make review write success/failure visible; no silent catch with auto-advance."
+      - "Treat adversarial/ambiguous QRA state as repair/quarantine workflow, not normal approval."
+      - "**Gate**: Approve is hidden or disabled with rationale unless QRA body and passing evidence gates are present."
+    skills:
+      - best-practices-react
+      - qra-review
+      - create-evidence-case
+    tests:
+      - "npm run build"
+      - "Manual blocked-approval and write-failure checks."
+    blind_tests:
+      - "Simulate memory/review write failure and assert the selected QRA does not advance."
+      - "Select adversarial CAPEC-649 fixture and assert Approve is unavailable or blocked with rationale."
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "exit_code == 0"
+
+  - id: T4
+    title: "Separate source-grounded evidence from advisory CAE repair flow"
+    lane: code
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    agent: Brandon Bailey
+    depends_on:
+      - T3
+    dirty_worktree_policy: isolated_worktree
+    max_rounds: 5
+    allowlist:
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+    read_context:
+      - packages/ux-lab/src/components/sparta/explorer/EvidenceView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+    context_boundary: >
+      Own evidence trace presentation, advisory labels, and compact evidence
+      flow visualization. Do not change review persistence or backend endpoints
+      in this task.
+    prompt: >
+      Make the evidence case read like a debuggable trace. Add explicit labels
+      and visual separation for source-grounded evidence versus advisory persona
+      gap-review/repair recommendations. Add a compact, bounded Evidence Flow
+      DAG that maps Question -> Extracted Entities -> Grounded Controls ->
+      Evidence Sources -> Answer Claims -> Gates -> Disposition, with a dashed
+      advisory branch for Failed Gate -> Persona Gap Reviews -> Judge
+      Recommendation -> Proposed Correction -> Rerun Evidence Case. Keep the
+      graph secondary to the textual trace and clickable to open/highlight the
+      matching trace section.
+    implementation:
+      - "Agent: Brandon Bailey."
+      - "Collapsed trace summary shows verdict, anchors, unsupported IDs, gate state, and recommended action."
+      - "Advisory branch uses dashed styling and explicit non-authoritative labeling."
+      - "Evidence-flow nodes are keyboard reachable and click/focus opens the matching trace row."
+      - "Clean pass cases may show the graph collapsed or compact; failed/review cases show failure location."
+      - "**Gate**: source-grounded evidence and advisory persona repair flow are visually and semantically distinct."
+    skills:
+      - best-practices-react
+      - create-evidence-case
+      - create-gsn-diagram
+      - web-design-guidelines
+    tests:
+      - "npm run build"
+      - "Visual check of failed, blocked, and clean evidence states."
+    blind_tests:
+      - "Assert advisory persona text is never styled as source-grounded evidence."
+      - "Click Answer Claims and Gates nodes and assert corresponding trace details open."
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "exit_code == 0"
+
+  - id: T5
+    title: "Update QRA interaction verification manifests"
+    lane: qa
+    runner: code-runner
+    backend: codex
+    mode: iterative
+    agent: qa-automation
+    depends_on:
+      - T4
+    dirty_worktree_policy: isolated_worktree
+    max_rounds: 3
+    allowlist:
+      - packages/ux-lab/test-interactions-manifest.json
+      - packages/ux-lab/test-interactions/manifests/sparta-qra-evidence-lineage.yaml
+      - packages/ux-lab/sparta-explorer-full-manifest.json
+    read_context:
+      - packages/ux-lab/test-interactions-manifest.json
+      - packages/ux-lab/test-interactions/manifests/sparta-qra-evidence-lineage.yaml
+      - packages/ux-lab/sparta-explorer-full-manifest.json
+      - packages/ux-lab/src/components/sparta/explorer/QRAsView.tsx
+      - packages/ux-lab/src/components/sparta/shared/EvidenceCaseTrace.tsx
+    context_boundary: >
+      Own only test-interactions and visual verification manifests. Do not edit
+      product source in this task.
+    prompt: >
+      Add or update QRA interaction manifest coverage for keyboard traversal,
+      blocked deep-link recovery, status-count stale/error display, blocked
+      approval rationale, review-write failure behavior, and evidence-flow
+      source-versus-advisory separation.
+    implementation:
+      - "Add deterministic route and state descriptions for the QRA annotation page."
+      - "Include deep-link fixture qra=000a5d68cbd446e5 when available."
+      - "Declare expected action visibility for unloaded, evidence-pending, evidence-failed, and approval-ready states."
+      - "**Gate**: manifests cover blocked deep link, stale counts, blocked approval, keyboard focus, and advisory/source separation."
+    skills:
+      - test-interactions
+      - qra-review
+    tests:
+      - "json/yaml parse checks"
+      - "npm run build"
+    blind_tests:
+      - "Run test-interactions manifest parser and assert the new QRA cases are discoverable."
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build"
+      assertion: "exit_code == 0"
+
+  - id: T6
+    title: "Run local build, lint, tests, and API smoke checks"
+    lane: qa
+    runner: local
+    backend: ""
+    mode: ""
+    agent: qa-automation
+    depends_on:
+      - T5
+    command: "cd /home/graham/workspace/experiments/pi-mono/packages/ux-lab && npm run build && npm run lint && npm run test && curl -fsS http://localhost:3001/api/health >/tmp/sparta-qra-post-health.json"
+    implementation:
+      - "Run the project verification suite after source and manifest updates."
+      - "Record any pre-existing lint/test failures with exact output and do not hide them."
+      - "**Gate**: build, lint, tests, and API health smoke check complete successfully or failures are recorded as blockers."
+    tests:
+      - "npm run build"
+      - "npm run lint"
+      - "npm run test"
+      - "curl -fsS http://localhost:3001/api/health"
+    definition_of_done:
+      command: "test -s /tmp/sparta-qra-post-health.json"
+      assertion: "exit_code == 0"
+
+  - id: T7
+    title: "Run rendered UI verification and design review handoff"
+    lane: qa
+    runner: local
+    backend: ""
+    mode: ""
+    agent: design-reviewer
+    depends_on:
+      - T6
+    command: "cd /home/graham/workspace/experiments/pi-mono && ~/.codex/hooks/verify-ui-cdp.sh --url http://localhost:3002/#sparta-explorer/qras?qra=000a5d68cbd446e5 --name sparta-qra-annotation-blockers && test -s .codex/ui-verification/latest.json"
+    implementation:
+      - "Verify the live rendered route with CDP after implementation."
+      - "Check layout, spacing, footer/action bar, queue state, recovery trace, evidence-flow graph, advisory labels, and focus visibility."
+      - "Prepare the screenshot and diff bundle for /review-design if visual changes are substantial."
+      - "**Gate**: fresh .codex/ui-verification/latest.json marker exists and screenshot is suitable for /review-design comparison against mockup PNG evidence."
+    tests:
+      - "~/.codex/hooks/verify-ui-cdp.sh --url http://localhost:3002/#sparta-explorer/qras?qra=000a5d68cbd446e5 --name sparta-qra-annotation-blockers"
+    definition_of_done:
+      command: "test -s /home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json"
+      assertion: "exit_code == 0"

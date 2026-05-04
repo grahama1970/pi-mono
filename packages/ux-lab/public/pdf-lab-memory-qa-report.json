@@ -10,27 +10,27 @@
   },
   "gates": [
     {
-      "detail": "492 page images, 357 section crops, and 27628 element crops for 27628 extracted elements.",
+      "detail": "492 page images, 358 section crops, and 27628 element crops for 27986 extracted elements.",
       "name": "full_crop_coverage",
       "passed": true
     },
     {
-      "detail": "ArangoDB memory upsert applied via canonical /upsert.",
+      "detail": "Run with --apply-memory to persist evidence metadata.",
       "name": "memory_upsert",
-      "passed": true
+      "passed": false
     },
     {
-      "detail": "pages 492/492, sections 357/357, elements 27628/27628 have text vectors; 8/8 element recall checks passed.",
+      "detail": "elements 27628/27628 have required text vectors; page text vectors 0/492 and section text vectors 352/358 are non-blocking metadata; 8/8 element recall checks passed.",
       "name": "text_qdrant_recall",
       "passed": true
     },
     {
-      "detail": "pages 492/492, sections 357/357, required table/figure/image elements 8/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
+      "detail": "pages 492/492, sections 358/358, required table/figure/image elements 8/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
       "name": "visual_qdrant_recall",
       "passed": true
     }
   ],
-  "generated_at": "2026-05-02T14:01:40.785566+00:00",
+  "generated_at": "2026-05-03T13:47:02.825482+00:00",
   "implemented": true,
   "notes": [
     "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
@@ -40,7 +40,7 @@
   ],
   "passed": true,
   "policy": "Final agent QA must store extracted page, section, and element metadata/crops in ArangoDB memory, index text vectors for every extracted element, index visual vectors for pages, sections, tables, and figures/images, and verify stratified recall against original page/crop evidence. Paragraph/list/header/footer crop image vectors are optional background/on-demand work.",
-  "run_id": "full-memory-qa-toc-20260501T200945Z",
+  "run_id": "pdf-lab-toc-repair-20260503T124447Z",
   "sample_checks": [
     {
       "element_key": "elt:fc63bcd61715d018:12:ecf9df308750838f",
@@ -49,7 +49,7 @@
       "returned_keys": [
         "elt:fc63bcd61715d018:12:ecf9df308750838f",
         "elt:fc63bcd61715d018:12:ecf9df308750838f",
-        "elt:fc63bcd61715d018:12:ecf9df308750838f",
+        "section:12:5878e8265fe73207",
         "section:12:5878e8265fe73207",
         "section:12:5878e8265fe73207"
       ],
@@ -75,10 +75,10 @@
       "element_type": "paragraph",
       "page": 1,
       "returned_keys": [
-        "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
-        "elt:fc63bcd61715d018:130:f159f507aa96e993",
         "elt:fc63bcd61715d018:130:f159f507aa96e993",
         "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
+        "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
+        "elt:fc63bcd61715d018:130:f159f507aa96e993",
         "elt:fc63bcd61715d018:258:61f035d2000668bf"
       ],
       "status": "passed",
@@ -104,10 +104,10 @@
       "page": 2,
       "returned_keys": [
         "elt:fc63bcd61715d018:2:06e296a9a6a54319",
+        "elt:fc63bcd61715d018:2:06e296a9a6a54319",
         "section:2:06e296a9a6a54319",
-        "elt:fc63bcd61715d018:20:0da21163600473fd",
-        "elt:fc63bcd61715d018:19:2a6db81d809e6d2c",
-        "elt:fc63bcd61715d018:19:387fc3c201b5aa5d"
+        "elt:fc63bcd61715d018:22:9840cbffb2dacbf9",
+        "elt:fc63bcd61715d018:24:92c8c2282f5a795e"
       ],
       "status": "passed",
       "text_hash": "14eb048e06511f2b275196c1ce6d5667779a85441386177bab59daee3a0d707a"
@@ -121,7 +121,7 @@
         "elt:fc63bcd61715d018:3:412657beb6164d87",
         "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
         "elt:fc63bcd61715d018:5:85b058849a407bef",
-        "elt:fc63bcd61715d018:411:7fecdc52e4e2c8fb"
+        "elt:fc63bcd61715d018:416:6d82e2d6fca43eed"
       ],
       "status": "passed",
       "text_hash": "0df93c9d75e13a9e94874c7f4268cbe7a86e8c853603bb339f481f0c697246f8"
@@ -156,33 +156,34 @@
     }
   ],
   "schema_version": "pdf_lab_memory_qdrant_qa_report.v1",
-  "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
   "summary": {
+    "crop_required_extraction_elements": 27628,
     "evidence_elements": 27628,
     "evidence_pages": 492,
-    "evidence_sections": 357,
-    "extraction_elements": 27628,
+    "evidence_sections": 358,
+    "extraction_elements": 27986,
     "full_crop_coverage": true,
-    "memory_upsert_applied": true,
-    "memory_upserted_element_images": 27628,
-    "memory_upserted_elements": 27628,
-    "memory_upserted_page_images": 492,
-    "memory_upserted_pages": 492,
-    "memory_upserted_section_images": 357,
-    "memory_upserted_sections": 357,
+    "memory_upsert_applied": false,
+    "memory_upserted_element_images": 0,
+    "memory_upserted_elements": 0,
+    "memory_upserted_page_images": 0,
+    "memory_upserted_pages": 0,
+    "memory_upserted_section_images": 0,
+    "memory_upserted_sections": 0,
     "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
     "sample_checks": 8,
     "sample_checks_passed": 8,
     "text_indexed_elements": 27628,
-    "text_indexed_pages": 492,
-    "text_indexed_sections": 357,
-    "text_indexed_total": 28477,
+    "text_indexed_pages": 0,
+    "text_indexed_sections": 352,
+    "text_indexed_total": 27980,
     "visual_indexed_elements": 8,
     "visual_indexed_optional_elements": 0,
     "visual_indexed_pages": 492,
     "visual_indexed_required_elements": 8,
-    "visual_indexed_sections": 357,
-    "visual_indexed_total": 857,
+    "visual_indexed_sections": 358,
+    "visual_indexed_total": 858,
     "visual_optional_elements": 27620,
     "visual_required_element_types": [
       "figure",
@@ -191,138 +192,5 @@
     ],
     "visual_required_elements": 8
   },
-  "upsert_results": {
-    "pdf_element_has_image": {
-      "batches": 277,
-      "collection": "pdf_element_has_image",
-      "document_count": 27628,
-      "last_response": {
-        "collection": "pdf_element_has_image",
-        "errors": [],
-        "inserted": 0,
-        "total": 28,
-        "updated": 28
-      }
-    },
-    "pdf_element_images": {
-      "batches": 277,
-      "collection": "pdf_element_images",
-      "document_count": 27628,
-      "last_response": {
-        "collection": "pdf_element_images",
-        "errors": [],
-        "inserted": 0,
-        "total": 28,
-        "updated": 28
-      }
-    },
-    "pdf_elements": {
-      "batches": 277,
-      "collection": "pdf_elements",
-      "document_count": 27628,
-      "last_response": {
-        "collection": "pdf_elements",
-        "errors": [],
-        "inserted": 0,
-        "total": 28,
-        "updated": 28
-      }
-    },
-    "pdf_extraction_run_has_artifact": {
-      "batches": 285,
-      "collection": "pdf_extraction_run_has_artifact",
-      "document_count": 28477,
-      "last_response": {
-        "collection": "pdf_extraction_run_has_artifact",
-        "errors": [],
-        "inserted": 0,
-        "total": 77,
-        "updated": 77
-      }
-    },
-    "pdf_extraction_runs": {
-      "batches": 1,
-      "collection": "pdf_extraction_runs",
-      "document_count": 1,
-      "last_response": {
-        "collection": "pdf_extraction_runs",
-        "errors": [],
-        "inserted": 0,
-        "total": 1,
-        "updated": 1
-      }
-    },
-    "pdf_page_has_image": {
-      "batches": 5,
-      "collection": "pdf_page_has_image",
-      "document_count": 492,
-      "last_response": {
-        "collection": "pdf_page_has_image",
-        "errors": [],
-        "inserted": 0,
-        "total": 92,
-        "updated": 92
-      }
-    },
-    "pdf_page_images": {
-      "batches": 5,
-      "collection": "pdf_page_images",
-      "document_count": 492,
-      "last_response": {
-        "collection": "pdf_page_images",
-        "errors": [],
-        "inserted": 0,
-        "total": 92,
-        "updated": 92
-      }
-    },
-    "pdf_pages": {
-      "batches": 5,
-      "collection": "pdf_pages",
-      "document_count": 492,
-      "last_response": {
-        "collection": "pdf_pages",
-        "errors": [],
-        "inserted": 0,
-        "total": 92,
-        "updated": 92
-      }
-    },
-    "pdf_section_has_image": {
-      "batches": 4,
-      "collection": "pdf_section_has_image",
-      "document_count": 357,
-      "last_response": {
-        "collection": "pdf_section_has_image",
-        "errors": [],
-        "inserted": 0,
-        "total": 57,
-        "updated": 57
-      }
-    },
-    "pdf_section_images": {
-      "batches": 4,
-      "collection": "pdf_section_images",
-      "document_count": 357,
-      "last_response": {
-        "collection": "pdf_section_images",
-        "errors": [],
-        "inserted": 0,
-        "total": 57,
-        "updated": 57
-      }
-    },
-    "pdf_sections": {
-      "batches": 4,
-      "collection": "pdf_sections",
-      "document_count": 357,
-      "last_response": {
-        "collection": "pdf_sections",
-        "errors": [],
-        "inserted": 0,
-        "total": 57,
-        "updated": 57
-      }
-    }
-  }
+  "upsert_results": {}
 }

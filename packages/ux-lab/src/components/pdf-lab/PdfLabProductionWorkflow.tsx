@@ -162,6 +162,7 @@ interface ProductionData {
   comparison: JsonComparison | null
   statusReport: PdfLabStatusReport | null
   tocAudit: TocAudit | null
+  coverageLoop: CoverageLoopReport | null
 }
 
 interface TocAudit {
@@ -180,9 +181,12 @@ interface TocAudit {
     match_rate: number
     matched_as_other_type: number
     matched_as_section_header: number
+    matched_as_semantic_section_anchor?: number
     matched_toc_entries: number
     pdf_oxide_section_header_elements: number
+    semantic_section_anchor_elements?: number
     toc_entries: number
+    toc_backed_section_anchor_elements?: number
     unmatched_toc_entries: number
   }
 }
@@ -195,6 +199,7 @@ interface TocAuditRow {
     element_id: string | null
     matched: boolean
     matched_as_section_header: boolean
+    matched_as_semantic_section_anchor?: boolean
     page: number | null
     score: number
     text: string | null
@@ -235,6 +240,11 @@ interface PdfLabStatusReport {
     preset_improved_pdf_oxide_behavior: boolean
     memory_qa_implemented?: boolean
     memory_qa_passed?: boolean
+    memory_qa_report_passed?: boolean
+    memory_upsert_passed?: boolean
+    memory_text_recall_passed?: boolean
+    memory_visual_recall_passed?: boolean
+    memory_crop_coverage_passed?: boolean
     memory_sample_checks?: number
     memory_sample_checks_passed?: number
     memory_text_indexed_total?: number
@@ -251,6 +261,7 @@ interface PdfLabStatusReport {
     toc_entries?: number
     toc_matched_entries?: number
     toc_matched_as_section_header?: number
+    toc_matched_as_semantic_section_anchor?: number
     toc_type_repairs?: number
     toc_missing_entries?: number
     toc_match_rate?: number
@@ -265,6 +276,29 @@ interface PdfLabStatusReport {
     missed_expected_by_type?: Record<string, number>
     unmatched_actual_sample_by_type?: Record<string, number>
   }
+}
+
+interface CoverageLoopReport {
+  active_blocker: {
+    area: string
+    detail: string
+    next_action: string
+    severity: string
+  } | null
+  active_plan_path: string | null
+  blocker_count: number
+  blocker_signature: string
+  generated_at: string
+  loop_safe_to_continue: boolean
+  memory_recall_required: boolean
+  must_stop_for_dogpile: boolean
+  must_stop_for_interview: boolean
+  next_action: 'complete' | 'new_plan' | 'amend_plan' | 'stop_interview' | 'stop_dogpile'
+  project_knowledge_checked: boolean
+  rationale: string
+  recommended_command: string
+  same_blocker_streak: number
+  schema_version: string
 }
 
 interface JsonComparison {
@@ -316,12 +350,13 @@ interface ComparisonActual {
   type: string
 }
 
-const WORKFLOW_VERSION = '20260428-real-artifacts'
+const WORKFLOW_VERSION = '20260503-proof-ledger-v1'
 const PDF_LAB_ARTIFACT_BASE_URL = ''
 const MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const COMPARISON_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-comparison.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const STATUS_REPORT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-status-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const COVERAGE_LOOP_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-coverage-loop.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const TOC_AUDIT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-toc-audit.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
@@ -339,6 +374,20 @@ const FAMILY_LABELS: Record<string, string> = {
 
 function normalizeInitialStage(initialStage?: WorkflowStage): WorkflowStage {
   return initialStage ?? 'evidence-qa'
+}
+
+function getHashTriageTaskId(): string | null {
+  const parts = window.location.hash.replace(/^#/, '').split('/')
+  const stageIndex = parts.findIndex(part => part === 'surgical-triage' || part === 'triage')
+  const encodedTaskId = stageIndex >= 0 ? parts[stageIndex + 1] : undefined
+  return encodedTaskId ? decodeURIComponent(encodedTaskId) : null
+}
+
+function pdfLabStageHash(stage: WorkflowStage, taskId?: string | null): string {
+  if (stage === 'surgical-triage' && taskId) {
+    return `#pdf-lab/surgical-triage/${encodeURIComponent(taskId)}`
+  }
+  return `#pdf-lab/${stage}`
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -433,10 +482,19 @@ function buildFamilyTallies(manifest: WorkflowManifest): Array<[string, number]>
 }
 
 function buildTriageTask(task: TriageTaskArtifact): SurgicalTriageCleanRoomTask {
+  const action = task.suggested_fix?.action
+  const isBoundsCheck = task.kind === 'comparison_miss' && action === 'FIX_BBOX'
+  const target = task.target_id
+  const previewType = task.preview?.type ? String(task.preview.type).replace(/_/g, ' ') : 'element'
+  const previewText = task.preview?.text ? `“${task.preview.text}”` : 'the highlighted text'
   return {
     id: task.task_id,
-    question: task.human_question,
-    reasoning: task.agent_reasoning,
+    question: isBoundsCheck
+      ? 'Bounds check: does this highlight cover the right PDF evidence?'
+      : task.human_question,
+    reasoning: isBoundsCheck
+      ? `This is not a table/not-table decision. The JSON comparison says the type is compatible; only the bbox alignment is unresolved for ${target}. Confirm whether ${previewText} is the correct ${previewType} evidence region.`
+      : task.agent_reasoning,
     path: `NIST › Page ${task.page} › ${task.kind.replace(/_/g, ' ')}`,
     severity: task.severity,
     bbox: task.target_bbox ?? [0.12, 0.2, 0.72, 0.82],
@@ -614,15 +672,16 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
 
   const loadArtifacts = useCallback(async (cancelled?: () => boolean) => {
     setError(null)
-    const [manifest, triage, comparison, statusReport, tocAudit] = await Promise.all([
+    const [manifest, triage, comparison, statusReport, tocAudit, coverageLoop] = await Promise.all([
       fetchJson<WorkflowManifest>(MANIFEST_URL),
       fetchJson<TriageQueue>(TRIAGE_URL),
       fetchJson<JsonComparison>(COMPARISON_URL).catch(() => null),
       fetchJson<PdfLabStatusReport>(STATUS_REPORT_URL).catch(() => null),
       fetchJson<TocAudit>(TOC_AUDIT_URL).catch(() => null),
+      fetchJson<CoverageLoopReport>(COVERAGE_LOOP_URL).catch(() => null),
     ])
     if (cancelled?.()) return
-    setData({ manifest, triage, comparison, statusReport, tocAudit })
+    setData({ manifest, triage, comparison, statusReport, tocAudit, coverageLoop })
     setSelectedPage(current => current ?? manifest.candidate_inventory.candidate_pages[0]?.page ?? null)
   }, [])
 
@@ -634,10 +693,40 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
     return () => { cancelled = true }
   }, [loadArtifacts])
 
-  const openStage = useCallback((nextStage: WorkflowStage) => {
+  const openStage = useCallback((nextStage: WorkflowStage, taskId?: string | null) => {
     setStage(nextStage)
-    window.history.replaceState(null, '', `#pdf-lab/${nextStage}`)
-  }, [])
+    const activeTaskId = taskId
+      ?? (nextStage === 'surgical-triage'
+        ? data?.triage.human_triage_queue[triageIndex]?.task_id ?? data?.triage.human_triage_queue[0]?.task_id
+        : null)
+    window.history.replaceState(null, '', pdfLabStageHash(nextStage, activeTaskId))
+  }, [data?.triage.human_triage_queue, triageIndex])
+
+  const goToTriageIndex = useCallback((nextIndex: number) => {
+    const queue = data?.triage.human_triage_queue ?? []
+    const boundedIndex = Math.max(0, Math.min(queue.length - 1, nextIndex))
+    setTriageIndex(boundedIndex)
+    const taskId = queue[boundedIndex]?.task_id
+    if (taskId) window.history.replaceState(null, '', pdfLabStageHash('surgical-triage', taskId))
+  }, [data?.triage.human_triage_queue])
+
+  useEffect(() => {
+    if (!data || stage !== 'surgical-triage') return
+    const queue = data.triage.human_triage_queue
+    if (queue.length === 0) return
+    const hashTaskId = getHashTriageTaskId()
+    if (hashTaskId) {
+      const hashIndex = queue.findIndex(task => task.task_id === hashTaskId)
+      if (hashIndex >= 0 && hashIndex !== triageIndex) {
+        setTriageIndex(hashIndex)
+        return
+      }
+    }
+    const activeTaskId = queue[triageIndex]?.task_id ?? queue[0]?.task_id
+    if (activeTaskId && window.location.hash !== pdfLabStageHash('surgical-triage', activeTaskId)) {
+      window.history.replaceState(null, '', pdfLabStageHash('surgical-triage', activeTaskId))
+    }
+  }, [data, stage, triageIndex])
 
   const addPageToCandidates = useCallback(() => {
     if (!data) return
@@ -667,14 +756,14 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
         proposedJsonDelta: task.proposed_json_delta ?? null,
       })
       setLastDecision(`${decision}: ${task.task_id}`)
-      setTriageIndex(index => Math.min((data?.triage.human_triage_queue.length ?? 1) - 1, index + 1))
+      goToTriageIndex(triageIndex + 1)
       setIntentDraft('')
     } catch (err) {
       setNotice(err instanceof Error ? err.message : String(err))
     } finally {
       setActionBusy(null)
     }
-  }, [data?.triage.human_triage_queue, intentDraft, triageIndex])
+  }, [data?.triage.human_triage_queue, goToTriageIndex, intentDraft, triageIndex])
 
   const undoLastDecision = useCallback(async () => {
     const task = data?.triage.human_triage_queue[Math.max(0, triageIndex - 1)] ?? data?.triage.human_triage_queue[triageIndex]
@@ -690,13 +779,13 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
         proposedJsonDelta: task.proposed_json_delta ?? null,
       })
       setLastDecision(null)
-      setTriageIndex(index => Math.max(0, index - 1))
+      goToTriageIndex(triageIndex - 1)
     } catch (err) {
       setNotice(err instanceof Error ? err.message : String(err))
     } finally {
       setActionBusy(null)
     }
-  }, [data?.triage.human_triage_queue, intentDraft, triageIndex])
+  }, [data?.triage.human_triage_queue, goToTriageIndex, intentDraft, triageIndex])
 
   const pollExtractionJob = useCallback(async (
     jobId: string,
@@ -948,8 +1037,8 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
           onAccept={() => { void advanceTriage('accept') }}
           onReject={() => { void advanceTriage('reject') }}
           onSkip={() => { void advanceTriage('skip') }}
-          onPrevious={() => setTriageIndex(index => Math.max(0, index - 1))}
-          onNext={() => setTriageIndex(index => Math.min(data.triage.human_triage_queue.length - 1, index + 1))}
+          onPrevious={() => goToTriageIndex(triageIndex - 1)}
+          onNext={() => goToTriageIndex(triageIndex + 1)}
           onUndoLastDecision={undoLastDecision}
           onOpenAudit={() => undefined}
           onOpenQueue={() => openStage('parity-audit')}
@@ -1048,7 +1137,9 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
 
         <CoverageStatusPane
           comparison={data.comparison}
+          coverageLoop={data.coverageLoop}
           manifest={data.manifest}
+          onOpenStage={openStage}
           statusReport={data.statusReport}
           tocAudit={data.tocAudit}
           triage={data.triage}
@@ -1428,13 +1519,17 @@ function ParityAuditPane({
 
 function CoverageStatusPane({
   comparison,
+  coverageLoop,
   manifest,
+  onOpenStage,
   statusReport,
   tocAudit,
   triage,
 }: {
   comparison: JsonComparison | null
+  coverageLoop: CoverageLoopReport | null
   manifest: WorkflowManifest
+  onOpenStage: (stage: WorkflowStage) => void
   statusReport: PdfLabStatusReport | null
   tocAudit: TocAudit | null
   triage: TriageQueue
@@ -1453,6 +1548,10 @@ function CoverageStatusPane({
   const humanTriageCount = summary?.human_triage_task_count ?? triage.task_count
   const agentResolvedCount = summary?.agent_resolved_count ?? triage.agent_resolved_summary?.finding_count ?? 0
   const memoryPassed = summary?.memory_qa_passed ?? false
+  const memoryUpsertPassed = summary?.memory_upsert_passed ?? false
+  const memoryTextRecallPassed = summary?.memory_text_recall_passed ?? false
+  const memoryVisualRecallPassed = summary?.memory_visual_recall_passed ?? false
+  const memoryCropCoveragePassed = summary?.memory_crop_coverage_passed ?? false
   const memoryImplemented = summary?.memory_qa_implemented ?? false
   const memoryTextIndexed = summary?.memory_text_indexed_total ?? summary?.memory_text_indexed_elements ?? 0
   const memoryVisualIndexed = summary?.memory_visual_indexed_total ?? summary?.memory_visual_indexed_elements ?? 0
@@ -1489,15 +1588,21 @@ function CoverageStatusPane({
   const tocMissing = summary?.toc_missing_entries ?? tocSummary?.unmatched_toc_entries ?? 0
   const tocMatched = summary?.toc_matched_entries ?? tocSummary?.matched_toc_entries ?? 0
   const tocEntries = summary?.toc_entries ?? tocSummary?.toc_entries ?? 0
+  const tocSemanticAnchors = summary?.toc_matched_as_semantic_section_anchor
+    ?? tocSummary?.matched_as_semantic_section_anchor
+    ?? tocSummary?.toc_backed_section_anchor_elements
+    ?? tocSummary?.matched_as_section_header
+    ?? 0
+  const tocGatePassing = tocTypeRepairs === 0 && tocMissing === 0 && tocSemanticAnchors >= tocEntries
   const sectionCropCount = summary?.evidence_section_count ?? 0
   const secondPassBacklogCount = summary?.second_pass_backlog_count ?? 0
   const workflowStages = [
     {
       artifact: 'pdf-lab-toc-audit.json',
-      detail: `${tocMatched.toLocaleString()} / ${tocEntries.toLocaleString()} TOC entries matched; ${tocTypeRepairs.toLocaleString()} type repairs remain.`,
+      detail: `${tocMatched.toLocaleString()} / ${tocEntries.toLocaleString()} TOC entries matched; ${tocSemanticAnchors.toLocaleString()} TOC-backed semantic anchors; ${tocTypeRepairs.toLocaleString()} type repairs remain.`,
       owner: 'Agent',
       stage: '1 · Agent Sweep',
-      state: tocMissing === 0 ? 'working' : 'blocked',
+      state: tocGatePassing ? 'working' : 'blocked',
       task: 'Find TOC, preset hits, candidate pages, and element-family coverage before extraction.',
     },
     {
@@ -1535,8 +1640,24 @@ function CoverageStatusPane({
   ]
   const primaryBlocker = blockers[0] ?? null
   const isFinalBlocked = blockers.length > 0 || !parityPassed || !memoryPassed
+  const primaryBlockerIsHuman = primaryBlocker?.area === 'Human Triage'
+  const primaryBlockerArea = primaryBlocker?.area.toLowerCase() ?? ''
+  const blockerTargetStage: WorkflowStage = primaryBlockerIsHuman
+    ? 'surgical-triage'
+    : primaryBlockerArea.includes('parity') || primaryBlockerArea.includes('comparison')
+      ? 'parity-audit'
+      : primaryBlockerArea.includes('memory') || primaryBlockerArea.includes('evidence')
+        ? 'evidence-qa'
+        : 'coverage'
+  const blockerCtaLabel = primaryBlockerIsHuman
+    ? `Resolve ${humanTriageCount.toLocaleString()} Triage Card${humanTriageCount === 1 ? '' : 's'} →`
+    : blockers.length > 0
+      ? `Open ${primaryBlocker?.area ?? 'Blocker'} →`
+      : 'No blockers'
   const topStatusTitle = isFinalBlocked
-    ? 'Not final: agent engineering work remains'
+    ? primaryBlockerIsHuman
+      ? 'Not final: human triage remains'
+      : 'Not final: agent engineering work remains'
     : 'All artifact gates passed'
   const topStatusDetail = primaryBlocker
     ? primaryBlocker.detail
@@ -1547,17 +1668,103 @@ function CoverageStatusPane({
     ? `Open Surgical Triage and resolve ${humanTriageCount.toLocaleString()} card${humanTriageCount === 1 ? '' : 's'}.`
     : 'No human triage work right now. Do not send obvious extractor defects to the human.'
   const agentNextStep = primaryBlocker?.next_action
-    ?? (memoryPassed && parityPassed
+    ?? (memoryPassed && parityPassed && tocGatePassing
       ? 'No agent blocker reported by the status artifact.'
       : 'Regenerate the failing artifact gate and rerun Coverage.')
   const proofGates = [
     { label: 'Parity', value: parityAccuracy === null ? 'missing' : `${(parityAccuracy * 100).toFixed(2)}%`, state: parityPassed ? 'ok' : 'bad' },
     { label: 'Human cards', value: humanTriageCount.toLocaleString(), state: humanTriageCount === 0 ? 'ok' : 'bad' },
     { label: 'Memory/Qdrant', value: memoryPassed ? 'passed' : memoryImplemented ? 'blocked' : 'missing', state: memoryPassed ? 'ok' : 'bad' },
-    { label: 'TOC repairs', value: tocTypeRepairs.toLocaleString(), state: tocTypeRepairs === 0 && tocMissing === 0 ? 'ok' : 'bad' },
+    { label: 'Memory upsert', value: String(memoryUpsertPassed), state: memoryUpsertPassed ? 'ok' : 'bad' },
+    { label: 'TOC anchors', value: `${tocSemanticAnchors.toLocaleString()} / ${tocEntries.toLocaleString()}`, state: tocGatePassing ? 'ok' : 'bad' },
+    { label: 'TOC repairs', value: tocTypeRepairs.toLocaleString(), state: tocGatePassing ? 'ok' : 'bad' },
     { label: 'TOC missing', value: tocMissing.toLocaleString(), state: tocMissing === 0 ? 'ok' : 'bad' },
     { label: 'Core Rust changed', value: String(coreChanged), state: coreChanged ? 'ok' : 'warn' },
   ]
+  const proofLedgerRows = [
+    {
+      artifact: 'pdf-lab-status-report.json',
+      check: 'blockers[]',
+      expected: 'empty',
+      observed: `${blockers.length.toLocaleString()} blocker${blockers.length === 1 ? '' : 's'}`,
+      path: statusReport?.artifact_paths?.status?.path ?? 'status artifact loaded from public route',
+      state: blockers.length === 0 ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-coverage-loop.json',
+      check: 'next_action',
+      expected: 'complete',
+      observed: coverageLoop?.next_action ?? 'missing',
+      path: COVERAGE_LOOP_URL,
+      state: coverageLoop?.next_action === 'complete' ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-nist-human-triage-queue.json',
+      check: 'task_count',
+      expected: '0 human cards',
+      observed: `${triage.task_count.toLocaleString()} human cards`,
+      path: statusReport?.artifact_paths?.triage?.path ?? TRIAGE_URL,
+      state: triage.task_count === 0 ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-nist-comparison.json',
+      check: 'parity gate',
+      expected: `${((parityTarget ?? 0.95) * 100).toFixed(0)}%+`,
+      observed: parityAccuracy === null ? 'missing' : `${(parityAccuracy * 100).toFixed(2)}%`,
+      path: statusReport?.artifact_paths?.comparison?.path ?? COMPARISON_URL,
+      state: parityPassed ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-toc-audit.json',
+      check: 'TOC semantic anchors',
+      expected: `${tocEntries.toLocaleString()} / ${tocEntries.toLocaleString()}`,
+      observed: `${tocSemanticAnchors.toLocaleString()} / ${tocEntries.toLocaleString()}`,
+      path: statusReport?.artifact_paths?.toc_audit?.path ?? TOC_AUDIT_URL,
+      state: tocGatePassing ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-memory-qa-report.json',
+      check: 'ArangoDB memory_upsert',
+      expected: 'true',
+      observed: String(memoryUpsertPassed),
+      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
+      state: memoryUpsertPassed ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-memory-qa-report.json',
+      check: 'Qdrant text recall',
+      expected: 'passed',
+      observed: `${memorySampleChecksPassed.toLocaleString()} / ${memorySampleChecks.toLocaleString()} recall`,
+      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
+      state: memoryTextRecallPassed ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-memory-qa-report.json',
+      check: 'Qdrant visual index',
+      expected: 'passed',
+      observed: `${memoryVisualIndexed.toLocaleString()} visual vectors`,
+      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
+      state: memoryVisualRecallPassed && memoryCropCoveragePassed ? 'ok' : 'bad',
+    },
+    {
+      artifact: 'pdf-lab-nist-human-triage-queue.json',
+      check: 'second-pass suppression',
+      expected: 'obvious tables handled by agent',
+      observed: `${agentResolvedCount.toLocaleString()} agent-resolved findings`,
+      path: statusReport?.artifact_paths?.triage?.path ?? TRIAGE_URL,
+      state: agentResolvedCount > 0 ? 'ok' : 'warn',
+    },
+  ]
+  const proofLedgerPassed = proofLedgerRows.every(row => row.state === 'ok' || row.state === 'warn')
+
+  const loopActionLabel = coverageLoop?.next_action.replaceAll('_', ' ') ?? 'artifact missing'
+  const loopStateClass = coverageLoop?.must_stop_for_dogpile || coverageLoop?.must_stop_for_interview
+    ? 'stop'
+    : coverageLoop?.loop_safe_to_continue
+      ? 'continue'
+      : coverageLoop?.next_action === 'complete'
+        ? 'complete'
+        : 'missing'
 
   return (
     <main className="pdf-lab-prod-coverage">
@@ -1574,11 +1781,86 @@ function CoverageStatusPane({
               real artifacts. Do not treat the artifact list below as the next-step summary.
             </p>
           </div>
-          <div className="pdf-lab-prod-next-steps-generated">
+          <button
+            type="button"
+            className={`pdf-lab-prod-next-steps-generated ${blockers.length > 0 ? 'actionable' : ''}`}
+            data-qid="pdf-lab:coverage:open-primary-blocker"
+            data-qs-action="PDF_LAB_COVERAGE_OPEN_PRIMARY_BLOCKER"
+            disabled={blockers.length === 0}
+            title={blockers.length > 0 ? blockerCtaLabel : 'No blockers reported'}
+            onClick={() => onOpenStage(blockerTargetStage)}
+          >
             <b>{blockers.length === 0 ? '0 blockers' : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
-            <span>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</span>
-          </div>
+            <span>{blockerCtaLabel}</span>
+            <small>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</small>
+          </button>
         </div>
+
+        <article className={`pdf-lab-prod-proof-ledger ${proofLedgerPassed ? 'ok' : 'bad'}`} data-qid="pdf-lab:coverage:proof-ledger">
+          <div className="pdf-lab-prod-proof-ledger-head">
+            <div>
+              <span>Visible proof ledger</span>
+              <h2>{proofLedgerPassed ? '0 blockers is artifact-backed' : 'One or more proof rows are failing'}</h2>
+              <p>
+                These rows are the fields used to compute Coverage. If a row is missing or failing,
+                the top-line status is not allowed to claim completion.
+              </p>
+            </div>
+            <strong>{proofLedgerRows.filter(row => row.state === 'ok' || row.state === 'warn').length} / {proofLedgerRows.length} proven</strong>
+          </div>
+          <div className="pdf-lab-prod-proof-ledger-table">
+            <div className="pdf-lab-prod-proof-ledger-row head">
+              <b>Artifact</b>
+              <b>Field / gate</b>
+              <b>Expected</b>
+              <b>Observed</b>
+              <b>Path</b>
+            </div>
+            {proofLedgerRows.map(row => (
+              <div key={`${row.artifact}:${row.check}`} className={`pdf-lab-prod-proof-ledger-row ${row.state}`}>
+                <code>{row.artifact}</code>
+                <span>{row.check}</span>
+                <span>{row.expected}</span>
+                <strong>{row.observed}</strong>
+                <small title={row.path}>{row.path}</small>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className={`pdf-lab-prod-plan-loop ${loopStateClass}`} data-qid="pdf-lab:coverage:plan-loop">
+          <div>
+            <span>Coverage plan loop</span>
+            <h2>{loopActionLabel}</h2>
+            <p>{coverageLoop?.rationale ?? 'Run pdf-lab coverage-loop to generate the plan-backed next-action artifact.'}</p>
+          </div>
+          <div className="pdf-lab-prod-plan-loop-grid">
+            <div>
+              <b>Active blocker</b>
+              <strong>{coverageLoop?.active_blocker?.area ?? primaryBlocker?.area ?? 'none'}</strong>
+            </div>
+            <div>
+              <b>Same blocker streak</b>
+              <strong>{coverageLoop?.same_blocker_streak ?? '—'}</strong>
+            </div>
+            <div>
+              <b>Project knowledge</b>
+              <strong>{coverageLoop?.project_knowledge_checked ? 'checked' : 'not checked'}</strong>
+            </div>
+            <div>
+              <b>Memory recall</b>
+              <strong>{coverageLoop?.memory_recall_required ? 'required' : 'unknown'}</strong>
+            </div>
+          </div>
+          <div className="pdf-lab-prod-plan-loop-command">
+            <b>Recommended command</b>
+            <code>{coverageLoop?.recommended_command ?? 'pdf-lab coverage-loop --out public/pdf-lab-coverage-loop.json'}</code>
+          </div>
+          <div className="pdf-lab-prod-plan-loop-command">
+            <b>Active plan</b>
+            <code>{coverageLoop?.active_plan_path ?? 'none'}</code>
+          </div>
+        </article>
 
         <div className="pdf-lab-prod-next-steps-grid">
           <article className="pdf-lab-prod-next-card human">
@@ -1589,20 +1871,24 @@ function CoverageStatusPane({
           </article>
 
           <article className="pdf-lab-prod-next-card agent">
-            <span>Agent must do next</span>
+            <span>{primaryBlockerIsHuman ? 'Blocking gate' : 'Agent must do next'}</span>
             <h2>{primaryBlocker?.area ?? 'No blocker reported'}</h2>
             <p>{agentNextStep}</p>
             <small>{topStatusDetail}</small>
           </article>
 
           <article className="pdf-lab-prod-next-card blocker">
-            <span>Why not final</span>
+            <span>{tocGatePassing ? 'TOC gate' : 'Why not final'}</span>
             <h2>{tocTypeRepairs.toLocaleString()} TOC type repairs · {tocMissing.toLocaleString()} missing</h2>
             <p>
-              The PDF outline has {tocEntries.toLocaleString()} entries; {tocMatched.toLocaleString()} were text-matched,
-              but only {(summary?.toc_matched_as_section_header ?? tocSummary?.matched_as_section_header ?? 0).toLocaleString()} are typed as section headers.
+              The PDF outline has {tocEntries.toLocaleString()} entries; {tocMatched.toLocaleString()} were text-matched;
+              {` ${tocSemanticAnchors.toLocaleString()} are TOC-backed semantic section anchors.`}
             </p>
-            <small>This is preset/section-builder engineering work, not human ambiguity triage.</small>
+            <small>
+              {tocGatePassing
+                ? 'TOC semantic structure is passing; remaining blockers are listed in the top cards.'
+                : 'This is preset/section-builder engineering work, not human ambiguity triage.'}
+            </small>
           </article>
 
           <article className="pdf-lab-prod-next-card proof">
@@ -1637,8 +1923,9 @@ function CoverageStatusPane({
             <b>Current boundary</b>
             <p>
               This run has <strong>{humanTriageCount.toLocaleString()}</strong> human cards.
-              Remaining work is engineering/QA: TOC semantic repair debt
-              {memoryPassed ? '.' : ', Memory/Qdrant visual indexing, and recall checks.'}
+              {' '}{tocGatePassing && memoryPassed
+                ? 'TOC semantic structure and Memory/Qdrant QA are passing.'
+                : 'Remaining work is engineering/QA before the human boundary.'}
               {' '}Obvious table rows, bbox misses, and text spans are agent work.
             </p>
           </div>
@@ -1726,7 +2013,7 @@ function CoverageStatusPane({
             <div className="pdf-lab-prod-toc-summary">
               <div><b>{tocSummary.toc_entries}</b><span>TOC entries</span></div>
               <div><b>{tocSummary.matched_toc_entries}</b><span>text found</span></div>
-              <div><b>{tocSummary.matched_as_section_header}</b><span>section headers</span></div>
+              <div><b>{tocSemanticAnchors}</b><span>semantic anchors</span></div>
               <div><b>{tocSummary.matched_as_other_type}</b><span>type repairs</span></div>
               <div><b>{tocSummary.unmatched_toc_entries}</b><span>missing</span></div>
             </div>

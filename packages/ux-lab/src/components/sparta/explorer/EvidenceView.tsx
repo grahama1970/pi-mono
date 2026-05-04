@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { inlineHighlight, spanHighlight } from './explorerUtils'
 import type { HighlightEmphasis } from './explorerUtils'
-import type { EvidenceCase, CrosswalkChain, EvidenceSpan } from '../../../hooks/useSpartaCollections'
+import type { EvidenceCase, EvidenceSpan } from '../../../hooks/useSpartaCollections'
 import { EvidenceCaseTrace } from '../shared/EvidenceCaseTrace'
 
 const EXTRACT_API = 'http://localhost:3001/api/extract-entities'
@@ -27,17 +27,32 @@ type EntityGlossaryEntry = {
   source?: string
 }
 
+type RawEntityRecord = {
+  id?: unknown
+  name?: unknown
+  framework?: unknown
+  description?: unknown
+}
+
+type RawSpanRecord = RawEntityRecord & {
+  text?: unknown
+  kind?: unknown
+  span?: unknown
+  start?: unknown
+  end?: unknown
+}
+
 function normalizeSeededGlossary(storedEvidenceCase?: EvidenceCase | null): EntityGlossaryEntry[] {
   const storedSpans = Array.isArray(storedEvidenceCase?.spans)
-    ? storedEvidenceCase.spans
+    ? storedEvidenceCase.spans as RawSpanRecord[]
     : []
   const storedResolvedEntities = Array.isArray(storedEvidenceCase?.resolved_entities)
-    ? storedEvidenceCase.resolved_entities
+    ? storedEvidenceCase.resolved_entities as RawEntityRecord[]
     : []
 
   const seeded = new Map<string, EntityGlossaryEntry>()
 
-  storedResolvedEntities.forEach((entity: any) => {
+  storedResolvedEntities.forEach((entity) => {
     const id = typeof entity?.id === 'string' ? entity.id.trim() : ''
     const name = typeof entity?.name === 'string' ? entity.name.trim() : ''
     if (!id) return
@@ -53,7 +68,7 @@ function normalizeSeededGlossary(storedEvidenceCase?: EvidenceCase | null): Enti
     })
   })
 
-  storedSpans.forEach((span: any) => {
+  storedSpans.forEach((span) => {
     const spanText = typeof span?.text === 'string' ? span.text.trim() : ''
     if (!spanText) return
     const key = spanText.toLowerCase()
@@ -102,7 +117,7 @@ async function extractGlossaryEntries(text: string): Promise<EntityGlossaryEntry
     })
   })
 
-  entities.forEach((entity: any) => {
+  entities.forEach((entity: RawEntityRecord) => {
     const cid = typeof entity?.id === 'string' ? entity.id.trim() : ''
     if (!cid) return
     const key = cid.toUpperCase()
@@ -136,7 +151,7 @@ async function extractGlossaryEntries(text: string): Promise<EntityGlossaryEntry
   const delimiterData = await delimited.json()
   const delimEntities = Array.isArray(delimiterData?.entities) ? delimiterData.entities : []
   const fallbackMap = new Map<string, EntityGlossaryEntry>()
-  delimEntities.forEach((entity: any) => {
+  delimEntities.forEach((entity: RawEntityRecord) => {
     const cid = typeof entity?.id === 'string' ? entity.id.trim() : ''
     if (!cid) return
     fallbackMap.set(cid.toUpperCase(), {
@@ -386,6 +401,11 @@ export function EvidenceView({
   const effectiveQuestionGlossary = glossary.length > 0 ? glossary : questionGlossary
   const effectiveAnswerGlossary = answerGlossary
   const currentAnswer = committedAnswer
+  const ambiguousReferents = qraQuality?.ambiguous_referents ?? []
+  const hasAmbiguousReferent = qraQuality?.issue_code === 'ambiguous_referent'
+  const clarifyQuestion = hasAmbiguousReferent
+    ? `What do you mean by '${ambiguousReferents[0] || 'this reference'}'?`
+    : ''
   const questionEntityRefs = effectiveQuestionGlossary.slice(0, 8)
   const answerEntityRefs = effectiveAnswerGlossary.slice(0, 8)
   const glossaryHasDescriptions = effectiveQuestionGlossary.some((entry) => typeof entry.description === 'string' && entry.description.trim().length > 0)
@@ -431,8 +451,8 @@ export function EvidenceView({
   const gapReview = ec?.gap_review || liveData?.gap_review
   const proposedCorrection = ec?.proposed_correction || liveData?.proposed_correction || (gapReview?.proposed_correction as Record<string, unknown> | undefined)
   const correctionLineage = ec?.correction_lineage || liveData?.correction_lineage || (gapReview?.correction_lineage as Record<string, unknown> | undefined)
-  const normalizedSpans: EvidenceSpan[] = Array.isArray(ec?.spans)
-    ? ec.spans
+  const normalizedSpans = useMemo<EvidenceSpan[]>(() => Array.isArray(ec?.spans)
+    ? (ec.spans as RawSpanRecord[])
       .map((span) => {
         if (Array.isArray(span?.span) && span.span.length === 2) return span
         if (typeof span?.start === 'number' && typeof span?.end === 'number') {
@@ -441,7 +461,7 @@ export function EvidenceView({
         return null
       })
       .filter((span): span is EvidenceSpan => Boolean(span))
-    : []
+    : [], [ec?.spans])
 
   const questionNode = useMemo(() => {
     const spanNode = normalizedSpans.length > 0
@@ -453,7 +473,9 @@ export function EvidenceView({
   }, [question, normalizedSpans, effectiveQuestionGlossary, minHighlightEmphasis])
 
   const answerNode = useMemo(() => (
-    currentAnswer?.trim()
+    hasAmbiguousReferent
+      ? <span style={{ color: '#fca5a5' }}>{clarifyQuestion}</span>
+      : currentAnswer?.trim()
       ? renderAnswerWithUnsupported(
           currentAnswer,
           unsupportedAnswerIds,
@@ -461,10 +483,9 @@ export function EvidenceView({
           minHighlightEmphasis,
         )
       : null
-  ), [currentAnswer, unsupportedAnswerIds, effectiveAnswerGlossary, effectiveQuestionGlossary, minHighlightEmphasis])
+  ), [hasAmbiguousReferent, clarifyQuestion, currentAnswer, unsupportedAnswerIds, effectiveAnswerGlossary, effectiveQuestionGlossary, minHighlightEmphasis])
 
   const questionHasGrounding = questionEntityRefs.length > 0 || questionControlIds.length > 0
-  const answerIsSupported = unsupportedAnswerIds.length === 0
   const topQuestionRefs = [...new Set([
     ...questionEntityRefs.slice(0, 2).map((entry) => entry.name || entry.id),
     ...inferredAnchorIds.slice(0, 2),
@@ -472,7 +493,9 @@ export function EvidenceView({
   const questionGroundingSummary = questionHasGrounding
     ? `Grounded to: ${topQuestionRefs.join(', ')}${(questionEntityRefs.length + inferredAnchorIds.length) > topQuestionRefs.length ? '…' : ''}`
     : 'Question grounding failed; no reliable entities or anchors were resolved.'
-  const answerGroundingSummary = !questionHasGrounding
+  const answerGroundingSummary = hasAmbiguousReferent
+    ? `Blocked until the ambiguous referent is clarified: ${ambiguousReferents.join(', ') || 'unknown referent'}.`
+    : !questionHasGrounding
     ? 'Blocked until question grounding succeeds.'
     : unsupportedAnswerIds.length > 0
       ? `Unsupported answer claims: ${unsupportedAnswerIds.join(', ')}.`
@@ -482,7 +505,9 @@ export function EvidenceView({
   const answerHelperText = unsupportedAnswerIds.length > 0
     ? `Unsupported: ${unsupportedAnswerIds.slice(0, 2).join(', ')}${unsupportedAnswerIds.length > 2 ? ` +${unsupportedAnswerIds.length - 2} more` : ''}`
     : undefined
-  const verdictWhy = !questionHasGrounding
+  const verdictWhy = hasAmbiguousReferent
+    ? `FAIL — QRA question is not standalone; unresolved referent(s): ${ambiguousReferents.join(', ') || qraQuality?.issue_label || 'ambiguous referent'}.`
+    : !questionHasGrounding
     ? 'FAIL — Question grounding could not anchor the claim to the current evidence set.'
     : unsupportedAnswerIds.length > 0
       ? `FAIL — Answer introduces ${unsupportedAnswerIds.join(', ')}, which is not supported by the grounded scope.`
@@ -512,8 +537,8 @@ export function EvidenceView({
       }))}
       glossaryLabel={glossaryLabel}
       reasoning={reasoning}
-      agentResponse={ec?.answer || liveData?.answer || currentAnswer}
-      responseAction={ec?.response_action || liveData?.response_action || (currentAnswer ? 'answer' : undefined)}
+      agentResponse={hasAmbiguousReferent ? clarifyQuestion : ec?.answer || liveData?.answer || currentAnswer}
+      responseAction={hasAmbiguousReferent ? 'clarify' : ec?.response_action || liveData?.response_action || (currentAnswer ? 'answer' : undefined)}
       evidenceVerdict={ec?.verdict || liveVerdict}
       evidenceGrade={ec?.grade || (typeof liveData?.verdict === 'object' ? liveData.verdict?.grade : undefined)}
       gatesPassed={ec?.gates_passed}

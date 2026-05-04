@@ -1,0 +1,561 @@
+[
+  {
+    "note_id": "note:agent_resolved_table_false_positive_actual_p12_table_0:actual_p12_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_false_positive:actual_p12_table_0",
+    "element_id": "actual:p12:table:0",
+    "issue_type": "table_false_positive",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.",
+    "evidence_metrics": {
+      "row_count": 15,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.817239,
+      "bbox_height": 0.909515,
+      "non_empty_cell_ratio": 0.45348837209302323,
+      "non_empty_row_cell_counts": [
+        8,
+        1,
+        2,
+        10,
+        10,
+        10,
+        9,
+        10,
+        8,
+        2,
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "same_page_requirement_rows": 0,
+      "same_page_section_rows": 0,
+      "average_non_empty_cell_text_length": 10.45,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "reject table candidates with sparse pseudo-columns or prose-only rows before creating human triage cards",
+    "page": 12,
+    "bbox": [
+      0.032912,
+      0.0435,
+      0.850151,
+      0.953015
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_row_fragment_actual_p23_table_0:actual_p23_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_row_fragment:actual_p23_table_0",
+    "element_id": "actual:p23:table:0",
+    "issue_type": "table_row_fragment",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "evidence_metrics": {
+      "row_count": 1,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.7084889999999999,
+      "bbox_height": 0.016257999999999995,
+      "non_empty_cell_ratio": 0.4166666666666667,
+      "non_empty_row_cell_counts": [
+        5
+      ],
+      "same_page_requirement_rows": 0,
+      "same_page_section_rows": 65,
+      "average_non_empty_cell_text_length": 8.4,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+    "page": 23,
+    "bbox": [
+      0.14556,
+      0.277439,
+      0.854049,
+      0.293697
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_false_positive_actual_p259_table_0:actual_p259_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_false_positive:actual_p259_table_0",
+    "element_id": "actual:p259:table:0",
+    "issue_type": "table_false_positive",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.",
+    "evidence_metrics": {
+      "row_count": 4,
+      "col_count": 2,
+      "has_header": false,
+      "bbox_width": 0.6104510000000001,
+      "bbox_height": 0.06466700000000003,
+      "non_empty_cell_ratio": 0.5,
+      "non_empty_row_cell_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "same_page_requirement_rows": 0,
+      "same_page_section_rows": 0,
+      "average_non_empty_cell_text_length": 88.0,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "reject table candidates with sparse pseudo-columns or prose-only rows before creating human triage cards",
+    "page": 259,
+    "bbox": [
+      0.204382,
+      0.585924,
+      0.814833,
+      0.650591
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_row_fragment_actual_p457_table_0:actual_p457_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_row_fragment:actual_p457_table_0",
+    "element_id": "actual:p457:table:0",
+    "issue_type": "table_row_fragment",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "evidence_metrics": {
+      "row_count": 1,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.7084889999999999,
+      "bbox_height": 0.02004499999999998,
+      "non_empty_cell_ratio": 0.4166666666666667,
+      "non_empty_row_cell_counts": [
+        5
+      ],
+      "same_page_requirement_rows": 42,
+      "same_page_section_rows": 86,
+      "average_non_empty_cell_text_length": 16.0,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+    "page": 457,
+    "bbox": [
+      0.14556,
+      0.249106,
+      0.854049,
+      0.269151
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_row_fragment_actual_p458_table_0:actual_p458_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_row_fragment:actual_p458_table_0",
+    "element_id": "actual:p458:table:0",
+    "issue_type": "table_row_fragment",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "evidence_metrics": {
+      "row_count": 1,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.7084889999999999,
+      "bbox_height": 0.02004399999999995,
+      "non_empty_cell_ratio": 0.4166666666666667,
+      "non_empty_row_cell_counts": [
+        5
+      ],
+      "same_page_requirement_rows": 42,
+      "same_page_section_rows": 74,
+      "average_non_empty_cell_text_length": 13.6,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+    "page": 458,
+    "bbox": [
+      0.14556,
+      0.824941,
+      0.854049,
+      0.844985
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_row_fragment_actual_p458_table_1:actual_p458_table_1",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_row_fragment:actual_p458_table_1",
+    "element_id": "actual:p458:table:1",
+    "issue_type": "table_row_fragment",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "evidence_metrics": {
+      "row_count": 1,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.7084889999999999,
+      "bbox_height": 0.020046000000000008,
+      "non_empty_cell_ratio": 0.4166666666666667,
+      "non_empty_row_cell_counts": [
+        5
+      ],
+      "same_page_requirement_rows": 42,
+      "same_page_section_rows": 74,
+      "average_non_empty_cell_text_length": 14.4,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+    "page": 458,
+    "bbox": [
+      0.14556,
+      0.688727,
+      0.854049,
+      0.708773
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_table_row_fragment_actual_p469_table_0:actual_p469_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:table_row_fragment:actual_p469_table_0",
+    "element_id": "actual:p469:table:0",
+    "issue_type": "table_row_fragment",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "evidence_metrics": {
+      "row_count": 1,
+      "col_count": 12,
+      "has_header": false,
+      "bbox_width": 0.7084889999999999,
+      "bbox_height": 0.02004499999999998,
+      "non_empty_cell_ratio": 0.4166666666666667,
+      "non_empty_row_cell_counts": [
+        5
+      ],
+      "same_page_requirement_rows": 28,
+      "same_page_section_rows": 53,
+      "average_non_empty_cell_text_length": 13.4,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+    "page": 469,
+    "bbox": [
+      0.14556,
+      0.382213,
+      0.854049,
+      0.402258
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p470_line_52:expected_p470_line_52",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p470_line_52",
+    "element_id": "expected:p470:line:52",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 0.4,
+      "type_compatible": true,
+      "iou": 0.0,
+      "text": "ASSURANCE",
+      "type": "section_header",
+      "overlapping_actual_text": "IMPLEMENTED ASSURANCE"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 470,
+    "bbox": [
+      0.761078,
+      0.143774,
+      0.827057,
+      0.157759
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_real_table_candidate_actual_p471_table_0:actual_p471_table_0",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:real_table_candidate:actual_p471_table_0",
+    "element_id": "actual:p471:table:0",
+    "issue_type": "real_table_candidate",
+    "action": "auto_resolved",
+    "rationale": "pdf_oxide emitted a table object and the second-pass audit found explicit table header cells plus a populated data row. This is a real table candidate and does not require a human table/not-table decision.",
+    "evidence_metrics": {
+      "row_count": 2,
+      "col_count": 4,
+      "has_header": false,
+      "bbox_width": 0.709668,
+      "bbox_height": 0.093985,
+      "non_empty_cell_ratio": 1.0,
+      "non_empty_row_cell_counts": [
+        4,
+        3
+      ],
+      "same_page_requirement_rows": 1,
+      "same_page_section_rows": 6,
+      "average_non_empty_cell_text_length": 20.71,
+      "source": "pdf_oxide.extract_tables"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "not_applicable",
+    "recommended_engine_fix": "record header-row evidence on table candidates so these do not become human triage cards",
+    "page": 471,
+    "bbox": [
+      0.145167,
+      0.089712,
+      0.854835,
+      0.183697
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p477_line_95:expected_p477_line_95",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p477_line_95",
+    "element_id": "expected:p477:line:95",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 0.5,
+      "type_compatible": true,
+      "iou": 0.0,
+      "text": "ASSURANCE",
+      "type": "section_header",
+      "overlapping_actual_text": "IMPLEMENTED ASSURANCE"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 477,
+    "bbox": [
+      0.761078,
+      0.143774,
+      0.827057,
+      0.157759
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_39:expected_p485_line_39",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_39",
+    "element_id": "expected:p485:line:39",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 1.0,
+      "type_compatible": true,
+      "iou": 0.045,
+      "text": "CONTROL NAME",
+      "type": "section_header",
+      "overlapping_actual_text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.357647,
+      0.138853,
+      0.481204,
+      0.158096
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_4:expected_p485_line_4",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_4",
+    "element_id": "expected:p485:line:4",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 0.7368,
+      "type_compatible": true,
+      "iou": 0.0,
+      "text": "CONTROL",
+      "type": "section_header",
+      "overlapping_actual_text": "CONTROL NUMBER"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.160784,
+      0.138572,
+      0.219839,
+      0.154345
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_40:expected_p485_line_40",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_40",
+    "element_id": "expected:p485:line:40",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 1.0,
+      "type_compatible": true,
+      "iou": 0.0229,
+      "text": "IMPLEMENTED",
+      "type": "section_header",
+      "overlapping_actual_text": "IMPLEMENTED BY"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.626569,
+      0.143698,
+      0.707729,
+      0.157683
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_41:expected_p485_line_41",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_41",
+    "element_id": "expected:p485:line:41",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 1.0,
+      "type_compatible": true,
+      "iou": 0.1131,
+      "text": "BY",
+      "type": "section_header",
+      "overlapping_actual_text": "BY"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.660098,
+      0.156349,
+      0.674233,
+      0.170335
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_42:expected_p485_line_42",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_42",
+    "element_id": "expected:p485:line:42",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 1.0,
+      "type_compatible": true,
+      "iou": 0.0277,
+      "text": "ASSURANCE",
+      "type": "section_header",
+      "overlapping_actual_text": "ASSURANCE"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.758039,
+      0.143774,
+      0.824018,
+      0.157759
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p485_line_5:expected_p485_line_5",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_5",
+    "element_id": "expected:p485:line:5",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 0.3333,
+      "type_compatible": true,
+      "iou": 0.0,
+      "text": "NUMBER",
+      "type": "section_header",
+      "overlapping_actual_text": "NUMBER CONTROL"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 485,
+    "bbox": [
+      0.162451,
+      0.151223,
+      0.218279,
+      0.166996
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  },
+  {
+    "note_id": "note:agent_resolved_bbox_only_exact_text_match_expected_p490_line_24:expected_p490_line_24",
+    "record_type": "pdf_element_note",
+    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p490_line_24",
+    "element_id": "expected:p490:line:24",
+    "issue_type": "noisy_text_or_bbox_match",
+    "action": "auto_resolved",
+    "rationale": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
+    "evidence_metrics": {
+      "comparison_reason": "bbox_iou_below_threshold",
+      "text_similarity": 1.0,
+      "type_compatible": true,
+      "iou": 0.2775,
+      "text": "SI-6",
+      "type": "requirement",
+      "overlapping_actual_text": "This publication is available SI-6 free of charge from: SI-6"
+    },
+    "confidence": 0.95,
+    "similar_element_propagation": "needs_verification",
+    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
+    "page": 490,
+    "bbox": [
+      0.155882,
+      0.267966,
+      0.17873,
+      0.283739
+    ],
+    "created_by": "pdf-lab.final-agent-pass"
+  }
+]

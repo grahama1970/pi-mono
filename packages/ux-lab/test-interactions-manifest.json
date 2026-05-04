@@ -39,7 +39,17 @@
             {
               "action": "click",
               "target": "[data-qid='qras:action:accept']",
-              "description": "Accept QRA"
+              "description": "Attempt Approve; blocked cases must show rationale and must not auto-advance"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:evidence-flow:claims']",
+              "description": "Open Answer Claims from source-grounded evidence flow"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:evidence-flow:failed-gate']",
+              "description": "Inspect dashed advisory repair branch"
             },
             {
               "action": "click",
@@ -64,6 +74,27 @@
               "action": "click",
               "target": "[data-qid='qras:action:validate_evidence']",
               "description": "Run /create-evidence-case validation"
+            }
+          ]
+        },
+        {
+          "name": "blocked-deeplink-recovery",
+          "path": "/#sparta-explorer/qras?qra=000a5d68cbd446e5",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='qras:recovery:open-diagnostics']",
+              "description": "Open recovery diagnostics for a blocked deep link"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:recovery:copy-diagnostics']",
+              "description": "Copy audit-grade recovery diagnostics JSON"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:recovery:try-all-sources']",
+              "description": "Try all QRA sources before escalating missing document state"
             }
           ]
         }

@@ -259,16 +259,20 @@ const Mockups = ({ projectId }: { projectId: string }) => {
 };
 
 const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
+  const isSpartaQraFocus = projectId === 'sparta-explorer' && subpath?.startsWith('qras')
+
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
-      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
-        <div className="flex items-center gap-4 px-2">
-          <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
-          <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
-            <Activity className="w-3 h-3" /> LIVE_RENDER
+      {!isSpartaQraFocus && (
+        <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
+          <div className="flex items-center gap-4 px-2">
+            <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
+            <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
+              <Activity className="w-3 h-3" /> LIVE_RENDER
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
@@ -1630,6 +1634,10 @@ export default function App() {
   const isPdfLabFocus = activeProjectId === 'pdf-lab'
     && activeView === 'final-site'
     && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage');
+  const isSpartaQraFocus = activeProjectId === 'sparta-explorer'
+    && activeView === 'final-site'
+    && hashSubpath.startsWith('qras');
+  const isFocusMode = isPdfLabFocus || isSpartaQraFocus;
 
   // Sync hash → state on popstate (back/forward)
   useEffect(() => {
@@ -1665,8 +1673,8 @@ export default function App() {
   }, [toast]);
 
   return (
-    <div className={`flex h-screen w-screen overflow-hidden bg-surface-base relative ${isPdfLabFocus ? '' : 'nvis-scan-line'}`}>
-      {!isPdfLabFocus && (
+    <div className={`flex h-screen w-screen overflow-hidden bg-surface-base relative ${isFocusMode ? '' : 'nvis-scan-line'}`}>
+      {!isFocusMode && (
         <>
           <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-tactical-primary/20 z-[60] pointer-events-none" />
           <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-tactical-primary/20 z-[60] pointer-events-none" />
@@ -1675,7 +1683,7 @@ export default function App() {
         </>
       )}
 
-      {!isPdfLabFocus && (
+      {!isFocusMode && (
         <ProjectSidebar 
           isCollapsed={isSidebarCollapsed} 
           onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
@@ -1685,7 +1693,7 @@ export default function App() {
       )}
 
       <div className="flex-1 flex flex-col relative overflow-hidden">
-        {!isPdfLabFocus && (
+        {!isFocusMode && (
           <ViewHeader 
             activeView={activeView} 
             onViewChange={handleViewChange}

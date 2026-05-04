@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "name": "SPARTA QRA Annotation Redesign Review",
+    "description": "Compare the live SPARTA QRA evidence annotation surface against the supplied QRA queue/evidence trace mockup. The target is a dense operator review UI, not a generic dashboard."
+  },
+  "surface": {
+    "role": "High-throughput QRA annotation page for reviewing source-grounded evidence cases, failed gates, advisory repair guidance, and human approve/reject/correct/escalate actions.",
+    "must_support": [
+      "Reviewer can identify the selected QRA and its queue status immediately.",
+      "Reviewer can see concrete CAPEC-649/T1036.006 evidence details without expanding generic process boxes.",
+      "Source-grounded evidence must be visually separated from advisory/persona repair reasoning.",
+      "Approval must remain blocked when evidence gates are unresolved, failed, or adversarial.",
+      "The visual direction should follow the supplied mockup: left queue, central decision/evidence trace, pinned action bar, and useful iconography."
+    ]
+  },
+  "colors": {
+    "background": "#070b12",
+    "panel": "#0d1522",
+    "panelRaised": "#111b2b",
+    "line": "rgba(148, 163, 184, .18)",
+    "text": "#f8fafc",
+    "muted": "#94a3b8",
+    "blue": "#3b82f6",
+    "green": "#22c55e",
+    "amber": "#f59e0b",
+    "red": "#ef4444",
+    "purple": "#a855f7"
+  },
+  "typography": {
+    "body": "Inter/system-ui",
+    "queueTitle": "22px, strong",
+    "qraTitle": "24px, strong",
+    "traceRow": "13-14px, dense but readable",
+    "statusLabels": "short, explicit, high contrast"
+  },
+  "layout": {
+    "reference": "4-column concept: icon rail, queue, main decision/evidence trace, right evidence-flow/summary panel.",
+    "currentConstraint": "Existing UX Lab shell adds an outer project rail; review should distinguish unavoidable shell chrome from QRA surface defects.",
+    "criticalGap": "Current implementation should look and behave closer to the supplied annotation mockup than to a generic accordion report."
+  },
+  "interactions": {
+    "keyboard": "Visible focus rings, queue row selection, shortcuts for accept/reject/edit/navigation.",
+    "primaryActions": "Approve blocked, Reject, Retain fixture or Correct and rerun, Escalate.",
+    "trace": "Rows use meaningful lucide icons and expand/collapse affordances; summary nodes jump to corresponding trace rows."
+  }
+}

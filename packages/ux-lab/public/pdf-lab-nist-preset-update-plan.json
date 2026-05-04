@@ -1,7 +1,7 @@
 {
   "schema_version": "pdf-lab.preset-update-plan.v1",
-  "created_at": "2026-04-29T18:07:06Z",
-  "comparison": "/tmp/pdf-lab-agentic-nist-commit-sweep-20260429T180225Z/iteration_01/comparison.json",
+  "created_at": "2026-05-03T12:38:28Z",
+  "comparison": "/tmp/pdf-lab-toc-repair-run/iteration_01/comparison.json",
   "status": "review_required",
   "safety_rule": "Tune a document-family preset first. Do not change global pdf_oxide extraction unless core_patch_required is justified across unrelated PDFs.",
   "target_preset": {
@@ -9,28 +9,26 @@
     "kind": "document_family",
     "storage_hint": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json"
   },
-  "accuracy": 0.9895494986583816,
+  "accuracy": 0.9944852941176471,
   "target": 0.95,
   "preset_updates": [
     {
       "reason": "bbox_iou_below_threshold",
-      "count": 83,
+      "count": 9,
       "affected_expected_types": [
-        "paragraph",
         "requirement",
         "section_header"
       ],
       "sample_expected_ids": [
-        "expected:p5:line:14",
-        "expected:p5:line:72",
-        "expected:p5:line:74",
-        "expected:p19:line:11",
-        "expected:p19:line:12",
-        "expected:p19:line:51",
-        "expected:p19:line:92",
-        "expected:p19:line:93",
-        "expected:p19:line:94",
-        "expected:p19:line:96"
+        "expected:p470:line:52",
+        "expected:p477:line:95",
+        "expected:p485:line:4",
+        "expected:p485:line:39",
+        "expected:p485:line:40",
+        "expected:p485:line:42",
+        "expected:p485:line:5",
+        "expected:p485:line:41",
+        "expected:p490:line:24"
       ],
       "scope": "preset",
       "preset_knobs": [
@@ -42,34 +40,5 @@
       "proposed_change": "Tune geometry/grouping thresholds for this document family before changing global coordinate logic."
     }
   ],
-  "core_patch_required": [
-    {
-      "reason": "text_similarity_below_threshold",
-      "count": 65,
-      "affected_expected_types": [
-        "list_item",
-        "paragraph",
-        "requirement",
-        "section_header"
-      ],
-      "sample_expected_ids": [
-        "expected:p4:line:14",
-        "expected:p5:line:39",
-        "expected:p5:line:64",
-        "expected:p5:line:66",
-        "expected:p5:line:80",
-        "expected:p5:line:82",
-        "expected:p19:line:50",
-        "expected:p21:line:17+expected:p21:line:70",
-        "expected:p24:line:74",
-        "expected:p26:line:77"
-      ],
-      "scope": "core_candidate",
-      "preset_knobs": [
-        "text_normalization_overrides"
-      ],
-      "proposed_change": "Try preset-level text normalization first. If failures are due to ToUnicode/ligature/spacing defects, promote to core patch.",
-      "core_review_gate": "Only patch core if the same text defect reproduces outside this document family."
-    }
-  ]
+  "core_patch_required": []
 }

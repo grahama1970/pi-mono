@@ -764,6 +764,7 @@
 }
 
 .pdf-lab-prod-next-steps-generated {
+  height: auto;
   min-width: 250px;
   padding: 12px;
   border: 1px solid rgba(248, 113, 113, 0.36);
@@ -772,12 +773,31 @@
   text-align: right;
 }
 
+.pdf-lab-prod-root button.pdf-lab-prod-next-steps-generated {
+  display: block;
+  height: auto;
+  min-height: 76px;
+  color: var(--prod-muted);
+  cursor: default;
+}
+
+.pdf-lab-prod-root button.pdf-lab-prod-next-steps-generated.actionable {
+  cursor: pointer;
+}
+
+.pdf-lab-prod-root button.pdf-lab-prod-next-steps-generated.actionable:hover {
+  border-color: rgba(248, 113, 113, 0.72);
+  background: rgba(248, 113, 113, 0.08);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.12), 0 14px 38px rgba(0, 0, 0, 0.28);
+}
+
 .pdf-lab-prod-next-steps.ready .pdf-lab-prod-next-steps-generated {
   border-color: rgba(25, 195, 125, 0.34);
 }
 
 .pdf-lab-prod-next-steps-generated b,
-.pdf-lab-prod-next-steps-generated span {
+.pdf-lab-prod-next-steps-generated span,
+.pdf-lab-prod-next-steps-generated small {
   display: block;
 }
 
@@ -793,8 +813,96 @@
 
 .pdf-lab-prod-next-steps-generated span {
   margin-top: 6px;
+  color: var(--prod-text);
+  font-size: 12px;
+}
+
+.pdf-lab-prod-next-steps-generated small {
+  margin-top: 6px;
   color: var(--prod-muted);
   font-size: 11px;
+}
+
+.pdf-lab-prod-plan-loop {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(245, 158, 11, 0.36);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.pdf-lab-prod-plan-loop.complete {
+  border-color: rgba(25, 195, 125, 0.36);
+}
+
+.pdf-lab-prod-plan-loop.stop {
+  border-color: rgba(248, 113, 113, 0.48);
+}
+
+.pdf-lab-prod-plan-loop.continue {
+  border-color: rgba(139, 92, 246, 0.42);
+}
+
+.pdf-lab-prod-plan-loop span,
+.pdf-lab-prod-plan-loop-command b,
+.pdf-lab-prod-plan-loop-grid b {
+  display: block;
+  color: var(--prod-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-prod-plan-loop h2 {
+  margin: 8px 0;
+  color: var(--prod-text);
+  font-size: 22px;
+  line-height: 1.12;
+  text-transform: capitalize;
+}
+
+.pdf-lab-prod-plan-loop p {
+  margin: 0;
+  color: var(--prod-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pdf-lab-prod-plan-loop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pdf-lab-prod-plan-loop-grid div,
+.pdf-lab-prod-plan-loop-command {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--prod-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.pdf-lab-prod-plan-loop-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--prod-text);
+  font-size: 13px;
+}
+
+.pdf-lab-prod-plan-loop-command {
+  grid-column: 1 / -1;
+}
+
+.pdf-lab-prod-plan-loop-command code {
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .pdf-lab-prod-next-steps-grid {
@@ -919,6 +1027,136 @@
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+
+.pdf-lab-prod-proof-ledger {
+  margin-top: 18px;
+  border: 1px solid rgba(25, 195, 125, 0.34);
+  border-radius: 14px;
+  background: rgba(5, 12, 10, 0.82);
+  overflow: hidden;
+}
+
+.pdf-lab-prod-proof-ledger.bad {
+  border-color: rgba(248, 113, 113, 0.44);
+}
+
+.pdf-lab-prod-proof-ledger-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px;
+  border-bottom: 1px solid var(--prod-line);
+}
+
+.pdf-lab-prod-proof-ledger-head span {
+  color: var(--prod-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-prod-proof-ledger-head h2 {
+  margin: 6px 0;
+  color: var(--prod-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.pdf-lab-prod-proof-ledger-head p {
+  max-width: 780px;
+  margin: 0;
+  color: var(--prod-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pdf-lab-prod-proof-ledger-head strong {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border: 1px solid rgba(25, 195, 125, 0.36);
+  border-radius: 10px;
+  color: var(--prod-success);
+  background: rgba(25, 195, 125, 0.08);
+  font-size: 14px;
+}
+
+.pdf-lab-prod-proof-ledger-table {
+  display: grid;
+  padding: 10px;
+  gap: 6px;
+}
+
+.pdf-lab-prod-proof-ledger-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.95fr) minmax(145px, 0.75fr) minmax(120px, 0.55fr) minmax(170px, 0.75fr) minmax(240px, 1.1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--prod-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.pdf-lab-prod-proof-ledger-row.head {
+  border-color: transparent;
+  background: transparent;
+  color: var(--prod-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-prod-proof-ledger-row.ok {
+  border-color: rgba(25, 195, 125, 0.26);
+}
+
+.pdf-lab-prod-proof-ledger-row.warn {
+  border-color: rgba(245, 158, 11, 0.28);
+}
+
+.pdf-lab-prod-proof-ledger-row.bad {
+  border-color: rgba(248, 113, 113, 0.42);
+}
+
+.pdf-lab-prod-proof-ledger-row code,
+.pdf-lab-prod-proof-ledger-row span,
+.pdf-lab-prod-proof-ledger-row strong,
+.pdf-lab-prod-proof-ledger-row small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-lab-prod-proof-ledger-row code {
+  color: #c4b5fd;
+  font-size: 11px;
+}
+
+.pdf-lab-prod-proof-ledger-row span,
+.pdf-lab-prod-proof-ledger-row small {
+  color: var(--prod-muted);
+  font-size: 11px;
+}
+
+.pdf-lab-prod-proof-ledger-row strong {
+  color: var(--prod-success);
+  font-size: 12px;
+}
+
+.pdf-lab-prod-proof-ledger-row.warn strong {
+  color: #fbbf24;
+}
+
+.pdf-lab-prod-proof-ledger-row.bad strong {
+  color: #f87171;
 }
 
 .pdf-lab-prod-coverage-hero {

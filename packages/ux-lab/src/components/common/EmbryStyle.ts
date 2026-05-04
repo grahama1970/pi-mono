@@ -11,7 +11,7 @@ export const EMBRY = {
 	surfaceAlt: "#1e1e1e", // slightly lighter surface for contrast
 
 	// Text (aliases for consistency with other token sets)
-	text: "#e2e8f0", // alias for white
+	text: "#f5f5f5", // alias for white
 	textMuted: "#94a3b8", // alias for muted/dim
 
 	// Border
@@ -24,7 +24,7 @@ export const EMBRY = {
 	amber: "#ffaa00",
 	blue: "#4a9eff",
 	accent: "#7c3aed",
-	white: "#e2e8f0", // slate-200
+	white: "#f5f5f5", // high-contrast primary text
 	dim: "#94a3b8", // slate-500
 	muted: "#94a3b8", // slate-400 (COTS: ≥4.5:1 on dark bg)
 

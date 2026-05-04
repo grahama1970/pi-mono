@@ -229,6 +229,14 @@ export interface SpartaQRA {
 // v2 QRA collection sources
 export type QRASource = "v2" | "legacy" | "all";
 export type QRAEvidenceStatus = "grounded" | "review" | "passed" | "adversarial" | "missing" | "failed";
+const EMPTY_QRA_STATUS_COUNTS: Record<QRAEvidenceStatus, number> = {
+	grounded: 0,
+	review: 0,
+	passed: 0,
+	adversarial: 0,
+	missing: 0,
+	failed: 0,
+};
 
 export interface QRAStatusCounts {
 	total: number;
@@ -237,6 +245,9 @@ export interface QRAStatusCounts {
 	loading: boolean;
 	error?: string | null;
 	generatedAt?: string;
+	fetchedAt?: string;
+	lastSuccessfulAt?: string;
+	stale?: boolean;
 }
 
 async function qraFeedPost(body: {
@@ -564,35 +575,32 @@ export function useQRAs(
 }
 
 export function useQRAStatusCounts(source: QRASource = "all"): QRAStatusCounts {
-	const emptyCounts: Record<QRAEvidenceStatus, number> = {
-		grounded: 0,
-		review: 0,
-		passed: 0,
-		adversarial: 0,
-		missing: 0,
-		failed: 0,
-	};
 	const [statusCounts, setStatusCounts] = useState<QRAStatusCounts>({
 		total: 0,
 		sourceUsed: source,
-		counts: emptyCounts,
+		counts: EMPTY_QRA_STATUS_COUNTS,
 		loading: true,
 		error: null,
 	});
 
 	useEffect(() => {
 		let cancelled = false;
-		setStatusCounts((prev) => ({ ...prev, sourceUsed: source, loading: true, error: null }));
+		const loadingTimer = setTimeout(() => {
+			if (!cancelled) setStatusCounts((prev) => ({ ...prev, sourceUsed: source, loading: true, error: null }));
+		}, 0);
 		qraStatusCountsGet(source)
 			.then((payload) => {
 				if (cancelled) return;
 				setStatusCounts({
 					total: Number(payload.total ?? 0),
 					sourceUsed: payload.source_used ?? source,
-					counts: { ...emptyCounts, ...(payload.counts ?? {}) },
+					counts: { ...EMPTY_QRA_STATUS_COUNTS, ...(payload.counts ?? {}) },
 					loading: false,
 					error: null,
 					generatedAt: payload.generated_at,
+					fetchedAt: new Date().toISOString(),
+					lastSuccessfulAt: new Date().toISOString(),
+					stale: false,
 				});
 			})
 			.catch((err) => {
@@ -601,9 +609,14 @@ export function useQRAStatusCounts(source: QRASource = "all"): QRAStatusCounts {
 					...prev,
 					loading: false,
 					error: err instanceof Error ? err.message : String(err),
+					fetchedAt: new Date().toISOString(),
+					stale: Boolean(prev.lastSuccessfulAt || prev.generatedAt || prev.total > 0),
 				}));
 			});
-		return () => { cancelled = true; };
+		return () => {
+			cancelled = true;
+			clearTimeout(loadingTimer);
+		};
 	}, [source]);
 
 	return statusCounts;

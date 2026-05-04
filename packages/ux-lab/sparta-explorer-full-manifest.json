@@ -151,7 +151,19 @@
           "interactions": [
             {
               "action": "screenshot",
-              "description": "QRA detail panel with Accept/Reject/Edit actions"
+              "description": "QRA detail panel with gated approval, reject, correction, and evidence-flow actions"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:action:accept']",
+              "description": "Attempt approval; blocked evidence must show explicit rationale and remain on the same QRA",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:evidence-flow:claims']",
+              "description": "Open Answer Claims from the source-grounded evidence-flow mini-map",
+              "screenshot_after": true
             }
           ]
         },
@@ -160,7 +172,34 @@
           "interactions": [
             {
               "action": "screenshot",
-              "description": "Evidence Context pane showing crosswalk chains"
+              "description": "Evidence Context pane showing textual trace plus source-grounded/advisory evidence flow separation"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:evidence-flow:failed-gate']",
+              "description": "Inspect dashed advisory branch; it must be labelled not evidence",
+              "screenshot_after": true
+            }
+          ]
+        },
+        {
+          "name": "qras-blocked-deeplink-recovery",
+          "path": "/#sparta-explorer/qras?qra=000a5d68cbd446e5",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Blocked deep-link recovery state with document actions hidden"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:recovery:open-diagnostics']",
+              "description": "Open recovery diagnostics JSON",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='qras:recovery:copy-diagnostics']",
+              "description": "Copy recovery diagnostics for audit or escalation"
             }
           ]
         }
