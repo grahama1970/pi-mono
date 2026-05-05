@@ -15,9 +15,9 @@
       "passed": true
     },
     {
-      "detail": "Run with --apply-memory to persist evidence metadata.",
+      "detail": "ArangoDB memory upsert applied via canonical /upsert.",
       "name": "memory_upsert",
-      "passed": false
+      "passed": true
     },
     {
       "detail": "elements 27628/27628 have required text vectors; page text vectors 0/492 and section text vectors 352/358 are non-blocking metadata; 8/8 element recall checks passed.",
@@ -30,7 +30,7 @@
       "passed": true
     }
   ],
-  "generated_at": "2026-05-03T13:47:02.825482+00:00",
+  "generated_at": "2026-05-04T14:25:32.366291+00:00",
   "implemented": true,
   "notes": [
     "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
@@ -164,13 +164,13 @@
     "evidence_sections": 358,
     "extraction_elements": 27986,
     "full_crop_coverage": true,
-    "memory_upsert_applied": false,
-    "memory_upserted_element_images": 0,
-    "memory_upserted_elements": 0,
-    "memory_upserted_page_images": 0,
-    "memory_upserted_pages": 0,
-    "memory_upserted_section_images": 0,
-    "memory_upserted_sections": 0,
+    "memory_upsert_applied": true,
+    "memory_upserted_element_images": 27628,
+    "memory_upserted_elements": 27628,
+    "memory_upserted_page_images": 492,
+    "memory_upserted_pages": 492,
+    "memory_upserted_section_images": 358,
+    "memory_upserted_sections": 358,
     "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
     "sample_checks": 8,
     "sample_checks_passed": 8,
@@ -192,5 +192,138 @@
     ],
     "visual_required_elements": 8
   },
-  "upsert_results": {}
+  "upsert_results": {
+    "pdf_element_has_image": {
+      "batches": 277,
+      "collection": "pdf_element_has_image",
+      "document_count": 27628,
+      "last_response": {
+        "collection": "pdf_element_has_image",
+        "errors": [],
+        "inserted": 28,
+        "total": 28,
+        "updated": 0
+      }
+    },
+    "pdf_element_images": {
+      "batches": 277,
+      "collection": "pdf_element_images",
+      "document_count": 27628,
+      "last_response": {
+        "collection": "pdf_element_images",
+        "errors": [],
+        "inserted": 28,
+        "total": 28,
+        "updated": 0
+      }
+    },
+    "pdf_elements": {
+      "batches": 277,
+      "collection": "pdf_elements",
+      "document_count": 27628,
+      "last_response": {
+        "collection": "pdf_elements",
+        "errors": [],
+        "inserted": 0,
+        "total": 28,
+        "updated": 28
+      }
+    },
+    "pdf_extraction_run_has_artifact": {
+      "batches": 285,
+      "collection": "pdf_extraction_run_has_artifact",
+      "document_count": 28478,
+      "last_response": {
+        "collection": "pdf_extraction_run_has_artifact",
+        "errors": [],
+        "inserted": 78,
+        "total": 78,
+        "updated": 0
+      }
+    },
+    "pdf_extraction_runs": {
+      "batches": 1,
+      "collection": "pdf_extraction_runs",
+      "document_count": 1,
+      "last_response": {
+        "collection": "pdf_extraction_runs",
+        "errors": [],
+        "inserted": 1,
+        "total": 1,
+        "updated": 0
+      }
+    },
+    "pdf_page_has_image": {
+      "batches": 5,
+      "collection": "pdf_page_has_image",
+      "document_count": 492,
+      "last_response": {
+        "collection": "pdf_page_has_image",
+        "errors": [],
+        "inserted": 92,
+        "total": 92,
+        "updated": 0
+      }
+    },
+    "pdf_page_images": {
+      "batches": 5,
+      "collection": "pdf_page_images",
+      "document_count": 492,
+      "last_response": {
+        "collection": "pdf_page_images",
+        "errors": [],
+        "inserted": 92,
+        "total": 92,
+        "updated": 0
+      }
+    },
+    "pdf_pages": {
+      "batches": 5,
+      "collection": "pdf_pages",
+      "document_count": 492,
+      "last_response": {
+        "collection": "pdf_pages",
+        "errors": [],
+        "inserted": 92,
+        "total": 92,
+        "updated": 0
+      }
+    },
+    "pdf_section_has_image": {
+      "batches": 4,
+      "collection": "pdf_section_has_image",
+      "document_count": 358,
+      "last_response": {
+        "collection": "pdf_section_has_image",
+        "errors": [],
+        "inserted": 58,
+        "total": 58,
+        "updated": 0
+      }
+    },
+    "pdf_section_images": {
+      "batches": 4,
+      "collection": "pdf_section_images",
+      "document_count": 358,
+      "last_response": {
+        "collection": "pdf_section_images",
+        "errors": [],
+        "inserted": 58,
+        "total": 58,
+        "updated": 0
+      }
+    },
+    "pdf_sections": {
+      "batches": 4,
+      "collection": "pdf_sections",
+      "document_count": 358,
+      "last_response": {
+        "collection": "pdf_sections",
+        "errors": [],
+        "inserted": 0,
+        "total": 58,
+        "updated": 58
+      }
+    }
+  }
 }

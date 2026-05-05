@@ -582,6 +582,9 @@ export function QRAsView() {
       })
       setLoadedQras((prev) => prev.some((entry) => entry._key === fallback._key) ? prev : [fallback, ...prev])
       setCurrentIndexRaw(0)
+      setDetailLoadingKey(null)
+      setDetailError(null)
+      return () => { cancelled = true }
     }
     qraDetailPost({ source, key: qraKeyFilter, qraId: qraKeyFilter })
       .then((result) => {

@@ -127,13 +127,6 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   // Memory health monitoring — adaptive polling, prominent banner when offline
   const memoryHealth = useMemoryHealth()
 
-  // Auto-reload data when connection restores
-  useEffect(() => {
-    if (memoryHealth.wasOffline && memoryHealth.isHealthy) {
-      window.location.reload()
-    }
-  }, [memoryHealth.wasOffline, memoryHealth.isHealthy])
-
   // Sync activeTab with URL changes (when parent passes new initialTab)
   useEffect(() => {
     if (initialTab) {

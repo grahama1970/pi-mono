@@ -291,12 +291,16 @@
     "id": "pdf-lab-agentic-workflow",
     "name": "PdfLabView",
     "file": "src/components/pdf-lab/PdfLabView.tsx",
-    "description": "Default PDF Lab surface now presents the real-data agentic workflow: agent scan, representative samples, deterministic extraction, parity comparison, preset/code improvement, 95% gate, full extraction, human triage, and Nico evidence QA.",
-    "composition": "Surgical evidence viewport with shared collapsible LeftPane ambiguity queue when human ambiguity exists; otherwise routes to PdfLabEvidenceQA for artifact-grounded post-triage sampling.",
+    "description": "Default PDF Lab surface presents the real-data agentic workflow and Coverage proof layer: agent scan, candidate pages, deterministic extraction, parity comparison, preset/code improvement, full extraction, human triage, candidate audit confirmation, and Nico evidence QA.",
+    "composition": "Coverage starts with a candidate audit table showing all promoted sweep candidate pages, thumbnails, detected PDF element families, agent correction notes, ArangoDB memory keys, and pass/warn/fail state; Surgical Triage remains the focused human ambiguity deck.",
     "data_sources": [
       "public/pdf-lab-nist-workflow-manifest.json",
       "public/pdf-lab-nist-full-extraction.json",
       "public/pdf-lab-nist-human-triage-queue.json",
+      "public/pdf-lab-status-report.json",
+      "public/pdf-lab-memory-qa-report.json",
+      "public/pdf-lab-evidence/**/pages/page-*.png",
+      "public/pdf-lab-evidence/**/crops/**/*.png",
       "GET /api/pdf-lab/nico-qa-report",
       "POST /api/pdf-lab/evidence-query",
       "public/NIST_SP_800-53r5.pdf"
@@ -305,6 +309,7 @@
       "workflow_manifest": "Browser-oriented phase/candidate/gate summary derived from real full-batch artifacts.",
       "full_extraction": "Deterministic pdf_oxide full-document extraction.",
       "human_triage_queue": "Final ambiguity cards only; no solved pages should become human work.",
+      "coverage_candidate_audit": "Coverage renders the promoted candidate pages as evidence rows with thumbnails, detected families, agent notes, ArangoDB memory status, and final pass/warn/fail outcome.",
       "nico_qa": "Post-triage stratified random sample that compares extracted JSON against original page/crop artifacts for Nico/persona-style compliance checks.",
       "gemini_review_bundle": "Top-bar shared ReviewBundleButton calls POST /api/pdf-lab/gemini-review-bundle, writes /tmp/pdf-lab-gemini-review-bundle-latest.md, and copies the complete review/fix prompt with xclip."
     },

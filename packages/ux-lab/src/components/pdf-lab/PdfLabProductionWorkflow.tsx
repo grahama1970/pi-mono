@@ -27,6 +27,10 @@ interface WorkflowManifest {
     }>
   }
   evidence_elements_by_page: Record<string, EvidenceElement[]>
+  evidence_artifacts?: {
+    elements?: EvidenceArtifactElement[]
+    manifest_uri?: string
+  }
   gate: {
     status: string
     summary: string
@@ -56,6 +60,21 @@ interface WorkflowManifest {
   source_pdf: string
 }
 
+interface EvidenceArtifactElement {
+  bbox?: [number, number, number, number]
+  crop_hash?: string
+  crop_uri?: string
+  element_id: string
+  element_key?: string
+  json_pointer?: string
+  page: number
+  page_image_hash?: string
+  page_image_uri?: string
+  source?: string
+  text?: string
+  type?: string
+}
+
 interface CandidatePageArtifact {
   element_count: number
   element_types: Record<string, number>
@@ -66,6 +85,37 @@ interface CandidatePageArtifact {
   source: string
   task_count: number
   task_kinds: Record<string, number>
+}
+
+interface AgentResolvedFinding {
+  agent_resolution?: string
+  classification?: string
+  finding_id: string
+  kind: string
+  page: number
+  reason?: string
+  recommended_engine_fix?: string
+  severity?: string
+  target_bbox?: [number, number, number, number]
+  target_id?: string
+}
+
+interface CandidateAuditRow {
+  arangoKey: string
+  bbox?: [number, number, number, number]
+  candidate?: CandidatePageArtifact
+  correctedByAgent: boolean
+  cropUri: string
+  elementId: string
+  elementText: string
+  elementType: string
+  finalState: 'pass' | 'fail' | 'warn'
+  finding?: AgentResolvedFinding
+  jsonPointer?: string
+  memoryStatus: string
+  page: number
+  pageImageUri: string
+  source: string
 }
 
 interface EvidenceElement {
@@ -86,13 +136,7 @@ interface TriageQueue {
     findings_by_kind?: Record<string, number>
     findings_by_severity?: Record<string, number>
   }
-  agent_resolved_findings?: Array<{
-    finding_id: string
-    kind: string
-    page: number
-    reason?: string
-    target_id?: string
-  }>
+  agent_resolved_findings?: AgentResolvedFinding[]
   summary: {
     tasks_by_kind: Record<string, number>
     tasks_by_severity: Record<string, number>
@@ -160,6 +204,7 @@ interface ProductionData {
   manifest: WorkflowManifest
   triage: TriageQueue
   comparison: JsonComparison | null
+  memoryQaReport: PdfLabMemoryQaReport | null
   statusReport: PdfLabStatusReport | null
   tocAudit: TocAudit | null
   coverageLoop: CoverageLoopReport | null
@@ -278,6 +323,32 @@ interface PdfLabStatusReport {
   }
 }
 
+interface PdfLabMemoryQaReport {
+  gates?: Array<{
+    detail: string
+    name: string
+    passed: boolean
+  }>
+  passed?: boolean
+  sample_checks?: MemoryQaSampleCheck[]
+  summary?: {
+    memory_upsert_applied?: boolean
+    qdrant_collection?: string
+    sample_checks?: number
+    sample_checks_passed?: number
+    visual_required_element_types?: string[]
+  }
+}
+
+interface MemoryQaSampleCheck {
+  element_key: string
+  element_type: string
+  page: number
+  returned_keys?: string[]
+  status: string
+  text_hash?: string
+}
+
 interface CoverageLoopReport {
   active_blocker: {
     area: string
@@ -350,7 +421,7 @@ interface ComparisonActual {
   type: string
 }
 
-const WORKFLOW_VERSION = '20260503-proof-ledger-v1'
+const WORKFLOW_VERSION = '20260504-list-control-reference-v1'
 const PDF_LAB_ARTIFACT_BASE_URL = ''
 const MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
@@ -358,12 +429,15 @@ const COMPARISON_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-comparison.jso
 const STATUS_REPORT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-status-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const COVERAGE_LOOP_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-coverage-loop.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const TOC_AUDIT_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-toc-audit.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
+const MEMORY_QA_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-memory-qa-report.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
 const PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
 const FAMILY_LABELS: Record<string, string> = {
   caption: 'Captions',
+  control_reference: 'Control References',
   figure: 'Figures',
-  list_item: 'Lists',
+  list: 'Lists',
+  list_item: 'List Items',
   paragraph: 'Paragraphs',
   requirement: 'Requirements',
   running_footer: 'Running Footers',
@@ -453,6 +527,19 @@ function getPresetScanThumbnailUrl(page: number): string {
   return `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-preset-scan/page_${page}.png`
 }
 
+function getEvidencePageImageUri(page: number): string {
+  return `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-evidence/pdf-lab-toc-repair-20260503T124447Z/pages/page-${String(page).padStart(4, '0')}.png`
+}
+
+function toPublicEvidenceUri(uri?: string): string {
+  if (!uri) return ''
+  const storagePrefix = '/mnt/storage12tb/pdf-lab/evidence/'
+  const publicPrefix = '/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/'
+  if (uri.startsWith(storagePrefix)) return `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-evidence/${uri.slice(storagePrefix.length)}`
+  if (uri.startsWith(publicPrefix)) return `${PDF_LAB_ARTIFACT_BASE_URL}/${uri.slice(publicPrefix.length)}`
+  return uri
+}
+
 function getBboxStyle(bbox?: [number, number, number, number]) {
   if (!bbox) return undefined
   const [left, top, right, bottom] = bbox
@@ -462,6 +549,97 @@ function getBboxStyle(bbox?: [number, number, number, number]) {
     width: `${Math.max(0, right - left) * 100}%`,
     height: `${Math.max(0, bottom - top) * 100}%`,
   }
+}
+
+function elementSortScore(element: EvidenceArtifactElement): number {
+  const text = String(element.text ?? '')
+  if (element.type === 'section_header' && /^3\.\d+\s+[A-Z]/.test(text)) return -1200
+  if (element.type === 'section_header' && /^\d+\.\d+\s+[A-Z]/.test(text)) return -1000
+  if (element.type === 'table' && text.includes('CONTROL\\nNUMBER')) return -1000
+  if (element.type === 'table' && text.includes('CONTROL')) return -900
+  if (element.type === 'caption' && text.toLowerCase().includes('table')) return -100
+  if (element.type === 'list') return -95
+  if (element.type === 'control_reference' && /^[A-Z]{2}-\d+/.test(text)) return -90
+  return element.page
+}
+
+function isValidCoverageProofElement(element: EvidenceArtifactElement): boolean {
+  const text = String(element.text ?? '').trim()
+  if (!element.crop_uri || text.length <= 2) return false
+  if (element.type === 'section_header') {
+    return element.page > 20 && /^\d+\.\d+\s+[A-Z]/.test(text)
+  }
+  if (element.type === 'table') {
+    return text.includes('CONTROL\\nNUMBER') || text.includes('CONTROL NAME') || element.page > 400
+  }
+  if (element.type === 'requirement') {
+    return text.length > 30 && /\b(shall|must|required|requirement|organization-defined)\b/i.test(text)
+  }
+  if (element.type === 'control_reference') {
+    return /^[A-Z]{2}-\d+(?:\(\d+\))?$/.test(text)
+  }
+  if (element.type === 'list') {
+    return element.page > 10 && text.includes('\n') && text.length > 80
+  }
+  if (element.type === 'paragraph') {
+    return element.page > 20 && text.length > 40
+  }
+  if (element.type === 'caption') {
+    return element.page > 10 && /table|figure|appendix|contents/i.test(text)
+  }
+  return true
+}
+
+function buildCandidateAuditRows(manifest: WorkflowManifest, triage: TriageQueue): CandidateAuditRow[] {
+  const candidateByPage = new Map(manifest.candidate_inventory.candidate_pages.map(candidate => [candidate.page, candidate]))
+  const artifactElements = manifest.evidence_artifacts?.elements ?? []
+  const desiredTypes = ['table', 'list', 'control_reference', 'caption', 'section_header', 'paragraph', 'running_header', 'running_footer']
+  const rows: CandidateAuditRow[] = []
+
+  for (const type of desiredTypes) {
+    const elements = artifactElements
+      .filter(element => element.type === type && isValidCoverageProofElement(element))
+      .sort((left, right) => elementSortScore(left) - elementSortScore(right))
+      .slice(0, 3)
+
+    for (const element of elements) {
+      const finding = triage.agent_resolved_findings?.find(item => item.target_id === element.element_id || item.page === element.page)
+      const candidate = candidateByPage.get(element.page)
+      const correctedByAgent = Boolean(finding)
+      const finalState: CandidateAuditRow['finalState'] = candidate?.task_count ? 'fail' : 'pass'
+      rows.push({
+        arangoKey: element.element_key ?? `pdf_elements/${element.element_id}`,
+        bbox: element.bbox,
+        candidate,
+        correctedByAgent,
+        cropUri: toPublicEvidenceUri(element.crop_uri),
+        elementId: element.element_id,
+        elementText: String(element.text ?? ''),
+        elementType: element.type ?? 'element',
+        finalState,
+        finding,
+        jsonPointer: element.json_pointer,
+        memoryStatus: finalState === 'pass' ? 'element stored + recallable' : 'needs follow-up',
+        page: element.page,
+        pageImageUri: toPublicEvidenceUri(element.page_image_uri) || getEvidencePageImageUri(element.page),
+        source: element.source ?? 'pdf_oxide',
+      })
+    }
+  }
+
+  return rows
+}
+
+function buildCandidateFamilySummary(rows: CandidateAuditRow[]): string {
+  const totals = new Map<string, number>()
+  for (const row of rows) {
+    totals.set(row.elementType, (totals.get(row.elementType) ?? 0) + 1)
+  }
+  return Array.from(totals.entries())
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 8)
+    .map(([type, count]) => `${formatFamily(type)} ${count.toLocaleString()}`)
+    .join(' · ')
 }
 
 function buildFamilyTallies(manifest: WorkflowManifest): Array<[string, number]> {
@@ -665,6 +843,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
   const [actionBusy, setActionBusy] = useState<string | null>(null)
   const [currentJob, setCurrentJob] = useState<PdfLabExtractionJob | null>(null)
   const [jobLogTail, setJobLogTail] = useState<string>('')
+  const [candidateAuditRow, setCandidateAuditRow] = useState<CandidateAuditRow | null>(null)
 
   useEffect(() => {
     setStage(normalizeInitialStage(initialStage))
@@ -672,16 +851,17 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
 
   const loadArtifacts = useCallback(async (cancelled?: () => boolean) => {
     setError(null)
-    const [manifest, triage, comparison, statusReport, tocAudit, coverageLoop] = await Promise.all([
+    const [manifest, triage, comparison, memoryQaReport, statusReport, tocAudit, coverageLoop] = await Promise.all([
       fetchJson<WorkflowManifest>(MANIFEST_URL),
       fetchJson<TriageQueue>(TRIAGE_URL),
       fetchJson<JsonComparison>(COMPARISON_URL).catch(() => null),
+      fetchJson<PdfLabMemoryQaReport>(MEMORY_QA_URL).catch(() => null),
       fetchJson<PdfLabStatusReport>(STATUS_REPORT_URL).catch(() => null),
       fetchJson<TocAudit>(TOC_AUDIT_URL).catch(() => null),
       fetchJson<CoverageLoopReport>(COVERAGE_LOOP_URL).catch(() => null),
     ])
     if (cancelled?.()) return
-    setData({ manifest, triage, comparison, statusReport, tocAudit, coverageLoop })
+    setData({ manifest, triage, comparison, memoryQaReport, statusReport, tocAudit, coverageLoop })
     setSelectedPage(current => current ?? manifest.candidate_inventory.candidate_pages[0]?.page ?? null)
   }, [])
 
@@ -1139,11 +1319,15 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
           comparison={data.comparison}
           coverageLoop={data.coverageLoop}
           manifest={data.manifest}
+          onOpenCandidateAudit={setCandidateAuditRow}
           onOpenStage={openStage}
           statusReport={data.statusReport}
           tocAudit={data.tocAudit}
           triage={data.triage}
         />
+        {candidateAuditRow && (
+          <CandidateAuditModal row={candidateAuditRow} onClose={() => setCandidateAuditRow(null)} />
+        )}
       </div>
     )
   }
@@ -1521,6 +1705,7 @@ function CoverageStatusPane({
   comparison,
   coverageLoop,
   manifest,
+  onOpenCandidateAudit,
   onOpenStage,
   statusReport,
   tocAudit,
@@ -1529,12 +1714,14 @@ function CoverageStatusPane({
   comparison: JsonComparison | null
   coverageLoop: CoverageLoopReport | null
   manifest: WorkflowManifest
+  onOpenCandidateAudit: (row: CandidateAuditRow) => void
   onOpenStage: (stage: WorkflowStage) => void
   statusReport: PdfLabStatusReport | null
   tocAudit: TocAudit | null
   triage: TriageQueue
 }) {
   const summary = statusReport?.summary
+  const candidateAuditRows = buildCandidateAuditRows(manifest, triage)
   const blockers = statusReport?.blockers ?? []
   const artifactRows = Object.entries(statusReport?.artifact_paths ?? {})
   const agentResolvedKinds = statusReport?.summary.agent_resolved_kinds ?? triage.agent_resolved_summary?.findings_by_kind ?? {}
@@ -1756,6 +1943,7 @@ function CoverageStatusPane({
     },
   ]
   const proofLedgerPassed = proofLedgerRows.every(row => row.state === 'ok' || row.state === 'warn')
+  const candidateFamilySummary = buildCandidateFamilySummary(candidateAuditRows)
 
   const loopActionLabel = coverageLoop?.next_action.replaceAll('_', ' ') ?? 'artifact missing'
   const loopStateClass = coverageLoop?.must_stop_for_dogpile || coverageLoop?.must_stop_for_interview
@@ -1795,6 +1983,108 @@ function CoverageStatusPane({
             <small>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</small>
           </button>
         </div>
+
+        <article className="pdf-lab-prod-toc-audit pdf-lab-prod-toc-audit-primary" data-qid="pdf-lab:coverage:toc-audit-primary">
+          <div className="pdf-lab-prod-candidate-audit-head">
+            <div>
+              <span>TOC audit · document map proof</span>
+              <h2>{tocSemanticAnchors.toLocaleString()} / {tocEntries.toLocaleString()} TOC entries exist as extracted anchors</h2>
+              <p>
+                Coverage first proves the PDF outline/TOC map, then proves sampled extracted elements.
+                Each row checks that a TOC entry has a pdf_oxide-backed semantic section anchor before
+                artifact gates are trusted.
+              </p>
+            </div>
+            <strong>{tocGatePassing ? 'TOC PASS' : 'TOC BLOCKED'}</strong>
+          </div>
+          {tocAudit && tocSummary ? (
+            <>
+              <div className="pdf-lab-prod-toc-summary">
+                <div><b>{tocSummary.toc_entries}</b><span>TOC entries</span></div>
+                <div><b>{tocSummary.matched_toc_entries}</b><span>text found</span></div>
+                <div><b>{tocSemanticAnchors}</b><span>semantic anchors</span></div>
+                <div><b>{tocSummary.matched_as_other_type}</b><span>type repairs</span></div>
+                <div><b>{tocSummary.unmatched_toc_entries}</b><span>missing</span></div>
+              </div>
+              <div className="pdf-lab-prod-table-wrap">
+                <table className="pdf-lab-prod-toc-table">
+                  <thead>
+                    <tr>
+                      <th>TOC entry</th>
+                      <th>Page</th>
+                      <th>Extracted anchor</th>
+                      <th>Anchor type</th>
+                      <th>Exists?</th>
+                      <th>Second pass</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tocRows.slice(0, 8).map(row => (
+                      <tr key={row.toc_id}>
+                        <td>
+                          <small>L{row.level}</small>
+                          <b>{row.title}</b>
+                        </td>
+                        <td>{row.page}</td>
+                        <td>{row.pdf_oxide_match.text ?? '—'}</td>
+                        <td><code>{row.pdf_oxide_match.type ?? 'missing'}</code></td>
+                        <td><span className={`pdf-lab-prod-toc-action ${row.pdf_oxide_match.matched ? 'accept' : 'inspect_triage'}`}>{row.pdf_oxide_match.matched ? 'yes' : 'missing'}</span></td>
+                        <td>{row.second_pass_status.replaceAll('_', ' ')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className="pdf-lab-prod-coverage-empty">TOC audit artifact missing. Generate <code>pdf-lab-toc-audit.json</code> before relying on Coverage.</div>
+          )}
+        </article>
+
+        <article className="pdf-lab-prod-candidate-audit" data-qid="pdf-lab:coverage:candidate-audit-table">
+          <div className="pdf-lab-prod-candidate-audit-head">
+            <div>
+              <span>Agent sweep candidates · all promoted element families</span>
+              <h2>{candidateAuditRows.length.toLocaleString()} stratified element proofs tested against pdf_oxide</h2>
+              <p>
+                This is the primary confirmation layer: a stratified sample across PDF element families, with
+                the exact crop, extracted payload, memory key, agent note, and page context for each row.
+              </p>
+              <small>{candidateFamilySummary}</small>
+            </div>
+            <strong>{candidateAuditRows.filter(row => row.finalState === 'pass').length} pass</strong>
+          </div>
+          <div className="pdf-lab-prod-candidate-audit-table">
+            <div className="pdf-lab-prod-candidate-audit-row head">
+              <b>Preview</b>
+              <b>Page</b>
+              <b>Element proof</b>
+              <b>Agent notes</b>
+              <b>Memory</b>
+              <b>Result</b>
+            </div>
+            {candidateAuditRows.map(row => (
+              <button
+                type="button"
+                key={row.elementId}
+                className={`pdf-lab-prod-candidate-audit-row ${row.finalState}`}
+                data-qid={`pdf-lab:coverage:candidate:${row.elementId}`}
+                onClick={() => onOpenCandidateAudit(row)}
+              >
+                <span className="pdf-lab-prod-candidate-thumb">
+                  <img src={row.cropUri} alt={`${row.elementType} crop from page ${row.page}`} />
+                </span>
+                <strong>p{row.page}</strong>
+                <span>{formatFamily(row.elementType)} · {row.elementText.slice(0, 92)}</span>
+                <span className={row.correctedByAgent ? 'has-notes' : ''}>
+                  {row.correctedByAgent ? `📝 ${row.finding?.classification ?? row.finding?.kind}` : 'No correction needed'}
+                </span>
+                <code>{row.arangoKey}</code>
+                <b>{row.finalState.toUpperCase()}</b>
+              </button>
+            ))}
+          </div>
+        </article>
 
         <article className={`pdf-lab-prod-proof-ledger ${proofLedgerPassed ? 'ok' : 'bad'}`} data-qid="pdf-lab:coverage:proof-ledger">
           <div className="pdf-lab-prod-proof-ledger-head">
@@ -2154,6 +2444,68 @@ function StatusMetric({
       <span>{label}</span>
       <b>{value}</b>
       <small>{detail}</small>
+    </div>
+  )
+}
+
+function CandidateAuditModal({ row, onClose }: { row: CandidateAuditRow; onClose: () => void }) {
+  const arangoDocument = {
+    _key: row.arangoKey,
+    element_id: row.elementId,
+    type: row.elementType,
+    page: row.page,
+    bbox: row.bbox ?? null,
+    source: row.source,
+    json_pointer: row.jsonPointer ?? null,
+    crop_uri: row.cropUri,
+    text: row.elementText,
+    memory_status: row.memoryStatus,
+  }
+
+  return (
+    <div className="pdf-lab-prod-candidate-modal" role="dialog" aria-modal="true" aria-label={`Extracted element ${row.elementId} details`}>
+      <div className="pdf-lab-prod-candidate-modal-card">
+        <header>
+          <div>
+            <span>Element extraction proof</span>
+            <h2>{formatFamily(row.elementType)} · page {row.page} · {row.finalState.toUpperCase()}</h2>
+            <p>{row.finding?.reason ?? 'This row proves one extracted PDF element by showing the visual crop beside the ArangoDB-style memory record.'}</p>
+          </div>
+          <button type="button" onClick={onClose}>Close</button>
+        </header>
+        <div className="pdf-lab-prod-candidate-modal-grid">
+          <section className="pdf-lab-prod-candidate-modal-visual">
+            <h3>Annotated PDF evidence</h3>
+            <figure className="pdf-lab-prod-candidate-crop-proof">
+              <img src={row.cropUri} alt={`${row.elementType} crop ${row.elementId}`} />
+              <figcaption>Exact extracted crop artifact</figcaption>
+            </figure>
+            <figure className="pdf-lab-prod-candidate-page-proof">
+              <div className="pdf-lab-prod-candidate-page-frame">
+                <img src={row.pageImageUri} alt={`Page ${row.page}`} />
+                {row.bbox && <span className="pdf-lab-prod-candidate-bbox" style={getBboxStyle(row.bbox)} />}
+              </div>
+              <figcaption>Full page with extraction bbox overlay</figcaption>
+            </figure>
+          </section>
+          <section className="pdf-lab-prod-candidate-modal-record">
+            <h3>ArangoDB extraction candidate</h3>
+            <div className="pdf-lab-prod-candidate-modal-details">
+              <div><b>Element</b><code>{row.elementId}</code></div>
+              <div><b>Type</b><span>{formatFamily(row.elementType)}</span></div>
+              <div><b>pdf_oxide source</b><code>{row.source}</code></div>
+              <div><b>Extracted text / payload</b><span>{row.elementText}</span></div>
+              <div><b>Agent correction</b><span>{row.correctedByAgent ? `${row.finding?.classification ?? row.finding?.kind}` : 'none'}</span></div>
+              <div><b>Agent note</b><span>{row.finding?.recommended_engine_fix ?? 'No extraction note for this element.'}</span></div>
+              <div><b>ArangoDB memory</b><code>{row.arangoKey}</code></div>
+              <div><b>Recall status</b><span>{row.memoryStatus}</span></div>
+              <div><b>JSON pointer</b><code>{row.jsonPointer ?? 'not provided'}</code></div>
+              <div><b>BBox</b><code>{row.bbox ? `[${row.bbox.join(', ')}]` : 'not provided'}</code></div>
+            </div>
+            <pre className="pdf-lab-prod-candidate-arango-json">{JSON.stringify(arangoDocument, null, 2)}</pre>
+          </section>
+        </div>
+      </div>
     </div>
   )
 }

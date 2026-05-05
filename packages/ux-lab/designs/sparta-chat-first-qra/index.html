@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SPARTA Chat · QRA Evidence</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b0f;
+      --rail: #080a0e;
+      --panel: #10141a;
+      --panel-2: #141a22;
+      --panel-3: #1a222c;
+      --ink: #f4f7f8;
+      --text: #d9e1e4;
+      --muted: #a6b1b7;
+      --faint: #7e8a92;
+      --line: rgba(226, 236, 240, .12);
+      --line-2: rgba(226, 236, 240, .20);
+      --accent: #b6c4cc;
+      --accent-bg: #161d24;
+      --accent-line: rgba(182, 196, 204, .38);
+      --pass: #7bd596;
+      --pass-bg: #0d2115;
+      --pass-line: rgba(123, 213, 150, .42);
+      --warn: #dfc16d;
+      --warn-bg: #241d0d;
+      --warn-line: rgba(223, 193, 109, .42);
+      --fail: #df7b7b;
+      --fail-bg: #241113;
+      --fail-line: rgba(223, 123, 123, .46);
+      --info: #8cc9df;
+      --info-bg: #0e1c24;
+      --info-line: rgba(140, 201, 223, .40);
+      --shadow: 0 20px 54px rgba(0, 0, 0, .38);
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      font: 16px/1.5 var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 10% -8%, rgba(140, 201, 223, .055), transparent 60%),
+        radial-gradient(800px 480px at 96% 0%, rgba(223, 193, 109, .05), transparent 60%),
+        var(--bg);
+    }
+
+    button, input { font: inherit; color: inherit; }
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    small { font-size: 16px; }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--info);
+      outline-offset: 2px;
+    }
+    i[data-lucide] { width: 20px; height: 20px; stroke-width: 1.9; flex: 0 0 auto; }
+    code, .mono { font-family: var(--mono); }
+    code {
+      display: inline-flex;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 2px 7px;
+      border: 1px solid var(--accent-line);
+      border-radius: 5px;
+      color: var(--ink);
+      background: var(--accent-bg);
+      font-size: 16px;
+    }
+
+    .app {
+      height: 100vh;
+      min-width: 1180px;
+      display: grid;
+      grid-template-columns: 292px minmax(760px, 1fr);
+      transition: grid-template-columns .16s ease;
+    }
+    .app.sidebar-collapsed {
+      grid-template-columns: 84px minmax(760px, 1fr);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      overflow: auto;
+      padding: 20px 16px;
+      background: var(--rail);
+      border-right: 1px solid var(--line);
+    }
+    .app.sidebar-collapsed .sidebar {
+      overflow: hidden;
+      align-items: center;
+      padding: 20px 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .app.sidebar-collapsed .brand {
+      width: 100%;
+      justify-content: center;
+      padding-bottom: 12px;
+    }
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--accent-line);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background: linear-gradient(160deg, rgba(140, 201, 223, .12), rgba(182, 196, 204, .04));
+    }
+    .brand h1 { margin: 0; color: var(--ink); font-size: 20px; line-height: 1.15; }
+    .brand p { margin: 3px 0 0; color: var(--muted); }
+    .brand-text { min-width: 0; }
+    .sidebar-toggle {
+      margin-left: auto;
+      border: 1px solid var(--line-2);
+      border-radius: 10px;
+      color: var(--text);
+      background: #0c120e;
+    }
+    .app.sidebar-collapsed .brand-text,
+    .app.sidebar-collapsed .side-label,
+    .thread-short { display: none; }
+    .app.sidebar-collapsed .thread-title span:not(.dot):not(.thread-short),
+    .app.sidebar-collapsed .thread-meta,
+    .app.sidebar-collapsed .quick-action span,
+    .app.sidebar-collapsed .session-grid,
+    .app.sidebar-collapsed .officer-card div:not(.officer-avatar) {
+      display: none;
+    }
+    .app.sidebar-collapsed .sidebar-toggle {
+      position: fixed;
+      left: 14px;
+      bottom: 16px;
+      z-index: 20;
+      margin: 0;
+    }
+
+    .side-section { display: grid; gap: 10px; }
+    .app.sidebar-collapsed .side-section {
+      width: 100%;
+      justify-items: center;
+      gap: 12px;
+    }
+    .side-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .thread-item, .quick-action, .session-cell, .officer-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0c120e;
+    }
+    .thread-item {
+      width: 100%;
+      padding: 12px;
+      text-align: left;
+      color: var(--text);
+    }
+    .app.sidebar-collapsed .thread-item,
+    .app.sidebar-collapsed .quick-action,
+    .app.sidebar-collapsed .officer-card {
+      width: 56px;
+      min-height: 56px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+    }
+    .thread-item.active {
+      border-color: var(--accent-line);
+      background: #18202a;
+    }
+    .thread-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .app.sidebar-collapsed .thread-title {
+      margin: 0;
+      justify-content: center;
+      display: grid;
+      place-items: center;
+      gap: 4px;
+    }
+    .app.sidebar-collapsed .thread-short {
+      display: block;
+      color: var(--ink);
+      font: 900 13px/1 var(--mono);
+    }
+    .app.sidebar-collapsed .thread-title .dot {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+    .app.sidebar-collapsed .thread-item {
+      position: relative;
+      border-radius: 12px;
+    }
+    .thread-meta { display: flex; gap: 7px; color: var(--muted); font-family: var(--mono); }
+    .dot { width: 8px; height: 8px; border-radius: 999px; flex: 0 0 auto; }
+    .dot.warn { background: var(--warn); }
+    .dot.fail { background: var(--fail); }
+    .dot.pass { background: var(--pass); }
+    .quick-action {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      color: var(--text);
+      text-align: left;
+    }
+    .app.sidebar-collapsed .quick-action {
+      justify-content: center;
+    }
+    .quick-action:hover, .thread-item:hover { border-color: var(--line-2); background: #18202a; }
+    .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .session-cell { padding: 12px; }
+    .session-cell span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .session-cell strong { color: var(--ink); font-family: var(--mono); }
+    .session-cell strong.pass { color: var(--pass); }
+    .officer-card {
+      margin-top: auto;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .app.sidebar-collapsed .officer-card {
+      margin-top: auto;
+    }
+    .officer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      border: 1px solid var(--line-2);
+      background: var(--panel-3);
+      font-weight: 900;
+    }
+    .officer-card b { display: block; color: var(--ink); }
+    .officer-card small { color: var(--muted); font-size: 16px; }
+
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      background: rgba(5, 8, 6, .76);
+    }
+    .topbar, .case-strip, .composer {
+      background: rgba(5, 8, 6, .84);
+      backdrop-filter: blur(14px);
+    }
+    .topbar {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+    .breadcrumb strong { color: var(--ink); }
+    .top-actions, .foot-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 14px;
+      border: 1px solid var(--line-2);
+      border-radius: 9px;
+      color: var(--text);
+      background: #141a22;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .btn.icon { width: 44px; padding: 0; }
+    .btn.primary {
+      color: var(--ink);
+      background: #294357;
+      border-color: var(--accent-line);
+    }
+    .btn.secondary {
+      color: var(--ink);
+      border-color: var(--accent-line);
+      background: linear-gradient(180deg, #26313d, #1a222c);
+    }
+    .btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+    .case-strip {
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .case-left, .case-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .case-label {
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .case-id {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 11px;
+      border: 1px solid var(--line-2);
+      border-radius: 8px;
+      background: #0c120e;
+      color: var(--ink);
+      font-family: var(--mono);
+    }
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--pass);
+      box-shadow: 0 0 0 4px rgba(123, 213, 150, .16);
+    }
+
+    .thread {
+      overflow: auto;
+      padding: 28px 24px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .day-divider {
+      align-self: center;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .day-divider::before, .day-divider::after {
+      content: "";
+      width: 80px;
+      height: 1px;
+      background: var(--line);
+    }
+    .turn { display: flex; flex-direction: column; gap: 9px; }
+    .turn.user { align-items: flex-end; }
+    .turn.agent { align-items: flex-start; }
+    .turn-meta {
+      display: flex;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .user-bubble {
+      max-width: 720px;
+      padding: 14px 16px;
+      border: 1px solid var(--line-2);
+      border-radius: 14px 14px 4px 14px;
+      color: var(--ink);
+      background: var(--panel-2);
+      box-shadow: var(--shadow);
+    }
+    .user-bubble p, .agent-answer p { margin: 0; }
+    .agent-answer {
+      max-width: 820px;
+      color: var(--text);
+    }
+    .agent-answer p + p { margin-top: 9px; }
+    .lead {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .receipt {
+      width: min(960px, 100%);
+      display: grid;
+      grid-template-columns: 6px minmax(0, 1fr);
+      border: 1px solid var(--line-2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .rail { background: var(--muted); }
+    .receipt.blocked .rail { background: var(--fail); }
+    .receipt.runnable .rail { background: var(--warn); }
+    .receipt.info .rail { background: var(--info); }
+    .receipt.approved .rail { background: var(--pass); }
+    .receipt-inner { min-width: 0; }
+    .receipt-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+    .receipt-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .state {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 9px;
+      border-radius: 7px;
+      border: 1px solid var(--line-2);
+      font-family: var(--mono);
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .state.fail { color: var(--fail); border-color: var(--fail-line); background: var(--fail-bg); }
+    .state.warn { color: var(--warn); border-color: var(--warn-line); background: var(--warn-bg); }
+    .state.pass { color: var(--pass); border-color: var(--pass-line); background: var(--pass-bg); }
+    .state.info { color: var(--info); border-color: var(--info-line); background: var(--info-bg); }
+    .receipt-meta {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      font-family: var(--mono);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 6px; }
+    .receipt h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 1.25;
+    }
+    .receipt-subtitle { margin: 0; color: var(--muted); }
+    .receipt-body {
+      padding: 16px;
+      display: grid;
+      gap: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0f1712;
+      overflow: hidden;
+    }
+    .panel-head {
+      min-height: 48px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .panel-head h3 {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-size: 16px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .panel-body { padding: 14px; }
+    .callout {
+      border: 1px solid var(--line-2);
+      border-radius: 9px;
+      padding: 12px;
+      background: #111912;
+    }
+    .callout.fail { border-color: var(--fail-line); background: var(--fail-bg); }
+    .callout.pass { border-color: var(--pass-line); background: var(--pass-bg); }
+    .callout b {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 5px;
+      color: var(--ink);
+    }
+    .dl {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      overflow: hidden;
+    }
+    .dl-row {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #101712;
+    }
+    .dl-row:last-child { border-bottom: 0; }
+    .dl-row dt {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .dl-row dd { margin: 0; }
+    .trace {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      overflow: hidden;
+    }
+    .trace-row {
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #101712;
+    }
+    .trace-row:last-child { border-bottom: 0; }
+    .trace-num { color: var(--muted); font-family: var(--mono); font-weight: 900; }
+    .trace-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .trace-detail { color: var(--muted); }
+    .status {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      font-family: var(--mono);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .status.fail { color: var(--fail); border-color: var(--fail-line); background: var(--fail-bg); }
+    .status.warn { color: var(--warn); border-color: var(--warn-line); background: var(--warn-bg); }
+    .status.pass { color: var(--pass); border-color: var(--pass-line); background: var(--pass-bg); }
+    .status.info { color: var(--info); border-color: var(--info-line); background: var(--info-bg); }
+
+    .flow {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      background: #101712;
+    }
+    .flow-head {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .flow-track { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 8px; }
+    .gate {
+      min-height: 64px;
+      position: relative;
+      display: grid;
+      align-content: center;
+      gap: 4px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #101712;
+      color: var(--muted);
+    }
+    .gate.done { color: var(--pass); border-color: var(--pass-line); background: var(--pass-bg); }
+    .gate.active { color: var(--warn); border-color: var(--warn-line); background: var(--warn-bg); }
+    .gate b { color: currentColor; }
+    .gate small { font-family: var(--mono); opacity: .78; }
+    .gate i { position: absolute; top: 9px; right: 9px; width: 16px; height: 16px; }
+
+    .recommend {
+      border: 1px solid var(--accent-line);
+      border-radius: 9px;
+      padding: 13px 14px;
+      background: var(--accent-bg);
+    }
+    .recommend-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .contrast {
+      margin-top: 12px;
+      padding-left: 14px;
+      border-left: 3px solid var(--info);
+    }
+    .contrast b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .receipt-foot, .snapshot-foot {
+      padding: 12px 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #101712;
+    }
+    .foot-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .snapshot {
+      width: min(960px, 100%);
+      padding: 16px;
+      border: 1px dashed var(--line-2);
+      border-radius: 12px;
+      background: #101712;
+    }
+    .snapshot-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .snapshot h2 { margin: 0; color: var(--ink); font-size: 22px; }
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .metric {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #101712;
+    }
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .metric strong {
+      display: block;
+      margin: 5px 0;
+      color: var(--ink);
+      font: 900 26px/1 var(--mono);
+    }
+    .metric.fail strong { color: var(--fail); }
+    .metric.warn strong { color: var(--warn); }
+    .metric.pass strong { color: var(--pass); }
+    .table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: 9px; }
+    table { width: 100%; min-width: 680px; border-collapse: collapse; }
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      background: #101712;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    tr:last-child td { border-bottom: 0; }
+    td:first-child { color: var(--ink); font-weight: 800; }
+
+    .composer {
+      padding: 14px 24px 18px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+    .composer-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 10px;
+    }
+    .composer-input {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border: 1px solid var(--line-2);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+    .composer-input input {
+      flex: 1;
+      min-width: 0;
+      min-height: 44px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+    .composer-input input::placeholder { color: var(--muted); }
+    .composer-hints {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+    }
+    .suggests { display: flex; gap: 7px; flex-wrap: wrap; }
+    .suggest {
+      min-height: 44px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: #101712;
+    }
+
+    [data-tip] { position: relative; }
+    [data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 7px);
+      z-index: 10;
+      padding: 8px 10px;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      color: var(--ink);
+      background: var(--panel-3);
+      white-space: nowrap;
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 1280px) {
+      .app { grid-template-columns: 270px minmax(0,1fr); }
+      .grid { grid-template-columns: 1fr; }
+      .flow-track { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .snapshot-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .case-strip { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><i data-lucide="shield"></i></div>
+        <div class="brand-text">
+          <h1>SPARTA Chat</h1>
+          <p>QRA evidence conversation</p>
+        </div>
+        <button class="sidebar-toggle" aria-label="Collapse sidebar" data-tip="Collapse sidebar">
+          <i data-lucide="panel-left-close"></i>
+        </button>
+      </div>
+
+      <section class="side-section">
+        <div class="side-label"><span>Active cases</span><span>3</span></div>
+        <button class="thread-item active" aria-label="Open CAPEC-649 T1036.006 payload review" data-tip="CAPEC-649 / T1036.006 payload review">
+          <div class="thread-title"><span class="dot warn"></span><span>CAPEC-649 / T1036.006 payload review</span><span class="thread-short">C649</span></div>
+          <div class="thread-meta"><span>capec_000a5d</span><span>just now</span></div>
+        </button>
+        <button class="thread-item" aria-label="Open AC-3 privileged MFA evidence" data-tip="AC-3 privileged MFA evidence">
+          <div class="thread-title"><span class="dot fail"></span><span>AC-3 privileged MFA evidence</span><span class="thread-short">AC3</span></div>
+          <div class="thread-meta"><span>ac3_002f81b</span><span>2h ago</span></div>
+        </button>
+        <button class="thread-item" aria-label="Open SI-7 integrity monitoring scope" data-tip="SI-7 integrity monitoring scope">
+          <div class="thread-title"><span class="dot pass"></span><span>SI-7 integrity monitoring scope</span><span class="thread-short">SI7</span></div>
+          <div class="thread-meta"><span>si7_004c92e</span><span>yesterday</span></div>
+        </button>
+      </section>
+
+      <section class="side-section">
+        <div class="side-label"><span>Quick actions</span></div>
+        <button class="quick-action"><i data-lucide="play-circle"></i><span>Run evidence case</span></button>
+        <button class="quick-action"><i data-lucide="search-x"></i><span>Show ambiguous referents</span></button>
+        <button class="quick-action"><i data-lucide="folder-symlink"></i><span>Promote to case file</span></button>
+        <button class="quick-action"><i data-lucide="layout-grid"></i><span>Open QRAs Tab</span></button>
+      </section>
+
+      <section class="side-section">
+        <div class="side-label"><span>Session</span></div>
+        <div class="session-grid">
+          <div class="session-cell"><span>Corpus</span><strong>SPARTA-F36</strong></div>
+          <div class="session-cell"><span>Memory</span><strong class="pass">HEALTHY</strong></div>
+          <div class="session-cell"><span>Explorer tab</span><strong>CHAT</strong></div>
+          <div class="session-cell"><span>Retention</span><strong>7Y AUDIT</strong></div>
+        </div>
+      </section>
+
+      <div class="officer-card">
+        <div class="officer-avatar">A</div>
+        <div><b>Alex O'Brien</b><small>Compliance Officer · L3</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+          <div class="breadcrumb"><span>Sparta Explorer</span><span>/</span><span>Chat</span><span>/</span><strong>QRA 000a5d68cbd446e5</strong></div>
+        <div class="top-actions">
+          <button class="btn icon" aria-label="Search in thread" data-tip="Search in thread"><i data-lucide="search"></i></button>
+          <button class="btn icon" aria-label="Thread details" data-tip="Thread details"><i data-lucide="info"></i></button>
+          <button class="btn"><i data-lucide="download"></i>Export thread</button>
+          <button class="btn secondary" data-tip="Open the existing Sparta Explorer QRAs tab filtered to actionable review rows"><i data-lucide="layout-grid"></i>QRAs Tab</button>
+        </div>
+      </header>
+
+      <section class="case-strip" data-qid="audit-trail">
+        <div class="case-left">
+          <span class="case-label">Active case</span>
+          <span class="case-id"><i data-lucide="hash"></i>Session ID: ec_000a5d68cbd446e5<button aria-label="Copy case ID" data-tip="Copy case ID"><i data-lucide="copy"></i></button></span>
+          <span>Source: Sparta Explorer · QRAsView · ChatWell evidence case</span>
+          <span>Opened by <strong>Alex O'Brien</strong> · Timestamp: today, 14:32 ET</span>
+        </div>
+        <div class="case-right"><span class="live-dot"></span><span>Live · last sync 8s ago</span></div>
+      </section>
+
+      <section class="thread">
+        <div class="day-divider">Today · Collaborative QRA review</div>
+
+        <article class="turn user">
+          <div class="turn-meta"><span>14:32:04</span><span>Alex O'Brien</span></div>
+          <div class="user-bubble"><p>Why is CAPEC-649 relevant to T1036.006 in this payload?</p></div>
+        </article>
+
+        <article class="turn agent">
+          <div class="turn-meta"><span>Sparta Evidence Agent</span><span>14:32:06</span></div>
+          <div class="agent-answer">
+            <span class="lead">I can't answer that safely yet.</span>
+            <p>The phrase <code>this payload</code> does not resolve to any artifact loaded in this thread. Could you identify the submitted file, sample hash, email attachment, sandbox object, or other artifact?</p>
+            <p>I am declining to infer a referent because guessing here would silently bias the evidence trace.</p>
+          </div>
+
+          <section class="receipt blocked">
+            <div class="rail"></div>
+            <div class="receipt-inner">
+              <header class="receipt-head">
+                <div class="receipt-top">
+                  <div class="eyebrow">Evidence receipt <span class="state fail"><i data-lucide="ban"></i>Blocked</span></div>
+                  <div class="receipt-meta">
+                    <span class="meta-item"><i data-lucide="hash"></i>Session ID: ec_000a5d68cbd446e5</span>
+                    <span class="meta-item"><i data-lucide="clock"></i>Timestamp: 14:32:06 ET</span>
+                  </div>
+                </div>
+                <h2>Payload anchor failed — referent unresolved</h2>
+                <p class="receipt-subtitle">The question is not runnable until <code>this payload</code> is bound to a concrete artifact.</p>
+              </header>
+              <div class="receipt-body">
+                <div class="grid">
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="alert-octagon"></i>Why blocked</h3><span>initial parse</span></div>
+                    <div class="panel-body">
+                      <div class="callout fail"><b><i data-lucide="x-circle"></i>Unresolved referent</b><p>Question parses CAPEC-649 and T1036.006, but <code>this payload</code> does not point to a loaded artifact.</p></div>
+                      <dl class="dl">
+                        <div class="dl-row"><dt>Failed gate</dt><dd>Payload anchor, gate 02 of 06</dd></div>
+                        <div class="dl-row"><dt>Reason</dt><dd>No submitted file, sample, or source object is attached.</dd></div>
+                        <div class="dl-row"><dt>Safe action</dt><dd>Ask the human to identify the payload. Do not infer.</dd></div>
+                      </dl>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="list-checks"></i>Trace</h3><span>3 of 6 evaluated</span></div>
+                    <div class="panel-body" style="padding:0">
+                      <div class="trace" style="border:0;border-radius:0">
+                        <div class="trace-row"><span class="trace-num">01</span><div><div class="trace-title"><i data-lucide="message-square"></i>Question claim</div><div class="trace-detail">Assess CAPEC-649 relevance to ATT&CK T1036.006</div></div><span class="status info">Parsed</span></div>
+                        <div class="trace-row"><span class="trace-num">02</span><div><div class="trace-title"><i data-lucide="anchor"></i>Payload anchor</div><div class="trace-detail"><code>this payload</code> is unresolved</div></div><span class="status fail">Fail</span></div>
+                        <div class="trace-row"><span class="trace-num">03</span><div><div class="trace-title"><i data-lucide="gavel"></i>Disposition</div><div class="trace-detail">Clarify before answering</div></div><span class="status warn">Clarify</span></div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <footer class="receipt-foot">
+                <div class="foot-status"><i data-lucide="file-stack"></i>Self-contained receipt · safe to cite as-is</div>
+                <div class="foot-actions">
+                  <button class="btn icon" aria-label="More receipt actions" data-tip="More actions"><i data-lucide="more-horizontal"></i></button>
+                  <button class="btn"><i data-lucide="copy"></i>Copy receipt</button>
+                  <button class="btn primary"><i data-lucide="message-square-plus"></i>Reply with payload</button>
+                </div>
+              </footer>
+            </div>
+          </section>
+        </article>
+
+        <article class="turn user">
+          <div class="turn-meta"><span>14:33:18</span><span>Alex O'Brien</span></div>
+          <div class="user-bubble"><p>It's the submitted file artifact <code>Quarterly_Report.pdf␠</code>. The <code>␠</code> is a real trailing space after <code>.pdf</code>. The question is whether it is masquerading via filename or extension behavior.</p></div>
+        </article>
+
+        <article class="turn agent">
+          <div class="turn-meta"><span>Sparta Evidence Agent</span><span>14:33:21</span></div>
+          <div class="agent-answer">
+            <span class="lead">Anchor resolved. Restating with the artifact bound.</span>
+            <p>Given the submitted file artifact <code>Quarterly_Report.pdf␠</code>, where <code>␠</code> denotes <code>U+0020</code>, a literal trailing space: does the evidence show that the payload uses trailing-space filename or extension behavior to masquerade as a benign PDF, and did the relevant controls detect, block, quarantine, or log that behavior?</p>
+          </div>
+
+          <section class="receipt runnable">
+            <div class="rail"></div>
+            <div class="receipt-inner">
+              <header class="receipt-head">
+                <div class="receipt-top">
+                  <div class="eyebrow">Evidence receipt <span class="state warn"><i data-lucide="play"></i>Runnable · Not proven</span></div>
+                  <div class="receipt-meta">
+                    <span class="meta-item"><i data-lucide="hash"></i>Session ID: ec_000a5d68cbd446e5</span>
+                    <span class="meta-item"><i data-lucide="clock"></i>Timestamp: 14:33:21 ET</span>
+                  </div>
+                </div>
+                <h2>Question runnable — evidence gates pending</h2>
+                <p class="receipt-subtitle">Payload anchor passed. Awaiting file identity, anomaly inventory, and control-handling outcomes.</p>
+              </header>
+              <div class="receipt-body">
+                <div class="grid">
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="file-search"></i>Bound artifact</h3><span>submitted file</span></div>
+                    <div class="panel-body">
+                      <div class="callout pass"><b><i data-lucide="check-circle-2"></i>Anchor loaded</b><p><code>Quarterly_Report.pdf␠</code> (U+0020 trailing)</p></div>
+                      <dl class="dl">
+                        <div class="dl-row"><dt>Stored as</dt><dd>Byte-preserving name with trailing whitespace after <code>.pdf</code></dd></div>
+                        <div class="dl-row"><dt>Why relevant</dt><dd>Consistent with filename and extension masquerade, not document-content analysis.</dd></div>
+                        <div class="dl-row"><dt>Next gates</dt><dd>True file type, anomaly inventory, and control-handling outcomes.</dd></div>
+                      </dl>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="git-branch"></i>Trace</h3><span>2 of 6 complete</span></div>
+                    <div class="panel-body" style="padding:0">
+                      <div class="trace" style="border:0;border-radius:0">
+                        <div class="trace-row"><span class="trace-num">01</span><div><div class="trace-title"><i data-lucide="check-check"></i>Payload anchor</div><div class="trace-detail">Resolved to submitted file artifact</div></div><span class="status pass">Pass</span></div>
+                        <div class="trace-row"><span class="trace-num">02</span><div><div class="trace-title"><i data-lucide="tags"></i>Technique mapping</div><div class="trace-detail">Trailing-space behavior maps plausibly to CAPEC-649 / T1036.006</div></div><span class="status warn">Plausible</span></div>
+                        <div class="trace-row"><span class="trace-num">03</span><div><div class="trace-title"><i data-lucide="fingerprint"></i>File identity</div><div class="trace-detail">Magic bytes, MIME, normalized extension, hash</div></div><span class="status info">Pending</span></div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <div class="flow">
+                  <div class="flow-head"><span>Evidence pipeline</span><span>2 of 6 gates · 33%</span></div>
+                  <div class="flow-track">
+                    <div class="gate done"><small>01</small><b>Submitted</b><i data-lucide="check"></i></div>
+                    <div class="gate done"><small>02</small><b>Filename anomaly</b><i data-lucide="check"></i></div>
+                    <div class="gate active"><small>03</small><b>True type</b><i data-lucide="loader"></i></div>
+                    <div class="gate"><small>04</small><b>Metadata</b></div>
+                    <div class="gate"><small>05</small><b>Handling logs</b></div>
+                    <div class="gate"><small>06</small><b>Disposition</b></div>
+                  </div>
+                </div>
+              </div>
+              <footer class="receipt-foot">
+                <div class="foot-status"><i data-lucide="circle-dashed"></i>Approval blocked until gates 03-06 complete</div>
+                <div class="foot-actions">
+                  <button class="btn icon" aria-label="More receipt actions" data-tip="More actions"><i data-lucide="more-horizontal"></i></button>
+                  <button class="btn"><i data-lucide="file-search"></i>Inspect artifact</button>
+                  <button class="btn primary"><i data-lucide="play-circle"></i>Run gates 03-06</button>
+                </div>
+              </footer>
+            </div>
+          </section>
+        </article>
+
+        <article class="turn user">
+          <div class="turn-meta"><span>14:34:02</span><span>Alex O'Brien</span></div>
+          <div class="user-bubble"><p>So the PDF content itself may be irrelevant?</p></div>
+        </article>
+
+        <article class="turn agent">
+          <div class="turn-meta"><span>Sparta Evidence Agent</span><span>14:34:04</span></div>
+          <div class="agent-answer">
+            <span class="lead">Mostly, yes.</span>
+            <p>For this QRA, the decisive evidence sits outside the page content. The visible PDF pages matter only if they contain embedded behavior, links, scripts, or other payload evidence.</p>
+          </div>
+          <section class="receipt info">
+            <div class="rail"></div>
+            <div class="receipt-inner">
+              <header class="receipt-head">
+                <div class="receipt-top">
+                  <div class="eyebrow">Evidence receipt <span class="state info"><i data-lucide="pencil-ruler"></i>Repair proposed</span></div>
+                  <div class="receipt-meta"><span class="meta-item"><i data-lucide="hash"></i>Session ID: ec_000a5d68cbd446e5</span><span class="meta-item"><i data-lucide="clock"></i>Timestamp: 14:34:04 ET</span></div>
+                </div>
+                <h2>Recommended QRA phrasing and evidence checklist</h2>
+                <p class="receipt-subtitle">Accepting this phrasing reruns the trace with required inputs explicitly bound.</p>
+              </header>
+              <div class="receipt-body">
+                <div class="grid">
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="file-pen-line"></i>Updated QRA</h3><span>anchored</span></div>
+                    <div class="panel-body">
+                      <div class="recommend">
+                        <div class="recommend-label"><i data-lucide="quote"></i>Recommended phrasing</div>
+                        <p>Given the submitted file artifact <code>Quarterly_Report.pdf␠</code>, does the evidence show that the payload uses trailing-space filename or extension behavior to masquerade as a benign PDF, and did the relevant controls detect, block, quarantine, or log that behavior?</p>
+                      </div>
+                      <div class="contrast"><b>Plain-English distinction</b>PDF content analysis asks what is inside the document. CAPEC-649 / T1036.006 analysis asks whether the artifact is pretending to be a benign file type through filename or extension behavior.</div>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-head"><h3><i data-lucide="list-checks"></i>Evidence required</h3><span>4 inputs</span></div>
+                    <div class="panel-body" style="padding:0">
+                      <div class="trace" style="border:0;border-radius:0">
+                        <div class="trace-row"><span class="trace-num">01</span><div><div class="trace-title"><i data-lucide="text-cursor-input"></i>Stored filename</div><div class="trace-detail">Byte-preserving name including trailing whitespace</div></div><span class="status info">Required</span></div>
+                        <div class="trace-row"><span class="trace-num">02</span><div><div class="trace-title"><i data-lucide="file-type"></i>True file type</div><div class="trace-detail">Magic bytes, MIME, normalized extension, hash</div></div><span class="status info">Required</span></div>
+                        <div class="trace-row"><span class="trace-num">03</span><div><div class="trace-title"><i data-lucide="binary"></i>Filename anomalies</div><div class="trace-detail">Trailing space, control chars, Unicode tricks, ADS</div></div><span class="status info">Required</span></div>
+                        <div class="trace-row"><span class="trace-num">04</span><div><div class="trace-title"><i data-lucide="radar"></i>Handling outcome</div><div class="trace-detail">Opened, executed, blocked, quarantined, logged, or ignored</div></div><span class="status warn">Needed</span></div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <footer class="receipt-foot">
+                <div class="foot-status"><i data-lucide="folder-input"></i>Promote to case file when ready for durable record</div>
+                <div class="foot-actions">
+                  <button class="btn icon" aria-label="More receipt actions" data-tip="More actions"><i data-lucide="more-horizontal"></i></button>
+                  <button class="btn"><i data-lucide="shield-alert"></i>Fetch logs</button>
+                  <button class="btn" disabled data-tip="Approval unlocks when handling outcome gate completes"><i data-lucide="check-circle-2"></i>Approve</button>
+                  <button class="btn primary"><i data-lucide="refresh-cw"></i>Accept & rerun</button>
+                </div>
+              </footer>
+            </div>
+          </section>
+        </article>
+
+        <article class="turn user">
+          <div class="turn-meta"><span>14:36:11</span><span>Alex O'Brien</span></div>
+          <div class="user-bubble"><p>Show me QRA failure counts — actionable review queues only.</p></div>
+        </article>
+
+        <article class="turn agent">
+          <div class="turn-meta"><span>Sparta Evidence Agent</span><span>14:36:13</span></div>
+          <div class="agent-answer">
+            <span class="lead">Snapshot — actionable queues only.</span>
+            <p>This is operational data, not evidence for a specific case. It is rendered inline because you asked; it will not persist as ambient state.</p>
+          </div>
+          <section class="snapshot">
+            <header class="snapshot-head">
+              <div><div class="eyebrow"><i data-lucide="bar-chart-3"></i>Operational snapshot — not citable as case evidence</div><h2>Actionable review queues</h2></div>
+              <span class="mono">captured 14:36:13 ET</span>
+            </header>
+            <div class="snapshot-grid">
+              <div class="metric fail"><span>Ambiguous referents</span><strong>42</strong><small>Clarify or rewrite question</small></div>
+              <div class="metric warn"><span>Unsupported claims</span><strong>17</strong><small>Correct answer and rerun evidence</small></div>
+              <div class="metric warn"><span>Missing evidence</span><strong>9</strong><small>Recover or escalate source</small></div>
+              <div class="metric pass"><span>Ready to approve</span><strong>31</strong><small>Evidence gates complete</small></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Queue</th><th>Why it exists</th><th>Default action</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>Ambiguous referent</td><td>Question uses terms like <em>this payload</em> with no anchored artifact.</td><td>Ask clarification or repair phrasing.</td><td><button class="btn">Open</button></td></tr>
+                  <tr><td>Unsupported claim</td><td>Answer contains a statement not supported by grounded evidence.</td><td>Correct claim and rerun evidence case.</td><td><button class="btn">Open</button></td></tr>
+                  <tr><td>Deep-link recovery</td><td>Requested QRA key did not hydrate to a full document.</td><td>Run recovery trace and escalate if missing.</td><td><button class="btn">Open</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <footer class="snapshot-foot">
+              <div class="foot-status"><i data-lucide="info"></i>Rendered on demand. Ask again later for a fresh snapshot.</div>
+              <div class="foot-actions"><button class="btn"><i data-lucide="filter"></i>Show ambiguous QRAs</button><button class="btn"><i data-lucide="layout-grid"></i>Open QRAs Tab</button></div>
+            </footer>
+          </section>
+        </article>
+      </section>
+
+      <footer class="composer">
+        <div class="composer-row">
+          <div class="composer-input">
+            <i data-lucide="message-square"></i>
+            <input aria-label="SPARTA Chat message" placeholder="Ask, restate, or accept the recommended phrasing..." />
+            <button class="btn icon" aria-label="Attach artifact" data-tip="Attach artifact"><i data-lucide="paperclip"></i></button>
+            <button class="btn icon" aria-label="Voice note" data-tip="Voice note"><i data-lucide="mic"></i></button>
+          </div>
+          <button class="btn primary"><i data-lucide="arrow-up"></i>Send</button>
+        </div>
+        <div class="composer-hints">
+          <div class="suggests"><button class="suggest">Run gates 03-06</button><button class="suggest">Inspect artifact identity</button><button class="suggest">Promote to case file</button></div>
+          <span>Enter to send · command palette planned</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script>
+    const app = document.querySelector('.app');
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+
+    function setSidebarCollapsed(collapsed) {
+      app?.classList.toggle('sidebar-collapsed', collapsed);
+      sidebarToggle?.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      sidebarToggle?.setAttribute('data-tip', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      const icon = sidebarToggle?.querySelector('i');
+      if (icon) icon.setAttribute('data-lucide', collapsed ? 'panel-left-open' : 'panel-left-close');
+      lucide.createIcons();
+    }
+
+    sidebarToggle?.addEventListener('click', () => {
+      setSidebarCollapsed(!app?.classList.contains('sidebar-collapsed'));
+    });
+
+    if (new URLSearchParams(window.location.search).get('sidebar') === 'collapsed') {
+      setSidebarCollapsed(true);
+    }
+
+    lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', () => {
+      const thread = document.querySelector('.thread');
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    });
+  </script>
+</body>
+</html>

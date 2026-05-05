@@ -17,22 +17,22 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-comparison.json"
     },
     "evidence_manifest": {
-      "bytes": 40121418,
+      "bytes": 37262375,
       "exists": true,
-      "path": "/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-20260430T144118Z/manifest.json"
+      "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-evidence/pdf-lab-list-control-reference-20260504T160000Z/manifest.json"
     },
     "extraction": {
-      "bytes": 12872064,
+      "bytes": 14143632,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json"
     },
     "manifest": {
-      "bytes": 38407372,
+      "bytes": 39504204,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json"
     },
     "memory_qa": {
-      "bytes": 7544,
+      "bytes": 10761,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json"
     },
@@ -52,17 +52,10 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-human-triage-queue.json"
     }
   },
-  "blockers": [
-    {
-      "area": "Memory / Qdrant Final QA",
-      "detail": "Memory/Qdrant QA artifact is not fully proven: memory_upsert=False (Run with --apply-memory to persist evidence metadata.); text_recall=True (8/8); visual_recall=True (pages 492/492, TOC section crops 358/358, required table/figure/image elements 8/8); crop_coverage=True.",
-      "next_action": "Apply ArangoDB memory upsert for extracted elements/crops, rerun Qdrant text+visual recall, then regenerate Memory QA, status report, and Coverage.",
-      "severity": "high"
-    }
-  ],
+  "blockers": [],
   "current_interpretation": "The run is usable for final QA if the parity gate is passed and the human triage deck is empty. Do not claim core extractor repair unless core_pdf_oxide_changed is true. Agent-resolved findings are engineering backlog, not human ambiguity.",
   "extraction_improvement": null,
-  "generated_at": "2026-05-03T17:59:40.654600+00:00",
+  "generated_at": "2026-05-04T16:41:45.557486+00:00",
   "memory_qa": {
     "errors": {
       "memory_upsert": null,
@@ -80,9 +73,9 @@
         "passed": true
       },
       {
-        "detail": "Run with --apply-memory to persist evidence metadata.",
+        "detail": "ArangoDB memory upsert applied via canonical /upsert.",
         "name": "memory_upsert",
-        "passed": false
+        "passed": true
       },
       {
         "detail": "elements 27628/27628 have required text vectors; page text vectors 0/492 and section text vectors 352/358 are non-blocking metadata; 8/8 element recall checks passed.",
@@ -95,7 +88,7 @@
         "passed": true
       }
     ],
-    "generated_at": "2026-05-03T13:47:02.825482+00:00",
+    "generated_at": "2026-05-04T14:25:32.366291+00:00",
     "implemented": true,
     "notes": [
       "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
@@ -229,13 +222,13 @@
       "evidence_sections": 358,
       "extraction_elements": 27986,
       "full_crop_coverage": true,
-      "memory_upsert_applied": false,
-      "memory_upserted_element_images": 0,
-      "memory_upserted_elements": 0,
-      "memory_upserted_page_images": 0,
-      "memory_upserted_pages": 0,
-      "memory_upserted_section_images": 0,
-      "memory_upserted_sections": 0,
+      "memory_upsert_applied": true,
+      "memory_upserted_element_images": 27628,
+      "memory_upserted_elements": 27628,
+      "memory_upserted_page_images": 492,
+      "memory_upserted_pages": 492,
+      "memory_upserted_section_images": 358,
+      "memory_upserted_sections": 358,
       "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
       "sample_checks": 8,
       "sample_checks_passed": 8,
@@ -257,7 +250,140 @@
       ],
       "visual_required_elements": 8
     },
-    "upsert_results": {}
+    "upsert_results": {
+      "pdf_element_has_image": {
+        "batches": 277,
+        "collection": "pdf_element_has_image",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_element_has_image",
+          "errors": [],
+          "inserted": 28,
+          "total": 28,
+          "updated": 0
+        }
+      },
+      "pdf_element_images": {
+        "batches": 277,
+        "collection": "pdf_element_images",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_element_images",
+          "errors": [],
+          "inserted": 28,
+          "total": 28,
+          "updated": 0
+        }
+      },
+      "pdf_elements": {
+        "batches": 277,
+        "collection": "pdf_elements",
+        "document_count": 27628,
+        "last_response": {
+          "collection": "pdf_elements",
+          "errors": [],
+          "inserted": 0,
+          "total": 28,
+          "updated": 28
+        }
+      },
+      "pdf_extraction_run_has_artifact": {
+        "batches": 285,
+        "collection": "pdf_extraction_run_has_artifact",
+        "document_count": 28478,
+        "last_response": {
+          "collection": "pdf_extraction_run_has_artifact",
+          "errors": [],
+          "inserted": 78,
+          "total": 78,
+          "updated": 0
+        }
+      },
+      "pdf_extraction_runs": {
+        "batches": 1,
+        "collection": "pdf_extraction_runs",
+        "document_count": 1,
+        "last_response": {
+          "collection": "pdf_extraction_runs",
+          "errors": [],
+          "inserted": 1,
+          "total": 1,
+          "updated": 0
+        }
+      },
+      "pdf_page_has_image": {
+        "batches": 5,
+        "collection": "pdf_page_has_image",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_page_has_image",
+          "errors": [],
+          "inserted": 92,
+          "total": 92,
+          "updated": 0
+        }
+      },
+      "pdf_page_images": {
+        "batches": 5,
+        "collection": "pdf_page_images",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_page_images",
+          "errors": [],
+          "inserted": 92,
+          "total": 92,
+          "updated": 0
+        }
+      },
+      "pdf_pages": {
+        "batches": 5,
+        "collection": "pdf_pages",
+        "document_count": 492,
+        "last_response": {
+          "collection": "pdf_pages",
+          "errors": [],
+          "inserted": 92,
+          "total": 92,
+          "updated": 0
+        }
+      },
+      "pdf_section_has_image": {
+        "batches": 4,
+        "collection": "pdf_section_has_image",
+        "document_count": 358,
+        "last_response": {
+          "collection": "pdf_section_has_image",
+          "errors": [],
+          "inserted": 58,
+          "total": 58,
+          "updated": 0
+        }
+      },
+      "pdf_section_images": {
+        "batches": 4,
+        "collection": "pdf_section_images",
+        "document_count": 358,
+        "last_response": {
+          "collection": "pdf_section_images",
+          "errors": [],
+          "inserted": 58,
+          "total": 58,
+          "updated": 0
+        }
+      },
+      "pdf_sections": {
+        "batches": 4,
+        "collection": "pdf_sections",
+        "document_count": 358,
+        "last_response": {
+          "collection": "pdf_sections",
+          "errors": [],
+          "inserted": 0,
+          "total": 58,
+          "updated": 58
+        }
+      }
+    }
   },
   "schema_version": "pdf_lab_status_report.v1",
   "summary": {
@@ -270,22 +396,22 @@
     },
     "candidate_page_count": 24,
     "core_pdf_oxide_changed": null,
-    "crop_required_extraction_element_count": 27628,
+    "crop_required_extraction_element_count": 28074,
     "document_family_preset": {
       "name": "nist_sp_800_53r5_pdf",
       "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
       "schema_version": "pdf-oxide.document-family-preset.v1"
     },
-    "evidence_element_count": 27628,
+    "evidence_element_count": 28075,
     "evidence_page_count": 492,
-    "evidence_section_count": 3724,
-    "extraction_element_count": 27986,
+    "evidence_section_count": 358,
+    "extraction_element_count": 28432,
     "human_triage_task_count": 0,
     "matched_expected_elements": 1623,
     "memory_crop_coverage_passed": true,
     "memory_evidence_sections": 358,
     "memory_qa_implemented": true,
-    "memory_qa_passed": false,
+    "memory_qa_passed": true,
     "memory_qa_report_passed": true,
     "memory_sample_checks": 8,
     "memory_sample_checks_passed": 8,
@@ -294,7 +420,7 @@
     "memory_text_indexed_sections": 352,
     "memory_text_indexed_total": 27980,
     "memory_text_recall_passed": true,
-    "memory_upsert_passed": false,
+    "memory_upsert_passed": true,
     "memory_visual_indexed_elements": 8,
     "memory_visual_indexed_optional_elements": 0,
     "memory_visual_indexed_pages": 492,

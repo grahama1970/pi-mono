@@ -389,6 +389,10 @@ const QRA_COUNT_CACHE_TTL_MS = 30_000
 const QRA_COUNT_CACHE = new Map<string, { count: number; at: number }>()
 const QRA_STATUS_CACHE_TTL_MS = 60_000
 const QRA_STATUS_CACHE = new Map<string, { payload: QraStatusAggregate; at: number }>()
+const QRA_STATUS_PENDING = new Map<string, Promise<QraStatusAggregate>>()
+const SPARTA_COUNTS_CACHE_TTL_MS = 30_000
+let SPARTA_COUNTS_CACHE: { payload: Record<string, number>; at: number } | null = null
+let SPARTA_COUNTS_PENDING: Promise<Record<string, number>> | null = null
 const QRA_SUMMARY_FIELDS = [
   '_key',
   '_id',
@@ -508,26 +512,34 @@ async function getQraStatusAggregate(source: string): Promise<QraStatusAggregate
   const sourceUsed = source === 'v2' ? 'v2' : source === 'legacy' ? 'legacy' : 'all'
   const cached = QRA_STATUS_CACHE.get(sourceUsed)
   if (cached && Date.now() - cached.at < QRA_STATUS_CACHE_TTL_MS) return cached.payload
+  const pending = QRA_STATUS_PENDING.get(sourceUsed)
+  if (pending) return pending
 
-  const collections = qraCollectionsForSource(sourceUsed)
-  const collectionCounts = await Promise.all(collections.map(async (collection) => [collection, await countQraStatusesForCollection(collection)] as const))
-  const counts = emptyQraStatusCounts()
-  const by_collection: QraStatusAggregate['by_collection'] = {}
-  let total = 0
-  for (const [collection, collectionStatusCounts] of collectionCounts) {
-    by_collection[collection] = collectionStatusCounts
-    total += collectionStatusCounts.total
-    for (const status of Object.keys(counts) as QraEvidenceStatus[]) counts[status] += collectionStatusCounts[status]
-  }
-  const payload: QraStatusAggregate = {
-    total,
-    source_used: sourceUsed,
-    counts,
-    by_collection,
-    generated_at: new Date().toISOString(),
-  }
-  QRA_STATUS_CACHE.set(sourceUsed, { payload, at: Date.now() })
-  return payload
+  const aggregate = (async () => {
+    const collections = qraCollectionsForSource(sourceUsed)
+    const collectionCounts = await Promise.all(collections.map(async (collection) => [collection, await countQraStatusesForCollection(collection)] as const))
+    const counts = emptyQraStatusCounts()
+    const by_collection: QraStatusAggregate['by_collection'] = {}
+    let total = 0
+    for (const [collection, collectionStatusCounts] of collectionCounts) {
+      by_collection[collection] = collectionStatusCounts
+      total += collectionStatusCounts.total
+      for (const status of Object.keys(counts) as QraEvidenceStatus[]) counts[status] += collectionStatusCounts[status]
+    }
+    const payload: QraStatusAggregate = {
+      total,
+      source_used: sourceUsed,
+      counts,
+      by_collection,
+      generated_at: new Date().toISOString(),
+    }
+    QRA_STATUS_CACHE.set(sourceUsed, { payload, at: Date.now() })
+    return payload
+  })().finally(() => {
+    QRA_STATUS_PENDING.delete(sourceUsed)
+  })
+  QRA_STATUS_PENDING.set(sourceUsed, aggregate)
+  return aggregate
 }
 
 async function countQraDocs(collection: string, filters?: Record<string, unknown>): Promise<number> {
@@ -944,27 +956,37 @@ app.post('/api/qra/search', async (req, res) => {
 
 app.get('/api/sparta/counts', async (_req, res) => {
   try {
-    const [controls, qras, qrasCanonical, qrasRelationship, relationships, urls] = await Promise.all([
-      proxyPost('/count', { collection: 'sparta_controls' }),
-      proxyPost('/count', { collection: 'sparta_qra' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_qra_canonical' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_qra_relationship' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_relationships' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_urls' }).catch(() => ({ count: 0 })),
-    ])
-
-    const payload = {
-      controls: controls?.count ?? 0,
-      qras: qras?.count ?? 0,
-      qrasCanonical: qrasCanonical?.count ?? 0,
-      qrasRelationship: qrasRelationship?.count ?? 0,
-      qrasTotal: (qras?.count ?? 0) + (qrasCanonical?.count ?? 0) + (qrasRelationship?.count ?? 0),
-      relationships: relationships?.count ?? 0,
-      urls: urls?.count ?? 0,
-      knowledge: 0,
+    if (SPARTA_COUNTS_CACHE && Date.now() - SPARTA_COUNTS_CACHE.at < SPARTA_COUNTS_CACHE_TTL_MS) {
+      return res.json(SPARTA_COUNTS_CACHE.payload)
     }
 
-    res.json(payload)
+    SPARTA_COUNTS_PENDING ??= (async () => {
+      const [controls, qras, qrasCanonical, qrasRelationship, relationships, urls] = await Promise.all([
+        proxyPost('/count', { collection: 'sparta_controls' }),
+        proxyPost('/count', { collection: 'sparta_qra' }).catch(() => ({ count: 0 })),
+        proxyPost('/count', { collection: 'sparta_qra_canonical' }).catch(() => ({ count: 0 })),
+        proxyPost('/count', { collection: 'sparta_qra_relationship' }).catch(() => ({ count: 0 })),
+        proxyPost('/count', { collection: 'sparta_relationships' }).catch(() => ({ count: 0 })),
+        proxyPost('/count', { collection: 'sparta_urls' }).catch(() => ({ count: 0 })),
+      ])
+
+      const payload = {
+        controls: controls?.count ?? 0,
+        qras: qras?.count ?? 0,
+        qrasCanonical: qrasCanonical?.count ?? 0,
+        qrasRelationship: qrasRelationship?.count ?? 0,
+        qrasTotal: (qras?.count ?? 0) + (qrasCanonical?.count ?? 0) + (qrasRelationship?.count ?? 0),
+        relationships: relationships?.count ?? 0,
+        urls: urls?.count ?? 0,
+        knowledge: 0,
+      }
+      SPARTA_COUNTS_CACHE = { payload, at: Date.now() }
+      return payload
+    })().finally(() => {
+      SPARTA_COUNTS_PENDING = null
+    })
+
+    res.json(await SPARTA_COUNTS_PENDING)
   } catch (e) {
     console.error('[sparta/counts] failed', e)
     res.status(502).json({ error: 'sparta_counts_failed', detail: String(e) })
@@ -2233,6 +2255,22 @@ function pdfLabPublicUrlFromPath(pathValue: unknown): string | null {
   return pathValue.startsWith('/') ? pathValue : null
 }
 
+function pdfLabEvidenceAssetPath(pathValue: unknown): string | null {
+  if (typeof pathValue !== 'string' || pathValue.length === 0) return null
+  let realPath: string
+  try {
+    realPath = realpathSync(resolve(pathValue))
+  } catch {
+    return null
+  }
+  const allowedRoots = [
+    '/mnt/storage12tb/pdf-lab/evidence',
+    PDF_LAB_ARTIFACTS_ROOT,
+    PUBLIC_ROOT,
+  ].map(root => realpathSync(root))
+  return allowedRoots.some(root => isPathInside(root, realPath)) ? realPath : null
+}
+
 function pdfLabQuestionPage(question: string): number | null {
   const match = question.match(/\bpage\s+(\d+)\b/i)
   return match ? Number(match[1]) : null
@@ -3130,6 +3168,17 @@ app.get('/api/pdf-lab/nico-qa-report', async (_req, res) => {
       detail: e instanceof Error ? e.message : String(e),
     })
   }
+})
+
+app.get('/api/pdf-lab/evidence-asset', async (req, res) => {
+  const filePath = pdfLabEvidenceAssetPath(req.query.path)
+  if (!filePath) {
+    return res.status(404).json({ error: 'Evidence asset not found or not allowed' })
+  }
+  const lowerPath = filePath.toLowerCase()
+  const contentType = lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg') ? 'image/jpeg' : 'image/png'
+  res.setHeader('Content-Type', contentType)
+  createReadStream(filePath).pipe(res)
 })
 
 app.get('/api/pdf-lab/jobs/latest', async (_req, res) => {

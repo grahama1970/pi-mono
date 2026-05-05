@@ -16,49 +16,51 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <body>
 <header>
 <h1>PDF Lab Status / Definition of Done</h1>
-<div class="sub">Artifact-derived status generated at 2026-05-02T14:02:12.651732+00:00. This report is designed to prevent hallucinated progress claims.</div>
+<div class="sub">Artifact-derived status generated at 2026-05-04T16:41:45.557486+00:00. This report is designed to prevent hallucinated progress claims.</div>
 </header>
 <main>
 <section class="grid">
 <div class="card"><div class="small">Pages extracted</div><div class="metric ok">492</div></div>
-<div class="card"><div class="small">Parity gate</div><div class="metric ok">98.95%</div><div class="small">target 95.00%</div></div>
+<div class="card"><div class="small">Parity gate</div><div class="metric ok">99.45%</div><div class="small">target 95.00%</div></div>
 <div class="card"><div class="small">Human triage cards</div><div class="metric ok">0</div></div>
-<div class="card"><div class="small">Open blockers</div><div class="metric warn">1</div><div class="small">0 critical · 1 high · 0 medium</div></div>
+<div class="card"><div class="small">Open blockers</div><div class="metric ok">0</div><div class="small">0 critical · 0 high · 0 medium</div></div>
 </section>
 <section class="card">
 <h2>Current Interpretation</h2>
 <p>The run is usable for final QA if the parity gate is passed and the human triage deck is empty. Do not claim core extractor repair unless core_pdf_oxide_changed is true. Agent-resolved findings are engineering backlog, not human ambiguity.</p>
-<p><b>Preset:</b> <code>nist_sp_800_53r5_pdf</code> · <b>Core Rust changed:</b> <code>False</code> · <b>Preset improved behavior:</b> <code>True</code></p>
+<p><b>Preset:</b> <code>nist_sp_800_53r5_pdf</code> · <b>Core Rust changed:</b> <code>None</code> · <b>Preset improved behavior:</b> <code>None</code></p>
 </section>
 <section>
 <table>
 <thead><tr><th>Blocker Area</th><th>Severity</th><th>Artifact-Derived Detail</th><th>Required Next Action</th></tr></thead>
-<tbody><tr><td>TOC Audit</td><td class="bad">high</td><td>PDF outline has 358 entries; 299 were found as non-section types and 1 were missing. Current section semantics are not clean enough for final Memory/Qdrant section QA.</td><td>Repair NIST section typing or promote TOC-backed anchors, then regenerate evidence, Memory/Qdrant QA, and the status report.</td></tr></tbody>
+<tbody><tr><td colspan="4" class="ok">No blockers detected from current artifacts.</td></tr></tbody>
 </table>
 </section>
 <section class="grid">
-<div class="card"><h2>Extraction</h2><p><b>Elements:</b> 27,628</p><p><b>Candidates:</b> 492</p></div>
-<div class="card"><h2>Parity</h2><p><b>Matched:</b> 14,014 / 14,162</p><p><b>Unmatched expected:</b> 148</p><p><b>Unmatched actual:</b> 838</p></div>
-<div class="card"><h2>Second Pass</h2><p><b>Agent-resolved:</b> 152</p><table><tbody><tr><td><code>noisy_text_or_bbox_match</code></td><td>148</td></tr>
-<tr><td><code>table_row_fragment</code></td><td>4</td></tr></tbody></table></div>
-<div class="card"><h2>Evidence QA</h2><p><b>Pages:</b> 492</p><p><b>Sections:</b> 357</p><p><b>Elements:</b> 27,628</p></div>
+<div class="card"><h2>Extraction</h2><p><b>Elements:</b> 28,432</p><p><b>Candidates:</b> 24</p></div>
+<div class="card"><h2>Parity</h2><p><b>Matched:</b> 1,623 / 1,632</p><p><b>Unmatched expected:</b> 9</p><p><b>Unmatched actual:</b> 37</p></div>
+<div class="card"><h2>Second Pass</h2><p><b>Agent-resolved:</b> 17</p><table><tbody><tr><td><code>noisy_text_or_bbox_match</code></td><td>9</td></tr>
+<tr><td><code>real_table_candidate</code></td><td>1</td></tr>
+<tr><td><code>table_false_positive</code></td><td>2</td></tr>
+<tr><td><code>table_row_fragment</code></td><td>5</td></tr></tbody></table></div>
+<div class="card"><h2>Evidence QA</h2><p><b>Pages:</b> 492</p><p><b>Sections:</b> 358</p><p><b>Elements:</b> 28,075</p></div>
 </section>
 <section class="grid">
 <div class="card"><h2>Memory/Qdrant</h2><p><b>Passed:</b> <code>True</code></p><p><b>Recall checks:</b> 8 / 8</p></div>
-<div class="card"><h2>Text Vectors</h2><p><b>Total:</b> 28,477</p><p><b>Pages:</b> 492 · <b>Sections:</b> 357 · <b>Elements:</b> 27,628</p></div>
-<div class="card"><h2>Visual Vectors</h2><p><b>Total:</b> 857</p><p><b>Pages:</b> 492 · <b>TOC section crops:</b> 357 · <b>Required elements:</b> 8 / 8</p></div>
+<div class="card"><h2>Text Vectors</h2><p><b>Total:</b> 27,980</p><p><b>Pages:</b> 0 · <b>Sections:</b> 352 · <b>Elements:</b> 27,628</p></div>
+<div class="card"><h2>Visual Vectors</h2><p><b>Total:</b> 858</p><p><b>Pages:</b> 492 · <b>TOC section crops:</b> 358 · <b>Required elements:</b> 8 / 8</p></div>
 <div class="card"><h2>Asset Storage</h2><p>PNG assets remain on disk. Memory stores paths, hashes, and provenance; Qdrant stores text/image vectors.</p></div>
 </section>
 <section>
 <table>
 <thead><tr><th>Artifact</th><th>Path</th><th>Exists</th><th>Bytes</th></tr></thead>
-<tbody><tr><td>manifest</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json</td><td class="ok">True</td><td>5,869,083</td></tr>
-<tr><td>triage</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-human-triage-queue.json</td><td class="ok">True</td><td>399,761</td></tr>
-<tr><td>comparison</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-comparison.json</td><td class="ok">True</td><td>3,242,851</td></tr>
-<tr><td>extraction</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json</td><td class="ok">True</td><td>12,708,822</td></tr>
-<tr><td>toc_audit</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-toc-audit.json</td><td class="ok">True</td><td>220,731</td></tr>
-<tr><td>evidence_manifest</td><td>/mnt/storage12tb/pdf-lab/evidence/full-memory-qa-toc-20260501T200945Z/manifest.json</td><td class="ok">True</td><td>35,767,408</td></tr>
-<tr><td>memory_qa</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json</td><td class="ok">True</td><td>10,654</td></tr>
+<tbody><tr><td>manifest</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json</td><td class="ok">True</td><td>39,504,204</td></tr>
+<tr><td>triage</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-human-triage-queue.json</td><td class="ok">True</td><td>45,479</td></tr>
+<tr><td>comparison</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-comparison.json</td><td class="ok">True</td><td>387,602</td></tr>
+<tr><td>extraction</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json</td><td class="ok">True</td><td>14,143,632</td></tr>
+<tr><td>toc_audit</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-toc-audit.json</td><td class="ok">True</td><td>243,569</td></tr>
+<tr><td>evidence_manifest</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-evidence/pdf-lab-list-control-reference-20260504T160000Z/manifest.json</td><td class="ok">True</td><td>37,262,375</td></tr>
+<tr><td>memory_qa</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json</td><td class="ok">True</td><td>10,761</td></tr>
 <tr><td>second_pass_backlog</td><td>/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-second-pass-backlog.json</td><td class="ok">True</td><td>17,303</td></tr></tbody>
 </table>
 </section>
@@ -71,7 +73,7 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 <li>Treat agent-resolved findings as engineering backlog unless a deterministic fix is recorded.</li>
 <li>Treat Nico/Evidence QA as sample-only unless evidence crop count covers the full extraction.</li>
 <li>For v1 visual QA, require page images, TOC section crops, and table/figure/image element crops; paragraph/list/header/footer crop vectors are optional or on-demand.</li>
-<li>Treat Memory/Qdrant recall QA as incomplete unless pdf-lab-memory-qa-report.json exists and passed is true.</li></ul>
+<li>Treat Memory/Qdrant recall QA as incomplete unless pdf-lab-memory-qa-report.json exists and all required gates pass: full_crop_coverage, memory_upsert, text_qdrant_recall, and visual_qdrant_recall.</li></ul>
 </section>
 </main>
 </body>
