@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-05T04:57:32.345Z",
+  "generated_at": "2026-05-05T05:18:22.790Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-05T04:57:31Z",
+    "generated_at": "2026-05-05T05:18:22Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -401,13 +401,13 @@
     }
   ],
   "monitor": {
-    "passed": 14,
+    "passed": 15,
     "total": 17,
     "checks": [
       {
-        "ok": false,
+        "ok": true,
         "dimension": "description_audit",
-        "message": "Audit failed (exit 1)"
+        "message": "0 fails"
       },
       {
         "ok": true,
@@ -1441,7 +1441,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T04:57:31Z",
+      "generated_at": "2026-05-05T05:18:22Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1982,9 +1982,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-05T04:55:24.507042Z",
-    "heartbeat_at": "2026-05-05T04:55:24.507042Z",
-    "snapshot_age_seconds": 225,
+    "generated_at": "2026-05-05T05:15:41.930230Z",
+    "heartbeat_at": "2026-05-05T05:15:41.930230Z",
+    "snapshot_age_seconds": 188,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2705,7 +2705,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T04:55:54Z",
+      "generated_at": "2026-05-05T05:16:12Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2739,7 +2739,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T04:55:54Z",
+      "generated_at": "2026-05-05T05:16:12Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -2752,7 +2752,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T04:55:24Z",
+      "generated_at": "2026-05-05T05:15:41Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2847,7 +2847,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T04:55:53Z",
+      "generated_at": "2026-05-05T05:16:11Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
@@ -2918,7 +2918,7 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260505T045553Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260505T051611Z.json",
           "status": "review_required",
           "candidate_count": 500,
           "truncated": false
