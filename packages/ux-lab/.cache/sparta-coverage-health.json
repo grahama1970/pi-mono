@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T04:59:11.778Z",
+  "generated_at": "2026-05-06T05:17:41.070Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-06T04:59:11Z",
+    "generated_at": "2026-05-06T05:17:40Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -1368,7 +1368,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T04:59:11Z",
+      "generated_at": "2026-05-06T05:17:40Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1920,9 +1920,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-06T04:58:28.342019Z",
-    "heartbeat_at": "2026-05-06T04:58:28.342019Z",
-    "snapshot_age_seconds": 89,
+    "generated_at": "2026-05-06T05:16:57.341054Z",
+    "heartbeat_at": "2026-05-06T05:16:57.341054Z",
+    "snapshot_age_seconds": 110,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2643,7 +2643,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T04:58:59Z",
+      "generated_at": "2026-05-06T05:17:29Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2677,7 +2677,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T04:58:59Z",
+      "generated_at": "2026-05-06T05:17:29Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -2690,7 +2690,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T04:58:28Z",
+      "generated_at": "2026-05-06T05:16:57Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2785,7 +2785,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T04:58:58Z",
+      "generated_at": "2026-05-06T05:17:27Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
@@ -2855,7 +2855,7 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260506T045858Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260506T051727Z.json",
           "status": "review_required",
           "candidate_count": 404,
           "truncated": false
