@@ -13,7 +13,7 @@
  * - 2026 Industrial Elegance: Split-level, blur(32px), interior glow
  */
 import { useCallback, useRef, useState, useEffect, type KeyboardEvent, type ChangeEvent } from 'react'
-import { Terminal, Plus, ChevronDown, ChevronUp, ArrowUp, Loader2, Shield } from 'lucide-react'
+import { Terminal, ChevronDown, ChevronUp, ArrowUp, Loader2, Shield, FileText, X } from 'lucide-react'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 // NVIS 2026 Color Palette
@@ -25,6 +25,7 @@ const NVIS = {
   glassBorder: 'rgba(255, 255, 255, 0.08)',
   cyanGlow: 'rgba(0, 209, 255, 0.15)',
   dark: '#08090a',
+  red: '#f85149',
 }
 
 export interface ReasoningStep {
@@ -70,7 +71,10 @@ export function SpartaHudInput({
 }: SpartaHudInputProps) {
   const [internalValue, setInternalValue] = useState('')
   const [thinkingExpanded, setThinkingExpanded] = useState(false)
+  const [pdfName, setPdfName] = useState('')
+  const [pdfStatus, setPdfStatus] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const pdfInputRef = useRef<HTMLInputElement>(null)
 
   // Register actions for QID compliance (4-attribute rule)
   useRegisterAction('sparta:hud:input', { app: 'sparta-explorer', action: 'ENTER_QUERY', label: 'Query Input', description: 'Enter a compliance query for SPARTA' })
@@ -78,6 +82,8 @@ export function SpartaHudInput({
   useRegisterAction('sparta:hud:skills', { app: 'sparta-explorer', action: 'OPEN_SKILLS', label: 'Skills Palette', description: 'Open the skills command palette' })
   useRegisterAction('sparta:hud:thinking', { app: 'sparta-explorer', action: 'TOGGLE_REASONING', label: 'View CAE Trace', description: 'Expand or collapse the reasoning trace' })
   useRegisterAction('sparta:hud:transmit', { app: 'sparta-explorer', action: 'SEND_QUERY', label: 'Transmit', description: 'Send the query for processing' })
+  useRegisterAction('sparta:hud:pdf-upload', { app: 'sparta-explorer', action: 'UPLOAD_PDF_EVIDENCE', label: 'Attach PDF evidence', description: 'Attach a PDF evidence document for evidence-case binding' })
+  useRegisterAction('sparta:hud:pdf-clear', { app: 'sparta-explorer', action: 'CLEAR_PDF_EVIDENCE', label: 'Clear PDF evidence', description: 'Remove the currently attached PDF evidence document' })
 
   const isControlled = controlledValue !== undefined
   const value = isControlled ? controlledValue : internalValue
@@ -122,6 +128,27 @@ export function SpartaHudInput({
     }
   }, [handleSubmit, value, onSkillsOpen])
 
+  const handlePdfChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+    if (!isPdf) {
+      setPdfName('')
+      setPdfStatus('Only PDF evidence files can be attached.')
+      e.target.value = ''
+      return
+    }
+    setPdfName(file.name)
+    setPdfStatus('PDF accepted · extraction pending · not available for approved evidence yet')
+    onIngestEvidence?.()
+  }, [onIngestEvidence])
+
+  const clearPdf = useCallback(() => {
+    setPdfName('')
+    setPdfStatus('')
+    if (pdfInputRef.current) pdfInputRef.current.value = ''
+  }, [])
+
   const canSend = value.trim().length > 0 && !disabled && !isThinking
 
   return (
@@ -149,15 +176,26 @@ export function SpartaHudInput({
         <div style={styles.bottomTier}>
           {/* Left: Tool Cluster */}
           <div style={styles.toolCluster}>
+            <input
+              ref={pdfInputRef}
+              data-qid="sparta:hud:pdf-input"
+              data-qs-action="UPLOAD_PDF_EVIDENCE"
+              title="PDF evidence file input"
+              type="file"
+              accept="application/pdf,.pdf"
+              onChange={handlePdfChange}
+              style={{ display: 'none' }}
+            />
             <button
-              data-qid="sparta:hud:ingest"
-              data-qs-action="INGEST_EVIDENCE"
-              title="Add Evidence"
-              style={styles.iconBtn}
-              onClick={onIngestEvidence}
+              data-qid="sparta:hud:pdf-upload"
+              data-qs-action="UPLOAD_PDF_EVIDENCE"
+              title="Attach PDF evidence"
+              style={styles.pdfBtn}
+              onClick={() => pdfInputRef.current?.click()}
               disabled={disabled}
             >
-              <Plus size={16} strokeWidth={1.25} />
+              <FileText size={16} strokeWidth={1.25} />
+              <span>PDF</span>
             </button>
             <button
               data-qid="sparta:hud:skills"
@@ -214,6 +252,28 @@ export function SpartaHudInput({
             </button>
           </div>
         </div>
+
+        {(pdfName || pdfStatus) && (
+          <div
+            data-qid="sparta:hud:pdf-status"
+            title={pdfStatus || `Attached PDF evidence: ${pdfName}`}
+            style={styles.pdfStatus}
+          >
+            {pdfName && <span style={styles.pdfName}>{pdfName}</span>}
+            <span style={{ color: pdfStatus.startsWith('Only') ? NVIS.red : NVIS.dim }}>{pdfStatus}</span>
+            {pdfName && (
+              <button
+                data-qid="sparta:hud:pdf-clear"
+                data-qs-action="CLEAR_PDF_EVIDENCE"
+                title="Remove attached PDF evidence"
+                onClick={clearPdf}
+                style={styles.clearPdfBtn}
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Expanded: Reasoning Trace */}
         {thinkingExpanded && reasoningSteps.length > 0 && (
@@ -327,6 +387,54 @@ const styles: Record<string, React.CSSProperties> = {
     color: NVIS.dim,
     cursor: 'pointer',
     transition: 'color 0.15s',
+  },
+  pdfBtn: {
+    minWidth: 44,
+    minHeight: 44,
+    padding: '0 10px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    background: 'transparent',
+    border: `1px solid ${NVIS.glassBorder}`,
+    borderRadius: 8,
+    color: NVIS.phosphor,
+    cursor: 'pointer',
+    fontSize: 12,
+    fontWeight: 700,
+  },
+  pdfStatus: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+    paddingTop: 8,
+    borderTop: `1px solid ${NVIS.glassBorder}`,
+    color: NVIS.dim,
+    fontSize: 12,
+    lineHeight: 1.4,
+  },
+  pdfName: {
+    color: NVIS.phosphor,
+    fontFamily: 'monospace',
+    overflowWrap: 'anywhere',
+  },
+  clearPdfBtn: {
+    width: 44,
+    height: 44,
+    minWidth: 44,
+    minHeight: 44,
+    padding: 0,
+    borderRadius: 8,
+    border: `1px solid ${NVIS.glassBorder}`,
+    background: 'transparent',
+    color: NVIS.dim,
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   toolLabel: {
     fontSize: 10,

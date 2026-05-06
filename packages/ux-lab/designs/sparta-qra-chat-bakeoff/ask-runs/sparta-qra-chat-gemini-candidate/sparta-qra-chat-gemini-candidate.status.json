@@ -1,0 +1,27 @@
+{
+  "artifacts": {
+    "events": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-gemini-candidate/sparta-qra-chat-gemini-candidate.events.jsonl",
+    "request": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-gemini-candidate/sparta-qra-chat-gemini-candidate.request.json",
+    "run_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-gemini-candidate",
+    "status": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-gemini-candidate/sparta-qra-chat-gemini-candidate.status.json"
+  },
+  "ask_id": "sparta-qra-chat-gemini-candidate",
+  "controller_pid": 990627,
+  "result_summary": {
+    "answer_chars": 2153,
+    "auto_learned": false,
+    "deep_review_enabled": false,
+    "items_count": 5,
+    "oracle_enabled": true,
+    "oracle_model": "text-gemini-oauth",
+    "oracle_model_alias": null,
+    "oracle_model_served": "",
+    "question": "You are creating one candidate for a SPARTA Explorer QRA review redesign bakeoff.\n\nRead this brief and return a complete static HTML document with inline CSS plus a short rationale. The HTML must be production-realistic and self-contained. Do not include markdown fences around the HTML.\n\nShared brief path: /home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/brief/BRIEF.md\n\nImportant context from the brief:\n- The current QRA page looks like dashboard theater.\n- Goal: quickly navigate QRAs by category/status, click one QRA, and evaluate it in a right-pane scoped chat interface.\n- Controls page is the navigation reference.\n- SPARTA Evidence Chat is the evidence/chat reference.\n- Current failed QRA: \"Why is CAPEC-649 relevant to T1036.006 in this payload?\"\n- Correct decision: approval is blocked because \"this payload\" is ambiguous.\n\nRequired UI sections:\n1. Controls-style QRA queue/list/table with filters for Needs repair, Ready to approve, Missing case, Rejected, Approved, Adversarial fixture.\n2. Selected QRA decision card showing blocker and allowed actions.\n3. Right-pane scoped chat about the selected QRA.\n4. Evidence Case card inside chat, separate from final answer.\n5. Explicit actions: Approve, Reject, Correct & rerun, Retain fixture, Escalate, Export audit packet.\n\nHard constraints:\n- Do not make chat the only navigation path.\n- Do not recreate dashboard/evidence-flow theater.\n- Do not expose model names or bakeoff labels in the officer-facing UI.\n- Use SPARTA/compliance language: blocked, not approved, evidence bound, trace pending, reviewer required.\n- Controls/techniques/artifacts/ambiguous phrases need hover/focus explanation affordances.\n\nOutput format:\nFirst line: CANDIDATE_RATIONALE: one short paragraph.\nThen: the complete static HTML document.\n\nLane: Gemini. Emphasize alternate visual direction and modern interaction patterns.",
+    "scope": "ask",
+    "session_path": "/home/graham/.pi/sessions/ask/20260505_ask-fde76c7ae6cc.jsonl"
+  },
+  "runtime_protocol_version": "ask.runtime.v1",
+  "started_at": "2026-05-05T14:27:05.755851+00:00",
+  "state": "answered",
+  "updated_at": "2026-05-05T14:27:31.452245+00:00"
+}

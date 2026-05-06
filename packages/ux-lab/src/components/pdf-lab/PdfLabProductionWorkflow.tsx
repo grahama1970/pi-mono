@@ -1,4 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { type KeyboardEvent, type MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  BadgeCheck,
+  CircleAlert,
+  FileText,
+  Heading,
+  Eye,
+  KeyRound,
+  Link2,
+  List,
+  PanelBottom,
+  PanelTop,
+  Pilcrow,
+  Quote,
+  Table2,
+  type LucideIcon,
+} from 'lucide-react'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
 import { SurgicalTriageCleanRoom, type SurgicalTriageCleanRoomTask } from './SurgicalTriageCleanRoom'
@@ -115,6 +131,8 @@ interface CandidateAuditRow {
   memoryStatus: string
   page: number
   pageImageUri: string
+  proofIssue: string
+  proofLabel: string
   source: string
 }
 
@@ -606,7 +624,21 @@ function buildCandidateAuditRows(manifest: WorkflowManifest, triage: TriageQueue
       const finding = triage.agent_resolved_findings?.find(item => item.target_id === element.element_id || item.page === element.page)
       const candidate = candidateByPage.get(element.page)
       const correctedByAgent = Boolean(finding)
-      const finalState: CandidateAuditRow['finalState'] = candidate?.task_count ? 'fail' : 'pass'
+      const hasOpenCandidateWork = (candidate?.task_count ?? 0) > 0
+      const hasInspectableArtifacts = Boolean(element.crop_uri && element.page_image_uri && element.json_pointer)
+      const finalState: CandidateAuditRow['finalState'] = hasOpenCandidateWork || correctedByAgent
+        ? 'fail'
+        : hasInspectableArtifacts
+          ? 'warn'
+          : 'fail'
+      const proofLabel = finalState === 'fail' ? 'needs review' : 'sample only'
+      const proofIssue = hasOpenCandidateWork
+        ? `${candidate?.task_count ?? 0} candidate task${candidate?.task_count === 1 ? '' : 's'} remain on this page`
+        : correctedByAgent
+          ? finding?.reason ?? 'Agent-resolved finding exists for this element or page'
+          : hasInspectableArtifacts
+            ? 'Visual crop and extracted payload are inspectable; final pass still requires Memory/Qdrant recall QA'
+            : 'Required crop, page image, or JSON pointer is missing'
       rows.push({
         arangoKey: element.element_key ?? `pdf_elements/${element.element_id}`,
         bbox: element.bbox,
@@ -619,9 +651,11 @@ function buildCandidateAuditRows(manifest: WorkflowManifest, triage: TriageQueue
         finalState,
         finding,
         jsonPointer: element.json_pointer,
-        memoryStatus: finalState === 'pass' ? 'element stored + recallable' : 'needs follow-up',
+        memoryStatus: 'provenance key only; recall status comes from Memory/Qdrant QA',
         page: element.page,
         pageImageUri: toPublicEvidenceUri(element.page_image_uri) || getEvidencePageImageUri(element.page),
+        proofIssue,
+        proofLabel,
         source: element.source ?? 'pdf_oxide',
       })
     }
@@ -657,6 +691,25 @@ function buildFamilyTallies(manifest: WorkflowManifest): Array<[string, number]>
   return Array.from(tallies.entries())
     .sort((left, right) => right[1] - left[1])
     .map(([type, count]) => [formatFamily(type), count])
+}
+
+function getCoverageElementIcon(type: string): LucideIcon {
+  const normalizedType = type.toLowerCase()
+  if (normalizedType.includes('table')) return Table2
+  if (normalizedType.includes('list')) return List
+  if (normalizedType.includes('control_reference')) return Link2
+  if (normalizedType.includes('caption')) return Quote
+  if (normalizedType.includes('section_header')) return Heading
+  if (normalizedType.includes('paragraph')) return Pilcrow
+  if (normalizedType.includes('running_header')) return PanelTop
+  if (normalizedType.includes('running_footer')) return PanelBottom
+  return FileText
+}
+
+function getCoverageProofIcon(state: CandidateAuditRow['finalState']): LucideIcon {
+  if (state === 'pass') return BadgeCheck
+  if (state === 'fail') return CircleAlert
+  return Eye
 }
 
 function buildTriageTask(task: TriageTaskArtifact): SurgicalTriageCleanRoomTask {
@@ -1829,6 +1882,9 @@ function CoverageStatusPane({
   const isFinalBlocked = blockers.length > 0 || !parityPassed || !memoryPassed
   const primaryBlockerIsHuman = primaryBlocker?.area === 'Human Triage'
   const primaryBlockerArea = primaryBlocker?.area.toLowerCase() ?? ''
+  const candidateVerifiedCount = candidateAuditRows.filter(row => row.finalState === 'pass').length
+  const candidateReviewCount = candidateAuditRows.filter(row => row.finalState === 'warn').length
+  const candidateFailCount = candidateAuditRows.filter(row => row.finalState === 'fail').length
   const blockerTargetStage: WorkflowStage = primaryBlockerIsHuman
     ? 'surgical-triage'
     : primaryBlockerArea.includes('parity') || primaryBlockerArea.includes('comparison')
@@ -1840,17 +1896,20 @@ function CoverageStatusPane({
     ? `Resolve ${humanTriageCount.toLocaleString()} Triage Card${humanTriageCount === 1 ? '' : 's'} →`
     : blockers.length > 0
       ? `Open ${primaryBlocker?.area ?? 'Blocker'} →`
-      : 'No blockers'
+      : 'Inspect sample rows'
+  const documentFamilyLabel = typeof manifest.document_family_preset === 'string'
+    ? manifest.document_family_preset
+    : 'document preset'
   const topStatusTitle = isFinalBlocked
     ? primaryBlockerIsHuman
       ? 'Not final: human triage remains'
       : 'Not final: agent engineering work remains'
-    : 'All artifact gates passed'
+    : `Convergence cases: ${candidateReviewCount} inspect · ${candidateFailCount} fail · ${candidateVerifiedCount} proven`
   const topStatusDetail = primaryBlocker
     ? primaryBlocker.detail
     : isFinalBlocked
       ? 'One or more artifact gates are not proven. Review the proof gates below before claiming completion.'
-      : 'Coverage artifacts report no open blockers.'
+      : 'This surface opens on candidate pipeline state, not completion state. Inspect expected-vs-actual deltas, visual proof, fix path, and the separate Memory/Qdrant recall gate.'
   const humanNextStep = humanTriageCount > 0
     ? `Open Surgical Triage and resolve ${humanTriageCount.toLocaleString()} card${humanTriageCount === 1 ? '' : 's'}.`
     : 'No human triage work right now. Do not send obvious extractor defects to the human.'
@@ -1943,9 +2002,12 @@ function CoverageStatusPane({
     },
   ]
   const proofLedgerPassed = proofLedgerRows.every(row => row.state === 'ok' || row.state === 'warn')
-  const candidateFamilySummary = buildCandidateFamilySummary(candidateAuditRows)
-
-  const loopActionLabel = coverageLoop?.next_action.replaceAll('_', ' ') ?? 'artifact missing'
+  const loopActionLabel = coverageLoop?.next_action === 'complete'
+    ? 'No active plan blocker'
+    : coverageLoop?.next_action.replaceAll('_', ' ') ?? 'artifact missing'
+  const loopRationale = coverageLoop?.next_action === 'complete'
+    ? 'Coverage loop reports no active blocker. This is plan state only; final confidence still depends on the visible evidence samples and Memory/Qdrant recall QA.'
+    : coverageLoop?.rationale ?? 'Run pdf-lab coverage-loop to generate the plan-backed next-action artifact.'
   const loopStateClass = coverageLoop?.must_stop_for_dogpile || coverageLoop?.must_stop_for_interview
     ? 'stop'
     : coverageLoop?.loop_safe_to_continue
@@ -1953,478 +2015,402 @@ function CoverageStatusPane({
       : coverageLoop?.next_action === 'complete'
         ? 'complete'
         : 'missing'
+  const [selectedCoverageElementId, setSelectedCoverageElementId] = useState<string | null>(null)
+  const selectedAuditRow = candidateAuditRows.find(row => row.elementId === selectedCoverageElementId) ?? candidateAuditRows[0] ?? null
+  const selectedProofRecord = selectedAuditRow
+    ? {
+      _key: selectedAuditRow.arangoKey,
+      bbox: selectedAuditRow.bbox ?? null,
+      crop_uri: selectedAuditRow.cropUri,
+      element_id: selectedAuditRow.elementId,
+      json_pointer: selectedAuditRow.jsonPointer ?? null,
+      page: selectedAuditRow.page,
+      proof_issue: selectedAuditRow.proofIssue,
+      proof_state: selectedAuditRow.proofLabel,
+      source: selectedAuditRow.source,
+      text: selectedAuditRow.elementText,
+      type: selectedAuditRow.elementType,
+    }
+    : null
+  const documentRows = [
+    ...candidateAuditRows.map(row => ({
+      count: row.candidate?.task_count ?? (row.finalState === 'fail' ? 1 : 0),
+      detail: row.proofIssue,
+      id: `element:${row.elementId}`,
+      label: `${formatFamily(row.elementType)} · ${row.elementId}`,
+      page: row.page,
+      state: row.finalState,
+    })),
+    ...tocRows.slice(0, 24).map(row => ({
+      count: row.pdf_oxide_match.matched ? 1 : 0,
+      detail: row.second_pass_status.replaceAll('_', ' '),
+      id: `toc:${row.toc_id}`,
+      label: row.title,
+      page: row.page,
+      state: row.pdf_oxide_match.matched ? 'warn' as const : 'fail' as const,
+    })),
+  ]
+    .sort((left, right) => left.page - right.page || left.label.localeCompare(right.label))
+    .slice(0, 36)
 
   return (
-    <main className="pdf-lab-prod-coverage">
-      <section
-        className={`pdf-lab-prod-next-steps ${isFinalBlocked ? 'blocked' : 'ready'}`}
-        data-qid="pdf-lab:coverage:next-steps"
-      >
-        <div className="pdf-lab-prod-next-steps-head">
-          <div>
-            <span className="pdf-lab-prod-coverage-kicker">Next steps · artifact-derived Definition of Done</span>
-            <h1>{topStatusTitle}</h1>
-            <p>
-              This is the first thing to read. Coverage is only final when every proof gate passes from
-              real artifacts. Do not treat the artifact list below as the next-step summary.
-            </p>
-          </div>
-          <button
-            type="button"
-            className={`pdf-lab-prod-next-steps-generated ${blockers.length > 0 ? 'actionable' : ''}`}
-            data-qid="pdf-lab:coverage:open-primary-blocker"
-            data-qs-action="PDF_LAB_COVERAGE_OPEN_PRIMARY_BLOCKER"
-            disabled={blockers.length === 0}
-            title={blockers.length > 0 ? blockerCtaLabel : 'No blockers reported'}
-            onClick={() => onOpenStage(blockerTargetStage)}
-          >
-            <b>{blockers.length === 0 ? '0 blockers' : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
-            <span>{blockerCtaLabel}</span>
-            <small>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</small>
-          </button>
+    <main className="pdf-lab-prod-coverage pdf-lab-prod-coverage-threepane" data-qid="pdf-lab:coverage:three-pane">
+      <header className={`pdf-lab-prod-coverage-workload ${isFinalBlocked ? 'blocked' : 'audit'}`} data-qid="pdf-lab:coverage:next-steps">
+        <div>
+          <span className="pdf-lab-prod-coverage-kicker">Coverage · candidate → delta → fix</span>
+          <h1>{topStatusTitle}</h1>
+          <p>{topStatusDetail}</p>
         </div>
+        <button
+          type="button"
+          className={`pdf-lab-prod-next-steps-generated ${blockers.length > 0 ? 'actionable' : ''}`}
+          data-qid="pdf-lab:coverage:open-primary-blocker"
+          data-qs-action="PDF_LAB_COVERAGE_OPEN_PRIMARY_BLOCKER"
+          disabled={blockers.length === 0}
+          title={blockers.length > 0 ? blockerCtaLabel : 'Status artifact reports no blockers; inspect element proof rows'}
+          onClick={() => onOpenStage(blockerTargetStage)}
+        >
+          <b>{blockers.length === 0 ? (statusReport ? 'status artifact loaded' : 'status artifact missing') : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
+          <span>{blockers.length === 0 ? 'Inspect element proof' : blockerCtaLabel}</span>
+          <small>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</small>
+        </button>
+      </header>
 
-        <article className="pdf-lab-prod-toc-audit pdf-lab-prod-toc-audit-primary" data-qid="pdf-lab:coverage:toc-audit-primary">
-          <div className="pdf-lab-prod-candidate-audit-head">
-            <div>
-              <span>TOC audit · document map proof</span>
-              <h2>{tocSemanticAnchors.toLocaleString()} / {tocEntries.toLocaleString()} TOC entries exist as extracted anchors</h2>
-              <p>
-                Coverage first proves the PDF outline/TOC map, then proves sampled extracted elements.
-                Each row checks that a TOC entry has a pdf_oxide-backed semantic section anchor before
-                artifact gates are trusted.
-              </p>
-            </div>
-            <strong>{tocGatePassing ? 'TOC PASS' : 'TOC BLOCKED'}</strong>
+      <section className="pdf-lab-prod-threepane-shell">
+        <aside className="pdf-lab-prod-map-pane" data-qid="pdf-lab:coverage:document-map">
+          <PaneHeader title="Convergence Case Queue" detail={`${documentFamilyLabel} · ${manifest.page_count.toLocaleString()} pages`} />
+          <div className="pdf-lab-prod-map-summary">
+            <div><b>{tocEntries.toLocaleString()}</b><span>TOC</span></div>
+            <div><b>{tocSemanticAnchors.toLocaleString()}</b><span>anchors</span></div>
+            <div><b>{candidateAuditRows.length.toLocaleString()}</b><span>cases</span></div>
           </div>
-          {tocAudit && tocSummary ? (
-            <>
-              <div className="pdf-lab-prod-toc-summary">
-                <div><b>{tocSummary.toc_entries}</b><span>TOC entries</span></div>
-                <div><b>{tocSummary.matched_toc_entries}</b><span>text found</span></div>
-                <div><b>{tocSemanticAnchors}</b><span>semantic anchors</span></div>
-                <div><b>{tocSummary.matched_as_other_type}</b><span>type repairs</span></div>
-                <div><b>{tocSummary.unmatched_toc_entries}</b><span>missing</span></div>
-              </div>
-              <div className="pdf-lab-prod-table-wrap">
-                <table className="pdf-lab-prod-toc-table">
-                  <thead>
-                    <tr>
-                      <th>TOC entry</th>
-                      <th>Page</th>
-                      <th>Extracted anchor</th>
-                      <th>Anchor type</th>
-                      <th>Exists?</th>
-                      <th>Second pass</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tocRows.slice(0, 8).map(row => (
-                      <tr key={row.toc_id}>
-                        <td>
-                          <small>L{row.level}</small>
-                          <b>{row.title}</b>
-                        </td>
-                        <td>{row.page}</td>
-                        <td>{row.pdf_oxide_match.text ?? '—'}</td>
-                        <td><code>{row.pdf_oxide_match.type ?? 'missing'}</code></td>
-                        <td><span className={`pdf-lab-prod-toc-action ${row.pdf_oxide_match.matched ? 'accept' : 'inspect_triage'}`}>{row.pdf_oxide_match.matched ? 'yes' : 'missing'}</span></td>
-                        <td>{row.second_pass_status.replaceAll('_', ' ')}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="pdf-lab-prod-coverage-empty">TOC audit artifact missing. Generate <code>pdf-lab-toc-audit.json</code> before relying on Coverage.</div>
-          )}
-        </article>
-
-        <article className="pdf-lab-prod-candidate-audit" data-qid="pdf-lab:coverage:candidate-audit-table">
-          <div className="pdf-lab-prod-candidate-audit-head">
-            <div>
-              <span>Agent sweep candidates · all promoted element families</span>
-              <h2>{candidateAuditRows.length.toLocaleString()} stratified element proofs tested against pdf_oxide</h2>
-              <p>
-                This is the primary confirmation layer: a stratified sample across PDF element families, with
-                the exact crop, extracted payload, memory key, agent note, and page context for each row.
-              </p>
-              <small>{candidateFamilySummary}</small>
-            </div>
-            <strong>{candidateAuditRows.filter(row => row.finalState === 'pass').length} pass</strong>
-          </div>
-          <div className="pdf-lab-prod-candidate-audit-table">
-            <div className="pdf-lab-prod-candidate-audit-row head">
-              <b>Preview</b>
-              <b>Page</b>
-              <b>Element proof</b>
-              <b>Agent notes</b>
-              <b>Memory</b>
-              <b>Result</b>
-            </div>
-            {candidateAuditRows.map(row => (
+          <p className="pdf-lab-prod-map-note">Agentic scan candidates and pipeline blockers. Raw elements are debug-only.</p>
+          <div className="pdf-lab-prod-map-list">
+            {documentRows.map(row => (
               <button
                 type="button"
-                key={row.elementId}
-                className={`pdf-lab-prod-candidate-audit-row ${row.finalState}`}
-                data-qid={`pdf-lab:coverage:candidate:${row.elementId}`}
-                onClick={() => onOpenCandidateAudit(row)}
+                key={row.id}
+                className={`pdf-lab-prod-map-row ${row.state} ${selectedAuditRow?.page === row.page ? 'selected' : ''}`}
+                onClick={() => {
+                  const firstOnPage = candidateAuditRows.find(candidate => candidate.page === row.page)
+                  if (firstOnPage) setSelectedCoverageElementId(firstOnPage.elementId)
+                }}
               >
-                <span className="pdf-lab-prod-candidate-thumb">
-                  <img src={row.cropUri} alt={`${row.elementType} crop from page ${row.page}`} />
+                <b>p{row.page}</b>
+                <span>
+                  <strong>{row.label}</strong>
+                  <small>{row.detail}</small>
                 </span>
-                <strong>p{row.page}</strong>
-                <span>{formatFamily(row.elementType)} · {row.elementText.slice(0, 92)}</span>
-                <span className={row.correctedByAgent ? 'has-notes' : ''}>
-                  {row.correctedByAgent ? `📝 ${row.finding?.classification ?? row.finding?.kind}` : 'No correction needed'}
-                </span>
-                <code>{row.arangoKey}</code>
-                <b>{row.finalState.toUpperCase()}</b>
+                <em>{row.count}</em>
               </button>
             ))}
           </div>
-        </article>
-
-        <article className={`pdf-lab-prod-proof-ledger ${proofLedgerPassed ? 'ok' : 'bad'}`} data-qid="pdf-lab:coverage:proof-ledger">
-          <div className="pdf-lab-prod-proof-ledger-head">
-            <div>
-              <span>Visible proof ledger</span>
-              <h2>{proofLedgerPassed ? '0 blockers is artifact-backed' : 'One or more proof rows are failing'}</h2>
-              <p>
-                These rows are the fields used to compute Coverage. If a row is missing or failing,
-                the top-line status is not allowed to claim completion.
-              </p>
-            </div>
-            <strong>{proofLedgerRows.filter(row => row.state === 'ok' || row.state === 'warn').length} / {proofLedgerRows.length} proven</strong>
+          <div className="pdf-lab-prod-proof-mix">
+            <span>Case mix</span>
+            <div><i style={{ width: `${Math.max(4, candidateReviewCount)}%` }} /><i style={{ width: `${Math.max(4, candidateFailCount)}%` }} /><i style={{ width: `${Math.max(4, candidateVerifiedCount)}%` }} /></div>
+            <small>{candidateReviewCount} inspect · {candidateFailCount} fail · {candidateVerifiedCount} verified</small>
           </div>
-          <div className="pdf-lab-prod-proof-ledger-table">
-            <div className="pdf-lab-prod-proof-ledger-row head">
-              <b>Artifact</b>
-              <b>Field / gate</b>
-              <b>Expected</b>
-              <b>Observed</b>
-              <b>Path</b>
-            </div>
-            {proofLedgerRows.map(row => (
-              <div key={`${row.artifact}:${row.check}`} className={`pdf-lab-prod-proof-ledger-row ${row.state}`}>
-                <code>{row.artifact}</code>
-                <span>{row.check}</span>
-                <span>{row.expected}</span>
-                <strong>{row.observed}</strong>
-                <small title={row.path}>{row.path}</small>
-              </div>
-            ))}
-          </div>
-        </article>
+        </aside>
 
-        <article className={`pdf-lab-prod-plan-loop ${loopStateClass}`} data-qid="pdf-lab:coverage:plan-loop">
-          <div>
-            <span>Coverage plan loop</span>
-            <h2>{loopActionLabel}</h2>
-            <p>{coverageLoop?.rationale ?? 'Run pdf-lab coverage-loop to generate the plan-backed next-action artifact.'}</p>
-          </div>
-          <div className="pdf-lab-prod-plan-loop-grid">
-            <div>
-              <b>Active blocker</b>
-              <strong>{coverageLoop?.active_blocker?.area ?? primaryBlocker?.area ?? 'none'}</strong>
-            </div>
-            <div>
-              <b>Same blocker streak</b>
-              <strong>{coverageLoop?.same_blocker_streak ?? '—'}</strong>
-            </div>
-            <div>
-              <b>Project knowledge</b>
-              <strong>{coverageLoop?.project_knowledge_checked ? 'checked' : 'not checked'}</strong>
-            </div>
-            <div>
-              <b>Memory recall</b>
-              <strong>{coverageLoop?.memory_recall_required ? 'required' : 'unknown'}</strong>
-            </div>
-          </div>
-          <div className="pdf-lab-prod-plan-loop-command">
-            <b>Recommended command</b>
-            <code>{coverageLoop?.recommended_command ?? 'pdf-lab coverage-loop --out public/pdf-lab-coverage-loop.json'}</code>
-          </div>
-          <div className="pdf-lab-prod-plan-loop-command">
-            <b>Active plan</b>
-            <code>{coverageLoop?.active_plan_path ?? 'none'}</code>
-          </div>
-        </article>
-
-        <div className="pdf-lab-prod-next-steps-grid">
-          <article className="pdf-lab-prod-next-card human">
-            <span>Human needs to do</span>
-            <h2>{humanTriageCount.toLocaleString()}</h2>
-            <p>{humanNextStep}</p>
-            <small>{humanSummaryTitle}. {humanSummaryDetail}</small>
-          </article>
-
-          <article className="pdf-lab-prod-next-card agent">
-            <span>{primaryBlockerIsHuman ? 'Blocking gate' : 'Agent must do next'}</span>
-            <h2>{primaryBlocker?.area ?? 'No blocker reported'}</h2>
-            <p>{agentNextStep}</p>
-            <small>{topStatusDetail}</small>
-          </article>
-
-          <article className="pdf-lab-prod-next-card blocker">
-            <span>{tocGatePassing ? 'TOC gate' : 'Why not final'}</span>
-            <h2>{tocTypeRepairs.toLocaleString()} TOC type repairs · {tocMissing.toLocaleString()} missing</h2>
-            <p>
-              The PDF outline has {tocEntries.toLocaleString()} entries; {tocMatched.toLocaleString()} were text-matched;
-              {` ${tocSemanticAnchors.toLocaleString()} are TOC-backed semantic section anchors.`}
-            </p>
-            <small>
-              {tocGatePassing
-                ? 'TOC semantic structure is passing; remaining blockers are listed in the top cards.'
-                : 'This is preset/section-builder engineering work, not human ambiguity triage.'}
-            </small>
-          </article>
-
-          <article className="pdf-lab-prod-next-card proof">
-            <span>Proof gates</span>
-            <div className="pdf-lab-prod-proof-gates">
-              {proofGates.map(gate => (
-                <div key={gate.label} className={`pdf-lab-prod-proof-gate ${gate.state}`}>
-                  <b>{gate.value}</b>
-                  <small>{gate.label}</small>
+        <section className="pdf-lab-prod-case-workbench-pane" data-qid="pdf-lab:coverage:convergence-case-workbench">
+          {selectedAuditRow && selectedProofRecord ? (
+            <div className="pdf-lab-prod-case-workbench">
+              <section className="pdf-lab-prod-case-hero">
+                <div>
+                  <span className="pdf-lab-prod-coverage-kicker">Selected convergence case</span>
+                  <h2>p{selectedAuditRow.page} · {formatFamily(selectedAuditRow.elementType)} extraction case</h2>
+                  <p>{selectedAuditRow.proofIssue}</p>
                 </div>
-              ))}
+                <div className="pdf-lab-prod-case-tags">
+                  <span className={selectedAuditRow.finalState}>state: {selectedAuditRow.proofLabel}</span>
+                  <span>expected: agent/sample</span>
+                  <span>actual: {selectedAuditRow.source}</span>
+                </div>
+              </section>
+
+              <section className="pdf-lab-prod-case-section">
+                <header><b>Expected vs Actual</b><span>candidate pipeline comparison</span></header>
+                <div className="pdf-lab-prod-case-compare">
+                  <article>
+                    <h3>Expected structure</h3>
+                    <p>{selectedAuditRow.candidate ? `${selectedAuditRow.candidate.task_count.toLocaleString()} candidate task${selectedAuditRow.candidate.task_count === 1 ? '' : 's'} flagged on p${selectedAuditRow.page}.` : 'Agent sample expects this PDF region to be independently inspectable before fixture promotion.'}</p>
+                    <dl>
+                      <div><dt>Authority</dt><dd>{selectedAuditRow.correctedByAgent ? 'agent second-pass finding' : 'agent/sample estimate'}</dd></div>
+                      <div><dt>Failure family</dt><dd>{formatFamily(selectedAuditRow.elementType)}</dd></div>
+                      <div><dt>Fixture lock</dt><dd>requires human authority + rerun pass</dd></div>
+                    </dl>
+                  </article>
+                  <article>
+                    <h3>Actual extraction</h3>
+                    <p><code>{selectedAuditRow.elementId}</code> was emitted by the deterministic extraction/evidence pipeline.</p>
+                    <dl>
+                      <div><dt>Source</dt><dd>{selectedAuditRow.source}</dd></div>
+                      <div><dt>JSON pointer</dt><dd>{selectedAuditRow.jsonPointer ?? 'missing'}</dd></div>
+                      <div><dt>Provenance key</dt><dd>{selectedAuditRow.arangoKey}</dd></div>
+                    </dl>
+                  </article>
+                </div>
+              </section>
+
+              <section className="pdf-lab-prod-case-section">
+                <header><b>Visual Proof</b><span>page bbox + selected crop</span></header>
+                <div className="pdf-lab-prod-case-proof-grid">
+                  <figure>
+                    <figcaption><b>Full page</b><code>p{selectedAuditRow.page}</code></figcaption>
+                    <div className="pdf-lab-prod-detail-page">
+                      <img src={selectedAuditRow.pageImageUri} alt={`Page ${selectedAuditRow.page}`} />
+                      {selectedAuditRow.bbox && <i style={getBboxStyle(selectedAuditRow.bbox)} />}
+                    </div>
+                  </figure>
+                  <figure>
+                    <figcaption><b>Selected crop</b><code>{selectedAuditRow.elementId}</code></figcaption>
+                    <img className="pdf-lab-prod-case-crop" src={selectedAuditRow.cropUri} alt={`${selectedAuditRow.elementType} crop ${selectedAuditRow.elementId}`} />
+                  </figure>
+                </div>
+              </section>
+
+              <section className="pdf-lab-prod-case-section">
+                <header><b>Delta and Diagnosis</b><span>what must become durable</span></header>
+                <div className="pdf-lab-prod-case-deltas">
+                  <div className="ok"><b>Actual JSON captured</b><span>{selectedAuditRow.jsonPointer ? 'Extractor output has a JSON pointer and crop-backed evidence.' : 'Extractor output exists, but JSON pointer is missing.'}</span><code>{selectedAuditRow.jsonPointer ?? 'missing'}</code></div>
+                  <div className={selectedAuditRow.finalState === 'fail' ? 'bad' : 'warn'}><b>Case disposition</b><span>{selectedAuditRow.proofIssue}</span><code>{selectedAuditRow.finalState}</code></div>
+                  <div className={parityPassed && memoryPassed ? 'ok' : 'bad'}><b>Definition of done</b><span>No promotion until comparison, Memory/Qdrant, and status-report artifacts prove the rerun.</span><code>{isFinalBlocked ? 'blocked' : 'green'}</code></div>
+                </div>
+              </section>
+
+              <details className="pdf-lab-prod-elements-debug">
+                <summary>
+                  <span>Debug extracted elements</span>
+                  <b>{candidateAuditRows.length.toLocaleString()} sample rows · case-scoped inventory</b>
+                </summary>
+                <div className="pdf-lab-prod-elements-table">
+                  <div className="pdf-lab-prod-elements-row head">
+                    <b>Element</b>
+                    <b>Crop</b>
+                    <b>Type</b>
+                    <b>State</b>
+                    <b>Key</b>
+                  </div>
+                  {candidateAuditRows.map(row => (
+                    <CoverageElementRow
+                      key={row.elementId}
+                      onOpenCandidateAudit={onOpenCandidateAudit}
+                      onSelect={setSelectedCoverageElementId}
+                      row={row}
+                      selected={selectedAuditRow?.elementId === row.elementId}
+                    />
+                  ))}
+                </div>
+              </details>
             </div>
-          </article>
-        </div>
+          ) : (
+            <div className="pdf-lab-prod-coverage-empty">No convergence candidates are available. Generate agentic scan and evidence artifacts before relying on Coverage.</div>
+          )}
+        </section>
+
+        <aside className="pdf-lab-prod-detail-pane" data-qid="pdf-lab:coverage:element-detail">
+          {selectedAuditRow && selectedProofRecord ? (
+            <>
+              <div className="pdf-lab-prod-detail-head">
+                <span className="pdf-lab-prod-coverage-kicker">Fix / Promotion Lane</span>
+                <h2>{isFinalBlocked ? 'Promotion blocked' : 'Ready for promotion review'}</h2>
+                <p>Only artifact-backed states can advance. Provenance keys and visual proof support the case, but status-report gates define completion.</p>
+                <div className="pdf-lab-prod-detail-actions">
+                  <button type="button" onClick={() => onOpenCandidateAudit(selectedAuditRow)}>Open debug proof</button>
+                  <button type="button" onClick={() => onOpenStage(blockerTargetStage)}>Open blocker stage</button>
+                </div>
+              </div>
+
+              <div className="pdf-lab-prod-detail-facts">
+                <div><span>Proof state</span><b className={selectedAuditRow.finalState}>{selectedAuditRow.proofLabel}</b></div>
+                <div><span>Element type</span><b>{formatFamily(selectedAuditRow.elementType)}</b></div>
+                <div><span>Page</span><b>{selectedAuditRow.page}</b></div>
+                <div><span>Recall status</span><b>{selectedAuditRow.memoryStatus}</b></div>
+              </div>
+
+              <section className={`pdf-lab-prod-plan-loop ${loopStateClass}`} data-qid="pdf-lab:coverage:plan-loop">
+                <div>
+                  <span>Coverage plan loop</span>
+                  <h2>{loopActionLabel}</h2>
+                  <p>{loopRationale}</p>
+                </div>
+                <div className="pdf-lab-prod-plan-loop-grid">
+                  <div><b>Active blocker</b><strong>{coverageLoop?.active_blocker?.area ?? primaryBlocker?.area ?? 'none'}</strong></div>
+                  <div><b>Same streak</b><strong>{coverageLoop?.same_blocker_streak ?? '—'}</strong></div>
+                  <div><b>Project knowledge</b><strong>{coverageLoop?.project_knowledge_checked ? 'checked' : 'not checked'}</strong></div>
+                  <div><b>Memory recall</b><strong>{coverageLoop?.memory_recall_required ? 'required' : 'unknown'}</strong></div>
+                </div>
+                <div className="pdf-lab-prod-plan-loop-command"><b>Command</b><code>{coverageLoop?.recommended_command ?? 'pdf-lab coverage-loop --out public/pdf-lab-coverage-loop.json'}</code></div>
+                <div className="pdf-lab-prod-plan-loop-command"><b>Active plan</b><code>{coverageLoop?.active_plan_path ?? 'none'}</code></div>
+              </section>
+
+              <section className="pdf-lab-prod-detail-card">
+                <header><b>Provenance ledger</b><span>{proofLedgerPassed ? 'inspectable' : 'blocked'}</span></header>
+                <div className="pdf-lab-prod-detail-ledger">
+                  {proofLedgerRows.map(row => (
+                    <div key={`${row.artifact}:${row.check}`} className={row.state}>
+                      <span>{row.check}</span>
+                      <code title={row.path}>{row.artifact}</code>
+                      <b>{row.observed}</b>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="pdf-lab-prod-detail-card">
+                <header><b>Artifact paths</b><span>real files/endpoints</span></header>
+                <div className="pdf-lab-prod-detail-ledger">
+                  {artifactRows.length === 0 ? (
+                    <div className="bad"><span>Status artifact</span><code>artifact_paths</code><b>missing</b></div>
+                  ) : artifactRows.map(([name, info]) => (
+                    <div key={name} className={info.exists ? 'ok' : 'bad'}>
+                      <span>{name}</span>
+                      <code title={info.path ?? 'not configured'}>{info.path ?? 'not configured'}</code>
+                      <b>{info.exists ? 'present' : 'missing'}</b>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className={`pdf-lab-prod-final-qa ${memoryPassed ? 'ready' : 'blocked'}`}>
+                <div>
+                  <span>Final Agent QA Gate</span>
+                  <h2>{memoryQaTitle}</h2>
+                  <p>Memory/Qdrant is a separate recall gate, not implied by element provenance keys.</p>
+                </div>
+                <div className="pdf-lab-prod-final-qa-metric">
+                  <b>{memoryTextIndexed.toLocaleString()} / {memoryVisualIndexed.toLocaleString()}</b>
+                  <small>text / visual indexed</small>
+                </div>
+                <div className="pdf-lab-prod-final-qa-detail">
+                  <span>pages {memoryVisualPages.toLocaleString()}</span>
+                  <span>TOC section crops {memoryVisualSections.toLocaleString()}</span>
+                  <span>required crops {memoryVisualRequiredIndexed.toLocaleString()} / {memoryVisualRequired.toLocaleString()}</span>
+                  <span>recall {memorySampleChecksPassed.toLocaleString()} / {memorySampleChecks.toLocaleString()}</span>
+                  <span>state {memoryMetricValue}</span>
+                </div>
+              </section>
+
+              <section className="pdf-lab-prod-detail-card">
+                <header><b>Extracted JSON</b><span>read-only</span></header>
+                <pre>{JSON.stringify(selectedProofRecord, null, 2)}</pre>
+              </section>
+            </>
+          ) : (
+            <div className="pdf-lab-prod-coverage-empty">No element proof rows are available. Generate evidence artifacts before relying on Coverage.</div>
+          )}
+        </aside>
       </section>
 
-      <section className="pdf-lab-prod-workflow-contract">
-        <PaneHeader
-          title="PDF Lab Workflow Contract"
-          detail="Written operating model for the project agent and human reviewer"
-        />
-        <div className="pdf-lab-prod-workflow-intro">
-          <div>
-            <b>Primary rule</b>
-            <p>
-              PDF Lab is agent-first. The agent performs sweep, deterministic extraction, parity audit,
-              obvious correction, and final Memory/Qdrant QA. Humans only resolve residual ambiguity
-              that cannot be proven from PDF evidence and extracted JSON.
-            </p>
-          </div>
-          <div>
-            <b>Current boundary</b>
-            <p>
-              This run has <strong>{humanTriageCount.toLocaleString()}</strong> human cards.
-              {' '}{tocGatePassing && memoryPassed
-                ? 'TOC semantic structure and Memory/Qdrant QA are passing.'
-                : 'Remaining work is engineering/QA before the human boundary.'}
-              {' '}Obvious table rows, bbox misses, and text spans are agent work.
-            </p>
-          </div>
-        </div>
+      <section className="pdf-lab-prod-coverage-support">
         <div className="pdf-lab-prod-workflow-steps">
           {workflowStages.map(stage => (
             <article key={stage.stage} className={`pdf-lab-prod-workflow-step ${stage.state}`}>
-              <div>
-                <span>{stage.owner}</span>
-                <b>{stage.stage}</b>
-              </div>
+              <div><span>{stage.owner}</span><b>{stage.stage}</b></div>
               <p>{stage.task}</p>
               <small>{stage.detail}</small>
               <code>{stage.artifact}</code>
             </article>
           ))}
         </div>
-      </section>
-
-      <section className={`pdf-lab-prod-final-qa ${memoryPassed ? 'ready' : 'blocked'}`}>
-        <div>
-          <span>Final Agent QA Gate</span>
-          <h2>{memoryQaTitle}</h2>
-          <p>
-            Final verification stores extracted elements, page images, TOC section crops, required table/figure/image crops, second-pass notes,
-            and provenance in ArangoDB memory; indexes text and multimodal embeddings; then runs stratified checks such as
-            “what is the extracted table on page 47, and does the crop match the JSON?”
-          </p>
-        </div>
-        <div className="pdf-lab-prod-final-qa-metric">
-          <b>{memoryTextIndexed.toLocaleString()} / {memoryVisualIndexed.toLocaleString()}</b>
-          <small>text / visual indexed</small>
-        </div>
-        <div className="pdf-lab-prod-final-qa-detail">
-          <span>pages {memoryVisualPages.toLocaleString()}</span>
-          <span>TOC section crops {memoryVisualSections.toLocaleString()}</span>
-          <span>required element crops {memoryVisualRequiredIndexed.toLocaleString()} / {memoryVisualRequired.toLocaleString()}</span>
-          <span>recall {memorySampleChecksPassed.toLocaleString()} / {memorySampleChecks.toLocaleString()}</span>
-        </div>
-      </section>
-
-      <section className="pdf-lab-prod-coverage-grid">
-        <StatusMetric label="Parity Gate" value={parityAccuracy === null ? '—' : `${(parityAccuracy * 100).toFixed(2)}%`} detail={parityTarget === null ? 'target unknown' : `target ${(parityTarget * 100).toFixed(0)}%`} state={parityPassed ? 'ok' : 'bad'} />
-        <StatusMetric label="Human Triage Cards" value={String(summary?.human_triage_task_count ?? triage.task_count)} detail="humans only see unresolved ambiguity" state={(summary?.human_triage_task_count ?? triage.task_count) === 0 ? 'ok' : 'bad'} />
-        <StatusMetric label="Agent-Resolved Findings" value={String(summary?.agent_resolved_count ?? triage.agent_resolved_summary?.finding_count ?? 0)} detail="engineering backlog, not human work" state={(summary?.agent_resolved_count ?? 0) > 0 ? 'warn' : 'ok'} />
-        <StatusMetric label="Evidence Crop Coverage" value={`${evidenceCount.toLocaleString()} / ${extractionCount.toLocaleString()}`} detail="sample-only until full coverage" state={evidenceCount >= extractionCount && extractionCount > 0 ? 'ok' : 'warn'} />
-        <StatusMetric label="Core Rust Changed" value={String(coreChanged)} detail="do not claim parser repair unless true" state={coreChanged ? 'ok' : 'warn'} />
-        <StatusMetric label="NIST Preset Improved" value={String(presetImproved)} detail="document-family improvement is valid for NIST-like PDFs" state={presetImproved ? 'ok' : 'warn'} />
-        <StatusMetric label="Memory/Qdrant QA" value={memoryMetricValue} detail="final PDF page ↔ JSON ↔ memory recall gate" state={memoryPassed ? 'ok' : 'bad'} />
-      </section>
-
-      <section className="pdf-lab-prod-coverage-columns pdf-lab-prod-learning-row">
-        <div className="pdf-lab-prod-coverage-panel">
-          <PaneHeader title="Agent Learning Backlog" detail="Defects to convert into deterministic extraction behavior" />
-          <div className="pdf-lab-prod-kind-list">
-            <div><code>toc_type_repairs</code><b>{tocTypeRepairs.toLocaleString()}</b></div>
-            <div><code>toc_missing_entries</code><b>{tocMissing.toLocaleString()}</b></div>
-            <div><code>second_pass_backlog</code><b>{secondPassBacklogCount.toLocaleString()}</b></div>
-            <div><code>toc_backed_sections</code><b>{sectionCropCount.toLocaleString()}</b></div>
-          </div>
-          <p className="pdf-lab-prod-coverage-note">
-            These are not ordinary human triage tasks. They are evidence that the NIST preset, TOC-backed
-            section model, or core extractor should learn from this PDF so the next NIST-like PDF extracts
-            more deterministically.
-          </p>
-        </div>
-
-        <div className="pdf-lab-prod-coverage-panel">
-          <PaneHeader title="Human Boundary" detail="What should and should not reach the reviewer" />
-          <div className="pdf-lab-prod-boundary-list">
-            <div><b>Agent must resolve</b><span>table row fragments, bbox-only misses, sidebar bleed, TOC/header typing, obvious text matches</span></div>
-            <div><b>Human may resolve</b><span>genuine semantic ambiguity where PDF evidence cannot prove node type or bounds</span></div>
-            <div><b>Never claim done</b><span>until Memory/Qdrant page/crop/JSON recall QA passes from artifacts</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section className="pdf-lab-prod-coverage-panel pdf-lab-prod-toc-audit">
-        <PaneHeader
-          title="TOC Sweep → pdf_oxide Extraction → Second Pass"
-          detail="PDF outline entries compared against extracted text before human handoff"
-        />
-        {tocAudit && tocSummary ? (
-          <>
-            <div className="pdf-lab-prod-toc-summary">
-              <div><b>{tocSummary.toc_entries}</b><span>TOC entries</span></div>
-              <div><b>{tocSummary.matched_toc_entries}</b><span>text found</span></div>
-              <div><b>{tocSemanticAnchors}</b><span>semantic anchors</span></div>
-              <div><b>{tocSummary.matched_as_other_type}</b><span>type repairs</span></div>
-              <div><b>{tocSummary.unmatched_toc_entries}</b><span>missing</span></div>
+        <div className="pdf-lab-prod-coverage-columns pdf-lab-prod-learning-row">
+          <div className="pdf-lab-prod-coverage-panel">
+            <PaneHeader title="Agent Learning Backlog" detail="Defects to convert into deterministic extraction behavior" />
+            <div className="pdf-lab-prod-kind-list">
+              <div><code>toc_type_repairs</code><b>{tocTypeRepairs.toLocaleString()}</b></div>
+              <div><code>toc_missing_entries</code><b>{tocMissing.toLocaleString()}</b></div>
+              <div><code>second_pass_backlog</code><b>{secondPassBacklogCount.toLocaleString()}</b></div>
+              <div><code>toc_backed_sections</code><b>{sectionCropCount.toLocaleString()}</b></div>
+              <div><code>agent_resolved</code><b>{agentResolvedCount.toLocaleString()}</b></div>
+              <div><code>evidence_coverage</code><b>{evidenceCount.toLocaleString()} / {extractionCount.toLocaleString()}</b></div>
+              <div><code>core_rust_changed</code><b>{String(coreChanged)}</b></div>
+              <div><code>preset_improved</code><b>{String(presetImproved)}</b></div>
             </div>
-            <div className="pdf-lab-prod-table-wrap">
-              <table className="pdf-lab-prod-toc-table">
-                <thead>
-                  <tr>
-                    <th>TOC</th>
-                    <th>Page</th>
-                    <th>pdf_oxide match</th>
-                    <th>Type</th>
-                    <th>Score</th>
-                    <th>Second pass</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(tocFollowUpRows.length > 0 ? tocFollowUpRows : tocRows.slice(0, 10)).map(row => (
-                    <tr key={row.toc_id}>
-                      <td>
-                        <small>L{row.level}</small>
-                        <b>{row.title}</b>
-                      </td>
-                      <td>{row.page}</td>
-                      <td>{row.pdf_oxide_match.text ?? '—'}</td>
-                      <td><code>{row.pdf_oxide_match.type ?? 'missing'}</code></td>
-                      <td>{(row.pdf_oxide_match.score * 100).toFixed(0)}%</td>
-                      <td>{row.second_pass_status.replaceAll('_', ' ')}</td>
-                      <td><span className={`pdf-lab-prod-toc-action ${row.action}`}>{row.action.replaceAll('_', ' ')}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          </div>
+          <div className="pdf-lab-prod-coverage-panel">
+            <PaneHeader title="Human Boundary" detail={humanSummaryTitle} />
+            <div className="pdf-lab-prod-boundary-list">
+              <div><b>Human next</b><span>{humanNextStep} {humanSummaryDetail}</span></div>
+              <div><b>Agent next</b><span>{agentNextStep}</span></div>
+              <div><b>TOC map</b><span>{tocMatched.toLocaleString()} matched · {tocFollowUpRows.length.toLocaleString()} follow-up rows · {tocGatePassing ? 'map inspected' : 'map blocked'}</span></div>
+              <div><b>Trouble report</b><span>{troubleRows.length === 0 ? 'No trouble report data in the status artifact.' : troubleRows.slice(0, 4).map(row => `${row.source}: ${row.kind} ${row.count}`).join(' · ')}</span></div>
+              <div><b>Current interpretation</b><span>{statusReport?.current_interpretation ?? 'Run pdf-lab status-report and publish pdf-lab-status-report.json before relying on this page for status.'}</span></div>
             </div>
-            <p className="pdf-lab-prod-coverage-note">{tocAudit.policy.human_boundary}</p>
-          </>
-        ) : (
-          <div className="pdf-lab-prod-coverage-empty">TOC audit artifact missing. Generate <code>pdf-lab-toc-audit.json</code> before relying on TOC coverage.</div>
-        )}
-      </section>
-
-      <section className="pdf-lab-prod-coverage-columns">
-        <div className="pdf-lab-prod-coverage-panel">
-          <PaneHeader title="Outstanding / Broken" detail="Current blockers derived from artifacts" />
-          {blockers.length === 0 ? (
-            <div className="pdf-lab-prod-coverage-empty">No blockers reported by the status artifact.</div>
-          ) : (
-            <div className="pdf-lab-prod-blocker-list">
-              {blockers.map(blocker => (
-                <article key={`${blocker.area}:${blocker.detail}`} className={`pdf-lab-prod-blocker ${blocker.severity}`}>
-                  <div>
-                    <b>{blocker.area}</b>
-                    <span>{blocker.severity}</span>
-                  </div>
-                  <p>{blocker.detail}</p>
-                  <small>{blocker.next_action}</small>
-                </article>
-              ))}
+          </div>
+          <div className="pdf-lab-prod-coverage-panel">
+            <PaneHeader title="Second-Pass Findings" detail="Agent fixes that should become deterministic behavior" />
+            <div className="pdf-lab-prod-kind-list">
+              {Object.entries(agentResolvedKinds).length === 0 ? (
+                <div className="pdf-lab-prod-coverage-empty">No agent-resolved findings recorded.</div>
+              ) : (
+                Object.entries(agentResolvedKinds).map(([kind, count]) => (
+                  <div key={kind}><code>{kind}</code><b>{count}</b></div>
+                ))
+              )}
             </div>
-          )}
-        </div>
-
-        <div className="pdf-lab-prod-coverage-panel">
-          <PaneHeader title="Second-Pass Findings" detail="What the agent resolved before human handoff" />
-          <div className="pdf-lab-prod-kind-list">
-            {Object.entries(agentResolvedKinds).length === 0 ? (
-              <div className="pdf-lab-prod-coverage-empty">No agent-resolved findings recorded.</div>
-            ) : (
-              Object.entries(agentResolvedKinds).map(([kind, count]) => (
-                <div key={kind}>
-                  <code>{kind}</code>
-                  <b>{count}</b>
-                </div>
-              ))
-            )}
-          </div>
-          <p className="pdf-lab-prod-coverage-note">
-            These are exactly the items that should become deterministic preset/core fixes, not recurring human triage cards.
-          </p>
-        </div>
-
-        <div className="pdf-lab-prod-coverage-panel">
-          <PaneHeader title="Trouble Report" detail="Element classes pdf_oxide/agent struggled to extract accurately" />
-          <div className="pdf-lab-prod-trouble-list">
-            {troubleRows.length === 0 ? (
-              <div className="pdf-lab-prod-coverage-empty">No trouble report data in the status artifact.</div>
-            ) : (
-              troubleRows.map(row => (
-                <div key={`${row.source}:${row.kind}`}>
-                  <span>{row.source}</span>
-                  <code>{row.kind}</code>
-                  <b>{row.count}</b>
-                </div>
-              ))
-            )}
           </div>
         </div>
-
-        <div className="pdf-lab-prod-coverage-panel pdf-lab-prod-artifacts-panel">
-          <PaneHeader title="Artifacts" detail="Files that prove or block the workflow state" />
-          <div className="pdf-lab-prod-artifact-list">
-            {artifactRows.length === 0 ? (
-              <div className="pdf-lab-prod-coverage-empty">Status artifact did not include artifact paths.</div>
-            ) : (
-              artifactRows.map(([name, info]) => (
-                <div key={name}>
-                  <b>{name}</b>
-                  <span className={info.exists ? 'ok' : 'bad'}>{info.exists ? 'present' : 'missing'}</span>
-                  <code title={info.path ?? 'not configured'}>{info.path ?? 'not configured'}</code>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="pdf-lab-prod-coverage-rule">
-        <b>Current interpretation</b>
-        <p>{statusReport?.current_interpretation ?? 'Run pdf-lab status-report and publish pdf-lab-status-report.json before relying on this page for status.'}</p>
       </section>
     </main>
+  )
+}
+
+function CoverageElementRow({
+  onOpenCandidateAudit,
+  onSelect,
+  row,
+  selected,
+}: {
+  onOpenCandidateAudit: (row: CandidateAuditRow) => void
+  onSelect: (elementId: string) => void
+  row: CandidateAuditRow
+  selected: boolean
+}) {
+  const TypeIcon = getCoverageElementIcon(row.elementType)
+  const ProofIcon = getCoverageProofIcon(row.finalState)
+  const copyProvenanceKey = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    await navigator.clipboard.writeText(row.arangoKey)
+  }
+  const selectFromKeyboard = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onSelect(row.elementId)
+    }
+  }
+
+  return (
+    <div
+      className={`pdf-lab-prod-elements-row ${row.finalState} ${selected ? 'selected' : ''}`}
+      data-qid={`pdf-lab:coverage:candidate:${row.elementId}`}
+      role="button"
+      tabIndex={0}
+      onClick={() => onSelect(row.elementId)}
+      onDoubleClick={() => onOpenCandidateAudit(row)}
+      onKeyDown={selectFromKeyboard}
+    >
+      <span>
+        <strong>{row.elementId}</strong>
+        <b>{formatFamily(row.elementType)} · p{row.page}</b>
+        <small>{row.elementText.slice(0, 64) || row.proofIssue}</small>
+      </span>
+      <img src={row.cropUri} alt={`${row.elementType} crop from page ${row.page}`} />
+      <em title={formatFamily(row.elementType)} aria-label={formatFamily(row.elementType)}>
+        <TypeIcon size={16} strokeWidth={2} />
+      </em>
+      <mark title={row.proofLabel} aria-label={row.proofLabel}>
+        <ProofIcon size={16} strokeWidth={2} />
+      </mark>
+      <button
+        type="button"
+        className="pdf-lab-prod-provenance-copy"
+        title={`Copy provenance key: ${row.arangoKey}`}
+        aria-label={`Copy provenance key for ${row.elementId}`}
+        onClick={copyProvenanceKey}
+      >
+        <KeyRound size={16} strokeWidth={2} />
+      </button>
+    </div>
   )
 }
 
@@ -2449,7 +2435,7 @@ function StatusMetric({
 }
 
 function CandidateAuditModal({ row, onClose }: { row: CandidateAuditRow; onClose: () => void }) {
-  const arangoDocument = {
+  const extractionRecord = {
     _key: row.arangoKey,
     element_id: row.elementId,
     type: row.elementType,
@@ -2459,6 +2445,8 @@ function CandidateAuditModal({ row, onClose }: { row: CandidateAuditRow; onClose
     json_pointer: row.jsonPointer ?? null,
     crop_uri: row.cropUri,
     text: row.elementText,
+    proof_state: row.proofLabel,
+    proof_issue: row.proofIssue,
     memory_status: row.memoryStatus,
   }
 
@@ -2467,18 +2455,18 @@ function CandidateAuditModal({ row, onClose }: { row: CandidateAuditRow; onClose
       <div className="pdf-lab-prod-candidate-modal-card">
         <header>
           <div>
-            <span>Element extraction proof</span>
-            <h2>{formatFamily(row.elementType)} · page {row.page} · {row.finalState.toUpperCase()}</h2>
-            <p>{row.finding?.reason ?? 'This row proves one extracted PDF element by showing the visual crop beside the ArangoDB-style memory record.'}</p>
+            <span>Element evidence inspection</span>
+            <h2>{formatFamily(row.elementType)} · page {row.page} · {row.proofLabel}</h2>
+            <p>{row.proofIssue}</p>
           </div>
           <button type="button" onClick={onClose}>Close</button>
         </header>
         <div className="pdf-lab-prod-candidate-modal-grid">
           <section className="pdf-lab-prod-candidate-modal-visual">
-            <h3>Annotated PDF evidence</h3>
+            <h3>PDF crop and page context</h3>
             <figure className="pdf-lab-prod-candidate-crop-proof">
               <img src={row.cropUri} alt={`${row.elementType} crop ${row.elementId}`} />
-              <figcaption>Exact extracted crop artifact</figcaption>
+              <figcaption>Readable source crop artifact for visual comparison</figcaption>
             </figure>
             <figure className="pdf-lab-prod-candidate-page-proof">
               <div className="pdf-lab-prod-candidate-page-frame">
@@ -2489,20 +2477,20 @@ function CandidateAuditModal({ row, onClose }: { row: CandidateAuditRow; onClose
             </figure>
           </section>
           <section className="pdf-lab-prod-candidate-modal-record">
-            <h3>ArangoDB extraction candidate</h3>
+            <h3>Extracted payload and provenance</h3>
             <div className="pdf-lab-prod-candidate-modal-details">
               <div><b>Element</b><code>{row.elementId}</code></div>
               <div><b>Type</b><span>{formatFamily(row.elementType)}</span></div>
               <div><b>pdf_oxide source</b><code>{row.source}</code></div>
               <div><b>Extracted text / payload</b><span>{row.elementText}</span></div>
               <div><b>Agent correction</b><span>{row.correctedByAgent ? `${row.finding?.classification ?? row.finding?.kind}` : 'none'}</span></div>
-              <div><b>Agent note</b><span>{row.finding?.recommended_engine_fix ?? 'No extraction note for this element.'}</span></div>
-              <div><b>ArangoDB memory</b><code>{row.arangoKey}</code></div>
+              <div><b>Agent note</b><span>{row.finding?.recommended_engine_fix ?? row.proofIssue}</span></div>
+              <div><b>Provenance key</b><code>{row.arangoKey}</code></div>
               <div><b>Recall status</b><span>{row.memoryStatus}</span></div>
               <div><b>JSON pointer</b><code>{row.jsonPointer ?? 'not provided'}</code></div>
               <div><b>BBox</b><code>{row.bbox ? `[${row.bbox.join(', ')}]` : 'not provided'}</code></div>
             </div>
-            <pre className="pdf-lab-prod-candidate-arango-json">{JSON.stringify(arangoDocument, null, 2)}</pre>
+            <pre className="pdf-lab-prod-candidate-arango-json">{JSON.stringify(extractionRecord, null, 2)}</pre>
           </section>
         </div>
       </div>

@@ -144,6 +144,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
+  const demoEvidenceSeededRef = useRef(false)
   const [chatReadiness, setChatReadiness] = useState<{ ready: boolean; warning?: string }>({
     ready: false,
     warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
@@ -391,6 +392,57 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     setMessages(prev => [...prev, m])
     return m
   }, [])
+
+  useEffect(() => {
+    if (demoEvidenceSeededRef.current) return
+    const hash = window.location.hash || ''
+    if (!hash.includes('/chat') || !hash.includes('demo=evidence-case')) return
+    demoEvidenceSeededRef.current = true
+    setChatOpen(true)
+    addMsg({
+      role: 'user',
+      content: 'Why is CAPEC-649 relevant to T1036.006 in Quarterly_Report.pdf?',
+      type: 'natural',
+    })
+    addMsg({
+      role: 'system',
+      content: 'CAPEC-649 is relevant to T1036.006 because the observed behavior depends on filename presentation and extension handling. This answer remains draft-only while trace provenance is pending.',
+      type: 'natural',
+      cascadeLayer: 'llm',
+      skillUsed: 'create-evidence-case',
+      evidenceCase: {
+        case_id: 'EC-2026-0842',
+        qraKey: 'QRA-2026-0842',
+        verdict: 'satisfied',
+        grade: 'B',
+        gates_passed: 2,
+        gates_total: 4,
+        gate_summary: '2/4 gates passed',
+        gate_trace: [
+          { gate: 'Artifact binding', passed: true, detail: 'Quarterly_Report.pdf is bound to this case.' },
+          { gate: 'Entity extraction', passed: true, detail: 'CAPEC-649 and T1036.006 resolved as structured entities.' },
+          { gate: 'Trace provenance', passed: false, detail: 'Source-page provenance is pending.' },
+          { gate: 'Reviewer approval', passed: false, detail: 'Compliance officer has not approved this case.' },
+        ],
+        control_ids: ['CAPEC-649', 'T1036.006'],
+        tier: 'deterministic',
+        answer: 'CAPEC-649 is relevant to T1036.006 because the observed behavior depends on filename presentation and extension handling. This answer remains draft-only while trace provenance is pending.',
+        question: 'Why is CAPEC-649 relevant to T1036.006 in Quarterly_Report.pdf?',
+        bound_artifact: 'Quarterly_Report.pdf',
+        artifact_hash: 'sha256:demo-pending',
+        claims: [
+          'Artifact is bound to Quarterly_Report.pdf.',
+          'CAPEC-649 explains the filename obfuscation objective.',
+          'T1036.006 is the technique under assessment.',
+        ],
+        citations: ['ChatWell turn 1', 'CAPEC-649', 'MITRE ATT&CK T1036.006'],
+        trace_state: 'Trace pending',
+        approval_state: 'Not approved',
+        human_review_state: 'queued',
+        response_action: 'answer',
+      },
+    })
+  }, [addMsg])
   const runTypedEvidenceCaseStream = useCallback(async (query: string) => {
     const question = query.replace(EVIDENCE_CASE_COMMAND_RE, '').trim() || query.trim()
     const userMsg = addMsg({ role: 'user', content: query, type: 'natural', skillUsed: 'create-evidence-case' })

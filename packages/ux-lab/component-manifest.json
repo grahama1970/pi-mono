@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-  "updated": "2026-04-27",
+  "updated": "2026-05-05",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -83,18 +83,18 @@
       "id": "chat-well",
       "name": "ChatWell",
       "file": "src/components/sparta/query/ChatWell.tsx",
-      "lines": 190,
-      "description": "Natural language + AQL query interface with mode toggle and message history",
+      "lines": 504,
+      "description": "Shared SPARTA compliance chat surface with Kimi v3-style inline Evidence Case card, answer divider, shield agent identity, PDF evidence upload, and message history",
       "props": {
         "messages": "ChatMessage[] — message objects with id, role, content, type (natural|aql), timestamp, resultCount",
         "onSend": "(query: string, type: 'natural' | 'aql') => void — optional send handler"
       },
-      "features": ["English/AQL mode toggle", "Enter to send", "role-colored message borders", "monospace for AQL"],
-      "token_usage": ["card", "heading", "label", "EMBRY.blue", "EMBRY.green", "EMBRY.bgDeep", "EMBRY.border"],
+      "features": ["English/AQL mode toggle", "Enter to send", "user/agent message differentiation", "shield agent avatar", "collapsed Evidence Case before final answer", "explicit Answer divider", "PDF evidence attachment and validation state", "reviewer actions: approve/reject/request-more/open-source/export", "monospace for AQL"],
+      "token_usage": ["card", "heading", "label", "EMBRY.blue", "EMBRY.green", "EMBRY.amber", "EMBRY.bgDeep", "EMBRY.border"],
       "data_source": "ArangoDB: queries via /api/memory/* proxy (natural language → AQL translation)",
       "variations": ["with-history (4 sample messages)", "empty (placeholder prompt)"],
       "test_status": "none",
-      "composition": "Used in Composed Explorer pane 3 (Query & Synthesis, 35% width)"
+      "composition": "Used in SPARTA Explorer ChatTab and shared chat surfaces; Evidence Case card is implemented in src/components/shared-chat/InlineEvidenceCase.tsx"
     },
     {
       "id": "lemma-graph",

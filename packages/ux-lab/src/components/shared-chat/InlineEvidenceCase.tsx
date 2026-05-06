@@ -1,11 +1,22 @@
 /**
- * InlineEvidenceCase — Renders evidence case cards inline in chat.
- * Shows verdict, tier, gates passed/total, and collapsible gate trace.
- * COTS compliant: fonts >= 12px, touch targets >= 44px, data-qid on ALL elements.
+ * InlineEvidenceCase — SPARTA compliance audit object for chat answers.
+ *
+ * Compact by default. Expanded state shows claims, citations, gate trace, and
+ * reviewer actions. The final answer is rendered separately by ChatWell.
  */
 
-import { useState } from 'react'
-import { ChevronDown, ChevronRight, ExternalLink, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+import { useMemo, useState, type ReactNode } from 'react'
+import {
+  CheckCircle,
+  ChevronDown,
+  ChevronRight,
+  Download,
+  ExternalLink,
+  FileSearch,
+  ShieldAlert,
+  XCircle,
+} from 'lucide-react'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import type { EvidenceCaseData } from './types'
 import { EMBRY } from '../sparta/common/EmbryStyle'
 
@@ -15,265 +26,346 @@ export interface InlineEvidenceCaseProps {
   loading?: boolean
 }
 
-const VERDICT_COLORS: Record<string, string> = {
-  PASS: '#00ff88',
-  FAIL: '#ff4444',
-  UNKNOWN: '#ffaa00',
+const STATE_LABELS = {
+  bound: 'Evidence bound',
+  pending: 'Trace pending',
+  notApproved: 'Not approved',
 }
 
-const TIER_LABELS: Record<string, string> = {
-  TIER_1: 'Informational',
-  TIER_2: 'Grounded',
-  TIER_3: 'Verified',
+function caseId(data: EvidenceCaseData) {
+  return data.case_id || data.qraKey || data.evidence_case_version?.case_id || 'EC-PENDING'
+}
+
+function normalizeVerdict(data: EvidenceCaseData) {
+  const raw = String(data.verdict || '').toLowerCase()
+  if (raw === 'satisfied' || raw === 'pass' || raw === 'passed') return 'Evidence bound'
+  if (raw === 'not_satisfied' || raw === 'fail' || raw === 'failed') return 'Artifact not bound'
+  return 'Trace pending'
+}
+
+function approvalState(data: EvidenceCaseData) {
+  const state = String(data.approval_state || data.human_review_state || '').toLowerCase()
+  if (state === 'approved') return 'Approved'
+  if (state === 'rejected') return 'Rejected'
+  return STATE_LABELS.notApproved
+}
+
+function boundArtifactLabel(data: EvidenceCaseData) {
+  return data.artifact?.name || data.bound_artifact || 'Artifact pending'
+}
+
+function statusColor(label: string) {
+  if (label === 'Approved') return EMBRY.green
+  if (label === 'Artifact not bound' || label === 'Rejected') return EMBRY.red
+  if (label === 'Evidence bound') return EMBRY.blue
+  return EMBRY.amber
+}
+
+function deriveClaims(data: EvidenceCaseData) {
+  if (Array.isArray(data.claims) && data.claims.length > 0) return data.claims
+  const controls = data.control_ids ?? []
+  const gates = data.gate_trace ?? data.metadata?.gate_trace ?? []
+  const fallback = [
+    data.artifact?.name ? `Artifact is bound to ${data.artifact.name}.` : null,
+    controls.length > 0 ? `Detected entities include ${controls.slice(0, 4).join(', ')}.` : null,
+    gates.length > 0 ? `${gates.filter(g => g.passed).length}/${gates.length} evidence gates passed.` : data.gate_summary,
+  ].filter(Boolean) as string[]
+  return fallback.length > 0 ? fallback : ['Evidence case generated; full claim extraction is pending.']
+}
+
+function deriveCitations(data: EvidenceCaseData) {
+  if (Array.isArray(data.citations) && data.citations.length > 0) return data.citations
+  const sourceTraceability = data.source_traceability ? Object.keys(data.source_traceability) : []
+  return sourceTraceability.slice(0, 5)
+}
+
+function Pill({ label, color, title }: { label: string; color: string; title: string }) {
+  return (
+    <span
+      tabIndex={0}
+      title={title}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 5,
+        minHeight: 24,
+        padding: '3px 8px',
+        borderRadius: 999,
+        border: `1px solid ${color}55`,
+        backgroundColor: `${color}16`,
+        color,
+        fontSize: 11,
+        fontWeight: 700,
+        fontFamily: 'var(--font-mono)',
+        overflowWrap: 'anywhere',
+      }}
+    >
+      <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: color }} />
+      {label}
+    </span>
+  )
+}
+
+function ActionButton({
+  qid,
+  action,
+  title,
+  children,
+  tone = EMBRY.dim,
+  onClick,
+}: {
+  qid: string
+  action: string
+  title: string
+  children: ReactNode
+  tone?: string
+  onClick?: () => void
+}) {
+  return (
+    <button
+      data-qid={qid}
+      data-qs-action={action}
+      title={title}
+      onClick={onClick}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        minHeight: 44,
+        minWidth: 44,
+        padding: '0 10px',
+        borderRadius: 8,
+        border: `1px solid ${EMBRY.border}`,
+        backgroundColor: EMBRY.bgPanel,
+        color: tone,
+        cursor: 'pointer',
+        fontSize: 12,
+        fontWeight: 700,
+      }}
+    >
+      {children}
+    </button>
+  )
 }
 
 export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvidenceCaseProps) {
   const [expanded, setExpanded] = useState(false)
+  const id = caseId(data)
+  const evidenceState = boundArtifactLabel(data) === 'Artifact pending' ? normalizeVerdict(data) : STATE_LABELS.bound
+  const traceState = data.trace_state || STATE_LABELS.pending
+  const approval = approvalState(data)
+  const boundArtifact = boundArtifactLabel(data)
+  const artifactHash = data.artifact?.sha256 || data.artifact_hash
+  const claims = useMemo(() => deriveClaims(data), [data])
+  const citations = useMemo(() => deriveCitations(data), [data])
+  const gates = data.gate_trace ?? data.metadata?.gate_trace ?? []
+  const gateCount = data.gates_total || data.metadata?.gates_total || gates.length
+  const gatePassed = data.gates_passed || data.metadata?.gates_passed || gates.filter(g => g.passed).length
+  const entities = data.control_ids ?? []
+
+  useRegisterAction('evidence-case:action:toggle', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_TOGGLE', label: 'Toggle evidence case', description: 'Expand or collapse the inline evidence case audit trail' })
+  useRegisterAction('evidence-case:action:approve', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_APPROVE', label: 'Approve case', description: 'Approve the selected evidence case after review' })
+  useRegisterAction('evidence-case:action:reject', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_REJECT', label: 'Reject case', description: 'Reject the selected evidence case' })
+  useRegisterAction('evidence-case:action:request-more', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_REQUEST_MORE', label: 'Request more evidence', description: 'Request additional evidence for the selected case' })
+  useRegisterAction('evidence-case:action:open-source', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_OPEN_SOURCE', label: 'Open source page', description: 'Open the source document or extracted page for the selected case' })
+  useRegisterAction('evidence-case:action:export', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_EXPORT', label: 'Export audit packet', description: 'Export the selected evidence case as an audit packet' })
 
   if (loading) {
     return (
-      <div
-        data-qid={`evidence-case:skeleton:${data.qraKey}`}
-        title="Loading evidence case..."
+      <section
+        data-qid={`evidence-case:skeleton:${id}`}
+        title="Building evidence case"
         style={{
-          background: EMBRY.surface,
+          backgroundColor: EMBRY.bgPanel,
+          border: `1px solid ${EMBRY.border}`,
+          borderLeft: `3px solid ${EMBRY.amber}`,
           borderRadius: 8,
-          padding: 16,
+          padding: 14,
           marginTop: 8,
-          animation: 'pulse 1.5s ease-in-out infinite',
+          color: EMBRY.dim,
+          fontSize: 12,
         }}
       >
-        <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-          <div style={{ width: 60, height: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 4 }} />
-          <div style={{ width: 80, height: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 4 }} />
-        </div>
-        <div style={{ height: 8, background: 'rgba(255,255,255,0.05)', borderRadius: 4, marginBottom: 8 }} />
-        <div style={{ height: 14, width: '80%', background: 'rgba(255,255,255,0.05)', borderRadius: 4 }} />
-      </div>
+        Building deterministic Evidence Case...
+      </section>
     )
   }
 
-  const verdictColor = VERDICT_COLORS[data.verdict] || VERDICT_COLORS.UNKNOWN
-  const tierLabel = TIER_LABELS[data.tier] || data.tier
-  const VerdictIcon = data.verdict === 'PASS' ? CheckCircle : data.verdict === 'FAIL' ? XCircle : HelpCircle
-
-  // Parse metadata for gates if available
-  const gatesPassed = data.metadata?.gates_passed ?? 0
-  const gatesTotal = data.metadata?.gates_total ?? 0
-  const gateTrace = data.metadata?.gate_trace ?? []
-  const progressPercent = gatesTotal > 0 ? (gatesPassed / gatesTotal) * 100 : 0
-
   return (
-    <div
-      data-qid={`evidence-case:container:${data.qraKey}`}
+    <section
+      data-qid={`evidence-case:container:${id}`}
       data-qs-action="EVIDENCE_CASE_CONTAINER"
-      title={`Evidence case for ${data.qraKey}`}
+      title={`Evidence Case ${id}: ${evidenceState}; ${traceState}; ${approval}`}
+      aria-label={`Evidence Case ${id}`}
       style={{
-        background: EMBRY.surface,
-        border: `1px solid ${verdictColor}33`,
-        borderLeft: `3px solid ${verdictColor}`,
+        backgroundColor: EMBRY.bgDeep,
+        border: `1px solid ${EMBRY.border}`,
+        borderLeft: `3px solid ${EMBRY.amber}`,
         borderRadius: 8,
-        padding: 12,
+        padding: 14,
         marginTop: 8,
+        maxWidth: 760,
       }}
     >
-      {/* Header: Verdict + Tier badges */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
-        <span
-          data-qid={`evidence-case:verdict:${data.qraKey}`}
-          title={`Verdict: ${data.verdict}`}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: 12, alignItems: 'start' }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <span style={{ color: EMBRY.white, fontSize: 12, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              Evidence Case
+            </span>
+            <span data-qid={`evidence-case:id:${id}`} title={`Case ID: ${id}`} style={{ color: EMBRY.dim, fontSize: 12, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere' }}>
+              {id}
+            </span>
+          </div>
+          <div data-qid={`evidence-case:artifact:${id}`} title={`Bound artifact: ${boundArtifact}`} style={{ color: EMBRY.white, fontSize: 13, lineHeight: 1.5, overflowWrap: 'anywhere' }}>
+            Bound artifact: <span style={{ fontFamily: 'var(--font-mono)' }}>{boundArtifact}</span>
+          </div>
+          {artifactHash && (
+            <div data-qid={`evidence-case:artifact-hash:${id}`} title={`Artifact SHA256: ${artifactHash}`} style={{ color: EMBRY.dim, fontSize: 11, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere', marginTop: 2 }}>
+              SHA256: {artifactHash}
+            </div>
+          )}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 9 }}>
+            <Pill label={evidenceState} color={statusColor(evidenceState)} title={`Evidence binding state: ${evidenceState}`} />
+            <Pill label={traceState} color={statusColor(traceState)} title={`Trace state: ${traceState}`} />
+            <Pill label={approval} color={statusColor(approval)} title={`Approval state: ${approval}`} />
+            <Pill label={`${claims.length} claim${claims.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${claims.length} claims in this audit case`} />
+            <Pill label={`${citations.length} citation${citations.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${citations.length} citations or source anchors in this audit case`} />
+          </div>
+        </div>
+        <button
+          data-qid={`evidence-case:toggle:${id}`}
+          data-qs-action="EVIDENCE_CASE_TOGGLE"
+          title={expanded ? 'Collapse Evidence Case audit trail' : 'Expand Evidence Case audit trail'}
+          aria-expanded={expanded}
+          onClick={() => setExpanded(!expanded)}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 4,
-            background: `${verdictColor}22`,
-            color: verdictColor,
+            gap: 6,
+            minHeight: 44,
+            minWidth: 44,
+            padding: '0 10px',
+            borderRadius: 8,
+            border: `1px solid ${EMBRY.border}`,
+            backgroundColor: EMBRY.bgPanel,
+            color: EMBRY.white,
+            cursor: 'pointer',
             fontSize: 12,
-            fontWeight: 600,
-            padding: '4px 10px',
-            borderRadius: 12,
-            fontFamily: 'var(--font-mono)',
           }}
         >
-          <VerdictIcon size={14} />
-          {data.verdict}
-        </span>
-        <span
-          data-qid={`evidence-case:tier:${data.qraKey}`}
-          title={`Evidence tier: ${tierLabel}`}
-          style={{
-            background: 'rgba(74, 158, 255, 0.15)',
-            color: '#4a9eff',
-            fontSize: 11,
-            padding: '3px 8px',
-            borderRadius: 10,
-            fontFamily: 'var(--font-sans)',
-          }}
-        >
-          {tierLabel}
-        </span>
-        <span
-          data-qid={`evidence-case:qra-key:${data.qraKey}`}
-          title={`Control: ${data.qraKey}`}
-          style={{
-            color: EMBRY.muted,
-            fontSize: 12,
-            fontFamily: 'var(--font-mono)',
-          }}
-        >
-          {data.qraKey}
-        </span>
+          {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          {expanded ? 'Collapse' : 'Audit trail'}
+        </button>
       </div>
 
-      {/* Gates progress bar */}
-      {gatesTotal > 0 && (
-        <div style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-            <span
-              data-qid={`evidence-case:gates-label:${data.qraKey}`}
-              title="Gates passed"
-              style={{ color: EMBRY.muted, fontSize: 11, fontFamily: 'var(--font-sans)' }}
-            >
-              Gates
-            </span>
-            <span
-              data-qid={`evidence-case:gates-count:${data.qraKey}`}
-              title={`${gatesPassed} of ${gatesTotal} gates passed`}
-              style={{ color: EMBRY.text, fontSize: 11, fontFamily: 'var(--font-mono)' }}
-            >
-              {gatesPassed}/{gatesTotal}
-            </span>
-          </div>
-          <div
-            data-qid={`evidence-case:progress-bar:${data.qraKey}`}
-            title={`${Math.round(progressPercent)}% complete`}
-            style={{
-              background: 'rgba(255,255,255,0.1)',
-              borderRadius: 4,
-              height: 6,
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                width: `${progressPercent}%`,
-                height: '100%',
-                background: verdictColor,
-                borderRadius: 4,
-                transition: 'width 0.3s ease',
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <div data-qid={`evidence-case:preview:${id}`} title="Collapsed evidence case claim preview" style={{ color: EMBRY.dim, fontSize: 12, lineHeight: 1.45, marginTop: 10, overflowWrap: 'anywhere' }}>
+        {claims.slice(0, 2).join(' ')}
+        {approval !== 'Approved' ? ' This answer is draft-only until approval is complete.' : ''}
+      </div>
 
-      {/* Description */}
-      {data.description && (
-        <p
-          data-qid={`evidence-case:description:${data.qraKey}`}
-          title={data.description}
-          style={{
-            color: EMBRY.text,
-            fontSize: 13,
-            margin: '8px 0',
-            lineHeight: 1.4,
-            fontFamily: 'var(--font-sans)',
-          }}
-        >
-          {data.description}
-        </p>
-      )}
+      <div style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '14px 0 8px' }}>
+        Reviewer Actions
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <ActionButton qid={`evidence-case:approve:${id}`} action="EVIDENCE_CASE_APPROVE" title="Approve case" tone={EMBRY.green}><CheckCircle size={14} />Approve</ActionButton>
+        <ActionButton qid={`evidence-case:reject:${id}`} action="EVIDENCE_CASE_REJECT" title="Reject case" tone={EMBRY.red}><XCircle size={14} />Reject</ActionButton>
+        <ActionButton qid={`evidence-case:request-more:${id}`} action="EVIDENCE_CASE_REQUEST_MORE" title="Request more evidence" tone={EMBRY.amber}><ShieldAlert size={14} />More evidence</ActionButton>
+        <ActionButton qid={`evidence-case:open-source:${id}`} action="EVIDENCE_CASE_OPEN_SOURCE" title="Open source page or extracted record" tone={EMBRY.blue} onClick={onViewDetails}><FileSearch size={14} />Open source</ActionButton>
+        <ActionButton qid={`evidence-case:export:${id}`} action="EVIDENCE_CASE_EXPORT" title="Export audit packet" tone={EMBRY.dim}><Download size={14} />Export</ActionButton>
+      </div>
 
-      {/* Collapsible gate trace */}
-      {gateTrace.length > 0 && (
-        <div style={{ marginTop: 8 }}>
-          <button
-            data-qid={`evidence-case:toggle-trace:${data.qraKey}`}
-            data-qs-action="EVIDENCE_CASE_TOGGLE_TRACE"
-            title={expanded ? 'Collapse gate trace' : 'Expand gate trace'}
-            onClick={() => setExpanded(!expanded)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: EMBRY.muted,
-              fontSize: 12,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-              padding: '4px 0',
-              minHeight: 44,
-              fontFamily: 'var(--font-sans)',
-            }}
-          >
-            {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-            Gate Trace ({gateTrace.length})
-          </button>
-          {expanded && (
-            <div
-              data-qid={`evidence-case:trace-panel:${data.qraKey}`}
-              title="Gate trace details"
-              style={{
-                background: 'rgba(0,0,0,0.2)',
-                borderRadius: 4,
-                padding: 8,
-                marginTop: 4,
-              }}
-            >
-              {gateTrace.map((gate: any, i: number) => (
-                <div
-                  key={i}
-                  data-qid={`evidence-case:gate:${data.qraKey}:${i}`}
-                  title={`Gate ${i + 1}: ${gate.name || gate.gate_id || 'Unknown'}`}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    padding: '4px 0',
-                    borderBottom: i < gateTrace.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-                  }}
-                >
-                  <span style={{ color: gate.passed ? '#00ff88' : '#ff4444', fontSize: 12 }}>
-                    {gate.passed ? '✓' : '✗'}
-                  </span>
-                  <span style={{ color: EMBRY.text, fontSize: 12, fontFamily: 'var(--font-mono)' }}>
-                    {gate.name || gate.gate_id || `Gate ${i + 1}`}
-                  </span>
-                </div>
+      {expanded && (
+        <div data-qid={`evidence-case:expanded:${id}`} title="Expanded evidence case audit trail" style={{ borderTop: `1px solid ${EMBRY.border}`, marginTop: 12, paddingTop: 12 }}>
+          {entities.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+              {entities.map(entity => (
+                <span key={entity} tabIndex={0} title={`${entity}: bound entity in this evidence case`} style={{ color: EMBRY.blue, border: `1px solid ${EMBRY.blue}55`, backgroundColor: `${EMBRY.blue}14`, borderRadius: 999, padding: '3px 8px', fontSize: 11, fontFamily: 'var(--font-mono)' }}>
+                  {entity}
+                </span>
               ))}
             </div>
+          )}
+
+          <div style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+            Claims
+          </div>
+          <ol style={{ margin: 0, paddingLeft: 18, color: EMBRY.white, fontSize: 12, lineHeight: 1.55 }}>
+            {claims.map((claim, index) => (
+              <li key={`${claim}-${index}`} data-qid={`evidence-case:claim:${id}:${index}`} title={`Claim ${index + 1}: ${claim}`} style={{ marginBottom: 6, overflowWrap: 'anywhere' }}>
+                {claim}
+              </li>
+            ))}
+          </ol>
+
+          {citations.length > 0 && (
+            <>
+              <div style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '12px 0 6px' }}>
+                Citations
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {citations.map((citation, index) => (
+                  <span key={`${citation}-${index}`} data-qid={`evidence-case:citation:${id}:${index}`} title={`Citation ${index + 1}: ${citation}`} style={{ color: EMBRY.dim, fontSize: 12, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere' }}>
+                    {citation}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
+          {gateCount > 0 && (
+            <>
+              <div style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '12px 0 6px' }}>
+                Trace Gates
+              </div>
+              <div data-qid={`evidence-case:gates:${id}`} title={`${gatePassed}/${gateCount} gates passed`} style={{ color: EMBRY.white, fontSize: 12, marginBottom: 8 }}>
+                {gatePassed}/{gateCount} gates passed
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {gates.map((gate, index) => (
+                  <div key={`${gate.gate}-${index}`} data-qid={`evidence-case:gate:${id}:${index}`} title={`${gate.gate}: ${gate.detail}`} style={{ display: 'grid', gridTemplateColumns: '18px minmax(0, 1fr)', gap: 8, alignItems: 'start', color: EMBRY.dim, fontSize: 12 }}>
+                    <span style={{ color: gate.passed ? EMBRY.green : EMBRY.red }}>{gate.passed ? <CheckCircle size={14} /> : <XCircle size={14} />}</span>
+                    <span style={{ overflowWrap: 'anywhere' }}><span style={{ color: EMBRY.white }}>{gate.gate}</span> — {gate.detail}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {onViewDetails && (
+            <button
+              data-qid={`evidence-case:view-details:${id}`}
+              data-qs-action="EVIDENCE_CASE_VIEW_DETAILS"
+              title="View full evidence case"
+              onClick={onViewDetails}
+              style={{
+                marginTop: 10,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                minHeight: 44,
+                padding: '0 10px',
+                borderRadius: 8,
+                border: `1px solid ${EMBRY.border}`,
+                backgroundColor: EMBRY.bgPanel,
+                color: EMBRY.dim,
+                cursor: 'pointer',
+                fontSize: 12,
+              }}
+            >
+              <ExternalLink size={14} />
+              Full case record
+            </button>
           )}
         </div>
       )}
 
-      {/* View Full Case button */}
-      {onViewDetails && (
-        <button
-          data-qid={`evidence-case:view-details:${data.qraKey}`}
-          data-qs-action="EVIDENCE_CASE_VIEW_DETAILS"
-          title="View full evidence case"
-          onClick={onViewDetails}
-          style={{
-            background: `${EMBRY.accent}22`,
-            border: `1px solid ${EMBRY.accent}`,
-            color: EMBRY.accent,
-            borderRadius: 6,
-            padding: '8px 16px',
-            fontSize: 12,
-            fontWeight: 500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            marginTop: 12,
-            minHeight: 44,
-            fontFamily: 'var(--font-sans)',
-          }}
-        >
-          <ExternalLink size={14} />
-          View Full Case
-        </button>
+      {approval !== 'Approved' && (
+        <div data-qid={`evidence-case:draft-warning:${id}`} title="Fail-closed draft warning" style={{ color: EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 10 }}>
+          Draft-only: trace provenance or reviewer approval is incomplete.
+        </div>
       )}
-    </div>
+    </section>
   )
 }

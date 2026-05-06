@@ -125,6 +125,8 @@ export interface EvidenceCase {
 	// Core evidence data
 	chains?: CrosswalkChain[];
 	crosswalk_chains?: CrosswalkChain[];
+	chains_count?: number;
+	crosswalk_chains_count?: number;
 	confidence?: number;
 	methods?: string[];
 	verdict?: "satisfied" | "inconclusive" | "not_satisfied" | "none" | string;

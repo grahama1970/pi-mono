@@ -1,0 +1,18 @@
+{
+  "artifacts": {
+    "events": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-kimi-candidate/sparta-qra-chat-kimi-candidate.events.jsonl",
+    "request": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-kimi-candidate/sparta-qra-chat-kimi-candidate.request.json",
+    "run_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-kimi-candidate",
+    "status": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/designs/sparta-qra-chat-bakeoff/ask-runs/sparta-qra-chat-kimi-candidate/sparta-qra-chat-kimi-candidate.status.json"
+  },
+  "ask_id": "sparta-qra-chat-kimi-candidate",
+  "controller_pid": 990662,
+  "error": {
+    "message": "{'message': 'stream_timeout: overall budget exceeded after 420.0s', 'type': 'timeout_error'}",
+    "type": "RuntimeError"
+  },
+  "runtime_protocol_version": "ask.runtime.v1",
+  "started_at": "2026-05-05T14:27:05.844910+00:00",
+  "state": "failed",
+  "updated_at": "2026-05-05T14:34:27.979957+00:00"
+}

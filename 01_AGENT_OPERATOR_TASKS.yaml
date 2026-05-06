@@ -1,0 +1,558 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/agent-operator"
+
+metadata:
+  title: "Agent Operator V1"
+  goal: "Create a Tailscale-private operator console for delegated agent runs, artifacts, and code-runner-backed patch execution."
+  plan_type: hybrid
+  created: "2026-05-05"
+  target_project_path: "/home/graham/workspace/experiments/agent-operator"
+  source_archive: "/home/graham/Downloads/subagent-control-plane-v1.zip"
+  primary_persona:
+    name: "Graham"
+    role: "iPad-based operator reviewing and dispatching delegated workstation agent runs over Tailscale"
+    source: "User conversation, 2026-05-05"
+  product_name: "agent-operator"
+  v1_contract:
+    patch_worker: "code-runner only"
+    review_worker: "codex_exec for read-only review and task-spec generation"
+    ui_pattern: "chat command surface plus run cards and artifact inspector"
+    exposure: "localhost-bound FastAPI exposed through Tailscale Serve; no Funnel"
+  compliance_governance:
+    principle: "Analyst workbench, not truth engine"
+    verdicts: "All SPARTA/compliance claims default to NEEDS_VERIFICATION"
+    human_gate: "Human reviews before any compliance status change"
+
+execution:
+  max_concurrency: 1
+  wave_barrier: true
+  scheduling_policy: wave_then_dependency
+
+capability_overlap:
+  - "Memory hook found background project knowledge for /code-runner: use it only with tight allowlists, explicit DoD, blind tests, and complete-task flags for source mutation."
+  - "Scanned skills manifest for relevant capabilities: /code-runner, /memory, /assess, /ops-workstation, /test-interactions, /review-plan, /skills-ci, /scillm, /best-practices-chat-ux, /best-practices-python."
+  - "CALL /ops-workstation for Tailscale/network readiness instead of writing custom workstation diagnostics."
+  - "CALL /memory as advisory recall/write path; do not implement a parallel memory database."
+  - "CALL /code-runner for patch execution; do not duplicate patch worktrees, allowlist enforcement, cleanup, DoD, patch artifacts, or optional apply/commit."
+  - "CREATE only the thin agent-operator control plane: routing, same-origin web app, run persistence, skill snapshots, WorkerAdapter glue, artifact UI, and Tailscale scripts."
+  - "EXTEND the supplied subagent-control-plane scaffold only as source material; rename and reshape it into agent-operator."
+
+questions_blockers: []
+
+test_manifest:
+  - surface: "Operator home"
+    route: "/"
+    device: "tablet"
+    expected_data:
+      projects_min: 2
+      subagents_min: 3
+    interactions:
+      - "select project agent-skills"
+      - "select mode review"
+      - "submit a dry-run review request"
+      - "open generated run card"
+    visual: "Chat command surface remains primary; run card shows project, worker, mode, selected skills, status, and open-details control."
+  - surface: "Run inspector"
+    route: "/"
+    device: "tablet"
+    expected_data:
+      artifacts_min: 5
+    interactions:
+      - "open report.md"
+      - "open result.json"
+      - "open events.jsonl"
+      - "open code-runner task-spec.json when present"
+    visual: "Inspector prioritizes report, result, diff/task spec, logs, prompt, events, memory, and skill snapshots with wrapped paths and collapsed logs."
+  - surface: "Failure and memory warning state"
+    route: "/"
+    device: "tablet"
+    expected_data:
+      warnings_min: 1
+    interactions:
+      - "load a run with memory recall unavailable"
+      - "open warning details"
+    visual: "Memory degradation is visible as a warning event and badge; the run is not shown as failed only because advisory memory was unavailable."
+  - surface: "Patch mode risk review"
+    route: "/"
+    device: "tablet"
+    expected_data:
+      code_runner_artifacts_min: 3
+    interactions:
+      - "toggle patch mode"
+      - "review dry-run risk artifact"
+      - "open code-runner output directory listing"
+    visual: "Patch mode clearly identifies code-runner as the sole patch worker and exposes dry-run risk before any run."
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Bootstrap and Discovery"
+  - id: "1"
+    label: "Wave 1: Backend Core"
+  - id: "2"
+    label: "Wave 2: Worker and Skill Composition"
+  - id: "3"
+    label: "Wave 3: Operator Chat UX"
+  - id: "4"
+    label: "Wave 4: Deployment and Validation"
+
+tasks:
+  - id: "0.1"
+    title: "Bootstrap agent-operator project from supplied archive"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "general-purpose"
+    cwd: "/home/graham/workspace/experiments"
+    depends_on: []
+    implementation:
+      - "Create `/home/graham/workspace/experiments/agent-operator` from `/home/graham/Downloads/subagent-control-plane-v1.zip`."
+      - "Remove generated `__pycache__` files from the extracted scaffold."
+      - "Rename human-facing references from Subagent Control Plane to Agent Operator."
+      - "Add `.gitignore` for Python, Node, run artifacts, caches, and generated UI verification."
+      - "Initialize a new git repository and create a baseline commit so subsequent /code-runner complete-task tasks have a clean source repo."
+    tests:
+      - "Blind: `python3 -m zipfile --test /home/graham/Downloads/subagent-control-plane-v1.zip` exits 0 before extraction."
+      - "Blind: `find /home/graham/workspace/experiments/agent-operator -path '*/__pycache__/*' | wc -l` returns 0 after cleanup."
+      - "Blind: `git -C /home/graham/workspace/experiments/agent-operator status --short` is empty after the baseline commit."
+    command: "python3 -m zipfile --test /home/graham/Downloads/subagent-control-plane-v1.zip && rm -rf /home/graham/workspace/experiments/agent-operator && python3 - <<'PY'\nfrom pathlib import Path\nfrom zipfile import ZipFile\nsrc = Path('/home/graham/Downloads/subagent-control-plane-v1.zip')\ntmp = Path('/home/graham/workspace/experiments/agent-operator')\nwith ZipFile(src) as z:\n    z.extractall(tmp.parent)\nextracted = tmp.parent / 'subagent-control-plane'\nif extracted.exists():\n    extracted.rename(tmp)\nfor p in sorted(tmp.rglob('__pycache__'), reverse=True):\n    for child in p.rglob('*'):\n        if child.is_file():\n            child.unlink()\n    p.rmdir()\nPY\ncd /home/graham/workspace/experiments/agent-operator\ngit init\ngit config user.name \"Agent Operator Bootstrap\"\ngit config user.email \"agent-operator@local\"\ncat > .gitignore <<'EOF'\n.venv/\nnode_modules/\n__pycache__/\n*.pyc\n.DS_Store\n.codex/ui-verification/\n.local/\nruns/\ndist/\nbuild/\nEOF\ngit add README.md TODO.md config backend frontend scripts systemd .gitignore\ngit commit -m \"bootstrap agent-operator scaffold\""
+    definition_of_done:
+      command: "test -d /home/graham/workspace/experiments/agent-operator && test -f /home/graham/workspace/experiments/agent-operator/README.md && test \"$(find /home/graham/workspace/experiments/agent-operator -path '*/__pycache__/*' | wc -l)\" = \"0\" && test -z \"$(git -C /home/graham/workspace/experiments/agent-operator status --short)\""
+      assertion: "exit_code == 0"
+
+  - id: "0.2"
+    title: "Write V1 architecture contract and project registry defaults"
+    lane: "0"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["0.1"]
+    skills:
+      - best-practices-agent
+      - best-practices-skills
+      - best-practices-python
+      - best-practices-chat-ux
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/README.md"
+      - "/home/graham/workspace/experiments/agent-operator/config/projects.yaml"
+      - "/home/graham/workspace/experiments/agent-operator/config/subagents/sparta-qra-reviewer.yaml"
+      - "/home/graham/workspace/experiments/agent-operator/config/subagents/ask-skill-reviewer.yaml"
+      - "/home/graham/workspace/experiments/agent-operator/config/subagents/generic-code-reviewer.yaml"
+    allowlist:
+      - "README.md"
+      - "config/projects.yaml"
+      - "config/subagents/sparta-qra-reviewer.yaml"
+      - "config/subagents/ask-skill-reviewer.yaml"
+      - "config/subagents/generic-code-reviewer.yaml"
+    blind_tests:
+      - "from pathlib import Path\nroot=Path.cwd()\nprojects=(root/'config/projects.yaml').read_text()\nassert '/home/graham/workspace/experiments/agent-skills' in projects\nassert '/home/graham/workspace/experiments/sparta' in projects\nassert 'pi-mono' not in projects"
+      - "from pathlib import Path\ntext=(Path.cwd()/'README.md').read_text().lower()\nfor needle in ['agent-operator', 'code-runner', 'codex_exec', 'same-origin', 'tailscale', 'funnel']:\n    assert needle in text, needle\nassert 'only patch' in text or 'sole patch' in text or 'only patch-capable' in text"
+    prompt: "Update README and config YAML for the renamed `agent-operator` V1. State the architecture contract: same-origin FastAPI + React through Tailscale, codex_exec is review/spec-only, code-runner is the only patch worker, memory is advisory and visibly degraded, skills are frozen snapshots from agent-skills, initial projects are agent-skills and sparta. Remove pi-mono from enabled defaults unless explicitly added later."
+    implementation:
+      - "Edit README to document `agent-operator`, the V1 run modes, WorkerAdapter policy, same-origin deployment, and safety constraints."
+      - "Set project defaults to `/home/graham/workspace/experiments/agent-skills` and `/home/graham/workspace/experiments/sparta`."
+      - "Set initial subagent skill selections with graceful missing-skill warnings."
+    tests:
+      - "Blind: README contains agent-operator, code-runner-only patch policy, same-origin Tailscale deployment, and no Funnel."
+      - "Blind: projects.yaml contains agent-skills and sparta paths and does not enable pi-mono by default."
+    definition_of_done:
+      command: "python3 - <<'PY'\nfrom pathlib import Path\nroot=Path.cwd()\nreadme=(root/'README.md').read_text()\nprojects=(root/'config/projects.yaml').read_text()\nassert 'agent-operator' in readme.lower()\nassert 'code-runner' in readme.lower()\nassert 'same-origin' in readme.lower()\nassert 'tailscale' in readme.lower()\nassert 'no funnel' in readme.lower() or 'funnel' in readme.lower()\nassert '/home/graham/workspace/experiments/agent-skills' in projects\nassert '/home/graham/workspace/experiments/sparta' in projects\nassert 'pi-mono' not in projects\nPY"
+      assertion: "exit_code == 0"
+    max_rounds: 3
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "1.1"
+    title: "Restructure backend into Python package with uv, loguru, httpx, and module boundaries"
+    lane: "1"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["0.2"]
+    skills:
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/app/main.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/app/runner.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/app/models.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/requirements.txt"
+    allowlist:
+      - "pyproject.toml"
+      - "backend/pyproject.toml"
+      - "backend/src/agent_operator/**"
+      - "backend/tests/**"
+      - "backend/run.sh"
+    blind_tests:
+      - "test -x backend/sanity.sh && backend/sanity.sh"
+      - "uv run --project backend python -m compileall -q backend/src backend/tests && uv run --project backend python -c 'import agent_operator; from agent_operator.app import create_app; create_app()'"
+      - "from pathlib import Path\nfor path in Path('backend/src/agent_operator').glob('*.py'):\n    text=path.read_text()\n    assert len(text.splitlines()) < 800, path\n    assert text.lstrip().startswith(('\"\"\"', \"'''\")), path"
+    prompt: "Move backend runtime code into `backend/src/agent_operator/` with thin `__init__.py`, module docstrings, loguru logging, httpx for HTTP, FastAPI app factory, and uv/pyproject packaging. Keep functionality equivalent but split modules so no file exceeds 800 lines. Add backend tests and a sanity script that compiles/imports the package."
+    implementation:
+      - "Create `backend/src/agent_operator/` package with modules for app, settings, models, events, registry, run_store, memory, skills, workers, and API routes."
+      - "Replace requirements.txt as the source of truth with `backend/pyproject.toml` using uv-compatible dependencies."
+      - "Add `backend/run.sh` using `uv run --project` only."
+      - "Add tests covering package import, settings paths, and model validation."
+    tests:
+      - "uv run --project backend python -m compileall -q backend/src backend/tests"
+      - "uv run --project backend python -c 'import agent_operator; from agent_operator.app import create_app; create_app()'"
+      - "backend/sanity.sh"
+    definition_of_done:
+      command: "uv run --project backend python -m compileall -q backend/src backend/tests && uv run --project backend python -c 'import agent_operator; from agent_operator.app import create_app; create_app()'"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "1.2"
+    title: "Implement durable run store, event log, restart recovery, and visible degradation states"
+    lane: "1"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["1.1"]
+    skills:
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/models.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/events.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/run_store.py"
+    allowlist:
+      - "backend/src/agent_operator/models.py"
+      - "backend/src/agent_operator/events.py"
+      - "backend/src/agent_operator/run_store.py"
+      - "backend/tests/test_run_store.py"
+      - "backend/tests/test_events.py"
+    blind_tests:
+      - "uv run --project backend pytest backend/tests/test_run_store.py backend/tests/test_events.py -q"
+      - "from pathlib import Path\nfor name in ['run_store.py', 'events.py', 'models.py']:\n    text=(Path('backend/src/agent_operator')/name).read_text().lower()\n    assert 'events.jsonl' in text or 'run.final.json' in text or 'warning' in text, name"
+    prompt: "Implement durable run persistence. Every run writes run.initial.json, events.jsonl, run.final.json, prompt.md, selected_skills metadata, memory_context.json, memory warning/write artifacts, stdout/stderr logs, report.md, result.json, and code-runner artifacts when present. Add restart recovery by scanning `~/.local/share/subagent-control-plane/runs/*/run.final.json`, but use the new app name where appropriate for defaults."
+    implementation:
+      - "Persist run snapshots and events atomically enough for restart recovery."
+      - "Represent warning states, especially memory degradation, without turning advisory failures into run failures."
+      - "Add typed artifact records with priority ordering for report, result, diff/task spec, logs, prompt, events, memory, and skill snapshots."
+    tests:
+      - "uv run --project backend pytest backend/tests/test_run_store.py backend/tests/test_events.py -q"
+      - "backend/sanity.sh"
+    definition_of_done:
+      command: "uv run --project backend pytest backend/tests/test_run_store.py backend/tests/test_events.py -q"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "2.1"
+    title: "Implement advisory MemoryClient using canonical memory skill with visible warning artifacts"
+    lane: "2"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["1.2"]
+    skills:
+      - memory
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/memory.py"
+      - "/home/graham/workspace/experiments/agent-skills/skills/memory/SKILL.md"
+    allowlist:
+      - "backend/src/agent_operator/memory.py"
+      - "backend/tests/test_memory_client.py"
+    blind_tests:
+      - "uv run --project backend pytest backend/tests/test_memory_client.py -q"
+      - "from pathlib import Path\ntext=Path('backend/src/agent_operator/memory.py').read_text()\nfor needle in ['recall', '--q', '--brief', 'memory-warning.json']:\n    assert needle in text, needle"
+    prompt: "Implement MemoryClient as advisory. Use the canonical memory skill path from config and call `run.sh recall --q <query> --brief` for recall. Do not swallow failures silently: log with loguru and write visible warning artifacts. Add run metadata fields before best-effort write attempts, but do not rely on memory writes until the live contract is inspected."
+    implementation:
+      - "Use asyncio subprocess APIs if called from async code."
+      - "Expose structured success/warning results."
+      - "Write `memory_context.json`, `memory-warning.json`, and `memory-write.json` artifacts as appropriate."
+    tests:
+      - "uv run --project backend pytest backend/tests/test_memory_client.py -q"
+      - "backend/sanity.sh"
+    definition_of_done:
+      command: "uv run --project backend pytest backend/tests/test_memory_client.py -q"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "2.2"
+    title: "Implement skill snapshot materializer with frontmatter metadata and graceful missing-skill warnings"
+    lane: "2"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["1.2"]
+    skills:
+      - best-practices-skills
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/skills.py"
+      - "/home/graham/workspace/experiments/agent-skills/skills/best-practices-skills/SKILL.md"
+    allowlist:
+      - "backend/src/agent_operator/skills.py"
+      - "backend/tests/test_skill_materializer.py"
+    blind_tests:
+      - "uv run --project backend pytest backend/tests/test_skill_materializer.py -q"
+      - "from pathlib import Path\ntext=Path('backend/src/agent_operator/skills.py').read_text().lower()\nfor needle in ['copy', 'skill.md', 'git', 'warning']:\n    assert needle in text, needle\nassert 'symlink' not in text or 'false' in text or 'follow_symlinks' in text"
+    prompt: "Implement skill materialization from `/home/graham/workspace/experiments/agent-skills/skills/*`. Copy frozen selected skill snapshots into each run directory, record source path, git SHA, skill IDs, and SKILL.md frontmatter. Missing optional skills warn visibly; required missing skills fail."
+    implementation:
+      - "Parse SKILL.md frontmatter with a structured parser, not ad hoc fragile string slicing."
+      - "Copy directories with symlink preservation disabled unless needed for existing skill safety; prefer reproducible snapshots."
+      - "Expose prompt context as inlined SKILL.md content."
+    tests:
+      - "uv run --project backend pytest backend/tests/test_skill_materializer.py -q"
+      - "backend/sanity.sh"
+    definition_of_done:
+      command: "uv run --project backend pytest backend/tests/test_skill_materializer.py -q"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "2.3"
+    title: "Add WorkerAdapter layer with codex_exec review/spec worker and code-runner patch worker"
+    lane: "2"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["2.1", "2.2"]
+    skills:
+      - code-runner
+      - scillm
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/workers.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/models.py"
+      - "/home/graham/workspace/experiments/agent-skills/skills/code-runner/SKILL.md"
+    allowlist:
+      - "backend/src/agent_operator/workers.py"
+      - "backend/src/agent_operator/code_runner_spec.py"
+      - "backend/tests/test_workers.py"
+      - "backend/tests/test_code_runner_spec.py"
+    blind_tests:
+      - "uv run --project backend pytest backend/tests/test_workers.py backend/tests/test_code_runner_spec.py -q"
+      - "from pathlib import Path\ntext=(Path('backend/src/agent_operator/workers.py').read_text() + Path('backend/src/agent_operator/code_runner_spec.py').read_text()).lower()\nfor needle in ['codex_exec', 'code-runner', 'dry-run', 'explain-risk', 'doctor', 'status']:\n    assert needle in text, needle\nassert 'patch' in text and 'code-runner' in text"
+    prompt: "Introduce WorkerAdapter. CodexExecWorker supports review and prepare_patch_spec only and must not edit source by default. CodeRunnerWorker is the sole patch-capable worker and delegates worktree lifecycle, allowlists, cleanup, patch artifacts, DoD, and optional apply/commit to `/home/graham/workspace/experiments/agent-skills/skills/code-runner/run.sh`. Generate task-spec.json artifacts with cwd, output_dir, allowlist, definition_of_done, apply_to_source, commit_on_success, rollback_on_failure, and selected skill context in the prompt/read_context."
+    implementation:
+      - "Represent run modes as review, prepare_patch_spec, and patch."
+      - "Run code-runner dry-run with `--explain-risk` before patch run and surface risk artifacts."
+      - "Track subprocess handles by run_id and start subprocesses in their own process group."
+      - "Use asyncio subprocess APIs, not blocking subprocess.run in async code."
+    tests:
+      - "uv run --project backend pytest backend/tests/test_workers.py backend/tests/test_code_runner_spec.py -q"
+      - "backend/sanity.sh"
+    definition_of_done:
+      command: "uv run --project backend pytest backend/tests/test_workers.py backend/tests/test_code_runner_spec.py -q"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "2.4"
+    title: "Implement same-origin FastAPI API routes, static frontend serving, SSE, artifacts, and real cancellation"
+    lane: "2"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "general-purpose"
+    depends_on: ["2.3"]
+    skills:
+      - best-practices-python
+      - best-practices-agent
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/app.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/api.py"
+      - "/home/graham/workspace/experiments/agent-operator/backend/src/agent_operator/workers.py"
+    allowlist:
+      - "backend/src/agent_operator/app.py"
+      - "backend/src/agent_operator/api.py"
+      - "backend/src/agent_operator/routes.py"
+      - "backend/src/agent_operator/static.py"
+      - "backend/src/agent_operator/workers.py"
+      - "backend/tests/test_api_routes.py"
+      - "backend/tests/test_cancellation.py"
+    blind_tests:
+      - "uv run --project backend pytest backend/tests/test_api_routes.py backend/tests/test_cancellation.py -q"
+      - "from pathlib import Path\ntext='\\n'.join(p.read_text() for p in [Path('backend/src/agent_operator/app.py'), Path('backend/src/agent_operator/api.py'), Path('backend/src/agent_operator/workers.py')] if p.exists()).lower()\nfor needle in ['/api', 'static', 'cancel', 'run.final.json']:\n    assert needle in text, needle\nassert '..' in text or 'resolve' in text"
+    prompt: "Wire FastAPI same-origin deployment. API routes must live under `/api`, SSE under `/api/runs/{id}/events`, artifact access under `/api/runs/{id}/artifacts/...`, and built React static files served from `/`. Implement cancel endpoint that kills the active worker subprocess tree, preserves partial logs/artifacts, emits cancelled event, and writes run.final.json."
+    implementation:
+      - "Do not expose public auth; bind local server to 127.0.0.1 and document Tailscale-only exposure."
+      - "Use safe artifact path resolution."
+      - "Keep CORS permissive only for local dev split if explicitly enabled."
+    tests:
+      - "uv run --project backend pytest backend/tests/test_api_routes.py -q"
+      - "Local smoke task curls `/api/health`, `/api/projects`, `/api/subagents` after server start."
+    definition_of_done:
+      command: "uv run --project backend pytest backend/tests/test_api_routes.py -q"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "3.1"
+    title: "Generate operator chat UX design contract for tablet and desktop"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "design-pipeline"
+    depends_on: ["2.4"]
+    skill: "mockup-lab"
+    skills:
+      - best-practices-chat-ux
+      - mockup-lab
+    implementation:
+      - "Use /mockup-lab for a tablet-first operator chat design before production TSX."
+      - "Design must follow chat command surface plus run cards plus artifact inspector; avoid dashboard-first layout."
+      - "Include required states from test_manifest: operator home, run inspector, memory warning, patch risk review."
+    tests:
+      - "Blind: design artifacts include tablet and desktop states and reference all test_manifest surfaces."
+    command: "/home/graham/workspace/experiments/agent-skills/skills/mockup-lab/run.sh generate --device tablet --name agent-operator --brief 'Tailscale-private operator chat console with run cards and artifact inspector; no dashboard drift; follow best-practices-chat-ux.'"
+    definition_of_done:
+      command: "test -d /mnt/storage12tb/skills/mockup-lab || test -d /home/graham/workspace/experiments/agent-skills/skills/mockup-lab"
+      assertion: "exit_code == 0"
+
+  - id: "3.2"
+    title: "Implement React operator shell from approved design with same-origin API client"
+    lane: "3"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    agent: "frontend"
+    depends_on: ["3.1"]
+    skills:
+      - best-practices-chat-ux
+      - best-practices-react
+      - best-practices-codex-design
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/frontend/src/App.tsx"
+      - "/home/graham/workspace/experiments/agent-operator/frontend/src/api.ts"
+      - "/home/graham/workspace/experiments/agent-operator/frontend/src/types.ts"
+    allowlist:
+      - "frontend/src/App.tsx"
+      - "frontend/src/api.ts"
+      - "frontend/src/types.ts"
+      - "frontend/src/index.css"
+      - "frontend/package.json"
+      - "frontend/tests/**"
+    blind_tests:
+      - "cd frontend && npm run build"
+      - "from pathlib import Path\ntext='\\n'.join(p.read_text() for p in Path('frontend/src').glob('*') if p.suffix in {'.ts', '.tsx', '.css'}).lower()\nfor needle in ['/api', 'vite_api_base', 'run', 'artifact']:\n    assert needle in text, needle\nassert '127.0.0.1' not in text"
+    prompt: "Implement the approved agent-operator React shell. The chat is the command surface. Runs render as structured run cards. Inspector prioritizes report, result JSON, diff/task spec, logs, prompt, events, memory, and skill snapshots. Use same-origin `/api` by default; allow dev override with VITE_API_BASE. Tablet/narrow screens use an inspector drawer."
+    implementation:
+      - "Expose visible routing: project, subagent, worker, mode, selected skills, branch/commit only when present."
+      - "Patch mode must clearly show code-runner risk dry-run before execution."
+      - "Do not render raw logs as primary conversation bubbles."
+      - "Do not imply merge, push, approval, finality, certification, or compliance satisfaction."
+    tests:
+      - "npm run build from frontend exits 0."
+      - "Per-view /test-interactions runs against test_manifest after local server start."
+    definition_of_done:
+      command: "cd frontend && npm run build"
+      assertion: "exit_code == 0"
+    max_rounds: 5
+    apply_to_source: true
+    commit_on_success: true
+    rollback_on_failure: true
+
+  - id: "3.3"
+    title: "Review and verify operator UI interactions with live server and CDP screenshots"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "verification"
+    depends_on: ["3.2"]
+    skills:
+      - test-interactions
+      - review-design
+      - ops-workstation
+    implementation:
+      - "Start the backend on 127.0.0.1 using uv."
+      - "Serve the built frontend same-origin."
+      - "Run /test-interactions against each test_manifest surface."
+      - "Run CDP verification and preserve screenshot/latest.json artifacts."
+    tests:
+      - "Blind: CDP latest.json exists and points to a fresh screenshot."
+      - "Blind: /test-interactions manifest covers operator home, run inspector, memory warning, and patch risk review."
+    command: "cd /home/graham/workspace/experiments/agent-operator && timeout 30s uv run --project backend uvicorn agent_operator.app:create_app --factory --host 127.0.0.1 --port 8765 >/tmp/agent-operator-ui.log 2>&1 & echo $! > /tmp/agent-operator-ui.pid; sleep 3; curl -fsS http://127.0.0.1:8765/api/health; ~/.codex/hooks/verify-ui-cdp.sh --url http://127.0.0.1:8765 --name agent-operator-v1"
+    definition_of_done:
+      command: "test -f /home/graham/workspace/experiments/agent-operator/.codex/ui-verification/latest.json || test -f /home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json"
+      assertion: "exit_code == 0"
+
+  - id: "4.1"
+    title: "Add Tailscale same-origin deployment scripts and systemd unit"
+    lane: "4"
+    runner: "scillm"
+    backend: "text-claude"
+    mode: "one_shot"
+    agent: "ops"
+    depends_on: ["3.3"]
+    skills:
+      - ops-workstation
+      - best-practices-python
+    read_context:
+      - "/home/graham/workspace/experiments/agent-operator/scripts/tailscale-serve.sh"
+      - "/home/graham/workspace/experiments/agent-operator/systemd/subagent-control-plane-backend.service"
+    blind_tests:
+      - "Hidden script audit verifies Tailscale Serve exposes one local FastAPI origin and does not use Funnel."
+      - "Hidden systemd audit verifies backend binds 127.0.0.1 and uses agent-operator paths/names."
+    prompt: "Update deployment scripts and systemd unit for agent-operator. Backend binds only `127.0.0.1`, FastAPI serves built React and `/api`, and Tailscale Serve exposes one local origin. No Funnel. Include health checks using `/ops-workstation net` and `/api/health`."
+    implementation:
+      - "Rename systemd unit to agent-operator backend."
+      - "Update tailscale serve script to expose the single FastAPI origin."
+      - "Document optional APP_SHARED_TOKEN but do not require full auth for V1."
+    tests:
+      - "Shellcheck-style syntax parse with `bash -n`."
+      - "ops-workstation net confirms tailscale0 is up."
+      - "test-lab/run.sh verify-task 4.1 /home/graham/workspace/experiments/agent-operator --domain ops"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/agent-operator && bash -n scripts/tailscale-serve.sh && /home/graham/workspace/experiments/agent-skills/skills/ops-workstation/run.sh net --json | python3 -c 'import json,sys; data=json.load(sys.stdin); assert any(i.get(\"name\")==\"tailscale0\" and i.get(\"link\")==\"yes\" for i in data[\"interfaces\"])'"
+      assertion: "exit_code == 0"
+
+  - id: "4.2"
+    title: "Run final backend, frontend, code-runner, skills, and UI validation gates"
+    lane: "4"
+    runner: "local"
+    backend: ""
+    mode: ""
+    agent: "verification"
+    depends_on: ["4.1"]
+    skills:
+      - code-runner
+      - skills-ci
+      - test-interactions
+      - ops-workstation
+    implementation:
+      - "Run backend compile/import/tests."
+      - "Run frontend build."
+      - "Run code-runner doctor."
+      - "Run a code-runner dry-run fixture that does not mutate source."
+      - "Run live same-origin health and CDP UI proof."
+      - "Run skills-ci or targeted skill scans for referenced skills when available."
+    tests:
+      - "Blind: code-runner doctor returns JSON with healthy status or explicit degraded service report."
+      - "Blind: same-origin `/api/health` returns 2xx from the running FastAPI app."
+      - "Blind: CDP screenshot exists for the real agent-operator UI."
+    command: "cd /home/graham/workspace/experiments/agent-operator && uv run --project backend python -m compileall -q backend/src backend/tests && uv run --project backend pytest backend/tests -q && (cd frontend && npm run build) && /home/graham/workspace/experiments/agent-skills/skills/code-runner/run.sh doctor --json"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/agent-operator && uv run --project backend python -m compileall -q backend/src backend/tests && (cd frontend && npm run build) && /home/graham/workspace/experiments/agent-skills/skills/code-runner/run.sh doctor --json >/tmp/agent-operator-code-runner-doctor.json"
+      assertion: "exit_code == 0"

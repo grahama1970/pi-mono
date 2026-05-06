@@ -10,11 +10,12 @@
  * - Thumbs feedback on system messages
  */
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
+import { Shield } from 'lucide-react'
 import { EMBRY, fwBadge } from '../sparta/common/EmbryStyle'
-import ReasoningBlock from './ReasoningBlock'
 import { highlightEntities, highlightWithGlossary, type GlossaryTerm } from './highlightEntities'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { SkillPalette } from './SkillPalette'
+import { InlineEvidenceCase } from './InlineEvidenceCase'
 import { SpartaHudInput, type ReasoningStep } from '../sparta/query/SpartaHudInput'
 import { RecallCard } from '../sparta/query/RecallCard'
 import { GateChain } from '../sparta/query/GateChain'
@@ -94,6 +95,7 @@ function MessageItem({
 
   // Get glossary from evidence case if available (domain phrases from /create-evidence-case daemon)
   const glossary: GlossaryTerm[] = msg.evidenceCase?.glossary || []
+  const answerContent = msg.evidenceCase?.answer || msg.content.replace(/^Evidence Case:.*\n?/i, '')
 
   // Use highlightWithGlossary when daemon glossary is available, else fallback to static patterns
   const highlight = (text: string) => glossary.length > 0
@@ -107,7 +109,8 @@ function MessageItem({
         <div style={{
           maxWidth: '85%', padding: '10px 14px',
           borderRadius: '14px 14px 4px 14px',
-          background: `${EMBRY.blue}18`,
+          background: `${EMBRY.blue}22`,
+          border: `1px solid ${EMBRY.blue}44`,
           fontSize: 12, lineHeight: 1.6, color: EMBRY.white,
           fontFamily: msg.type === 'aql' ? 'monospace' : 'inherit',
         }}>
@@ -117,48 +120,98 @@ function MessageItem({
     )
   }
 
-  // ── System message: card with left accent border ──
+  // ── Agent/system message: shield identity + operational surface ──
   const layerColor = msg.cascadeLayer ? LAYER_COLORS[msg.cascadeLayer] : EMBRY.border
   return (
-    <div style={{
-      padding: '10px 12px', margin: '6px 0',
-      borderRadius: 8, borderLeft: `3px solid ${layerColor}`,
-      background: `${layerColor}06`,
-    }}>
-      {/* Tool action line */}
-      {msg.skillUsed && <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:skill:${msg.skillUsed}`} />}
-
-      {/* Cascade layer indicator */}
-      {msg.cascadeLayer && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%',
-            background: layerColor,
-            boxShadow: `0 0 4px ${layerColor}`,
-          }} />
-          <span style={{
-            fontSize: 10, color: layerColor,
-            fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
-            fontFamily: 'monospace',
-          }}>
-            {msg.cascadeLayer}
-          </span>
-        </div>
-      )}
-
-      {/* Content — shared MarkdownRenderer with entity highlighting */}
-      <div style={{ fontSize: 12, lineHeight: 1.6, color: EMBRY.white }}>
-        {msg.type === 'aql' ? (
-          <pre style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', margin: 0 }}>{msg.content}</pre>
-        ) : (
-          <MarkdownRenderer content={msg.content} onEntityClick={onEntityClick} />
-        )}
+    <div style={{ display: 'grid', gridTemplateColumns: '32px minmax(0, 1fr)', gap: 10, padding: '10px 0', alignItems: 'start' }}>
+      <div
+        aria-label="SPARTA agent"
+        title="SPARTA agent"
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: 6,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: EMBRY.amber,
+          backgroundColor: `${EMBRY.amber}10`,
+          border: `1px solid ${EMBRY.border}`,
+        }}
+      >
+        <Shield size={18} strokeWidth={1.7} />
       </div>
+      <div style={{
+        padding: '10px 12px', margin: 0,
+        borderRadius: 8, borderLeft: `3px solid ${layerColor}`,
+        background: `${layerColor}06`,
+        minWidth: 0,
+      }}>
+        {/* Tool action line */}
+        {msg.skillUsed && <ToolAction label={`Ran /${msg.skillUsed}`} qid={`chat:skill:${msg.skillUsed}`} />}
 
-      {/* Reasoning Block — unified evidence case display (replaces separate GateChain + RecallCard) */}
-      {msg.evidenceCase && (
-        <ReasoningBlock data={msg.evidenceCase} onNavigateToControl={onEntityClick ? (id) => onEntityClick(id, 'control') : undefined} />
-      )}
+        {/* Cascade layer indicator */}
+        {msg.cascadeLayer && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
+            <div style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: layerColor,
+              boxShadow: `0 0 4px ${layerColor}`,
+            }} />
+            <span style={{
+              fontSize: 10, color: layerColor,
+              fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
+              fontFamily: 'monospace',
+            }}>
+              {msg.cascadeLayer}
+            </span>
+          </div>
+        )}
+
+        {/* Evidence Case — primary audit object, separated from final answer */}
+        {msg.evidenceCase && (
+          <InlineEvidenceCase data={msg.evidenceCase} />
+        )}
+
+        {msg.evidenceCase && (
+          <div
+            data-qid={`chat:answer-divider:${msg.id ?? 'message'}`}
+            title="Final answer begins below; it is grounded by the Evidence Case above"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              color: EMBRY.dim,
+              fontSize: 10,
+              fontWeight: 900,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              margin: '16px 0 8px',
+            }}
+          >
+            <span style={{ height: 1, flex: 1, backgroundColor: EMBRY.border }} />
+            Answer
+            <span style={{ height: 1, flex: 1, backgroundColor: EMBRY.border }} />
+          </div>
+        )}
+
+        {/* Content — shared MarkdownRenderer with entity highlighting */}
+        <div style={{ fontSize: 12, lineHeight: 1.6, color: EMBRY.white }}>
+          {msg.evidenceCase && msg.evidenceCase.human_review_state !== 'approved' && (
+            <div
+              data-qid={`chat:draft-warning:${msg.id ?? 'message'}`}
+              title="Draft-only answer warning"
+              style={{ color: EMBRY.amber, fontSize: 11, marginBottom: 8 }}
+            >
+              Draft-only: trace provenance or reviewer approval is incomplete.
+            </div>
+          )}
+          {msg.type === 'aql' ? (
+            <pre style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', margin: 0 }}>{answerContent}</pre>
+          ) : (
+            <MarkdownRenderer content={answerContent} onEntityClick={onEntityClick} />
+          )}
+        </div>
 
       {/* RecallCard — only when no evidenceCase (fallback for non-evidence messages) */}
       {!msg.evidenceCase && msg.recallItems && msg.recallItems.length > 0 && (
@@ -288,7 +341,8 @@ function MessageItem({
         </div>
       )}
 
-      {renderExtras?.(msg)}
+        {renderExtras?.(msg)}
+      </div>
     </div>
   )
 }

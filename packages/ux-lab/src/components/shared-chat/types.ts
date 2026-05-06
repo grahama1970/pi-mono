@@ -162,6 +162,7 @@ export interface GlossaryTerm {
 }
 
 export interface EvidenceCaseData {
+	case_id?: string;
 	qraKey?: string;
 	verdict: string;
 	grade: string;
@@ -177,6 +178,20 @@ export interface EvidenceCaseData {
 	source_traceability?: Record<string, number>;
 	description?: string;
 	answer?: string;
+	question?: string;
+	bound_artifact?: string;
+	artifact_hash?: string;
+	artifact?: {
+		name?: string;
+		sha256?: string;
+		page_count?: number;
+		extraction_state?: string;
+	};
+	claims?: string[];
+	citations?: string[];
+	receipts?: Array<{ id?: string; state?: string; summary?: string }>;
+	trace_state?: string;
+	approval_state?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
 	glossary?: GlossaryTerm[];
 	diagnostics?: Record<string, unknown>;

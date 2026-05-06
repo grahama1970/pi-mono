@@ -567,8 +567,82 @@ async function queryQraKeysPage(collection: string, offset: number, limit: numbe
 }
 
 async function pageCollectionSummaries(collection: string, offset: number, limit: number): Promise<any[]> {
-  const keys = await queryQraKeysPage(collection, offset, limit)
-  return fetchQraDocsByKeys(collection, keys, QRA_SUMMARY_FIELDS)
+  if (limit <= 0) return []
+  const result = await proxyPost('/query', {
+    aql: `FOR doc IN ${collection}
+            LIMIT @offset, @limit
+            RETURN {
+              _key: doc._key,
+              _id: doc._id,
+              qra_id: doc.qra_id,
+              question: doc.question,
+              reasoning: doc.reasoning,
+              answer: doc.answer,
+              source_framework: doc.source_framework,
+              source_control_id: doc.source_control_id,
+              control_id: doc.control_id,
+              run_id: doc.run_id,
+              mind: doc.mind,
+              relationship_id: doc.relationship_id,
+              expertise: doc.expertise,
+              difficulty: doc.difficulty,
+              created_at: doc.created_at,
+              review_status: doc.review_status,
+              qra_quality: doc.qra_quality,
+              qra_type: doc.qra_type,
+              evidence_case: doc.evidence_case == null ? null : {
+                confidence: doc.evidence_case.confidence,
+                methods: doc.evidence_case.methods,
+                verdict: doc.evidence_case.verdict,
+                grade: doc.evidence_case.grade,
+                gates_passed: doc.evidence_case.gates_passed,
+                gates_total: doc.evidence_case.gates_total,
+                gate_trace: IS_ARRAY(doc.evidence_case.gate_trace) ? SLICE(doc.evidence_case.gate_trace, 0, 6) : null,
+                chains_count: IS_ARRAY(doc.evidence_case.chains) ? LENGTH(doc.evidence_case.chains) : 0,
+                chains: IS_ARRAY(doc.evidence_case.chains) ? SLICE(doc.evidence_case.chains, 0, 3) : null,
+                crosswalk_chains_count: IS_ARRAY(doc.evidence_case.crosswalk_chains) ? LENGTH(doc.evidence_case.crosswalk_chains) : 0,
+                crosswalk_chains: IS_ARRAY(doc.evidence_case.crosswalk_chains) ? SLICE(doc.evidence_case.crosswalk_chains, 0, 3) : null,
+                question_text: doc.evidence_case.question_text,
+                answer: doc.evidence_case.answer,
+                response_action: doc.evidence_case.response_action,
+                control_ids: doc.evidence_case.control_ids,
+                resolved_entities: doc.evidence_case.resolved_entities,
+                spans: doc.evidence_case.spans,
+                entity_resolution: doc.evidence_case.entity_resolution,
+                technique_check: doc.evidence_case.technique_check,
+                prior_qra_evidence: doc.evidence_case.prior_qra_evidence == null ? null : (
+                  FOR p IN SLICE(doc.evidence_case.prior_qra_evidence, 0, 4)
+                    RETURN {
+                      _key: p._key,
+                      qra_id: p.qra_id,
+                      source_framework: p.source_framework,
+                      citation_id: p.citation_id,
+                      question: p.question
+                    }
+                ),
+                glossary: doc.evidence_case.glossary == null ? null : (
+                  FOR g IN doc.evidence_case.glossary
+                    RETURN {
+                      id: g.id,
+                      name: g.name,
+                      framework: g.framework,
+                      type: g.type
+                    }
+                ),
+                review_status: doc.evidence_case.review_status,
+                failure_stage: doc.evidence_case.failure_stage,
+                failure_reason: doc.evidence_case.failure_reason,
+                failed_items: doc.evidence_case.failed_items,
+                skipped_checks: doc.evidence_case.skipped_checks,
+                gap_review_status: doc.evidence_case.gap_review_status,
+                human_review_state: doc.evidence_case.human_review_state,
+                formal_proof: doc.evidence_case.formal_proof,
+                sacm_ref: doc.evidence_case.sacm_ref
+              }
+            }`,
+    bind_vars: { offset, limit },
+  }, 45_000)
+  return asRows(result).map((doc) => normalizeQraDocument(doc, collection)).filter(Boolean)
 }
 
 async function pagePartitionedSummaries(
@@ -592,19 +666,9 @@ async function pagePartitionedSummaries(
       continue
     }
 
-    const page = await proxyPost('/list', {
-      collection: partition.collection,
-      limit: remainingLimit,
-      offset: remainingOffset,
-      ...(partition.filters ? { filters: partition.filters } : {}),
-      return_fields: ['_key'],
-    }, 45_000)
-    const keys = asRows(page)
-      .map((row) => row?._key ?? row)
-      .filter((value): value is string => typeof value === 'string' && value.length > 0)
-
-    documents.push(...(await fetchQraDocsByKeys(partition.collection, keys, QRA_SUMMARY_FIELDS)))
-    remainingLimit -= keys.length
+    const pageDocs = await pageCollectionSummaries(partition.collection, remainingOffset, remainingLimit)
+    documents.push(...pageDocs)
+    remainingLimit -= pageDocs.length
     remainingOffset = 0
   }
 

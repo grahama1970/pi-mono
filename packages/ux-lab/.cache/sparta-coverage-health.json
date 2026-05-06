@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-05T05:18:22.790Z",
+  "generated_at": "2026-05-06T04:59:11.778Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
-    "controls": 0,
-    "qrasLegacy": 0,
-    "qrasCanonical": 0,
-    "qrasRelationship": 0,
-    "qrasTotal": 0,
-    "relationships": 0,
-    "urls": 0,
-    "urlKnowledge": 0,
-    "datalakeChunks": 0
+    "controls": 12321,
+    "qrasLegacy": 245975,
+    "qrasCanonical": 769,
+    "qrasRelationship": 1463,
+    "qrasTotal": 248207,
+    "relationships": 262426,
+    "urls": 6854,
+    "urlKnowledge": 43398,
+    "datalakeChunks": 2529120
   },
   "qraTrust": {
     "status": "plausible_for_system_test",
@@ -25,17 +25,17 @@
       "relationship"
     ],
     "counts": {
-      "legacy": 0,
-      "canonical": 0,
-      "relationship": 0,
-      "total": 0
+      "legacy": 245975,
+      "canonical": 769,
+      "relationship": 1463,
+      "total": 248207
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-05T05:18:22Z",
+    "generated_at": "2026-05-06T04:59:11Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -162,23 +162,90 @@
       "framework": "CWE",
       "controls": 974,
       "missing_descriptions": 0,
-      "missing_embeddings": 0,
+      "missing_embeddings": 4,
       "raw_frameworks": [
         "CWE",
         "cwe"
       ],
-      "defects": [],
-      "quality_gaps": 0,
-      "status": "healthy",
-      "action_code": "inspect_control_framework",
-      "action_label": "Inspect",
-      "risk": "read_only",
+      "defects": [
+        {
+          "control_id": "CWE-1176|CWE-1060|CWE-1077",
+          "title": "CWE-1176|CWE-1060|CWE-1077",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 102
+        },
+        {
+          "control_id": "CWE-492|T1514|T1631|T1540",
+          "title": "CWE-492|T1514|T1631|T1540",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 101
+        },
+        {
+          "control_id": "CWE-624|CWE-185|CWE-625",
+          "title": "CWE-624|CWE-185|CWE-625",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 99
+        },
+        {
+          "control_id": "CWE-798|CWE-1391|CWE-1392",
+          "title": "CWE-798|CWE-1391|CWE-1392",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 101
+        }
+      ],
+      "quality_gaps": 4,
+      "status": "needs_repair",
+      "action_code": "repair_control_quality",
+      "action_label": "Plan Repair",
+      "risk": "review_required",
       "safe_default": "observe_only",
-      "requires_checkpoint": false,
+      "requires_checkpoint": true,
       "command_payload": {
         "framework": "CWE",
         "gap_type": "control_quality",
-        "gap_count": 0
+        "gap_count": 4,
+        "defects": [
+          {
+            "control_id": "CWE-1176|CWE-1060|CWE-1077",
+            "title": "CWE-1176|CWE-1060|CWE-1077",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 102
+          },
+          {
+            "control_id": "CWE-492|T1514|T1631|T1540",
+            "title": "CWE-492|T1514|T1631|T1540",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 101
+          },
+          {
+            "control_id": "CWE-624|CWE-185|CWE-625",
+            "title": "CWE-624|CWE-185|CWE-625",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 99
+          },
+          {
+            "control_id": "CWE-798|CWE-1391|CWE-1392",
+            "title": "CWE-798|CWE-1391|CWE-1392",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 101
+          }
+        ]
       }
     },
     {
@@ -207,22 +274,153 @@
       "framework": "ATT&CK",
       "controls": 524,
       "missing_descriptions": 0,
-      "missing_embeddings": 0,
+      "missing_embeddings": 8,
       "raw_frameworks": [
         "attack"
       ],
-      "defects": [],
-      "quality_gaps": 0,
-      "status": "healthy",
-      "action_code": "inspect_control_framework",
-      "action_label": "Inspect",
-      "risk": "read_only",
+      "defects": [
+        {
+          "control_id": "T0883|T1581|T1101|T0860|T1650",
+          "title": "T0883|T1581|T1101|T0860|T1650",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 108
+        },
+        {
+          "control_id": "T1047|T1084|T1218.005",
+          "title": "T1047|T1084|T1218.005",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 100
+        },
+        {
+          "control_id": "T1109|T1101|T1162|T1108",
+          "title": "T1109|T1101|T1162|T1108",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 102
+        },
+        {
+          "control_id": "T1145|T1187|T1101",
+          "title": "T1145|T1187|T1101",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 96
+        },
+        {
+          "control_id": "T1195|EX-0005|T0862|EX-0005.01",
+          "title": "T1195|EX-0005|T0862|EX-0005.01",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 109
+        },
+        {
+          "control_id": "T1429|T1123|T1513",
+          "title": "T1429|T1123|T1513",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 96
+        },
+        {
+          "control_id": "T1554|T1474|T1550|T1050|T0862",
+          "title": "T1554|T1474|T1550|T1050|T0862",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 108
+        },
+        {
+          "control_id": "T1648|EX-0012.03|T1584.004",
+          "title": "T1648|EX-0012.03|T1584.004",
+          "gap_types": [
+            "missing_embedding"
+          ],
+          "description_length": 105
+        }
+      ],
+      "quality_gaps": 8,
+      "status": "needs_repair",
+      "action_code": "repair_control_quality",
+      "action_label": "Plan Repair",
+      "risk": "review_required",
       "safe_default": "observe_only",
-      "requires_checkpoint": false,
+      "requires_checkpoint": true,
       "command_payload": {
         "framework": "ATT&CK",
         "gap_type": "control_quality",
-        "gap_count": 0
+        "gap_count": 8,
+        "defects": [
+          {
+            "control_id": "T0883|T1581|T1101|T0860|T1650",
+            "title": "T0883|T1581|T1101|T0860|T1650",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 108
+          },
+          {
+            "control_id": "T1047|T1084|T1218.005",
+            "title": "T1047|T1084|T1218.005",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 100
+          },
+          {
+            "control_id": "T1109|T1101|T1162|T1108",
+            "title": "T1109|T1101|T1162|T1108",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 102
+          },
+          {
+            "control_id": "T1145|T1187|T1101",
+            "title": "T1145|T1187|T1101",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 96
+          },
+          {
+            "control_id": "T1195|EX-0005|T0862|EX-0005.01",
+            "title": "T1195|EX-0005|T0862|EX-0005.01",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 109
+          },
+          {
+            "control_id": "T1429|T1123|T1513",
+            "title": "T1429|T1123|T1513",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 96
+          },
+          {
+            "control_id": "T1554|T1474|T1550|T1050|T0862",
+            "title": "T1554|T1474|T1550|T1050|T0862",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 108
+          },
+          {
+            "control_id": "T1648|EX-0012.03|T1584.004",
+            "title": "T1648|EX-0012.03|T1584.004",
+            "gap_types": [
+              "missing_embedding"
+            ],
+            "description_length": 105
+          }
+        ]
       }
     },
     {
@@ -401,13 +599,13 @@
     }
   ],
   "monitor": {
-    "passed": 15,
+    "passed": 13,
     "total": 17,
     "checks": [
       {
-        "ok": true,
+        "ok": false,
         "dimension": "description_audit",
-        "message": "0 fails"
+        "message": "Audit failed (exit 1)"
       },
       {
         "ok": true,
@@ -427,7 +625,7 @@
       {
         "ok": true,
         "dimension": "relationship_coverage",
-        "message": "0/0 threats covered"
+        "message": "44/44 threats covered"
       },
       {
         "ok": true,
@@ -435,9 +633,9 @@
         "message": "All SPARTA controls have mind tags"
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "embedding_gaps",
-        "message": "All documents have embeddings"
+        "message": "1 collections with embedding gaps: sparta_controls=12"
       },
       {
         "ok": true,
@@ -447,7 +645,7 @@
       {
         "ok": true,
         "dimension": "description_preservation",
-        "message": "0 enriched descriptions (0 BRAVE-SEARCH, 0 INFERRED) out of 0 total"
+        "message": "25 enriched descriptions (25 BRAVE-SEARCH, 0 INFERRED) out of 12321 total"
       },
       {
         "ok": true,
@@ -482,145 +680,54 @@
       {
         "ok": false,
         "dimension": "create_qras_remaining_calls",
-        "message": "1,438 implemented calls remain; 321 comparison calls remain after deterministic evidence gating (8,107 raw candidates)"
+        "message": "750 implemented calls remain; 114 comparison calls remain after deterministic evidence gating (8,107 raw candidates)"
       },
       {
         "ok": false,
         "dimension": "qra_question_surface_quality",
-        "message": "No module named 'qra_question_surface_quality'"
+        "message": "258 malformed question surfaces across 2,769 scanned QRAs",
+        "malformed": 258,
+        "scanned": 2769,
+        "course_corrected_non_generation": 0,
+        "course_corrected_by_collection": {},
+        "malformed_by_collection": {
+          "sparta_qra_canonical": 258
+        },
+        "rule_counts": {
+          "QS01": 258
+        },
+        "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
       }
     ],
     "remaining": {
       "ok": false,
       "dimension": "create_qras_remaining_calls",
-      "message": "1,438 implemented calls remain; 321 comparison calls remain after deterministic evidence gating (8,107 raw candidates)",
-      "native_remaining_any_collection_total": 833,
-      "native_remaining_non_sparta_total": 814,
-      "native_remaining_sparta_any_collection": 19,
+      "message": "750 implemented calls remain; 114 comparison calls remain after deterministic evidence gating (8,107 raw candidates)",
+      "native_remaining_any_collection_total": 556,
+      "native_remaining_non_sparta_total": 556,
+      "native_remaining_sparta_any_collection": 0,
       "native_by_framework": [
         {
           "framework": "ATT&CK",
           "expected_calls": 524,
-          "completed_calls_any_collection": 506,
-          "remaining_calls": 18,
-          "remaining_control_ids": [
-            "T0883|T1581|T1101|T0860|T1650",
-            "T1047|T1084|T1218.005",
-            "T1055.012",
-            "T1071.003",
-            "T1106",
-            "T1109|T1101|T1162|T1108",
-            "T1145|T1187|T1101",
-            "T1195|EX-0005|T0862|EX-0005.01",
-            "T1429|T1123|T1513",
-            "T1472",
-            "T1548.003",
-            "T1554|T1474|T1550|T1050|T0862",
-            "T1585.001",
-            "T1590",
-            "T1601",
-            "T1614.001",
-            "T1648|EX-0012.03|T1584.004",
-            "T2007.007"
-          ]
+          "completed_calls_any_collection": 524,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "ATT_CK_Enterprise",
           "expected_calls": 1273,
-          "completed_calls_any_collection": 1240,
-          "remaining_calls": 33,
-          "remaining_control_ids": [
-            "M1031",
-            "S0001",
-            "S0004",
-            "S0006",
-            "S0013",
-            "S0015",
-            "S0107",
-            "S0114",
-            "S0209",
-            "S0470",
-            "S0472",
-            "S0481",
-            "S0517",
-            "S0546",
-            "S0599",
-            "S0610",
-            "S0614",
-            "S0616",
-            "S1025",
-            "S9000",
-            "T1136",
-            "T1215",
-            "T1216.001",
-            "T1589.003",
-            "T1590.001",
-            "T1590.002",
-            "T1590.003",
-            "T1598.003",
-            "T1599",
-            "T1599.001",
-            "T1606.001",
-            "T1606.002",
-            "T1615"
-          ]
+          "completed_calls_any_collection": 1273,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "ATT_CK_ICS",
           "expected_calls": 131,
-          "completed_calls_any_collection": 0,
-          "remaining_calls": 131,
+          "completed_calls_any_collection": 49,
+          "remaining_calls": 82,
           "remaining_control_ids": [
-            "M0800",
-            "M0801",
-            "M0802",
-            "M0803",
-            "M0804",
-            "M0805",
-            "M0806",
-            "M0807",
-            "M0808",
-            "M0809",
-            "M0810",
-            "M0811",
-            "M0812",
-            "M0813",
-            "M0814",
-            "M0815",
-            "M0816",
-            "M0817",
-            "M0818",
-            "M0913",
-            "M0915",
             "M0916",
-            "M0917",
-            "M0918",
-            "M0919",
-            "M0920",
-            "M0921",
-            "M0922",
-            "M0924",
-            "M0926",
-            "M0927",
-            "M0928",
-            "M0930",
-            "M0931",
-            "M0932",
-            "M0934",
-            "M0935",
-            "M0936",
-            "M0937",
-            "M0938",
-            "M0941",
-            "M0942",
-            "M0944",
-            "M0945",
-            "M0946",
-            "M0947",
-            "M0948",
-            "M0949",
-            "M0950",
-            "M0951",
             "M0953",
             "M0954",
             "S0038",
@@ -707,59 +814,9 @@
         {
           "framework": "ATT_CK_Mobile",
           "expected_calls": 225,
-          "completed_calls_any_collection": 0,
-          "remaining_calls": 225,
+          "completed_calls_any_collection": 50,
+          "remaining_calls": 175,
           "remaining_control_ids": [
-            "M1001",
-            "M1002",
-            "M1003",
-            "M1004",
-            "M1005",
-            "M1006",
-            "M1007",
-            "M1009",
-            "M1010",
-            "M1011",
-            "M1012",
-            "M1013",
-            "M1014",
-            "M1058",
-            "M1059",
-            "S0182",
-            "S0285",
-            "S0286",
-            "S0287",
-            "S0288",
-            "S0289",
-            "S0290",
-            "S0291",
-            "S0292",
-            "S0293",
-            "S0294",
-            "S0295",
-            "S0297",
-            "S0298",
-            "S0299",
-            "S0300",
-            "S0301",
-            "S0302",
-            "S0303",
-            "S0304",
-            "S0305",
-            "S0306",
-            "S0307",
-            "S0308",
-            "S0309",
-            "S0310",
-            "S0311",
-            "S0312",
-            "S0313",
-            "S0314",
-            "S0315",
-            "S0316",
-            "S0317",
-            "S0318",
-            "S0319",
             "S0320",
             "S0321",
             "S0322",
@@ -947,83 +1004,23 @@
         {
           "framework": "CWE",
           "expected_calls": 974,
-          "completed_calls_any_collection": 969,
-          "remaining_calls": 5,
-          "remaining_control_ids": [
-            "CWE-1176|CWE-1060|CWE-1077",
-            "CWE-199",
-            "CWE-492|T1514|T1631|T1540",
-            "CWE-624|CWE-185|CWE-625",
-            "CWE-798|CWE-1391|CWE-1392"
-          ]
+          "completed_calls_any_collection": 974,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "D3FEND",
           "expected_calls": 424,
-          "completed_calls_any_collection": 421,
-          "remaining_calls": 3,
-          "remaining_control_ids": [
-            "D3-DLIC",
-            "d3f:Storage",
-            "d3f:Thread"
-          ]
+          "completed_calls_any_collection": 424,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "ESA",
           "expected_calls": 137,
-          "completed_calls_any_collection": 85,
-          "remaining_calls": 52,
+          "completed_calls_any_collection": 135,
+          "remaining_calls": 2,
           "remaining_control_ids": [
-            "ESA-T1489.001",
-            "ESA-T1489.002",
-            "ESA-T1591.005",
-            "ESA-T1591.006",
-            "ESA-T1591.007",
-            "ESA-T2001.002",
-            "ESA-T2002.009",
-            "ESA-T2004",
-            "ESA-T2004.001",
-            "ESA-T2007",
-            "ESA-T2007.002",
-            "ESA-T2007.003",
-            "ESA-T2007.004",
-            "ESA-T2007.008",
-            "ESA-T2007.010",
-            "ESA-T2007.011",
-            "ESA-T2008",
-            "ESA-T2009.001",
-            "ESA-T2009.003",
-            "ESA-T2013",
-            "ESA-T2013.001",
-            "ESA-T2014",
-            "ESA-T2014.004",
-            "ESA-T2018",
-            "ESA-T2018.002",
-            "ESA-T2019",
-            "ESA-T2019.006",
-            "ESA-T2028",
-            "ESA-T2028.009",
-            "ESA-T2028.010",
-            "ESA-T2028.012",
-            "ESA-T2029",
-            "ESA-T2029.001",
-            "ESA-T2029.006",
-            "ESA-T2030",
-            "ESA-T2030.001",
-            "ESA-T2039",
-            "ESA-T2039.001",
-            "ESA-T2039.003",
-            "ESA-T2041",
-            "ESA-T2043",
-            "ESA-T2044",
-            "ESA-T2046",
-            "ESA-T2049",
-            "ESA-T2049.001",
-            "ESA-T2049.002",
-            "ESA-T2049.003",
-            "ESA-T2050",
-            "ESA-T2053.003",
-            "ESA-T2054",
             "ESA-T2055",
             "ESA-T2055.001"
           ]
@@ -1038,59 +1035,9 @@
         {
           "framework": "NVD",
           "expected_calls": 4830,
-          "completed_calls_any_collection": 4483,
-          "remaining_calls": 347,
+          "completed_calls_any_collection": 4533,
+          "remaining_calls": 297,
           "remaining_control_ids": [
-            "CVE-2022-4947",
-            "CVE-2022-4977",
-            "CVE-2023-26934",
-            "CVE-2023-26935",
-            "CVE-2023-31554",
-            "CVE-2025-11381",
-            "CVE-2025-11382",
-            "CVE-2025-11383",
-            "CVE-2025-11384",
-            "CVE-2025-11589",
-            "CVE-2025-12774",
-            "CVE-2025-12801",
-            "CVE-2025-12875",
-            "CVE-2025-12925",
-            "CVE-2025-12981",
-            "CVE-2025-13002",
-            "CVE-2025-14149",
-            "CVE-2025-15571",
-            "CVE-2025-1789",
-            "CVE-2025-27380",
-            "CVE-2025-27769",
-            "CVE-2025-27900",
-            "CVE-2025-33022",
-            "CVE-2025-41709",
-            "CVE-2025-53706",
-            "CVE-2025-71226",
-            "CVE-2025-71228",
-            "CVE-2026-1799",
-            "CVE-2026-24641",
-            "CVE-2026-24663",
-            "CVE-2026-24688",
-            "CVE-2026-25412",
-            "CVE-2026-25984",
-            "CVE-2026-2647",
-            "CVE-2026-27123",
-            "CVE-2026-27163",
-            "CVE-2026-27200",
-            "CVE-2026-27201",
-            "CVE-2026-27500",
-            "CVE-2026-27501",
-            "CVE-2026-27573",
-            "CVE-2026-27580",
-            "CVE-2026-27581",
-            "CVE-2026-27582",
-            "CVE-2026-27583",
-            "CVE-2026-28279",
-            "CVE-2026-28456",
-            "CVE-2026-28484",
-            "CVE-2026-28678",
-            "CVE-2026-28774",
             "CVE-2026-28792",
             "CVE-2026-3076",
             "CVE-2026-3197",
@@ -1393,55 +1340,35 @@
         {
           "framework": "SPARTA",
           "expected_calls": 315,
-          "completed_calls_any_collection": 296,
-          "remaining_calls": 19,
-          "remaining_control_ids": [
-            "REC-0004",
-            "REC-0004.01",
-            "REC-0005",
-            "REC-0005.01",
-            "REC-0005.02",
-            "REC-0005.03",
-            "REC-0005.04",
-            "REC-0006",
-            "REC-0006.01",
-            "REC-0006.02",
-            "REC-0007",
-            "REC-0008",
-            "REC-0008.01",
-            "REC-0008.02",
-            "REC-0008.03",
-            "REC-0008.04",
-            "REC-0009",
-            "ST0006",
-            "ST0009"
-          ]
+          "completed_calls_any_collection": 315,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         }
       ],
-      "sparta_v2_remaining_total": 624,
-      "sparta_v2_native_remaining_target_collection": 162,
-      "sparta_v2_contextual_remaining_target_collection": 462,
+      "sparta_v2_remaining_total": 194,
+      "sparta_v2_native_remaining_target_collection": 5,
+      "sparta_v2_contextual_remaining_target_collection": 189,
       "sparta_v2_remaining_prompt_kinds": {
-        "sparta_tactic_canonical": 2,
-        "sparta_technique_canonical": 122,
-        "sparta_countermeasure_canonical": 38,
-        "sparta_tactic_technique_relationship": 10,
-        "sparta_technique_countermeasure_relationship": 452
+        "sparta_tactic_canonical": 0,
+        "sparta_technique_canonical": 3,
+        "sparta_countermeasure_canonical": 2,
+        "sparta_tactic_technique_relationship": 1,
+        "sparta_technique_countermeasure_relationship": 188
       },
       "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 321,
+      "sparta_control_to_control_gated_pairs": 114,
       "sparta_control_to_control_gated_skip_reasons": {
-        "no_grounded_overlap": 7780,
-        "non_substantive_node": 6
+        "no_grounded_overlap": 2025,
+        "non_substantive_node": 5968
       },
-      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 1295,
-      "implemented_backlog_total_if_v2_sparta_native_required": 1438,
-      "exact_remaining_calls_total": 1759,
-      "total_with_raw_comparison_candidates": 9545
+      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 745,
+      "implemented_backlog_total_if_v2_sparta_native_required": 750,
+      "exact_remaining_calls_total": 864,
+      "total_with_raw_comparison_candidates": 8857
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T05:18:22Z",
+      "generated_at": "2026-05-06T04:59:11Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1480,11 +1407,11 @@
       "skill": "best-practices-react",
       "ok": false,
       "status": "fail",
-      "message": "data-qid coverage: 353/359 (98%)",
-      "covered": 353,
-      "total": 359,
+      "message": "data-qid coverage: 387/392 (98%)",
+      "covered": 387,
+      "total": 392,
       "percent": 98,
-      "detail": "data-qid coverage: 353/359 (98%)\n\nMISSING (6):\n  explorer/QRAsView.tsx:1404 — <span>QRA key: <button type=\"button\" onClick={() => navigator.clipboard.writeTex\n  shared/EvidenceCaseTrace.tsx:1165 — <button key={`control-pill-${id}`} type=\"button\" onClick={() => onNavigateToCont\n  shared/EvidenceCaseTrace.tsx:1341 — <button type=\"button\" onClick={() => setExpandedStep(expandedStep ? null : 'gate\n  shared/EvidenceCaseTrace.tsx:1358 — <div\n  shared/EvidenceCaseTrace.tsx:1414 — {onCancelEdit && <button type=\"button\" onClick={onCancelEdit} style={{ height: 4\n  shared/EvidenceCaseTrace.tsx:1415 — {onSaveAndRerun && <button type=\"button\" onClick={onSaveAndRerun} disabled={vali\n\nFAIL: 6 interactive elements without data-qid"
+      "detail": "data-qid coverage: 387/392 (98%)\n\nMISSING (5):\n  shared/EvidenceCaseTrace.tsx:1165 — <button key={`control-pill-${id}`} type=\"button\" onClick={() => onNavigateToCont\n  shared/EvidenceCaseTrace.tsx:1341 — <button type=\"button\" onClick={() => setExpandedStep(expandedStep ? null : 'gate\n  shared/EvidenceCaseTrace.tsx:1358 — <div\n  shared/EvidenceCaseTrace.tsx:1414 — {onCancelEdit && <button type=\"button\" onClick={onCancelEdit} style={{ height: 4\n  shared/EvidenceCaseTrace.tsx:1415 — {onSaveAndRerun && <button type=\"button\" onClick={onSaveAndRerun} disabled={vali\n\nFAIL: 5 interactive elements without data-qid"
     },
     {
       "name": "Python silent fallback scan",
@@ -1506,7 +1433,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 632,562 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 632,694 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1975,16 +1902,27 @@
     "total": 8
   },
   "artifacts": {
-    "recent": [],
+    "recent": [
+      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_211926.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_213331.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_213559.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_211926.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_213331.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_213559.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260505_213559.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_211926.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213331.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213559.json"
+    ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
   },
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-05T05:15:41.930230Z",
-    "heartbeat_at": "2026-05-05T05:15:41.930230Z",
-    "snapshot_age_seconds": 188,
+    "generated_at": "2026-05-06T04:58:28.342019Z",
+    "heartbeat_at": "2026-05-06T04:58:28.342019Z",
+    "snapshot_age_seconds": 89,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2705,7 +2643,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T05:16:12Z",
+      "generated_at": "2026-05-06T04:58:59Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2739,20 +2677,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T05:16:12Z",
+      "generated_at": "2026-05-06T04:58:59Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1375,
-        "end": 1524
+        "start": 1439,
+        "end": 1588
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T05:15:41Z",
+      "generated_at": "2026-05-06T04:58:28Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2762,7 +2700,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 632562
+        "qdrant_vectors": 632694
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2832,7 +2770,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 632562,
+        "point_count": 632694,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -2847,14 +2785,14 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-05T05:16:11Z",
+      "generated_at": "2026-05-06T04:58:58Z",
       "status": "fail",
       "state": "gaps_found",
       "summary": {
         "control_text_missing_or_stub": 0,
-        "control_qra_missing": 500,
-        "control_qra_generation_required": 449,
-        "control_qra_terminal_non_generation_required": 51,
+        "control_qra_missing": 404,
+        "control_qra_generation_required": 386,
+        "control_qra_terminal_non_generation_required": 18,
         "url_text_missing_or_stub": 0,
         "url_qra_missing": 0
       },
@@ -2863,19 +2801,18 @@
         "text_ok": 12321,
         "text_missing_or_stub": 0,
         "qra_scope": 11353,
-        "qra_ok": 10853,
-        "qra_missing": 500,
-        "qra_missing_generation_required": 449,
-        "qra_missing_terminal_non_generation_required": 51,
+        "qra_ok": 10949,
+        "qra_missing": 404,
+        "qra_missing_generation_required": 386,
+        "qra_missing_terminal_non_generation_required": 18,
         "qra_disposition_counts": {
-          "terminal_non_generation_required": 51,
-          "generation_required": 449
+          "generation_required": 386,
+          "terminal_non_generation_required": 18
         },
         "terminal_reason_counts": {
-          "nvd_rejected_or_withdrawn": 34,
-          "nvd_template_placeholder": 1,
-          "deprecated_or_revoked_control": 14,
-          "non_substantive_source": 2
+          "nvd_rejected_or_withdrawn": 5,
+          "non_substantive_source": 2,
+          "deprecated_or_revoked_control": 11
         },
         "manifest_truncated": false
       },
@@ -2896,14 +2833,14 @@
         "manifest_truncated": false
       },
       "qra_indexes": {
-        "control_ids_with_valid_qra": 11122,
+        "control_ids_with_valid_qra": 11218,
         "url_ids_with_direct_valid_qra": 0
       },
       "gaps": {
         "control_text_missing_or_stub": 0,
-        "control_qra_missing": 500,
-        "control_qra_generation_required": 449,
-        "control_qra_terminal_non_generation_required": 51,
+        "control_qra_missing": 404,
+        "control_qra_generation_required": 386,
+        "control_qra_terminal_non_generation_required": 18,
         "url_text_missing_or_stub": 0,
         "url_qra_missing": 0,
         "url_direct_qra_attribution_missing": 881,
@@ -2918,9 +2855,9 @@
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260505T051611Z.json",
+          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260506T045858Z.json",
           "status": "review_required",
-          "candidate_count": 500,
+          "candidate_count": 404,
           "truncated": false
         }
       },

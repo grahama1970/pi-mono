@@ -103,6 +103,7 @@ tmux kill-session -t pi-test
 - No emojis in commits, issues, PR comments, or code
 - No fluff or cheerful filler text
 - Technical prose only, be kind but direct (e.g., "Thanks @user" not "Thanks so much @user!")
+- Do not failure-report by default. When a tool, skill, hook, or validation fails, lead with the actionable conclusion, the recommended next step, and only the minimum failure detail needed to justify that action.
 
 ## Changelog
 Location: `packages/*/CHANGELOG.md` (each package has its own)

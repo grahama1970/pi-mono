@@ -1,9 +1,9 @@
 {
-  "verified_at": "2026-05-03T18:30:53.326217+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "verified_at": "2026-05-05T21:16:57.118195+00:00",
+  "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
   "root": "/home/graham/workspace/experiments/pi-mono",
-  "url": "http://localhost:3002/#sparta-explorer/qras?qra=000a5d68cbd446e5",
-  "name": "sparta-qra-focused-reviewable-final-v5",
-  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-qra-focused-reviewable-final-v5/20260503T183018Z.png",
-  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-qra-focused-reviewable-final-v5/20260503T183018Z.read.json"
+  "url": "http://localhost:3002/#sparta-explorer/qras",
+  "name": "sparta-explorer-qras-lock-readable-editor",
+  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-explorer-qras-lock-readable-editor/20260505T211651Z.png",
+  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/sparta-explorer-qras-lock-readable-editor/20260505T211651Z.read.json"
 }
