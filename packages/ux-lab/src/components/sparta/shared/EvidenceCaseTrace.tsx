@@ -1162,7 +1162,7 @@ export function EvidenceCaseTrace({
         content: (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(groundedControlIds.length > 0 ? groundedControlIds : controlIds).slice(0, 6).map((id) => (
-              <button key={`control-pill-${id}`} type="button" onClick={() => onNavigateToControl(id)} style={{ borderRadius: 8, border: `1px solid ${EMBRY.green}66`, background: `${EMBRY.green}18`, color: '#bbf7d0', padding: '4px 8px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
+              <button key={`control-pill-${id}`} type="button" data-qid={`qras:evidence:grounded-control:${id}`} data-qs-action="NAVIGATE_TO_CONTROL" onClick={() => onNavigateToControl(id)} style={{ borderRadius: 8, border: `1px solid ${EMBRY.green}66`, background: `${EMBRY.green}18`, color: '#bbf7d0', padding: '4px 8px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
                 {id}
               </button>
             ))}
@@ -1338,7 +1338,7 @@ export function EvidenceCaseTrace({
                 Evidence Trace <Info size={14} color={EMBRY.dim} /> <small style={{ color: EMBRY.dim, fontWeight: 650 }}>7 sections</small>
               </div>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                <button type="button" onClick={() => setExpandedStep(expandedStep ? null : 'gates')} style={{ height: 34, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0 10px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
+                <button type="button" data-qid="qras:evidence:trace:expand-all" data-qs-action="EXPAND_EVIDENCE_TRACE" onClick={() => setExpandedStep(expandedStep ? null : 'gates')} style={{ height: 34, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.white, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0 10px', fontSize: 13, fontWeight: 750, cursor: 'pointer' }}>
                   <Expand size={15} /> Expand all
                 </button>
                 <button type="button" aria-label="Collapse trace panel" style={{ width: 34, height: 34, borderRadius: 8, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.dim, display: 'grid', placeItems: 'center' }}>
@@ -1353,6 +1353,8 @@ export function EvidenceCaseTrace({
                 return (
                   <section key={step.id} style={{ flexShrink: 0, borderRadius: 12, border: `1px solid ${step.status === 'failed' ? EMBRY.red : EMBRY.border}`, background: step.status === 'failed' ? `linear-gradient(180deg, ${EMBRY.red}14, rgba(17,27,43,0.72))` : 'linear-gradient(180deg, rgba(17,27,43,0.78), rgba(14,22,35,0.70))', overflow: 'hidden' }}>
                     <div
+                      data-qid={`qras:evidence:trace-step:${step.id}`}
+                      data-qs-action="TOGGLE_EVIDENCE_TRACE_STEP"
                       role="button"
                       tabIndex={0}
                       onClick={() => setExpandedStep(open ? null : step.id)}
@@ -1411,8 +1413,8 @@ export function EvidenceCaseTrace({
             {reviewActions}
             {isEditing ? (
               <>
-                {onCancelEdit && <button type="button" onClick={onCancelEdit} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.dim, padding: '0 14px', fontWeight: 800 }}>Cancel</button>}
-                {onSaveAndRerun && <button type="button" onClick={onSaveAndRerun} disabled={validating} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.blue}88`, background: EMBRY.blue, color: EMBRY.white, padding: '0 16px', fontWeight: 850 }}>Save & rerun</button>}
+                {onCancelEdit && <button type="button" data-qid="qras:evidence:edit:cancel" data-qs-action="CANCEL_QRA_EDIT" onClick={onCancelEdit} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.border}`, background: 'rgba(15,23,42,0.58)', color: EMBRY.dim, padding: '0 14px', fontWeight: 800 }}>Cancel</button>}
+                {onSaveAndRerun && <button type="button" data-qid="qras:evidence:edit:save-rerun" data-qs-action="SAVE_QRA_AND_RERUN_EVIDENCE" onClick={onSaveAndRerun} disabled={validating} style={{ height: 42, borderRadius: 10, border: `1px solid ${EMBRY.blue}88`, background: EMBRY.blue, color: EMBRY.white, padding: '0 16px', fontWeight: 850 }}>Save & rerun</button>}
               </>
             ) : (
               <>

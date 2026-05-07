@@ -25,6 +25,7 @@ import { useBinaryData } from '../../hooks/useBinaryData'
 import EntitySpanViewer from '../shared-chat/EntitySpanViewer'
 import { ScillmDashboard, RealtimeLogTable } from '../scillm'
 import { sampleLogs } from '../scillm/sampleData'
+import { HackEvolveMonitor } from '../hack/HackEvolveMonitor'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
 import {
   sampleTactics, sampleTechniques, sampleMessages, emptyMessages,
@@ -739,6 +740,13 @@ const registry: GalleryEntry[] = [
       return <RealtimeLogTable logs={logs} />
     },
   },
+  {
+    id: 'hack-evolve-monitor',
+    name: 'HackEvolveMonitor',
+    folder: ['Hack', 'Composed'],
+    variations: ['memory-backed'],
+    render: () => <HackEvolveMonitor />,
+  },
 ]
 
 /* ───── Folder tree helpers ───── */
@@ -864,12 +872,25 @@ const styles = {
 /* ───── Gallery ───── */
 
 export function ComponentGallery() {
-  // Parse initial state from URL hash: #component-id or #component-id/variation
+  // Parse initial state from URL search params first. The app shell owns the URL hash.
   const parseHash = () => {
+    const params = new URLSearchParams(window.location.search)
+    const componentId = params.get('component')
+    if (componentId) {
+      return { id: componentId, variation: params.get('variation') ?? '' }
+    }
     const hash = window.location.hash.slice(1)
     if (!hash) return { id: registry[0].id, variation: '' }
     const [id, v] = hash.split('/')
     return { id, variation: v ?? '' }
+  }
+
+  const syncGalleryUrl = (id: string, nextVariation?: string) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('component', id)
+    if (nextVariation) url.searchParams.set('variation', nextVariation)
+    else url.searchParams.delete('variation')
+    window.history.replaceState({}, '', url)
   }
 
   const initial = parseHash()
@@ -905,7 +926,7 @@ export function ComponentGallery() {
     const e = registry.find((r) => r.id === id)
     if (e) {
       setVariation(e.variations[0])
-      window.location.hash = id
+      syncGalleryUrl(id, e.variations[0])
     }
   }
 
@@ -996,7 +1017,7 @@ export function ComponentGallery() {
                 backgroundColor: v === variation ? EMBRY.blue : EMBRY.bgDeep,
                 color: v === variation ? '#fff' : EMBRY.dim,
               }}
-              onClick={() => { setVariation(v); window.location.hash = `${selectedId}/${v}` }}
+              onClick={() => { setVariation(v); syncGalleryUrl(selectedId, v) }}
             >
               {v}
             </button>

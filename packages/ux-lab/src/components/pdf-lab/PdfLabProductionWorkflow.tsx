@@ -439,6 +439,50 @@ interface ComparisonActual {
   type: string
 }
 
+type ConvergenceClarification =
+  | 'single_table_wrong_bounds'
+  | 'split_table_across_extracts'
+  | 'not_a_table'
+  | 'paragraph_crop_truncated'
+  | 'paragraph_crop_correct'
+  | 'caption_wrong_target'
+  | 'caption_association_correct'
+  | 'list_structure_wrong'
+  | 'list_structure_correct'
+  | 'extraction_bounds_wrong'
+  | 'extraction_correct'
+  | 'need_more_evidence'
+
+type ConvergenceClarificationOption = { label: string; value: ConvergenceClarification }
+
+const TABLE_CLARIFICATION_OPTIONS: ConvergenceClarificationOption[] = [
+  { label: 'Single table, wrong bounds', value: 'single_table_wrong_bounds' },
+  { label: 'Split table across extracts', value: 'split_table_across_extracts' },
+  { label: 'Not a table', value: 'not_a_table' },
+  { label: 'Need more evidence', value: 'need_more_evidence' },
+]
+
+const PARAGRAPH_CLARIFICATION_OPTIONS: ConvergenceClarificationOption[] = [
+  { label: 'Text continues past crop', value: 'paragraph_crop_truncated' },
+  { label: 'Paragraph crop is correct', value: 'paragraph_crop_correct' },
+  { label: 'Wrong text region', value: 'extraction_bounds_wrong' },
+  { label: 'Need more evidence', value: 'need_more_evidence' },
+]
+
+const CAPTION_CLARIFICATION_OPTIONS: ConvergenceClarificationOption[] = [
+  { label: 'Caption attached to wrong target', value: 'caption_wrong_target' },
+  { label: 'Caption association is correct', value: 'caption_association_correct' },
+  { label: 'Wrong crop or bounds', value: 'extraction_bounds_wrong' },
+  { label: 'Need more evidence', value: 'need_more_evidence' },
+]
+
+const LIST_CLARIFICATION_OPTIONS: ConvergenceClarificationOption[] = [
+  { label: 'List structure is wrong', value: 'list_structure_wrong' },
+  { label: 'List structure is correct', value: 'list_structure_correct' },
+  { label: 'Wrong crop or bounds', value: 'extraction_bounds_wrong' },
+  { label: 'Need more evidence', value: 'need_more_evidence' },
+]
+
 const WORKFLOW_VERSION = '20260504-list-control-reference-v1'
 const PDF_LAB_ARTIFACT_BASE_URL = ''
 const MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-workflow-manifest.json?pdfLabWorkflow=${WORKFLOW_VERSION}`
@@ -664,6 +708,130 @@ function buildCandidateAuditRows(manifest: WorkflowManifest, triage: TriageQueue
   return rows
 }
 
+function getDefaultClarification(row: CandidateAuditRow): ConvergenceClarification {
+  const issue = `${row.proofIssue} ${row.elementText} ${row.finding?.kind ?? ''}`.toLowerCase()
+  if (row.elementType === 'paragraph') return 'paragraph_crop_truncated'
+  if (row.elementType === 'caption') return 'caption_wrong_target'
+  if (row.elementType === 'list') return 'list_structure_wrong'
+  if (issue.includes('split')) return 'split_table_across_extracts'
+  if (issue.includes('false positive') || issue.includes('not a table')) return 'not_a_table'
+  if (issue.includes('missing') || issue.includes('more evidence')) return 'need_more_evidence'
+  return 'single_table_wrong_bounds'
+}
+
+function getClarificationOptions(row: CandidateAuditRow): ConvergenceClarificationOption[] {
+  if (row.elementType === 'paragraph') return PARAGRAPH_CLARIFICATION_OPTIONS
+  if (row.elementType === 'caption') return CAPTION_CLARIFICATION_OPTIONS
+  if (row.elementType === 'list') return LIST_CLARIFICATION_OPTIONS
+  if (row.elementType === 'table') return TABLE_CLARIFICATION_OPTIONS
+  return [
+    { label: `${formatFamily(row.elementType)} bounds are wrong`, value: 'extraction_bounds_wrong' },
+    { label: `${formatFamily(row.elementType)} extraction is correct`, value: 'extraction_correct' },
+    { label: 'Reject as non-issue', value: 'not_a_table' },
+    { label: 'Need more evidence', value: 'need_more_evidence' },
+  ]
+}
+
+function getPrimaryDecisionAction(clarification: ConvergenceClarification) {
+  if (clarification === 'not_a_table') {
+    return {
+      action: 'PDF_LAB_CONVERGENCE_REJECT_NON_ISSUE',
+      decision: 'rejected_non_issue',
+      label: 'Reject non-issue',
+      title: 'Reject this candidate because the selected extraction is not an issue',
+    }
+  }
+  if (
+    clarification === 'paragraph_crop_correct'
+    || clarification === 'caption_association_correct'
+    || clarification === 'list_structure_correct'
+    || clarification === 'extraction_correct'
+  ) {
+    return {
+      action: 'PDF_LAB_CONVERGENCE_ACCEPT_EXTRACTION',
+      decision: 'accepted_extraction',
+      label: 'Accept extraction as correct',
+      title: 'Accept the current deterministic extraction as correct',
+    }
+  }
+  if (clarification === 'need_more_evidence') {
+    return {
+      action: 'PDF_LAB_CONVERGENCE_REQUEST_MORE_EVIDENCE',
+      decision: 'needs_more_evidence',
+      label: 'Request more evidence',
+      title: 'Request more visual or extraction evidence before resolving this case',
+    }
+  }
+  return {
+    action: 'PDF_LAB_CONVERGENCE_CONFIRM_EXTRACTOR_FAILURE',
+    decision: 'confirmed_extractor_failure',
+    label: 'Confirm extractor failure',
+    title: 'Confirm that this candidate is a real deterministic extractor failure',
+  }
+}
+
+function getConvergenceCaseSummary(row: CandidateAuditRow) {
+  const family = formatFamily(row.elementType)
+  if (row.elementType === 'table') {
+    return {
+      actual: `pdf_oxide emitted ${row.elementId} with extracted table evidence; the current issue is ${row.proofIssue.toLowerCase()}.`,
+      delta: 'Bounds likely capture only a repeated table row instead of the full table region.',
+      expected: 'One 4-column control table: Control Number, Control Name, Implemented By, Assurance.',
+      failureType: 'Table bounds',
+      familyLabel: 'Table structure',
+      hypothesis: 'the extractor captured only a repeated row as the table region.',
+      question: 'Is this a single table with incorrect bounds?',
+      title: 'Table bounds',
+    }
+  }
+  if (row.elementType === 'paragraph') {
+    return {
+      actual: `pdf_oxide emitted ${row.elementId} as paragraph text on p${row.page}.`,
+      delta: 'The crop may truncate visible continuation text or overrun the intended paragraph region.',
+      expected: 'One contiguous paragraph region with complete visible text and correct bounds.',
+      failureType: 'Paragraph crop',
+      familyLabel: 'Paragraph structure',
+      hypothesis: 'the detected paragraph crop may not cover the complete visible text region.',
+      question: 'Does this paragraph continue beyond the detected crop?',
+      title: 'Paragraph crop',
+    }
+  }
+  if (row.elementType === 'caption') {
+    return {
+      actual: `pdf_oxide emitted ${row.elementId} as a caption on p${row.page}.`,
+      delta: 'The caption may be associated with the wrong neighboring table or figure.',
+      expected: 'Caption text associated with the correct table or figure on the same page region.',
+      failureType: 'Caption association',
+      familyLabel: 'Caption association',
+      hypothesis: 'the caption may be attached to the wrong visual element.',
+      question: 'Is this caption attached to the wrong table?',
+      title: 'Caption mismatch',
+    }
+  }
+  if (row.elementType === 'list') {
+    return {
+      actual: `pdf_oxide emitted ${row.elementId} as list structure on p${row.page}.`,
+      delta: 'The list hierarchy or item grouping may not match the visible document structure.',
+      expected: 'Visible list items represented with correct nesting, order, and bounds.',
+      failureType: 'List structure',
+      familyLabel: 'List structure',
+      hypothesis: 'the extracted list may merge, split, or mis-order visible list items.',
+      question: 'Does this list structure match the visible page?',
+      title: 'List structure',
+    }
+  }
+  return {
+    actual: `pdf_oxide emitted ${row.elementId} as ${family} on p${row.page}.`,
+    delta: row.proofIssue,
+    expected: `One visually inspectable ${family.toLowerCase()} element with correct bounds and extracted payload.`,
+    failureType: family,
+    familyLabel: family,
+    hypothesis: row.proofIssue.charAt(0).toLowerCase() + row.proofIssue.slice(1),
+    question: `Is this ${family.toLowerCase()} extraction correct?`,
+    title: family,
+  }
+}
+
 function buildCandidateFamilySummary(rows: CandidateAuditRow[]): string {
   const totals = new Map<string, number>()
   for (const row of rows) {
@@ -674,6 +842,27 @@ function buildCandidateFamilySummary(rows: CandidateAuditRow[]): string {
     .slice(0, 8)
     .map(([type, count]) => `${formatFamily(type)} ${count.toLocaleString()}`)
     .join(' · ')
+}
+
+function collapseRowsToConvergenceCases(rows: CandidateAuditRow[]): CandidateAuditRow[] {
+  const cases = new Map<string, CandidateAuditRow>()
+  for (const row of rows) {
+    const summary = getConvergenceCaseSummary(row)
+    const key = `${row.page}:${row.elementType}:${summary.failureType}`
+    const current = cases.get(key)
+    if (!current || row.finalState === 'fail' || (row.candidate?.task_count ?? 0) > (current.candidate?.task_count ?? 0)) {
+      cases.set(key, row)
+    }
+  }
+  return Array.from(cases.values())
+}
+
+function getConvergenceCardDescription(row: CandidateAuditRow): string {
+  if (row.page === 457 && row.elementType === 'table') return 'Possible repeated row bounds bug; likely one table.'
+  if (row.page === 458 && row.elementType === 'table') return 'Headers and body may be split across two extracts.'
+  if (row.elementType === 'paragraph') return 'Text appears truncated past right boundary.'
+  if (row.elementType === 'caption') return 'Caption may be attached to wrong table.'
+  return getConvergenceCaseSummary(row).hypothesis
 }
 
 function buildFamilyTallies(manifest: WorkflowManifest): Array<[string, number]> {
@@ -1761,7 +1950,6 @@ function CoverageStatusPane({
   onOpenCandidateAudit,
   onOpenStage,
   statusReport,
-  tocAudit,
   triage,
 }: {
   comparison: JsonComparison | null
@@ -1773,583 +1961,452 @@ function CoverageStatusPane({
   tocAudit: TocAudit | null
   triage: TriageQueue
 }) {
+  useRegisterAction('pdf-lab:convergence:select-case', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_SELECT_CASE',
+    label: 'Select convergence case',
+    description: 'Select an unresolved agentic sweep candidate for human clarification',
+  })
+  useRegisterAction('pdf-lab:convergence:shortcuts', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_SHORTCUTS',
+    label: 'Show shortcuts',
+    description: 'Show PDF Lab convergence keyboard shortcuts',
+  })
+  useRegisterAction('pdf-lab:convergence:help', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_HELP',
+    label: 'Show help',
+    description: 'Show help for PDF Lab convergence cases',
+  })
+  useRegisterAction('pdf-lab:convergence:share-run', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_SHARE_RUN',
+    label: 'Share run',
+    description: 'Share this PDF Lab convergence run',
+  })
+  useRegisterAction('pdf-lab:convergence:set-clarification', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_SET_CLARIFICATION',
+    label: 'Set clarification',
+    description: 'Set the human clarification for the selected convergence case',
+  })
+  useRegisterAction('pdf-lab:convergence:view-resolved', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_VIEW_RESOLVED',
+    label: 'View resolved cases',
+    description: 'Open resolved convergence cases for this PDF Lab run',
+  })
+  useRegisterAction('pdf-lab:convergence:confirm-extractor-failure', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_CONFIRM_EXTRACTOR_FAILURE',
+    label: 'Confirm extractor failure',
+    description: 'Confirm that the selected agentic sweep candidate is a real deterministic extractor failure',
+  })
+  useRegisterAction('pdf-lab:convergence:accept-extraction', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_ACCEPT_EXTRACTION',
+    label: 'Accept extraction as correct',
+    description: 'Mark the current deterministic extraction output as correct for the selected candidate',
+  })
+  useRegisterAction('pdf-lab:convergence:reject-non-issue', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_REJECT_NON_ISSUE',
+    label: 'Reject non-issue',
+    description: 'Reject the selected agentic sweep candidate as not requiring an extractor fix',
+  })
+  useRegisterAction('pdf-lab:convergence:request-more-evidence', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_REQUEST_MORE_EVIDENCE',
+    label: 'Request more evidence',
+    description: 'Mark the selected convergence case as requiring more visual or extraction evidence',
+  })
+  useRegisterAction('pdf-lab:convergence:tune-preset', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_TUNE_PRESET',
+    label: 'Tune preset',
+    description: 'Open the preset tuning path for the selected extractor failure',
+  })
+  useRegisterAction('pdf-lab:convergence:promote-fixture', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_PROMOTE_REGRESSION_FIXTURE',
+    label: 'Promote regression fixture',
+    description: 'Promote an artifact-backed convergence case into a regression fixture when gates pass',
+  })
+  useRegisterAction('pdf-lab:convergence:create-parser-task', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_CREATE_PARSER_PATCH_TASK',
+    label: 'Create parser patch task',
+    description: 'Create a project-agent task for a core parser/extractor patch',
+  })
+  useRegisterAction('pdf-lab:convergence:open-debug-json', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_OPEN_DEBUG_JSON',
+    label: 'Open debug raw JSON',
+    description: 'Expand the selected candidate raw extraction JSON debug drawer',
+  })
+  useRegisterAction('pdf-lab:convergence:open-run-status', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_OPEN_RUN_STATUS',
+    label: 'Open run status artifacts',
+    description: 'Expand run status artifacts for the selected convergence case',
+  })
+  useRegisterAction('pdf-lab:convergence:open-provenance', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_CONVERGENCE_OPEN_PROVENANCE',
+    label: 'Open provenance',
+    description: 'Expand provenance details for the selected convergence case',
+  })
+
   const summary = statusReport?.summary
   const candidateAuditRows = buildCandidateAuditRows(manifest, triage)
-  const blockers = statusReport?.blockers ?? []
-  const artifactRows = Object.entries(statusReport?.artifact_paths ?? {})
-  const agentResolvedKinds = statusReport?.summary.agent_resolved_kinds ?? triage.agent_resolved_summary?.findings_by_kind ?? {}
-  const parityAccuracy = summary?.parity_accuracy ?? comparison?.accuracy ?? null
-  const parityTarget = summary?.parity_target ?? comparison?.target ?? null
-  const parityPassed = summary?.parity_passed ?? comparison?.passed ?? false
-  const evidenceCount = summary?.evidence_element_count ?? 0
-  const extractionCount = summary?.extraction_element_count ?? manifest.element_summary.total_elements ?? 0
-  const coreChanged = summary?.core_pdf_oxide_changed ?? manifest.extraction_improvement?.core_pdf_oxide_changed ?? false
-  const presetImproved = summary?.preset_improved_pdf_oxide_behavior ?? manifest.extraction_improvement?.preset_improved_pdf_oxide_behavior ?? false
-  const humanTriageCount = summary?.human_triage_task_count ?? triage.task_count
-  const agentResolvedCount = summary?.agent_resolved_count ?? triage.agent_resolved_summary?.finding_count ?? 0
-  const memoryPassed = summary?.memory_qa_passed ?? false
-  const memoryUpsertPassed = summary?.memory_upsert_passed ?? false
-  const memoryTextRecallPassed = summary?.memory_text_recall_passed ?? false
-  const memoryVisualRecallPassed = summary?.memory_visual_recall_passed ?? false
-  const memoryCropCoveragePassed = summary?.memory_crop_coverage_passed ?? false
-  const memoryImplemented = summary?.memory_qa_implemented ?? false
-  const memoryTextIndexed = summary?.memory_text_indexed_total ?? summary?.memory_text_indexed_elements ?? 0
-  const memoryVisualIndexed = summary?.memory_visual_indexed_total ?? summary?.memory_visual_indexed_elements ?? 0
-  const memoryVisualPages = summary?.memory_visual_indexed_pages ?? 0
-  const memoryVisualSections = summary?.memory_visual_indexed_sections ?? 0
-  const memoryVisualRequired = summary?.memory_visual_required_elements ?? 0
-  const memoryVisualRequiredIndexed = summary?.memory_visual_indexed_required_elements ?? 0
-  const memorySampleChecks = summary?.memory_sample_checks ?? 0
-  const memorySampleChecksPassed = summary?.memory_sample_checks_passed ?? 0
-  const memoryMetricValue = memoryPassed ? 'passed' : memoryImplemented ? 'blocked' : 'missing'
-  const memoryQaTitle = memoryPassed
-    ? 'Memory/Qdrant PDF-element recall QA passed'
-    : memoryImplemented
-      ? 'Memory/Qdrant PDF-element recall QA ran but is blocked'
-      : 'Memory/Qdrant PDF-element recall QA is not implemented for this run'
-  const troubleReport = statusReport?.trouble_report
-  const troubleRows = [
-    ...Object.entries(troubleReport?.agent_resolved_by_kind ?? {}).map(([kind, count]) => ({ source: 'agent second pass', kind, count })),
-    ...Object.entries(troubleReport?.missed_expected_by_type ?? {}).map(([kind, count]) => ({ source: 'missed expected', kind, count })),
-    ...Object.entries(troubleReport?.unmatched_actual_sample_by_type ?? {}).map(([kind, count]) => ({ source: 'unmatched actual sample', kind, count })),
-  ].sort((left, right) => right.count - left.count)
-  const humanSummaryTitle = humanTriageCount > 0
-    ? `${humanTriageCount} human triage card${humanTriageCount === 1 ? '' : 's'} need resolution`
-    : 'No human triage cards need resolution'
-  const humanSummaryDetail = humanTriageCount > 0
-    ? 'Open Surgical Triage and resolve the remaining ambiguity cards before claiming the workflow is complete.'
-    : 'The agent second pass cleared the human deck. Human review should focus on status blockers, evidence QA coverage, and whether agent-resolved patterns need deterministic fixes.'
-  const tocRows = tocAudit?.rows ?? []
-  const tocFollowUpRows = tocRows
-    .filter(row => row.action !== 'accept')
-    .slice(0, 14)
-  const tocSummary = tocAudit?.summary
-  const tocTypeRepairs = summary?.toc_type_repairs ?? tocSummary?.matched_as_other_type ?? 0
-  const tocMissing = summary?.toc_missing_entries ?? tocSummary?.unmatched_toc_entries ?? 0
-  const tocMatched = summary?.toc_matched_entries ?? tocSummary?.matched_toc_entries ?? 0
-  const tocEntries = summary?.toc_entries ?? tocSummary?.toc_entries ?? 0
-  const tocSemanticAnchors = summary?.toc_matched_as_semantic_section_anchor
-    ?? tocSummary?.matched_as_semantic_section_anchor
-    ?? tocSummary?.toc_backed_section_anchor_elements
-    ?? tocSummary?.matched_as_section_header
-    ?? 0
-  const tocGatePassing = tocTypeRepairs === 0 && tocMissing === 0 && tocSemanticAnchors >= tocEntries
-  const sectionCropCount = summary?.evidence_section_count ?? 0
-  const secondPassBacklogCount = summary?.second_pass_backlog_count ?? 0
-  const workflowStages = [
-    {
-      artifact: 'pdf-lab-toc-audit.json',
-      detail: `${tocMatched.toLocaleString()} / ${tocEntries.toLocaleString()} TOC entries matched; ${tocSemanticAnchors.toLocaleString()} TOC-backed semantic anchors; ${tocTypeRepairs.toLocaleString()} type repairs remain.`,
-      owner: 'Agent',
-      stage: '1 · Agent Sweep',
-      state: tocGatePassing ? 'working' : 'blocked',
-      task: 'Find TOC, preset hits, candidate pages, and element-family coverage before extraction.',
-    },
-    {
-      artifact: 'pdf-lab-nist-full-extraction.json',
-      detail: `${extractionCount.toLocaleString()} elements emitted from ${manifest.page_count.toLocaleString()} pages using the NIST preset.`,
-      owner: 'pdf_oxide',
-      stage: '2 · Deterministic Extraction',
-      state: extractionCount > 0 ? 'working' : 'blocked',
-      task: 'Run deterministic extraction; do not ask humans to classify obvious tables, rows, headers, or text spans.',
-    },
-    {
-      artifact: 'pdf-lab-nist-comparison.json',
-      detail: parityAccuracy === null ? 'comparison missing' : `${(parityAccuracy * 100).toFixed(2)}% parity against ${((parityTarget ?? 0) * 100).toFixed(0)}% target.`,
-      owner: 'Agent',
-      stage: '3 · Parity Audit',
-      state: parityPassed ? 'working' : 'blocked',
-      task: 'Compare expected agent nodes to emitted JSON and classify misses as fixable extraction defects or ambiguity.',
-    },
-    {
-      artifact: 'pdf-lab-nist-human-triage-queue.json',
-      detail: `${agentResolvedCount.toLocaleString()} findings resolved by agent; ${humanTriageCount.toLocaleString()} cards left for humans.`,
-      owner: 'Agent → Human',
-      stage: '4 · Agent Correction → Human Resolve',
-      state: humanTriageCount === 0 ? 'working' : 'blocked',
-      task: 'Agent suppresses obvious/canonicalizable defects; humans only receive unresolved ambiguity.',
-    },
-    {
-      artifact: 'pdf-lab-memory-qa-report.json',
-      detail: `${memorySampleChecksPassed.toLocaleString()} / ${memorySampleChecks.toLocaleString()} recall checks; visual pages ${memoryVisualPages.toLocaleString()} / ${manifest.page_count.toLocaleString()}.`,
-      owner: 'Agent',
-      stage: '5 · Memory/Qdrant QA',
-      state: memoryPassed ? 'working' : 'blocked',
-      task: 'Verify PDF page/crop evidence against extracted JSON and indexed memory recall before claiming completion.',
-    },
-  ]
-  const primaryBlocker = blockers[0] ?? null
-  const isFinalBlocked = blockers.length > 0 || !parityPassed || !memoryPassed
-  const primaryBlockerIsHuman = primaryBlocker?.area === 'Human Triage'
-  const primaryBlockerArea = primaryBlocker?.area.toLowerCase() ?? ''
-  const candidateVerifiedCount = candidateAuditRows.filter(row => row.finalState === 'pass').length
-  const candidateReviewCount = candidateAuditRows.filter(row => row.finalState === 'warn').length
-  const candidateFailCount = candidateAuditRows.filter(row => row.finalState === 'fail').length
-  const blockerTargetStage: WorkflowStage = primaryBlockerIsHuman
-    ? 'surgical-triage'
-    : primaryBlockerArea.includes('parity') || primaryBlockerArea.includes('comparison')
-      ? 'parity-audit'
-      : primaryBlockerArea.includes('memory') || primaryBlockerArea.includes('evidence')
-        ? 'evidence-qa'
-        : 'coverage'
-  const blockerCtaLabel = primaryBlockerIsHuman
-    ? `Resolve ${humanTriageCount.toLocaleString()} Triage Card${humanTriageCount === 1 ? '' : 's'} →`
-    : blockers.length > 0
-      ? `Open ${primaryBlocker?.area ?? 'Blocker'} →`
-      : 'Inspect sample rows'
-  const documentFamilyLabel = typeof manifest.document_family_preset === 'string'
-    ? manifest.document_family_preset
-    : 'document preset'
-  const topStatusTitle = isFinalBlocked
-    ? primaryBlockerIsHuman
-      ? 'Not final: human triage remains'
-      : 'Not final: agent engineering work remains'
-    : `Convergence cases: ${candidateReviewCount} inspect · ${candidateFailCount} fail · ${candidateVerifiedCount} proven`
-  const topStatusDetail = primaryBlocker
-    ? primaryBlocker.detail
-    : isFinalBlocked
-      ? 'One or more artifact gates are not proven. Review the proof gates below before claiming completion.'
-      : 'This surface opens on candidate pipeline state, not completion state. Inspect expected-vs-actual deltas, visual proof, fix path, and the separate Memory/Qdrant recall gate.'
-  const humanNextStep = humanTriageCount > 0
-    ? `Open Surgical Triage and resolve ${humanTriageCount.toLocaleString()} card${humanTriageCount === 1 ? '' : 's'}.`
-    : 'No human triage work right now. Do not send obvious extractor defects to the human.'
-  const agentNextStep = primaryBlocker?.next_action
-    ?? (memoryPassed && parityPassed && tocGatePassing
-      ? 'No agent blocker reported by the status artifact.'
-      : 'Regenerate the failing artifact gate and rerun Coverage.')
-  const proofGates = [
-    { label: 'Parity', value: parityAccuracy === null ? 'missing' : `${(parityAccuracy * 100).toFixed(2)}%`, state: parityPassed ? 'ok' : 'bad' },
-    { label: 'Human cards', value: humanTriageCount.toLocaleString(), state: humanTriageCount === 0 ? 'ok' : 'bad' },
-    { label: 'Memory/Qdrant', value: memoryPassed ? 'passed' : memoryImplemented ? 'blocked' : 'missing', state: memoryPassed ? 'ok' : 'bad' },
-    { label: 'Memory upsert', value: String(memoryUpsertPassed), state: memoryUpsertPassed ? 'ok' : 'bad' },
-    { label: 'TOC anchors', value: `${tocSemanticAnchors.toLocaleString()} / ${tocEntries.toLocaleString()}`, state: tocGatePassing ? 'ok' : 'bad' },
-    { label: 'TOC repairs', value: tocTypeRepairs.toLocaleString(), state: tocGatePassing ? 'ok' : 'bad' },
-    { label: 'TOC missing', value: tocMissing.toLocaleString(), state: tocMissing === 0 ? 'ok' : 'bad' },
-    { label: 'Core Rust changed', value: String(coreChanged), state: coreChanged ? 'ok' : 'warn' },
-  ]
-  const proofLedgerRows = [
-    {
-      artifact: 'pdf-lab-status-report.json',
-      check: 'blockers[]',
-      expected: 'empty',
-      observed: `${blockers.length.toLocaleString()} blocker${blockers.length === 1 ? '' : 's'}`,
-      path: statusReport?.artifact_paths?.status?.path ?? 'status artifact loaded from public route',
-      state: blockers.length === 0 ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-coverage-loop.json',
-      check: 'next_action',
-      expected: 'complete',
-      observed: coverageLoop?.next_action ?? 'missing',
-      path: COVERAGE_LOOP_URL,
-      state: coverageLoop?.next_action === 'complete' ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-nist-human-triage-queue.json',
-      check: 'task_count',
-      expected: '0 human cards',
-      observed: `${triage.task_count.toLocaleString()} human cards`,
-      path: statusReport?.artifact_paths?.triage?.path ?? TRIAGE_URL,
-      state: triage.task_count === 0 ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-nist-comparison.json',
-      check: 'parity gate',
-      expected: `${((parityTarget ?? 0.95) * 100).toFixed(0)}%+`,
-      observed: parityAccuracy === null ? 'missing' : `${(parityAccuracy * 100).toFixed(2)}%`,
-      path: statusReport?.artifact_paths?.comparison?.path ?? COMPARISON_URL,
-      state: parityPassed ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-toc-audit.json',
-      check: 'TOC semantic anchors',
-      expected: `${tocEntries.toLocaleString()} / ${tocEntries.toLocaleString()}`,
-      observed: `${tocSemanticAnchors.toLocaleString()} / ${tocEntries.toLocaleString()}`,
-      path: statusReport?.artifact_paths?.toc_audit?.path ?? TOC_AUDIT_URL,
-      state: tocGatePassing ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-memory-qa-report.json',
-      check: 'ArangoDB memory_upsert',
-      expected: 'true',
-      observed: String(memoryUpsertPassed),
-      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
-      state: memoryUpsertPassed ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-memory-qa-report.json',
-      check: 'Qdrant text recall',
-      expected: 'passed',
-      observed: `${memorySampleChecksPassed.toLocaleString()} / ${memorySampleChecks.toLocaleString()} recall`,
-      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
-      state: memoryTextRecallPassed ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-memory-qa-report.json',
-      check: 'Qdrant visual index',
-      expected: 'passed',
-      observed: `${memoryVisualIndexed.toLocaleString()} visual vectors`,
-      path: statusReport?.artifact_paths?.memory_qa?.path ?? 'pdf-lab-memory-qa-report.json',
-      state: memoryVisualRecallPassed && memoryCropCoveragePassed ? 'ok' : 'bad',
-    },
-    {
-      artifact: 'pdf-lab-nist-human-triage-queue.json',
-      check: 'second-pass suppression',
-      expected: 'obvious tables handled by agent',
-      observed: `${agentResolvedCount.toLocaleString()} agent-resolved findings`,
-      path: statusReport?.artifact_paths?.triage?.path ?? TRIAGE_URL,
-      state: agentResolvedCount > 0 ? 'ok' : 'warn',
-    },
-  ]
-  const proofLedgerPassed = proofLedgerRows.every(row => row.state === 'ok' || row.state === 'warn')
-  const loopActionLabel = coverageLoop?.next_action === 'complete'
-    ? 'No active plan blocker'
-    : coverageLoop?.next_action.replaceAll('_', ' ') ?? 'artifact missing'
-  const loopRationale = coverageLoop?.next_action === 'complete'
-    ? 'Coverage loop reports no active blocker. This is plan state only; final confidence still depends on the visible evidence samples and Memory/Qdrant recall QA.'
-    : coverageLoop?.rationale ?? 'Run pdf-lab coverage-loop to generate the plan-backed next-action artifact.'
-  const loopStateClass = coverageLoop?.must_stop_for_dogpile || coverageLoop?.must_stop_for_interview
-    ? 'stop'
-    : coverageLoop?.loop_safe_to_continue
-      ? 'continue'
-      : coverageLoop?.next_action === 'complete'
-        ? 'complete'
-        : 'missing'
-  const [selectedCoverageElementId, setSelectedCoverageElementId] = useState<string | null>(null)
-  const selectedAuditRow = candidateAuditRows.find(row => row.elementId === selectedCoverageElementId) ?? candidateAuditRows[0] ?? null
-  const selectedProofRecord = selectedAuditRow
-    ? {
-      _key: selectedAuditRow.arangoKey,
-      bbox: selectedAuditRow.bbox ?? null,
-      crop_uri: selectedAuditRow.cropUri,
-      element_id: selectedAuditRow.elementId,
-      json_pointer: selectedAuditRow.jsonPointer ?? null,
-      page: selectedAuditRow.page,
-      proof_issue: selectedAuditRow.proofIssue,
-      proof_state: selectedAuditRow.proofLabel,
-      source: selectedAuditRow.source,
-      text: selectedAuditRow.elementText,
-      type: selectedAuditRow.elementType,
+  const unresolvedCases = candidateAuditRows
+    .filter(row => row.candidate && row.finalState !== 'pass')
+    .sort((left, right) => {
+      const preferredPages = [457, 458, 21, 27]
+      const leftPreferred = preferredPages.indexOf(left.page)
+      const rightPreferred = preferredPages.indexOf(right.page)
+      if (leftPreferred !== -1 || rightPreferred !== -1) {
+        return (leftPreferred === -1 ? Number.MAX_SAFE_INTEGER : leftPreferred)
+          - (rightPreferred === -1 ? Number.MAX_SAFE_INTEGER : rightPreferred)
+      }
+      const leftTasks = left.candidate?.task_count ?? 0
+      const rightTasks = right.candidate?.task_count ?? 0
+      return rightTasks - leftTasks || left.page - right.page || left.elementId.localeCompare(right.elementId)
+    })
+  const fallbackCases = candidateAuditRows
+    .filter(row => row.finalState !== 'pass')
+    .slice(0, 4)
+  const casesNeedingClarification = collapseRowsToConvergenceCases(unresolvedCases.length > 0 ? unresolvedCases : fallbackCases)
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
+  const selectedRow = casesNeedingClarification.find(row => row.elementId === selectedElementId)
+    ?? casesNeedingClarification[0]
+    ?? candidateAuditRows[0]
+    ?? null
+  const [clarification, setClarification] = useState<ConvergenceClarification>('single_table_wrong_bounds')
+
+  useEffect(() => {
+    if (selectedRow && selectedElementId !== selectedRow.elementId) {
+      setSelectedElementId(selectedRow.elementId)
+      setClarification(getDefaultClarification(selectedRow))
     }
-    : null
-  const documentRows = [
-    ...candidateAuditRows.map(row => ({
-      count: row.candidate?.task_count ?? (row.finalState === 'fail' ? 1 : 0),
-      detail: row.proofIssue,
-      id: `element:${row.elementId}`,
-      label: `${formatFamily(row.elementType)} · ${row.elementId}`,
-      page: row.page,
-      state: row.finalState,
-    })),
-    ...tocRows.slice(0, 24).map(row => ({
-      count: row.pdf_oxide_match.matched ? 1 : 0,
-      detail: row.second_pass_status.replaceAll('_', ' '),
-      id: `toc:${row.toc_id}`,
-      label: row.title,
-      page: row.page,
-      state: row.pdf_oxide_match.matched ? 'warn' as const : 'fail' as const,
-    })),
-  ]
-    .sort((left, right) => left.page - right.page || left.label.localeCompare(right.label))
-    .slice(0, 36)
+  }, [selectedElementId, selectedRow])
+
+  if (!selectedRow) {
+    return (
+      <main className="pdf-lab-prod-convergence pdf-lab-prod-convergence-empty" data-qid="pdf-lab:convergence:empty">
+        <section>
+          <h1>PDF Lab · Convergence Cases</h1>
+          <p>No artifact-backed convergence cases are available. Generate agentic sweep and human triage artifacts before using this route.</p>
+        </section>
+      </main>
+    )
+  }
+
+  const selectedCaseSummary = getConvergenceCaseSummary(selectedRow)
+  const clarificationOptions = getClarificationOptions(selectedRow)
+  const primaryAction = getPrimaryDecisionAction(clarification)
+  const selectedRecord = {
+    bbox: selectedRow.bbox ?? null,
+    clarification,
+    crop_uri: selectedRow.cropUri,
+    element_id: selectedRow.elementId,
+    failure_type: selectedCaseSummary.failureType,
+    human_decision: primaryAction.decision,
+    json_pointer: selectedRow.jsonPointer ?? null,
+    page: selectedRow.page,
+    proof_issue: selectedRow.proofIssue,
+    source: selectedRow.source,
+    text: selectedRow.elementText,
+    type: selectedRow.elementType,
+  }
+  const similarCaseCount = Math.max(1, triage.agent_resolved_summary?.finding_count ?? casesNeedingClarification.length)
+  const impactedDocCount = Math.max(1, Object.keys(summary?.agent_resolved_kinds ?? triage.agent_resolved_summary?.findings_by_kind ?? {}).length)
+  const promoteFixtureReady = Boolean(
+    selectedRow.bbox
+    && selectedRow.cropUri
+    && selectedRow.pageImageUri
+    && selectedRow.jsonPointer
+    && selectedRow.finalState !== 'fail'
+    && comparison?.passed,
+  )
 
   return (
-    <main className="pdf-lab-prod-coverage pdf-lab-prod-coverage-threepane" data-qid="pdf-lab:coverage:three-pane">
-      <header className={`pdf-lab-prod-coverage-workload ${isFinalBlocked ? 'blocked' : 'audit'}`} data-qid="pdf-lab:coverage:next-steps">
-        <div>
-          <span className="pdf-lab-prod-coverage-kicker">Coverage · candidate → delta → fix</span>
-          <h1>{topStatusTitle}</h1>
-          <p>{topStatusDetail}</p>
+    <main className="pdf-lab-prod-convergence" data-qid="pdf-lab:convergence:workbench">
+      <header className="pdf-lab-prod-convergence-topbar" data-qid="pdf-lab:convergence:topbar">
+        <div className="pdf-lab-prod-convergence-brand">
+          <span aria-hidden="true">⚗</span>
+          <div>
+            <h1>PDF Lab · Convergence Cases</h1>
+            <p><i /> Agentic sweep → human clarification → deterministic fix</p>
+          </div>
         </div>
-        <button
-          type="button"
-          className={`pdf-lab-prod-next-steps-generated ${blockers.length > 0 ? 'actionable' : ''}`}
-          data-qid="pdf-lab:coverage:open-primary-blocker"
-          data-qs-action="PDF_LAB_COVERAGE_OPEN_PRIMARY_BLOCKER"
-          disabled={blockers.length === 0}
-          title={blockers.length > 0 ? blockerCtaLabel : 'Status artifact reports no blockers; inspect element proof rows'}
-          onClick={() => onOpenStage(blockerTargetStage)}
-        >
-          <b>{blockers.length === 0 ? (statusReport ? 'status artifact loaded' : 'status artifact missing') : `${blockers.length} blocker${blockers.length === 1 ? '' : 's'}`}</b>
-          <span>{blockers.length === 0 ? 'Inspect element proof' : blockerCtaLabel}</span>
-          <small>{statusReport ? `Generated ${new Date(statusReport.generated_at).toLocaleString()}` : 'Status artifact missing'}</small>
-        </button>
+        <div className="pdf-lab-prod-convergence-top-actions">
+          <button
+            type="button"
+            data-qid="pdf-lab:convergence:shortcuts"
+            data-qs-action="PDF_LAB_CONVERGENCE_SHORTCUTS"
+            title="Show keyboard shortcuts"
+          >
+            ⌘K Shortcuts
+          </button>
+          <button
+            type="button"
+            data-qid="pdf-lab:convergence:help"
+            data-qs-action="PDF_LAB_CONVERGENCE_HELP"
+            title="Show convergence case help"
+          >
+            ?
+          </button>
+          <button
+            type="button"
+            data-qid="pdf-lab:convergence:share-run"
+            data-qs-action="PDF_LAB_CONVERGENCE_SHARE_RUN"
+            title="Share this PDF Lab run"
+          >
+            Share run
+          </button>
+        </div>
       </header>
 
-      <section className="pdf-lab-prod-threepane-shell">
-        <aside className="pdf-lab-prod-map-pane" data-qid="pdf-lab:coverage:document-map">
-          <PaneHeader title="Convergence Case Queue" detail={`${documentFamilyLabel} · ${manifest.page_count.toLocaleString()} pages`} />
-          <div className="pdf-lab-prod-map-summary">
-            <div><b>{tocEntries.toLocaleString()}</b><span>TOC</span></div>
-            <div><b>{tocSemanticAnchors.toLocaleString()}</b><span>anchors</span></div>
-            <div><b>{candidateAuditRows.length.toLocaleString()}</b><span>cases</span></div>
+      <section className="pdf-lab-prod-convergence-shell">
+        <aside className="pdf-lab-prod-convergence-queue" data-qid="pdf-lab:convergence:queue">
+          <header>
+            <div>
+              <h2>Cases Needing Clarification</h2>
+              <p>Unresolved cases only</p>
+            </div>
+            <span title="Agentic sweep cases are sorted by current severity">☷</span>
+          </header>
+          <div className="pdf-lab-prod-convergence-cases">
+            {casesNeedingClarification.map(row => {
+              const caseSummary = getConvergenceCaseSummary(row)
+              const selected = row.elementId === selectedRow.elementId
+              return (
+                <button
+                  type="button"
+                  key={row.elementId}
+                  className={`pdf-lab-prod-convergence-case ${selected ? 'selected' : ''}`}
+                  data-qid={`pdf-lab:convergence:case:${row.elementId}`}
+                  data-qs-action="PDF_LAB_CONVERGENCE_SELECT_CASE"
+                  title={`Review convergence case ${caseSummary.title} on page ${row.page}`}
+                  onClick={() => {
+                    setSelectedElementId(row.elementId)
+                    setClarification(getDefaultClarification(row))
+                  }}
+                >
+                  <span className="pdf-lab-prod-convergence-page page-badge">p{row.page}</span>
+                  <span>
+                    <b>{caseSummary.title}</b>
+                    <small>{getConvergenceCardDescription(row)}</small>
+                    <em>{caseSummary.familyLabel}</em>
+                  </span>
+                  <strong className="status-pill">Needs human decision</strong>
+                </button>
+              )
+            })}
           </div>
-          <p className="pdf-lab-prod-map-note">Agentic scan candidates and pipeline blockers. Raw elements are debug-only.</p>
-          <div className="pdf-lab-prod-map-list">
-            {documentRows.map(row => (
-              <button
-                type="button"
-                key={row.id}
-                className={`pdf-lab-prod-map-row ${row.state} ${selectedAuditRow?.page === row.page ? 'selected' : ''}`}
-                onClick={() => {
-                  const firstOnPage = candidateAuditRows.find(candidate => candidate.page === row.page)
-                  if (firstOnPage) setSelectedCoverageElementId(firstOnPage.elementId)
-                }}
-              >
-                <b>p{row.page}</b>
-                <span>
-                  <strong>{row.label}</strong>
-                  <small>{row.detail}</small>
-                </span>
-                <em>{row.count}</em>
-              </button>
-            ))}
-          </div>
-          <div className="pdf-lab-prod-proof-mix">
-            <span>Case mix</span>
-            <div><i style={{ width: `${Math.max(4, candidateReviewCount)}%` }} /><i style={{ width: `${Math.max(4, candidateFailCount)}%` }} /><i style={{ width: `${Math.max(4, candidateVerifiedCount)}%` }} /></div>
-            <small>{candidateReviewCount} inspect · {candidateFailCount} fail · {candidateVerifiedCount} verified</small>
-          </div>
+          <button
+            type="button"
+            className="pdf-lab-prod-convergence-resolved"
+            data-qid="pdf-lab:convergence:view-resolved"
+            data-qs-action="PDF_LAB_CONVERGENCE_VIEW_RESOLVED"
+            title="View resolved convergence cases"
+          >
+            View resolved cases →
+          </button>
         </aside>
 
-        <section className="pdf-lab-prod-case-workbench-pane" data-qid="pdf-lab:coverage:convergence-case-workbench">
-          {selectedAuditRow && selectedProofRecord ? (
-            <div className="pdf-lab-prod-case-workbench">
-              <section className="pdf-lab-prod-case-hero">
-                <div>
-                  <span className="pdf-lab-prod-coverage-kicker">Selected convergence case</span>
-                  <h2>p{selectedAuditRow.page} · {formatFamily(selectedAuditRow.elementType)} extraction case</h2>
-                  <p>{selectedAuditRow.proofIssue}</p>
-                </div>
-                <div className="pdf-lab-prod-case-tags">
-                  <span className={selectedAuditRow.finalState}>state: {selectedAuditRow.proofLabel}</span>
-                  <span>expected: agent/sample</span>
-                  <span>actual: {selectedAuditRow.source}</span>
-                </div>
-              </section>
-
-              <section className="pdf-lab-prod-case-section">
-                <header><b>Expected vs Actual</b><span>candidate pipeline comparison</span></header>
-                <div className="pdf-lab-prod-case-compare">
-                  <article>
-                    <h3>Expected structure</h3>
-                    <p>{selectedAuditRow.candidate ? `${selectedAuditRow.candidate.task_count.toLocaleString()} candidate task${selectedAuditRow.candidate.task_count === 1 ? '' : 's'} flagged on p${selectedAuditRow.page}.` : 'Agent sample expects this PDF region to be independently inspectable before fixture promotion.'}</p>
-                    <dl>
-                      <div><dt>Authority</dt><dd>{selectedAuditRow.correctedByAgent ? 'agent second-pass finding' : 'agent/sample estimate'}</dd></div>
-                      <div><dt>Failure family</dt><dd>{formatFamily(selectedAuditRow.elementType)}</dd></div>
-                      <div><dt>Fixture lock</dt><dd>requires human authority + rerun pass</dd></div>
-                    </dl>
-                  </article>
-                  <article>
-                    <h3>Actual extraction</h3>
-                    <p><code>{selectedAuditRow.elementId}</code> was emitted by the deterministic extraction/evidence pipeline.</p>
-                    <dl>
-                      <div><dt>Source</dt><dd>{selectedAuditRow.source}</dd></div>
-                      <div><dt>JSON pointer</dt><dd>{selectedAuditRow.jsonPointer ?? 'missing'}</dd></div>
-                      <div><dt>Provenance key</dt><dd>{selectedAuditRow.arangoKey}</dd></div>
-                    </dl>
-                  </article>
-                </div>
-              </section>
-
-              <section className="pdf-lab-prod-case-section">
-                <header><b>Visual Proof</b><span>page bbox + selected crop</span></header>
-                <div className="pdf-lab-prod-case-proof-grid">
-                  <figure>
-                    <figcaption><b>Full page</b><code>p{selectedAuditRow.page}</code></figcaption>
-                    <div className="pdf-lab-prod-detail-page">
-                      <img src={selectedAuditRow.pageImageUri} alt={`Page ${selectedAuditRow.page}`} />
-                      {selectedAuditRow.bbox && <i style={getBboxStyle(selectedAuditRow.bbox)} />}
-                    </div>
-                  </figure>
-                  <figure>
-                    <figcaption><b>Selected crop</b><code>{selectedAuditRow.elementId}</code></figcaption>
-                    <img className="pdf-lab-prod-case-crop" src={selectedAuditRow.cropUri} alt={`${selectedAuditRow.elementType} crop ${selectedAuditRow.elementId}`} />
-                  </figure>
-                </div>
-              </section>
-
-              <section className="pdf-lab-prod-case-section">
-                <header><b>Delta and Diagnosis</b><span>what must become durable</span></header>
-                <div className="pdf-lab-prod-case-deltas">
-                  <div className="ok"><b>Actual JSON captured</b><span>{selectedAuditRow.jsonPointer ? 'Extractor output has a JSON pointer and crop-backed evidence.' : 'Extractor output exists, but JSON pointer is missing.'}</span><code>{selectedAuditRow.jsonPointer ?? 'missing'}</code></div>
-                  <div className={selectedAuditRow.finalState === 'fail' ? 'bad' : 'warn'}><b>Case disposition</b><span>{selectedAuditRow.proofIssue}</span><code>{selectedAuditRow.finalState}</code></div>
-                  <div className={parityPassed && memoryPassed ? 'ok' : 'bad'}><b>Definition of done</b><span>No promotion until comparison, Memory/Qdrant, and status-report artifacts prove the rerun.</span><code>{isFinalBlocked ? 'blocked' : 'green'}</code></div>
-                </div>
-              </section>
-
-              <details className="pdf-lab-prod-elements-debug">
-                <summary>
-                  <span>Debug extracted elements</span>
-                  <b>{candidateAuditRows.length.toLocaleString()} sample rows · case-scoped inventory</b>
-                </summary>
-                <div className="pdf-lab-prod-elements-table">
-                  <div className="pdf-lab-prod-elements-row head">
-                    <b>Element</b>
-                    <b>Crop</b>
-                    <b>Type</b>
-                    <b>State</b>
-                    <b>Key</b>
-                  </div>
-                  {candidateAuditRows.map(row => (
-                    <CoverageElementRow
-                      key={row.elementId}
-                      onOpenCandidateAudit={onOpenCandidateAudit}
-                      onSelect={setSelectedCoverageElementId}
-                      row={row}
-                      selected={selectedAuditRow?.elementId === row.elementId}
-                    />
-                  ))}
-                </div>
-              </details>
+        <section className="pdf-lab-prod-convergence-proof" data-qid="pdf-lab:convergence:proof-workspace">
+          <header className="pdf-lab-prod-convergence-case-head">
+            <span>Convergence case · p{selectedRow.page}</span>
+            <h2>{selectedCaseSummary.question}</h2>
+            <p>Current agent hypothesis: {selectedCaseSummary.hypothesis}</p>
+            <div>
+              <b>Failure type: {selectedCaseSummary.failureType}</b>
+              <b>Expected source: Agent hypothesis</b>
+              <b>Authority: <mark>Low</mark></b>
+              <b>Actual source: {selectedRow.source}</b>
             </div>
-          ) : (
-            <div className="pdf-lab-prod-coverage-empty">No convergence candidates are available. Generate agentic scan and evidence artifacts before relying on Coverage.</div>
-          )}
+          </header>
+
+          <section className="pdf-lab-prod-convergence-visual" data-qid="pdf-lab:convergence:visual-proof">
+            <header><Eye size={16} /><b>Visual proof</b></header>
+            <div className="pdf-lab-prod-convergence-visual-grid">
+              <figure>
+                <figcaption>Full page (p{selectedRow.page})</figcaption>
+                <div className="pdf-lab-prod-convergence-page-proof">
+                  <img src={selectedRow.pageImageUri} alt={`Full PDF page ${selectedRow.page}`} />
+                  {selectedRow.bbox && <i style={getBboxStyle(selectedRow.bbox)} />}
+                </div>
+              </figure>
+              <figure>
+                <figcaption>Selected crop (zoomed)</figcaption>
+                <div className="pdf-lab-prod-convergence-crop-proof">
+                  <img src={selectedRow.cropUri} alt={`Selected extraction crop for ${selectedRow.elementId}`} />
+                </div>
+                <div className="pdf-lab-prod-convergence-zoom" aria-label="Static crop zoom controls">
+                  <span>−</span><b>176%</b><span>+</span><em>Fit width</em>
+                </div>
+              </figure>
+            </div>
+          </section>
+
+          <section className="pdf-lab-prod-convergence-delta" data-qid="pdf-lab:convergence:expected-actual-delta">
+            <article className="expected">
+              <h3>Expected</h3>
+              <p>{selectedCaseSummary.expected}</p>
+            </article>
+            <article className="actual">
+              <h3>Actual</h3>
+              <p>{selectedCaseSummary.actual}</p>
+            </article>
+            <article className="delta">
+              <h3>Delta</h3>
+              <p>{selectedCaseSummary.delta}</p>
+            </article>
+          </section>
+
+          <div className="pdf-lab-prod-convergence-debug">
+            <details>
+              <summary
+                data-qid="pdf-lab:convergence:debug-json"
+                data-qs-action="PDF_LAB_CONVERGENCE_OPEN_DEBUG_JSON"
+                title="Open debug raw JSON"
+              >
+                Debug raw JSON
+              </summary>
+              <pre>{JSON.stringify(selectedRecord, null, 2)}</pre>
+            </details>
+            <details>
+              <summary
+                data-qid="pdf-lab:convergence:run-status"
+                data-qs-action="PDF_LAB_CONVERGENCE_OPEN_RUN_STATUS"
+                title="Open run status artifacts"
+              >
+                Run status artifacts
+              </summary>
+              <div className="pdf-lab-prod-convergence-ledger">
+                <span>Parity <b>{comparison?.passed ? 'passed' : 'not proven'}</b></span>
+                <span>Coverage loop <b>{coverageLoop?.next_action ?? 'missing'}</b></span>
+                <span>Status blockers <b>{statusReport?.blockers.length ?? 'unknown'}</b></span>
+              </div>
+            </details>
+            <details>
+              <summary
+                data-qid="pdf-lab:convergence:provenance"
+                data-qs-action="PDF_LAB_CONVERGENCE_OPEN_PROVENANCE"
+                title="Open provenance details"
+              >
+                Provenance
+              </summary>
+              <div className="pdf-lab-prod-convergence-ledger">
+                <span>Element <b>{selectedRow.elementId}</b></span>
+                <span>Key <b>{selectedRow.arangoKey}</b></span>
+                <span>JSON pointer <b>{selectedRow.jsonPointer ?? 'missing'}</b></span>
+              </div>
+            </details>
+          </div>
         </section>
 
-        <aside className="pdf-lab-prod-detail-pane" data-qid="pdf-lab:coverage:element-detail">
-          {selectedAuditRow && selectedProofRecord ? (
-            <>
-              <div className="pdf-lab-prod-detail-head">
-                <span className="pdf-lab-prod-coverage-kicker">Fix / Promotion Lane</span>
-                <h2>{isFinalBlocked ? 'Promotion blocked' : 'Ready for promotion review'}</h2>
-                <p>Only artifact-backed states can advance. Provenance keys and visual proof support the case, but status-report gates define completion.</p>
-                <div className="pdf-lab-prod-detail-actions">
-                  <button type="button" onClick={() => onOpenCandidateAudit(selectedAuditRow)}>Open debug proof</button>
-                  <button type="button" onClick={() => onOpenStage(blockerTargetStage)}>Open blocker stage</button>
-                </div>
-              </div>
+        <aside className="pdf-lab-prod-convergence-decision" data-qid="pdf-lab:convergence:decision-lane">
+          <header>
+            <div>
+              <h2>Human decision</h2>
+              <p>Clarify ambiguity</p>
+            </div>
+            <span>Needs review</span>
+          </header>
 
-              <div className="pdf-lab-prod-detail-facts">
-                <div><span>Proof state</span><b className={selectedAuditRow.finalState}>{selectedAuditRow.proofLabel}</b></div>
-                <div><span>Element type</span><b>{formatFamily(selectedAuditRow.elementType)}</b></div>
-                <div><span>Page</span><b>{selectedAuditRow.page}</b></div>
-                <div><span>Recall status</span><b>{selectedAuditRow.memoryStatus}</b></div>
-              </div>
+          <fieldset className="pdf-lab-prod-convergence-options">
+            <legend>Clarify ambiguity</legend>
+            {clarificationOptions.map(option => (
+              <label key={option.value} className={clarification === option.value ? 'selected' : ''}>
+                <input
+                  type="radio"
+                  name="pdf-lab-convergence-clarification"
+                  value={option.value}
+                  checked={clarification === option.value}
+                  data-qid={`pdf-lab:convergence:clarification:${option.value}`}
+                  data-qs-action="PDF_LAB_CONVERGENCE_SET_CLARIFICATION"
+                  title={`Set clarification: ${option.label}`}
+                  onChange={() => setClarification(option.value)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </fieldset>
 
-              <section className={`pdf-lab-prod-plan-loop ${loopStateClass}`} data-qid="pdf-lab:coverage:plan-loop">
-                <div>
-                  <span>Coverage plan loop</span>
-                  <h2>{loopActionLabel}</h2>
-                  <p>{loopRationale}</p>
-                </div>
-                <div className="pdf-lab-prod-plan-loop-grid">
-                  <div><b>Active blocker</b><strong>{coverageLoop?.active_blocker?.area ?? primaryBlocker?.area ?? 'none'}</strong></div>
-                  <div><b>Same streak</b><strong>{coverageLoop?.same_blocker_streak ?? '—'}</strong></div>
-                  <div><b>Project knowledge</b><strong>{coverageLoop?.project_knowledge_checked ? 'checked' : 'not checked'}</strong></div>
-                  <div><b>Memory recall</b><strong>{coverageLoop?.memory_recall_required ? 'required' : 'unknown'}</strong></div>
-                </div>
-                <div className="pdf-lab-prod-plan-loop-command"><b>Command</b><code>{coverageLoop?.recommended_command ?? 'pdf-lab coverage-loop --out public/pdf-lab-coverage-loop.json'}</code></div>
-                <div className="pdf-lab-prod-plan-loop-command"><b>Active plan</b><code>{coverageLoop?.active_plan_path ?? 'none'}</code></div>
-              </section>
+          <button
+            type="button"
+            className="pdf-lab-prod-convergence-primary-action"
+            data-qid="pdf-lab:convergence:primary-action"
+            data-qs-action={primaryAction.action}
+            title={primaryAction.title}
+            onClick={() => {
+              if (primaryAction.action === 'PDF_LAB_CONVERGENCE_REQUEST_MORE_EVIDENCE') {
+                onOpenCandidateAudit(selectedRow)
+              }
+            }}
+          >
+            {primaryAction.label}
+          </button>
+          <button
+            type="button"
+            className="pdf-lab-prod-convergence-secondary-action"
+            data-qid="pdf-lab:convergence:accept-extraction"
+            data-qs-action="PDF_LAB_CONVERGENCE_ACCEPT_EXTRACTION"
+            title="Accept the current deterministic extraction as correct"
+          >
+            Accept extraction as correct
+          </button>
+          <button
+            type="button"
+            className="pdf-lab-prod-convergence-secondary-action"
+            data-qid="pdf-lab:convergence:reject-non-issue"
+            data-qs-action="PDF_LAB_CONVERGENCE_REJECT_NON_ISSUE"
+            title="Reject this candidate as a non-issue"
+          >
+            Reject non-issue
+          </button>
 
-              <section className="pdf-lab-prod-detail-card">
-                <header><b>Provenance ledger</b><span>{proofLedgerPassed ? 'inspectable' : 'blocked'}</span></header>
-                <div className="pdf-lab-prod-detail-ledger">
-                  {proofLedgerRows.map(row => (
-                    <div key={`${row.artifact}:${row.check}`} className={row.state}>
-                      <span>{row.check}</span>
-                      <code title={row.path}>{row.artifact}</code>
-                      <b>{row.observed}</b>
-                    </div>
-                  ))}
-                </div>
-              </section>
+          <section className="pdf-lab-prod-convergence-fixpath">
+            <h3>Fix path <small>gated by evidence</small></h3>
+            <button
+              type="button"
+              disabled={!promoteFixtureReady}
+              data-qid="pdf-lab:convergence:promote-fixture"
+              data-qs-action="PDF_LAB_CONVERGENCE_PROMOTE_REGRESSION_FIXTURE"
+              title={promoteFixtureReady ? 'Promote this case to a regression fixture' : 'Promote regression fixture requires evidence gates to pass'}
+            >
+              Promote regression fixture <small>{promoteFixtureReady ? 'ready' : 'requires evidence gates'}</small>
+            </button>
+            <button
+              type="button"
+              data-qid="pdf-lab:convergence:tune-preset"
+              data-qs-action="PDF_LAB_CONVERGENCE_TUNE_PRESET"
+              title="Open preset tuning path for this candidate"
+              onClick={() => onOpenStage('parity-audit')}
+            >
+              Tune preset
+            </button>
+            <button
+              type="button"
+              data-qid="pdf-lab:convergence:create-parser-task"
+              data-qs-action="PDF_LAB_CONVERGENCE_CREATE_PARSER_PATCH_TASK"
+              title="Create a parser patch task for this extractor failure"
+            >
+              Create parser patch task
+            </button>
+          </section>
 
-              <section className="pdf-lab-prod-detail-card">
-                <header><b>Artifact paths</b><span>real files/endpoints</span></header>
-                <div className="pdf-lab-prod-detail-ledger">
-                  {artifactRows.length === 0 ? (
-                    <div className="bad"><span>Status artifact</span><code>artifact_paths</code><b>missing</b></div>
-                  ) : artifactRows.map(([name, info]) => (
-                    <div key={name} className={info.exists ? 'ok' : 'bad'}>
-                      <span>{name}</span>
-                      <code title={info.path ?? 'not configured'}>{info.path ?? 'not configured'}</code>
-                      <b>{info.exists ? 'present' : 'missing'}</b>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className={`pdf-lab-prod-final-qa ${memoryPassed ? 'ready' : 'blocked'}`}>
-                <div>
-                  <span>Final Agent QA Gate</span>
-                  <h2>{memoryQaTitle}</h2>
-                  <p>Memory/Qdrant is a separate recall gate, not implied by element provenance keys.</p>
-                </div>
-                <div className="pdf-lab-prod-final-qa-metric">
-                  <b>{memoryTextIndexed.toLocaleString()} / {memoryVisualIndexed.toLocaleString()}</b>
-                  <small>text / visual indexed</small>
-                </div>
-                <div className="pdf-lab-prod-final-qa-detail">
-                  <span>pages {memoryVisualPages.toLocaleString()}</span>
-                  <span>TOC section crops {memoryVisualSections.toLocaleString()}</span>
-                  <span>required crops {memoryVisualRequiredIndexed.toLocaleString()} / {memoryVisualRequired.toLocaleString()}</span>
-                  <span>recall {memorySampleChecksPassed.toLocaleString()} / {memorySampleChecks.toLocaleString()}</span>
-                  <span>state {memoryMetricValue}</span>
-                </div>
-              </section>
-
-              <section className="pdf-lab-prod-detail-card">
-                <header><b>Extracted JSON</b><span>read-only</span></header>
-                <pre>{JSON.stringify(selectedProofRecord, null, 2)}</pre>
-              </section>
-            </>
-          ) : (
-            <div className="pdf-lab-prod-coverage-empty">No element proof rows are available. Generate evidence artifacts before relying on Coverage.</div>
-          )}
+          <section className="pdf-lab-prod-convergence-impact" data-qid="pdf-lab:convergence:impact">
+            <h3>Impact</h3>
+            <div><span>Similar cases</span><b>{similarCaseCount}</b></div>
+            <div><span>Impacted docs</span><b>{impactedDocCount}</b></div>
+            <div><span>Fixture family</span><b>NIST control tables</b></div>
+          </section>
         </aside>
-      </section>
-
-      <section className="pdf-lab-prod-coverage-support">
-        <div className="pdf-lab-prod-workflow-steps">
-          {workflowStages.map(stage => (
-            <article key={stage.stage} className={`pdf-lab-prod-workflow-step ${stage.state}`}>
-              <div><span>{stage.owner}</span><b>{stage.stage}</b></div>
-              <p>{stage.task}</p>
-              <small>{stage.detail}</small>
-              <code>{stage.artifact}</code>
-            </article>
-          ))}
-        </div>
-        <div className="pdf-lab-prod-coverage-columns pdf-lab-prod-learning-row">
-          <div className="pdf-lab-prod-coverage-panel">
-            <PaneHeader title="Agent Learning Backlog" detail="Defects to convert into deterministic extraction behavior" />
-            <div className="pdf-lab-prod-kind-list">
-              <div><code>toc_type_repairs</code><b>{tocTypeRepairs.toLocaleString()}</b></div>
-              <div><code>toc_missing_entries</code><b>{tocMissing.toLocaleString()}</b></div>
-              <div><code>second_pass_backlog</code><b>{secondPassBacklogCount.toLocaleString()}</b></div>
-              <div><code>toc_backed_sections</code><b>{sectionCropCount.toLocaleString()}</b></div>
-              <div><code>agent_resolved</code><b>{agentResolvedCount.toLocaleString()}</b></div>
-              <div><code>evidence_coverage</code><b>{evidenceCount.toLocaleString()} / {extractionCount.toLocaleString()}</b></div>
-              <div><code>core_rust_changed</code><b>{String(coreChanged)}</b></div>
-              <div><code>preset_improved</code><b>{String(presetImproved)}</b></div>
-            </div>
-          </div>
-          <div className="pdf-lab-prod-coverage-panel">
-            <PaneHeader title="Human Boundary" detail={humanSummaryTitle} />
-            <div className="pdf-lab-prod-boundary-list">
-              <div><b>Human next</b><span>{humanNextStep} {humanSummaryDetail}</span></div>
-              <div><b>Agent next</b><span>{agentNextStep}</span></div>
-              <div><b>TOC map</b><span>{tocMatched.toLocaleString()} matched · {tocFollowUpRows.length.toLocaleString()} follow-up rows · {tocGatePassing ? 'map inspected' : 'map blocked'}</span></div>
-              <div><b>Trouble report</b><span>{troubleRows.length === 0 ? 'No trouble report data in the status artifact.' : troubleRows.slice(0, 4).map(row => `${row.source}: ${row.kind} ${row.count}`).join(' · ')}</span></div>
-              <div><b>Current interpretation</b><span>{statusReport?.current_interpretation ?? 'Run pdf-lab status-report and publish pdf-lab-status-report.json before relying on this page for status.'}</span></div>
-            </div>
-          </div>
-          <div className="pdf-lab-prod-coverage-panel">
-            <PaneHeader title="Second-Pass Findings" detail="Agent fixes that should become deterministic behavior" />
-            <div className="pdf-lab-prod-kind-list">
-              {Object.entries(agentResolvedKinds).length === 0 ? (
-                <div className="pdf-lab-prod-coverage-empty">No agent-resolved findings recorded.</div>
-              ) : (
-                Object.entries(agentResolvedKinds).map(([kind, count]) => (
-                  <div key={kind}><code>{kind}</code><b>{count}</b></div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
       </section>
     </main>
   )

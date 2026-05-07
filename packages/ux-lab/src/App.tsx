@@ -50,6 +50,7 @@ const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/In
 const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
+import { HackEvolveMonitor } from './components/hack/HackEvolveMonitor';
 
 // SPARTA sub-views
 const ChatTabView = React.lazy(() => import('./components/sparta/explorer/ChatTab').then(m => ({ default: m.ChatTab })));
@@ -259,20 +260,16 @@ const Mockups = ({ projectId }: { projectId: string }) => {
 };
 
 const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
-  const isSpartaQraFocus = projectId === 'sparta-explorer' && subpath?.startsWith('qras')
-
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
-      {!isSpartaQraFocus && (
-        <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
-          <div className="flex items-center gap-4 px-2">
-            <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
-            <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
-              <Activity className="w-3 h-3" /> LIVE_RENDER
-            </div>
+      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
+        <div className="flex items-center gap-4 px-2">
+          <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
+          <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
+            <Activity className="w-3 h-3" /> LIVE_RENDER
           </div>
         </div>
-      )}
+      </div>
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
@@ -297,7 +294,12 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
           {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
           {projectId === 'scillm' && <ScillmMonitor />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm'].includes(projectId) && (
+          {projectId === 'hack' && (
+            <div className="flex-1 overflow-auto p-6">
+              <HackEvolveMonitor />
+            </div>
+          )}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'hack'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -967,6 +969,7 @@ const ProjectSidebar = ({
   // Real projects with working component routing
   const projects: Project[] = [
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
+    { id: 'hack', title: 'Hack Evolve Monitor', subtitle: 'Greybox hardening campaign UX', date: '2026-05-06', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
     { id: 'lean4-lemma', title: 'Lean4 Lemma Viewer', subtitle: 'Formal proof graph explorer', date: '2026-04-02', type: 'desktop' as const },
     { id: 'music-lab-pipeline', title: 'Music Lab Pipeline', subtitle: '10-stage creation pipeline', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/music-lab-pipeline/stitch/d81f2a555f73455098f59c16379d9517.png' },
@@ -1634,10 +1637,7 @@ export default function App() {
   const isPdfLabFocus = activeProjectId === 'pdf-lab'
     && activeView === 'final-site'
     && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage');
-  const isSpartaQraFocus = activeProjectId === 'sparta-explorer'
-    && activeView === 'final-site'
-    && hashSubpath.startsWith('qras');
-  const isFocusMode = isPdfLabFocus || isSpartaQraFocus;
+  const isFocusMode = isPdfLabFocus;
 
   // Sync hash → state on popstate (back/forward)
   useEffect(() => {

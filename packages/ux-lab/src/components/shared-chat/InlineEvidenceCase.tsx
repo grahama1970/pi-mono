@@ -33,7 +33,11 @@ const STATE_LABELS = {
 }
 
 function caseId(data: EvidenceCaseData) {
-  return data.case_id || data.qraKey || data.evidence_case_version?.case_id || 'EC-PENDING'
+  const versionCaseId = data.evidence_case_version?.case_id
+  if (data.case_id) return data.case_id
+  if (data.qraKey) return data.qraKey
+  if (typeof versionCaseId === 'string' || typeof versionCaseId === 'number') return String(versionCaseId)
+  return 'EC-PENDING'
 }
 
 function normalizeVerdict(data: EvidenceCaseData) {

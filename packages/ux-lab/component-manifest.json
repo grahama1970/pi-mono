@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-  "updated": "2026-05-05",
+  "updated": "2026-05-06",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -245,7 +245,24 @@
       "variations": ["default"],
       "test_status": "none",
       "source_mockup": "tab_model_health_r7.html"
+    },
+    {
+      "id": "hack-evolve-monitor",
+      "name": "HackEvolveMonitor",
+      "file": "src/components/hack/HackEvolveMonitor.tsx",
+      "lines": 497,
+      "description": "Current-exploit $hack monitor. It renders the active exploit attempt and previous attempts from an adapter-shaped fixture; it does not render memory recall, dashboards, KPIs, run history, or fake operational state.",
+      "props": {
+        "none": "The component currently uses an in-file fixture shaped like the future /api/hack/evolve-runs/latest adapter contract."
+      },
+      "features": ["current exploit panel", "latest event list", "availableActions[] rendering with disabled reasons", "previous exploits table scoped to the same attempts.jsonl run", "source pills on every visible value"],
+      "token_usage": ["card", "heading", "label", "body", "glowDot", "EMBRY.bg*", "EMBRY.border", "EMBRY.green/red/amber/blue/dim"],
+      "data_source": "Fixture data shaped like /api/hack/evolve-runs/latest. Future adapter should derive currentExploit and previousExploits from attempts.jsonl, enrich promoted anomalies from anomalies.jsonl, and expose availableActions[].",
+      "variations": ["current-exploit"],
+      "test_status": "TypeScript + CDP visual verification required after every layout change",
+      "composition": "Registered in ComponentGallery under Hack / Composed as the two-pane current-exploit monitor for $hack evolve-campaign."
     }
+
   ],
   "compositions": [
     {
@@ -261,7 +278,21 @@
       },
       "section_headers": "Colored pill (5x16px, rounded) + 11px font-black uppercase tracking-[0.2em] text-slate-400",
       "variations": ["3-column (5 tactics)", "threat-map-focus (all 9 tactics, taller)", "live (real ArangoDB data via useSpartaData hook)"]
+    },
+    {
+      "id": "hack-evolve-monitor",
+      "name": "Hack Evolve Monitor",
+      "description": "Current-exploit $hack monitor centered on the active exploit attempt plus previous attempts from the same attempts.jsonl run.",
+      "file": "src/components/gallery/ComponentGallery.tsx (registry entry)",
+      "pattern": {
+        "top_bar": "Active artifact path and exploit source only; no health, queue, score, or memory status chrome",
+        "pane_1": { "label": "Current Exploit", "components": ["HackEvolveMonitor.CurrentExploitPanel"] },
+        "pane_2": { "label": "Latest Events + Actions", "components": ["HackEvolveMonitor.RecentEvents", "HackEvolveMonitor.AvailableActions"] },
+        "bottom": { "label": "Previous Exploits", "components": ["HackEvolveMonitor.PreviousExploits"] }
+      },
+      "variations": ["current-exploit"]
     }
+
   ],
   "data_hooks": [
     {
@@ -327,6 +358,43 @@
     ],
     "test_status": "TypeScript + CDP visual verification required after every layout change"
   },
+
+  "hack_monitor": {
+    "id": "hack-evolve-monitor",
+    "name": "HackEvolveMonitor",
+    "file": "src/components/hack/HackEvolveMonitor.tsx",
+    "description": "Current-exploit monitor for $hack evolve-campaign. It removes dashboard theater by showing only currentExploit, previousExploits, recent events, and availableActions[] with source-backed artifact selectors.",
+    "artifact_contract": {
+      "summary": "Supporting run metadata only; not the primary monitor object.",
+      "attempts": "Primary source of truth for currentExploit and previousExploits. Each visible exploit row must resolve to an attempts.jsonl selector such as attempt_id.",
+      "anomalies": "Promoted anomaly evidence used to enrich currentExploit.latestResult and blocker context.",
+      "generation_summaries": "Strategy/lineage context only; not primary monitor content.",
+      "promotion_tasks": "Downstream handoff tasks generated from promoted anomalies; not exploit attempts.",
+      "docker_logs": "Optional evidence opened through availableActions[]; not a dashboard log wall."
+    },
+    "known_gaps_exposed_by_ui": ["Implement /api/hack/evolve-runs/latest artifact adapter.", "Define attempts.jsonl selectors and line-pointer support.", "Expose availableActions[] with enabled/disabled reasons.", "Map anomalies.jsonl promoted records onto currentExploit without inventing state."],
+    "adapter_contract": "GET /api/hack/evolve-runs/latest returns active artifact path, currentExploit, previousExploits, latestEvents, availableActions, and sourceDetail for every visible field.",
+    "gallery_entry": "Hack / Composed / HackEvolveMonitor",
+    "app_shell_route": "Sidebar project id hack renders HackEvolveMonitor directly at #hack/final-site and appears near the top of the project list."
+  },
+  "route_shell_contracts": [
+    {
+      "id": "sparta-explorer-final-site",
+      "files": [
+        "src/App.tsx",
+        "src/components/sparta/explorer/SpartaExplorer.tsx"
+      ],
+      "routes": [
+        "#sparta-explorer",
+        "#sparta-explorer/coverage",
+        "#sparta-explorer/controls",
+        "#sparta-explorer/qras"
+      ],
+      "contract": "SPARTA Explorer final-site routes render inside the ux-lab project housing and keep the SPARTA tab strip visible, including Controls and Coverage, even when the QRAs tab is active.",
+      "interaction_contract": "Navigation buttons in the SPARTA tab strip keep stable data-qid/data-qs-action selectors and remain available from the QRA review workspace.",
+      "qras_layout_contract": "The housed QRAs route uses bounded responsive columns so the filter rail, dense QRA table, editable draft, inline CAE artifact, and fixed chat composer remain visible without horizontal clipping at a 1440px desktop viewport."
+    }
+  ],
   "planned_components": [
     {
       "id": "qra-detail",

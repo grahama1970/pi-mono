@@ -85,6 +85,7 @@ const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH 
 const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
 const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'status.json')
 const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
+const SPARTA_GAP_PLAN_DIR = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
 const PUBLIC_ROOT = resolve(__dirname, '../public')
 const ARTIFACTS_ROOT = resolve(process.env.UX_LAB_ARTIFACTS_ROOT ?? process.env.ARTIFACTS_ROOT ?? '/mnt/storage12tb/pi-mono/artifacts')
 const PDF_LAB_ARTIFACTS_ROOT = resolve(process.env.PDF_LAB_ARTIFACTS_ROOT ?? resolve(ARTIFACTS_ROOT, 'pdf-lab'))
@@ -1196,7 +1197,7 @@ function deriveBestPracticeAudit(
 }
 
 async function readLatestArtifactSummary() {
-  const artifactDir = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
+  const artifactDir = SPARTA_GAP_PLAN_DIR
   const files = await readdir(artifactDir).catch(() => [])
   const interesting = files
     .filter((name) => /final_audit|backfill_summary|remaining_manifest|comparison_gated_manifest|failures/.test(name))
@@ -1207,6 +1208,104 @@ async function readLatestArtifactSummary() {
     recent: interesting,
     c2cAuditPath: 'artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json',
     nonC2cAuditPath: 'artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json',
+  }
+}
+
+function parseLastMatch<T>(text: string, pattern: RegExp, map: (match: RegExpMatchArray) => T | null): T | null {
+  let out: T | null = null
+  for (const match of text.matchAll(pattern)) {
+    out = map(match)
+  }
+  return out
+}
+
+async function newestCreateQrasLog(): Promise<{ path: string; mtimeMs: number } | null> {
+  const files = await readdir(SPARTA_GAP_PLAN_DIR).catch(() => [])
+  const candidates = await Promise.all(files
+    .filter((name) => /^create_qras_.*\.log$/.test(name) && !name.includes('watchdog') && !name.includes('safe_backfill_setsid_chain'))
+    .map(async (name) => {
+      const path = resolve(SPARTA_GAP_PLAN_DIR, name)
+      const stats = await stat(path).catch(() => null)
+      return stats ? { path, mtimeMs: stats.mtimeMs } : null
+    }))
+  return candidates
+    .filter((row): row is { path: string; mtimeMs: number } => Boolean(row))
+    .sort((left, right) => right.mtimeMs - left.mtimeMs)[0] ?? null
+}
+
+async function readCreateQrasBackfillProgress(): Promise<JsonRecord> {
+  const processPattern = 'runtime\\.cli (generate|manifest)|create_qras_safe_backfill'
+  const { stdout } = await execAsync(`pgrep -af '${processPattern}' || true`, { timeout: 5_000 }).catch(() => ({ stdout: '' }))
+  const processLines = stdout
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => !line.includes('pgrep -af'))
+  const activeRuntimeLines = processLines.filter((line) => /runtime\.cli (generate|manifest)/.test(line))
+  const newestLog = await newestCreateQrasLog()
+  const logText = newestLog ? await readFile(newestLog.path, 'utf8').catch(() => '') : ''
+  const lastChunk = parseLastMatch(logText, /Chunk\s+(\d+)\/(\d+)\s+\((\d+)-(\d+)\/(\d+)\)/g, (match) => ({
+    current: Number(match[1]),
+    total: Number(match[2]),
+    start: Number(match[3]),
+    end: Number(match[4]),
+    job_total: Number(match[5]),
+  }))
+  const lastHeartbeat = parseLastMatch(logText, /Heartbeat:\s+chunk\s+(\d+)\/(\d+),\s+pending=(\d+),\s+elapsed=([\d.]+)s,\s+items=(.*)/g, (match) => ({
+    chunk_current: Number(match[1]),
+    chunk_total: Number(match[2]),
+    pending: Number(match[3]),
+    elapsed_s: Number(match[4]),
+    items: String(match[5] ?? '').slice(0, 240),
+  }))
+  const lastStored = parseLastMatch(logText, /Stored\s+(\d+)\s+QRAs\s+\(total:\s*(\d+)\)/g, (match) => ({
+    last_batch: Number(match[1]),
+    total: Number(match[2]),
+  }))
+  const heartbeat = lastChunk && lastHeartbeat
+    && lastHeartbeat.chunk_current === lastChunk.current
+    && lastHeartbeat.chunk_total === lastChunk.total
+    ? lastHeartbeat
+    : null
+  const manifestPath = parseLastMatch(logText, /Manifest:\s+(.+)/g, (match) => String(match[1] ?? '').trim())
+  const totalJobs = parseLastMatch(logText, /Total jobs:\s+(\d+)/g, (match) => Number(match[1]))
+  const canonicalJobs = parseLastMatch(logText, /Processing\s+(\d+)\s+canonical jobs/g, (match) => Number(match[1]))
+  const relationshipJobs = parseLastMatch(logText, /Processing\s+(\d+)\s+relationship jobs/g, (match) => Number(match[1]))
+  const latestLogAgeSeconds = newestLog ? Math.max(0, Math.round((Date.now() - newestLog.mtimeMs) / 1000)) : null
+  const active = activeRuntimeLines.length > 0 || processLines.some((line) => line.includes('create_qras_safe_backfill'))
+  const percent = lastChunk && lastChunk.total > 0
+    ? Math.max(0, Math.min(100, Math.round((lastChunk.current / lastChunk.total) * 100)))
+    : null
+
+  return {
+    status: active ? 'running' : 'idle',
+    active_process_count: activeRuntimeLines.length,
+    process_count: processLines.length,
+    pid_summary: activeRuntimeLines.slice(0, 2).map((line) => line.split(/\s+/)[0]).join(', ') || null,
+    current_log: newestLog ? newestLog.path : null,
+    current_log_age_seconds: latestLogAgeSeconds,
+    manifest_path: manifestPath,
+    total_jobs: totalJobs,
+    canonical_jobs: canonicalJobs,
+    relationship_jobs: relationshipJobs,
+    chunk: lastChunk,
+    heartbeat,
+    stored: lastStored,
+    progress_percent: percent,
+    message: active && lastChunk
+      ? `create-qras ${lastChunk.current}/${lastChunk.total} chunks; ${lastStored?.total ?? 0} stored in current manifest.`
+      : active
+        ? 'create-qras worker active; waiting for manifest progress heartbeat.'
+        : newestLog
+          ? `No active create-qras worker observed; latest log changed ${latestLogAgeSeconds}s ago.`
+          : 'No create-qras backfill log found.',
+  }
+}
+
+async function attachLiveCreateQrasProgress(payload: JsonRecord): Promise<JsonRecord> {
+  return {
+    ...attachQraTrustStatus(payload),
+    createQrasBackfill: await readCreateQrasBackfillProgress(),
   }
 }
 
@@ -1582,6 +1681,7 @@ print(json.dumps(payload, default=str))
     promptAudit,
     artifacts,
     supervisor,
+    createQrasBackfill: await readCreateQrasBackfillProgress(),
   }
 }
 
@@ -1589,7 +1689,7 @@ function refreshSpartaCoverageInBackground() {
   if (spartaCoverageRefresh) return spartaCoverageRefresh
   spartaCoverageRefresh = buildSpartaCoveragePayload()
     .then(async (payload) => {
-      const normalizedPayload = attachQraTrustStatus(payload)
+      const normalizedPayload = await attachLiveCreateQrasProgress(payload)
       spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload: normalizedPayload }
       await writeSpartaCoverageSnapshot(normalizedPayload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
       broadcastSpartaCoverageHealth(normalizedPayload)
@@ -1633,7 +1733,7 @@ function startSpartaCoveragePushBridge(): void {
 app.get('/api/sparta/coverage-health', async (req, res) => {
   try {
     if (spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
-      return res.json(attachQraTrustStatus(spartaCoverageCache.payload))
+      return res.json(await attachLiveCreateQrasProgress(spartaCoverageCache.payload))
     }
 
     const waitForRefresh = req.query.wait === '1'
@@ -1641,7 +1741,7 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
 
     if (snapshot && !waitForRefresh) {
       refreshSpartaCoverageInBackground().catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
-      return res.json(attachQraTrustStatus({ ...snapshot, stale: true, refreshing: true }))
+      return res.json(await attachLiveCreateQrasProgress({ ...snapshot, stale: true, refreshing: true }))
     }
 
     const payload = await refreshSpartaCoverageInBackground()
@@ -5664,6 +5764,16 @@ app.post('/api/extract-entities', async (req, res) => {
             reason?: string
           }>)
         : []
+      let externalEntities = Array.isArray((result as any).external_entities)
+        ? ((result as any).external_entities as Array<{
+            mention?: string
+            normalized_text?: string
+            span?: [number, number]
+            entity_type?: string
+            routing_effect?: string
+            source?: string
+          }>)
+        : []
       const domainTerms = Array.isArray((result as any).domain_terms)
         ? ((result as any).domain_terms as Array<{
             text?: string
@@ -5686,6 +5796,50 @@ app.post('/api/extract-entities', async (req, res) => {
               name: e.canonical_name ?? e.canonical_id,
               framework: e.framework ?? '',
             }))
+
+      const loweredText = text.toLowerCase()
+      const parentheticalMismatches: typeof externalEntities = []
+      normalizedControlIds.forEach((cid, index) => {
+        const canonicalName = normalizedControlMeta[index]?.name?.trim()
+        if (!cid || !canonicalName) return
+        const cidStart = loweredText.indexOf(cid.toLowerCase())
+        if (cidStart < 0) return
+        const afterCid = cidStart + cid.length
+        const open = text.indexOf('(', afterCid)
+        if (open < 0 || open - afterCid > 3) return
+        const close = text.indexOf(')', open + 1)
+        if (close < 0) return
+        const parenthetical = text.slice(open + 1, close).trim()
+        if (!parenthetical) return
+        const canonicalTerms = [canonicalName, cid]
+          .map((term) => term.trim().toLowerCase())
+          .filter(Boolean)
+        if (canonicalTerms.includes(parenthetical.toLowerCase())) return
+        parentheticalMismatches.push({
+          mention: parenthetical,
+          normalized_text: parenthetical.toLowerCase(),
+          span: [open + 1, close],
+          entity_type: 'unsupported_control_name',
+          routing_effect: `does_not_match_${cid}_canonical_name_${canonicalName}`,
+          source: '/extract-entities parenthetical control-name guard',
+        })
+      })
+      if (parentheticalMismatches.length > 0) {
+        parentheticalMismatches.forEach((mismatch) => {
+          const mismatchKey = (mismatch.mention || mismatch.normalized_text || '').toLowerCase()
+          const mismatchSpan = Array.isArray(mismatch.span) ? mismatch.span.join(':') : ''
+          const existingIndex = externalEntities.findIndex((entity) => {
+            const entityKey = (entity.mention || entity.normalized_text || '').toLowerCase()
+            const entitySpan = Array.isArray(entity.span) ? entity.span.join(':') : ''
+            return entityKey === mismatchKey && entitySpan === mismatchSpan
+          })
+          if (existingIndex >= 0) {
+            externalEntities[existingIndex] = { ...externalEntities[existingIndex], ...mismatch }
+          } else {
+            externalEntities.push(mismatch)
+          }
+        })
+      }
 
       const entities = normalizedControlIds.map((cid: string, i: number) => {
         const meta = normalizedControlMeta[i] ?? {}
@@ -5721,6 +5875,15 @@ app.post('/api/extract-entities', async (req, res) => {
                 kind: 'aerospace_term',
                 source: '/extract-entities',
               })),
+            ...externalEntities
+              .filter((e) => Array.isArray(e.span) && typeof e.span[0] === 'number' && typeof e.span[1] === 'number')
+              .map((e) => ({
+                text: e.mention ?? e.normalized_text ?? '',
+                span: e.span,
+                kind: e.entity_type ?? 'external_entity',
+                grounded_to_framework: false,
+                source: e.source ?? '/extract-entities',
+              })),
           ].filter((s) => typeof s.text === 'string' && s.text.length > 0)
 
       const normalizedPhrases = legacyPhrases.length > 0
@@ -5729,29 +5892,41 @@ app.post('/api/extract-entities', async (req, res) => {
             .map((t) => t.text)
             .filter((v): v is string => typeof v === 'string' && v.length > 0)
 
-      const normalizedResolutionMap = (result as any).resolution_map ?? Object.fromEntries([
-        ...resolvedEntities
-          .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
-          .map((e) => [e.mention as string, {
-            exists: true,
-            control_id: e.canonical_id ?? null,
-            name: e.canonical_name ?? e.mention,
-            framework: e.framework ?? null,
-            match_type: 'exact',
-          }]),
-        ...unresolvedEntities
-          .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
-          .map((e) => [e.mention as string, {
-            exists: false,
-            reason: e.reason ?? 'unresolved',
-            match_type: 'unresolved',
-          }]),
-      ])
+      const rawResolutionMap = (result as any).resolution_map
+      const normalizedResolutionMap = {
+        ...(rawResolutionMap && typeof rawResolutionMap === 'object' && !Array.isArray(rawResolutionMap) ? rawResolutionMap : {}),
+        ...Object.fromEntries([
+          ...resolvedEntities
+            .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
+            .map((e) => [e.mention as string, {
+              exists: true,
+              control_id: e.canonical_id ?? null,
+              name: e.canonical_name ?? e.mention,
+              framework: e.framework ?? null,
+              match_type: 'exact',
+            }]),
+          ...unresolvedEntities
+            .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
+            .map((e) => [e.mention as string, {
+              exists: false,
+              reason: e.reason ?? 'unresolved',
+              match_type: 'unresolved',
+            }]),
+          ...externalEntities
+            .filter((e) => typeof e.mention === 'string' && e.mention.length > 0)
+            .map((e) => [e.mention as string, {
+              exists: false,
+              reason: e.routing_effect ?? 'not_grounded_to_sparta_controls',
+              match_type: e.entity_type ?? 'external_entity',
+            }]),
+        ]),
+      }
 
       const normalizedNotInCorpus = Array.isArray((result as any).not_in_corpus)
         ? ((result as any).not_in_corpus as unknown[])
         : unresolvedEntities
             .map((e) => e.mention)
+            .concat(externalEntities.map((e) => e.mention))
             .filter((v): v is string => typeof v === 'string' && v.length > 0)
 
       res.json({
@@ -5767,9 +5942,13 @@ app.post('/api/extract-entities', async (req, res) => {
         misspellings: result.misspellings ?? [],
         related_pairs: result.related_pairs ?? [],
         recall_items: result.recall_items ?? [],
+        grounding_ok: result.grounding_ok ?? null,
+        agent_decision: result.agent_decision ?? null,
+        summary: result.summary ?? null,
         // Pass-through current contract for newer consumers
         resolved_entities: resolvedEntities,
         unresolved_entities: unresolvedEntities,
+        external_entities: externalEntities,
         domain_terms: domainTerms,
       })
     } catch (daemonErr) {

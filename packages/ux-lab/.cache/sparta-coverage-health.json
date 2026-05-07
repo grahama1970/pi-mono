@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-05-06T05:17:41.070Z",
+  "generated_at": "2026-05-07T04:59:28.343Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
     "controls": 12321,
     "qrasLegacy": 245975,
-    "qrasCanonical": 769,
-    "qrasRelationship": 1463,
-    "qrasTotal": 248207,
+    "qrasCanonical": 1948,
+    "qrasRelationship": 1652,
+    "qrasTotal": 249575,
     "relationships": 262426,
     "urls": 6854,
     "urlKnowledge": 43398,
@@ -26,16 +26,16 @@
     ],
     "counts": {
       "legacy": 245975,
-      "canonical": 769,
-      "relationship": 1463,
-      "total": 248207
+      "canonical": 1948,
+      "relationship": 1652,
+      "total": 249575
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-06T05:17:40Z",
+    "generated_at": "2026-05-07T04:59:23Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -138,24 +138,219 @@
     {
       "framework": "SPARTA",
       "controls": 1109,
-      "missing_descriptions": 0,
+      "missing_descriptions": 70,
       "missing_embeddings": 0,
       "raw_frameworks": [
         "SPARTA",
         "sparta"
       ],
-      "defects": [],
-      "quality_gaps": 0,
-      "status": "healthy",
-      "action_code": "inspect_control_framework",
-      "action_label": "Inspect",
-      "risk": "read_only",
+      "defects": [
+        {
+          "control_id": "ARFS-11",
+          "title": "Authorized SLE Session Establishment by Attacker (Rogue IP)",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 59
+        },
+        {
+          "control_id": "ARFS-12",
+          "title": "Rejection of CLTU BIND Due to Tampered/Invalid Credentials",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 58
+        },
+        {
+          "control_id": "ARFS-5",
+          "title": "Failed Authentication Attempts Due to RF/EMI Interference",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 57
+        },
+        {
+          "control_id": "CSNE-1",
+          "title": "Unexpected Ground Station IP Address in Communication",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 53
+        },
+        {
+          "control_id": "CSNE-10",
+          "title": "Transmission to Unauthorized Ground Station Detected",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 52
+        },
+        {
+          "control_id": "CSNE-11",
+          "title": "Data Exfiltration Detected During Scheduled Communication Windows",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 65
+        },
+        {
+          "control_id": "CSNE-14",
+          "title": "Unusual Data Transmission Between SpaceWire Routing Switches",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 60
+        },
+        {
+          "control_id": "CSNE-16",
+          "title": "Suspicious Network Traffic Without Expected Encryption",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 54
+        },
+        {
+          "control_id": "CSNE-17",
+          "title": "Creation of FIFO for Data Exfiltration or Command Injection",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 59
+        },
+        {
+          "control_id": "CSNE-18",
+          "title": "Process Execution Tied to Specific Geographic Coordinates",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 57
+        },
+        {
+          "control_id": "CSNE-20",
+          "title": "Unauthorized Downlink Communication at Unexpected Time",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 54
+        },
+        {
+          "control_id": "CSNE-21",
+          "title": "Unauthorized Data Transmission from Ground System to External IP",
+          "gap_types": [
+            "short_description"
+          ],
+          "description_length": 64
+        }
+      ],
+      "quality_gaps": 70,
+      "status": "needs_repair",
+      "action_code": "repair_control_quality",
+      "action_label": "Plan Repair",
+      "risk": "review_required",
       "safe_default": "observe_only",
-      "requires_checkpoint": false,
+      "requires_checkpoint": true,
       "command_payload": {
         "framework": "SPARTA",
         "gap_type": "control_quality",
-        "gap_count": 0
+        "gap_count": 70,
+        "defects": [
+          {
+            "control_id": "ARFS-11",
+            "title": "Authorized SLE Session Establishment by Attacker (Rogue IP)",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 59
+          },
+          {
+            "control_id": "ARFS-12",
+            "title": "Rejection of CLTU BIND Due to Tampered/Invalid Credentials",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 58
+          },
+          {
+            "control_id": "ARFS-5",
+            "title": "Failed Authentication Attempts Due to RF/EMI Interference",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 57
+          },
+          {
+            "control_id": "CSNE-1",
+            "title": "Unexpected Ground Station IP Address in Communication",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 53
+          },
+          {
+            "control_id": "CSNE-10",
+            "title": "Transmission to Unauthorized Ground Station Detected",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 52
+          },
+          {
+            "control_id": "CSNE-11",
+            "title": "Data Exfiltration Detected During Scheduled Communication Windows",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 65
+          },
+          {
+            "control_id": "CSNE-14",
+            "title": "Unusual Data Transmission Between SpaceWire Routing Switches",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 60
+          },
+          {
+            "control_id": "CSNE-16",
+            "title": "Suspicious Network Traffic Without Expected Encryption",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 54
+          },
+          {
+            "control_id": "CSNE-17",
+            "title": "Creation of FIFO for Data Exfiltration or Command Injection",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 59
+          },
+          {
+            "control_id": "CSNE-18",
+            "title": "Process Execution Tied to Specific Geographic Coordinates",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 57
+          },
+          {
+            "control_id": "CSNE-20",
+            "title": "Unauthorized Downlink Communication at Unexpected Time",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 54
+          },
+          {
+            "control_id": "CSNE-21",
+            "title": "Unauthorized Data Transmission from Ground System to External IP",
+            "gap_types": [
+              "short_description"
+            ],
+            "description_length": 64
+          }
+        ]
       }
     },
     {
@@ -472,42 +667,23 @@
     {
       "framework": "ATT&CK Mobile",
       "controls": 225,
-      "missing_descriptions": 1,
+      "missing_descriptions": 0,
       "missing_embeddings": 0,
       "raw_frameworks": [
         "ATT_CK_Mobile"
       ],
-      "defects": [
-        {
-          "control_id": "T1454",
-          "title": "Malicious SMS Message",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 4
-        }
-      ],
-      "quality_gaps": 1,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ATT&CK Mobile",
         "gap_type": "control_quality",
-        "gap_count": 1,
-        "defects": [
-          {
-            "control_id": "T1454",
-            "title": "Malicious SMS Message",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 4
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
@@ -543,12 +719,12 @@
       ],
       "defects": [
         {
-          "control_id": "10",
-          "title": "Improvement",
+          "control_id": "6.2",
+          "title": "Information security objectives and planning to achieve them",
           "gap_types": [
             "short_description"
           ],
-          "description_length": 11
+          "description_length": 60
         }
       ],
       "quality_gaps": 1,
@@ -564,12 +740,12 @@
         "gap_count": 1,
         "defects": [
           {
-            "control_id": "10",
-            "title": "Improvement",
+            "control_id": "6.2",
+            "title": "Information security objectives and planning to achieve them",
             "gap_types": [
               "short_description"
             ],
-            "description_length": 11
+            "description_length": 60
           }
         ]
       }
@@ -599,7 +775,7 @@
     }
   ],
   "monitor": {
-    "passed": 13,
+    "passed": 15,
     "total": 17,
     "checks": [
       {
@@ -665,7 +841,7 @@
       {
         "ok": true,
         "dimension": "qra_reasoning_coverage",
-        "message": "245,973/245,975 QRAs have valid reasoning (100.0%)"
+        "message": "241,128/241,128 QRAs have valid reasoning (100.0%)"
       },
       {
         "ok": true,
@@ -678,33 +854,31 @@
         "message": "15 relationship QRAs with chains (0 violations)"
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "create_qras_remaining_calls",
-        "message": "750 implemented calls remain; 114 comparison calls remain after deterministic evidence gating (8,107 raw candidates)"
+        "message": "0 implemented calls remain; 321 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "qra_question_surface_quality",
-        "message": "258 malformed question surfaces across 2,769 scanned QRAs",
-        "malformed": 258,
-        "scanned": 2769,
-        "course_corrected_non_generation": 0,
-        "course_corrected_by_collection": {},
-        "malformed_by_collection": {
-          "sparta_qra_canonical": 258
+        "message": "0 malformed question surfaces across 3,000 scanned QRAs; 285 course-corrected non-generation placeholders",
+        "malformed": 0,
+        "scanned": 3000,
+        "course_corrected_non_generation": 285,
+        "course_corrected_by_collection": {
+          "sparta_qra_canonical": 285
         },
-        "rule_counts": {
-          "QS01": 258
-        },
+        "malformed_by_collection": {},
+        "rule_counts": {},
         "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
       }
     ],
     "remaining": {
-      "ok": false,
+      "ok": true,
       "dimension": "create_qras_remaining_calls",
-      "message": "750 implemented calls remain; 114 comparison calls remain after deterministic evidence gating (8,107 raw candidates)",
-      "native_remaining_any_collection_total": 556,
-      "native_remaining_non_sparta_total": 556,
+      "message": "0 implemented calls remain; 321 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
+      "native_remaining_any_collection_total": 0,
+      "native_remaining_non_sparta_total": 0,
       "native_remaining_sparta_any_collection": 0,
       "native_by_framework": [
         {
@@ -724,275 +898,16 @@
         {
           "framework": "ATT_CK_ICS",
           "expected_calls": 131,
-          "completed_calls_any_collection": 49,
-          "remaining_calls": 82,
-          "remaining_control_ids": [
-            "M0916",
-            "M0953",
-            "M0954",
-            "S0038",
-            "S0089",
-            "S0093",
-            "S0143",
-            "S0366",
-            "S0368",
-            "S0372",
-            "S0446",
-            "S0496",
-            "S0603",
-            "S0604",
-            "S0605",
-            "S0606",
-            "S0607",
-            "S0608",
-            "S1000",
-            "S1006",
-            "S1009",
-            "S1010",
-            "S1045",
-            "S1072",
-            "S1157",
-            "S1165",
-            "T0801",
-            "T0802",
-            "T0803",
-            "T0807",
-            "T0808",
-            "T0810",
-            "T0811",
-            "T0817",
-            "T0818",
-            "T0819",
-            "T0823",
-            "T0824",
-            "T0825",
-            "T0828",
-            "T0830",
-            "T0832",
-            "T0834",
-            "T0837",
-            "T0839",
-            "T0841",
-            "T0842",
-            "T0845",
-            "T0846",
-            "T0848",
-            "T0850",
-            "T0851",
-            "T0852",
-            "T0853",
-            "T0854",
-            "T0855",
-            "T0856",
-            "T0857",
-            "T0858",
-            "T0859",
-            "T0860",
-            "T0861",
-            "T0862",
-            "T0863",
-            "T0864",
-            "T0865",
-            "T0867",
-            "T0868",
-            "T0869",
-            "T0870",
-            "T0874",
-            "T0877",
-            "T0880",
-            "T0882",
-            "T0884",
-            "T0886",
-            "T0887",
-            "T0888",
-            "T0891",
-            "T0892",
-            "T0893",
-            "T0894"
-          ]
+          "completed_calls_any_collection": 131,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "ATT_CK_Mobile",
           "expected_calls": 225,
-          "completed_calls_any_collection": 50,
-          "remaining_calls": 175,
-          "remaining_control_ids": [
-            "S0320",
-            "S0321",
-            "S0322",
-            "S0323",
-            "S0324",
-            "S0325",
-            "S0326",
-            "S0327",
-            "S0328",
-            "S0329",
-            "S0399",
-            "S0403",
-            "S0405",
-            "S0406",
-            "S0407",
-            "S0408",
-            "S0411",
-            "S0418",
-            "S0419",
-            "S0420",
-            "S0421",
-            "S0422",
-            "S0423",
-            "S0424",
-            "S0425",
-            "S0426",
-            "S0427",
-            "S0432",
-            "S0440",
-            "S0463",
-            "S0478",
-            "S0479",
-            "S0480",
-            "S0485",
-            "S0489",
-            "S0490",
-            "S0494",
-            "S0505",
-            "S0506",
-            "S0507",
-            "S0509",
-            "S0522",
-            "S0524",
-            "S0525",
-            "S0529",
-            "S0535",
-            "S0536",
-            "S0539",
-            "S0540",
-            "S0544",
-            "S0545",
-            "S0549",
-            "S0550",
-            "S0551",
-            "S0555",
-            "S0558",
-            "S0577",
-            "S0602",
-            "S0655",
-            "S1054",
-            "S1055",
-            "S1056",
-            "S1061",
-            "S1062",
-            "S1067",
-            "S1069",
-            "S1077",
-            "S1079",
-            "S1080",
-            "S1082",
-            "S1083",
-            "S1092",
-            "S1093",
-            "S1094",
-            "S1095",
-            "S1103",
-            "S1126",
-            "S1128",
-            "S1185",
-            "S1195",
-            "S1208",
-            "S1214",
-            "S1215",
-            "S1216",
-            "S1225",
-            "S1231",
-            "S1241",
-            "S1243",
-            "T1399",
-            "T1401",
-            "T1409",
-            "T1410",
-            "T1412",
-            "T1413",
-            "T1414",
-            "T1415",
-            "T1416",
-            "T1417",
-            "T1417.001",
-            "T1417.002",
-            "T1425",
-            "T1427",
-            "T1428",
-            "T1429",
-            "T1430",
-            "T1430.002",
-            "T1431",
-            "T1434",
-            "T1440",
-            "T1441",
-            "T1442",
-            "T1443",
-            "T1444",
-            "T1445",
-            "T1448",
-            "T1449",
-            "T1451",
-            "T1452",
-            "T1453",
-            "T1454",
-            "T1455",
-            "T1456",
-            "T1457",
-            "T1458",
-            "T1459",
-            "T1460",
-            "T1462",
-            "T1463",
-            "T1465",
-            "T1467",
-            "T1468",
-            "T1473",
-            "T1474",
-            "T1474.002",
-            "T1474.003",
-            "T1475",
-            "T1476",
-            "T1478",
-            "T1510",
-            "T1513",
-            "T1517",
-            "T1540",
-            "T1544",
-            "T1577",
-            "T1579",
-            "T1582",
-            "T1603",
-            "T1605",
-            "T1616",
-            "T1623",
-            "T1623.001",
-            "T1625",
-            "T1625.001",
-            "T1626.001",
-            "T1629",
-            "T1629.001",
-            "T1630.002",
-            "T1631",
-            "T1631.001",
-            "T1632",
-            "T1632.001",
-            "T1634.001",
-            "T1635",
-            "T1635.001",
-            "T1638",
-            "T1640",
-            "T1641",
-            "T1641.001",
-            "T1645",
-            "T1658",
-            "T1660",
-            "T1661",
-            "T1663",
-            "T1670",
-            "T1676"
-          ]
+          "completed_calls_any_collection": 225,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "CAPEC",
@@ -1018,12 +933,9 @@
         {
           "framework": "ESA",
           "expected_calls": 137,
-          "completed_calls_any_collection": 135,
-          "remaining_calls": 2,
-          "remaining_control_ids": [
-            "ESA-T2055",
-            "ESA-T2055.001"
-          ]
+          "completed_calls_any_collection": 137,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "NIST",
@@ -1035,307 +947,9 @@
         {
           "framework": "NVD",
           "expected_calls": 4830,
-          "completed_calls_any_collection": 4533,
-          "remaining_calls": 297,
-          "remaining_control_ids": [
-            "CVE-2026-28792",
-            "CVE-2026-3076",
-            "CVE-2026-3197",
-            "CVE-2026-3233",
-            "CVE-2026-3370",
-            "CVE-2026-3398",
-            "CVE-2026-3399",
-            "CVE-2026-3400",
-            "CVE-2026-3401",
-            "CVE-2026-3402",
-            "CVE-2026-3403",
-            "CVE-2026-3404",
-            "CVE-2026-3405",
-            "CVE-2026-3406",
-            "CVE-2026-3407",
-            "CVE-2026-3408",
-            "CVE-2026-3409",
-            "CVE-2026-3410",
-            "CVE-2026-3411",
-            "CVE-2026-3412",
-            "CVE-2026-3413",
-            "CVE-2026-3419",
-            "CVE-2026-3422",
-            "CVE-2026-3429",
-            "CVE-2026-3431",
-            "CVE-2026-3432",
-            "CVE-2026-3437",
-            "CVE-2026-3439",
-            "CVE-2026-3449",
-            "CVE-2026-3452",
-            "CVE-2026-3455",
-            "CVE-2026-3459",
-            "CVE-2026-3463",
-            "CVE-2026-3465",
-            "CVE-2026-3483",
-            "CVE-2026-3484",
-            "CVE-2026-3485",
-            "CVE-2026-3486",
-            "CVE-2026-3487",
-            "CVE-2026-3494",
-            "CVE-2026-3496",
-            "CVE-2026-3497",
-            "CVE-2026-3520",
-            "CVE-2026-3523",
-            "CVE-2026-3536",
-            "CVE-2026-3537",
-            "CVE-2026-3538",
-            "CVE-2026-3539",
-            "CVE-2026-3540",
-            "CVE-2026-3541",
-            "CVE-2026-3542",
-            "CVE-2026-3543",
-            "CVE-2026-3544",
-            "CVE-2026-3545",
-            "CVE-2026-3582",
-            "CVE-2026-3585",
-            "CVE-2026-3588",
-            "CVE-2026-3589",
-            "CVE-2026-3598",
-            "CVE-2026-3606",
-            "CVE-2026-3610",
-            "CVE-2026-3611",
-            "CVE-2026-3612",
-            "CVE-2026-3613",
-            "CVE-2026-3616",
-            "CVE-2026-3630",
-            "CVE-2026-3631",
-            "CVE-2026-3638",
-            "CVE-2026-3653",
-            "CVE-2026-3657",
-            "CVE-2026-3661",
-            "CVE-2026-3662",
-            "CVE-2026-3663",
-            "CVE-2026-3664",
-            "CVE-2026-3665",
-            "CVE-2026-3667",
-            "CVE-2026-3668",
-            "CVE-2026-3669",
-            "CVE-2026-3670",
-            "CVE-2026-3671",
-            "CVE-2026-3672",
-            "CVE-2026-3674",
-            "CVE-2026-3675",
-            "CVE-2026-3677",
-            "CVE-2026-3678",
-            "CVE-2026-3679",
-            "CVE-2026-3680",
-            "CVE-2026-3681",
-            "CVE-2026-3682",
-            "CVE-2026-3683",
-            "CVE-2026-3693",
-            "CVE-2026-3695",
-            "CVE-2026-3696",
-            "CVE-2026-3697",
-            "CVE-2026-3698",
-            "CVE-2026-3699",
-            "CVE-2026-3700",
-            "CVE-2026-3701",
-            "CVE-2026-3702",
-            "CVE-2026-3703",
-            "CVE-2026-3704",
-            "CVE-2026-3705",
-            "CVE-2026-3706",
-            "CVE-2026-3707",
-            "CVE-2026-3708",
-            "CVE-2026-3709",
-            "CVE-2026-3710",
-            "CVE-2026-3711",
-            "CVE-2026-3713",
-            "CVE-2026-3714",
-            "CVE-2026-3715",
-            "CVE-2026-3716",
-            "CVE-2026-3719",
-            "CVE-2026-3720",
-            "CVE-2026-3721",
-            "CVE-2026-3723",
-            "CVE-2026-3724",
-            "CVE-2026-3725",
-            "CVE-2026-3726",
-            "CVE-2026-3727",
-            "CVE-2026-3728",
-            "CVE-2026-3729",
-            "CVE-2026-3730",
-            "CVE-2026-3731",
-            "CVE-2026-3732",
-            "CVE-2026-3733",
-            "CVE-2026-3734",
-            "CVE-2026-3735",
-            "CVE-2026-3736",
-            "CVE-2026-3737",
-            "CVE-2026-3738",
-            "CVE-2026-3739",
-            "CVE-2026-3740",
-            "CVE-2026-3741",
-            "CVE-2026-3742",
-            "CVE-2026-3743",
-            "CVE-2026-3744",
-            "CVE-2026-3745",
-            "CVE-2026-3746",
-            "CVE-2026-3747",
-            "CVE-2026-3748",
-            "CVE-2026-3749",
-            "CVE-2026-3750",
-            "CVE-2026-3751",
-            "CVE-2026-3752",
-            "CVE-2026-3753",
-            "CVE-2026-3754",
-            "CVE-2026-3755",
-            "CVE-2026-3756",
-            "CVE-2026-3757",
-            "CVE-2026-3758",
-            "CVE-2026-3759",
-            "CVE-2026-3760",
-            "CVE-2026-3761",
-            "CVE-2026-3762",
-            "CVE-2026-3763",
-            "CVE-2026-3764",
-            "CVE-2026-3765",
-            "CVE-2026-3766",
-            "CVE-2026-3767",
-            "CVE-2026-3768",
-            "CVE-2026-3769",
-            "CVE-2026-3770",
-            "CVE-2026-3771",
-            "CVE-2026-3783",
-            "CVE-2026-3784",
-            "CVE-2026-3785",
-            "CVE-2026-3786",
-            "CVE-2026-3787",
-            "CVE-2026-3788",
-            "CVE-2026-3789",
-            "CVE-2026-3790",
-            "CVE-2026-3791",
-            "CVE-2026-3792",
-            "CVE-2026-3793",
-            "CVE-2026-3794",
-            "CVE-2026-3795",
-            "CVE-2026-3796",
-            "CVE-2026-3797",
-            "CVE-2026-3798",
-            "CVE-2026-3799",
-            "CVE-2026-3800",
-            "CVE-2026-3801",
-            "CVE-2026-3802",
-            "CVE-2026-3803",
-            "CVE-2026-3804",
-            "CVE-2026-3805",
-            "CVE-2026-3806",
-            "CVE-2026-3807",
-            "CVE-2026-3808",
-            "CVE-2026-3809",
-            "CVE-2026-3810",
-            "CVE-2026-3811",
-            "CVE-2026-3812",
-            "CVE-2026-3813",
-            "CVE-2026-3814",
-            "CVE-2026-3815",
-            "CVE-2026-3816",
-            "CVE-2026-3817",
-            "CVE-2026-3818",
-            "CVE-2026-3819",
-            "CVE-2026-3822",
-            "CVE-2026-3823",
-            "CVE-2026-3841",
-            "CVE-2026-3843",
-            "CVE-2026-3845",
-            "CVE-2026-3846",
-            "CVE-2026-3847",
-            "CVE-2026-3848",
-            "CVE-2026-3854",
-            "CVE-2026-3862",
-            "CVE-2026-3904",
-            "CVE-2026-3913",
-            "CVE-2026-3914",
-            "CVE-2026-3915",
-            "CVE-2026-3916",
-            "CVE-2026-3917",
-            "CVE-2026-3918",
-            "CVE-2026-3919",
-            "CVE-2026-3920",
-            "CVE-2026-3921",
-            "CVE-2026-3922",
-            "CVE-2026-3923",
-            "CVE-2026-3924",
-            "CVE-2026-3925",
-            "CVE-2026-3926",
-            "CVE-2026-3927",
-            "CVE-2026-3928",
-            "CVE-2026-3929",
-            "CVE-2026-3930",
-            "CVE-2026-3931",
-            "CVE-2026-3932",
-            "CVE-2026-3934",
-            "CVE-2026-3935",
-            "CVE-2026-3936",
-            "CVE-2026-3937",
-            "CVE-2026-3938",
-            "CVE-2026-3939",
-            "CVE-2026-3940",
-            "CVE-2026-3941",
-            "CVE-2026-3942",
-            "CVE-2026-3944",
-            "CVE-2026-3946",
-            "CVE-2026-3949",
-            "CVE-2026-3950",
-            "CVE-2026-3951",
-            "CVE-2026-3954",
-            "CVE-2026-3955",
-            "CVE-2026-3956",
-            "CVE-2026-3957",
-            "CVE-2026-3958",
-            "CVE-2026-3959",
-            "CVE-2026-3961",
-            "CVE-2026-3962",
-            "CVE-2026-3963",
-            "CVE-2026-3964",
-            "CVE-2026-3965",
-            "CVE-2026-3966",
-            "CVE-2026-3967",
-            "CVE-2026-3968",
-            "CVE-2026-3969",
-            "CVE-2026-3970",
-            "CVE-2026-3971",
-            "CVE-2026-3972",
-            "CVE-2026-3973",
-            "CVE-2026-3974",
-            "CVE-2026-3975",
-            "CVE-2026-3976",
-            "CVE-2026-3977",
-            "CVE-2026-3978",
-            "CVE-2026-3979",
-            "CVE-2026-3980",
-            "CVE-2026-3981",
-            "CVE-2026-3982",
-            "CVE-2026-3983",
-            "CVE-2026-3984",
-            "CVE-2026-3989",
-            "CVE-2026-3990",
-            "CVE-2026-3992",
-            "CVE-2026-3993",
-            "CVE-2026-3994",
-            "CVE-2026-4007",
-            "CVE-2026-4008",
-            "CVE-2026-4009",
-            "CVE-2026-4010",
-            "CVE-2026-4012",
-            "CVE-2026-4013",
-            "CVE-2026-4014",
-            "CVE-2026-4015",
-            "CVE-2026-4016",
-            "CVE-2026-4039",
-            "CVE-2026-4040",
-            "CVE-2026-4041",
-            "CVE-2026-4042",
-            "CVE-2026-4043",
-            "CVE-2026-4044",
-            "CVE-2026-4045"
-          ]
+          "completed_calls_any_collection": 4830,
+          "remaining_calls": 0,
+          "remaining_control_ids": []
         },
         {
           "framework": "SPARTA",
@@ -1345,30 +959,30 @@
           "remaining_control_ids": []
         }
       ],
-      "sparta_v2_remaining_total": 194,
-      "sparta_v2_native_remaining_target_collection": 5,
-      "sparta_v2_contextual_remaining_target_collection": 189,
+      "sparta_v2_remaining_total": 0,
+      "sparta_v2_native_remaining_target_collection": 0,
+      "sparta_v2_contextual_remaining_target_collection": 0,
       "sparta_v2_remaining_prompt_kinds": {
         "sparta_tactic_canonical": 0,
-        "sparta_technique_canonical": 3,
-        "sparta_countermeasure_canonical": 2,
-        "sparta_tactic_technique_relationship": 1,
-        "sparta_technique_countermeasure_relationship": 188
+        "sparta_technique_canonical": 0,
+        "sparta_countermeasure_canonical": 0,
+        "sparta_tactic_technique_relationship": 0,
+        "sparta_technique_countermeasure_relationship": 0
       },
       "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 114,
+      "sparta_control_to_control_gated_pairs": 321,
       "sparta_control_to_control_gated_skip_reasons": {
-        "no_grounded_overlap": 2025,
-        "non_substantive_node": 5968
+        "no_grounded_overlap": 7780,
+        "non_substantive_node": 6
       },
-      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 745,
-      "implemented_backlog_total_if_v2_sparta_native_required": 750,
-      "exact_remaining_calls_total": 864,
-      "total_with_raw_comparison_candidates": 8857
+      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
+      "implemented_backlog_total_if_v2_sparta_native_required": 0,
+      "exact_remaining_calls_total": 321,
+      "total_with_raw_comparison_candidates": 8107
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T05:17:40Z",
+      "generated_at": "2026-05-07T04:59:23Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1405,35 +1019,34 @@
     {
       "name": "React data-qid coverage",
       "skill": "best-practices-react",
-      "ok": false,
-      "status": "fail",
-      "message": "data-qid coverage: 387/392 (98%)",
-      "covered": 387,
+      "ok": true,
+      "status": "pass",
+      "message": "data-qid coverage: 392/392 (100%)",
+      "covered": 392,
       "total": 392,
-      "percent": 98,
-      "detail": "data-qid coverage: 387/392 (98%)\n\nMISSING (5):\n  shared/EvidenceCaseTrace.tsx:1165 — <button key={`control-pill-${id}`} type=\"button\" onClick={() => onNavigateToCont\n  shared/EvidenceCaseTrace.tsx:1341 — <button type=\"button\" onClick={() => setExpandedStep(expandedStep ? null : 'gate\n  shared/EvidenceCaseTrace.tsx:1358 — <div\n  shared/EvidenceCaseTrace.tsx:1414 — {onCancelEdit && <button type=\"button\" onClick={onCancelEdit} style={{ height: 4\n  shared/EvidenceCaseTrace.tsx:1415 — {onSaveAndRerun && <button type=\"button\" onClick={onSaveAndRerun} disabled={vali\n\nFAIL: 5 interactive elements without data-qid"
+      "percent": 100
     },
     {
       "name": "Python silent fallback scan",
       "skill": "best-practices-python",
-      "ok": false,
-      "status": "fail",
-      "message": "3 violation(s) found.",
-      "detail": "VIOLATION: src/graph_memory/runtime_pressure.py:232 — logger.debug in except handler\nVIOLATION: src/graph_memory/runtime_pressure.py:237 — logger.debug in except handler\nVIOLATION: src/graph_memory/runtime_pressure.py:280 — logger.debug in except handler\n\n3 violation(s) found.\nINFO     | Scanning 243 files under /home/graham/workspace/experiments/memory/src/graph_memory"
+      "ok": true,
+      "status": "pass",
+      "message": "No silent fallback violations found",
+      "detail": "INFO     | Scanning 247 files under /home/graham/workspace/experiments/memory/src/graph_memory\nINFO     | No silent fallback violations found."
     },
     {
       "name": "Prompt best-practice static scan",
       "skill": "best-practices-prompt",
-      "ok": true,
-      "status": "pass",
-      "message": "17/17 scanned prompt files pass; 8/8 active prompt units pass."
+      "ok": false,
+      "status": "fail",
+      "message": "18/19 scanned prompt files pass; 9/10 active prompt units pass."
     },
     {
       "name": "Arango/Qdrant source embedding coverage",
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 632,694 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 633,850 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1726,10 +1339,46 @@
         "status": "pass",
         "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+        "prompt_kind": "sparta/variants/blessed_qra_variant",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": false,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [
+          "grounding"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "prompt_kind": "sparta/variants/qra_term_recall_alias",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
       }
     ],
-    "all_passed": 17,
-    "all_total": 17,
+    "all_passed": 18,
+    "all_total": 19,
     "autofix": {
       "mode": "review_required",
       "resume_hint": "Run review-prompt for failed prompt units, then apply only passing mechanical patches.",
@@ -1744,8 +1393,28 @@
         "generate review-prompt dry-run payloads"
       ]
     },
-    "failed_rows": [],
-    "passed": 8,
+    "failed_rows": [
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": false,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [
+          "grounding"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "prompt_kind": "sparta/variants/qra_term_recall_alias",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
+      }
+    ],
+    "passed": 9,
     "rows": [
       {
         "banned_words": [],
@@ -1882,14 +1551,50 @@
         "status": "pass",
         "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": true,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+        "prompt_kind": "sparta/variants/blessed_qra_variant",
+        "source": "create-qras-active-sparta",
+        "status": "pass",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_user.txt"
+      },
+      {
+        "banned_words": [],
+        "checks": {
+          "exactJson": true,
+          "grounding": false,
+          "inputOutput": true,
+          "rationale": true,
+          "rejectionCriteria": true
+        },
+        "failures": [
+          "grounding"
+        ],
+        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "prompt_kind": "sparta/variants/qra_term_recall_alias",
+        "source": "create-qras-active-sparta",
+        "status": "fail",
+        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
       }
     ],
     "schema_version": 1,
     "scopes": [
       {
-        "passed": 8,
+        "passed": 9,
         "source": "create-qras-active-sparta",
-        "total": 8
+        "total": 10
       },
       {
         "passed": 9,
@@ -1897,22 +1602,32 @@
         "total": 9
       }
     ],
-    "state": "covered",
-    "status": "pass",
-    "total": 8
+    "state": "active_prompt_failures",
+    "status": "fail",
+    "total": 10
   },
   "artifacts": {
     "recent": [
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_211926.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_213331.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260505_213559.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_211926.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_213331.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260505_213559.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260506_203623.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260506_205649.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260505_213559.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_124052.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_141816.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_150227.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_163252.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_203527.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_203623.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_205649.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_211926.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213331.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213559.json"
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213559.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_124052.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_141816.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_150227.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_163252.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203527.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203623.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json"
     ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
@@ -1920,9 +1635,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-06T05:16:57.341054Z",
-    "heartbeat_at": "2026-05-06T05:16:57.341054Z",
-    "snapshot_age_seconds": 110,
+    "generated_at": "2026-05-07T04:58:53.860874Z",
+    "heartbeat_at": "2026-05-07T04:58:53.860874Z",
+    "snapshot_age_seconds": 96,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2178,12 +1893,12 @@
     ],
     "prompt_health_coverage": {
       "schema_version": 1,
-      "status": "pass",
-      "state": "covered",
-      "passed": 8,
-      "total": 8,
-      "all_passed": 17,
-      "all_total": 17,
+      "status": "fail",
+      "state": "active_prompt_failures",
+      "passed": 9,
+      "total": 10,
+      "all_passed": 18,
+      "all_total": 19,
       "rows": [
         {
           "source": "create-qras-active-sparta",
@@ -2320,6 +2035,42 @@
           },
           "banned_words": [],
           "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/variants/blessed_qra_variant",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/variants/qra_term_recall_alias",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": false,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": [
+            "grounding"
+          ]
         }
       ],
       "allRows": [
@@ -2611,14 +2362,70 @@
           },
           "banned_words": [],
           "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/variants/blessed_qra_variant",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_user.txt",
+          "status": "pass",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": true,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": []
+        },
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/variants/qra_term_recall_alias",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": false,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": [
+            "grounding"
+          ]
         }
       ],
-      "failed_rows": [],
+      "failed_rows": [
+        {
+          "source": "create-qras-active-sparta",
+          "prompt_kind": "sparta/variants/qra_term_recall_alias",
+          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
+          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
+          "status": "fail",
+          "checks": {
+            "rationale": true,
+            "inputOutput": true,
+            "exactJson": true,
+            "grounding": false,
+            "rejectionCriteria": true
+          },
+          "banned_words": [],
+          "failures": [
+            "grounding"
+          ]
+        }
+      ],
       "scopes": [
         {
           "source": "create-qras-active-sparta",
-          "passed": 8,
-          "total": 8
+          "passed": 9,
+          "total": 10
         },
         {
           "source": "create-qras-production",
@@ -2643,7 +2450,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T05:17:29Z",
+      "generated_at": "2026-05-07T04:59:28Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2677,20 +2484,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T05:17:29Z",
+      "generated_at": "2026-05-07T04:59:28Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1439,
-        "end": 1588
+        "start": 1538,
+        "end": 1688
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T05:16:57Z",
+      "generated_at": "2026-05-07T04:58:53Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2700,7 +2507,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 632694
+        "qdrant_vectors": 633850
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2770,7 +2577,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 632694,
+        "point_count": 633850,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -2785,14 +2592,14 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-06T05:17:27Z",
-      "status": "fail",
-      "state": "gaps_found",
+      "generated_at": "2026-05-07T04:59:26Z",
+      "status": "pass",
+      "state": "covered",
       "summary": {
         "control_text_missing_or_stub": 0,
-        "control_qra_missing": 404,
-        "control_qra_generation_required": 386,
-        "control_qra_terminal_non_generation_required": 18,
+        "control_qra_missing": 0,
+        "control_qra_generation_required": 0,
+        "control_qra_terminal_non_generation_required": 0,
         "url_text_missing_or_stub": 0,
         "url_qra_missing": 0
       },
@@ -2801,19 +2608,12 @@
         "text_ok": 12321,
         "text_missing_or_stub": 0,
         "qra_scope": 11353,
-        "qra_ok": 10949,
-        "qra_missing": 404,
-        "qra_missing_generation_required": 386,
-        "qra_missing_terminal_non_generation_required": 18,
-        "qra_disposition_counts": {
-          "generation_required": 386,
-          "terminal_non_generation_required": 18
-        },
-        "terminal_reason_counts": {
-          "nvd_rejected_or_withdrawn": 5,
-          "non_substantive_source": 2,
-          "deprecated_or_revoked_control": 11
-        },
+        "qra_ok": 11353,
+        "qra_missing": 0,
+        "qra_missing_generation_required": 0,
+        "qra_missing_terminal_non_generation_required": 0,
+        "qra_disposition_counts": {},
+        "terminal_reason_counts": {},
         "manifest_truncated": false
       },
       "urls": {
@@ -2833,33 +2633,24 @@
         "manifest_truncated": false
       },
       "qra_indexes": {
-        "control_ids_with_valid_qra": 11218,
+        "control_ids_with_valid_qra": 11622,
         "url_ids_with_direct_valid_qra": 0
       },
       "gaps": {
         "control_text_missing_or_stub": 0,
-        "control_qra_missing": 404,
-        "control_qra_generation_required": 386,
-        "control_qra_terminal_non_generation_required": 18,
+        "control_qra_missing": 0,
+        "control_qra_generation_required": 0,
+        "control_qra_terminal_non_generation_required": 0,
         "url_text_missing_or_stub": 0,
         "url_qra_missing": 0,
         "url_direct_qra_attribution_missing": 881,
-        "fail_reasons": [
-          "control_qra_missing",
-          "control_qra_generation_required",
-          "control_qra_terminal_non_generation_required"
-        ]
+        "fail_reasons": []
       },
       "backfill": {
-        "required": true,
+        "required": false,
         "mode": "review_required",
         "mutation_enabled": false,
-        "manifest": {
-          "path": "/home/graham/workspace/experiments/memory/artifacts/sparta_supervisor/dev/source_text_qra_backfill_manifest_20260506T051727Z.json",
-          "status": "review_required",
-          "candidate_count": 404,
-          "truncated": false
-        }
+        "manifest": null
       },
       "resume_hint": "Review generated source text/QRA manifest before running any fetch, control backfill, or QRA generation."
     },
@@ -2891,5 +2682,22 @@
       }
     ],
     "needs_attention": []
+  },
+  "createQrasBackfill": {
+    "status": "idle",
+    "active_process_count": 0,
+    "process_count": 0,
+    "pid_summary": null,
+    "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260506_205649.log",
+    "current_log_age_seconds": 28959,
+    "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json",
+    "total_jobs": 0,
+    "canonical_jobs": null,
+    "relationship_jobs": null,
+    "chunk": null,
+    "heartbeat": null,
+    "stored": null,
+    "progress_percent": null,
+    "message": "No active create-qras worker observed; latest log changed 28959s ago."
   }
 }

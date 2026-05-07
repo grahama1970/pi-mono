@@ -29,6 +29,40 @@ interface CoveragePayload {
     c2cAuditPath?: string
     nonC2cAuditPath?: string
   }
+  createQrasBackfill?: CreateQrasBackfillProgress
+}
+
+interface CreateQrasBackfillProgress {
+  status?: string
+  active_process_count?: number
+  process_count?: number
+  pid_summary?: string | null
+  current_log?: string | null
+  current_log_age_seconds?: number | null
+  manifest_path?: string | null
+  total_jobs?: number | null
+  canonical_jobs?: number | null
+  relationship_jobs?: number | null
+  progress_percent?: number | null
+  message?: string
+  chunk?: {
+    current?: number
+    total?: number
+    start?: number
+    end?: number
+    job_total?: number
+  } | null
+  heartbeat?: {
+    chunk_current?: number
+    chunk_total?: number
+    pending?: number
+    elapsed_s?: number
+    items?: string
+  } | null
+  stored?: {
+    last_batch?: number
+    total?: number
+  } | null
 }
 
 interface QraTrustStatus {
@@ -218,6 +252,7 @@ function compactForLocalCache(payload: CoveragePayload): CoveragePayload {
     bestPractices: payload.bestPractices,
     promptAudit: payload.promptAudit,
     supervisor: payload.supervisor,
+    createQrasBackfill: payload.createQrasBackfill,
   }
 }
 
@@ -264,6 +299,7 @@ function frameworkRank(value: unknown): number {
 
 interface ImmediateStepInput {
   data: CoveragePayload | null
+  createQrasBackfill?: CreateQrasBackfillProgress
   heartbeatFresh: boolean
   heartbeatAgeSeconds: number | null
   reviewRequiredCount: number
@@ -275,6 +311,7 @@ interface ImmediateStepInput {
 
 function getImmediateSteps({
   data,
+  createQrasBackfill,
   heartbeatFresh,
   heartbeatAgeSeconds,
   reviewRequiredCount,
@@ -286,9 +323,9 @@ function getImmediateSteps({
   const remaining = data?.monitor?.remaining ?? {}
   const failedChecks = data?.monitor?.checks?.filter((check) => !check.ok) ?? []
   const steps: string[] = []
-  const exactRemaining = remaining.exact_remaining_calls_total ?? 0
   const implemented = remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0
   const comparison = remaining.sparta_control_to_control_gated_pairs ?? 0
+  const qraBackfillRunning = createQrasBackfill?.status === 'running'
 
   if (data?.stale || !heartbeatFresh) {
     steps.push(`Refresh or rerun the read-only audit before signoff; snapshot is ${data?.stale ? 'stale' : 'not yet trusted'} and heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}.`)
@@ -305,8 +342,13 @@ function getImmediateSteps({
   if (controlQualityGaps > 0) {
     steps.push(`Repair or explicitly waive ${formatNum(controlQualityGaps)} control-quality gap(s): ${qualityGapFrameworks.join(', ')}.`)
   }
-  if (exactRemaining > 0) {
-    steps.push(`Run the remaining /create-qras work: ${formatNum(exactRemaining)} exact calls (${formatNum(implemented)} implemented + ${formatNum(comparison)} comparison).`)
+  if (implemented > 0 && qraBackfillRunning) {
+    steps.push(`Monitor active /create-qras backfill: ${createQrasBackfill?.message ?? 'worker is running'} ${formatNum(implemented)} runnable calls remain in the current audit snapshot.`)
+  } else if (implemented > 0) {
+    steps.push(`Run the remaining /create-qras work: ${formatNum(implemented)} implemented runnable calls.`)
+  }
+  if (comparison > 0) {
+    steps.push(`Keep ${formatNum(comparison)} control-to-control comparison candidate(s) review-gated until accepted /create-evidence-case responses make them runnable.`)
   }
   if (failedChecks.length > 0) {
     steps.push(`Fix or explicitly triage failing monitor-sparta checks: ${failedChecks.map((check) => check.dimension).join(', ')}.`)
@@ -327,6 +369,7 @@ function getImmediateSteps({
 
 function statusColor(status: unknown, ok?: unknown): string {
   if (status === 'pass' || ok === true) return EMBRY.green
+  if (status === 'running' || status === 'RUNNING') return EMBRY.blue
   if (status === 'not_wired' || status === 'NOT WIRED' || status === 'OPEN' || status === 'BLOCKED') return EMBRY.amber
   return EMBRY.red
 }
@@ -510,6 +553,12 @@ export function CoverageView() {
     return () => window.clearTimeout(timer)
   }, [data?.refreshing, load])
 
+  useEffect(() => {
+    if (data?.createQrasBackfill?.status !== 'running') return
+    const timer = window.setInterval(load, 15000)
+    return () => window.clearInterval(timer)
+  }, [data?.createQrasBackfill?.status, load])
+
   const runAuditNow = useCallback(async () => {
     setCommandMessage(null)
     try {
@@ -545,6 +594,12 @@ export function CoverageView() {
   }, [loadSupervisor])
 
   const remaining: RemainingSummary = data?.monitor?.remaining ?? {}
+  const createQrasBackfill = data?.createQrasBackfill
+  const createQrasRunning = createQrasBackfill?.status === 'running'
+  const createQrasPercent = Number(createQrasBackfill?.progress_percent ?? 0)
+  const createQrasChunk = createQrasBackfill?.chunk
+  const createQrasHeartbeat = createQrasBackfill?.heartbeat
+  const createQrasStored = createQrasBackfill?.stored
   const checks = data?.monitor?.checks ?? []
   const bestPractices = data?.bestPractices ?? []
   const corpus = data?.corpus ?? {}
@@ -632,6 +687,7 @@ export function CoverageView() {
   const qualityGapFrameworks = controlFrameworkRows.filter((row) => row.qualityGaps > 0).map((row) => row.framework)
   const immediateSteps = getImmediateSteps({
     data,
+    createQrasBackfill,
     heartbeatFresh,
     heartbeatAgeSeconds,
     reviewRequiredCount,
@@ -822,10 +878,29 @@ export function CoverageView() {
   const aggregateRows = [
     {
       lane: 'QRA Generation',
-      status: (remaining.exact_remaining_calls_total ?? 0) === 0 ? 'PASS' : 'OPEN',
-      value: `${formatNum(remaining.exact_remaining_calls_total)} calls remaining`,
-      meaning: `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} implemented + ${formatNum(remaining.sparta_control_to_control_gated_pairs)} comparison.`,
-      action: 'Observe',
+      status: createQrasRunning ? 'RUNNING' : (remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0 ? 'PASS' : 'OPEN',
+      value: createQrasRunning ? (
+        <div data-qid="coverage:qra-generation:progress" data-entity-type="create-qras-progress" data-status="running" style={S.progressCell}>
+          <div style={S.progressTopline}>
+            {createQrasChunk?.current && createQrasChunk?.total
+              ? `chunk ${formatNum(createQrasChunk.current)} / ${formatNum(createQrasChunk.total)}`
+              : 'worker active'}
+            <span style={S.progressPercent}>{formatNum(createQrasPercent)}%</span>
+          </div>
+          <div style={S.progressTrack} aria-label="create-qras backfill progress">
+            <span style={{ ...S.progressBar, width: `${Math.max(3, Math.min(100, createQrasPercent || 3))}%` }} />
+          </div>
+          <div style={S.progressMeta}>
+            {formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} runnable calls remain · {formatNum(createQrasStored?.total)} stored in manifest
+          </div>
+        </div>
+      ) : (remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0
+        ? `${formatNum(remaining.sparta_control_to_control_gated_pairs)} review-gated`
+        : `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} runnable calls remaining`,
+      meaning: createQrasRunning
+        ? `${createQrasBackfill?.message ?? 'create-qras worker active'} Pending ${formatNum(createQrasHeartbeat?.pending)} job(s); log age ${formatNum(createQrasBackfill?.current_log_age_seconds)}s.`
+        : `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} implemented runnable + ${formatNum(remaining.sparta_control_to_control_gated_pairs)} review-gated comparison candidate(s).`,
+      action: createQrasRunning ? 'Monitor' : 'Observe',
     },
     {
       lane: 'Prompt Health',
@@ -944,6 +1019,9 @@ export function CoverageView() {
           </span>
         </div>
         <div style={S.statusMetrics}>
+          <span data-qid="coverage:qra-generation:live-worker" data-entity-type="create-qras-worker" data-status={createQrasRunning ? 'running' : 'idle'} style={{ ...S.statusMetric, borderColor: createQrasRunning ? `${EMBRY.blue}66` : EMBRY.border, color: createQrasRunning ? EMBRY.blue : EMBRY.white }}>
+            <b>{createQrasRunning ? 'RUNNING' : 'idle'}</b> create-qras
+          </span>
           <span style={S.statusMetric}><b>{supervisorState?.active_jobs?.length ?? 0}</b> active jobs</span>
           <span style={S.statusMetric}><b>{reviewRequiredCount}</b> review gates</span>
           <span style={S.statusMetric}><b>{attentionCount}</b> attention</span>
@@ -966,15 +1044,15 @@ export function CoverageView() {
       {hasData ? <Section title="State At A Glance" subtitle="Aggregate status first; details follow below.">
         <div style={S.tableCard}>
           <table style={S.table}>
-            <thead><tr><th style={S.th}>Lane</th><th style={S.th}>Status</th><th style={S.th}>Value</th><th style={S.th}>Meaning</th><th style={S.th}>Action</th></tr></thead>
+            <thead><tr><th style={S.th}>Lane</th><th style={S.th}>Status</th><th style={S.th}>Value</th><th style={S.th}>Meaning</th><th style={S.th}>Next</th></tr></thead>
             <tbody>
               {aggregateRows.map((row) => (
-                <tr key={row.lane}>
+                <tr key={row.lane} data-qid={`coverage:aggregate:${frameworkSlug(row.lane)}`} data-entity-type="coverage-aggregate-lane" data-status={String(row.status)}>
                   <td style={S.td}>{row.lane}</td>
                   <td style={S.td}><span style={{ ...S.pill, color: statusColor(row.status, row.status === 'PASS'), borderColor: `${statusColor(row.status, row.status === 'PASS')}66` }}>{row.status}</span></td>
                   <td style={S.tdStrong}>{row.value}</td>
                   <td style={S.td}>{row.meaning}</td>
-                  <td style={S.td}><span style={{ ...S.pill, color: EMBRY.blue, borderColor: `${EMBRY.blue}66` }}>{row.action}</span></td>
+                  <td style={S.td}><span style={S.nextText}>{row.action}</span></td>
                 </tr>
               ))}
             </tbody>
@@ -1133,9 +1211,9 @@ export function CoverageView() {
 
       {hasData ? <Section title="Generation Backlog" subtitle="Runnable work is separated from diagnostic raw candidates.">
         <div style={S.grid}>
-          <StatCard label="Implemented Remaining" value={remaining.implemented_backlog_total_if_v2_sparta_native_required} tone={EMBRY.amber} note="Native + SPARTA v2 residuals" />
-          <StatCard label="Comparison Remaining" value={remaining.sparta_control_to_control_gated_pairs} tone={EMBRY.amber} note="Evidence-gated runnable C2C" />
-          <StatCard label="Exact Remaining" value={remaining.exact_remaining_calls_total} tone={EMBRY.red} note="Runnable total" />
+          <StatCard label="Runnable Remaining" value={remaining.implemented_backlog_total_if_v2_sparta_native_required} tone={(remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0 ? EMBRY.green : EMBRY.amber} note="Native + SPARTA v2 residuals" />
+          <StatCard label="Review-Gated C2C" value={remaining.sparta_control_to_control_gated_pairs} tone={EMBRY.blue} note="Requires accepted CAE" />
+          <StatCard label="Open Audit Total" value={remaining.exact_remaining_calls_total} tone={EMBRY.dim} note="Runnable + review-gated" />
           <StatCard label="Raw C2C Candidates" value={remaining.sparta_control_to_control_raw_candidate_pairs} tone={EMBRY.dim} note="Diagnostic, not runnable" />
         </div>
         <div style={S.twoCol}>
@@ -1313,9 +1391,16 @@ const S: Record<string, React.CSSProperties> = {
   th: { padding: '10px 12px', color: EMBRY.dim, textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase' },
   td: { padding: '10px 12px', color: EMBRY.white, borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: 'top' },
   tdStrong: { padding: '10px 12px', color: EMBRY.white, borderBottom: `1px solid ${EMBRY.border}`, verticalAlign: 'top', fontSize: 15, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' },
+  progressCell: { minWidth: 240, display: 'grid', gap: 6 },
+  progressTopline: { display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'baseline', color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace', fontWeight: 900 },
+  progressPercent: { color: EMBRY.blue, fontSize: 12 },
+  progressTrack: { height: 7, border: `1px solid ${EMBRY.border}`, background: '#0b1220', overflow: 'hidden' },
+  progressBar: { display: 'block', height: '100%', background: EMBRY.blue, boxShadow: `0 0 12px ${EMBRY.blue}66` },
+  progressMeta: { color: EMBRY.dim, fontSize: 10, fontFamily: 'JetBrains Mono, monospace' },
   summaryRow: { background: 'rgba(148, 163, 184, 0.06)' },
   frameworkLabel: { display: 'inline-flex', paddingLeft: 10, borderLeft: `3px solid ${EMBRY.blue}`, minHeight: 18, alignItems: 'center' },
   pill: { display: 'inline-flex', border: '1px solid', padding: '3px 7px', fontSize: 10, fontWeight: 800, letterSpacing: '0.08em' },
+  nextText: { color: EMBRY.muted, fontSize: 12, lineHeight: 1.35 },
   actionStack: { display: 'grid', gap: 8 },
   actionButtons: { display: 'flex', flexWrap: 'wrap', gap: 6 },
   rowButton: { border: `1px solid ${EMBRY.border}`, background: '#172033', color: EMBRY.white, padding: '5px 8px', minHeight: 30, fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer' },

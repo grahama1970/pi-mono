@@ -47,6 +47,7 @@ type DiagnosticPayload = Record<string, unknown>
 type SourceHoverState = { key: string; x: number; y: number } | null
 type QraDraft = { question: string; reasoning: string; answer: string }
 type DraftExtractionEntity = { id?: string; label?: string; name?: string; type?: string; framework?: string; exists?: boolean }
+type DraftExtractionExternalEntity = { mention?: string; normalized_text?: string; entity_type?: string; routing_effect?: string; source?: string }
 type DraftExtractionSpan = {
   text?: string
   kind?: string
@@ -69,6 +70,9 @@ type DraftExtractionResult = {
   phrases?: string[]
   not_in_corpus?: unknown[]
   resolution_map?: Record<string, { exists?: boolean; control_id?: string | null; name?: string | null; framework?: string | null; reason?: string | null; match_type?: string | null }>
+  external_entities?: DraftExtractionExternalEntity[]
+  grounding_ok?: boolean | null
+  agent_decision?: { safe_to_answer?: boolean; needs_clarification?: boolean; reason?: string; suggested_action?: string } | null
   error?: string
   detail?: string
 }
@@ -806,7 +810,7 @@ export function QRAsView() {
   // Resizable / Collapsible State
   const [leftWidth, setLeftWidth] = useState(330)
   const [leftCollapsed, setLeftCollapsed] = useState(false)
-  const [chatPaneWidth, setChatPaneWidth] = useState(640)
+  const [chatPaneWidth, setChatPaneWidth] = useState(560)
   const [hoveredQra, setHoveredQra] = useState<string | null>(null)
   const [sourceHover, setSourceHover] = useState<SourceHoverState>(null)
   const [questionHover, setQuestionHover] = useState<SourceHoverState>(null)
@@ -888,7 +892,18 @@ export function QRAsView() {
   ))
   const currentQualityIssue = getQraQualityIssue(current)
   const currentEvidenceStatus = current ? deriveEvidenceStatus(current) : null
-  const approveBlockReason = approvalBlockReason(current)
+  const draftApprovalUnsupportedTerms = Array.from(new Set([
+    ...Object.entries(draftExtraction?.resolution_map ?? {})
+      .filter(([, value]) => value?.exists === false)
+      .map(([term]) => term),
+    ...(Array.isArray(draftExtraction?.external_entities) ? draftExtraction.external_entities : [])
+      .map((entity) => entity.mention || entity.normalized_text || '')
+      .filter(Boolean),
+  ])).filter((term) => term.trim().length > 0)
+  const draftApprovalBlockReason = !draftExtractionLoading && !draftExtraction?.error && draftApprovalUnsupportedTerms.length > 0
+    ? `$extract-entities found unsupported term${draftApprovalUnsupportedTerms.length === 1 ? '' : 's'}: ${draftApprovalUnsupportedTerms.slice(0, 3).join(', ')}.`
+    : null
+  const approveBlockReason = approvalBlockReason(current) || draftApprovalBlockReason
   const canApproveCurrent = Boolean(current && !approveBlockReason)
   const isCurrentAdversarial = currentEvidenceStatus === 'adversarial'
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
@@ -1383,8 +1398,20 @@ export function QRAsView() {
       ].filter(Boolean).slice(0, 6).join(' -> ')
       : 'none'
     const draftEntities = Array.isArray(draftExtraction?.entities) ? draftExtraction.entities : []
+    const draftExternalEntities = Array.isArray(draftExtraction?.external_entities) ? draftExtraction.external_entities : []
     const draftResolutionEntries = Object.entries(draftExtraction?.resolution_map ?? {})
     const draftUnresolvedEntries = draftResolutionEntries.filter(([, value]) => value?.exists === false)
+    const draftUnsupportedMap = new Map(draftUnresolvedEntries)
+    draftExternalEntities.forEach((entity) => {
+      const term = entity.mention || entity.normalized_text
+      if (!term || draftUnsupportedMap.has(term)) return
+      draftUnsupportedMap.set(term, {
+        exists: false,
+        reason: entity.routing_effect || 'not_grounded_to_sparta_controls',
+        match_type: entity.entity_type || 'external_entity',
+      })
+    })
+    const draftUnsupportedEntries = Array.from(draftUnsupportedMap.entries())
     const draftEntityCount = draftEntities.filter((entity) => entity.exists !== false).length
     const draftExtractionGlossary: GlossaryEntryLike[] = [
       ...draftEntities
@@ -1438,12 +1465,12 @@ export function QRAsView() {
         .filter((term) => !groundedDraftTermSet.has(term.toLowerCase())),
     ))
     const draftValidationTerms = [
-      ...selectedHighlightGlossary.flatMap((entry) => [entry.id, entry.name].filter(Boolean).map((term) => ({
+      ...draftExtractionGlossary.flatMap((entry) => [entry.id, entry.name].filter(Boolean).map((term) => ({
         term: String(term),
         state: 'grounded' as const,
         title: `${entry.framework || 'entity'} ${entry.name || entry.id || term}`,
       }))),
-      ...draftUnresolvedEntries.map(([term, detail]) => ({
+      ...draftUnsupportedEntries.map(([term, detail]) => ({
         term,
         state: 'unresolved' as const,
         title: detail?.reason || 'Unresolved or possibly misspelled control/entity',
@@ -1529,12 +1556,12 @@ export function QRAsView() {
       {
         number: 1,
         name: 'Claim',
-        result: 'Evaluate the selected QRA question plus proposed answer.',
-        state: currentDraft?.question && currentDraft?.answer ? 'pass' : 'warn',
+        result: draftUnsupportedEntries.length > 0 ? 'Draft claim contains unsupported entity text; repair and rerun CAE.' : 'Evaluate the selected QRA question plus proposed answer.',
+        state: currentDraft?.question && currentDraft?.answer && draftUnsupportedEntries.length === 0 ? 'pass' : 'warn',
         details: [
           { label: 'Question', value: currentDraft?.question || current?.question || 'missing' },
           { label: 'Proposed answer', value: currentDraft?.answer || current?.answer || evidenceCase?.answer || 'missing' },
-          { label: 'Draft status', value: qraDraftDirty ? 'edited draft; rerun CAE before approval' : 'matches persisted QRA' },
+          { label: 'Draft status', value: draftUnsupportedEntries.length > 0 ? `unsupported term(s): ${draftUnsupportedEntries.map(([term]) => term).join(', ')}` : qraDraftDirty ? 'edited draft; rerun CAE before approval' : 'matches persisted QRA' },
         ],
       },
       {
@@ -1550,11 +1577,12 @@ export function QRAsView() {
       {
         number: 3,
         name: 'Entity Grounding',
-        result: `${selectedEntities.length} resolved entit${selectedEntities.length === 1 ? 'y' : 'ies'}; ${spanCount} cached span${spanCount === 1 ? '' : 's'}.`,
-        state: selectedEntities.length > 0 || spanCount > 0 ? 'pass' : 'warn',
+        result: `${draftEntityCount} grounded; ${draftUnsupportedEntries.length} unsupported in editable draft.`,
+        state: draftUnsupportedEntries.length > 0 ? 'warn' : draftEntityCount > 0 || selectedEntities.length > 0 || spanCount > 0 ? 'pass' : 'warn',
         details: [
           { label: 'Glossary', value: glossaryCount > 0 ? `${glossaryCount} resolved entries` : 'not generated' },
           { label: 'Control IDs', value: evidenceCase?.control_ids?.join(', ') || current?.control_id || 'none' },
+          { label: 'Unsupported', value: draftUnsupportedEntries.length > 0 ? draftUnsupportedEntries.map(([term]) => term).join(', ') : 'none' },
         ],
       },
       {
@@ -1634,7 +1662,14 @@ export function QRAsView() {
 
     return (
       <>
-      <div style={{ display: 'grid', gridTemplateColumns: `240px minmax(360px, 1fr) 6px ${chatPaneWidth}px`, flex: 1, minHeight: 0, overflow: 'hidden', backgroundColor: EMBRY.bgPanel }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: `minmax(210px, 0.42fr) minmax(320px, 0.62fr) 6px minmax(500px, ${chatPaneWidth}px)`,
+        flex: 1,
+        minHeight: 0,
+        overflow: 'hidden',
+        backgroundColor: EMBRY.bgPanel,
+      }}>
         <aside style={{ minWidth: 0, borderRight: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(8,14,24,0.86)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div style={{ padding: '12px 14px', borderBottom: `1px solid ${EMBRY.border}` }}>
             <div style={{ fontSize: 18, fontWeight: 850, color: EMBRY.white, marginBottom: 3 }}>QRA Review</div>
@@ -1964,7 +1999,7 @@ export function QRAsView() {
             const startWidth = chatPaneWidth
             const onMouseMove = (moveEvent: MouseEvent) => {
               const next = startWidth - (moveEvent.clientX - startX)
-              setChatPaneWidth(Math.max(520, Math.min(860, next)))
+              setChatPaneWidth(Math.max(500, Math.min(720, next)))
             }
             const onMouseUp = () => {
               document.removeEventListener('mousemove', onMouseMove)
@@ -2083,10 +2118,10 @@ export function QRAsView() {
                     <div style={{ ...label, paddingTop: 5 }}>Entities</div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
                       <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <span style={{ ...label, color: draftExtractionLoading ? EMBRY.amber : draftExtraction?.error ? EMBRY.red : draftUnresolvedEntries.length > 0 ? EMBRY.amber : EMBRY.blue }}>
+                        <span style={{ ...label, color: draftExtractionLoading ? EMBRY.amber : draftExtraction?.error ? EMBRY.red : draftUnsupportedEntries.length > 0 ? EMBRY.amber : EMBRY.blue }}>
                           {draftExtractionLoading ? '$extract-entities running' : draftExtraction?.error ? '$extract-entities unavailable' : `${draftEntityCount} grounded`}
                         </span>
-                        {draftUnresolvedEntries.length > 0 && <span style={{ ...label, color: EMBRY.amber }}>{draftUnresolvedEntries.length} unresolved</span>}
+                        {draftUnsupportedEntries.length > 0 && <span style={{ ...label, color: EMBRY.amber }}>{draftUnsupportedEntries.length} unsupported</span>}
                         {!draftExtractionLoading && !draftExtraction?.error && draftEntities.length === 0 && <span style={{ color: EMBRY.dim, fontSize: 11 }}>No grounded entities detected in the editable draft.</span>}
                       </div>
                       {draftExtraction?.error ? (
@@ -2102,9 +2137,9 @@ export function QRAsView() {
                               </span>
                             )
                           })}
-                          {draftUnresolvedEntries.slice(0, 5).map(([term, detail]) => (
-                            <span key={term} title={detail.reason || 'Unresolved term'} style={{ border: `1px solid ${EMBRY.amber}55`, backgroundColor: `${EMBRY.amber}12`, color: EMBRY.amber, borderRadius: 999, padding: '2px 7px', fontSize: 10, fontFamily: 'monospace' }}>
-                              unresolved {term}
+                          {draftUnsupportedEntries.slice(0, 5).map(([term, detail]) => (
+                            <span key={term} title={detail.reason || 'Unsupported term'} style={{ border: `1px solid ${EMBRY.amber}55`, backgroundColor: `${EMBRY.amber}12`, color: EMBRY.amber, borderRadius: 999, padding: '2px 7px', fontSize: 10, fontFamily: 'monospace' }}>
+                              unsupported {term}
                             </span>
                           ))}
                         </div>
@@ -2123,7 +2158,7 @@ export function QRAsView() {
               )}
 
               <div style={{ minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', padding: '9px 12px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div data-qid="qras:artifact:cae:root" style={{ alignSelf: 'flex-start', flexShrink: 0, width: '96%', border: `1px solid ${EMBRY.amber}55`, borderLeft: `4px solid ${EMBRY.amber}`, backgroundColor: 'rgba(20,16,8,0.26)', borderRadius: 9, overflow: 'hidden' }}>
+                <div data-qid="qras:artifact:cae:root" style={{ alignSelf: 'stretch', flexShrink: 0, width: '100%', border: `1px solid ${EMBRY.amber}55`, borderLeft: `4px solid ${EMBRY.amber}`, backgroundColor: 'rgba(20,16,8,0.26)', borderRadius: 9, overflow: 'hidden' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', padding: '9px 10px', borderBottom: `1px solid ${EMBRY.amber}33`, backgroundColor: 'rgba(15,23,42,0.20)' }}>
                     <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
                       <div style={{ minWidth: 0 }}>
@@ -2173,7 +2208,7 @@ export function QRAsView() {
                             {step.number}
                           </div>
                           <details data-qid={`qras:artifact:cae:step:${step.number}`} open={step.number <= 3 || step.number >= 5} style={{ border: `1px solid ${EMBRY.amber}25`, borderRadius: 7, backgroundColor: 'rgba(7,12,20,0.58)', overflow: 'hidden' }}>
-                            <summary data-qid={`qras:artifact:cae:step:${step.number}:toggle`} data-qs-action="TOGGLE_CAE_STEP" title={`Expand or collapse CAE step ${step.number}: ${step.name}`} style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'minmax(96px, 0.42fr) minmax(0, 1fr) auto', gap: 8, alignItems: 'center', padding: '8px 9px', cursor: 'pointer' }}>
+                            <summary data-qid={`qras:artifact:cae:step:${step.number}:toggle`} data-qs-action="TOGGLE_CAE_STEP" title={`Expand or collapse CAE step ${step.number}: ${step.name}`} style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'minmax(112px, 0.48fr) minmax(0, 1fr) auto', gap: 8, alignItems: 'center', padding: '8px 9px', cursor: 'pointer' }}>
                               <span style={{ color: EMBRY.white, fontSize: 11.5, fontWeight: 750, display: 'inline-flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
                                 <span style={{ color: EMBRY.dim, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>{stepIcon}</span>
                                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{step.name}</span>
@@ -2184,11 +2219,11 @@ export function QRAsView() {
                               </span>
                             </summary>
                             <div style={{ borderTop: `1px solid ${EMBRY.amber}22`, padding: 8, display: 'grid', gap: 6 }}>
-                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 6 }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 6 }}>
                                 {step.details.map((item) => (
                                   <div key={`${step.number}:${item.label}`} title={item.value} style={{ minWidth: 0, border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: 'rgba(15,23,42,0.20)', padding: '6px 7px' }}>
                                     <div style={{ ...label, fontSize: 8.5, marginBottom: 3 }}>{item.label}</div>
-                                    <div style={{ color: EMBRY.white, fontSize: 11.2, lineHeight: 1.32, overflowWrap: 'anywhere' }}>{renderEvidenceText(item.value)}</div>
+                                    <div style={{ color: EMBRY.white, fontSize: 11.2, lineHeight: 1.32, overflowWrap: 'anywhere' }}>{renderDraftValidationText(item.value)}</div>
                                   </div>
                                 ))}
                               </div>
@@ -2224,7 +2259,7 @@ export function QRAsView() {
                     })}
                   </div>}
                 </div>
-                <div style={{ alignSelf: 'flex-end', flexShrink: 0, maxWidth: '88%', border: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(148,163,184,0.08)', borderRadius: 7, padding: 8 }}>
+                <div style={{ alignSelf: 'flex-end', flexShrink: 0, maxWidth: '94%', border: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(148,163,184,0.08)', borderRadius: 7, padding: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
                     <span>User</span>
                     <span>01</span>
@@ -2234,7 +2269,7 @@ export function QRAsView() {
                   </div>
                 </div>
 
-                <div style={{ alignSelf: 'flex-start', flexShrink: 0, maxWidth: '92%', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
+                <div style={{ alignSelf: 'stretch', flexShrink: 0, maxWidth: '100%', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
                     <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={glowDot(EMBRY.green, 6)} />SPARTA Agent</span>
                     <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.red, fontSize: 9 }}>{canApproveCurrent ? 'READY' : 'BLOCKING'}</span>
@@ -2262,7 +2297,7 @@ export function QRAsView() {
                     </div>
                     {relatedQras.length > 0 ? (
                       <div style={{ display: 'grid' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(78px, 0.18fr) 66px 92px minmax(0, 1fr)', gap: 8, padding: '6px 9px', color: EMBRY.dim, fontSize: 8.5, fontWeight: 850, letterSpacing: 1.2, textTransform: 'uppercase', borderBottom: `1px solid ${EMBRY.border}` }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(64px, 0.18fr) 58px 72px minmax(0, 1fr)', gap: 7, padding: '6px 9px', color: EMBRY.dim, fontSize: 8.5, fontWeight: 850, letterSpacing: 1.2, textTransform: 'uppercase', borderBottom: `1px solid ${EMBRY.border}` }}>
                           <span>QRA</span>
                           <span>Status</span>
                           <span>Match</span>
@@ -2280,8 +2315,8 @@ export function QRAsView() {
                               onClick={() => selectRelatedQra(related.key)}
                               style={{
                                 display: 'grid',
-                                gridTemplateColumns: 'minmax(78px, 0.18fr) 66px 92px minmax(0, 1fr)',
-                                gap: 8,
+                                gridTemplateColumns: 'minmax(64px, 0.18fr) 58px 72px minmax(0, 1fr)',
+                                gap: 7,
                                 alignItems: 'center',
                                 padding: '6px 9px',
                                 border: 0,
