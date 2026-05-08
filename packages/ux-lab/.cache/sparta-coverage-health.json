@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T05:17:46.778Z",
+  "generated_at": "2026-05-08T04:59:15.438Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-07T05:17:42Z",
+    "generated_at": "2026-05-08T04:59:14Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -357,90 +357,23 @@
       "framework": "CWE",
       "controls": 974,
       "missing_descriptions": 0,
-      "missing_embeddings": 4,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "CWE",
         "cwe"
       ],
-      "defects": [
-        {
-          "control_id": "CWE-1176|CWE-1060|CWE-1077",
-          "title": "CWE-1176|CWE-1060|CWE-1077",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 102
-        },
-        {
-          "control_id": "CWE-492|T1514|T1631|T1540",
-          "title": "CWE-492|T1514|T1631|T1540",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 101
-        },
-        {
-          "control_id": "CWE-624|CWE-185|CWE-625",
-          "title": "CWE-624|CWE-185|CWE-625",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 99
-        },
-        {
-          "control_id": "CWE-798|CWE-1391|CWE-1392",
-          "title": "CWE-798|CWE-1391|CWE-1392",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 101
-        }
-      ],
-      "quality_gaps": 4,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "CWE",
         "gap_type": "control_quality",
-        "gap_count": 4,
-        "defects": [
-          {
-            "control_id": "CWE-1176|CWE-1060|CWE-1077",
-            "title": "CWE-1176|CWE-1060|CWE-1077",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 102
-          },
-          {
-            "control_id": "CWE-492|T1514|T1631|T1540",
-            "title": "CWE-492|T1514|T1631|T1540",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 101
-          },
-          {
-            "control_id": "CWE-624|CWE-185|CWE-625",
-            "title": "CWE-624|CWE-185|CWE-625",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 99
-          },
-          {
-            "control_id": "CWE-798|CWE-1391|CWE-1392",
-            "title": "CWE-798|CWE-1391|CWE-1392",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 101
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
@@ -469,153 +402,22 @@
       "framework": "ATT&CK",
       "controls": 524,
       "missing_descriptions": 0,
-      "missing_embeddings": 8,
+      "missing_embeddings": 0,
       "raw_frameworks": [
         "attack"
       ],
-      "defects": [
-        {
-          "control_id": "T0883|T1581|T1101|T0860|T1650",
-          "title": "T0883|T1581|T1101|T0860|T1650",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 108
-        },
-        {
-          "control_id": "T1047|T1084|T1218.005",
-          "title": "T1047|T1084|T1218.005",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 100
-        },
-        {
-          "control_id": "T1109|T1101|T1162|T1108",
-          "title": "T1109|T1101|T1162|T1108",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 102
-        },
-        {
-          "control_id": "T1145|T1187|T1101",
-          "title": "T1145|T1187|T1101",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 96
-        },
-        {
-          "control_id": "T1195|EX-0005|T0862|EX-0005.01",
-          "title": "T1195|EX-0005|T0862|EX-0005.01",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 109
-        },
-        {
-          "control_id": "T1429|T1123|T1513",
-          "title": "T1429|T1123|T1513",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 96
-        },
-        {
-          "control_id": "T1554|T1474|T1550|T1050|T0862",
-          "title": "T1554|T1474|T1550|T1050|T0862",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 108
-        },
-        {
-          "control_id": "T1648|EX-0012.03|T1584.004",
-          "title": "T1648|EX-0012.03|T1584.004",
-          "gap_types": [
-            "missing_embedding"
-          ],
-          "description_length": 105
-        }
-      ],
-      "quality_gaps": 8,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ATT&CK",
         "gap_type": "control_quality",
-        "gap_count": 8,
-        "defects": [
-          {
-            "control_id": "T0883|T1581|T1101|T0860|T1650",
-            "title": "T0883|T1581|T1101|T0860|T1650",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 108
-          },
-          {
-            "control_id": "T1047|T1084|T1218.005",
-            "title": "T1047|T1084|T1218.005",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 100
-          },
-          {
-            "control_id": "T1109|T1101|T1162|T1108",
-            "title": "T1109|T1101|T1162|T1108",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 102
-          },
-          {
-            "control_id": "T1145|T1187|T1101",
-            "title": "T1145|T1187|T1101",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 96
-          },
-          {
-            "control_id": "T1195|EX-0005|T0862|EX-0005.01",
-            "title": "T1195|EX-0005|T0862|EX-0005.01",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 109
-          },
-          {
-            "control_id": "T1429|T1123|T1513",
-            "title": "T1429|T1123|T1513",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 96
-          },
-          {
-            "control_id": "T1554|T1474|T1550|T1050|T0862",
-            "title": "T1554|T1474|T1550|T1050|T0862",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 108
-          },
-          {
-            "control_id": "T1648|EX-0012.03|T1584.004",
-            "title": "T1648|EX-0012.03|T1584.004",
-            "gap_types": [
-              "missing_embedding"
-            ],
-            "description_length": 105
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
@@ -775,8 +577,8 @@
     }
   ],
   "monitor": {
-    "passed": 15,
-    "total": 17,
+    "passed": 16,
+    "total": 18,
     "checks": [
       {
         "ok": false,
@@ -786,12 +588,17 @@
       {
         "ok": true,
         "dimension": "upstream_version",
-        "message": "Spreadsheet: v3.1 / 2026-04-09 (sha:9cbd7eef1254) - download check failed (non-blocking)"
+        "message": "Up to date semantically: v3.1 / 2026-04-09 (content sha:055c57e26035, binary differs)"
       },
       {
         "ok": true,
         "dimension": "source_control_parity",
         "message": "All 1,596 source control IDs present"
+      },
+      {
+        "ok": true,
+        "dimension": "source_control_field_parity",
+        "message": "All 90 countermeasure fields match source workbook"
       },
       {
         "ok": true,
@@ -809,9 +616,9 @@
         "message": "All SPARTA controls have mind tags"
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "embedding_gaps",
-        "message": "1 collections with embedding gaps: sparta_controls=12"
+        "message": "All documents have embeddings"
       },
       {
         "ok": true,
@@ -836,7 +643,7 @@
       {
         "ok": true,
         "dimension": "qra_evidence_coverage",
-        "message": "245,975/245,975 with evidence_case (100.0%), 245,975/245,975 structurally complete (100.0%)"
+        "message": "245,962/245,962 with evidence_case (100.0%), 245,962/245,962 structurally complete (100.0%)"
       },
       {
         "ok": true,
@@ -856,27 +663,33 @@
       {
         "ok": true,
         "dimension": "create_qras_remaining_calls",
-        "message": "0 implemented calls remain; 321 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
+        "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_question_surface_quality",
-        "message": "0 malformed question surfaces across 3,000 scanned QRAs; 285 course-corrected non-generation placeholders",
-        "malformed": 0,
+        "message": "147 malformed question surfaces across 3,000 scanned QRAs",
+        "malformed": 147,
         "scanned": 3000,
-        "course_corrected_non_generation": 285,
+        "course_corrected_non_generation": 777,
         "course_corrected_by_collection": {
-          "sparta_qra_canonical": 285
+          "sparta_qra_canonical": 339,
+          "sparta_qra_relationship": 438
         },
-        "malformed_by_collection": {},
-        "rule_counts": {},
+        "malformed_by_collection": {
+          "sparta_qra_canonical": 145,
+          "sparta_qra_relationship": 2
+        },
+        "rule_counts": {
+          "QS01": 147
+        },
         "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
       }
     ],
     "remaining": {
       "ok": true,
       "dimension": "create_qras_remaining_calls",
-      "message": "0 implemented calls remain; 321 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
+      "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
       "native_remaining_any_collection_total": 0,
       "native_remaining_non_sparta_total": 0,
       "native_remaining_sparta_any_collection": 0,
@@ -970,19 +783,19 @@
         "sparta_technique_countermeasure_relationship": 0
       },
       "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 321,
+      "sparta_control_to_control_gated_pairs": 315,
       "sparta_control_to_control_gated_skip_reasons": {
-        "no_grounded_overlap": 7780,
+        "no_grounded_overlap": 7786,
         "non_substantive_node": 6
       },
       "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
       "implemented_backlog_total_if_v2_sparta_native_required": 0,
-      "exact_remaining_calls_total": 321,
+      "exact_remaining_calls_total": 315,
       "total_with_raw_comparison_candidates": 8107
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-07T05:17:42Z",
+      "generated_at": "2026-05-08T04:59:14Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1021,9 +834,9 @@
       "skill": "best-practices-react",
       "ok": true,
       "status": "pass",
-      "message": "data-qid coverage: 392/392 (100%)",
-      "covered": 392,
-      "total": 392,
+      "message": "data-qid coverage: 393/393 (100%)",
+      "covered": 393,
+      "total": 393,
       "percent": 100
     },
     {
@@ -1037,16 +850,16 @@
     {
       "name": "Prompt best-practice static scan",
       "skill": "best-practices-prompt",
-      "ok": false,
-      "status": "fail",
-      "message": "18/19 scanned prompt files pass; 9/10 active prompt units pass."
+      "ok": true,
+      "status": "pass",
+      "message": "19/19 scanned prompt files pass; 10/10 active prompt units pass."
     },
     {
       "name": "Arango/Qdrant source embedding coverage",
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 633,850 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 633,878 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1361,23 +1174,21 @@
         "banned_words": [],
         "checks": {
           "exactJson": true,
-          "grounding": false,
+          "grounding": true,
           "inputOutput": true,
           "rationale": true,
           "rejectionCriteria": true
         },
-        "failures": [
-          "grounding"
-        ],
+        "failures": [],
         "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
         "prompt_kind": "sparta/variants/qra_term_recall_alias",
         "source": "create-qras-active-sparta",
-        "status": "fail",
+        "status": "pass",
         "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
       }
     ],
-    "all_passed": 18,
+    "all_passed": 19,
     "all_total": 19,
     "autofix": {
       "mode": "review_required",
@@ -1393,28 +1204,8 @@
         "generate review-prompt dry-run payloads"
       ]
     },
-    "failed_rows": [
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": false,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [
-          "grounding"
-        ],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
-        "prompt_kind": "sparta/variants/qra_term_recall_alias",
-        "source": "create-qras-active-sparta",
-        "status": "fail",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
-      }
-    ],
-    "passed": 9,
+    "failed_rows": [],
+    "passed": 10,
     "rows": [
       {
         "banned_words": [],
@@ -1573,18 +1364,16 @@
         "banned_words": [],
         "checks": {
           "exactJson": true,
-          "grounding": false,
+          "grounding": true,
           "inputOutput": true,
           "rationale": true,
           "rejectionCriteria": true
         },
-        "failures": [
-          "grounding"
-        ],
+        "failures": [],
         "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
         "prompt_kind": "sparta/variants/qra_term_recall_alias",
         "source": "create-qras-active-sparta",
-        "status": "fail",
+        "status": "pass",
         "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
       }
@@ -1592,7 +1381,7 @@
     "schema_version": 1,
     "scopes": [
       {
-        "passed": 9,
+        "passed": 10,
         "source": "create-qras-active-sparta",
         "total": 10
       },
@@ -1602,14 +1391,12 @@
         "total": 9
       }
     ],
-    "state": "active_prompt_failures",
-    "status": "fail",
+    "state": "covered",
+    "status": "pass",
     "total": 10
   },
   "artifacts": {
     "recent": [
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260506_203623.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260506_205649.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260505_213559.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_124052.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_141816.jsonl",
@@ -1618,6 +1405,7 @@
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_203527.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_203623.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_205649.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260507_205711.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_211926.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213331.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213559.json",
@@ -1627,7 +1415,8 @@
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_163252.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203527.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203623.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json"
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260507_205711.json"
     ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
@@ -1635,9 +1424,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-07T05:17:13.388418Z",
-    "heartbeat_at": "2026-05-07T05:17:13.388418Z",
-    "snapshot_age_seconds": 96,
+    "generated_at": "2026-05-08T04:58:32.436069Z",
+    "heartbeat_at": "2026-05-08T04:58:32.436069Z",
+    "snapshot_age_seconds": 65,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -1893,11 +1682,11 @@
     ],
     "prompt_health_coverage": {
       "schema_version": 1,
-      "status": "fail",
-      "state": "active_prompt_failures",
-      "passed": 9,
+      "status": "pass",
+      "state": "covered",
+      "passed": 10,
       "total": 10,
-      "all_passed": 18,
+      "all_passed": 19,
       "all_total": 19,
       "rows": [
         {
@@ -2059,18 +1848,16 @@
           "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
           "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
           "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
-          "status": "fail",
+          "status": "pass",
           "checks": {
             "rationale": true,
             "inputOutput": true,
             "exactJson": true,
-            "grounding": false,
+            "grounding": true,
             "rejectionCriteria": true
           },
           "banned_words": [],
-          "failures": [
-            "grounding"
-          ]
+          "failures": []
         }
       ],
       "allRows": [
@@ -2386,45 +2173,23 @@
           "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
           "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
           "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
-          "status": "fail",
+          "status": "pass",
           "checks": {
             "rationale": true,
             "inputOutput": true,
             "exactJson": true,
-            "grounding": false,
+            "grounding": true,
             "rejectionCriteria": true
           },
           "banned_words": [],
-          "failures": [
-            "grounding"
-          ]
+          "failures": []
         }
       ],
-      "failed_rows": [
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/variants/qra_term_recall_alias",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt",
-          "status": "fail",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": false,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": [
-            "grounding"
-          ]
-        }
-      ],
+      "failed_rows": [],
       "scopes": [
         {
           "source": "create-qras-active-sparta",
-          "passed": 9,
+          "passed": 10,
           "total": 10
         },
         {
@@ -2450,7 +2215,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-07T05:17:46Z",
+      "generated_at": "2026-05-08T04:59:03Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2484,20 +2249,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-07T05:17:46Z",
+      "generated_at": "2026-05-08T04:59:03Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1538,
-        "end": 1688
+        "start": 1599,
+        "end": 1749
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-07T05:17:13Z",
+      "generated_at": "2026-05-08T04:58:32Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2507,7 +2272,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 633850
+        "qdrant_vectors": 633878
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2577,7 +2342,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 633850,
+        "point_count": 633878,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -2592,7 +2357,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-07T05:17:45Z",
+      "generated_at": "2026-05-08T04:59:01Z",
       "status": "pass",
       "state": "covered",
       "summary": {
@@ -2688,9 +2453,9 @@
     "active_process_count": 0,
     "process_count": 0,
     "pid_summary": null,
-    "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260506_205649.log",
-    "current_log_age_seconds": 30057,
-    "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json",
+    "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260507_205711.log",
+    "current_log_age_seconds": 28924,
+    "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260507_205711.json",
     "total_jobs": 0,
     "canonical_jobs": null,
     "relationship_jobs": null,
@@ -2698,6 +2463,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 30057s ago."
+    "message": "No active create-qras worker observed; latest log changed 28924s ago."
   }
 }

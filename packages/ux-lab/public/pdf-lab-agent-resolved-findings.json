@@ -170,7 +170,7 @@
       "non_empty_row_cell_counts": [
         5
       ],
-      "same_page_requirement_rows": 42,
+      "same_page_requirement_rows": 41,
       "same_page_section_rows": 74,
       "average_non_empty_cell_text_length": 13.6,
       "source": "pdf_oxide.extract_tables"
@@ -202,7 +202,7 @@
       "non_empty_row_cell_counts": [
         5
       ],
-      "same_page_requirement_rows": 42,
+      "same_page_requirement_rows": 41,
       "same_page_section_rows": 74,
       "average_non_empty_cell_text_length": 14.4,
       "source": "pdf_oxide.extract_tables"
@@ -234,35 +234,10 @@
       "non_empty_row_cell_counts": [
         5
       ],
-      "same_page_requirement_rows": 28,
+      "same_page_requirement_rows": 27,
       "same_page_section_rows": 53,
       "average_non_empty_cell_text_length": 13.4,
       "source": "pdf_oxide.extract_tables"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p470_line_52",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 470,
-    "target_id": "expected:p470:line:52",
-    "target_bbox": [
-      0.761078,
-      0.143774,
-      0.827057,
-      0.157759
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 0.4,
-      "type_compatible": true,
-      "iou": 0.0,
-      "text": "ASSURANCE",
-      "type": "section_header",
-      "overlapping_actual_text": "IMPLEMENTED ASSURANCE"
     }
   },
   {
@@ -296,206 +271,6 @@
       "same_page_section_rows": 6,
       "average_non_empty_cell_text_length": 20.71,
       "source": "pdf_oxide.extract_tables"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p477_line_95",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 477,
-    "target_id": "expected:p477:line:95",
-    "target_bbox": [
-      0.761078,
-      0.143774,
-      0.827057,
-      0.157759
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 0.5,
-      "type_compatible": true,
-      "iou": 0.0,
-      "text": "ASSURANCE",
-      "type": "section_header",
-      "overlapping_actual_text": "IMPLEMENTED ASSURANCE"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_39",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:39",
-    "target_bbox": [
-      0.357647,
-      0.138853,
-      0.481204,
-      0.158096
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 1.0,
-      "type_compatible": true,
-      "iou": 0.045,
-      "text": "CONTROL NAME",
-      "type": "section_header",
-      "overlapping_actual_text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_4",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:4",
-    "target_bbox": [
-      0.160784,
-      0.138572,
-      0.219839,
-      0.154345
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 0.7368,
-      "type_compatible": true,
-      "iou": 0.0,
-      "text": "CONTROL",
-      "type": "section_header",
-      "overlapping_actual_text": "CONTROL NUMBER"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_40",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:40",
-    "target_bbox": [
-      0.626569,
-      0.143698,
-      0.707729,
-      0.157683
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 1.0,
-      "type_compatible": true,
-      "iou": 0.0229,
-      "text": "IMPLEMENTED",
-      "type": "section_header",
-      "overlapping_actual_text": "IMPLEMENTED BY"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_41",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:41",
-    "target_bbox": [
-      0.660098,
-      0.156349,
-      0.674233,
-      0.170335
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 1.0,
-      "type_compatible": true,
-      "iou": 0.1131,
-      "text": "BY",
-      "type": "section_header",
-      "overlapping_actual_text": "BY"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_42",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:42",
-    "target_bbox": [
-      0.758039,
-      0.143774,
-      0.824018,
-      0.157759
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 1.0,
-      "type_compatible": true,
-      "iou": 0.0277,
-      "text": "ASSURANCE",
-      "type": "section_header",
-      "overlapping_actual_text": "ASSURANCE"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p485_line_5",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 485,
-    "target_id": "expected:p485:line:5",
-    "target_bbox": [
-      0.162451,
-      0.151223,
-      0.218279,
-      0.166996
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 0.3333,
-      "type_compatible": true,
-      "iou": 0.0,
-      "text": "NUMBER",
-      "type": "section_header",
-      "overlapping_actual_text": "NUMBER CONTROL"
-    }
-  },
-  {
-    "finding_id": "agent_resolved:bbox_only_exact_text_match:expected_p490_line_24",
-    "kind": "noisy_text_or_bbox_match",
-    "severity": "medium",
-    "page": 490,
-    "target_id": "expected:p490:line:24",
-    "target_bbox": [
-      0.155882,
-      0.267966,
-      0.17873,
-      0.283739
-    ],
-    "agent_resolution": "suppressed_from_human_triage",
-    "reason": "Representative comparison was resolvable from page evidence: the target text is present after removing known sidebar/watermark bleed, or the text/type are exact and only bbox IoU failed. This is a deterministic extraction/canonicalization issue for the agent pass, not a human ambiguity.",
-    "recommended_engine_fix": "suppress sidebar/watermark bleed and canonicalize bbox matching before emitting human triage",
-    "evidence": {
-      "comparison_reason": "bbox_iou_below_threshold",
-      "text_similarity": 1.0,
-      "type_compatible": true,
-      "iou": 0.2775,
-      "text": "SI-6",
-      "type": "requirement",
-      "overlapping_actual_text": "This publication is available SI-6 free of charge from: SI-6"
     }
   }
 ]

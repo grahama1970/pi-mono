@@ -1,9 +1,14 @@
 {
-  "verified_at": "2026-05-06T20:10:35.008699+00:00",
   "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "latest_marker_created_by": "codex",
+  "latest_marker_path": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json",
+  "name": "hack-prompt-payload-fresh",
+  "output_root": "/tmp/codex-ui-verification/pi-mono",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/hack-prompt-payload-fresh/20260507T130133Z.read.json",
+  "read_json_exists": true,
   "root": "/home/graham/workspace/experiments/pi-mono",
-  "url": "http://localhost:3002/#hack/final-site",
-  "name": "hack-interface-crash-fixed-current",
-  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/hack-interface-crash-fixed-current/20260506T201000Z.png",
-  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/hack-interface-crash-fixed-current/20260506T201000Z.read.json"
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/hack-prompt-payload-fresh/20260507T130133Z.png",
+  "screenshot_exists": true,
+  "url": "http://127.0.0.1:18792/hack-prompt-verification-fresh.html",
+  "verified_at": "2026-05-07T13:01:38.710691+00:00"
 }

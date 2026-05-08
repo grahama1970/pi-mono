@@ -46,8 +46,37 @@ type ReviewDecision = 'accept' | 'reject' | 'retain_adversarial'
 type DiagnosticPayload = Record<string, unknown>
 type SourceHoverState = { key: string; x: number; y: number } | null
 type QraDraft = { question: string; reasoning: string; answer: string }
+type EvidenceFreshness = { qraKey: string; draftHash: string; ok: boolean; runId?: string | null; checkedAt: string }
 type DraftExtractionEntity = { id?: string; label?: string; name?: string; type?: string; framework?: string; exists?: boolean }
+type DraftExtractionGlossaryEntry = GlossaryEntryLike & { mention?: string; span?: [number, number] | number[]; grounded?: boolean; exists?: boolean; reason?: string | null; control_id?: string | null; canonical_name?: string | null }
 type DraftExtractionExternalEntity = { mention?: string; normalized_text?: string; entity_type?: string; routing_effect?: string; source?: string }
+type DraftExtractionNodeMetadata = {
+  control_id?: string
+  name?: string
+  framework?: string
+  framework_id?: string
+  framework_label?: string
+  type?: string
+  category?: string
+  descriptor_kind?: string
+  canonical_name?: string
+  matched_value?: string
+  matched_fields?: string[]
+  grounded?: boolean
+  exists?: boolean
+}
+type DraftExtractionNode = {
+  id?: string
+  node_kind?: string
+  proof_role?: string
+  status?: string
+  mention?: string
+  span?: [number, number] | number[]
+  metadata?: DraftExtractionNodeMetadata
+  relationship?: { type?: string; target_id?: string }
+  reason?: string
+  covered_by?: string
+}
 type DraftExtractionSpan = {
   text?: string
   kind?: string
@@ -69,10 +98,21 @@ type DraftExtractionResult = {
   control_ids?: string[]
   phrases?: string[]
   not_in_corpus?: unknown[]
+  glossary?: DraftExtractionGlossaryEntry[]
   resolution_map?: Record<string, { exists?: boolean; control_id?: string | null; name?: string | null; framework?: string | null; reason?: string | null; match_type?: string | null }>
   external_entities?: DraftExtractionExternalEntity[]
+  nodes?: {
+    anchors?: DraftExtractionNode[]
+    validated_context?: DraftExtractionNode[]
+    context_terms?: DraftExtractionNode[]
+    suppressed?: DraftExtractionNode[]
+    unsupported?: DraftExtractionNode[]
+  }
+  proof_packet?: { assertions?: Array<Record<string, unknown>> }
+  counts?: { anchors?: number; validated_context?: number; context_terms?: number; suppressed?: number; unsupported?: number }
+  candidate_nodes?: Record<string, unknown>
   grounding_ok?: boolean | null
-  agent_decision?: { safe_to_answer?: boolean; needs_clarification?: boolean; reason?: string; suggested_action?: string } | null
+  agent_decision?: { safe_to_answer?: boolean; needs_clarification?: boolean; reason?: string; suggested_action?: string; primary_entity_id?: string; grounding_source?: string } | null
   error?: string
   detail?: string
 }
@@ -98,6 +138,55 @@ const QRA_CATEGORY_FILTERS: Array<{ category: QraCategoryFilter; label: string; 
 
 function formatCount(value: number | undefined) {
   return Number(value ?? 0).toLocaleString()
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function hashDraft(draft: QraDraft | null | undefined): string {
+  if (!draft) return ''
+  const payload = JSON.stringify({
+    question: draft.question,
+    reasoning: draft.reasoning,
+    answer: draft.answer,
+  })
+  let hash = 2166136261
+  for (let i = 0; i < payload.length; i += 1) {
+    hash ^= payload.charCodeAt(i)
+    hash = Math.imul(hash, 16777619)
+  }
+  return `fnv1a:${(hash >>> 0).toString(16).padStart(8, '0')}`
+}
+
+function evidenceRunId(payload: Record<string, unknown>): string | null {
+  const evidenceCase = payload.evidence_case as Record<string, unknown> | undefined
+  return String(
+    payload.case_id
+    || payload.run_id
+    || evidenceCase?.case_id
+    || evidenceCase?.id
+    || '',
+  ) || null
+}
+
+function evidenceRunIdentity(qraKey: string, draftHash: string, payload: Record<string, unknown>): string {
+  return evidenceRunId(payload) ?? `qra_evidence:${qraKey}:${draftHash.replace(/[^a-zA-Z0-9]+/g, '_')}`
+}
+
+function evidenceRunSucceeded(payload: Record<string, unknown>): boolean {
+  if (payload.error || payload.ok === false || payload.grounding_ok === false) return false
+  const extractEntities = payload.extract_entities as { grounding_ok?: boolean; ok?: boolean } | undefined
+  if (!extractEntities || extractEntities.ok !== true || extractEntities.grounding_ok !== true) return false
+  const evidenceCase = payload.evidence_case as {
+    answer_decision?: { can_answer?: boolean }
+    case_type?: string
+    clarification_decision?: { blocking?: boolean }
+  } | undefined
+  if (!evidenceCase || evidenceCase.case_type !== 'direct_lookup') return false
+  if (evidenceCase.answer_decision?.can_answer !== true) return false
+  if (evidenceCase?.clarification_decision?.blocking === true) return false
+  return true
 }
 
 function hasEvidenceCaseData(q: SpartaQRA): boolean {
@@ -352,12 +441,12 @@ function approvalBlockReason(q: SpartaQRA | undefined): string | null {
   if (!q.question?.trim() || !q.answer?.trim()) return 'QRA question or answer body is missing.'
   if (quality?.issue_code === 'ambiguous_referent') return 'Ambiguous referent must be repaired or retained as adversarial before approval.'
   if (q.qra_quality?.disposition?.toLowerCase() === 'adversarial') return 'Adversarial fixture cannot be approved as a normal QRA.'
+  if (status === 'failed') return 'Evidence case failed or was rejected.'
+  if (status === 'adversarial') return 'Adversarial/ambiguous QRA must be repaired or quarantined before approval.'
   if (isInformationalLookupQra(q)) return null
   if (!q.evidence_case) return '$create-evidence-case returned the informational tier with no cached extraction; verify the answer before approval.'
-  if (status === 'failed') return 'Evidence case failed or was rejected.'
   if (status === 'missing') return 'Evidence case is missing.'
   if (status === 'review') return 'Evidence case is inconclusive and still needs correction or review.'
-  if (status === 'adversarial') return 'Adversarial/ambiguous QRA must be repaired or quarantined before approval.'
   return null
 }
 
@@ -585,8 +674,60 @@ function compactKey(key: string, prefix = 24, suffix = 10): string {
   return `${key.slice(0, prefix)}...${key.slice(-suffix)}`
 }
 
-function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
+function buildDirectLookupAnswer(controlId: string, canonicalName: string, descriptor: string): string {
+  const base = `${controlId} is the SPARTA countermeasure ${canonicalName}.`
+  return descriptor ? `${base} It is categorized under ${descriptor}.` : base
+}
+
+function buildDirectLookupReasoning(controlId: string, canonicalName: string, descriptor: string): string {
+  const descriptorClause = descriptor
+    ? ` ${descriptor} is validated as the category/alias for ${controlId}, not as the canonical name.`
+    : ''
+  return `The extractor resolves ${controlId} to the SPARTA countermeasure ${canonicalName}.${descriptorClause}`
+}
+
+function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[], validatedDescriptorOverride?: string) {
   if (!current) return []
+  const parentheticalDescriptor = current.question.match(/\(([^)]+)\)/)?.[1]?.trim()
+  const currentDescriptorLabel = validatedDescriptorOverride?.trim() || parentheticalDescriptor
+  const currentDescriptor = currentDescriptorLabel?.toLowerCase()
+  const structuredDescriptorFor = (candidate: SpartaQRA): string | null => {
+    const evidenceCase = candidate.evidence_case as Record<string, unknown> | undefined
+    const entityContext = evidenceCase?.entity_context && typeof evidenceCase.entity_context === 'object' && !Array.isArray(evidenceCase.entity_context)
+      ? evidenceCase.entity_context as Record<string, unknown>
+      : undefined
+    const extractEntities = evidenceCase?.extract_entities && typeof evidenceCase.extract_entities === 'object' && !Array.isArray(evidenceCase.extract_entities)
+      ? evidenceCase.extract_entities as Record<string, unknown>
+      : undefined
+    const nodeSources = [evidenceCase, entityContext, extractEntities]
+    for (const source of nodeSources) {
+      const nodes = source?.nodes && typeof source.nodes === 'object' && !Array.isArray(source.nodes)
+        ? source.nodes as { validated_context?: Array<Record<string, unknown>> }
+        : undefined
+      for (const node of nodes?.validated_context ?? []) {
+        const metadata = node.metadata && typeof node.metadata === 'object' && !Array.isArray(node.metadata)
+          ? node.metadata as Record<string, unknown>
+          : {}
+        const mention = typeof node.mention === 'string' ? node.mention : ''
+        const matchedValue = typeof metadata.matched_value === 'string' ? metadata.matched_value : ''
+        const category = typeof metadata.category === 'string' ? metadata.category : ''
+        const descriptor = matchedValue || category || mention
+        if (descriptor.trim()) return descriptor.trim()
+      }
+    }
+    for (const entry of candidate.evidence_case?.glossary ?? []) {
+      const descriptorEntry = entry as GlossaryEntryLike & { descriptor_kind?: string; mention?: string }
+      const type = (descriptorEntry.type || descriptorEntry.descriptor_kind || '').toLowerCase()
+      if (type.includes('descriptor') || type.includes('category') || type.includes('alias')) {
+        return (descriptorEntry.mention || descriptorEntry.name || descriptorEntry.id || '').trim() || null
+      }
+    }
+    return null
+  }
+  const structuredDescriptorMatch = (candidate: SpartaQRA) => {
+    const descriptor = structuredDescriptorFor(candidate)
+    return Boolean(currentDescriptor && descriptor && descriptor.toLowerCase() === currentDescriptor)
+  }
   const byKey = new Map(qras.map((entry) => [entry._key, entry]))
   const byQraId = new Map(qras.filter((entry) => Boolean(entry.qra_id)).map((entry) => [entry.qra_id as string, entry]))
   const explicitKeys = Array.from(new Set([
@@ -606,7 +747,7 @@ function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
       source: candidate.source_framework || 'SPARTA',
       question: candidate.question,
       verdict: deriveEvidenceStatus(candidate),
-      match: 'prior evidence',
+      match: structuredDescriptorMatch(candidate) && currentDescriptorLabel ? `same ${currentDescriptorLabel} category` : 'prior evidence',
     }))
   }
 
@@ -633,14 +774,31 @@ function buildRelatedQras(current: SpartaQRA | undefined, qras: SpartaQRA[]) {
       verdict: deriveEvidenceStatus(candidate),
       match: current.relationship_id && candidate.relationship_id === current.relationship_id
         ? 'same relationship'
+        : structuredDescriptorMatch(candidate) && currentDescriptorLabel
+          ? `same ${currentDescriptorLabel} category`
+        : currentDescriptor && candidate.question.toLowerCase().includes(currentDescriptor)
+          ? 'mentions descriptor'
         : current.control_id && candidate.control_id === current.control_id
           ? 'same control'
-          : current.source_framework && candidate.source_framework === current.source_framework
-            ? 'same framework'
+        : current.source_framework && candidate.source_framework === current.source_framework
+            ? 'semantic neighbor'
             : current.qra_type && candidate.qra_type === current.qra_type
               ? 'same QRA type'
               : 'loaded neighbor',
     }))
+}
+
+function qraCollectionName(q: SpartaQRA): string {
+  const fromId = typeof q._id === 'string' ? q._id.split('/')[0] : ''
+  if (fromId === 'sparta_qra' || fromId === 'sparta_qra_canonical' || fromId === 'sparta_qra_relationship') return fromId
+  return q._collection || 'sparta_qra'
+}
+
+function formatEvidenceCheckedAt(value: string | null | undefined): string {
+  if (!value) return 'not checked'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
 // Sync selected QRA _key into URL hash params (e.g. #sparta-explorer/qras?qra=abc123)
@@ -819,7 +977,9 @@ export function QRAsView() {
   const [showBatchModal, setShowBatchModal] = useState(false)
   const [payloadModalKey, setPayloadModalKey] = useState<string | null>(null)
   const [evidenceRunResult, setEvidenceRunResult] = useState<Record<string, unknown> | null>(null)
+  const [evidenceRunResultOpen, setEvidenceRunResultOpen] = useState(false)
   const [evidenceRunLoading, setEvidenceRunLoading] = useState(false)
+  const [lastEvidenceRun, setLastEvidenceRun] = useState<EvidenceFreshness | null>(null)
   const [entityViewMode, setEntityViewMode] = useState<EntityViewMode>(loadEntityViewMode)
   const [showEntitiesHelp, setShowEntitiesHelp] = useState(false)
   const [qraDrafts, setQraDrafts] = useState<Map<string, QraDraft>>(new Map())
@@ -885,13 +1045,50 @@ export function QRAsView() {
   const currentDraftText = currentDraft
     ? [currentDraft.question, currentDraft.answer, currentDraft.reasoning].filter((part) => part.trim()).join('\n')
     : ''
+  const currentDraftHash = hashDraft(currentDraft)
   const qraDraftDirty = Boolean(current && currentDraft && (
     currentDraft.question !== (current.question || '')
     || currentDraft.reasoning !== (current.reasoning || '')
     || currentDraft.answer !== (current.answer || current.evidence_case?.answer || '')
   ))
+  const evidenceFreshForDraft = Boolean(
+    current
+    && currentDraftHash
+    && lastEvidenceRun?.qraKey === current._key
+    && lastEvidenceRun.draftHash === currentDraftHash
+    && lastEvidenceRun.ok,
+  )
   const currentQualityIssue = getQraQualityIssue(current)
   const currentEvidenceStatus = current ? deriveEvidenceStatus(current) : null
+  const draftApprovalAnchors = Array.isArray(draftExtraction?.nodes?.anchors) ? draftExtraction.nodes.anchors : []
+  const draftApprovalValidatedContext = Array.isArray(draftExtraction?.nodes?.validated_context) ? draftExtraction.nodes.validated_context : []
+  const draftPrimaryAnchor = draftApprovalAnchors[0]
+  const draftPrimaryControlId = draftPrimaryAnchor?.metadata?.control_id || draftPrimaryAnchor?.id || draftExtraction?.agent_decision?.primary_entity_id || current?.control_id || ''
+  const draftPrimaryCanonicalName = draftPrimaryAnchor?.metadata?.name || draftPrimaryAnchor?.metadata?.canonical_name || ''
+  const draftValidatedDescriptor = draftApprovalValidatedContext[0]?.mention || draftApprovalValidatedContext[0]?.metadata?.matched_value || draftApprovalValidatedContext[0]?.metadata?.category || ''
+  const draftSuggestedAnswer = draftPrimaryControlId && draftPrimaryCanonicalName
+    ? buildDirectLookupAnswer(draftPrimaryControlId, draftPrimaryCanonicalName, draftValidatedDescriptor)
+    : ''
+  const draftSuggestedReasoning = draftPrimaryControlId && draftPrimaryCanonicalName
+    ? buildDirectLookupReasoning(draftPrimaryControlId, draftPrimaryCanonicalName, draftValidatedDescriptor)
+    : ''
+  const descriptorAsNamePattern = draftValidatedDescriptor
+    ? new RegExp(`\\bname\\s*\\(?\\s*${escapeRegExp(draftValidatedDescriptor)}\\s*\\)?`, 'i')
+    : null
+  const draftWordingRepairNeeded = Boolean(
+    isInformationalLookupQra(current)
+    && draftPrimaryControlId
+    && draftPrimaryCanonicalName
+    && draftValidatedDescriptor
+    && currentDraft
+    && (
+      descriptorAsNamePattern?.test(currentDraft.reasoning || '')
+      || (
+        currentDraft.answer.includes(`(${draftValidatedDescriptor})`)
+        && !currentDraft.answer.includes(`${draftPrimaryControlId} is the SPARTA countermeasure ${draftPrimaryCanonicalName}`)
+      )
+    ),
+  )
   const draftApprovalUnsupportedTerms = Array.from(new Set([
     ...Object.entries(draftExtraction?.resolution_map ?? {})
       .filter(([, value]) => value?.exists === false)
@@ -899,11 +1096,27 @@ export function QRAsView() {
     ...(Array.isArray(draftExtraction?.external_entities) ? draftExtraction.external_entities : [])
       .map((entity) => entity.mention || entity.normalized_text || '')
       .filter(Boolean),
+    ...(Array.isArray(draftExtraction?.nodes?.unsupported) ? draftExtraction.nodes.unsupported : [])
+      .map((node) => node.mention || node.id || '')
+      .filter(Boolean),
   ])).filter((term) => term.trim().length > 0)
   const draftApprovalBlockReason = !draftExtractionLoading && !draftExtraction?.error && draftApprovalUnsupportedTerms.length > 0
     ? `$extract-entities found unsupported term${draftApprovalUnsupportedTerms.length === 1 ? '' : 's'}: ${draftApprovalUnsupportedTerms.slice(0, 3).join(', ')}.`
     : null
-  const approveBlockReason = approvalBlockReason(current) || draftApprovalBlockReason
+  const draftExtractionBlockReason = currentDraftText.trim() && (draftExtractionLoading || !draftExtraction || draftExtraction.error)
+    ? draftExtractionLoading
+      ? '$extract-entities is still running.'
+      : draftExtraction?.error
+        ? '$extract-entities is unavailable; rerun evidence before approval.'
+        : '$extract-entities has not completed for this draft.'
+    : null
+  const draftWordingBlockReason = !draftExtractionLoading && !draftExtraction?.error && draftWordingRepairNeeded
+    ? `QRA wording treats ${draftValidatedDescriptor} as the control name; repair answer/reasoning so ${draftPrimaryControlId} is ${draftPrimaryCanonicalName}.`
+    : null
+  const draftRerunBlockReason = qraDraftDirty && !draftWordingRepairNeeded && !evidenceFreshForDraft
+    ? 'Edited QRA draft requires rerun evidence before approval.'
+    : null
+  const approveBlockReason = draftExtractionBlockReason || approvalBlockReason(current) || draftApprovalBlockReason || draftWordingBlockReason || draftRerunBlockReason
   const canApproveCurrent = Boolean(current && !approveBlockReason)
   const isCurrentAdversarial = currentEvidenceStatus === 'adversarial'
   const minHighlightEmphasis = minEmphasisForMode(entityViewMode)
@@ -1030,27 +1243,32 @@ export function QRAsView() {
   useRegisterAction('qras:display:entity-context', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_CONTEXT', label: 'Entity View Context', description: 'Show primary entities plus contextual phrase entities in the QRA panes' })
   useRegisterAction('qras:display:entity-full', { app: 'sparta-explorer', action: 'SET_ENTITY_VIEW_FULL', label: 'Entity View Full', description: 'Show the full extracted entity set in the QRA panes' })
   useRegisterAction('qras:trace:select-related', { app: 'sparta-explorer', action: 'SELECT_RELATED_QRA', label: 'Select Related QRA', description: 'Select a related QRA from the evidence trace' })
-  useRegisterAction('qras:artifact:cae:run', { app: 'sparta-explorer', action: 'RUN_CAE_EVIDENCE_CASE', label: 'Run CAE evidence case', description: 'Run the full create-evidence-case workflow for the selected QRA' })
-  useRegisterAction('qras:artifact:cae:toggle-collapse', { app: 'sparta-explorer', action: 'TOGGLE_CAE_ARTIFACT_COLLAPSE', label: 'Collapse CAE evidence case', description: 'Collapse or expand the inline CAE evidence case artifact' })
-  useRegisterAction('qras:artifact:cae:copy-case-id', { app: 'sparta-explorer', action: 'COPY_CAE_CASE_ID', label: 'Copy CAE case ID', description: 'Copy the selected CAE evidence case identifier' })
+  useRegisterAction('qras:artifact:cae:run', { app: 'sparta-explorer', action: 'RUN_CAE_EVIDENCE_CASE', label: 'Run evidence case', description: 'Run the full create-evidence-case workflow for the selected QRA' })
+  useRegisterAction('qras:artifact:cae:toggle-collapse', { app: 'sparta-explorer', action: 'TOGGLE_CAE_ARTIFACT_COLLAPSE', label: 'Collapse evidence case', description: 'Collapse or expand the inline evidence artifact' })
+  useRegisterAction('qras:artifact:cae:copy-case-id', { app: 'sparta-explorer', action: 'COPY_CAE_CASE_ID', label: 'Copy evidence case ID', description: 'Copy the selected evidence case identifier' })
   useRegisterAction('qras:artifact:cae:open-raw', { app: 'sparta-explorer', action: 'OPEN_QRA_RAW_PAYLOAD', label: 'Open raw QRA payload', description: 'Open the cached QRA and evidence_case JSON payload' })
-  useRegisterAction('qras:artifact:cae:toggle-step', { app: 'sparta-explorer', action: 'TOGGLE_CAE_STEP', label: 'Toggle CAE step', description: 'Expand or collapse an inline CAE artifact step' })
-  useRegisterAction('qras:artifact:cae:open-related', { app: 'sparta-explorer', action: 'OPEN_RELATED_QRAS', label: 'Open related QRAs', description: 'Select a related QRA from the inline CAE artifact' })
-  useRegisterAction('qras:artifact:cae:approve', { app: 'sparta-explorer', action: 'APPROVE_CAE_QRA', label: 'Approve QRA from CAE artifact', description: 'Approve the selected QRA from the inline CAE artifact action row' })
-  useRegisterAction('qras:artifact:cae:repair-rerun', { app: 'sparta-explorer', action: 'REPAIR_RERUN_CAE', label: 'Repair or rerun CAE', description: 'Run the evidence case repair or rerun flow for the selected QRA' })
-  useRegisterAction('qras:artifact:cae:reject', { app: 'sparta-explorer', action: 'REJECT_CAE_QRA', label: 'Reject QRA from CAE artifact', description: 'Reject the selected QRA from the inline CAE artifact action row' })
+  useRegisterAction('qras:artifact:cae:toggle-step', { app: 'sparta-explorer', action: 'TOGGLE_CAE_STEP', label: 'Toggle evidence step', description: 'Expand or collapse an inline evidence artifact step' })
+  useRegisterAction('qras:artifact:cae:open-related', { app: 'sparta-explorer', action: 'OPEN_RELATED_QRAS', label: 'Open related QRAs', description: 'Select a related QRA from the inline evidence artifact' })
+  useRegisterAction('qras:artifact:cae:approve', { app: 'sparta-explorer', action: 'APPROVE_CAE_QRA', label: 'Approve QRA from evidence artifact', description: 'Approve the selected QRA from the inline evidence artifact action row' })
+  useRegisterAction('qras:artifact:cae:repair-rerun', { app: 'sparta-explorer', action: 'REPAIR_RERUN_CAE', label: 'Repair or rerun evidence', description: 'Run the evidence case repair or rerun flow for the selected QRA' })
+  useRegisterAction('qras:artifact:cae:reject', { app: 'sparta-explorer', action: 'REJECT_CAE_QRA', label: 'Reject QRA from evidence artifact', description: 'Reject the selected QRA from the inline evidence artifact action row' })
+  useRegisterAction('qras:artifact:evidence:approve', { app: 'sparta-explorer', action: 'APPROVE_EVIDENCE_QRA', label: 'Approve QRA from evidence artifact', description: 'Approve the reviewed QRA draft after fresh evidence rerun' })
+  useRegisterAction('qras:artifact:evidence:repair-rerun', { app: 'sparta-explorer', action: 'REPAIR_RERUN_EVIDENCE', label: 'Repair or rerun evidence', description: 'Run the evidence case repair or rerun flow for the selected QRA' })
+  useRegisterAction('qras:artifact:evidence:reject', { app: 'sparta-explorer', action: 'REJECT_EVIDENCE_QRA', label: 'Reject QRA from evidence artifact', description: 'Reject the selected QRA from the inline evidence artifact action row' })
   useRegisterAction('qras:chat:attach-evidence', { app: 'sparta-explorer', action: 'ATTACH_QRA_CHAT_EVIDENCE', label: 'Attach QRA chat evidence', description: 'Attach source excerpts, payload evidence, or audit packets to the scoped QRA chat' })
   useRegisterAction('qras:chat:prompt', { app: 'sparta-explorer', action: 'EDIT_QRA_CHAT_PROMPT', label: 'Edit QRA chat prompt', description: 'Edit the scoped QRA chat prompt composer' })
   useRegisterAction('qras:chat:send', { app: 'sparta-explorer', action: 'SEND_QRA_CHAT_PROMPT', label: 'Send QRA chat prompt', description: 'Send the scoped QRA chat prompt' })
   useRegisterAction('qras:draft:toggle-edit', { app: 'sparta-explorer', action: 'TOGGLE_QRA_DRAFT_EDIT_MODE', label: 'Toggle QRA draft edit mode', description: 'Enable or disable editing for the selected QRA draft fields' })
-  useRegisterAction('qras:draft:question', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_QUESTION', label: 'Edit QRA draft question', description: 'Patch the selected QRA question before rerunning CAE' })
-  useRegisterAction('qras:draft:reasoning', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_REASONING', label: 'Edit QRA draft reasoning', description: 'Patch the selected QRA reasoning before rerunning CAE' })
-  useRegisterAction('qras:draft:answer', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_ANSWER', label: 'Edit QRA draft answer', description: 'Patch the selected QRA answer before rerunning CAE' })
+  useRegisterAction('qras:draft:question', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_QUESTION', label: 'Edit QRA draft question', description: 'Patch the selected QRA question before rerunning evidence' })
+  useRegisterAction('qras:draft:reasoning', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_REASONING', label: 'Edit QRA draft reasoning', description: 'Patch the selected QRA reasoning before rerunning evidence' })
+  useRegisterAction('qras:draft:answer', { app: 'sparta-explorer', action: 'EDIT_QRA_DRAFT_ANSWER', label: 'Edit QRA draft answer', description: 'Patch the selected QRA answer before rerunning evidence' })
   useRegisterAction('qras:draft:reset', { app: 'sparta-explorer', action: 'RESET_QRA_DRAFT', label: 'Reset QRA draft', description: 'Restore the selected QRA draft to the persisted question, reasoning, and answer' })
-  useRegisterAction('qras:draft:rerun-cae', { app: 'sparta-explorer', action: 'RERUN_CAE_WITH_QRA_DRAFT', label: 'Rerun CAE with QRA draft', description: 'Run create-evidence-case against the edited QRA draft fields' })
+  useRegisterAction('qras:draft:rerun-cae', { app: 'sparta-explorer', action: 'RERUN_CAE_WITH_QRA_DRAFT', label: 'Rerun evidence with QRA draft', description: 'Run create-evidence-case against the edited QRA draft fields' })
+  useRegisterAction('qras:draft:rerun-evidence', { app: 'sparta-explorer', action: 'RERUN_EVIDENCE_WITH_QRA_DRAFT', label: 'Rerun evidence with QRA draft', description: 'Run create-evidence-case against the edited QRA draft fields' })
   useRegisterAction('qras:payload:copy', { app: 'sparta-explorer', action: 'COPY_QRA_PAYLOAD_JSON', label: 'Copy QRA payload JSON', description: 'Copy the full QRA prompt payload JSON' })
   useRegisterAction('qras:payload:close', { app: 'sparta-explorer', action: 'CLOSE_QRA_PAYLOAD', label: 'Close QRA payload', description: 'Close the QRA prompt payload modal' })
-  useRegisterAction('qras:artifact:cae:close-result', { app: 'sparta-explorer', action: 'CLOSE_CAE_RESULT', label: 'Close CAE result', description: 'Close the full query-time CAE evidence case result modal' })
+  useRegisterAction('qras:artifact:cae:close-result', { app: 'sparta-explorer', action: 'CLOSE_EVIDENCE_RESULT', label: 'Close evidence result', description: 'Close the full query-time evidence case result modal' })
+  useRegisterAction('qras:artifact:evidence:close-result', { app: 'sparta-explorer', action: 'CLOSE_EVIDENCE_RESULT', label: 'Close evidence result', description: 'Close the full query-time evidence case result modal' })
   useRegisterAction('qras:item:copy-key', { app: 'sparta-explorer', action: 'COPY_QRA_KEY', label: 'Copy QRA key', description: 'Copy the selected QRA key from the dense queue' })
   useRegisterAction('qras:item:copy-payload', { app: 'sparta-explorer', action: 'COPY_QRA_PAYLOAD', label: 'Copy QRA payload', description: 'Copy the full QRA prompt payload from the dense queue' })
   useRegisterAction('qras:item:open-payload', { app: 'sparta-explorer', action: 'OPEN_QRA_PAYLOAD', label: 'Open QRA payload', description: 'Open the full QRA prompt payload from the dense queue' })
@@ -1078,7 +1296,7 @@ export function QRAsView() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
-        body: JSON.stringify({ text: currentDraftText, collection: 'sparta_controls' }),
+        body: JSON.stringify({ text: currentDraftText, collection: 'sparta_controls', view: 'agent' }),
       })
         .then(async (response) => {
           const payload = await response.json()
@@ -1134,7 +1352,7 @@ export function QRAsView() {
     return () => { cancelled = true }
   }, [currentListItem?._key, currentListItem?.qra_id, qraDetails, source])
 
-  const relatedQras = useMemo(() => buildRelatedQras(current, qras), [current, qras])
+  const relatedQras = useMemo(() => buildRelatedQras(current, qras, draftValidatedDescriptor), [current, qras, draftValidatedDescriptor])
   const payloadModalQra = useMemo(() => {
     if (!payloadModalKey) return null
     return qraDetails.get(payloadModalKey) ?? qras.find((entry) => entry._key === payloadModalKey) ?? null
@@ -1159,6 +1377,32 @@ export function QRAsView() {
     })
   }, [qraDetails, qras])
 
+  useEffect(() => {
+    if (!current?._key) return
+    const hasStaleAutoReasoning = Boolean(
+      qraDraftDirty
+      && draftValidatedDescriptor
+      && currentDraft?.reasoning.includes(`parenthetical ${draftValidatedDescriptor}`),
+    )
+    if (!draftWordingRepairNeeded && !hasStaleAutoReasoning) return
+    if (qraDraftDirty && !hasStaleAutoReasoning) return
+    if (!draftSuggestedAnswer || !draftSuggestedReasoning) return
+
+    updateQraDraft(current._key, {
+      answer: draftSuggestedAnswer,
+      reasoning: draftSuggestedReasoning,
+    })
+  }, [
+    current?._key,
+    draftSuggestedAnswer,
+    draftSuggestedReasoning,
+    draftValidatedDescriptor,
+    draftWordingRepairNeeded,
+    currentDraft?.reasoning,
+    qraDraftDirty,
+    updateQraDraft,
+  ])
+
   const resetQraDraft = useCallback((key: string) => {
     setQraDrafts((prev) => {
       const next = new Map(prev)
@@ -1171,6 +1415,7 @@ export function QRAsView() {
     if (!q) return
     setEvidenceRunLoading(true)
     setEvidenceRunResult(null)
+    setEvidenceRunResultOpen(false)
     try {
       const sourceControlId = (q as SpartaQRA & { source_control_id?: string }).source_control_id
       const runDraft = draft ?? {
@@ -1178,6 +1423,7 @@ export function QRAsView() {
         reasoning: q.reasoning || '',
         answer: q.answer || q.evidence_case?.answer || '',
       }
+      const runDraftHash = hashDraft(runDraft)
       const response = await fetch('/api/evidence-case/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1192,9 +1438,31 @@ export function QRAsView() {
         }),
       })
       const payload = await response.json()
-      setEvidenceRunResult(response.ok ? payload : { error: payload?.error || response.statusText, status: response.status })
+      const resultPayload = response.ok ? payload : { error: payload?.error || response.statusText, status: response.status }
+      setEvidenceRunResult(resultPayload)
+      setEvidenceRunResultOpen(!response.ok)
+      setLastEvidenceRun({
+        qraKey: q._key,
+        draftHash: runDraftHash,
+        ok: response.ok && evidenceRunSucceeded(payload as Record<string, unknown>),
+        runId: response.ok ? evidenceRunIdentity(q._key, runDraftHash, payload as Record<string, unknown>) : null,
+        checkedAt: new Date().toISOString(),
+      })
     } catch (error) {
       setEvidenceRunResult({ error: error instanceof Error ? error.message : String(error) })
+      setEvidenceRunResultOpen(true)
+      const failedDraft = draft ?? {
+        question: q.question,
+        reasoning: q.reasoning || '',
+        answer: q.answer || q.evidence_case?.answer || '',
+      }
+      setLastEvidenceRun({
+        qraKey: q._key,
+        draftHash: hashDraft(failedDraft),
+        ok: false,
+        runId: null,
+        checkedAt: new Date().toISOString(),
+      })
     } finally {
       setEvidenceRunLoading(false)
     }
@@ -1211,37 +1479,61 @@ export function QRAsView() {
 
   const handleDecision = useCallback(async (decision: ReviewDecision) => {
     if (!current) return
-    const blockReason = decision === 'accept' ? approvalBlockReason(current) : null
+    const blockReason = decision === 'accept' ? approveBlockReason : null
     if (blockReason) {
       setDecisionError(`Approve blocked: ${blockReason}`)
       return
     }
     const key = current._key
+    const reviewedDraft = currentDraft ?? {
+      question: current.question || '',
+      reasoning: current.reasoning || '',
+      answer: current.answer || current.evidence_case?.answer || '',
+    }
     setDecisionSaving(decision)
     setDecisionError(null)
 
     const grade = decision === 'accept' ? 'PASS' : decision === 'retain_adversarial' ? 'ADVERSARIAL_FIXTURE' : 'FAIL'
     try {
-      const response = await fetch('http://localhost:3001/api/memory/learn', {
+      const response = await fetch(`/api/sparta/qras/${encodeURIComponent(key)}/review`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          collection: 'sparta_qra',
-          problem: current.question,
-          solution: current.answer,
-          metadata: {
-            _key: key,
-            control_id: current.control_id,
-            grade,
-            decision,
-            evidence_status: deriveEvidenceStatus(current),
-            approval_block_reason: decision === 'accept' ? null : approvalBlockReason(current),
-            reviewed_by: 'brandon',
-            reviewed_at: new Date().toISOString(),
+          collection: qraCollectionName(current),
+          decision,
+          reviewed_draft: reviewedDraft,
+          reviewer: 'brandon',
+          grade,
+          evidence_status: deriveEvidenceStatus(current),
+          draft_hash: hashDraft(reviewedDraft),
+          evidence_run: {
+            id: evidenceFreshForDraft ? lastEvidenceRun?.runId ?? null : null,
+            checked_at: evidenceFreshForDraft ? lastEvidenceRun?.checkedAt ?? null : null,
+            fresh_for_draft: evidenceFreshForDraft,
           },
         }),
       })
-      if (!response.ok) throw new Error(`/api/memory/learn ${response.status}: ${await response.text()}`)
+      if (!response.ok) throw new Error(`/api/sparta/qras/review ${response.status}: ${await response.text()}`)
+      const saved = await response.json() as { document?: SpartaQRA }
+      const savedDocument = saved.document ?? {
+        ...current,
+        question: reviewedDraft.question,
+        answer: reviewedDraft.answer,
+        reasoning: reviewedDraft.reasoning,
+        review_status: decision === 'accept' ? 'approved' : decision === 'reject' ? 'rejected' : 'adversarial_fixture',
+      }
+      setQraDetails((prev) => {
+        const next = new Map(prev)
+        next.set(key, savedDocument)
+        return next
+      })
+      if (decision === 'accept') {
+        setQraDrafts((prev) => {
+          const next = new Map(prev)
+          next.delete(key)
+          return next
+        })
+      }
       setDecisions((prev) => new Map(prev).set(key, decision))
       if (undoTimer) clearTimeout(undoTimer.timer)
       const timer = window.setTimeout(() => setUndoTimer(null), 10_000)
@@ -1252,7 +1544,7 @@ export function QRAsView() {
     } finally {
       setDecisionSaving(null)
     }
-  }, [current, undoTimer, advance])
+  }, [current, currentDraft, approveBlockReason, qraDraftDirty, evidenceFreshForDraft, lastEvidenceRun, undoTimer, advance])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -1398,10 +1690,41 @@ export function QRAsView() {
       ].filter(Boolean).slice(0, 6).join(' -> ')
       : 'none'
     const draftEntities = Array.isArray(draftExtraction?.entities) ? draftExtraction.entities : []
+    const draftGlossary = Array.isArray(draftExtraction?.glossary) ? draftExtraction.glossary : []
     const draftExternalEntities = Array.isArray(draftExtraction?.external_entities) ? draftExtraction.external_entities : []
+    const draftNodes = draftExtraction?.nodes
+    const draftAnchors = Array.isArray(draftNodes?.anchors) ? draftNodes.anchors : []
+    const draftValidatedContext = Array.isArray(draftNodes?.validated_context) ? draftNodes.validated_context : []
+    const draftSuppressed = Array.isArray(draftNodes?.suppressed) ? draftNodes.suppressed : []
+    const draftUnsupportedNodes = Array.isArray(draftNodes?.unsupported) ? draftNodes.unsupported : []
+    const primaryDraftAnchor = draftAnchors[0]
+    const primaryControlId = primaryDraftAnchor?.metadata?.control_id || primaryDraftAnchor?.id || draftExtraction?.agent_decision?.primary_entity_id || current?.control_id || ''
+    const primaryCanonicalName = primaryDraftAnchor?.metadata?.name || primaryDraftAnchor?.metadata?.canonical_name || ''
+    const primaryFramework = primaryDraftAnchor?.metadata?.framework_label || primaryDraftAnchor?.metadata?.framework || 'SPARTA'
+    const primaryCategory = primaryDraftAnchor?.metadata?.category || ''
+    const validatedDescriptorNode = draftValidatedContext[0]
+    const validatedDescriptor = validatedDescriptorNode?.mention || validatedDescriptorNode?.metadata?.matched_value || validatedDescriptorNode?.metadata?.category || primaryCategory || ''
+    const descriptorKind = validatedDescriptorNode?.metadata?.descriptor_kind || 'control_category_or_alias'
+    const suggestedDirectAnswer = primaryControlId && primaryCanonicalName
+      ? buildDirectLookupAnswer(primaryControlId, primaryCanonicalName, validatedDescriptor)
+      : ''
+    const suggestedDirectReasoning = primaryControlId && primaryCanonicalName
+      ? buildDirectLookupReasoning(primaryControlId, primaryCanonicalName, validatedDescriptor)
+      : ''
     const draftResolutionEntries = Object.entries(draftExtraction?.resolution_map ?? {})
     const draftUnresolvedEntries = draftResolutionEntries.filter(([, value]) => value?.exists === false)
     const draftUnsupportedMap = new Map(draftUnresolvedEntries)
+    draftGlossary
+      .filter((entry) => entry.grounded === false || entry.exists === false)
+      .forEach((entry) => {
+        const term = entry.mention || entry.name || entry.id
+        if (!term || draftUnsupportedMap.has(term)) return
+        draftUnsupportedMap.set(term, {
+          exists: false,
+          reason: entry.reason || 'not_grounded_to_sparta_controls',
+          match_type: entry.type || 'unsupported',
+        })
+      })
     draftExternalEntities.forEach((entity) => {
       const term = entity.mention || entity.normalized_text
       if (!term || draftUnsupportedMap.has(term)) return
@@ -1411,28 +1734,70 @@ export function QRAsView() {
         match_type: entity.entity_type || 'external_entity',
       })
     })
+    draftUnsupportedNodes.forEach((node) => {
+      const term = node.mention || node.id
+      if (!term || draftUnsupportedMap.has(term)) return
+      draftUnsupportedMap.set(term, {
+        exists: false,
+        reason: node.reason || node.status || 'unsupported',
+        match_type: node.node_kind || 'unsupported',
+      })
+    })
     const draftUnsupportedEntries = Array.from(draftUnsupportedMap.entries())
-    const draftEntityCount = draftEntities.filter((entity) => entity.exists !== false).length
-    const draftExtractionGlossary: GlossaryEntryLike[] = [
-      ...draftEntities
-        .filter((entity) => entity.exists !== false)
-        .map((entity) => ({
-          id: entity.label || entity.id,
-          name: entity.name || entity.label || entity.id,
-          framework: entity.framework,
-          type: entity.type,
-          source: '/extract-entities editable QRA draft',
-        })),
-      ...draftResolutionEntries
-        .filter(([, value]) => value?.exists !== false)
-        .map(([mention, value]) => ({
-          id: value?.control_id || mention,
-          name: value?.name || mention,
-          framework: value?.framework || undefined,
-          type: value?.match_type || 'entity',
-          source: '/extract-entities editable QRA draft',
-        })),
+    const groundedControlCount = Math.max(draftAnchors.length, draftEntities.filter((entity) => entity.exists !== false).length, primaryControlId ? 1 : 0)
+    const validatedDescriptorCount = draftValidatedContext.length
+    const unsupportedCount = draftUnsupportedEntries.length
+    const suppressedTerms = draftSuppressed
+      .map((node) => node.mention || node.id)
+      .filter((value): value is string => typeof value === 'string' && value.length > 0)
+    const nodeGlossary: GlossaryEntryLike[] = [
+      ...draftAnchors.map((node) => ({
+        id: node.metadata?.control_id || node.id,
+        name: node.metadata?.name || node.mention || node.id,
+        framework: node.metadata?.framework_label || node.metadata?.framework || 'SPARTA',
+        type: node.metadata?.type || node.node_kind || 'control',
+        source: '/extract-entities nodes.anchors',
+      })),
+      ...draftValidatedContext.map((node) => ({
+        id: node.id || node.mention,
+        name: node.mention || node.metadata?.matched_value || node.metadata?.category || node.id,
+        framework: node.metadata?.framework_label || node.metadata?.framework || primaryFramework,
+        type: node.metadata?.descriptor_kind || 'control_descriptor',
+        source: '/extract-entities nodes.validated_context',
+      })),
     ]
+    const draftExtractionGlossary: GlossaryEntryLike[] = draftGlossary.length > 0
+      ? draftGlossary
+        .filter((entry) => entry.grounded !== false && entry.exists !== false)
+        .map((entry) => ({
+          id: entry.id || entry.control_id || entry.name || undefined,
+          name: entry.name || entry.id || entry.control_id || undefined,
+          framework: entry.framework,
+          type: entry.type,
+          source: entry.source || '/extract-entities editable QRA draft',
+        }))
+      : nodeGlossary.length > 0
+        ? nodeGlossary
+      : [
+        ...draftEntities
+          .filter((entity) => entity.exists !== false)
+          .map((entity) => ({
+            id: entity.label || entity.id,
+            name: entity.name || entity.label || entity.id,
+            framework: entity.framework,
+            type: entity.type,
+            source: '/extract-entities editable QRA draft',
+          })),
+        ...draftResolutionEntries
+          .filter(([, value]) => value?.exists !== false)
+          .map(([mention, value]) => ({
+            id: value?.control_id || mention,
+            name: value?.name || mention,
+            framework: value?.framework || undefined,
+            type: value?.match_type || 'entity',
+            source: '/extract-entities editable QRA draft',
+          })),
+      ]
     const selectedHighlightGlossary: GlossaryEntryLike[] = [
       ...(evidenceCase?.glossary ?? []),
       ...selectedEntities.map((entity) => ({
@@ -1453,6 +1818,8 @@ export function QRAsView() {
       [
         ...(draftExtraction?.control_ids ?? []),
         ...draftEntities.flatMap((entity) => [entity.id, entity.label, entity.name]),
+        ...draftAnchors.flatMap((node) => [node.id, node.mention, node.metadata?.control_id, node.metadata?.name, node.metadata?.category]),
+        ...draftValidatedContext.flatMap((node) => [node.id, node.mention, node.metadata?.matched_value, node.metadata?.category, node.metadata?.canonical_name, node.relationship?.target_id]),
         ...draftResolutionEntries
           .filter(([, value]) => value?.exists !== false)
           .flatMap(([mention, value]) => [mention, value?.control_id, value?.name]),
@@ -1478,7 +1845,7 @@ export function QRAsView() {
       ...unresolvedControlLikeTerms.map((term) => ({
         term,
         state: 'unresolved' as const,
-        title: '$extract-entities did not ground this control-like token; check for a typo before rerunning CAE',
+        title: '$extract-entities did not ground this control-like token; check for a typo before rerunning evidence',
       })),
     ]
       .filter((item) => item.term.trim().length >= 3)
@@ -1552,16 +1919,29 @@ export function QRAsView() {
     const sacmGateState = informationalLookup
       ? 'not required'
       : sacmLabel
+    const evidenceArtifactTitle = informationalLookup ? 'Direct Lookup Evidence' : 'Inline Evidence Artifact'
+    const evidenceArtifactStatus = draftWordingRepairNeeded
+      ? 'Repair wording'
+      : qraDraftDirty && !evidenceFreshForDraft
+        ? 'Rerun evidence'
+      : canApproveCurrent
+        ? 'Approval ready'
+        : 'Needs repair'
+    const groundedLookupAssertion = primaryControlId && primaryCanonicalName
+      ? `${primaryControlId} resolves to ${primaryCanonicalName}${validatedDescriptor ? `; ${validatedDescriptor} is validated as category/alias.` : '.'}`
+      : 'Evaluate the selected QRA question plus proposed answer.'
     const caeSteps: Array<{ number: number; name: string; result: string; state: 'pass' | 'info' | 'skip' | 'warn'; details: Array<{ label: string; value: string }> }> = [
       {
         number: 1,
-        name: 'Claim',
-        result: draftUnsupportedEntries.length > 0 ? 'Draft claim contains unsupported entity text; repair and rerun CAE.' : 'Evaluate the selected QRA question plus proposed answer.',
-        state: currentDraft?.question && currentDraft?.answer && draftUnsupportedEntries.length === 0 ? 'pass' : 'warn',
+        name: informationalLookup ? 'Grounded Lookup' : 'Answer Check',
+        result: draftUnsupportedEntries.length > 0 ? 'Draft contains unsupported entity text; repair and rerun evidence.' : groundedLookupAssertion,
+        state: currentDraft?.question && currentDraft?.answer && draftUnsupportedEntries.length === 0 && !draftWordingRepairNeeded ? 'pass' : 'warn',
         details: [
           { label: 'Question', value: currentDraft?.question || current?.question || 'missing' },
           { label: 'Proposed answer', value: currentDraft?.answer || current?.answer || evidenceCase?.answer || 'missing' },
-          { label: 'Draft status', value: draftUnsupportedEntries.length > 0 ? `unsupported term(s): ${draftUnsupportedEntries.map(([term]) => term).join(', ')}` : qraDraftDirty ? 'edited draft; rerun CAE before approval' : 'matches persisted QRA' },
+          { label: 'Recommended answer', value: suggestedDirectAnswer || 'not generated' },
+          { label: 'Recommended reasoning', value: suggestedDirectReasoning || 'not generated' },
+          { label: 'Draft status', value: draftUnsupportedEntries.length > 0 ? `unsupported term(s): ${draftUnsupportedEntries.map(([term]) => term).join(', ')}` : draftWordingRepairNeeded ? `wording repair: ${validatedDescriptor} is a descriptor/category, not the canonical name` : qraDraftDirty && evidenceFreshForDraft ? 'edited draft; evidence rerun is fresh for this draft' : qraDraftDirty ? 'edited draft; rerun evidence before approval' : 'matches persisted QRA' },
         ],
       },
       {
@@ -1577,11 +1957,14 @@ export function QRAsView() {
       {
         number: 3,
         name: 'Entity Grounding',
-        result: `${draftEntityCount} grounded; ${draftUnsupportedEntries.length} unsupported in editable draft.`,
-        state: draftUnsupportedEntries.length > 0 ? 'warn' : draftEntityCount > 0 || selectedEntities.length > 0 || spanCount > 0 ? 'pass' : 'warn',
+        result: `${groundedControlCount} grounded control${groundedControlCount === 1 ? '' : 's'}; ${validatedDescriptorCount} validated descriptor${validatedDescriptorCount === 1 ? '' : 's'}; ${unsupportedCount} unsupported.`,
+        state: unsupportedCount > 0 ? 'warn' : groundedControlCount > 0 ? 'pass' : 'warn',
         details: [
-          { label: 'Glossary', value: glossaryCount > 0 ? `${glossaryCount} resolved entries` : 'not generated' },
-          { label: 'Control IDs', value: evidenceCase?.control_ids?.join(', ') || current?.control_id || 'none' },
+          { label: 'Primary control', value: primaryControlId || 'none' },
+          { label: 'Canonical name', value: primaryCanonicalName || 'not resolved' },
+          { label: 'Validated descriptor', value: validatedDescriptor || 'none' },
+          { label: 'Descriptor kind', value: descriptorKind },
+          { label: 'Suppressed', value: suppressedTerms.length > 0 ? suppressedTerms.join(', ') : 'none' },
           { label: 'Unsupported', value: draftUnsupportedEntries.length > 0 ? draftUnsupportedEntries.map(([term]) => term).join(', ') : 'none' },
         ],
       },
@@ -1608,20 +1991,20 @@ export function QRAsView() {
       {
         number: 6,
         name: 'Verification Gates',
-        result: informationalLookup ? 'Required gates passed; relationship-only gates are policy-exempt.' : `Gate trace ${gateLabel}; proof ${proofLabel}; SACM ${sacmLabel}.`,
-        state: canApproveCurrent ? 'pass' : 'warn',
+        result: informationalLookup ? 'Direct lookup: crosswalk, CAE, and formal proof are not required.' : `Gate trace ${gateLabel}; proof ${proofLabel}; SACM ${sacmLabel}.`,
+        state: canApproveCurrent ? 'pass' : draftWordingRepairNeeded ? 'warn' : 'warn',
         details: [
-          { label: 'Entity resolved', value: selectedEntities.length > 0 ? 'passed' : 'needs review' },
+          { label: 'Entity grounding', value: groundedControlCount > 0 ? 'passed' : 'needs review' },
+          { label: 'Crosswalk', value: relationshipGateState },
+          { label: 'CAE', value: informationalLookup ? 'not required' : 'required' },
           { label: 'Confidence', value: confidenceLabel },
-          { label: 'Gate trace', value: gateLabel },
           { label: 'Formal proof', value: proofGateState },
-          { label: 'SACM export', value: sacmGateState },
         ],
       },
       {
         number: 7,
         name: 'Verdict',
-        result: canApproveCurrent ? 'Approve as written unless the reviewer wants stronger wording.' : issueText,
+        result: draftWordingRepairNeeded ? `Repair answer/reasoning so ${primaryControlId || 'the control'} is ${primaryCanonicalName || 'the canonical control'} and ${validatedDescriptor || 'the descriptor'} is category/alias.` : canApproveCurrent ? 'Approve as written after human review.' : issueText,
         state: canApproveCurrent ? 'pass' : 'warn',
         details: [
           { label: 'Decision basis', value: canApproveCurrent ? issueText : approveBlockReason || 'review required' },
@@ -1634,7 +2017,7 @@ export function QRAsView() {
         result: 'Human remains final approver.',
         state: 'info',
         details: [
-          { label: 'Available actions', value: canApproveCurrent ? 'approve, reject, open raw payload, export audit packet' : 'repair/rerun, reject, retain fixture, open raw payload' },
+          { label: 'Available actions', value: canApproveCurrent ? 'approve, reject, open raw payload, export audit packet' : 'repair/rerun evidence, reject, retain fixture, open raw payload' },
         ],
       },
     ]
@@ -2010,7 +2393,7 @@ export function QRAsView() {
           }}
         />
 
-        <aside style={{ minWidth: 0, minHeight: 0, overflow: 'hidden', display: 'grid', gridTemplateRows: undoTimer ? 'auto auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr) auto', backgroundColor: EMBRY.bgPanel }}>
+        <aside data-qid="qras:review-pane" style={{ minWidth: 0, minHeight: 0, overflow: 'hidden', display: 'grid', gridTemplateRows: undoTimer ? 'auto auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr) auto', backgroundColor: EMBRY.bgPanel }}>
           {!current ? (
             qraKeyFilter ? (
               <DeepLinkRecoveryState
@@ -2048,10 +2431,15 @@ export function QRAsView() {
                       {selectedBadge && <span style={{ color: selectedBadge.color, fontSize: 10, fontWeight: 850, border: `1px solid ${selectedBadge.color}66`, borderRadius: 999, padding: '2px 7px' }}>{selectedBadge.label}</span>}
                     </div>
                   </div>
-                  <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.red, border: `1px solid ${canApproveCurrent ? EMBRY.green : EMBRY.red}55`, borderRadius: 999, padding: '3px 7px', fontSize: 9, fontWeight: 900, whiteSpace: 'nowrap' }}>
-                    {canApproveCurrent ? 'APPROVAL READY' : 'APPROVAL BLOCKED'}
+                  <span style={{ color: draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red, border: `1px solid ${draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red}55`, borderRadius: 999, padding: '3px 7px', fontSize: 9, fontWeight: 900, whiteSpace: 'nowrap' }}>
+                    {draftWordingRepairNeeded ? 'REPAIR WORDING' : qraDraftDirty && !evidenceFreshForDraft ? 'RERUN EVIDENCE' : canApproveCurrent ? 'APPROVAL READY' : 'APPROVAL BLOCKED'}
                   </span>
                 </div>
+                {lastEvidenceRun?.qraKey === current._key && (
+                  <div data-qid="qras:evidence:freshness" style={{ marginTop: 6, color: evidenceFreshForDraft ? EMBRY.green : EMBRY.amber, fontSize: 10, fontFamily: 'monospace' }}>
+                    Evidence {evidenceFreshForDraft ? 'fresh for draft' : 'stale for current draft'} · {lastEvidenceRun.draftHash} · checked {formatEvidenceCheckedAt(lastEvidenceRun.checkedAt)}
+                  </div>
+                )}
                 <div style={{ marginTop: 10, display: 'grid', gap: 7, padding: 10, border: `1px solid ${qraDraftDirty ? EMBRY.amber : EMBRY.border}`, borderRadius: 8, backgroundColor: 'rgba(5,11,20,0.72)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
                     <div style={{ minWidth: 0, display: 'flex', gap: 7, alignItems: 'center' }}>
@@ -2065,7 +2453,7 @@ export function QRAsView() {
                       <button type="button" data-qid="qras:draft:reset" data-qs-action="RESET_QRA_DRAFT" title="Reset the QRA draft to the persisted question, reasoning, and answer" aria-label="Reset QRA draft" disabled={!qraDraftDirty} onClick={() => resetQraDraft(current._key)} style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: qraDraftDirty ? EMBRY.dim : `${EMBRY.dim}80`, padding: 0, cursor: qraDraftDirty ? 'pointer' : 'not-allowed' }}>
                         <Undo2 size={14} strokeWidth={1.8} />
                       </button>
-                      <button type="button" data-qid="qras:draft:rerun-cae" data-qs-action="RERUN_CAE_WITH_QRA_DRAFT" title="Rerun /create-evidence-case against the edited question, reasoning, and answer" aria-label="Rerun CAE evidence case for QRA draft" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.amber}55`, borderRadius: 6, backgroundColor: `${EMBRY.amber}12`, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: 0, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>
+                      <button type="button" data-qid="qras:draft:rerun-evidence" data-qid-alias="qras:draft:rerun-cae" data-qs-action="RERUN_EVIDENCE_WITH_QRA_DRAFT" title="Rerun /create-evidence-case against the edited question, reasoning, and answer" aria-label="Rerun evidence case for QRA draft" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.amber}55`, borderRadius: 6, backgroundColor: `${EMBRY.amber}12`, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: 0, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>
                         <RotateCcw size={14} strokeWidth={1.9} />
                       </button>
                     </div>
@@ -2100,7 +2488,7 @@ export function QRAsView() {
                         <textarea
                           data-qid={row.qid}
                           data-qs-action={row.keyName === 'question' ? 'EDIT_QRA_DRAFT_QUESTION' : row.keyName === 'answer' ? 'EDIT_QRA_DRAFT_ANSWER' : 'EDIT_QRA_DRAFT_REASONING'}
-                          title={`Edit selected QRA ${row.labelText.toLowerCase()} before rerunning CAE`}
+                          title={`Edit selected QRA ${row.labelText.toLowerCase()} before rerunning the evidence case`}
                           spellCheck={false}
                           autoCorrect="off"
                           autoCapitalize="off"
@@ -2119,16 +2507,33 @@ export function QRAsView() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
                       <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
                         <span style={{ ...label, color: draftExtractionLoading ? EMBRY.amber : draftExtraction?.error ? EMBRY.red : draftUnsupportedEntries.length > 0 ? EMBRY.amber : EMBRY.blue }}>
-                          {draftExtractionLoading ? '$extract-entities running' : draftExtraction?.error ? '$extract-entities unavailable' : `${draftEntityCount} grounded`}
+                          {draftExtractionLoading ? '$extract-entities running' : draftExtraction?.error ? '$extract-entities unavailable' : `${groundedControlCount} grounded control${groundedControlCount === 1 ? '' : 's'}`}
                         </span>
                         {draftUnsupportedEntries.length > 0 && <span style={{ ...label, color: EMBRY.amber }}>{draftUnsupportedEntries.length} unsupported</span>}
-                        {!draftExtractionLoading && !draftExtraction?.error && draftEntities.length === 0 && <span style={{ color: EMBRY.dim, fontSize: 11 }}>No grounded entities detected in the editable draft.</span>}
+                        {!draftExtractionLoading && !draftExtraction?.error && groundedControlCount === 0 && <span style={{ color: EMBRY.dim, fontSize: 11 }}>No grounded controls detected in the editable draft.</span>}
+                        {!draftExtractionLoading && !draftExtraction?.error && groundedControlCount > 0 && <span style={{ color: EMBRY.dim, fontSize: 11 }}>{validatedDescriptorCount} validated descriptor{validatedDescriptorCount === 1 ? '' : 's'}</span>}
                       </div>
                       {draftExtraction?.error ? (
                         <div style={{ color: EMBRY.red, fontSize: 11, lineHeight: 1.35 }}>{draftExtraction.error}</div>
                       ) : (
                         <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                          {draftEntities.slice(0, 10).map((entity, idx) => {
+                          {draftAnchors.slice(0, 8).map((node, idx) => {
+                            const entityLabel = node.metadata?.control_id || node.id || node.mention || 'control'
+                            return (
+                              <span key={`anchor:${entityLabel}:${idx}`} title={`${node.metadata?.framework_label || node.metadata?.framework || 'SPARTA'} ${node.metadata?.name || entityLabel}`} style={{ border: `1px solid ${EMBRY.blue}55`, backgroundColor: `${EMBRY.blue}12`, color: EMBRY.white, borderRadius: 999, padding: '2px 7px', fontSize: 10, fontFamily: 'monospace' }}>
+                                <span style={{ color: EMBRY.dim }}>{node.metadata?.framework_label || node.metadata?.framework || 'sparta'}</span> {entityLabel}
+                              </span>
+                            )
+                          })}
+                          {draftValidatedContext.slice(0, 8).map((node, idx) => {
+                            const entityLabel = node.mention || node.metadata?.matched_value || node.metadata?.category || node.id || 'descriptor'
+                            return (
+                              <span key={`descriptor:${entityLabel}:${idx}`} title={`${entityLabel} describes ${node.relationship?.target_id || primaryControlId}`} style={{ border: `1px solid ${EMBRY.blue}44`, backgroundColor: `${EMBRY.blue}0f`, color: EMBRY.white, borderRadius: 999, padding: '2px 7px', fontSize: 10, fontFamily: 'monospace' }}>
+                                <span style={{ color: EMBRY.dim }}>descriptor</span> {entityLabel}
+                              </span>
+                            )
+                          })}
+                          {draftAnchors.length === 0 && draftValidatedContext.length === 0 && draftEntities.slice(0, 10).map((entity, idx) => {
                             const exists = entity.exists !== false
                             const entityLabel = entity.label || entity.id || entity.name || 'entity'
                             return (
@@ -2157,25 +2562,25 @@ export function QRAsView() {
                 </div>
               )}
 
-              <div style={{ minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', padding: '9px 12px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div data-qid="qras:artifact:cae:root" style={{ alignSelf: 'stretch', flexShrink: 0, width: '100%', border: `1px solid ${EMBRY.amber}55`, borderLeft: `4px solid ${EMBRY.amber}`, backgroundColor: 'rgba(20,16,8,0.26)', borderRadius: 9, overflow: 'hidden' }}>
+              <div data-qid="qras:review-pane:scroll" style={{ minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', padding: '9px 12px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div data-qid="qras:artifact:evidence:root" style={{ alignSelf: 'stretch', flexShrink: 0, width: '100%', border: `1px solid ${EMBRY.amber}55`, borderLeft: `4px solid ${EMBRY.amber}`, backgroundColor: 'rgba(20,16,8,0.26)', borderRadius: 9, overflow: 'hidden' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', padding: '9px 10px', borderBottom: `1px solid ${EMBRY.amber}33`, backgroundColor: 'rgba(15,23,42,0.20)' }}>
                     <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ ...label, color: EMBRY.amber }}>Inline CAE Artifact</div>
+                        <div style={{ ...label, color: EMBRY.amber }}>{evidenceArtifactTitle}</div>
                       </div>
-                      <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.amber, border: `1px solid ${canApproveCurrent ? EMBRY.green : EMBRY.amber}44`, borderRadius: 999, padding: '2px 8px', fontSize: 9, fontWeight: 650, whiteSpace: 'nowrap' }}>
-                        {canApproveCurrent ? 'Approval ready' : 'Needs repair'}
+                      <span style={{ color: draftWordingRepairNeeded ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.amber, border: `1px solid ${draftWordingRepairNeeded ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.amber}44`, borderRadius: 999, padding: '2px 8px', fontSize: 9, fontWeight: 650, whiteSpace: 'nowrap' }}>
+                        {evidenceArtifactStatus}
                       </span>
                     </div>
                     <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                      <button type="button" data-qid="qras:artifact:cae:copy-case-id" data-qs-action="COPY_CAE_CASE_ID" onClick={() => navigator.clipboard?.writeText(caseId).catch(() => { /* best effort */ })} aria-label="Copy CAE case ID" title={`Copy CAE case ID: ${caseId}`} style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, padding: 0, cursor: 'copy' }}>
+                      <button type="button" data-qid="qras:artifact:evidence:copy-case-id" data-qs-action="COPY_EVIDENCE_CASE_ID" onClick={() => navigator.clipboard?.writeText(caseId).catch(() => { /* best effort */ })} aria-label="Copy evidence case ID" title={`Copy evidence case ID: ${caseId}`} style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, padding: 0, cursor: 'copy' }}>
                         <KeyRound size={14} strokeWidth={1.8} />
                       </button>
-                      <button type="button" data-qid="qras:artifact:cae:run" data-qs-action="RUN_CAE_EVIDENCE_CASE" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} aria-label="Run CAE evidence case" title="Run the full /create-evidence-case workflow for this QRA draft" style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: 0, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>
+                      <button type="button" data-qid="qras:artifact:evidence:run" data-qs-action="RUN_EVIDENCE_CASE" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} aria-label="Run evidence case" title="Run the full /create-evidence-case workflow for this QRA draft" style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: 0, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>
                         <RotateCcw size={14} strokeWidth={1.9} />
                       </button>
-                      <button type="button" data-qid="qras:artifact:cae:toggle-collapse" data-qs-action="TOGGLE_CAE_ARTIFACT_COLLAPSE" onClick={() => setCaeCollapsed((value) => !value)} aria-label={caeCollapsed ? 'Expand CAE evidence case' : 'Collapse CAE evidence case'} title={caeCollapsed ? 'Expand CAE evidence case' : 'Collapse CAE evidence case'} style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, padding: 0, cursor: 'pointer' }}>
+                      <button type="button" data-qid="qras:artifact:evidence:toggle-collapse" data-qs-action="TOGGLE_EVIDENCE_ARTIFACT_COLLAPSE" onClick={() => setCaeCollapsed((value) => !value)} aria-label={caeCollapsed ? 'Expand evidence case' : 'Collapse evidence case'} title={caeCollapsed ? 'Expand evidence case' : 'Collapse evidence case'} style={{ width: 34, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, padding: 0, cursor: 'pointer' }}>
                         <ChevronDown size={15} strokeWidth={1.9} style={{ transform: caeCollapsed ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 140ms ease' }} />
                       </button>
                     </div>
@@ -2183,7 +2588,7 @@ export function QRAsView() {
 
                   {!caeCollapsed && <div style={{ padding: 9, display: 'flex', flexDirection: 'column', gap: 7 }}>
                     <div style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.35 }}>
-                      Inspectable claim → argument → evidence flow rendered inside the agent chat turn. Hover highlighted terms in the chat text for `$extract-entities` grounding.
+                      {informationalLookup ? 'Grounding artifact for a direct SPARTA control lookup. CAE, crosswalk, and formal proof are not required for this request.' : 'Inspectable evidence flow rendered inside the agent chat turn. Hover highlighted terms in the chat text for `$extract-entities` grounding.'}
                     </div>
                     {caeSteps.map((step) => {
                       const tone = step.state === 'pass' ? EMBRY.green : step.state === 'warn' ? EMBRY.amber : step.state === 'skip' ? EMBRY.amber : EMBRY.blue
@@ -2208,7 +2613,7 @@ export function QRAsView() {
                             {step.number}
                           </div>
                           <details data-qid={`qras:artifact:cae:step:${step.number}`} open={step.number <= 3 || step.number >= 5} style={{ border: `1px solid ${EMBRY.amber}25`, borderRadius: 7, backgroundColor: 'rgba(7,12,20,0.58)', overflow: 'hidden' }}>
-                            <summary data-qid={`qras:artifact:cae:step:${step.number}:toggle`} data-qs-action="TOGGLE_CAE_STEP" title={`Expand or collapse CAE step ${step.number}: ${step.name}`} style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'minmax(112px, 0.48fr) minmax(0, 1fr) auto', gap: 8, alignItems: 'center', padding: '8px 9px', cursor: 'pointer' }}>
+                            <summary data-qid={`qras:artifact:cae:step:${step.number}:toggle`} data-qs-action="TOGGLE_CAE_STEP" title={`Expand or collapse evidence step ${step.number}: ${step.name}`} style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'minmax(112px, 0.48fr) minmax(0, 1fr) auto', gap: 8, alignItems: 'center', padding: '8px 9px', cursor: 'pointer' }}>
                               <span style={{ color: EMBRY.white, fontSize: 11.5, fontWeight: 750, display: 'inline-flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
                                 <span style={{ color: EMBRY.dim, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>{stepIcon}</span>
                                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{step.name}</span>
@@ -2240,16 +2645,19 @@ export function QRAsView() {
                                 </div>
                               )}
                               {step.number === 4 && relatedQras.length > 0 && (
-                                <button type="button" data-qid="qras:artifact:cae:open-related" data-qs-action="OPEN_RELATED_QRAS" title="Open the first linked QRA from this CAE artifact" onClick={() => selectRelatedQra(relatedQras[0].key)} style={{ justifySelf: 'start', border: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep, color: EMBRY.blue, borderRadius: 6, padding: '3px 8px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
+                                <button type="button" data-qid="qras:artifact:cae:open-related" data-qs-action="OPEN_RELATED_QRAS" title="Open the first linked QRA from this evidence artifact" onClick={() => selectRelatedQra(relatedQras[0].key)} style={{ justifySelf: 'start', border: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep, color: EMBRY.blue, borderRadius: 6, padding: '3px 8px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
                                   open {relatedQras.length} linked QRAs
                                 </button>
                               )}
                               {step.number === 8 && (
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                                  <button type="button" data-qid="qras:artifact:cae:approve" data-qs-action="APPROVE_CAE_QRA" title="Approve the selected QRA from the CAE artifact" onClick={() => void handleDecision('accept')} disabled={!canApproveCurrent || Boolean(decisionSaving)} style={{ border: `1px solid ${EMBRY.green}44`, borderRadius: 6, backgroundColor: `${EMBRY.green}10`, color: canApproveCurrent ? EMBRY.green : EMBRY.dim, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: canApproveCurrent ? 'pointer' : 'not-allowed' }}>Approve QRA</button>
-                                  <button type="button" data-qid="qras:artifact:cae:repair-rerun" data-qs-action="REPAIR_RERUN_CAE" title="Repair or rerun the CAE evidence case for this QRA draft" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} style={{ border: `1px solid ${EMBRY.amber}44`, borderRadius: 6, backgroundColor: `${EMBRY.amber}10`, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>Repair / rerun CAE</button>
-                                  <button type="button" data-qid="qras:artifact:cae:reject" data-qs-action="REJECT_CAE_QRA" title="Reject the selected QRA from the CAE artifact" onClick={() => void handleDecision('reject')} disabled={Boolean(decisionSaving)} style={{ border: `1px solid ${EMBRY.red}44`, borderRadius: 6, backgroundColor: `${EMBRY.red}10`, color: EMBRY.red, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: decisionSaving ? 'wait' : 'pointer' }}>Reject</button>
+                                  <button type="button" data-qid="qras:artifact:evidence:repair-rerun" data-qid-alias="qras:artifact:cae:repair-rerun" data-qs-action="REPAIR_RERUN_EVIDENCE" title="Repair or rerun the evidence case for this QRA draft" onClick={() => void runFullEvidenceCase(current, currentDraft)} disabled={evidenceRunLoading || !currentDraft?.question.trim()} style={{ border: `1px solid ${EMBRY.amber}44`, borderRadius: 6, backgroundColor: `${EMBRY.amber}10`, color: evidenceRunLoading || !currentDraft?.question.trim() ? EMBRY.dim : EMBRY.amber, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: evidenceRunLoading ? 'wait' : 'pointer' }}>Repair / rerun evidence</button>
+                                  <button type="button" data-qid="qras:artifact:evidence:approve" data-qid-alias="qras:artifact:cae:approve" data-qs-action="APPROVE_EVIDENCE_QRA" title={approveBlockReason ? `Approve blocked: ${approveBlockReason}` : 'Approve the selected QRA from the evidence artifact'} onClick={() => void handleDecision('accept')} disabled={!canApproveCurrent || Boolean(decisionSaving)} aria-disabled={!canApproveCurrent || Boolean(decisionSaving)} style={{ border: `1px solid ${canApproveCurrent ? EMBRY.green : EMBRY.border}`, borderRadius: 6, backgroundColor: canApproveCurrent ? `${EMBRY.green}10` : 'rgba(148,163,184,0.06)', color: canApproveCurrent ? EMBRY.green : EMBRY.dim, opacity: canApproveCurrent ? 1 : 0.58, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: canApproveCurrent ? 'pointer' : 'not-allowed' }}>{canApproveCurrent ? 'Approve QRA' : 'Approve blocked'}</button>
+                                  <button type="button" data-qid="qras:artifact:evidence:reject" data-qid-alias="qras:artifact:cae:reject" data-qs-action="REJECT_EVIDENCE_QRA" title="Reject the selected QRA from the evidence artifact" onClick={() => void handleDecision('reject')} disabled={Boolean(decisionSaving)} style={{ border: `1px solid ${EMBRY.red}44`, borderRadius: 6, backgroundColor: `${EMBRY.red}10`, color: EMBRY.red, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: decisionSaving ? 'wait' : 'pointer' }}>Reject</button>
                                   <button type="button" data-qid="qras:artifact:cae:open-raw-action" data-qs-action="OPEN_QRA_RAW_PAYLOAD" title="Open the cached QRA and evidence_case JSON payload" onClick={() => setPayloadModalKey(current._key)} style={{ border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgDeep, color: EMBRY.dim, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: 'pointer' }}>Open raw payload</button>
+                                  {evidenceRunResult && (
+                                    <button type="button" data-qid="qras:artifact:evidence:open-latest-result" data-qs-action="OPEN_EVIDENCE_RESULT" title="Open the latest query-time evidence result" onClick={() => setEvidenceRunResultOpen(true)} style={{ border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgDeep, color: EMBRY.dim, padding: '5px 8px', fontSize: 10, fontWeight: 750, cursor: 'pointer' }}>Open latest result</button>
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -2272,7 +2680,9 @@ export function QRAsView() {
                 <div style={{ alignSelf: 'stretch', flexShrink: 0, maxWidth: '100%', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
                     <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={glowDot(EMBRY.green, 6)} />SPARTA Agent</span>
-                    <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.red, fontSize: 9 }}>{canApproveCurrent ? 'READY' : 'BLOCKING'}</span>
+                    <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.red, fontSize: 9 }}>
+                      {canApproveCurrent ? 'READY' : draftWordingRepairNeeded ? 'BLOCKING: WORDING REPAIR REQUIRED' : qraDraftDirty && !evidenceFreshForDraft ? 'BLOCKING: RERUN EVIDENCE REQUIRED' : 'BLOCKING: REVIEW REQUIRED'}
+                    </span>
                   </div>
                   <div style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.36 }}>
                     I found the highest-related loaded QRAs for {renderEvidenceText(selectedEntityLabel)}. Compare these before taking the approval action.
@@ -2297,7 +2707,7 @@ export function QRAsView() {
                     </div>
                     {relatedQras.length > 0 ? (
                       <div style={{ display: 'grid' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(64px, 0.18fr) 58px 72px minmax(0, 1fr)', gap: 7, padding: '6px 9px', color: EMBRY.dim, fontSize: 8.5, fontWeight: 850, letterSpacing: 1.2, textTransform: 'uppercase', borderBottom: `1px solid ${EMBRY.border}` }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(64px, 0.18fr) 58px minmax(92px, 0.24fr) minmax(0, 1fr)', gap: 7, padding: '6px 9px', color: EMBRY.dim, fontSize: 8.5, fontWeight: 850, letterSpacing: 1.2, textTransform: 'uppercase', borderBottom: `1px solid ${EMBRY.border}` }}>
                           <span>QRA</span>
                           <span>Status</span>
                           <span>Match</span>
@@ -2315,7 +2725,7 @@ export function QRAsView() {
                               onClick={() => selectRelatedQra(related.key)}
                               style={{
                                 display: 'grid',
-                                gridTemplateColumns: 'minmax(64px, 0.18fr) 58px 72px minmax(0, 1fr)',
+                                gridTemplateColumns: 'minmax(64px, 0.18fr) 58px minmax(92px, 0.24fr) minmax(0, 1fr)',
                                 gap: 7,
                                 alignItems: 'center',
                                 padding: '6px 9px',
@@ -2403,28 +2813,30 @@ export function QRAsView() {
           </div>
         </div>
       )}
-      {evidenceRunResult && (
+      {evidenceRunResult && evidenceRunResultOpen && (
         <div
-          data-qid="qras:artifact:cae:result-dialog"
-          data-qs-action="CLOSE_CAE_RESULT"
+          data-qid="qras:artifact:evidence:result-dialog"
+          data-qid-alias="qras:artifact:cae:result-dialog"
+          data-qs-action="CLOSE_EVIDENCE_RESULT"
           role="dialog"
           aria-modal="true"
-          aria-label="Full CAE evidence case result"
-          title="Full CAE evidence case result dialog"
-          onClick={() => setEvidenceRunResult(null)}
+          aria-label="Full evidence case result"
+          title="Full evidence case result dialog"
+          onClick={() => setEvidenceRunResultOpen(false)}
           style={{ position: 'fixed', inset: 0, zIndex: 10002, backgroundColor: 'rgba(2,6,12,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
         >
           <div
-            data-qid="qras:artifact:cae:result-panel"
+            data-qid="qras:artifact:evidence:result-panel"
+            data-qid-alias="qras:artifact:cae:result-panel"
             onClick={(event) => event.stopPropagation()}
             style={{ width: 'min(900px, 92vw)', maxHeight: '84vh', display: 'grid', gridTemplateRows: 'auto 1fr', border: `1px solid ${EMBRY.border}`, borderRadius: 8, backgroundColor: EMBRY.bgPanel, overflow: 'hidden', boxShadow: '0 28px 90px rgba(0,0,0,0.55)' }}
           >
             <div style={{ padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
               <div>
                 <div style={{ ...label, color: EMBRY.blue }}>Full /create-evidence-case Result</div>
-                <div style={{ color: EMBRY.dim, fontSize: 11 }}>Query-time CAE output, separate from the cached QRA snapshot.</div>
+                <div style={{ color: EMBRY.dim, fontSize: 11 }}>Query-time evidence output, separate from the cached QRA snapshot.</div>
               </div>
-              <button type="button" data-qid="qras:artifact:cae:close-result" data-qs-action="CLOSE_CAE_RESULT" title="Close CAE result" aria-label="Close CAE result" onClick={() => setEvidenceRunResult(null)} style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 5, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, cursor: 'pointer' }}>
+              <button type="button" data-qid="qras:artifact:evidence:close-result" data-qid-alias="qras:artifact:cae:close-result" data-qs-action="CLOSE_EVIDENCE_RESULT" title="Close evidence result" aria-label="Close evidence result" onClick={() => setEvidenceRunResultOpen(false)} style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 5, backgroundColor: EMBRY.bgPanel, color: EMBRY.dim, cursor: 'pointer' }}>
                 <X size={15} />
               </button>
             </div>

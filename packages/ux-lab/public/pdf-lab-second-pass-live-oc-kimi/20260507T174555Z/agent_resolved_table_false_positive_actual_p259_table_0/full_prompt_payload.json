@@ -1,0 +1,218 @@
+{
+  "schema_version": "pdf_lab.second_pass_full_prompt_payload.v1",
+  "case_id": "agent_resolved:table_false_positive:actual_p259_table_0",
+  "preset_id": "pdf.table.v1",
+  "system_prompt": "# RATIONALE (not sent to LLM)\n# Purpose: Classify one PDF extraction evidence case into agent_resolved, human_triage, fixture_candidate, or blocker.\n# Consumer: pdf-lab final-pass writes agent_resolved_findings, pdf_element_notes, human_triage_queue, and fixture candidates.\n# Why this matters: Bad output creates unnecessary human triage cards or hides real extractor defects.\n# Input: One JSON payload with case_id, preset_id, page evidence paths, expected_json, actual_json or actual_candidates, candidate_corrected_json, and provenance.\n# Output: One JSON object matching the schema in second_pass/global_user.txt.\n# Last reviewed: 2026-05-07 by project agent.\n\nYou are the PDF Lab second-pass evidence gate.\n\nTask: Decide whether one PDF extraction case is resolved by artifacts, requires human triage, should become a fixture candidate, or is blocked by missing evidence.\n\nSafety and evidence boundary:\n- Use only the supplied payload fields and referenced artifact paths.\n- Do not invent text, cells, rows, captions, page numbers, bbox coordinates, file paths, or relationships.\n- Do not ask a human to decide facts already proven by target evidence.\n- Do not create human work from raw `pdf_oxide.extract_tables` output alone.\n- If required target evidence is missing, return `decision: \"blocker\"`.\n\nTarget evidence means:\n- original page image path\n- annotated page image path or crop image path\n- actual deterministic extraction JSON, or actual candidate extractions linked from the deterministic output for expected-side comparison misses\n- candidate corrected JSON when present\n- bbox, page, element ID, and provenance paths supplied in the payload\n\nTechnique evidence means generic knowledge about PDFs, tables, charts, captions, equations, or extraction heuristics. Technique evidence may explain validation rules, but it may not justify a human triage card by itself.\n\nClosed decision vocabulary:\n- `agent_resolved`\n- `human_triage`\n- `fixture_candidate`\n- `blocker`\n\nHuman triage rule:\nReturn `human_triage` only when the supplied artifacts contain a concrete unresolved conflict that cannot be resolved by the selected preset validators.\n\nExpected-side comparison miss rule:\nIf `actual_json` is null but `actual_candidates[]` is non-empty, treat `actual_candidates[]` as deterministic extraction evidence. Do not return blocker solely because `actual_json` is null in that case.\n\nTable-specific hard rule:\nIf the visible evidence shows a table header plus one data row and the actual JSON captures that visible table object, do not ask whether it is a real table. Return `agent_resolved` unless the payload proves visible content is cut off or candidate corrected JSON conflicts with actual JSON.\n\nOutput rule:\nReturn only one JSON object. Do not return markdown, commentary, headings, or prose outside JSON.\n",
+  "user_prompt": "# RATIONALE (not sent to LLM)\n# Purpose: User-message template for one PDF Lab second-pass evidence case.\n# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.\n# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.\n# Input: CASE_PAYLOAD JSON inserted below.\n# Output: JSON matching the exact schema at the end of this file.\n# Last reviewed: 2026-05-07 by project agent.\n\nGiven `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.\n\nEvidence classification:\n1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.\n2. Technique evidence: element-type rules from the selected preset.\n3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.\n\nRules:\n- Recommend human triage only when target evidence contains an unresolved conflict.\n- Do not cite the selected preset as target evidence.\n- Do not infer missing rows, cells, values, captions, or section relationships.\n- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.\n- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.\n- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.\n\nCASE_PAYLOAD:\n```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_case_payload.v1\",\n  \"case_id\": \"agent_resolved:table_false_positive:actual_p259_table_0\",\n  \"source_kind\": \"agent_resolved\",\n  \"preset_id\": \"pdf.table.v1\",\n  \"page\": 259,\n  \"element_id\": \"actual:p259:table:0\",\n  \"original_page_image_path\": \"/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259.png\",\n  \"annotated_page_image_path\": \"/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259_annotated.png\",\n  \"expected_json\": {\n    \"id\": \"actual:p259:table:0\",\n    \"page\": 259,\n    \"type\": null,\n    \"bbox\": [\n      0.204382,\n      0.585924,\n      0.814833,\n      0.650591\n    ],\n    \"text\": null,\n    \"source\": \"agentic_expected_oracle\"\n  },\n  \"actual_json\": {\n    \"bbox\": [\n      0.204382,\n      0.585924,\n      0.814833,\n      0.650591\n    ],\n    \"confidence\": 1.0,\n    \"id\": \"actual:p259:table:0\",\n    \"page\": 259,\n    \"preset_applied\": \"nist_sp_800_53r5_pdf\",\n    \"raw\": {\n      \"bbox\": [\n        126.0,\n        277.91998291015625,\n        371.760009765625,\n        48.839996337890625\n      ],\n      \"col_count\": 2,\n      \"has_header\": false,\n      \"row_count\": 4,\n      \"rows\": [\n        {\n          \"cells\": [\n            {\n              \"bbox\": [\n                126.0,\n                314.5199890136719,\n                353.8800048828125,\n                12.239990234375\n              ],\n              \"text\": \"be reasonably expected to understand and accept the privacy risks that arise from their\"\n            },\n            {\n              \"bbox\": [\n                479.8800048828125,\n                314.5199890136719,\n                17.8800048828125,\n                12.239990234375\n              ],\n              \"text\": \"\"\n            }\n          ],\n          \"is_header\": false\n        },\n        {\n          \"cells\": [\n            {\n              \"bbox\": [\n                126.0,\n                302.3399963378906,\n                353.8800048828125,\n                12.17999267578125\n              ],\n              \"text\": \"authorization. Organizations consider whether other controls may more effectively mitigate\"\n            },\n            {\n              \"bbox\": [\n                479.8800048828125,\n                302.3399963378906,\n                17.8800048828125,\n                12.17999267578125\n              ],\n              \"text\": \"\"\n            }\n          ],\n          \"is_header\": false\n        },\n        {\n          \"cells\": [\n            {\n              \"bbox\": [\n                126.0,\n                290.1000061035156,\n                353.8800048828125,\n                12.239990234375\n              ],\n              \"text\": \"privacy risk either alone or in conjunction with consent. Organizations also consider any\"\n            },\n            {\n              \"bbox\": [\n                479.8800048828125,\n                290.1000061035156,\n                17.8800048828125,\n                12.239990234375\n              ],\n              \"text\": \"\"\n            }\n          ],\n          \"is_header\": false\n        },\n        {\n          \"cells\": [\n            {\n              \"bbox\": [\n                126.0,\n                277.91998291015625,\n                353.8800048828125,\n                12.180023193359375\n              ],\n              \"text\": \"demographic or contextual factors that may influence th e understanding or behavior of\"\n            },\n            {\n              \"bbox\": [\n                479.8800048828125,\n                277.91998291015625,\n                17.8800048828125,\n                12.180023193359375\n              ],\n              \"text\": \"\"\n            }\n          ],\n          \"is_header\": false\n        }\n      ]\n    },\n    \"source\": \"pdf_oxide.extract_tables\",\n    \"text\": \"{'is_header': False, 'cells': [{'text': 'be reasonably expected to understand and accept the privacy risks that arise from their', 'bbox': [126.0, 314.5199890136719, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 314.5199890136719, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'authorization. Organizations consider whether other controls may more effectively mitigate', 'bbox': [126.0, 302.3399963378906, 353.8800048828125, 12.17999267578125]}, {'text': '', 'bbox': [479.8800048828125, 302.3399963378906, 17.8800048828125, 12.17999267578125]}]} {'is_header': False, 'cells': [{'text': 'privacy risk either alone or in conjunction with consent. Organizations also consider any', 'bbox': [126.0, 290.1000061035156, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 290.1000061035156, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'demographic or contextual factors that may influence th e understanding or behavior of', 'bbox': [126.0, 277.91998291015625, 353.8800048828125, 12.180023193359375]}, {'text': '', 'bbox': [479.8800048828125, 277.91998291015625, 17.8800048828125, 12.180023193359375]}]}\",\n    \"type\": \"table\"\n  },\n  \"actual_candidates\": [],\n  \"candidate_corrected_json\": null,\n  \"known_visual_facts\": [\n    \"pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.\",\n    \"Deterministic table evidence reports row_count=4, col_count=2.\",\n    \"Same-page requirement rows: 0.\",\n    \"Same-page section rows: 0.\"\n  ],\n  \"provenance\": {\n    \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n    \"source_extraction\": null,\n    \"created_by\": \"pdf-lab.final-agent-pass\",\n    \"deterministic_record\": \"agent_resolved:table_false_positive:actual_p259_table_0\"\n  }\n}\n```\n\nReturn this exact JSON shape:\n```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_decision.v1\",\n  \"case_id\": \"string\",\n  \"preset_id\": \"string\",\n  \"decision\": \"agent_resolved|human_triage|fixture_candidate|blocker\",\n  \"human_triage_required\": true,\n  \"classification\": \"string\",\n  \"confidence\": \"low|medium|high\",\n  \"reason\": \"string\",\n  \"target_evidence_used\": [\n    {\n      \"field_path\": \"string\",\n      \"fact\": \"string\"\n    }\n  ],\n  \"missing_evidence\": [\"string\"],\n  \"validators\": [\n    {\n      \"validator_id\": \"string\",\n      \"status\": \"pass|fail|blocked\",\n      \"fact\": \"string\"\n    }\n  ],\n  \"human_question\": null,\n  \"recommended_engine_fix\": null,\n  \"proposed_json_delta\": null,\n  \"fixture_candidate\": {\n    \"enabled\": false,\n    \"fixture_family\": null,\n    \"reason\": null\n  }\n}\n```\n",
+  "element_preset": {
+    "schema_version": "pdf_lab.element_preset.v1",
+    "required_inputs": [
+      "case_id",
+      "page",
+      "element_id",
+      "original_page_image_path",
+      "annotated_page_image_path",
+      "actual_json",
+      "provenance"
+    ],
+    "common_validators": [
+      "artifact_paths_exist",
+      "actual_json_present",
+      "no_invented_text",
+      "page_matches_element_page"
+    ],
+    "decision_outputs": [
+      "agent_resolved",
+      "human_triage",
+      "fixture_candidate",
+      "blocker"
+    ],
+    "preset_id": "pdf.table.v1",
+    "element_type": "table",
+    "required_outputs": [
+      "table_id",
+      "page",
+      "bbox",
+      "columns",
+      "rows",
+      "header_rows",
+      "caption",
+      "notes",
+      "confidence",
+      "warnings",
+      "evidence"
+    ],
+    "validators": [
+      "page_image_required",
+      "annotated_bbox_required",
+      "rows_match_visible_text",
+      "no_invented_cells",
+      "bbox_does_not_cut_visible_table_content"
+    ],
+    "human_triage_gate": "Only escalate when visible table content and actual/candidate JSON conflict on table identity, bounds, row structure, or cell text.",
+    "rendering_contract": [
+      "show_original_page",
+      "show_annotated_page_or_crop",
+      "show_actual_json",
+      "show_candidate_corrected_json_or_null",
+      "show_validator_results"
+    ]
+  },
+  "case_payload": {
+    "schema_version": "pdf_lab.second_pass_case_payload.v1",
+    "case_id": "agent_resolved:table_false_positive:actual_p259_table_0",
+    "source_kind": "agent_resolved",
+    "preset_id": "pdf.table.v1",
+    "page": 259,
+    "element_id": "actual:p259:table:0",
+    "original_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259.png",
+    "annotated_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259_annotated.png",
+    "expected_json": {
+      "id": "actual:p259:table:0",
+      "page": 259,
+      "type": null,
+      "bbox": [
+        0.204382,
+        0.585924,
+        0.814833,
+        0.650591
+      ],
+      "text": null,
+      "source": "agentic_expected_oracle"
+    },
+    "actual_json": {
+      "bbox": [
+        0.204382,
+        0.585924,
+        0.814833,
+        0.650591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p259:table:0",
+      "page": 259,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox": [
+          126.0,
+          277.91998291015625,
+          371.760009765625,
+          48.839996337890625
+        ],
+        "col_count": 2,
+        "has_header": false,
+        "row_count": 4,
+        "rows": [
+          {
+            "cells": [
+              {
+                "bbox": [
+                  126.0,
+                  314.5199890136719,
+                  353.8800048828125,
+                  12.239990234375
+                ],
+                "text": "be reasonably expected to understand and accept the privacy risks that arise from their"
+              },
+              {
+                "bbox": [
+                  479.8800048828125,
+                  314.5199890136719,
+                  17.8800048828125,
+                  12.239990234375
+                ],
+                "text": ""
+              }
+            ],
+            "is_header": false
+          },
+          {
+            "cells": [
+              {
+                "bbox": [
+                  126.0,
+                  302.3399963378906,
+                  353.8800048828125,
+                  12.17999267578125
+                ],
+                "text": "authorization. Organizations consider whether other controls may more effectively mitigate"
+              },
+              {
+                "bbox": [
+                  479.8800048828125,
+                  302.3399963378906,
+                  17.8800048828125,
+                  12.17999267578125
+                ],
+                "text": ""
+              }
+            ],
+            "is_header": false
+          },
+          {
+            "cells": [
+              {
+                "bbox": [
+                  126.0,
+                  290.1000061035156,
+                  353.8800048828125,
+                  12.239990234375
+                ],
+                "text": "privacy risk either alone or in conjunction with consent. Organizations also consider any"
+              },
+              {
+                "bbox": [
+                  479.8800048828125,
+                  290.1000061035156,
+                  17.8800048828125,
+                  12.239990234375
+                ],
+                "text": ""
+              }
+            ],
+            "is_header": false
+          },
+          {
+            "cells": [
+              {
+                "bbox": [
+                  126.0,
+                  277.91998291015625,
+                  353.8800048828125,
+                  12.180023193359375
+                ],
+                "text": "demographic or contextual factors that may influence th e understanding or behavior of"
+              },
+              {
+                "bbox": [
+                  479.8800048828125,
+                  277.91998291015625,
+                  17.8800048828125,
+                  12.180023193359375
+                ],
+                "text": ""
+              }
+            ],
+            "is_header": false
+          }
+        ]
+      },
+      "source": "pdf_oxide.extract_tables",
+      "text": "{'is_header': False, 'cells': [{'text': 'be reasonably expected to understand and accept the privacy risks that arise from their', 'bbox': [126.0, 314.5199890136719, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 314.5199890136719, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'authorization. Organizations consider whether other controls may more effectively mitigate', 'bbox': [126.0, 302.3399963378906, 353.8800048828125, 12.17999267578125]}, {'text': '', 'bbox': [479.8800048828125, 302.3399963378906, 17.8800048828125, 12.17999267578125]}]} {'is_header': False, 'cells': [{'text': 'privacy risk either alone or in conjunction with consent. Organizations also consider any', 'bbox': [126.0, 290.1000061035156, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 290.1000061035156, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'demographic or contextual factors that may influence th e understanding or behavior of', 'bbox': [126.0, 277.91998291015625, 353.8800048828125, 12.180023193359375]}, {'text': '', 'bbox': [479.8800048828125, 277.91998291015625, 17.8800048828125, 12.180023193359375]}]}",
+      "type": "table"
+    },
+    "actual_candidates": [],
+    "candidate_corrected_json": null,
+    "known_visual_facts": [
+      "pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.",
+      "Deterministic table evidence reports row_count=4, col_count=2.",
+      "Same-page requirement rows: 0.",
+      "Same-page section rows: 0."
+    ],
+    "provenance": {
+      "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+      "source_extraction": null,
+      "created_by": "pdf-lab.final-agent-pass",
+      "deterministic_record": "agent_resolved:table_false_positive:actual_p259_table_0"
+    }
+  }
+}

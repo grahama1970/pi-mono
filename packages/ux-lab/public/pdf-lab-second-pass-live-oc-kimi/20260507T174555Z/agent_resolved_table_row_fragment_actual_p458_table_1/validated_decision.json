@@ -1,0 +1,69 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "agent_resolved:table_row_fragment:actual_p458_table_1",
+  "preset_id": "pdf.table.v1",
+  "decision": "agent_resolved",
+  "human_triage_required": false,
+  "classification": "table_row_fragment",
+  "confidence": "high",
+  "reason": "actual_json correctly extracts the single table-row fragment within expected_json.bbox. Cell texts (AC-17(5), MONITORING FOR UNAUTHORIZED CONNECTIONS, W: Incorporated into, SI, -4.) exactly match the annotated image. expected_json and actual_json share identical bbox coordinates, so there is no bounds conflict. candidate_corrected_json is null. known_visual_facts explicitly identify the single-row emission as an extractor bounds bug, not a table-identity ambiguity, so no human judgment is required.",
+  "target_evidence_used": [
+    {
+      "field_path": "actual_json.raw.rows[0].cells",
+      "fact": "Cell texts exactly match the highlighted AC-17(5) row visible in the annotated image."
+    },
+    {
+      "field_path": "expected_json.bbox",
+      "fact": "Expected bbox matches actual_json.bbox, confirming case scope is the same row fragment."
+    },
+    {
+      "field_path": "known_visual_facts[0]",
+      "fact": "States the single-row table object is an extractor bounds bug, not a human table/not-table ambiguity."
+    },
+    {
+      "field_path": "annotated_page_image_path",
+      "fact": "Visual confirmation that extracted text corresponds to the highlighted table row and no content is cut off within the fragment scope."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.table.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=458"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "agent_resolved"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=False"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": "merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid",
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}

@@ -1,0 +1,219 @@
+# RATIONALE (not sent to LLM)
+# Purpose: User-message template for one PDF Lab second-pass evidence case.
+# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.
+# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.
+# Input: CASE_PAYLOAD JSON inserted below.
+# Output: JSON matching the exact schema at the end of this file.
+# Last reviewed: 2026-05-07 by project agent.
+
+Given `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.
+
+Evidence classification:
+1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.
+2. Technique evidence: element-type rules from the selected preset.
+3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.
+
+Rules:
+- Recommend human triage only when target evidence contains an unresolved conflict.
+- Do not cite the selected preset as target evidence.
+- Do not infer missing rows, cells, values, captions, or section relationships.
+- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.
+- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.
+- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.
+
+CASE_PAYLOAD:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_case_payload.v1",
+  "case_id": "agent_resolved:table_false_positive:actual_p259_table_0",
+  "source_kind": "agent_resolved",
+  "preset_id": "pdf.table.v1",
+  "page": 259,
+  "element_id": "actual:p259:table:0",
+  "original_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259.png",
+  "annotated_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_false_positive_actual_p259_table_0/page_259_annotated.png",
+  "expected_json": {
+    "id": "actual:p259:table:0",
+    "page": 259,
+    "type": null,
+    "bbox": [
+      0.204382,
+      0.585924,
+      0.814833,
+      0.650591
+    ],
+    "text": null,
+    "source": "agentic_expected_oracle"
+  },
+  "actual_json": {
+    "bbox": [
+      0.204382,
+      0.585924,
+      0.814833,
+      0.650591
+    ],
+    "confidence": 1.0,
+    "id": "actual:p259:table:0",
+    "page": 259,
+    "preset_applied": "nist_sp_800_53r5_pdf",
+    "raw": {
+      "bbox": [
+        126.0,
+        277.91998291015625,
+        371.760009765625,
+        48.839996337890625
+      ],
+      "col_count": 2,
+      "has_header": false,
+      "row_count": 4,
+      "rows": [
+        {
+          "cells": [
+            {
+              "bbox": [
+                126.0,
+                314.5199890136719,
+                353.8800048828125,
+                12.239990234375
+              ],
+              "text": "be reasonably expected to understand and accept the privacy risks that arise from their"
+            },
+            {
+              "bbox": [
+                479.8800048828125,
+                314.5199890136719,
+                17.8800048828125,
+                12.239990234375
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        },
+        {
+          "cells": [
+            {
+              "bbox": [
+                126.0,
+                302.3399963378906,
+                353.8800048828125,
+                12.17999267578125
+              ],
+              "text": "authorization. Organizations consider whether other controls may more effectively mitigate"
+            },
+            {
+              "bbox": [
+                479.8800048828125,
+                302.3399963378906,
+                17.8800048828125,
+                12.17999267578125
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        },
+        {
+          "cells": [
+            {
+              "bbox": [
+                126.0,
+                290.1000061035156,
+                353.8800048828125,
+                12.239990234375
+              ],
+              "text": "privacy risk either alone or in conjunction with consent. Organizations also consider any"
+            },
+            {
+              "bbox": [
+                479.8800048828125,
+                290.1000061035156,
+                17.8800048828125,
+                12.239990234375
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        },
+        {
+          "cells": [
+            {
+              "bbox": [
+                126.0,
+                277.91998291015625,
+                353.8800048828125,
+                12.180023193359375
+              ],
+              "text": "demographic or contextual factors that may influence th e understanding or behavior of"
+            },
+            {
+              "bbox": [
+                479.8800048828125,
+                277.91998291015625,
+                17.8800048828125,
+                12.180023193359375
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        }
+      ]
+    },
+    "source": "pdf_oxide.extract_tables",
+    "text": "{'is_header': False, 'cells': [{'text': 'be reasonably expected to understand and accept the privacy risks that arise from their', 'bbox': [126.0, 314.5199890136719, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 314.5199890136719, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'authorization. Organizations consider whether other controls may more effectively mitigate', 'bbox': [126.0, 302.3399963378906, 353.8800048828125, 12.17999267578125]}, {'text': '', 'bbox': [479.8800048828125, 302.3399963378906, 17.8800048828125, 12.17999267578125]}]} {'is_header': False, 'cells': [{'text': 'privacy risk either alone or in conjunction with consent. Organizations also consider any', 'bbox': [126.0, 290.1000061035156, 353.8800048828125, 12.239990234375]}, {'text': '', 'bbox': [479.8800048828125, 290.1000061035156, 17.8800048828125, 12.239990234375]}]} {'is_header': False, 'cells': [{'text': 'demographic or contextual factors that may influence th e understanding or behavior of', 'bbox': [126.0, 277.91998291015625, 353.8800048828125, 12.180023193359375]}, {'text': '', 'bbox': [479.8800048828125, 277.91998291015625, 17.8800048828125, 12.180023193359375]}]}",
+    "type": "table"
+  },
+  "actual_candidates": [],
+  "candidate_corrected_json": null,
+  "known_visual_facts": [
+    "pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.",
+    "Deterministic table evidence reports row_count=4, col_count=2.",
+    "Same-page requirement rows: 0.",
+    "Same-page section rows: 0."
+  ],
+  "provenance": {
+    "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+    "source_extraction": null,
+    "created_by": "pdf-lab.final-agent-pass",
+    "deterministic_record": "agent_resolved:table_false_positive:actual_p259_table_0"
+  }
+}
+```
+
+Return this exact JSON shape:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "string",
+  "preset_id": "string",
+  "decision": "agent_resolved|human_triage|fixture_candidate|blocker",
+  "human_triage_required": true,
+  "classification": "string",
+  "confidence": "low|medium|high",
+  "reason": "string",
+  "target_evidence_used": [
+    {
+      "field_path": "string",
+      "fact": "string"
+    }
+  ],
+  "missing_evidence": ["string"],
+  "validators": [
+    {
+      "validator_id": "string",
+      "status": "pass|fail|blocked",
+      "fact": "string"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": null,
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}
+```

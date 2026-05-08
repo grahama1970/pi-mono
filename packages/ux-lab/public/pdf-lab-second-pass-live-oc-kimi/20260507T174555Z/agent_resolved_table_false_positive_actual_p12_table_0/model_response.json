@@ -1,0 +1,94 @@
+{
+  "schema_version": "pdf_lab.second_pass_model_response.v1",
+  "transport": "scillm_chat_completions",
+  "model": "oc-kimi",
+  "endpoint": "http://localhost:4001/v1/chat/completions",
+  "raw_response": {
+    "id": "batch-resume-95a2204a21091333",
+    "object": "chat.completion",
+    "created": 0,
+    "model": "moonshotai/kimi-k2.6-20260420",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_decision.v1\",\n  \"case_id\": \"agent_resolved:table_false_positive:actual_p12_table_0\",\n  \"preset_id\": \"pdf.table.v1\",\n  \"decision\": \"agent_resolved\",\n  \"human_triage_required\": false,\n  \"classification\": \"extractor_false_positive\",\n  \"confidence\": \"high\",\n  \"reason\": \"Annotated page image and expected_json confirm the region is sparse title-page prose layout, not a table. pdf_oxide emitted a 15x12 table object, but the visual evidence and expected oracle unambiguously prove this is an extractor false positive with no unresolved conflict requiring human judgment.\",\n  \"target_evidence_used\": [\n    {\n      \"field_path\": \"annotated_page_image_path\",\n      \"fact\": \"Visual evidence shows a title/prose page containing a centered 'CONTROL BASELINES' text block, hyperlinks, and publication metadata with no tabular grid or columnar structure.\"\n    },\n    {\n      \"field_path\": \"expected_json.type\",\n      \"fact\": \"Expected oracle marks type as null and text as null, confirming no table element is expected in this region.\"\n    },\n    {\n      \"field_path\": \"actual_json.raw\",\n      \"fact\": \"Extractor reported row_count=15, col_count=12 over the prose region, with many empty cells and fragmented sentences, confirming a structural false positive.\"\n    },\n    {\n      \"field_path\": \"known_visual_facts[0]\",\n      \"fact\": \"Audit proved the region is sparse page/prose layout rather than a complete table, explicitly identifying this as an extractor false positive and not a human ambiguity.\"\n    }\n  ],\n  \"missing_evidence\": [],\n  \"validators\": [\n    {\n      \"validator_id\": \"artifact_paths_exist\",\n      \"status\": \"pass\",\n      \"fact\": \"original_page_image_path and annotated_page_image_path are present in the payload.\"\n    },\n    {\n      \"validator_id\": \"actual_json_present\",\n      \"status\": \"pass\",\n      \"fact\": \"actual_json is non-null and contains deterministic extraction output.\"\n    },\n    {\n      \"validator_id\": \"page_matches_element_page\",\n      \"status\": \"pass\",\n      \"fact\": \"actual_json.page (12) matches element_id page (12).\"\n    },\n    {\n      \"validator_id\": \"rows_match_visible_text\",\n      \"status\": \"fail\",\n      \"fact\": \"Visible evidence contains continuous prose, not a table; actual_json row/column structure does not correspond to any visible tabular layout.\"\n    },\n    {\n      \"validator_id\": \"bbox_does_not_cut_visible_table_content\",\n      \"status\": \"pass\",\n      \"fact\": \"No visible table content exists to be cut; the bbox encompasses the page area without truncating an actual table.\"\n    }\n  ],\n  \"human_question\": null,\n  \"recommended_engine_fix\": \"Improve table-detector heuristics to avoid treating centered multi-line prose blocks and title-page layouts as tabular structures with artificial rows and columns.\",\n  \"proposed_json_delta\": null,\n  \"fixture_candidate\": {\n    \"enabled\": true,\n    \"fixture_family\": \"table_false_positive\",\n    \"reason\": \"Clear extractor false positive on a prose title page; ideal regression test for distinguishing tables from structured text blocks.\"\n  }\n}\n```"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 22808,
+      "completion_tokens": 3127,
+      "total_tokens": 25935
+    },
+    "_batch_resume": true,
+    "_cached_from": "95a2204a21091333"
+  },
+  "content": "```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_decision.v1\",\n  \"case_id\": \"agent_resolved:table_false_positive:actual_p12_table_0\",\n  \"preset_id\": \"pdf.table.v1\",\n  \"decision\": \"agent_resolved\",\n  \"human_triage_required\": false,\n  \"classification\": \"extractor_false_positive\",\n  \"confidence\": \"high\",\n  \"reason\": \"Annotated page image and expected_json confirm the region is sparse title-page prose layout, not a table. pdf_oxide emitted a 15x12 table object, but the visual evidence and expected oracle unambiguously prove this is an extractor false positive with no unresolved conflict requiring human judgment.\",\n  \"target_evidence_used\": [\n    {\n      \"field_path\": \"annotated_page_image_path\",\n      \"fact\": \"Visual evidence shows a title/prose page containing a centered 'CONTROL BASELINES' text block, hyperlinks, and publication metadata with no tabular grid or columnar structure.\"\n    },\n    {\n      \"field_path\": \"expected_json.type\",\n      \"fact\": \"Expected oracle marks type as null and text as null, confirming no table element is expected in this region.\"\n    },\n    {\n      \"field_path\": \"actual_json.raw\",\n      \"fact\": \"Extractor reported row_count=15, col_count=12 over the prose region, with many empty cells and fragmented sentences, confirming a structural false positive.\"\n    },\n    {\n      \"field_path\": \"known_visual_facts[0]\",\n      \"fact\": \"Audit proved the region is sparse page/prose layout rather than a complete table, explicitly identifying this as an extractor false positive and not a human ambiguity.\"\n    }\n  ],\n  \"missing_evidence\": [],\n  \"validators\": [\n    {\n      \"validator_id\": \"artifact_paths_exist\",\n      \"status\": \"pass\",\n      \"fact\": \"original_page_image_path and annotated_page_image_path are present in the payload.\"\n    },\n    {\n      \"validator_id\": \"actual_json_present\",\n      \"status\": \"pass\",\n      \"fact\": \"actual_json is non-null and contains deterministic extraction output.\"\n    },\n    {\n      \"validator_id\": \"page_matches_element_page\",\n      \"status\": \"pass\",\n      \"fact\": \"actual_json.page (12) matches element_id page (12).\"\n    },\n    {\n      \"validator_id\": \"rows_match_visible_text\",\n      \"status\": \"fail\",\n      \"fact\": \"Visible evidence contains continuous prose, not a table; actual_json row/column structure does not correspond to any visible tabular layout.\"\n    },\n    {\n      \"validator_id\": \"bbox_does_not_cut_visible_table_content\",\n      \"status\": \"pass\",\n      \"fact\": \"No visible table content exists to be cut; the bbox encompasses the page area without truncating an actual table.\"\n    }\n  ],\n  \"human_question\": null,\n  \"recommended_engine_fix\": \"Improve table-detector heuristics to avoid treating centered multi-line prose blocks and title-page layouts as tabular structures with artificial rows and columns.\",\n  \"proposed_json_delta\": null,\n  \"fixture_candidate\": {\n    \"enabled\": true,\n    \"fixture_family\": \"table_false_positive\",\n    \"reason\": \"Clear extractor false positive on a prose title page; ideal regression test for distinguishing tables from structured text blocks.\"\n  }\n}\n```",
+  "parsed_json": {
+    "schema_version": "pdf_lab.second_pass_decision.v1",
+    "case_id": "agent_resolved:table_false_positive:actual_p12_table_0",
+    "preset_id": "pdf.table.v1",
+    "decision": "agent_resolved",
+    "human_triage_required": false,
+    "classification": "extractor_false_positive",
+    "confidence": "high",
+    "reason": "Annotated page image and expected_json confirm the region is sparse title-page prose layout, not a table. pdf_oxide emitted a 15x12 table object, but the visual evidence and expected oracle unambiguously prove this is an extractor false positive with no unresolved conflict requiring human judgment.",
+    "target_evidence_used": [
+      {
+        "field_path": "annotated_page_image_path",
+        "fact": "Visual evidence shows a title/prose page containing a centered 'CONTROL BASELINES' text block, hyperlinks, and publication metadata with no tabular grid or columnar structure."
+      },
+      {
+        "field_path": "expected_json.type",
+        "fact": "Expected oracle marks type as null and text as null, confirming no table element is expected in this region."
+      },
+      {
+        "field_path": "actual_json.raw",
+        "fact": "Extractor reported row_count=15, col_count=12 over the prose region, with many empty cells and fragmented sentences, confirming a structural false positive."
+      },
+      {
+        "field_path": "known_visual_facts[0]",
+        "fact": "Audit proved the region is sparse page/prose layout rather than a complete table, explicitly identifying this as an extractor false positive and not a human ambiguity."
+      }
+    ],
+    "missing_evidence": [],
+    "validators": [
+      {
+        "validator_id": "artifact_paths_exist",
+        "status": "pass",
+        "fact": "original_page_image_path and annotated_page_image_path are present in the payload."
+      },
+      {
+        "validator_id": "actual_json_present",
+        "status": "pass",
+        "fact": "actual_json is non-null and contains deterministic extraction output."
+      },
+      {
+        "validator_id": "page_matches_element_page",
+        "status": "pass",
+        "fact": "actual_json.page (12) matches element_id page (12)."
+      },
+      {
+        "validator_id": "rows_match_visible_text",
+        "status": "fail",
+        "fact": "Visible evidence contains continuous prose, not a table; actual_json row/column structure does not correspond to any visible tabular layout."
+      },
+      {
+        "validator_id": "bbox_does_not_cut_visible_table_content",
+        "status": "pass",
+        "fact": "No visible table content exists to be cut; the bbox encompasses the page area without truncating an actual table."
+      }
+    ],
+    "human_question": null,
+    "recommended_engine_fix": "Improve table-detector heuristics to avoid treating centered multi-line prose blocks and title-page layouts as tabular structures with artificial rows and columns.",
+    "proposed_json_delta": null,
+    "fixture_candidate": {
+      "enabled": true,
+      "fixture_family": "table_false_positive",
+      "reason": "Clear extractor false positive on a prose title page; ideal regression test for distinguishing tables from structured text blocks."
+    }
+  }
+}

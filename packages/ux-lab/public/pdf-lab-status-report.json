@@ -27,7 +27,7 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json"
     },
     "manifest": {
-      "bytes": 39504204,
+      "bytes": 785307,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json"
     },
@@ -47,7 +47,7 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-toc-audit.json"
     },
     "triage": {
-      "bytes": 45479,
+      "bytes": 36655,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-human-triage-queue.json"
     }
@@ -55,7 +55,7 @@
   "blockers": [],
   "current_interpretation": "The run is usable for final QA if the parity gate is passed and the human triage deck is empty. Do not claim core extractor repair unless core_pdf_oxide_changed is true. Agent-resolved findings are engineering backlog, not human ambiguity.",
   "extraction_improvement": null,
-  "generated_at": "2026-05-04T16:41:45.557486+00:00",
+  "generated_at": "2026-05-07T17:46:50.389676+00:00",
   "memory_qa": {
     "errors": {
       "memory_upsert": null,
@@ -387,9 +387,8 @@
   },
   "schema_version": "pdf_lab_status_report.v1",
   "summary": {
-    "agent_resolved_count": 17,
+    "agent_resolved_count": 8,
     "agent_resolved_kinds": {
-      "noisy_text_or_bbox_match": 9,
       "real_table_candidate": 1,
       "table_false_positive": 2,
       "table_row_fragment": 5
@@ -452,7 +451,7 @@
     "total_expected_elements": 1632,
     "unmatched_actual_elements": 37,
     "unmatched_expected_elements": 9,
-    "workflow_evidence_element_count": 0,
+    "workflow_evidence_element_count": 28074,
     "workflow_evidence_page_count": 492
   },
   "triage_summary": {
@@ -462,15 +461,13 @@
   },
   "trouble_report": {
     "agent_resolved_by_kind": {
-      "noisy_text_or_bbox_match": 9,
       "real_table_candidate": 1,
       "table_false_positive": 2,
       "table_row_fragment": 5
     },
     "agent_resolved_by_severity": {
       "high": 7,
-      "low": 1,
-      "medium": 9
+      "low": 1
     },
     "missed_expected_by_type": {
       "requirement": 1,

@@ -1,0 +1,2990 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Lab Second-Pass Candidate Report</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07101d; --panel:#101a2a; --line:#26364e; --text:#f4f7fb; --muted:#9eb0c7; --green:#22c55e; --amber:#f59e0b; --purple:#a78bfa; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 1800px; margin: 0 auto; padding: 24px; }
+    .hero, .case { border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg,#121d2e,#0c1422); box-shadow:0 18px 60px rgba(0,0,0,.3); }
+    .hero { padding:20px; margin-bottom:16px; }
+    h1, h2 { margin:0; letter-spacing:-.03em; }
+    h1 { font-size:28px; }
+    h2 { font-size:18px; word-break: break-word; }
+    .summary { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+    .metric { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#0a1322; color:var(--muted); }
+    .metric strong { display:block; color:var(--text); font-size:22px; }
+    .case { padding:16px; margin:16px 0; }
+    .case header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    .eyebrow { color:var(--purple); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
+    .badge { border:1px solid var(--line); border-radius:999px; padding:6px 10px; font-weight:800; }
+    .badge.resolved { color:#bbf7d0; border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.12); }
+    .badge.human { color:#fde68a; border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.12); }
+    .grid { display:grid; grid-template-columns:minmax(280px, .72fr) minmax(420px, 1fr); gap:16px; align-items:start; }
+    .page-proof { position:relative; background:#fff; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.2); }
+    .page-proof img { display:block; width:100%; height:auto; }
+    .bbox { position:absolute; border:3px solid var(--amber); box-shadow:0 0 0 2px rgba(167,139,250,.95), 0 0 0 9999px rgba(15,23,42,.10); pointer-events:none; }
+    .facts { min-width:0; }
+    dl { display:grid; grid-template-columns:140px minmax(0,1fr); gap:8px 12px; margin:0 0 12px; }
+    dt { color:var(--muted); font-weight:800; text-transform:uppercase; font-size:11px; letter-spacing:.05em; }
+    dd { margin:0; overflow-wrap:anywhere; }
+    details { border:1px solid var(--line); border-radius:12px; background:#0a1322; margin:8px 0; overflow:hidden; }
+    summary { cursor:pointer; padding:10px 12px; font-weight:800; }
+    pre { margin:0; padding:12px; overflow:auto; max-height:420px; color:#d8b4fe; background:#050914; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .missing { border:1px dashed var(--line); border-radius:12px; padding:20px; color:var(--muted); }
+    @media (max-width: 1100px) { .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">PDF Lab · second-pass candidate report</div>
+      <h1>Every candidate with prompt payload, preset, extraction JSON, decision, and annotation status</h1>
+      <div class="summary">
+        <div class="metric"><strong>8</strong> candidates</div>
+        <div class="metric"><strong>8</strong> with expected JSON</div>
+        <div class="metric"><strong>8</strong> with actual JSON</div>
+        <div class="metric"><strong>0</strong> with actual candidates</div>
+        <div class="metric"><strong>8</strong> with extraction evidence</div>
+        <div class="metric"><strong>8</strong> with bbox</div>
+        <div class="metric"><strong>8</strong> rendered page images</div>
+        <div class="metric"><strong>8</strong> annotated overlays</div>
+        <div class="metric"><strong>0</strong> human required</div>
+      </div>
+    </section>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 12</div>
+            <h2>agent_resolved:table_false_positive:actual_p12_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_12.png" alt="Rendered page 12"><span class="bbox" style="left:3.291%;top:4.350%;width:81.724%;height:90.951%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p12:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.032912, 0.0435, 0.850151, 0.953015]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=15, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 0.&quot;,
+  &quot;Same-page section rows: 0.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p12:table:0&quot;,
+  &quot;page&quot;: 12,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.032912,
+    0.0435,
+    0.850151,
+    0.953015
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.032912,
+    0.0435,
+    0.850151,
+    0.953015
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p12:table:0&quot;,
+  &quot;page&quot;: 12,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      21.059999465942383,
+      38.400001525878906,
+      498.314208984375,
+      717.9599609375
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 15,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              90.0,
+              748.3800048828125,
+              50.17417907714844,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;NIST SP 800-53,&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              141.66000366210938,
+              748.3800048828125,
+              18.745849609375,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;REV. 5&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              285.29998779296875,
+              748.3800048828125,
+              38.55914306640625,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;SECURITY AND&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              327.0724182128906,
+              748.3800048828125,
+              22.59149169921875,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;P RIVACY&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              351.05999755859375,
+              748.3800048828125,
+              38.803680419921875,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;CONTROLS FOR&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              393.0973205566406,
+              748.3800048828125,
+              40.982757568359375,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;I NFORMATION&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              435.4800109863281,
+              748.3800048828125,
+              24.13531494140625,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;SYSTEMS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              463.063232421875,
+              748.3800048828125,
+              50.81536865234375,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;AND O RGANIZATIONS&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              90.0,
+              738.719970703125,
+              429.37420654296875,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;_________________________________________________________________________________________________&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              258.1199951171875,
+              678.239990234375,
+              37.03436279296875,
+              10.97998046875
+            ],
+            &quot;text&quot;: &quot;CONTROL&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              300.44500732421875,
+              678.239990234375,
+              47.6156005859375,
+              10.97998046875
+            ],
+            &quot;text&quot;: &quot;BASELINES&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.62000274658203,
+              659.8200073242188,
+              15.190322875976562,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;The&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              129.61392211914062,
+              659.8200073242188,
+              29.348587036132812,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;control&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              160.76611328125,
+              659.8200073242188,
+              56.56294250488281,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;baselines that&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              219.13265991210938,
+              659.8200073242188,
+              19.659255981445312,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;have&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              240.59552001953125,
+              659.8200073242188,
+              42.063934326171875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;previously&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              284.4630432128906,
+              659.8200073242188,
+              57.404632568359375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;been included&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              343.6712646484375,
+              659.8200073242188,
+              7.59515380859375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;in&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              353.07000732421875,
+              659.8200073242188,
+              48.977752685546875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;NIST Special&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              403.8513488769531,
+              659.8200073242188,
+              62.845428466796875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;Publication 800&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              464.742919921875,
+              659.8200073242188,
+              32.375701904296875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;-53 have&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.6199951171875,
+              647.6356811523438,
+              16.79296875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;been&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              133.6112060546875,
+              647.6356811523438,
+              37.7841796875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;relocated&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              175.5936279296875,
+              647.6356811523438,
+              29.3876953125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;to NIST&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              209.1795654296875,
+              647.6356811523438,
+              29.387710571289062,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;Special&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              242.76551818847656,
+              647.6356811523438,
+              46.18064880371094,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;Publication&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              293.1444091796875,
+              647.6356811523438,
+              33.585968017578125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;800-53B.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              330.9286193847656,
+              647.6356811523438,
+              41.982421875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;SP 800-53B&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              377.1092834472656,
+              647.6356811523438,
+              33.5859375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;contains&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              414.8934631347656,
+              647.6356811523438,
+              50.37890625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;security and&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              469.4706115722656,
+              647.6356811523438,
+              29.3876953125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;privacy&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.62000274658203,
+              635.4000244140625,
+              28.956626892089844,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;control&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              145.71328735351562,
+              635.4000244140625,
+              37.229949951171875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;baselines&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              187.0799102783203,
+              635.4000244140625,
+              12.409988403320312,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;for&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              203.62655639648438,
+              635.4000244140625,
+              28.956634521484375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;federal&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              236.7198486328125,
+              635.4000244140625,
+              45.503265380859375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;information&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              286.3597717285156,
+              635.4000244140625,
+              45.5032958984375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;systems and&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              335.9997253417969,
+              635.4000244140625,
+              57.913238525390625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;organizations.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              398.0496520996094,
+              635.4000244140625,
+              8.2733154296875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;It&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              410.4596252441406,
+              635.4000244140625,
+              33.093292236328125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;provides&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              447.6895751953125,
+              635.4000244140625,
+              49.63995361328125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;guidance for&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.6199951171875,
+              623.2156982421875,
+              72.32415771484375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;tailoring control&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              189.19851684570312,
+              623.2156982421875,
+              38.28926086425781,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;baselines&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              231.74212646484375,
+              623.2156982421875,
+              12.763092041015625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;and&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              248.75958251953125,
+              623.2156982421875,
+              59.561065673828125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;for developing&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              312.57501220703125,
+              623.2156982421875,
+              46.798004150390625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;overlays to&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              363.62738037109375,
+              623.2156982421875,
+              29.780517578125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;support&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              397.6622619628906,
+              623.2156982421875,
+              12.763092041015625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;the&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              414.6797180175781,
+              623.2156982421875,
+              51.052337646484375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;security and&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              469.9864196777344,
+              623.2156982421875,
+              29.780517578125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;privacy&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.6099853515625,
+              611.0313720703125,
+              63.41667175292969,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;requirements of&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              180.25442504882812,
+              611.0313720703125,
+              50.73333740234375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;stakeholders&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              235.2155303955078,
+              611.0313720703125,
+              12.683334350585938,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;and&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              252.12664794921875,
+              611.0313720703125,
+              21.138885498046875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;their&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              277.4932861328125,
+              611.0313720703125,
+              59.18890380859375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;organizations.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              340.90997314453125,
+              611.0313720703125,
+              16.9111328125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;CNSS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              362.0488586425781,
+              611.0313720703125,
+              46.50555419921875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;Instruction&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              412.7821960449219,
+              611.0313720703125,
+              16.911102294921875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;1253&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              433.25811767578125,
+              611.0399780273438,
+              32.6251220703125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;provides&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              469.96136474609375,
+              611.0399780273438,
+              28.546966552734375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;control&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.62000274658203,
+              598.7999877929688,
+              56.40259552001953,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;baselines and&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              172.37930297851562,
+              598.7999877929688,
+              36.82350158691406,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;guidance&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              212.55950927734375,
+              598.7999877929688,
+              47.284393310546875,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;for security&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              263.2005920410156,
+              598.7999877929688,
+              58.12603759765625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;categorization&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              324.6833190917969,
+              598.7999877929688,
+              50.771331787109375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;and security&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              378.81134033203125,
+              598.7999877929688,
+              29.20831298828125,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;control&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              411.3763427734375,
+              598.7999877929688,
+              51.81341552734375,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;selection for&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              466.54644775390625,
+              598.7999877929688,
+              33.346588134765625,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;national&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              112.62000274658203,
+              586.5555419921875,
+              31.832435607910156,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;security&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.43148803710938,
+              586.5555419921875,
+              31.832443237304688,
+              10.02001953125
+            ],
+            &quot;text&quot;: &quot;systems.&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              21.059999465942383,
+              564.0599975585938,
+              62.13600158691406,
+              9.0
+            ],
+            &quot;text&quot;: &quot;This publication&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              85.71599578857422,
+              564.0599975585938,
+              44.23499298095703,
+              9.0
+            ],
+            &quot;text&quot;: &quot;is available&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              132.4709930419922,
+              564.0599975585938,
+              25.37103271484375,
+              9.0
+            ],
+            &quot;text&quot;: &quot;free of&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              160.36203002929688,
+              564.0599975585938,
+              50.23805236816406,
+              9.0
+            ],
+            &quot;text&quot;: &quot;charge from:&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              21.059999465942383,
+              370.9800109863281,
+              143.63999938964844,
+              9.0
+            ],
+            &quot;text&quot;: &quot;https://doi.org/10.6028/NIST.SP.800&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              21.059999465942383,
+              226.44000244140625,
+              2.996999740600586,
+              9.0
+            ],
+            &quot;text&quot;: &quot;-&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              21.059999465942383,
+              223.44000244140625,
+              17.901002883911133,
+              9.0
+            ],
+            &quot;text&quot;: &quot;53r5&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              304.0199890136719,
+              38.400001525878906,
+              3.897003173828125,
+              9.0
+            ],
+            &quot;text&quot;: &quot;x&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;NIST SP 800-53,&#x27;, &#x27;bbox&#x27;: [90.0, 748.3800048828125, 50.17417907714844, 7.97998046875]}, {&#x27;text&#x27;: &#x27;REV. 5&#x27;, &#x27;bbox&#x27;: [141.66000366210938, 748.3800048828125, 18.745849609375, 7.97998046875]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;SECURITY AND&#x27;, &#x27;bbox&#x27;: [285.29998779296875, 748.3800048828125, 38.55914306640625, 7.97998046875]}, {&#x27;text&#x27;: &#x27;P RIVACY&#x27;, &#x27;bbox&#x27;: [327.0724182128906, 748.3800048828125, 22.59149169921875, 7.97998046875]}, {&#x27;text&#x27;: &#x27;CONTROLS FOR&#x27;, &#x27;bbox&#x27;: [351.05999755859375, 748.3800048828125, 38.803680419921875, 7.97998046875]}, {&#x27;text&#x27;: &#x27;I NFORMATION&#x27;, &#x27;bbox&#x27;: [393.0973205566406, 748.3800048828125, 40.982757568359375, 7.97998046875]}, {&#x27;text&#x27;: &#x27;SYSTEMS&#x27;, &#x27;bbox&#x27;: [435.4800109863281, 748.3800048828125, 24.13531494140625, 7.97998046875]}, {&#x27;text&#x27;: &#x27;AND O RGANIZATIONS&#x27;, &#x27;bbox&#x27;: [463.063232421875, 748.3800048828125, 50.81536865234375, 7.97998046875]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;_________________________________________________________________________________________________&#x27;, &#x27;bbox&#x27;: [90.0, 738.719970703125, 429.37420654296875, 7.97998046875]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;CONTROL&#x27;, &#x27;bbox&#x27;: [258.1199951171875, 678.239990234375, 37.03436279296875, 10.97998046875]}, {&#x27;text&#x27;: &#x27;BASELINES&#x27;, &#x27;bbox&#x27;: [300.44500732421875, 678.239990234375, 47.6156005859375, 10.97998046875]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;The&#x27;, &#x27;bbox&#x27;: [112.62000274658203, 659.8200073242188, 15.190322875976562, 10.02001953125]}, {&#x27;text&#x27;: &#x27;control&#x27;, &#x27;bbox&#x27;: [129.61392211914062, 659.8200073242188, 29.348587036132812, 10.02001953125]}, {&#x27;text&#x27;: &#x27;baselines that&#x27;, &#x27;bbox&#x27;: [160.76611328125, 659.8200073242188, 56.56294250488281, 10.02001953125]}, {&#x27;text&#x27;: &#x27;have&#x27;, &#x27;bbox&#x27;: [219.13265991210938, 659.8200073242188, 19.659255981445312, 10.02001953125]}, {&#x27;text&#x27;: &#x27;previously&#x27;, &#x27;bbox&#x27;: [240.59552001953125, 659.8200073242188, 42.063934326171875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;been included&#x27;, &#x27;bbox&#x27;: [284.4630432128906, 659.8200073242188, 57.404632568359375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;in&#x27;, &#x27;bbox&#x27;: [343.6712646484375, 659.8200073242188, 7.59515380859375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;NIST Special&#x27;, &#x27;bbox&#x27;: [353.07000732421875, 659.8200073242188, 48.977752685546875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;Publication 800&#x27;, &#x27;bbox&#x27;: [403.8513488769531, 659.8200073242188, 62.845428466796875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;-53 have&#x27;, &#x27;bbox&#x27;: [464.742919921875, 659.8200073242188, 32.375701904296875, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;been&#x27;, &#x27;bbox&#x27;: [112.6199951171875, 647.6356811523438, 16.79296875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;relocated&#x27;, &#x27;bbox&#x27;: [133.6112060546875, 647.6356811523438, 37.7841796875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;to NIST&#x27;, &#x27;bbox&#x27;: [175.5936279296875, 647.6356811523438, 29.3876953125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;Special&#x27;, &#x27;bbox&#x27;: [209.1795654296875, 647.6356811523438, 29.387710571289062, 10.02001953125]}, {&#x27;text&#x27;: &#x27;Publication&#x27;, &#x27;bbox&#x27;: [242.76551818847656, 647.6356811523438, 46.18064880371094, 10.02001953125]}, {&#x27;text&#x27;: &#x27;800-53B.&#x27;, &#x27;bbox&#x27;: [293.1444091796875, 647.6356811523438, 33.585968017578125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;SP 800-53B&#x27;, &#x27;bbox&#x27;: [330.9286193847656, 647.6356811523438, 41.982421875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;contains&#x27;, &#x27;bbox&#x27;: [377.1092834472656, 647.6356811523438, 33.5859375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;security and&#x27;, &#x27;bbox&#x27;: [414.8934631347656, 647.6356811523438, 50.37890625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;privacy&#x27;, &#x27;bbox&#x27;: [469.4706115722656, 647.6356811523438, 29.3876953125, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;control&#x27;, &#x27;bbox&#x27;: [112.62000274658203, 635.4000244140625, 28.956626892089844, 10.02001953125]}, {&#x27;text&#x27;: &#x27;baselines&#x27;, &#x27;bbox&#x27;: [145.71328735351562, 635.4000244140625, 37.229949951171875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;for&#x27;, &#x27;bbox&#x27;: [187.0799102783203, 635.4000244140625, 12.409988403320312, 10.02001953125]}, {&#x27;text&#x27;: &#x27;federal&#x27;, &#x27;bbox&#x27;: [203.62655639648438, 635.4000244140625, 28.956634521484375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;information&#x27;, &#x27;bbox&#x27;: [236.7198486328125, 635.4000244140625, 45.503265380859375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;systems and&#x27;, &#x27;bbox&#x27;: [286.3597717285156, 635.4000244140625, 45.5032958984375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;organizations.&#x27;, &#x27;bbox&#x27;: [335.9997253417969, 635.4000244140625, 57.913238525390625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;It&#x27;, &#x27;bbox&#x27;: [398.0496520996094, 635.4000244140625, 8.2733154296875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;provides&#x27;, &#x27;bbox&#x27;: [410.4596252441406, 635.4000244140625, 33.093292236328125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;guidance for&#x27;, &#x27;bbox&#x27;: [447.6895751953125, 635.4000244140625, 49.63995361328125, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;tailoring control&#x27;, &#x27;bbox&#x27;: [112.6199951171875, 623.2156982421875, 72.32415771484375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;baselines&#x27;, &#x27;bbox&#x27;: [189.19851684570312, 623.2156982421875, 38.28926086425781, 10.02001953125]}, {&#x27;text&#x27;: &#x27;and&#x27;, &#x27;bbox&#x27;: [231.74212646484375, 623.2156982421875, 12.763092041015625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;for developing&#x27;, &#x27;bbox&#x27;: [248.75958251953125, 623.2156982421875, 59.561065673828125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;overlays to&#x27;, &#x27;bbox&#x27;: [312.57501220703125, 623.2156982421875, 46.798004150390625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;support&#x27;, &#x27;bbox&#x27;: [363.62738037109375, 623.2156982421875, 29.780517578125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;the&#x27;, &#x27;bbox&#x27;: [397.6622619628906, 623.2156982421875, 12.763092041015625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;security and&#x27;, &#x27;bbox&#x27;: [414.6797180175781, 623.2156982421875, 51.052337646484375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;privacy&#x27;, &#x27;bbox&#x27;: [469.9864196777344, 623.2156982421875, 29.780517578125, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;requirements of&#x27;, &#x27;bbox&#x27;: [112.6099853515625, 611.0313720703125, 63.41667175292969, 10.02001953125]}, {&#x27;text&#x27;: &#x27;stakeholders&#x27;, &#x27;bbox&#x27;: [180.25442504882812, 611.0313720703125, 50.73333740234375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;and&#x27;, &#x27;bbox&#x27;: [235.2155303955078, 611.0313720703125, 12.683334350585938, 10.02001953125]}, {&#x27;text&#x27;: &#x27;their&#x27;, &#x27;bbox&#x27;: [252.12664794921875, 611.0313720703125, 21.138885498046875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;organizations.&#x27;, &#x27;bbox&#x27;: [277.4932861328125, 611.0313720703125, 59.18890380859375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;CNSS&#x27;, &#x27;bbox&#x27;: [340.90997314453125, 611.0313720703125, 16.9111328125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;Instruction&#x27;, &#x27;bbox&#x27;: [362.0488586425781, 611.0313720703125, 46.50555419921875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;1253&#x27;, &#x27;bbox&#x27;: [412.7821960449219, 611.0313720703125, 16.911102294921875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;provides&#x27;, &#x27;bbox&#x27;: [433.25811767578125, 611.0399780273438, 32.6251220703125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;control&#x27;, &#x27;bbox&#x27;: [469.96136474609375, 611.0399780273438, 28.546966552734375, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;baselines and&#x27;, &#x27;bbox&#x27;: [112.62000274658203, 598.7999877929688, 56.40259552001953, 10.02001953125]}, {&#x27;text&#x27;: &#x27;guidance&#x27;, &#x27;bbox&#x27;: [172.37930297851562, 598.7999877929688, 36.82350158691406, 10.02001953125]}, {&#x27;text&#x27;: &#x27;for security&#x27;, &#x27;bbox&#x27;: [212.55950927734375, 598.7999877929688, 47.284393310546875, 10.02001953125]}, {&#x27;text&#x27;: &#x27;categorization&#x27;, &#x27;bbox&#x27;: [263.2005920410156, 598.7999877929688, 58.12603759765625, 10.02001953125]}, {&#x27;text&#x27;: &#x27;and security&#x27;, &#x27;bbox&#x27;: [324.6833190917969, 598.7999877929688, 50.771331787109375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;control&#x27;, &#x27;bbox&#x27;: [378.81134033203125, 598.7999877929688, 29.20831298828125, 10.02001953125]}, {&#x27;text&#x27;: &#x27;selection for&#x27;, &#x27;bbox&#x27;: [411.3763427734375, 598.7999877929688, 51.81341552734375, 10.02001953125]}, {&#x27;text&#x27;: &#x27;national&#x27;, &#x27;bbox&#x27;: [466.54644775390625, 598.7999877929688, 33.346588134765625, 10.02001953125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;security&#x27;, &#x27;bbox&#x27;: [112.62000274658203, 586.5555419921875, 31.832435607910156, 10.02001953125]}, {&#x27;text&#x27;: &#x27;systems.&#x27;, &#x27;bbox&#x27;: [148.43148803710938, 586.5555419921875, 31.832443237304688, 10.02001953125]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;This publication&#x27;, &#x27;bbox&#x27;: [21.059999465942383, 564.0599975585938, 62.13600158691406, 9.0]}, {&#x27;text&#x27;: &#x27;is available&#x27;, &#x27;bbox&#x27;: [85.71599578857422, 564.0599975585938, 44.23499298095703, 9.0]}, {&#x27;text&#x27;: &#x27;free of&#x27;, &#x27;bbox&#x27;: [132.4709930419922, 564.0599975585938, 25.37103271484375, 9.0]}, {&#x27;text&#x27;: &#x27;charge from:&#x27;, &#x27;bbox&#x27;: [160.36203002929688, 564.0599975585938, 50.23805236816406, 9.0]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;https://doi.org/10.6028/NIST.SP.800&#x27;, &#x27;bbox&#x27;: [21.059999465942383, 370.9800109863281, 143.63999938964844, 9.0]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;-&#x27;, &#x27;bbox&#x27;: [21.059999465942383, 226.44000244140625, 2.996999740600586, 9.0]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;53r5&#x27;, &#x27;bbox&#x27;: [21.059999465942383, 223.44000244140625, 17.901002883911133, 9.0]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;x&#x27;, &#x27;bbox&#x27;: [304.0199890136719, 38.400001525878906, 3.897003173828125, 9.0]}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}, {&#x27;text&#x27;: &#x27;&#x27;}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_false_positive:actual_p12_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;extractor_false_positive&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;Annotated page image and expected_json confirm the region is sparse title-page prose layout, not a table. pdf_oxide emitted a 15x12 table object, but the visual evidence and expected oracle unambiguously prove this is an extractor false positive with no unresolved conflict requiring human judgment.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Visual evidence shows a title/prose page containing a centered &#x27;CONTROL BASELINES&#x27; text block, hyperlinks, and publication metadata with no tabular grid or columnar structure.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;expected_json.type&quot;,
+      &quot;fact&quot;: &quot;Expected oracle marks type as null and text as null, confirming no table element is expected in this region.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw&quot;,
+      &quot;fact&quot;: &quot;Extractor reported row_count=15, col_count=12 over the prose region, with many empty cells and fragmented sentences, confirming a structural false positive.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts[0]&quot;,
+      &quot;fact&quot;: &quot;Audit proved the region is sparse page/prose layout rather than a complete table, explicitly identifying this as an extractor false positive and not a human ambiguity.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=12&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;Improve table-detector heuristics to avoid treating centered multi-line prose blocks and title-page layouts as tabular structures with artificial rows and columns.&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;fixture_family&quot;: &quot;table_false_positive&quot;,
+    &quot;reason&quot;: &quot;Clear extractor false positive on a prose title page; ideal regression test for distinguishing tables from structured text blocks.&quot;
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_false_positive_actual_p12_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 23</div>
+            <h2>agent_resolved:table_row_fragment:actual_p23_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_23.png" alt="Rendered page 23"><span class="bbox" style="left:14.556%;top:27.744%;width:70.849%;height:1.626%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p23:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.14556, 0.277439, 0.854049, 0.293697]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=1, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 0.&quot;,
+  &quot;Same-page section rows: 65.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p23:table:0&quot;,
+  &quot;page&quot;: 23,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.14556,
+    0.277439,
+    0.854049,
+    0.293697
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.14556,
+    0.277439,
+    0.854049,
+    0.293697
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p23:table:0&quot;,
+  &quot;page&quot;: 23,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      90.00050354003906,
+      560.5800170898438,
+      431.759521484375,
+      10.5
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              90.00050354003906,
+              560.5800170898438,
+              5.399497985839844,
+              10.5
+            ],
+            &quot;text&quot;: &quot;is&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              560.5800170898438,
+              56.70000457763672,
+              10.5
+            ],
+            &quot;text&quot;: &quot;available free&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              152.10000610351562,
+              560.5800170898438,
+              5.1599884033203125,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              157.25999450683594,
+              560.5800170898438,
+              5.6399993896484375,
+              10.5
+            ],
+            &quot;text&quot;: &quot;of&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              162.89999389648438,
+              560.5800170898438,
+              47.69999694824219,
+              10.5
+            ],
+            &quot;text&quot;: &quot;charge from:&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              210.59999084472656,
+              560.5800170898438,
+              5.1600189208984375,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              215.760009765625,
+              560.5800170898438,
+              5.639984130859375,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              221.39999389648438,
+              560.5800170898438,
+              250.19998168945312,
+              10.5
+            ],
+            &quot;text&quot;: &quot;frequency ]”&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              471.5999755859375,
+              560.5800170898438,
+              5.1600341796875,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              476.760009765625,
+              560.5800170898438,
+              5.639984130859375,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              482.3999938964844,
+              560.5800170898438,
+              34.199981689453125,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              516.5999755859375,
+              560.5800170898438,
+              5.1600341796875,
+              10.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;is&#x27;, &#x27;bbox&#x27;: [90.00050354003906, 560.5800170898438, 5.399497985839844, 10.5]}, {&#x27;text&#x27;: &#x27;available free&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 560.5800170898438, 56.70000457763672, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [152.10000610351562, 560.5800170898438, 5.1599884033203125, 10.5]}, {&#x27;text&#x27;: &#x27;of&#x27;, &#x27;bbox&#x27;: [157.25999450683594, 560.5800170898438, 5.6399993896484375, 10.5]}, {&#x27;text&#x27;: &#x27;charge from:&#x27;, &#x27;bbox&#x27;: [162.89999389648438, 560.5800170898438, 47.69999694824219, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [210.59999084472656, 560.5800170898438, 5.1600189208984375, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [215.760009765625, 560.5800170898438, 5.639984130859375, 10.5]}, {&#x27;text&#x27;: &#x27;frequency]”&#x27;, &#x27;bbox&#x27;: [221.39999389648438, 560.5800170898438, 250.19998168945312, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [471.5999755859375, 560.5800170898438, 5.1600341796875, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [476.760009765625, 560.5800170898438, 5.639984130859375, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [482.3999938964844, 560.5800170898438, 34.199981689453125, 10.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [516.5999755859375, 560.5800170898438, 5.1600341796875, 10.5]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_row_fragment:actual_p23_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;table_row_fragment_extractor_bounds_bug&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The target evidence includes deterministic actual_json that matches the expected bbox and the visible annotated row fragment. No candidate_corrected_json is present, so there is no unresolved conflict between extraction variants. The known_visual_facts explicitly identify the single-row emission as an extractor bounds bug rather than a table/not-table ambiguity, which means no human judgment is required to resolve the case.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;actual_json.bbox&quot;,
+      &quot;fact&quot;: &quot;actual_json bbox [0.14556, 0.277439, 0.854049, 0.293697] matches expected_json bbox exactly&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw.row_count&quot;,
+      &quot;fact&quot;: &quot;deterministic extraction reports exactly one row with 12 columns for this fragment&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;annotated page image shows a single highlighted horizontal row fragment consistent with the thin bbox&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts[0]&quot;,
+      &quot;fact&quot;: &quot;known_visual_facts label this as an extractor bounds bug, not a human ambiguity&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;candidate_corrected_json&quot;,
+      &quot;fact&quot;: &quot;candidate_corrected_json is null, so no conflicting correction exists&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=23&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_row_fragment_actual_p23_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 259</div>
+            <h2>agent_resolved:table_false_positive:actual_p259_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_259.png" alt="Rendered page 259"><span class="bbox" style="left:20.438%;top:58.592%;width:61.045%;height:6.467%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p259:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.204382, 0.585924, 0.814833, 0.650591]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object, but the second-pass audit proved the region is sparse page/prose layout rather than a complete table. This is an extractor false positive, not a human ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=4, col_count=2.&quot;,
+  &quot;Same-page requirement rows: 0.&quot;,
+  &quot;Same-page section rows: 0.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p259:table:0&quot;,
+  &quot;page&quot;: 259,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.204382,
+    0.585924,
+    0.814833,
+    0.650591
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.204382,
+    0.585924,
+    0.814833,
+    0.650591
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p259:table:0&quot;,
+  &quot;page&quot;: 259,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      126.0,
+      277.91998291015625,
+      371.760009765625,
+      48.839996337890625
+    ],
+    &quot;col_count&quot;: 2,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 4,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              126.0,
+              314.5199890136719,
+              353.8800048828125,
+              12.239990234375
+            ],
+            &quot;text&quot;: &quot;be reasonably expected to understand and accept the privacy risks that arise from their&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              479.8800048828125,
+              314.5199890136719,
+              17.8800048828125,
+              12.239990234375
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              126.0,
+              302.3399963378906,
+              353.8800048828125,
+              12.17999267578125
+            ],
+            &quot;text&quot;: &quot;authorization. Organizations consider whether other controls may more effectively mitigate&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              479.8800048828125,
+              302.3399963378906,
+              17.8800048828125,
+              12.17999267578125
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              126.0,
+              290.1000061035156,
+              353.8800048828125,
+              12.239990234375
+            ],
+            &quot;text&quot;: &quot;privacy risk either alone or in conjunction with consent. Organizations also consider any&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              479.8800048828125,
+              290.1000061035156,
+              17.8800048828125,
+              12.239990234375
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              126.0,
+              277.91998291015625,
+              353.8800048828125,
+              12.180023193359375
+            ],
+            &quot;text&quot;: &quot;demographic or contextual factors that may influence th e understanding or behavior of&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              479.8800048828125,
+              277.91998291015625,
+              17.8800048828125,
+              12.180023193359375
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;be reasonably expected to understand and accept the privacy risks that arise from their&#x27;, &#x27;bbox&#x27;: [126.0, 314.5199890136719, 353.8800048828125, 12.239990234375]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [479.8800048828125, 314.5199890136719, 17.8800048828125, 12.239990234375]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;authorization. Organizations consider whether other controls may more effectively mitigate&#x27;, &#x27;bbox&#x27;: [126.0, 302.3399963378906, 353.8800048828125, 12.17999267578125]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [479.8800048828125, 302.3399963378906, 17.8800048828125, 12.17999267578125]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;privacy risk either alone or in conjunction with consent. Organizations also consider any&#x27;, &#x27;bbox&#x27;: [126.0, 290.1000061035156, 353.8800048828125, 12.239990234375]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [479.8800048828125, 290.1000061035156, 17.8800048828125, 12.239990234375]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;demographic or contextual factors that may influence th e understanding or behavior of&#x27;, &#x27;bbox&#x27;: [126.0, 277.91998291015625, 353.8800048828125, 12.180023193359375]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [479.8800048828125, 277.91998291015625, 17.8800048828125, 12.180023193359375]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_false_positive:actual_p259_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;table_false_positive&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The annotated page image shows a highlighted prose paragraph under PT-4 CONSENT with no tabular structure, borders, or headers. The expected oracle marks this element as type null (not a table). The actual_json from pdf_oxide extracted a 4x2 table, but column 1 contains continuous prose sentences and column 2 is entirely empty, confirming an extractor false positive. The conflict between actual_json and visible evidence is fully resolved without human ambiguity.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;expected_json.type&quot;,
+      &quot;fact&quot;: &quot;Oracle expected type is null, indicating no table should exist at this element ID.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Visual evidence shows a highlighted block of body text; no table grid, headers, or cells are visible.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw&quot;,
+      &quot;fact&quot;: &quot;Extracted object claims row_count=4 and col_count=2, yet column 2 cells are all empty strings and column 1 cells contain flowing prose lines, inconsistent with a real table.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;Audit explicitly confirmed the region is sparse page/prose layout and identified this as an extractor false positive.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=259&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;reject table candidates with sparse pseudo-columns or prose-only rows before creating human triage cards&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_false_positive_actual_p259_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 457</div>
+            <h2>agent_resolved:table_row_fragment:actual_p457_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_457.png" alt="Rendered page 457"><span class="bbox" style="left:14.556%;top:24.911%;width:70.849%;height:2.004%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p457:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.14556, 0.249106, 0.854049, 0.269151]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=1, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 42.&quot;,
+  &quot;Same-page section rows: 86.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p457:table:0&quot;,
+  &quot;page&quot;: 457,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.14556,
+    0.249106,
+    0.854049,
+    0.269151
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.14556,
+    0.249106,
+    0.854049,
+    0.269151
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p457:table:0&quot;,
+  &quot;page&quot;: 457,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      90.00050354003906,
+      580.02001953125,
+      431.759521484375,
+      13.5
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              90.00050354003906,
+              580.02001953125,
+              5.399497985839844,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              580.02001953125,
+              42.23999786376953,
+              13.5
+            ],
+            &quot;text&quot;: &quot;AC-4(16)&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              137.63999938964844,
+              580.02001953125,
+              5.160003662109375,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              142.8000030517578,
+              580.02001953125,
+              5.6399993896484375,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.44000244140625,
+              580.02001953125,
+              216.53997802734375,
+              13.5
+            ],
+            &quot;text&quot;: &quot;INFORMATION TRANSFERS ON INTERCONNECTED SYSTEMS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              364.97998046875,
+              580.02001953125,
+              5.1600341796875,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              370.1400146484375,
+              580.02001953125,
+              5.639984130859375,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              375.7799987792969,
+              580.02001953125,
+              65.04000854492188,
+              13.5
+            ],
+            &quot;text&quot;: &quot;W: Incorporated into&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              440.82000732421875,
+              580.02001953125,
+              5.0999755859375,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              445.91998291015625,
+              580.02001953125,
+              5.70001220703125,
+              13.5
+            ],
+            &quot;text&quot;: &quot;AC&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              451.6199951171875,
+              580.02001953125,
+              64.97998046875,
+              13.5
+            ],
+            &quot;text&quot;: &quot;-4.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              516.5999755859375,
+              580.02001953125,
+              5.1600341796875,
+              13.5
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [90.00050354003906, 580.02001953125, 5.399497985839844, 13.5]}, {&#x27;text&#x27;: &#x27;AC-4(16)&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 580.02001953125, 42.23999786376953, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [137.63999938964844, 580.02001953125, 5.160003662109375, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [142.8000030517578, 580.02001953125, 5.6399993896484375, 13.5]}, {&#x27;text&#x27;: &#x27;INFORMATION TRANSFERS ON INTERCONNECTED SYSTEMS&#x27;, &#x27;bbox&#x27;: [148.44000244140625, 580.02001953125, 216.53997802734375, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [364.97998046875, 580.02001953125, 5.1600341796875, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [370.1400146484375, 580.02001953125, 5.639984130859375, 13.5]}, {&#x27;text&#x27;: &#x27;W: Incorporated into&#x27;, &#x27;bbox&#x27;: [375.7799987792969, 580.02001953125, 65.04000854492188, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [440.82000732421875, 580.02001953125, 5.0999755859375, 13.5]}, {&#x27;text&#x27;: &#x27;AC&#x27;, &#x27;bbox&#x27;: [445.91998291015625, 580.02001953125, 5.70001220703125, 13.5]}, {&#x27;text&#x27;: &#x27;-4.&#x27;, &#x27;bbox&#x27;: [451.6199951171875, 580.02001953125, 64.97998046875, 13.5]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [516.5999755859375, 580.02001953125, 5.1600341796875, 13.5]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_row_fragment:actual_p457_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;table_row_fragment&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The actual JSON accurately captures the single table row fragment within the expected bounding box. Extracted cell texts (AC-4(16), INFORMATION TRANSFERS ON INTERCONNECTED SYSTEMS, W: Incorporated into AC-4.) match the annotated page evidence. The expected oracle bbox matches the actual bbox. No candidate corrected JSON is present, and there is no unresolved conflict regarding table identity, bounds, or cell text.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Annotated page image shows the AC-4(16) row within the NIST SP 800-53 control table matching the extracted text.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw.rows[0]&quot;,
+      &quot;fact&quot;: &quot;Deterministic extraction reports a single row with 12 columns, including cells for AC-4(16), INFORMATION TRANSFERS ON INTERCONNECTED SYSTEMS, and W: Incorporated into AC-4.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;expected_json.bbox&quot;,
+      &quot;fact&quot;: &quot;Expected oracle bounding box [0.14556, 0.249106, 0.854049, 0.269151] matches the actual extraction bbox, confirming the scope is a single row fragment.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts[0]&quot;,
+      &quot;fact&quot;: &quot;Known visual fact notes pdf_oxide emitted a single-row table object on a page with repeated table-row structure, identifying it as an extractor bounds bug rather than a table/not-table ambiguity.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=457&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_row_fragment_actual_p457_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 458</div>
+            <h2>agent_resolved:table_row_fragment:actual_p458_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_458.png" alt="Rendered page 458"><span class="bbox" style="left:14.556%;top:82.494%;width:70.849%;height:2.004%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p458:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.14556, 0.824941, 0.854049, 0.844985]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=1, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 41.&quot;,
+  &quot;Same-page section rows: 74.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p458:table:0&quot;,
+  &quot;page&quot;: 458,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.14556,
+    0.824941,
+    0.854049,
+    0.844985
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.14556,
+    0.824941,
+    0.854049,
+    0.844985
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p458:table:0&quot;,
+  &quot;page&quot;: 458,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      90.00050354003906,
+      123.95999908447266,
+      431.759521484375,
+      13.499000549316406
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              90.00050354003906,
+              123.95999908447266,
+              5.399497985839844,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              123.95999908447266,
+              42.23999786376953,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;AC-18(2)&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              137.63999938964844,
+              123.95999908447266,
+              5.160003662109375,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              142.8000030517578,
+              123.95999908447266,
+              5.6399993896484375,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.44000244140625,
+              123.95999908447266,
+              216.53997802734375,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;MONITORING UNAUTHORIZED CONNECTIONS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              364.97998046875,
+              123.95999908447266,
+              5.1600341796875,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              370.1400146484375,
+              123.95999908447266,
+              5.639984130859375,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              375.7799987792969,
+              123.95999908447266,
+              65.04000854492188,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;W: Incorporated into&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              440.82000732421875,
+              123.95999908447266,
+              5.0999755859375,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              445.91998291015625,
+              123.95999908447266,
+              5.70001220703125,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;SI&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              451.6199951171875,
+              123.95999908447266,
+              64.97998046875,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;-4.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              516.5999755859375,
+              123.95999908447266,
+              5.1600341796875,
+              13.499000549316406
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [90.00050354003906, 123.95999908447266, 5.399497985839844, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;AC-18(2)&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 123.95999908447266, 42.23999786376953, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [137.63999938964844, 123.95999908447266, 5.160003662109375, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [142.8000030517578, 123.95999908447266, 5.6399993896484375, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;MONITORING UNAUTHORIZED CONNECTIONS&#x27;, &#x27;bbox&#x27;: [148.44000244140625, 123.95999908447266, 216.53997802734375, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [364.97998046875, 123.95999908447266, 5.1600341796875, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [370.1400146484375, 123.95999908447266, 5.639984130859375, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;W: Incorporated into&#x27;, &#x27;bbox&#x27;: [375.7799987792969, 123.95999908447266, 65.04000854492188, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [440.82000732421875, 123.95999908447266, 5.0999755859375, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;SI&#x27;, &#x27;bbox&#x27;: [445.91998291015625, 123.95999908447266, 5.70001220703125, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;-4.&#x27;, &#x27;bbox&#x27;: [451.6199951171875, 123.95999908447266, 64.97998046875, 13.499000549316406]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [516.5999755859375, 123.95999908447266, 5.1600341796875, 13.499000549316406]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_row_fragment:actual_p458_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;table_row_fragment&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The actual_json deterministic extraction accurately captures the single table row fragment within the reported bbox, and the annotated page image confirms the extracted cell text (AC-18(2), MONITORING UNAUTHORIZED CONNECTIONS, W: Incorporated into SI-4) matches the visible highlighted row exactly. The expected_json shares the identical bbox, confirming the element scope is this fragment. There is no candidate_corrected_json conflict. Known visual facts explicitly identify this as a documented extractor bounds fragmentation behavior rather than an unresolved structural ambiguity requiring human judgment.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;actual_json&quot;,
+      &quot;fact&quot;: &quot;Deterministic extraction contains one row with 12 columns, including cell text AC-18(2), MONITORING UNAUTHORIZED CONNECTIONS, and W: Incorporated into SI-4.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Visual evidence shows the highlighted row content matches the extracted cell text exactly.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;expected_json.bbox&quot;,
+      &quot;fact&quot;: &quot;Expected bbox matches actual_json bbox, confirming the element scope is this single row fragment.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;States this is an extractor bounds bug producing row fragments, not a human table/not-table ambiguity.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=458&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;pdf_oxide.extract_tables should merge contiguous row fragments belonging to the same visual table into a single table object rather than emitting isolated single-row tables.&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_row_fragment_actual_p458_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 458</div>
+            <h2>agent_resolved:table_row_fragment:actual_p458_table_1</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_458.png" alt="Rendered page 458"><span class="bbox" style="left:14.556%;top:68.873%;width:70.849%;height:2.005%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p458:table:1</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.14556, 0.688727, 0.854049, 0.708773]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=1, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 41.&quot;,
+  &quot;Same-page section rows: 74.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p458:table:1&quot;,
+  &quot;page&quot;: 458,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.14556,
+    0.688727,
+    0.854049,
+    0.708773
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.14556,
+    0.688727,
+    0.854049,
+    0.708773
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p458:table:1&quot;,
+  &quot;page&quot;: 458,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      90.00050354003906,
+      231.8400115966797,
+      431.759521484375,
+      13.499984741210938
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              90.00050354003906,
+              231.8400115966797,
+              5.399497985839844,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              231.8400115966797,
+              42.23999786376953,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;AC-17(5)&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              137.63999938964844,
+              231.8400115966797,
+              5.160003662109375,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              142.8000030517578,
+              231.8400115966797,
+              5.6399993896484375,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.44000244140625,
+              231.8400115966797,
+              216.53997802734375,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;MONITORING FOR UNAUTHORIZED CONNECTIONS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              364.97998046875,
+              231.8400115966797,
+              5.1600341796875,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              370.1400146484375,
+              231.8400115966797,
+              5.639984130859375,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              375.7799987792969,
+              231.8400115966797,
+              65.04000854492188,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;W: Incorporated into&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              440.82000732421875,
+              231.8400115966797,
+              5.0999755859375,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              445.91998291015625,
+              231.8400115966797,
+              5.70001220703125,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;SI&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              451.6199951171875,
+              231.8400115966797,
+              64.97998046875,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;-4.&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              516.5999755859375,
+              231.8400115966797,
+              5.1600341796875,
+              13.499984741210938
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [90.00050354003906, 231.8400115966797, 5.399497985839844, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;AC-17(5)&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 231.8400115966797, 42.23999786376953, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [137.63999938964844, 231.8400115966797, 5.160003662109375, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [142.8000030517578, 231.8400115966797, 5.6399993896484375, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;MONITORING FOR UNAUTHORIZED CONNECTIONS&#x27;, &#x27;bbox&#x27;: [148.44000244140625, 231.8400115966797, 216.53997802734375, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [364.97998046875, 231.8400115966797, 5.1600341796875, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [370.1400146484375, 231.8400115966797, 5.639984130859375, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;W: Incorporated into&#x27;, &#x27;bbox&#x27;: [375.7799987792969, 231.8400115966797, 65.04000854492188, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [440.82000732421875, 231.8400115966797, 5.0999755859375, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;SI&#x27;, &#x27;bbox&#x27;: [445.91998291015625, 231.8400115966797, 5.70001220703125, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;-4.&#x27;, &#x27;bbox&#x27;: [451.6199951171875, 231.8400115966797, 64.97998046875, 13.499984741210938]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [516.5999755859375, 231.8400115966797, 5.1600341796875, 13.499984741210938]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_row_fragment:actual_p458_table_1&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;table_row_fragment&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;actual_json correctly extracts the single table-row fragment within expected_json.bbox. Cell texts (AC-17(5), MONITORING FOR UNAUTHORIZED CONNECTIONS, W: Incorporated into, SI, -4.) exactly match the annotated image. expected_json and actual_json share identical bbox coordinates, so there is no bounds conflict. candidate_corrected_json is null. known_visual_facts explicitly identify the single-row emission as an extractor bounds bug, not a table-identity ambiguity, so no human judgment is required.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw.rows[0].cells&quot;,
+      &quot;fact&quot;: &quot;Cell texts exactly match the highlighted AC-17(5) row visible in the annotated image.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;expected_json.bbox&quot;,
+      &quot;fact&quot;: &quot;Expected bbox matches actual_json.bbox, confirming case scope is the same row fragment.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts[0]&quot;,
+      &quot;fact&quot;: &quot;States the single-row table object is an extractor bounds bug, not a human table/not-table ambiguity.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Visual confirmation that extracted text corresponds to the highlighted table row and no content is cut off within the fragment scope.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=458&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;merge adjacent compatible row-band table fragments or expand row-only table bbox to the containing grid&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_row_fragment_actual_p458_table_1/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 469</div>
+            <h2>agent_resolved:table_row_fragment:actual_p469_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_469.png" alt="Rendered page 469"><span class="bbox" style="left:14.556%;top:38.221%;width:70.849%;height:2.004%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p469:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.14556, 0.382213, 0.854049, 0.402258]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.&quot;,
+  &quot;Deterministic table evidence reports row_count=1, col_count=12.&quot;,
+  &quot;Same-page requirement rows: 27.&quot;,
+  &quot;Same-page section rows: 53.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p469:table:0&quot;,
+  &quot;page&quot;: 469,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.14556,
+    0.382213,
+    0.854049,
+    0.402258
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.14556,
+    0.382213,
+    0.854049,
+    0.402258
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p469:table:0&quot;,
+  &quot;page&quot;: 469,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      90.00050354003906,
+      474.6000061035156,
+      431.759521484375,
+      13.498992919921875
+    ],
+    &quot;col_count&quot;: 12,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              90.00050354003906,
+              474.6000061035156,
+              5.399497985839844,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              474.6000061035156,
+              42.23999786376953,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;IA-8(3)&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              137.63999938964844,
+              474.6000061035156,
+              5.160003662109375,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              142.8000030517578,
+              474.6000061035156,
+              5.6399993896484375,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.44000244140625,
+              474.6000061035156,
+              216.53997802734375,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;- USE OF FICAM APPROVED PRODUCTS&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              364.97998046875,
+              474.6000061035156,
+              5.1600341796875,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              370.1400146484375,
+              474.6000061035156,
+              5.639984130859375,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              375.7799987792969,
+              474.6000061035156,
+              65.04000854492188,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;W: Incorporated into&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              440.82000732421875,
+              474.6000061035156,
+              5.0999755859375,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              445.91998291015625,
+              474.6000061035156,
+              5.70001220703125,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;IA&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              451.6199951171875,
+              474.6000061035156,
+              64.97998046875,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;-8(2).&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              516.5999755859375,
+              474.6000061035156,
+              5.1600341796875,
+              13.498992919921875
+            ],
+            &quot;text&quot;: &quot;&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [90.00050354003906, 474.6000061035156, 5.399497985839844, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;IA-8(3)&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 474.6000061035156, 42.23999786376953, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [137.63999938964844, 474.6000061035156, 5.160003662109375, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [142.8000030517578, 474.6000061035156, 5.6399993896484375, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;- USE OF FICAM APPROVED PRODUCTS&#x27;, &#x27;bbox&#x27;: [148.44000244140625, 474.6000061035156, 216.53997802734375, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [364.97998046875, 474.6000061035156, 5.1600341796875, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [370.1400146484375, 474.6000061035156, 5.639984130859375, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;W: Incorporated into&#x27;, &#x27;bbox&#x27;: [375.7799987792969, 474.6000061035156, 65.04000854492188, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [440.82000732421875, 474.6000061035156, 5.0999755859375, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;IA&#x27;, &#x27;bbox&#x27;: [445.91998291015625, 474.6000061035156, 5.70001220703125, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;-8(2).&#x27;, &#x27;bbox&#x27;: [451.6199951171875, 474.6000061035156, 64.97998046875, 13.498992919921875]}, {&#x27;text&#x27;: &#x27;&#x27;, &#x27;bbox&#x27;: [516.5999755859375, 474.6000061035156, 5.1600341796875, 13.498992919921875]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:table_row_fragment:actual_p469_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;agent_resolved_table_row_fragment&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The annotated page image shows a table header plus one highlighted data row containing IA-8(3), - USE OF FICAM APPROVED PRODUCTS, and W: Incorporated into IA-8(2). The actual_json deterministically captures this visible row fragment with matching cell text, row_count=1, and col_count=12. No visible content is cut off, candidate_corrected_json is null, and there is no unresolved conflict between target evidence and deterministic extraction output. Per the table-specific hard rule, this is agent_resolved.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;actual_json&quot;,
+      &quot;fact&quot;: &quot;Deterministic extraction reports a single row with 12 columns, including cell texts &#x27;IA-8(3)&#x27;, &#x27;- USE OF FICAM APPROVED PRODUCTS&#x27;, &#x27;W: Incorporated into&#x27;, &#x27;IA&#x27;, &#x27;-8(2).&#x27; which exactly match the highlighted visible row.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Annotated image shows the highlighted table row fragment within the page 469 table structure without truncation.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;Known visual facts identify this as an extractor bounds bug (single row emitted from repeated table-row structure), not a table identity ambiguity requiring human judgment.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=469&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;pdf_oxide.extract_tables should merge contiguous repeated table-row structures on the same page rather than emitting single-row fragments.&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_table_row_fragment_actual_p469_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.table.v1 · page 471</div>
+            <h2>agent_resolved:real_table_candidate:actual_p471_table_0</h2>
+          </div>
+          <span class="badge resolved">agent_resolved</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_471.png" alt="Rendered page 471"><span class="bbox" style="left:14.517%;top:8.971%;width:70.967%;height:9.399%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p471:table:0</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Actual type</dt><dd>table</dd>
+              <dt>Annotation bbox</dt><dd>[0.145167, 0.089712, 0.854835, 0.183697]</dd>
+              <dt>Actual candidates</dt><dd>0</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;pdf_oxide emitted a table object and the second-pass audit found explicit table header cells plus a populated data row. This is a real table candidate and does not require a human table/not-table decision.&quot;,
+  &quot;Deterministic table evidence reports row_count=2, col_count=4.&quot;,
+  &quot;Same-page requirement rows: 1.&quot;,
+  &quot;Same-page section rows: 6.&quot;
+]</pre></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p471:table:0&quot;,
+  &quot;page&quot;: 471,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    0.145167,
+    0.089712,
+    0.854835,
+    0.183697
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;bbox&quot;: [
+    0.145167,
+    0.089712,
+    0.854835,
+    0.183697
+  ],
+  &quot;confidence&quot;: 1.0,
+  &quot;id&quot;: &quot;actual:p471:table:0&quot;,
+  &quot;page&quot;: 471,
+  &quot;preset_applied&quot;: &quot;nist_sp_800_53r5_pdf&quot;,
+  &quot;raw&quot;: {
+    &quot;bbox&quot;: [
+      89.76000213623047,
+      647.7000122070312,
+      432.48101806640625,
+      72.05999755859375
+    ],
+    &quot;col_count&quot;: 4,
+    &quot;has_header&quot;: false,
+    &quot;row_count&quot;: 2,
+    &quot;rows&quot;: [
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              98.4000015258789,
+              680.4600219726562,
+              36.00000762939453,
+              19.01995849609375
+            ],
+            &quot;text&quot;: &quot;CONTROL\nNUMBER&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              211.13999938964844,
+              675.8400268554688,
+              94.99458312988281,
+              23.3399658203125
+            ],
+            &quot;text&quot;: &quot;CONTROL NAME\nCONTROL ENHANCEMENT NAME&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              386.8800048828125,
+              677.4600219726562,
+              49.707427978515625,
+              17.99993896484375
+            ],
+            &quot;text&quot;: &quot;IMPLEMENTED\nBY&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              465.7799987792969,
+              687.47998046875,
+              40.37091064453125,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;ASSURANCE&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      },
+      {
+        &quot;cells&quot;: [
+          {
+            &quot;bbox&quot;: [
+              95.4000015258789,
+              651.2999877929688,
+              19.32599639892578,
+              9.0
+            ],
+            &quot;text&quot;: &quot;IR-10&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              148.44000244140625,
+              651.2999877929688,
+              172.03109741210938,
+              9.0
+            ],
+            &quot;text&quot;: &quot;Integrated Information Security Analysis Team&quot;
+          },
+          {
+            &quot;bbox&quot;: [
+              378.8999938964844,
+              652.260009765625,
+              72.060791015625,
+              7.97998046875
+            ],
+            &quot;text&quot;: &quot;W: Moved to IR-4(11).&quot;
+          }
+        ],
+        &quot;is_header&quot;: false
+      }
+    ]
+  },
+  &quot;source&quot;: &quot;pdf_oxide.extract_tables&quot;,
+  &quot;text&quot;: &quot;{&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;CONTROL\\nNUMBER&#x27;, &#x27;bbox&#x27;: [98.4000015258789, 680.4600219726562, 36.00000762939453, 19.01995849609375]}, {&#x27;text&#x27;: &#x27;CONTROL NAME\\nCONTROL ENHANCEMENT NAME&#x27;, &#x27;bbox&#x27;: [211.13999938964844, 675.8400268554688, 94.99458312988281, 23.3399658203125]}, {&#x27;text&#x27;: &#x27;IMPLEMENTED\\nBY&#x27;, &#x27;bbox&#x27;: [386.8800048828125, 677.4600219726562, 49.707427978515625, 17.99993896484375]}, {&#x27;text&#x27;: &#x27;ASSURANCE&#x27;, &#x27;bbox&#x27;: [465.7799987792969, 687.47998046875, 40.37091064453125, 7.97998046875]}]} {&#x27;is_header&#x27;: False, &#x27;cells&#x27;: [{&#x27;text&#x27;: &#x27;IR-10&#x27;, &#x27;bbox&#x27;: [95.4000015258789, 651.2999877929688, 19.32599639892578, 9.0]}, {&#x27;text&#x27;: &#x27;Integrated Information Security Analysis Team&#x27;, &#x27;bbox&#x27;: [148.44000244140625, 651.2999877929688, 172.03109741210938, 9.0]}, {&#x27;text&#x27;: &#x27;W: Moved to IR-4(11).&#x27;, &#x27;bbox&#x27;: [378.8999938964844, 652.260009765625, 72.060791015625, 7.97998046875]}]}&quot;,
+  &quot;type&quot;: &quot;table&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;agent_resolved:real_table_candidate:actual_p471_table_0&quot;,
+  &quot;preset_id&quot;: &quot;pdf.table.v1&quot;,
+  &quot;decision&quot;: &quot;agent_resolved&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;real_table&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The annotated page image shows a table with a header row (CONTROL NUMBER, CONTROL NAME/CONTROL ENHANCEMENT NAME, IMPLEMENTED BY, ASSURANCE) and one data row (IR-10, Integrated Information Security Analysis Team, W: Moved to IR-4(11).). The actual_json captures this visible table object with matching bbox coordinates, row_count=2, col_count=4, and cell text that aligns with the visible content. No candidate_corrected_json is present to introduce a conflict, and the bounding box does not appear to cut off visible table content. Per the table-specific hard rule, this is a resolved real table extraction.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;annotated_page_image_path&quot;,
+      &quot;fact&quot;: &quot;Annotated image shows a two-row table with four columns; header text and data row text are clearly visible within the highlighted bbox.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.bbox&quot;,
+      &quot;fact&quot;: &quot;Bounding box [0.145167, 0.089712, 0.854835, 0.183697] corresponds to the annotated table region.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.raw.rows&quot;,
+      &quot;fact&quot;: &quot;Row 1 contains four header cells; row 2 contains three populated data cells matching IR-10, Integrated Information Security Analysis Team, and W: Moved to IR-4(11).&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;expected_json&quot;,
+      &quot;fact&quot;: &quot;Expected oracle confirms element identity and page 471 without contradicting actual_json structure or bounds.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;Second-pass audit already confirmed explicit header cells plus a populated data row as a real table candidate.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.table.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=471&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: &quot;record header-row evidence on table candidates so these do not become human triage cards&quot;,
+  &quot;proposed_json_delta&quot;: null,
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details><summary>Full prompt payload</summary><p><code>agent_resolved_real_table_candidate_actual_p471_table_0/full_prompt_payload.json</code></p></details>
+          </div>
+        </div>
+      </article>
+    
+  </main>
+</body>
+</html>

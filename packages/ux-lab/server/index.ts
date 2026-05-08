@@ -16,6 +16,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
+import { buildQraReviewPatch, mergeQraReviewDocument } from './qraReview.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { execFile, exec, spawn } from 'child_process'
@@ -386,6 +387,15 @@ function annotateQraQuality(doc: Record<string, any> | null | undefined) {
 
 const QRA_V2_COLLECTIONS = ['sparta_qra_canonical', 'sparta_qra_relationship'] as const
 const LEGACY_QRA_COLLECTION = 'sparta_qra' as const
+
+function unsupportedEntityId(mention: string): string {
+  const slug = mention
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .replace(/_+/g, '_')
+  return `unsupported:${slug || 'term'}`
+}
 const QRA_COUNT_CACHE_TTL_MS = 30_000
 const QRA_COUNT_CACHE = new Map<string, { count: number; at: number }>()
 const QRA_STATUS_CACHE_TTL_MS = 60_000
@@ -897,6 +907,57 @@ app.post('/api/qra/detail', async (req, res) => {
   } catch (e) {
     console.error('[qra/detail] failed', e)
     res.status(502).json({ error: 'qra_detail_failed', detail: String(e) })
+  }
+})
+
+app.post('/api/sparta/qras/:key/review', async (req, res) => {
+  const key = String(req.params.key || '').trim()
+  const collectionHint = String(req.body?.collection || '').trim()
+  const decision = String(req.body?.decision || '').trim()
+  const reviewer = String(req.body?.reviewer || 'brandon').trim()
+  const reviewedDraft = req.body?.reviewed_draft && typeof req.body.reviewed_draft === 'object'
+    ? req.body.reviewed_draft as { question?: unknown; reasoning?: unknown; answer?: unknown }
+    : {}
+  const draftHash = String(req.body?.draft_hash || '').trim()
+  const evidenceRun = req.body?.evidence_run && typeof req.body.evidence_run === 'object'
+    ? req.body.evidence_run as JsonRecord
+    : {}
+  if (!key) return res.status(400).json({ error: 'qra_review_requires_key' })
+  if (!['accept', 'reject', 'retain_adversarial'].includes(decision)) return res.status(400).json({ error: 'invalid_qra_review_decision' })
+  const question = typeof reviewedDraft.question === 'string' ? reviewedDraft.question.trim() : ''
+  const answer = typeof reviewedDraft.answer === 'string' ? reviewedDraft.answer.trim() : ''
+  const reasoning = typeof reviewedDraft.reasoning === 'string' ? reviewedDraft.reasoning.trim() : ''
+  if (!question || !answer) return res.status(400).json({ error: 'qra_review_requires_reviewed_question_and_answer' })
+
+  const collections = collectionHint && [...QRA_V2_COLLECTIONS, LEGACY_QRA_COLLECTION].includes(collectionHint as any)
+    ? [collectionHint]
+    : ['sparta_qra', ...QRA_V2_COLLECTIONS]
+  const { patch, evidenceCasePatch, reviewEvent } = buildQraReviewPatch({
+    decision,
+    reviewer,
+    reviewedDraft: { question, answer, reasoning },
+    draftHash,
+    evidenceRun,
+  })
+
+  try {
+    for (const collection of collections) {
+      const existing = (await fetchQraDocsByKeys(collection, [key]))[0]
+      if (existing) {
+        const document = mergeQraReviewDocument(existing, patch, evidenceCasePatch, reviewEvent)
+        await proxyPost('/upsert', {
+          collection,
+          documents: [document],
+        }, 45000)
+        const refreshed = (await fetchQraDocsByKeys(collection, [key]))[0] ?? document
+        QRA_STATUS_CACHE.clear()
+        return res.json({ ok: true, collection, document: refreshed, review_event: reviewEvent })
+      }
+    }
+    return res.status(404).json({ error: 'qra_not_found', key })
+  } catch (e) {
+    console.error('[sparta/qras/review] failed', e)
+    return res.status(502).json({ error: 'qra_review_failed', detail: String(e) })
   }
 })
 
@@ -5664,8 +5725,11 @@ app.post('/api/projects/:projectId/test-interactions', async (req, res) => {
 
 app.post('/api/extract-entities', async (req, res) => {
   try {
-    const { text, collection, delimiter } = req.body as { text: string; collection?: string; delimiter?: string }
+    const { text, collection, delimiter, view } = req.body as { text: string; collection?: string; delimiter?: string; view?: string }
     const col = collection || 'sparta_controls'
+    const requestedView = typeof view === 'string' && ['agent', 'verbose', 'debug', 'legacy'].includes(view)
+      ? view
+      : 'agent'
 
     // Mode 1: structured ID list — split and look up each
     if (delimiter) {
@@ -5738,16 +5802,49 @@ app.post('/api/extract-entities', async (req, res) => {
     // Mode 3: SPARTA entity extraction via daemon (FlashText Aho-Corasick)
     // Normalize both legacy and current daemon contracts into one UI-friendly shape.
     try {
-      const result = await proxyPost('/extract-entities', { text, include_taxonomy: false }) as Record<string, unknown>
+      const result = await proxyPost('/extract-entities', { text, include_taxonomy: false, view: requestedView }) as Record<string, unknown>
+
+      const nodes = result.nodes && typeof result.nodes === 'object' && !Array.isArray(result.nodes)
+        ? result.nodes as JsonRecord
+        : {}
+      const nodeAnchors = Array.isArray(nodes.anchors) ? nodes.anchors as JsonRecord[] : []
+      const nodeValidatedContext = Array.isArray(nodes.validated_context) ? nodes.validated_context as JsonRecord[] : []
+      const nodeContextTerms = Array.isArray(nodes.context_terms) ? nodes.context_terms as JsonRecord[] : []
+      const nodeSuppressed = Array.isArray(nodes.suppressed) ? nodes.suppressed as JsonRecord[] : []
+      const nodeUnsupported = Array.isArray(nodes.unsupported) ? nodes.unsupported as JsonRecord[] : []
+      const nodeMetadata = (node: JsonRecord) => (
+        node.metadata && typeof node.metadata === 'object' && !Array.isArray(node.metadata)
+          ? node.metadata as JsonRecord
+          : {}
+      )
+      const spanOf = (node: JsonRecord): [number, number] | undefined => {
+        const span = node.span
+        return Array.isArray(span) && typeof span[0] === 'number' && typeof span[1] === 'number'
+          ? [span[0], span[1]]
+          : undefined
+      }
+      const stringOf = (value: unknown): string | undefined => typeof value === 'string' && value.trim().length > 0 ? value : undefined
 
       const legacyControlIds = Array.isArray(result.control_ids) ? (result.control_ids as string[]) : []
       const legacyControlMeta = Array.isArray(result.control_metadata)
         ? (result.control_metadata as Array<{ name?: string; framework?: string; domain?: string }>)
         : []
+      const legacyRawGlossary = Array.isArray((result as any).glossary)
+        ? ((result as any).glossary as Array<Record<string, unknown>>)
+        : []
+      const rawEntityNodes = Array.isArray((result as any).entity_nodes)
+        ? ((result as any).entity_nodes as Array<Record<string, unknown>>)
+        : [
+            ...nodeAnchors,
+            ...nodeValidatedContext,
+            ...nodeContextTerms,
+            ...nodeSuppressed,
+            ...nodeUnsupported,
+          ]
       const legacySpans = Array.isArray(result.spans) ? (result.spans as Array<Record<string, unknown>>) : []
       const legacyPhrases = Array.isArray(result.phrases) ? (result.phrases as string[]) : []
 
-      const resolvedEntities = Array.isArray((result as any).resolved_entities)
+      const legacyResolvedEntities = Array.isArray((result as any).resolved_entities)
         ? ((result as any).resolved_entities as Array<{
             mention?: string
             span?: [number, number]
@@ -5757,6 +5854,30 @@ app.post('/api/extract-entities', async (req, res) => {
             entity_type?: string
           }>)
         : []
+      const resolvedEntities = legacyResolvedEntities.length > 0
+        ? legacyResolvedEntities
+        : nodeAnchors
+            .map((node) => {
+              const meta = nodeMetadata(node)
+              const controlId = stringOf(meta.control_id) ?? stringOf(node.id)
+              if (!controlId) return null
+              return {
+                mention: stringOf(node.mention) ?? controlId,
+                span: spanOf(node),
+                canonical_id: controlId,
+                canonical_name: stringOf(meta.name) ?? controlId,
+                framework: stringOf(meta.framework_label) ?? stringOf(meta.framework) ?? '',
+                entity_type: stringOf(meta.type) ?? stringOf(node.node_kind) ?? 'control',
+              }
+            })
+            .filter((value): value is {
+              mention?: string
+              span?: [number, number]
+              canonical_id?: string
+              canonical_name?: string
+              framework?: string
+              entity_type?: string
+            } => Boolean(value))
       const unresolvedEntities = Array.isArray((result as any).unresolved_entities)
         ? ((result as any).unresolved_entities as Array<{
             mention?: string
@@ -5766,21 +5887,35 @@ app.post('/api/extract-entities', async (req, res) => {
         : []
       let externalEntities = Array.isArray((result as any).external_entities)
         ? ((result as any).external_entities as Array<{
+            id?: string
             mention?: string
             normalized_text?: string
             span?: [number, number]
             entity_type?: string
             routing_effect?: string
             source?: string
+            control_id?: string
+            canonical_name?: string
+            claimed_against_control_id?: string
+            expected_control_name?: string
           }>)
         : []
-      const domainTerms = Array.isArray((result as any).domain_terms)
+      const legacyDomainTerms = Array.isArray((result as any).domain_terms)
         ? ((result as any).domain_terms as Array<{
             text?: string
             span?: [number, number]
             kind?: string
           }>)
         : []
+      const domainTerms = legacyDomainTerms.length > 0
+        ? legacyDomainTerms
+        : nodeContextTerms
+            .map((node) => ({
+              text: stringOf(node.mention) ?? stringOf(node.id),
+              span: spanOf(node),
+              kind: stringOf(node.node_kind) ?? 'domain_term',
+            }))
+            .filter((term) => term.text)
 
       const normalizedControlIds = legacyControlIds.length > 0
         ? legacyControlIds
@@ -5796,6 +5931,12 @@ app.post('/api/extract-entities', async (req, res) => {
               name: e.canonical_name ?? e.canonical_id,
               framework: e.framework ?? '',
             }))
+      const validatedDescriptorMentions = new Set(
+        nodeValidatedContext
+          .map((node) => stringOf(node.mention) ?? stringOf(nodeMetadata(node).category) ?? stringOf(nodeMetadata(node).matched_value))
+          .filter((value): value is string => Boolean(value))
+          .map((value) => value.trim().toLowerCase()),
+      )
 
       const loweredText = text.toLowerCase()
       const parentheticalMismatches: typeof externalEntities = []
@@ -5811,16 +5952,20 @@ app.post('/api/extract-entities', async (req, res) => {
         if (close < 0) return
         const parenthetical = text.slice(open + 1, close).trim()
         if (!parenthetical) return
+        if (validatedDescriptorMentions.has(parenthetical.toLowerCase())) return
         const canonicalTerms = [canonicalName, cid]
           .map((term) => term.trim().toLowerCase())
           .filter(Boolean)
         if (canonicalTerms.includes(parenthetical.toLowerCase())) return
         parentheticalMismatches.push({
+          id: unsupportedEntityId(parenthetical),
           mention: parenthetical,
           normalized_text: parenthetical.toLowerCase(),
           span: [open + 1, close],
           entity_type: 'unsupported_control_name',
           routing_effect: `does_not_match_${cid}_canonical_name_${canonicalName}`,
+          claimed_against_control_id: cid,
+          expected_control_name: canonicalName,
           source: '/extract-entities parenthetical control-name guard',
         })
       })
@@ -5875,6 +6020,24 @@ app.post('/api/extract-entities', async (req, res) => {
                 kind: 'aerospace_term',
                 source: '/extract-entities',
               })),
+            ...nodeValidatedContext
+              .filter((node) => {
+                const span = spanOf(node)
+                return Boolean(span && (stringOf(node.mention) || stringOf(nodeMetadata(node).category)))
+              })
+              .map((node) => {
+                const meta = nodeMetadata(node)
+                return {
+                  text: stringOf(node.mention) ?? stringOf(meta.category) ?? '',
+                  span: spanOf(node),
+                  kind: 'control_descriptor',
+                  framework: stringOf(meta.framework_label) ?? stringOf(meta.framework) ?? 'SPARTA',
+                  name: stringOf(meta.canonical_name) ?? stringOf(meta.name) ?? stringOf(meta.category) ?? '',
+                  control_id: stringOf(meta.control_id) ?? stringOf(node.relationship && typeof node.relationship === 'object' && !Array.isArray(node.relationship) ? (node.relationship as JsonRecord).target_id : undefined),
+                  grounded_to_framework: true,
+                  source: '/extract-entities nodes.validated_context',
+                }
+              }),
             ...externalEntities
               .filter((e) => Array.isArray(e.span) && typeof e.span[0] === 'number' && typeof e.span[1] === 'number')
               .map((e) => ({
@@ -5928,6 +6091,205 @@ app.post('/api/extract-entities', async (req, res) => {
             .map((e) => e.mention)
             .concat(externalEntities.map((e) => e.mention))
             .filter((v): v is string => typeof v === 'string' && v.length > 0)
+      const rawGlossary = legacyRawGlossary.length > 0
+        ? legacyRawGlossary
+        : [
+            ...nodeAnchors.map((node) => {
+              const meta = nodeMetadata(node)
+              return {
+                id: stringOf(meta.control_id) ?? stringOf(node.id),
+                control_id: stringOf(meta.control_id) ?? stringOf(node.id),
+                name: stringOf(meta.name) ?? stringOf(node.mention) ?? stringOf(node.id),
+                mention: stringOf(node.mention) ?? stringOf(meta.control_id) ?? stringOf(node.id),
+                framework: stringOf(meta.framework_label) ?? stringOf(meta.framework) ?? '',
+                type: stringOf(meta.type) ?? stringOf(node.node_kind) ?? 'control',
+                category: stringOf(meta.category),
+                grounded: true,
+                exists: true,
+                source: '/extract-entities nodes.anchors',
+              }
+            }),
+            ...nodeValidatedContext.map((node) => {
+              const meta = nodeMetadata(node)
+              const relationship = node.relationship && typeof node.relationship === 'object' && !Array.isArray(node.relationship)
+                ? node.relationship as JsonRecord
+                : {}
+              return {
+                id: stringOf(node.id) ?? stringOf(node.mention),
+                control_id: stringOf(meta.control_id) ?? stringOf(relationship.target_id),
+                name: stringOf(node.mention) ?? stringOf(meta.category) ?? stringOf(node.id),
+                mention: stringOf(node.mention) ?? stringOf(meta.category) ?? stringOf(node.id),
+                framework: stringOf(meta.framework_label) ?? stringOf(meta.framework) ?? 'SPARTA',
+                type: stringOf(meta.descriptor_kind) ?? 'control_descriptor',
+                descriptor_kind: stringOf(meta.descriptor_kind) ?? 'control_category_or_alias',
+                canonical_name: stringOf(meta.canonical_name),
+                grounded: true,
+                exists: true,
+                source: '/extract-entities nodes.validated_context',
+              }
+            }),
+          ].filter((entry) => stringOf(entry.id) || stringOf(entry.name))
+      const normalizedGlossary = rawGlossary.length > 0
+        ? rawGlossary
+        : [
+            ...normalizedControlIds.map((cid: string, i: number) => {
+              const meta = normalizedControlMeta[i] ?? {}
+              const resolved = resolvedEntities.find((e) => e.canonical_id === cid)
+              return {
+                id: cid,
+                control_id: cid,
+                name: meta.name ?? resolved?.canonical_name ?? cid,
+                mention: resolved?.mention ?? cid,
+                framework: meta.framework ?? resolved?.framework ?? '',
+                type: resolved?.entity_type ?? 'control',
+                span: resolved?.span,
+                grounded: true,
+                exists: true,
+                source: '/extract-entities',
+              }
+            }),
+            ...externalEntities.map((entity) => ({
+              id: entity.id ?? unsupportedEntityId(entity.mention ?? entity.normalized_text ?? ''),
+              name: entity.mention ?? entity.normalized_text ?? '',
+              mention: entity.mention ?? entity.normalized_text ?? '',
+              type: entity.entity_type ?? 'external_entity',
+              span: entity.span,
+              grounded: false,
+              exists: false,
+              reason: entity.routing_effect ?? 'not_grounded_to_sparta_controls',
+              source: entity.source ?? '/extract-entities',
+              claimed_against_control_id: entity.claimed_against_control_id ?? entity.control_id ?? null,
+              expected_control_name: entity.expected_control_name ?? entity.canonical_name ?? null,
+            })),
+            ...unresolvedEntities.map((entity) => ({
+              id: null,
+              name: entity.mention ?? '',
+              mention: entity.mention ?? '',
+              type: 'unresolved',
+              span: entity.span,
+              grounded: false,
+              exists: false,
+              reason: entity.reason ?? 'unresolved',
+              source: '/extract-entities',
+            })),
+          ].filter((entry) => typeof entry.name === 'string' && entry.name.length > 0)
+      const normalizedEntityNodes = rawEntityNodes.length > 0
+        ? rawEntityNodes
+        : [
+            ...normalizedGlossary.map((entry) => {
+              const name = String(entry.name ?? entry.mention ?? entry.id ?? '')
+              const grounded = entry.grounded !== false && entry.exists !== false
+              const extractedText = String(entry.mention ?? entry.name ?? entry.id ?? '')
+              return {
+                id: entry.id ?? (grounded ? entry.control_id ?? name : unsupportedEntityId(name)),
+                node_kind: grounded ? 'control' : 'unsupported_term',
+                status: grounded ? 'grounded' : 'unsupported',
+                proof_role: grounded ? 'entity_anchor' : 'none',
+                extracted: {
+                  text: extractedText,
+                  span: entry.span,
+                  source: entry.source ?? '/extract-entities',
+                  kind: grounded ? 'control_id' : entry.type ?? 'unsupported_term',
+                },
+                metadata: grounded
+                  ? {
+                      control_id: entry.control_id,
+                      name,
+                      framework: entry.framework,
+                      type: entry.type,
+                      grounded: true,
+                      exists: true,
+                    }
+                  : {
+                      name,
+                      type: entry.type,
+                      grounded: false,
+                      exists: false,
+                      reason: entry.reason,
+                      claimed_against_control_id: entry.claimed_against_control_id,
+                      expected_control_name: entry.expected_control_name,
+                    },
+              }
+            }),
+            ...domainTerms
+              .filter((term) => typeof term.text === 'string' && term.text.length > 0)
+              .map((term) => ({
+                id: unsupportedEntityId(term.text || '').replace('unsupported:', 'domain:'),
+                node_kind: 'domain_term',
+                status: 'extracted',
+                proof_role: 'context',
+                extracted: {
+                  text: term.text,
+                  span: term.span,
+                  source: '/extract-entities domain_terms',
+                  kind: term.kind ?? 'domain_term',
+                },
+                metadata: {
+                  name: term.text,
+                  type: term.kind ?? 'domain_term',
+                  grounded: true,
+                  exists: true,
+                },
+              })),
+          ]
+      const rawGuessNodes = (result as any).guess_nodes
+      let normalizedGuessNodes = rawGuessNodes && typeof rawGuessNodes === 'object' && !Array.isArray(rawGuessNodes)
+        ? rawGuessNodes
+        : null
+      if (!normalizedGuessNodes) {
+        const qraCandidates: Array<Record<string, unknown>> = []
+        const seenQras = new Set<string>()
+        for (const cid of normalizedControlIds.slice(0, 4)) {
+          for (const qraCollection of ['sparta_qra_canonical', 'sparta_qra_relationship', 'sparta_qra']) {
+            for (const field of ['source_control_id', 'control_id']) {
+              try {
+                const listed = await proxyPost('/list', {
+                  collection: qraCollection,
+                  limit: 2,
+                  filters: { [field]: cid },
+                  return_fields: ['_id', '_key', 'qra_id', 'question', 'problem', 'answer', 'solution', 'reasoning', 'control_id', 'source_control_id', 'review_status'],
+                }) as { documents?: Array<Record<string, unknown>> }
+                const docs = Array.isArray(listed.documents) ? listed.documents : []
+                docs.forEach((doc) => {
+                  const key = String(doc._id || doc._key || doc.qra_id || '')
+                  if (!key || seenQras.has(key)) return
+                  seenQras.add(key)
+                  qraCandidates.push({
+                    layer: qraCollection,
+                    status: 'candidate',
+                    proof_role: 'none',
+                    query: text,
+                    match_basis: 'same_control_id',
+                    reason: `related QRA candidate for extracted control ${cid}`,
+                    id: doc.qra_id || doc._id || doc._key,
+                    _id: doc._id,
+                    _key: doc._key,
+                    control_id: doc.source_control_id || doc.control_id || cid,
+                    question: doc.question || doc.problem,
+                    answer: doc.answer || doc.solution,
+                    reasoning: doc.reasoning,
+                    review_status: doc.review_status,
+                    source: qraCollection,
+                  })
+                })
+              } catch {
+                // Candidate nodes are non-proof affordances; extraction should not fail on them.
+              }
+              if (qraCandidates.length > 0) break
+            }
+          }
+        }
+        normalizedGuessNodes = {
+          status: 'candidate_only',
+          proof_role: 'none',
+          controls: [],
+          qras: qraCandidates.slice(0, 12),
+          notes: [
+            'Guess nodes are did-you-mean or closest related candidates.',
+            'Guess nodes must not satisfy grounding, approval, or evidence gates.',
+          ],
+        }
+      }
 
       res.json({
         entities,
@@ -5935,6 +6297,7 @@ app.post('/api/extract-entities', async (req, res) => {
         // Normalized data for UI consumers that expect legacy keys
         control_ids: normalizedControlIds,
         spans: normalizedSpans,
+        glossary: normalizedGlossary,
         resolution_map: normalizedResolutionMap,
         control_metadata: normalizedControlMeta,
         not_in_corpus: normalizedNotInCorpus,
@@ -5945,6 +6308,13 @@ app.post('/api/extract-entities', async (req, res) => {
         grounding_ok: result.grounding_ok ?? null,
         agent_decision: result.agent_decision ?? null,
         summary: result.summary ?? null,
+        guess_nodes: normalizedGuessNodes,
+        candidate_nodes: result.candidate_nodes ?? normalizedGuessNodes,
+        entity_nodes: normalizedEntityNodes,
+        proof_packet: result.proof_packet ?? null,
+        nodes: result.nodes ?? null,
+        counts: result.counts ?? null,
+        agent_contract: result.agent_contract ?? null,
         // Pass-through current contract for newer consumers
         resolved_entities: resolvedEntities,
         unresolved_entities: unresolvedEntities,
@@ -7989,6 +8359,44 @@ function buildAdvisoryGapReview(question: string, controlId: unknown, payload: J
 }
 
 function normalizeEvidenceCaseWorkflowResult(question: string, controlId: unknown, result: any): JsonRecord {
+  if (result?.evidence_case?.case_type === 'direct_lookup' && result?.extract_entities) {
+    const evidenceCase = result.evidence_case
+    const glossary = Array.isArray(evidenceCase.glossary) ? evidenceCase.glossary : []
+    return {
+      verdict: { state: 'satisfied', grade: 'A', score: 1.0 },
+      gate_trace: [
+        { gate: 'extract_entities', passed: true, detail: 'direct lookup grounded' },
+        { gate: 'crosswalk', passed: true, detail: 'not required' },
+        { gate: 'cae', passed: true, detail: 'not required' },
+        { gate: 'framework', passed: true, detail: evidenceCase.context?.framework_label || evidenceCase.context?.framework || 'SPARTA' },
+      ],
+      evidence: [],
+      glossary: glossary.slice(0, 20).map((g: any) => ({
+        term: g.name || g.id,
+        type: g.type === 'countermeasure' ? 'countermeasure' : g.framework === 'SPARTA' ? 'control' : 'domain_term',
+      })),
+      crosswalk_chains: [],
+      context: evidenceCase.context || {},
+      cwe_record: null,
+      diagnostics: {
+        authority: 'create-evidence-case',
+        workflow: 'create-evidence-case',
+        mode: 'direct_lookup',
+        question,
+        control_id: typeof controlId === 'string' ? controlId : evidenceCase.answer_payload?.control_id || null,
+        review_status: evidenceCase.review_status || 'not_reviewed',
+        raw_keys: result && typeof result === 'object' ? Object.keys(result).sort() : [],
+      },
+      answer: result.assistant_response?.text || '',
+      assistant_response: result.assistant_response || null,
+      extract_entities: result.extract_entities,
+      evidence_case: evidenceCase,
+      evidence_card: evidenceCase.evidence_card || null,
+      agent_contract: result.agent_contract || null,
+      cae_tree: evidenceCase.cae_tree || { included: false, reason: 'CAE generation is not required for direct control lookup.' },
+    }
+  }
+
   const reviewStatus = result.review_status || 'unknown'
   const glossary = Array.isArray(result.glossary) ? result.glossary : []
   const crosswalks = Array.isArray(result.crosswalk_chains) ? result.crosswalk_chains : []

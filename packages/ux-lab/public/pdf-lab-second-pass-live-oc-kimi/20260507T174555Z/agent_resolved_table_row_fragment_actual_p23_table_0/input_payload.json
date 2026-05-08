@@ -1,0 +1,178 @@
+{
+  "schema_version": "pdf_lab.second_pass_case_payload.v1",
+  "case_id": "agent_resolved:table_row_fragment:actual_p23_table_0",
+  "source_kind": "agent_resolved",
+  "preset_id": "pdf.table.v1",
+  "page": 23,
+  "element_id": "actual:p23:table:0",
+  "original_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_row_fragment_actual_p23_table_0/page_23.png",
+  "annotated_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_row_fragment_actual_p23_table_0/page_23_annotated.png",
+  "expected_json": {
+    "id": "actual:p23:table:0",
+    "page": 23,
+    "type": null,
+    "bbox": [
+      0.14556,
+      0.277439,
+      0.854049,
+      0.293697
+    ],
+    "text": null,
+    "source": "agentic_expected_oracle"
+  },
+  "actual_json": {
+    "bbox": [
+      0.14556,
+      0.277439,
+      0.854049,
+      0.293697
+    ],
+    "confidence": 1.0,
+    "id": "actual:p23:table:0",
+    "page": 23,
+    "preset_applied": "nist_sp_800_53r5_pdf",
+    "raw": {
+      "bbox": [
+        90.00050354003906,
+        560.5800170898438,
+        431.759521484375,
+        10.5
+      ],
+      "col_count": 12,
+      "has_header": false,
+      "row_count": 1,
+      "rows": [
+        {
+          "cells": [
+            {
+              "bbox": [
+                90.00050354003906,
+                560.5800170898438,
+                5.399497985839844,
+                10.5
+              ],
+              "text": "is"
+            },
+            {
+              "bbox": [
+                95.4000015258789,
+                560.5800170898438,
+                56.70000457763672,
+                10.5
+              ],
+              "text": "available free"
+            },
+            {
+              "bbox": [
+                152.10000610351562,
+                560.5800170898438,
+                5.1599884033203125,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                157.25999450683594,
+                560.5800170898438,
+                5.6399993896484375,
+                10.5
+              ],
+              "text": "of"
+            },
+            {
+              "bbox": [
+                162.89999389648438,
+                560.5800170898438,
+                47.69999694824219,
+                10.5
+              ],
+              "text": "charge from:"
+            },
+            {
+              "bbox": [
+                210.59999084472656,
+                560.5800170898438,
+                5.1600189208984375,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                215.760009765625,
+                560.5800170898438,
+                5.639984130859375,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                221.39999389648438,
+                560.5800170898438,
+                250.19998168945312,
+                10.5
+              ],
+              "text": "frequency ]”"
+            },
+            {
+              "bbox": [
+                471.5999755859375,
+                560.5800170898438,
+                5.1600341796875,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                476.760009765625,
+                560.5800170898438,
+                5.639984130859375,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                482.3999938964844,
+                560.5800170898438,
+                34.199981689453125,
+                10.5
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                516.5999755859375,
+                560.5800170898438,
+                5.1600341796875,
+                10.5
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        }
+      ]
+    },
+    "source": "pdf_oxide.extract_tables",
+    "text": "{'is_header': False, 'cells': [{'text': 'is', 'bbox': [90.00050354003906, 560.5800170898438, 5.399497985839844, 10.5]}, {'text': 'available free', 'bbox': [95.4000015258789, 560.5800170898438, 56.70000457763672, 10.5]}, {'text': '', 'bbox': [152.10000610351562, 560.5800170898438, 5.1599884033203125, 10.5]}, {'text': 'of', 'bbox': [157.25999450683594, 560.5800170898438, 5.6399993896484375, 10.5]}, {'text': 'charge from:', 'bbox': [162.89999389648438, 560.5800170898438, 47.69999694824219, 10.5]}, {'text': '', 'bbox': [210.59999084472656, 560.5800170898438, 5.1600189208984375, 10.5]}, {'text': '', 'bbox': [215.760009765625, 560.5800170898438, 5.639984130859375, 10.5]}, {'text': 'frequency]”', 'bbox': [221.39999389648438, 560.5800170898438, 250.19998168945312, 10.5]}, {'text': '', 'bbox': [471.5999755859375, 560.5800170898438, 5.1600341796875, 10.5]}, {'text': '', 'bbox': [476.760009765625, 560.5800170898438, 5.639984130859375, 10.5]}, {'text': '', 'bbox': [482.3999938964844, 560.5800170898438, 34.199981689453125, 10.5]}, {'text': '', 'bbox': [516.5999755859375, 560.5800170898438, 5.1600341796875, 10.5]}]}",
+    "type": "table"
+  },
+  "actual_candidates": [],
+  "candidate_corrected_json": null,
+  "known_visual_facts": [
+    "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "Deterministic table evidence reports row_count=1, col_count=12.",
+    "Same-page requirement rows: 0.",
+    "Same-page section rows: 65."
+  ],
+  "provenance": {
+    "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+    "source_extraction": null,
+    "created_by": "pdf-lab.final-agent-pass",
+    "deterministic_record": "agent_resolved:table_row_fragment:actual_p23_table_0"
+  }
+}

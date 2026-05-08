@@ -1,0 +1,69 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "agent_resolved:table_false_positive:actual_p12_table_0",
+  "preset_id": "pdf.table.v1",
+  "decision": "agent_resolved",
+  "human_triage_required": false,
+  "classification": "extractor_false_positive",
+  "confidence": "high",
+  "reason": "Annotated page image and expected_json confirm the region is sparse title-page prose layout, not a table. pdf_oxide emitted a 15x12 table object, but the visual evidence and expected oracle unambiguously prove this is an extractor false positive with no unresolved conflict requiring human judgment.",
+  "target_evidence_used": [
+    {
+      "field_path": "annotated_page_image_path",
+      "fact": "Visual evidence shows a title/prose page containing a centered 'CONTROL BASELINES' text block, hyperlinks, and publication metadata with no tabular grid or columnar structure."
+    },
+    {
+      "field_path": "expected_json.type",
+      "fact": "Expected oracle marks type as null and text as null, confirming no table element is expected in this region."
+    },
+    {
+      "field_path": "actual_json.raw",
+      "fact": "Extractor reported row_count=15, col_count=12 over the prose region, with many empty cells and fragmented sentences, confirming a structural false positive."
+    },
+    {
+      "field_path": "known_visual_facts[0]",
+      "fact": "Audit proved the region is sparse page/prose layout rather than a complete table, explicitly identifying this as an extractor false positive and not a human ambiguity."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.table.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=12"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "agent_resolved"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=False"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": "Improve table-detector heuristics to avoid treating centered multi-line prose blocks and title-page layouts as tabular structures with artificial rows and columns.",
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": true,
+    "fixture_family": "table_false_positive",
+    "reason": "Clear extractor false positive on a prose title page; ideal regression test for distinguishing tables from structured text blocks."
+  }
+}

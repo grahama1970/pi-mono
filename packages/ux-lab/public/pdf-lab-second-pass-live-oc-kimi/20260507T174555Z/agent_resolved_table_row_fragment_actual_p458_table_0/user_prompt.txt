@@ -1,0 +1,240 @@
+# RATIONALE (not sent to LLM)
+# Purpose: User-message template for one PDF Lab second-pass evidence case.
+# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.
+# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.
+# Input: CASE_PAYLOAD JSON inserted below.
+# Output: JSON matching the exact schema at the end of this file.
+# Last reviewed: 2026-05-07 by project agent.
+
+Given `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.
+
+Evidence classification:
+1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.
+2. Technique evidence: element-type rules from the selected preset.
+3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.
+
+Rules:
+- Recommend human triage only when target evidence contains an unresolved conflict.
+- Do not cite the selected preset as target evidence.
+- Do not infer missing rows, cells, values, captions, or section relationships.
+- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.
+- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.
+- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.
+
+CASE_PAYLOAD:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_case_payload.v1",
+  "case_id": "agent_resolved:table_row_fragment:actual_p458_table_0",
+  "source_kind": "agent_resolved",
+  "preset_id": "pdf.table.v1",
+  "page": 458,
+  "element_id": "actual:p458:table:0",
+  "original_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_row_fragment_actual_p458_table_0/page_458.png",
+  "annotated_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_table_row_fragment_actual_p458_table_0/page_458_annotated.png",
+  "expected_json": {
+    "id": "actual:p458:table:0",
+    "page": 458,
+    "type": null,
+    "bbox": [
+      0.14556,
+      0.824941,
+      0.854049,
+      0.844985
+    ],
+    "text": null,
+    "source": "agentic_expected_oracle"
+  },
+  "actual_json": {
+    "bbox": [
+      0.14556,
+      0.824941,
+      0.854049,
+      0.844985
+    ],
+    "confidence": 1.0,
+    "id": "actual:p458:table:0",
+    "page": 458,
+    "preset_applied": "nist_sp_800_53r5_pdf",
+    "raw": {
+      "bbox": [
+        90.00050354003906,
+        123.95999908447266,
+        431.759521484375,
+        13.499000549316406
+      ],
+      "col_count": 12,
+      "has_header": false,
+      "row_count": 1,
+      "rows": [
+        {
+          "cells": [
+            {
+              "bbox": [
+                90.00050354003906,
+                123.95999908447266,
+                5.399497985839844,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                95.4000015258789,
+                123.95999908447266,
+                42.23999786376953,
+                13.499000549316406
+              ],
+              "text": "AC-18(2)"
+            },
+            {
+              "bbox": [
+                137.63999938964844,
+                123.95999908447266,
+                5.160003662109375,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                142.8000030517578,
+                123.95999908447266,
+                5.6399993896484375,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                148.44000244140625,
+                123.95999908447266,
+                216.53997802734375,
+                13.499000549316406
+              ],
+              "text": "MONITORING UNAUTHORIZED CONNECTIONS"
+            },
+            {
+              "bbox": [
+                364.97998046875,
+                123.95999908447266,
+                5.1600341796875,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                370.1400146484375,
+                123.95999908447266,
+                5.639984130859375,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                375.7799987792969,
+                123.95999908447266,
+                65.04000854492188,
+                13.499000549316406
+              ],
+              "text": "W: Incorporated into"
+            },
+            {
+              "bbox": [
+                440.82000732421875,
+                123.95999908447266,
+                5.0999755859375,
+                13.499000549316406
+              ],
+              "text": ""
+            },
+            {
+              "bbox": [
+                445.91998291015625,
+                123.95999908447266,
+                5.70001220703125,
+                13.499000549316406
+              ],
+              "text": "SI"
+            },
+            {
+              "bbox": [
+                451.6199951171875,
+                123.95999908447266,
+                64.97998046875,
+                13.499000549316406
+              ],
+              "text": "-4."
+            },
+            {
+              "bbox": [
+                516.5999755859375,
+                123.95999908447266,
+                5.1600341796875,
+                13.499000549316406
+              ],
+              "text": ""
+            }
+          ],
+          "is_header": false
+        }
+      ]
+    },
+    "source": "pdf_oxide.extract_tables",
+    "text": "{'is_header': False, 'cells': [{'text': '', 'bbox': [90.00050354003906, 123.95999908447266, 5.399497985839844, 13.499000549316406]}, {'text': 'AC-18(2)', 'bbox': [95.4000015258789, 123.95999908447266, 42.23999786376953, 13.499000549316406]}, {'text': '', 'bbox': [137.63999938964844, 123.95999908447266, 5.160003662109375, 13.499000549316406]}, {'text': '', 'bbox': [142.8000030517578, 123.95999908447266, 5.6399993896484375, 13.499000549316406]}, {'text': 'MONITORING UNAUTHORIZED CONNECTIONS', 'bbox': [148.44000244140625, 123.95999908447266, 216.53997802734375, 13.499000549316406]}, {'text': '', 'bbox': [364.97998046875, 123.95999908447266, 5.1600341796875, 13.499000549316406]}, {'text': '', 'bbox': [370.1400146484375, 123.95999908447266, 5.639984130859375, 13.499000549316406]}, {'text': 'W: Incorporated into', 'bbox': [375.7799987792969, 123.95999908447266, 65.04000854492188, 13.499000549316406]}, {'text': '', 'bbox': [440.82000732421875, 123.95999908447266, 5.0999755859375, 13.499000549316406]}, {'text': 'SI', 'bbox': [445.91998291015625, 123.95999908447266, 5.70001220703125, 13.499000549316406]}, {'text': '-4.', 'bbox': [451.6199951171875, 123.95999908447266, 64.97998046875, 13.499000549316406]}, {'text': '', 'bbox': [516.5999755859375, 123.95999908447266, 5.1600341796875, 13.499000549316406]}]}",
+    "type": "table"
+  },
+  "actual_candidates": [],
+  "candidate_corrected_json": null,
+  "known_visual_facts": [
+    "pdf_oxide emitted a table object whose raw extraction contains exactly one row inside a page with repeated table-row structure. This is an extractor bounds bug, not a human table/not-table ambiguity.",
+    "Deterministic table evidence reports row_count=1, col_count=12.",
+    "Same-page requirement rows: 41.",
+    "Same-page section rows: 74."
+  ],
+  "provenance": {
+    "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+    "source_extraction": null,
+    "created_by": "pdf-lab.final-agent-pass",
+    "deterministic_record": "agent_resolved:table_row_fragment:actual_p458_table_0"
+  }
+}
+```
+
+Return this exact JSON shape:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "string",
+  "preset_id": "string",
+  "decision": "agent_resolved|human_triage|fixture_candidate|blocker",
+  "human_triage_required": true,
+  "classification": "string",
+  "confidence": "low|medium|high",
+  "reason": "string",
+  "target_evidence_used": [
+    {
+      "field_path": "string",
+      "fact": "string"
+    }
+  ],
+  "missing_evidence": ["string"],
+  "validators": [
+    {
+      "validator_id": "string",
+      "status": "pass|fail|blocked",
+      "fact": "string"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": null,
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}
+```

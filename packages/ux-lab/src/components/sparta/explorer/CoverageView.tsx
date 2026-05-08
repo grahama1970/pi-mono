@@ -133,6 +133,8 @@ interface SupervisorLane {
   next_action?: string
 }
 
+type AggregateActionState = 'idle' | 'running' | 'queued' | 'refreshing'
+
 interface SupervisorState {
   generated_at?: string
   heartbeat_at?: string
@@ -372,6 +374,21 @@ function statusColor(status: unknown, ok?: unknown): string {
   if (status === 'running' || status === 'RUNNING') return EMBRY.blue
   if (status === 'not_wired' || status === 'NOT WIRED' || status === 'OPEN' || status === 'BLOCKED') return EMBRY.amber
   return EMBRY.red
+}
+
+function commandMatchesLane(command: Record<string, unknown>, laneId: string, laneLabel: string): boolean {
+  const normalizedLabel = laneLabel.toLowerCase()
+  const fields = [
+    command.target_lane,
+    command.lane,
+    command.lane_id,
+    command.source,
+    command.intent,
+    command.title,
+  ]
+    .map((value) => String(value ?? '').toLowerCase())
+    .filter(Boolean)
+  return fields.some((value) => value === laneId || value.includes(laneId) || value.includes(normalizedLabel))
 }
 
 function gateLabel(ok: boolean | undefined): string {
@@ -615,6 +632,7 @@ export function CoverageView() {
   const commandStatusCounts = supervisorState?.command_status_counts ?? {}
   const notificationChannels = supervisorState?.notification_channels ?? {}
   const remediationPlans = supervisorState?.remediation_plans ?? []
+  const activeJobs = supervisorState?.active_jobs ?? []
   const slackState = notificationChannels.slack
   const sourceEmbeddingCoverage = supervisorState?.source_embedding_coverage
   const sourceTextQraCoverage = supervisorState?.source_text_qra_coverage
@@ -759,6 +777,34 @@ export function CoverageView() {
       },
     }, 'Queued review-gated plan for all repairs')
   }
+  const aggregateActionState = (laneId: string, laneLabel: string, rowStatus: unknown): AggregateActionState => {
+    if (rowStatus === 'RUNNING' || rowStatus === 'running') return 'running'
+    const laneJobs = activeJobs.filter((job) => commandMatchesLane(job, laneId, laneLabel))
+    if (laneJobs.some((job) => String(job.status ?? '').toLowerCase() === 'running')) return 'running'
+    if (laneJobs.some((job) => ['queued', 'dry_run', 'review_required'].includes(String(job.status ?? '').toLowerCase()))) return 'queued'
+    if ((loading || data?.refreshing) && rowStatus !== 'PASS') return 'refreshing'
+    return 'idle'
+  }
+  const renderAggregateAction = (row: { lane: string; laneId: string; status: unknown; action: string }) => {
+    const state = aggregateActionState(row.laneId, row.lane, row.status)
+    const label = state === 'running' ? 'Running' : state === 'queued' ? 'Queued' : state === 'refreshing' ? 'Refreshing' : row.action
+    const tone = state === 'running' || state === 'refreshing' ? EMBRY.blue : state === 'queued' ? EMBRY.amber : EMBRY.muted
+    const disabled = state !== 'idle'
+    return (
+      <button
+        type="button"
+        data-qid={`coverage:aggregate:${frameworkSlug(row.lane)}:action`}
+        data-qs-action="COVERAGE_LANE_ACTION_STATE"
+        data-action-state={state}
+        disabled={disabled}
+        title={disabled ? `${row.lane} is ${label.toLowerCase()}.` : `${row.lane}: ${row.action}`}
+        style={{ ...S.rowButton, minWidth: 92, color: tone, borderColor: `${tone}66`, opacity: disabled ? 0.82 : 1, cursor: disabled ? 'wait' : 'default' }}
+      >
+        {(state === 'running' || state === 'refreshing') && <RefreshCw size={12} style={{ marginRight: 6, verticalAlign: -2 }} />}
+        {label}
+      </button>
+    )
+  }
   const handlePersonaVerify = (persona: string) => {
     void queueSupervisorCommand({
       source: 'ui',
@@ -861,6 +907,7 @@ export function CoverageView() {
     : sourceTextQraCoverage?.resume_hint ?? 'Controls and valid URLs need non-stub text and valid QRAs.'
   const sourceTextRow = (
     lane: string,
+    laneId: string,
     gapKey: string,
     passValue: string,
     failSuffix: string,
@@ -869,6 +916,7 @@ export function CoverageView() {
     const gaps = Number(sourceTextSummary[gapKey] ?? 0)
     return {
       lane,
+      laneId,
       status: sourceTextStatus === 'blocked' ? 'BLOCKED' : gaps === 0 ? 'PASS' : 'FAIL',
       value: gaps === 0 ? passValue : `${formatNum(gaps)} ${failSuffix}`,
       meaning: gaps === 0 ? meaning : `${meaning} ${sourceTextMeaning}`,
@@ -878,6 +926,7 @@ export function CoverageView() {
   const aggregateRows = [
     {
       lane: 'QRA Generation',
+      laneId: 'qra_generation',
       status: createQrasRunning ? 'RUNNING' : (remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0 ? 'PASS' : 'OPEN',
       value: createQrasRunning ? (
         <div data-qid="coverage:qra-generation:progress" data-entity-type="create-qras-progress" data-status="running" style={S.progressCell}>
@@ -904,6 +953,7 @@ export function CoverageView() {
     },
     {
       lane: 'Prompt Health',
+      laneId: 'prompt_health',
       status: data?.promptAudit?.passed === data?.promptAudit?.total ? 'PASS' : 'FAIL',
       value: `${formatNum(data?.promptAudit?.passed)} / ${formatNum(data?.promptAudit?.total)} pass`,
       meaning: 'Active SPARTA create-qras prompt gate. Full prompt inventory remains advisory below.',
@@ -911,6 +961,7 @@ export function CoverageView() {
     },
     {
       lane: 'Monitor Health',
+      laneId: 'monitor_health',
       status: data?.monitor?.passed === data?.monitor?.total ? 'PASS' : 'FAIL',
       value: `${formatNum(data?.monitor?.passed)} / ${formatNum(data?.monitor?.total)} pass`,
       meaning: 'monitor-sparta full audit dimensions.',
@@ -918,6 +969,7 @@ export function CoverageView() {
     },
     {
       lane: 'UX Coverage',
+      laneId: 'ux_coverage',
       status: gateLabel(qidCheck?.ok),
       value: qidCheck?.percent != null ? `${qidCheck.percent}% data-qid` : 'not loaded',
       meaning: 'SPARTA Explorer test-interaction addressability.',
@@ -925,6 +977,7 @@ export function CoverageView() {
     },
     {
       lane: 'Python Fallbacks',
+      laneId: 'python_fallbacks',
       status: gateLabel(pythonCheck?.ok),
       value: pythonCheck?.message ?? 'not loaded',
       meaning: 'Silent failure scanner result.',
@@ -932,6 +985,7 @@ export function CoverageView() {
     },
     sourceTextRow(
       'Control Text Coverage',
+      'source_text_qra_coverage',
       'control_text_missing_or_stub',
       `${formatNum(sourceTextQraCoverage?.controls?.text_ok)} text ok`,
       'missing/stubbed',
@@ -939,6 +993,7 @@ export function CoverageView() {
     ),
     sourceTextRow(
       'Control QRA Coverage',
+      'source_text_qra_coverage',
       'control_qra_missing',
       `${formatNum(sourceTextQraCoverage?.controls?.qra_ok)} QRA covered`,
       'missing QRA',
@@ -946,6 +1001,7 @@ export function CoverageView() {
     ),
     sourceTextRow(
       'URL Text Coverage',
+      'source_text_qra_coverage',
       'url_text_missing_or_stub',
       `${formatNum(sourceTextQraCoverage?.urls?.text_ok)} URL text ok`,
       'missing/stubbed',
@@ -953,6 +1009,7 @@ export function CoverageView() {
     ),
     sourceTextRow(
       'URL QRA Coverage',
+      'source_text_qra_coverage',
       'url_qra_missing',
       `${formatNum(sourceTextQraCoverage?.urls?.qra_ok)} URL QRA covered`,
       'missing QRA',
@@ -960,6 +1017,7 @@ export function CoverageView() {
     ),
     {
       lane: 'Source/Embedding Coverage',
+      laneId: 'source_embedding_coverage',
       status: sourceEmbeddingStatus === 'pass' ? 'PASS' : sourceEmbeddingStatus === 'fail' ? 'FAIL' : 'BLOCKED',
       value: sourceEmbeddingValue,
       meaning: sourceEmbeddingBlocked > 0 ? `${sourceEmbeddingMeaning} Backend block(s): ${sourceEmbeddingBlocked}.` : sourceEmbeddingMeaning,
@@ -1052,7 +1110,7 @@ export function CoverageView() {
                   <td style={S.td}><span style={{ ...S.pill, color: statusColor(row.status, row.status === 'PASS'), borderColor: `${statusColor(row.status, row.status === 'PASS')}66` }}>{row.status}</span></td>
                   <td style={S.tdStrong}>{row.value}</td>
                   <td style={S.td}>{row.meaning}</td>
-                  <td style={S.td}><span style={S.nextText}>{row.action}</span></td>
+                  <td style={S.td}>{renderAggregateAction(row)}</td>
                 </tr>
               ))}
             </tbody>

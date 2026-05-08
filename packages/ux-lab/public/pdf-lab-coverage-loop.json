@@ -1,10 +1,10 @@
 {
   "active_blocker": null,
-  "active_plan_path": "/home/graham/workspace/experiments/pdf_oxide/26_PDF_LAB_TOC_REPAIR_REGENERATE_TASKS.yaml",
+  "active_plan_path": "/home/graham/workspace/experiments/pdf_oxide/28_PDF_LAB_SECOND_PASS_TABLE_TRIAGE_GATE_TASKS.yaml",
   "blocker_count": 0,
   "blocker_signature": "4f53cda18c2baa0c",
   "blockers": [],
-  "generated_at": "2026-05-04T14:26:08.838230+00:00",
+  "generated_at": "2026-05-07T17:46:50.911397+00:00",
   "loop_safe_to_continue": false,
   "memory_recall_required": true,
   "must_stop_for_dogpile": false,
@@ -19,25 +19,24 @@
   "schema_version": "pdf_lab_coverage_loop.v1",
   "status_report_path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-status-report.json",
   "status_summary": {
-    "agent_resolved_count": 17,
+    "agent_resolved_count": 8,
     "agent_resolved_kinds": {
-      "noisy_text_or_bbox_match": 9,
       "real_table_candidate": 1,
       "table_false_positive": 2,
       "table_row_fragment": 5
     },
     "candidate_page_count": 24,
     "core_pdf_oxide_changed": null,
-    "crop_required_extraction_element_count": 27628,
+    "crop_required_extraction_element_count": 28074,
     "document_family_preset": {
       "name": "nist_sp_800_53r5_pdf",
       "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
       "schema_version": "pdf-oxide.document-family-preset.v1"
     },
-    "evidence_element_count": 27628,
+    "evidence_element_count": 28075,
     "evidence_page_count": 492,
-    "evidence_section_count": 3724,
-    "extraction_element_count": 27986,
+    "evidence_section_count": 358,
+    "extraction_element_count": 28432,
     "human_triage_task_count": 0,
     "matched_expected_elements": 1623,
     "memory_crop_coverage_passed": true,
@@ -84,7 +83,7 @@
     "total_expected_elements": 1632,
     "unmatched_actual_elements": 37,
     "unmatched_expected_elements": 9,
-    "workflow_evidence_element_count": 0,
+    "workflow_evidence_element_count": 28074,
     "workflow_evidence_page_count": 492
   }
 }

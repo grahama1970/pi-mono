@@ -1,0 +1,73 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "agent_resolved:real_table_candidate:actual_p471_table_0",
+  "preset_id": "pdf.table.v1",
+  "decision": "agent_resolved",
+  "human_triage_required": false,
+  "classification": "real_table",
+  "confidence": "high",
+  "reason": "The annotated page image shows a table with a header row (CONTROL NUMBER, CONTROL NAME/CONTROL ENHANCEMENT NAME, IMPLEMENTED BY, ASSURANCE) and one data row (IR-10, Integrated Information Security Analysis Team, W: Moved to IR-4(11).). The actual_json captures this visible table object with matching bbox coordinates, row_count=2, col_count=4, and cell text that aligns with the visible content. No candidate_corrected_json is present to introduce a conflict, and the bounding box does not appear to cut off visible table content. Per the table-specific hard rule, this is a resolved real table extraction.",
+  "target_evidence_used": [
+    {
+      "field_path": "annotated_page_image_path",
+      "fact": "Annotated image shows a two-row table with four columns; header text and data row text are clearly visible within the highlighted bbox."
+    },
+    {
+      "field_path": "actual_json.bbox",
+      "fact": "Bounding box [0.145167, 0.089712, 0.854835, 0.183697] corresponds to the annotated table region."
+    },
+    {
+      "field_path": "actual_json.raw.rows",
+      "fact": "Row 1 contains four header cells; row 2 contains three populated data cells matching IR-10, Integrated Information Security Analysis Team, and W: Moved to IR-4(11)."
+    },
+    {
+      "field_path": "expected_json",
+      "fact": "Expected oracle confirms element identity and page 471 without contradicting actual_json structure or bounds."
+    },
+    {
+      "field_path": "known_visual_facts",
+      "fact": "Second-pass audit already confirmed explicit header cells plus a populated data row as a real table candidate."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.table.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=471"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "agent_resolved"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=False"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": "record header-row evidence on table candidates so these do not become human triage cards",
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}

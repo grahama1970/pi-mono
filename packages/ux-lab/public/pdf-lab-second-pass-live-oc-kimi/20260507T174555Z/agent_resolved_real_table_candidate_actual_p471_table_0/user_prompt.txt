@@ -1,0 +1,200 @@
+# RATIONALE (not sent to LLM)
+# Purpose: User-message template for one PDF Lab second-pass evidence case.
+# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.
+# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.
+# Input: CASE_PAYLOAD JSON inserted below.
+# Output: JSON matching the exact schema at the end of this file.
+# Last reviewed: 2026-05-07 by project agent.
+
+Given `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.
+
+Evidence classification:
+1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.
+2. Technique evidence: element-type rules from the selected preset.
+3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.
+
+Rules:
+- Recommend human triage only when target evidence contains an unresolved conflict.
+- Do not cite the selected preset as target evidence.
+- Do not infer missing rows, cells, values, captions, or section relationships.
+- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.
+- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.
+- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.
+
+CASE_PAYLOAD:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_case_payload.v1",
+  "case_id": "agent_resolved:real_table_candidate:actual_p471_table_0",
+  "source_kind": "agent_resolved",
+  "preset_id": "pdf.table.v1",
+  "page": 471,
+  "element_id": "actual:p471:table:0",
+  "original_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_real_table_candidate_actual_p471_table_0/page_471.png",
+  "annotated_page_image_path": "/tmp/pdf-lab-live-oc-kimi-50-20260507T173517Z/second_pass_cases/agent_resolved_real_table_candidate_actual_p471_table_0/page_471_annotated.png",
+  "expected_json": {
+    "id": "actual:p471:table:0",
+    "page": 471,
+    "type": null,
+    "bbox": [
+      0.145167,
+      0.089712,
+      0.854835,
+      0.183697
+    ],
+    "text": null,
+    "source": "agentic_expected_oracle"
+  },
+  "actual_json": {
+    "bbox": [
+      0.145167,
+      0.089712,
+      0.854835,
+      0.183697
+    ],
+    "confidence": 1.0,
+    "id": "actual:p471:table:0",
+    "page": 471,
+    "preset_applied": "nist_sp_800_53r5_pdf",
+    "raw": {
+      "bbox": [
+        89.76000213623047,
+        647.7000122070312,
+        432.48101806640625,
+        72.05999755859375
+      ],
+      "col_count": 4,
+      "has_header": false,
+      "row_count": 2,
+      "rows": [
+        {
+          "cells": [
+            {
+              "bbox": [
+                98.4000015258789,
+                680.4600219726562,
+                36.00000762939453,
+                19.01995849609375
+              ],
+              "text": "CONTROL\nNUMBER"
+            },
+            {
+              "bbox": [
+                211.13999938964844,
+                675.8400268554688,
+                94.99458312988281,
+                23.3399658203125
+              ],
+              "text": "CONTROL NAME\nCONTROL ENHANCEMENT NAME"
+            },
+            {
+              "bbox": [
+                386.8800048828125,
+                677.4600219726562,
+                49.707427978515625,
+                17.99993896484375
+              ],
+              "text": "IMPLEMENTED\nBY"
+            },
+            {
+              "bbox": [
+                465.7799987792969,
+                687.47998046875,
+                40.37091064453125,
+                7.97998046875
+              ],
+              "text": "ASSURANCE"
+            }
+          ],
+          "is_header": false
+        },
+        {
+          "cells": [
+            {
+              "bbox": [
+                95.4000015258789,
+                651.2999877929688,
+                19.32599639892578,
+                9.0
+              ],
+              "text": "IR-10"
+            },
+            {
+              "bbox": [
+                148.44000244140625,
+                651.2999877929688,
+                172.03109741210938,
+                9.0
+              ],
+              "text": "Integrated Information Security Analysis Team"
+            },
+            {
+              "bbox": [
+                378.8999938964844,
+                652.260009765625,
+                72.060791015625,
+                7.97998046875
+              ],
+              "text": "W: Moved to IR-4(11)."
+            }
+          ],
+          "is_header": false
+        }
+      ]
+    },
+    "source": "pdf_oxide.extract_tables",
+    "text": "{'is_header': False, 'cells': [{'text': 'CONTROL\\nNUMBER', 'bbox': [98.4000015258789, 680.4600219726562, 36.00000762939453, 19.01995849609375]}, {'text': 'CONTROL NAME\\nCONTROL ENHANCEMENT NAME', 'bbox': [211.13999938964844, 675.8400268554688, 94.99458312988281, 23.3399658203125]}, {'text': 'IMPLEMENTED\\nBY', 'bbox': [386.8800048828125, 677.4600219726562, 49.707427978515625, 17.99993896484375]}, {'text': 'ASSURANCE', 'bbox': [465.7799987792969, 687.47998046875, 40.37091064453125, 7.97998046875]}]} {'is_header': False, 'cells': [{'text': 'IR-10', 'bbox': [95.4000015258789, 651.2999877929688, 19.32599639892578, 9.0]}, {'text': 'Integrated Information Security Analysis Team', 'bbox': [148.44000244140625, 651.2999877929688, 172.03109741210938, 9.0]}, {'text': 'W: Moved to IR-4(11).', 'bbox': [378.8999938964844, 652.260009765625, 72.060791015625, 7.97998046875]}]}",
+    "type": "table"
+  },
+  "actual_candidates": [],
+  "candidate_corrected_json": null,
+  "known_visual_facts": [
+    "pdf_oxide emitted a table object and the second-pass audit found explicit table header cells plus a populated data row. This is a real table candidate and does not require a human table/not-table decision.",
+    "Deterministic table evidence reports row_count=2, col_count=4.",
+    "Same-page requirement rows: 1.",
+    "Same-page section rows: 6."
+  ],
+  "provenance": {
+    "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+    "source_extraction": null,
+    "created_by": "pdf-lab.final-agent-pass",
+    "deterministic_record": "agent_resolved:real_table_candidate:actual_p471_table_0"
+  }
+}
+```
+
+Return this exact JSON shape:
+```json
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "string",
+  "preset_id": "string",
+  "decision": "agent_resolved|human_triage|fixture_candidate|blocker",
+  "human_triage_required": true,
+  "classification": "string",
+  "confidence": "low|medium|high",
+  "reason": "string",
+  "target_evidence_used": [
+    {
+      "field_path": "string",
+      "fact": "string"
+    }
+  ],
+  "missing_evidence": ["string"],
+  "validators": [
+    {
+      "validator_id": "string",
+      "status": "pass|fail|blocked",
+      "fact": "string"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": null,
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}
+```

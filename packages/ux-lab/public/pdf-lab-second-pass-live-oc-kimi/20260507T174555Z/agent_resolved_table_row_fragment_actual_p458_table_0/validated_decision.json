@@ -1,0 +1,69 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "agent_resolved:table_row_fragment:actual_p458_table_0",
+  "preset_id": "pdf.table.v1",
+  "decision": "agent_resolved",
+  "human_triage_required": false,
+  "classification": "table_row_fragment",
+  "confidence": "high",
+  "reason": "The actual_json deterministic extraction accurately captures the single table row fragment within the reported bbox, and the annotated page image confirms the extracted cell text (AC-18(2), MONITORING UNAUTHORIZED CONNECTIONS, W: Incorporated into SI-4) matches the visible highlighted row exactly. The expected_json shares the identical bbox, confirming the element scope is this fragment. There is no candidate_corrected_json conflict. Known visual facts explicitly identify this as a documented extractor bounds fragmentation behavior rather than an unresolved structural ambiguity requiring human judgment.",
+  "target_evidence_used": [
+    {
+      "field_path": "actual_json",
+      "fact": "Deterministic extraction contains one row with 12 columns, including cell text AC-18(2), MONITORING UNAUTHORIZED CONNECTIONS, and W: Incorporated into SI-4."
+    },
+    {
+      "field_path": "annotated_page_image_path",
+      "fact": "Visual evidence shows the highlighted row content matches the extracted cell text exactly."
+    },
+    {
+      "field_path": "expected_json.bbox",
+      "fact": "Expected bbox matches actual_json bbox, confirming the element scope is this single row fragment."
+    },
+    {
+      "field_path": "known_visual_facts",
+      "fact": "States this is an extractor bounds bug producing row fragments, not a human table/not-table ambiguity."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.table.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=458"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "agent_resolved"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=False"
+    }
+  ],
+  "human_question": null,
+  "recommended_engine_fix": "pdf_oxide.extract_tables should merge contiguous row fragments belonging to the same visual table into a single table object rather than emitting isolated single-row tables.",
+  "proposed_json_delta": null,
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}
