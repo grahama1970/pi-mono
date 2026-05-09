@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-08T05:21:07.915Z",
+  "generated_at": "2026-05-09T04:59:00.705Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
-    "controls": 12321,
+    "controls": 12309,
     "qrasLegacy": 245975,
     "qrasCanonical": 1948,
     "qrasRelationship": 1652,
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-08T05:21:07Z",
+    "generated_at": "2026-05-09T04:59:00Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -138,224 +138,29 @@
     {
       "framework": "SPARTA",
       "controls": 1109,
-      "missing_descriptions": 70,
+      "missing_descriptions": 0,
       "missing_embeddings": 0,
       "raw_frameworks": [
         "SPARTA",
         "sparta"
       ],
-      "defects": [
-        {
-          "control_id": "ARFS-11",
-          "title": "Authorized SLE Session Establishment by Attacker (Rogue IP)",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 59
-        },
-        {
-          "control_id": "ARFS-12",
-          "title": "Rejection of CLTU BIND Due to Tampered/Invalid Credentials",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 58
-        },
-        {
-          "control_id": "ARFS-5",
-          "title": "Failed Authentication Attempts Due to RF/EMI Interference",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 57
-        },
-        {
-          "control_id": "CSNE-1",
-          "title": "Unexpected Ground Station IP Address in Communication",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 53
-        },
-        {
-          "control_id": "CSNE-10",
-          "title": "Transmission to Unauthorized Ground Station Detected",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 52
-        },
-        {
-          "control_id": "CSNE-11",
-          "title": "Data Exfiltration Detected During Scheduled Communication Windows",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 65
-        },
-        {
-          "control_id": "CSNE-14",
-          "title": "Unusual Data Transmission Between SpaceWire Routing Switches",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 60
-        },
-        {
-          "control_id": "CSNE-16",
-          "title": "Suspicious Network Traffic Without Expected Encryption",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 54
-        },
-        {
-          "control_id": "CSNE-17",
-          "title": "Creation of FIFO for Data Exfiltration or Command Injection",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 59
-        },
-        {
-          "control_id": "CSNE-18",
-          "title": "Process Execution Tied to Specific Geographic Coordinates",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 57
-        },
-        {
-          "control_id": "CSNE-20",
-          "title": "Unauthorized Downlink Communication at Unexpected Time",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 54
-        },
-        {
-          "control_id": "CSNE-21",
-          "title": "Unauthorized Data Transmission from Ground System to External IP",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 64
-        }
-      ],
-      "quality_gaps": 70,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "SPARTA",
         "gap_type": "control_quality",
-        "gap_count": 70,
-        "defects": [
-          {
-            "control_id": "ARFS-11",
-            "title": "Authorized SLE Session Establishment by Attacker (Rogue IP)",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 59
-          },
-          {
-            "control_id": "ARFS-12",
-            "title": "Rejection of CLTU BIND Due to Tampered/Invalid Credentials",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 58
-          },
-          {
-            "control_id": "ARFS-5",
-            "title": "Failed Authentication Attempts Due to RF/EMI Interference",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 57
-          },
-          {
-            "control_id": "CSNE-1",
-            "title": "Unexpected Ground Station IP Address in Communication",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 53
-          },
-          {
-            "control_id": "CSNE-10",
-            "title": "Transmission to Unauthorized Ground Station Detected",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 52
-          },
-          {
-            "control_id": "CSNE-11",
-            "title": "Data Exfiltration Detected During Scheduled Communication Windows",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 65
-          },
-          {
-            "control_id": "CSNE-14",
-            "title": "Unusual Data Transmission Between SpaceWire Routing Switches",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 60
-          },
-          {
-            "control_id": "CSNE-16",
-            "title": "Suspicious Network Traffic Without Expected Encryption",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 54
-          },
-          {
-            "control_id": "CSNE-17",
-            "title": "Creation of FIFO for Data Exfiltration or Command Injection",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 59
-          },
-          {
-            "control_id": "CSNE-18",
-            "title": "Process Execution Tied to Specific Geographic Coordinates",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 57
-          },
-          {
-            "control_id": "CSNE-20",
-            "title": "Unauthorized Downlink Communication at Unexpected Time",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 54
-          },
-          {
-            "control_id": "CSNE-21",
-            "title": "Unauthorized Data Transmission from Ground System to External IP",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 64
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
       "framework": "CWE",
-      "controls": 974,
+      "controls": 970,
       "missing_descriptions": 0,
       "missing_embeddings": 0,
       "raw_frameworks": [
@@ -400,7 +205,7 @@
     },
     {
       "framework": "ATT&CK",
-      "controls": 524,
+      "controls": 516,
       "missing_descriptions": 0,
       "missing_embeddings": 0,
       "raw_frameworks": [
@@ -513,43 +318,24 @@
     {
       "framework": "ISO",
       "controls": 23,
-      "missing_descriptions": 1,
+      "missing_descriptions": 0,
       "missing_embeddings": 0,
       "raw_frameworks": [
         "ISO",
         "iso"
       ],
-      "defects": [
-        {
-          "control_id": "6.2",
-          "title": "Information security objectives and planning to achieve them",
-          "gap_types": [
-            "short_description"
-          ],
-          "description_length": 60
-        }
-      ],
-      "quality_gaps": 1,
-      "status": "needs_repair",
-      "action_code": "repair_control_quality",
-      "action_label": "Plan Repair",
-      "risk": "review_required",
+      "defects": [],
+      "quality_gaps": 0,
+      "status": "healthy",
+      "action_code": "inspect_control_framework",
+      "action_label": "Inspect",
+      "risk": "read_only",
       "safe_default": "observe_only",
-      "requires_checkpoint": true,
+      "requires_checkpoint": false,
       "command_payload": {
         "framework": "ISO",
         "gap_type": "control_quality",
-        "gap_count": 1,
-        "defects": [
-          {
-            "control_id": "6.2",
-            "title": "Information security objectives and planning to achieve them",
-            "gap_types": [
-              "short_description"
-            ],
-            "description_length": 60
-          }
-        ]
+        "gap_count": 0
       }
     },
     {
@@ -577,13 +363,13 @@
     }
   ],
   "monitor": {
-    "passed": 16,
+    "passed": 18,
     "total": 18,
     "checks": [
       {
-        "ok": false,
+        "ok": true,
         "dimension": "description_audit",
-        "message": "Audit failed (exit 1)"
+        "message": "0 fails"
       },
       {
         "ok": true,
@@ -603,7 +389,7 @@
       {
         "ok": true,
         "dimension": "control_description_coverage",
-        "message": "All 12,321 controls have descriptions"
+        "message": "All 12,309 controls have descriptions"
       },
       {
         "ok": true,
@@ -628,7 +414,7 @@
       {
         "ok": true,
         "dimension": "description_preservation",
-        "message": "25 enriched descriptions (25 BRAVE-SEARCH, 0 INFERRED) out of 12321 total"
+        "message": "25 enriched descriptions (25 BRAVE-SEARCH, 0 INFERRED) out of 12309 total"
       },
       {
         "ok": true,
@@ -666,23 +452,18 @@
         "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "qra_question_surface_quality",
-        "message": "147 malformed question surfaces across 3,000 scanned QRAs",
-        "malformed": 147,
-        "scanned": 3000,
-        "course_corrected_non_generation": 777,
+        "message": "0 malformed question surfaces across 3,600 scanned QRAs; 924 course-corrected non-generation placeholders",
+        "malformed": 0,
+        "scanned": 3600,
+        "course_corrected_non_generation": 924,
         "course_corrected_by_collection": {
-          "sparta_qra_canonical": 339,
-          "sparta_qra_relationship": 438
+          "sparta_qra_canonical": 484,
+          "sparta_qra_relationship": 440
         },
-        "malformed_by_collection": {
-          "sparta_qra_canonical": 145,
-          "sparta_qra_relationship": 2
-        },
-        "rule_counts": {
-          "QS01": 147
-        },
+        "malformed_by_collection": {},
+        "rule_counts": {},
         "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
       }
     ],
@@ -696,8 +477,8 @@
       "native_by_framework": [
         {
           "framework": "ATT&CK",
-          "expected_calls": 524,
-          "completed_calls_any_collection": 524,
+          "expected_calls": 516,
+          "completed_calls_any_collection": 516,
           "remaining_calls": 0,
           "remaining_control_ids": []
         },
@@ -731,8 +512,8 @@
         },
         {
           "framework": "CWE",
-          "expected_calls": 974,
-          "completed_calls_any_collection": 974,
+          "expected_calls": 970,
+          "completed_calls_any_collection": 970,
           "remaining_calls": 0,
           "remaining_control_ids": []
         },
@@ -795,7 +576,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-08T05:21:07Z",
+      "generated_at": "2026-05-09T04:59:00Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -859,7 +640,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 633,878 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 633,910 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1397,8 +1178,6 @@
   },
   "artifacts": {
     "recent": [
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260505_213559.jsonl",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_124052.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_141816.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_150227.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_163252.jsonl",
@@ -1406,6 +1185,7 @@
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_203623.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260506_205649.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260507_205711.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_failures_20260508_205734.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_211926.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213331.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260505_213559.json",
@@ -1416,7 +1196,8 @@
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203527.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_203623.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260506_205649.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260507_205711.json"
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260507_205711.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260508_205734.json"
     ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
@@ -1424,9 +1205,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-08T05:20:20.340820Z",
-    "heartbeat_at": "2026-05-08T05:20:20.340820Z",
-    "snapshot_age_seconds": 111,
+    "generated_at": "2026-05-09T04:58:10.760465Z",
+    "heartbeat_at": "2026-05-09T04:58:10.760465Z",
+    "snapshot_age_seconds": 64,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2215,7 +1996,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-08T05:20:52Z",
+      "generated_at": "2026-05-09T04:58:37Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2249,20 +2030,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-08T05:20:52Z",
+      "generated_at": "2026-05-09T04:58:37Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 1599,
-        "end": 1749
+        "start": 1604,
+        "end": 1754
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-08T05:20:20Z",
+      "generated_at": "2026-05-09T04:58:10Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -2272,7 +2053,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 633878
+        "qdrant_vectors": 633910
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2342,7 +2123,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 633878,
+        "point_count": 633910,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -2357,7 +2138,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-08T05:20:50Z",
+      "generated_at": "2026-05-09T04:58:35Z",
       "status": "pass",
       "state": "covered",
       "summary": {
@@ -2369,11 +2150,11 @@
         "url_qra_missing": 0
       },
       "controls": {
-        "total": 12321,
-        "text_ok": 12321,
+        "total": 12309,
+        "text_ok": 12309,
         "text_missing_or_stub": 0,
-        "qra_scope": 11353,
-        "qra_ok": 11353,
+        "qra_scope": 11341,
+        "qra_ok": 11341,
         "qra_missing": 0,
         "qra_missing_generation_required": 0,
         "qra_missing_terminal_non_generation_required": 0,
@@ -2453,9 +2234,9 @@
     "active_process_count": 0,
     "process_count": 0,
     "pid_summary": null,
-    "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260507_205711.log",
-    "current_log_age_seconds": 30236,
-    "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260507_205711.json",
+    "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260508_205734.log",
+    "current_log_age_seconds": 28886,
+    "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260508_205734.json",
     "total_jobs": 0,
     "canonical_jobs": null,
     "relationship_jobs": null,
@@ -2463,6 +2244,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 30236s ago."
+    "message": "No active create-qras worker observed; latest log changed 28886s ago."
   }
 }

@@ -101,3 +101,31 @@ export function mergeQraReviewDocument(
     ],
   })
 }
+
+export interface PersistQraReviewInput {
+  key: string
+  collections: string[]
+  patch: JsonRecord
+  evidenceCasePatch: JsonRecord
+  reviewEvent: JsonRecord
+  fetchQraDocsByKeys: (collection: string, keys: string[]) => Promise<JsonRecord[]>
+  upsertDocuments: (collection: string, documents: JsonRecord[]) => Promise<unknown>
+}
+
+export interface PersistQraReviewResult {
+  collection: string
+  document: JsonRecord
+}
+
+export async function persistQraReview(input: PersistQraReviewInput): Promise<PersistQraReviewResult | null> {
+  for (const collection of input.collections) {
+    const existing = (await input.fetchQraDocsByKeys(collection, [input.key]))[0]
+    if (!existing) continue
+
+    const document = mergeQraReviewDocument(existing, input.patch, input.evidenceCasePatch, input.reviewEvent)
+    await input.upsertDocuments(collection, [document])
+    const refreshed = (await input.fetchQraDocsByKeys(collection, [input.key]))[0] ?? document
+    return { collection, document: refreshed }
+  }
+  return null
+}

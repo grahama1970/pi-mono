@@ -16,7 +16,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
-import { buildQraReviewPatch, mergeQraReviewDocument } from './qraReview.js'
+import { buildQraReviewPatch, persistQraReview } from './qraReview.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { execFile, exec, spawn } from 'child_process'
@@ -941,18 +941,23 @@ app.post('/api/sparta/qras/:key/review', async (req, res) => {
   })
 
   try {
-    for (const collection of collections) {
-      const existing = (await fetchQraDocsByKeys(collection, [key]))[0]
-      if (existing) {
-        const document = mergeQraReviewDocument(existing, patch, evidenceCasePatch, reviewEvent)
+    const persisted = await persistQraReview({
+      key,
+      collections,
+      patch,
+      evidenceCasePatch,
+      reviewEvent,
+      fetchQraDocsByKeys: async (collection, keys) => fetchQraDocsByKeys(collection, keys),
+      upsertDocuments: async (collection, documents) => {
         await proxyPost('/upsert', {
           collection,
-          documents: [document],
+          documents,
         }, 45000)
-        const refreshed = (await fetchQraDocsByKeys(collection, [key]))[0] ?? document
-        QRA_STATUS_CACHE.clear()
-        return res.json({ ok: true, collection, document: refreshed, review_event: reviewEvent })
-      }
+      },
+    })
+    if (persisted) {
+      QRA_STATUS_CACHE.clear()
+      return res.json({ ok: true, collection: persisted.collection, document: persisted.document, review_event: reviewEvent })
     }
     return res.status(404).json({ error: 'qra_not_found', key })
   } catch (e) {

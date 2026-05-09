@@ -1991,12 +1991,12 @@ export function QRAsView() {
       {
         number: 6,
         name: 'Verification Gates',
-        result: informationalLookup ? 'Direct lookup: crosswalk, CAE, and formal proof are not required.' : `Gate trace ${gateLabel}; proof ${proofLabel}; SACM ${sacmLabel}.`,
+        result: informationalLookup ? 'Direct lookup: crosswalk and formal proof are not required.' : `Gate trace ${gateLabel}; proof ${proofLabel}; SACM ${sacmLabel}.`,
         state: canApproveCurrent ? 'pass' : draftWordingRepairNeeded ? 'warn' : 'warn',
         details: [
           { label: 'Entity grounding', value: groundedControlCount > 0 ? 'passed' : 'needs review' },
           { label: 'Crosswalk', value: relationshipGateState },
-          { label: 'CAE', value: informationalLookup ? 'not required' : 'required' },
+          { label: 'Formal evidence tree', value: informationalLookup ? 'not required' : 'required' },
           { label: 'Confidence', value: confidenceLabel },
           { label: 'Formal proof', value: proofGateState },
         ],
@@ -2588,7 +2588,7 @@ export function QRAsView() {
 
                   {!caeCollapsed && <div style={{ padding: 9, display: 'flex', flexDirection: 'column', gap: 7 }}>
                     <div style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.35 }}>
-                      {informationalLookup ? 'Grounding artifact for a direct SPARTA control lookup. CAE, crosswalk, and formal proof are not required for this request.' : 'Inspectable evidence flow rendered inside the agent chat turn. Hover highlighted terms in the chat text for `$extract-entities` grounding.'}
+                      {informationalLookup ? 'Grounding artifact for a direct SPARTA control lookup. Crosswalk and formal proof are not required for this request.' : 'Inspectable evidence flow rendered inside the agent chat turn. Hover highlighted terms in the chat text for `$extract-entities` grounding.'}
                     </div>
                     {caeSteps.map((step) => {
                       const tone = step.state === 'pass' ? EMBRY.green : step.state === 'warn' ? EMBRY.amber : step.state === 'skip' ? EMBRY.amber : EMBRY.blue
