@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T17:23:33.189Z",
+  "generated_at": "2026-05-12T04:58:41.069Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-10T17:23:32Z",
+    "generated_at": "2026-05-12T04:58:40Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -364,7 +364,7 @@
   ],
   "monitor": {
     "passed": 18,
-    "total": 18,
+    "total": 21,
     "checks": [
       {
         "ok": true,
@@ -465,6 +465,21 @@
         "malformed_by_collection": {},
         "rule_counts": {},
         "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
+      },
+      {
+        "ok": false,
+        "dimension": "description_completeness",
+        "message": "1229 controls have stub descriptions with no real content in extended_description (an additional 32 have stubs in `description` but real content in `extended_description` — wrong-field data, recoverable) across 7 frameworks"
+      },
+      {
+        "ok": false,
+        "dimension": "qra_coverage_per_control",
+        "message": "6754 controls have no QRA across 11 frameworks"
+      },
+      {
+        "ok": false,
+        "dimension": "framework_name_normalization",
+        "message": "6 canonical frameworks have case-duplicate variants (4419 controls affected)"
       }
     ],
     "remaining": {
@@ -576,7 +591,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-10T17:23:32Z",
+      "generated_at": "2026-05-12T04:58:40Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -640,7 +655,7 @@
       "skill": "best-practices-arangodb",
       "ok": true,
       "status": "pass",
-      "message": "43,398 Arango docs synced; 633,961 Qdrant vectors observed."
+      "message": "43,398 Arango docs synced; 633,978 Qdrant vectors observed."
     }
   ],
   "promptAudit": {
@@ -1712,9 +1727,9 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-10T17:22:42.520032Z",
-    "heartbeat_at": "2026-05-10T17:22:42.520032Z",
-    "snapshot_age_seconds": 120,
+    "generated_at": "2026-05-12T04:57:57.441853Z",
+    "heartbeat_at": "2026-05-12T04:57:57.441853Z",
+    "snapshot_age_seconds": 109,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -3010,7 +3025,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-10T17:23:12Z",
+      "generated_at": "2026-05-12T04:58:28Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3044,7 +3059,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-10T17:23:12Z",
+      "generated_at": "2026-05-12T04:58:28Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -3057,7 +3072,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-10T17:22:42Z",
+      "generated_at": "2026-05-12T04:57:57Z",
       "status": "pass",
       "state": "reconciled",
       "target_counts": {
@@ -3067,7 +3082,7 @@
       "observed_counts": {
         "arango_embedding_docs": 43398,
         "arango_synced_docs": 43398,
-        "qdrant_vectors": 633961
+        "qdrant_vectors": 633978
       },
       "gaps": {
         "missing_vectors": 0,
@@ -3137,7 +3152,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 633961,
+        "point_count": 633978,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
@@ -3152,7 +3167,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-10T17:23:11Z",
+      "generated_at": "2026-05-12T04:58:27Z",
       "status": "pass",
       "state": "covered",
       "summary": {
@@ -3249,7 +3264,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 73526,
+    "current_log_age_seconds": 201634,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3258,6 +3273,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 73526s ago."
+    "message": "No active create-qras worker observed; latest log changed 201634s ago."
   }
 }
