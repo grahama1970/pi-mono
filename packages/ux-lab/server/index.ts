@@ -86,6 +86,7 @@ const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH 
 const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
 const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'status.json')
 const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
+const SPARTA_SUPERVISOR_RUN_ENABLED = process.env.SPARTA_SUPERVISOR_RUN_ENABLED === '1'
 const SPARTA_GAP_PLAN_DIR = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
 const PUBLIC_ROOT = resolve(__dirname, '../public')
 const ARTIFACTS_ROOT = resolve(process.env.UX_LAB_ARTIFACTS_ROOT ?? process.env.ARTIFACTS_ROOT ?? '/mnt/storage12tb/pi-mono/artifacts')
@@ -1468,6 +1469,10 @@ function broadcastSpartaCoverageHealth(payload: JsonRecord, force = false): void
 }
 
 async function refreshSpartaSupervisorState(): Promise<JsonRecord | null> {
+  if (!SPARTA_SUPERVISOR_RUN_ENABLED) {
+    return readSpartaSupervisorState()
+  }
+
   try {
     const state = await runCommandJson('uv', [
       'run',
