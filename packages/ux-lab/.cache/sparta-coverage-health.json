@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-13T04:59:23.632Z",
+  "generated_at": "2026-05-13T05:02:18.447Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-13T04:59:23Z",
+    "generated_at": "2026-05-13T05:02:17Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -489,7 +489,7 @@
       {
         "ok": false,
         "dimension": "sparta_relationship_integrity",
-        "message": "relationship integrity gaps: source_orphans=2095, target_orphans=12, null_edge_type=262426, self_loops=793"
+        "message": "HTTPConnectionPool(host='localhost', port=8529): Read timed out. (read timeout=60)"
       },
       {
         "ok": false,
@@ -611,7 +611,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-13T04:59:23Z",
+      "generated_at": "2026-05-13T05:02:17Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3282,7 +3282,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 288077,
+    "current_log_age_seconds": 288252,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3291,6 +3291,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 288077s ago."
+    "message": "No active create-qras worker observed; latest log changed 288252s ago."
   }
 }
