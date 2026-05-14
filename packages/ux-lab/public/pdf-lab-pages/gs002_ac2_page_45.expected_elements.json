@@ -1,0 +1,117 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "gs002_ac2_page_19",
+  "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+  "human_page_claim": "page_index=45 of NIST_SP_800-53r5.pdf",
+  "printed_page_label": null,
+  "zero_based_page_index": 45,
+  "one_based_pdf_page_number": 46,
+  "captured_at": "2026-05-13T23:04:18.213197+00:00",
+  "captured_by": "human (via VGG Image Annotator) \u2014 annotate-via skill",
+  "label_methodology": "Human annotated rectangles in VIA using the canonical family vocabulary (see PROJECT_KNOWLEDGE.md \u00a714 + annotate-via SKILL.md). bbox_hint values are normalized xyxy (0..1).",
+  "matcher_precedence": "text_hint \u2192 bbox_hint (IoU>=0.5) \u2192 allowed_types \u2192 type-synonym fallback",
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "label": null,
+      "bbox_hint": [
+        0.115196,
+        0.075758,
+        0.461601,
+        0.111742
+      ],
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "section_label",
+      "label": null,
+      "bbox_hint": [
+        0.187092,
+        0.114899,
+        0.283497,
+        0.133838
+      ],
+      "allowed_types": [
+        "section_label",
+        "content_label",
+        "paragraph_block"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "section_label",
+      "label": null,
+      "bbox_hint": [
+        0.200163,
+        0.763258,
+        0.283497,
+        0.777146
+      ],
+      "allowed_types": [
+        "section_label",
+        "content_label",
+        "paragraph_block"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "page_chrome_noise",
+      "label": "header",
+      "bbox_hint": [
+        0.10866,
+        0.024621,
+        0.901144,
+        0.076389
+      ],
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "page_chrome_noise",
+      "label": "footer",
+      "bbox_hint": [
+        0.131536,
+        0.934343,
+        0.919118,
+        0.977904
+      ],
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "list",
+      "label": null,
+      "bbox_hint": [
+        0.187092,
+        0.136364,
+        0.919118,
+        0.755682
+      ],
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "type_only"
+    },
+    {
+      "family": "page_chrome_noise",
+      "label": "watermark",
+      "bbox_hint": [
+        0.0,
+        0.09596,
+        0.091503,
+        0.936237
+      ],
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "type_only"
+    }
+  ]
+}

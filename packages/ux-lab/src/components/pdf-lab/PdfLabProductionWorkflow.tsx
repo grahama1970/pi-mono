@@ -17,10 +17,11 @@ import {
 } from 'lucide-react'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
+import { PdfLabLabelingPage } from './PdfLabLabelingPage'
 import { SurgicalTriageCleanRoom, type SurgicalTriageCleanRoomTask } from './SurgicalTriageCleanRoom'
 import './PdfLabProductionWorkflow.css'
 
-type WorkflowStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage'
+type WorkflowStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage' | 'labeling'
 
 interface PdfLabProductionWorkflowProps {
   initialStage?: WorkflowStage
@@ -1042,6 +1043,12 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
     label: 'Open Coverage / Status',
     description: 'Show artifact-derived PDF Lab blockers and definition-of-done gates',
   })
+  useRegisterAction('pdf-lab:production:stage-labeling', {
+    app: 'pdf-lab',
+    action: 'PDF_LAB_PRODUCTION_STAGE_LABELING',
+    label: 'Open Labeling',
+    description: 'Manually draw and label expected elements on a rendered PDF page',
+  })
   useRegisterAction('pdf-lab:production:add-page', {
     app: 'pdf-lab',
     action: 'PDF_LAB_PRODUCTION_ADD_PAGE_TO_CANDIDATES',
@@ -1506,6 +1513,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
           <StageButton id="surgical-triage" label="3 · Surgical Triage" activeStage={stage} onOpen={openStage} />
           <StageButton id="evidence-qa" label="4 · Evidence QA" activeStage={stage} onOpen={openStage} />
           <StageButton id="coverage" label="5 · Coverage" activeStage={stage} onOpen={openStage} />
+          <StageButton id="labeling" label="6 · Labeling" activeStage={stage} onOpen={openStage} />
           <div className="pdf-lab-prod-metric"><span>Pages</span><b>{data.manifest.page_count}</b></div>
           <div className="pdf-lab-prod-metric"><span>Candidates</span><b>{candidates.length}</b></div>
           <div className="pdf-lab-prod-metric"><span>Triage Cards</span><b>{data.triage.task_count}</b></div>
@@ -1552,6 +1560,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
           <StageButton id="surgical-triage" label="3 · Surgical Triage" activeStage={stage} onOpen={openStage} />
           <StageButton id="evidence-qa" label="4 · Evidence QA" activeStage={stage} onOpen={openStage} />
           <StageButton id="coverage" label="5 · Coverage" activeStage={stage} onOpen={openStage} />
+          <StageButton id="labeling" label="6 · Labeling" activeStage={stage} onOpen={openStage} />
           <div className="pdf-lab-prod-metric"><span>Pages</span><b>{data.manifest.page_count}</b></div>
           <div className="pdf-lab-prod-metric"><span>Candidates</span><b>{candidates.length}</b></div>
           <div className="pdf-lab-prod-metric"><span>Triage Cards</span><b>{data.triage.task_count}</b></div>
@@ -1570,6 +1579,42 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
         {candidateAuditRow && (
           <CandidateAuditModal row={candidateAuditRow} onClose={() => setCandidateAuditRow(null)} />
         )}
+      </div>
+    )
+  }
+
+  if (stage === 'labeling') {
+    return (
+      <div className="pdf-lab-prod-root" data-qid="pdf-lab:production:labeling-root">
+        <header className="pdf-lab-prod-header">
+          <div>
+            <div className="pdf-lab-prod-brand">PDF Lab</div>
+            <div className="pdf-lab-prod-subtitle">
+              Labeling · draw expected elements directly on the rendered PDF page
+            </div>
+          </div>
+          <div className="pdf-lab-prod-header-actions">
+            <button
+              data-qid="pdf-lab:production:labeling-open-coverage"
+              data-qs-action="PDF_LAB_PRODUCTION_STAGE_COVERAGE"
+              title="Back to Coverage"
+              onClick={() => openStage('coverage')}
+            >
+              Back to Coverage
+            </button>
+          </div>
+        </header>
+
+        <nav className="pdf-lab-prod-stage-nav" aria-label="PDF Lab workflow stages">
+          <StageButton id="initial-sweep" label="1 · Initial Sweep" activeStage={stage} onOpen={openStage} />
+          <StageButton id="parity-audit" label="2 · Parity Audit" activeStage={stage} onOpen={openStage} />
+          <StageButton id="surgical-triage" label="3 · Surgical Triage" activeStage={stage} onOpen={openStage} />
+          <StageButton id="evidence-qa" label="4 · Evidence QA" activeStage={stage} onOpen={openStage} />
+          <StageButton id="coverage" label="5 · Coverage" activeStage={stage} onOpen={openStage} />
+          <StageButton id="labeling" label="6 · Labeling" activeStage={stage} onOpen={openStage} />
+        </nav>
+
+        <PdfLabLabelingPage />
       </div>
     )
   }
@@ -1618,6 +1663,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
         <StageButton id="surgical-triage" label="3 · Surgical Triage" activeStage={stage} onOpen={openStage} />
         <StageButton id="evidence-qa" label="4 · Evidence QA" activeStage={stage} onOpen={openStage} />
         <StageButton id="coverage" label="5 · Coverage" activeStage={stage} onOpen={openStage} />
+        <StageButton id="labeling" label="6 · Labeling" activeStage={stage} onOpen={openStage} />
         <div className="pdf-lab-prod-metric"><span>Pages</span><b>{data.manifest.page_count}</b></div>
         <div className="pdf-lab-prod-metric"><span>Candidates</span><b>{candidates.length}</b></div>
         <div className="pdf-lab-prod-metric"><span>Triage Cards</span><b>{data.triage.task_count}</b></div>

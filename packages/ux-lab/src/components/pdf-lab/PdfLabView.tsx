@@ -266,7 +266,7 @@ const PDF_LAB_WORKFLOW_MANIFEST_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist
 const PDF_LAB_HUMAN_TRIAGE_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/pdf-lab-nist-human-triage-queue.json?pdfLabWorkflow=${PDF_LAB_WORKFLOW_DATA_VERSION}`
 const PDF_LAB_REAL_NIST_PDF_URL = `${PDF_LAB_ARTIFACT_BASE_URL}/NIST_SP_800-53r5.pdf`
 
-type PdfLabProductionStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage'
+type PdfLabProductionStage = 'initial-sweep' | 'parity-audit' | 'surgical-triage' | 'evidence-qa' | 'coverage' | 'labeling'
 
 function resolveProductionStage(subpath: string | undefined): PdfLabProductionStage | undefined {
   const stage = subpath?.split('/')[0]
@@ -275,6 +275,7 @@ function resolveProductionStage(subpath: string | undefined): PdfLabProductionSt
   if (stage === 'surgical-triage' || stage === 'triage') return 'surgical-triage'
   if (stage === 'evidence-qa' || stage === 'nico-qa') return 'evidence-qa'
   if (stage === 'coverage' || stage === 'status') return 'coverage'
+  if (stage === 'labeling' || stage === 'annotate') return 'labeling'
   return undefined
 }
 
