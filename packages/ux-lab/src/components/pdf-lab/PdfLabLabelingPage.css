@@ -276,6 +276,97 @@
   cursor: not-allowed;
 }
 
+/* Sign-off is the primary workflow-advancing action — green to signal
+ * "commit + advance". Disabled state keeps the muted look so it doesn't
+ * draw attention when there's no project page loaded. */
+.pdf-lab-labeling-export.is-signoff {
+  background: #16a34a;
+  border-color: #15803d;
+}
+.pdf-lab-labeling-export.is-signoff:hover:not(:disabled) {
+  background: #22c55e;
+}
+.pdf-lab-labeling-export.is-signoff:disabled {
+  background: #1f2937;
+  border-color: #374151;
+  color: #6b7280;
+  opacity: 0.6;
+}
+
+/* AMEND verdict — the human edited the agent's regions. Each edit is a
+ * typed bug spec for pdf_oxide_core or the NIST ledger. Amber to signal
+ * "this is a code-change spec, not a green-light confirmation". */
+.pdf-lab-labeling-export.is-signoff-amend {
+  background: #d97706;
+  border-color: #b45309;
+}
+.pdf-lab-labeling-export.is-signoff-amend:hover:not(:disabled) {
+  background: #f59e0b;
+}
+.pdf-lab-labeling-export.is-signoff-amend:disabled {
+  background: #1f2937;
+  border-color: #374151;
+  color: #6b7280;
+  opacity: 0.6;
+}
+
+/* View-mode segmented toggle: Agent | Human | Diff */
+.pdf-lab-labeling-viewmode {
+  display: inline-flex;
+  border: 1px solid #232b34;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.pdf-lab-labeling-viewmode-btn {
+  background: transparent;
+  color: #9aa0a6;
+  border: none;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+}
+.pdf-lab-labeling-viewmode-btn + .pdf-lab-labeling-viewmode-btn {
+  border-left: 1px solid #232b34;
+}
+.pdf-lab-labeling-viewmode-btn:hover {
+  background: #1a2129;
+}
+.pdf-lab-labeling-viewmode-btn.is-active {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px #1d4ed8;
+}
+.pdf-lab-labeling-viewmode-btn.is-active:hover {
+  background: #2563eb;  /* no hover change when active */
+}
+
+/* Diff-mode region overlays. Each diff class layers a status outline over
+ * the existing region styling so the human can see at a glance where
+ * pdf_oxide + the ledger missed or got it wrong. */
+.pdf-lab-labeling-region.is-diff-added {
+  outline: 3px solid #22c55e;
+  outline-offset: 1px;
+}
+.pdf-lab-labeling-region.is-diff-removed {
+  outline: 3px dashed #ef4444;
+  outline-offset: 1px;
+  opacity: 0.5;
+}
+.pdf-lab-labeling-region.is-diff-bbox_edited {
+  outline: 3px solid #f59e0b;
+  outline-offset: 1px;
+}
+.pdf-lab-labeling-region.is-diff-family_relabeled {
+  outline: 3px solid #a855f7;
+  outline-offset: 1px;
+}
+.pdf-lab-labeling-region.is-diff-metadata_edited {
+  outline: 3px dotted #fbbf24;
+  outline-offset: 1px;
+}
+
 .pdf-lab-labeling-canvas {
   flex: 1;
   position: relative;
@@ -408,6 +499,79 @@
   pointer-events: none;
 }
 
+/* Agent-origin regions (origin: agent_link_sweep | agent_dispatcher) —
+ * visually distinct from human-drawn regions: dashed outer ring + a
+ * slightly muted inner shadow. The chip tag still shows the family color
+ * so it can be read at a glance. */
+.pdf-lab-labeling-region.is-agent {
+  border-style: dashed;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+}
+.pdf-lab-labeling-region.is-agent.is-selected {
+  box-shadow: 0 0 0 2px #fff inset, 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+}
+
+/* Project page rows: visual states for the agent-curated queue. */
+.pdf-lab-labeling-pages-row.is-agreed .pdf-lab-labeling-pages-row-slug {
+  color: #4ade80;
+}
+.pdf-lab-labeling-pages-row.is-agreed .pdf-lab-labeling-pages-row-hint {
+  color: rgba(74, 222, 128, 0.6);
+}
+
+/* Project block in the side panel — groups the project header with its pages. */
+.pdf-lab-labeling-pages-project {
+  display: contents;
+}
+.pdf-lab-labeling-project-progress {
+  font-weight: normal;
+  opacity: 0.7;
+  margin-left: 6px;
+  font-size: 0.85em;
+}
+
+/* Compact project page rows: single-line layout with leading status icon.
+ * The default .pdf-lab-labeling-pages-row-main is flex-direction: column
+ * (slug above hint); override here for a single-line horizontal layout. */
+.pdf-lab-labeling-pages-row.pdf-lab-labeling-pages-row-compact .pdf-lab-labeling-pages-row-main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.pdf-lab-labeling-pages-row-status {
+  flex: 0 0 14px;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1;
+  font-family: ui-monospace, monospace;
+}
+.pdf-lab-labeling-pages-row-status.is-status-pending {
+  color: #6b7280;
+}
+.pdf-lab-labeling-pages-row-status.is-status-inreview {
+  color: #fbbc04;
+}
+.pdf-lab-labeling-pages-row-status.is-status-agreed {
+  color: #4ade80;
+}
+.pdf-lab-labeling-pages-row.pdf-lab-labeling-pages-row-compact .pdf-lab-labeling-pages-row-slug {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pdf-lab-labeling-pages-row-hint-inline {
+  flex: 0 0 auto;
+  font-size: 10px;
+  opacity: 0.6;
+  margin-left: auto;
+}
+
 /* Resize handles — 4 corners + 4 edges, shown only on the selected region. */
 .pdf-lab-labeling-region-handle {
   position: absolute;
@@ -510,6 +674,44 @@
   color: #6b7782;
   font-size: 12px;
   padding: 16px 0;
+}
+
+.pdf-lab-labeling-regions-sort {
+  background: #181d23;
+  border: 1px solid #232b34;
+  color: #93a1ad;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 11px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+}
+.pdf-lab-labeling-regions-sort:hover {
+  background: #1d2329;
+  color: #cfd6dc;
+}
+
+.pdf-lab-labeling-region-row-grip {
+  width: 16px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
+  color: #6b7782;
+  cursor: grab;
+  user-select: none;
+  flex: 0 0 16px;
+}
+.pdf-lab-labeling-region-row-grip:active {
+  cursor: grabbing;
+}
+
+.pdf-lab-labeling-region-row.is-dragging {
+  opacity: 0.4;
+}
+.pdf-lab-labeling-region-row.is-drop-target {
+  border-top: 2px solid #4a9eff;
+  margin-top: -1px;
 }
 
 .pdf-lab-labeling-region-row {

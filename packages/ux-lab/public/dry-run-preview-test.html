@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DryRunPreviewPanel test</title>
+<link rel="stylesheet" href="/src/components/pdf-lab/DryRunPreviewPanel.css">
+<style>body{background:#0b0d10;color:#e7e9ec;font-family:system-ui;padding:20px;}</style>
+</head>
+<body>
+<h2>DryRunPreviewPanel — static render test (Phase 3 v3)</h2>
+<p style="color:#93a1ad;font-size:12px;">Static HTML snapshot of the component as it appears with fixture A data.</p>
+<div class="pdf-lab-dry-run-panel">
+  <div class="pdf-lab-dry-run-header">
+    <span class="pdf-lab-dry-run-summary">
+      <span class="pdf-lab-dry-run-state resolved">✓ Resolved (11)</span>
+      <span class="pdf-lab-dry-run-state rejected">✗ Rejected (0)</span>
+      <span class="pdf-lab-dry-run-state conflict">⚠ Conflicts (0)</span>
+    </span>
+  </div>
+  <details class="pdf-lab-dry-run-section is-resolved" open>
+    <summary>Resolved (11)</summary>
+    <ul>
+      <li><code class="pdf-lab-dry-run-token">IA-1</code> → <code class="pdf-lab-dry-run-target">nist_controls/IA-1</code>
+        <span class="pdf-lab-dry-run-badge pdf-lab-dry-run-badge-queued_for_review">queued</span>
+        <span class="pdf-lab-dry-run-line-marker" title="Line-evidence (Phase 1 verdict)">L</span></li>
+      <li><code class="pdf-lab-dry-run-token">PM-9</code> → <code class="pdf-lab-dry-run-target">nist_controls/PM-9</code>
+        <span class="pdf-lab-dry-run-badge pdf-lab-dry-run-badge-queued_for_review">queued</span>
+        <span class="pdf-lab-dry-run-line-marker">L</span></li>
+      <li><code class="pdf-lab-dry-run-token">[SP 800-12]</code> → <code class="pdf-lab-dry-run-target">nist_external_refs/NIST.SP.800-12</code>
+        <span class="pdf-lab-dry-run-badge pdf-lab-dry-run-badge-auto_promote_candidate">auto-promote</span>
+        <span class="pdf-lab-dry-run-line-marker">L</span></li>
+    </ul>
+  </details>
+  <details class="pdf-lab-dry-run-section is-warning" open>
+    <summary>Warnings (1)</summary>
+    <ul>
+      <li><code class="pdf-lab-dry-run-warning-kind">bbox_text_incomplete</code>
+        <span class="pdf-lab-dry-run-warning-msg"> — paragraph_block text appears truncated mid-token</span></li>
+    </ul>
+  </details>
+  <div class="pdf-lab-dry-run-actions">
+    <button class="pdf-lab-dry-run-export">Export expected_elements.json</button>
+    <button class="pdf-lab-dry-run-discard">Discard preview</button>
+    <span class="pdf-lab-dry-run-gate-note">Artifact export is NOT blocked by conflicts. Graph promotion (Phase 6) is separately gated.</span>
+  </div>
+</div>
+</body></html>

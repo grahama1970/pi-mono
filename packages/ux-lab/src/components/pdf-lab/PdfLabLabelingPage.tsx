@@ -28,6 +28,10 @@ const CANONICAL_FAMILIES = [
   { id: 'footnote',          color: '#c084fc', hotkey: '9' },
   { id: 'page_chrome_noise', color: '#9aa0a6', hotkey: '0' },
   { id: 'human_decision',    color: '#ff6b6b', hotkey: 'q' },
+  { id: 'control_link',           color: '#1e90ff', hotkey: 'r' },
+  { id: 'publication_link',       color: '#00bfa5', hotkey: 't' },
+  { id: 'control_link_group',     color: '#3b82f6', hotkey: 'g' },
+  { id: 'publication_link_group', color: '#14b8a6', hotkey: 'y' },
 ] as const
 
 type FamilyId = typeof CANONICAL_FAMILIES[number]['id']
@@ -49,6 +53,20 @@ interface Region {
    *  cycle through the four anchored positions. Default `top-outside` =
    *  just above the bbox's top-left, the conventional CVAT / VIA position. */
   labelAnchor?: LabelAnchor
+  /** Where the region came from. 'human' = labeler drew it; agent origins
+   *  are pre-computed candidates the labeler verifies / corrects.
+   *  `'agent_link_sweep'` = emitted by `extract_link_chips.py` via the PDF
+   *  /Dest annotations; `'agent_dispatcher'` = emitted by the canary
+   *  dispatcher (future). */
+  origin?: 'human' | 'agent_link_sweep' | 'agent_dispatcher'
+  /** Agent-origin metadata: where the link points (for control_link /
+   *  publication_link chips). Used by the labeler to verify the link's
+   *  canonical target is correct. */
+  agentMeta?: {
+    destPage?: number | null
+    destYNorm?: number | null
+    actionUrl?: string | null
+  }
 }
 
 const LABEL_ANCHOR_CYCLE: LabelAnchor[] = [
@@ -85,6 +103,10 @@ const DEFAULT_ALLOWED_TYPES: Record<FamilyId, string[]> = {
   footnote: ['footnote_block', 'paragraph_block'],
   page_chrome_noise: ['header_footer_noise'],
   human_decision: [],
+  control_link: ['control_link'],
+  publication_link: ['publication_link'],
+  control_link_group: ['control_link_group'],
+  publication_link_group: ['publication_link_group'],
 }
 
 function newId(): string {
@@ -225,6 +247,83 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
   return { regions: [], warnings, format: 'unknown' }
 }
 
+/** Convert a link-sidecar JSON (from extract_link_chips.py / pypdfium2)
+ *  into agent-origin Regions ready for human verification.
+ *
+ *  Classification heuristic, using section_label regions already present
+ *  from the expected_elements contract:
+ *    - link Y center inside a section_label whose text_hint contains
+ *      "Related Controls" → `control_link`
+ *    - link Y center inside a section_label whose text_hint contains
+ *      "References" → `publication_link`
+ *    - link with a non-null action_url (true external URL) →
+ *      `publication_link`
+ *    - otherwise → `control_link` (most common: internal /Dest nav)
+ *
+ *  Each region carries `origin: 'agent_link_sweep'` and `agentMeta` so the
+ *  labeler can see the dest_page / URL the link points to and verify it.
+ */
+function linksToRegions(
+  sidecar: any,
+  contextRegions: Region[],
+): { regions: Region[]; warnings: string[] } {
+  const out: Region[] = []
+  const warnings: string[] = []
+  if (!sidecar || !Array.isArray(sidecar.links)) {
+    warnings.push('link sidecar has no `links` array')
+    return { regions: out, warnings }
+  }
+  // Build Y-band → family map from context regions (section_label entries).
+  const relatedBands: Array<[number, number]> = []
+  const referencesBands: Array<[number, number]> = []
+  for (const r of contextRegions) {
+    if (r.family !== 'section_label') continue
+    const hint = (r.text_hint || r.label || '').toLowerCase()
+    const [, y0, , y1] = r.bbox
+    // Section labels in this corpus are single-line "Related Controls:" /
+    // "References:" headers. Their span ends at the next section header,
+    // but we don't know that here — instead extend by a generous chunk
+    // below the header and hope it covers the immediate citation rows.
+    // 12% of page height is enough for ~5 lines.
+    const band: [number, number] = [y0, Math.min(1, y1 + 0.12)]
+    if (hint.includes('related controls')) relatedBands.push(band)
+    else if (hint.includes('reference')) referencesBands.push(band)
+  }
+  for (const link of sidecar.links) {
+    const lr = link.rect_norm_top_left
+    if (!lr) continue
+    const left = Number(lr.left)
+    const top = Number(lr.top)
+    const right = Number(lr.right)
+    const bottom = Number(lr.bottom)
+    if (![left, top, right, bottom].every(Number.isFinite)) continue
+    if (right <= left || bottom <= top) continue
+    const yCenter = (top + bottom) / 2
+    let family: FamilyId = 'control_link'
+    const inReferences = referencesBands.some(([y0, y1]) => yCenter >= y0 && yCenter <= y1)
+    const inRelated = relatedBands.some(([y0, y1]) => yCenter >= y0 && yCenter <= y1)
+    if (inReferences) family = 'publication_link'
+    else if (inRelated) family = 'control_link'
+    else if (link.action_url) family = 'publication_link'
+    out.push({
+      id: newId(),
+      family,
+      bbox: [clamp01(left), clamp01(top), clamp01(right), clamp01(bottom)],
+      origin: 'agent_link_sweep',
+      agentMeta: {
+        destPage: link.dest_page_index_0based ?? null,
+        destYNorm: link.dest_y_norm_top_left ?? null,
+        actionUrl: link.action_url ?? null,
+      },
+      labelAnchor: 'top-outside',
+    })
+  }
+  if (out.length === 0) {
+    warnings.push('link sidecar contained 0 links')
+  }
+  return { regions: out, warnings }
+}
+
 interface DragState {
   startX: number; startY: number
   curX: number; curY: number
@@ -298,6 +397,195 @@ interface KnownSlice {
   label: string
   imageUrl: string
   expectedElementsUrl?: string
+  /** Agent-detected hyperlink candidates from the canary pipeline
+   *  (extract_link_chips.py via pypdfium2 /Dest annotations). Each link
+   *  becomes a pre-tagged region the human verifies / corrects. */
+  linkSidecarUrl?: string
+}
+
+/** A multi-page Project — the agent's candidate queue for collaborative
+ *  human-in-the-loop labeling. Each project is generated by an agent run
+ *  (e.g., the phase-04-7 corpus canary) and surfaces N pending pages.
+ *  The human signs off on each page; signed-off regions become fixture
+ *  candidates for the NIST ledger + pdf_oxide regression suite. */
+interface ProjectPage {
+  slug: string
+  label: string
+  anchor_page: number
+  control_id_declared?: string | null
+  stratum?: string | null
+  image_url: string
+  link_sidecar_url?: string | null
+  expected_elements_url?: string | null
+  status: 'pending' | 'in_review' | 'agreed' | 'rejected'
+  agent_origin?: string
+  agreed_at?: string | null
+  agreed_by?: string | null
+  agreed_regions_url?: string | null
+  notes?: string | null
+}
+interface Project {
+  schema_version: string
+  project_id: string
+  name: string
+  source?: string
+  description?: string
+  generated_at?: string
+  generated_by?: string
+  pages: ProjectPage[]
+}
+interface ProjectIndexEntry {
+  project_id: string
+  name: string
+  url: string
+  page_count: number
+}
+
+/** Per-page sign-off snapshot persisted in localStorage. The agreed
+ *  regions become the human-blessed fixture for this page; the verdict
+ *  and diff drive the downstream pdf_oxide PR or NIST ledger entry. */
+type ProposedOwner = 'pdf_oxide_core' | 'nist_preset' | 'unclassified' | 'mixed'
+interface RegionDiff {
+  kind: 'added' | 'removed' | 'bbox_edited' | 'family_relabeled' | 'metadata_edited'
+  region_id: string
+  agent_initial?: Region
+  human_final?: Region
+  proposed_owner: ProposedOwner
+  proposed_owner_reason: string
+}
+interface PageSignoff {
+  project_id: string
+  page_slug: string
+  agreed_at: string
+  agreed_by: string
+  agreed_regions: Region[]
+  /** Regions as the agent emitted them at page-load (deep copy, used
+   *  as the diff baseline for the verdict). */
+  regions_initial: Region[]
+  /** Verdict: `confirmed` = no edits → positive regression fixture;
+   *  `amended` = edits → bug spec drives a PR. */
+  verdict: 'confirmed' | 'amended'
+  diff: RegionDiff[]
+  /** Where the amendment should land. Computed from the per-region
+   *  proposed_owner distribution. */
+  proposed_owner: ProposedOwner
+}
+
+/** Diff-classification heuristics. These are first-cut rules; the
+ *  signoff record stores both the verdict and the per-region rationale
+ *  so a downstream agent can refine the owner-assignment. */
+function classifyRegionDiff(
+  agentRegion: Region | undefined,
+  humanRegion: Region | undefined,
+): RegionDiff | null {
+  if (!agentRegion && !humanRegion) return null
+  if (agentRegion && !humanRegion) {
+    return {
+      kind: 'removed',
+      region_id: agentRegion.id,
+      agent_initial: agentRegion,
+      proposed_owner: agentRegion.origin === 'agent_link_sweep' ? 'pdf_oxide_core' : 'nist_preset',
+      proposed_owner_reason: agentRegion.origin === 'agent_link_sweep'
+        ? 'Human removed an agent-emitted control_link/publication_link — likely a false-positive in PDF /Dest enumeration (pdf_oxide_core bug) or a misclassified link (nist_preset)'
+        : 'Human removed an agent region — likely a wrong classification rule in the NIST ledger',
+    }
+  }
+  if (!agentRegion && humanRegion) {
+    return {
+      kind: 'added',
+      region_id: humanRegion.id,
+      human_final: humanRegion,
+      proposed_owner: 'unclassified',
+      proposed_owner_reason: 'Human added a region with no agent counterpart — pdf_oxide_core missed extraction OR NIST ledger missed a classification rule. Inspect text/bbox to decide.',
+    }
+  }
+  if (!agentRegion || !humanRegion) return null
+  // Bbox edited?
+  const bboxChanged = agentRegion.bbox.some((v, i) => Math.abs(v - humanRegion.bbox[i]) > 0.002)
+  // Family relabeled?
+  const familyChanged = agentRegion.family !== humanRegion.family
+  // Metadata edited (label, text_hint, lead_label, notes)?
+  const metaChanged =
+    (agentRegion.label ?? '') !== (humanRegion.label ?? '') ||
+    (agentRegion.text_hint ?? '') !== (humanRegion.text_hint ?? '') ||
+    (agentRegion.lead_label ?? '') !== (humanRegion.lead_label ?? '') ||
+    (agentRegion.notes ?? '') !== (humanRegion.notes ?? '')
+  if (familyChanged) {
+    return {
+      kind: 'family_relabeled',
+      region_id: humanRegion.id,
+      agent_initial: agentRegion,
+      human_final: humanRegion,
+      proposed_owner: 'nist_preset',
+      proposed_owner_reason: `Family changed from ${agentRegion.family} → ${humanRegion.family}. NIST ledger classifier rule (text_classifier_rule / block_type_map) needs updating.`,
+    }
+  }
+  if (bboxChanged) {
+    return {
+      kind: 'bbox_edited',
+      region_id: humanRegion.id,
+      agent_initial: agentRegion,
+      human_final: humanRegion,
+      proposed_owner: 'pdf_oxide_core',
+      proposed_owner_reason: 'Human edited the bbox — pdf_oxide emitted geometry the human disagrees with (e.g., multi-row Body collapse, span-level bbox missing, link rect too tight/loose).',
+    }
+  }
+  if (metaChanged) {
+    return {
+      kind: 'metadata_edited',
+      region_id: humanRegion.id,
+      agent_initial: agentRegion,
+      human_final: humanRegion,
+      proposed_owner: 'nist_preset',
+      proposed_owner_reason: 'Human edited label / text_hint / lead_label / notes — NIST ledger field-enrichment rule needs updating.',
+    }
+  }
+  return null  // identical → no diff entry
+}
+
+function computeVerdict(
+  initial: Region[],
+  final: Region[],
+): { verdict: 'confirmed' | 'amended'; diff: RegionDiff[]; proposed_owner: ProposedOwner } {
+  const initialById = new Map(initial.map(r => [r.id, r]))
+  const finalById = new Map(final.map(r => [r.id, r]))
+  const allIds = new Set<string>([...initialById.keys(), ...finalById.keys()])
+  const diff: RegionDiff[] = []
+  for (const id of allIds) {
+    const d = classifyRegionDiff(initialById.get(id), finalById.get(id))
+    if (d) diff.push(d)
+  }
+  if (diff.length === 0) {
+    return { verdict: 'confirmed', diff: [], proposed_owner: 'unclassified' }
+  }
+  // Aggregate proposed_owner: if all diffs point to one owner, use it; else 'mixed'.
+  const owners = new Set(diff.map(d => d.proposed_owner))
+  let owner: ProposedOwner = 'unclassified'
+  if (owners.size === 1) {
+    owner = diff[0].proposed_owner
+  } else if (owners.size > 1) {
+    owner = 'mixed'
+  }
+  return { verdict: 'amended', diff, proposed_owner: owner }
+}
+
+const PROJECT_SIGNOFF_STORAGE_KEY = 'pdfLab.projectSignoffs.v1'
+function loadProjectSignoffs(): Record<string, PageSignoff> {
+  try {
+    const raw = window.localStorage.getItem(PROJECT_SIGNOFF_STORAGE_KEY)
+    if (!raw) return {}
+    return JSON.parse(raw) as Record<string, PageSignoff>
+  } catch {
+    return {}
+  }
+}
+function persistProjectSignoffs(value: Record<string, PageSignoff>): void {
+  try {
+    window.localStorage.setItem(PROJECT_SIGNOFF_STORAGE_KEY, JSON.stringify(value))
+  } catch {/* quota / disabled storage — ignore */}
+}
+function signoffKey(projectId: string, pageSlug: string): string {
+  return `${projectId}::${pageSlug}`
 }
 const KNOWN_SLICES: KnownSlice[] = [
   {
@@ -310,12 +598,14 @@ const KNOWN_SLICES: KnownSlice[] = [
     slug: 'gs002_ac1_page_44',
     label: 'AC-1 · printed pg 18',
     imageUrl: '/pdf-lab-pages/page_0044.png',
+    linkSidecarUrl: '/pdf-lab-pages/link_sidecars/links_p44.json',
   },
   {
     slug: 'gs002_ac2_page_45',
     label: 'GS002 · AC-2 · printed pg 19',
     imageUrl: '/pdf-lab-pages/page_0045.png',
     expectedElementsUrl: '/pdf-lab-pages/gs002_ac2_page_45.expected_elements.json',
+    linkSidecarUrl: '/pdf-lab-pages/link_sidecars/links_p45.json',
   },
 ]
 
@@ -330,10 +620,28 @@ export function PdfLabLabelingPage() {
   const [slug, setSlug] = useState('manual_labeling')
   const [warnings, setWarnings] = useState<string[]>([])
   const [savedPages, setSavedPages] = useState<Record<string, SavedPage>>(() => loadSavedPages())
+  /** Agent-generated projects (multi-page candidate queues). Loaded from
+   *  /pdf-lab-projects/index.json on mount. */
+  const [projects, setProjects] = useState<Project[]>([])
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
+  /** Per-page sign-off snapshots, keyed by `${project_id}::${page_slug}`. */
+  const [projectSignoffs, setProjectSignoffs] = useState<Record<string, PageSignoff>>(() => loadProjectSignoffs())
+  /** Snapshot of agent-emitted regions captured at page-load. Used as the
+   *  diff baseline when the human signs off — turns each sign-off into
+   *  either a `confirmed` regression fixture or an `amended` bug spec. */
+  const [regionsInitial, setRegionsInitial] = useState<Region[]>([])
+  /** View mode for the canvas — toggles between what pdf_oxide labeled
+   *  (agent), the human's edits (human, default), and a diff overlay
+   *  showing where they disagree. */
+  const [viewMode, setViewMode] = useState<'agent' | 'human' | 'diff'>('human')
   const [zoom, setZoom] = useState<number>(1)
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; regionId?: string } | null>(null)
   // (Removed freeform label-drag state — labels are anchored to one of 4
   //  fixed corner positions; click the tag to cycle through them.)
+  /** Drag-to-reorder state in the Regions panel. Holds the id of the region
+   *  being dragged so we can render a drop indicator on hover targets. */
+  const [reorderDragId, setReorderDragId] = useState<string | null>(null)
+  const [reorderHoverId, setReorderHoverId] = useState<string | null>(null)
   /** Region move / resize drag. `mode` records which edge or corner the user
    *  grabbed; 'move' translates the whole rect. We capture the rect at
    *  mousedown so the math is a simple delta-from-start. */
@@ -469,7 +777,7 @@ export function PdfLabLabelingPage() {
           if (resp.ok) {
             const json = await resp.json()
             const { regions: rs, warnings: ws } = importJson(json)
-            importedRegions = rs
+            importedRegions = rs.map(r => ({ ...r, origin: r.origin ?? 'human' }))
             importWarnings.push(...ws)
           } else {
             importWarnings.push(`expected_elements.json fetch returned HTTP ${resp.status}`)
@@ -479,19 +787,246 @@ export function PdfLabLabelingPage() {
         }
       }
 
+      // 3. Agent sweep: fetch the link sidecar (control_link / publication_link
+      //    candidates pre-detected via pypdfium2 /Dest annotations).
+      let agentLinkRegions: Region[] = []
+      if (slice.linkSidecarUrl) {
+        try {
+          const resp = await fetch(slice.linkSidecarUrl)
+          if (resp.ok) {
+            const json = await resp.json()
+            const { regions: rs, warnings: ws } = linksToRegions(json, importedRegions)
+            agentLinkRegions = rs
+            importWarnings.push(...ws.map(w => `link_sidecar: ${w}`))
+          } else {
+            importWarnings.push(`link_sidecar fetch returned HTTP ${resp.status}`)
+          }
+        } catch (err) {
+          importWarnings.push(`link_sidecar fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+        }
+      }
+
+      const allRegions = [...importedRegions, ...agentLinkRegions]
       setSlug(slice.slug)
       setImageUrl(dataUrl)
       setImageDataUrl(dataUrl)
-      setRegions(importedRegions)
+      setRegions(allRegions)
       setSelectedId(null)
+      const linkSummary = agentLinkRegions.length > 0
+        ? ` · ${agentLinkRegions.length} agent-link candidate${agentLinkRegions.length === 1 ? '' : 's'}`
+        : ''
       setWarnings([
-        `Loaded ${slice.label} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'} from contract`,
+        `Loaded ${slice.label} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'} from contract${linkSummary}`,
         ...importWarnings,
       ])
     } catch (err) {
       setWarnings([`Failed to load ${slice.label}: ${err instanceof Error ? err.message : String(err)}`])
     }
   }, [savedPages, loadSavedPage])
+
+  /** Load a page from a Project (parallels loadSlice, but uses ProjectPage
+   *  shape and respects the sign-off snapshot if present). */
+  const loadProjectPage = useCallback(async (project: Project, page: ProjectPage) => {
+    try {
+      const key = signoffKey(project.project_id, page.slug)
+      const signoff = projectSignoffs[key]
+
+      const dataUrl = await urlToDataUrl(page.image_url)
+      let importedRegions: Region[] = []
+      const importWarnings: string[] = []
+
+      // If page is already signed-off, restore the agreed snapshot directly.
+      if (signoff && signoff.agreed_regions.length > 0) {
+        importedRegions = signoff.agreed_regions
+        importWarnings.push(`Restored signed-off snapshot from ${signoff.agreed_at} by ${signoff.agreed_by}`)
+      } else {
+        if (page.expected_elements_url) {
+          try {
+            const resp = await fetch(page.expected_elements_url)
+            if (resp.ok) {
+              const { regions: rs, warnings: ws } = importJson(await resp.json())
+              importedRegions = rs.map(r => ({ ...r, origin: r.origin ?? 'human' }))
+              importWarnings.push(...ws)
+            }
+          } catch (err) {
+            importWarnings.push(`expected_elements fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+          }
+        }
+        if (page.link_sidecar_url) {
+          try {
+            const resp = await fetch(page.link_sidecar_url)
+            if (resp.ok) {
+              const { regions: rs, warnings: ws } = linksToRegions(await resp.json(), importedRegions)
+              importedRegions = [...importedRegions, ...rs]
+              importWarnings.push(...ws.map(w => `link_sidecar: ${w}`))
+            }
+          } catch (err) {
+            importWarnings.push(`link_sidecar fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+          }
+        }
+      }
+
+      setCurrentProjectId(project.project_id)
+      setSlug(page.slug)
+      setImageUrl(dataUrl)
+      setImageDataUrl(dataUrl)
+      setRegions(importedRegions)
+      // Capture the agent-emitted initial state as the diff baseline. Deep
+      // copy so subsequent in-place edits don't mutate it.
+      setRegionsInitial(JSON.parse(JSON.stringify(importedRegions)))
+      setSelectedId(null)
+      const statusLabel = signoff ? 'signed-off' : page.status
+      setWarnings([
+        `Project: ${project.name} · page ${page.label} · status=${statusLabel} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'}`,
+        ...importWarnings,
+      ])
+    } catch (err) {
+      setWarnings([`Failed to load ${page.label}: ${err instanceof Error ? err.message : String(err)}`])
+    }
+  }, [projectSignoffs])
+
+  /** Sign off the current page: snapshot regions, mark agreed, advance
+   *  to the next pending page in the same project. */
+  const signOffAndNext = useCallback(() => {
+    if (!currentProjectId) {
+      setWarnings(['No active project — cannot sign off'])
+      return
+    }
+    const project = projects.find(p => p.project_id === currentProjectId)
+    if (!project) return
+    const page = project.pages.find(p => p.slug === slug)
+    if (!page) {
+      setWarnings([`Active slug ${slug} is not part of ${project.name}; cannot sign off as project page`])
+      return
+    }
+    const key = signoffKey(project.project_id, page.slug)
+    // Compute the verdict: did the human edit anything? Each edit is a
+    // classified bug spec for pdf_oxide_core or the NIST ledger.
+    const { verdict, diff, proposed_owner } = computeVerdict(regionsInitial, regions)
+    const next: PageSignoff = {
+      project_id: project.project_id,
+      page_slug: page.slug,
+      agreed_at: new Date().toISOString(),
+      agreed_by: 'graham',
+      agreed_regions: regions,
+      regions_initial: regionsInitial,
+      verdict,
+      diff,
+      proposed_owner,
+    }
+    const updated = { ...projectSignoffs, [key]: next }
+    setProjectSignoffs(updated)
+    persistProjectSignoffs(updated)
+    // Auto-persist to disk via the Vite middleware so the project agent
+    // can read the latest sign-offs without any export-button dance.
+    // Failure is non-fatal (localStorage remains the fallback).
+    try {
+      void fetch('/pdf-lab-api/signoffs/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          schema_version: 'pdf_lab.signoff_export.v1',
+          exported_at: new Date().toISOString(),
+          exported_by: 'graham',
+          projects: projects.map(p => ({
+            project_id: p.project_id,
+            name: p.name,
+            pages_total: p.pages.length,
+          })),
+          signoffs: updated,
+        }),
+      })
+    } catch {/* swallow — localStorage already updated */}
+    // Verdict summary for the status banner.
+    const verdictMsg = verdict === 'confirmed'
+      ? `CONFIRMED pdf_oxide for ${page.label} (0 edits, ${regions.length} regions locked as positive fixture)`
+      : `AMENDED ${page.label}: ${diff.length} diff entr${diff.length === 1 ? 'y' : 'ies'} · proposed owner: ${proposed_owner}`
+    const remaining = project.pages.filter(p =>
+      p.slug !== page.slug &&
+      p.status !== 'agreed' &&
+      !updated[signoffKey(project.project_id, p.slug)],
+    )
+    if (remaining.length === 0) {
+      setWarnings([verdictMsg, `Project ${project.name} has no more pending pages.`])
+      return
+    }
+    const nextPage = remaining[0]
+    setWarnings([verdictMsg, `Advancing to ${nextPage.label} (${remaining.length} more pending).`])
+    loadProjectPage(project, nextPage)
+  }, [currentProjectId, projects, projectSignoffs, regions, regionsInitial, slug, loadProjectPage])
+
+  /** Load projects from the index on mount. */
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const indexResp = await fetch('/pdf-lab-projects/index.json')
+        if (!indexResp.ok) return
+        const idx = await indexResp.json() as { projects: ProjectIndexEntry[] }
+        const loaded: Project[] = []
+        for (const entry of idx.projects ?? []) {
+          try {
+            const pResp = await fetch(entry.url)
+            if (pResp.ok) loaded.push(await pResp.json() as Project)
+          } catch {/* ignore individual project failures */}
+        }
+        if (!cancelled) setProjects(loaded)
+      } catch {/* no projects index → fall back to legacy KNOWN_SLICES */}
+    })()
+    return () => { cancelled = true }
+  }, [])
+
+  /** Continuous auto-save of the current edit state to disk. Every time
+   *  `regions` changes while a project page is loaded, POST a debounced
+   *  snapshot to /pdf-lab-api/signoffs/save-in-progress. The agent reads
+   *  in_progress.json at any time to see WIP edits — no sign-off needed,
+   *  no export-button click. This is the collaboration loop. */
+  useEffect(() => {
+    if (!currentProjectId || !slug) return
+    const project = projects.find(p => p.project_id === currentProjectId)
+    if (!project) return
+    if (!project.pages.some(pg => pg.slug === slug)) return
+    const t = window.setTimeout(() => {
+      try {
+        void fetch('/pdf-lab-api/signoffs/save-in-progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_id: currentProjectId,
+            page_slug: slug,
+            regions,
+            regions_initial: regionsInitial,
+            updated_at: new Date().toISOString(),
+          }),
+        })
+      } catch {/* offline / no middleware — swallow */}
+    }, 400)  // debounce: bundle rapid edits (drag, resize, family-cycle)
+    return () => window.clearTimeout(t)
+  }, [regions, regionsInitial, currentProjectId, slug, projects])
+
+  /** Auto-load signed-off snapshots from disk on mount so the human↔agent
+   *  loop is shared state, not localStorage-trapped. Disk wins over
+   *  localStorage when both exist (disk is the agent-readable source). */
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const resp = await fetch('/pdf-lab-api/signoffs/load')
+        if (!resp.ok) return
+        const payload = await resp.json() as { signoffs?: Record<string, PageSignoff> }
+        if (cancelled) return
+        const fromDisk = payload.signoffs ?? {}
+        if (Object.keys(fromDisk).length > 0) {
+          setProjectSignoffs(prev => {
+            const merged = { ...prev, ...fromDisk }
+            persistProjectSignoffs(merged)
+            return merged
+          })
+        }
+      } catch {/* middleware not running — localStorage stays authoritative */}
+    })()
+    return () => { cancelled = true }
+  }, [])
 
   /** Convert a client-pixel point to normalized image coords. Uses the
    *  scaled image wrapper rect so the mapping stays correct at any zoom. */
@@ -505,11 +1040,13 @@ export function PdfLabLabelingPage() {
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!imageUrl) return
+    // Agent / Diff views are read-only — no drawing new regions.
+    if (viewMode !== 'human') return
     const p = clientToNormalized(e.clientX, e.clientY)
     if (!p) return
     setSelectedId(null)
     setDrag({ startX: p[0], startY: p[1], curX: p[0], curY: p[1], family: activeFamily })
-  }, [activeFamily, clientToNormalized, imageUrl])
+  }, [activeFamily, clientToNormalized, imageUrl, viewMode])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (regionDrag && imageNaturalSize) {
@@ -580,6 +1117,53 @@ export function PdfLabLabelingPage() {
     setRegions(prev => prev.map(r => r.id === regionId
       ? { ...r, labelAnchor: nextAnchor(r.labelAnchor) }
       : r))
+  }, [])
+
+  const handleReorderDragStart = useCallback((e: React.DragEvent, regionId: string) => {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', regionId)
+    setReorderDragId(regionId)
+  }, [])
+
+  const handleReorderDragOver = useCallback((e: React.DragEvent, regionId: string) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (regionId !== reorderHoverId) setReorderHoverId(regionId)
+  }, [reorderHoverId])
+
+  const handleReorderDrop = useCallback((e: React.DragEvent, targetId: string) => {
+    e.preventDefault()
+    const sourceId = e.dataTransfer.getData('text/plain')
+    setReorderDragId(null)
+    setReorderHoverId(null)
+    if (!sourceId || sourceId === targetId) return
+    setRegions(prev => {
+      const fromIdx = prev.findIndex(r => r.id === sourceId)
+      const toIdx = prev.findIndex(r => r.id === targetId)
+      if (fromIdx < 0 || toIdx < 0) return prev
+      const next = [...prev]
+      const [moved] = next.splice(fromIdx, 1)
+      next.splice(toIdx, 0, moved)
+      return next
+    })
+  }, [])
+
+  const handleReorderDragEnd = useCallback(() => {
+    setReorderDragId(null)
+    setReorderHoverId(null)
+  }, [])
+
+  /** Sort regions by reading order: top-to-bottom (bbox y0), then
+   *  left-to-right (bbox x0) within the same line. The matcher doesn't
+   *  care about order, but downstream artifacts (closure_page.html,
+   *  expected_elements.json review) read better in reading order. */
+  const sortByReadingOrder = useCallback(() => {
+    setRegions(prev => [...prev].sort((a, b) => {
+      // Treat rows within ~1.5% of the page height as the same "line".
+      const dy = a.bbox[1] - b.bbox[1]
+      if (Math.abs(dy) > 0.015) return dy
+      return a.bbox[0] - b.bbox[0]
+    }))
   }, [])
 
   const handleRegionMouseDown = useCallback(
@@ -724,9 +1308,60 @@ export function PdfLabLabelingPage() {
             .filter(p => !knownSlugs.has(p.slug) && p.regions.length > 0)
             .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 
+          // Always-expanded project queue: show every project's pages inline
+          // (no "click to open" step). The currently-loaded page is highlighted.
+          // Project sign-off uses the toolbar button; the queue is a navigator.
           return (
             <div className="pdf-lab-labeling-pages">
-              <div className="pdf-lab-labeling-chips-title">Projects</div>
+              {projects.length > 0 && projects.map(proj => {
+                let agreed = 0
+                for (const pg of proj.pages) {
+                  if (pg.status === 'agreed' || projectSignoffs[signoffKey(proj.project_id, pg.slug)]) agreed++
+                }
+                return (
+                  <div key={proj.project_id} className="pdf-lab-labeling-pages-project">
+                    <div className="pdf-lab-labeling-chips-title">
+                      🤖 {proj.name}
+                      <span className="pdf-lab-labeling-project-progress"> · {agreed}/{proj.pages.length} agreed</span>
+                    </div>
+                    {proj.pages.map(pg => {
+                      const isActive = pg.slug === slug && currentProjectId === proj.project_id
+                      const signoff = projectSignoffs[signoffKey(proj.project_id, pg.slug)]
+                      const isAgreed = pg.status === 'agreed' || !!signoff
+                      const isInReview = !isAgreed && pg.status === 'in_review'
+                      const statusIcon = isAgreed ? '●' : (isInReview ? '◐' : '◯')
+                      const statusClass = isAgreed ? 'is-status-agreed' : (isInReview ? 'is-status-inreview' : 'is-status-pending')
+                      // Only agreed rows show a hint line (agreed date); pending
+                      // rows compress to one line for queue scannability.
+                      const hint = isAgreed
+                        ? `${signoff?.agreed_at?.slice(0, 10) ?? pg.agreed_at?.slice(0, 10) ?? ''}`
+                        : null
+                      const tooltip = `${pg.label} · ${isAgreed ? 'agreed' : (isInReview ? 'in review' : 'pending')} · ${pg.agent_origin ?? 'agent'}`
+                      return (
+                        <div
+                          key={pg.slug}
+                          className={`pdf-lab-labeling-pages-row pdf-lab-labeling-pages-row-compact ${isActive ? 'is-active' : ''} ${isAgreed ? 'is-agreed' : ''}`}
+                          data-qid={`pdf-lab:labeling:page-${pg.slug}`}
+                        >
+                          <button
+                            className="pdf-lab-labeling-pages-row-main"
+                            onClick={() => loadProjectPage(proj, pg)}
+                            title={tooltip}
+                          >
+                            <span className={`pdf-lab-labeling-pages-row-status ${statusClass}`} aria-label={isAgreed ? 'agreed' : (isInReview ? 'in review' : 'pending')}>{statusIcon}</span>
+                            <span className="pdf-lab-labeling-pages-row-slug">{pg.label}</span>
+                            {hint && <span className="pdf-lab-labeling-pages-row-hint pdf-lab-labeling-pages-row-hint-inline">{hint}</span>}
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })}
+              {projects.length > 0 && (
+                <div className="pdf-lab-labeling-pages-section">LEGACY SLICES</div>
+              )}
+              {projects.length === 0 && <div className="pdf-lab-labeling-chips-title">Projects</div>}
               {KNOWN_SLICES.map(s => {
                 const saved = savedPages[s.slug]
                 const isActive = s.slug === slug
@@ -839,6 +1474,102 @@ export function PdfLabLabelingPage() {
           <button className="pdf-lab-labeling-export" onClick={onExport} disabled={regions.length === 0}>
             Export expected_elements.json
           </button>
+          <button
+            className="pdf-lab-labeling-export"
+            onClick={() => {
+              // Dump the full sign-off snapshot bundle (every project page
+              // the human has signed off, with regions_initial + regions_final
+              // + verdict + diff + proposed_owner). This is the artifact the
+              // project agent reads to compute pdf_oxide_core + ledger PRs.
+              const payload = {
+                schema_version: 'pdf_lab.signoff_export.v1',
+                exported_at: new Date().toISOString(),
+                exported_by: 'graham',
+                projects: projects.map(p => ({
+                  project_id: p.project_id,
+                  name: p.name,
+                  pages_total: p.pages.length,
+                })),
+                signoffs: projectSignoffs,
+              }
+              const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `signoffs_${new Date().toISOString().replace(/[:.]/g, '-')}.json`
+              document.body.appendChild(a)
+              a.click()
+              document.body.removeChild(a)
+              URL.revokeObjectURL(url)
+              const n = Object.keys(projectSignoffs).length
+              setWarnings([`Exported ${n} signoff${n === 1 ? '' : 's'}. Commit to /tmp/nist-corpus-graph-design-review/.plan-iterate/phase-04-7-hyperlink-chip-canary/evidence-artifacts/signoffs/`])
+            }}
+            disabled={Object.keys(projectSignoffs).length === 0}
+            title={Object.keys(projectSignoffs).length === 0
+              ? 'No signed-off pages yet'
+              : `Download all ${Object.keys(projectSignoffs).length} sign-off snapshots as a single JSON (verdict + diff + proposed_owner per page). Commit the file so the project agent can compute downstream PRs.`}
+            data-qid="pdf-lab:labeling:export-verdicts"
+          >
+            ⤓ Export verdicts ({Object.keys(projectSignoffs).length})
+          </button>
+          {(() => {
+            const project = currentProjectId ? projects.find(p => p.project_id === currentProjectId) : null
+            const isProjectPage = !!(project && project.pages.some(pg => pg.slug === slug))
+            const alreadyAgreed = isProjectPage && project ? !!projectSignoffs[signoffKey(project.project_id, slug)] : false
+            const noRegions = regions.length === 0
+            const disabled = noRegions || !isProjectPage
+            // Live verdict preview: would clicking sign-off CONFIRM pdf_oxide
+            // (zero edits, locks a positive fixture) or AMEND it (edits exist,
+            // files a bug spec routed to pdf_oxide_core / nist_preset)?
+            const liveVerdict = isProjectPage ? computeVerdict(regionsInitial, regions) : null
+            const verdictClass = liveVerdict?.verdict === 'amended' ? 'is-signoff-amend' : 'is-signoff'
+            const label = !isProjectPage
+              ? '✓ Sign off + next'
+              : liveVerdict?.verdict === 'amended'
+                ? `⚠ Amend (${liveVerdict.diff.length}) + next`
+                : `✓ Confirm pdf_oxide + next`
+            const title = !isProjectPage
+              ? 'Current page is not part of an agent project queue. Open a project page from the side panel to enable sign-off.'
+              : noRegions
+                ? 'Draw or load at least one region before signing off.'
+                : liveVerdict?.verdict === 'amended'
+                  ? `AMEND verdict: ${liveVerdict.diff.length} diff entr${liveVerdict.diff.length === 1 ? 'y' : 'ies'} → owner: ${liveVerdict.proposed_owner}. Each diff becomes a typed bug spec for pdf_oxide_core or the NIST ledger.`
+                  : alreadyAgreed
+                    ? `Re-CONFIRM pdf_oxide — no edits since the previous sign-off; locks ${regions.length} regions as positive regression fixture for ${project!.name}.`
+                    : `CONFIRM pdf_oxide — no edits made; locks ${regions.length} regions as positive regression fixture for ${project!.name}.`
+            return (
+              <button
+                className={`pdf-lab-labeling-export ${verdictClass}`}
+                onClick={signOffAndNext}
+                disabled={disabled}
+                title={title}
+                data-qid="pdf-lab:labeling:signoff-next"
+              >
+                {alreadyAgreed && liveVerdict?.verdict === 'confirmed' ? `✓ Re-confirm + next` : label}
+              </button>
+            )
+          })()}
+          <span className="pdf-lab-labeling-toolbar-divider" />
+          <div className="pdf-lab-labeling-viewmode" role="group" aria-label="Canvas view mode">
+            <button
+              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'agent' ? 'is-active' : ''}`}
+              onClick={() => setViewMode('agent')}
+              title="Agent view: what pdf_oxide + ledger pre-labeled this page (read-only)"
+              data-qid="pdf-lab:labeling:viewmode-agent"
+            >Agent</button>
+            <button
+              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'human' ? 'is-active' : ''}`}
+              onClick={() => setViewMode('human')}
+              title="Human view: your corrections (editable)"
+              data-qid="pdf-lab:labeling:viewmode-human"
+            >Human</button>
+            <button
+              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'diff' ? 'is-active' : ''}`}
+              onClick={() => setViewMode('diff')}
+              title="Diff view: where agent and human disagree (each diff is a typed bug spec)"
+              data-qid="pdf-lab:labeling:viewmode-diff"
+            >Diff</button>
+          </div>
           <span className="pdf-lab-labeling-toolbar-divider" />
           <button className="pdf-lab-labeling-zoom-btn" onClick={zoomOut}     title="Zoom out (Ctrl/Cmd −)">−</button>
           <button className="pdf-lab-labeling-zoom-btn" onClick={zoomFit}     title="Fit to viewport (Ctrl/Cmd 9)">fit</button>
@@ -876,15 +1607,58 @@ export function PdfLabLabelingPage() {
                 }}
                 draggable={false}
               />
-              {regions.map(r => {
-                const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
-                const isSelected = selectedId === r.id
-                return (
+              {(() => {
+                // Compute the displayed region set based on viewMode.
+                //   'agent' → regionsInitial (read-only, pdf_oxide's claim)
+                //   'human' → regions (editable, default)
+                //   'diff'  → union with per-region _diffStatus annotation
+                interface RenderRegion extends Region {
+                  _diffStatus?: 'identical' | 'added' | 'removed' | 'bbox_edited' | 'family_relabeled' | 'metadata_edited'
+                }
+                let displayed: RenderRegion[] = []
+                if (viewMode === 'agent') {
+                  displayed = regionsInitial.map(r => ({ ...r, _diffStatus: 'identical' as const }))
+                } else if (viewMode === 'human') {
+                  displayed = regions
+                } else {
+                  const initialById = new Map(regionsInitial.map(r => [r.id, r]))
+                  const currentById = new Map(regions.map(r => [r.id, r]))
+                  const allIds = new Set<string>([...initialById.keys(), ...currentById.keys()])
+                  for (const id of allIds) {
+                    const a = initialById.get(id)
+                    const h = currentById.get(id)
+                    if (a && !h) {
+                      displayed.push({ ...a, _diffStatus: 'removed' })
+                    } else if (!a && h) {
+                      displayed.push({ ...h, _diffStatus: 'added' })
+                    } else if (a && h) {
+                      const d = classifyRegionDiff(a, h)
+                      if (!d) {
+                        displayed.push({ ...h, _diffStatus: 'identical' })
+                      } else if (d.kind === 'family_relabeled') {
+                        displayed.push({ ...h, _diffStatus: 'family_relabeled' })
+                      } else if (d.kind === 'bbox_edited') {
+                        displayed.push({ ...h, _diffStatus: 'bbox_edited' })
+                      } else {
+                        displayed.push({ ...h, _diffStatus: 'metadata_edited' })
+                      }
+                    }
+                  }
+                }
+                return displayed.map(r => {
+                  const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
+                  const isSelected = selectedId === r.id && viewMode === 'human'
+                  const isEditable = viewMode === 'human'
+                  const diffClass = r._diffStatus && r._diffStatus !== 'identical'
+                    ? `is-diff-${r._diffStatus}`
+                    : ''
+                  return (
                   <div
-                    key={r.id}
-                    className={`pdf-lab-labeling-region ${isSelected ? 'is-selected' : ''}`}
-                    onMouseDown={e => handleRegionMouseDown(e, r.id, 'move')}
-                    onContextMenu={e => handleContextMenu(e, r.id)}
+                    key={`${viewMode}-${r.id}`}
+                    className={`pdf-lab-labeling-region ${isSelected ? 'is-selected' : ''} ${r.origin && r.origin !== 'human' ? 'is-agent' : ''} ${diffClass}`}
+                    data-origin={r.origin ?? 'human'}
+                    onMouseDown={isEditable ? e => handleRegionMouseDown(e, r.id, 'move') : undefined}
+                    onContextMenu={isEditable ? e => handleContextMenu(e, r.id) : undefined}
                     style={{
                       left: `${r.bbox[0] * 100}%`,
                       top: `${r.bbox[1] * 100}%`,
@@ -912,8 +1686,9 @@ export function PdfLabLabelingPage() {
                       />
                     ))}
                   </div>
-                )
-              })}
+                  )
+                })
+              })()}
               {previewRect && (
                 <div
                   className="pdf-lab-labeling-region is-preview"
@@ -994,6 +1769,16 @@ export function PdfLabLabelingPage() {
           Regions ({regions.length})
           {imageNaturalSize && <span className="pdf-lab-labeling-regions-meta">{imageNaturalSize.w}×{imageNaturalSize.h}px</span>}
         </div>
+        {regions.length > 1 && (
+          <button
+            className="pdf-lab-labeling-regions-sort"
+            data-qid="pdf-lab:labeling:sort-by-reading-order"
+            onClick={sortByReadingOrder}
+            title="Sort regions top-to-bottom by their bbox position on the page"
+          >
+            ↓ Sort by reading order
+          </button>
+        )}
         {regions.length === 0 && (
           <div className="pdf-lab-labeling-regions-empty">No regions yet. Pick a family, drag on the page.</div>
         )}
@@ -1001,14 +1786,31 @@ export function PdfLabLabelingPage() {
           const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
           const update = (patch: Partial<Region>) => setRegions(prev => prev.map(x => x.id === r.id ? { ...x, ...patch } : x))
           const remove = () => { setRegions(prev => prev.filter(x => x.id !== r.id)); if (selectedId === r.id) setSelectedId(null) }
+          const isDragging = reorderDragId === r.id
+          const isDropTarget = reorderHoverId === r.id && reorderDragId && reorderDragId !== r.id
           return (
             <div
               key={r.id}
               data-qid={`pdf-lab:labeling:region-${r.id}`}
-              className={`pdf-lab-labeling-region-row ${selectedId === r.id ? 'is-selected' : ''}`}
+              className={
+                `pdf-lab-labeling-region-row ` +
+                `${selectedId === r.id ? 'is-selected ' : ''}` +
+                `${isDragging ? 'is-dragging ' : ''}` +
+                `${isDropTarget ? 'is-drop-target ' : ''}`
+              }
               onClick={() => setSelectedId(r.id)}
+              onDragOver={e => handleReorderDragOver(e, r.id)}
+              onDrop={e => handleReorderDrop(e, r.id)}
+              onDragLeave={() => setReorderHoverId(prev => prev === r.id ? null : prev)}
             >
               <div className="pdf-lab-labeling-region-row-head">
+                <span
+                  className="pdf-lab-labeling-region-row-grip"
+                  draggable
+                  onDragStart={e => handleReorderDragStart(e, r.id)}
+                  onDragEnd={handleReorderDragEnd}
+                  title="Drag to reorder"
+                >≡</span>
                 <span className="pdf-lab-labeling-region-row-swatch" style={{ background: def?.color }} />
                 <select value={r.family} onChange={e => update({ family: e.target.value as FamilyId })}>
                   {CANONICAL_FAMILIES.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
