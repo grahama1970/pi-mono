@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T04:58:04.013Z",
+  "generated_at": "2026-05-15T05:10:04.307Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
@@ -35,7 +35,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-15T04:58:03Z",
+    "generated_at": "2026-05-15T05:10:03Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -606,7 +606,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-15T04:58:03Z",
+      "generated_at": "2026-05-15T05:10:03Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3277,7 +3277,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 460797,
+    "current_log_age_seconds": 461517,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3286,6 +3286,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 460797s ago."
+    "message": "No active create-qras worker observed; latest log changed 461517s ago."
   }
 }
