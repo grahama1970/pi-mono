@@ -16,22 +16,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './PdfLabLabelingPage.css'
 
+/** Human-labeling vocabulary. Link annotations (control_link /
+ *  publication_link) are machine-only — captured by extract_link_chips.py
+ *  in the link_sidecar and correlated at extract time with the enclosing
+ *  paragraph_block / section_label / section_heading region. They are NOT
+ *  human-labeling chips. */
 const CANONICAL_FAMILIES = [
-  { id: 'section_heading',   color: '#a8ff57', hotkey: '1' },
-  { id: 'section_label',     color: '#fbbc04', hotkey: '2' },
-  { id: 'list',              color: '#4a9eff', hotkey: '3' },
-  { id: 'paragraph_block',   color: '#94a3b8', hotkey: '4' },
-  { id: 'labeled_paragraph', color: '#ff9500', hotkey: '5' },
-  { id: 'table',             color: '#22d3ee', hotkey: '6' },
-  { id: 'figure',            color: '#7c3aed', hotkey: '7' },
-  { id: 'caption',           color: '#ec407a', hotkey: '8' },
-  { id: 'footnote',          color: '#c084fc', hotkey: '9' },
-  { id: 'page_chrome_noise', color: '#9aa0a6', hotkey: '0' },
-  { id: 'human_decision',    color: '#ff6b6b', hotkey: 'q' },
-  { id: 'control_link',           color: '#1e90ff', hotkey: 'r' },
-  { id: 'publication_link',       color: '#00bfa5', hotkey: 't' },
-  { id: 'control_link_group',     color: '#3b82f6', hotkey: 'g' },
-  { id: 'publication_link_group', color: '#14b8a6', hotkey: 'y' },
+  { id: 'section_heading',     color: '#a8ff57', hotkey: '1' },
+  { id: 'section_label',       color: '#fbbc04', hotkey: '2' },
+  { id: 'list',                color: '#4a9eff', hotkey: '3' },
+  { id: 'paragraph_block',     color: '#94a3b8', hotkey: '4' },
+  { id: 'labeled_paragraph',   color: '#ff9500', hotkey: '5' },
+  { id: 'labeled_controls',    color: '#6366f1', hotkey: 'c' },
+  { id: 'labeled_references',  color: '#14b8a6', hotkey: 'r' },
+  { id: 'table',               color: '#22d3ee', hotkey: '6' },
+  { id: 'figure',              color: '#7c3aed', hotkey: '7' },
+  { id: 'caption',             color: '#ec407a', hotkey: '8' },
+  { id: 'footnote',            color: '#c084fc', hotkey: '9' },
+  { id: 'page_chrome_noise',   color: '#9aa0a6', hotkey: '0' },
+  { id: 'human_decision',      color: '#ff6b6b', hotkey: 'q' },
 ] as const
 
 type FamilyId = typeof CANONICAL_FAMILIES[number]['id']
@@ -97,16 +100,14 @@ const DEFAULT_ALLOWED_TYPES: Record<FamilyId, string[]> = {
   list: ['list'],
   paragraph_block: ['paragraph_block'],
   labeled_paragraph: ['paragraph_block'],
+  labeled_controls: ['labeled_controls', 'paragraph_block'],
+  labeled_references: ['labeled_references', 'paragraph_block'],
   table: ['table'],
   figure: ['figure'],
   caption: ['caption'],
   footnote: ['footnote_block', 'paragraph_block'],
   page_chrome_noise: ['header_footer_noise'],
   human_decision: [],
-  control_link: ['control_link'],
-  publication_link: ['publication_link'],
-  control_link_group: ['control_link_group'],
-  publication_link_group: ['publication_link_group'],
 }
 
 function newId(): string {
@@ -289,34 +290,18 @@ function linksToRegions(
     if (hint.includes('related controls')) relatedBands.push(band)
     else if (hint.includes('reference')) referencesBands.push(band)
   }
-  for (const link of sidecar.links) {
-    const lr = link.rect_norm_top_left
-    if (!lr) continue
-    const left = Number(lr.left)
-    const top = Number(lr.top)
-    const right = Number(lr.right)
-    const bottom = Number(lr.bottom)
-    if (![left, top, right, bottom].every(Number.isFinite)) continue
-    if (right <= left || bottom <= top) continue
-    const yCenter = (top + bottom) / 2
-    let family: FamilyId = 'control_link'
-    const inReferences = referencesBands.some(([y0, y1]) => yCenter >= y0 && yCenter <= y1)
-    const inRelated = relatedBands.some(([y0, y1]) => yCenter >= y0 && yCenter <= y1)
-    if (inReferences) family = 'publication_link'
-    else if (inRelated) family = 'control_link'
-    else if (link.action_url) family = 'publication_link'
-    out.push({
-      id: newId(),
-      family,
-      bbox: [clamp01(left), clamp01(top), clamp01(right), clamp01(bottom)],
-      origin: 'agent_link_sweep',
-      agentMeta: {
-        destPage: link.dest_page_index_0based ?? null,
-        destYNorm: link.dest_y_norm_top_left ?? null,
-        actionUrl: link.action_url ?? null,
-      },
-      labelAnchor: 'top-outside',
-    })
+  // control_link / publication_link are no longer human-labeling chips —
+  // they live in the link_sidecar and are correlated to the enclosing
+  // labeled_paragraph / section_heading / section_label region at extract
+  // time. Skip per-link rectangle emission here so the Human view stays
+  // uncluttered. The sidecar count is reported in warnings for visibility.
+  if (sidecar && Array.isArray(sidecar.links)) {
+    const n = sidecar.links.length
+    if (n > 0) {
+      warnings.push(`link_sidecar: ${n} link annotation${n === 1 ? '' : 's'} present (machine-only; not emitted as human chips)`)
+    }
+  } else {
+    void relatedBands; void referencesBands
   }
   if (out.length === 0) {
     warnings.push('link sidecar contained 0 links')
@@ -417,6 +402,10 @@ interface ProjectPage {
   image_url: string
   link_sidecar_url?: string | null
   expected_elements_url?: string | null
+  /** scillm second-pass refined classification (LLM-pass result), surfaced
+   *  under the "Agent" view-mode. Distinct from expected_elements_url,
+   *  which is the deterministic Original view. */
+  second_pass_url?: string | null
   status: 'pending' | 'in_review' | 'agreed' | 'rejected'
   agent_origin?: string
   agreed_at?: string | null
@@ -630,10 +619,35 @@ export function PdfLabLabelingPage() {
    *  diff baseline when the human signs off — turns each sign-off into
    *  either a `confirmed` regression fixture or an `amended` bug spec. */
   const [regionsInitial, setRegionsInitial] = useState<Region[]>([])
-  /** View mode for the canvas — toggles between what pdf_oxide labeled
-   *  (agent), the human's edits (human, default), and a diff overlay
-   *  showing where they disagree. */
-  const [viewMode, setViewMode] = useState<'agent' | 'human' | 'diff'>('human')
+  /** View mode for the canvas. Four modes:
+   *    'original'  — pdf_oxide + ledger deterministic output (what the
+   *                  primitive extractor + heuristic ledger produced)
+   *    'agent'     — scillm second-pass LLM refinement (Agent enrichment)
+   *    'human'     — human's edits (editable, default)
+   *    'diff'      — overlay showing where agent and human disagree
+   *  Only 'human' is editable. */
+  const [viewMode, setViewMode] = useState<'original' | 'agent' | 'human' | 'diff'>('human')
+  /** Regions emitted by the scillm second-pass (Agent view). Loaded from
+   *  the second_pass_url sidecar at page-load time. */
+  const [regionsAgent, setRegionsAgent] = useState<Region[]>([])
+  /** Context neighbors for the focal page being annotated. The human labels
+   *  ONLY the focal canvas; prev/next are rendered as read-only thumbnails
+   *  alongside so the human (and the agent) can see whether structural
+   *  elements span page boundaries:
+   *    - does this Control Enhancements: section's list continue on the
+   *      next page?
+   *    - does this table at the bottom of the focal page continue?
+   *    - was this Discussion block started on the previous page?
+   *  Region overlays on the neighbors come from their existing Agent (or
+   *  Original) sidecars — read-only — purely for visual continuity scanning. */
+  type ContextNeighbor = {
+    slug: string
+    image_url: string
+    page_index: number
+    regions: Region[]  // read-only display
+  }
+  const [contextPrev, setContextPrev] = useState<ContextNeighbor | null>(null)
+  const [contextNext, setContextNext] = useState<ContextNeighbor | null>(null)
   const [zoom, setZoom] = useState<number>(1)
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; regionId?: string } | null>(null)
   // (Removed freeform label-drag state — labels are anchored to one of 4
@@ -866,18 +880,86 @@ export function PdfLabLabelingPage() {
         }
       }
 
+      // 4. Second-pass Agent view: fetch the scillm-refined sidecar if
+      //    present. This is the LLM enrichment of the deterministic
+      //    Original output. Surfaced under the "Agent" view-mode.
+      let agentRegions: Region[] = []
+      if (page.second_pass_url) {
+        try {
+          const resp = await fetch(page.second_pass_url)
+          if (resp.ok) {
+            const json = await resp.json()
+            const { regions: rs, warnings: ws } = importJson(json)
+            agentRegions = rs.map(r => ({ ...r, origin: 'agent_dispatcher' as const }))
+            importWarnings.push(...ws.map(w => `second_pass: ${w}`))
+          }
+        } catch (err) {
+          importWarnings.push(`second_pass fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+        }
+      }
+
+      // Pick the Human starting state: prefer scillm second-pass when present
+      // (it's already a refinement of the deterministic Original — saves the
+      // human the merging/cleanup work the agent already did). Fall back to
+      // importedRegions (Original heuristic) otherwise.
+      const humanSeed = (signoff && signoff.agreed_regions.length > 0)
+        ? signoff.agreed_regions
+        : (agentRegions.length > 0
+            ? agentRegions.map(r => ({ ...r, origin: 'human' as const, id: newId() }))
+            : importedRegions)
+      const seedSource = signoff ? 'signed-off snapshot'
+        : agentRegions.length > 0 ? 'Agent (scillm second-pass)'
+        : 'Original (pdf_oxide + ledger)'
+
+      // Fetch context-neighbor renders (prev/next pages) for cross-page
+      // continuity scanning. We resolve them by anchor_page ± 1 against the
+      // project's page list, falling back to nothing if no matching project
+      // entry exists at that anchor. Neighbors are READ-ONLY context — the
+      // human only annotates the focal canvas.
+      const fetchNeighbor = async (anchorPageDelta: number): Promise<ContextNeighbor | null> => {
+        const neighborAnchor = page.anchor_page + anchorPageDelta
+        const neighborPage = project.pages.find(p => p.anchor_page === neighborAnchor)
+        if (!neighborPage) return null
+        try {
+          const nDataUrl = await urlToDataUrl(neighborPage.image_url)
+          // Prefer second_pass (Agent) regions for neighbor display, fall back
+          // to expected_elements (Original). Read-only either way.
+          let neighborRegions: Region[] = []
+          const tryUrl = neighborPage.second_pass_url || neighborPage.expected_elements_url
+          if (tryUrl) {
+            try {
+              const r = await fetch(tryUrl)
+              if (r.ok) {
+                const { regions: rs } = importJson(await r.json())
+                neighborRegions = rs.map(reg => ({ ...reg, origin: 'agent_dispatcher' as const }))
+              }
+            } catch {/* swallow — context view degrades gracefully */}
+          }
+          return { slug: neighborPage.slug, image_url: nDataUrl, page_index: neighborAnchor, regions: neighborRegions }
+        } catch {
+          return null
+        }
+      }
+      const [prevNbr, nextNbr] = await Promise.all([fetchNeighbor(-1), fetchNeighbor(+1)])
+
       setCurrentProjectId(project.project_id)
       setSlug(page.slug)
       setImageUrl(dataUrl)
       setImageDataUrl(dataUrl)
-      setRegions(importedRegions)
-      // Capture the agent-emitted initial state as the diff baseline. Deep
-      // copy so subsequent in-place edits don't mutate it.
+      setRegions(humanSeed)
+      // Capture the Original (heuristic) regions as the diff baseline.
+      // Diff stays meaningful: Original vs Human-final.
       setRegionsInitial(JSON.parse(JSON.stringify(importedRegions)))
+      setRegionsAgent(agentRegions)
+      setContextPrev(prevNbr)
+      setContextNext(nextNbr)
       setSelectedId(null)
       const statusLabel = signoff ? 'signed-off' : page.status
+      const ctxMsg = (prevNbr || nextNbr)
+        ? ` · context: ${prevNbr ? `prev=${prevNbr.slug}` : '(no prev)'} ${nextNbr ? `next=${nextNbr.slug}` : '(no next)'}`
+        : ''
       setWarnings([
-        `Project: ${project.name} · page ${page.label} · status=${statusLabel} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'}`,
+        `Project: ${project.name} · page ${page.label} · status=${statusLabel} · seeded Human from ${seedSource} (${humanSeed.length} region${humanSeed.length === 1 ? '' : 's'})${ctxMsg}`,
         ...importWarnings,
       ])
     } catch (err) {
@@ -1038,14 +1120,26 @@ export function PdfLabLabelingPage() {
     return [clamp01((clientX - r.left) / r.width), clamp01((clientY - r.top) / r.height)]
   }, [])
 
+  /** Shift+drag triggers marquee-delete mode (instead of drawing a new
+   *  region). Mouse-up deletes every region whose bbox intersects the
+   *  marquee rectangle. */
+  const [marqueeMode, setMarqueeMode] = useState<boolean>(false)
+
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!imageUrl) return
-    // Agent / Diff views are read-only — no drawing new regions.
+    // Original / Agent / Diff views are read-only.
     if (viewMode !== 'human') return
     const p = clientToNormalized(e.clientX, e.clientY)
     if (!p) return
     setSelectedId(null)
-    setDrag({ startX: p[0], startY: p[1], curX: p[0], curY: p[1], family: activeFamily })
+    if (e.shiftKey) {
+      // Marquee-delete: same drag-rect mechanism, different family marker.
+      setMarqueeMode(true)
+      setDrag({ startX: p[0], startY: p[1], curX: p[0], curY: p[1], family: activeFamily })
+    } else {
+      setMarqueeMode(false)
+      setDrag({ startX: p[0], startY: p[1], curX: p[0], curY: p[1], family: activeFamily })
+    }
   }, [activeFamily, clientToNormalized, imageUrl, viewMode])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -1100,13 +1194,32 @@ export function PdfLabLabelingPage() {
     const w = bbox[2] - bbox[0], h = bbox[3] - bbox[1]
     if (w < 0.005 || h < 0.005) {
       setDrag(null)
+      setMarqueeMode(false)
+      return
+    }
+    if (marqueeMode) {
+      // Marquee-delete: drop every region whose bbox intersects the marquee.
+      const intersects = (a: [number, number, number, number], b: [number, number, number, number]): boolean => {
+        return !(a[2] <= b[0] || a[0] >= b[2] || a[3] <= b[1] || a[1] >= b[3])
+      }
+      setRegions(prev => {
+        const kept = prev.filter(r => !intersects(r.bbox, bbox))
+        const removed = prev.length - kept.length
+        if (removed > 0) {
+          setWarnings([`Marquee-delete: removed ${removed} region${removed === 1 ? '' : 's'} intersecting the marquee rect`])
+        }
+        return kept
+      })
+      setSelectedId(null)
+      setMarqueeMode(false)
+      setDrag(null)
       return
     }
     const id = newId()
     setRegions(prev => [...prev, { id, family: drag.family, bbox }])
     setSelectedId(id)
     setDrag(null)
-  }, [drag, regionDrag])
+  }, [drag, regionDrag, marqueeMode])
 
   /** Click the family tag → cycle through 4 anchored positions. The label
    *  is always pinned to a corner of the bbox so move/resize keep them
@@ -1550,23 +1663,49 @@ export function PdfLabLabelingPage() {
             )
           })()}
           <span className="pdf-lab-labeling-toolbar-divider" />
+          <button
+            className="pdf-lab-labeling-zoom-btn"
+            onClick={() => {
+              if (regions.length === 0) return
+              if (window.confirm(`Clear all ${regions.length} region${regions.length === 1 ? '' : 's'} on this page? (Auto-save will persist the empty state.)`)) {
+                setRegions([])
+                setSelectedId(null)
+              }
+            }}
+            disabled={regions.length === 0 || viewMode !== 'human'}
+            title={
+              viewMode !== 'human'
+                ? 'Clear is only available in Human view'
+                : regions.length === 0
+                  ? 'No regions to clear'
+                  : `Clear all ${regions.length} regions on this page (you can redraw from scratch)`
+            }
+            data-qid="pdf-lab:labeling:clear-all"
+          >Clear</button>
+          <span className="pdf-lab-labeling-toolbar-divider" />
           <div className="pdf-lab-labeling-viewmode" role="group" aria-label="Canvas view mode">
+            <button
+              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'original' ? 'is-active' : ''}`}
+              onClick={() => setViewMode('original')}
+              title="Original view: pdf_oxide + ledger deterministic output (the primitive extractor's classification, read-only)"
+              data-qid="pdf-lab:labeling:viewmode-original"
+            >Original</button>
             <button
               className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'agent' ? 'is-active' : ''}`}
               onClick={() => setViewMode('agent')}
-              title="Agent view: what pdf_oxide + ledger pre-labeled this page (read-only)"
+              title="Agent view: scillm gpt-5.5 second-pass refined classification (LLM enrichment of Original, read-only)"
               data-qid="pdf-lab:labeling:viewmode-agent"
             >Agent</button>
             <button
               className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'human' ? 'is-active' : ''}`}
               onClick={() => setViewMode('human')}
-              title="Human view: your corrections (editable)"
+              title="Human view: your corrections (editable, default)"
               data-qid="pdf-lab:labeling:viewmode-human"
             >Human</button>
             <button
               className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'diff' ? 'is-active' : ''}`}
               onClick={() => setViewMode('diff')}
-              title="Diff view: where agent and human disagree (each diff is a typed bug spec)"
+              title="Diff view: where Original and Human disagree (each diff is a typed bug spec)"
               data-qid="pdf-lab:labeling:viewmode-diff"
             >Diff</button>
           </div>
@@ -1585,6 +1724,36 @@ export function PdfLabLabelingPage() {
           onContextMenu={e => handleContextMenu(e)}
         >
           {imageUrl ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
+              {contextPrev && (
+                <div
+                  className="pdf-lab-labeling-context-pane pdf-lab-labeling-context-prev"
+                  data-qid="pdf-lab:labeling:context-prev"
+                  title={`Previous page (read-only context): ${contextPrev.slug}`}
+                  style={{
+                    opacity: 0.55,
+                    position: 'relative',
+                    width: imageNaturalSize ? `${imageNaturalSize.w * zoom * 0.5}px` : '50%',
+                    border: '2px dashed rgba(120,140,180,0.45)',
+                    borderRadius: 6,
+                    padding: 4,
+                    flexShrink: 0,
+                  }}
+                >
+                  <div style={{ fontSize: 11, color: '#9aa6c4', padding: '2px 8px', fontFamily: 'ui-monospace, monospace', textAlign: 'center' }}>
+                    ◀ prev (read-only context — scan for page-spanning elements): {contextPrev.slug} · {contextPrev.regions.length} regions
+                  </div>
+                  <img
+                    src={contextPrev.image_url}
+                    alt={`Previous page ${contextPrev.slug}`}
+                    draggable={false}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </div>
+              )}
+              <div style={{ position: 'sticky', top: 0, zIndex: 2, background: 'rgba(8,12,24,0.85)', color: '#cfe', padding: '4px 8px', fontSize: 11, fontFamily: 'ui-monospace, monospace', border: '1px solid rgba(120,200,160,0.4)', borderRadius: 4 }}>
+                ● FOCAL (annotate this): {slug}
+              </div>
             <div
               ref={imgWrapperRef}
               className="pdf-lab-labeling-canvas-inner"
@@ -1616,8 +1785,13 @@ export function PdfLabLabelingPage() {
                   _diffStatus?: 'identical' | 'added' | 'removed' | 'bbox_edited' | 'family_relabeled' | 'metadata_edited'
                 }
                 let displayed: RenderRegion[] = []
-                if (viewMode === 'agent') {
+                if (viewMode === 'original') {
+                  // Original = pdf_oxide + ledger deterministic (the regions captured
+                  // at page-load before any human or scillm edits).
                   displayed = regionsInitial.map(r => ({ ...r, _diffStatus: 'identical' as const }))
+                } else if (viewMode === 'agent') {
+                  // Agent = scillm second-pass refined classification.
+                  displayed = regionsAgent.map(r => ({ ...r, _diffStatus: 'identical' as const }))
                 } else if (viewMode === 'human') {
                   displayed = regions
                 } else {
@@ -1691,17 +1865,44 @@ export function PdfLabLabelingPage() {
               })()}
               {previewRect && (
                 <div
-                  className="pdf-lab-labeling-region is-preview"
+                  className={`pdf-lab-labeling-region is-preview ${marqueeMode ? 'is-marquee-delete' : ''}`}
                   style={{
                     left: `${previewRect[0] * 100}%`,
                     top: `${previewRect[1] * 100}%`,
                     width: `${(previewRect[2] - previewRect[0]) * 100}%`,
                     height: `${(previewRect[3] - previewRect[1]) * 100}%`,
-                    borderColor: activeFamilyDef.color,
-                    background: `${activeFamilyDef.color}22`,
+                    borderColor: marqueeMode ? '#ef4444' : activeFamilyDef.color,
+                    background: marqueeMode ? '#ef444422' : `${activeFamilyDef.color}22`,
                   }}
                 />
               )}
+            </div>
+            {contextNext && (
+              <div
+                className="pdf-lab-labeling-context-pane pdf-lab-labeling-context-next"
+                data-qid="pdf-lab:labeling:context-next"
+                title={`Next page (read-only context): ${contextNext.slug}`}
+                style={{
+                  opacity: 0.55,
+                  position: 'relative',
+                  width: imageNaturalSize ? `${imageNaturalSize.w * zoom * 0.5}px` : '50%',
+                  border: '2px dashed rgba(120,140,180,0.45)',
+                  borderRadius: 6,
+                  padding: 4,
+                  flexShrink: 0,
+                }}
+              >
+                <div style={{ fontSize: 11, color: '#9aa6c4', padding: '2px 8px', fontFamily: 'ui-monospace, monospace', textAlign: 'center' }}>
+                  ▶ next (read-only context — scan for page-spanning elements): {contextNext.slug} · {contextNext.regions.length} regions
+                </div>
+                <img
+                  src={contextNext.image_url}
+                  alt={`Next page ${contextNext.slug}`}
+                  draggable={false}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
+            )}
             </div>
           ) : (
             <div className="pdf-lab-labeling-empty">

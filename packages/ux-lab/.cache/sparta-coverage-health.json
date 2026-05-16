@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-05-15T05:10:04.307Z",
+  "generated_at": "2026-05-15T16:36:51.773Z",
   "stale": false,
   "refreshing": false,
   "corpus": {
     "controls": 12309,
     "qrasLegacy": 245975,
-    "qrasCanonical": 4075,
+    "qrasCanonical": 4306,
     "qrasRelationship": 1652,
-    "qrasTotal": 251702,
+    "qrasTotal": 251933,
     "relationships": 262426,
     "urls": 6854,
     "urlKnowledge": 43398,
@@ -26,16 +26,16 @@
     ],
     "counts": {
       "legacy": 245975,
-      "canonical": 4075,
+      "canonical": 4306,
       "relationship": 1652,
-      "total": 251702
+      "total": 251933
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-15T05:10:03Z",
+    "generated_at": "2026-05-15T16:36:51Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -449,9 +449,9 @@
       {
         "ok": true,
         "dimension": "qra_question_surface_quality",
-        "message": "0 malformed question surfaces across 5,727 scanned QRAs; 924 course-corrected non-generation placeholders",
+        "message": "0 malformed question surfaces across 5,987 scanned QRAs; 924 course-corrected non-generation placeholders",
         "malformed": 0,
-        "scanned": 5727,
+        "scanned": 5987,
         "course_corrected_non_generation": 924,
         "course_corrected_by_collection": {
           "sparta_qra_canonical": 484,
@@ -469,7 +469,7 @@
       {
         "ok": false,
         "dimension": "qra_coverage_per_control",
-        "message": "4335 in-scope text-backed controls have no valid QRA (4334 generation-required, 1 terminal disposition required)"
+        "message": "4258 in-scope text-backed controls have no valid QRA (4257 generation-required, 1 terminal disposition required)"
       },
       {
         "ok": true,
@@ -606,7 +606,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-15T05:10:03Z",
+      "generated_at": "2026-05-15T16:36:51Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3277,7 +3277,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 461517,
+    "current_log_age_seconds": 502725,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3286,6 +3286,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 461517s ago."
+    "message": "No active create-qras worker observed; latest log changed 502725s ago."
   }
 }
