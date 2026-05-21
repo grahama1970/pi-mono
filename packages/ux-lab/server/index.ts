@@ -19,6 +19,7 @@ import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
 import { buildQraReviewPatch, persistQraReview } from './qraReview.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
+import { createHash } from 'crypto'
 import { execFile, exec, spawn } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -74,6 +75,9 @@ app.post('/api/auth/revoke-all', (_req, res) => {
 
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
+const SCILLM_PROJECT_ROOT = process.env.SCILLM_PROJECT_ROOT ?? '/home/graham/workspace/experiments/scillm'
+const SCILLM_DAG_PHASE_ID = process.env.SCILLM_DAG_PHASE_ID ?? 'phase-20260519-dag-self-improvement-loop'
+const SCILLM_DAG_RUN_ARTIFACT_DIR = process.env.SCILLM_DAG_RUN_ARTIFACT_DIR ?? 'scillm-exec-run-hash-bound'
 const ARCH_SCOPE = 'architecture'
 const RE_QUESTION_SKILL = '/home/graham/workspace/experiments/agent-skills/skills/review-question'
 const WORKSHEETS_PATH = process.env.WORKSHEETS_YAML ?? resolve(__dirname, '../fixtures/sparta-reference/worksheets.yaml')
@@ -91,6 +95,62 @@ const SPARTA_GAP_PLAN_DIR = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_
 const PUBLIC_ROOT = resolve(__dirname, '../public')
 const ARTIFACTS_ROOT = resolve(process.env.UX_LAB_ARTIFACTS_ROOT ?? process.env.ARTIFACTS_ROOT ?? '/mnt/storage12tb/pi-mono/artifacts')
 const PDF_LAB_ARTIFACTS_ROOT = resolve(process.env.PDF_LAB_ARTIFACTS_ROOT ?? resolve(ARTIFACTS_ROOT, 'pdf-lab'))
+
+function canonicalJson(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value as Record<string, unknown>).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson((value as Record<string, unknown>)[key])}`).join(',')}}`
+  }
+  return JSON.stringify(value)
+}
+
+function canonicalExecutableGraph(graph: any): JsonRecord {
+  return {
+    exec_graph_version: graph?.exec_graph_version,
+    graph_id: graph?.graph_id,
+    graph_goal: graph?.graph_goal,
+    self_improvement_iterations: graph?.self_improvement_iterations,
+    review_fanout_limits: graph?.review_fanout_limits,
+    review_iteration_limits: graph?.review_iteration_limits,
+    nodes: Array.isArray(graph?.nodes) ? graph.nodes.map((node: any) => ({
+      id: node.id,
+      revision_id: node.revision_id,
+      type: node.type,
+      node_goal: node.node_goal,
+      depends_on: Array.isArray(node.depends_on) ? [...node.depends_on].sort() : undefined,
+      protocol_role: node.protocol_role,
+      persona_ref: node.persona_ref,
+      model: node.model,
+      model_pool: node.model_pool,
+      prompt: node.prompt,
+      messages: node.messages,
+      output_schema: node.output_schema,
+      retry_policy: node.retry_policy,
+      gate_policy: node.gate_policy,
+      review_scopes: node.review_scopes,
+      disabled: node.disabled,
+      archived: node.archived,
+      superseded_by: node.superseded_by,
+      metadata: node.metadata && typeof node.metadata === 'object' ? {
+        scheduling: node.metadata.scheduling,
+        schedule: node.metadata.schedule,
+        gate_policy: node.metadata.gate_policy,
+        retry_policy: node.metadata.retry_policy,
+        disabled: node.metadata.disabled,
+        archived: node.metadata.archived,
+        superseded_by: node.metadata.superseded_by,
+      } : undefined,
+    })).sort((a: any, b: any) => String(a.id).localeCompare(String(b.id))) : [],
+  }
+}
+
+function executableGraphHash(graph: any): string {
+  return createHash('sha256').update(canonicalJson(canonicalExecutableGraph(graph))).digest('hex')
+}
+
+function safeArtifactName(value: string): string {
+  return value.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 160) || 'graph'
+}
 
 type JsonRecord = Record<string, unknown>
 type WorksheetConfig = { description_source?: string } & Record<string, unknown>
@@ -4022,20 +4082,167 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
-app.get('/api/scillm/{*path}', (req, res) => {
+app.get('/api/scillm/dag-viewer/snapshot', async (_req, res) => {
+  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', SCILLM_DAG_PHASE_ID)
+  const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
+  const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
+  const runDir = existsSync(preferredRunDir) ? preferredRunDir : fallbackRunDir
+  const graphPath = resolve(runDir, 'graph.request.json')
+  const statusPath = resolve(runDir, 'status.json')
+  const eventsPath = resolve(runDir, 'events.jsonl')
+  const phaseStatusPath = resolve(phaseDir, 'PHASE_STATUS.json')
+
+  if (!isPathInside(SCILLM_PROJECT_ROOT, phaseDir) || !isPathInside(SCILLM_PROJECT_ROOT, runDir)) {
+    res.status(500).json({ ok: false, error: 'configured scillm DAG paths escape project root' })
+    return
+  }
+
+  try {
+    const [graphRaw, statusRaw, eventsRaw, phaseStatusRaw] = await Promise.all([
+      readFile(graphPath, 'utf-8'),
+      readFile(statusPath, 'utf-8'),
+      readFile(eventsPath, 'utf-8'),
+      readFile(phaseStatusPath, 'utf-8').catch(() => ''),
+    ])
+    const graph = JSON.parse(graphRaw)
+    const status = JSON.parse(statusRaw)
+    const baseGraphHash = executableGraphHash(graph)
+    const events = eventsRaw
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => JSON.parse(line))
+    res.json({
+      ok: true,
+      phase_id: SCILLM_DAG_PHASE_ID,
+      source: {
+        project_root: SCILLM_PROJECT_ROOT,
+        graph: graphPath,
+        status: statusPath,
+        events: eventsPath,
+        phase_status: phaseStatusPath,
+      },
+      graph,
+      status,
+      base_graph_hash: baseGraphHash,
+      hash_algorithm: 'sha256.canonical_json.executable_graph.v1',
+      events,
+      phase_status: phaseStatusRaw ? JSON.parse(phaseStatusRaw) : null,
+    })
+  } catch (err) {
+    res.status(503).json({
+      ok: false,
+      error: 'scillm DAG evidence artifacts are unavailable',
+      detail: err instanceof Error ? err.message : String(err),
+      expected: { graph: graphPath, status: statusPath, events: eventsPath },
+    })
+  }
+})
+
+app.post('/api/scillm/dag-viewer/amendments', async (req, res) => {
+  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', SCILLM_DAG_PHASE_ID)
+  const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
+  const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
+  const runDir = existsSync(preferredRunDir) ? preferredRunDir : fallbackRunDir
+  const graphPath = resolve(runDir, 'graph.request.json')
+  const eventPath = resolve(phaseDir, 'artifacts', 'dag-viewer', 'amendment-events.jsonl')
+  const amendmentDir = resolve(phaseDir, 'artifacts', 'dag-viewer', 'amendments')
+
+  if (!isPathInside(SCILLM_PROJECT_ROOT, phaseDir) || !isPathInside(SCILLM_PROJECT_ROOT, amendmentDir)) {
+    res.status(500).json({ ok: false, error: 'configured scillm DAG amendment paths escape project root' })
+    return
+  }
+
+  try {
+    const committedGraph = JSON.parse(await readFile(graphPath, 'utf-8'))
+    const currentHash = executableGraphHash(committedGraph)
+    const requestedHash = String(req.body?.baseGraphHash ?? req.body?.base_graph_hash ?? '')
+    if (!requestedHash) {
+      res.status(409).json({ ok: false, error: 'missing_base_graph_hash', baseGraphHash: currentHash })
+      return
+    }
+    if (requestedHash !== currentHash) {
+      res.status(409).json({ ok: false, error: 'stale_base_graph_hash', baseGraphHash: currentHash, requestedBaseGraphHash: requestedHash })
+      return
+    }
+
+    const operations = Array.isArray(req.body?.operations) ? req.body.operations : []
+    if (!operations.length) {
+      res.status(400).json({ ok: false, error: 'empty_amendment_operations' })
+      return
+    }
+
+    const now = new Date().toISOString()
+    const graphId = String(req.body?.graphId ?? req.body?.graph_id ?? committedGraph.graph_id ?? 'graph')
+    const amendmentId = `amendment-${safeArtifactName(graphId)}-${now.replace(/[:.]/g, '')}`
+    const artifactPath = resolve(amendmentDir, `${amendmentId}.json`)
+    const payload = {
+      schema: 'scillm.dag_viewer.amendment_draft.v1',
+      amendmentId,
+      graphId,
+      runId: req.body?.runId ?? req.body?.run_id ?? null,
+      baseGraphHash: currentHash,
+      origin: req.body?.origin ?? 'human',
+      status: 'draft',
+      operations,
+      rationale: req.body?.rationale ?? null,
+      warnings: Array.isArray(req.body?.warnings) ? req.body.warnings : [],
+      createdAt: now,
+      source: {
+        phase_id: SCILLM_DAG_PHASE_ID,
+        committed_graph: graphPath,
+      },
+    }
+    await mkdir(amendmentDir, { recursive: true })
+    await writeFile(artifactPath, JSON.stringify(payload, null, 2) + '\n', 'utf-8')
+    const event = {
+      type: 'dag.amendment.draft_saved',
+      amendmentId,
+      graphId,
+      baseGraphHash: currentHash,
+      origin: payload.origin,
+      artifactPath,
+      ts: now,
+    }
+    await mkdir(dirname(eventPath), { recursive: true })
+    await writeFile(eventPath, JSON.stringify(event) + '\n', { encoding: 'utf-8', flag: 'a' })
+    res.json({
+      ok: true,
+      amendmentId,
+      amendment_key: amendmentId,
+      baseGraphHash: currentHash,
+      status: 'draft',
+      artifactPath,
+      warnings: payload.warnings,
+    })
+  } catch (err) {
+    res.status(503).json({
+      ok: false,
+      error: 'amendment_draft_save_failed',
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
+app.all('/api/scillm/{*path}', (req, res) => {
   const scillmPath = '/' + (Array.isArray(req.params.path) ? req.params.path.join('/') : req.params.path)
   const url = new URL(`${SCILLM_URL}${scillmPath}`)
   if (req.url.includes('?')) {
     url.search = req.url.slice(req.url.indexOf('?'))
   }
+  const body = req.method === 'GET' || req.method === 'HEAD' ? null : JSON.stringify(req.body ?? {})
 
   const proxyReq = httpRequest(
     {
       hostname: url.hostname,
       port: url.port,
       path: `${url.pathname}${url.search}`,
-      method: 'GET',
+      method: req.method,
       headers: {
+        ...(body ? {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body),
+        } : {}),
         'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
         'X-Caller-Skill': 'ux-lab',
       },
@@ -4057,6 +4264,7 @@ app.get('/api/scillm/{*path}', (req, res) => {
   proxyReq.on('error', (err) => {
     res.status(502).json({ error: 'scillm unreachable', detail: err.message })
   })
+  if (body) proxyReq.write(body)
   proxyReq.end()
 })
 

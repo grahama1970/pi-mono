@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs'
-import { dirname } from 'path'
 import type { Plugin } from 'vite'
 
 /** PDF Lab sign-off persistence middleware.

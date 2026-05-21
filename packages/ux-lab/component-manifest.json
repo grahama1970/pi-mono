@@ -358,6 +358,61 @@
     ],
     "test_status": "TypeScript + CDP visual verification required after every layout change"
   },
+  "scillm_workspace": {
+    "id": "scillm-workspace",
+    "name": "ScillmWorkspace",
+    "file": "src/components/scillm/ScillmWorkspace.tsx",
+    "description": "Final Site workspace for #scillm with internal product tabs. Mirrors the SPARTA Explorer pattern by keeping Monitor and DAG Viewer-Planner inside one scillm route instead of splitting them into separate ux-lab projects.",
+    "tabs": [
+      {
+        "id": "monitor",
+        "component": "ScillmDashboard",
+        "purpose": "Live scillm proxy calls, provider auth, jobs, model pools, and trace inspection."
+      },
+      {
+        "id": "dag-planner",
+        "component": "ScillmDagPlanner",
+        "purpose": "Review and amend the plan-iterate DAG viewer-editor evidence graph from real scillm project artifacts."
+      }
+    ],
+    "route": "http://localhost:3002/#scillm",
+    "deep_links": {
+      "monitor": "http://localhost:3002/#scillm",
+      "dag-planner": "http://localhost:3002/#scillm/dag-planner"
+    },
+    "test_status": "TypeScript + browser screenshot verification required after tab or layout changes"
+  },
+  "scillm_dag_planner": {
+    "id": "scillm-dag-planner",
+    "name": "ScillmDagPlanner",
+    "file": "src/components/scillm/ScillmDagPlanner.tsx",
+    "description": "DAG Viewer-Editor tab for scillm. Loads a fail-closed snapshot adapter from /api/scillm/dag-viewer/snapshot and renders five source-derived lenses: Source, Design, Trace, Checkpoints, and Debug. Design mode reuses ScillmExecGraphDebugger and saves semantic edits as DAG-viewer amendment drafts without applying them to committed execution.",
+    "data_sources": [
+      "GET /api/scillm/dag-viewer/snapshot",
+      "GET /api/scillm/v1/scillm/models",
+      "GET /api/scillm/v1/scillm/exec/review-catalog?skill=review-code",
+      "POST /api/scillm/dag-viewer/amendments",
+      "POST /api/scillm/v1/scillm/exec/review-catalog/{agents|contracts}?skill=review-code",
+      "src/components/scillm/dag-planner/dagViewModel.ts",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/phase-20260519-dag-self-improvement-loop/evidence-artifacts/scillm-exec-run-final/{graph.request.json,status.json,events.jsonl}"
+    ],
+    "artifact_contract": {
+      "fail_closed": "If graph.request.json, status.json, or events.jsonl is missing, the tab renders DAG evidence unavailable instead of fake graph state.",
+      "phase_gate": "The tab surfaces PHASE_STATUS review_comparison when phase closure is still pending.",
+      "model_selection": "Review fanout models come from /v1/scillm/models review_fanout_models, preserving the no text/text-* selection contract.",
+      "inspectability": "The DAG planner uses the scillm-dag-planner modifier so the DAG evidence surface scrolls inside the #scillm final-site panel; graph, footer events, and node inspector content must remain reachable at desktop viewport height.",
+      "viewport_controls": "The graph canvas exposes zoom in, zoom out, move/pan, and fit controls in the top-right canvas well and the same actions in the canvas context menu.",
+      "layout_spacing": "The DAG layout must size the internal graph canvas from depth count and widest layer so adjacent depth columns do not overlap 220px node cards.",
+      "plan_iterate_shape": "Known plan-iterate graphs render as a workflow map: synthesis/goal on top, review-code/review-prompt/review-design lane labels, a green current-round band, then aggregate/validate summary nodes below.",
+      "node_inspector": "Node inspection uses a right-side slide-out data pane. Selecting a node opens the pane; the pane can close without destroying graph context and can be reopened from the canvas.",
+      "view_model": "dagViewModel.ts derives DagViewModel from executable graph nodes, status/events/artifacts, draft amendment diff, and separate UI layout state. Build/Run/Debug are the primary product modes; Evidence/Plan edit/Nico proposals are lower-level capabilities.",
+      "base_graph_hash": "GET /api/scillm/dag-viewer/snapshot returns a backend-computed sha256 canonical executable graph hash. UI draft saves include that hash and display stale-hash warnings when the draft base hash no longer matches the current snapshot.",
+      "amendment_drafts": "Build mode semantic edits create local AmendmentDraft operations. Save Draft posts operations to /api/scillm/dag-viewer/amendments; Apply Amendment is intentionally disabled until a backend apply validator exists.",
+      "build_mode_controls": "Build mode exposes add child, add sibling, add gate, disable node, and archive node controls in the node inspector. These mutate only the local draft graph and formal amendment diff.",
+      "five_lens_shell": "The top-level DAG viewer-editor shell separates Source (raw graph/status/events JSON), Design (visual graph and amendment drafting), Trace (live/review execution chronology), Checkpoints (human gates and interrupt-style queue), and Debug (evidence, artifacts, hashes, and missing fields). This borrows product requirements from LangGraph/Studio, Agent Flow, and Agent Inbox without copying source code."
+    },
+    "test_status": "TypeScript + local adapter health + actual screenshot inspection required before claiming ready"
+  },
 
   "hack_monitor": {
     "id": "hack-evolve-monitor",

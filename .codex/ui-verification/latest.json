@@ -1,14 +1,15 @@
 {
-  "verified_at": "2026-05-08T18:29:48.632085+00:00",
+  "verified_at": "2026-05-20T17:48:43.186473+00:00",
   "cwd": "/home/graham/workspace/experiments/pi-mono",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
-  "url": "file:///home/graham/workspace/experiments/pi-mono/.agents/skills/hack/docs/HACK_THREE_LANE_INFOGRAPHIC.html",
-  "name": "hack-infographic-final-wording-fixes",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/hack-infographic-final-wording-fixes/20260508T182943Z.png",
+  "url": "http://localhost:3002/#scillm/dag-planner",
+  "name": "scillm-dag-blocker-explanation-turn",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/scillm-dag-blocker-explanation-turn/20260520T174837Z.png",
   "screenshot_exists": true,
-  "read_json": "/tmp/codex-ui-verification/pi-mono/hack-infographic-final-wording-fixes/20260508T182943Z.read.json",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/scillm-dag-blocker-explanation-turn/20260520T174837Z.read.json",
   "read_json_exists": true,
   "latest_marker_created_by": "codex",
-  "latest_marker_path": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json"
+  "latest_marker_path": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/latest.json",
+  "visual_note": "Fresh CDP screenshot inspected this turn: #scillm/dag-planner shows Closure and deploy are blocked banner and Source contract JSON view."
 }

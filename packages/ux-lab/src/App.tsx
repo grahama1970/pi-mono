@@ -43,7 +43,7 @@ const ArchitectureView = React.lazy(() => import('./components/architecture/Arch
 const EmbryTerminal = React.lazy(() => import('./components/embry-terminal/EmbryTerminalView').then(m => ({ default: m.EmbryTerminalView })).catch(() => ({ default: () => React.createElement('div', { style: { padding: 20, color: '#f44' } }, 'Embry Terminal failed to load — check console') })));
 const DatalakeExplorer = React.lazy(() => import('./components/datalake-explorer/DatalakeExplorerView').then(m => ({ default: m.DatalakeExplorerView })));
 const Lean4Lemma = React.lazy(() => import('./components/lean4-lemma/Lean4LemmaView').then(m => ({ default: m.Lean4LemmaView })));
-const ScillmMonitor = React.lazy(() => import('./components/scillm/ScillmDashboard').then(m => ({ default: m.ScillmDashboard })));
+const ScillmWorkspace = React.lazy(() => import('./components/scillm/ScillmWorkspace').then(m => ({ default: m.ScillmWorkspace })));
 const ComponentGalleryView = React.lazy(() => import('./components/gallery/ComponentGallery').then(m => ({ default: m.ComponentGallery })));
 const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m => ({ default: m.PdfLabView })));
 const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/InitialSweepStaticProof').then(m => ({ default: m.InitialSweepStaticProof })));
@@ -293,7 +293,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'embry-terminal' && <EmbryTerminal />}
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
           {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
-          {projectId === 'scillm' && <ScillmMonitor />}
+          {projectId === 'scillm' && <ScillmWorkspace initialTab={subpath} />}
           {projectId === 'hack' && (
             <div className="flex-1 overflow-auto p-6">
               <HackEvolveMonitor />
@@ -1162,15 +1162,22 @@ const ProjectSidebar = ({
   );
 };
 
-const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
+const ViewHeader = ({ activeView, onViewChange, systemHealth, deployBlockedReason }: {
   activeView: View,
   onViewChange: (view: View) => void,
-  systemHealth: { health: 'NOMINAL' | 'DEGRADED' | 'OFFLINE', details: string }
+  systemHealth: { health: 'NOMINAL' | 'DEGRADED' | 'OFFLINE', details: string },
+  deployBlockedReason?: string | null
 }) => {
   useRegisterAction('header:tab:view', { app: 'ux-lab', action: 'HEADER_SWITCH_VIEW', label: 'Switch View Tab', description: 'Switch between Mockups, Components, Design Board, Reviews, Testing, and Final Site views' });
   useRegisterAction('header:button:history', { app: 'ux-lab', action: 'HEADER_HISTORY', label: 'History', description: 'View project history and recent changes' });
   useRegisterAction('header:button:notifications', { app: 'ux-lab', action: 'HEADER_NOTIFICATIONS', label: 'Notifications', description: 'View system notifications and alerts' });
-  useRegisterAction('header:button:deploy', { app: 'ux-lab', action: 'HEADER_DEPLOY', label: 'Deploy', description: 'Deploy the current project to production' });
+  const isDeployBlocked = Boolean(deployBlockedReason);
+  useRegisterAction('header:button:deploy', {
+    app: 'ux-lab',
+    action: 'HEADER_DEPLOY',
+    label: isDeployBlocked ? 'Deploy Blocked' : 'Deploy',
+    description: isDeployBlocked ? deployBlockedReason || 'Deployment is blocked by the current review gate' : 'Deploy the current project to production'
+  });
   return (
     <header className="h-14 bg-black border-b border-tactical-primary/20 flex items-center justify-between px-6 z-40">
       <div className="flex h-full items-center space-x-8">
@@ -1232,9 +1239,21 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth }: {
           <Bell className="w-4 h-4" />
           <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-tactical-danger rounded-full" />
         </button>
-        <button data-qid="header:button:deploy" data-qs-action="HEADER_DEPLOY" title="Deploy project to production" className="bg-tactical-primary text-black px-4 py-2.5 min-h-[44px] text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 hover:bg-tactical-success transition-all">
-          <Rocket className="w-3.5 h-3.5" />
-          Deploy
+        <button
+          data-qid="header:button:deploy"
+          data-qs-action={isDeployBlocked ? "HEADER_DEPLOY_BLOCKED" : "HEADER_DEPLOY"}
+          title={isDeployBlocked ? deployBlockedReason || 'Deploy blocked by the current review gate' : 'Deploy project to production'}
+          disabled={isDeployBlocked}
+          aria-disabled={isDeployBlocked}
+          className={cn(
+            "px-4 py-2.5 min-h-[44px] text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 transition-all border",
+            isDeployBlocked
+              ? "bg-tactical-danger/10 border-tactical-danger/40 text-tactical-danger cursor-not-allowed"
+              : "bg-tactical-primary border-tactical-primary text-black hover:bg-tactical-success"
+          )}
+        >
+          {isDeployBlocked ? <AlertCircle className="w-3.5 h-3.5" /> : <Rocket className="w-3.5 h-3.5" />}
+          {isDeployBlocked ? 'Deploy blocked' : 'Deploy'}
         </button>
       </div>
     </header>
@@ -1638,6 +1657,11 @@ export default function App() {
     && activeView === 'final-site'
     && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage');
   const isFocusMode = isPdfLabFocus;
+  const deployBlockedReason = activeProjectId === 'scillm'
+    && activeView === 'final-site'
+    && hashSubpath === 'dag-planner'
+    ? 'Deploy blocked: scillm DAG phase is ready for the final review gate, but not accepted.'
+    : null;
 
   // Sync hash → state on popstate (back/forward)
   useEffect(() => {
@@ -1698,6 +1722,7 @@ export default function App() {
             activeView={activeView} 
             onViewChange={handleViewChange}
             systemHealth={systemHealth}
+            deployBlockedReason={deployBlockedReason}
           />
         )}
         
@@ -1742,13 +1767,13 @@ export default function App() {
                         <PromptLab />
                       </React.Suspense>
                     </div>
-                  ) : activeProjectId === 'scillm' ? (
-                    <div className="flex-1 overflow-auto p-4">
-                      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_SCILLM...</div>}>
-                        <ScillmMonitor />
-                      </React.Suspense>
-                    </div>
-                  ) : (
+	                  ) : activeProjectId === 'scillm' ? (
+	                    <div className="flex-1 min-h-0 overflow-hidden">
+	                      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_SCILLM...</div>}>
+	                        <ScillmWorkspace />
+	                      </React.Suspense>
+	                    </div>
+	                  ) : (
                     <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_GALLERY...</div>}>
                       <ComponentGalleryView />
                     </React.Suspense>

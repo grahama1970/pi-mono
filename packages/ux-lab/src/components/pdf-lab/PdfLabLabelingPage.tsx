@@ -51,6 +51,7 @@ interface Region {
   label?: string
   text_hint?: string
   lead_label?: string
+  breadcrumb?: string[]
   notes?: string
   /** Where the family tag sits relative to the bbox. Click the tag to
    *  cycle through the four anchored positions. Default `top-outside` =
@@ -86,6 +87,7 @@ interface ExpectedElement {
   label?: string | null
   text_hint?: string
   lead_label?: string
+  breadcrumb?: string[]
   notes?: string
   allowed_types?: string[]
   match_strategy?: string
@@ -124,6 +126,23 @@ function normalizeRect(x0: number, y0: number, x1: number, y1: number): [number,
   return [clamp01(a), clamp01(c), clamp01(b), clamp01(d)]
 }
 
+function parseBreadcrumb(value: unknown): string[] | undefined {
+  if (Array.isArray(value)) {
+    const parts = value.map(part => String(part).trim()).filter(Boolean)
+    return parts.length ? parts : undefined
+  }
+  if (typeof value === 'string') {
+    const separator = ['›', '>', '/', '|'].find(s => value.includes(s))
+    const parts = (separator ? value.split(separator) : [value]).map(part => part.trim()).filter(Boolean)
+    return parts.length ? parts : undefined
+  }
+  return undefined
+}
+
+function formatBreadcrumb(value: string[] | undefined): string {
+  return value?.join(' › ') ?? ''
+}
+
 function regionsToExpected(regions: Region[], slug = 'manual_labeling'): { schema_version: string; slice_id: string; captured_at: string; expected_elements: ExpectedElement[] } {
   return {
     schema_version: 'pdf_lab.golden_slice.v2',
@@ -138,6 +157,7 @@ function regionsToExpected(regions: Region[], slug = 'manual_labeling'): { schem
       }
       if (r.label) e.label = r.label
       if (r.text_hint) e.text_hint = r.text_hint
+      if (r.breadcrumb?.length) e.breadcrumb = r.breadcrumb
       if (r.lead_label) {
         e.lead_label = r.lead_label
         e.desired_role = 'labeled_paragraph'
@@ -177,6 +197,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
         label: el.label ?? undefined,
         text_hint: el.text_hint,
         lead_label: el.lead_label ?? el.desired_lead_label,
+        breadcrumb: parseBreadcrumb(el.breadcrumb),
         notes: el.notes,
       })
     }
@@ -238,6 +259,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
         label: migratedLabel || undefined,
         text_hint: String(attrs.text_hint || '') || undefined,
         lead_label: String(attrs.lead_label || '') || undefined,
+        breadcrumb: parseBreadcrumb(attrs.breadcrumb),
         notes: String(attrs.notes || '') || undefined,
       })
     }
@@ -498,6 +520,7 @@ function classifyRegionDiff(
     (agentRegion.label ?? '') !== (humanRegion.label ?? '') ||
     (agentRegion.text_hint ?? '') !== (humanRegion.text_hint ?? '') ||
     (agentRegion.lead_label ?? '') !== (humanRegion.lead_label ?? '') ||
+    formatBreadcrumb(agentRegion.breadcrumb) !== formatBreadcrumb(humanRegion.breadcrumb) ||
     (agentRegion.notes ?? '') !== (humanRegion.notes ?? '')
   if (familyChanged) {
     return {
@@ -605,6 +628,7 @@ export function PdfLabLabelingPage() {
   const [imageNaturalSize, setImageNaturalSize] = useState<{ w: number; h: number } | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const selectedRegion = useMemo(() => regions.find(r => r.id === selectedId) ?? null, [regions, selectedId])
   const [drag, setDrag] = useState<DragState | null>(null)
   const [slug, setSlug] = useState('manual_labeling')
   const [warnings, setWarnings] = useState<string[]>([])
@@ -1970,6 +1994,20 @@ export function PdfLabLabelingPage() {
           Regions ({regions.length})
           {imageNaturalSize && <span className="pdf-lab-labeling-regions-meta">{imageNaturalSize.w}×{imageNaturalSize.h}px</span>}
         </div>
+        {selectedRegion?.breadcrumb?.length ? (
+          <div
+            className="pdf-lab-labeling-selected-breadcrumb"
+            data-qid="pdf-lab:labeling:selected-breadcrumb"
+            title="Selected region breadcrumb"
+          >
+            {selectedRegion.breadcrumb.map((part, index) => (
+              <span key={`${selectedRegion.id}-selected-bc-${index}`}>
+                {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
+                {part}
+              </span>
+            ))}
+          </div>
+        ) : null}
         {regions.length > 1 && (
           <button
             className="pdf-lab-labeling-regions-sort"
@@ -2030,6 +2068,23 @@ export function PdfLabLabelingPage() {
                 onChange={e => update({ text_hint: e.target.value || undefined })}
                 placeholder="text_hint — exact text the matcher should find"
               />
+              <input
+                type="text"
+                value={formatBreadcrumb(r.breadcrumb)}
+                onChange={e => update({ breadcrumb: parseBreadcrumb(e.target.value) })}
+                placeholder="breadcrumb — e.g. AC-2 ACCOUNT MANAGEMENT › (7) PRIVILEGED USER ACCOUNTS"
+                title="Per-region hierarchy path. Shared breadcrumbs identify sibling regions for merge/grouping."
+              />
+              {r.breadcrumb?.length ? (
+                <div className="pdf-lab-labeling-region-breadcrumb" title="Selected region breadcrumb">
+                  {r.breadcrumb.map((part, index) => (
+                    <span key={`${r.id}-bc-${index}`}>
+                      {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
+                      {part}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               {r.family === 'labeled_paragraph' && (
                 <input
                   type="text"

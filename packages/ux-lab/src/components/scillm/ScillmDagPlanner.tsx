@@ -1,0 +1,811 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Activity,
+  AlertTriangle,
+  Bug,
+  CheckSquare,
+  FileJson,
+  GitBranch,
+  Network,
+  PencilRuler,
+  ShieldCheck,
+  RefreshCcw,
+} from "lucide-react";
+import { EMBRY } from "../common/EmbryStyle";
+import { useRegisterAction } from "../../hooks/useRegisterAction";
+import {
+  ScillmExecGraphDebugger,
+  type AmendmentsLoadState,
+  type ExecGraphAmendment,
+  type ExecGraphAmendmentStatus,
+  type ExecEvent,
+  type ExecGraph,
+  type ExecStatus,
+  type ReviewCatalog,
+  type ReviewCatalogEntry,
+} from "./dag-planner/ScillmExecGraphDebugger";
+
+type DagSnapshot = {
+  ok: boolean;
+  phase_id: string;
+  source: Record<string, string>;
+  graph: ExecGraph;
+  base_graph_hash: string;
+  hash_algorithm?: string;
+  status: ExecStatus;
+  events: ExecEvent[];
+  phase_status?: {
+    status?: string;
+    review_status?: string;
+    review_comparison?: { closure_allowed?: boolean; reason?: string };
+    known_caveats?: string[];
+  } | null;
+};
+
+type LoadState =
+  | { status: "loading" }
+  | { status: "error"; message: string }
+  | { status: "ready"; snapshot: DagSnapshot };
+
+type PlannerSurface = "source" | "design" | "trace" | "checkpoints" | "debug";
+type SourcePayload = "graph" | "status" | "events" | "phase_status" | "snapshot";
+
+const API_HEADERS = { "Content-Type": "application/json" };
+
+export function ScillmDagPlanner() {
+  const [state, setState] = useState<LoadState>({ status: "loading" });
+  const [availableModels, setAvailableModels] = useState<string[]>([]);
+  const [reviewCatalog, setReviewCatalog] = useState<ReviewCatalog | undefined>();
+  const [catalogState, setCatalogState] = useState("catalog pending");
+  const [amendments, setAmendments] = useState<ExecGraphAmendment[]>([]);
+  const [amendmentsState, setAmendmentsState] = useState<AmendmentsLoadState>({ status: "idle" });
+  const [surface, setSurface] = useState<PlannerSurface>("source");
+  const [sourcePayload, setSourcePayload] = useState<SourcePayload>("graph");
+  const [hashCheck, setHashCheck] = useState<"idle" | "checking" | "match" | "changed" | "error">("idle");
+  const [copiedToken, setCopiedToken] = useState<string>("");
+
+  useRegisterAction("scillm:workspace:dag-refresh", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_REFRESH",
+    label: "Refresh DAG Viewer-Planner",
+    description: "Reload the scillm DAG evidence snapshot and review catalog",
+  });
+  useRegisterAction("scillm:dag-planner:lens:source", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_LENS_SOURCE",
+    label: "Show DAG source lens",
+    description: "Open the authoritative DAG source payload lens",
+  });
+  useRegisterAction("scillm:dag-planner:lens:design", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_LENS_DESIGN",
+    label: "Show DAG design lens",
+    description: "Open the DAG viewer-editor design and amendment lens",
+  });
+  useRegisterAction("scillm:dag-planner:lens:trace", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_LENS_TRACE",
+    label: "Show DAG trace lens",
+    description: "Open the DAG execution trace lens",
+  });
+  useRegisterAction("scillm:dag-planner:lens:checkpoints", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_LENS_CHECKPOINTS",
+    label: "Show DAG checkpoints lens",
+    description: "Open the human gate and checkpoint lens",
+  });
+  useRegisterAction("scillm:dag-planner:lens:debug", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_LENS_DEBUG",
+    label: "Show DAG debug lens",
+    description: "Open the missing-evidence and artifact debug lens",
+  });
+
+  const loadAmendments = useCallback(async (graphId: string) => {
+    setAmendmentsState({ status: "loading", message: "Loading scillm amendment records." });
+    try {
+      const response = await fetch(`/api/scillm/v1/scillm/exec/graph/${encodeURIComponent(graphId)}/amendments?limit=50`, { cache: "no-store" });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`amendments unavailable (${response.status}): ${text.slice(0, 240)}`);
+      }
+      const payload = await response.json();
+      const records = Array.isArray(payload.amendments) ? payload.amendments as ExecGraphAmendment[] : [];
+      setAmendments(records);
+      setAmendmentsState({ status: "loaded", message: `${records.length} scillm amendment record${records.length === 1 ? "" : "s"} loaded.` });
+      return records;
+    } catch (error) {
+      setAmendments([]);
+      setAmendmentsState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+      return [];
+    }
+  }, []);
+
+  const load = useCallback(async () => {
+    setState({ status: "loading" });
+    try {
+      const [snapshotResp, modelsResp, catalogResp] = await Promise.all([
+        fetch("/api/scillm/dag-viewer/snapshot"),
+        fetch("/api/scillm/v1/scillm/models"),
+        fetch("/api/scillm/v1/scillm/exec/review-catalog?skill=review-code"),
+      ]);
+      if (!snapshotResp.ok) {
+        const text = await snapshotResp.text();
+        throw new Error(`DAG snapshot unavailable (${snapshotResp.status}): ${text.slice(0, 240)}`);
+      }
+      const snapshot = (await snapshotResp.json()) as DagSnapshot;
+      if (!snapshot.ok || !snapshot.graph?.nodes?.length) {
+        throw new Error("DAG snapshot did not include a usable graph.");
+      }
+
+      if (modelsResp.ok) {
+        const modelPayload = await modelsResp.json();
+        const reviewModels = Array.isArray(modelPayload.review_fanout_models) ? modelPayload.review_fanout_models : [];
+        const selectable = Array.isArray(modelPayload.selectable_models) ? modelPayload.selectable_models : [];
+        setAvailableModels(reviewModels.length ? reviewModels : selectable);
+      } else {
+        setAvailableModels([]);
+      }
+
+      if (catalogResp.ok) {
+        const catalog = (await catalogResp.json()) as ReviewCatalog;
+        setReviewCatalog(catalog);
+        setCatalogState(`${catalog.agents?.length ?? 0} agents · ${catalog.contracts?.length ?? 0} contracts`);
+      } else {
+        setReviewCatalog(undefined);
+        setCatalogState(`catalog unavailable (${catalogResp.status})`);
+      }
+
+      setState({ status: "ready", snapshot });
+      void loadAmendments(snapshot.graph.graph_id);
+    } catch (error) {
+      setState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+      setCatalogState("catalog unavailable");
+      setAmendments([]);
+      setAmendmentsState({ status: "idle" });
+    }
+  }, [loadAmendments]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const phaseBadge = useMemo(() => {
+    if (state.status !== "ready") return "loading";
+    const phaseStatus = state.snapshot.phase_status?.status ?? "unknown";
+    const reviewStatus = state.snapshot.phase_status?.review_status ?? "unknown";
+    return `${phaseStatus} · review ${reviewStatus}`;
+  }, [state]);
+
+  const sourceView = useMemo(() => {
+    if (state.status !== "ready") return null;
+    const snapshot = state.snapshot;
+    const payloads: Record<SourcePayload, unknown> = {
+      graph: snapshot.graph,
+      status: snapshot.status,
+      events: snapshot.events,
+      phase_status: snapshot.phase_status,
+      snapshot: {
+        ok: snapshot.ok,
+        phase_id: snapshot.phase_id,
+        source: snapshot.source,
+        base_graph_hash: snapshot.base_graph_hash,
+        hash_algorithm: snapshot.hash_algorithm,
+        graph: snapshot.graph,
+        status: snapshot.status,
+        events: snapshot.events,
+        phase_status: snapshot.phase_status,
+      },
+    };
+    return {
+      payload: payloads[sourcePayload],
+      sourcePath: sourcePayload === "snapshot" ? "/api/scillm/dag-viewer/snapshot" : snapshot.source[sourcePayload] ?? "not reported",
+    };
+  }, [sourcePayload, state]);
+
+  const plannerSummary = useMemo(() => {
+    if (state.status !== "ready") return null;
+    return summarizeDagSnapshot(state.snapshot);
+  }, [state]);
+
+  async function saveReviewCatalogEntry(kind: "agents" | "contracts", entry: ReviewCatalogEntry) {
+    const response = await fetch(`/api/scillm/v1/scillm/exec/review-catalog/${kind}?skill=review-code`, {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({ ...entry, overwrite: true }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`review catalog save failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    await load();
+    return response.json();
+  }
+
+  async function amendPlan(draftGraph: ExecGraph, context: any) {
+    const snapshot = state.status === "ready" ? state.snapshot : null;
+    if (!snapshot) throw new Error("No DAG snapshot is loaded.");
+    const response = await fetch("/api/scillm/v1/scillm/exec/graph/amendments", {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        graph_id: snapshot.graph.graph_id,
+        run_id: (snapshot.status as ExecStatus & { run_id?: string }).run_id ?? snapshot.graph.graph_id,
+        base_graph: context.baseGraph ?? snapshot.graph,
+        draft_graph: draftGraph,
+        status: "proposed",
+        actor: "ux-lab.scillm-dag-planner",
+        operations: context.operations ?? [],
+        diff: context.diff,
+        validation: context.validation,
+        warning_acceptance: context.warning_acceptance,
+        provenance: {
+          phase_id: snapshot.phase_id,
+          source_artifacts: snapshot.source,
+          base_graph_hash: snapshot.base_graph_hash,
+          hash_algorithm: snapshot.hash_algorithm,
+          origin: "ux-lab #scillm/dag-planner",
+          operations: context.operations ?? [],
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`amendment save failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    const payload = await response.json();
+    await loadAmendments(snapshot.graph.graph_id);
+    return payload;
+  }
+
+  async function setAmendmentStatus(amendmentKey: string, status: Exclude<ExecGraphAmendmentStatus, "proposed">, reason?: string) {
+    const snapshot = state.status === "ready" ? state.snapshot : null;
+    if (!snapshot) throw new Error("No DAG snapshot is loaded.");
+    const response = await fetch(`/api/scillm/v1/scillm/exec/graph/amendments/${encodeURIComponent(amendmentKey)}/status`, {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        status,
+        actor: "ux-lab.scillm-dag-planner",
+        reason: reason ?? `Marked ${status} from DAG planner.`,
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`amendment status failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    const payload = await response.json();
+    await loadAmendments(snapshot.graph.graph_id);
+    return payload;
+  }
+
+  async function verifyBackendHash() {
+    if (state.status !== "ready") return;
+    setHashCheck("checking");
+    try {
+      const response = await fetch("/api/scillm/dag-viewer/snapshot", { cache: "no-store" });
+      if (!response.ok) throw new Error(`snapshot ${response.status}`);
+      const latest = (await response.json()) as DagSnapshot;
+      setHashCheck(latest.base_graph_hash === state.snapshot.base_graph_hash ? "match" : "changed");
+    } catch {
+      setHashCheck("error");
+    }
+  }
+
+  function copyText(value: string, token: string) {
+    void navigator.clipboard?.writeText(value);
+    setCopiedToken(token);
+    window.setTimeout(() => setCopiedToken(""), 1400);
+  }
+
+  return (
+    <div className="scillm-dashboard scillm-dag-planner" data-qid="scillm:dag-planner">
+      <div className="elevated-surface scillm-dashboard__header">
+        <div className="scillm-flex-row scillm-gap-8">
+          <GitBranch size={18} color={EMBRY.blue} />
+          <span className="scillm-heading-lg">DAG Viewer-Planner</span>
+          <span className="scillm-heading-md">plan-iterate evidence graph</span>
+        </div>
+        <div className="scillm-flex-row scillm-gap-12 scillm-flex-wrap">
+          <span className="scillm-chip">Phase: {state.status === "ready" ? state.snapshot.phase_id : "pending"}</span>
+          <span className="scillm-chip">State: {phaseBadge}</span>
+          <span className="scillm-chip">Review catalog: {catalogState}</span>
+          <button
+            type="button"
+            data-qid="scillm:workspace:dag-refresh"
+            data-qs-action="SCILLM_DAG_REFRESH"
+            title="Reload DAG evidence and catalog"
+            onClick={() => void load()}
+            className="press-scale scillm-focus scillm-button"
+          >
+            <RefreshCcw size={13} />
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {state.status === "loading" ? (
+        <div className="scillm-card scillm-flex-center" style={{ minHeight: 420 }}>
+          <span className="scillm-spinner scillm-spinner--blue" />
+          <span className="scillm-meta">Loading real scillm DAG evidence artifacts...</span>
+        </div>
+      ) : state.status === "error" ? (
+        <div className="scillm-card scillm-flex-col scillm-gap-12" style={{ margin: 16 }}>
+          <div className="scillm-flex-row scillm-gap-8">
+            <AlertTriangle size={18} color={EMBRY.red} />
+            <span className="scillm-heading">DAG evidence unavailable</span>
+          </div>
+          <div className="scillm-meta">
+            This tab fails closed when the plan-iterate graph, status, or event artifacts are missing.
+          </div>
+          <pre className="scillm-pre scillm-pre--empty">{state.message}</pre>
+        </div>
+      ) : (
+        <div className="scillm-dashboard__main" style={{ padding: 0 }}>
+          {state.snapshot.phase_status?.review_comparison?.closure_allowed === false ? (
+            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
+              <div className="scillm-flex-row scillm-gap-8">
+                <AlertTriangle size={16} color={EMBRY.amber} />
+                <span className="scillm-text-amber scillm-fw-700">Closure and deploy are blocked</span>
+              </div>
+              <div className="scillm-meta" style={{ marginTop: 6 }}>
+                Phase review is still pending. Do not accept, deploy, or treat reported node success as closure evidence until external review and required hashes are recorded. {state.snapshot.phase_status.review_comparison.reason}
+              </div>
+            </div>
+          ) : null}
+          <div className="scillm-dag-source-shell">
+            <div className="scillm-dag-source-shell__bar">
+              <div className="scillm-segmented" role="tablist" aria-label="DAG viewer-editor lenses">
+                {([
+                  ["source", "Source", FileJson],
+                  ["design", "Design", PencilRuler],
+                  ["trace", "Trace", Activity],
+                  ["checkpoints", "Checkpoints", CheckSquare],
+                  ["debug", "Debug", Bug],
+                ] as const).map(([id, label, Icon]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
+                    data-qid={`scillm:dag-planner:lens:${id}`}
+                    data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
+                    title={`Show ${label} lens`}
+                    onClick={() => setSurface(id)}
+                    role="tab"
+                    aria-selected={surface === id}
+                  >
+                    <Icon size={14} />
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="scillm-dag-source-shell__contract">
+                <span>Backend hash</span>
+                <code>{state.snapshot.base_graph_hash.slice(0, 16)}</code>
+                <span>{state.snapshot.hash_algorithm ?? "sha256 canonical executable graph"}</span>
+              </div>
+            </div>
+
+            {plannerSummary && surface !== "design" ? (
+              <DagLensSummary summary={plannerSummary} activeLens={surface} />
+            ) : null}
+
+            {surface === "source" && sourceView ? (
+              <section className="scillm-dag-source" aria-label="DAG source JSON viewer">
+                <div className="scillm-dag-source__header">
+                  <div>
+                    <div className="scillm-dag-source__eyebrow">Authoritative source contract</div>
+                    <h2>Actual DAG JSON</h2>
+                    <p>
+                      This is a draft executable graph source contract from the backend adapter. It is not an
+                      accepted baseline until phase review passes; layout edits and synthetic visual nodes stay outside it.
+                    </p>
+                  </div>
+                  <div className="scillm-dag-source__meta">
+                    <span>Graph ID</span>
+                    <code>{state.snapshot.graph.graph_id}</code>
+                    <span>Source</span>
+                    <code title={sourceView.sourcePath}>{sourceView.sourcePath}</code>
+                    <span>Hash check</span>
+                    <button
+                      type="button"
+                      className="scillm-dag-inline-action"
+                      onClick={() => void verifyBackendHash()}
+                      title="Fetch the current snapshot and compare its backend-computed baseGraphHash to the displayed hash."
+                    >
+                      <ShieldCheck size={13} />
+                      {hashCheck === "checking" ? "Checking" : hashCheck === "match" ? "Hash matches" : hashCheck === "changed" ? "Hash changed" : hashCheck === "error" ? "Check failed" : "Verify hash"}
+                    </button>
+                    <span>Copy</span>
+                    <button type="button" className="scillm-dag-inline-action" onClick={() => copyText(sourceView.sourcePath, "source-path")}>
+                      {copiedToken === "source-path" ? "Copied path" : "Copy path"}
+                    </button>
+                  </div>
+                </div>
+                <div className="scillm-dag-source__tabs" role="tablist" aria-label="DAG JSON payload">
+                  {([
+                    ["graph", "Graph"],
+                    ["status", "Status"],
+                    ["events", "Events"],
+                    ["phase_status", "Phase status"],
+                    ["snapshot", "Full snapshot"],
+                  ] as const).map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`scillm-dag-source__tab ${sourcePayload === id ? "scillm-dag-source__tab--active" : ""}`}
+                      onClick={() => setSourcePayload(id)}
+                      role="tab"
+                      aria-selected={sourcePayload === id}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <HighlightedJson value={sourceView.payload} />
+              </section>
+            ) : surface === "design" ? (
+              <>
+                <DesignMap graph={state.snapshot.graph} summary={plannerSummary} onOpenTrace={() => setSurface("trace")} />
+                <ScillmExecGraphDebugger
+                  graph={state.snapshot.graph}
+                  status={state.snapshot.status}
+                  events={state.snapshot.events}
+                  baseGraphHash={state.snapshot.base_graph_hash}
+                  amendBackendLabel="DAG-viewer draft endpoint"
+                  enablePlanEditing
+                  availableModels={availableModels}
+                  reviewCatalog={reviewCatalog}
+                  amendments={amendments}
+                  amendmentsState={amendmentsState}
+                  onRefreshAmendments={() => {
+                    void loadAmendments(state.snapshot.graph.graph_id);
+                  }}
+                  onSetAmendmentStatus={setAmendmentStatus}
+                  onAmendPlan={amendPlan}
+                  onSaveReviewCatalogEntry={saveReviewCatalogEntry}
+                />
+              </>
+            ) : surface === "trace" && plannerSummary ? (
+              <TraceLens snapshot={state.snapshot} summary={plannerSummary} onOpenDesign={() => setSurface("design")} />
+            ) : surface === "checkpoints" && plannerSummary ? (
+              <CheckpointLens snapshot={state.snapshot} summary={plannerSummary} onOpenDebug={() => setSurface("debug")} />
+            ) : plannerSummary ? (
+              <DebugLens snapshot={state.snapshot} summary={plannerSummary} onCopy={copyText} copiedToken={copiedToken} />
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+type DagPlannerSummary = {
+  nodeCount: number;
+  edgeCount: number;
+  eventCount: number;
+  running: string[];
+  queued: string[];
+  passed: string[];
+  failed: string[];
+  incompleteEvidence: string[];
+  incompleteEvidenceDetails: Array<{ id: string; reason: string }>;
+  checkpointNodes: string[];
+  latestEvents: ExecEvent[];
+};
+
+function summarizeDagSnapshot(snapshot: DagSnapshot): DagPlannerSummary {
+  const nodeResults = (snapshot.status as ExecStatus & { node_results?: Record<string, { ok?: boolean; evidence_status?: string; output_hash?: string }> }).node_results ?? {};
+  const states = (snapshot.status as ExecStatus & { node_states?: Record<string, string> }).node_states ?? {};
+  const running = Object.entries(states).filter(([, value]) => value === "running").map(([id]) => id);
+  const queued = Object.entries(states).filter(([, value]) => value === "queued" || value === "ready").map(([id]) => id);
+  const passed = Object.entries(nodeResults).filter(([, result]) => result.ok === true).map(([id]) => id);
+  const failed = Object.entries(nodeResults).filter(([, result]) => result.ok === false).map(([id]) => id);
+  const incompleteEvidence = Object.entries(nodeResults)
+    .filter(([, result]) => !result.output_hash || result.evidence_status === "incomplete")
+    .map(([id]) => id);
+  const incompleteEvidenceDetails = Object.entries(nodeResults)
+    .filter(([, result]) => !result.output_hash || result.evidence_status === "incomplete")
+    .map(([id, result]) => ({
+      id,
+      reason: !result.output_hash
+        ? "Missing output hash"
+        : result.evidence_status === "incomplete"
+          ? "Evidence status incomplete"
+          : "Evidence not fully reported",
+    }));
+  const checkpointNodes = snapshot.graph.nodes
+    .filter((node) => /gate|human|interrupt|approval|checkpoint/i.test(`${node.id} ${node.type} ${node.node_goal}`))
+    .map((node) => node.id);
+  return {
+    nodeCount: snapshot.graph.nodes.length,
+    edgeCount: snapshot.graph.nodes.reduce((count, node) => count + (node.depends_on?.length ?? 0), 0),
+    eventCount: snapshot.events.length,
+    running,
+    queued,
+    passed,
+    failed,
+    incompleteEvidence,
+    incompleteEvidenceDetails,
+    checkpointNodes,
+    latestEvents: snapshot.events.slice().reverse(),
+  };
+}
+
+function DagLensSummary({ summary, activeLens }: { summary: DagPlannerSummary; activeLens: PlannerSurface }) {
+  return (
+    <section className="scillm-dag-lens-summary" aria-label="DAG lens summary">
+      <div>
+        <div className="scillm-dag-source__eyebrow">Viewer-editor contract</div>
+        <h2>{lensTitle(activeLens)}</h2>
+        <p>{lensDescription(activeLens)}</p>
+      </div>
+      <div className="scillm-dag-lens-summary__metrics">
+        <Metric label="nodes" value={summary.nodeCount} title="Executable graph nodes from the backend DAG snapshot." />
+        <Metric label="edges" value={summary.edgeCount} title="Dependency edges computed from executable node depends_on fields." />
+        <Metric label="events" value={summary.eventCount} title="Runtime/review events loaded from the source events artifact." />
+        <Metric label="checkpoints" value={summary.checkpointNodes.length} title="Human gate, interrupt, approval, or checkpoint nodes inferred from the graph snapshot." />
+      </div>
+    </section>
+  );
+}
+
+function Metric({ label, value, title }: { label: string; value: number; title?: string }) {
+  return (
+    <div className="scillm-dag-metric" title={title}>
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function lensTitle(lens: PlannerSurface) {
+  switch (lens) {
+    case "source": return "Source contract";
+    case "design": return "Design graph";
+    case "trace": return "Live and review trace";
+    case "checkpoints": return "Human checkpoints";
+    case "debug": return "Debug evidence";
+  }
+}
+
+function lensDescription(lens: PlannerSurface) {
+  switch (lens) {
+    case "source":
+      return "The backend adapter payload: executable graph, status, events, phase state, and backend hash. Draft until review is accepted.";
+    case "design":
+      return "Graph structure and amendment-draft editing. Semantic changes save drafts; active execution is not mutated.";
+    case "trace":
+      return "Execution replay context: running, queued, passed, failed, and recent event chronology.";
+    case "checkpoints":
+      return "Human gates and interrupt-style workflow items. This borrows Agent Inbox semantics without inventing actions.";
+    case "debug":
+      return "Evidence, artifacts, missing output hashes, backend hash, and raw source paths for closure review.";
+  }
+}
+
+function DesignMap({ graph, summary, onOpenTrace }: { graph: ExecGraph; summary: DagPlannerSummary | null; onOpenTrace: () => void }) {
+  const positions: Record<string, { x: number; y: number; label: string; lane?: string }> = {
+    "project-agent-synthesize-round-1": { x: 50, y: 44, label: "Goal" },
+    "review-code-round-1": { x: 25, y: 142, label: "review-code", lane: "review-code" },
+    "review-prompt-round-1": { x: 50, y: 142, label: "review-prompt", lane: "review-prompt" },
+    "test-interactions-round-1": { x: 69, y: 142, label: "test-interactions", lane: "review-design" },
+    "review-design-round-1": { x: 82, y: 142, label: "review-design", lane: "review-design" },
+    "project-agent-aggregate-round-1": { x: 50, y: 228, label: "aggregate" },
+    "plan-iterate-validate-round-1": { x: 50, y: 302, label: "validate" },
+  };
+  const mapNodes = graph.nodes.map((node, index) => ({
+    node,
+    position: positions[node.id] ?? { x: 16 + (index % 5) * 16, y: 310 + Math.floor(index / 5) * 82, label: node.id },
+  }));
+  const edges = mapNodes.flatMap(({ node, position }) => (node.depends_on ?? [])
+    .map((dep) => ({ source: mapNodes.find((candidate) => candidate.node.id === dep)?.position, target: position, id: `${dep}->${node.id}` }))
+    .filter((edge): edge is { source: { x: number; y: number; label: string; lane?: string }; target: { x: number; y: number; label: string; lane?: string }; id: string } => Boolean(edge.source)));
+  return (
+    <section className="scillm-dag-design-map" aria-label="DAG design overview">
+      <div className="scillm-dag-design-map__header">
+        <div>
+          <div className="scillm-dag-source__eyebrow">Design map</div>
+          <h2>Goal to review fan-out to current round</h2>
+          <p>Render-only overview. The full editor below creates amendment drafts; this map makes the workflow shape visible before detailed inspection.</p>
+        </div>
+        <div className="scillm-dag-design-map__actions">
+          <button type="button" onClick={onOpenTrace}>Open trace evidence</button>
+          <span>{summary?.nodeCount ?? graph.nodes.length} nodes · {summary?.edgeCount ?? graph.nodes.reduce((count, node) => count + (node.depends_on?.length ?? 0), 0)} edges</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 1000 350" role="img" aria-label="DAG fan-out overview">
+        <rect x="48" y="112" width="904" height="88" rx="16" className="design-map-round" />
+        <text x="74" y="162" className="design-map-band-label">Round 1</text>
+        <text x="900" y="162" className="design-map-band-label design-map-band-label-current">current</text>
+        {edges.map((edge) => (
+          <path key={edge.id} className="design-map-edge" d={`M ${edge.source.x * 10} ${edge.source.y + 34} C ${edge.source.x * 10} ${(edge.source.y + edge.target.y) / 2}, ${edge.target.x * 10} ${(edge.source.y + edge.target.y) / 2}, ${edge.target.x * 10} ${edge.target.y - 34}`} />
+        ))}
+        {mapNodes.map(({ node, position }) => (
+          <g key={node.id} transform={`translate(${position.x * 10 - 76}, ${position.y - 27})`}>
+            <rect width="152" height="54" rx="8" className={node.id.includes("validate") || node.id.includes("aggregate") ? "design-map-node design-map-node-summary" : "design-map-node"} />
+            <text x="76" y="23" textAnchor="middle" className="design-map-node-title">{position.label}</text>
+            <text x="76" y="39" textAnchor="middle" className="design-map-node-id">{node.id.replace(/-round-1$/, "")}</text>
+          </g>
+        ))}
+      </svg>
+    </section>
+  );
+}
+
+function TraceLens({ snapshot, summary, onOpenDesign }: { snapshot: DagSnapshot; summary: DagPlannerSummary; onOpenDesign: () => void }) {
+  return (
+    <section className="scillm-dag-lens-panel" aria-label="DAG trace lens">
+      <div className="scillm-dag-panel-grid">
+        <StatusColumn title="Running" items={summary.running} snapshot={snapshot} empty="No nodes currently running." tone="blue" onInspect={onOpenDesign} />
+        <StatusColumn title="Queued" items={summary.queued} snapshot={snapshot} empty="No queued nodes reported." tone="amber" onInspect={onOpenDesign} />
+        <StatusColumn title="Reported pass" items={summary.passed} snapshot={snapshot} empty="No passed nodes reported." tone="green" onInspect={onOpenDesign} />
+        <StatusColumn title="Failed" items={summary.failed} snapshot={snapshot} empty="No failed nodes reported." tone="red" onInspect={onOpenDesign} />
+      </div>
+      <div className="scillm-dag-timeline">
+        <div className="scillm-flex-between">
+          <h3>Event stream</h3>
+          <span className="scillm-meta" title={snapshot.source.events}>{summary.eventCount} events from {snapshot.source.events}</span>
+        </div>
+        <div className="scillm-dag-timeline__rail">
+          {summary.latestEvents.map((event, index) => (
+            <button key={`${event.type}-${event.node_id ?? index}-${index}`} type="button" className="scillm-dag-timeline__event" onClick={onOpenDesign} title="Open Design lens to inspect this node in context.">
+              <span className="scillm-dag-timeline__dot" />
+              <code>{event.type ?? "event"}</code>
+              <span>{event.node_id ?? "graph"}</span>
+              <small>{String((event as ExecEvent & { ts?: string; timestamp?: string }).ts ?? (event as ExecEvent & { timestamp?: string }).timestamp ?? "")}</small>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CheckpointLens({ snapshot, summary, onOpenDebug }: { snapshot: DagSnapshot; summary: DagPlannerSummary; onOpenDebug: () => void }) {
+  const [filter, setFilter] = useState<"all" | "review" | "blocked">("all");
+  const pendingReview = snapshot.phase_status?.review_comparison?.closure_allowed === false;
+  const items = [
+    ...(pendingReview ? [{ id: "phase-review", title: "Phase review pending", detail: snapshot.phase_status?.review_comparison?.reason ?? "Review comparison does not allow closure.", status: "blocked", evidence: snapshot.source.phase_status }] : []),
+    ...summary.checkpointNodes.map((nodeId) => ({ id: nodeId, title: nodeId, detail: "Pending review checkpoint: evidence must be inspected before acceptance.", status: "pending_review", evidence: snapshot.source.events })),
+  ];
+  const visibleItems = items.filter((item) => filter === "all" || (filter === "blocked" ? item.status === "blocked" : item.status !== "blocked"));
+  return (
+    <section className="scillm-dag-lens-panel" aria-label="DAG checkpoint lens">
+      <div className="scillm-dag-checkpoint-layout">
+        <div>
+          <h3>Checkpoint queue</h3>
+          <p className="scillm-meta">Human gates are explicit review items. Approval/rejection is disabled until the backend action contract exists.</p>
+          <div className="scillm-dag-checkpoint-filters">
+            <button type="button" className={filter === "all" ? "active" : ""} onClick={() => setFilter("all")}>All</button>
+            <button type="button" className={filter === "review" ? "active" : ""} onClick={() => setFilter("review")}>Needs review</button>
+            <button type="button" className={filter === "blocked" ? "active" : ""} onClick={() => setFilter("blocked")}>Blocked</button>
+          </div>
+        </div>
+        <div className="scillm-dag-checkpoint-list">
+          {visibleItems.length ? visibleItems.map((item) => (
+            <article key={item.id} className="scillm-dag-checkpoint-item">
+              <div>
+                <h4>{item.title}</h4>
+                <p>{item.detail}</p>
+                <code title={item.evidence}>{item.evidence}</code>
+                <div className="scillm-dag-checkpoint-actions">
+                  <button type="button" onClick={onOpenDebug}>Open evidence</button>
+                  <button type="button" disabled title="Approve requires the backend checkpoint action contract.">Approve</button>
+                  <button type="button" disabled title="Reject requires the backend checkpoint action contract.">Reject</button>
+                </div>
+              </div>
+              <span className={`scillm-dag-state scillm-dag-state--${item.status}`}>{item.status}</span>
+            </article>
+          )) : (
+            <div className="scillm-dag-empty">No checkpoint nodes are present in this graph snapshot.</div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DebugLens({ snapshot, summary, onCopy, copiedToken }: { snapshot: DagSnapshot; summary: DagPlannerSummary; onCopy: (value: string, token: string) => void; copiedToken: string }) {
+  return (
+    <section className="scillm-dag-lens-panel" aria-label="DAG debug lens">
+      {summary.incompleteEvidence.length ? (
+        <div className="scillm-dag-hard-stop" role="alert">
+          <AlertTriangle size={18} color={EMBRY.red} />
+          <div>
+            <strong>Acceptance blocked by missing evidence hashes</strong>
+            <p>These nodes may report execution success, but they are not closure evidence until output hashes or formal exemptions are recorded by the backend.</p>
+          </div>
+        </div>
+      ) : null}
+      <div className="scillm-dag-debug-grid">
+        <div className="scillm-dag-debug-card">
+          <h3>Evidence completeness</h3>
+          <StatusColumn title="Missing or incomplete evidence" items={summary.incompleteEvidence} details={summary.incompleteEvidenceDetails} snapshot={snapshot} empty="No incomplete evidence reported by node_results." tone="red" />
+        </div>
+        <div className="scillm-dag-debug-card">
+          <h3>Source artifacts</h3>
+          <dl className="scillm-dag-source-list">
+            {Object.entries(snapshot.source).map(([key, value]) => (
+              <div key={key}>
+                <dt>{key}</dt>
+                <dd title={value}>{value}</dd>
+                <button type="button" className="scillm-dag-inline-action" onClick={() => onCopy(value, `source-${key}`)}>
+                  {copiedToken === `source-${key}` ? "Copied" : "Copy"}
+                </button>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div className="scillm-dag-debug-card scillm-dag-debug-card--wide">
+          <h3>Backend graph hash</h3>
+          <code>{snapshot.base_graph_hash}</code>
+          <p className="scillm-meta">{snapshot.hash_algorithm ?? "sha256 canonical executable graph"}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatusColumn({ title, items, empty, tone, snapshot, details, onInspect }: { title: string; items: string[]; empty: string; tone: "green" | "red" | "amber" | "blue"; snapshot?: DagSnapshot; details?: Array<{ id: string; reason: string }>; onInspect?: () => void }) {
+  const detailById = new Map((details ?? []).map((item) => [item.id, item.reason]));
+  return (
+    <div className={`scillm-dag-status-column scillm-dag-status-column--${tone}`}>
+      <h3>{title}</h3>
+      {items.length ? (
+        <ul>
+          {items.map((item) => {
+            const result = (snapshot?.status as ExecStatus & { node_results?: Record<string, { output_hash?: string; artifact?: string; evidence_status?: string; ok?: boolean }> } | undefined)?.node_results?.[item];
+            const reason = detailById.get(item) ?? (result?.output_hash ? `hash ${result.output_hash.slice(0, 12)}` : result?.artifact ? `artifact ${result.artifact}` : result?.ok === true ? "Execution reported ok; evidence missing - not closure evidence" : "Evidence artifact not reported");
+            return (
+              <li key={item}>
+                <button type="button" onClick={onInspect} disabled={!onInspect} title={onInspect ? "Open Design lens for node inspection." : undefined}>
+                  <strong>{item}</strong>
+                  <span>{reason}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p>{empty}</p>
+      )}
+    </div>
+  );
+}
+
+function HighlightedJson({ value }: { value: unknown }) {
+  const html = useMemo(() => highlightJson(value), [value]);
+  return (
+    <pre
+      className="scillm-json-viewer"
+      aria-label="Formatted JSON payload"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+function highlightJson(value: unknown) {
+  const escaped = escapeHtml(JSON.stringify(value, null, 2));
+  return escaped.replace(
+    /(&quot;(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\&])*?&quot;)(\s*:)?|\b(true|false|null)\b|-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g,
+    (match, stringToken: string | undefined, colon: string | undefined) => {
+      if (stringToken) {
+        return colon
+          ? `<span class="json-key">${stringToken}</span>${colon}`
+          : `<span class="json-string">${stringToken}</span>`;
+      }
+      if (match === "true" || match === "false") return `<span class="json-boolean">${match}</span>`;
+      if (match === "null") return `<span class="json-null">${match}</span>`;
+      return `<span class="json-number">${match}</span>`;
+    },
+  );
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
