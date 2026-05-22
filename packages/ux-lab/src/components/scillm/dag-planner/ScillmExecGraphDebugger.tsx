@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { GitBranchPlus, Maximize2, Move, ShieldPlus, SquarePlus, X, ZoomIn, ZoomOut } from "lucide-react";
+import { GitBranchPlus, LocateFixed, Maximize2, Move, ShieldPlus, SquarePlus, X, ZoomIn, ZoomOut } from "lucide-react";
 import {
   analyzeExecGraphRuntimeReadiness,
   applyNicoPlanProposal,
@@ -42,6 +42,13 @@ export type ExecGraphNode = {
   review_scopes?: ReviewScopeSpec[];
   messages?: Array<Record<string, unknown>>;
   output_schema?: Record<string, unknown>;
+  template_id?: string;
+  template_version?: string;
+  template_sha256?: string;
+  catalog_id?: string;
+  catalog_version?: string;
+  catalog_sha256?: string;
+  inline_overrides?: Record<string, unknown>;
   retry_policy?: Record<string, unknown>;
   gate_policy?: Record<string, unknown>;
   disabled?: boolean;
@@ -65,12 +72,19 @@ export type ReviewScopeSpec = {
   best_practice_skills?: string[];
   prompt_preset?: string;
   prompt?: string;
+  catalog_id?: string;
+  catalog_version?: string;
+  catalog_sha256?: string;
+  inline_overrides?: Record<string, unknown>;
   enabled?: boolean;
 };
 
 export type ReviewCatalogEntry = {
   id: string;
+  version?: string;
   kind?: "agent" | "contract";
+  catalog_id?: string;
+  catalog_sha256?: string;
   label?: string;
   description?: string;
   default_agent?: string;
@@ -84,6 +98,10 @@ export type ReviewCatalogEntry = {
   closure_authority?: string;
   risk_triggers?: string[];
   best_practice_skills?: string[];
+  compatible_node_types?: string[];
+  compatible_upstream_types?: string[];
+  compatible_downstream_types?: string[];
+  required_fields?: string[];
   default?: boolean;
   order?: number;
   prompt?: string;
@@ -116,9 +134,40 @@ export type ReviewDomainLimits = {
 };
 
 export type ExecStatus = {
+  run_id?: string;
   state?: string;
   updated_at?: string;
   node_results?: Record<string, Record<string, unknown>>;
+  paused?: boolean;
+  paused_graph?: boolean;
+  paused_node_ids?: string[];
+  disabled_node_ids?: string[];
+  running_node_ids?: string[];
+  runtime_actions?: RuntimeActionRecord[];
+};
+
+export type RuntimeActionRecord = {
+  schema_version?: string;
+  action_id?: string;
+  run_id?: string;
+  action?: string;
+  target?: "graph" | "node" | "subtree";
+  node_id?: string | null;
+  affected_node_ids?: string[];
+  actor?: string;
+  reason?: string | null;
+  provenance?: Record<string, unknown>;
+  status?: string;
+  created_at?: string;
+};
+
+export type RuntimeActionRequest = {
+  action: "pause" | "resume" | "disable" | "cancel" | "stop";
+  target: "graph" | "node" | "subtree";
+  node_id?: string;
+  actor?: string;
+  reason?: string;
+  provenance?: Record<string, unknown>;
 };
 
 export type ExecEvent = {
@@ -200,9 +249,16 @@ export type ExecGraphAmendment = {
   _key: string;
   graph_id: string;
   run_id?: string;
+  base_graph_sha256?: string;
+  draft_graph_sha256?: string;
   base_graph_hash?: string;
   baseGraphHash?: string;
   status: ExecGraphAmendmentStatus;
+  apply_status?: "applied";
+  applied_by?: string;
+  applied_at?: string;
+  applied_graph_sha256?: string;
+  apply_reason?: string;
   actor?: string;
   status_actor?: string;
   status_reason?: string;
@@ -216,7 +272,10 @@ export type AmendmentsLoadState =
   | { status: "idle" | "loading" | "loaded"; message?: string }
   | { status: "error"; message: string };
 type AmendmentStatusHandler = (amendmentKey: string, status: Exclude<ExecGraphAmendmentStatus, "proposed">, reason?: string) => unknown | Promise<unknown>;
+type AmendmentApplyHandler = (amendment: ExecGraphAmendment, reason?: string) => unknown | Promise<unknown>;
 type SaveReviewCatalogEntryHandler = (kind: "agents" | "contracts", entry: ReviewCatalogEntry) => unknown | Promise<unknown>;
+type RuntimeActionHandler = (action: RuntimeActionRequest) => unknown | Promise<unknown>;
+type RuntimeActionUiState = { status: "idle" | "submitting" | "ok" | "error"; message?: string };
 type AmendmentDraftSaveResult = { amendment_key?: string; amendmentId?: string; baseGraphHash?: string; status?: string };
 type PlanAuditEntry = {
   id: string;
@@ -700,6 +759,14 @@ function defaultBestPracticeSkillsForContract(contract: string, catalog?: Review
   return ["best-practices-scillm", "best-practices-self-improvement-loop", "best-practices-python", "best-practices-d3"];
 }
 
+function catalogIdentityFields(entry?: ReviewCatalogEntry): Pick<ReviewScopeSpec, "catalog_id" | "catalog_version" | "catalog_sha256"> {
+  return {
+    catalog_id: entry?.catalog_id,
+    catalog_version: entry?.version,
+    catalog_sha256: entry?.catalog_sha256,
+  };
+}
+
 function formatBestPracticeSkills(skills?: string[]) {
   return (skills ?? []).join(", ");
 }
@@ -721,6 +788,7 @@ function defaultReviewScopeForContract(contract: string, node: ExecGraphNode, ca
   return {
     scope: contract,
     contract,
+    ...catalogIdentityFields(entry),
     agent: defaultReviewAgentForContract(contract, catalog),
     model: node.model || defaultReviewModelForContract(contract, catalog),
     review_level: entry?.review_level ?? (contract === "security" ? "risk_expanded" : "default"),
@@ -733,6 +801,7 @@ function defaultReviewScopeForContract(contract: string, node: ExecGraphNode, ca
     best_practice_skills: defaultBestPracticeSkillsForContract(contract, catalog),
     prompt_preset: entry?.default_preset ?? "scope_default",
     prompt: defaultReviewContractPrompt(contract, entry?.default_preset ?? "scope_default", catalog),
+    inline_overrides: {},
     enabled: true,
   };
 }
@@ -951,6 +1020,26 @@ function dependencyList(value: unknown, addedDependency?: string) {
   return value.map((item) => String(item)).map((item) => item === addedDependency ? `+ ${item}` : item);
 }
 
+function downstreamNodeIds(nodeId: string, allNodes: ExecGraphNode[]) {
+  const children = new Map<string, string[]>();
+  for (const node of allNodes) {
+    for (const dependency of node.depends_on ?? []) {
+      const existing = children.get(dependency) ?? [];
+      existing.push(node.id);
+      children.set(dependency, existing);
+    }
+  }
+  const seen = new Set<string>([nodeId]);
+  const stack = [...(children.get(nodeId) ?? [])];
+  while (stack.length) {
+    const child = stack.pop();
+    if (!child || seen.has(child)) continue;
+    seen.add(child);
+    stack.push(...(children.get(child) ?? []));
+  }
+  return Array.from(seen).sort();
+}
+
 function runImpact(summary: ReturnType<typeof runSummary>) {
   if (summary.requiredFailed > 0) return `Blocking required nodes failed: ${summary.requiredFailed}`;
   if (summary.optionalFailed > 0 && summary.lifecycle === "completed") return "Run passed because 0 required nodes failed.";
@@ -1023,6 +1112,8 @@ export function ScillmExecGraphDebugger({
   amendmentsState = { status: "idle" },
   onRefreshAmendments,
   onSetAmendmentStatus,
+  onApplyAmendment,
+  onRuntimeAction,
 }: {
   graph: ExecGraph;
   baseGraphHash?: string;
@@ -1040,8 +1131,10 @@ export function ScillmExecGraphDebugger({
   amendmentsState?: AmendmentsLoadState;
   onRefreshAmendments?: () => void;
   onSetAmendmentStatus?: AmendmentStatusHandler;
+  onApplyAmendment?: AmendmentApplyHandler;
+  onRuntimeAction?: RuntimeActionHandler;
 }) {
-  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={{ state: "static", label: "Static snapshot" }} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan} amendBackendLabel={amendBackendLabel} amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={onRefreshAmendments} onSetAmendmentStatus={onSetAmendmentStatus} availableModels={availableModels} reviewCatalog={reviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={onSaveReviewCatalogEntry} />;
+  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={{ state: "static", label: "Static snapshot" }} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan} amendBackendLabel={amendBackendLabel} amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={onRefreshAmendments} onSetAmendmentStatus={onSetAmendmentStatus} onApplyAmendment={onApplyAmendment} onRuntimeAction={onRuntimeAction} availableModels={availableModels} reviewCatalog={reviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={onSaveReviewCatalogEntry} />;
 }
 
 export function ScillmExecGraphDebuggerLive({
@@ -1253,6 +1346,31 @@ export function ScillmExecGraphDebuggerLive({
     return response.json();
   };
 
+  const memoryApplyAmendment: AmendmentApplyHandler = async (amendment, reason) => {
+    const response = await fetcher(`${baseUrl}/v1/scillm/exec/graph/amendments/${encodeURIComponent(amendment._key)}/apply`, {
+      method: "POST",
+      headers: jsonHeaders(headers),
+      body: JSON.stringify({
+        actor: "scillm-exec-graph-editor",
+        reason: reason ?? "Applied approved amendment from DAG editor.",
+        expected_base_graph_sha256: amendment.base_graph_sha256 ?? amendment.base_graph_hash ?? amendment.baseGraphHash,
+        provenance: {
+          source: "ScillmExecGraphDebuggerLive",
+          graph_id: amendment.graph_id,
+          run_id: runId,
+          status_updated_at: status?.updated_at,
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`amendment apply ${response.status}: ${text.slice(0, 240)}`);
+    }
+    const result = await response.json();
+    await loadAmendments();
+    return result;
+  };
+
   const saveReviewCatalogEntry: SaveReviewCatalogEntryHandler = async (kind, entry) => {
     const response = await fetcher(`${baseUrl}/v1/scillm/exec/review-catalog/${kind}?skill=review-code`, {
       method: "POST",
@@ -1268,7 +1386,41 @@ export function ScillmExecGraphDebuggerLive({
     return result;
   };
 
-  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={connection} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan ?? memoryAmendPlan} amendBackendLabel="ArangoDB through Memory /upsert" amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={loadAmendments} onSetAmendmentStatus={memorySetAmendmentStatus} availableModels={liveModels} reviewCatalog={liveReviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={saveReviewCatalogEntry} />;
+  const runtimeAction: RuntimeActionHandler = async (action) => {
+    const actionRunId = status?.run_id ?? runId;
+    const response = await fetcher(`${baseUrl}/v1/scillm/exec/${encodeURIComponent(actionRunId)}/actions`, {
+      method: "POST",
+      headers: jsonHeaders(headers),
+      body: JSON.stringify({
+        ...action,
+        actor: action.actor ?? "scillm-exec-graph-editor",
+        provenance: {
+          source: "ScillmExecGraphDebuggerLive",
+          graph_id: graph.graph_id,
+          run_id: actionRunId,
+          status_updated_at: status?.updated_at,
+          ...(action.provenance ?? {}),
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`runtime action ${response.status}: ${text.slice(0, 240)}`);
+    }
+    const result = await response.json();
+    setStatus((current) => ({
+      ...(current ?? {}),
+      run_id: actionRunId,
+      state: result.cancel_requested ? "cancel_requested" : result.paused ? "paused" : current?.state === "paused" ? "running" : current?.state,
+      paused: Boolean(result.paused),
+      disabled_node_ids: Array.isArray(result.disabled_node_ids) ? result.disabled_node_ids : current?.disabled_node_ids,
+      runtime_actions: Array.isArray(result.runtime_actions) ? result.runtime_actions : current?.runtime_actions,
+      updated_at: new Date().toISOString(),
+    }));
+    return result;
+  };
+
+  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={connection} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan ?? memoryAmendPlan} amendBackendLabel="ArangoDB through Memory /upsert" amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={loadAmendments} onSetAmendmentStatus={memorySetAmendmentStatus} onApplyAmendment={memoryApplyAmendment} onRuntimeAction={runtimeAction} availableModels={liveModels} reviewCatalog={liveReviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={saveReviewCatalogEntry} />;
 }
 
 function ScillmExecGraphDebuggerView({
@@ -1285,10 +1437,12 @@ function ScillmExecGraphDebuggerView({
   amendmentsState = { status: "idle" },
   onRefreshAmendments,
   onSetAmendmentStatus,
+  onApplyAmendment,
   availableModels,
   reviewCatalog,
   runtimeReadiness,
   onSaveReviewCatalogEntry,
+  onRuntimeAction,
 }: {
   graph: ExecGraph;
   baseGraphHash: string;
@@ -1303,15 +1457,14 @@ function ScillmExecGraphDebuggerView({
   amendmentsState?: AmendmentsLoadState;
   onRefreshAmendments?: () => void;
   onSetAmendmentStatus?: AmendmentStatusHandler;
+  onApplyAmendment?: AmendmentApplyHandler;
   availableModels?: string[];
   reviewCatalog?: ReviewCatalog;
   runtimeReadiness?: RuntimeReadinessReport;
   onSaveReviewCatalogEntry?: SaveReviewCatalogEntryHandler;
+  onRuntimeAction?: RuntimeActionHandler;
 }) {
   useRegisterAction("scillm-exec-graph:node:inspect", { app: "scillm", action: "SCILLM_EXEC_NODE_INSPECT", label: "Inspect node" });
-  useRegisterAction("scillm-exec-graph:control:pause", { app: "scillm", action: "SCILLM_EXEC_GRAPH_PAUSE", label: "Pause graph" });
-  useRegisterAction("scillm-exec-graph:control:resume", { app: "scillm", action: "SCILLM_EXEC_GRAPH_RESUME", label: "Resume graph" });
-  useRegisterAction("scillm-exec-graph:control:stop", { app: "scillm", action: "SCILLM_EXEC_GRAPH_STOP", label: "Stop graph" });
   useRegisterAction("scillm-exec-graph:summary:optional-failed", { app: "scillm", action: "SCILLM_EXEC_GRAPH_SELECT_OPTIONAL_FAILURE", label: "Show optional failed node" });
   useRegisterAction("scillm-exec-graph:event:select", { app: "scillm", action: "SCILLM_EXEC_EVENT_SELECT", label: "Select event node" });
   useRegisterAction("scillm-exec-graph:event:filter", { app: "scillm", action: "SCILLM_EXEC_EVENT_FILTER", label: "Filter events" });
@@ -1320,6 +1473,7 @@ function ScillmExecGraphDebuggerView({
   useRegisterAction("scillm-exec-graph:mode:nico-proposals", { app: "scillm", action: "SCILLM_EXEC_GRAPH_MODE_NICO_PROPOSALS", label: "Show Nico proposals" });
   useRegisterAction("scillm-exec-graph:amendment:load", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_LOAD_DRAFT", label: "Load amendment draft" });
   useRegisterAction("scillm-exec-graph:amendment:set-status", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_SET_STATUS", label: "Set amendment status" });
+  useRegisterAction("scillm-exec-graph:amendment:apply", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_APPLY", label: "Apply approved amendment" });
 
   const { ref, size } = useSize();
   const [selectedId, setSelectedId] = useState(graph.nodes[0]?.id ?? "");
@@ -1336,7 +1490,9 @@ function ScillmExecGraphDebuggerView({
   const [amendState, setAmendState] = useState<AmendState>({ status: "idle" });
   const [warningsAcknowledged, setWarningsAcknowledged] = useState(false);
   const [formalDiffCopied, setFormalDiffCopied] = useState(false);
+  const [runtimeActionState, setRuntimeActionState] = useState<RuntimeActionUiState>({ status: "idle" });
   const [viewport, setViewport] = useState<GraphViewport>({ zoom: 1, offsetX: 0, offsetY: 0, panMode: false });
+  const [followExecution, setFollowExecution] = useState(true);
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null);
   const [inspectorOpen, setInspectorOpen] = useState(true);
   const panDrag = useRef<{ pointerId: number; startX: number; startY: number; offsetX: number; offsetY: number } | null>(null);
@@ -1369,7 +1525,24 @@ function ScillmExecGraphDebuggerView({
   const planDirty = planDiff.length > 0;
   const isCompleted = summary.lifecycle === "completed";
   const isTerminal = ["completed", "stopped", "failed", "cancelled"].includes(summary.lifecycle);
+  const runtimeControlsDisabled = isTerminal || !onRuntimeAction || runtimeActionState.status === "submitting";
+  const runtimeControlsReason = isTerminal
+    ? "Runtime controls are closed because this run is terminal."
+    : !onRuntimeAction
+      ? "Runtime evidence is read-only because no backend action handler was provided."
+      : runtimeActionState.status === "submitting"
+        ? "Runtime action is being submitted."
+        : "";
+  const runtimeActionSummary = `${status?.paused ? "Paused" : "Running"} · ${status?.disabled_node_ids?.length ?? 0} disabled · ${status?.runtime_actions?.length ?? 0} actions`;
   const verdict = currentVerdict(summary, isTerminal);
+  const currentExecutionNodeId = useMemo(() => {
+    const graphNodeIds = new Set(graph.nodes.map((node) => node.id));
+    const runningNodeId = graph.nodes.find((node) => status?.running_node_ids?.includes(node.id) || states[node.id] === "running")?.id;
+    if (runningNodeId) return runningNodeId;
+    const latestEventNodeId = [...events].reverse().find((event) => event.node_id && graphNodeIds.has(event.node_id))?.node_id;
+    if (latestEventNodeId) return latestEventNodeId;
+    return graph.nodes.find((node) => states[node.id] === "pending")?.id ?? graph.nodes[0]?.id ?? "";
+  }, [events, graph.nodes, states, status?.running_node_ids]);
   const filteredEvents = eventFilter === "all" ? events : events.filter((event) => event.state === eventFilter || eventTone(event) === eventFilter);
   const visibleEvents = filteredEvents.slice(-12).reverse();
   const statusTitle = [
@@ -1380,8 +1553,19 @@ function ScillmExecGraphDebuggerView({
     connection.error ? `Error: ${connection.error}` : "",
   ].filter(Boolean).join("\n");
   const firstOptionalFailed = graph.nodes.find((node) => states[node.id] === "failed" && isOptionalNode(node, nodeResult(status, node.id)));
-  const completedControlsReasonId = "graph-controls-disabled-reason";
+  const liveControlsReasonId = "graph-controls-unwired-reason";
+  const dispatchRuntimeAction = async (action: RuntimeActionRequest) => {
+    if (!onRuntimeAction || runtimeControlsDisabled) return;
+    setRuntimeActionState({ status: "submitting", message: `${titleCase(action.action)} ${action.target}` });
+    try {
+      await onRuntimeAction(action);
+      setRuntimeActionState({ status: "ok", message: `${titleCase(action.action)} accepted for ${action.target}.` });
+    } catch (error) {
+      setRuntimeActionState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+    }
+  };
   const selectNode = (nodeId: string) => {
+    setFollowExecution(false);
     setSelectedId(nodeId);
     setInspectorOpen(true);
   };
@@ -1430,6 +1614,10 @@ function ScillmExecGraphDebuggerView({
       setContextMenu(null);
       setViewport((current) => ({ ...current, zoom: 1, offsetX: 0, offsetY: 0 }));
     },
+    follow: () => {
+      setContextMenu(null);
+      setFollowExecution((current) => !current);
+    },
     togglePan: () => {
       setContextMenu(null);
       setViewport((current) => ({ ...current, panMode: !current.panMode }));
@@ -1440,6 +1628,7 @@ function ScillmExecGraphDebuggerView({
     if (!safeViewport.panMode && event.button !== 1) return;
     if ((event.target as Element).closest(".exec-node-button")) return;
     event.preventDefault();
+    setFollowExecution(false);
     setContextMenu(null);
     panDrag.current = {
       pointerId: event.pointerId,
@@ -1487,6 +1676,22 @@ function ScillmExecGraphDebuggerView({
   useEffect(() => {
     if (mode !== "evidence" && !enablePlanEditing) setMode("evidence");
   }, [enablePlanEditing, mode]);
+
+  useEffect(() => {
+    if (!followExecution || !currentExecutionNodeId) return;
+    const target = nodes.find((node) => node.id === currentExecutionNodeId);
+    if (!target) return;
+    setSelectedId(target.id);
+    setViewport((current) => {
+      const viewWidth = canvasSize.width / current.zoom;
+      const viewHeight = canvasSize.height / current.zoom;
+      return clampViewport({
+        ...current,
+        offsetX: target.x - viewWidth / 2,
+        offsetY: target.y - viewHeight / 2,
+      }, canvasSize);
+    });
+  }, [canvasSize, currentExecutionNodeId, followExecution, nodes]);
 
   useEffect(() => {
     if (activeGraph.nodes.some((node) => node.id === selectedId)) return;
@@ -1731,13 +1936,45 @@ function ScillmExecGraphDebuggerView({
               </div>
               {connection.updated_at ? <div style={{ marginTop: 4, color: dimColor, fontSize: 12 }}>{isCompleted ? "UI last refreshed at" : "Auto-refresh checked at"} {formatTimestamp(connection.updated_at)}</div> : null}
             </div>
-            <div className="exec-controls-cluster">
+            <div className="exec-controls-cluster" aria-describedby={liveControlsReasonId}>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
-                <button className="exec-control-button" data-qid="scillm-exec-graph:control:pause" data-qs-action="SCILLM_EXEC_GRAPH_PAUSE" title={isCompleted ? "Run is completed; pause is unavailable." : "Pause graph scheduling"} aria-label={isCompleted ? "Run is completed; pause is unavailable." : "Pause graph scheduling"} aria-describedby={isCompleted ? completedControlsReasonId : undefined} disabled={isCompleted} aria-disabled={isCompleted}>Pause</button>
-                <button className="exec-control-button" data-qid="scillm-exec-graph:control:resume" data-qs-action="SCILLM_EXEC_GRAPH_RESUME" title={isCompleted ? "Run is completed; resume is unavailable." : "Resume graph scheduling"} aria-label={isCompleted ? "Run is completed; resume is unavailable." : "Resume graph scheduling"} aria-describedby={isCompleted ? completedControlsReasonId : undefined} disabled={isCompleted} aria-disabled={isCompleted}>Resume</button>
-                <button className="exec-control-button exec-control-button-danger" data-qid="scillm-exec-graph:control:stop" data-qs-action="SCILLM_EXEC_GRAPH_STOP" title={isCompleted ? "Run is completed; stop is unavailable." : "Stop graph run"} aria-label={isCompleted ? "Run is completed; stop is unavailable." : "Stop graph run"} aria-describedby={isCompleted ? completedControlsReasonId : undefined} disabled={isCompleted} aria-disabled={isCompleted}>Stop</button>
+                <button
+                  className="exec-control-button exec-control-button-compact"
+                  type="button"
+                  data-qid="scillm-exec-graph:runtime:pause-graph"
+                  data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_GRAPH"
+                  disabled={runtimeControlsDisabled}
+                  aria-disabled={runtimeControlsDisabled}
+                  onClick={() => void dispatchRuntimeAction({ action: "pause", target: "graph", reason: "Pause graph scheduling from DAG viewer." })}
+                >
+                  Pause
+                </button>
+                <button
+                  className="exec-control-button exec-control-button-compact"
+                  type="button"
+                  data-qid="scillm-exec-graph:runtime:resume-graph"
+                  data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_GRAPH"
+                  disabled={runtimeControlsDisabled}
+                  aria-disabled={runtimeControlsDisabled}
+                  onClick={() => void dispatchRuntimeAction({ action: "resume", target: "graph", reason: "Resume graph scheduling from DAG viewer." })}
+                >
+                  Resume
+                </button>
+                <button
+                  className="exec-control-button exec-control-button-compact exec-control-button-danger"
+                  type="button"
+                  data-qid="scillm-exec-graph:runtime:stop-graph"
+                  data-qs-action="SCILLM_EXEC_RUNTIME_STOP_GRAPH"
+                  disabled={runtimeControlsDisabled}
+                  aria-disabled={runtimeControlsDisabled}
+                  onClick={() => void dispatchRuntimeAction({ action: "stop", target: "graph", reason: "Stop graph run from DAG viewer." })}
+                >
+                  Stop
+                </button>
               </div>
-              {isCompleted ? <div id={completedControlsReasonId} className="exec-controls-reason">Controls unavailable because the run is completed.</div> : null}
+              <div id={liveControlsReasonId} className={runtimeActionState.status === "error" ? "exec-controls-reason exec-controls-reason-error" : "exec-controls-reason"}>
+                {runtimeControlsReason || runtimeActionState.message || runtimeActionSummary}
+              </div>
             </div>
           </div>
           <p style={{ margin: "8px 0 0", color: dimColor, fontSize: 13, lineHeight: 1.45 }}>{graph.graph_goal}</p>
@@ -1749,11 +1986,11 @@ function ScillmExecGraphDebuggerView({
                 className={productMode === item ? "exec-primary-mode exec-primary-mode-active" : "exec-primary-mode"}
                 data-qid={`scillm-exec-graph:primary-mode:${item}`}
                 data-qs-action={`SCILLM_EXEC_PRIMARY_MODE_${item.toUpperCase()}`}
-                title={item === "build" ? "Edit a draft amendment without mutating active execution" : item === "run" ? "Operate committed/materialized execution state" : "Inspect evidence, artifacts, logs, prompts, and replay context"}
+                title={item === "build" ? "Edit a draft amendment without mutating active execution" : item === "run" ? "Inspect committed/materialized runtime evidence" : "Inspect evidence, artifacts, logs, prompts, and replay context"}
                 onClick={() => setPrimaryMode(item)}
               >
                 <b>{titleCase(item)}</b>
-                <span>{item === "build" ? "draft amendments" : item === "run" ? "execution control" : "evidence trace"}</span>
+                <span>{item === "build" ? "draft amendments" : item === "run" ? "read-only runtime" : "evidence trace"}</span>
               </button>
             ))}
           </div>
@@ -1820,6 +2057,7 @@ function ScillmExecGraphDebuggerView({
           <div className="exec-canvas-toolbar" data-qid="scillm-exec-graph:canvas:toolbar" aria-label="Graph viewport controls">
             <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:zoom-in" data-qs-action="SCILLM_EXEC_CANVAS_ZOOM_IN" title="Zoom in" onClick={viewportControls.zoomIn}><ZoomIn size={15} /></button>
             <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:zoom-out" data-qs-action="SCILLM_EXEC_CANVAS_ZOOM_OUT" title="Zoom out" onClick={viewportControls.zoomOut}><ZoomOut size={15} /></button>
+            <button type="button" className={followExecution ? "exec-canvas-tool-button exec-canvas-tool-button-active" : "exec-canvas-tool-button"} data-qid="scillm-exec-graph:canvas:follow-current" data-qs-action="SCILLM_EXEC_CANVAS_FOLLOW_CURRENT" title={currentExecutionNodeId ? `${followExecution ? "Following" : "Follow"} current node: ${currentExecutionNodeId}` : "Follow current execution node"} onClick={viewportControls.follow}><LocateFixed size={15} /></button>
             <button type="button" className={safeViewport.panMode ? "exec-canvas-tool-button exec-canvas-tool-button-active" : "exec-canvas-tool-button"} data-qid="scillm-exec-graph:canvas:pan" data-qs-action="SCILLM_EXEC_CANVAS_TOGGLE_PAN" title={safeViewport.panMode ? "Move mode on: drag the graph to pan" : "Move graph"} onClick={viewportControls.togglePan}><Move size={15} /></button>
             <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:fit" data-qs-action="SCILLM_EXEC_CANVAS_FIT" title="Fit graph" onClick={viewportControls.fit}><Maximize2 size={15} /></button>
             <span className="exec-canvas-zoom-label">{Math.round(safeViewport.zoom * 100)}%</span>
@@ -1830,6 +2068,7 @@ function ScillmExecGraphDebuggerView({
             <div className="exec-canvas-context-menu" data-qid="scillm-exec-graph:canvas:context-menu" style={{ left: contextMenu.x, top: contextMenu.y }} role="menu">
               <button type="button" role="menuitem" onClick={viewportControls.zoomIn}><ZoomIn size={14} />Zoom in</button>
               <button type="button" role="menuitem" onClick={viewportControls.zoomOut}><ZoomOut size={14} />Zoom out</button>
+              <button type="button" role="menuitem" onClick={viewportControls.follow}><LocateFixed size={14} />{followExecution ? "Stop following" : "Follow current"}</button>
               <button type="button" role="menuitem" onClick={viewportControls.togglePan}><Move size={14} />{safeViewport.panMode ? "Turn move off" : "Move graph"}</button>
               <button type="button" role="menuitem" onClick={viewportControls.fit}><Maximize2 size={14} />Fit graph</button>
             </div>
@@ -1966,6 +2205,7 @@ function ScillmExecGraphDebuggerView({
               onRefreshAmendments={onRefreshAmendments}
               onLoadAmendment={loadAmendmentDraft}
               onSetAmendmentStatus={onSetAmendmentStatus}
+              onApplyAmendment={onApplyAmendment}
               onApplyProposal={applyProposal}
               onSelectNode={selectNode}
             />
@@ -2042,6 +2282,10 @@ function ScillmExecGraphDebuggerView({
             availableModels={availableModels}
             reviewCatalog={reviewCatalog}
             onSaveReviewCatalogEntry={onSaveReviewCatalogEntry}
+            status={status}
+            runTerminal={isTerminal}
+            onRuntimeAction={onRuntimeAction ? dispatchRuntimeAction : undefined}
+            runtimeActionState={runtimeActionState}
           />
         ) : <div style={{ padding: 16 }}>Select a node.</div>}
       </aside>
@@ -2163,6 +2407,10 @@ function Inspector({
   availableModels,
   reviewCatalog,
   onSaveReviewCatalogEntry,
+  status,
+  runTerminal = false,
+  onRuntimeAction,
+  runtimeActionState,
 }: {
   node: ExecGraphNode;
   state: ExecNodeState;
@@ -2185,6 +2433,10 @@ function Inspector({
   availableModels?: string[];
   reviewCatalog?: ReviewCatalog;
   onSaveReviewCatalogEntry?: SaveReviewCatalogEntryHandler;
+  status?: ExecStatus;
+  runTerminal?: boolean;
+  onRuntimeAction?: RuntimeActionHandler;
+  runtimeActionState?: RuntimeActionUiState;
 }) {
   useRegisterAction("scillm-exec-graph:plan-edit:goal", { app: "scillm", action: "SCILLM_EXEC_PLAN_EDIT_GOAL", label: "Edit node goal" });
   useRegisterAction("scillm-exec-graph:plan-edit:type", { app: "scillm", action: "SCILLM_EXEC_PLAN_EDIT_TYPE", label: "Edit node type" });
@@ -2209,6 +2461,14 @@ function Inspector({
   useRegisterAction("scillm-exec-graph:plan-edit:add-gate", { app: "scillm", action: "SCILLM_EXEC_PLAN_ADD_GATE", label: "Add gate node" });
   useRegisterAction("scillm-exec-graph:plan-edit:disable-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_DISABLE_NODE", label: "Disable node" });
   useRegisterAction("scillm-exec-graph:plan-edit:archive-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_ARCHIVE_NODE", label: "Archive node" });
+  useRegisterAction("scillm-exec-graph:runtime:pause-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_PAUSE_NODE", label: "Pause node" });
+  useRegisterAction("scillm-exec-graph:runtime:resume-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_RESUME_NODE", label: "Resume node" });
+  useRegisterAction("scillm-exec-graph:runtime:disable-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_DISABLE_NODE", label: "Disable runtime node" });
+  useRegisterAction("scillm-exec-graph:runtime:pause-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_PAUSE_SUBTREE", label: "Pause subtree" });
+  useRegisterAction("scillm-exec-graph:runtime:resume-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_RESUME_SUBTREE", label: "Resume subtree" });
+  useRegisterAction("scillm-exec-graph:runtime:disable-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_DISABLE_SUBTREE", label: "Disable runtime subtree" });
+  useRegisterAction("scillm-exec-graph:runtime:stop-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_STOP_NODE", label: "Stop run from node" });
+  useRegisterAction("scillm-exec-graph:runtime:stop-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_STOP_SUBTREE", label: "Stop run from subtree" });
   const [copied, setCopied] = useState(false);
   const [catalogSaveState, setCatalogSaveState] = useState<string>("");
   const [dependencyChoice, setDependencyChoice] = useState("");
@@ -2238,6 +2498,33 @@ function Inspector({
   const defaultCatalogContracts = reviewCatalogDefaultContractsForNode(node, reviewCatalog, allNodes ?? []);
   const topLevelModelChoices = modelChoices(availableModels, node.model);
   const scopeModelChoices = reviewScopeModelChoices(availableModels, reviewScopes);
+  const runningNodeIds = new Set(status?.running_node_ids ?? []);
+  const pausedNodeIds = new Set(status?.paused_node_ids ?? []);
+  const disabledNodeIds = new Set(status?.disabled_node_ids ?? []);
+  const subtreeIds = downstreamNodeIds(node.id, allNodes);
+  const runningSubtreeIds = subtreeIds.filter((nodeId) => runningNodeIds.has(nodeId));
+  const pausedSubtreeIds = subtreeIds.filter((nodeId) => pausedNodeIds.has(nodeId));
+  const nodeTerminal = ["passed", "failed", "skipped"].includes(state) || disabledNodeIds.has(node.id);
+  const nodeRunning = state === "running" || runningNodeIds.has(node.id);
+  const runtimeBusy = runtimeActionState?.status === "submitting";
+  const runtimeNodeActionDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || nodeRunning;
+  const runtimeResumeDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || !pausedNodeIds.has(node.id);
+  const runtimeSubtreeActionDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || runningSubtreeIds.length > 0;
+  const runtimeSubtreeResumeDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || pausedSubtreeIds.length === 0;
+  const runtimeStopDisabled = !onRuntimeAction || runtimeBusy || runTerminal;
+  const runtimeControlReason = !onRuntimeAction
+    ? "Live node/subtree controls require the backend action contract."
+    : runtimeBusy
+      ? "Runtime action is being submitted."
+      : runTerminal
+        ? "Runtime controls are closed because this run is terminal."
+        : nodeTerminal
+        ? "Runtime controls are closed because this node has terminal evidence."
+        : nodeRunning
+          ? "Running nodes cannot be paused or disabled; use graph stop to terminate active work."
+          : runningSubtreeIds.length
+            ? `Subtree contains running node(s): ${runningSubtreeIds.join(", ")}.`
+            : runtimeActionState?.message ?? "Node and subtree actions write runtime amendment evidence.";
   function updateReviewScope(index: number, fields: Partial<ReviewScopeSpec>) {
     const next = reviewScopes.map((scope, scopeIndex) => scopeIndex === index ? { ...scope, ...fields } : { ...scope });
     onUpdateNode?.({ review_scopes: next });
@@ -2263,9 +2550,11 @@ function Inspector({
     const scope = reviewScopes[index];
     if (!scope) return;
     const contract = reviewContractName(scope);
+    const priorOverrides = scope.inline_overrides ?? {};
     updateReviewScope(index, {
       prompt_preset: preset,
       prompt: preset === "custom" ? scope.prompt : defaultReviewContractPrompt(contract, preset, reviewCatalog),
+      inline_overrides: preset === "custom" ? { ...priorOverrides, prompt: true } : {},
     });
   }
   function duplicateReviewScope(index: number) {
@@ -2293,6 +2582,7 @@ function Inspector({
     try {
       await onSaveReviewCatalogEntry("contracts", {
         id: contract,
+        version: scope.catalog_version ?? reviewContractEntry(contract, reviewCatalog)?.version ?? "1",
         label: reviewContractEntry(contract, reviewCatalog)?.label ?? titleCase(contract),
         default_agent: scope.agent ?? defaultReviewAgentForContract(contract, reviewCatalog),
         default_model: scope.model ?? node.model ?? defaultReviewModelForContract(contract, reviewCatalog),
@@ -2305,6 +2595,8 @@ function Inspector({
         closure_authority: scope.closure_authority ?? "final_review_gate",
         risk_triggers: scope.risk_triggers ?? reviewContractEntry(contract, reviewCatalog)?.risk_triggers,
         best_practice_skills: scope.best_practice_skills?.length ? scope.best_practice_skills : defaultBestPracticeSkillsForContract(contract, reviewCatalog),
+        compatible_node_types: reviewContractEntry(contract, reviewCatalog)?.compatible_node_types ?? ["review-code"],
+        required_fields: reviewContractEntry(contract, reviewCatalog)?.required_fields ?? ["agent", "model", "contract", "proof_level", "best_practice_skills"],
         default: reviewCatalogDefaultContracts(reviewCatalog).includes(contract),
         prompt: scope.prompt ?? "",
       });
@@ -2322,8 +2614,10 @@ function Inspector({
     try {
       await onSaveReviewCatalogEntry("agents", {
         id: agent,
+        version: reviewCatalogAgents(reviewCatalog).find((entry) => entry.id === agent)?.version ?? "1",
         label: reviewCatalogAgents(reviewCatalog).find((entry) => entry.id === agent)?.label ?? titleCase(agent),
         default_model: scope.model ?? node.model ?? "oc-kimi",
+        compatible_node_types: reviewCatalogAgents(reviewCatalog).find((entry) => entry.id === agent)?.compatible_node_types ?? ["review-code"],
         read_only: scope.read_only ?? true,
         evidence_required: scope.evidence_required ?? true,
         prompt: reviewCatalogAgents(reviewCatalog).find((entry) => entry.id === agent)?.prompt ?? "Stay read-only. Ground every finding in concrete file, diff, test, log, command, or artifact evidence.",
@@ -2380,6 +2674,107 @@ function Inspector({
       </div>
       <Section title="Contract"><Info label="Goal" value={node.node_goal} /><Info label="Role" value={node.protocol_role ?? "worker"} /><Info label="Persona" value={node.persona_ref ?? "none"} /><Info label="Required" value={optional ? "no, optional node" : "yes"} /><Info label="Failure classification" value={optional && state === "failed" ? "Optional failure" : state === "failed" ? "Required failure" : "No failure"} /><Info label="Impact on run result" value={nodeImpact(optional, state)} /></Section>
       <Section title="Runtime">
+        <div className="exec-build-quick-actions" data-qid="scillm-exec-graph:runtime:node-actions">
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:pause-node"
+            data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_NODE"
+            title={runtimeControlReason}
+            disabled={runtimeNodeActionDisabled}
+            aria-disabled={runtimeNodeActionDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "pause", target: "node", node_id: node.id, reason: `Pause node ${node.id} scheduling from DAG viewer.` })}
+          >
+            Pause node
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:resume-node"
+            data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_NODE"
+            title={runtimeControlReason}
+            disabled={runtimeResumeDisabled}
+            aria-disabled={runtimeResumeDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "resume", target: "node", node_id: node.id, reason: `Resume node ${node.id} scheduling from DAG viewer.` })}
+          >
+            Resume node
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:disable-node"
+            data-qs-action="SCILLM_EXEC_RUNTIME_DISABLE_NODE"
+            title={runtimeControlReason}
+            disabled={runtimeNodeActionDisabled}
+            aria-disabled={runtimeNodeActionDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "disable", target: "node", node_id: node.id, reason: `Disable pending node ${node.id} from DAG viewer.` })}
+          >
+            Disable node
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:pause-subtree"
+            data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_SUBTREE"
+            title={runtimeControlReason}
+            disabled={runtimeSubtreeActionDisabled}
+            aria-disabled={runtimeSubtreeActionDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "pause", target: "subtree", node_id: node.id, reason: `Pause pending subtree rooted at ${node.id} from DAG viewer.` })}
+          >
+            Pause subtree
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:resume-subtree"
+            data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_SUBTREE"
+            title={runtimeControlReason}
+            disabled={runtimeSubtreeResumeDisabled}
+            aria-disabled={runtimeSubtreeResumeDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "resume", target: "subtree", node_id: node.id, reason: `Resume pending subtree rooted at ${node.id} from DAG viewer.` })}
+          >
+            Resume subtree
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:disable-subtree"
+            data-qs-action="SCILLM_EXEC_RUNTIME_DISABLE_SUBTREE"
+            title={runtimeControlReason}
+            disabled={runtimeSubtreeActionDisabled}
+            aria-disabled={runtimeSubtreeActionDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "disable", target: "subtree", node_id: node.id, reason: `Disable pending subtree rooted at ${node.id} from DAG viewer.` })}
+          >
+            Disable subtree
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact exec-control-button-danger"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:stop-node"
+            data-qs-action="SCILLM_EXEC_RUNTIME_STOP_NODE"
+            title="Stop cancels the active run and records selected-node provenance."
+            disabled={runtimeStopDisabled}
+            aria-disabled={runtimeStopDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "stop", target: "node", node_id: node.id, reason: `Stop active run from selected node ${node.id}.` })}
+          >
+            Stop from node
+          </button>
+          <button
+            className="exec-control-button exec-control-button-compact exec-control-button-danger"
+            type="button"
+            data-qid="scillm-exec-graph:runtime:stop-subtree"
+            data-qs-action="SCILLM_EXEC_RUNTIME_STOP_SUBTREE"
+            title="Stop cancels the active run and records selected-subtree provenance."
+            disabled={runtimeStopDisabled}
+            aria-disabled={runtimeStopDisabled}
+            onClick={() => void onRuntimeAction?.({ action: "stop", target: "subtree", node_id: node.id, reason: `Stop active run from subtree rooted at ${node.id}.` })}
+          >
+            Stop from subtree
+          </button>
+        </div>
+        <div className={runtimeActionState?.status === "error" ? "exec-controls-reason exec-controls-reason-error" : "exec-controls-reason"} style={{ textAlign: "left", maxWidth: "100%" }}>
+          {runtimeControlReason}
+        </div>
         <Info label="Type" value={node.type} />
         <Info label="Model" value={node.model ?? "default"} />
         <Info label="Depends on" value={dependencies.length ? dependencies.join(", ") : "none"}>
@@ -2401,7 +2796,7 @@ function Inspector({
             <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:disable-node" data-qs-action="SCILLM_EXEC_PLAN_DISABLE_NODE" title="Mark this committed node disabled in the draft amendment; does not hard-delete execution evidence" disabled={Boolean(node.disabled)} aria-disabled={Boolean(node.disabled)} onClick={onDisableNode}>Disable</button>
             <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:archive-node" data-qs-action="SCILLM_EXEC_PLAN_ARCHIVE_NODE" title="Mark this committed node archived in the draft amendment; does not hard-delete execution evidence" disabled={Boolean(node.archived)} aria-disabled={Boolean(node.archived)} onClick={onArchiveNode}>Archive</button>
           </div>
-          <div className="exec-plan-inline-help">These controls mutate only the local amendment draft. Run evidence and committed execution state remain read-only until a backend apply validator exists.</div>
+          <div className="exec-plan-inline-help">These controls mutate only the local amendment draft. Run evidence stays read-only; approved amendments are applied from the Memory amendments list with provenance.</div>
           <label className="exec-plan-field">
             <span>Goal</span>
             <textarea className="exec-plan-input exec-plan-textarea" data-qid="scillm-exec-graph:plan-edit:goal" data-qs-action="SCILLM_EXEC_PLAN_EDIT_GOAL" title="Edit selected node goal" value={node.node_goal} onChange={(event) => onUpdateNode?.({ node_goal: event.target.value })} />
@@ -2500,6 +2895,7 @@ function Inspector({
                             onChange={(event) => updateReviewScope(index, {
                               scope: event.target.value,
                               contract: event.target.value,
+                              ...catalogIdentityFields(reviewContractEntry(event.target.value, reviewCatalog)),
                               agent: defaultReviewAgentForContract(event.target.value, reviewCatalog),
                               model: node.model || defaultReviewModelForContract(event.target.value, reviewCatalog),
                               review_level: reviewContractEntry(event.target.value, reviewCatalog)?.review_level ?? (event.target.value === "security" ? "risk_expanded" : "default"),
@@ -2512,6 +2908,7 @@ function Inspector({
                               best_practice_skills: defaultBestPracticeSkillsForContract(event.target.value, reviewCatalog),
                               prompt: defaultReviewContractPrompt(event.target.value, reviewContractEntry(event.target.value, reviewCatalog)?.default_preset ?? "scope_default", reviewCatalog),
                               prompt_preset: reviewContractEntry(event.target.value, reviewCatalog)?.default_preset ?? "scope_default",
+                              inline_overrides: {},
                             })}
                           >
                             {contract && !catalogContracts.some((option) => option.id === contract) ? <option value={contract}>{contract} (draft)</option> : null}
@@ -2612,7 +3009,7 @@ function Inspector({
                             data-qs-action="SCILLM_EXEC_PLAN_EDIT_REVIEW_CONTRACT_PROMPT"
                             title="Edit this evidence contract prompt body"
                             value={scope.prompt ?? ""}
-                            onChange={(event) => updateReviewScope(index, { prompt: event.target.value })}
+                            onChange={(event) => updateReviewScope(index, { prompt: event.target.value, prompt_preset: "custom", inline_overrides: { ...(scope.inline_overrides ?? {}), prompt: true } })}
                           />
                         </label>
                         <button
@@ -2811,6 +3208,7 @@ function PlanDraftPanel({
   onRefreshAmendments,
   onLoadAmendment,
   onSetAmendmentStatus,
+  onApplyAmendment,
   onWarningsAcknowledgedChange,
   onApplyProposal,
   onSelectNode,
@@ -2847,6 +3245,7 @@ function PlanDraftPanel({
   onRefreshAmendments?: () => void;
   onLoadAmendment: (amendment: ExecGraphAmendment) => void;
   onSetAmendmentStatus?: AmendmentStatusHandler;
+  onApplyAmendment?: AmendmentApplyHandler;
   onWarningsAcknowledgedChange: (value: boolean) => void;
   onApplyProposal: (proposal: NicoPlanProposal) => void;
   onSelectNode: (nodeId: string) => void;
@@ -2877,7 +3276,7 @@ function PlanDraftPanel({
               ? "Acknowledge the listed warnings before saving this amendment."
             : warningCount
               ? `Save this draft amendment with ${warningCount} accepted validation warning${warningCount === 1 ? "" : "s"}.`
-              : "Save this draft amendment. Apply is intentionally unavailable until backend validation exists.";
+              : "Save this draft amendment. Approve and apply it from the Memory amendments list.";
   const amendVisibleReason = !canAmend
     ? "Save unavailable: no shared Memory amendment backend is connected."
     : staleBaseGraph
@@ -2914,7 +3313,7 @@ function PlanDraftPanel({
         <strong>Draft revision</strong>
         <span className={dirty && amendState.status !== "saved" ? "exec-plan-audit-status-attention" : undefined}><b>Unsaved</b><em>{amendState.status === "saved" ? "No" : dirty ? "Yes" : "No"}</em></span>
         <span><b>Run evidence</b><em>Read-only</em></span>
-        <span className={saveStatusClass} title="Saves the amendment draft operations, structured diff, validation result, provenance, and audit metadata. It does not apply the amendment."><b>Save</b><em>{saveStatusLabel}</em></span>
+        <span className={saveStatusClass} title="Saves the amendment draft operations, structured diff, validation result, provenance, and audit metadata. Approved amendments are applied from the Memory amendments list."><b>Save</b><em>{saveStatusLabel}</em></span>
         <span className={diff.length ? "exec-plan-audit-status-attention exec-plan-audit-diff-status" : "exec-plan-audit-diff-status"}>
           <b>{diffCountLabel}</b>
           <em>{diff.length}</em>
@@ -2979,6 +3378,7 @@ function PlanDraftPanel({
         onRefresh={onRefreshAmendments}
         onLoadAmendment={onLoadAmendment}
         onSetAmendmentStatus={onSetAmendmentStatus}
+        onApplyAmendment={onApplyAmendment}
       />
       {mode === "nico_proposals" ? (
         <div className="exec-plan-column">
@@ -3082,7 +3482,6 @@ function PlanDraftPanel({
         <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:reset" data-qs-action="SCILLM_EXEC_PLAN_RESET_DRAFT" title={dirty ? "Reset draft to original evidence graph" : "No draft changes to reset"} disabled={!dirty} aria-disabled={!dirty} onClick={onReset}>Reset draft</button>
         <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:export-diff" data-qs-action="SCILLM_EXEC_PLAN_COPY_DIFF" title={dirty ? "Copy formal plan diff JSON with graph id, actor, timestamp, amendment identity, warning acknowledgements, proposal provenance, and diff hash." : "No draft changes to copy"} disabled={!dirty} aria-disabled={!dirty} onClick={onExportDiff}>{formalDiffCopied ? "Copied formal diff" : "Copy formal diff"}</button>
         <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:save-draft-amendment" data-qs-action="SCILLM_EXEC_PLAN_SAVE_DRAFT_AMENDMENT" disabled={amendDisabled} aria-disabled={amendDisabled} title={amendTitle} onClick={onAmend}>{amendState.status === "saving" ? "Saving draft..." : amendState.status === "saved" ? "Saved draft amendment" : staleBaseGraph ? "Refresh before save" : warningAckRequired && !warningsAcknowledged ? "Acknowledge warning to save" : warningCount ? `Save draft with ${warningCount} warning${warningCount === 1 ? "" : "s"}` : "Save draft amendment"}</button>
-        <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:apply-amendment-disabled" data-qs-action="SCILLM_EXEC_PLAN_APPLY_AMENDMENT_DISABLED" disabled aria-disabled="true" title="Apply amendment is disabled until backend validation and application contracts are available.">Apply amendment</button>
       </div>
       {warningAckRequired && amendState.status !== "saved" ? (
         <label className="exec-plan-warning-ack" data-qid="scillm-exec-graph:plan-warning-ack">
@@ -3106,12 +3505,14 @@ function MemoryAmendmentsPanel({
   onRefresh,
   onLoadAmendment,
   onSetAmendmentStatus,
+  onApplyAmendment,
 }: {
   amendments: ExecGraphAmendment[];
   state: AmendmentsLoadState;
   onRefresh?: () => unknown | Promise<unknown>;
   onLoadAmendment: (amendment: ExecGraphAmendment) => void;
   onSetAmendmentStatus?: AmendmentStatusHandler;
+  onApplyAmendment?: AmendmentApplyHandler;
 }) {
   const [busyKey, setBusyKey] = useState<string | undefined>();
   const statusOptions: Array<Exclude<ExecGraphAmendmentStatus, "proposed">> = ["approved", "rejected", "superseded"];
@@ -3133,6 +3534,17 @@ function MemoryAmendmentsPanel({
     setBusyKey(nextBusyKey);
     try {
       await onSetAmendmentStatus(amendment._key, nextStatus, `Marked ${nextStatus} from DAG editor.`);
+    } finally {
+      setBusyKey(undefined);
+    }
+  }
+
+  async function applyAmendment(amendment: ExecGraphAmendment) {
+    if (!onApplyAmendment || amendment.status !== "approved" || amendment.apply_status === "applied") return;
+    const nextBusyKey = `${amendment._key}:apply`;
+    setBusyKey(nextBusyKey);
+    try {
+      await onApplyAmendment(amendment, "Applied approved amendment from DAG editor.");
     } finally {
       setBusyKey(undefined);
     }
@@ -3163,6 +3575,17 @@ function MemoryAmendmentsPanel({
             const canLoadDraft = Boolean(amendment.draft_graph);
             const timestamp = formatTimestamp(amendment.updated_at ?? amendment.created_at);
             const diffCount = amendment.diff?.length ?? 0;
+            const applied = amendment.apply_status === "applied";
+            const canApply = amendment.status === "approved" && !applied;
+            const applyBusy = busyKey === `${amendment._key}:apply`;
+            const applyDisabled = !onApplyAmendment || !canApply || applyBusy;
+            const applyTitle = !onApplyAmendment
+              ? "No Memory amendment apply writer is connected."
+              : applied
+                ? `Applied${amendment.applied_at ? ` at ${formatTimestamp(amendment.applied_at)}` : ""}.`
+                : amendment.status !== "approved"
+                  ? "Approve this amendment before applying it."
+                  : "Apply this approved amendment as a provenance-recorded runtime decision overlay.";
             return (
               <div key={amendment._key} className="exec-plan-proposal exec-plan-amendment-record" data-qid={`scillm-exec-graph:amendment:${amendment._key}`}>
                 <div>
@@ -3173,10 +3596,14 @@ function MemoryAmendmentsPanel({
                     <b className={`exec-plan-status-badge exec-plan-status-badge-${amendment.status}`}>{amendment.status}</b>
                     <span>Diffs</span>
                     <b>{diffCount}</b>
+                    <span>Apply</span>
+                    <b className={`exec-plan-status-badge exec-plan-status-badge-${applied ? "approved" : "proposed"}`}>{applied ? "applied" : "not applied"}</b>
                     {amendment.actor ? <><span>Author</span><b>{amendment.actor}</b></> : null}
                   </div>
                   {amendment.status_reason ? <div className="exec-plan-muted">Status reason: {amendment.status_reason}</div> : null}
                   {amendment.status_actor ? <div className="exec-plan-muted">Status actor: {amendment.status_actor}</div> : null}
+                  {applied ? <div className="exec-plan-muted">Applied by {amendment.applied_by ?? "unknown"} · {formatTimestamp(amendment.applied_at)} · graph {amendment.applied_graph_sha256?.slice(0, 16) ?? "hash unavailable"}</div> : null}
+                  {amendment.apply_reason ? <div className="exec-plan-muted">Apply reason: {amendment.apply_reason}</div> : null}
                 </div>
                 <div className="exec-plan-amendment-actions">
                   <button
@@ -3210,6 +3637,18 @@ function MemoryAmendmentsPanel({
                       </button>
                     );
                   })}
+                  <button
+                    className="exec-control-button exec-control-button-compact"
+                    type="button"
+                    data-qid={`scillm-exec-graph:amendment:${amendment._key}:apply`}
+                    data-qs-action="SCILLM_EXEC_AMENDMENT_APPLY"
+                    title={applyTitle}
+                    disabled={applyDisabled}
+                    aria-disabled={applyDisabled}
+                    onClick={() => void applyAmendment(amendment)}
+                  >
+                    {applyBusy ? "Applying" : applied ? "Applied" : "Apply"}
+                  </button>
                 </div>
               </div>
             );
@@ -3355,6 +3794,21 @@ const execGraphDebuggerCss = `
   color: var(--exec-dim-contrast);
   font-size: 12px;
   line-height: 16px;
+  text-align: right;
+}
+.exec-controls-reason-error {
+  color: var(--exec-failed, #ef4444);
+}
+.exec-controls-unwired {
+  max-width: 320px;
+  padding: 10px 12px;
+  border: 1px solid var(--exec-warning, #facc15);
+  border-radius: 8px;
+  background: rgba(250, 204, 21, 0.08);
+  color: var(--exec-warning, #facc15);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
   text-align: right;
 }
 .exec-node-button:hover {

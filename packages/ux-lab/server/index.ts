@@ -76,7 +76,8 @@ app.post('/api/auth/revoke-all', (_req, res) => {
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
 const SCILLM_PROJECT_ROOT = process.env.SCILLM_PROJECT_ROOT ?? '/home/graham/workspace/experiments/scillm'
-const SCILLM_DAG_PHASE_ID = process.env.SCILLM_DAG_PHASE_ID ?? 'phase-20260519-dag-self-improvement-loop'
+const SCILLM_DAG_PHASE_ID = process.env.SCILLM_DAG_PHASE_ID ?? ''
+const SCILLM_DAG_FALLBACK_PHASE_ID = 'phase-20260519-dag-self-improvement-loop'
 const SCILLM_DAG_RUN_ARTIFACT_DIR = process.env.SCILLM_DAG_RUN_ARTIFACT_DIR ?? 'scillm-exec-run-hash-bound'
 const ARCH_SCOPE = 'architecture'
 const RE_QUESTION_SKILL = '/home/graham/workspace/experiments/agent-skills/skills/review-question'
@@ -150,6 +151,91 @@ function executableGraphHash(graph: any): string {
 
 function safeArtifactName(value: string): string {
   return value.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 160) || 'graph'
+}
+
+function safeScillmPhaseId(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const trimmed = value.trim()
+  return /^phase-[a-zA-Z0-9._-]+$/.test(trimmed) ? trimmed : null
+}
+
+async function readActiveScillmPhaseId(): Promise<string | null> {
+  const knowledgePath = resolve(SCILLM_PROJECT_ROOT, 'PROJECT_KNOWLEDGE.md')
+  const content = await readFile(knowledgePath, 'utf-8').catch(() => '')
+  const pointer = content.match(/Current phase pointer:\s*`\.plan-iterate\/([^`]+)`/)
+  const phaseId = safeScillmPhaseId(pointer?.[1])
+  if (phaseId && existsSync(resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', phaseId))) return phaseId
+  return null
+}
+
+async function resolveScillmDagPhaseId(req: express.Request): Promise<{ phaseId: string; activePhaseId: string | null; requestedPhaseId: string | null }> {
+  const queryPhase = Array.isArray(req.query.phase_id) ? req.query.phase_id[0] : req.query.phase_id
+  const queryPhaseCamel = Array.isArray(req.query.phaseId) ? req.query.phaseId[0] : req.query.phaseId
+  const bodyPhase = safeScillmPhaseId((req.body as JsonRecord | undefined)?.phase_id ?? (req.body as JsonRecord | undefined)?.phaseId)
+  const requestedPhaseId = safeScillmPhaseId(queryPhase) ?? safeScillmPhaseId(queryPhaseCamel) ?? bodyPhase
+  const activePhaseId = await readActiveScillmPhaseId()
+  const configuredPhaseId = safeScillmPhaseId(SCILLM_DAG_PHASE_ID)
+  return {
+    phaseId: requestedPhaseId ?? configuredPhaseId ?? activePhaseId ?? SCILLM_DAG_FALLBACK_PHASE_ID,
+    activePhaseId,
+    requestedPhaseId,
+  }
+}
+
+async function latestScillmPlanGraph(phaseDir: string, phaseStatus: JsonRecord | null): Promise<{ graphPath: string; readinessPath: string | null } | null> {
+  const statusPath = typeof phaseStatus?.active_plan_graph_artifact === 'string'
+    ? resolve(phaseDir, phaseStatus.active_plan_graph_artifact)
+    : null
+  const graphPath = statusPath && isPathInside(phaseDir, statusPath) && existsSync(statusPath)
+    ? statusPath
+    : null
+  if (graphPath) {
+    const readinessPath = graphPath.replace(/\.json$/, '-runtime-readiness.json')
+    return { graphPath, readinessPath: existsSync(readinessPath) ? readinessPath : null }
+  }
+  const planGraphDir = resolve(phaseDir, 'plan-graphs')
+  const files = (await readdir(planGraphDir).catch(() => []))
+    .filter((file) => file.endsWith('.json') && !file.endsWith('-runtime-readiness.json'))
+    .sort()
+  const latest = files.at(-1)
+  if (!latest) return null
+  const latestGraphPath = resolve(planGraphDir, latest)
+  const latestReadinessPath = latestGraphPath.replace(/\.json$/, '-runtime-readiness.json')
+  return { graphPath: latestGraphPath, readinessPath: existsSync(latestReadinessPath) ? latestReadinessPath : null }
+}
+
+function synthesizePlanIterateStatus(graph: JsonRecord, readiness: JsonRecord | null, phaseStatus: JsonRecord | null): JsonRecord {
+  const readinessNodes = Array.isArray(readiness?.nodes) ? readiness.nodes as Array<JsonRecord> : []
+  const readinessByNode = new Map(readinessNodes.map((node) => [String(node.node_id ?? ''), node]))
+  const nodeStates: Record<string, string> = {}
+  const nodeResults: Record<string, JsonRecord> = {}
+  const nodes = Array.isArray(graph.nodes) ? graph.nodes as Array<JsonRecord> : []
+  for (const node of nodes) {
+    const nodeId = String(node.id ?? '')
+    if (!nodeId) continue
+    const report = readinessByNode.get(nodeId)
+    const readinessStatus = String(report?.status ?? '')
+    const missingFields = Array.isArray(report?.missing_fields) ? report.missing_fields : []
+    const state = readinessStatus === 'blocked' || missingFields.length
+      ? 'needs_attention'
+      : readinessStatus === 'manual_action_required'
+        ? 'ready'
+        : 'pending'
+    nodeStates[nodeId] = state
+    nodeResults[nodeId] = {
+      evidence_status: readinessStatus === 'runtime_ready' ? 'awaiting_execution' : readinessStatus || 'not_executed',
+      missing_fields: missingFields,
+      next_action: report?.next_action ?? 'execute or amend this plan node before closure evidence can exist',
+    }
+  }
+  return {
+    state: String(phaseStatus?.status ?? 'planned'),
+    updated_at: new Date().toISOString(),
+    source_kind: 'plan_iterate_phase_plan',
+    node_states: nodeStates,
+    node_results: nodeResults,
+    runtime_readiness: readiness,
+  }
 }
 
 type JsonRecord = Record<string, unknown>
@@ -425,7 +511,100 @@ const AMBIGUOUS_QRA_REFERENT_RE = /\b(?:this|that|these|those|above|following|pr
 
 function detectAmbiguousQraReferents(question: unknown): string[] {
   if (typeof question !== 'string' || !question.trim()) return []
-  return Array.from(new Set(Array.from(question.matchAll(AMBIGUOUS_QRA_REFERENT_RE), (match) => match[0])))
+  const referents = Array.from(question.matchAll(AMBIGUOUS_QRA_REFERENT_RE), (match) => match[0])
+  if (/\bwhich\s+one\b/i.test(question)) referents.push('which one')
+  if (/\b(first|second)\s+(?:control|option|one)\b/i.test(question)) referents.push('ordinal control reference')
+  if (/\bT\d{1,3}\b/.test(question)) referents.push('truncated technique id')
+  if (/\b(?:are|is)\s+we\s+compliant\s+now\b/i.test(question) || /\bare\s+we\s+compliant\s+now\b/i.test(question)) referents.push('compliance scope')
+  return Array.from(new Set(referents))
+}
+
+type EvidenceCasePreflightAction = 'clarify' | 'deflect'
+
+interface EvidenceCasePreflightDecision {
+  action: EvidenceCasePreflightAction
+  issue_code: string
+  issue_label: string
+  detail: string
+}
+
+function detectEvidenceCasePreflight(question: unknown, profile: unknown): EvidenceCasePreflightDecision | null {
+  if (typeof question !== 'string' || !question.trim()) {
+    return {
+      action: 'clarify',
+      issue_code: 'empty_question',
+      issue_label: 'Empty question',
+      detail: 'A question is required before an evidence case can be built.',
+    }
+  }
+  const q = question.toLowerCase()
+  const profileText = typeof profile === 'string' ? profile.toLowerCase() : ''
+  const ambiguousReferents = detectAmbiguousQraReferents(question)
+  if (ambiguousReferents.length > 0) {
+    return {
+      action: 'clarify',
+      issue_code: 'ambiguous_referent',
+      issue_label: 'Ambiguous referent',
+      detail: `Missing explicit referent for: ${ambiguousReferents.join(', ')}`,
+    }
+  }
+  if (/\b(ignore|bypass|override)\b.*\b(evidence|source|gate|rules?)\b/.test(q) || /\bwithout checking sources\b/.test(q) || /\bfully compliant\b.*\bwithout\b/.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'evidence_bypass_request',
+      issue_label: 'Evidence bypass request',
+      detail: 'The request asks Chat to bypass evidence-case grounding.',
+    }
+  }
+  if (/\binvent\b.*\b(source|citation|evidence)\b/.test(q) || /\bfake\b.*\b(source|citation|evidence)\b/.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'fabricated_source_request',
+      issue_label: 'Fabricated source request',
+      detail: 'The request asks Chat to fabricate source evidence.',
+    }
+  }
+  if (/\b(private|secret)\b.*\b(key|token|credential|password)\b/.test(q) || /\bshow\b.*\b(private|secret)\b/.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'secret_disclosure_request',
+      issue_label: 'Secret disclosure request',
+      detail: 'The request asks for secrets or private credentials rather than compliance evidence.',
+    }
+  }
+  if (/\bclassified\b.*\bvendor\b/.test(q) || /\bzero[- ]day\b/.test(q) || /\bthis morning\b/.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'unsupported_current_intel',
+      issue_label: 'Unsupported current intelligence claim',
+      detail: 'The selected corpus cannot substantiate classified or same-day intelligence claims.',
+    }
+  }
+  if (/\bwill\b.*\b(breach|breached|ransomware|compromise)\b/.test(q) || /\bnext\s+(friday|week|month|year)\b/.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'unsupported_prediction',
+      issue_label: 'Unsupported prediction',
+      detail: 'The selected corpus cannot predict future incidents.',
+    }
+  }
+  if (/\bfedramp\s+high\b.*\b(compliant|prove|certif)/.test(q) || /\bprove\b.*\b(compliant|certified)\b/.test(q)) {
+    return {
+      action: 'clarify',
+      issue_code: 'compliance_authority_scope',
+      issue_label: 'Compliance authority scope',
+      detail: 'The request needs an assessment scope and authoritative compliance evidence before Chat can answer.',
+    }
+  }
+  if ((profileText.includes('ground') || /\bground[- ]only\b/.test(q)) && /\b(orbital|orbit|downlink|leo|spacecraft|satellite)\b/.test(q)) {
+    return {
+      action: 'clarify',
+      issue_code: 'profile_mismatch',
+      issue_label: 'Profile mismatch',
+      detail: 'The selected ground cybersecurity profile conflicts with orbital or space-system terminology in the question.',
+    }
+  }
+  return null
 }
 
 function annotateQraQuality(doc: Record<string, any> | null | undefined) {
@@ -4082,8 +4261,9 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
-app.get('/api/scillm/dag-viewer/snapshot', async (_req, res) => {
-  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', SCILLM_DAG_PHASE_ID)
+app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
+  const { phaseId, activePhaseId, requestedPhaseId } = await resolveScillmDagPhaseId(req)
+  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', phaseId)
   const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
   const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
   const runDir = existsSync(preferredRunDir) ? preferredRunDir : fallbackRunDir
@@ -4114,7 +4294,11 @@ app.get('/api/scillm/dag-viewer/snapshot', async (_req, res) => {
       .map(line => JSON.parse(line))
     res.json({
       ok: true,
-      phase_id: SCILLM_DAG_PHASE_ID,
+      phase_id: phaseId,
+      active_phase_id: activePhaseId,
+      requested_phase_id: requestedPhaseId,
+      phase_matches_active: activePhaseId ? activePhaseId === phaseId : null,
+      snapshot_kind: 'runtime_exec_artifacts',
       source: {
         project_root: SCILLM_PROJECT_ROOT,
         graph: graphPath,
@@ -4130,17 +4314,71 @@ app.get('/api/scillm/dag-viewer/snapshot', async (_req, res) => {
       phase_status: phaseStatusRaw ? JSON.parse(phaseStatusRaw) : null,
     })
   } catch (err) {
-    res.status(503).json({
-      ok: false,
-      error: 'scillm DAG evidence artifacts are unavailable',
-      detail: err instanceof Error ? err.message : String(err),
-      expected: { graph: graphPath, status: statusPath, events: eventsPath },
-    })
+    try {
+      const phaseStatusRaw = await readFile(phaseStatusPath, 'utf-8').catch(() => '')
+      const phaseStatus = phaseStatusRaw ? JSON.parse(phaseStatusRaw) as JsonRecord : null
+      const latestPlan = await latestScillmPlanGraph(phaseDir, phaseStatus)
+      if (!latestPlan) throw err
+      const graph = JSON.parse(await readFile(latestPlan.graphPath, 'utf-8')) as JsonRecord
+      const readiness = latestPlan.readinessPath
+        ? JSON.parse(await readFile(latestPlan.readinessPath, 'utf-8')) as JsonRecord
+        : null
+      const status = synthesizePlanIterateStatus(graph, readiness, phaseStatus)
+      const events = [
+        {
+          ts: new Date().toISOString(),
+          type: 'plan_iterate.phase_plan_snapshot',
+          text: 'Runtime exec artifacts are unavailable; showing active plan graph and runtime-readiness evidence.',
+        },
+      ]
+      res.json({
+        ok: true,
+        phase_id: phaseId,
+        active_phase_id: activePhaseId,
+        requested_phase_id: requestedPhaseId,
+        phase_matches_active: activePhaseId ? activePhaseId === phaseId : null,
+        snapshot_kind: 'plan_iterate_phase_plan',
+        source: {
+          project_root: SCILLM_PROJECT_ROOT,
+          graph: latestPlan.graphPath,
+          status: phaseStatusPath,
+          events: 'synthetic: plan-iterate phase plan snapshot; runtime events unavailable',
+          phase_status: phaseStatusPath,
+          runtime_readiness: latestPlan.readinessPath ?? 'not reported',
+          missing_runtime_graph: graphPath,
+          missing_runtime_status: statusPath,
+          missing_runtime_events: eventsPath,
+        },
+        graph,
+        status,
+        base_graph_hash: executableGraphHash(graph),
+        hash_algorithm: 'sha256.canonical_json.executable_graph.v1',
+        events,
+        phase_status: phaseStatus,
+        missing_runtime_artifacts: {
+          graph: graphPath,
+          status: statusPath,
+          events: eventsPath,
+          detail: err instanceof Error ? err.message : String(err),
+        },
+      })
+    } catch (fallbackErr) {
+      res.status(503).json({
+        ok: false,
+        error: 'scillm DAG evidence artifacts are unavailable',
+        phase_id: phaseId,
+        active_phase_id: activePhaseId,
+        requested_phase_id: requestedPhaseId,
+        detail: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
+        expected: { graph: graphPath, status: statusPath, events: eventsPath },
+      })
+    }
   }
 })
 
 app.post('/api/scillm/dag-viewer/amendments', async (req, res) => {
-  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', SCILLM_DAG_PHASE_ID)
+  const { phaseId } = await resolveScillmDagPhaseId(req)
+  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', phaseId)
   const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
   const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
   const runDir = existsSync(preferredRunDir) ? preferredRunDir : fallbackRunDir
@@ -4189,7 +4427,7 @@ app.post('/api/scillm/dag-viewer/amendments', async (req, res) => {
       warnings: Array.isArray(req.body?.warnings) ? req.body.warnings : [],
       createdAt: now,
       source: {
-        phase_id: SCILLM_DAG_PHASE_ID,
+        phase_id: phaseId,
         committed_graph: graphPath,
       },
     }
@@ -8494,6 +8732,51 @@ function evidenceCaseAmbiguousPayload(question: string, ambiguousReferents: stri
   }
 }
 
+function evidenceCasePreflightPayload(question: string, decision: EvidenceCasePreflightDecision, profile: unknown): JsonRecord {
+  const clarify = decision.action === 'clarify'
+  const qraQuality = {
+    status: 'blocked_by_preflight',
+    issue_code: decision.issue_code,
+    issue_label: decision.issue_label,
+    disposition: clarify ? 'clarify_before_evidence_case' : 'deflect_without_evidence_case',
+    safe_action: decision.action,
+  }
+  return {
+    verdict: {
+      state: clarify ? 'inconclusive' : 'not_satisfied',
+      action: decision.action,
+      grade: clarify ? 'C' : 'F',
+      score: clarify ? 0.25 : 0,
+    },
+    gate_trace: [
+      {
+        gate: `preflight_${decision.issue_code}`,
+        passed: false,
+        detail: decision.detail,
+      },
+    ],
+    evidence: [],
+    glossary: [],
+    crosswalk_chains: [],
+    context: {
+      profile: typeof profile === 'string' ? profile : null,
+    },
+    diagnostics: {
+      authority: 'server_deterministic_gate',
+      workflow: 'create-evidence-case',
+      mode: clarify ? 'clarification_required' : 'deflection_required',
+      question,
+      profile: typeof profile === 'string' ? profile : null,
+      qra_quality: qraQuality,
+    },
+    qra_quality: qraQuality,
+    answer: clarify
+      ? `Clarify: ${decision.detail}`
+      : `Cannot answer from selected evidence profile: ${decision.detail}`,
+    cae_tree: null,
+  }
+}
+
 function createEvidenceCaseVersion(question: string, controlId: unknown, result?: any, previousVersion?: unknown): JsonRecord {
   return {
     id: createEvidenceCaseRunId(),
@@ -8701,8 +8984,23 @@ app.post('/api/evidence-case', async (req, res) => {
 
 app.post('/api/evidence-case/run', async (req, res) => {
   // Call daemon /create-evidence-case directly (no subprocess, <1s per best-practices-arangodb)
-  const { question, controlId } = req.body
+  const { question, controlId, profile, evidenceProfile } = req.body
   if (!question) return res.status(400).json({ error: 'question required' })
+  const selectedProfile = evidenceProfile ?? profile
+  const preflight = detectEvidenceCasePreflight(question, selectedProfile)
+  if (preflight) {
+    const payload = evidenceCasePreflightPayload(String(question), preflight, selectedProfile)
+    if (evidenceCaseNeedsGapReview(payload)) {
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+    }
+    return res.json(payload)
+  }
   const ambiguousReferents = detectAmbiguousQraReferents(question)
   if (ambiguousReferents.length > 0) {
     return res.json(evidenceCaseAmbiguousPayload(String(question), ambiguousReferents))
@@ -8775,7 +9073,7 @@ app.get('/api/evidence-case/runs', (_req, res) => {
 })
 
 app.post('/api/evidence-case/stream', async (req, res) => {
-  const { question, controlId, nodeLabel } = req.body
+  const { question, controlId, nodeLabel, profile, evidenceProfile } = req.body
   if (!question) return res.status(400).json({ error: 'question required' })
 
   res.writeHead(200, {
@@ -8805,6 +9103,42 @@ app.post('/api/evidence-case/stream', async (req, res) => {
   })
 
   try {
+    const selectedProfile = evidenceProfile ?? profile
+    const preflight = detectEvidenceCasePreflight(question, selectedProfile)
+    if (preflight) {
+      const payload = evidenceCasePreflightPayload(String(question), preflight, selectedProfile)
+      const gapReview = buildAdvisoryGapReview(String(question), controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+      run.status = 'completed'
+      run.completed_at = new Date().toISOString()
+      run.verdict = payload.verdict as JsonRecord
+      run.gates = payload.gate_trace as JsonRecord[]
+      run.diagnostics = payload.diagnostics as JsonRecord
+      run.gap_review = gapReview
+      run.proposed_correction = gapReview.proposed_correction as JsonRecord
+      run.correction_lineage = gapReview.correction_lineage as JsonRecord
+      run.gap_review_status = 'completed'
+      run.human_review_state = 'queued'
+      rememberEvidenceCaseRun(run)
+      emit('gate', { gate: (payload.gate_trace as JsonRecord[])[0] })
+      emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
+      emit('gap_review_started', { gap_review_candidate: true, advisory_only: true })
+      emit('persona_review', { persona: 'Brandon Bailey', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Margaret Chen', review: gapReview.persona_review })
+      emit('persona_review', { persona: 'Jennifer Park', review: gapReview.persona_review })
+      emit('judge_routing', { judge_routing: gapReview.judge_routing })
+      emit('correction_suggested', { proposed_correction: gapReview.proposed_correction, correction_lineage: gapReview.correction_lineage })
+      emit('human_intervention_requested', { human_review_state: gapReview.human_review_state })
+      emit('result', { result: payload })
+      emit('run_completed', { run: { ...run } })
+      return res.end()
+    }
+
     const ambiguousReferents = detectAmbiguousQraReferents(question)
     if (ambiguousReferents.length > 0) {
       const payload = evidenceCaseAmbiguousPayload(String(question), ambiguousReferents)

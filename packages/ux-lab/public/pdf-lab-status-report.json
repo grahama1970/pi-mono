@@ -32,7 +32,7 @@
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-workflow-manifest.json"
     },
     "memory_qa": {
-      "bytes": 10761,
+      "bytes": 34150,
       "exists": true,
       "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-memory-qa-report.json"
     },
@@ -55,7 +55,7 @@
   "blockers": [],
   "current_interpretation": "The run is usable for final QA if the parity gate is passed and the human triage deck is empty. Do not claim core extractor repair unless core_pdf_oxide_changed is true. Agent-resolved findings are engineering backlog, not human ambiguity.",
   "extraction_improvement": null,
-  "generated_at": "2026-05-07T17:46:50.389676+00:00",
+  "generated_at": "2026-05-21T19:09:51.224930+00:00",
   "memory_qa": {
     "errors": {
       "memory_upsert": null,
@@ -68,7 +68,7 @@
     },
     "gates": [
       {
-        "detail": "492 page images, 358 section crops, and 27628 element crops for 27986 extracted elements.",
+        "detail": "492 page images, 358 section crops, and 28075 element crops for 28432 extracted elements.",
         "name": "full_crop_coverage",
         "passed": true
       },
@@ -78,17 +78,17 @@
         "passed": true
       },
       {
-        "detail": "elements 27628/27628 have required text vectors; page text vectors 0/492 and section text vectors 352/358 are non-blocking metadata; 8/8 element recall checks passed.",
+        "detail": "elements 28075/28075 have required text vectors; page text vectors 0/492 and section text vectors 352/358 are non-blocking metadata; 50/50 element recall checks passed.",
         "name": "text_qdrant_recall",
         "passed": true
       },
       {
-        "detail": "pages 492/492, sections 358/358, required table/figure/image elements 8/8 have visual vectors. Optional text-element crops indexed: 0/27620.",
+        "detail": "pages 492/492, sections 358/358, required table/figure/image elements 8/8 have visual vectors. Optional text-element crops indexed: 0/28067.",
         "name": "visual_qdrant_recall",
         "passed": true
       }
     ],
-    "generated_at": "2026-05-04T14:25:32.366291+00:00",
+    "generated_at": "2026-05-21T19:06:51.758160+00:00",
     "implemented": true,
     "notes": [
       "This report is real-data backed. A false `passed` value means the QA pipeline ran but did not satisfy the full final gate.",
@@ -98,7 +98,7 @@
     ],
     "passed": true,
     "policy": "Final agent QA must store extracted page, section, and element metadata/crops in ArangoDB memory, index text vectors for every extracted element, index visual vectors for pages, sections, tables, and figures/images, and verify stratified recall against original page/crop evidence. Paragraph/list/header/footer crop image vectors are optional background/on-demand work.",
-    "run_id": "pdf-lab-toc-repair-20260503T124447Z",
+    "run_id": "pdf-lab-list-control-reference-20260504T160000Z",
     "sample_checks": [
       {
         "element_key": "elt:fc63bcd61715d018:12:ecf9df308750838f",
@@ -107,12 +107,26 @@
         "returned_keys": [
           "elt:fc63bcd61715d018:12:ecf9df308750838f",
           "elt:fc63bcd61715d018:12:ecf9df308750838f",
-          "section:12:5878e8265fe73207",
+          "elt:fc63bcd61715d018:12:ecf9df308750838f",
           "section:12:5878e8265fe73207",
           "section:12:5878e8265fe73207"
         ],
         "status": "passed",
         "text_hash": "e2f1cb3066b359073ef8f57b807b31b422467bc07291ebcfbeabf8e7b8278b46"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:10:ddbc09a31e2ed329",
+        "element_type": "requirement",
+        "page": 10,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:10:ddbc09a31e2ed329",
+          "elt:fc63bcd61715d018:10:ddbc09a31e2ed329",
+          "elt:fc63bcd61715d018:10:ddbc09a31e2ed329",
+          "elt:fc63bcd61715d018:283:18632a3372bb1bf9",
+          "elt:fc63bcd61715d018:283:18632a3372bb1bf9"
+        ],
+        "status": "passed",
+        "text_hash": "161f382ac123ffe1cf7bd0e5e0b9d4cf015a6a5736c8b1f8f4bb0b6f03dc13f7"
       },
       {
         "element_key": "elt:fc63bcd61715d018:4:b831ba518164b4a0",
@@ -133,8 +147,8 @@
         "element_type": "paragraph",
         "page": 1,
         "returned_keys": [
-          "elt:fc63bcd61715d018:130:f159f507aa96e993",
           "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
+          "elt:fc63bcd61715d018:130:f159f507aa96e993",
           "elt:fc63bcd61715d018:178:a706ca9b2ebb6c38",
           "elt:fc63bcd61715d018:130:f159f507aa96e993",
           "elt:fc63bcd61715d018:258:61f035d2000668bf"
@@ -143,29 +157,15 @@
         "text_hash": "163ef8ec9556fcc2b01cf4ce5c60d76ad07f8ff87f8258b1ac1c0b4c739222fb"
       },
       {
-        "element_key": "elt:fc63bcd61715d018:1:f404ae653edb2493",
-        "element_type": "paragraph",
-        "page": 1,
-        "returned_keys": [
-          "elt:fc63bcd61715d018:408:c8cd56119dceca51",
-          "elt:fc63bcd61715d018:410:2f85c930aca2d616",
-          "elt:fc63bcd61715d018:408:a4deb088e3986ef9",
-          "elt:fc63bcd61715d018:408:92f20a1e7eb9d73c",
-          "elt:fc63bcd61715d018:1:f404ae653edb2493"
-        ],
-        "status": "passed",
-        "text_hash": "109710db4e714e9ceb644d041218df95b9437788fb27f938d8c8c2ca8de1963b"
-      },
-      {
         "element_key": "elt:fc63bcd61715d018:2:06e296a9a6a54319",
         "element_type": "section_header",
         "page": 2,
         "returned_keys": [
           "elt:fc63bcd61715d018:2:06e296a9a6a54319",
-          "elt:fc63bcd61715d018:2:06e296a9a6a54319",
-          "section:2:06e296a9a6a54319",
-          "elt:fc63bcd61715d018:22:9840cbffb2dacbf9",
-          "elt:fc63bcd61715d018:24:92c8c2282f5a795e"
+          "elt:fc63bcd61715d018:23:7b88dd4b8ef35cf7",
+          "section:23:a8179ccc12dca47a",
+          "section:23:4c4c778d70e66b81",
+          "section:23:d07b2f44ac14b1ea"
         ],
         "status": "passed",
         "text_hash": "14eb048e06511f2b275196c1ce6d5667779a85441386177bab59daee3a0d707a"
@@ -179,7 +179,7 @@
           "elt:fc63bcd61715d018:3:412657beb6164d87",
           "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
           "elt:fc63bcd61715d018:5:85b058849a407bef",
-          "elt:fc63bcd61715d018:416:6d82e2d6fca43eed"
+          "elt:fc63bcd61715d018:408:150a3e412adb0e2c"
         ],
         "status": "passed",
         "text_hash": "0df93c9d75e13a9e94874c7f4268cbe7a86e8c853603bb339f481f0c697246f8"
@@ -205,44 +205,632 @@
         "returned_keys": [
           "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
           "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
+          "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
           "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
-          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
-          "uk__3323__8"
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67"
         ],
         "status": "passed",
         "text_hash": "2da474b78d68ad49549304b114578f444f515aab9be37c56564a36edf8856274"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:a712236053dbd13b",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:a712236053dbd13b",
+          "elt:fc63bcd61715d018:3:a712236053dbd13b",
+          "elt:fc63bcd61715d018:3:a712236053dbd13b",
+          "elt:fc63bcd61715d018:29:2b3080083ffb60c9",
+          "elt:fc63bcd61715d018:29:2b3080083ffb60c9"
+        ],
+        "status": "passed",
+        "text_hash": "3620910b127fafd0315bba12fb08a2e0c39c9476d5ea7f3abb048f859189ed31"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:b69a8e16fb3111bc",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:b69a8e16fb3111bc",
+          "308496597672",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "308496572653",
+          "section:5:6adada9f593d6f0d"
+        ],
+        "status": "passed",
+        "text_hash": "62aa9dfdac3dbb41c7bf38882e25a61bb2fc9fa493a5729de1fbda6b10f667bd"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:45d8a65ae80b2d52",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:45d8a65ae80b2d52",
+          "elt:fc63bcd61715d018:3:45d8a65ae80b2d52",
+          "elt:fc63bcd61715d018:3:45d8a65ae80b2d52",
+          "elt:fc63bcd61715d018:406:762777c2eecec5f3",
+          "elt:fc63bcd61715d018:406:762777c2eecec5f3"
+        ],
+        "status": "passed",
+        "text_hash": "2e84935ccace337f45c918052fd46e7be9e5cc768bc9100e5ae9504a8b7a5e7f"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:f37f655f8be013cc",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:f37f655f8be013cc",
+          "elt:fc63bcd61715d018:3:f37f655f8be013cc",
+          "elt:fc63bcd61715d018:9:3620a62092703b72",
+          "elt:fc63bcd61715d018:9:3620a62092703b72",
+          "308496633809"
+        ],
+        "status": "passed",
+        "text_hash": "90ed983a1353c69dea3401b54fa6bac9643530e2c5e66b93079ce7c81d2d62b6"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:9f6fe987ed5d5b42",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:9f6fe987ed5d5b42",
+          "elt:fc63bcd61715d018:3:9f6fe987ed5d5b42",
+          "elt:fc63bcd61715d018:3:9f6fe987ed5d5b42",
+          "uk__6704__21",
+          "section:116:1eaa6e6701e76824"
+        ],
+        "status": "passed",
+        "text_hash": "f7ebf4cb403024b5933ca9c01335ed4e9d61d0d8f935d4152d4b22f3bb1ac25c"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:04b0598a4501c31f",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:04b0598a4501c31f",
+          "elt:fc63bcd61715d018:3:04b0598a4501c31f",
+          "elt:fc63bcd61715d018:3:04b0598a4501c31f",
+          "uk__4493__5",
+          "elt:fc63bcd61715d018:9:38dadeb36c731b3c"
+        ],
+        "status": "passed",
+        "text_hash": "b2e60e3243b0c8bc7c6dd3f26d4168be6535965474c31b8fb0272b9a83a6baa6"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:1994497f08615c34",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:1994497f08615c34",
+          "elt:fc63bcd61715d018:3:1994497f08615c34",
+          "elt:fc63bcd61715d018:212:f844af0fb61fff41",
+          "elt:fc63bcd61715d018:212:f844af0fb61fff41",
+          "elt:fc63bcd61715d018:430:ec6cf5cf83019c17"
+        ],
+        "status": "passed",
+        "text_hash": "3f36bc30a15b0cec2fb1f5ef7eece613e1c2f62ff19f64357cd4b8a45291e5fa"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:9cb58f2924c83f31",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:9cb58f2924c83f31",
+          "elt:fc63bcd61715d018:3:9cb58f2924c83f31",
+          "elt:fc63bcd61715d018:3:9cb58f2924c83f31",
+          "elt:fc63bcd61715d018:3:6c4777b33bb8596e",
+          "elt:fc63bcd61715d018:3:6c4777b33bb8596e"
+        ],
+        "status": "passed",
+        "text_hash": "7e8ba8f69d9fce3cc31c8ba23d1761c0f8dcecb387dc740787151d7da61fc060"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:38a2a797da84337b",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:38a2a797da84337b",
+          "elt:fc63bcd61715d018:3:38a2a797da84337b",
+          "elt:fc63bcd61715d018:3:38a2a797da84337b",
+          "elt:fc63bcd61715d018:3:206aeeec755ff984",
+          "elt:fc63bcd61715d018:3:206aeeec755ff984"
+        ],
+        "status": "passed",
+        "text_hash": "ae0a1177c315641bd065932adbe635d7b482424f9997f20c57c86b945d5da049"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:6c4777b33bb8596e",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:6c4777b33bb8596e",
+          "elt:fc63bcd61715d018:3:6c4777b33bb8596e",
+          "elt:fc63bcd61715d018:3:6c4777b33bb8596e",
+          "elt:fc63bcd61715d018:3:9cb58f2924c83f31",
+          "elt:fc63bcd61715d018:3:9cb58f2924c83f31"
+        ],
+        "status": "passed",
+        "text_hash": "8e0c2ffaea5fd4ef575587c7a0271aa441cd4d6b9563aa5cb333bd3c9a0d4e34"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:1331db5641993781",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:1331db5641993781",
+          "elt:fc63bcd61715d018:3:1331db5641993781",
+          "elt:fc63bcd61715d018:3:1331db5641993781",
+          "elt:fc63bcd61715d018:432:d3ded08d9bd24a4d",
+          "elt:fc63bcd61715d018:212:f844af0fb61fff41"
+        ],
+        "status": "passed",
+        "text_hash": "01a03f31e925d0d6772e9a796cd8d6814709c5f9334a1b1cc00f2d378635614a"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:17e174a40b22cdcb",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "section:453:ee88a66b19b68cd1",
+          "section:453:ee88a66b19b68cd1",
+          "elt:fc63bcd61715d018:413:b11290e9ab8b378e",
+          "elt:fc63bcd61715d018:409:2acf34ab11cb1486",
+          "elt:fc63bcd61715d018:410:10fe7539bccdc526"
+        ],
+        "status": "passed",
+        "text_hash": "0bd7570ebd21a59a1e8fdd73366fdcc2d3ac36d336abe724bd0e5f75f9281beb"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:2647f0e109720896",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:2647f0e109720896",
+          "elt:fc63bcd61715d018:3:2647f0e109720896",
+          "elt:fc63bcd61715d018:1:7052ad2ab761118e",
+          "elt:fc63bcd61715d018:2:4b9f2efc2464b59f",
+          "elt:fc63bcd61715d018:1:7052ad2ab761118e"
+        ],
+        "status": "passed",
+        "text_hash": "bb34f121c98774f215ff0c3c8d7cfe7f555b00bc8c05cc67785645c418b04591"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:a8a99b69134c1f53",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:a8a99b69134c1f53",
+          "elt:fc63bcd61715d018:10:6392e2fc8a6046fa",
+          "elt:fc63bcd61715d018:10:6392e2fc8a6046fa",
+          "elt:fc63bcd61715d018:77:1fe040c97c49743e",
+          "elt:fc63bcd61715d018:332:176ce735f27df016"
+        ],
+        "status": "passed",
+        "text_hash": "792b55619cb5f04542adbc574234b46ff791500b22157593aac82326b22d4e37"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:c5d11f2cdbc71853",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:c5d11f2cdbc71853",
+          "elt:fc63bcd61715d018:3:c5d11f2cdbc71853",
+          "elt:fc63bcd61715d018:3:c5d11f2cdbc71853",
+          "4c263bd12e1d44c61e1e62438fd3b433",
+          "308496615755"
+        ],
+        "status": "passed",
+        "text_hash": "d6c4cde48f3e6802f1233b35babfe1903ef6907f2ff8557a03fca0c0635008d3"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:fb457e25c3a3d32d",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:fb457e25c3a3d32d",
+          "elt:fc63bcd61715d018:3:fb457e25c3a3d32d",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "308496597669",
+          "elt:fc63bcd61715d018:9:211e4e609875f7ee"
+        ],
+        "status": "passed",
+        "text_hash": "feedb3bcdd492b5edf5ee3b15d6aef7f4991e5a95b07211720ecd99cd727d7ff"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:03d6bbeff1e8cd26",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:03d6bbeff1e8cd26",
+          "elt:fc63bcd61715d018:3:03d6bbeff1e8cd26",
+          "elt:fc63bcd61715d018:3:03d6bbeff1e8cd26",
+          "elt:fc63bcd61715d018:433:fa27b1dc785b8a40",
+          "elt:fc63bcd61715d018:431:11c81cff021a8b44"
+        ],
+        "status": "passed",
+        "text_hash": "3cfd3d0222f3be73c2aa534a72f0149b519bf7940134bc75feb2f4863d4ce9d4"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0",
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0",
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0",
+          "elt:fc63bcd61715d018:5:f2b58d1e150332b5",
+          "elt:fc63bcd61715d018:199:c52ada62f34a8a63"
+        ],
+        "status": "passed",
+        "text_hash": "749bb47a8077e6026817a0e9603a1228d7bf057aabf64ae074dbad22e620d487"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "elt:fc63bcd61715d018:3:2d44b401eba4cb67",
+          "elt:fc63bcd61715d018:3:719aef0e78ac58e5",
+          "elt:fc63bcd61715d018:3:719aef0e78ac58e5"
+        ],
+        "status": "passed",
+        "text_hash": "987c718a866626712929a55245a015596de1c8fd4c157cb4d296b5537bfd1287"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:62931dd8f87c9edf",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:62931dd8f87c9edf",
+          "elt:fc63bcd61715d018:3:62931dd8f87c9edf",
+          "elt:fc63bcd61715d018:3:62931dd8f87c9edf",
+          "elt:fc63bcd61715d018:260:0eb35fb89f7c82d1",
+          "elt:fc63bcd61715d018:260:0eb35fb89f7c82d1"
+        ],
+        "status": "passed",
+        "text_hash": "3b571f4b44ab0f165d5bcebc6f891b21549ff1d2625ae2044fd7d67fd1b346fe"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:179f8126c2c56e4a",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:179f8126c2c56e4a",
+          "elt:fc63bcd61715d018:3:179f8126c2c56e4a",
+          "elt:fc63bcd61715d018:3:179f8126c2c56e4a",
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0",
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0"
+        ],
+        "status": "passed",
+        "text_hash": "c71e75a8c1534aeef484eca9b6330123c038a17df74b23c2282b258ff79751b9"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:373fed402957a51d",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:373fed402957a51d",
+          "elt:fc63bcd61715d018:3:373fed402957a51d",
+          "elt:fc63bcd61715d018:3:373fed402957a51d",
+          "elt:fc63bcd61715d018:34:0719904a18d267aa",
+          "elt:fc63bcd61715d018:34:0719904a18d267aa"
+        ],
+        "status": "passed",
+        "text_hash": "b9a2823e99a425d54ced3fffee7b2db623c6ba9093ece0acea38f13f3e030ce7"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:c9fd220c10ebde19",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:c9fd220c10ebde19",
+          "elt:fc63bcd61715d018:3:c9fd220c10ebde19",
+          "elt:fc63bcd61715d018:3:c9fd220c10ebde19",
+          "elt:fc63bcd61715d018:114:8cc1a458c81ec25e",
+          "elt:fc63bcd61715d018:243:1db4973f235ab659"
+        ],
+        "status": "passed",
+        "text_hash": "094d793612270b019d9fd7b968ea56b4549c144be5760fc2d8e7cabdd5dd5e89"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:25d0388a15e003d2",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:25d0388a15e003d2",
+          "elt:fc63bcd61715d018:3:25d0388a15e003d2",
+          "elt:fc63bcd61715d018:3:25d0388a15e003d2",
+          "elt:fc63bcd61715d018:33:9691d377405f0c3f",
+          "elt:fc63bcd61715d018:3:c32f3bc1c1193fd0"
+        ],
+        "status": "passed",
+        "text_hash": "79c05307f31837df1e9aa23ec5c53618f715460f4b7a404d3d735d8554ec6f70"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:2dd89e442ad108da",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:2dd89e442ad108da",
+          "elt:fc63bcd61715d018:3:2dd89e442ad108da",
+          "elt:fc63bcd61715d018:438:364e058395647ace",
+          "elt:fc63bcd61715d018:377:4cec640079594206",
+          "elt:fc63bcd61715d018:212:a6ef344d701c64b5"
+        ],
+        "status": "passed",
+        "text_hash": "bbceeb901700150c60e1827cb0de5e73729141ad7bc10d995cf541c1572cdccf"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:639ac4d92b2219f5",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:409:af15f01046059149",
+          "elt:fc63bcd61715d018:413:5aed6a0f71ede302",
+          "elt:fc63bcd61715d018:415:d77e7bc1b4cbaac0",
+          "uk__4479__0",
+          "uk__4493__4"
+        ],
+        "status": "passed",
+        "text_hash": "f7c80b14ded50df2ea978a5fb9f71e2a4f8caf74858936ac003fa11f0c5531d9"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:b37a5d933124c8cd",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:b37a5d933124c8cd",
+          "elt:fc63bcd61715d018:3:b37a5d933124c8cd",
+          "elt:fc63bcd61715d018:3:b37a5d933124c8cd",
+          "elt:fc63bcd61715d018:3:749277219e9e6fd2",
+          "section:3:fc0a233fc5f35521"
+        ],
+        "status": "passed",
+        "text_hash": "82e94a78a22ead9df0a5caf5ae02e928d00b415c86e77b4050653d2de6453974"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:36546ac00f9c59ea",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:36546ac00f9c59ea",
+          "elt:fc63bcd61715d018:3:36546ac00f9c59ea",
+          "elt:fc63bcd61715d018:6:b6510820455305c8",
+          "elt:fc63bcd61715d018:5:57622977153187b0",
+          "elt:fc63bcd61715d018:370:f740335c4c7c73ea"
+        ],
+        "status": "passed",
+        "text_hash": "c1c86a66a376392c35c0eb12edbcdc3607f790409813663851c32e07f1ba061f"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:5ea361b2cde958ee",
+        "element_type": "section_header",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:5ea361b2cde958ee",
+          "elt:fc63bcd61715d018:3:5ea361b2cde958ee",
+          "section:3:5ea361b2cde958ee",
+          "308496611515",
+          "308496611780"
+        ],
+        "status": "passed",
+        "text_hash": "ca72f111b7a7547c7ba054fd0d6becdcac272018049c098fc87e55aeb1bb4c27"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:3:749277219e9e6fd2",
+        "element_type": "paragraph",
+        "page": 3,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:3:749277219e9e6fd2",
+          "elt:fc63bcd61715d018:3:749277219e9e6fd2",
+          "elt:fc63bcd61715d018:3:749277219e9e6fd2",
+          "section:3:fc0a233fc5f35521",
+          "section:3:fc0a233fc5f35521"
+        ],
+        "status": "passed",
+        "text_hash": "d43ad5e7a2c52f4e7b8f8cc246dc81891d00b91030cc79b54df870b6b95f4454"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:6584c187c3dfc5ab",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:6584c187c3dfc5ab",
+          "elt:fc63bcd61715d018:4:6584c187c3dfc5ab",
+          "elt:fc63bcd61715d018:3:412657beb6164d87",
+          "elt:fc63bcd61715d018:2:6b467d69c20d9e1d",
+          "elt:fc63bcd61715d018:453:98e706d5b76ede84"
+        ],
+        "status": "passed",
+        "text_hash": "2873ab18665322acc743fa2c813b506073db9ba536d622b099b2964e00a9dc73"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:11f0b7f59defcbe1",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:11f0b7f59defcbe1",
+          "elt:fc63bcd61715d018:4:11f0b7f59defcbe1",
+          "elt:fc63bcd61715d018:4:11f0b7f59defcbe1",
+          "uk__4493__6",
+          "uk__3323__6"
+        ],
+        "status": "passed",
+        "text_hash": "fa447a694236a44c1433bd26888fabb4b0ac9d5a39fb1e6355cf94727347a31e"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:30e33efeb3320226",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:30e33efeb3320226",
+          "elt:fc63bcd61715d018:4:30e33efeb3320226",
+          "elt:fc63bcd61715d018:4:30e33efeb3320226",
+          "elt:fc63bcd61715d018:60:bb093b32a8321ade",
+          "elt:fc63bcd61715d018:60:bb093b32a8321ade"
+        ],
+        "status": "passed",
+        "text_hash": "6fd5c45d3621207e6b5c3f4a324be38c9a53a45b42d5253383db2ddb2dc51000"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+          "elt:fc63bcd61715d018:4:03c976fbb9ea4926",
+          "elt:fc63bcd61715d018:4:b831ba518164b4a0",
+          "elt:fc63bcd61715d018:4:b831ba518164b4a0"
+        ],
+        "status": "passed",
+        "text_hash": "e77c9d9936511ec7cbc3ebcd4e558cb9c20615c28e7518532ec8a0552ea531e8"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:bef7a468698c1fee",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:bef7a468698c1fee",
+          "elt:fc63bcd61715d018:4:bef7a468698c1fee",
+          "elt:fc63bcd61715d018:171:2fcf3877dad9b16f",
+          "elt:fc63bcd61715d018:221:5c96e7d142563727",
+          "elt:fc63bcd61715d018:176:e43d86987b913071"
+        ],
+        "status": "passed",
+        "text_hash": "ae4d0e6eb52ad2f1c3bd31ce99db39c4d530cd13a2d7c338c18831a1d81b9981"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:d796ec6c3cbde357",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:d796ec6c3cbde357",
+          "elt:fc63bcd61715d018:4:d796ec6c3cbde357",
+          "elt:fc63bcd61715d018:4:d796ec6c3cbde357",
+          "elt:fc63bcd61715d018:236:a93b2db958d9e45a",
+          "elt:fc63bcd61715d018:236:a93b2db958d9e45a"
+        ],
+        "status": "passed",
+        "text_hash": "0575a85a0229dfcac01abe36a4ead995414ba0a58a219be4880426a254aaaf60"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:399be4f36ce67a4b",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:399be4f36ce67a4b",
+          "elt:fc63bcd61715d018:4:399be4f36ce67a4b",
+          "elt:fc63bcd61715d018:4:399be4f36ce67a4b",
+          "uk__3323__7",
+          "elt:fc63bcd61715d018:421:0009000ec1712f7c"
+        ],
+        "status": "passed",
+        "text_hash": "067aa32d73eecc34fae96bbb67e4fcc96fc4be4bcf422074bc130a7cf1382745"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:6eda71f0f54ba2a8",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:6eda71f0f54ba2a8",
+          "elt:fc63bcd61715d018:4:6eda71f0f54ba2a8",
+          "elt:fc63bcd61715d018:319:a2fe0561a0060041",
+          "elt:fc63bcd61715d018:249:cf10c96f2573df97",
+          "elt:fc63bcd61715d018:45:1e7e480afd654323"
+        ],
+        "status": "passed",
+        "text_hash": "92c87102be200ee6ccf2bd96fc2235ed4924b66fceb1538e7d104e7f7f328daf"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:9c4400e81cbd1f88",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:9c4400e81cbd1f88",
+          "elt:fc63bcd61715d018:4:9c4400e81cbd1f88",
+          "elt:fc63bcd61715d018:4:9c4400e81cbd1f88",
+          "elt:fc63bcd61715d018:212:f844af0fb61fff41",
+          "elt:fc63bcd61715d018:212:f844af0fb61fff41"
+        ],
+        "status": "passed",
+        "text_hash": "5da5cee88ac5d78eb79324af4b41b5a213280a9ac18cfdb052258e25c8f9e199"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:44e38933252fced5",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:44e38933252fced5",
+          "elt:fc63bcd61715d018:43:b173d1eaec8a77ab",
+          "elt:fc63bcd61715d018:31:c05377061c3ecbaf",
+          "elt:fc63bcd61715d018:31:c05377061c3ecbaf",
+          "elt:fc63bcd61715d018:32:519101b9b618313e"
+        ],
+        "status": "passed",
+        "text_hash": "45add75b3cc783778eadfadf5082b54504eb0a73b74eec1f623b0dc22f027c57"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:2a03acd67083f990",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:2a03acd67083f990",
+          "elt:fc63bcd61715d018:4:2a03acd67083f990",
+          "elt:fc63bcd61715d018:28:7464833627d80a4c",
+          "elt:fc63bcd61715d018:28:0a306da6b27bf706",
+          "elt:fc63bcd61715d018:78:dc618b7c9d19f9f8"
+        ],
+        "status": "passed",
+        "text_hash": "16062a7937fdb8e1660af3a6283e3d8f76ba9387c11b94d4d8aad77b0c9c4aea"
+      },
+      {
+        "element_key": "elt:fc63bcd61715d018:4:e449d78728b150ea",
+        "element_type": "paragraph",
+        "page": 4,
+        "returned_keys": [
+          "elt:fc63bcd61715d018:4:e449d78728b150ea",
+          "elt:fc63bcd61715d018:4:e449d78728b150ea",
+          "elt:fc63bcd61715d018:4:e449d78728b150ea",
+          "elt:fc63bcd61715d018:236:c85b920efeef7d80",
+          "elt:fc63bcd61715d018:236:c85b920efeef7d80"
+        ],
+        "status": "passed",
+        "text_hash": "6fa953cf4ae5f401f863e768a94ca2761f34f5c9e7d9ef641e4a544033389818"
       }
     ],
     "schema_version": "pdf_lab_memory_qdrant_qa_report.v1",
     "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
     "summary": {
-      "crop_required_extraction_elements": 27628,
-      "evidence_elements": 27628,
+      "crop_required_extraction_elements": 28074,
+      "evidence_elements": 28075,
       "evidence_pages": 492,
       "evidence_sections": 358,
-      "extraction_elements": 27986,
+      "extraction_elements": 28432,
       "full_crop_coverage": true,
       "memory_upsert_applied": true,
-      "memory_upserted_element_images": 27628,
-      "memory_upserted_elements": 27628,
+      "memory_upserted_element_images": 28075,
+      "memory_upserted_elements": 28075,
       "memory_upserted_page_images": 492,
       "memory_upserted_pages": 492,
       "memory_upserted_section_images": 358,
       "memory_upserted_sections": 358,
       "qdrant_collection": "memory_chunks_mm_jina_v4_1024",
-      "sample_checks": 8,
-      "sample_checks_passed": 8,
-      "text_indexed_elements": 27628,
+      "sample_checks": 50,
+      "sample_checks_passed": 50,
+      "text_indexed_elements": 28075,
       "text_indexed_pages": 0,
       "text_indexed_sections": 352,
-      "text_indexed_total": 27980,
+      "text_indexed_total": 28427,
       "visual_indexed_elements": 8,
       "visual_indexed_optional_elements": 0,
       "visual_indexed_pages": 492,
       "visual_indexed_required_elements": 8,
       "visual_indexed_sections": 358,
       "visual_indexed_total": 858,
-      "visual_optional_elements": 27620,
+      "visual_optional_elements": 28067,
       "visual_required_element_types": [
         "figure",
         "image",
@@ -252,51 +840,55 @@
     },
     "upsert_results": {
       "pdf_element_has_image": {
-        "batches": 277,
+        "batches": 281,
         "collection": "pdf_element_has_image",
-        "document_count": 27628,
+        "document_count": 28075,
         "last_response": {
           "collection": "pdf_element_has_image",
           "errors": [],
-          "inserted": 28,
-          "total": 28,
-          "updated": 0
+          "inserted": 0,
+          "total": 75,
+          "updated": 75,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_element_has_image_20260521T190619335541Z_11_138397559555776.jsonl"
         }
       },
       "pdf_element_images": {
-        "batches": 277,
+        "batches": 281,
         "collection": "pdf_element_images",
-        "document_count": 27628,
+        "document_count": 28075,
         "last_response": {
           "collection": "pdf_element_images",
           "errors": [],
-          "inserted": 28,
-          "total": 28,
-          "updated": 0
+          "inserted": 0,
+          "total": 75,
+          "updated": 75,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_element_images_20260521T190540430849Z_11_138397559555776.jsonl"
         }
       },
       "pdf_elements": {
-        "batches": 277,
+        "batches": 281,
         "collection": "pdf_elements",
-        "document_count": 27628,
+        "document_count": 28075,
         "last_response": {
           "collection": "pdf_elements",
           "errors": [],
           "inserted": 0,
-          "total": 28,
-          "updated": 28
+          "total": 75,
+          "updated": 75,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_elements_20260521T190519051708Z_11_138397559555776.jsonl"
         }
       },
       "pdf_extraction_run_has_artifact": {
-        "batches": 285,
+        "batches": 290,
         "collection": "pdf_extraction_run_has_artifact",
-        "document_count": 28478,
+        "document_count": 28925,
         "last_response": {
           "collection": "pdf_extraction_run_has_artifact",
           "errors": [],
-          "inserted": 78,
-          "total": 78,
-          "updated": 0
+          "inserted": 0,
+          "total": 25,
+          "updated": 25,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_extraction_run_has_artifact_20260521T190559769928Z_11_138397559555776.jsonl"
         }
       },
       "pdf_extraction_runs": {
@@ -306,9 +898,10 @@
         "last_response": {
           "collection": "pdf_extraction_runs",
           "errors": [],
-          "inserted": 1,
+          "inserted": 0,
           "total": 1,
-          "updated": 0
+          "updated": 1,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_extraction_runs_20260521T190455620272Z_11_138397559555776.jsonl"
         }
       },
       "pdf_page_has_image": {
@@ -318,9 +911,10 @@
         "last_response": {
           "collection": "pdf_page_has_image",
           "errors": [],
-          "inserted": 92,
+          "inserted": 0,
           "total": 92,
-          "updated": 0
+          "updated": 92,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_page_has_image_20260521T190600141616Z_11_138397559555776.jsonl"
         }
       },
       "pdf_page_images": {
@@ -330,9 +924,10 @@
         "last_response": {
           "collection": "pdf_page_images",
           "errors": [],
-          "inserted": 92,
+          "inserted": 0,
           "total": 92,
-          "updated": 0
+          "updated": 92,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_page_images_20260521T190456408238Z_11_138397559555776.jsonl"
         }
       },
       "pdf_pages": {
@@ -342,9 +937,10 @@
         "last_response": {
           "collection": "pdf_pages",
           "errors": [],
-          "inserted": 92,
+          "inserted": 0,
           "total": 92,
-          "updated": 0
+          "updated": 92,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_pages_20260521T190456093175Z_11_138397559555776.jsonl"
         }
       },
       "pdf_section_has_image": {
@@ -354,9 +950,10 @@
         "last_response": {
           "collection": "pdf_section_has_image",
           "errors": [],
-          "inserted": 58,
+          "inserted": 0,
           "total": 58,
-          "updated": 0
+          "updated": 58,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_section_has_image_20260521T190600421234Z_11_138397559555776.jsonl"
         }
       },
       "pdf_section_images": {
@@ -366,9 +963,10 @@
         "last_response": {
           "collection": "pdf_section_images",
           "errors": [],
-          "inserted": 58,
+          "inserted": 0,
           "total": 58,
-          "updated": 0
+          "updated": 58,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_section_images_20260521T190457027664Z_11_138397559555776.jsonl"
         }
       },
       "pdf_sections": {
@@ -380,7 +978,8 @@
           "errors": [],
           "inserted": 0,
           "total": 58,
-          "updated": 58
+          "updated": 58,
+          "writeahead_path": "artifacts/memory_upsert_writeahead/upsert_pdf_sections_20260521T190456723041Z_11_138397559555776.jsonl"
         }
       }
     }
@@ -412,12 +1011,12 @@
     "memory_qa_implemented": true,
     "memory_qa_passed": true,
     "memory_qa_report_passed": true,
-    "memory_sample_checks": 8,
-    "memory_sample_checks_passed": 8,
-    "memory_text_indexed_elements": 27628,
+    "memory_sample_checks": 50,
+    "memory_sample_checks_passed": 50,
+    "memory_text_indexed_elements": 28075,
     "memory_text_indexed_pages": 0,
     "memory_text_indexed_sections": 352,
-    "memory_text_indexed_total": 27980,
+    "memory_text_indexed_total": 28427,
     "memory_text_recall_passed": true,
     "memory_upsert_passed": true,
     "memory_visual_indexed_elements": 8,
@@ -426,7 +1025,7 @@
     "memory_visual_indexed_required_elements": 8,
     "memory_visual_indexed_sections": 358,
     "memory_visual_indexed_total": 858,
-    "memory_visual_optional_elements": 27620,
+    "memory_visual_optional_elements": 28067,
     "memory_visual_recall_passed": true,
     "memory_visual_required_element_types": [
       "figure",

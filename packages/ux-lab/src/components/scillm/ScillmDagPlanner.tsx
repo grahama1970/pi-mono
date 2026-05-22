@@ -23,11 +23,17 @@ import {
   type ExecStatus,
   type ReviewCatalog,
   type ReviewCatalogEntry,
+  type RuntimeActionRequest,
 } from "./dag-planner/ScillmExecGraphDebugger";
 
 type DagSnapshot = {
   ok: boolean;
   phase_id: string;
+  active_phase_id?: string | null;
+  requested_phase_id?: string | null;
+  phase_matches_active?: boolean | null;
+  snapshot_kind?: "runtime_exec_artifacts" | "plan_iterate_phase_plan" | string;
+  missing_runtime_artifacts?: Record<string, string>;
   source: Record<string, string>;
   graph: ExecGraph;
   base_graph_hash: string;
@@ -52,6 +58,14 @@ type SourcePayload = "graph" | "status" | "events" | "phase_status" | "snapshot"
 
 const API_HEADERS = { "Content-Type": "application/json" };
 
+function initialPhaseIdFromLocation() {
+  if (typeof window === "undefined") return "";
+  const searchPhase = new URLSearchParams(window.location.search).get("phase_id");
+  if (searchPhase) return searchPhase;
+  const hashQuery = window.location.hash.includes("?") ? window.location.hash.slice(window.location.hash.indexOf("?") + 1) : "";
+  return new URLSearchParams(hashQuery).get("phase_id") ?? "";
+}
+
 export function ScillmDagPlanner() {
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const [availableModels, setAvailableModels] = useState<string[]>([]);
@@ -63,6 +77,7 @@ export function ScillmDagPlanner() {
   const [sourcePayload, setSourcePayload] = useState<SourcePayload>("graph");
   const [hashCheck, setHashCheck] = useState<"idle" | "checking" | "match" | "changed" | "error">("idle");
   const [copiedToken, setCopiedToken] = useState<string>("");
+  const [phaseIdOverride, setPhaseIdOverride] = useState(() => initialPhaseIdFromLocation());
 
   useRegisterAction("scillm:workspace:dag-refresh", {
     app: "ux-lab",
@@ -124,8 +139,11 @@ export function ScillmDagPlanner() {
   const load = useCallback(async () => {
     setState({ status: "loading" });
     try {
+      const snapshotUrl = phaseIdOverride.trim()
+        ? `/api/scillm/dag-viewer/snapshot?phase_id=${encodeURIComponent(phaseIdOverride.trim())}`
+        : "/api/scillm/dag-viewer/snapshot";
       const [snapshotResp, modelsResp, catalogResp] = await Promise.all([
-        fetch("/api/scillm/dag-viewer/snapshot"),
+        fetch(snapshotUrl),
         fetch("/api/scillm/v1/scillm/models"),
         fetch("/api/scillm/v1/scillm/exec/review-catalog?skill=review-code"),
       ]);
@@ -164,7 +182,7 @@ export function ScillmDagPlanner() {
       setAmendments([]);
       setAmendmentsState({ status: "idle" });
     }
-  }, [loadAmendments]);
+  }, [loadAmendments, phaseIdOverride]);
 
   useEffect(() => {
     void load();
@@ -195,6 +213,10 @@ export function ScillmDagPlanner() {
         status: snapshot.status,
         events: snapshot.events,
         phase_status: snapshot.phase_status,
+        snapshot_kind: snapshot.snapshot_kind,
+        active_phase_id: snapshot.active_phase_id,
+        phase_matches_active: snapshot.phase_matches_active,
+        missing_runtime_artifacts: snapshot.missing_runtime_artifacts,
       },
     };
     return {
@@ -279,11 +301,77 @@ export function ScillmDagPlanner() {
     return payload;
   }
 
+  async function applyAmendment(amendment: ExecGraphAmendment, reason?: string) {
+    const snapshot = state.status === "ready" ? state.snapshot : null;
+    if (!snapshot) throw new Error("No DAG snapshot is loaded.");
+    const response = await fetch(`/api/scillm/v1/scillm/exec/graph/amendments/${encodeURIComponent(amendment._key)}/apply`, {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        actor: "ux-lab.scillm-dag-planner",
+        reason: reason ?? "Applied approved amendment from DAG planner.",
+        expected_base_graph_sha256: amendment.base_graph_sha256 ?? amendment.base_graph_hash ?? amendment.baseGraphHash,
+        provenance: {
+          phase_id: snapshot.phase_id,
+          graph_id: amendment.graph_id,
+          run_id: (snapshot.status as ExecStatus & { run_id?: string }).run_id ?? snapshot.graph.graph_id,
+          source_artifacts: snapshot.source,
+          base_graph_hash: snapshot.base_graph_hash,
+          hash_algorithm: snapshot.hash_algorithm,
+          origin: "ux-lab #scillm/dag-planner",
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`amendment apply failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    const payload = await response.json();
+    await loadAmendments(snapshot.graph.graph_id);
+    return payload;
+  }
+
+  async function runtimeAction(action: RuntimeActionRequest) {
+    const snapshot = state.status === "ready" ? state.snapshot : null;
+    const runId = snapshot?.status.run_id;
+    if (!snapshot || !runId) {
+      throw new Error("Runtime action requires a live scillm run_id in the DAG snapshot.");
+    }
+    const response = await fetch(`/api/scillm/v1/scillm/exec/${encodeURIComponent(runId)}/actions`, {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        ...action,
+        actor: action.actor ?? "ux-lab.scillm-dag-planner",
+        provenance: {
+          phase_id: snapshot.phase_id,
+          graph_id: snapshot.graph.graph_id,
+          run_id: runId,
+          source_artifacts: snapshot.source,
+          base_graph_hash: snapshot.base_graph_hash,
+          hash_algorithm: snapshot.hash_algorithm,
+          origin: "ux-lab #scillm/dag-planner",
+          ...(action.provenance ?? {}),
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`runtime action failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    const payload = await response.json();
+    await load();
+    return payload;
+  }
+
   async function verifyBackendHash() {
     if (state.status !== "ready") return;
     setHashCheck("checking");
     try {
-      const response = await fetch("/api/scillm/dag-viewer/snapshot", { cache: "no-store" });
+      const snapshotUrl = phaseIdOverride.trim()
+        ? `/api/scillm/dag-viewer/snapshot?phase_id=${encodeURIComponent(phaseIdOverride.trim())}`
+        : "/api/scillm/dag-viewer/snapshot";
+      const response = await fetch(snapshotUrl, { cache: "no-store" });
       if (!response.ok) throw new Error(`snapshot ${response.status}`);
       const latest = (await response.json()) as DagSnapshot;
       setHashCheck(latest.base_graph_hash === state.snapshot.base_graph_hash ? "match" : "changed");
@@ -308,7 +396,18 @@ export function ScillmDagPlanner() {
         </div>
         <div className="scillm-flex-row scillm-gap-12 scillm-flex-wrap">
           <span className="scillm-chip">Phase: {state.status === "ready" ? state.snapshot.phase_id : "pending"}</span>
+          <label className="scillm-chip" title="Load a specific plan-iterate phase. Leave blank to use the active phase pointer.">
+            Phase override
+            <input
+              aria-label="DAG phase override"
+              value={phaseIdOverride}
+              onChange={(event) => setPhaseIdOverride(event.target.value)}
+              placeholder="active phase"
+              style={{ width: 285, marginLeft: 8, background: "transparent", border: 0, color: "inherit", font: "inherit", outline: "none" }}
+            />
+          </label>
           <span className="scillm-chip">State: {phaseBadge}</span>
+          {state.status === "ready" ? <span className="scillm-chip">Snapshot: {state.snapshot.snapshot_kind ?? "runtime"}</span> : null}
           <span className="scillm-chip">Review catalog: {catalogState}</span>
           <button
             type="button"
@@ -342,6 +441,28 @@ export function ScillmDagPlanner() {
         </div>
       ) : (
         <div className="scillm-dashboard__main" style={{ padding: 0 }}>
+          {state.snapshot.phase_matches_active === false ? (
+            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.red}66` }}>
+              <div className="scillm-flex-row scillm-gap-8">
+                <AlertTriangle size={16} color={EMBRY.red} />
+                <span className="scillm-text-red scillm-fw-700">Loaded phase is not the active plan-iterate phase</span>
+              </div>
+              <div className="scillm-meta" style={{ marginTop: 6 }}>
+                Loaded {state.snapshot.phase_id}; active pointer is {state.snapshot.active_phase_id ?? "not reported"}. Use the phase override only for historical inspection.
+              </div>
+            </div>
+          ) : null}
+          {state.snapshot.snapshot_kind === "plan_iterate_phase_plan" ? (
+            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
+              <div className="scillm-flex-row scillm-gap-8">
+                <AlertTriangle size={16} color={EMBRY.amber} />
+                <span className="scillm-text-amber scillm-fw-700">Runtime execution artifacts are not available for this phase</span>
+              </div>
+              <div className="scillm-meta" style={{ marginTop: 6 }}>
+                Showing the authoritative phase plan graph and runtime-readiness artifact. Start/resume state remains inadmissible until runtime graph, status, and event artifacts exist.
+              </div>
+            </div>
+          ) : null}
           {state.snapshot.phase_status?.review_comparison?.closure_allowed === false ? (
             <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
               <div className="scillm-flex-row scillm-gap-8">
@@ -462,8 +583,10 @@ export function ScillmDagPlanner() {
                     void loadAmendments(state.snapshot.graph.graph_id);
                   }}
                   onSetAmendmentStatus={setAmendmentStatus}
+                  onApplyAmendment={applyAmendment}
                   onAmendPlan={amendPlan}
                   onSaveReviewCatalogEntry={saveReviewCatalogEntry}
+                  onRuntimeAction={state.snapshot.status.run_id ? runtimeAction : undefined}
                 />
               </>
             ) : surface === "trace" && plannerSummary ? (

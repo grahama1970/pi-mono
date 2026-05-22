@@ -7,9 +7,9 @@
   "zero_based_page_index": 45,
   "one_based_pdf_page_number": 46,
   "captured_at": "2026-05-13T23:04:18.213197+00:00",
-  "captured_by": "human (via VGG Image Annotator) \u2014 annotate-via skill",
-  "label_methodology": "Human annotated rectangles in VIA using the canonical family vocabulary (see PROJECT_KNOWLEDGE.md \u00a714 + annotate-via SKILL.md). bbox_hint values are normalized xyxy (0..1).",
-  "matcher_precedence": "text_hint \u2192 bbox_hint (IoU>=0.5) \u2192 allowed_types \u2192 type-synonym fallback",
+  "captured_by": "human (via VGG Image Annotator) — annotate-via skill",
+  "label_methodology": "Human annotated rectangles in VIA using the canonical family vocabulary (see PROJECT_KNOWLEDGE.md §14 + annotate-via SKILL.md). bbox_hint values are normalized xyxy (0..1).",
+  "matcher_precedence": "text_hint → bbox_hint (IoU>=0.5) → allowed_types → type-synonym fallback",
   "expected_elements": [
     {
       "family": "section_heading",
@@ -23,7 +23,55 @@
       "allowed_types": [
         "section_heading"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "section_label",
@@ -39,7 +87,55 @@
         "content_label",
         "paragraph_block"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "section_label",
@@ -55,7 +151,55 @@
         "content_label",
         "paragraph_block"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "page_chrome_noise",
@@ -69,7 +213,55 @@
       "allowed_types": [
         "header_footer_noise"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "page_chrome_noise",
@@ -83,7 +275,55 @@
       "allowed_types": [
         "header_footer_noise"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "list",
@@ -97,7 +337,55 @@
       "allowed_types": [
         "list"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     },
     {
       "family": "page_chrome_noise",
@@ -111,7 +399,72 @@
       "allowed_types": [
         "header_footer_noise"
       ],
-      "match_strategy": "type_only"
+      "match_strategy": "type_only",
+      "breadcrumb": [
+        "NIST SP 800-53 Rev. 5",
+        "THE CONTROLS",
+        "3.1   ACCESS CONTROL",
+        "AC-2 ACCOUNT MANAGEMENT"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "document",
+          "label": "NIST SP 800-53 Rev. 5",
+          "id": null,
+          "node_id": "toc:nist-sp-800-53-rev.-5",
+          "parent_node_id": null,
+          "source": "toc",
+          "editable": false
+        },
+        {
+          "level": 2,
+          "kind": "chapter",
+          "label": "THE CONTROLS",
+          "id": null,
+          "node_id": "toc:toc:0018",
+          "parent_node_id": "toc:nist-sp-800-53-rev.-5",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 3,
+          "kind": "section",
+          "label": "3.1   ACCESS CONTROL",
+          "id": null,
+          "node_id": "toc:toc:0019",
+          "parent_node_id": "toc:toc:0018",
+          "source": "toc",
+          "editable": true
+        },
+        {
+          "level": 4,
+          "kind": "subsection",
+          "label": "AC-2 ACCOUNT MANAGEMENT",
+          "id": null,
+          "node_id": "toc:toc:0021",
+          "parent_node_id": "toc:toc:0019",
+          "source": "toc",
+          "editable": true
+        }
+      ]
     }
-  ]
+  ],
+  "breadcrumb_enrichment": {
+    "schema_version": "pdf_lab.breadcrumb_enrichment.v1",
+    "source": "pdf_oxide_toc_audit_active_path",
+    "document_id": "nist-800-53r5",
+    "document_title": "NIST SP 800-53 Rev. 5",
+    "page_number": 46,
+    "status": "verified",
+    "assignment_method": "toc_active_path",
+    "breadcrumb": [
+      "NIST SP 800-53 Rev. 5",
+      "THE CONTROLS",
+      "3.1   ACCESS CONTROL",
+      "AC-2 ACCOUNT MANAGEMENT"
+    ],
+    "breadcrumb_node_count": 4,
+    "elements_enriched": 7
+  }
 }

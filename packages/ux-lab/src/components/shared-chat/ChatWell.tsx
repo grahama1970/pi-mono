@@ -495,7 +495,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
           onSend={(query, type) => onSend?.(query, type)}
           onSkillsOpen={() => setShowPalette(true)}
           isThinking={isStreaming}
-          thinkingLabel={isStreaming ? 'Building Evidence Case' : 'Thinking'}
+          thinkingLabel={isStreaming ? 'Building Evidence Case' : 'CAE Trace'}
           reasoningSteps={streamingSteps ?? []}
         />
       </div>

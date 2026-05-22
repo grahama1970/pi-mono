@@ -14,6 +14,13 @@ export type ExecGraphNode = {
   review_scopes?: ReviewScopeSpec[];
   messages?: Array<Record<string, unknown>>;
   output_schema?: Record<string, unknown>;
+  template_id?: string;
+  template_version?: string;
+  template_sha256?: string;
+  catalog_id?: string;
+  catalog_version?: string;
+  catalog_sha256?: string;
+  inline_overrides?: Record<string, unknown>;
   command?: string | string[];
   items?: Array<Record<string, unknown>>;
   manifest?: string | Record<string, unknown>;
@@ -81,6 +88,10 @@ export type ReviewScopeSpec = {
   best_practice_skills?: string[];
   prompt_preset?: string;
   prompt?: string;
+  catalog_id?: string;
+  catalog_version?: string;
+  catalog_sha256?: string;
+  inline_overrides?: Record<string, unknown>;
   enabled?: boolean;
 };
 
@@ -341,6 +352,15 @@ export function validateExecGraphPlan(graph: ExecGraph): PlanValidationResult {
         seenContracts.add(contractName);
         if (!scope.prompt?.trim()) {
           issues.push({ severity: "warning", code: "missing_review_contract_prompt", message: `Review contract ${contractName} has no prompt body.`, node_id: node.id });
+        }
+        if (scope.catalog_id && !scope.catalog_version?.trim()) {
+          issues.push({ severity: "blocking", code: "missing_catalog_version", message: `Review contract ${contractName} is pinned to a catalog id but is missing catalog_version.`, node_id: node.id });
+        }
+        if (scope.catalog_id && !scope.catalog_sha256?.trim()) {
+          issues.push({ severity: "blocking", code: "missing_catalog_sha256", message: `Review contract ${contractName} is pinned to a catalog id but is missing catalog_sha256.`, node_id: node.id });
+        }
+        if (scope.inline_overrides?.prompt && scope.prompt_preset !== "custom") {
+          issues.push({ severity: "warning", code: "catalog_prompt_override_not_custom", message: `Review contract ${contractName} has a prompt override but prompt_preset is not custom.`, node_id: node.id });
         }
       }
     }

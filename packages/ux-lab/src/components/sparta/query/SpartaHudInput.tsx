@@ -178,9 +178,6 @@ export function SpartaHudInput({
           <div style={styles.toolCluster}>
             <input
               ref={pdfInputRef}
-              data-qid="sparta:hud:pdf-input"
-              data-qs-action="UPLOAD_PDF_EVIDENCE"
-              title="PDF evidence file input"
               type="file"
               accept="application/pdf,.pdf"
               onChange={handlePdfChange}

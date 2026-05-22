@@ -1,0 +1,13 @@
+{
+  "project_root": "/home/graham/workspace/experiments/pi-mono",
+  "out_dir": "/home/graham/workspace/experiments/pi-mono/.project-drift/latest",
+  "transcripts": [
+    "/home/graham/.codex/sessions/2026/05/01/rollout-2026-05-01T08-15-18-019de376-f6d9-76d0-92f9-bb1571e83f2f.jsonl"
+  ],
+  "since": "2026-04-29T12:27:00+00:00",
+  "knowledge_found": true,
+  "knowledge_claim_count": 18,
+  "observations": 80,
+  "routine_successful_tool_calls": 0,
+  "execute": false
+}

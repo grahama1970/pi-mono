@@ -387,6 +387,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     return ['sparta_controls', 'sparta_qra']
   }
 
+  function scopeToEvidenceProfile(s: Scope): string {
+    if (s === 'f36') return 'f36-leo-warfighter'
+    if (s === 'both') return 'mixed-sparta-f36'
+    return 'ground-cybersecurity'
+  }
+
   const addMsg = useCallback((msg: Omit<ChatMessage, 'id' | 'timestamp'>) => {
     const m: ChatMessage = { ...msg, id: String(++msgIdRef.current), timestamp: Date.now() }
     setMessages(prev => [...prev, m])
@@ -473,7 +479,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       const res = await fetch(`${API}/api/evidence-case/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, nodeLabel: activeTab }),
+        body: JSON.stringify({ question, nodeLabel: activeTab, profile: scopeToEvidenceProfile(scope), evidenceProfile: scopeToEvidenceProfile(scope) }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const reader = res.body?.getReader()
@@ -614,7 +620,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       setEvidenceStreaming(false)
       setEvidenceCaseLoading(null)
     }
-  }, [activeTab, addMsg])
+  }, [activeTab, addMsg, scope])
 
   const handleSend = useCallback(async (query: string, type: 'natural' | 'aql') => {
     if (type === 'natural' && EVIDENCE_CASE_COMMAND_RE.test(query)) {

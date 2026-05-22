@@ -14,6 +14,24 @@
  * resolution independent and matches the matcher contract directly.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type BreadcrumbNode,
+  type BreadcrumbNodeKind,
+  type ExpectedElement,
+  BREADCRUMB_NODE_KINDS,
+  applyKnownBreadcrumbNode,
+  breadcrumbMetadataChanged,
+  breadcrumbNodeIdentityKey,
+  breadcrumbNodesFromRegion,
+  breadcrumbPatch,
+  clearBreadcrumbNodeIdentity,
+  collectBreadcrumbOptions,
+  formatBreadcrumb,
+  normalizeBreadcrumbNodes,
+  parseBreadcrumb,
+  replaceBreadcrumbNodeManually,
+  regionsToExpected,
+} from './PdfLabLabelingExport'
 import './PdfLabLabelingPage.css'
 
 /** Human-labeling vocabulary. Link annotations (control_link /
@@ -52,6 +70,7 @@ interface Region {
   text_hint?: string
   lead_label?: string
   breadcrumb?: string[]
+  breadcrumb_nodes?: BreadcrumbNode[]
   notes?: string
   /** Where the family tag sits relative to the bbox. Click the tag to
    *  cycle through the four anchored positions. Default `top-outside` =
@@ -81,37 +100,6 @@ function nextAnchor(a: LabelAnchor | undefined): LabelAnchor {
   return LABEL_ANCHOR_CYCLE[(idx + 1) % LABEL_ANCHOR_CYCLE.length]
 }
 
-interface ExpectedElement {
-  family: FamilyId
-  bbox_hint: [number, number, number, number]
-  label?: string | null
-  text_hint?: string
-  lead_label?: string
-  breadcrumb?: string[]
-  notes?: string
-  allowed_types?: string[]
-  match_strategy?: string
-  desired_role?: string
-  desired_lead_label?: string
-}
-
-/** Family default `allowed_types` (mirrors ls_to_expected.py). */
-const DEFAULT_ALLOWED_TYPES: Record<FamilyId, string[]> = {
-  section_heading: ['section_heading'],
-  section_label: ['section_label', 'content_label', 'paragraph_block'],
-  list: ['list'],
-  paragraph_block: ['paragraph_block'],
-  labeled_paragraph: ['paragraph_block'],
-  labeled_controls: ['labeled_controls', 'paragraph_block'],
-  labeled_references: ['labeled_references', 'paragraph_block'],
-  table: ['table'],
-  figure: ['figure'],
-  caption: ['caption'],
-  footnote: ['footnote_block', 'paragraph_block'],
-  page_chrome_noise: ['header_footer_noise'],
-  human_decision: [],
-}
-
 function newId(): string {
   return `r_${Math.random().toString(36).slice(2, 10)}`
 }
@@ -126,47 +114,71 @@ function normalizeRect(x0: number, y0: number, x1: number, y1: number): [number,
   return [clamp01(a), clamp01(c), clamp01(b), clamp01(d)]
 }
 
-function parseBreadcrumb(value: unknown): string[] | undefined {
-  if (Array.isArray(value)) {
-    const parts = value.map(part => String(part).trim()).filter(Boolean)
-    return parts.length ? parts : undefined
-  }
-  if (typeof value === 'string') {
-    const separator = ['›', '>', '/', '|'].find(s => value.includes(s))
-    const parts = (separator ? value.split(separator) : [value]).map(part => part.trim()).filter(Boolean)
-    return parts.length ? parts : undefined
-  }
-  return undefined
+function normalizedRegionText(value: string | undefined): string {
+  return (value ?? '').replace(/\s+/g, ' ').trim().toLowerCase()
 }
 
-function formatBreadcrumb(value: string[] | undefined): string {
-  return value?.join(' › ') ?? ''
+function hasBreadcrumbPath(region: Region): boolean {
+  return (region.breadcrumb_nodes?.length ?? 0) > 0 || (region.breadcrumb?.length ?? 0) > 0
 }
 
-function regionsToExpected(regions: Region[], slug = 'manual_labeling'): { schema_version: string; slice_id: string; captured_at: string; expected_elements: ExpectedElement[] } {
-  return {
-    schema_version: 'pdf_lab.golden_slice.v2',
-    slice_id: slug,
-    captured_at: new Date().toISOString(),
-    expected_elements: regions.map(r => {
-      const e: ExpectedElement = {
-        family: r.family,
-        bbox_hint: r.bbox,
-        allowed_types: DEFAULT_ALLOWED_TYPES[r.family],
-        match_strategy: r.text_hint ? 'text_contains' : 'type_only',
-      }
-      if (r.label) e.label = r.label
-      if (r.text_hint) e.text_hint = r.text_hint
-      if (r.breadcrumb?.length) e.breadcrumb = r.breadcrumb
-      if (r.lead_label) {
-        e.lead_label = r.lead_label
-        e.desired_role = 'labeled_paragraph'
-        e.desired_lead_label = r.lead_label
-      }
-      if (r.notes) e.notes = r.notes
-      return e
-    }),
+function bboxDistance(a: Region, b: Region): number {
+  return a.bbox.reduce((sum, value, index) => sum + Math.abs(value - b.bbox[index]), 0)
+}
+
+function sameRegionIdentity(a: Region, b: Region): boolean {
+  if (a.family !== b.family) return false
+  const aText = normalizedRegionText(a.text_hint)
+  const bText = normalizedRegionText(b.text_hint)
+  const textMatches = aText.length > 0 && bText.length > 0 && aText === bText
+  return textMatches || bboxDistance(a, b) <= 0.01
+}
+
+function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Region[] {
+  if (regions.length === 0 || source.length === 0) return regions
+  const used = new Set<number>()
+  return regions.map((region, index) => {
+    if (hasBreadcrumbPath(region)) return region
+
+    let sourceIndex = source.findIndex((candidate, candidateIndex) =>
+      !used.has(candidateIndex) && hasBreadcrumbPath(candidate) && sameRegionIdentity(region, candidate),
+    )
+    if (
+      sourceIndex < 0 &&
+      regions.length === source.length &&
+      hasBreadcrumbPath(source[index]) &&
+      source[index].family === region.family
+    ) {
+      sourceIndex = index
+    }
+    if (sourceIndex < 0) return region
+
+    used.add(sourceIndex)
+    const sourceRegion = source[sourceIndex]
+    return {
+      ...region,
+      breadcrumb: sourceRegion.breadcrumb ? [...sourceRegion.breadcrumb] : region.breadcrumb,
+      breadcrumb_nodes: sourceRegion.breadcrumb_nodes
+        ? sourceRegion.breadcrumb_nodes.map(node => ({ ...node }))
+        : region.breadcrumb_nodes,
+    }
+  })
+}
+
+async function fetchBreadcrumbSourceRegions(expectedElementsUrl: string | null | undefined): Promise<Region[]> {
+  if (!expectedElementsUrl) return []
+  try {
+    const resp = await fetch(expectedElementsUrl)
+    if (!resp.ok) return []
+    const { regions: rs } = importJson(await resp.json())
+    return rs.map(region => ({ ...region, origin: region.origin ?? 'human' }))
+  } catch {
+    return []
   }
+}
+
+async function fetchFallbackBreadcrumbSourceRegions(slug: string): Promise<Region[]> {
+  return fetchBreadcrumbSourceRegions(`/pdf-lab-pages/${slug}.expected_elements.json`)
 }
 
 /** Best-effort importer: detects shape and returns regions. Supports
@@ -198,6 +210,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
         text_hint: el.text_hint,
         lead_label: el.lead_label ?? el.desired_lead_label,
         breadcrumb: parseBreadcrumb(el.breadcrumb),
+        breadcrumb_nodes: normalizeBreadcrumbNodes(el.breadcrumb_nodes, el.breadcrumb),
         notes: el.notes,
       })
     }
@@ -260,6 +273,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
         text_hint: String(attrs.text_hint || '') || undefined,
         lead_label: String(attrs.lead_label || '') || undefined,
         breadcrumb: parseBreadcrumb(attrs.breadcrumb),
+        breadcrumb_nodes: normalizeBreadcrumbNodes(attrs.breadcrumb_nodes, parseBreadcrumb(attrs.breadcrumb)),
         notes: String(attrs.notes || '') || undefined,
       })
     }
@@ -515,12 +529,12 @@ function classifyRegionDiff(
   const bboxChanged = agentRegion.bbox.some((v, i) => Math.abs(v - humanRegion.bbox[i]) > 0.002)
   // Family relabeled?
   const familyChanged = agentRegion.family !== humanRegion.family
-  // Metadata edited (label, text_hint, lead_label, notes)?
+  // Metadata edited (label, text_hint, lead_label, breadcrumb hierarchy, notes)?
   const metaChanged =
     (agentRegion.label ?? '') !== (humanRegion.label ?? '') ||
     (agentRegion.text_hint ?? '') !== (humanRegion.text_hint ?? '') ||
     (agentRegion.lead_label ?? '') !== (humanRegion.lead_label ?? '') ||
-    formatBreadcrumb(agentRegion.breadcrumb) !== formatBreadcrumb(humanRegion.breadcrumb) ||
+    breadcrumbMetadataChanged(agentRegion, humanRegion) ||
     (agentRegion.notes ?? '') !== (humanRegion.notes ?? '')
   if (familyChanged) {
     return {
@@ -549,7 +563,7 @@ function classifyRegionDiff(
       agent_initial: agentRegion,
       human_final: humanRegion,
       proposed_owner: 'nist_preset',
-      proposed_owner_reason: 'Human edited label / text_hint / lead_label / notes — NIST ledger field-enrichment rule needs updating.',
+      proposed_owner_reason: 'Human edited label / text_hint / lead_label / breadcrumb hierarchy / notes — NIST ledger field-enrichment rule needs updating.',
     }
   }
   return null  // identical → no diff entry
@@ -599,6 +613,175 @@ function persistProjectSignoffs(value: Record<string, PageSignoff>): void {
 function signoffKey(projectId: string, pageSlug: string): string {
   return `${projectId}::${pageSlug}`
 }
+
+function BreadcrumbEditor({
+  region,
+  options,
+  onChange,
+}: {
+  region: Region
+  options: BreadcrumbNode[]
+  onChange: (patch: Pick<Region, 'breadcrumb' | 'breadcrumb_nodes'>) => void
+}) {
+  const nodes = breadcrumbNodesFromRegion(region)
+  const optionKey = breadcrumbNodeIdentityKey
+  const optionLabel = (node: BreadcrumbNode) => {
+    const identity = [node.node_id ?? node.id, Number.isFinite(node.page) ? `p${node.page}` : ''].filter(Boolean).join(' · ')
+    return identity ? `${node.label} (${identity})` : node.label
+  }
+  const replaceNode = (index: number, patch: Partial<BreadcrumbNode>) => {
+    const nextNodes = replaceBreadcrumbNodeManually(nodes, index, patch)
+    onChange(breadcrumbPatch(nextNodes))
+  }
+  const applyOption = (index: number, value: string) => {
+    if (!value) {
+      onChange(breadcrumbPatch(clearBreadcrumbNodeIdentity(nodes, index)))
+      return
+    }
+    const option = options.find(candidate => optionKey(candidate) === value)
+    if (!option) return
+    onChange(breadcrumbPatch(applyKnownBreadcrumbNode(nodes, index, option)))
+  }
+  const duplicateOptionLabels = useMemo(() => {
+    const counts = new Map<string, number>()
+    options.forEach(option => counts.set(option.label, (counts.get(option.label) ?? 0) + 1))
+    return counts
+  }, [options])
+  const displayOptionLabel = (option: BreadcrumbNode) => {
+    if ((duplicateOptionLabels.get(option.label) ?? 0) <= 1) return option.label
+    return optionLabel(option)
+  }
+  const kindLabel = (kind: BreadcrumbNodeKind) => ({
+    document: 'Document',
+    chapter: 'Chapter',
+    section: 'Section',
+    subsection: 'Subsection',
+    control_family: 'Control family',
+    control: 'Control',
+    enhancement: 'Enhancement',
+    local_role: 'Local role',
+    unknown: 'Unclassified hierarchy role',
+  }[kind])
+  const addLevel = () => {
+    const nextLevel = nodes.length + 1
+    onChange(breadcrumbPatch([
+      ...nodes,
+      { level: nextLevel, kind: 'unknown', label: `level_${nextLevel}`, source: 'human' },
+    ]))
+  }
+  const removeLevel = (index: number) => {
+    onChange(breadcrumbPatch(nodes.filter((_, nodeIndex) => nodeIndex !== index)))
+  }
+
+  return (
+    <div
+      className="pdf-lab-labeling-breadcrumb-editor"
+      data-qid={`pdf-lab:labeling:breadcrumb-editor-${region.id}`}
+      title="Structured hierarchy path. Reassign a wrong level or add a missing parent level."
+    >
+      <div className="pdf-lab-labeling-breadcrumb-editor-head">
+        <span>document hierarchy path</span>
+        <button
+          type="button"
+          data-qid={`pdf-lab:labeling:breadcrumb-add-level:${region.id}`}
+          data-qs-action="PDF_LAB_BREADCRUMB_ADD_LEVEL"
+          title="Add a missing TOC/outline/section hierarchy level"
+          onClick={addLevel}
+        >+ level</button>
+      </div>
+      <div className="pdf-lab-labeling-breadcrumb-help">
+        Path from document root to the current section; role is metadata, not a PDF element type.
+      </div>
+      {nodes.length === 0 ? (
+        <button
+          type="button"
+          className="pdf-lab-labeling-breadcrumb-empty"
+          data-qid={`pdf-lab:labeling:breadcrumb-add-first-level:${region.id}`}
+          data-qs-action="PDF_LAB_BREADCRUMB_ADD_FIRST_LEVEL"
+          title="Add the first TOC/outline/section hierarchy level"
+          onClick={addLevel}
+        >
+          Add first hierarchy path level
+        </button>
+      ) : (
+        <div className="pdf-lab-labeling-breadcrumb-levels">
+          <div className="pdf-lab-labeling-breadcrumb-column-labels" aria-hidden="true">
+            <span />
+            <span>path label</span>
+            <span>known hierarchy node</span>
+            <span>role</span>
+            <span />
+          </div>
+          {nodes.map((node, index) => {
+            const selectedOption = options.some(option => optionKey(option) === optionKey(node)) ? optionKey(node) : ''
+            return (
+              <div className="pdf-lab-labeling-breadcrumb-level" key={`${region.id}-breadcrumb-${index}`}>
+                <span className="pdf-lab-labeling-breadcrumb-level-index">{index + 1}</span>
+                <input
+                  type="text"
+                  data-qid={`pdf-lab:labeling:breadcrumb-label:${region.id}:${index + 1}`}
+                  data-qs-action="PDF_LAB_BREADCRUMB_SET_LABEL"
+                  title={`Edit breadcrumb path label for level ${index + 1}`}
+                  value={node.label}
+                  onChange={event => replaceNode(index, { label: event.target.value })}
+                  placeholder="section / subsection title"
+                  aria-label={`Breadcrumb level ${index + 1} path label`}
+                />
+                <select
+                  data-qid={`pdf-lab:labeling:breadcrumb-known-node:${region.id}:${index + 1}`}
+                  data-qs-action="PDF_LAB_BREADCRUMB_REASSIGN_NODE"
+                  title={`Reassign breadcrumb level ${index + 1} from known TOC/outline/section nodes`}
+                  value={selectedOption}
+                  onChange={event => applyOption(index, event.target.value)}
+                  aria-label={`Breadcrumb level ${index + 1} known hierarchy node`}
+                >
+                  <option value="">custom / missing</option>
+                  {options.map(option => (
+                    <option key={`${index}-${optionKey(option)}`} value={optionKey(option)}>
+                      {displayOptionLabel(option)}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  data-qid={`pdf-lab:labeling:breadcrumb-kind:${region.id}:${index + 1}`}
+                  data-qs-action="PDF_LAB_BREADCRUMB_SET_KIND"
+                  title={`Set hierarchy role for breadcrumb level ${index + 1}`}
+                  value={node.kind}
+                  onChange={event => replaceNode(index, { kind: event.target.value as BreadcrumbNodeKind })}
+                  aria-label={`Breadcrumb level ${index + 1} hierarchy role`}
+                >
+                  {BREADCRUMB_NODE_KINDS.map(kind => <option key={kind} value={kind}>{kindLabel(kind)}</option>)}
+                </select>
+                <button
+                  type="button"
+                  className="pdf-lab-labeling-breadcrumb-remove"
+                  data-qid={`pdf-lab:labeling:breadcrumb-remove-level:${region.id}:${index + 1}`}
+                  data-qs-action="PDF_LAB_BREADCRUMB_REMOVE_LEVEL"
+                  title={`Remove breadcrumb level ${index + 1}`}
+                  onClick={() => removeLevel(index)}
+                  aria-label={`Remove breadcrumb level ${index + 1}`}
+                >
+                  −
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      )}
+      {nodes.length > 0 ? (
+        <div className="pdf-lab-labeling-region-breadcrumb" title="Current structured breadcrumb">
+          {nodes.map((node, index) => (
+            <span key={`${region.id}-structured-bc-${index}`}>
+              {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
+              {node.label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 const KNOWN_SLICES: KnownSlice[] = [
   {
     slug: 'gs001_intro_page_27',
@@ -629,6 +812,7 @@ export function PdfLabLabelingPage() {
   const [regions, setRegions] = useState<Region[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selectedRegion = useMemo(() => regions.find(r => r.id === selectedId) ?? null, [regions, selectedId])
+  const breadcrumbOptions = useMemo(() => collectBreadcrumbOptions(regions), [regions])
   const [drag, setDrag] = useState<DragState | null>(null)
   const [slug, setSlug] = useState('manual_labeling')
   const [warnings, setWarnings] = useState<string[]>([])
@@ -725,11 +909,17 @@ export function PdfLabLabelingPage() {
     }
     if (entries.length === 0) return
     const mostRecent = entries.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0]
-    setSlug(mostRecent.slug)
-    setImageUrl(mostRecent.imageDataUrl)
-    setImageDataUrl(mostRecent.imageDataUrl)
-    setRegions(mostRecent.regions)
-    if (mostRecent.naturalSize) setImageNaturalSize(mostRecent.naturalSize)
+    let cancelled = false
+    ;(async () => {
+      const source = await fetchFallbackBreadcrumbSourceRegions(mostRecent.slug)
+      if (cancelled) return
+      setSlug(mostRecent.slug)
+      setImageUrl(mostRecent.imageDataUrl)
+      setImageDataUrl(mostRecent.imageDataUrl)
+      setRegions(backfillMissingBreadcrumbPaths(mostRecent.regions, source))
+      if (mostRecent.naturalSize) setImageNaturalSize(mostRecent.naturalSize)
+    })()
+    return () => { cancelled = true }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -759,11 +949,12 @@ export function PdfLabLabelingPage() {
     }
   }, [regions, imageDataUrl, slug, imageNaturalSize])
 
-  const loadSavedPage = useCallback((p: SavedPage) => {
+  const loadSavedPage = useCallback(async (p: SavedPage) => {
+    const source = await fetchFallbackBreadcrumbSourceRegions(p.slug)
     setSlug(p.slug)
     setImageUrl(p.imageDataUrl)
     setImageDataUrl(p.imageDataUrl)
-    setRegions(p.regions)
+    setRegions(backfillMissingBreadcrumbPaths(p.regions, source))
     setImageNaturalSize(p.naturalSize ?? null)
     setSelectedId(null)
     setWarnings([`Loaded saved page ${p.slug} (${p.regions.length} regions)`])
@@ -797,15 +988,8 @@ export function PdfLabLabelingPage() {
 
   const loadSlice = useCallback(async (slice: KnownSlice) => {
     try {
-      // 1. Prefer the local edit if the user already worked on this slug.
-      const local = savedPages[slice.slug]
-      if (local && local.regions.length > 0) {
-        loadSavedPage(local)
-        setWarnings([`Loaded saved edit of ${slice.label} (${local.regions.length} regions)`])
-        return
-      }
-
-      // 2. Otherwise pull the canonical image + (optional) contract.
+      // Pull the canonical image + (optional) contract before considering
+      // local edits so schema-enriched fields can backfill stale saved state.
       const dataUrl = await urlToDataUrl(slice.imageUrl)
       let importedRegions: Region[] = []
       const importWarnings: string[] = []
@@ -845,22 +1029,29 @@ export function PdfLabLabelingPage() {
       }
 
       const allRegions = [...importedRegions, ...agentLinkRegions]
+      const local = savedPages[slice.slug]
+      const humanRegions = local && local.regions.length > 0
+        ? backfillMissingBreadcrumbPaths(local.regions, allRegions)
+        : allRegions
       setSlug(slice.slug)
       setImageUrl(dataUrl)
       setImageDataUrl(dataUrl)
-      setRegions(allRegions)
+      setRegions(humanRegions)
       setSelectedId(null)
       const linkSummary = agentLinkRegions.length > 0
         ? ` · ${agentLinkRegions.length} agent-link candidate${agentLinkRegions.length === 1 ? '' : 's'}`
         : ''
+      const localSummary = local && local.regions.length > 0
+        ? ` · restored local edit with current hierarchy metadata`
+        : ''
       setWarnings([
-        `Loaded ${slice.label} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'} from contract${linkSummary}`,
+        `Loaded ${slice.label} · ${importedRegions.length} region${importedRegions.length === 1 ? '' : 's'} from contract${linkSummary}${localSummary}`,
         ...importWarnings,
       ])
     } catch (err) {
       setWarnings([`Failed to load ${slice.label}: ${err instanceof Error ? err.message : String(err)}`])
     }
-  }, [savedPages, loadSavedPage])
+  }, [savedPages])
 
   /** Load a page from a Project (parallels loadSlice, but uses ProjectPage
    *  shape and respects the sign-off snapshot if present). */
@@ -873,35 +1064,32 @@ export function PdfLabLabelingPage() {
       let importedRegions: Region[] = []
       const importWarnings: string[] = []
 
-      // If page is already signed-off, restore the agreed snapshot directly.
+      if (page.expected_elements_url) {
+        try {
+          const resp = await fetch(page.expected_elements_url)
+          if (resp.ok) {
+            const { regions: rs, warnings: ws } = importJson(await resp.json())
+            importedRegions = rs.map(r => ({ ...r, origin: r.origin ?? 'human' }))
+            importWarnings.push(...ws)
+          }
+        } catch (err) {
+          importWarnings.push(`expected_elements fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+        }
+      }
+      if (page.link_sidecar_url) {
+        try {
+          const resp = await fetch(page.link_sidecar_url)
+          if (resp.ok) {
+            const { regions: rs, warnings: ws } = linksToRegions(await resp.json(), importedRegions)
+            importedRegions = [...importedRegions, ...rs]
+            importWarnings.push(...ws.map(w => `link_sidecar: ${w}`))
+          }
+        } catch (err) {
+          importWarnings.push(`link_sidecar fetch failed: ${err instanceof Error ? err.message : String(err)}`)
+        }
+      }
       if (signoff && signoff.agreed_regions.length > 0) {
-        importedRegions = signoff.agreed_regions
         importWarnings.push(`Restored signed-off snapshot from ${signoff.agreed_at} by ${signoff.agreed_by}`)
-      } else {
-        if (page.expected_elements_url) {
-          try {
-            const resp = await fetch(page.expected_elements_url)
-            if (resp.ok) {
-              const { regions: rs, warnings: ws } = importJson(await resp.json())
-              importedRegions = rs.map(r => ({ ...r, origin: r.origin ?? 'human' }))
-              importWarnings.push(...ws)
-            }
-          } catch (err) {
-            importWarnings.push(`expected_elements fetch failed: ${err instanceof Error ? err.message : String(err)}`)
-          }
-        }
-        if (page.link_sidecar_url) {
-          try {
-            const resp = await fetch(page.link_sidecar_url)
-            if (resp.ok) {
-              const { regions: rs, warnings: ws } = linksToRegions(await resp.json(), importedRegions)
-              importedRegions = [...importedRegions, ...rs]
-              importWarnings.push(...ws.map(w => `link_sidecar: ${w}`))
-            }
-          } catch (err) {
-            importWarnings.push(`link_sidecar fetch failed: ${err instanceof Error ? err.message : String(err)}`)
-          }
-        }
       }
 
       // 4. Second-pass Agent view: fetch the scillm-refined sidecar if
@@ -927,9 +1115,12 @@ export function PdfLabLabelingPage() {
       // human the merging/cleanup work the agent already did). Fall back to
       // importedRegions (Original heuristic) otherwise.
       const humanSeed = (signoff && signoff.agreed_regions.length > 0)
-        ? signoff.agreed_regions
+        ? backfillMissingBreadcrumbPaths(signoff.agreed_regions, importedRegions)
         : (agentRegions.length > 0
-            ? agentRegions.map(r => ({ ...r, origin: 'human' as const, id: newId() }))
+            ? backfillMissingBreadcrumbPaths(
+                agentRegions.map(r => ({ ...r, origin: 'human' as const, id: newId() })),
+                importedRegions,
+              )
             : importedRegions)
       const seedSource = signoff ? 'signed-off snapshot'
         : agentRegions.length > 0 ? 'Agent (scillm second-pass)'
@@ -1482,6 +1673,8 @@ export function PdfLabLabelingPage() {
                         >
                           <button
                             className="pdf-lab-labeling-pages-row-main"
+                            data-qid={`pdf-lab:labeling:page-open-${pg.slug}`}
+                            data-qs-action="PDF_LAB_LABELING_OPEN_PROJECT_PAGE"
                             onClick={() => loadProjectPage(proj, pg)}
                             title={tooltip}
                           >
@@ -1512,6 +1705,8 @@ export function PdfLabLabelingPage() {
                   >
                     <button
                       className="pdf-lab-labeling-pages-row-main"
+                      data-qid={`pdf-lab:labeling:project-open-${s.slug}`}
+                      data-qs-action="PDF_LAB_LABELING_OPEN_LEGACY_SLICE"
                       onClick={() => loadSlice(s)}
                       title={s.imageUrl}
                     >
@@ -1545,6 +1740,8 @@ export function PdfLabLabelingPage() {
                       >
                         <button
                           className="pdf-lab-labeling-pages-row-main"
+                          data-qid={`pdf-lab:labeling:saved-open-${p.slug}`}
+                          data-qs-action="PDF_LAB_LABELING_OPEN_SAVED_PAGE"
                           onClick={() => loadSavedPage(p)}
                           title={`Updated ${p.updatedAt}`}
                         >
@@ -1563,7 +1760,13 @@ export function PdfLabLabelingPage() {
                   })}
                 </>
               )}
-              <button className="pdf-lab-labeling-pages-new" data-qid="pdf-lab:labeling:new-page" onClick={newPage}>
+              <button
+                className="pdf-lab-labeling-pages-new"
+                data-qid="pdf-lab:labeling:new-page"
+                data-qs-action="PDF_LAB_LABELING_NEW_PAGE"
+                title="Create a custom labeling page from uploaded files"
+                onClick={newPage}
+              >
                 + Custom page from file
               </button>
             </div>
@@ -2068,23 +2271,11 @@ export function PdfLabLabelingPage() {
                 onChange={e => update({ text_hint: e.target.value || undefined })}
                 placeholder="text_hint — exact text the matcher should find"
               />
-              <input
-                type="text"
-                value={formatBreadcrumb(r.breadcrumb)}
-                onChange={e => update({ breadcrumb: parseBreadcrumb(e.target.value) })}
-                placeholder="breadcrumb — e.g. AC-2 ACCOUNT MANAGEMENT › (7) PRIVILEGED USER ACCOUNTS"
-                title="Per-region hierarchy path. Shared breadcrumbs identify sibling regions for merge/grouping."
+              <BreadcrumbEditor
+                region={r}
+                options={breadcrumbOptions}
+                onChange={update}
               />
-              {r.breadcrumb?.length ? (
-                <div className="pdf-lab-labeling-region-breadcrumb" title="Selected region breadcrumb">
-                  {r.breadcrumb.map((part, index) => (
-                    <span key={`${r.id}-bc-${index}`}>
-                      {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
-                      {part}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
               {r.family === 'labeled_paragraph' && (
                 <input
                   type="text"
