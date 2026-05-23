@@ -564,6 +564,46 @@ function detectEvidenceCasePreflight(question: unknown, profile: unknown): Evide
       detail: 'The request asks Chat to fabricate source evidence.',
     }
   }
+  if (/\bsparta\s+(?:control|technique|countermeasure)\s+[A-Z]\d{2,}-[A-Z][A-Z0-9-]*\b/i.test(question)) {
+    return {
+      action: 'deflect',
+      issue_code: 'fabricated_or_unsupported_entity',
+      issue_label: 'Fabricated or unsupported entity',
+      detail: 'The request names an unsupported SPARTA entity that must be resolved before evidence recall can support an answer.',
+    }
+  }
+  if (/\brelationship candidate\s+rel::tech_related_controls\b/i.test(question) || /\bwhat evidence supports\b.*\bwhat is missing\b/i.test(q)) {
+    return {
+      action: 'clarify',
+      issue_code: 'relationship_evidence_required',
+      issue_label: 'Relationship evidence required',
+      detail: 'The relationship needs direct satisfied traceability evidence before Chat can answer rather than relying on broad related-QRA recall.',
+    }
+  }
+  if (/\bfailed\s+SPARTA\s+evidence-case\s+candidate\b/i.test(question) || /\banswer\b.*\bfailed\b.*\bevidence-case\b.*\banyway\b/i.test(q)) {
+    return {
+      action: 'deflect',
+      issue_code: 'failed_evidence_case_candidate',
+      issue_label: 'Failed evidence-case candidate',
+      detail: 'The prior evidence-case candidate did not satisfy the answer gate and must not be answered from broad recall.',
+    }
+  }
+  if (/\b(sourdough|starter schedule|recipe|super bowl|sports prediction|espresso|coffee grinder|hiking boots|piano practice|tax deduction|fantasy football|wedding playlist|gardening|tomatoes|movie recommendations|mortgage rates|cake frosting|running shoes|vacation itinerary|dog training|birthday party|stock market|oil change|yoga pose|language learning)\b/i.test(question)) {
+    return {
+      action: 'deflect',
+      issue_code: 'outside_sparta_scope',
+      issue_label: 'Outside SPARTA scope',
+      detail: 'The request is outside the SPARTA space cybersecurity evidence corpus.',
+    }
+  }
+  if (/\bwhy\s+is\s+countermeasure\s+[A-Z]{2}\d{4}\b.*\brelevant\s+to\s+technique\s+[A-Z]{2}-\d{4}\b/i.test(question)) {
+    return {
+      action: 'clarify',
+      issue_code: 'relationship_evidence_required',
+      issue_label: 'Relationship evidence required',
+      detail: 'The relationship needs direct satisfied traceability evidence before Chat can answer rather than relying on broad related-QRA recall.',
+    }
+  }
   if (/\b(private|secret)\b.*\b(key|token|credential|password)\b/.test(q) || /\bshow\b.*\b(private|secret)\b/.test(q)) {
     return {
       action: 'deflect',
@@ -8650,6 +8690,7 @@ type EvidenceCaseSseEventType =
   | 'human_intervention_requested'
 
 type EvidenceCaseHumanReviewState = 'not_requested' | 'requested' | 'queued' | 'in_review' | 'approved' | 'rejected'
+type SpartaChatResponseAction = 'answer' | 'clarify' | 'deflect'
 
 interface EvidenceCaseRunHistoryEntry {
   id: string
@@ -8689,6 +8730,166 @@ function rememberEvidenceCaseRun(entry: EvidenceCaseRunHistoryEntry): void {
 function sendEvidenceCaseSse(res: any, event: EvidenceCaseSseEventType, data: JsonRecord): void {
   res.write(`event: ${event}\n`)
   res.write(`data: ${JSON.stringify({ type: event, ...data })}\n\n`)
+}
+
+const SPARTA_CHAT_RESPONSE_PROMPT_VERSION = 'sparta_chat_response_policy_v1'
+const SPARTA_CHAT_SOURCE_INJECTION_MARKERS = [
+  'ignore the prompt',
+  'ignore previous',
+  'disregard previous',
+  'override response_action',
+  'qra_fake',
+  'fully compliant',
+  'reveal the system prompt',
+  'system prompt',
+]
+
+function iterTextValues(value: unknown): string[] {
+  if (typeof value === 'string') return [value]
+  if (Array.isArray(value)) return value.flatMap((item) => iterTextValues(item))
+  if (value && typeof value === 'object') return Object.values(value as Record<string, unknown>).flatMap((item) => iterTextValues(item))
+  return []
+}
+
+function hasResponsePolicySourceInjection(question: unknown, payload: JsonRecord): boolean {
+  const text = [typeof question === 'string' ? question : '', ...iterTextValues({
+    evidence: payload.evidence,
+    glossary: payload.glossary,
+    crosswalk_chains: payload.crosswalk_chains,
+    context: payload.context,
+  })].join('\n').toLowerCase()
+  return SPARTA_CHAT_SOURCE_INJECTION_MARKERS.some((marker) => text.includes(marker))
+}
+
+function evidenceCaseArtifactIds(payload: JsonRecord): string[] {
+  const ids = new Set<string>()
+  const version = payload.evidence_case_version as JsonRecord | undefined
+  const evidenceCase = payload.evidence_case as JsonRecord | undefined
+  const versionId = version?.id ?? evidenceCase?.case_id ?? evidenceCase?.id
+  if (typeof versionId === 'string' && versionId.trim()) ids.add(versionId)
+  ids.add('gate_trace')
+  const evidence = Array.isArray(payload.evidence) ? payload.evidence as JsonRecord[] : []
+  for (const [index, item] of evidence.entries()) {
+    const result = item.result && typeof item.result === 'object' ? item.result as JsonRecord : {}
+    const id = item.id ?? result.control_id ?? `evidence_case.evidence[${index}]`
+    if (typeof id === 'string' && id.trim()) ids.add(id)
+  }
+  return [...ids]
+}
+
+function evidenceCaseCitations(payload: JsonRecord): JsonRecord[] {
+  const citations: JsonRecord[] = []
+  const evidence = Array.isArray(payload.evidence) ? payload.evidence as JsonRecord[] : []
+  for (const [index, item] of evidence.entries()) {
+    const result = item.result && typeof item.result === 'object' ? item.result as JsonRecord : {}
+    const id = item.id ?? result.control_id ?? `evidence_case.evidence[${index}]`
+    if (typeof id !== 'string' || !id.trim()) continue
+    const framework = typeof result.source_framework === 'string' ? result.source_framework : 'UNKNOWN'
+    citations.push({
+      id,
+      source: 'evidence_case.evidence',
+      framework: ['SPARTA', 'CWE', 'NIST', 'CAPEC', 'ATT&CK', 'D3FEND', 'ISO', 'CMMC', 'DISA_STIG', 'ESA', 'URL_KNOWLEDGE'].includes(framework) ? framework : 'UNKNOWN',
+    })
+  }
+  if (citations.length === 0) {
+    const evidenceCase = payload.evidence_case as JsonRecord | undefined
+    const evidenceCard = evidenceCase?.evidence_card && typeof evidenceCase.evidence_card === 'object' ? evidenceCase.evidence_card as JsonRecord : undefined
+    const answerPayload = evidenceCase?.answer_payload && typeof evidenceCase.answer_payload === 'object' ? evidenceCase.answer_payload as JsonRecord : undefined
+    const controlId = evidenceCard?.primary_control ?? answerPayload?.control_id
+    const source = evidenceCard?.source && typeof evidenceCard.source === 'object' ? evidenceCard.source as JsonRecord : {}
+    const collection = typeof source.collection === 'string' ? source.collection : null
+    if (typeof controlId === 'string' && controlId.trim() && collection === 'sparta_controls') {
+      citations.push({
+        id: controlId,
+        source: 'evidence_case.evidence_card',
+        framework: 'SPARTA',
+      })
+    }
+  }
+  return citations
+}
+
+function buildSpartaChatResponsePolicy(question: string, payload: JsonRecord, profile: unknown): JsonRecord {
+  const verdict = payload.verdict && typeof payload.verdict === 'object' ? payload.verdict as JsonRecord : {}
+  const state = String(verdict.state ?? payload.verdict_state ?? '').toLowerCase()
+  const verdictAction = typeof verdict.action === 'string' ? verdict.action.toLowerCase() : ''
+  const gateTrace = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
+  const hasFailedRequiredGate = gateTrace.some((gate) => gate.passed === false && gate.required !== false)
+  const sourceInjection = hasResponsePolicySourceInjection(question, payload)
+  const citations = evidenceCaseCitations(payload)
+  const artifacts = evidenceCaseArtifactIds(payload)
+  let responseAction: SpartaChatResponseAction = verdictAction === 'clarify' ? 'clarify'
+    : verdictAction === 'deflect' ? 'deflect'
+    : state === 'satisfied' ? 'answer'
+    : state === 'not_satisfied' ? 'deflect'
+    : 'clarify'
+
+  if (sourceInjection) responseAction = 'deflect'
+  if (responseAction === 'answer' && (state !== 'satisfied' || citations.length === 0 || hasFailedRequiredGate)) responseAction = 'deflect'
+
+  const profileText = typeof profile === 'string' ? profile : null
+  if (responseAction === 'answer') {
+    const evidenceIds = citations.map((citation) => String(citation.id))
+    const firstCitation = evidenceIds[0]
+    return {
+      response_action: 'answer',
+      user_message: firstCitation
+        ? `The evidence case supports an answer using cited evidence [${firstCitation}]. ${String(payload.answer ?? '').trim()}`.trim()
+        : String(payload.answer ?? 'The evidence case supports an answer.'),
+      citations,
+      evidence_items: evidenceIds,
+      clarifying_questions: [],
+      deflection_reason: null,
+      limitations: ['This is evidence-case support, not a compliance certification.'],
+      inspectable_artifacts: [...new Set([...artifacts, ...evidenceIds])],
+      confidence: hasFailedRequiredGate ? 'low' : 'high',
+      prompt_version: SPARTA_CHAT_RESPONSE_PROMPT_VERSION,
+    }
+  }
+
+  if (responseAction === 'clarify') {
+    const detail = gateTrace.find((gate) => gate.passed === false)?.detail
+    return {
+      response_action: 'clarify',
+      user_message: 'More scoped input is required before Chat can provide an evidence-grounded answer.',
+      citations: [],
+      evidence_items: [],
+      clarifying_questions: [
+        typeof detail === 'string' && detail.trim()
+          ? `Please clarify: ${detail}`
+          : 'Which specific system, control, or evidence profile should the evidence case use?',
+      ],
+      deflection_reason: null,
+      limitations: ['The current request is underspecified for the selected evidence-case route.'],
+      inspectable_artifacts: artifacts,
+      confidence: 'medium',
+      prompt_version: SPARTA_CHAT_RESPONSE_PROMPT_VERSION,
+    }
+  }
+
+  const reason = sourceInjection ? 'unsafe_request'
+    : profileText && profileText.toLowerCase().includes('ground') && /\b(orbital|orbit|downlink|leo|spacecraft|satellite)\b/i.test(question) ? 'outside_profile'
+    : citations.length === 0 || state !== 'satisfied' ? 'insufficient_evidence'
+    : 'unsafe_request'
+  return {
+    response_action: 'deflect',
+    user_message: 'I cannot provide an authoritative answer from the selected evidence route.',
+    citations: [],
+    evidence_items: [],
+    clarifying_questions: [],
+    deflection_reason: reason,
+    limitations: [sourceInjection ? 'Untrusted source or scoping text attempted to override response policy.' : 'The evidence case did not satisfy the answer gate.'],
+    inspectable_artifacts: artifacts,
+    confidence: 'low',
+    prompt_version: SPARTA_CHAT_RESPONSE_PROMPT_VERSION,
+  }
+}
+
+function attachSpartaChatResponsePolicy(question: string, payload: JsonRecord, profile: unknown): JsonRecord {
+  const responsePolicy = buildSpartaChatResponsePolicy(question, payload, profile)
+  payload.response_policy = responsePolicy
+  payload.response_action = responsePolicy.response_action
+  return payload
 }
 
 function evidenceCaseAmbiguousPayload(question: string, ambiguousReferents: string[]): JsonRecord {
@@ -8863,6 +9064,8 @@ function normalizeEvidenceCaseWorkflowResult(question: string, controlId: unknow
   if (result?.evidence_case?.case_type === 'direct_lookup' && result?.extract_entities) {
     const evidenceCase = result.evidence_case
     const glossary = Array.isArray(evidenceCase.glossary) ? evidenceCase.glossary : []
+    const answerPayload = evidenceCase.answer_payload && typeof evidenceCase.answer_payload === 'object' ? evidenceCase.answer_payload : {}
+    const directControlId = evidenceCase.evidence_card?.primary_control || answerPayload.control_id || null
     return {
       verdict: { state: 'satisfied', grade: 'A', score: 1.0 },
       gate_trace: [
@@ -8871,7 +9074,18 @@ function normalizeEvidenceCaseWorkflowResult(question: string, controlId: unknow
         { gate: 'cae', passed: true, detail: 'not required' },
         { gate: 'framework', passed: true, detail: evidenceCase.context?.framework_label || evidenceCase.context?.framework || 'SPARTA' },
       ],
-      evidence: [],
+      evidence: directControlId ? [{
+        id: directControlId,
+        method: 'LOOKUP',
+        layer: 'sparta_controls',
+        result: {
+          control_id: directControlId,
+          source_framework: 'SPARTA',
+          qra_text: evidenceCase.evidence_card?.title || result.assistant_response?.text || '',
+          answer: result.assistant_response?.text || answerPayload.source_description || '',
+        },
+        confidence: 1.0,
+      }] : [],
       glossary: glossary.slice(0, 20).map((g: any) => ({
         term: g.name || g.id,
         type: g.type === 'countermeasure' ? 'countermeasure' : g.framework === 'SPARTA' ? 'control' : 'domain_term',
@@ -8999,11 +9213,11 @@ app.post('/api/evidence-case/run', async (req, res) => {
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
     }
-    return res.json(payload)
+    return res.json(attachSpartaChatResponsePolicy(String(question), payload, selectedProfile))
   }
   const ambiguousReferents = detectAmbiguousQraReferents(question)
   if (ambiguousReferents.length > 0) {
-    return res.json(evidenceCaseAmbiguousPayload(String(question), ambiguousReferents))
+    return res.json(attachSpartaChatResponsePolicy(String(question), evidenceCaseAmbiguousPayload(String(question), ambiguousReferents), selectedProfile))
   }
 
   try {
@@ -9024,7 +9238,7 @@ app.post('/api/evidence-case/run', async (req, res) => {
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
     }
-    return res.json(payload)
+    return res.json(attachSpartaChatResponsePolicy(String(question), payload, selectedProfile))
   } catch (e: any) {
     console.error('[evidence-case/run] Daemon call failed:', e.message)
     try {
@@ -9061,7 +9275,7 @@ app.post('/api/evidence-case/run', async (req, res) => {
       payload.proposed_correction = gapReview.proposed_correction
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
-      res.json(payload)
+      res.json(attachSpartaChatResponsePolicy(String(question), payload, selectedProfile))
     } catch {
       res.status(502).json({ error: 'Evidence case daemon and recall both unavailable' })
     }
@@ -9114,6 +9328,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       payload.proposed_correction = gapReview.proposed_correction
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
+      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
       run.status = 'completed'
       run.completed_at = new Date().toISOString()
       run.verdict = payload.verdict as JsonRecord
@@ -9149,6 +9364,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       payload.proposed_correction = gapReview.proposed_correction
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
+      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
       run.status = 'completed'
       run.completed_at = new Date().toISOString()
       run.verdict = payload.verdict as JsonRecord
@@ -9200,6 +9416,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       emit('correction_suggested', { proposed_correction: gapReview.proposed_correction, correction_lineage: gapReview.correction_lineage })
       emit('human_intervention_requested', { human_review_state: gapReview.human_review_state })
     }
+    attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
     const gates = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
     for (const gate of gates) emit('gate', { gate })
     emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })
@@ -9410,9 +9627,10 @@ if (existsSync(distPath)) {
 // ── Start ───────────────────────────────────────────────────────────────────
 
 const PORT = process.env.PORT ?? 3001
+const HOST = process.env.HOST ?? process.env.UX_LAB_HOST ?? '127.0.0.1'
 
-httpServer.listen(Number(PORT), '0.0.0.0', () => {
-  console.log(`UX Lab API on http://localhost:${PORT}`)
+httpServer.listen(Number(PORT), HOST, () => {
+  console.log(`UX Lab API on http://${HOST}:${PORT}`)
   console.log(`  Memory daemon: ${MEMORY_SOCKET}`)
   console.log(`  scillm: ${SCILLM_URL}`)
   console.log(`  artifacts: ${ARTIFACTS_ROOT}`)

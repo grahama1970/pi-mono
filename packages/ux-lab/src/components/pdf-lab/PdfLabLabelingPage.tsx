@@ -617,13 +617,18 @@ function signoffKey(projectId: string, pageSlug: string): string {
 function BreadcrumbEditor({
   region,
   options,
+  previousNodes,
   onChange,
 }: {
   region: Region
   options: BreadcrumbNode[]
+  previousNodes?: BreadcrumbNode[]
   onChange: (patch: Pick<Region, 'breadcrumb' | 'breadcrumb_nodes'>) => void
 }) {
   const nodes = breadcrumbNodesFromRegion(region)
+  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+  const [query, setQuery] = useState('')
+  const [advancedOpen, setAdvancedOpen] = useState(false)
   const optionKey = breadcrumbNodeIdentityKey
   const optionLabel = (node: BreadcrumbNode) => {
     const identity = [node.node_id ?? node.id, Number.isFinite(node.page) ? `p${node.page}` : ''].filter(Boolean).join(' · ')
@@ -641,6 +646,7 @@ function BreadcrumbEditor({
     const option = options.find(candidate => optionKey(candidate) === value)
     if (!option) return
     onChange(breadcrumbPatch(applyKnownBreadcrumbNode(nodes, index, option)))
+    setQuery('')
   }
   const duplicateOptionLabels = useMemo(() => {
     const counts = new Map<string, number>()
@@ -662,15 +668,59 @@ function BreadcrumbEditor({
     local_role: 'Local role',
     unknown: 'Unclassified hierarchy role',
   }[kind])
+  const activeNode = editingIndex === null ? null : nodes[editingIndex]
+  const activeIndex = editingIndex ?? -1
+  const filteredOptions = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase()
+    const candidates = normalizedQuery
+      ? options.filter(option =>
+          option.label.toLowerCase().includes(normalizedQuery) ||
+          option.kind.toLowerCase().includes(normalizedQuery) ||
+          (option.node_id ?? '').toLowerCase().includes(normalizedQuery),
+        )
+      : options
+    return candidates.slice(0, 24)
+  }, [options, query])
   const addLevel = () => {
     const nextLevel = nodes.length + 1
     onChange(breadcrumbPatch([
       ...nodes,
       { level: nextLevel, kind: 'unknown', label: `level_${nextLevel}`, source: 'human' },
     ]))
+    setEditingIndex(nodes.length)
+    setQuery('')
   }
   const removeLevel = (index: number) => {
     onChange(breadcrumbPatch(nodes.filter((_, nodeIndex) => nodeIndex !== index)))
+    setEditingIndex(null)
+    setQuery('')
+  }
+  const usePreviousPath = () => {
+    if (!previousNodes?.length) return
+    onChange(breadcrumbPatch(previousNodes))
+    setEditingIndex(null)
+    setQuery('')
+  }
+  const clearPath = () => {
+    onChange({ breadcrumb: undefined, breadcrumb_nodes: undefined })
+    setEditingIndex(null)
+    setQuery('')
+  }
+  const promoteActiveLevel = () => {
+    if (editingIndex === null || editingIndex <= 0) return
+    const nextNodes = [...nodes]
+    const [node] = nextNodes.splice(editingIndex, 1)
+    nextNodes.splice(editingIndex - 1, 0, node)
+    onChange(breadcrumbPatch(nextNodes))
+    setEditingIndex(editingIndex - 1)
+  }
+  const demoteActiveLevel = () => {
+    if (editingIndex === null || editingIndex >= nodes.length - 1) return
+    const nextNodes = [...nodes]
+    const [node] = nextNodes.splice(editingIndex, 1)
+    nextNodes.splice(editingIndex + 1, 0, node)
+    onChange(breadcrumbPatch(nextNodes))
+    setEditingIndex(editingIndex + 1)
   }
 
   return (
@@ -693,83 +743,140 @@ function BreadcrumbEditor({
         Path from document root to the current section; role is metadata, not a PDF element type.
       </div>
       {nodes.length === 0 ? (
-        <button
-          type="button"
-          className="pdf-lab-labeling-breadcrumb-empty"
-          data-qid={`pdf-lab:labeling:breadcrumb-add-first-level:${region.id}`}
-          data-qs-action="PDF_LAB_BREADCRUMB_ADD_FIRST_LEVEL"
-          title="Add the first TOC/outline/section hierarchy level"
-          onClick={addLevel}
-        >
-          Add first hierarchy path level
-        </button>
+        <div className="pdf-lab-labeling-breadcrumb-empty-actions">
+          <button
+            type="button"
+            className="pdf-lab-labeling-breadcrumb-empty"
+            data-qid={`pdf-lab:labeling:breadcrumb-add-first-level:${region.id}`}
+            data-qs-action="PDF_LAB_BREADCRUMB_ADD_FIRST_LEVEL"
+            title="Add the first TOC/outline/section hierarchy level"
+            onClick={addLevel}
+          >
+            Add first hierarchy path level
+          </button>
+          <button
+            type="button"
+            className="pdf-lab-labeling-breadcrumb-quick"
+            disabled={!previousNodes?.length}
+            data-qid={`pdf-lab:labeling:breadcrumb-use-previous-empty:${region.id}`}
+            data-qs-action="PDF_LAB_BREADCRUMB_USE_PREVIOUS"
+            title="Use the previous annotated element's hierarchy path"
+            onClick={usePreviousPath}
+          >
+            Use previous path
+          </button>
+        </div>
       ) : (
-        <div className="pdf-lab-labeling-breadcrumb-levels">
-          <div className="pdf-lab-labeling-breadcrumb-column-labels" aria-hidden="true">
-            <span />
-            <span>path label</span>
-            <span>known hierarchy node</span>
-            <span>role</span>
-            <span />
-          </div>
-          {nodes.map((node, index) => {
-            const selectedOption = options.some(option => optionKey(option) === optionKey(node)) ? optionKey(node) : ''
-            return (
-              <div className="pdf-lab-labeling-breadcrumb-level" key={`${region.id}-breadcrumb-${index}`}>
-                <span className="pdf-lab-labeling-breadcrumb-level-index">{index + 1}</span>
-                <input
-                  type="text"
-                  data-qid={`pdf-lab:labeling:breadcrumb-label:${region.id}:${index + 1}`}
-                  data-qs-action="PDF_LAB_BREADCRUMB_SET_LABEL"
-                  title={`Edit breadcrumb path label for level ${index + 1}`}
-                  value={node.label}
-                  onChange={event => replaceNode(index, { label: event.target.value })}
-                  placeholder="section / subsection title"
-                  aria-label={`Breadcrumb level ${index + 1} path label`}
-                />
-                <select
-                  data-qid={`pdf-lab:labeling:breadcrumb-known-node:${region.id}:${index + 1}`}
-                  data-qs-action="PDF_LAB_BREADCRUMB_REASSIGN_NODE"
-                  title={`Reassign breadcrumb level ${index + 1} from known TOC/outline/section nodes`}
-                  value={selectedOption}
-                  onChange={event => applyOption(index, event.target.value)}
-                  aria-label={`Breadcrumb level ${index + 1} known hierarchy node`}
-                >
-                  <option value="">custom / missing</option>
-                  {options.map(option => (
-                    <option key={`${index}-${optionKey(option)}`} value={optionKey(option)}>
-                      {displayOptionLabel(option)}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  data-qid={`pdf-lab:labeling:breadcrumb-kind:${region.id}:${index + 1}`}
-                  data-qs-action="PDF_LAB_BREADCRUMB_SET_KIND"
-                  title={`Set hierarchy role for breadcrumb level ${index + 1}`}
-                  value={node.kind}
-                  onChange={event => replaceNode(index, { kind: event.target.value as BreadcrumbNodeKind })}
-                  aria-label={`Breadcrumb level ${index + 1} hierarchy role`}
-                >
-                  {BREADCRUMB_NODE_KINDS.map(kind => <option key={kind} value={kind}>{kindLabel(kind)}</option>)}
-                </select>
+        <>
+          <div className="pdf-lab-labeling-breadcrumb-path" data-qid={`pdf-lab:labeling:breadcrumb-path:${region.id}`}>
+            {nodes.map((node, index) => (
+              <span className="pdf-lab-labeling-breadcrumb-chip-wrap" key={`${region.id}-breadcrumb-chip-${index}`}>
+                {index > 0 && <span className="pdf-lab-labeling-breadcrumb-path-sep">›</span>}
                 <button
                   type="button"
-                  className="pdf-lab-labeling-breadcrumb-remove"
-                  data-qid={`pdf-lab:labeling:breadcrumb-remove-level:${region.id}:${index + 1}`}
-                  data-qs-action="PDF_LAB_BREADCRUMB_REMOVE_LEVEL"
-                  title={`Remove breadcrumb level ${index + 1}`}
-                  onClick={() => removeLevel(index)}
-                  aria-label={`Remove breadcrumb level ${index + 1}`}
+                  className={`pdf-lab-labeling-breadcrumb-chip ${editingIndex === index ? 'is-editing' : ''}`}
+                  data-qid={`pdf-lab:labeling:breadcrumb-chip:${region.id}:${index + 1}`}
+                  data-qs-action="PDF_LAB_BREADCRUMB_EDIT_CHIP"
+                  title={`Edit hierarchy level ${index + 1}: ${node.label}`}
+                  onClick={() => { setEditingIndex(index); setQuery('') }}
                 >
-                  −
+                  <span>{node.label}</span>
+                  <em>{kindLabel(node.kind)}</em>
                 </button>
+              </span>
+            ))}
+            <button
+              type="button"
+              className="pdf-lab-labeling-breadcrumb-add-inline"
+              data-qid={`pdf-lab:labeling:breadcrumb-add-inline:${region.id}`}
+              data-qs-action="PDF_LAB_BREADCRUMB_ADD_LEVEL"
+              title="Add another hierarchy path level"
+              onClick={addLevel}
+            >
+              + level
+            </button>
+          </div>
+          {activeNode ? (
+            <div className="pdf-lab-labeling-breadcrumb-popover" data-qid={`pdf-lab:labeling:breadcrumb-popover:${region.id}`}>
+              <div className="pdf-lab-labeling-breadcrumb-popover-title">
+                <strong>{activeNode.label}</strong>
+                <span>{kindLabel(activeNode.kind)} · auto-detected from selected node</span>
               </div>
-            )
-          })}
-        </div>
+              <input
+                type="search"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                placeholder="Search or select section…"
+                data-qid={`pdf-lab:labeling:breadcrumb-search:${region.id}:${activeIndex + 1}`}
+                data-qs-action="PDF_LAB_BREADCRUMB_SEARCH_NODE"
+                aria-label={`Search known hierarchy nodes for level ${activeIndex + 1}`}
+              />
+              <div className="pdf-lab-labeling-breadcrumb-options" role="listbox">
+                {filteredOptions.length === 0 ? (
+                  <div className="pdf-lab-labeling-breadcrumb-no-options">No matching hierarchy nodes.</div>
+                ) : filteredOptions.map(option => (
+                  <button
+                    type="button"
+                    key={`${activeIndex}-${optionKey(option)}`}
+                    data-qid={`pdf-lab:labeling:breadcrumb-option:${region.id}:${activeIndex + 1}:${optionKey(option)}`}
+                    data-qs-action="PDF_LAB_BREADCRUMB_SELECT_NODE"
+                    title={optionLabel(option)}
+                    onClick={() => editingIndex !== null && applyOption(editingIndex, optionKey(option))}
+                  >
+                    <span>{displayOptionLabel(option)}</span>
+                    <em>{kindLabel(option.kind)}</em>
+                  </button>
+                ))}
+              </div>
+              <div className="pdf-lab-labeling-breadcrumb-actions">
+                <button type="button" onClick={usePreviousPath} disabled={!previousNodes?.length}>Use previous path</button>
+                <button type="button" onClick={promoteActiveLevel} disabled={editingIndex === null || editingIndex <= 0}>Promote</button>
+                <button type="button" onClick={demoteActiveLevel} disabled={editingIndex === null || editingIndex >= nodes.length - 1}>Demote</button>
+                <button type="button" onClick={clearPath}>Clear path</button>
+              </div>
+              <details
+                className="pdf-lab-labeling-breadcrumb-advanced"
+                open={advancedOpen}
+                onToggle={event => setAdvancedOpen(event.currentTarget.open)}
+              >
+                <summary>Advanced</summary>
+                <label>
+                  Override display label
+                  <input
+                    type="text"
+                    data-qid={`pdf-lab:labeling:breadcrumb-label:${region.id}:${activeIndex + 1}`}
+                    data-qs-action="PDF_LAB_BREADCRUMB_SET_LABEL"
+                    value={activeNode.label}
+                    onChange={event => editingIndex !== null && replaceNode(editingIndex, { label: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Override node role
+                  <select
+                    data-qid={`pdf-lab:labeling:breadcrumb-kind:${region.id}:${activeIndex + 1}`}
+                    data-qs-action="PDF_LAB_BREADCRUMB_SET_KIND"
+                    value={activeNode.kind}
+                    onChange={event => editingIndex !== null && replaceNode(editingIndex, { kind: event.target.value as BreadcrumbNodeKind })}
+                  >
+                    {BREADCRUMB_NODE_KINDS.map(kind => <option key={kind} value={kind}>{kindLabel(kind)}</option>)}
+                  </select>
+                </label>
+                <div className="pdf-lab-labeling-breadcrumb-advanced-actions">
+                  <button type="button" onClick={() => editingIndex !== null && onChange(breadcrumbPatch(clearBreadcrumbNodeIdentity(nodes, editingIndex)))}>
+                    Detach from known hierarchy node
+                  </button>
+                  <button type="button" onClick={() => editingIndex !== null && removeLevel(editingIndex)}>
+                    Remove level
+                  </button>
+                </div>
+              </details>
+            </div>
+          ) : null}
+        </>
       )}
       {nodes.length > 0 ? (
         <div className="pdf-lab-labeling-region-breadcrumb" title="Current structured breadcrumb">
+          <span className="pdf-lab-labeling-region-breadcrumb-label">Preview:</span>
           {nodes.map((node, index) => (
             <span key={`${region.id}-structured-bc-${index}`}>
               {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
@@ -2224,12 +2331,16 @@ export function PdfLabLabelingPage() {
         {regions.length === 0 && (
           <div className="pdf-lab-labeling-regions-empty">No regions yet. Pick a family, drag on the page.</div>
         )}
-        {regions.map(r => {
+        {regions.map((r, regionIndex) => {
           const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
           const update = (patch: Partial<Region>) => setRegions(prev => prev.map(x => x.id === r.id ? { ...x, ...patch } : x))
           const remove = () => { setRegions(prev => prev.filter(x => x.id !== r.id)); if (selectedId === r.id) setSelectedId(null) }
           const isDragging = reorderDragId === r.id
           const isDropTarget = reorderHoverId === r.id && reorderDragId && reorderDragId !== r.id
+          const previousBreadcrumbNodes = [...regions.slice(0, regionIndex)]
+            .reverse()
+            .map(candidate => breadcrumbNodesFromRegion(candidate))
+            .find(candidateNodes => candidateNodes.length > 0)
           return (
             <div
               key={r.id}
@@ -2274,6 +2385,7 @@ export function PdfLabLabelingPage() {
               <BreadcrumbEditor
                 region={r}
                 options={breadcrumbOptions}
+                previousNodes={previousBreadcrumbNodes}
                 onChange={update}
               />
               {r.family === 'labeled_paragraph' && (

@@ -73,7 +73,7 @@ export function ScillmDagPlanner() {
   const [catalogState, setCatalogState] = useState("catalog pending");
   const [amendments, setAmendments] = useState<ExecGraphAmendment[]>([]);
   const [amendmentsState, setAmendmentsState] = useState<AmendmentsLoadState>({ status: "idle" });
-  const [surface, setSurface] = useState<PlannerSurface>("source");
+  const [surface, setSurface] = useState<PlannerSurface>("design");
   const [sourcePayload, setSourcePayload] = useState<SourcePayload>("graph");
   const [hashCheck, setHashCheck] = useState<"idle" | "checking" | "match" | "changed" | "error">("idle");
   const [copiedToken, setCopiedToken] = useState<string>("");
@@ -478,8 +478,8 @@ export function ScillmDagPlanner() {
             <div className="scillm-dag-source-shell__bar">
               <div className="scillm-segmented" role="tablist" aria-label="DAG viewer-editor lenses">
                 {([
-                  ["source", "Source", FileJson],
-                  ["design", "Design", PencilRuler],
+                  ["design", "DAG", PencilRuler],
+                  ["source", "JSON", FileJson],
                   ["trace", "Trace", Activity],
                   ["checkpoints", "Checkpoints", CheckSquare],
                   ["debug", "Debug", Bug],
@@ -567,7 +567,6 @@ export function ScillmDagPlanner() {
               </section>
             ) : surface === "design" ? (
               <>
-                <DesignMap graph={state.snapshot.graph} summary={plannerSummary} onOpenTrace={() => setSurface("trace")} />
                 <ScillmExecGraphDebugger
                   graph={state.snapshot.graph}
                   status={state.snapshot.status}

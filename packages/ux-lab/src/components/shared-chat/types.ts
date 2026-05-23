@@ -193,6 +193,7 @@ export interface EvidenceCaseData {
 	trace_state?: string;
 	approval_state?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
+	response_policy?: Record<string, unknown>;
 	glossary?: GlossaryTerm[];
 	diagnostics?: Record<string, unknown>;
 	evidence_case_version?: Record<string, unknown>;

@@ -787,12 +787,12 @@
 
 .pdf-lab-labeling-breadcrumb-editor {
   border: 1px solid #232b34;
-  border-radius: 4px;
-  padding: 6px;
+  border-radius: 8px;
+  padding: 10px;
   background: #101419;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .pdf-lab-labeling-breadcrumb-editor-head {
@@ -808,14 +808,23 @@
 
 .pdf-lab-labeling-breadcrumb-editor-head button,
 .pdf-lab-labeling-breadcrumb-empty,
-.pdf-lab-labeling-breadcrumb-remove {
+.pdf-lab-labeling-breadcrumb-remove,
+.pdf-lab-labeling-breadcrumb-quick,
+.pdf-lab-labeling-breadcrumb-add-inline,
+.pdf-lab-labeling-breadcrumb-actions button,
+.pdf-lab-labeling-breadcrumb-advanced-actions button {
   background: #181d23;
   border: 1px solid #2c3540;
   color: #cfd6dc;
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
   font-family: ui-monospace, monospace;
   font-size: 11px;
+}
+
+.pdf-lab-labeling-breadcrumb-editor button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .pdf-lab-labeling-breadcrumb-editor-head button {
@@ -835,6 +844,213 @@
   width: 100%;
   padding: 6px;
   text-align: left;
+}
+
+.pdf-lab-labeling-breadcrumb-empty-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+}
+
+.pdf-lab-labeling-breadcrumb-quick {
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-breadcrumb-path {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pdf-lab-labeling-breadcrumb-chip-wrap {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pdf-lab-labeling-breadcrumb-path-sep {
+  color: #5e6c78;
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+}
+
+.pdf-lab-labeling-breadcrumb-chip {
+  align-items: center;
+  background: #0d1117;
+  border: 1px solid #2c3540;
+  border-radius: 999px;
+  color: #d8dee9;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 9px;
+}
+
+.pdf-lab-labeling-breadcrumb-chip:hover,
+.pdf-lab-labeling-breadcrumb-chip.is-editing {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.18);
+}
+
+.pdf-lab-labeling-breadcrumb-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-breadcrumb-chip em,
+.pdf-lab-labeling-breadcrumb-options em,
+.pdf-lab-labeling-breadcrumb-popover-title span {
+  color: #8b98a5;
+  font-family: ui-monospace, monospace;
+  font-size: 9px;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.pdf-lab-labeling-breadcrumb-add-inline {
+  border-style: dashed;
+  padding: 6px 9px;
+}
+
+.pdf-lab-labeling-breadcrumb-popover {
+  background: #0d1117;
+  border: 1px solid #2c3540;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.pdf-lab-labeling-breadcrumb-popover-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pdf-lab-labeling-breadcrumb-popover-title strong {
+  color: #d8dee9;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-breadcrumb-popover input[type="search"],
+.pdf-lab-labeling-breadcrumb-advanced input,
+.pdf-lab-labeling-breadcrumb-advanced select {
+  background: #090c10;
+  border: 1px solid #232b34;
+  border-radius: 6px;
+  color: #cfd6dc;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 7px 8px;
+}
+
+.pdf-lab-labeling-breadcrumb-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.pdf-lab-labeling-breadcrumb-options button {
+  align-items: center;
+  background: #111820;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #cfd6dc;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.pdf-lab-labeling-breadcrumb-options button:hover {
+  background: #17212b;
+  border-color: #314050;
+}
+
+.pdf-lab-labeling-breadcrumb-options button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-breadcrumb-no-options {
+  color: #8b98a5;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 6px 8px;
+}
+
+.pdf-lab-labeling-breadcrumb-actions,
+.pdf-lab-labeling-breadcrumb-advanced-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pdf-lab-labeling-breadcrumb-actions button,
+.pdf-lab-labeling-breadcrumb-advanced-actions button {
+  padding: 5px 7px;
+}
+
+.pdf-lab-labeling-breadcrumb-advanced {
+  border-top: 1px solid #1f2730;
+  color: #93a1ad;
+  padding-top: 8px;
+}
+
+.pdf-lab-labeling-breadcrumb-advanced summary {
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pdf-lab-labeling-breadcrumb-advanced label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.pdf-lab-labeling-region-breadcrumb,
+.pdf-lab-labeling-selected-breadcrumb {
+  align-items: center;
+  color: #cfd6dc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  line-height: 1.45;
+}
+
+.pdf-lab-labeling-region-breadcrumb-label {
+  color: #8b98a5;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  margin-right: 2px;
+  text-transform: uppercase;
+}
+
+.pdf-lab-labeling-region-breadcrumb-sep {
+  color: #6f7c88;
+  margin: 0 5px;
 }
 
 .pdf-lab-labeling-breadcrumb-levels {

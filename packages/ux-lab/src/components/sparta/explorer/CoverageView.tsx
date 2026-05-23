@@ -3,7 +3,7 @@ import { RefreshCw } from 'lucide-react'
 import { EMBRY } from '../common/EmbryStyle'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
-const API = 'http://localhost:3001'
+const API = ''
 const LOCAL_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
 
 interface CoveragePayload {

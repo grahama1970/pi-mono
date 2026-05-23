@@ -23,7 +23,7 @@ import { LemmaGraph } from '../lemma-graph/LemmaGraph'
 import type { GraphNode, GraphEdge } from '../lemma-graph/LemmaGraph'
 import PostureDashboard from '../dashboard/PostureDashboard'
 
-const API = 'http://localhost:3001'
+const API = ''
 
 // ── Shared state between chat + viz ──────────────────────────────────────
 
@@ -300,6 +300,7 @@ export function ChatTab() {
         signal: AbortSignal.timeout(90_000),
       })
       const data = await res.json()
+      const responsePolicy = data.response_policy ?? {}
       const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
         gate: g.gate ?? g.name ?? '?',
         passed: !!g.passed,
@@ -327,8 +328,9 @@ export function ChatTab() {
           control_ids: data.context?.control_ids ?? [],
           tier,
           answer: data.answer ?? '',
-          response_action: String(verdict) === 'satisfied' ? 'answer' : String(verdict) === 'not_satisfied' ? 'deflect' : 'clarify',
+          response_action: responsePolicy.response_action ?? data.response_action ?? 'clarify',
           glossary: data.glossary ?? [],
+          response_policy: responsePolicy,
         },
       }])
     } catch (err) {
@@ -352,7 +354,7 @@ export function ChatTab() {
     if (graphMode === 'critical-path') {
       // Fetch failing attack chains from critical-path endpoint
       const controlId = focusControl ?? focusTechnique ?? undefined
-      fetch('http://localhost:3001/api/critical-path', {
+      fetch(`${API}/api/critical-path`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ control_id: controlId }),
       }).then(r => r.json()).then(res => {

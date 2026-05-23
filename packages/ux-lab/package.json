@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite --port 3002\" \"tsx watch server/index.ts\"",
-    "dev:ui": "vite --port 3002",
+    "dev": "concurrently \"vite --host 127.0.0.1 --port 3002\" \"tsx watch server/index.ts\"",
+    "dev:ui": "vite --host 127.0.0.1 --port 3002",
     "dev:api": "tsx watch server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

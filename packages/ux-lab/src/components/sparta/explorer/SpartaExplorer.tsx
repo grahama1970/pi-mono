@@ -17,7 +17,7 @@ import { useReducedMotion } from 'motion/react'
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
 
-const API = 'http://localhost:3001'
+const API = ''
 const EVIDENCE_CASE_COMMAND_RE = /^\s*\/create-evidence-case(?:\s+|$)/i
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
@@ -419,7 +419,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       evidenceCase: {
         case_id: 'EC-2026-0842',
         qraKey: 'QRA-2026-0842',
-        verdict: 'satisfied',
+        verdict: 'inconclusive',
         grade: 'B',
         gates_passed: 2,
         gates_total: 4,
@@ -435,7 +435,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         answer: 'CAPEC-649 is relevant to T1036.006 because the observed behavior depends on filename presentation and extension handling. This answer remains draft-only while trace provenance is pending.',
         question: 'Why is CAPEC-649 relevant to T1036.006 in Quarterly_Report.pdf?',
         bound_artifact: 'Quarterly_Report.pdf',
-        artifact_hash: 'sha256:demo-pending',
+        artifact_hash: 'MOCK_DATA_NOT_AUDIT_VALID',
         claims: [
           'Artifact is bound to Quarterly_Report.pdf.',
           'CAPEC-649 explains the filename obfuscation objective.',
@@ -566,6 +566,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       }
 
       if (finalPayload) {
+        const responsePolicy = finalPayload.response_policy ?? {}
         const gates: EvidenceGate[] = (finalPayload.gate_trace ?? []).map((g: any) => ({
           gate: g.gate ?? g.name ?? '?',
           passed: !!g.passed,
@@ -599,9 +600,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             control_ids: finalPayload.context?.control_ids ?? [],
             tier: finalPayload.diagnostics?.mode ?? 'deterministic',
             answer: finalPayload.answer ?? '',
-            response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
+            response_action: responsePolicy.response_action ?? finalPayload.response_action ?? 'clarify',
             glossary: finalPayload.glossary ?? [],
             diagnostics: finalPayload.diagnostics ?? {},
+            response_policy: responsePolicy,
             evidence_case_version: finalPayload.evidence_case_version,
             gap_review: finalPayload.gap_review,
             gap_review_status: finalPayload.gap_review_status,
@@ -804,6 +806,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         signal: AbortSignal.timeout(90_000),
       })
       const data = await res.json()
+      const responsePolicy = data.response_policy ?? {}
       const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
         gate: g.gate ?? g.name ?? '?',
         passed: !!g.passed,
@@ -829,9 +832,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           control_ids: data.context?.control_ids ?? [],
           tier,
           answer: data.answer ?? '',
-          response_action: verdict === 'satisfied' ? 'answer' : verdict === 'not_satisfied' ? 'deflect' : 'clarify',
+          response_action: responsePolicy.response_action ?? data.response_action ?? 'clarify',
           glossary: data.glossary ?? [],
           diagnostics: data.diagnostics ?? {},
+          response_policy: responsePolicy,
           evidence_case_version: data.evidence_case_version,
           gap_review: data.gap_review,
           gap_review_status: data.gap_review_status,

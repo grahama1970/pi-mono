@@ -3,6 +3,7 @@ import { Check, Clock, FileText, GitBranch, ListChecks, PackageCheck, Pencil, Se
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import type { ChatMessage } from '../../shared-chat'
 import type { StreamingStep } from '../../shared-chat/ChatWell'
+import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
 type EvidenceWorkspaceTab = 'Trace' | 'Gap' | 'Sources' | 'Entities' | 'Proof' | 'Export'
 
@@ -31,7 +32,17 @@ function verdictColor(state?: string) {
 
 function statusText(message?: ChatMessage, isStreaming?: boolean) {
   if (isStreaming) return 'RUNNING'
-  return message?.evidenceCase?.verdict?.toUpperCase() || message?.verdict?.state || 'NEEDS_VERIFICATION'
+  const evidence = message?.evidenceCase
+  const gates = evidence?.gate_trace ?? message?.verdict?.gates ?? []
+  const gateCount = evidence?.gates_total || gates.length
+  const gatePassed = evidence?.gates_passed || gates.filter(g => g.passed).length
+  const approval = String(evidence?.approval_state || evidence?.human_review_state || '').toLowerCase()
+  const traceState = String(evidence?.trace_state || '').toLowerCase()
+  const hasBlockedGate = gateCount > 0 && gatePassed < gateCount
+  const lacksApproval = approval !== 'approved'
+  const tracePending = traceState.includes('pending')
+  if (hasBlockedGate || lacksApproval || tracePending) return 'NEEDS_VERIFICATION'
+  return evidence?.verdict?.toUpperCase() || message?.verdict?.state || 'NEEDS_VERIFICATION'
 }
 
 function asRecord(value: unknown): Record<string, any> {
@@ -44,6 +55,7 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
   const [paused, setPaused] = useState(false)
   const [rerunRequest, setRerunRequest] = useState<string | null>(null)
   const evidence = message?.evidenceCase
+  const displayStatus = statusText(message, isStreaming)
   const gapReview = asRecord(evidence?.gap_review)
   const proposedCorrection = asRecord(evidence?.proposed_correction ?? gapReview.proposed_correction)
   const correctionLineage = asRecord(evidence?.correction_lineage ?? gapReview.correction_lineage)
@@ -63,6 +75,15 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
   const controlIds = evidence?.control_ids ?? []
   const verdict = evidence?.verdict ?? message?.verdict?.state
   const runLabel = message?.id ? `case ${message.id}` : 'live case'
+
+  useRegisterAction('sparta:evidence-workspace:approve', { app: 'sparta-explorer', action: 'APPROVE_EVIDENCE_CASE', label: 'Approve evidence case', description: 'Approve the evidence case only after provenance and review gates are complete' })
+  useRegisterAction('sparta:evidence-workspace:edit', { app: 'sparta-explorer', action: 'EDIT_EVIDENCE_CASE', label: 'Edit reviewer answer', description: 'Edit the reviewer-facing answer text before rerunning evidence checks' })
+  useRegisterAction('sparta:evidence-workspace:defer', { app: 'sparta-explorer', action: 'DEFER_EVIDENCE_CASE', label: 'Defer evidence case', description: 'Defer the evidence case for later review' })
+  useRegisterAction('sparta:evidence-workspace:reject', { app: 'sparta-explorer', action: 'REJECT_EVIDENCE_CASE', label: 'Reject evidence case', description: 'Reject the evidence case when it cannot support the claim' })
+  useRegisterAction('sparta:evidence-workspace:pause', { app: 'sparta-explorer', action: 'PAUSE_EVIDENCE_CASE_REVIEW', label: 'Pause review', description: 'Pause the evidence case review workflow' })
+  useRegisterAction('sparta:evidence-workspace:rerun', { app: 'sparta-explorer', action: 'RERUN_EVIDENCE_CASE_STEP', label: 'Rerun evidence step', description: 'Request rerun of the latest evidence step without approving the case' })
+  useRegisterAction('sparta:evidence-workspace:tab', { app: 'sparta-explorer', action: 'SWITCH_EVIDENCE_WORKSPACE_TAB', label: 'Switch evidence workspace tab', description: 'Switch between trace, gap, sources, entities, proof, and export evidence views' })
+  useRegisterAction('sparta:evidence-workspace:reviewer-answer', { app: 'sparta-explorer', action: 'EDIT_REVIEWER_ANSWER_TEXT', label: 'Reviewer answer text', description: 'Edit the draft reviewer answer text while the case remains unapproved' })
 
   const exportPreview = useMemo(() => ({
     review_state: 'NEEDS_VERIFICATION',
@@ -249,14 +270,19 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
         </button>
       </div>
       <div style={S.verdictBar}>
-        <span style={{ ...S.verdict, color: verdictColor(verdict) }}>{statusText(message, isStreaming)}</span>
+        <span style={{ ...S.verdict, color: verdictColor(displayStatus) }}>{displayStatus}</span>
         <span style={S.muted}>Review state: {reviewDecision}</span>
       </div>
       <div style={S.verdictCard}>
         <div style={S.itemHead}>
           <span style={S.rowTitle}>Final verdict</span>
-          <span style={{ ...S.status, color: verdictColor(verdict) }}>{statusText(message, isStreaming)}</span>
+          <span style={{ ...S.status, color: verdictColor(displayStatus) }}>{displayStatus}</span>
         </div>
+        {displayStatus === 'NEEDS_VERIFICATION' && (
+          <div data-qid="sparta:evidence-workspace:draft-warning" title="Evidence case is not approved for signoff" style={S.warningBanner}>
+            Draft-only. Trace provenance, reviewer approval, or gate completion is missing; this case is not ready for export or signoff.
+          </div>
+        )}
         <div style={S.muted}>
           {(evidence?.gate_summary || `${gates.filter(g => g.passed).length}/${gates.length} gates passed`) || 'Waiting for gates.'}
           {' '}Reviewer action is required before persistence, export readiness, or signoff.
@@ -290,6 +316,9 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
         {rerunRequest && <div style={{ ...S.muted, marginTop: 8 }}>Rerun requested at {rerunRequest}; execution remains gated by reviewer workflow.</div>}
         {reviewDecision === 'EDITING' && (
           <textarea
+            data-qid="sparta:evidence-workspace:reviewer-answer"
+            data-qs-action="EDIT_REVIEWER_ANSWER_TEXT"
+            title="Reviewer edited answer draft"
             aria-label="Reviewer edited answer"
             defaultValue={evidence?.answer || message?.content || ''}
             style={S.textarea}
@@ -399,8 +428,19 @@ const S: Record<string, React.CSSProperties> = {
     gap: 5,
     cursor: 'pointer',
   },
-  actionActive: { color: EMBRY.green, backgroundColor: EMBRY.bgPanel },
-  actionDanger: { color: EMBRY.red, backgroundColor: EMBRY.bgPanel },
+  actionActive: { color: EMBRY.amber, backgroundColor: `${EMBRY.amber}18`, border: `1px solid ${EMBRY.amber}` },
+  actionDanger: { color: EMBRY.red, backgroundColor: `${EMBRY.red}18`, border: `1px solid ${EMBRY.red}` },
+  warningBanner: {
+    marginBottom: 8,
+    padding: '9px 10px',
+    border: `1px solid ${EMBRY.amber}`,
+    borderRadius: 6,
+    backgroundColor: `${EMBRY.amber}18`,
+    color: EMBRY.amber,
+    fontSize: 12,
+    fontWeight: 800,
+    lineHeight: 1.45,
+  },
   textarea: {
     marginTop: 10,
     width: '100%',

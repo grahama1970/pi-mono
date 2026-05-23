@@ -58,6 +58,11 @@ function boundArtifactLabel(data: EvidenceCaseData) {
   return data.artifact?.name || data.bound_artifact || 'Artifact pending'
 }
 
+function isAuditInvalidHash(hash: unknown) {
+  const value = String(hash ?? '').toLowerCase()
+  return value.includes('demo') || value.includes('mock') || value.includes('pending')
+}
+
 function statusColor(label: string) {
   if (label === 'Approved') return EMBRY.green
   if (label === 'Artifact not bound' || label === 'Rejected') return EMBRY.red
@@ -161,6 +166,7 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
   const approval = approvalState(data)
   const boundArtifact = boundArtifactLabel(data)
   const artifactHash = data.artifact?.sha256 || data.artifact_hash
+  const auditInvalidHash = isAuditInvalidHash(artifactHash)
   const claims = useMemo(() => deriveClaims(data), [data])
   const citations = useMemo(() => deriveCitations(data), [data])
   const gates = data.gate_trace ?? data.metadata?.gate_trace ?? []
@@ -226,8 +232,8 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
             Bound artifact: <span style={{ fontFamily: 'var(--font-mono)' }}>{boundArtifact}</span>
           </div>
           {artifactHash && (
-            <div data-qid={`evidence-case:artifact-hash:${id}`} title={`Artifact SHA256: ${artifactHash}`} style={{ color: EMBRY.dim, fontSize: 11, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere', marginTop: 2 }}>
-              SHA256: {artifactHash}
+            <div data-qid={`evidence-case:artifact-hash:${id}`} title={auditInvalidHash ? `Mock artifact hash: ${artifactHash}` : `Artifact SHA256: ${artifactHash}`} style={{ color: auditInvalidHash ? EMBRY.amber : EMBRY.dim, fontSize: 11, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere', marginTop: 2, fontWeight: auditInvalidHash ? 800 : 400 }}>
+              {auditInvalidHash ? 'MOCK HASH: ' : 'SHA256: '}{artifactHash}
             </div>
           )}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 9 }}>
@@ -236,6 +242,9 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
             <Pill label={approval} color={statusColor(approval)} title={`Approval state: ${approval}`} />
             <Pill label={`${claims.length} claim${claims.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${claims.length} claims in this audit case`} />
             <Pill label={`${citations.length} citation${citations.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${citations.length} citations or source anchors in this audit case`} />
+          </div>
+          <div data-qid={`evidence-case:citation-preview:${id}`} title={citations.length > 0 ? `Citation anchors: ${citations.join(', ')}` : 'Citations pending'} style={{ color: citations.length > 0 ? EMBRY.dim : EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 8, overflowWrap: 'anywhere' }}>
+            Citations: {citations.length > 0 ? citations.slice(0, 4).join(' · ') : 'pending extraction'}
           </div>
         </div>
         <button
@@ -334,6 +343,11 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
                   </div>
                 ))}
               </div>
+              {gatePassed < gateCount && (
+                <div data-qid={`evidence-case:next-step:${id}`} title="Next step to resolve blocked evidence gates" style={{ color: EMBRY.amber, fontSize: 12, lineHeight: 1.45, marginTop: 10 }}>
+                  Next step: request more evidence or rerun the evidence case after binding source-page provenance; approval and export remain blocked until all required gates pass.
+                </div>
+              )}
             </>
           )}
 
@@ -366,7 +380,7 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
       )}
 
       {approval !== 'Approved' && (
-        <div data-qid={`evidence-case:draft-warning:${id}`} title="Fail-closed draft warning" style={{ color: EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 10 }}>
+        <div data-qid={`evidence-case:draft-warning:${id}`} title="Fail-closed draft warning" style={{ color: EMBRY.amber, fontSize: 12, fontWeight: 800, lineHeight: 1.45, marginTop: 10, padding: '8px 10px', border: `1px solid ${EMBRY.amber}`, borderRadius: 6, backgroundColor: `${EMBRY.amber}14` }}>
           Draft-only: trace provenance or reviewer approval is incomplete.
         </div>
       )}

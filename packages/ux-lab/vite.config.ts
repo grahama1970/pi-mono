@@ -128,6 +128,7 @@ export default defineConfig({
     dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
   },
   server: {
+    host: '127.0.0.1',
     port: 3000,
     watch: {
       ignored: [

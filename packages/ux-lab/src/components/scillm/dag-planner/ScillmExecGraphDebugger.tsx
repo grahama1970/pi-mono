@@ -1476,7 +1476,7 @@ function ScillmExecGraphDebuggerView({
   useRegisterAction("scillm-exec-graph:amendment:apply", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_APPLY", label: "Apply approved amendment" });
 
   const { ref, size } = useSize();
-  const [selectedId, setSelectedId] = useState(graph.nodes[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState("");
   const [productMode, setProductMode] = useState<DagMode>(enablePlanEditing ? "build" : "debug");
   const [mode, setMode] = useState<DebuggerMode>(enablePlanEditing ? "plan_edit" : "evidence");
   const [draftGraph, setDraftGraph] = useState<ExecGraph>(() => cloneExecGraph(graph));
@@ -1492,9 +1492,9 @@ function ScillmExecGraphDebuggerView({
   const [formalDiffCopied, setFormalDiffCopied] = useState(false);
   const [runtimeActionState, setRuntimeActionState] = useState<RuntimeActionUiState>({ status: "idle" });
   const [viewport, setViewport] = useState<GraphViewport>({ zoom: 1, offsetX: 0, offsetY: 0, panMode: false });
-  const [followExecution, setFollowExecution] = useState(true);
+  const [followExecution, setFollowExecution] = useState(false);
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null);
-  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [inspectorOpen, setInspectorOpen] = useState(false);
   const panDrag = useRef<{ pointerId: number; startX: number; startY: number; offsetX: number; offsetY: number } | null>(null);
   const activeGraph = mode === "evidence" ? graph : draftGraph;
   const states = useMemo(() => buildStates(graph, status, events), [events, graph, status]);
@@ -1505,7 +1505,7 @@ function ScillmExecGraphDebuggerView({
   const viewBoxWidth = canvasSize.width / safeViewport.zoom;
   const viewBoxHeight = canvasSize.height / safeViewport.zoom;
   const { nodes, edges, bands, labels } = useMemo(() => layout(activeGraph, activeStates, canvasSize.width, canvasSize.height), [activeGraph, activeStates, canvasSize.height, canvasSize.width]);
-  const selected = activeGraph.nodes.find((node) => node.id === selectedId) ?? activeGraph.nodes[0];
+  const selected = activeGraph.nodes.find((node) => node.id === selectedId);
   const selectedResult = selected ? nodeResult(status, selected.id) : undefined;
   const summary = useMemo(() => runSummary(graph, status, states), [graph, status, states]);
   const planValidation = useMemo(() => validateExecGraphPlan(draftGraph), [draftGraph]);
@@ -1568,6 +1568,11 @@ function ScillmExecGraphDebuggerView({
     setFollowExecution(false);
     setSelectedId(nodeId);
     setInspectorOpen(true);
+  };
+  const clearSelection = () => {
+    setSelectedId("");
+    setInspectorOpen(false);
+    setContextMenu(null);
   };
   const setPrimaryMode = (nextMode: DagMode) => {
     setProductMode(nextMode);
@@ -1695,13 +1700,14 @@ function ScillmExecGraphDebuggerView({
 
   useEffect(() => {
     if (activeGraph.nodes.some((node) => node.id === selectedId)) return;
-    setSelectedId(activeGraph.nodes[0]?.id ?? "");
+    setSelectedId("");
+    setInspectorOpen(false);
   }, [activeGraph.nodes, selectedId]);
 
   useEffect(() => {
     if (!isCompleted || !firstOptionalFailed) return;
     if (mode !== "evidence") return;
-    if (selectedId !== graph.nodes[0]?.id) return;
+    if (selectedId) return;
     selectNode(firstOptionalFailed.id);
   }, [firstOptionalFailed, graph.nodes, isCompleted, mode, selectedId]);
 
@@ -1995,11 +2001,10 @@ function ScillmExecGraphDebuggerView({
             ))}
           </div>
           <div className="exec-execution-strip" data-qid="scillm-exec-graph:execution-strip">
-            <ExecutionStripGroup label="Previous" values={dagViewModel.execution.previous} empty="none" />
-            <ExecutionStripGroup label="Running" values={dagViewModel.execution.running} empty="none" tone="running" />
-            <ExecutionStripGroup label="Queued" values={dagViewModel.execution.queued} empty="none" />
-            <ExecutionStripGroup label="Gated" values={dagViewModel.execution.gated} empty="none" tone="warning" />
-            <ExecutionStripGroup label="Blocked" values={dagViewModel.execution.blocked} empty="none" tone="failed" />
+            <ExecutionStripGroup label="Running" values={dagViewModel.execution.running} empty="—" tone="running" />
+            <ExecutionStripGroup label="Previous" values={dagViewModel.execution.previous} empty="—" />
+            <ExecutionStripGroup label="Next" values={dagViewModel.execution.queued} empty="—" />
+            <ExecutionStripGroup label="Blocked" values={[...dagViewModel.execution.gated, ...dagViewModel.execution.blocked]} empty="—" tone="failed" />
           </div>
           <div className="exec-view-model-strip" data-qid="scillm-exec-graph:view-model-contract">
             <span><b>View model</b>{dagViewModel.executableNodes.length} executable nodes · {dagViewModel.executableEdges.length} executable edges</span>
@@ -2049,10 +2054,6 @@ function ScillmExecGraphDebuggerView({
           data-qid="scillm-exec-graph:canvas"
           title="Execution graph canvas"
           style={{ minHeight: 0, position: "relative" }}
-          onContextMenu={(event) => {
-            event.preventDefault();
-            setContextMenu({ x: event.clientX, y: event.clientY });
-          }}
         >
           <div className="exec-canvas-toolbar" data-qid="scillm-exec-graph:canvas:toolbar" aria-label="Graph viewport controls">
             <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:zoom-in" data-qs-action="SCILLM_EXEC_CANVAS_ZOOM_IN" title="Zoom in" onClick={viewportControls.zoomIn}><ZoomIn size={15} /></button>
@@ -2064,14 +2065,11 @@ function ScillmExecGraphDebuggerView({
           </div>
           <div className="exec-canvas-legend">{mode === "evidence" ? "Evidence edges" : "Draft dependencies"} <span aria-hidden>→</span></div>
           <div className="exec-canvas-keyboard-hint">Keyboard: Tab to a node, arrows move selection, Enter or Space inspects.</div>
-          {contextMenu ? (
-            <div className="exec-canvas-context-menu" data-qid="scillm-exec-graph:canvas:context-menu" style={{ left: contextMenu.x, top: contextMenu.y }} role="menu">
-              <button type="button" role="menuitem" onClick={viewportControls.zoomIn}><ZoomIn size={14} />Zoom in</button>
-              <button type="button" role="menuitem" onClick={viewportControls.zoomOut}><ZoomOut size={14} />Zoom out</button>
-              <button type="button" role="menuitem" onClick={viewportControls.follow}><LocateFixed size={14} />{followExecution ? "Stop following" : "Follow current"}</button>
-              <button type="button" role="menuitem" onClick={viewportControls.togglePan}><Move size={14} />{safeViewport.panMode ? "Turn move off" : "Move graph"}</button>
-              <button type="button" role="menuitem" onClick={viewportControls.fit}><Maximize2 size={14} />Fit graph</button>
-            </div>
+          {!selected ? (
+            <aside className="exec-node-empty-pane" data-qid="scillm-exec-graph:node-inspector:empty">
+              <strong>Select a node to inspect and edit</strong>
+              <span>Click any node in the graph to open metadata, draft actions, dependencies, and evidence for that node.</span>
+            </aside>
           ) : null}
           <svg
             role="img"
@@ -2083,7 +2081,7 @@ function ScillmExecGraphDebuggerView({
             onPointerMove={handleCanvasPointerMove}
             onPointerUp={handleCanvasPointerUp}
             onPointerCancel={handleCanvasPointerUp}
-            onClick={() => setContextMenu(null)}
+            onClick={clearSelection}
             style={{ display: "block", width: "100%", height: "100%", cursor: safeViewport.panMode ? "grab" : "default" }}
           >
             <defs><marker id="exec-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--exec-dim, #94a3b8)" /></marker></defs>
@@ -2247,6 +2245,7 @@ function ScillmExecGraphDebuggerView({
         </button>
       ) : null}
 
+      {selected ? (
       <aside
         data-qid="scillm-exec-graph:node-inspector"
         data-open={inspectorOpen ? "true" : "false"}
@@ -2259,8 +2258,7 @@ function ScillmExecGraphDebuggerView({
             <X size={15} />
           </button>
         </div>
-        {selected ? (
-          <Inspector
+        <Inspector
             node={selected}
             state={activeStates[selected.id] ?? "pending"}
             result={selectedResult}
@@ -2287,8 +2285,8 @@ function ScillmExecGraphDebuggerView({
             onRuntimeAction={onRuntimeAction ? dispatchRuntimeAction : undefined}
             runtimeActionState={runtimeActionState}
           />
-        ) : <div style={{ padding: 16 }}>Select a node.</div>}
       </aside>
+      ) : null}
     </section>
   );
 }
@@ -2326,6 +2324,7 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
   const hasBlockingIssue = validationIssues.some((issue) => issue.severity === "blocking");
   const hasValidationIssue = validationIssues.length > 0;
   const blockingCount = validationIssues.filter((issue) => issue.severity === "blocking").length;
+  const draftOnly = Boolean(node.metadata?.draft_only || node.metadata?.amendment_state);
   const optionalBorder = optional ? "2px dashed var(--exec-optional-border, #9ca35a)" : `2px solid ${stateColor[node.state]}`;
   const validationBorder = hasBlockingIssue ? "3px solid var(--exec-failed, #ef4444)" : hasValidationIssue ? "2px dashed var(--exec-warning, #facc15)" : optionalBorder;
   const nodeClassName = [
@@ -2343,7 +2342,10 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
         aria-label={`Inspect node ${node.id}, ${statusText}${hasBlockingIssue ? `, ${blockingCount} blocking plan issue${blockingCount === 1 ? "" : "s"}` : ""}`}
         aria-current={selected ? "true" : undefined}
         title={`Inspect ${node.id}\nType: ${node.type}\nState: ${statusText}${hasValidationIssue ? `\nPlan validation: ${validationIssues.map((issue) => issue.message).join("; ")}` : ""}\nGoal: ${node.node_goal}`}
-        onClick={onSelect}
+        onClick={(event) => {
+          event.stopPropagation();
+          onSelect();
+        }}
         onKeyDown={(event) => {
           if (event.key === "ArrowRight" || event.key === "ArrowDown") {
             event.preventDefault();
@@ -2364,22 +2366,20 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
           color: "var(--exec-text, #e5e7eb)",
           cursor: "pointer",
           display: "grid",
-          gridTemplateColumns: "22px minmax(0, 1fr)",
-          gridTemplateRows: "auto auto auto",
+          gridTemplateColumns: "18px minmax(0, 1fr)",
+          gridTemplateRows: "auto auto",
           alignItems: "center",
           columnGap: 8,
-          rowGap: 3,
-          padding: "10px 12px",
+          rowGap: 6,
+          padding: "11px 12px",
           textAlign: "left",
           font: "inherit",
         }}
       >
-        {hasBlockingIssue ? <span className="exec-node-blocking-icon" aria-hidden>!</span> : <span aria-hidden style={{ gridRow: "1 / span 3", width: 14, height: 14, borderRadius: 999, background: stateColor[node.state] }} />}
-        <span style={{ minWidth: 0, whiteSpace: "normal", overflowWrap: "anywhere", fontSize: 12, lineHeight: "15px", fontWeight: 700 }}>{node.id}</span>
-        <span style={{ minWidth: 0, whiteSpace: "normal", overflowWrap: "anywhere", color: dimColor, fontSize: 11, lineHeight: "14px" }}>{node.type}</span>
+        {hasBlockingIssue ? <span className="exec-node-blocking-icon" aria-hidden>!</span> : <span aria-hidden style={{ gridRow: "1 / span 2", width: 12, height: 12, borderRadius: 999, background: stateColor[node.state] }} />}
+        <span style={{ minWidth: 0, whiteSpace: "normal", overflowWrap: "anywhere", fontSize: 13, lineHeight: "16px", fontWeight: 800 }}>{node.id}</span>
         <span className={optional && node.state === "failed" ? "exec-node-status exec-node-status-warning" : "exec-node-status"}>{statusText}</span>
-        {optional ? <span className="exec-node-optional-badge">Optional</span> : null}
-        {hasValidationIssue ? <span className={hasBlockingIssue ? "exec-node-validation-badge exec-node-validation-badge-blocking" : "exec-node-validation-badge"}>{hasBlockingIssue ? `${blockingCount} Block` : "Plan warning"}</span> : null}
+        {draftOnly ? <span className="exec-node-optional-badge">draft</span> : null}
       </button>
     </foreignObject>
   );
@@ -4174,9 +4174,8 @@ button.exec-summary-chip {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
-.exec-execution-group,
 .exec-view-model-strip span {
   min-height: 36px;
   display: inline-grid;
@@ -4188,6 +4187,33 @@ button.exec-summary-chip {
   color: var(--exec-dim-contrast);
   padding: 5px 9px;
   font-size: 11px;
+}
+.exec-execution-strip {
+  min-height: 64px;
+  align-items: center;
+  padding: 6px 8px;
+  border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+  border-radius: 10px;
+  background: rgba(0,0,0,0.12);
+}
+.exec-execution-group {
+  min-height: 40px;
+  display: inline-grid;
+  align-content: center;
+  gap: 2px;
+  border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+  border-radius: 8px;
+  background: rgba(0,0,0,0.14);
+  color: var(--exec-dim-contrast);
+  padding: 5px 10px;
+  font-size: 11px;
+}
+.exec-execution-group:first-child {
+  min-width: min(360px, 42%);
+  flex: 1 1 280px;
+}
+.exec-execution-group:not(:first-child) {
+  flex: 0 1 180px;
 }
 .exec-execution-group strong,
 .exec-view-model-strip b {
@@ -5091,6 +5117,30 @@ button.exec-summary-chip {
 }
 .exec-canvas-context-menu button:hover {
   background: rgba(34, 211, 238, 0.14);
+}
+.exec-node-empty-pane {
+  position: fixed;
+  top: 440px;
+  right: 28px;
+  z-index: 9;
+  width: min(360px, calc(100% - 40px));
+  display: grid;
+  gap: 8px;
+  border: 1px dashed rgba(184, 194, 214, 0.38);
+  border-radius: 12px;
+  background: rgba(15,17,21,0.78);
+  color: var(--exec-dim-contrast);
+  padding: 16px;
+  box-shadow: 0 18px 44px rgba(0,0,0,0.32);
+  pointer-events: none;
+}
+.exec-node-empty-pane strong {
+  color: var(--exec-text, #e5e7eb);
+  font-size: 14px;
+}
+.exec-node-empty-pane span {
+  font-size: 12px;
+  line-height: 17px;
 }
 .exec-node-inspector-slideout {
   position: absolute;
