@@ -13,8 +13,9 @@ import { ModelPicker, type ModelConfig } from '../common/ModelPicker'
 import { RunButton } from '../common/RunButton'
 import { EditModal } from '../common/EditModal'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { API_ROOT } from '../../../lib/apiBase'
 
-const API = 'http://localhost:3001/api'
+const API = API_ROOT
 const MONO = '"JetBrains Mono", "SF Mono", monospace'
 const EVAL_MODES = ['contains', 'exact', 'regex', 'json_field', 'not_empty', 'agent_judge'] as const
 type EvalMode = typeof EVAL_MODES[number]

@@ -15,8 +15,9 @@ import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../
 import { EditModal } from '../common/EditModal'
 import { Plus, Copy, Pencil, Trash2 } from 'lucide-react'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { API_ROOT } from '../../../lib/apiBase'
 
-const API = 'http://localhost:3001/api'
+const API = API_ROOT
 const MONO = '"JetBrains Mono", "SF Mono", monospace'
 
 // Helpers for TestCase input format (string or {name, description})

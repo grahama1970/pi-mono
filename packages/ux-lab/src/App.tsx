@@ -51,6 +51,7 @@ const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/Par
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
 import { HackEvolveMonitor } from './components/hack/HackEvolveMonitor';
+import { apiUrl } from './lib/apiBase';
 
 // SPARTA sub-views
 const ChatTabView = React.lazy(() => import('./components/sparta/explorer/ChatTab').then(m => ({ default: m.ChatTab })));
@@ -1595,7 +1596,7 @@ const useSystemHealth = () => {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/memory/health', { method: 'GET' });
+        const res = await fetch(apiUrl('/memory/health'), { method: 'GET' });
         if (res.ok) {
           const data = await res.json();
           if (data.status === 'ok' && data.memory_db_connected) {

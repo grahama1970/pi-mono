@@ -8,8 +8,9 @@
  */
 import { useState, useEffect, useRef } from 'react'
 import { EMBRY } from '../../common/EmbryStyle'
+import { API_ORIGIN } from '../../../lib/apiBase'
 
-const API = 'http://localhost:3001'
+const API = API_ORIGIN
 
 interface ControlInfo {
   name: string

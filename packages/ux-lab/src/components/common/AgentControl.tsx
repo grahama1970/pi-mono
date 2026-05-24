@@ -7,8 +7,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Bot } from 'lucide-react'
 import { EMBRY } from './EmbryStyle'
+import { API_ROOT } from '../../lib/apiBase'
 
-const API = 'http://localhost:3001/api'
+const API = API_ROOT
 
 const AGENT_CSS = `
 @keyframes agent-pulse {

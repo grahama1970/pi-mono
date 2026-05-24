@@ -5,8 +5,9 @@
 import { useState, useMemo } from 'react'
 import { Brain, Braces, Code, Bot, Plus, X } from 'lucide-react'
 import { EMBRY, label, card } from './EmbryStyle'
+import { API_ROOT } from '../../lib/apiBase'
 
-const API = 'http://localhost:3001/api'
+const API = API_ROOT
 const MONO = '"JetBrains Mono", "SF Mono", monospace'
 
 export interface ModelConfig {

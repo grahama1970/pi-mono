@@ -10,6 +10,7 @@ import { useToast } from '../common/Toast'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { useWorksheets, worksheetToSourceDef } from '../../../hooks/useWorksheets'
 import type { SourceDef } from '../../../hooks/useWorksheets'
+import { MEMORY_API_ROOT } from '../../../lib/apiBase'
 
 const TYPE_COLORS: Record<string, string> = {
   technique: '#e06c75', attack_technique: '#e06c75', attack_mobile_technique: '#e06c75',
@@ -72,7 +73,7 @@ function useURLDomains(): { domains: DomainGroup[]; total: number; loading: bool
   const fetchDomains = useCallback(async () => {
     try {
       // Sample URLs to build domain distribution
-      const API = 'http://localhost:3001/api/memory'
+      const API = MEMORY_API_ROOT
       const counts = new Map<string, number>()
       const batchSize = 200
       let offset = 0
@@ -205,7 +206,7 @@ export function SourcesView() {
   const [enrichedUrls, setEnrichedUrls] = useState<Map<number, { control_ids: string[]; fetched: boolean; status: number | null; chunks: number }>>(new Map())
   useEffect(() => {
     if (urls.length === 0) return
-    const DAEMON = 'http://localhost:3001/api/memory'
+    const DAEMON = MEMORY_API_ROOT
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then((r) => r.json()).catch(() => ({ documents: [] }))
@@ -521,7 +522,7 @@ function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; 
   const [relLoading, setRelLoading] = useState(true)
 
   useEffect(() => {
-    const API = 'http://localhost:3001/api/memory'
+    const API = MEMORY_API_ROOT
     setQraLoading(true)
     setRelLoading(true)
 
@@ -777,7 +778,7 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
     let cancelled = false
     setLoading(true)
     setMindTags([])
-    const DAEMON = 'http://localhost:3001/api/memory'
+    const DAEMON = MEMORY_API_ROOT
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then((r) => r.json()).catch(() => ({ documents: [] }))

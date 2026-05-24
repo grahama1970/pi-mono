@@ -7,6 +7,7 @@
  * - Provides manual retry function
  */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { apiUrl } from "../lib/apiBase";
 
 export type HealthStatus = "NOMINAL" | "DEGRADED" | "OFFLINE";
 
@@ -17,7 +18,7 @@ interface HealthState {
 	wasOffline: boolean; // true if we just recovered from OFFLINE
 }
 
-const API = "http://localhost:3001/api/memory/health";
+const API = apiUrl("/memory/health");
 const HEALTHY_INTERVAL_MS = 30_000;
 const UNHEALTHY_INTERVAL_MS = 5_000;
 

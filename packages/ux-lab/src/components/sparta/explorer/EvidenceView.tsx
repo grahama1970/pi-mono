@@ -3,8 +3,9 @@ import { inlineHighlight, spanHighlight } from './explorerUtils'
 import type { HighlightEmphasis } from './explorerUtils'
 import type { EvidenceCase, EvidenceSpan } from '../../../hooks/useSpartaCollections'
 import { EvidenceCaseTrace } from '../shared/EvidenceCaseTrace'
+import { apiUrl } from '../../../lib/apiBase'
 
-const EXTRACT_API = 'http://localhost:3001/api/extract-entities'
+const EXTRACT_API = apiUrl('/extract-entities')
 const CONTROL_ID_FALLBACK_RE = /\b(?:[A-Z]{1,8}-\d{1,4}(?:\([0-9A-Za-z]+\))?(?:\.\d+)?|(?:[A-Z]{2,8}-)?T\d{4}(?:\.\d{3})?|CWE-\d+|CAPEC-\d+|D3F:[A-Za-z0-9_.:-]+)\b/g
 
 function extractControlIdsFromText(text: string): string[] {
@@ -333,7 +334,7 @@ export function EvidenceView({
     setValidating(true)
     setError(null)
     try {
-      const res = await fetch('http://localhost:3001/api/evidence/generate', {
+      const res = await fetch(apiUrl('/evidence/generate'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question }),

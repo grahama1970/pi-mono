@@ -88,6 +88,13 @@ function deriveCitations(data: EvidenceCaseData) {
   return sourceTraceability.slice(0, 5)
 }
 
+function citationLabel(citation: string, index: number) {
+  if (/^chatwell\b/i.test(citation)) return `Generated-answer turn, not a source citation: ${citation}`
+  if (/^capec-\d+/i.test(citation)) return `Source anchor ${index + 1}: ${citation} relationship text pending source-page excerpt`
+  if (/^mitre|^attack|^t\d{4}/i.test(citation)) return `Source anchor ${index + 1}: ${citation} technique text pending source-page excerpt`
+  return `Source anchor ${index + 1}: ${citation}`
+}
+
 function Pill({ label, color, title }: { label: string; color: string; title: string }) {
   return (
     <span
@@ -122,6 +129,8 @@ function ActionButton({
   children,
   tone = EMBRY.dim,
   onClick,
+  disabled = false,
+  describedBy,
 }: {
   qid: string
   action: string
@@ -129,13 +138,18 @@ function ActionButton({
   children: ReactNode
   tone?: string
   onClick?: () => void
+  disabled?: boolean
+  describedBy?: string
 }) {
   return (
     <button
       data-qid={qid}
       data-qs-action={action}
       title={title}
-      onClick={onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
+      aria-describedby={describedBy}
+      onClick={disabled ? undefined : onClick}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -145,10 +159,12 @@ function ActionButton({
         minWidth: 44,
         padding: '0 10px',
         borderRadius: 8,
-        border: `1px solid ${EMBRY.border}`,
-        backgroundColor: EMBRY.bgPanel,
-        color: tone,
-        cursor: 'pointer',
+        border: disabled ? `1px solid ${EMBRY.border}` : `1px solid ${EMBRY.border}`,
+        backgroundColor: disabled ? '#07090c' : EMBRY.bgPanel,
+        color: disabled ? '#5d6572' : tone,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.48 : 1,
+        filter: disabled ? 'grayscale(1)' : undefined,
         fontSize: 12,
         fontWeight: 700,
       }}
@@ -173,6 +189,12 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
   const gateCount = data.gates_total || data.metadata?.gates_total || gates.length
   const gatePassed = data.gates_passed || data.metadata?.gates_passed || gates.filter(g => g.passed).length
   const entities = data.control_ids ?? []
+  const traceStateRaw = String(data.trace_state ?? '').toLowerCase()
+  const gatesComplete = gateCount > 0 && gatePassed >= gateCount
+  const canApproveOrExport = gatesComplete && traceStateRaw === 'bound' && approval === 'Approved' && !auditInvalidHash
+  const blockedActionReason = canApproveOrExport
+    ? ''
+    : 'Approve, reject, and export are disabled until all evidence gates pass, source-page provenance is bound, mock artifacts are replaced, and reviewer approval is complete.'
 
   useRegisterAction('evidence-case:action:toggle', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_TOGGLE', label: 'Toggle evidence case', description: 'Expand or collapse the inline evidence case audit trail' })
   useRegisterAction('evidence-case:action:approve', { app: 'sparta-explorer', action: 'EVIDENCE_CASE_APPROVE', label: 'Approve case', description: 'Approve the selected evidence case after review' })
@@ -231,6 +253,9 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
           <div data-qid={`evidence-case:artifact:${id}`} title={`Bound artifact: ${boundArtifact}`} style={{ color: EMBRY.white, fontSize: 13, lineHeight: 1.5, overflowWrap: 'anywhere' }}>
             Bound artifact: <span style={{ fontFamily: 'var(--font-mono)' }}>{boundArtifact}</span>
           </div>
+          <div data-qid={`evidence-case:provenance-distinction:${id}`} title="Artifact binding is not citation provenance" style={{ color: EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 4 }}>
+            Artifact binding only confirms the file is attached; source-page citation provenance is still blocked.
+          </div>
           {artifactHash && (
             <div data-qid={`evidence-case:artifact-hash:${id}`} title={auditInvalidHash ? `Mock artifact hash: ${artifactHash}` : `Artifact SHA256: ${artifactHash}`} style={{ color: auditInvalidHash ? EMBRY.amber : EMBRY.dim, fontSize: 11, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere', marginTop: 2, fontWeight: auditInvalidHash ? 800 : 400 }}>
               {auditInvalidHash ? 'MOCK HASH: ' : 'SHA256: '}{artifactHash}
@@ -243,8 +268,8 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
             <Pill label={`${claims.length} claim${claims.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${claims.length} claims in this audit case`} />
             <Pill label={`${citations.length} citation${citations.length === 1 ? '' : 's'}`} color={EMBRY.dim} title={`${citations.length} citations or source anchors in this audit case`} />
           </div>
-          <div data-qid={`evidence-case:citation-preview:${id}`} title={citations.length > 0 ? `Citation anchors: ${citations.join(', ')}` : 'Citations pending'} style={{ color: citations.length > 0 ? EMBRY.dim : EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 8, overflowWrap: 'anywhere' }}>
-            Citations: {citations.length > 0 ? citations.slice(0, 4).join(' · ') : 'pending extraction'}
+          <div data-qid={`evidence-case:citation-preview:${id}`} title={citations.length > 0 ? `Citation anchors pending source-page excerpts: ${citations.join(', ')}` : 'Citations pending'} style={{ color: citations.length > 0 ? EMBRY.dim : EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 8, overflowWrap: 'anywhere' }}>
+            Citations: anchors only, not audit citations until provenance is bound: {citations.length > 0 ? citations.slice(0, 4).map(citationLabel).join(' · ') : 'pending source-page extraction'}
           </div>
         </div>
         <button
@@ -282,12 +307,17 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
         Reviewer Actions
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-        <ActionButton qid={`evidence-case:approve:${id}`} action="EVIDENCE_CASE_APPROVE" title="Approve case" tone={EMBRY.green}><CheckCircle size={14} />Approve</ActionButton>
-        <ActionButton qid={`evidence-case:reject:${id}`} action="EVIDENCE_CASE_REJECT" title="Reject case" tone={EMBRY.red}><XCircle size={14} />Reject</ActionButton>
+        <ActionButton qid={`evidence-case:approve:${id}`} action="EVIDENCE_CASE_APPROVE" title={canApproveOrExport ? 'Approve case' : blockedActionReason} disabled={!canApproveOrExport} describedBy={!canApproveOrExport ? `evidence-case:blocked-actions:${id}` : undefined} tone={EMBRY.green}><CheckCircle size={14} />Approve</ActionButton>
+        <ActionButton qid={`evidence-case:reject:${id}`} action="EVIDENCE_CASE_REJECT" title={canApproveOrExport ? 'Reject case' : blockedActionReason} disabled={!canApproveOrExport} describedBy={!canApproveOrExport ? `evidence-case:blocked-actions:${id}` : undefined} tone={EMBRY.red}><XCircle size={14} />Reject</ActionButton>
         <ActionButton qid={`evidence-case:request-more:${id}`} action="EVIDENCE_CASE_REQUEST_MORE" title="Request more evidence" tone={EMBRY.amber}><ShieldAlert size={14} />More evidence</ActionButton>
         <ActionButton qid={`evidence-case:open-source:${id}`} action="EVIDENCE_CASE_OPEN_SOURCE" title="Open source page or extracted record" tone={EMBRY.blue} onClick={onViewDetails}><FileSearch size={14} />Open source</ActionButton>
-        <ActionButton qid={`evidence-case:export:${id}`} action="EVIDENCE_CASE_EXPORT" title="Export audit packet" tone={EMBRY.dim}><Download size={14} />Export</ActionButton>
+        <ActionButton qid={`evidence-case:export:${id}`} action="EVIDENCE_CASE_EXPORT" title={canApproveOrExport ? 'Export audit packet' : blockedActionReason} disabled={!canApproveOrExport} describedBy={!canApproveOrExport ? `evidence-case:blocked-actions:${id}` : undefined} tone={EMBRY.dim}><Download size={14} />Export</ActionButton>
       </div>
+      {!canApproveOrExport && (
+        <div id={`evidence-case:blocked-actions:${id}`} style={{ color: EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginTop: 8 }}>
+          {blockedActionReason}
+        </div>
+      )}
 
       {expanded && (
         <div data-qid={`evidence-case:expanded:${id}`} title="Expanded evidence case audit trail" style={{ borderTop: `1px solid ${EMBRY.border}`, marginTop: 12, paddingTop: 12 }}>
@@ -315,12 +345,15 @@ export function InlineEvidenceCase({ data, onViewDetails, loading }: InlineEvide
           {citations.length > 0 && (
             <>
               <div style={{ color: EMBRY.dim, fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '12px 0 6px' }}>
-                Citations
+                Citation anchors pending source-page excerpts
+              </div>
+              <div style={{ color: EMBRY.amber, fontSize: 11, lineHeight: 1.45, marginBottom: 6 }}>
+                Anchors are not audit-ready citations until trace provenance binds the source page and excerpt.
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 {citations.map((citation, index) => (
-                  <span key={`${citation}-${index}`} data-qid={`evidence-case:citation:${id}:${index}`} title={`Citation ${index + 1}: ${citation}`} style={{ color: EMBRY.dim, fontSize: 12, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere' }}>
-                    {citation}
+                  <span key={`${citation}-${index}`} data-qid={`evidence-case:citation:${id}:${index}`} title={`Citation anchor ${index + 1}: ${citation}; source-page excerpt pending`} style={{ color: EMBRY.dim, fontSize: 12, fontFamily: 'var(--font-mono)', overflowWrap: 'anywhere' }}>
+                    {citationLabel(citation, index)}
                   </span>
                 ))}
               </div>

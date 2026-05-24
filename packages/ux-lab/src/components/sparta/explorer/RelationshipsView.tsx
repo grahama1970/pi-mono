@@ -5,6 +5,7 @@ import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelect
 import { useToast } from '../common/Toast'
 import { useRelationshipsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaRelationship } from '../../../hooks/useSpartaCollections'
+import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
 
 const PAGE_SIZE = 100
 
@@ -173,9 +174,9 @@ export function RelationshipsView() {
   )
 }
 
-const DAEMON = 'http://localhost:3001/api/memory'
+const DAEMON = MEMORY_API_ROOT
 
-const API = 'http://localhost:3001'
+const API = API_ORIGIN
 
 function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: () => void }) {
   const [sourceMind, setSourceMind] = useState<string[]>([])

@@ -10,8 +10,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase } from '../shared/ThreatMatrix'
+import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
 
-const DAEMON = 'http://localhost:3001/api/memory'
+const DAEMON = MEMORY_API_ROOT
 
 const SPARTA_TACTICS: ThreatTactic[] = [
   { id: 'ST0001', name: 'Reconnaissance', prefix: 'REC' },
@@ -32,7 +33,7 @@ function tacticForTechnique(controlId: string): string | null {
   return null
 }
 
-const EXPRESS = 'http://localhost:3001'
+const EXPRESS = API_ORIGIN
 
 function post(path: string, body: Record<string, unknown>) {
   return fetch(`${DAEMON}${path}`, {

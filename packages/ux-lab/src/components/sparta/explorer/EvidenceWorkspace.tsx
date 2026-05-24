@@ -75,6 +75,14 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
   const controlIds = evidence?.control_ids ?? []
   const verdict = evidence?.verdict ?? message?.verdict?.state
   const runLabel = message?.id ? `case ${message.id}` : 'live case'
+  const gatesComplete = gates.length === 0 ? false : gates.every(gate => gate.passed)
+  const traceState = String(evidence?.trace_state ?? '').toLowerCase()
+  const approvalState = String(evidence?.approval_state ?? evidence?.human_review_state ?? '').toLowerCase()
+  const auditValidArtifact = !String(evidence?.artifact_hash ?? evidence?.artifact?.sha256 ?? '').toLowerCase().match(/demo|mock|pending/)
+  const canApprove = displayStatus !== 'NEEDS_VERIFICATION' && gatesComplete && traceState === 'bound' && approvalState === 'approved' && auditValidArtifact
+  const blockedReviewReason = canApprove
+    ? ''
+    : 'Approval and rejection are disabled until evidence gates pass, source-page provenance is bound, mock artifacts are replaced, and compliance review is approved.'
 
   useRegisterAction('sparta:evidence-workspace:approve', { app: 'sparta-explorer', action: 'APPROVE_EVIDENCE_CASE', label: 'Approve evidence case', description: 'Approve the evidence case only after provenance and review gates are complete' })
   useRegisterAction('sparta:evidence-workspace:edit', { app: 'sparta-explorer', action: 'EDIT_EVIDENCE_CASE', label: 'Edit reviewer answer', description: 'Edit the reviewer-facing answer text before rerunning evidence checks' })
@@ -260,6 +268,27 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
 
   return (
     <aside data-qid="sparta:evidence-workspace" style={S.container} aria-label="Evidence Workspace">
+      <style>{`
+        .sparta-evidence-workspace-scroll {
+          scrollbar-color: #5d6572 #14161a !important;
+        }
+        .sparta-evidence-workspace-scroll::-webkit-scrollbar {
+          width: 10px !important;
+          height: 10px !important;
+        }
+        .sparta-evidence-workspace-scroll::-webkit-scrollbar-track {
+          background: #14161a !important;
+        }
+        .sparta-evidence-workspace-scroll::-webkit-scrollbar-thumb {
+          background: #5d6572 !important;
+          border: 2px solid #14161a !important;
+          border-radius: 999px !important;
+          box-shadow: none !important;
+        }
+        .sparta-evidence-workspace-scroll::-webkit-scrollbar-corner {
+          background: #14161a !important;
+        }
+      `}</style>
       <div style={S.header}>
         <div>
           <div style={S.kicker}>Evidence Workspace</div>
@@ -288,7 +317,17 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
           {' '}Reviewer action is required before persistence, export readiness, or signoff.
         </div>
         <div style={S.actions} aria-label="Reviewer actions">
-          <button type="button" data-qid="sparta:evidence-workspace:approve" data-qs-action="APPROVE_EVIDENCE_CASE" title="Approve evidence case" onClick={() => setReviewDecision('APPROVED')} style={{ ...S.actionBtn, ...(reviewDecision === 'APPROVED' ? S.actionActive : {}) }}>
+          <button
+            type="button"
+            data-qid="sparta:evidence-workspace:approve"
+            data-qs-action="APPROVE_EVIDENCE_CASE"
+            title={canApprove ? 'Approve evidence case' : blockedReviewReason}
+            disabled={!canApprove}
+            aria-disabled={!canApprove}
+            aria-describedby={!canApprove ? 'sparta-evidence-workspace-blocked-actions' : undefined}
+            onClick={() => { if (canApprove) setReviewDecision('APPROVED') }}
+            style={{ ...S.actionBtn, ...(!canApprove ? S.actionDisabled : {}), ...(reviewDecision === 'APPROVED' && canApprove ? S.actionActive : {}) }}
+          >
             <Check size={14} />
             Approve
           </button>
@@ -300,7 +339,17 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
             <Clock size={14} />
             Defer
           </button>
-          <button type="button" data-qid="sparta:evidence-workspace:reject" data-qs-action="REJECT_EVIDENCE_CASE" title="Reject evidence case" onClick={() => setReviewDecision('REJECTED')} style={{ ...S.actionBtn, ...(reviewDecision === 'REJECTED' ? S.actionDanger : {}) }}>
+          <button
+            type="button"
+            data-qid="sparta:evidence-workspace:reject"
+            data-qs-action="REJECT_EVIDENCE_CASE"
+            title={canApprove ? 'Reject evidence case' : blockedReviewReason}
+            disabled={!canApprove}
+            aria-disabled={!canApprove}
+            aria-describedby={!canApprove ? 'sparta-evidence-workspace-blocked-actions' : undefined}
+            onClick={() => { if (canApprove) setReviewDecision('REJECTED') }}
+            style={{ ...S.actionBtn, ...(!canApprove ? S.actionDisabled : {}), ...(reviewDecision === 'REJECTED' && canApprove ? S.actionDanger : {}) }}
+          >
             <X size={14} />
             Reject
           </button>
@@ -313,6 +362,11 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
             Rerun
           </button>
         </div>
+        {!canApprove && (
+          <div id="sparta-evidence-workspace-blocked-actions" style={S.blockedReason}>
+            {blockedReviewReason}
+          </div>
+        )}
         {rerunRequest && <div style={{ ...S.muted, marginTop: 8 }}>Rerun requested at {rerunRequest}; execution remains gated by reviewer workflow.</div>}
         {reviewDecision === 'EDITING' && (
           <textarea
@@ -337,7 +391,7 @@ export function EvidenceWorkspace({ message, isStreaming = false, streamingSteps
           )
         })}
       </div>
-      <div style={S.content}>{renderTab()}</div>
+      <div className="sparta-evidence-workspace-scroll" style={S.content}>{renderTab()}</div>
     </aside>
   )
 }
@@ -428,8 +482,22 @@ const S: Record<string, React.CSSProperties> = {
     gap: 5,
     cursor: 'pointer',
   },
+  actionDisabled: {
+    color: '#5d6572',
+    backgroundColor: '#07090c',
+    border: `1px solid ${EMBRY.border}`,
+    cursor: 'not-allowed',
+    opacity: 0.48,
+    filter: 'grayscale(1)',
+  },
   actionActive: { color: EMBRY.amber, backgroundColor: `${EMBRY.amber}18`, border: `1px solid ${EMBRY.amber}` },
   actionDanger: { color: EMBRY.red, backgroundColor: `${EMBRY.red}18`, border: `1px solid ${EMBRY.red}` },
+  blockedReason: {
+    marginTop: 8,
+    color: EMBRY.amber,
+    fontSize: 11,
+    lineHeight: 1.45,
+  },
   warningBanner: {
     marginBottom: 8,
     padding: '9px 10px',
@@ -455,7 +523,7 @@ const S: Record<string, React.CSSProperties> = {
     padding: 10,
     boxSizing: 'border-box',
   },
-  content: { flex: 1, overflow: 'auto', padding: 14 },
+  content: { flex: 1, overflow: 'auto', padding: 14, scrollbarColor: `${EMBRY.amber} ${EMBRY.bgCard}` },
   stack: { display: 'flex', flexDirection: 'column', gap: 10 },
   sectionTitle: { fontSize: 10, color: EMBRY.dim, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.08em' },
   timeline: { display: 'flex', flexDirection: 'column', gap: 8, padding: '2px 0 8px' },
@@ -480,6 +548,7 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 11,
     lineHeight: 1.45,
     overflow: 'auto',
+    scrollbarColor: `${EMBRY.amber} ${EMBRY.bgCard}`,
   },
   details: { border: `1px solid ${EMBRY.border}`, borderRadius: 6, backgroundColor: EMBRY.bgCard },
   summary: { minHeight: 44, padding: '0 12px', display: 'flex', alignItems: 'center', color: EMBRY.white, fontSize: 12, fontWeight: 800, cursor: 'pointer' },

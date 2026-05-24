@@ -8,9 +8,9 @@
  * All data flows through: /api/memory/* → Express proxy → daemon Unix socket → ArangoDB.
  */
 import { useCallback, useEffect, useState } from "react";
+import { API_ROOT, MEMORY_API_ROOT } from "../lib/apiBase";
 
-const API_ROOT = "http://localhost:3001/api";
-const API = `${API_ROOT}/memory`;
+const API = MEMORY_API_ROOT;
 
 // ── Shared fetch helpers ────────────────────────────────────────────────────
 

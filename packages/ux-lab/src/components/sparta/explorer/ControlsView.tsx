@@ -8,8 +8,9 @@ import { useToast } from '../common/Toast'
 import { ControlIdPills } from '../common/ControlIdPills'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { useSpartaNav } from './SpartaExplorer'
+import { MEMORY_API_ROOT } from '../../../lib/apiBase'
 
-const API = 'http://localhost:3001/api/memory'
+const API = MEMORY_API_ROOT
 const PAGE_SIZE = 100
 const QRA_PREVIEW_LIMIT = 5
 
@@ -193,7 +194,7 @@ function ControlDetailPane({
         const { prose, crossRefs } = splitDescription(control.description ?? '')
         const navigateToControl = (id: string) => {
           if (!onNavigate) return
-          fetch(`http://localhost:3001/api/memory/list`, {
+          fetch(`${API}/list`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: id }, return_fields: ['control_id', 'name', 'description', 'source_framework', 'control_type', 'parent_id', 'domain', 'scope', 'weaknesses', 'mind', 'nrs_score', 'status'] }),
           }).then(r => r.json()).then(data => {
@@ -415,7 +416,7 @@ function ControlDetailPane({
               return (
                 <div key={`rel-${i}`} onClick={() => {
                     if (!onNavigate || !other) return
-                    fetch(`http://localhost:3001/api/memory/list`, {
+                    fetch(`${API}/list`, {
                       method: 'POST', headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: other }, return_fields: ['control_id', 'name', 'description', 'source_framework', 'control_type', 'parent_id', 'domain', 'scope', 'weaknesses', 'mind', 'nrs_score', 'status'] }),
                     }).then((r) => r.json()).then((d) => {

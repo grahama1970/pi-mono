@@ -5,9 +5,10 @@ import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelect
 import { useToast } from '../common/Toast'
 import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
+import { MEMORY_API_ROOT } from '../../../lib/apiBase'
 
 const API = '/api/memory'
-const DAEMON = 'http://localhost:3001/api/memory'
+const DAEMON = MEMORY_API_ROOT
 const PAGE_SIZE = 100
 
 /** Pipeline status for a single URL, enriched client-side. */
