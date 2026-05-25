@@ -1100,3 +1100,574 @@
   padding: 0;
   color: #ffb4b4;
 }
+
+/* ---- Phase 50 canvas-first redesign overrides --------------------- */
+
+.pdf-lab-labeling-root {
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-lab-labeling-canvas-pane {
+  border: 0;
+  border-radius: 0;
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+.pdf-lab-labeling-canvas-toolbar {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+  min-height: 48px;
+  max-height: 48px;
+  overflow-x: auto;
+  padding: 6px 10px;
+  scrollbar-width: thin;
+}
+
+.pdf-lab-labeling-file,
+.pdf-lab-labeling-export,
+.pdf-lab-labeling-zoom-btn,
+.pdf-lab-labeling-viewmode-btn {
+  border-radius: 8px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-canvas-toolbar > .pdf-lab-labeling-file,
+.pdf-lab-labeling-canvas-toolbar > .pdf-lab-labeling-export:not(.is-signoff):not(.is-signoff-amend) {
+  display: none;
+}
+
+.pdf-lab-labeling-overflow-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.pdf-lab-labeling-overflow-menu summary {
+  background: #181d23;
+  border: 1px solid #232b34;
+  border-radius: 8px;
+  color: #cfd6dc;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  list-style: none;
+  padding: 7px 10px;
+}
+
+.pdf-lab-labeling-overflow-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.pdf-lab-labeling-overflow-panel {
+  background: #0e1216;
+  border: 1px solid #2c3540;
+  border-radius: 10px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.48);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  left: 0;
+  min-width: 250px;
+  padding: 10px;
+  position: absolute;
+  top: calc(100% + 8px);
+  z-index: 40;
+}
+
+.pdf-lab-labeling-file {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdf-lab-labeling-slug {
+  flex: 0 0 260px;
+  height: 34px;
+}
+
+.pdf-lab-labeling-overlaymode .pdf-lab-labeling-viewmode-btn {
+  text-transform: capitalize;
+}
+
+.pdf-lab-labeling-canvas {
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 0;
+}
+
+.pdf-lab-labeling-canvas-inner {
+  margin: 10px;
+}
+
+.pdf-lab-labeling-region {
+  border-width: 1px;
+  background: transparent;
+}
+
+.pdf-lab-labeling-region:hover {
+  border-width: 2px;
+  z-index: 3;
+}
+
+.pdf-lab-labeling-region.is-selected {
+  border-width: 2px;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px rgba(37, 99, 235, 0.55);
+  z-index: 4;
+}
+
+.pdf-lab-labeling-region-tag {
+  background: transparent;
+  color: var(--region-color);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  padding: 0;
+  text-shadow:
+    0 1px 1px #ffffff,
+    0 -1px 1px #ffffff,
+    1px 0 1px #ffffff,
+    -1px 0 1px #ffffff;
+  text-transform: uppercase;
+}
+
+.pdf-lab-labeling-region-tag.tag-anchor-top-outside {
+  top: -11px;
+  left: 0;
+}
+
+.pdf-lab-labeling-region-tag.tag-anchor-bottom-outside {
+  bottom: -11px;
+  left: 0;
+}
+
+.pdf-lab-labeling-root.overlay-debug .pdf-lab-labeling-region-tag {
+  background: var(--region-color);
+  color: #05070a;
+  font-size: 9px;
+  padding: 1px 4px;
+  text-shadow: none;
+}
+
+.pdf-lab-labeling-root.overlay-debug .pdf-lab-labeling-region {
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+.pdf-lab-labeling-chips {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  width: 44px;
+  height: 100%;
+  min-height: 0;
+  border-width: 0 1px 0 0;
+  border-radius: 0;
+  padding: 8px 6px;
+  overflow: hidden;
+  transition: width 160ms ease, box-shadow 160ms ease;
+}
+
+.pdf-lab-labeling-chips:hover,
+.pdf-lab-labeling-chips:focus-within {
+  width: 320px;
+  box-shadow: 14px 0 30px rgba(0, 0, 0, 0.45);
+}
+
+.pdf-lab-labeling-pages {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #1f262d;
+  border-right: 0;
+}
+
+.pdf-lab-labeling-pages-project {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.pdf-lab-labeling-pages .pdf-lab-labeling-chips-title,
+.pdf-lab-labeling-pages-section {
+  align-self: auto;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0 auto;
+  padding: 6px 0;
+  border-left: 0;
+}
+
+.pdf-lab-labeling-chips:hover .pdf-lab-labeling-pages .pdf-lab-labeling-chips-title,
+.pdf-lab-labeling-chips:focus-within .pdf-lab-labeling-pages .pdf-lab-labeling-chips-title,
+.pdf-lab-labeling-chips:hover .pdf-lab-labeling-pages-section,
+.pdf-lab-labeling-chips:focus-within .pdf-lab-labeling-pages-section {
+  writing-mode: horizontal-tb;
+  transform: none;
+  margin: 8px 0 2px;
+  padding: 0;
+}
+
+.pdf-lab-labeling-pages-row,
+.pdf-lab-labeling-pages-preset,
+.pdf-lab-labeling-pages-new {
+  flex: 0 0 auto;
+  min-height: 40px;
+  width: 100%;
+}
+
+.pdf-lab-labeling-pages-row-main {
+  justify-content: center;
+}
+
+.pdf-lab-labeling-chip {
+  flex: 0 0 auto;
+  height: 36px;
+  padding: 7px 8px;
+}
+
+.pdf-lab-labeling-chips > .pdf-lab-labeling-chips-title,
+.pdf-lab-labeling-chips-hint {
+  display: none;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row-main,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row-del,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-new,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip-label,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip-hotkey {
+  display: none;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row {
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip {
+  justify-content: center;
+  padding: 7px 0;
+}
+
+.pdf-lab-labeling-regions-pane {
+  position: fixed;
+  right: 0;
+  top: 48px;
+  bottom: 0;
+  z-index: 18;
+  width: 300px;
+  border-width: 0 0 0 1px;
+  border-radius: 0;
+  padding: 10px;
+  transition: transform 140ms ease;
+  box-shadow: -10px 0 26px rgba(0, 0, 0, 0.38);
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane {
+  transform: translateX(calc(100% - 16px));
+  padding-left: 16px;
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  border-radius: 999px;
+  background: #334155;
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane > * {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pdf-lab-labeling-region-row {
+  border-radius: 0;
+  gap: 7px;
+  padding: 8px;
+}
+
+.pdf-lab-labeling-breadcrumb-editor {
+  border-radius: 0;
+  padding: 8px;
+}
+
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-help,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-column-labels,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-levels,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-actions,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-advanced {
+  display: none;
+}
+
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) {
+  background: #0d1117;
+}
+
+.pdf-lab-labeling-warnings {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 22;
+  max-height: 28px;
+  overflow: hidden;
+  padding: 4px 10px;
+}
+
+/* ---- oc-kimi review-design gate: shared panes, no dashboard theater ---- */
+
+.pdf-lab-labeling-root {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pdf-lab-labeling-main {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pdf-lab-labeling-main > .pdf-lab-labeling-canvas-pane {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pdf-lab-labeling-chips {
+  position: static;
+  z-index: auto;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  transition: none;
+}
+
+.pdf-lab-labeling-chips:hover,
+.pdf-lab-labeling-chips:focus-within {
+  width: auto;
+  box-shadow: none;
+}
+
+.pdf-lab-labeling-pages {
+  margin: 0;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #1f262d;
+}
+
+.pdf-lab-labeling-pages .pdf-lab-labeling-chips-title,
+.pdf-lab-labeling-pages-section {
+  writing-mode: horizontal-tb;
+  transform: none;
+  margin: 8px 10px 2px;
+  padding: 0;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row-main,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row-del,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-new,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip-label,
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip-hotkey {
+  display: flex;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-pages-row {
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 40px;
+  padding: 6px 8px;
+}
+
+.pdf-lab-labeling-chips:not(:hover):not(:focus-within) .pdf-lab-labeling-chip {
+  justify-content: flex-start;
+  padding: 7px 8px;
+}
+
+.pdf-lab-labeling-canvas-toolbar {
+  flex-wrap: nowrap;
+  min-height: 44px;
+  max-height: 44px;
+  overflow: hidden;
+  gap: 6px;
+  padding: 5px 8px;
+}
+
+.pdf-lab-labeling-overflow-menu summary,
+.pdf-lab-labeling-file,
+.pdf-lab-labeling-export,
+.pdf-lab-labeling-zoom-btn,
+.pdf-lab-labeling-mode-select,
+.pdf-lab-labeling-family-picker select {
+  min-height: 32px;
+}
+
+.pdf-lab-labeling-family-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #93a1ad;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pdf-lab-labeling-family-picker select,
+.pdf-lab-labeling-mode-select {
+  background: #181d23;
+  border: 1px solid #232b34;
+  border-radius: 8px;
+  color: #cfd6dc;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.pdf-lab-labeling-family-picker select {
+  width: 180px;
+}
+
+.pdf-lab-labeling-mode-select {
+  width: 96px;
+}
+
+.pdf-lab-labeling-slug {
+  flex: 0 1 260px;
+  min-width: 160px;
+  height: 32px;
+}
+
+.pdf-lab-labeling-regions-pane {
+  position: static;
+  flex: 0 0 320px;
+  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+  height: auto;
+  min-height: 0;
+  border-width: 0 0 0 1px;
+  border-radius: 0;
+  padding: 10px;
+  overflow-y: auto;
+  transform: none;
+  box-shadow: none;
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane {
+  transform: none;
+  padding-left: 10px;
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane::before {
+  display: none;
+}
+
+.pdf-lab-labeling-root.no-selection .pdf-lab-labeling-regions-pane > * {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.pdf-lab-labeling-regions-title {
+  align-items: center;
+  min-height: 28px;
+  margin-bottom: 6px;
+}
+
+.pdf-lab-labeling-pane-close {
+  margin-left: 4px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid #4a9eff;
+  background: #172033;
+  color: #e7e9ec;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.pdf-lab-labeling-pane-close:hover {
+  background: #1d2b44;
+}
+
+.pdf-lab-labeling-selected-breadcrumb {
+  align-items: flex-start;
+  border: 1px solid #232b34;
+  border-radius: 8px;
+  background: #0d1117;
+  padding: 8px;
+}
+
+.pdf-lab-labeling-selected-breadcrumb-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+
+.pdf-lab-labeling-selected-breadcrumb-note {
+  color: #7f8c98;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.pdf-lab-labeling-breadcrumb-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pdf-lab-labeling-breadcrumb-empty,
+.pdf-lab-labeling-breadcrumb-quick {
+  flex: 1 1 130px;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-help,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-column-labels,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-levels,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-actions,
+.pdf-lab-labeling-breadcrumb-editor:not(:focus-within) .pdf-lab-labeling-breadcrumb-advanced {
+  display: inherit;
+}

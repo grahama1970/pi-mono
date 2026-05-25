@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { Activity, GitBranch } from "lucide-react";
+import { Activity, GitBranch, ServerCog } from "lucide-react";
 import { EMBRY } from "../common/EmbryStyle";
 import { useRegisterAction } from "../../hooks/useRegisterAction";
 import { ScillmDashboard } from "./ScillmDashboard";
 import { ScillmDagPlanner } from "./ScillmDagPlanner";
+import { ScillmAppServerSession } from "./ScillmAppServerSession";
 import "./scillm-dashboard.css";
 
-type ScillmWorkspaceTab = "monitor" | "dag-planner";
+type ScillmWorkspaceTab = "monitor" | "app-server" | "dag-planner";
 
 const TABS: Array<{
   id: ScillmWorkspaceTab;
@@ -19,6 +20,12 @@ const TABS: Array<{
     label: "Monitor",
     title: "Inspect live scillm calls, provider health, jobs, and model-pool state",
     icon: Activity,
+  },
+  {
+    id: "app-server",
+    label: "App Server",
+    title: "Inspect Codex App Server subagent sessions as scillm call artifacts",
+    icon: ServerCog,
   },
   {
     id: "dag-planner",
@@ -73,7 +80,7 @@ export function ScillmWorkspace({ initialTab }: { initialTab?: string }) {
         })}
       </nav>
       <div className="scillm-workspace__panel" role="tabpanel">
-        {activeTab === "monitor" ? <ScillmDashboard /> : <ScillmDagPlanner />}
+        {activeTab === "monitor" ? <ScillmDashboard /> : activeTab === "app-server" ? <ScillmAppServerSession /> : <ScillmDagPlanner />}
       </div>
     </div>
   );

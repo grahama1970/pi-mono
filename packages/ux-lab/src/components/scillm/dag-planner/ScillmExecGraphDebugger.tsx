@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { GitBranchPlus, LocateFixed, Maximize2, Move, ShieldPlus, SquarePlus, X, ZoomIn, ZoomOut } from "lucide-react";
+import { LocateFixed, Maximize2 } from "lucide-react";
 import {
   analyzeExecGraphRuntimeReadiness,
   applyNicoPlanProposal,
@@ -288,8 +288,8 @@ type PlanAuditEntry = {
   after?: unknown;
 };
 
-const nodeWidth = 220;
-const nodeHeight = 88;
+const nodeWidth = 156;
+const nodeHeight = 40;
 
 const fallbackReviewCodeContracts: ReviewCatalogEntry[] = [
   { id: "correctness_regression", label: "Correctness / Regression", default_agent: "correctness-reviewer", default_model: "oc-kimi", default_preset: "scope_default", review_level: "default", proof_level: "static_confirmed", reducer_policy: "evidence_backed_only", read_only: true, evidence_required: true, closure_authority: "final_review_gate", best_practice_skills: ["best-practices-scillm", "best-practices-self-improvement-loop", "best-practices-python", "best-practices-d3"], default: true },
@@ -363,10 +363,10 @@ const stateLabel: Record<ExecNodeState, string> = {
 };
 
 const stateColor: Record<ExecNodeState, string> = {
-  pending: "var(--exec-pending, #64748b)",
+  pending: "var(--exec-pending, #f59e0b)",
   ready: "var(--exec-ready, #3b82f6)",
   queued: "var(--exec-ready, #3b82f6)",
-  running: "var(--exec-running, #f59e0b)",
+  running: "var(--exec-running, #4a9eff)",
   paused: "var(--exec-paused, #a855f7)",
   passed: "var(--exec-passed, #22c55e)",
   needs_attention: "var(--exec-needs, #fb923c)",
@@ -506,19 +506,13 @@ function graphDepths(graph: ExecGraph) {
 }
 
 function graphCanvasSize(graph: ExecGraph, width: number, height: number) {
-  if (isPlanIterateGraph(graph)) {
-    return {
-      width: Math.max(width, 1500),
-      height: Math.max(height, 920),
-    };
-  }
   const depth = graphDepths(graph);
   const maxDepth = Math.max(0, ...Array.from(depth.values()));
   const layers = d3.group(graph.nodes, (node) => depth.get(node.id) ?? 0);
   const widestLayer = Math.max(1, ...Array.from(layers.values()).map((layerNodes) => layerNodes.length));
   return {
-    width: Math.max(width, 300 + (maxDepth + 1) * (nodeWidth + 110)),
-    height: Math.max(height, 160 + widestLayer * (nodeHeight + 80)),
+    width: Math.max(width, 140 + widestLayer * (nodeWidth + 30)),
+    height: Math.max(height, 140 + (maxDepth + 1) * (nodeHeight + 48)),
   };
 }
 
@@ -547,36 +541,36 @@ function clampViewport(viewport: GraphViewport, canvas: { width: number; height:
 }
 
 function layout(graph: ExecGraph, states: Record<string, ExecNodeState>, width: number, height: number) {
-  if (isPlanIterateGraph(graph)) return planIterateLayout(graph, states, width, height);
-
   const depth = graphDepths(graph);
   const maxDepth = Math.max(0, ...Array.from(depth.values()));
   const layers = d3.group(graph.nodes, (node) => depth.get(node.id) ?? 0);
-  const horizontalPadding = nodeWidth / 2 + 90;
-  const xScale = d3.scalePoint<number>().domain(d3.range(maxDepth + 1)).range([horizontalPadding, Math.max(horizontalPadding + nodeWidth + 96, width - horizontalPadding)]).padding(0.5);
+  const verticalPadding = nodeHeight / 2 + 36;
+  const yScale = d3.scalePoint<number>().domain(d3.range(maxDepth + 1)).range([verticalPadding, Math.max(verticalPadding + nodeHeight + 42, height - verticalPadding)]).padding(0.35);
   const nodes: LayoutNode[] = [];
 
+  const visibleContentWidth = Math.min(width, 1040);
+
   for (const [layer, layerNodes] of layers) {
-    const verticalPadding = nodeHeight / 2 + 32;
-    const yScale = d3.scalePoint<string>().domain(layerNodes.map((node) => node.id)).range([verticalPadding, Math.max(verticalPadding + 48, height - verticalPadding)]).padding(0.8);
+    const horizontalPadding = nodeWidth / 2 + 20;
+    const xScale = d3.scalePoint<string>().domain(layerNodes.map((node) => node.id)).range([horizontalPadding, Math.max(horizontalPadding + nodeWidth + 20, visibleContentWidth - horizontalPadding)]).padding(0.5);
     for (const node of layerNodes) {
-      nodes.push({ ...node, depth: layer, state: states[node.id] ?? "pending", x: xScale(layer) ?? 120, y: yScale(node.id) ?? height / 2 });
+      nodes.push({ ...node, depth: layer, state: states[node.id] ?? "pending", x: xScale(node.id) ?? Math.min(width / 2, visibleContentWidth / 2), y: yScale(layer) ?? 120 });
     }
   }
 
   const layoutById = new Map(nodes.map((node) => [node.id, node]));
-  const line = d3.line<[number, number]>().curve(d3.curveBumpX);
+  const line = d3.line<[number, number]>().curve(d3.curveBumpY);
   const edges: LayoutEdge[] = [];
   for (const target of nodes) {
     for (const dep of target.depends_on ?? []) {
       const source = layoutById.get(dep);
       if (!source) continue;
-      const mid = (source.x + target.x) / 2;
+      const midY = (source.y + target.y) / 2;
       edges.push({
         id: `${source.id}->${target.id}`,
         source,
         target,
-        path: line([[source.x + nodeWidth / 2, source.y], [mid, source.y], [mid, target.y], [target.x - nodeWidth / 2, target.y]]) ?? "",
+        path: line([[source.x, source.y + nodeHeight / 2], [source.x, midY], [target.x, midY], [target.x, target.y - nodeHeight / 2]]) ?? "",
       });
     }
   }
@@ -585,22 +579,22 @@ function layout(graph: ExecGraph, states: Record<string, ExecNodeState>, width: 
 
 function planIterateLayout(graph: ExecGraph, states: Record<string, ExecNodeState>, width: number, height: number) {
   const center = width / 2;
-  const laneGap = Math.min(470, Math.max(320, width / 4.2));
+  const laneGap = Math.min(270, Math.max(230, width / 5.2));
   const codeX = center - laneGap;
   const promptX = center;
   const designX = center + laneGap;
-  const yGoal = 112;
-  const yRound = 470;
-  const ySummary = 690;
-  const yValidate = Math.min(height - 110, 820);
+  const yGoal = 82;
+  const yRound = 190;
+  const ySummary = 300;
+  const yValidate = Math.min(height - 80, 410);
   const fallbackDepth = graphDepths(graph);
 
   const positionById = new Map<string, { x: number; y: number }>([
     ["project-agent-synthesize-round-1", { x: center, y: yGoal }],
     ["review-code-round-1", { x: codeX, y: yRound }],
     ["review-prompt-round-1", { x: promptX, y: yRound }],
-    ["test-interactions-round-1", { x: designX - 135, y: yRound }],
-    ["review-design-round-1", { x: designX + 135, y: yRound }],
+    ["test-interactions-round-1", { x: designX - 92, y: yRound }],
+    ["review-design-round-1", { x: designX + 92, y: yRound }],
     ["project-agent-aggregate-round-1", { x: center, y: ySummary }],
     ["plan-iterate-validate-round-1", { x: center, y: yValidate }],
   ]);
@@ -635,17 +629,17 @@ function planIterateLayout(graph: ExecGraph, states: Record<string, ExecNodeStat
     bands: [{
       id: "round-1",
       x: 120,
-      y: yRound - 92,
+      y: yRound - 50,
       width: Math.max(0, width - 240),
-      height: 184,
+      height: 100,
       label: "Round 1",
       sideLabel: "current round",
     }],
     labels: [
-      { id: "lane-review-code", x: codeX, y: yRound - 142, text: "review-code" },
-      { id: "lane-review-prompt", x: promptX, y: yRound - 142, text: "review-prompt" },
-      { id: "lane-review-design", x: designX, y: yRound - 142, text: "review-design" },
-      { id: "summary-label", x: center, y: ySummary + 82, text: "Summary" },
+      { id: "lane-review-code", x: codeX, y: yRound - 78, text: "review-code" },
+      { id: "lane-review-prompt", x: promptX, y: yRound - 78, text: "review-prompt" },
+      { id: "lane-review-design", x: designX, y: yRound - 78, text: "review-design" },
+      { id: "summary-label", x: center, y: ySummary + 44, text: "Summary" },
     ],
   };
 }
@@ -681,6 +675,65 @@ function formatEvidenceValue(label: string, value: unknown) {
 
 function titleCase(value: string) {
   return value ? value.slice(0, 1).toUpperCase() + value.slice(1).replaceAll("_", " ") : "Unknown";
+}
+
+function nodeDisplayLabel(node: ExecGraphNode) {
+  const explicit = stringMeta(node, ["label", "title", "display_name", "name"]);
+  if (explicit) return explicit;
+  return titleCase(node.id
+    .replace(/^project-agent-/, "")
+    .replace(/^review-code-/, "")
+    .replace(/^review-prompt-/, "prompt-")
+    .replace(/^review-design-/, "design-")
+    .replace(/^test-interactions-/, "interaction-test-")
+    .replace(/^plan-iterate-/, "")
+    .replace(/-round-\d+$/i, "")
+    .replace(/-r\d+$/i, "")
+    .replaceAll("-", " "));
+}
+
+function unknownRecord(value: unknown): Record<string, unknown> | undefined {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
+}
+
+function stringMeta(node: ExecGraphNode, keys: string[]) {
+  const metadata = unknownRecord(node.metadata);
+  const retryPolicy = unknownRecord(node.retry_policy);
+  const gatePolicy = unknownRecord(node.gate_policy);
+  for (const key of keys) {
+    const value = metadata?.[key] ?? retryPolicy?.[key] ?? gatePolicy?.[key];
+    if (value !== undefined && value !== null && value !== "") return String(value);
+  }
+  return undefined;
+}
+
+function retryBudgetLabel(node: ExecGraphNode) {
+  const policy = unknownRecord(node.retry_policy);
+  const value = policy?.max_tries ?? policy?.max_attempts ?? policy?.attempts ?? policy?.retries ?? stringMeta(node, ["max_tries", "max_attempts", "attempts", "retries"]);
+  if (value === undefined || value === null || value === "") return "not declared";
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) {
+    if (String(value).toLowerCase().includes("retr")) return `${numeric + 1} tries`;
+    return `${numeric} ${numeric === 1 ? "try" : "tries"}`;
+  }
+  return String(value);
+}
+
+function executionKindLabel(node: ExecGraphNode, readiness?: RuntimeReadinessNodeReport) {
+  const haystack = `${node.type} ${node.protocol_role ?? ""} ${node.persona_ref ?? ""} ${readiness?.adapter ?? ""} ${JSON.stringify(node.metadata ?? {})}`.toLowerCase();
+  if (/local_command|shell|command/.test(haystack)) return "local command";
+  if (/codex|app[-_ ]server|subagent/.test(haystack)) return "Codex app-server subagent";
+  if (/llm|model|chat|completion|review/.test(haystack)) return "one-shot LLM call";
+  return "not declared";
+}
+
+function executionCallShape(node: ExecGraphNode) {
+  const explicit = stringMeta(node, ["call_shape", "execution_shape", "invocation"]);
+  if (explicit) return explicit;
+  if (node.messages?.length) return `${node.messages.length} message chat call`;
+  if (node.prompt) return "prompt call";
+  if (node.review_scopes?.length) return `${node.review_scopes.length} review fanout call${node.review_scopes.length === 1 ? "" : "s"}`;
+  return "not declared";
 }
 
 function isReviewCodeNode(node: ExecGraphNode) {
@@ -1042,9 +1095,9 @@ function downstreamNodeIds(nodeId: string, allNodes: ExecGraphNode[]) {
 
 function runImpact(summary: ReturnType<typeof runSummary>) {
   if (summary.requiredFailed > 0) return `Blocking required nodes failed: ${summary.requiredFailed}`;
-  if (summary.optionalFailed > 0 && summary.lifecycle === "completed") return "Run passed because 0 required nodes failed.";
-  if (summary.optionalFailed > 0) return "No required failures yet; optional failure is non-blocking.";
-  if (summary.lifecycle === "completed") return "Run passed because all required nodes passed.";
+  if (summary.optionalFailed > 0 && summary.lifecycle === "completed") return "Required nodes reported clear; inspect optional failure evidence.";
+  if (summary.optionalFailed > 0) return "No required failures yet; inspect optional failure evidence.";
+  if (summary.lifecycle === "completed") return "Required nodes report passed; inspect node evidence.";
   return "Run result is still pending.";
 }
 
@@ -1059,7 +1112,7 @@ function currentVerdict(summary: ReturnType<typeof runSummary>, terminal: boolea
 function nodeImpact(optional: boolean, state: ExecNodeState) {
   if (optional && state === "failed") return "Non-blocking because REQUIRED = no";
   if (state === "failed") return "Blocking required failure";
-  if (state === "passed") return "Satisfied required evidence";
+  if (state === "passed") return "Reported passed; inspect evidence";
   return "No terminal impact yet";
 }
 
@@ -1083,6 +1136,11 @@ function outputHashState(value: unknown, optional: boolean) {
   }
   if (optional) return { text: "Not reported", tone: "optional", note: "Hash not reported for optional node." };
   return { text: "Missing required output hash", tone: "missing", note: "Required evidence is absent." };
+}
+
+function compactEvidenceText(value: string) {
+  if (value.length <= 28) return value;
+  return `${value.slice(0, 12)}...${value.slice(-8)}`;
 }
 
 function evidenceStatus(result: Record<string, unknown> | undefined, optional: boolean) {
@@ -1475,6 +1533,11 @@ function ScillmExecGraphDebuggerView({
   useRegisterAction("scillm-exec-graph:amendment:set-status", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_SET_STATUS", label: "Set amendment status" });
   useRegisterAction("scillm-exec-graph:amendment:apply", { app: "scillm", action: "SCILLM_EXEC_AMENDMENT_APPLY", label: "Apply approved amendment" });
 
+  useEffect(() => {
+    document.body.classList.add("scillm-dag-viewer-active");
+    return () => document.body.classList.remove("scillm-dag-viewer-active");
+  }, []);
+
   const { ref, size } = useSize();
   const [selectedId, setSelectedId] = useState("");
   const [productMode, setProductMode] = useState<DagMode>(enablePlanEditing ? "build" : "debug");
@@ -1494,17 +1557,17 @@ function ScillmExecGraphDebuggerView({
   const [viewport, setViewport] = useState<GraphViewport>({ zoom: 1, offsetX: 0, offsetY: 0, panMode: false });
   const [followExecution, setFollowExecution] = useState(false);
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null);
-  const [inspectorOpen, setInspectorOpen] = useState(false);
-  const panDrag = useRef<{ pointerId: number; startX: number; startY: number; offsetX: number; offsetY: number } | null>(null);
   const activeGraph = mode === "evidence" ? graph : draftGraph;
   const states = useMemo(() => buildStates(graph, status, events), [events, graph, status]);
   const draftStates = useMemo(() => buildStates(draftGraph, status, events), [draftGraph, events, status]);
   const activeStates = mode === "evidence" ? states : draftStates;
   const canvasSize = useMemo(() => graphCanvasSize(activeGraph, size.width, size.height), [activeGraph, size.height, size.width]);
   const safeViewport = useMemo(() => clampViewport(viewport, canvasSize), [canvasSize, viewport]);
-  const viewBoxWidth = canvasSize.width / safeViewport.zoom;
-  const viewBoxHeight = canvasSize.height / safeViewport.zoom;
-  const { nodes, edges, bands, labels } = useMemo(() => layout(activeGraph, activeStates, canvasSize.width, canvasSize.height), [activeGraph, activeStates, canvasSize.height, canvasSize.width]);
+  const { nodes, edges, bands, labels } = useMemo(() => {
+    return isPlanIterateGraph(activeGraph)
+      ? planIterateLayout(activeGraph, activeStates, canvasSize.width, canvasSize.height)
+      : layout(activeGraph, activeStates, canvasSize.width, canvasSize.height);
+  }, [activeGraph, activeStates, canvasSize.height, canvasSize.width]);
   const selected = activeGraph.nodes.find((node) => node.id === selectedId);
   const selectedResult = selected ? nodeResult(status, selected.id) : undefined;
   const summary = useMemo(() => runSummary(graph, status, states), [graph, status, states]);
@@ -1567,11 +1630,9 @@ function ScillmExecGraphDebuggerView({
   const selectNode = (nodeId: string) => {
     setFollowExecution(false);
     setSelectedId(nodeId);
-    setInspectorOpen(true);
   };
   const clearSelection = () => {
     setSelectedId("");
-    setInspectorOpen(false);
     setContextMenu(null);
   };
   const setPrimaryMode = (nextMode: DagMode) => {
@@ -1629,40 +1690,6 @@ function ScillmExecGraphDebuggerView({
     },
   };
 
-  function handleCanvasPointerDown(event: React.PointerEvent<SVGSVGElement>) {
-    if (!safeViewport.panMode && event.button !== 1) return;
-    if ((event.target as Element).closest(".exec-node-button")) return;
-    event.preventDefault();
-    setFollowExecution(false);
-    setContextMenu(null);
-    panDrag.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      offsetX: safeViewport.offsetX,
-      offsetY: safeViewport.offsetY,
-    };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  }
-
-  function handleCanvasPointerMove(event: React.PointerEvent<SVGSVGElement>) {
-    const drag = panDrag.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    const deltaX = (event.clientX - drag.startX) / safeViewport.zoom;
-    const deltaY = (event.clientY - drag.startY) / safeViewport.zoom;
-    setViewport((current) => clampViewport({
-      ...current,
-      offsetX: drag.offsetX - deltaX,
-      offsetY: drag.offsetY - deltaY,
-    }, canvasSize));
-  }
-
-  function handleCanvasPointerUp(event: React.PointerEvent<SVGSVGElement>) {
-    if (panDrag.current?.pointerId !== event.pointerId) return;
-    panDrag.current = null;
-    event.currentTarget.releasePointerCapture(event.pointerId);
-  }
-
   useEffect(() => {
     setDraftGraph(cloneExecGraph(graph));
     setDraftBaseGraphHash(baseGraphHash);
@@ -1701,7 +1728,6 @@ function ScillmExecGraphDebuggerView({
   useEffect(() => {
     if (activeGraph.nodes.some((node) => node.id === selectedId)) return;
     setSelectedId("");
-    setInspectorOpen(false);
   }, [activeGraph.nodes, selectedId]);
 
   useEffect(() => {
@@ -1927,28 +1953,47 @@ function ScillmExecGraphDebuggerView({
   return (
     <section className="scillm-exec-debugger" data-qid="scillm-exec-graph:debugger" aria-label="scillm exec graph debugger">
       <style>{execGraphDebuggerCss}</style>
-      <div style={{ display: "grid", gridTemplateRows: "auto minmax(360px, 1fr) auto", alignContent: "start", minWidth: 0, minHeight: 0 }}>
-        <header style={{ padding: 16, background: "var(--exec-panel, #151923)", borderBottom: "1px solid var(--exec-border, rgba(255,255,255,0.14))" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-            <div>
-              <div style={{ color: dimColor, fontSize: 12, letterSpacing: 0, textTransform: "uppercase" }}>scillm exec graph</div>
-              <h2 style={{ margin: "4px 0 0", fontSize: 18 }}>{graph.graph_id}</h2>
-              <div data-qid="scillm-exec-graph:live-status" title={statusTitle} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, minHeight: 24, color: connection.state === "error" ? "var(--exec-failed, #ef4444)" : dimColor, fontSize: 12, flexWrap: "wrap" }}>
+      <div style={{ display: "grid", gridTemplateRows: "auto minmax(560px, 1fr) auto", alignContent: "start", minWidth: 0, minHeight: 0 }}>
+        <header className="exec-workbench-header">
+          <div className="exec-workbench-header-row">
+            <div className="exec-workbench-title">
+              <div style={{ color: dimColor, fontSize: 11, letterSpacing: 0 }}>Current run</div>
+              <div data-qid="scillm-exec-graph:live-status" title={statusTitle} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3, minHeight: 22, color: connection.state === "error" ? "var(--exec-failed, #ef4444)" : dimColor, fontSize: 12, flexWrap: "wrap" }}>
                 <span aria-hidden style={{ width: 8, height: 8, borderRadius: 999, background: summary.requiredFailed > 0 ? "var(--exec-failed, #ef4444)" : summary.optionalFailed > 0 ? "var(--exec-warning, #facc15)" : connection.state === "live" ? "var(--exec-passed, #22c55e)" : connection.state === "error" ? "var(--exec-failed, #ef4444)" : "var(--exec-running, #f59e0b)" }} />
                 <strong style={{ color: connection.state === "error" ? "var(--exec-failed, #ef4444)" : "var(--exec-text, #e5e7eb)", fontWeight: 600 }}>Lifecycle: {titleCase(summary.lifecycle)}</strong>
                 <strong style={{ color: summary.requiredFailed > 0 ? "var(--exec-failed, #ef4444)" : summary.optionalFailed > 0 ? "var(--exec-warning, #facc15)" : "var(--exec-passed, #22c55e)", fontWeight: 600 }}>{verdict.label}: {verdict.text}</strong>
                 <span className={summary.requiredFailed > 0 ? "exec-verdict-impact exec-verdict-impact-failed" : "exec-verdict-impact"}>{runImpact(summary)}</span>
+                <span className="exec-run-id-pill" title={graph.graph_id}>{graph.graph_id}</span>
                 {connection.error ? <span style={{ color: "var(--exec-failed, #ef4444)", maxWidth: 420, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{connection.error}</span> : null}
               </div>
-              {connection.updated_at ? <div style={{ marginTop: 4, color: dimColor, fontSize: 12 }}>{isCompleted ? "UI last refreshed at" : "Auto-refresh checked at"} {formatTimestamp(connection.updated_at)}</div> : null}
             </div>
-            <div className="exec-controls-cluster" aria-describedby={liveControlsReasonId}>
+            <div className="exec-workbench-actions">
+              <div className="exec-primary-mode-row" data-qid="scillm-exec-graph:primary-modes" role="tablist" aria-label="DAG workbench mode">
+                {(["build", "run", "debug"] as DagMode[]).map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={productMode === item ? "exec-primary-mode exec-primary-mode-active" : "exec-primary-mode"}
+                    data-qid={`scillm-exec-graph:primary-mode:${item}`}
+                    data-qs-action={`SCILLM_EXEC_PRIMARY_MODE_${item.toUpperCase()}`}
+                    role="tab"
+                    aria-selected={productMode === item}
+                    title={item === "build" ? "Edit the DAG with the inspector" : item === "run" ? "View run status while keeping the DAG visible" : "Open advanced evidence and JSON details"}
+                    onClick={() => setPrimaryMode(item)}
+                  >
+                    <b>{item === "build" ? "DAG" : item === "run" ? "Run" : "JSON"}</b>
+                    <span>{item === "build" ? "view/edit" : item === "run" ? "status" : "escape hatch"}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="exec-controls-cluster" aria-describedby={liveControlsReasonId}>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
                 <button
                   className="exec-control-button exec-control-button-compact"
                   type="button"
                   data-qid="scillm-exec-graph:runtime:pause-graph"
                   data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_GRAPH"
+                  title="Pause graph scheduling"
                   disabled={runtimeControlsDisabled}
                   aria-disabled={runtimeControlsDisabled}
                   onClick={() => void dispatchRuntimeAction({ action: "pause", target: "graph", reason: "Pause graph scheduling from DAG viewer." })}
@@ -1960,6 +2005,7 @@ function ScillmExecGraphDebuggerView({
                   type="button"
                   data-qid="scillm-exec-graph:runtime:resume-graph"
                   data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_GRAPH"
+                  title="Resume graph scheduling"
                   disabled={runtimeControlsDisabled}
                   aria-disabled={runtimeControlsDisabled}
                   onClick={() => void dispatchRuntimeAction({ action: "resume", target: "graph", reason: "Resume graph scheduling from DAG viewer." })}
@@ -1971,6 +2017,7 @@ function ScillmExecGraphDebuggerView({
                   type="button"
                   data-qid="scillm-exec-graph:runtime:stop-graph"
                   data-qs-action="SCILLM_EXEC_RUNTIME_STOP_GRAPH"
+                  title="Stop graph run"
                   disabled={runtimeControlsDisabled}
                   aria-disabled={runtimeControlsDisabled}
                   onClick={() => void dispatchRuntimeAction({ action: "stop", target: "graph", reason: "Stop graph run from DAG viewer." })}
@@ -1982,43 +2029,29 @@ function ScillmExecGraphDebuggerView({
                 {runtimeControlsReason || runtimeActionState.message || runtimeActionSummary}
               </div>
             </div>
-          </div>
-          <p style={{ margin: "8px 0 0", color: dimColor, fontSize: 13, lineHeight: 1.45 }}>{graph.graph_goal}</p>
-          <div className="exec-primary-mode-row" data-qid="scillm-exec-graph:primary-modes">
-            {(["build", "run", "debug"] as DagMode[]).map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={productMode === item ? "exec-primary-mode exec-primary-mode-active" : "exec-primary-mode"}
-                data-qid={`scillm-exec-graph:primary-mode:${item}`}
-                data-qs-action={`SCILLM_EXEC_PRIMARY_MODE_${item.toUpperCase()}`}
-                title={item === "build" ? "Edit a draft amendment without mutating active execution" : item === "run" ? "Inspect committed/materialized runtime evidence" : "Inspect evidence, artifacts, logs, prompts, and replay context"}
-                onClick={() => setPrimaryMode(item)}
-              >
-                <b>{titleCase(item)}</b>
-                <span>{item === "build" ? "draft amendments" : item === "run" ? "read-only runtime" : "evidence trace"}</span>
-              </button>
-            ))}
-          </div>
-          <div className="exec-execution-strip" data-qid="scillm-exec-graph:execution-strip">
-            <ExecutionStripGroup label="Running" values={dagViewModel.execution.running} empty="—" tone="running" />
-            <ExecutionStripGroup label="Previous" values={dagViewModel.execution.previous} empty="—" />
-            <ExecutionStripGroup label="Next" values={dagViewModel.execution.queued} empty="—" />
-            <ExecutionStripGroup label="Blocked" values={[...dagViewModel.execution.gated, ...dagViewModel.execution.blocked]} empty="—" tone="failed" />
-          </div>
-          <div className="exec-view-model-strip" data-qid="scillm-exec-graph:view-model-contract">
-            <span><b>View model</b>{dagViewModel.executableNodes.length} executable nodes · {dagViewModel.executableEdges.length} executable edges</span>
-            <span><b>Render-only</b>{dagViewModel.layout.syntheticNodes.length} goal · {dagViewModel.lanes.length} lanes · {dagViewModel.rounds.length} round</span>
-            <span><b>Draft</b>{dagViewModel.draft ? `${dagViewModel.draft.operations.length} operations · ${dagViewModel.draft.status}` : "no semantic draft"}</span>
-            <span className={dagViewModel.draft?.staleBaseGraph ? "exec-view-model-stale" : undefined}><b>Base hash</b>{baseGraphHash.slice(0, 12)}{dagViewModel.draft?.staleBaseGraph ? " · stale draft" : ""}</span>
+            </div>
           </div>
           {dagViewModel.draft?.staleBaseGraph ? (
             <div className="exec-stale-base-warning" data-qid="scillm-exec-graph:stale-base-warning">
               Base graph hash changed since this draft was created. Save is blocked until the DAG snapshot is refreshed or the draft is rebased.
             </div>
           ) : null}
-          {enablePlanEditing ? (
-            <div className="exec-mode-row" data-qid="scillm-exec-graph:mode-tabs">
+          <details className="exec-meta-drawer">
+            <summary>Run details, validation, and advanced graph metadata</summary>
+            <div className="exec-execution-strip" data-qid="scillm-exec-graph:execution-strip">
+              <ExecutionStripGroup label="Running" values={dagViewModel.execution.running} empty="—" tone="running" />
+              <ExecutionStripGroup label="Previous" values={dagViewModel.execution.previous} empty="—" />
+              <ExecutionStripGroup label="Next" values={dagViewModel.execution.queued} empty="—" />
+              <ExecutionStripGroup label="Blocked" values={[...dagViewModel.execution.gated, ...dagViewModel.execution.blocked]} empty="—" tone="failed" />
+            </div>
+            <div className="exec-view-model-strip" data-qid="scillm-exec-graph:view-model-contract">
+              <span><b>View model</b>{dagViewModel.executableNodes.length} executable nodes · {dagViewModel.executableEdges.length} executable edges</span>
+              <span><b>Render-only</b>{dagViewModel.layout.syntheticNodes.length} goal · {dagViewModel.lanes.length} lanes · {dagViewModel.rounds.length ? `${dagViewModel.rounds.length} observed round${dagViewModel.rounds.length === 1 ? "" : "s"}` : "no declared rounds"}</span>
+              <span><b>Draft</b>{dagViewModel.draft ? `${dagViewModel.draft.operations.length} operations · ${dagViewModel.draft.status}` : "no semantic draft"}</span>
+              <span className={dagViewModel.draft?.staleBaseGraph ? "exec-view-model-stale" : undefined}><b>Base hash</b>{baseGraphHash.slice(0, 12)}{dagViewModel.draft?.staleBaseGraph ? " · stale draft" : ""}</span>
+            </div>
+            {enablePlanEditing ? (
+              <div className="exec-mode-row" data-qid="scillm-exec-graph:mode-tabs">
               <div className="exec-mode-tabs" role="tablist" aria-label="DAG debugger mode">
                 <button type="button" className={mode === "evidence" ? "exec-mode-tab exec-mode-tab-active" : "exec-mode-tab"} role="tab" aria-selected={mode === "evidence"} data-qid="scillm-exec-graph:mode:evidence" data-qs-action="SCILLM_EXEC_GRAPH_MODE_EVIDENCE" title="Show immutable execution evidence" onClick={() => setMode("evidence")}>Evidence</button>
                 <button type="button" className={mode === "plan_edit" ? "exec-mode-tab exec-mode-tab-active" : "exec-mode-tab"} role="tab" aria-selected={mode === "plan_edit"} data-qid="scillm-exec-graph:mode:plan-edit" data-qs-action="SCILLM_EXEC_GRAPH_MODE_PLAN_EDIT" title={planDirty ? "Show draft plan editor; unsaved draft changes exist" : "Show draft plan editor"} onClick={() => setMode("plan_edit")}>Plan edit{planDirty ? " *" : ""}</button>
@@ -2032,59 +2065,60 @@ function ScillmExecGraphDebuggerView({
               </span>
               {mode === "evidence" ? <span className="exec-plan-chip exec-plan-chip-readonly">Read-only evidence</span> : null}
             </div>
-          ) : null}
-          <div data-qid="scillm-exec-graph:run-summary" title="Run result summary" style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
-            <span className="exec-summary-label">Summary</span>
-            <span className="exec-summary-chip exec-summary-chip-passed">{summary.passed} passed</span>
-            {summary.optionalFailed ? (
-              <>
-                <span className="exec-summary-chip exec-summary-chip-warning">{summary.optionalFailed} optional failed</span>
-                <button className="exec-summary-action-button" type="button" data-qid="scillm-exec-graph:summary:optional-failed" data-qs-action="SCILLM_EXEC_GRAPH_SELECT_OPTIONAL_FAILURE" title="Focus optional failure node" aria-label={`Focus optional failure node${summary.optionalFailed === 1 ? "" : "s"}`} onClick={() => {
-                  if (firstOptionalFailed) selectNode(firstOptionalFailed.id);
-                }}>Focus optional failure</button>
-              </>
             ) : null}
-            {summary.requiredFailed ? <span className="exec-summary-chip exec-summary-chip-failed">{summary.requiredFailed} required failed</span> : null}
-            <span className="exec-summary-chip">{summary.running} running</span>
-          </div>
+            <div data-qid="scillm-exec-graph:run-summary" title="Run result summary" style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
+              <span className="exec-summary-label">Summary</span>
+              <span className="exec-summary-chip exec-summary-chip-passed">{summary.passed} passed</span>
+              {summary.optionalFailed ? (
+                <>
+                  <span className="exec-summary-chip exec-summary-chip-warning">{summary.optionalFailed} optional failed</span>
+                  <button className="exec-summary-action-button" type="button" data-qid="scillm-exec-graph:summary:optional-failed" data-qs-action="SCILLM_EXEC_GRAPH_SELECT_OPTIONAL_FAILURE" title="Focus optional failure node" aria-label={`Focus optional failure node${summary.optionalFailed === 1 ? "" : "s"}`} onClick={() => {
+                    if (firstOptionalFailed) selectNode(firstOptionalFailed.id);
+                  }}>Focus optional failure</button>
+                </>
+              ) : null}
+              {summary.requiredFailed ? <span className="exec-summary-chip exec-summary-chip-failed">{summary.requiredFailed} required failed</span> : null}
+              <span className="exec-summary-chip">{summary.running} running</span>
+            </div>
+          </details>
         </header>
 
-        <div
-          ref={ref}
-          data-qid="scillm-exec-graph:canvas"
-          title="Execution graph canvas"
-          style={{ minHeight: 0, position: "relative" }}
-        >
-          <div className="exec-canvas-toolbar" data-qid="scillm-exec-graph:canvas:toolbar" aria-label="Graph viewport controls">
-            <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:zoom-in" data-qs-action="SCILLM_EXEC_CANVAS_ZOOM_IN" title="Zoom in" onClick={viewportControls.zoomIn}><ZoomIn size={15} /></button>
-            <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:zoom-out" data-qs-action="SCILLM_EXEC_CANVAS_ZOOM_OUT" title="Zoom out" onClick={viewportControls.zoomOut}><ZoomOut size={15} /></button>
-            <button type="button" className={followExecution ? "exec-canvas-tool-button exec-canvas-tool-button-active" : "exec-canvas-tool-button"} data-qid="scillm-exec-graph:canvas:follow-current" data-qs-action="SCILLM_EXEC_CANVAS_FOLLOW_CURRENT" title={currentExecutionNodeId ? `${followExecution ? "Following" : "Follow"} current node: ${currentExecutionNodeId}` : "Follow current execution node"} onClick={viewportControls.follow}><LocateFixed size={15} /></button>
-            <button type="button" className={safeViewport.panMode ? "exec-canvas-tool-button exec-canvas-tool-button-active" : "exec-canvas-tool-button"} data-qid="scillm-exec-graph:canvas:pan" data-qs-action="SCILLM_EXEC_CANVAS_TOGGLE_PAN" title={safeViewport.panMode ? "Move mode on: drag the graph to pan" : "Move graph"} onClick={viewportControls.togglePan}><Move size={15} /></button>
-            <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:fit" data-qs-action="SCILLM_EXEC_CANVAS_FIT" title="Fit graph" onClick={viewportControls.fit}><Maximize2 size={15} /></button>
-            <span className="exec-canvas-zoom-label">{Math.round(safeViewport.zoom * 100)}%</span>
+        <div className="exec-graph-workbench">
+          <div
+            ref={ref}
+            className="exec-graph-canvas-stage"
+            data-qid="scillm-exec-graph:canvas"
+            title="Execution graph canvas"
+          >
+          <div className="exec-canvas-chrome">
+            <div className="exec-canvas-toolbar" data-qid="scillm-exec-graph:canvas:toolbar" aria-label="Graph viewport controls">
+              <button type="button" className={followExecution ? "exec-canvas-tool-button exec-canvas-tool-button-active" : "exec-canvas-tool-button"} data-qid="scillm-exec-graph:canvas:follow-current" data-qs-action="SCILLM_EXEC_CANVAS_FOLLOW_CURRENT" title={currentExecutionNodeId ? `${followExecution ? "Following" : "Follow"} current node: ${currentExecutionNodeId}` : "Follow current execution node"} onClick={viewportControls.follow}><LocateFixed size={15} /></button>
+              <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:canvas:fit" data-qs-action="SCILLM_EXEC_CANVAS_FIT" title="Reset graph view" onClick={viewportControls.fit}><Maximize2 size={15} /></button>
+              <span className="exec-canvas-zoom-label">Fixed map</span>
           </div>
-          <div className="exec-canvas-legend">{mode === "evidence" ? "Evidence edges" : "Draft dependencies"} <span aria-hidden>→</span></div>
-          <div className="exec-canvas-keyboard-hint">Keyboard: Tab to a node, arrows move selection, Enter or Space inspects.</div>
-          {!selected ? (
-            <aside className="exec-node-empty-pane" data-qid="scillm-exec-graph:node-inspector:empty">
-              <strong>Select a node to inspect and edit</strong>
-              <span>Click any node in the graph to open metadata, draft actions, dependencies, and evidence for that node.</span>
-            </aside>
-          ) : null}
+            <div className="exec-canvas-legend">{mode === "evidence" ? "Evidence edges" : "Draft dependencies"} <span aria-hidden>→</span></div>
+            <div className="exec-state-legend" aria-label="Node status colors">
+              {(["passed", "running", "pending", "failed", "skipped"] as ExecNodeState[]).map((item) => (
+                <span key={item} className={`exec-state-sample exec-state-sample-${item}`}><i aria-hidden style={{ background: stateColor[item] }} />{stateLabel[item]}</span>
+              ))}
+            </div>
+          </div>
+          <div className="exec-canvas-scroll">
           <svg
             role="img"
             aria-label={mode === "evidence" ? "Live scillm exec DAG" : "Draft scillm exec DAG"}
-            viewBox={`${safeViewport.offsetX} ${safeViewport.offsetY} ${viewBoxWidth} ${viewBoxHeight}`}
-            preserveAspectRatio="xMidYMid meet"
-            data-pan-mode={safeViewport.panMode ? "true" : "false"}
-            onPointerDown={handleCanvasPointerDown}
-            onPointerMove={handleCanvasPointerMove}
-            onPointerUp={handleCanvasPointerUp}
-            onPointerCancel={handleCanvasPointerUp}
+            viewBox={`0 0 ${canvasSize.width} ${canvasSize.height}`}
+            width={canvasSize.width}
+            height={canvasSize.height}
+            preserveAspectRatio="xMidYMin meet"
+            data-pan-mode="false"
             onClick={clearSelection}
-            style={{ display: "block", width: "100%", height: "100%", cursor: safeViewport.panMode ? "grab" : "default" }}
+            style={{ display: "block", cursor: "default" }}
           >
-            <defs><marker id="exec-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--exec-dim, #94a3b8)" /></marker></defs>
+            <defs>
+              <marker id="exec-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--exec-dim, #94a3b8)" /></marker>
+              <marker id="exec-arrow-selected" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--exec-selected-ring, #4a9eff)" /></marker>
+            </defs>
             <g aria-hidden="true">{bands.map((band) => (
               <g key={band.id}>
                 <rect className="exec-round-band" x={band.x} y={band.y} width={band.width} height={band.height} rx="28" />
@@ -2095,9 +2129,13 @@ function ScillmExecGraphDebuggerView({
             <g aria-hidden="true">{labels.map((label) => (
               <text key={label.id} className="exec-lane-label" x={label.x} y={label.y}>{label.text}</text>
             ))}</g>
-            <g aria-hidden="true">{edges.map((edge) => {
+            <g aria-hidden="true">{[...edges].sort((a, b) => {
+              const aSelected = a.source.id === selected?.id || a.target.id === selected?.id;
+              const bSelected = b.source.id === selected?.id || b.target.id === selected?.id;
+              return Number(aSelected) - Number(bSelected);
+            }).map((edge) => {
               const selectedEdge = edge.source.id === selected?.id || edge.target.id === selected?.id;
-              return <path key={edge.id} d={edge.path} fill="none" stroke={selectedEdge ? "var(--exec-selected-ring, #22d3ee)" : "var(--exec-edge, #6b7280)"} strokeWidth={selectedEdge ? 2.5 : 1.75} opacity={selectedEdge ? 0.95 : 0.72} markerEnd="url(#exec-arrow)" />;
+              return <path key={edge.id} d={edge.path} fill="none" stroke={selectedEdge ? "var(--exec-selected-ring, #4a9eff)" : "var(--exec-edge, #6b7280)"} strokeWidth={selectedEdge ? 2.75 : 1.75} opacity={selectedEdge ? 1 : 0.72} markerEnd={selectedEdge ? "url(#exec-arrow-selected)" : "url(#exec-arrow)"} />;
             })}</g>
             <g>{nodes.map((node, index) => {
               const nodeIssues = mode === "evidence" ? [] : planValidation.issues.filter((issue) => issue.node_id === node.id);
@@ -2107,9 +2145,44 @@ function ScillmExecGraphDebuggerView({
             }} />;
             })}</g>
           </svg>
+          </div>
+          </div>
+          <aside className="exec-node-inspector-workbench" data-qid="scillm-exec-graph:node-inspector">
+            {selected ? (
+              <Inspector
+                node={selected}
+                state={activeStates[selected.id] ?? "pending"}
+                result={selectedResult}
+                optional={isOptionalNode(selected, selectedResult)}
+                onSelectNode={selectNode}
+                mode={mode}
+                allNodes={activeGraph.nodes}
+                validation={planValidation}
+                diff={planDiff}
+                runtimeReadinessNode={mode === "evidence" ? undefined : draftRuntimeReadiness.nodes.find((report) => report.node_id === selected.id)}
+                onUpdateNode={mode === "plan_edit" ? (fields) => patchDraft({ op: "update_node", node_id: selected.id, fields }) : undefined}
+                onAddDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "add_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
+                onRemoveDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "remove_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
+                availableModels={availableModels}
+                reviewCatalog={reviewCatalog}
+                onSaveReviewCatalogEntry={onSaveReviewCatalogEntry}
+                status={status}
+              />
+            ) : (
+              <div className="exec-node-empty-pane" data-qid="scillm-exec-graph:node-inspector:empty">
+                <strong>Select a node</strong>
+                <span>The inspector stays here and updates in place when graph selection changes.</span>
+              </div>
+            )}
+          </aside>
         </div>
 
-        <footer style={{ padding: 12, background: "var(--exec-panel, #151923)", borderTop: "1px solid var(--exec-border, rgba(255,255,255,0.14))" }}>
+        <footer className="exec-bottom-drawer-wrap">
+          <details className="exec-bottom-drawer">
+            <summary>
+              <span>Events and draft tools</span>
+              <span>{visibleEvents.length} of {filteredEvents.length} events · {activeGraph.nodes.length} nodes</span>
+            </summary>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 14, color: "var(--exec-dim-contrast)", fontSize: 13, lineHeight: "18px", fontWeight: 600, marginBottom: 10, flexWrap: "wrap" }}>
             <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
               <span>Recent events · time UTC; full timestamp on hover</span>
@@ -2230,63 +2303,10 @@ function ScillmExecGraphDebuggerView({
               <span>{event.node_id ? `${event.node_id}${event.text ? ` · ${event.text}` : ""}` : event.text ?? "system"}</span>
             </button>
           );})}</div>
+          </details>
         </footer>
       </div>
 
-      {selected && !inspectorOpen ? (
-        <button
-          type="button"
-          className="exec-inspector-reopen"
-          data-qid="scillm-exec-graph:node-inspector:open"
-          title="Open node inspector"
-          onClick={() => setInspectorOpen(true)}
-        >
-          Node Inspector
-        </button>
-      ) : null}
-
-      {selected ? (
-      <aside
-        data-qid="scillm-exec-graph:node-inspector"
-        data-open={inspectorOpen ? "true" : "false"}
-        className="exec-node-inspector-slideout"
-        aria-hidden={!inspectorOpen}
-      >
-        <div className="exec-node-inspector-bar">
-          <span>Node Inspector</span>
-          <button type="button" className="exec-canvas-tool-button" data-qid="scillm-exec-graph:node-inspector:close" data-qs-action="SCILLM_EXEC_NODE_INSPECTOR_CLOSE" title="Close node inspector" onClick={() => setInspectorOpen(false)}>
-            <X size={15} />
-          </button>
-        </div>
-        <Inspector
-            node={selected}
-            state={activeStates[selected.id] ?? "pending"}
-            result={selectedResult}
-            optional={isOptionalNode(selected, selectedResult)}
-            onSelectNode={selectNode}
-            mode={mode}
-            allNodes={activeGraph.nodes}
-            validation={planValidation}
-            diff={planDiff}
-            runtimeReadinessNode={mode === "evidence" ? undefined : draftRuntimeReadiness.nodes.find((report) => report.node_id === selected.id)}
-            onUpdateNode={mode === "plan_edit" ? (fields) => patchDraft({ op: "update_node", node_id: selected.id, fields }) : undefined}
-            onAddDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "add_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
-            onRemoveDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "remove_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
-            onAddChild={mode === "plan_edit" ? () => addDraftNode("child", selected) : undefined}
-            onAddSibling={mode === "plan_edit" ? () => addDraftNode("sibling", selected) : undefined}
-            onAddGate={mode === "plan_edit" ? () => addDraftNode("gate", selected) : undefined}
-            onDisableNode={mode === "plan_edit" ? () => markCommittedNode("disabled", selected) : undefined}
-            onArchiveNode={mode === "plan_edit" ? () => markCommittedNode("archived", selected) : undefined}
-            availableModels={availableModels}
-            reviewCatalog={reviewCatalog}
-            onSaveReviewCatalogEntry={onSaveReviewCatalogEntry}
-            status={status}
-            runTerminal={isTerminal}
-            onRuntimeAction={onRuntimeAction ? dispatchRuntimeAction : undefined}
-            runtimeActionState={runtimeActionState}
-          />
-      </aside>
-      ) : null}
     </section>
   );
 }
@@ -2325,16 +2345,18 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
   const hasValidationIssue = validationIssues.length > 0;
   const blockingCount = validationIssues.filter((issue) => issue.severity === "blocking").length;
   const draftOnly = Boolean(node.metadata?.draft_only || node.metadata?.amendment_state);
-  const optionalBorder = optional ? "2px dashed var(--exec-optional-border, #9ca35a)" : `2px solid ${stateColor[node.state]}`;
+  const optionalBorder = optional ? "2px solid rgba(184,194,214,0.54)" : `2px solid ${stateColor[node.state]}`;
   const validationBorder = hasBlockingIssue ? "3px solid var(--exec-failed, #ef4444)" : hasValidationIssue ? "2px dashed var(--exec-warning, #facc15)" : optionalBorder;
   const nodeClassName = [
     "exec-node-button",
+    `exec-node-button-${node.state}`,
     selected ? "exec-node-button-selected" : "",
     hasBlockingIssue ? "exec-node-button-blocking" : "",
   ].filter(Boolean).join(" ");
 
+  const label = nodeDisplayLabel(node);
   return (
-    <foreignObject x={node.x - nodeWidth / 2 - 8} y={node.y - nodeHeight / 2 - 8} width={nodeWidth + 16} height={nodeHeight + 16}>
+    <foreignObject x={node.x - nodeWidth / 2 - 4} y={node.y - nodeHeight / 2 - 4} width={nodeWidth + 8} height={nodeHeight + 8}>
       <button
         className={nodeClassName}
         data-qid={`scillm-exec-graph:node:${node.id}`}
@@ -2358,27 +2380,25 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
         }}
         style={{
           width: `${nodeWidth}px`,
-          minHeight: `${nodeHeight}px`,
+          height: `${nodeHeight}px`,
           boxSizing: "border-box",
-          borderRadius: 8,
-          border: validationBorder,
-          background: "var(--exec-card, #1c2230)",
+          borderRadius: 12,
+          border: selected ? "2px solid rgba(255,255,255,0.36)" : validationBorder,
+          background: selected ? "rgba(255, 255, 255, 0.055)" : "var(--exec-card, #1c2230)",
           color: "var(--exec-text, #e5e7eb)",
           cursor: "pointer",
           display: "grid",
-          gridTemplateColumns: "18px minmax(0, 1fr)",
-          gridTemplateRows: "auto auto",
+          gridTemplateColumns: "12px minmax(0, 1fr) auto",
           alignItems: "center",
           columnGap: 8,
-          rowGap: 6,
-          padding: "11px 12px",
+          padding: "0 8px",
           textAlign: "left",
           font: "inherit",
         }}
       >
-        {hasBlockingIssue ? <span className="exec-node-blocking-icon" aria-hidden>!</span> : <span aria-hidden style={{ gridRow: "1 / span 2", width: 12, height: 12, borderRadius: 999, background: stateColor[node.state] }} />}
-        <span style={{ minWidth: 0, whiteSpace: "normal", overflowWrap: "anywhere", fontSize: 13, lineHeight: "16px", fontWeight: 800 }}>{node.id}</span>
-        <span className={optional && node.state === "failed" ? "exec-node-status exec-node-status-warning" : "exec-node-status"}>{statusText}</span>
+        {hasBlockingIssue ? <span className="exec-node-blocking-icon" aria-hidden>!</span> : <span aria-hidden style={{ width: 9, height: 9, borderRadius: 999, background: stateColor[node.state] }} />}
+        <span style={{ minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12, lineHeight: "16px", fontWeight: 800 }}>{label}</span>
+        <span className={optional && node.state === "failed" ? "exec-node-status exec-node-status-warning" : `exec-node-status exec-node-status-${node.state}`}>{statusText}</span>
         {draftOnly ? <span className="exec-node-optional-badge">draft</span> : null}
       </button>
     </foreignObject>
@@ -2399,18 +2419,10 @@ function Inspector({
   onUpdateNode,
   onAddDependency,
   onRemoveDependency,
-  onAddChild,
-  onAddSibling,
-  onAddGate,
-  onDisableNode,
-  onArchiveNode,
   availableModels,
   reviewCatalog,
   onSaveReviewCatalogEntry,
   status,
-  runTerminal = false,
-  onRuntimeAction,
-  runtimeActionState,
 }: {
   node: ExecGraphNode;
   state: ExecNodeState;
@@ -2425,18 +2437,10 @@ function Inspector({
   onUpdateNode?: (fields: Partial<ExecGraphNode>) => void;
   onAddDependency?: (nodeId: string) => void;
   onRemoveDependency?: (nodeId: string) => void;
-  onAddChild?: () => void;
-  onAddSibling?: () => void;
-  onAddGate?: () => void;
-  onDisableNode?: () => void;
-  onArchiveNode?: () => void;
   availableModels?: string[];
   reviewCatalog?: ReviewCatalog;
   onSaveReviewCatalogEntry?: SaveReviewCatalogEntryHandler;
   status?: ExecStatus;
-  runTerminal?: boolean;
-  onRuntimeAction?: RuntimeActionHandler;
-  runtimeActionState?: RuntimeActionUiState;
 }) {
   useRegisterAction("scillm-exec-graph:plan-edit:goal", { app: "scillm", action: "SCILLM_EXEC_PLAN_EDIT_GOAL", label: "Edit node goal" });
   useRegisterAction("scillm-exec-graph:plan-edit:type", { app: "scillm", action: "SCILLM_EXEC_PLAN_EDIT_TYPE", label: "Edit node type" });
@@ -2461,14 +2465,6 @@ function Inspector({
   useRegisterAction("scillm-exec-graph:plan-edit:add-gate", { app: "scillm", action: "SCILLM_EXEC_PLAN_ADD_GATE", label: "Add gate node" });
   useRegisterAction("scillm-exec-graph:plan-edit:disable-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_DISABLE_NODE", label: "Disable node" });
   useRegisterAction("scillm-exec-graph:plan-edit:archive-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_ARCHIVE_NODE", label: "Archive node" });
-  useRegisterAction("scillm-exec-graph:runtime:pause-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_PAUSE_NODE", label: "Pause node" });
-  useRegisterAction("scillm-exec-graph:runtime:resume-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_RESUME_NODE", label: "Resume node" });
-  useRegisterAction("scillm-exec-graph:runtime:disable-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_DISABLE_NODE", label: "Disable runtime node" });
-  useRegisterAction("scillm-exec-graph:runtime:pause-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_PAUSE_SUBTREE", label: "Pause subtree" });
-  useRegisterAction("scillm-exec-graph:runtime:resume-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_RESUME_SUBTREE", label: "Resume subtree" });
-  useRegisterAction("scillm-exec-graph:runtime:disable-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_DISABLE_SUBTREE", label: "Disable runtime subtree" });
-  useRegisterAction("scillm-exec-graph:runtime:stop-node", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_STOP_NODE", label: "Stop run from node" });
-  useRegisterAction("scillm-exec-graph:runtime:stop-subtree", { app: "scillm", action: "SCILLM_EXEC_RUNTIME_STOP_SUBTREE", label: "Stop run from subtree" });
   const [copied, setCopied] = useState(false);
   const [catalogSaveState, setCatalogSaveState] = useState<string>("");
   const [dependencyChoice, setDependencyChoice] = useState("");
@@ -2491,40 +2487,19 @@ function Inspector({
   const artifactLabelText = artifactLabel(artifactValue);
   const evidenceStatusText = evidenceStatus(result, optional);
   const modeContext = mode === "evidence" ? "Evidence node" : "Draft node";
-  const dataContext = mode === "evidence" ? "Read-only evidence" : "Last run evidence below";
+  const dataContext = mode === "evidence" ? "Read-only evidence" : "Evidence available below";
   const reviewScopes = node.review_scopes ?? [];
   const catalogAgents = reviewCatalogAgents(reviewCatalog);
   const catalogContracts = reviewCatalogContracts(reviewCatalog);
   const defaultCatalogContracts = reviewCatalogDefaultContractsForNode(node, reviewCatalog, allNodes ?? []);
   const topLevelModelChoices = modelChoices(availableModels, node.model);
   const scopeModelChoices = reviewScopeModelChoices(availableModels, reviewScopes);
-  const runningNodeIds = new Set(status?.running_node_ids ?? []);
-  const pausedNodeIds = new Set(status?.paused_node_ids ?? []);
-  const disabledNodeIds = new Set(status?.disabled_node_ids ?? []);
-  const subtreeIds = downstreamNodeIds(node.id, allNodes);
-  const runningSubtreeIds = subtreeIds.filter((nodeId) => runningNodeIds.has(nodeId));
-  const pausedSubtreeIds = subtreeIds.filter((nodeId) => pausedNodeIds.has(nodeId));
-  const nodeTerminal = ["passed", "failed", "skipped"].includes(state) || disabledNodeIds.has(node.id);
-  const nodeRunning = state === "running" || runningNodeIds.has(node.id);
-  const runtimeBusy = runtimeActionState?.status === "submitting";
-  const runtimeNodeActionDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || nodeRunning;
-  const runtimeResumeDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || !pausedNodeIds.has(node.id);
-  const runtimeSubtreeActionDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || runningSubtreeIds.length > 0;
-  const runtimeSubtreeResumeDisabled = !onRuntimeAction || runtimeBusy || runTerminal || nodeTerminal || pausedSubtreeIds.length === 0;
-  const runtimeStopDisabled = !onRuntimeAction || runtimeBusy || runTerminal;
-  const runtimeControlReason = !onRuntimeAction
-    ? "Live node/subtree controls require the backend action contract."
-    : runtimeBusy
-      ? "Runtime action is being submitted."
-      : runTerminal
-        ? "Runtime controls are closed because this run is terminal."
-        : nodeTerminal
-        ? "Runtime controls are closed because this node has terminal evidence."
-        : nodeRunning
-          ? "Running nodes cannot be paused or disabled; use graph stop to terminate active work."
-          : runningSubtreeIds.length
-            ? `Subtree contains running node(s): ${runningSubtreeIds.join(", ")}.`
-            : runtimeActionState?.message ?? "Node and subtree actions write runtime amendment evidence.";
+  const executionKind = executionKindLabel(node, runtimeReadinessNode);
+  const executionAdapter = runtimeReadinessNode?.adapter ?? stringMeta(node, ["adapter", "execution_adapter", "runtime_adapter"]) ?? "not declared";
+  const maxTries = retryBudgetLabel(node);
+  const callShape = executionCallShape(node);
+  const permissionProfile = stringMeta(node, ["permission_profile", "sandbox_profile", "profile"]) ?? stringMeta(node, ["sandbox", "profile"]) ?? "not declared";
+  const displayLabel = nodeDisplayLabel(node);
   function updateReviewScope(index: number, fields: Partial<ReviewScopeSpec>) {
     const next = reviewScopes.map((scope, scopeIndex) => scopeIndex === index ? { ...scope, ...fields } : { ...scope });
     onUpdateNode?.({ review_scopes: next });
@@ -2631,6 +2606,23 @@ function Inspector({
   function removeReviewScope(index: number) {
     onUpdateNode?.({ review_scopes: reviewScopes.filter((_, scopeIndex) => scopeIndex !== index) });
   }
+  function updateRetryBudget(value: string) {
+    const trimmed = value.trim();
+    onUpdateNode?.({
+      retry_policy: {
+        ...(node.retry_policy ?? {}),
+        max_tries: trimmed ? Number(trimmed) : undefined,
+      },
+    });
+  }
+  function updateMetadataField(field: string, value: string) {
+    onUpdateNode?.({
+      metadata: {
+        ...(node.metadata ?? {}),
+        [field]: value.trim() ? value : undefined,
+      },
+    });
+  }
   useEffect(() => {
     setDependencyChoice("");
   }, [node.id]);
@@ -2641,175 +2633,67 @@ function Inspector({
   }
 
   return (
-    <div style={{ padding: 16, display: "grid", gap: 16 }}>
+    <div className="exec-inspector-content">
       <div className="exec-inspector-header exec-inspector-sticky-summary">
-        <div style={{ color: dimColor, fontSize: 12, textTransform: "uppercase", letterSpacing: 0 }}>Node frame</div>
-        <h3 style={{ margin: "4px 0", fontSize: 18 }}>Selected node: {node.id}</h3>
+        <div style={{ color: dimColor, fontSize: 12, letterSpacing: 0 }}>Selected node</div>
+        <h3 style={{ margin: "4px 0", fontSize: 18 }}>{displayLabel}</h3>
         <div className="exec-mode-badge-row" aria-label="Inspector mode and data source">
+          <span className="exec-source-node-badge">{node.id}</span>
           <span className={mode === "evidence" ? "exec-readonly-node-badge" : "exec-draft-node-badge"}>{modeContext}</span>
           <span className="exec-source-node-badge">{dataContext}</span>
+          <span className="exec-source-node-badge">{executionKind}</span>
         </div>
         <span style={{ display: "inline-flex", gap: 8, alignItems: "center", fontSize: 12 }}><span aria-hidden style={{ width: 10, height: 10, borderRadius: 999, background: stateColor[state] }} />{optional && state === "failed" ? "Optional failed" : stateLabel[state]} · {node.type}</span>
-        <div className="exec-inspector-proof-summary">{optional && state === "failed" ? "Optional failure - Non-blocking - REQUIRED = no - Evidence absence allowed" : `${stateLabel[state]} - ${optional ? "Optional node" : "Required node"} - Inspector selection`}</div>
-        <div className="exec-compliance-summary-heading">Compliance summary</div>
-        <div className="exec-node-summary-grid">
-          <Info label="Impact" value={nodeImpact(optional, state)} />
-          <Info label="Required" value={optional ? "No" : "Yes"} />
-          <Info label={artifactLabelText} value={String(artifactValue ?? "Not reported")} />
-          <Info label="Output hash" value={outputHash.text}><EvidenceBadge tone={outputHash.tone} text={outputHash.text} /></Info>
-          <Info label="Evidence status" value={evidenceStatusText}><EvidenceBadge tone={optional ? "optional" : outputHash.tone} text={evidenceStatusText} /></Info>
-          <Info label="Plan issues" value={`${nodeBlockingIssues.length} blocking, ${nodeWarnings.length} warnings`}>
-            <span className={nodeBlockingIssues.length ? "exec-compliance-issue-badge exec-compliance-issue-badge-blocking" : nodeWarnings.length ? "exec-compliance-issue-badge exec-compliance-issue-badge-warning" : "exec-compliance-issue-badge"}>
-              {nodeBlockingIssues.length ? `${nodeBlockingIssues.length} blocking` : nodeWarnings.length ? `${nodeWarnings.length} warning${nodeWarnings.length === 1 ? "" : "s"}` : "No node issues"}
-            </span>
-          </Info>
-          <Info label="Draft diff" value={nodeDiffItems.length ? nodeDiffItems.map((item) => diffParticipationSummary(item, node.id)).join("; ") : "Not in current draft diff"}>
-            {nodeDiffItems.length ? (
-              <span className="exec-compliance-issue-badge">Participates in draft diff: {diffParticipationSummary(nodeDiffItems[0], node.id)}</span>
-            ) : (
-              <span className="exec-compliance-issue-badge">Not in current draft diff</span>
-            )}
-          </Info>
+        <div className="exec-inspector-evidence-summary" aria-label="Selected node evidence summary">
+          <span>Evidence</span>
+          <b>{evidenceStatusText}</b>
+          <span title={outputHash.text}>{compactEvidenceText(outputHash.text)}</span>
         </div>
       </div>
-      <Section title="Contract"><Info label="Goal" value={node.node_goal} /><Info label="Role" value={node.protocol_role ?? "worker"} /><Info label="Persona" value={node.persona_ref ?? "none"} /><Info label="Required" value={optional ? "no, optional node" : "yes"} /><Info label="Failure classification" value={optional && state === "failed" ? "Optional failure" : state === "failed" ? "Required failure" : "No failure"} /><Info label="Impact on run result" value={nodeImpact(optional, state)} /></Section>
-      <Section title="Runtime">
-        <div className="exec-build-quick-actions" data-qid="scillm-exec-graph:runtime:node-actions">
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:pause-node"
-            data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_NODE"
-            title={runtimeControlReason}
-            disabled={runtimeNodeActionDisabled}
-            aria-disabled={runtimeNodeActionDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "pause", target: "node", node_id: node.id, reason: `Pause node ${node.id} scheduling from DAG viewer.` })}
-          >
-            Pause node
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:resume-node"
-            data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_NODE"
-            title={runtimeControlReason}
-            disabled={runtimeResumeDisabled}
-            aria-disabled={runtimeResumeDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "resume", target: "node", node_id: node.id, reason: `Resume node ${node.id} scheduling from DAG viewer.` })}
-          >
-            Resume node
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:disable-node"
-            data-qs-action="SCILLM_EXEC_RUNTIME_DISABLE_NODE"
-            title={runtimeControlReason}
-            disabled={runtimeNodeActionDisabled}
-            aria-disabled={runtimeNodeActionDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "disable", target: "node", node_id: node.id, reason: `Disable pending node ${node.id} from DAG viewer.` })}
-          >
-            Disable node
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:pause-subtree"
-            data-qs-action="SCILLM_EXEC_RUNTIME_PAUSE_SUBTREE"
-            title={runtimeControlReason}
-            disabled={runtimeSubtreeActionDisabled}
-            aria-disabled={runtimeSubtreeActionDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "pause", target: "subtree", node_id: node.id, reason: `Pause pending subtree rooted at ${node.id} from DAG viewer.` })}
-          >
-            Pause subtree
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:resume-subtree"
-            data-qs-action="SCILLM_EXEC_RUNTIME_RESUME_SUBTREE"
-            title={runtimeControlReason}
-            disabled={runtimeSubtreeResumeDisabled}
-            aria-disabled={runtimeSubtreeResumeDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "resume", target: "subtree", node_id: node.id, reason: `Resume pending subtree rooted at ${node.id} from DAG viewer.` })}
-          >
-            Resume subtree
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:disable-subtree"
-            data-qs-action="SCILLM_EXEC_RUNTIME_DISABLE_SUBTREE"
-            title={runtimeControlReason}
-            disabled={runtimeSubtreeActionDisabled}
-            aria-disabled={runtimeSubtreeActionDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "disable", target: "subtree", node_id: node.id, reason: `Disable pending subtree rooted at ${node.id} from DAG viewer.` })}
-          >
-            Disable subtree
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact exec-control-button-danger"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:stop-node"
-            data-qs-action="SCILLM_EXEC_RUNTIME_STOP_NODE"
-            title="Stop cancels the active run and records selected-node provenance."
-            disabled={runtimeStopDisabled}
-            aria-disabled={runtimeStopDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "stop", target: "node", node_id: node.id, reason: `Stop active run from selected node ${node.id}.` })}
-          >
-            Stop from node
-          </button>
-          <button
-            className="exec-control-button exec-control-button-compact exec-control-button-danger"
-            type="button"
-            data-qid="scillm-exec-graph:runtime:stop-subtree"
-            data-qs-action="SCILLM_EXEC_RUNTIME_STOP_SUBTREE"
-            title="Stop cancels the active run and records selected-subtree provenance."
-            disabled={runtimeStopDisabled}
-            aria-disabled={runtimeStopDisabled}
-            onClick={() => void onRuntimeAction?.({ action: "stop", target: "subtree", node_id: node.id, reason: `Stop active run from subtree rooted at ${node.id}.` })}
-          >
-            Stop from subtree
-          </button>
-        </div>
-        <div className={runtimeActionState?.status === "error" ? "exec-controls-reason exec-controls-reason-error" : "exec-controls-reason"} style={{ textAlign: "left", maxWidth: "100%" }}>
-          {runtimeControlReason}
-        </div>
-        <Info label="Type" value={node.type} />
-        <Info label="Model" value={node.model ?? "default"} />
-        <Info label="Depends on" value={dependencies.length ? dependencies.join(", ") : "none"}>
-          {dependencies.length ? (
-            <span style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {dependencies.map((dependency) => (
-                <button key={dependency} className="exec-link-button" type="button" onClick={() => onSelectNode(dependency)} title={`Select dependency ${dependency}`}>{dependency}</button>
-              ))}
-            </span>
-          ) : null}
-        </Info>
-      </Section>
-      {mode === "plan_edit" ? (
-        <Section title="Plan edit">
-          <div className="exec-build-quick-actions" data-qid="scillm-exec-graph:plan-edit:quick-actions">
-            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-child" data-qs-action="SCILLM_EXEC_PLAN_ADD_CHILD" title="Create an unsaved draft child node that depends on this node" onClick={onAddChild}><SquarePlus size={14} />Add child</button>
-            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-sibling" data-qs-action="SCILLM_EXEC_PLAN_ADD_SIBLING" title="Create an unsaved draft sibling node with the same dependencies" onClick={onAddSibling}><GitBranchPlus size={14} />Add sibling</button>
-            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-gate" data-qs-action="SCILLM_EXEC_PLAN_ADD_GATE" title="Create an unsaved draft human approval gate after this node" onClick={onAddGate}><ShieldPlus size={14} />Add gate</button>
-            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:disable-node" data-qs-action="SCILLM_EXEC_PLAN_DISABLE_NODE" title="Mark this committed node disabled in the draft amendment; does not hard-delete execution evidence" disabled={Boolean(node.disabled)} aria-disabled={Boolean(node.disabled)} onClick={onDisableNode}>Disable</button>
-            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:archive-node" data-qs-action="SCILLM_EXEC_PLAN_ARCHIVE_NODE" title="Mark this committed node archived in the draft amendment; does not hard-delete execution evidence" disabled={Boolean(node.archived)} aria-disabled={Boolean(node.archived)} onClick={onArchiveNode}>Archive</button>
-          </div>
-          <div className="exec-plan-inline-help">These controls mutate only the local amendment draft. Run evidence stays read-only; approved amendments are applied from the Memory amendments list with provenance.</div>
-          <label className="exec-plan-field">
-            <span>Goal</span>
-            <textarea className="exec-plan-input exec-plan-textarea" data-qid="scillm-exec-graph:plan-edit:goal" data-qs-action="SCILLM_EXEC_PLAN_EDIT_GOAL" title="Edit selected node goal" value={node.node_goal} onChange={(event) => onUpdateNode?.({ node_goal: event.target.value })} />
-          </label>
-          <label className="exec-plan-field">
-            <span>Type</span>
-            <input className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:type" data-qs-action="SCILLM_EXEC_PLAN_EDIT_TYPE" title="Edit selected node type" value={node.type} onChange={(event) => onUpdateNode?.({ type: event.target.value })} />
-          </label>
-          <div className="exec-plan-sensitive-group">
-            <div className="exec-plan-subheading">AI model and compliance contract</div>
+      <Section title="Execution contract">
+        {onUpdateNode ? (
+          <>
+            <label className="exec-plan-field">
+              <span>Goal</span>
+              <textarea className="exec-plan-input exec-plan-textarea" data-qid="scillm-exec-graph:plan-edit:goal" data-qs-action="SCILLM_EXEC_PLAN_EDIT_GOAL" title="Edit selected node goal" value={node.node_goal} onChange={(event) => onUpdateNode({ node_goal: event.target.value })} />
+            </label>
+            <label className="exec-plan-field">
+              <span>Prompt</span>
+              <textarea className="exec-plan-input exec-plan-textarea" data-qid="scillm-exec-graph:plan-edit:prompt" data-qs-action="SCILLM_EXEC_PLAN_EDIT_PROMPT" title="Edit selected node prompt contract" value={node.prompt ?? ""} placeholder="No prompt declared for this node" onChange={(event) => onUpdateNode({ prompt: event.target.value || undefined })} />
+            </label>
+            <div className="exec-node-settings-grid exec-node-core-grid">
+              <label className="exec-plan-field">
+                <span>Execution</span>
+                <input className="exec-plan-input" value={executionKind} readOnly title="Derived from node type, adapter, persona, and metadata" />
+              </label>
+              <label className="exec-plan-field">
+                <span>Type</span>
+                <input className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:type" data-qs-action="SCILLM_EXEC_PLAN_EDIT_TYPE" title="Edit selected node type" value={node.type} onChange={(event) => onUpdateNode({ type: event.target.value })} />
+              </label>
+              <label className="exec-plan-field">
+                <span>Model</span>
+                <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:model" data-qs-action="SCILLM_EXEC_PLAN_EDIT_MODEL" title="Select selected node model" value={node.model ?? ""} onChange={(event) => onUpdateNode({ model: event.target.value || undefined })}>
+                  {topLevelModelChoices.map((option) => <option key={option || "default"} value={option}>{option || "default"}</option>)}
+                </select>
+              </label>
+              <label className="exec-plan-field">
+                <span>Max tries</span>
+                <input className="exec-plan-input" type="number" min={1} step={1} data-qid="scillm-exec-graph:plan-edit:max-tries" title="Retry budget. Actual rounds may be lower if the node succeeds early." value={String(unknownRecord(node.retry_policy)?.max_tries ?? unknownRecord(node.retry_policy)?.max_attempts ?? "")} placeholder="not declared" onChange={(event) => updateRetryBudget(event.target.value)} />
+              </label>
+              <label className="exec-plan-field">
+                <span>Template</span>
+                <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:template" title="Select template id for this node contract" value={node.template_id ?? ""} onChange={(event) => onUpdateNode({ template_id: event.target.value || undefined })}>
+                  <option value="">none</option>
+                  {node.template_id ? <option value={node.template_id}>{node.template_id}</option> : null}
+                </select>
+              </label>
+            <label className="exec-plan-field">
+              <span>Permission profile</span>
+              <input className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:permission-profile" title="Permission or sandbox profile used by this worker" value={permissionProfile === "not declared" ? "" : permissionProfile} placeholder="not declared" onChange={(event) => updateMetadataField("permission_profile", event.target.value)} />
+            </label>
             <label className="exec-plan-field">
               <span>Role</span>
-              <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:role" data-qs-action="SCILLM_EXEC_PLAN_EDIT_ROLE" title="Select verified protocol role" value={node.protocol_role ?? ""} onChange={(event) => onUpdateNode?.({ protocol_role: event.target.value })}>
+              <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:role" data-qs-action="SCILLM_EXEC_PLAN_EDIT_ROLE" title="Select verified protocol role" value={node.protocol_role ?? ""} onChange={(event) => onUpdateNode({ protocol_role: event.target.value || undefined })}>
                 <option value="">worker</option>
                 <option value="worker">worker</option>
                 <option value="reviewer">reviewer</option>
@@ -2817,26 +2701,78 @@ function Inspector({
                 <option value="planner">planner</option>
                 <option value="tool">tool</option>
               </select>
-              <span className="exec-plan-inline-help">Verified role controls how this node is reviewed and gated.</span>
             </label>
             <label className="exec-plan-field">
               <span>Persona</span>
-              <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:persona" data-qs-action="SCILLM_EXEC_PLAN_EDIT_PERSONA" title="Select review persona" value={node.persona_ref ?? ""} onChange={(event) => onUpdateNode?.({ persona_ref: event.target.value })}>
+              <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:persona" data-qs-action="SCILLM_EXEC_PLAN_EDIT_PERSONA" title="Select review persona" value={node.persona_ref ?? ""} onChange={(event) => onUpdateNode({ persona_ref: event.target.value || undefined })}>
                 <option value="">none</option>
                 <option value="nico-bailon">nico-bailon</option>
                 <option value="margaret-chen">margaret-chen</option>
                 <option value="brandon-bailey">brandon-bailey</option>
                 <option value="rob-armstrong">rob-armstrong</option>
               </select>
-              <span className="exec-plan-inline-help">Persona selection affects compliance and design review posture.</span>
             </label>
-            <label className="exec-plan-field">
-              <span>Model</span>
-              <select className="exec-plan-input" data-qid="scillm-exec-graph:plan-edit:model" data-qs-action="SCILLM_EXEC_PLAN_EDIT_MODEL" title="Select selected node model" value={node.model ?? ""} onChange={(event) => onUpdateNode?.({ model: event.target.value || undefined })}>
-                {topLevelModelChoices.map((option) => <option key={option || "default"} value={option}>{option || "default"}</option>)}
+          </div>
+          <div className="exec-plan-dependencies" data-qid="scillm-exec-graph:plan-edit:dependencies">
+            <div className="exec-info-label">Dependencies</div>
+            {dependencies.length ? (
+              <div className="exec-plan-list">
+                {dependencies.map((dependency) => (
+                  <span key={dependency} className="exec-plan-dependency-pill">
+                    <button className="exec-link-button" type="button" onClick={() => onSelectNode(dependency)}>{dependency}</button>
+                    <button className="exec-plan-remove-button" type="button" data-qid={`scillm-exec-graph:plan-edit:remove-dependency:${dependency}`} data-qs-action="SCILLM_EXEC_PLAN_REMOVE_DEPENDENCY" title={`Remove dependency ${dependency}`} onClick={() => onRemoveDependency?.(dependency)}>Remove</button>
+                  </span>
+                ))}
+              </div>
+            ) : <div className="exec-empty-state">No dependencies.</div>}
+            <div className="exec-plan-add-dependency">
+              <select className="exec-plan-input" value={dependencyChoice} data-qid="scillm-exec-graph:plan-edit:dependency-select" data-qs-action="SCILLM_EXEC_PLAN_SELECT_DEPENDENCY" title="Select dependency to add" onChange={(event) => setDependencyChoice(event.target.value)}>
+                <option value="">Select node</option>
+                {dependencyOptions.map((candidate) => <option key={candidate.node.id} value={candidate.node.id} disabled={Boolean(candidate.cyclePath)}>{candidate.node.id}{candidate.cyclePath ? " (would create cycle)" : ""}</option>)}
               </select>
-            </label>
-            {isReviewCodeNode(node) ? (
+              <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-dependency" data-qs-action="SCILLM_EXEC_PLAN_ADD_DEPENDENCY" title={selectedDependencyOption?.cyclePath ? `Would create cycle: ${selectedDependencyOption.cyclePath}` : dependencyChoice ? "Add selected dependency to draft" : "Select a dependency first"} disabled={!dependencyChoice || Boolean(selectedDependencyOption?.cyclePath)} aria-disabled={!dependencyChoice || Boolean(selectedDependencyOption?.cyclePath)} onClick={() => {
+                if (!dependencyChoice || selectedDependencyOption?.cyclePath) return;
+                onAddDependency?.(dependencyChoice);
+                setDependencyChoice("");
+              }}>Add dependency</button>
+            </div>
+            {dependencyOptions.some((candidate) => candidate.cyclePath) ? (
+              <div className="exec-plan-invalid-dependencies">
+                {dependencyOptions.filter((candidate) => candidate.cyclePath).map((candidate) => (
+                  <span key={candidate.node.id}>Would create cycle: {candidate.cyclePath}</span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+          </>
+        ) : (
+          <>
+            <Info label="Execution" value={executionKind} />
+            <Info label="Call shape" value={callShape} />
+            <Info label="Model" value={node.model ?? "default"} />
+            <Info label="Max tries" value={maxTries} />
+            <Info label="Adapter" value={executionAdapter} />
+            <Info label="Permission profile" value={permissionProfile} />
+          </>
+        )}
+        <Info label="Call shape" value={callShape} />
+        <Info label="Adapter" value={executionAdapter} />
+        <Info label="Role" value={node.protocol_role ?? "worker"} />
+        <Info label="Persona" value={node.persona_ref ?? "none"} />
+        <Info label="Required" value={optional ? "no, optional node" : "yes"} />
+        {!onUpdateNode ? <Info label="Depends on" value={dependencies.length ? dependencies.join(", ") : "none"}>
+          {dependencies.length ? (
+            <span style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {dependencies.map((dependency) => (
+                <button key={dependency} className="exec-link-button" type="button" onClick={() => onSelectNode(dependency)} title={`Select dependency ${dependency}`}>{dependency}</button>
+              ))}
+            </span>
+          ) : null}
+        </Info> : null}
+      </Section>
+      {mode === "plan_edit" && isReviewCodeNode(node) ? (
+        <Section title="Review fanout" defaultOpen={reviewScopes.length === 0}>
+          <div className="exec-plan-sensitive-group">
               <div className="exec-review-scope-editor" data-qid="scillm-exec-graph:plan-edit:review-scopes">
                 <div className="exec-plan-panel-heading exec-plan-panel-heading-row">
                   <span>review-code fanout</span>
@@ -3061,94 +2997,11 @@ function Inspector({
                 {catalogSaveState ? <div className="exec-plan-inline-help">{catalogSaveState}</div> : null}
                 <div className="exec-plan-inline-help">Enabled fanout rows require agent, evidence contract, model, proof floor, and best-practices-* skills. Agents/contracts load from /v1/scillm/exec/review-catalog; review-safe models load from /v1/scillm/models review_fanout_models/selectable_models. Save contract or agent updates the catalog; Save amendment persists the DAG edit.</div>
               </div>
-            ) : null}
-            <div className="exec-plan-obligation-summary" aria-label="Verification gates for this draft node">
-              <span><b>Obligation status</b>Draft contract under review</span>
-              <span><b>Gate</b>Plan validation plus reviewer evidence</span>
-              <span><b>Persistence</b>Memory amendment record after save</span>
-            </div>
-            <label className="exec-plan-field">
-              <span>Prompt</span>
-              <textarea className="exec-plan-input exec-plan-textarea" data-qid="scillm-exec-graph:plan-edit:prompt" data-qs-action="SCILLM_EXEC_PLAN_EDIT_PROMPT" title="Edit selected node prompt contract" value={node.prompt ?? ""} onChange={(event) => onUpdateNode?.({ prompt: event.target.value })} />
-              {nodeValidationIssues.some((issue) => issue.code === "missing_prompt_contract") ? <span className="exec-plan-inline-warning">Prompt-like node is missing a prompt or messages.</span> : null}
-            </label>
-          </div>
-          <div className="exec-plan-dependencies" data-qid="scillm-exec-graph:plan-edit:dependencies">
-            <div className="exec-info-label">Dependencies</div>
-            <div className="exec-plan-inline-help">Keyboard: focus the selector, choose a node, then press Enter or Space on Add dependency.</div>
-            {dependencies.length ? (
-              <div className="exec-plan-list">
-                {dependencies.map((dependency) => (
-                  <span key={dependency} className="exec-plan-dependency-pill">
-                    <button className="exec-link-button" type="button" onClick={() => onSelectNode(dependency)}>{dependency}</button>
-                    <button className="exec-plan-remove-button" type="button" data-qid={`scillm-exec-graph:plan-edit:remove-dependency:${dependency}`} data-qs-action="SCILLM_EXEC_PLAN_REMOVE_DEPENDENCY" title={`Remove dependency ${dependency}`} onClick={() => onRemoveDependency?.(dependency)}>Remove</button>
-                  </span>
-                ))}
-              </div>
-            ) : <div className="exec-empty-state">No dependencies. Use the options below to add one.</div>}
-            <div className="exec-plan-add-dependency">
-              <select className="exec-plan-input" value={dependencyChoice} data-qid="scillm-exec-graph:plan-edit:dependency-select" data-qs-action="SCILLM_EXEC_PLAN_SELECT_DEPENDENCY" title="Select dependency to add" onChange={(event) => setDependencyChoice(event.target.value)}>
-                <option value="">Select node</option>
-                {dependencyOptions.map((candidate) => <option key={candidate.node.id} value={candidate.node.id} disabled={Boolean(candidate.cyclePath)}>{candidate.node.id}{candidate.cyclePath ? " (would create cycle)" : ""}</option>)}
-              </select>
-              <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-dependency" data-qs-action="SCILLM_EXEC_PLAN_ADD_DEPENDENCY" title={selectedDependencyOption?.cyclePath ? `Would create cycle: ${selectedDependencyOption.cyclePath}` : dependencyChoice ? "Add selected dependency to draft; keyboard Enter or Space activates this button" : "Select a dependency first"} disabled={!dependencyChoice || Boolean(selectedDependencyOption?.cyclePath)} aria-disabled={!dependencyChoice || Boolean(selectedDependencyOption?.cyclePath)} onClick={() => {
-                if (!dependencyChoice || selectedDependencyOption?.cyclePath) return;
-                onAddDependency?.(dependencyChoice);
-                setDependencyChoice("");
-              }}>Add dependency</button>
-            </div>
-            {dependencyOptions.length ? (
-              <div className="exec-plan-available-dependencies" aria-label="Available dependencies">
-                {dependencyOptions.map((candidate) => (
-                  <button
-                    key={candidate.node.id}
-                    className="exec-control-button exec-control-button-compact"
-                    type="button"
-                    data-qid={`scillm-exec-graph:plan-edit:add-dependency:${candidate.node.id}`}
-                    data-qs-action="SCILLM_EXEC_PLAN_ADD_DEPENDENCY"
-                    title={candidate.cyclePath ? `Would create cycle: ${candidate.cyclePath}` : `Add dependency ${candidate.node.id}`}
-                    disabled={Boolean(candidate.cyclePath)}
-                    aria-disabled={Boolean(candidate.cyclePath)}
-                    onClick={() => {
-                      if (candidate.cyclePath) return;
-                      onAddDependency?.(candidate.node.id);
-                    }}
-                  >
-                    {candidate.cyclePath ? `Blocked ${candidate.node.id}` : `Add ${candidate.node.id}`}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-            {dependencyOptions.some((candidate) => candidate.cyclePath) ? (
-              <div className="exec-plan-invalid-dependencies">
-                {dependencyOptions.filter((candidate) => candidate.cyclePath).map((candidate) => (
-                  <span key={candidate.node.id}>Would create cycle: {candidate.cyclePath}</span>
-                ))}
-              </div>
-            ) : null}
           </div>
           {nodeValidationIssues.length ? <ValidationIssueList issues={nodeValidationIssues} onSelectNode={onSelectNode} /> : <div className="exec-plan-issue exec-plan-issue-info">No node issues.</div>}
         </Section>
       ) : null}
-      {mode === "plan_edit" && runtimeReadinessNode ? (
-        <Section title="Plan-iterate readiness">
-          <Info label="Adapter" value={runtimeReadinessNode.adapter} />
-          <Info label="Status" value={runtimeReadinessNode.status.replaceAll("_", " ")} />
-          <Info label="Missing fields" value={runtimeReadinessNode.missing_fields.length ? runtimeReadinessNode.missing_fields.join(", ") : "none"}>
-            {runtimeReadinessNode.missing_fields.length ? (
-              <span className="exec-readiness-field-list">
-                {runtimeReadinessNode.missing_fields.map((field) => <span key={field} className="exec-readiness-field">{field}</span>)}
-              </span>
-            ) : <span className="exec-compliance-issue-badge">No missing fields</span>}
-          </Info>
-          <Info label="Present fields" value={runtimeReadinessNode.present_fields.length ? runtimeReadinessNode.present_fields.join(", ") : "none"} />
-          <Info label="Next action" value={runtimeReadinessNode.next_action} />
-          {runtimeReadinessNode.inferred_fields.length ? (
-            <Info label="Inferred fields" value={runtimeReadinessNode.inferred_fields.map((field) => `${field.field} from ${field.source}`).join("; ")} />
-          ) : null}
-        </Section>
-      ) : null}
-      <Section title={mode === "evidence" ? "Execution evidence" : "Last run evidence"}>
+      <Section title={mode === "evidence" ? "Execution evidence" : "Last run evidence"} defaultOpen={state === "passed" || state === "failed"}>
         <div className="exec-evidence-note">Node execution timestamps are UTC.</div>
         <Info label="Node ID" value={node.id} />
         <EvidenceInfo label="Attempt" value={result?.attempt_id ?? result?.attempt} node={node} optional={optional} />
@@ -3163,10 +3016,11 @@ function Inspector({
         <Info label="Evidence status" value={evidenceStatusText}><EvidenceBadge tone={optional ? "optional" : outputHash.tone} text={evidenceStatusText} /></Info>
       </Section>
       <Section
-        title="Prompt payload"
+        title="Raw prompt payload"
+        defaultOpen={false}
         action={<button className="exec-control-button exec-control-button-compact" data-qid="scillm-exec-graph:prompt-payload:copy" data-qs-action="SCILLM_EXEC_PROMPT_PAYLOAD_COPY" title={hasPromptPayload ? "Copy prompt payload JSON" : "No prompt payload to copy"} disabled={!hasPromptPayload} aria-disabled={!hasPromptPayload} onClick={() => void copyPromptPayload()}>{copied ? "Copied" : "Copy payload"}</button>}
       >
-        <details open={hasPromptPayload}>
+        <details open={false}>
           <summary style={{ cursor: "pointer", color: dimColor, fontSize: 12, marginBottom: 10 }}>Rendered JSON payload</summary>
           {hasPromptPayload ? <pre className="exec-json-pre" style={preStyle()}>{promptPayload}</pre> : <div className="exec-empty-state">No prompt payload for this node.</div>}
         </details>
@@ -3681,8 +3535,16 @@ function ValidationIssueList({ issues, onSelectNode }: { issues: PlanValidationI
   );
 }
 
-function Section({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
-  return <section style={{ padding: 14, border: "1px solid var(--exec-border, rgba(255,255,255,0.14))", borderRadius: 8, background: "var(--exec-card, #1c2230)" }}><div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}><h4 style={{ margin: 0, fontSize: 14, fontWeight: 600, lineHeight: "20px" }}>{title}</h4>{action}</div><div style={{ display: "grid", gap: 12 }}>{children}</div></section>;
+function Section({ title, children, action, defaultOpen = true }: { title: string; children: React.ReactNode; action?: React.ReactNode; defaultOpen?: boolean }) {
+  return (
+    <details className="exec-inspector-section" open={defaultOpen}>
+      <summary>
+        <span>{title}</span>
+        {action ? <span onClick={(event) => event.preventDefault()}>{action}</span> : null}
+      </summary>
+      <div className="exec-inspector-section-body">{children}</div>
+    </details>
+  );
 }
 
 function Info({ label, value, children }: { label: string; value: string; children?: React.ReactNode }) {
@@ -3709,6 +3571,7 @@ function preStyle(): React.CSSProperties {
 
 const execGraphDebuggerCss = `
 .scillm-exec-debugger {
+  --exec-selected-ring: #4a9eff;
   --exec-dim-contrast: #b8c2d6;
   --exec-border-highlight: rgba(184, 194, 214, 0.72);
   --exec-disabled-fg: #e0e5ee;
@@ -3735,17 +3598,103 @@ const execGraphDebuggerCss = `
 }
 .scillm-exec-debugger * {
   box-sizing: border-box;
+  scrollbar-color: rgba(184,194,214,0.48) rgba(255,255,255,0.04);
 }
 .scillm-exec-debugger :focus-visible {
   outline: 3px solid var(--exec-focus, #63b3ed);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px rgba(99, 179, 237, 0.22);
 }
+.exec-workbench-header {
+  padding: 6px 10px;
+  background: var(--exec-panel, #151923);
+  border-bottom: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+}
+.exec-workbench-header-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+.exec-workbench-title {
+  min-width: 0;
+}
+.exec-workbench-title h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.exec-workbench-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.exec-workbench-goal {
+  max-width: 960px;
+  margin: 6px 0 0;
+  color: var(--exec-dim, #94a3b8);
+  font-size: 12px;
+  line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.exec-meta-drawer,
+.exec-bottom-drawer {
+  margin-top: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.12);
+}
+.exec-meta-drawer {
+  display: none;
+}
+.exec-run-id-pill {
+  max-width: min(520px, 44vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--exec-dim-contrast, #cbd5e1);
+  border: 1px solid rgba(184,194,214,0.24);
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 10px;
+}
+.exec-meta-drawer > summary,
+.exec-bottom-drawer > summary {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 10px;
+  color: var(--exec-dim-contrast);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+.exec-bottom-drawer-wrap {
+  padding: 0 12px 10px;
+  background: var(--exec-panel, #151923);
+  border-top: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+}
+.exec-bottom-drawer {
+  margin-top: 10px;
+}
+.exec-bottom-drawer[open] {
+  padding: 0 10px 10px;
+}
+.exec-bottom-drawer[open] > summary {
+  margin: 0 -10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
 .exec-control-button {
   min-height: 44px;
   min-width: 44px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
   background: var(--exec-card, #1c2230);
   color: var(--exec-text, #e5e7eb);
@@ -3759,17 +3708,17 @@ const execGraphDebuggerCss = `
 }
 .exec-control-button:disabled,
 .exec-control-button[aria-disabled="true"] {
-  color: var(--exec-disabled-fg, #e0e5ee);
-  background: var(--exec-disabled-bg, #10151c);
-  border-color: var(--exec-disabled-border, #3a4552);
+  color: #7d8798;
+  background: rgba(15, 17, 21, 0.42);
+  border-color: rgba(148, 163, 184, 0.18);
   cursor: not-allowed;
   transform: none;
-  opacity: 1;
+  opacity: 0.62;
 }
 .exec-control-button:disabled:hover,
 .exec-control-button[aria-disabled="true"]:hover {
-  border-color: var(--exec-disabled-border, #303642);
-  background: var(--exec-disabled-bg, #1e2532);
+  border-color: rgba(148, 163, 184, 0.18);
+  background: rgba(15, 17, 21, 0.42);
 }
 .exec-control-button:active {
   background: rgba(255,255,255,0.1);
@@ -3812,22 +3761,28 @@ const execGraphDebuggerCss = `
   text-align: right;
 }
 .exec-node-button:hover {
-  border-color: var(--exec-border-highlight) !important;
-  background: color-mix(in srgb, var(--exec-card, #1c2230), #93c5fd 12%) !important;
+  border-color: rgba(255,255,255,0.32) !important;
+  background: rgba(255,255,255,0.07) !important;
+}
+.exec-node-button:focus {
+  outline: 0;
 }
 .exec-node-button-selected {
-  box-shadow: 0 0 0 4px var(--exec-card, #1c2230), 0 0 0 8px var(--exec-selected-ring, #22d3ee);
+  border-style: solid !important;
+  border-color: rgba(255,255,255,0.36) !important;
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.68), 0 0 0 6px rgba(255,255,255,0.12);
+  outline: 0 !important;
 }
 .exec-round-band {
-  fill: rgba(34, 197, 94, 0.035);
-  stroke: rgba(34, 197, 94, 0.78);
-  stroke-width: 3px;
+  fill: rgba(34, 197, 94, 0.025);
+  stroke: rgba(34, 197, 94, 0.38);
+  stroke-width: 1.5px;
 }
 .exec-round-band-label,
 .exec-round-band-side-label,
 .exec-lane-label {
   fill: var(--exec-dim-contrast);
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0;
   text-anchor: middle;
@@ -3837,7 +3792,7 @@ const execGraphDebuggerCss = `
 }
 .exec-round-band-side-label {
   fill: var(--exec-passed, #22c55e);
-  font-size: 14px;
+  font-size: 11px;
 }
 .exec-lane-label {
   fill: var(--exec-text, #e5e7eb);
@@ -3848,23 +3803,58 @@ const execGraphDebuggerCss = `
 }
 .exec-node-button:focus-visible {
   outline: 0;
-  box-shadow: inset 0 0 0 3px var(--exec-focus, #63b3ed), 0 0 0 2px var(--exec-focus, #63b3ed), 0 0 0 7px rgba(99,179,237,0.22);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.42), 0 0 0 3px rgba(99, 179, 237, 0.72);
 }
 .exec-node-button-selected:focus-visible {
-  box-shadow: inset 0 0 0 3px var(--exec-focus, #63b3ed), 0 0 0 4px var(--exec-card, #1c2230), 0 0 0 8px var(--exec-selected-ring, #22d3ee), 0 0 0 11px var(--exec-focus, #63b3ed);
+  outline: 0 !important;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.44), 0 0 0 3px rgba(74, 158, 255, 0.8), 0 0 0 7px rgba(255,255,255,0.14);
 }
 .exec-node-button:active {
   transform: translateY(1px);
 }
 .exec-node-status {
   justify-self: start;
-  border-radius: 8px;
+  border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.16);
-  padding: 2px 7px;
-  font-size: 10px;
-  line-height: 13px;
+  padding: 2px 6px;
+  font-size: 9px;
+  line-height: 11px;
   color: var(--exec-text, #e5e7eb);
   background: rgba(255,255,255,0.06);
+}
+.exec-node-status-passed {
+  color: #d8fbe7;
+  border-color: rgba(34,197,94,0.48);
+  background: rgba(34,197,94,0.13);
+}
+.exec-node-status-running,
+.exec-node-status-ready,
+.exec-node-status-queued {
+  color: #dbeafe;
+  border-color: rgba(74,158,255,0.55);
+  background: rgba(74,158,255,0.14);
+}
+.exec-node-status-pending {
+  color: #ffedd5;
+  border-color: rgba(245,158,11,0.58);
+  background: rgba(245,158,11,0.13);
+}
+.exec-node-status-failed,
+.exec-node-status-stopped {
+  color: #fee2e2;
+  border-color: rgba(239,68,68,0.6);
+  background: rgba(239,68,68,0.16);
+}
+.exec-node-status-skipped {
+  color: #cbd5e1;
+  border-color: rgba(100,116,139,0.64);
+  background: rgba(100,116,139,0.14);
+}
+.exec-node-status-needs_attention,
+.exec-node-status-paused {
+  color: #ffedd5;
+  border-color: rgba(251,146,60,0.6);
+  background: rgba(251,146,60,0.16);
 }
 .exec-node-status-warning {
   color: var(--exec-warning-solid-text, #111827);
@@ -3878,23 +3868,22 @@ const execGraphDebuggerCss = `
   border: 1px solid var(--exec-optional-border, #9ca35a);
   background: rgba(156,163,90,0.1);
   color: #d9df8f;
-  padding: 2px 7px;
-  font-size: 10px;
-  line-height: 13px;
+  padding: 2px 6px;
+  font-size: 9px;
+  line-height: 11px;
 }
 .exec-node-blocking-icon {
-  grid-row: 1 / span 3;
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
   background: var(--exec-failed, #ef4444);
   color: #ffffff;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 800;
-  line-height: 18px;
+  line-height: 12px;
 }
 .exec-node-validation-badge {
   justify-self: start;
@@ -3984,14 +3973,14 @@ button.exec-summary-chip {
   background: var(--exec-warning-bg, #3a2a0a);
 }
 .exec-inspector-header {
-  border-left: 3px solid var(--exec-selected-ring, #22d3ee);
+  border-left: 1px solid rgba(184,194,214,0.18);
   padding-left: 10px;
 }
 .exec-inspector-sticky-summary {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 12px 12px 12px 10px;
+  padding: 10px 12px 10px 10px;
   background: color-mix(in srgb, var(--exec-panel, #151923), #000 6%);
   border-bottom: 1px solid var(--exec-border, rgba(255,255,255,0.14));
   box-shadow: 0 10px 18px rgba(0,0,0,0.24);
@@ -4006,9 +3995,9 @@ button.exec-summary-chip {
 .exec-mode-badge-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin: 4px 0 8px;
+  margin: 4px 0 6px;
 }
 .exec-compliance-summary-heading {
   margin-top: 12px;
@@ -4138,31 +4127,34 @@ button.exec-summary-chip {
   background: rgba(34, 211, 238, 0.16);
 }
 .exec-primary-mode-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 14px;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+  border-radius: 8px;
+  background: rgba(0,0,0,0.14);
 }
 .exec-primary-mode {
-  min-height: 52px;
+  min-height: 44px;
+  min-width: 44px;
   display: grid;
   gap: 2px;
   align-content: center;
-  border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
-  border-radius: 8px;
-  background: rgba(0,0,0,0.12);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
   color: var(--exec-dim-contrast);
   cursor: pointer;
   font: inherit;
-  padding: 8px 10px;
-  text-align: left;
+  padding: 5px 10px;
+  text-align: center;
 }
 .exec-primary-mode b {
   color: var(--exec-text, #e5e7eb);
-  font-size: 13px;
+  font-size: 12px;
 }
 .exec-primary-mode span {
-  font-size: 11px;
+  display: none;
 }
 .exec-primary-mode:hover,
 .exec-primary-mode-active {
@@ -4479,12 +4471,12 @@ button.exec-summary-chip {
 }
 .exec-plan-field {
   display: grid;
-  gap: 6px;
+  gap: 5px;
   color: var(--exec-dim-contrast);
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
 }
 .exec-build-quick-actions {
   display: flex;
@@ -4608,20 +4600,21 @@ button.exec-summary-chip {
 }
 .exec-plan-input {
   width: 100%;
-  min-height: 44px;
-  border: 1px solid rgba(34, 211, 238, 0.48);
+  min-height: 32px;
+  border: 1px solid rgba(184, 194, 214, 0.18);
   border-radius: 8px;
-  background: #202a3a;
+  background: rgba(15, 17, 21, 0.36);
   color: var(--exec-text, #e5e7eb);
   font: inherit;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 400;
   line-height: 18px;
-  padding: 8px 10px;
-  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.18);
+  padding: 6px 8px;
+  box-shadow: none;
 }
 .exec-plan-input:hover {
-  border-color: rgba(34, 211, 238, 0.72);
-  background: #263449;
+  border-color: rgba(74, 158, 255, 0.52);
+  background: rgba(32, 42, 58, 0.68);
 }
 .exec-plan-input:focus,
 .exec-plan-input:focus-visible {
@@ -4630,7 +4623,7 @@ button.exec-summary-chip {
   box-shadow: 0 0 0 6px rgba(99, 179, 237, 0.22);
 }
 .exec-plan-textarea {
-  min-height: 84px;
+  min-height: 56px;
   resize: vertical;
 }
 .exec-plan-dependencies {
@@ -4892,25 +4885,48 @@ button.exec-summary-chip {
 .exec-draft-node-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  border-radius: 8px;
-  border: 1px solid rgba(56, 161, 105, 0.42);
-  background: rgba(56, 161, 105, 0.18);
-  color: #ffffff;
-  padding: 3px 8px;
+  min-height: 24px;
+  border-radius: 12px;
+  border: 1px dashed rgba(184, 194, 214, 0.56);
+  background: rgba(255,255,255,0.05);
+  color: var(--exec-dim-contrast);
+  padding: 2px 8px;
   font-size: 11px;
   line-height: 16px;
   font-weight: 800;
 }
+.exec-inspector-evidence-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+  color: var(--exec-dim-contrast);
+  font-size: 11px;
+  min-width: 0;
+}
+.exec-inspector-evidence-summary > span,
+.exec-inspector-evidence-summary > b {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  border: 1px solid rgba(184,194,214,0.22);
+  border-radius: 12px;
+  padding: 3px 7px;
+  background: rgba(255,255,255,0.04);
+}
+.exec-inspector-evidence-summary > b {
+  color: var(--exec-text);
+}
 .exec-readonly-node-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  border-radius: 8px;
+  min-height: 24px;
+  border-radius: 12px;
   border: 1px solid #3a4552;
-  background: #222936;
+  background: rgba(255,255,255,0.05);
   color: var(--exec-dim-contrast);
-  padding: 3px 8px;
+  padding: 2px 8px;
   font-size: 11px;
   line-height: 16px;
   font-weight: 800;
@@ -4918,12 +4934,12 @@ button.exec-summary-chip {
 .exec-source-node-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  border-radius: 8px;
+  min-height: 24px;
+  border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.05);
   color: var(--exec-dim-contrast);
-  padding: 3px 8px;
+  padding: 2px 8px;
   font-size: 11px;
   line-height: 16px;
   font-weight: 700;
@@ -5033,28 +5049,63 @@ button.exec-summary-chip {
   min-height: 44px;
 }
 .exec-canvas-legend {
-  position: absolute;
-  top: 56px;
-  right: 12px;
-  z-index: 1;
-  min-height: 28px;
+  min-height: 24px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 999px;
+  border-radius: 7px;
   background: rgba(15,17,21,0.78);
   color: var(--exec-dim-contrast);
   padding: 3px 9px;
   font-size: 12px;
   line-height: 18px;
 }
+.exec-state-legend {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--exec-dim-contrast);
+  font-size: 11px;
+  line-height: 16px;
+}
+.exec-state-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.exec-state-legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+}
+.exec-state-sample {
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  background: rgba(255,255,255,0.035);
+}
+.exec-state-sample-passed {
+  border-color: rgba(34,197,94,0.42);
+}
+.exec-state-sample-running {
+  border-color: rgba(74,158,255,0.5);
+}
+.exec-state-sample-pending {
+  border-color: rgba(245,158,11,0.5);
+}
+.exec-state-sample-failed {
+  border-color: rgba(239,68,68,0.5);
+}
+.exec-state-sample-skipped {
+  border-color: rgba(100,116,139,0.58);
+  color: #cbd5e1;
+}
 .exec-canvas-toolbar {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
-  min-height: 36px;
+  min-height: 32px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -5062,11 +5113,11 @@ button.exec-summary-chip {
   border-radius: 8px;
   background: rgba(15,17,21,0.92);
   padding: 4px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+  box-shadow: none;
 }
 .exec-canvas-tool-button {
-  width: 44px;
-  height: 44px;
+  width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -5082,8 +5133,8 @@ button.exec-summary-chip {
   background: rgba(34, 211, 238, 0.14);
 }
 .exec-canvas-zoom-label {
-  min-width: 40px;
-  padding: 0 4px;
+  min-width: 74px;
+  padding: 0 8px;
   color: var(--exec-dim-contrast);
   font-size: 11px;
   font-weight: 700;
@@ -5118,21 +5169,96 @@ button.exec-summary-chip {
 .exec-canvas-context-menu button:hover {
   background: rgba(34, 211, 238, 0.14);
 }
-.exec-node-empty-pane {
-  position: fixed;
-  top: 440px;
-  right: 28px;
-  z-index: 9;
-  width: min(360px, calc(100% - 40px));
+.exec-graph-workbench {
+  height: clamp(620px, calc(100vh - 160px), 860px);
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.exec-graph-canvas-stage {
+  min-height: 0;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  border-right: 1px solid rgba(184,194,214,0.18);
+  overflow: hidden;
+}
+.exec-canvas-chrome {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15,17,21,0.82);
+}
+.exec-canvas-scroll {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-color: rgba(184,194,214,0.42) rgba(255,255,255,0.04);
+}
+.exec-node-inspector-workbench {
+  min-height: 0;
+  overflow: auto;
+  background: var(--exec-panel, #151923);
+}
+.exec-inspector-content {
+  min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 8px;
+}
+.exec-node-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.exec-node-core-grid .exec-plan-field:nth-child(n+4) {
+  display: none;
+}
+.exec-inspector-section {
+  border: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+  border-radius: 12px;
+  background: var(--exec-card, #1c2230);
+  overflow: hidden;
+}
+.exec-inspector-section > summary {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 10px;
+  cursor: pointer;
+  color: var(--exec-text, #e5e7eb);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 18px;
+}
+.exec-inspector-section[open] > summary {
+  border-bottom: 1px solid var(--exec-border, rgba(255,255,255,0.14));
+}
+.exec-inspector-section-body {
   display: grid;
   gap: 8px;
+  padding: 10px;
+}
+.exec-node-empty-pane {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   border: 1px dashed rgba(184, 194, 214, 0.38);
-  border-radius: 12px;
-  background: rgba(15,17,21,0.78);
+  border-radius: 8px;
+  background: rgba(15,17,21,0.68);
   color: var(--exec-dim-contrast);
-  padding: 16px;
-  box-shadow: 0 18px 44px rgba(0,0,0,0.32);
-  pointer-events: none;
+  padding: 12px;
 }
 .exec-node-empty-pane strong {
   color: var(--exec-text, #e5e7eb);
@@ -5142,71 +5268,28 @@ button.exec-summary-chip {
   font-size: 12px;
   line-height: 17px;
 }
-.exec-node-inspector-slideout {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  bottom: 16px;
-  z-index: 8;
-  width: min(420px, calc(100% - 40px));
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  background: var(--exec-panel, #151923);
-  border: 1px solid var(--exec-selected-ring, #22d3ee);
-  border-radius: 12px;
-  box-shadow: 0 22px 56px rgba(0,0,0,0.46);
-  overflow: hidden;
-  transform: translateX(calc(100% + 24px));
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 180ms ease, opacity 180ms ease;
-}
-.exec-node-inspector-slideout[data-open="true"] {
-  transform: translateX(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-.exec-node-inspector-slideout > div:last-child,
-.exec-node-inspector-slideout > section,
-.exec-node-inspector-slideout > article {
-  min-height: 0;
-  overflow: auto;
-}
-.exec-node-inspector-bar {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 6px 8px 6px 14px;
-  border-bottom: 1px solid var(--exec-border, rgba(255,255,255,0.14));
-  color: var(--exec-text, #e5e7eb);
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.exec-inspector-reopen {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 7;
-  min-height: 36px;
-  border: 1px solid var(--exec-selected-ring, #22d3ee);
-  border-radius: 999px;
-  background: rgba(15,17,21,0.9);
-  color: var(--exec-text, #e5e7eb);
-  padding: 0 12px;
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
+@media (max-width: 900px) {
+  .exec-graph-workbench {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(420px, 55vh) minmax(360px, auto);
+  }
+  .exec-graph-canvas-stage {
+    border-right: 0;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.42);
+  }
+  .exec-node-settings-grid {
+    grid-template-columns: 1fr;
+  }
+  .exec-canvas-chrome {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .exec-canvas-keyboard-hint {
+    max-width: none;
+  }
 }
 .exec-canvas-keyboard-hint {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  z-index: 1;
-  max-width: min(520px, calc(100% - 24px));
+  max-width: min(520px, 42vw);
   border: 1px solid rgba(99,179,237,0.48);
   border-radius: 8px;
   background: rgba(15,17,21,0.86);

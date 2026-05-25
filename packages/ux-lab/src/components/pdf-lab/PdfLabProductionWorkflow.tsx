@@ -1585,7 +1585,7 @@ export function PdfLabProductionWorkflow({ initialStage }: PdfLabProductionWorkf
 
   if (stage === 'labeling') {
     return (
-      <div className="pdf-lab-prod-root" data-qid="pdf-lab:production:labeling-root">
+      <div className="pdf-lab-prod-root pdf-lab-prod-root-labeling" data-qid="pdf-lab:production:labeling-root">
         <header className="pdf-lab-prod-header">
           <div>
             <div className="pdf-lab-prod-brand">PDF Lab</div>

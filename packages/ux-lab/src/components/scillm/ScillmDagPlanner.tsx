@@ -388,27 +388,30 @@ export function ScillmDagPlanner() {
 
   return (
     <div className="scillm-dashboard scillm-dag-planner" data-qid="scillm:dag-planner">
-      <div className="elevated-surface scillm-dashboard__header">
-        <div className="scillm-flex-row scillm-gap-8">
+      <div className="elevated-surface scillm-dashboard__header scillm-dag-planner__header">
+        <div className="scillm-flex-row scillm-gap-8 scillm-dag-planner__title">
           <GitBranch size={18} color={EMBRY.blue} />
           <span className="scillm-heading-lg">DAG Viewer-Planner</span>
-          <span className="scillm-heading-md">plan-iterate evidence graph</span>
+          <span className="scillm-heading-md">Phase evidence graph</span>
         </div>
-        <div className="scillm-flex-row scillm-gap-12 scillm-flex-wrap">
+        <div className="scillm-flex-row scillm-gap-8 scillm-flex-wrap scillm-dag-planner__status">
           <span className="scillm-chip">Phase: {state.status === "ready" ? state.snapshot.phase_id : "pending"}</span>
-          <label className="scillm-chip" title="Load a specific plan-iterate phase. Leave blank to use the active phase pointer.">
-            Phase override
-            <input
-              aria-label="DAG phase override"
-              value={phaseIdOverride}
-              onChange={(event) => setPhaseIdOverride(event.target.value)}
-              placeholder="active phase"
-              style={{ width: 285, marginLeft: 8, background: "transparent", border: 0, color: "inherit", font: "inherit", outline: "none" }}
-            />
-          </label>
           <span className="scillm-chip">State: {phaseBadge}</span>
-          {state.status === "ready" ? <span className="scillm-chip">Snapshot: {state.snapshot.snapshot_kind ?? "runtime"}</span> : null}
-          <span className="scillm-chip">Review catalog: {catalogState}</span>
+          <details className="scillm-dag-planner__details">
+            <summary>Details</summary>
+            <label className="scillm-chip" title="Load a specific plan-iterate phase. Leave blank to use the active phase pointer.">
+              Phase override
+              <input
+                aria-label="DAG phase override"
+                value={phaseIdOverride}
+                onChange={(event) => setPhaseIdOverride(event.target.value)}
+                placeholder="active phase"
+                style={{ width: 285, marginLeft: 8, background: "transparent", border: 0, color: "inherit", font: "inherit", outline: "none" }}
+              />
+            </label>
+            {state.status === "ready" ? <span className="scillm-chip">Snapshot: {state.snapshot.snapshot_kind ?? "runtime"}</span> : null}
+            <span className="scillm-chip">Review catalog: {catalogState}</span>
+          </details>
           <button
             type="button"
             data-qid="scillm:workspace:dag-refresh"
@@ -464,14 +467,12 @@ export function ScillmDagPlanner() {
             </div>
           ) : null}
           {state.snapshot.phase_status?.review_comparison?.closure_allowed === false ? (
-            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
-              <div className="scillm-flex-row scillm-gap-8">
-                <AlertTriangle size={16} color={EMBRY.amber} />
-                <span className="scillm-text-amber scillm-fw-700">Closure and deploy are blocked</span>
-              </div>
-              <div className="scillm-meta" style={{ marginTop: 6 }}>
-                Phase review is still pending. Do not accept, deploy, or treat reported node success as closure evidence until external review and required hashes are recorded. {state.snapshot.phase_status.review_comparison.reason}
-              </div>
+            <div className="scillm-dag-inline-alert">
+              <AlertTriangle size={15} color={EMBRY.bgDeep} />
+              <span className="scillm-text-amber scillm-fw-700">Closure and deploy are blocked</span>
+              <span className="scillm-meta">
+                Review pending; node success is not closure evidence. {state.snapshot.phase_status.review_comparison.reason}
+              </span>
             </div>
           ) : null}
           <div className="scillm-dag-source-shell">
@@ -480,9 +481,6 @@ export function ScillmDagPlanner() {
                 {([
                   ["design", "DAG", PencilRuler],
                   ["source", "JSON", FileJson],
-                  ["trace", "Trace", Activity],
-                  ["checkpoints", "Checkpoints", CheckSquare],
-                  ["debug", "Debug", Bug],
                 ] as const).map(([id, label, Icon]) => (
                   <button
                     key={id}
@@ -499,6 +497,29 @@ export function ScillmDagPlanner() {
                     {label}
                   </button>
                 ))}
+                <details className="scillm-dag-lens-overflow">
+                  <summary>More</summary>
+                  {([
+                    ["trace", "Trace", Activity],
+                    ["checkpoints", "Checkpoints", CheckSquare],
+                    ["debug", "Debug", Bug],
+                  ] as const).map(([id, label, Icon]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
+                      data-qid={`scillm:dag-planner:lens:${id}`}
+                      data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
+                      title={`Show ${label} lens`}
+                      onClick={() => setSurface(id)}
+                      role="tab"
+                      aria-selected={surface === id}
+                    >
+                      <Icon size={14} />
+                      {label}
+                    </button>
+                  ))}
+                </details>
               </div>
               <div className="scillm-dag-source-shell__contract">
                 <span>Backend hash</span>

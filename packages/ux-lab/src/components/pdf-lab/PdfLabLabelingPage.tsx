@@ -32,6 +32,7 @@ import {
   replaceBreadcrumbNodeManually,
   regionsToExpected,
 } from './PdfLabLabelingExport'
+import { LeftPane } from '../common/LeftPane'
 import './PdfLabLabelingPage.css'
 
 /** Human-labeling vocabulary. Link annotations (control_link /
@@ -58,6 +59,23 @@ const CANONICAL_FAMILIES = [
 type FamilyId = typeof CANONICAL_FAMILIES[number]['id']
 
 type LabelAnchor = 'top-outside' | 'top-inside' | 'bottom-inside' | 'bottom-outside'
+type OverlayMode = 'clean' | 'compact' | 'debug'
+
+const FAMILY_ABBREVIATIONS: Record<FamilyId, string> = {
+  section_heading: 'HDG',
+  section_label: 'LBL',
+  list: 'LST',
+  paragraph_block: 'TXT',
+  labeled_paragraph: 'LP',
+  labeled_controls: 'CTL',
+  labeled_references: 'REF',
+  table: 'TBL',
+  figure: 'FIG',
+  caption: 'CAP',
+  footnote: 'FNT',
+  page_chrome_noise: 'CHR',
+  human_decision: 'DEC',
+}
 
 interface Region {
   /** Stable client-side id (not persisted directly). */
@@ -122,6 +140,14 @@ function hasBreadcrumbPath(region: Region): boolean {
   return (region.breadcrumb_nodes?.length ?? 0) > 0 || (region.breadcrumb?.length ?? 0) > 0
 }
 
+function hierarchyPathText(region: Region | null): string {
+  if (!region) return '(none selected)'
+  const structured = breadcrumbNodesFromRegion(region).map(node => node.label).filter(Boolean)
+  if (structured.length > 0) return formatBreadcrumb(structured)
+  if (region.breadcrumb?.length) return region.breadcrumb.join(' › ')
+  return '(root)'
+}
+
 function bboxDistance(a: Region, b: Region): number {
   return a.bbox.reduce((sum, value, index) => sum + Math.abs(value - b.bbox[index]), 0)
 }
@@ -134,10 +160,147 @@ function sameRegionIdentity(a: Region, b: Region): boolean {
   return textMatches || bboxDistance(a, b) <= 0.01
 }
 
+function isPageChromeRegion(region: Region): boolean {
+  const text = normalizedRegionText(region.text_hint || region.label)
+  const [x0, y0, , y1] = region.bbox
+  if (y1 <= 0.08 || y0 >= 0.92) return true
+  if (
+    x0 <= 0.04 &&
+    (
+      text.includes('this publication is available free of charge') ||
+      text.includes('doi.org/10.6028/nist.sp.800') ||
+      text === '-53r5'
+    )
+  ) return true
+  return false
+}
+
+function isSideChromeRegion(region: Region): boolean {
+  const text = normalizedRegionText(region.text_hint || region.label)
+  const [, , x1] = region.bbox
+  return (
+    x1 <= 0.36 &&
+    (
+      text.includes('this publication is available free of charge') ||
+      text.includes('doi.org/10.6028/nist.sp.800') ||
+      text === '-53r5'
+    )
+  )
+}
+
+function sideChromeBand(region: Region): Region['bbox'] {
+  void region
+  return [0.017, 0.072, 0.088, 0.916]
+}
+
+function isListRegion(region: Region): boolean {
+  const text = region.text_hint || region.label || ''
+  return /^\s*(?:\(\d+[a-z]?\)|[a-z]\.)\s+/i.test(text)
+}
+
+function isNumberedListRegion(region: Region): boolean {
+  const text = region.text_hint || region.label || ''
+  return /^\s*\(\d+[a-z]?\)\s+/i.test(text)
+}
+
+function isAlphaListRegion(region: Region): boolean {
+  const text = region.text_hint || region.label || ''
+  return /^\s*[a-z]\.\s+/i.test(text)
+}
+
+function isListSectionBoundary(region: Region): boolean {
+  const text = normalizedRegionText(region.text_hint || region.label)
+  return (
+    region.family === 'section_heading' ||
+    region.family === 'labeled_references' ||
+    text.startsWith('references:') ||
+    /^[a-z]{2}-\d+\s+/.test(text)
+  )
+}
+
+function mergeRegionBbox(a: Region['bbox'], b: Region['bbox']): Region['bbox'] {
+  return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]
+}
+
+function sameChromeCluster(a: Region, b: Region): boolean {
+  const [ax0, ay0, ax1, ay1] = a.bbox
+  const [bx0, by0, bx1, by1] = b.bbox
+  const xOverlap = Math.max(0, Math.min(ax1, bx1) - Math.max(ax0, bx0))
+  const minWidth = Math.max(0.0001, Math.min(ax1 - ax0, bx1 - bx0))
+  const verticallyAdjacent = Math.abs(by0 - ay1) <= 0.01 || Math.abs(ay0 - by1) <= 0.01
+  const sameTopBand = ay1 <= 0.08 && by1 <= 0.08 && xOverlap / minWidth >= 0.55 && verticallyAdjacent
+  const sameBottomBand = ay0 >= 0.92 && by0 >= 0.92 && xOverlap / minWidth >= 0.55 && verticallyAdjacent
+  const sameLeftSide = ax1 <= 0.36 && bx1 <= 0.36
+  return sameTopBand || sameBottomBand || sameLeftSide
+}
+
+function canonicalizeHumanRegions(regions: Region[]): Region[] {
+  const normalized = regions.map(region => {
+    if (isPageChromeRegion(region)) {
+      return {
+        ...region,
+        family: 'page_chrome_noise' as const,
+        bbox: isSideChromeRegion(region) ? sideChromeBand(region) : region.bbox,
+      }
+    }
+    if (isListRegion(region)) return { ...region, family: 'list' as const }
+    return region
+  })
+  const grouped: Region[] = []
+  let index = 0
+  while (index < normalized.length) {
+    const region = normalized[index]
+    if (!isNumberedListRegion(region)) {
+      grouped.push(region)
+      index += 1
+      continue
+    }
+    let group = { ...region }
+    let consumedAny = false
+    index += 1
+    while (index < normalized.length) {
+      const candidate = normalized[index]
+      if (candidate.family === 'page_chrome_noise') break
+      if (isAlphaListRegion(candidate)) break
+      if (isListSectionBoundary(candidate)) break
+      const textParts = [group.text_hint, candidate.text_hint].filter((value): value is string => Boolean(value))
+      group = {
+        ...group,
+        bbox: mergeRegionBbox(group.bbox, candidate.bbox),
+        text_hint: textParts.length > 0 ? Array.from(new Set(textParts)).join('\n') : group.text_hint,
+      }
+      consumedAny = true
+      index += 1
+    }
+    grouped.push(consumedAny ? group : region)
+  }
+  const output: Region[] = []
+  for (const region of grouped) {
+    if (region.family !== 'page_chrome_noise') {
+      output.push(region)
+      continue
+    }
+    const matchIndex = output.findIndex(existing => existing.family === 'page_chrome_noise' && sameChromeCluster(existing, region))
+    if (matchIndex < 0) {
+      output.push(region)
+      continue
+    }
+    const existing = output[matchIndex]
+    const textParts = [existing.text_hint, region.text_hint].filter((value): value is string => Boolean(value))
+    output[matchIndex] = {
+      ...existing,
+      bbox: mergeRegionBbox(existing.bbox, region.bbox),
+      text_hint: textParts.length > 0 ? Array.from(new Set(textParts)).join('\n') : existing.text_hint,
+    }
+  }
+  return output
+}
+
 function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Region[] {
-  if (regions.length === 0 || source.length === 0) return regions
+  const canonicalRegions = canonicalizeHumanRegions(regions)
+  if (canonicalRegions.length === 0 || source.length === 0) return canonicalRegions
   const used = new Set<number>()
-  return regions.map((region, index) => {
+  return canonicalRegions.map((region, index) => {
     if (hasBreadcrumbPath(region)) return region
 
     let sourceIndex = source.findIndex((candidate, candidateIndex) =>
@@ -145,7 +308,7 @@ function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Re
     )
     if (
       sourceIndex < 0 &&
-      regions.length === source.length &&
+      canonicalRegions.length === source.length &&
       hasBreadcrumbPath(source[index]) &&
       source[index].family === region.family
     ) {
@@ -945,6 +1108,7 @@ export function PdfLabLabelingPage() {
   /** Regions emitted by the scillm second-pass (Agent view). Loaded from
    *  the second_pass_url sidecar at page-load time. */
   const [regionsAgent, setRegionsAgent] = useState<Region[]>([])
+  const [overlayMode, setOverlayMode] = useState<OverlayMode>('clean')
   /** Context neighbors for the focal page being annotated. The human labels
    *  ONLY the focal canvas; prev/next are rendered as read-only thumbnails
    *  alongside so the human (and the agent) can see whether structural
@@ -1217,19 +1381,39 @@ export function PdfLabLabelingPage() {
         }
       }
 
+      let diskWipRegions: Region[] = []
+      try {
+        const resp = await fetch('/pdf-lab-api/signoffs/load-in-progress')
+        if (resp.ok) {
+          const payload = await resp.json() as {
+            entries?: Record<string, { regions?: Region[]; updated_at?: string }>
+          }
+          const entry = payload.entries?.[key]
+          if (entry?.regions?.length) {
+            diskWipRegions = backfillMissingBreadcrumbPaths(entry.regions, importedRegions)
+            importWarnings.push(`Restored in-progress human feedback from disk (${entry.regions.length} regions, ${entry.updated_at ?? 'unknown time'})`)
+          }
+        }
+      } catch {
+        // Middleware unavailable: fall through to signoff/agent/original seed order.
+      }
+
       // Pick the Human starting state: prefer scillm second-pass when present
       // (it's already a refinement of the deterministic Original — saves the
       // human the merging/cleanup work the agent already did). Fall back to
       // importedRegions (Original heuristic) otherwise.
       const humanSeed = (signoff && signoff.agreed_regions.length > 0)
         ? backfillMissingBreadcrumbPaths(signoff.agreed_regions, importedRegions)
-        : (agentRegions.length > 0
+        : (diskWipRegions.length > 0
+            ? diskWipRegions
+            : agentRegions.length > 0
             ? backfillMissingBreadcrumbPaths(
                 agentRegions.map(r => ({ ...r, origin: 'human' as const, id: newId() })),
                 importedRegions,
               )
             : importedRegions)
       const seedSource = signoff ? 'signed-off snapshot'
+        : diskWipRegions.length > 0 ? 'in-progress human feedback'
         : agentRegions.length > 0 ? 'Agent (scillm second-pass)'
         : 'Original (pdf_oxide + ledger)'
 
@@ -1642,6 +1826,10 @@ export function PdfLabLabelingPage() {
         setContextMenu(null)
         return
       }
+      if (e.key === '`') {
+        setOverlayMode(prev => prev === 'clean' ? 'compact' : prev === 'compact' ? 'debug' : 'clean')
+        return
+      }
       if ((e.key === 'Delete' || e.key === 'Backspace') && selectedId) {
         setRegions(prev => prev.filter(r => r.id !== selectedId))
         setSelectedId(null)
@@ -1729,10 +1917,24 @@ export function PdfLabLabelingPage() {
   }, [drag])
 
   const activeFamilyDef = CANONICAL_FAMILIES.find(f => f.id === activeFamily)!
+  const paneRegions = viewMode === 'original'
+    ? regionsInitial
+    : viewMode === 'agent'
+      ? regionsAgent
+      : regions
+  const paneSelectedRegion = paneRegions.find(r => r.id === selectedId) ?? null
+  const inspectorRegions = paneSelectedRegion ? [paneSelectedRegion] : []
+  const currentProject = currentProjectId ? projects.find(p => p.project_id === currentProjectId) : null
+  const activeProjectPages = currentProject?.pages ?? []
 
   return (
-    <div className="pdf-lab-labeling-root" data-qid="pdf-lab:labeling:root">
-      <aside className="pdf-lab-labeling-chips" data-qid="pdf-lab:labeling:chip-column">
+    <div
+      className={`pdf-lab-labeling-root overlay-${overlayMode} ${selectedId ? 'has-selection' : 'no-selection'}`}
+      data-qid="pdf-lab:labeling:root"
+    >
+      <div className="pdf-lab-labeling-main" data-qid="pdf-lab:labeling:main">
+      <LeftPane title="PDF Candidates" width={240} defaultCollapsed={false}>
+      <div className="pdf-lab-labeling-chips" data-qid="pdf-lab:labeling:chip-column">
         {(() => {
           // One unified explorer: known slices first, then any custom local
           // slugs the user added that aren't in the manifest. Each row shows
@@ -1898,19 +2100,47 @@ export function PdfLabLabelingPage() {
             <span className="pdf-lab-labeling-chip-hotkey">{f.hotkey}</span>
           </button>
         ))}
-      </aside>
+      </div>
+      </LeftPane>
 
       <section className="pdf-lab-labeling-canvas-pane" data-qid="pdf-lab:labeling:canvas-pane">
         <header className="pdf-lab-labeling-canvas-toolbar">
+          <details className="pdf-lab-labeling-overflow-menu">
+            <summary title="Secondary import/export/debug actions">Tools</summary>
+            <div className="pdf-lab-labeling-overflow-panel">
+              <label className="pdf-lab-labeling-file">
+                <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
+                <span>Open page image…</span>
+              </label>
+              <label className="pdf-lab-labeling-file">
+                <input type="file" accept="application/json,.json" onChange={e => e.target.files?.[0] && onJsonImport(e.target.files[0])} />
+                <span>Import expected_elements JSON…</span>
+              </label>
+              <button className="pdf-lab-labeling-export" onClick={onExport} disabled={regions.length === 0}>
+                Export expected_elements.json
+              </button>
+            </div>
+          </details>
           <label className="pdf-lab-labeling-file">
             <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
-            <span>Open page image…</span>
+            <span>Open image…</span>
           </label>
           <label className="pdf-lab-labeling-file">
             <input type="file" accept="application/json,.json" onChange={e => e.target.files?.[0] && onJsonImport(e.target.files[0])} />
-            <span>Import JSON (VIA / expected_elements)…</span>
+            <span>Import JSON…</span>
           </label>
           <span className="pdf-lab-labeling-spacer" />
+          <label className="pdf-lab-labeling-family-picker" title={`Active family: ${activeFamily}`}>
+            <span>Family</span>
+            <select
+              value={activeFamily}
+              onChange={event => setActiveFamily(event.target.value as FamilyId)}
+              data-qid="pdf-lab:labeling:family-select"
+              aria-label="Active annotation family"
+            >
+              {CANONICAL_FAMILIES.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
+            </select>
+          </label>
           <input
             className="pdf-lab-labeling-slug"
             type="text"
@@ -1919,7 +2149,7 @@ export function PdfLabLabelingPage() {
             placeholder="slice_id (slug)"
           />
           <button className="pdf-lab-labeling-export" onClick={onExport} disabled={regions.length === 0}>
-            Export expected_elements.json
+            Export JSON
           </button>
           <button
             className="pdf-lab-labeling-export"
@@ -1957,7 +2187,7 @@ export function PdfLabLabelingPage() {
               : `Download all ${Object.keys(projectSignoffs).length} sign-off snapshots as a single JSON (verdict + diff + proposed_owner per page). Commit the file so the project agent can compute downstream PRs.`}
             data-qid="pdf-lab:labeling:export-verdicts"
           >
-            ⤓ Export verdicts ({Object.keys(projectSignoffs).length})
+            ⤓ Verdicts ({Object.keys(projectSignoffs).length})
           </button>
           {(() => {
             const project = currentProjectId ? projects.find(p => p.project_id === currentProjectId) : null
@@ -1971,10 +2201,10 @@ export function PdfLabLabelingPage() {
             const liveVerdict = isProjectPage ? computeVerdict(regionsInitial, regions) : null
             const verdictClass = liveVerdict?.verdict === 'amended' ? 'is-signoff-amend' : 'is-signoff'
             const label = !isProjectPage
-              ? '✓ Sign off + next'
+              ? '✓ Next'
               : liveVerdict?.verdict === 'amended'
-                ? `⚠ Amend (${liveVerdict.diff.length}) + next`
-                : `✓ Confirm pdf_oxide + next`
+                ? `⚠ Amend (${liveVerdict.diff.length})`
+                : `✓ Confirm`
             const title = !isProjectPage
               ? 'Current page is not part of an agent project queue. Open a project page from the side panel to enable sign-off.'
               : noRegions
@@ -1992,7 +2222,7 @@ export function PdfLabLabelingPage() {
                 title={title}
                 data-qid="pdf-lab:labeling:signoff-next"
               >
-                {alreadyAgreed && liveVerdict?.verdict === 'confirmed' ? `✓ Re-confirm + next` : label}
+                {alreadyAgreed && liveVerdict?.verdict === 'confirmed' ? `✓ Re-confirm` : label}
               </button>
             )
           })()}
@@ -2017,32 +2247,31 @@ export function PdfLabLabelingPage() {
             data-qid="pdf-lab:labeling:clear-all"
           >Clear</button>
           <span className="pdf-lab-labeling-toolbar-divider" />
-          <div className="pdf-lab-labeling-viewmode" role="group" aria-label="Canvas view mode">
-            <button
-              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'original' ? 'is-active' : ''}`}
-              onClick={() => setViewMode('original')}
-              title="Original view: pdf_oxide + ledger deterministic output (the primitive extractor's classification, read-only)"
-              data-qid="pdf-lab:labeling:viewmode-original"
-            >Original</button>
-            <button
-              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'agent' ? 'is-active' : ''}`}
-              onClick={() => setViewMode('agent')}
-              title="Agent view: scillm gpt-5.5 second-pass refined classification (LLM enrichment of Original, read-only)"
-              data-qid="pdf-lab:labeling:viewmode-agent"
-            >Agent</button>
-            <button
-              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'human' ? 'is-active' : ''}`}
-              onClick={() => setViewMode('human')}
-              title="Human view: your corrections (editable, default)"
-              data-qid="pdf-lab:labeling:viewmode-human"
-            >Human</button>
-            <button
-              className={`pdf-lab-labeling-viewmode-btn ${viewMode === 'diff' ? 'is-active' : ''}`}
-              onClick={() => setViewMode('diff')}
-              title="Diff view: where Original and Human disagree (each diff is a typed bug spec)"
-              data-qid="pdf-lab:labeling:viewmode-diff"
-            >Diff</button>
-          </div>
+          <select
+            className="pdf-lab-labeling-mode-select"
+            value={viewMode}
+            onChange={event => setViewMode(event.target.value as typeof viewMode)}
+            title="Canvas view mode"
+            data-qid="pdf-lab:labeling:viewmode-select"
+            aria-label="Canvas view mode"
+          >
+            <option value="original">Original</option>
+            <option value="agent">Agent</option>
+            <option value="human">Human</option>
+            <option value="diff">Diff</option>
+          </select>
+          <select
+            className="pdf-lab-labeling-mode-select"
+            value={overlayMode}
+            onChange={event => setOverlayMode(event.target.value as OverlayMode)}
+            title="Overlay density"
+            data-qid="pdf-lab:labeling:overlay-select"
+            aria-label="Overlay density"
+          >
+            <option value="clean">Clean</option>
+            <option value="compact">Compact</option>
+            <option value="debug">Debug</option>
+          </select>
           <span className="pdf-lab-labeling-toolbar-divider" />
           <button className="pdf-lab-labeling-zoom-btn" onClick={zoomOut}     title="Zoom out (Ctrl/Cmd −)">−</button>
           <button className="pdf-lab-labeling-zoom-btn" onClick={zoomFit}     title="Fit to viewport (Ctrl/Cmd 9)">fit</button>
@@ -2085,9 +2314,6 @@ export function PdfLabLabelingPage() {
                   />
                 </div>
               )}
-              <div style={{ position: 'sticky', top: 0, zIndex: 2, background: 'rgba(8,12,24,0.85)', color: '#cfe', padding: '4px 8px', fontSize: 11, fontFamily: 'ui-monospace, monospace', border: '1px solid rgba(120,200,160,0.4)', borderRadius: 4 }}>
-                ● FOCAL (annotate this): {slug}
-              </div>
             <div
               ref={imgWrapperRef}
               className="pdf-lab-labeling-canvas-inner"
@@ -2173,18 +2399,24 @@ export function PdfLabLabelingPage() {
                       width: `${(r.bbox[2] - r.bbox[0]) * 100}%`,
                       height: `${(r.bbox[3] - r.bbox[1]) * 100}%`,
                       borderColor: def?.color ?? '#fff',
-                      background: `${def?.color ?? '#fff'}22`,
+                      background: overlayMode === 'debug' ? `${def?.color ?? '#fff'}26` : 'transparent',
                     }}
                   >
-                    <span
-                      className={`pdf-lab-labeling-region-tag tag-anchor-${r.labelAnchor ?? 'top-outside'}`}
-                      style={{ background: def?.color ?? '#fff' }}
-                      onMouseDown={e => { e.stopPropagation(); e.preventDefault() }}
-                      onClick={e => handleLabelClick(e, r.id)}
-                      title="Click to cycle: top-outside → top-inside → bottom-inside → bottom-outside"
-                    >
-                      {r.family}{r.label ? ` · ${r.label.slice(0, 24)}` : ''}
-                    </span>
+                    {overlayMode !== 'clean' && (
+                      <span
+                        className={`pdf-lab-labeling-region-tag tag-anchor-${r.labelAnchor ?? 'top-outside'}`}
+                        style={{ ['--region-color' as string]: def?.color ?? '#fff' }}
+                        onMouseDown={e => { e.stopPropagation(); e.preventDefault() }}
+                        onClick={e => handleLabelClick(e, r.id)}
+                        title={overlayMode === 'debug'
+                          ? 'Debug overlay label. Click to cycle label position.'
+                          : `${r.family}. Click to cycle label position.`}
+                      >
+                        {overlayMode === 'debug'
+                          ? `${r.family}${r.label ? ` · ${r.label.slice(0, 24)}` : ''}`
+                          : FAMILY_ABBREVIATIONS[r.family]}
+                      </span>
+                    )}
                     {isSelected && (['nw','n','ne','e','se','s','sw','w'] as const).map(dir => (
                       <div
                         key={dir}
@@ -2301,24 +2533,35 @@ export function PdfLabLabelingPage() {
 
       <aside className="pdf-lab-labeling-regions-pane" data-qid="pdf-lab:labeling:regions-pane">
         <div className="pdf-lab-labeling-regions-title">
-          Regions ({regions.length})
+          <span>{paneSelectedRegion ? 'Selected region' : `Regions (${paneRegions.length})`}</span>
           {imageNaturalSize && <span className="pdf-lab-labeling-regions-meta">{imageNaturalSize.w}×{imageNaturalSize.h}px</span>}
-        </div>
-        {selectedRegion?.breadcrumb?.length ? (
-          <div
-            className="pdf-lab-labeling-selected-breadcrumb"
-            data-qid="pdf-lab:labeling:selected-breadcrumb"
-            title="Selected region breadcrumb"
+          <button
+            className="pdf-lab-labeling-pane-close"
+            type="button"
+            data-qid="pdf-lab:labeling:regions-close"
+            data-qs-action="PDF_LAB_REGIONS_PANE_CLOSE"
+            title="Close selected-region inspector"
+            onClick={() => setSelectedId(null)}
           >
-            {selectedRegion.breadcrumb.map((part, index) => (
-              <span key={`${selectedRegion.id}-selected-bc-${index}`}>
-                {index > 0 && <span className="pdf-lab-labeling-region-breadcrumb-sep">›</span>}
-                {part}
-              </span>
-            ))}
+            ×
+          </button>
+        </div>
+        <div
+          className="pdf-lab-labeling-selected-breadcrumb"
+          data-qid="pdf-lab:labeling:selected-breadcrumb"
+          title="Selected region document hierarchy path"
+        >
+          <span className="pdf-lab-labeling-region-breadcrumb-label">Path:</span>
+          <span className="pdf-lab-labeling-selected-breadcrumb-text">
+            {hierarchyPathText(paneSelectedRegion)}
+          </span>
+        </div>
+        {paneSelectedRegion && (
+          <div className="pdf-lab-labeling-selected-breadcrumb-note">
+            Document hierarchy metadata; not a PDF element type.
           </div>
-        ) : null}
-        {regions.length > 1 && (
+        )}
+        {viewMode === 'human' && regions.length > 1 && (
           <button
             className="pdf-lab-labeling-regions-sort"
             data-qid="pdf-lab:labeling:sort-by-reading-order"
@@ -2328,16 +2571,19 @@ export function PdfLabLabelingPage() {
             ↓ Sort by reading order
           </button>
         )}
-        {regions.length === 0 && (
-          <div className="pdf-lab-labeling-regions-empty">No regions yet. Pick a family, drag on the page.</div>
+        {!paneSelectedRegion && (
+          <div className="pdf-lab-labeling-regions-empty">
+            Select a region to edit type, text, and traceability. The full region list is intentionally hidden to keep the PDF canvas usable.
+          </div>
         )}
-        {regions.map((r, regionIndex) => {
+        {inspectorRegions.map((r) => {
           const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
           const update = (patch: Partial<Region>) => setRegions(prev => prev.map(x => x.id === r.id ? { ...x, ...patch } : x))
           const remove = () => { setRegions(prev => prev.filter(x => x.id !== r.id)); if (selectedId === r.id) setSelectedId(null) }
           const isDragging = reorderDragId === r.id
           const isDropTarget = reorderHoverId === r.id && reorderDragId && reorderDragId !== r.id
-          const previousBreadcrumbNodes = [...regions.slice(0, regionIndex)]
+          const selectedIndex = paneRegions.findIndex(candidate => candidate.id === r.id)
+          const previousBreadcrumbNodes = [...paneRegions.slice(0, Math.max(0, selectedIndex))]
             .reverse()
             .map(candidate => breadcrumbNodesFromRegion(candidate))
             .find(candidateNodes => candidateNodes.length > 0)
@@ -2400,6 +2646,7 @@ export function PdfLabLabelingPage() {
           )
         })}
       </aside>
+      </div>
     </div>
   )
 }

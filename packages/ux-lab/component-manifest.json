@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-  "updated": "2026-05-06",
+    "updated": "2026-05-24",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -318,12 +318,13 @@
       "summary": "object — { total, broken, held }"
     }
   },
-  "pdf_lab": {
-    "id": "pdf-lab-agentic-workflow",
-    "name": "PdfLabView",
-    "file": "src/components/pdf-lab/PdfLabView.tsx",
-    "description": "Default PDF Lab surface presents the real-data agentic workflow and Coverage proof layer: agent scan, candidate pages, deterministic extraction, parity comparison, preset/code improvement, full extraction, human triage, candidate audit confirmation, and Nico evidence QA.",
-    "composition": "Coverage starts with a candidate audit table showing all promoted sweep candidate pages, thumbnails, detected PDF element families, agent correction notes, ArangoDB memory keys, and pass/warn/fail state; Surgical Triage remains the focused human ambiguity deck.",
+    "pdf_lab": {
+      "id": "pdf-lab-agentic-workflow",
+      "name": "PdfLabView",
+      "file": "src/components/pdf-lab/PdfLabView.tsx",
+      "description": "Default PDF Lab surface presents the real-data agentic workflow and Coverage proof layer: agent scan, candidate pages, deterministic extraction, parity comparison, preset/code improvement, full extraction, human triage, candidate audit confirmation, and Nico evidence QA.",
+      "labeling_surface": "PdfLabLabelingPage uses the shared common/LeftPane for the candidate explorer, a compact canvas toolbar, and a static right selected-region inspector with visible document hierarchy path metadata.",
+      "composition": "Coverage starts with a candidate audit table showing all promoted sweep candidate pages, thumbnails, detected PDF element families, agent correction notes, ArangoDB memory keys, and pass/warn/fail state; Surgical Triage remains the focused human ambiguity deck.",
     "data_sources": [
       "public/pdf-lab-nist-workflow-manifest.json",
       "public/pdf-lab-nist-full-extraction.json",
@@ -362,12 +363,17 @@
     "id": "scillm-workspace",
     "name": "ScillmWorkspace",
     "file": "src/components/scillm/ScillmWorkspace.tsx",
-    "description": "Final Site workspace for #scillm with internal product tabs. Mirrors the SPARTA Explorer pattern by keeping Monitor and DAG Viewer-Planner inside one scillm route instead of splitting them into separate ux-lab projects.",
+    "description": "Final Site workspace for #scillm with internal product tabs. Mirrors the SPARTA Explorer pattern by keeping Monitor, Codex App Server sessions, and DAG Viewer-Planner inside one scillm route instead of splitting them into separate ux-lab projects.",
     "tabs": [
       {
         "id": "monitor",
         "component": "ScillmDashboard",
         "purpose": "Live scillm proxy calls, provider auth, jobs, model pools, and trace inspection."
+      },
+      {
+        "id": "app-server",
+        "component": "ScillmAppServerSession",
+        "purpose": "Inspect Codex App Server subagent sessions as scillm call artifacts with persona/profile/runtime metadata, separated turns, files, tests, and protocol events."
       },
       {
         "id": "dag-planner",
@@ -378,9 +384,32 @@
     "route": "http://localhost:3002/#scillm",
     "deep_links": {
       "monitor": "http://localhost:3002/#scillm",
+      "app-server": "http://localhost:3002/#scillm/app-server",
       "dag-planner": "http://localhost:3002/#scillm/dag-planner"
     },
     "test_status": "TypeScript + browser screenshot verification required after tab or layout changes"
+  },
+  "scillm_app_server_session": {
+    "id": "scillm-app-server-session",
+    "name": "ScillmAppServerSession",
+    "file": "src/components/scillm/ScillmAppServerSession.tsx",
+    "description": "Artifact-backed Codex App Server interface for #scillm. It treats Nico as a scillm call variety alongside one-shot calls and exec workers, then renders the app-server JSON-RPC thread/start + turn/start run without terminal input simulation.",
+    "data_sources": [
+      "GET /api/scillm/app-server/sessions/latest",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/app-server-nico-e2e-run/summary.json",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/app-server-nico-e2e-run/turn-transcript.json",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/app-server-nico-e2e-run/events.jsonl",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/app-server-nico-e2e-run/pytest.log",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/app-server-nico-e2e-run/workspace.diff"
+    ],
+    "artifact_contract": {
+      "fail_closed": "The backend returns codex_app_server_session_unavailable or codex_app_server_session_incomplete instead of fake operational content when required evidence is missing.",
+      "call_varieties": "The UI names one-shot scillm call, scillm exec worker, and Codex App Server subagent as sibling call varieties; the selected evidence-backed variety is codex_app_server_subagent.",
+      "runtime_contract": "Visible runtime fields include backing runtime, persona, model, permission/sandbox profile, approval policy, terminal-input-simulation=false, and subagent-runner=false.",
+      "conversation_trace": "Each turn separates project/human prompt, optional course correction, Nico app-server response, terminal turn status, and duration.",
+      "proof": "Changed files, pytest log, workspace diff, artifact paths, and protocol event method counts are rendered from stored phase artifacts."
+    },
+    "test_status": "TypeScript + CDP screenshot verification required after every layout/data-contract change"
   },
   "scillm_dag_planner": {
     "id": "scillm-dag-planner",
@@ -394,17 +423,18 @@
       "POST /api/scillm/dag-viewer/amendments",
       "POST /api/scillm/v1/scillm/exec/review-catalog/{agents|contracts}?skill=review-code",
       "src/components/scillm/dag-planner/dagViewModel.ts",
-      "/home/graham/workspace/experiments/scillm/.plan-iterate/phase-20260519-dag-self-improvement-loop/evidence-artifacts/scillm-exec-run-final/{graph.request.json,status.json,events.jsonl}"
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/scillm-exec-run-hash-bound/{graph.request.json,status.json,events.jsonl}",
+      "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/{compiled-runtime-graph-request*.json,current-run-*-status.json,current-run-*-events.json}"
     ],
     "artifact_contract": {
-      "fail_closed": "If graph.request.json, status.json, or events.jsonl is missing, the tab renders DAG evidence unavailable instead of fake graph state.",
+      "fail_closed": "If no complete runtime artifact set or plan-graph fallback exists for the resolved phase, the tab renders DAG evidence unavailable instead of fake graph state. Runtime artifact discovery supports both exec-run directories and current phase evidence files.",
       "phase_gate": "The tab surfaces PHASE_STATUS review_comparison when phase closure is still pending.",
       "model_selection": "Review fanout models come from /v1/scillm/models review_fanout_models, preserving the no text/text-* selection contract.",
       "inspectability": "The DAG planner uses the scillm-dag-planner modifier so the DAG evidence surface scrolls inside the #scillm final-site panel; graph, footer events, and node inspector content must remain reachable at desktop viewport height.",
       "viewport_controls": "The graph canvas exposes zoom in, zoom out, move/pan, and fit controls in the top-right canvas well and the same actions in the canvas context menu.",
-      "layout_spacing": "The DAG layout must size the internal graph canvas from depth count and widest layer so adjacent depth columns do not overlap 220px node cards.",
-      "plan_iterate_shape": "Known plan-iterate graphs render as a workflow map: synthesis/goal on top, review-code/review-prompt/review-design lane labels, a green current-round band, then aggregate/validate summary nodes below.",
-      "node_inspector": "Node inspection uses a right-side slide-out data pane. Selecting a node opens the pane; the pane can close without destroying graph context and can be reopened from the canvas.",
+      "layout_spacing": "The DAG layout is top-down for editing: depth maps to vertical position, same-depth nodes fan out horizontally, and the internal graph canvas sizes from deepest layer and widest layer so adjacent nodes do not overlap 270px cards.",
+      "plan_iterate_shape": "Current plan-iterate graphs render as a top-down editable workflow map: synthesis/goal upstream, review fanout across a horizontal layer, aggregate/implement/verify/validate downstream.",
+      "node_inspector": "Node inspection uses a persistent right-side selected-node workbench. Selecting a different node updates the same pane in place; the pane focuses on editable node contract fields, dependencies, source-backed run evidence, and collapsed raw/debug payloads instead of runtime dashboard controls.",
       "view_model": "dagViewModel.ts derives DagViewModel from executable graph nodes, status/events/artifacts, draft amendment diff, and separate UI layout state. Build/Run/Debug are the primary product modes; Evidence/Plan edit/Nico proposals are lower-level capabilities.",
       "base_graph_hash": "GET /api/scillm/dag-viewer/snapshot returns a backend-computed sha256 canonical executable graph hash. UI draft saves include that hash and display stale-hash warnings when the draft base hash no longer matches the current snapshot.",
       "amendment_drafts": "Build mode semantic edits create local AmendmentDraft operations. Save Draft posts operations to /api/scillm/dag-viewer/amendments; Apply Amendment is intentionally disabled until a backend apply validator exists.",

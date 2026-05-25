@@ -183,10 +183,13 @@ async function resolveScillmDagPhaseId(req: express.Request): Promise<{ phaseId:
 }
 
 async function latestScillmPlanGraph(phaseDir: string, phaseStatus: JsonRecord | null): Promise<{ graphPath: string; readinessPath: string | null } | null> {
-  const statusPath = typeof phaseStatus?.active_plan_graph_artifact === 'string'
-    ? resolve(phaseDir, phaseStatus.active_plan_graph_artifact)
+  const activePlanGraphArtifact = typeof phaseStatus?.active_plan_graph_artifact === 'string' && phaseStatus.active_plan_graph_artifact.trim()
+    ? phaseStatus.active_plan_graph_artifact.trim()
     : null
-  const graphPath = statusPath && isPathInside(phaseDir, statusPath) && existsSync(statusPath)
+  const statusPath = activePlanGraphArtifact
+    ? resolve(phaseDir, activePlanGraphArtifact)
+    : null
+  const graphPath = statusPath && isPathInside(phaseDir, statusPath) && existsSync(statusPath) && (await stat(statusPath).catch(() => null))?.isFile()
     ? statusPath
     : null
   if (graphPath) {
@@ -202,6 +205,120 @@ async function latestScillmPlanGraph(phaseDir: string, phaseStatus: JsonRecord |
   const latestGraphPath = resolve(planGraphDir, latest)
   const latestReadinessPath = latestGraphPath.replace(/\.json$/, '-runtime-readiness.json')
   return { graphPath: latestGraphPath, readinessPath: existsSync(latestReadinessPath) ? latestReadinessPath : null }
+}
+
+async function latestMatchingFile(dir: string, matcher: (file: string) => boolean): Promise<string | null> {
+  const candidates = await Promise.all((await readdir(dir).catch(() => []))
+    .filter(matcher)
+    .map(async (file) => {
+      const path = resolve(dir, file)
+      const fileStat = await stat(path).catch(() => null)
+      return fileStat?.isFile() ? { file, path, mtimeMs: fileStat.mtimeMs } : null
+    }))
+  const latest = candidates
+    .filter((candidate): candidate is { file: string; path: string; mtimeMs: number } => Boolean(candidate))
+    .sort((a, b) => a.mtimeMs - b.mtimeMs || a.file.localeCompare(b.file))
+    .at(-1)
+  return latest?.path ?? null
+}
+
+async function resolveScillmRuntimeArtifacts(phaseDir: string): Promise<{ runDir: string; graphPath: string; statusPath: string; eventsPath: string; layout: string }> {
+  const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
+  const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
+  for (const runDir of [preferredRunDir, fallbackRunDir]) {
+    const graphPath = resolve(runDir, 'graph.request.json')
+    const statusPath = resolve(runDir, 'status.json')
+    const eventsPath = resolve(runDir, 'events.jsonl')
+    if (
+      existsSync(graphPath) && existsSync(statusPath) && existsSync(eventsPath)
+      && (await stat(graphPath).catch(() => null))?.isFile()
+      && (await stat(statusPath).catch(() => null))?.isFile()
+      && (await stat(eventsPath).catch(() => null))?.isFile()
+    ) {
+      return { runDir, graphPath, statusPath, eventsPath, layout: 'exec_run_dir' }
+    }
+  }
+
+  const evidenceDir = resolve(phaseDir, 'evidence-artifacts')
+  const graphPath =
+    await latestMatchingFile(evidenceDir, (file) => /^compiled-runtime-graph-request(?:-[a-z0-9]+)?\.json$/i.test(file))
+    ?? await latestMatchingFile(resolve(phaseDir, 'plan-graphs'), (file) => /^compiled-runtime-graph(?:-[a-z0-9]+)?\.json$/i.test(file))
+  const statusPath = await latestMatchingFile(evidenceDir, (file) => /^current-run-\d+-status(?:-[a-z0-9-]+)?\.json$/i.test(file))
+  const eventsPath = await latestMatchingFile(evidenceDir, (file) => /^current-run-\d+-events(?:-[a-z0-9-]+)?\.(json|jsonl)$/i.test(file))
+
+  if (!graphPath || !statusPath || !eventsPath) {
+    throw new Error(`No complete scillm DAG runtime artifact set found in ${evidenceDir}`)
+  }
+  return { runDir: evidenceDir, graphPath, statusPath, eventsPath, layout: 'phase_evidence_files' }
+}
+
+function parseScillmEvents(raw: string, eventsPath: string): JsonRecord[] {
+  const trimmed = raw.trim()
+  if (!trimmed) return []
+  if (eventsPath.endsWith('.jsonl')) {
+    return trimmed
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => JSON.parse(line))
+  }
+  const parsed = JSON.parse(trimmed)
+  if (Array.isArray(parsed)) return parsed as JsonRecord[]
+  if (Array.isArray((parsed as JsonRecord).events)) return (parsed as JsonRecord).events as JsonRecord[]
+  return [parsed as JsonRecord]
+}
+
+async function readJsonArtifact(path: string): Promise<JsonRecord> {
+  return JSON.parse(await readFile(path, 'utf-8')) as JsonRecord
+}
+
+async function findLatestAppServerSessionPhase(): Promise<string | null> {
+  const root = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate')
+  const entries = await readdir(root, { withFileTypes: true }).catch(() => [])
+  let latest: { phaseId: string; mtimeMs: number } | null = null
+
+  for (const entry of entries) {
+    if (!entry.isDirectory() || !safeScillmPhaseId(entry.name)) continue
+    const summaryPath = resolve(root, entry.name, 'evidence-artifacts', 'app-server-nico-e2e-run', 'summary.json')
+    const summaryStat = await stat(summaryPath).catch(() => null)
+    if (!summaryStat) continue
+    if (!latest || summaryStat.mtimeMs > latest.mtimeMs) {
+      latest = { phaseId: entry.name, mtimeMs: summaryStat.mtimeMs }
+    }
+  }
+
+  return latest?.phaseId ?? null
+}
+
+function parseAppServerEventSummary(events: JsonRecord[]): JsonRecord {
+  const methods: Record<string, number> = {}
+  let sendCount = 0
+  let recvCount = 0
+  let firstTs: unknown = null
+  let lastTs: unknown = null
+
+  for (const event of events) {
+    const direction = event.direction
+    if (direction === 'send') sendCount += 1
+    if (direction === 'recv') recvCount += 1
+    const message = event.message as JsonRecord | undefined
+    const method = typeof message?.method === 'string' ? message.method : typeof message?.id !== 'undefined' ? 'response' : 'unknown'
+    methods[method] = (methods[method] ?? 0) + 1
+    if (firstTs === null) firstTs = event.ts ?? null
+    lastTs = event.ts ?? lastTs
+  }
+
+  return {
+    total: events.length,
+    send_count: sendCount,
+    recv_count: recvCount,
+    first_ts: firstTs,
+    last_ts: lastTs,
+    method_counts: Object.entries(methods)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, 18)
+      .map(([method, count]) => ({ method, count })),
+  }
 }
 
 function synthesizePlanIterateStatus(graph: JsonRecord, readiness: JsonRecord | null, phaseStatus: JsonRecord | null): JsonRecord {
@@ -4301,23 +4418,154 @@ app.post('/api/scillm', (req, res) => {
   proxyReq.end()
 })
 
+app.get('/api/scillm/app-server/sessions/latest', async (req, res) => {
+  const queryPhase = Array.isArray(req.query.phase_id) ? req.query.phase_id[0] : req.query.phase_id
+  const queryPhaseCamel = Array.isArray(req.query.phaseId) ? req.query.phaseId[0] : req.query.phaseId
+  const requestedPhaseId = safeScillmPhaseId(queryPhase) ?? safeScillmPhaseId(queryPhaseCamel)
+  const discoveredPhaseId = requestedPhaseId ?? await findLatestAppServerSessionPhase()
+
+  if (!discoveredPhaseId) {
+    res.status(503).json({
+      ok: false,
+      error: 'codex_app_server_session_unavailable',
+      detail: 'No plan-iterate phase contains evidence-artifacts/app-server-nico-e2e-run/summary.json.',
+    })
+    return
+  }
+
+  const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', discoveredPhaseId)
+  const evidenceDir = resolve(phaseDir, 'evidence-artifacts')
+  const runDir = resolve(evidenceDir, 'app-server-nico-e2e-run')
+  const networkBlockedDir = resolve(evidenceDir, 'app-server-nico-e2e-run-network-blocked')
+  const paths = {
+    phase_status: resolve(phaseDir, 'PHASE_STATUS.json'),
+    summary: resolve(runDir, 'summary.json'),
+    transcript: resolve(runDir, 'turn-transcript.json'),
+    events: resolve(runDir, 'events.jsonl'),
+    pytest_log: resolve(runDir, 'pytest.log'),
+    workspace_diff: resolve(runDir, 'workspace.diff'),
+    workspace_status: resolve(runDir, 'workspace-status.log'),
+    report_html: resolve(evidenceDir, 'nico-collaboration-report.html'),
+    network_blocked_events: resolve(networkBlockedDir, 'events.jsonl'),
+  }
+
+  if (!isPathInside(SCILLM_PROJECT_ROOT, phaseDir) || !isPathInside(SCILLM_PROJECT_ROOT, runDir)) {
+    res.status(500).json({ ok: false, error: 'configured app-server session paths escape project root' })
+    return
+  }
+
+  try {
+    const requiredPaths = [paths.summary, paths.transcript, paths.events]
+    const missing = requiredPaths.filter((path) => !existsSync(path))
+    if (missing.length) {
+      res.status(503).json({
+        ok: false,
+        error: 'codex_app_server_session_incomplete',
+        phase_id: discoveredPhaseId,
+        missing,
+      })
+      return
+    }
+
+    const [
+      phaseStatus,
+      summary,
+      transcriptRaw,
+      eventsRaw,
+      pytestLog,
+      workspaceDiff,
+      workspaceStatus,
+      networkBlockedRaw,
+    ] = await Promise.all([
+      readJsonArtifact(paths.phase_status).catch(() => null),
+      readJsonArtifact(paths.summary),
+      readFile(paths.transcript, 'utf-8'),
+      readFile(paths.events, 'utf-8'),
+      readFile(paths.pytest_log, 'utf-8').catch(() => ''),
+      readFile(paths.workspace_diff, 'utf-8').catch(() => ''),
+      readFile(paths.workspace_status, 'utf-8').catch(() => ''),
+      readFile(paths.network_blocked_events, 'utf-8').catch(() => ''),
+    ])
+    const transcript = JSON.parse(transcriptRaw)
+    const events = parseScillmEvents(eventsRaw, paths.events)
+    const networkBlockedEvents = networkBlockedRaw.trim()
+      ? parseScillmEvents(networkBlockedRaw, paths.network_blocked_events)
+      : []
+
+    res.json({
+      ok: true,
+      schema: 'ux_lab.scillm_app_server_session_snapshot.v1',
+      phase_id: discoveredPhaseId,
+      source: {
+        project_root: SCILLM_PROJECT_ROOT,
+        phase_dir: phaseDir,
+        run_dir: runDir,
+        summary: paths.summary,
+        transcript: paths.transcript,
+        events: paths.events,
+        pytest_log: paths.pytest_log,
+        workspace_diff: paths.workspace_diff,
+        workspace_status: paths.workspace_status,
+        report_html: paths.report_html,
+        network_blocked_events: paths.network_blocked_events,
+      },
+      call_varieties: [
+        { id: 'one_shot', label: 'One-shot scillm call', implemented_interface: 'POST /v1/chat/completions' },
+        { id: 'exec', label: 'scillm exec worker', implemented_interface: 'scillm exec profile' },
+        { id: 'codex_app_server_subagent', label: 'Codex App Server subagent', implemented_interface: 'JSON-RPC thread/start + turn/start' },
+      ],
+      selected_call_variety: 'codex_app_server_subagent',
+      runtime: {
+        provider_surface: 'scillm',
+        backing_runtime: 'codex_app_server',
+        persona: 'Nico',
+        model: 'gpt-5.5',
+        approval_policy: 'never',
+        sandbox: 'workspace-write',
+        network_access: true,
+        terminal_input_simulation: false,
+        subagent_runner: false,
+      },
+      phase_status: phaseStatus,
+      summary,
+      transcript,
+      event_summary: parseAppServerEventSummary(events),
+      recent_events: events.slice(0, 120),
+      network_blocked_event_summary: parseAppServerEventSummary(networkBlockedEvents),
+      pytest_log: pytestLog,
+      workspace_diff: workspaceDiff,
+      workspace_status: workspaceStatus,
+    })
+  } catch (err) {
+    res.status(503).json({
+      ok: false,
+      error: 'codex_app_server_session_read_failed',
+      phase_id: discoveredPhaseId,
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
 app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
   const { phaseId, activePhaseId, requestedPhaseId } = await resolveScillmDagPhaseId(req)
   const phaseDir = resolve(SCILLM_PROJECT_ROOT, '.plan-iterate', phaseId)
-  const preferredRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
-  const fallbackRunDir = resolve(phaseDir, 'evidence-artifacts', 'scillm-exec-run-final')
-  const runDir = existsSync(preferredRunDir) ? preferredRunDir : fallbackRunDir
-  const graphPath = resolve(runDir, 'graph.request.json')
-  const statusPath = resolve(runDir, 'status.json')
-  const eventsPath = resolve(runDir, 'events.jsonl')
+  const defaultRunDir = resolve(phaseDir, 'evidence-artifacts', SCILLM_DAG_RUN_ARTIFACT_DIR)
+  const defaultGraphPath = resolve(defaultRunDir, 'graph.request.json')
+  const defaultStatusPath = resolve(defaultRunDir, 'status.json')
+  const defaultEventsPath = resolve(defaultRunDir, 'events.jsonl')
   const phaseStatusPath = resolve(phaseDir, 'PHASE_STATUS.json')
 
-  if (!isPathInside(SCILLM_PROJECT_ROOT, phaseDir) || !isPathInside(SCILLM_PROJECT_ROOT, runDir)) {
+  if (!isPathInside(SCILLM_PROJECT_ROOT, phaseDir)) {
     res.status(500).json({ ok: false, error: 'configured scillm DAG paths escape project root' })
     return
   }
 
   try {
+    const { runDir, graphPath, statusPath, eventsPath, layout } = await resolveScillmRuntimeArtifacts(phaseDir)
+    if (!isPathInside(SCILLM_PROJECT_ROOT, runDir)) {
+      res.status(500).json({ ok: false, error: 'configured scillm DAG artifact paths escape project root' })
+      return
+    }
     const [graphRaw, statusRaw, eventsRaw, phaseStatusRaw] = await Promise.all([
       readFile(graphPath, 'utf-8'),
       readFile(statusPath, 'utf-8'),
@@ -4327,11 +4575,7 @@ app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
     const graph = JSON.parse(graphRaw)
     const status = JSON.parse(statusRaw)
     const baseGraphHash = executableGraphHash(graph)
-    const events = eventsRaw
-      .split('\n')
-      .map(line => line.trim())
-      .filter(Boolean)
-      .map(line => JSON.parse(line))
+    const events = parseScillmEvents(eventsRaw, eventsPath)
     res.json({
       ok: true,
       phase_id: phaseId,
@@ -4339,8 +4583,10 @@ app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
       requested_phase_id: requestedPhaseId,
       phase_matches_active: activePhaseId ? activePhaseId === phaseId : null,
       snapshot_kind: 'runtime_exec_artifacts',
+      artifact_layout: layout,
       source: {
         project_root: SCILLM_PROJECT_ROOT,
+        run_dir: runDir,
         graph: graphPath,
         status: statusPath,
         events: eventsPath,
@@ -4385,9 +4631,9 @@ app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
           events: 'synthetic: plan-iterate phase plan snapshot; runtime events unavailable',
           phase_status: phaseStatusPath,
           runtime_readiness: latestPlan.readinessPath ?? 'not reported',
-          missing_runtime_graph: graphPath,
-          missing_runtime_status: statusPath,
-          missing_runtime_events: eventsPath,
+          missing_runtime_graph: defaultGraphPath,
+          missing_runtime_status: defaultStatusPath,
+          missing_runtime_events: defaultEventsPath,
         },
         graph,
         status,
@@ -4396,9 +4642,9 @@ app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
         events,
         phase_status: phaseStatus,
         missing_runtime_artifacts: {
-          graph: graphPath,
-          status: statusPath,
-          events: eventsPath,
+          graph: defaultGraphPath,
+          status: defaultStatusPath,
+          events: defaultEventsPath,
           detail: err instanceof Error ? err.message : String(err),
         },
       })
@@ -4410,7 +4656,7 @@ app.get('/api/scillm/dag-viewer/snapshot', async (req, res) => {
         active_phase_id: activePhaseId,
         requested_phase_id: requestedPhaseId,
         detail: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
-        expected: { graph: graphPath, status: statusPath, events: eventsPath },
+        expected: { graph: defaultGraphPath, status: defaultStatusPath, events: defaultEventsPath },
       })
     }
   }
