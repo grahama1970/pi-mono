@@ -328,7 +328,7 @@
         },
         {
           "control_id": "AC-13",
-          "title": "Supervision and Review — Access Control",
+          "title": "Supervision and Review \u2014 Access Control",
           "gap_types": [
             "missing_embedding"
           ],
@@ -437,7 +437,7 @@
           },
           {
             "control_id": "AC-13",
-            "title": "Supervision and Review — Access Control",
+            "title": "Supervision and Review \u2014 Access Control",
             "gap_types": [
               "missing_embedding"
             ],
@@ -3189,7 +3189,7 @@
       "covered": 392,
       "total": 393,
       "percent": 99,
-      "detail": "data-qid coverage: 392/393 (99%)\n\nMISSING (1):\n  query/SpartaHudInput.tsx:183 — <input\n\nFAIL: 1 interactive elements without data-qid"
+      "detail": "data-qid coverage: 392/393 (99%)\n\nMISSING (1):\n  query/SpartaHudInput.tsx:183 \u2014 <input\n\nFAIL: 1 interactive elements without data-qid"
     },
     {
       "name": "Python silent fallback scan",
@@ -5828,5 +5828,23 @@
     "stored": null,
     "progress_percent": null,
     "message": "No active create-qras worker observed; latest log changed 1130352s ago."
+  },
+  "refresh_policy": "change_gated",
+  "coverage_change_signature": {
+    "schema": "sparta_coverage_change_signature.v1",
+    "collections": {
+      "sparta_controls": 12309,
+      "sparta_qra": 245975,
+      "sparta_qra_canonical": 19160,
+      "sparta_qra_relationship": 1892,
+      "sparta_relationships": 262426,
+      "sparta_urls": 6854,
+      "sparta_url_knowledge": 43398,
+      "datalake_chunks": 2529120
+    },
+    "supervisor_status_mtime_ms": 1778594033910,
+    "supervisor_commands_mtime_ms": null,
+    "monitor_state_mtime_ms": 1779722842298,
+    "monitor_task_state_mtime_ms": 1779722842300
   }
 }

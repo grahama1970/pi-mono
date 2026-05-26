@@ -93,6 +93,16 @@ const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'stat
 const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
 const SPARTA_SUPERVISOR_RUN_ENABLED = process.env.SPARTA_SUPERVISOR_RUN_ENABLED === '1'
 const SPARTA_GAP_PLAN_DIR = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
+const SPARTA_COVERAGE_SIGNATURE_COLLECTIONS = [
+  'sparta_controls',
+  'sparta_qra',
+  'sparta_qra_canonical',
+  'sparta_qra_relationship',
+  'sparta_relationships',
+  'sparta_urls',
+  'sparta_url_knowledge',
+  'datalake_chunks',
+]
 const PUBLIC_ROOT = resolve(__dirname, '../public')
 const ARTIFACTS_ROOT = resolve(process.env.UX_LAB_ARTIFACTS_ROOT ?? process.env.ARTIFACTS_ROOT ?? '/mnt/storage12tb/pi-mono/artifacts')
 const PDF_LAB_ARTIFACTS_ROOT = resolve(process.env.PDF_LAB_ARTIFACTS_ROOT ?? resolve(ARTIFACTS_ROOT, 'pdf-lab'))
@@ -1790,6 +1800,33 @@ async function readSpartaCoverageSnapshot(): Promise<JsonRecord | null> {
   }
 }
 
+async function fileMtimeMs(path: string): Promise<number | null> {
+  const info = await stat(path).catch(() => null)
+  return info ? Math.trunc(info.mtimeMs) : null
+}
+
+async function buildSpartaCoverageChangeSignature(): Promise<JsonRecord> {
+  const counts = await Promise.all(
+    SPARTA_COVERAGE_SIGNATURE_COLLECTIONS.map(async (collection) => [
+      collection,
+      await countQraDocs(collection).catch(() => 0),
+    ] as const),
+  )
+  return {
+    schema: 'sparta_coverage_change_signature.v1',
+    collections: Object.fromEntries(counts),
+    supervisor_status_mtime_ms: await fileMtimeMs(SPARTA_SUPERVISOR_STATUS_PATH),
+    supervisor_commands_mtime_ms: await fileMtimeMs(SPARTA_SUPERVISOR_COMMANDS_PATH),
+    monitor_state_mtime_ms: await fileMtimeMs('/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json'),
+    monitor_task_state_mtime_ms: await fileMtimeMs('/mnt/storage12tb/media/agents/shared/monitor-sparta/task_state.json'),
+  }
+}
+
+function sameCoverageChangeSignature(left: unknown, right: unknown): boolean {
+  if (!left || !right) return false
+  return canonicalJson(left) === canonicalJson(right)
+}
+
 async function readSpartaSupervisorState(): Promise<JsonRecord | null> {
   const text = await readFile(SPARTA_SUPERVISOR_STATUS_PATH, 'utf8').catch(() => null)
   if (!text) return null
@@ -2035,7 +2072,7 @@ print(json.dumps(payload, default=str))
 
   const [
     monitor,
-    counts,
+    changeSignature,
     bestPracticeBase,
     artifacts,
     promptAudit,
@@ -2046,21 +2083,15 @@ print(json.dumps(payload, default=str))
       env: { PYTHONPATH: 'src', MEMORY_SERVICE_URL: 'http://127.0.0.1:8601' },
       timeout: 180_000,
     }),
-    Promise.all([
-      proxyPost('/count', { collection: 'sparta_controls' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_qra' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_qra_canonical' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_qra_relationship' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_relationships' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_urls' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'sparta_url_knowledge' }).catch(() => ({ count: 0 })),
-      proxyPost('/count', { collection: 'datalake_chunks' }).catch(() => ({ count: 0 })),
-    ]),
+    buildSpartaCoverageChangeSignature(),
     runBestPracticeAudit(),
     readLatestArtifactSummary(),
     auditSpartaPrompts(),
     refreshSpartaSupervisorState(),
   ])
+  const counts = (changeSignature.collections && typeof changeSignature.collections === 'object' && !Array.isArray(changeSignature.collections))
+    ? changeSignature.collections as Record<string, number>
+    : {}
   const remaining = monitor && typeof monitor === 'object' && !Array.isArray(monitor)
     ? (monitor as JsonRecord).remaining as JsonRecord | undefined
     : undefined
@@ -2110,16 +2141,18 @@ print(json.dumps(payload, default=str))
     generated_at: new Date().toISOString(),
     stale: false,
     refreshing: false,
+    refresh_policy: 'change_gated',
+    coverage_change_signature: changeSignature,
     corpus: {
-      controls: counts[0]?.count ?? 0,
-      qrasLegacy: counts[1]?.count ?? 0,
-      qrasCanonical: counts[2]?.count ?? 0,
-      qrasRelationship: counts[3]?.count ?? 0,
-      qrasTotal: (counts[1]?.count ?? 0) + (counts[2]?.count ?? 0) + (counts[3]?.count ?? 0),
-      relationships: counts[4]?.count ?? 0,
-      urls: counts[5]?.count ?? 0,
-      urlKnowledge: counts[6]?.count ?? 0,
-      datalakeChunks: counts[7]?.count ?? 0,
+      controls: counts.sparta_controls ?? 0,
+      qrasLegacy: counts.sparta_qra ?? 0,
+      qrasCanonical: counts.sparta_qra_canonical ?? 0,
+      qrasRelationship: counts.sparta_qra_relationship ?? 0,
+      qrasTotal: (counts.sparta_qra ?? 0) + (counts.sparta_qra_canonical ?? 0) + (counts.sparta_qra_relationship ?? 0),
+      relationships: counts.sparta_relationships ?? 0,
+      urls: counts.sparta_urls ?? 0,
+      urlKnowledge: counts.sparta_url_knowledge ?? 0,
+      datalakeChunks: counts.datalake_chunks ?? 0,
     },
     qraTrust: {
       status: 'plausible_for_system_test',
@@ -2129,10 +2162,10 @@ print(json.dumps(payload, default=str))
       blessed_at: null,
       scope: ['legacy', 'canonical', 'relationship'],
       counts: {
-        legacy: counts[1]?.count ?? 0,
-        canonical: counts[2]?.count ?? 0,
-        relationship: counts[3]?.count ?? 0,
-        total: (counts[1]?.count ?? 0) + (counts[2]?.count ?? 0) + (counts[3]?.count ?? 0),
+        legacy: counts.sparta_qra ?? 0,
+        canonical: counts.sparta_qra_canonical ?? 0,
+        relationship: counts.sparta_qra_relationship ?? 0,
+        total: (counts.sparta_qra ?? 0) + (counts.sparta_qra_canonical ?? 0) + (counts.sparta_qra_relationship ?? 0),
       },
       use_policy: 'Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.',
       next_action: 'After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata.',
@@ -2152,14 +2185,14 @@ print(json.dumps(payload, default=str))
   }
 }
 
-function refreshSpartaCoverageInBackground() {
+function refreshSpartaCoverageInBackground(force = false) {
   if (spartaCoverageRefresh) return spartaCoverageRefresh
   spartaCoverageRefresh = buildSpartaCoveragePayload()
     .then(async (payload) => {
       const normalizedPayload = await attachLiveCreateQrasProgress(payload)
       spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload: normalizedPayload }
       await writeSpartaCoverageSnapshot(normalizedPayload).catch((err) => console.error('[sparta/coverage-health] failed to write snapshot', err))
-      broadcastSpartaCoverageHealth(normalizedPayload)
+      broadcastSpartaCoverageHealth(normalizedPayload, force)
       return normalizedPayload
     })
     .finally(() => {
@@ -2199,19 +2232,49 @@ function startSpartaCoveragePushBridge(): void {
 
 app.get('/api/sparta/coverage-health', async (req, res) => {
   try {
-    if (spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
+    const forceRefresh = req.query.force === '1' || req.query.refresh === '1'
+    const waitForRefresh = req.query.wait === '1'
+
+    if (!forceRefresh && spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
       return res.json(await attachLiveCreateQrasProgress(spartaCoverageCache.payload))
     }
 
-    const waitForRefresh = req.query.wait === '1'
     const snapshot = spartaCoverageCache?.payload ?? await readSpartaCoverageSnapshot()
+    const currentSignature = !forceRefresh && snapshot
+      ? await buildSpartaCoverageChangeSignature().catch((err) => {
+        console.error('[sparta/coverage-health] failed to build change signature', err)
+        return null
+      })
+      : null
+    const snapshotSignature = snapshot?.coverage_change_signature
+    const signatureChanged = Boolean(currentSignature && !sameCoverageChangeSignature(currentSignature, snapshotSignature))
 
-    if (snapshot && !waitForRefresh) {
-      refreshSpartaCoverageInBackground().catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
-      return res.json(await attachLiveCreateQrasProgress({ ...snapshot, stale: true, refreshing: true }))
+    if (snapshot && !forceRefresh && currentSignature && !signatureChanged) {
+      const payload = {
+        ...snapshot,
+        stale: false,
+        refreshing: false,
+        refresh_policy: 'change_gated',
+        coverage_change_signature: currentSignature,
+      }
+      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
+      return res.json(await attachLiveCreateQrasProgress(payload))
     }
 
-    const payload = await refreshSpartaCoverageInBackground()
+    if (snapshot && !waitForRefresh) {
+      if (forceRefresh || signatureChanged) {
+        refreshSpartaCoverageInBackground(forceRefresh).catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
+      }
+      return res.json(await attachLiveCreateQrasProgress({
+        ...snapshot,
+        stale: true,
+        refreshing: forceRefresh || signatureChanged,
+        refresh_policy: forceRefresh ? 'force_requested' : signatureChanged ? 'change_detected' : 'snapshot_only',
+        coverage_change_signature: currentSignature ?? snapshotSignature,
+      }))
+    }
+
+    const payload = await refreshSpartaCoverageInBackground(forceRefresh)
     return res.json(payload)
   } catch (err) {
     console.error('[sparta/coverage-health] failed', err)
