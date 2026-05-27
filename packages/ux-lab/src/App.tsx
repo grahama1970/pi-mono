@@ -1656,7 +1656,7 @@ export default function App() {
   const systemHealth = useSystemHealth();
   const isPdfLabFocus = activeProjectId === 'pdf-lab'
     && activeView === 'final-site'
-    && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage');
+    && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage' || hashSubpath === 'labeling');
   const isFocusMode = isPdfLabFocus;
   const deployBlockedReason = activeProjectId === 'scillm'
     && activeView === 'final-site'

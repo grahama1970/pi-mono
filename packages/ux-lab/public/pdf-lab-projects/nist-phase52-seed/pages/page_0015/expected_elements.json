@@ -1,0 +1,1612 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase52_page_0015",
+  "captured_at": "2026-05-26T14:59:46.649729+00:00",
+  "source": "phase-52-nist-agentic-sweep-golden-slice-seed release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; pdf_oxide output is comparison evidence only.",
+  "candidate_families": [
+    "footnotes_references",
+    "headers_footers",
+    "definitions_glossary",
+    "appendix_tables"
+  ],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p14:line:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p14:line:1+actual:p14:line:14 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.300843,
+        0.130424,
+        0.68564,
+        0.148288
+      ],
+      "text_hint": "FEDERAL RECORDS MANAGEMENT COLLABORATION",
+      "label": "FEDERAL RECORDS MANAGEMENT COLLABORATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p14:line:3 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.155394,
+        0.816078,
+        0.171045
+      ],
+      "text_hint": "Federal records management processes have a nexus with certain information security and",
+      "label": "Federal records management processes have a nexus with certain information security and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:4 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.170778,
+        0.819925,
+        0.18643
+      ],
+      "text_hint": "privacy requirements and controls. For example, records officers may be managing records",
+      "label": "privacy requirements and controls. For example, records officers may be managing records",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:5 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.186238,
+        0.818656,
+        0.20189
+      ],
+      "text_hint": "retention, including when records will be deleted. Collaborating with records officers on the",
+      "label": "retention, including when records will be deleted. Collaborating with records officers on the",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:6 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.201623,
+        0.819598,
+        0.217274
+      ],
+      "text_hint": "selection and implementation of security and privacy controls related to records management",
+      "label": "selection and implementation of security and privacy controls related to records management",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:7 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.747424,
+        0.217007,
+        0.816684,
+        0.232658
+      ],
+      "text_hint": "curity and",
+      "label": "curity and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:15 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.217007,
+        0.754255,
+        0.232658
+      ],
+      "text_hint": "can support consistency and efficiency and ultimately strengthen the organization\u2019s se",
+      "label": "can support consistency and efficiency and ultimately strengthen the organization\u2019s se",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:8 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.181441,
+        0.232543,
+        0.288501,
+        0.248194
+      ],
+      "text_hint": "privacy posture.",
+      "label": "privacy posture.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:9 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.274939,
+        0.345618,
+        0.289303
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:10 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p14:line:11 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.491431,
+        0.938152,
+        0.507773,
+        0.953515
+      ],
+      "text_hint": "xii",
+      "label": "xii",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p14:line:13 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p15:line:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p15:line:1 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.414775,
+        0.088576,
+        0.580702,
+        0.109227
+      ],
+      "text_hint": "Table of Contents",
+      "label": "Table of Contents",
+      "allowed_types": [
+        "caption"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: caption | Source id: actual:p15:line:3 | Deterministic TOC materialization: Table of Contents heading anchors TOC rows.",
+      "semantic_role": "toc_heading"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.125545,
+        0.853634,
+        0.142409
+      ],
+      "text_hint": "CHAPTER ONE INTRODUCTION...................................................................................................... 1",
+      "label": "CHAPTER ONE INTRODUCTION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:4 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 1,
+      "dot_leader": true,
+      "toc_title": "CHAPTER ONE INTRODUCTION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.146227,
+        0.853609,
+        0.161879
+      ],
+      "text_hint": "1.1 PURPOSE AND APPLICABILITY................................................................................................... 2",
+      "label": "1.1 PURPOSE AND APPLICABILITY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:5 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 2,
+      "dot_leader": true,
+      "toc_title": "1.1 PURPOSE AND APPLICABILITY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.161606,
+        0.85363,
+        0.177258
+      ],
+      "text_hint": "1.2 TARGET AUDIENCE.................................................................................................................. 3",
+      "label": "1.2 TARGET AUDIENCE",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:6 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 3,
+      "dot_leader": true,
+      "toc_title": "1.2 TARGET AUDIENCE"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.177061,
+        0.853624,
+        0.192712
+      ],
+      "text_hint": "1.3 ORGANIZATIONAL RESPONSIBILITIES......................................................................................... 3",
+      "label": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:7 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 3,
+      "dot_leader": true,
+      "toc_title": "1.3 ORGANIZATIONAL RESPONSIBILITIES"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.192439,
+        0.853629,
+        0.208091
+      ],
+      "text_hint": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS................................................................................... 5",
+      "label": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:8 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 5,
+      "dot_leader": true,
+      "toc_title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.207818,
+        0.853626,
+        0.22347
+      ],
+      "text_hint": "1.5 REVISIONS AND EXTENSIONS.................................................................................................... 5",
+      "label": "1.5 REVISIONS AND EXTENSIONS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:9 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 5,
+      "dot_leader": true,
+      "toc_title": "1.5 REVISIONS AND EXTENSIONS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.223273,
+        0.853619,
+        0.238924
+      ],
+      "text_hint": "1.6 PUBLICATION ORGANIZATION.................................................................................................. 5",
+      "label": "1.6 PUBLICATION ORGANIZATION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:10 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 5,
+      "dot_leader": true,
+      "toc_title": "1.6 PUBLICATION ORGANIZATION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.242515,
+        0.853647,
+        0.259379
+      ],
+      "text_hint": "CHAPTER TWO THE FUNDAMENTALS............................................................................................ 7",
+      "label": "CHAPTER TWO THE FUNDAMENTALS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:11 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 7,
+      "dot_leader": true,
+      "toc_title": "CHAPTER TWO THE FUNDAMENTALS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.263197,
+        0.853618,
+        0.278848
+      ],
+      "text_hint": "2.1 REQUIREMENTS AND CONTROLS.............................................................................................. 7",
+      "label": "2.1 REQUIREMENTS AND CONTROLS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:12 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 7,
+      "dot_leader": true,
+      "toc_title": "2.1 REQUIREMENTS AND CONTROLS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.032912,
+        0.274939,
+        0.853622,
+        0.294303
+      ],
+      "text_hint": "This publication is available 2.2 CONTROL free of charge STRUCTURE from: AND ORGANIZATION.............................................................................. 8",
+      "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:13 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 8,
+      "dot_leader": true,
+      "toc_title": "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.29403,
+        0.853743,
+        0.309682
+      ],
+      "text_hint": "2.3 CONTROL IMPLEMENTATION APPROACHES............................................................................. 11",
+      "label": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:14 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 11,
+      "dot_leader": true,
+      "toc_title": "2.3 CONTROL IMPLEMENTATION APPROACHES"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.309409,
+        0.853733,
+        0.325061
+      ],
+      "text_hint": "2.4 SECURITY AND PRIVACY CONTROLS......................................................................................... 13",
+      "label": "2.4 SECURITY AND PRIVACY CONTROLS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:15 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 13,
+      "dot_leader": true,
+      "toc_title": "2.4 SECURITY AND PRIVACY CONTROLS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.324864,
+        0.853731,
+        0.340515
+      ],
+      "text_hint": "2.5 TRUSTWORTHINESS AND ASSURANCE..................................................................................... 14",
+      "label": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:16 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 14,
+      "dot_leader": true,
+      "toc_title": "2.5 TRUSTWORTHINESS AND ASSURANCE"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.344106,
+        0.85366,
+        0.36097
+      ],
+      "text_hint": "CHAPTER THREE THE CONTROLS................................................................................................. 16",
+      "label": "CHAPTER THREE THE CONTROLS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:17 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 16,
+      "dot_leader": true,
+      "toc_title": "CHAPTER THREE THE CONTROLS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.364788,
+        0.853733,
+        0.380439
+      ],
+      "text_hint": "3.1 ACCESS CONTROL.................................................................................................................. 18",
+      "label": "3.1 ACCESS CONTROL",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:18 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 18,
+      "dot_leader": true,
+      "toc_title": "3.1 ACCESS CONTROL"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.380242,
+        0.85373,
+        0.395894
+      ],
+      "text_hint": "3.2 AWARENESS AND TRAINING................................................................................................... 59",
+      "label": "3.2 AWARENESS AND TRAINING",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:19 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 59,
+      "dot_leader": true,
+      "toc_title": "3.2 AWARENESS AND TRAINING"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.395621,
+        0.853634,
+        0.411273
+      ],
+      "text_hint": "3.3 AUDIT AND ACCOUNTABILITY................................................................................................. 65",
+      "label": "3.3 AUDIT AND ACCOUNTABILITY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:20 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 65,
+      "dot_leader": true,
+      "toc_title": "3.3 AUDIT AND ACCOUNTABILITY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.411076,
+        0.853737,
+        0.426727
+      ],
+      "text_hint": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING................................................................. 83",
+      "label": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:21 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 83,
+      "dot_leader": true,
+      "toc_title": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.426455,
+        0.853752,
+        0.442106
+      ],
+      "text_hint": "3.5 CONFIGURATION MANAGEMENT........................................................................................... 96",
+      "label": "3.5 CONFIGURATION MANAGEMENT",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:22 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 96,
+      "dot_leader": true,
+      "toc_title": "3.5 CONFIGURATION MANAGEMENT"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.441833,
+        0.853751,
+        0.457485
+      ],
+      "text_hint": "3.6 CONTINGENCY PLANNING.................................................................................................... 115",
+      "label": "3.6 CONTINGENCY PLANNING",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:23 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 115,
+      "dot_leader": true,
+      "toc_title": "3.6 CONTINGENCY PLANNING"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.457288,
+        0.853764,
+        0.472939
+      ],
+      "text_hint": "3.7 IDENTIFICATION AND AUTHENTICATION............................................................................... 131",
+      "label": "3.7 IDENTIFICATION AND AUTHENTICATION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:24 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 131,
+      "dot_leader": true,
+      "toc_title": "3.7 IDENTIFICATION AND AUTHENTICATION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.472667,
+        0.853738,
+        0.488318
+      ],
+      "text_hint": "3.8 INCIDENT RESPONSE............................................................................................................ 149",
+      "label": "3.8 INCIDENT RESPONSE",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:25 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 149,
+      "dot_leader": true,
+      "toc_title": "3.8 INCIDENT RESPONSE"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.488121,
+        0.853757,
+        0.503773
+      ],
+      "text_hint": "3.9 MAINTENANCE.................................................................................................................... 162",
+      "label": "3.9 MAINTENANCE",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:26 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 162,
+      "dot_leader": true,
+      "toc_title": "3.9 MAINTENANCE"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.5035,
+        0.853742,
+        0.519152
+      ],
+      "text_hint": "3.10 MEDIA PROTECTION.......................................................................................................... 171",
+      "label": "3.10 MEDIA PROTECTION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:27 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 171,
+      "dot_leader": true,
+      "toc_title": "3.10 MEDIA PROTECTION"
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:28 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.518955,
+        0.85374,
+        0.534606
+      ],
+      "text_hint": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION.................................................................... 179",
+      "label": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:29 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 179,
+      "dot_leader": true,
+      "toc_title": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.534333,
+        0.853741,
+        0.549985
+      ],
+      "text_hint": "3.12 PLANNING........................................................................................................................ 194",
+      "label": "3.12 PLANNING",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:30 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 194,
+      "dot_leader": true,
+      "toc_title": "3.12 PLANNING"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.549788,
+        0.853757,
+        0.565439
+      ],
+      "text_hint": "3.13 PROGRAM MANAGEMENT................................................................................................. 203",
+      "label": "3.13 PROGRAM MANAGEMENT",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:31 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 203,
+      "dot_leader": true,
+      "toc_title": "3.13 PROGRAM MANAGEMENT"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.565167,
+        0.853756,
+        0.580818
+      ],
+      "text_hint": "3.14 PERSONNEL SECURITY........................................................................................................ 222",
+      "label": "3.14 PERSONNEL SECURITY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:32 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 222,
+      "dot_leader": true,
+      "toc_title": "3.14 PERSONNEL SECURITY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.580545,
+        0.853769,
+        0.596197
+      ],
+      "text_hint": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY....................... 229",
+      "label": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:33 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 229,
+      "dot_leader": true,
+      "toc_title": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.596,
+        0.853742,
+        0.611652
+      ],
+      "text_hint": "3.16 RISK ASSESSMENT.............................................................................................................. 238",
+      "label": "3.16 RISK ASSESSMENT",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:34 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 238,
+      "dot_leader": true,
+      "toc_title": "3.16 RISK ASSESSMENT"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.611379,
+        0.853761,
+        0.62703
+      ],
+      "text_hint": "3.17 SYSTEM AND SERVICES ACQUISITION.................................................................................. 249",
+      "label": "3.17 SYSTEM AND SERVICES ACQUISITION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:35 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 249,
+      "dot_leader": true,
+      "toc_title": "3.17 SYSTEM AND SERVICES ACQUISITION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.626833,
+        0.853719,
+        0.642485
+      ],
+      "text_hint": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION................................................................... 292",
+      "label": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:36 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 292,
+      "dot_leader": true,
+      "toc_title": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.642212,
+        0.853736,
+        0.657864
+      ],
+      "text_hint": "3.19 SYSTEM AND INFORMATION INTEGRITY.............................................................................. 332",
+      "label": "3.19 SYSTEM AND INFORMATION INTEGRITY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:37 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 332,
+      "dot_leader": true,
+      "toc_title": "3.19 SYSTEM AND INFORMATION INTEGRITY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.165167,
+        0.657667,
+        0.853758,
+        0.673318
+      ],
+      "text_hint": "3.20 SUPPLY CHAIN RISK MANAGEMENT..................................................................................... 363",
+      "label": "3.20 SUPPLY CHAIN RISK MANAGEMENT",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:38 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 363,
+      "dot_leader": true,
+      "toc_title": "3.20 SUPPLY CHAIN RISK MANAGEMENT"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.676909,
+        0.853647,
+        0.693773
+      ],
+      "text_hint": "REFERENCES................................................................................................................................ 374",
+      "label": "REFERENCES",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:39 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 374,
+      "dot_leader": true,
+      "toc_title": "REFERENCES"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.697667,
+        0.853628,
+        0.71453
+      ],
+      "text_hint": "APPENDIX A GLOSSARY.............................................................................................................. 394",
+      "label": "APPENDIX A GLOSSARY",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:41 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 394,
+      "dot_leader": true,
+      "toc_title": "APPENDIX A GLOSSARY"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.718424,
+        0.853643,
+        0.735288
+      ],
+      "text_hint": "APPENDIX B ACRONYMS............................................................................................................ 424",
+      "label": "APPENDIX B ACRONYMS",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:42 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 424,
+      "dot_leader": true,
+      "toc_title": "APPENDIX B ACRONYMS"
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145559,
+        0.739182,
+        0.853648,
+        0.756045
+      ],
+      "text_hint": "APPENDIX C CONTROL SUMMARIES.......................................................................................... 428",
+      "label": "APPENDIX C CONTROL SUMMARIES",
+      "allowed_types": [
+        "TableOfContents",
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p15:line:43 | Deterministic TOC materialization: dot-leader row promoted to toc_entry; human should amend bbox/text only if extraction geometry is wrong.",
+      "semantic_role": "toc_entry",
+      "target_page": 428,
+      "dot_leader": true,
+      "toc_title": "APPENDIX C CONTROL SUMMARIES"
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.489765,
+        0.938152,
+        0.5096,
+        0.953515
+      ],
+      "text_hint": "xiii",
+      "label": "xiii",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p15:line:44 | Human should confirm/amend; release extraction is not ground truth."
+    }
+  ],
+  "toc": {
+    "type": "toc",
+    "source": "table_of_contents_section",
+    "heading": {
+      "source_id": "actual:p15:line:3",
+      "title": "Table of Contents"
+    },
+    "entry_count": 38,
+    "entries": [
+      {
+        "title": "CHAPTER ONE INTRODUCTION",
+        "target_page": 1,
+        "level": 1,
+        "source_id": "actual:p15:line:4"
+      },
+      {
+        "title": "1.1 PURPOSE AND APPLICABILITY",
+        "target_page": 2,
+        "level": 2,
+        "source_id": "actual:p15:line:5"
+      },
+      {
+        "title": "1.2 TARGET AUDIENCE",
+        "target_page": 3,
+        "level": 2,
+        "source_id": "actual:p15:line:6"
+      },
+      {
+        "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+        "target_page": 3,
+        "level": 2,
+        "source_id": "actual:p15:line:7"
+      },
+      {
+        "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+        "target_page": 5,
+        "level": 2,
+        "source_id": "actual:p15:line:8"
+      },
+      {
+        "title": "1.5 REVISIONS AND EXTENSIONS",
+        "target_page": 5,
+        "level": 2,
+        "source_id": "actual:p15:line:9"
+      },
+      {
+        "title": "1.6 PUBLICATION ORGANIZATION",
+        "target_page": 5,
+        "level": 2,
+        "source_id": "actual:p15:line:10"
+      },
+      {
+        "title": "CHAPTER TWO THE FUNDAMENTALS",
+        "target_page": 7,
+        "level": 1,
+        "source_id": "actual:p15:line:11"
+      },
+      {
+        "title": "2.1 REQUIREMENTS AND CONTROLS",
+        "target_page": 7,
+        "level": 2,
+        "source_id": "actual:p15:line:12"
+      },
+      {
+        "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+        "target_page": 8,
+        "level": 2,
+        "source_id": "actual:p15:line:13"
+      },
+      {
+        "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+        "target_page": 11,
+        "level": 2,
+        "source_id": "actual:p15:line:14"
+      },
+      {
+        "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+        "target_page": 13,
+        "level": 2,
+        "source_id": "actual:p15:line:15"
+      },
+      {
+        "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+        "target_page": 14,
+        "level": 2,
+        "source_id": "actual:p15:line:16"
+      },
+      {
+        "title": "CHAPTER THREE THE CONTROLS",
+        "target_page": 16,
+        "level": 1,
+        "source_id": "actual:p15:line:17"
+      },
+      {
+        "title": "3.1 ACCESS CONTROL",
+        "target_page": 18,
+        "level": 2,
+        "source_id": "actual:p15:line:18"
+      },
+      {
+        "title": "3.2 AWARENESS AND TRAINING",
+        "target_page": 59,
+        "level": 2,
+        "source_id": "actual:p15:line:19"
+      },
+      {
+        "title": "3.3 AUDIT AND ACCOUNTABILITY",
+        "target_page": 65,
+        "level": 2,
+        "source_id": "actual:p15:line:20"
+      },
+      {
+        "title": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING",
+        "target_page": 83,
+        "level": 2,
+        "source_id": "actual:p15:line:21"
+      },
+      {
+        "title": "3.5 CONFIGURATION MANAGEMENT",
+        "target_page": 96,
+        "level": 2,
+        "source_id": "actual:p15:line:22"
+      },
+      {
+        "title": "3.6 CONTINGENCY PLANNING",
+        "target_page": 115,
+        "level": 2,
+        "source_id": "actual:p15:line:23"
+      },
+      {
+        "title": "3.7 IDENTIFICATION AND AUTHENTICATION",
+        "target_page": 131,
+        "level": 2,
+        "source_id": "actual:p15:line:24"
+      },
+      {
+        "title": "3.8 INCIDENT RESPONSE",
+        "target_page": 149,
+        "level": 2,
+        "source_id": "actual:p15:line:25"
+      },
+      {
+        "title": "3.9 MAINTENANCE",
+        "target_page": 162,
+        "level": 2,
+        "source_id": "actual:p15:line:26"
+      },
+      {
+        "title": "3.10 MEDIA PROTECTION",
+        "target_page": 171,
+        "level": 2,
+        "source_id": "actual:p15:line:27"
+      },
+      {
+        "title": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION",
+        "target_page": 179,
+        "level": 2,
+        "source_id": "actual:p15:line:29"
+      },
+      {
+        "title": "3.12 PLANNING",
+        "target_page": 194,
+        "level": 2,
+        "source_id": "actual:p15:line:30"
+      },
+      {
+        "title": "3.13 PROGRAM MANAGEMENT",
+        "target_page": 203,
+        "level": 2,
+        "source_id": "actual:p15:line:31"
+      },
+      {
+        "title": "3.14 PERSONNEL SECURITY",
+        "target_page": 222,
+        "level": 2,
+        "source_id": "actual:p15:line:32"
+      },
+      {
+        "title": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+        "target_page": 229,
+        "level": 2,
+        "source_id": "actual:p15:line:33"
+      },
+      {
+        "title": "3.16 RISK ASSESSMENT",
+        "target_page": 238,
+        "level": 2,
+        "source_id": "actual:p15:line:34"
+      },
+      {
+        "title": "3.17 SYSTEM AND SERVICES ACQUISITION",
+        "target_page": 249,
+        "level": 2,
+        "source_id": "actual:p15:line:35"
+      },
+      {
+        "title": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION",
+        "target_page": 292,
+        "level": 2,
+        "source_id": "actual:p15:line:36"
+      },
+      {
+        "title": "3.19 SYSTEM AND INFORMATION INTEGRITY",
+        "target_page": 332,
+        "level": 2,
+        "source_id": "actual:p15:line:37"
+      },
+      {
+        "title": "3.20 SUPPLY CHAIN RISK MANAGEMENT",
+        "target_page": 363,
+        "level": 2,
+        "source_id": "actual:p15:line:38"
+      },
+      {
+        "title": "REFERENCES",
+        "target_page": 374,
+        "level": 1,
+        "source_id": "actual:p15:line:39"
+      },
+      {
+        "title": "APPENDIX A GLOSSARY",
+        "target_page": 394,
+        "level": 1,
+        "source_id": "actual:p15:line:41"
+      },
+      {
+        "title": "APPENDIX B ACRONYMS",
+        "target_page": 424,
+        "level": 1,
+        "source_id": "actual:p15:line:42"
+      },
+      {
+        "title": "APPENDIX C CONTROL SUMMARIES",
+        "target_page": 428,
+        "level": 1,
+        "source_id": "actual:p15:line:43"
+      }
+    ],
+    "tree": [
+      {
+        "id": "toc:0001",
+        "title": "CHAPTER ONE INTRODUCTION",
+        "target_page": 1,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0002",
+            "title": "1.1 PURPOSE AND APPLICABILITY",
+            "target_page": 2,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0003",
+            "title": "1.2 TARGET AUDIENCE",
+            "target_page": 3,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0004",
+            "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+            "target_page": 3,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0005",
+            "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+            "target_page": 5,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0006",
+            "title": "1.5 REVISIONS AND EXTENSIONS",
+            "target_page": 5,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0007",
+            "title": "1.6 PUBLICATION ORGANIZATION",
+            "target_page": 5,
+            "level": 2,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "toc:0008",
+        "title": "CHAPTER TWO THE FUNDAMENTALS",
+        "target_page": 7,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0009",
+            "title": "2.1 REQUIREMENTS AND CONTROLS",
+            "target_page": 7,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0010",
+            "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+            "target_page": 8,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0011",
+            "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+            "target_page": 11,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0012",
+            "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+            "target_page": 13,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0013",
+            "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+            "target_page": 14,
+            "level": 2,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "toc:0014",
+        "title": "CHAPTER THREE THE CONTROLS",
+        "target_page": 16,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0015",
+            "title": "3.1 ACCESS CONTROL",
+            "target_page": 18,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0016",
+            "title": "3.2 AWARENESS AND TRAINING",
+            "target_page": 59,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0017",
+            "title": "3.3 AUDIT AND ACCOUNTABILITY",
+            "target_page": 65,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0018",
+            "title": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING",
+            "target_page": 83,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0019",
+            "title": "3.5 CONFIGURATION MANAGEMENT",
+            "target_page": 96,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0020",
+            "title": "3.6 CONTINGENCY PLANNING",
+            "target_page": 115,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0021",
+            "title": "3.7 IDENTIFICATION AND AUTHENTICATION",
+            "target_page": 131,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0022",
+            "title": "3.8 INCIDENT RESPONSE",
+            "target_page": 149,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0023",
+            "title": "3.9 MAINTENANCE",
+            "target_page": 162,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0024",
+            "title": "3.10 MEDIA PROTECTION",
+            "target_page": 171,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0025",
+            "title": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION",
+            "target_page": 179,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0026",
+            "title": "3.12 PLANNING",
+            "target_page": 194,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0027",
+            "title": "3.13 PROGRAM MANAGEMENT",
+            "target_page": 203,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0028",
+            "title": "3.14 PERSONNEL SECURITY",
+            "target_page": 222,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0029",
+            "title": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+            "target_page": 229,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0030",
+            "title": "3.16 RISK ASSESSMENT",
+            "target_page": 238,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0031",
+            "title": "3.17 SYSTEM AND SERVICES ACQUISITION",
+            "target_page": 249,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0032",
+            "title": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION",
+            "target_page": 292,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0033",
+            "title": "3.19 SYSTEM AND INFORMATION INTEGRITY",
+            "target_page": 332,
+            "level": 2,
+            "children": []
+          },
+          {
+            "id": "toc:0034",
+            "title": "3.20 SUPPLY CHAIN RISK MANAGEMENT",
+            "target_page": 363,
+            "level": 2,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "toc:0035",
+        "title": "REFERENCES",
+        "target_page": 374,
+        "level": 1,
+        "children": []
+      },
+      {
+        "id": "toc:0036",
+        "title": "APPENDIX A GLOSSARY",
+        "target_page": 394,
+        "level": 1,
+        "children": []
+      },
+      {
+        "id": "toc:0037",
+        "title": "APPENDIX B ACRONYMS",
+        "target_page": 424,
+        "level": 1,
+        "children": []
+      },
+      {
+        "id": "toc:0038",
+        "title": "APPENDIX C CONTROL SUMMARIES",
+        "target_page": 428,
+        "level": 1,
+        "children": []
+      }
+    ]
+  }
+}

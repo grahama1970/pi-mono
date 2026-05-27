@@ -329,8 +329,10 @@ function getImmediateSteps({
   const comparison = remaining.sparta_control_to_control_gated_pairs ?? 0
   const qraBackfillRunning = createQrasBackfill?.status === 'running'
 
-  if (data?.stale || !heartbeatFresh) {
-    steps.push(`Refresh or rerun the read-only audit before signoff; snapshot is ${data?.stale ? 'stale' : 'not yet trusted'} and heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}.`)
+  if (data?.stale) {
+    steps.push(`Refresh or rerun the read-only audit before signoff; snapshot is stale and heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}.`)
+  } else if (data && !heartbeatFresh) {
+    steps.push(`Refresh or rerun the supervisor heartbeat before signoff; audit snapshot is current, but supervisor heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}.`)
   }
   if (reviewRequiredCount > 0) {
     steps.push(`Review ${formatNum(reviewRequiredCount)} supervisor-gated command(s) before mutation-capable remediation.`)
@@ -364,7 +366,7 @@ function getImmediateSteps({
     steps.push(`Remove or justify Python silent-fallback violations before treating coverage health as clean.`)
   }
   if (!data) {
-    steps.push('Loading the first coverage snapshot. The audit can take about two minutes; no decision should be made from blank placeholders.')
+    steps.push('Loading the first coverage snapshot. The full monitor-sparta audit can take up to five minutes; no decision should be made from blank placeholders.')
   }
   return steps.length > 0 ? steps : ['No immediate blocking action is visible from the current coverage snapshot.']
 }
@@ -639,7 +641,12 @@ export function CoverageView() {
   const voiceCount = commandSourceCounts.voice ?? 0
   const slackCount = commandSourceCounts.slack ?? 0
   const reviewRequiredCount = commandStatusCounts.review_required ?? 0
-  const liveLabel = liveState === 'connected' && heartbeatFresh
+  const auditSnapshotFresh = Boolean(data?.generated_at && data?.stale === false)
+  const liveLabel = auditSnapshotFresh && heartbeatFresh
+    ? 'Live'
+    : auditSnapshotFresh && !heartbeatFresh
+    ? 'Supervisor Stale'
+    : liveState === 'connected' && heartbeatFresh
     ? 'Live'
     : liveState === 'connected'
       ? 'Stale'
@@ -648,8 +655,14 @@ export function CoverageView() {
         : liveState === 'connecting'
           ? 'Connecting'
           : 'Disconnected'
-  const liveTone = liveLabel === 'Live' ? EMBRY.green : liveLabel === 'Stale' ? EMBRY.amber : EMBRY.red
+  const liveTone = liveLabel === 'Live' ? EMBRY.green : liveLabel === 'Stale' || liveLabel === 'Supervisor Stale' ? EMBRY.amber : EMBRY.red
   const nextScheduled = supervisorState?.next_scheduled_actions?.[0]
+  const projectStatusTitle = auditSnapshotFresh && !heartbeatFresh
+    ? 'Fresh audit; supervisor stale'
+    : liveLabel === 'Live'
+      ? 'Live snapshot'
+      : `${liveLabel} snapshot`
+  const projectStatusTone = auditSnapshotFresh && !heartbeatFresh ? EMBRY.amber : liveTone
   const nativeByFramework = remaining.native_by_framework ?? []
   const promptKinds = remaining.sparta_v2_remaining_prompt_kinds ?? {}
   const promptAuditRows = data?.promptAudit?.rows ?? []
@@ -923,11 +936,28 @@ export function CoverageView() {
       action: gaps === 0 ? 'Observe' : 'Review Backfill',
     }
   }
+  const implementedRemaining = remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0
+  const reviewGatedComparisons = remaining.sparta_control_to_control_gated_pairs ?? 0
+  const qraGenerationStatus = createQrasRunning
+    ? 'RUNNING'
+    : implementedRemaining > 0
+      ? 'OPEN'
+      : reviewGatedComparisons > 0
+        ? 'REVIEW GATED'
+        : 'PASS'
+  const qraGenerationAction = createQrasRunning
+    ? 'Monitor'
+    : implementedRemaining > 0
+      ? 'Run'
+      : reviewGatedComparisons > 0
+        ? 'Review'
+        : 'Observe'
+
   const aggregateRows = [
     {
       lane: 'QRA Generation',
       laneId: 'qra_generation',
-      status: createQrasRunning ? 'RUNNING' : (remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0 ? 'PASS' : 'OPEN',
+      status: qraGenerationStatus,
       value: createQrasRunning ? (
         <div data-qid="coverage:qra-generation:progress" data-entity-type="create-qras-progress" data-status="running" style={S.progressCell}>
           <div style={S.progressTopline}>
@@ -943,13 +973,13 @@ export function CoverageView() {
             {formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} runnable calls remain · {formatNum(createQrasStored?.total)} stored in manifest
           </div>
         </div>
-      ) : (remaining.implemented_backlog_total_if_v2_sparta_native_required ?? 0) === 0
-        ? `${formatNum(remaining.sparta_control_to_control_gated_pairs)} review-gated`
-        : `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} runnable calls remaining`,
+      ) : implementedRemaining === 0
+        ? `${formatNum(reviewGatedComparisons)} review-gated comparison candidate(s)`
+        : `${formatNum(implementedRemaining)} runnable calls remaining`,
       meaning: createQrasRunning
         ? `${createQrasBackfill?.message ?? 'create-qras worker active'} Pending ${formatNum(createQrasHeartbeat?.pending)} job(s); log age ${formatNum(createQrasBackfill?.current_log_age_seconds)}s.`
-        : `${formatNum(remaining.implemented_backlog_total_if_v2_sparta_native_required)} implemented runnable + ${formatNum(remaining.sparta_control_to_control_gated_pairs)} review-gated comparison candidate(s).`,
-      action: createQrasRunning ? 'Monitor' : 'Observe',
+        : `${formatNum(implementedRemaining)} implemented runnable + ${formatNum(reviewGatedComparisons)} review-gated comparison candidate(s).`,
+      action: qraGenerationAction,
     },
     {
       lane: 'Prompt Health',
@@ -1068,10 +1098,10 @@ export function CoverageView() {
 
       {error ? <div style={S.error}>Coverage API failed: {error}</div> : null}
       {commandMessage ? <div style={S.info}>{commandMessage}</div> : null}
-      <section data-qid="coverage:project-status-strip" data-entity-type="project-status" style={{ ...S.statusStrip, borderColor: `${liveTone}66` }}>
+      <section data-qid="coverage:project-status-strip" data-entity-type="project-status" style={{ ...S.statusStrip, borderColor: `${projectStatusTone}66` }}>
         <div>
           <div style={S.statusEyebrow}>Project Status</div>
-          <strong style={{ ...S.statusTitle, color: liveTone }}>{liveLabel === 'Live' ? 'Live snapshot' : `${liveLabel} snapshot`}</strong>
+          <strong style={{ ...S.statusTitle, color: projectStatusTone }}>{projectStatusTitle}</strong>
           <span style={S.statusText}>
             heartbeat {heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`} · snapshot {data?.generated_at ? new Date(data.generated_at).toLocaleString() : 'not loaded'} · next {typeof nextScheduled?.action === 'string' ? nextScheduled.action : 'not scheduled'}
           </span>
@@ -1089,7 +1119,7 @@ export function CoverageView() {
       {!hasData ? (
         <div style={S.loadingPanel}>
           <strong>Loading coverage snapshot.</strong>
-          <span>The full monitor-sparta audit is slow. This page will not render empty metric boxes as evidence.</span>
+          <span>The full monitor-sparta audit can take up to five minutes. This page will not render empty metric boxes as evidence.</span>
         </div>
       ) : null}
 

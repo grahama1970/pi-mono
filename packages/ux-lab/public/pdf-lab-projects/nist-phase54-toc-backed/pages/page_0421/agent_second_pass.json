@@ -1,0 +1,997 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0421",
+  "captured_at": "2026-05-26T19:14:03.545831+00:00",
+  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "agent_decision": {
+    "status": "candidate_for_human_amendment",
+    "selection_sources": [
+      "deterministic_page_scan",
+      "verified_toc_spine"
+    ],
+    "rationale": [
+      "verified TOC target(s): toc:0036 APPENDIX A GLOSSARY -> printed p.394",
+      "TOC title hint `GLOSSARY` maps to definitions_glossary",
+      "page chrome signal: running_headers=2, running_footers=2"
+    ],
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+      "Mark glossary/acronym term labels separately from descriptive definitions."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [
+    {
+      "toc_id": "toc:0036",
+      "title": "APPENDIX A GLOSSARY",
+      "level": 1,
+      "target_page": 394,
+      "matched_pdf_page_index": 420,
+      "extraction_page": 421
+    }
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "GLOSSARY",
+      "label": "GLOSSARY",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0356; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p421:line:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p421:line:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.091712,
+        0.256772,
+        0.112152
+      ],
+      "text_hint": "APPENDIX A",
+      "label": "APPENDIX A",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:2; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145054,
+        0.127772,
+        0.246536,
+        0.151999
+      ],
+      "text_hint": "GLOSSARY",
+      "label": "GLOSSARY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:3; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.156561,
+        0.392862,
+        0.173212
+      ],
+      "text_hint": "COMMON TERMS AND DEFINITIONS",
+      "label": "COMMON TERMS AND DEFINITIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.187091,
+        0.598467,
+        0.204955
+      ],
+      "text_hint": "Appendix A provides definitions for terminology used in NIST",
+      "label": "Appendix A provides definitions for terminology used in NIST",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:5; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.593496,
+        0.187591,
+        0.851502,
+        0.204455
+      ],
+      "text_hint": "Special Publication 800 -53. Sources",
+      "label": "Special Publication 800 -53. Sources",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.20456,
+        0.858241,
+        0.221424
+      ],
+      "text_hint": "for terms used in this publication are cited as applicable. Where no citation is noted, the source",
+      "label": "for terms used in this publication are cited as applicable. Where no citation is",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.451241,
+        0.221529,
+        0.480076,
+        0.238393
+      ],
+      "text_hint": "-53.",
+      "label": "-53.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.221529,
+        0.460717,
+        0.238393
+      ],
+      "text_hint": "of the definition is Special Publication 800",
+      "label": "of the definition is Special Publication 800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.153004,
+        0.257436,
+        0.257697,
+        0.274299
+      ],
+      "text_hint": "access control",
+      "label": "access control",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.257439,
+        0.780018,
+        0.274303
+      ],
+      "text_hint": "The process of granting or denying specific requests for",
+      "label": "The process of granting or denying specific requests for",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032868,
+        0.274333,
+        0.792218,
+        0.291203
+      ],
+      "text_hint": "This publication is [FIPS available 201-2] free of charge from: obtaining and using information and related information",
+      "label": "This publication is [FIPS available 201-2] free of charge from: obtaining and us",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:9+actual:p421:line:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.291308,
+        0.845054,
+        0.308172
+      ],
+      "text_hint": "processing services; and to enter specific physical facilities (e.g.,",
+      "label": "processing services; and to enter specific physical facilities (e.g.,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.308277,
+        0.83612,
+        0.325141
+      ],
+      "text_hint": "Federal buildings, military establishments, and border crossing",
+      "label": "Federal buildings, military establishments, and border crossing",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.325246,
+        0.451954,
+        0.34211
+      ],
+      "text_hint": "entrances ).",
+      "label": "entrances ).",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.153005,
+        0.349785,
+        0.283142,
+        0.366649
+      ],
+      "text_hint": "adequate security",
+      "label": "adequate security",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.349788,
+        0.842399,
+        0.366652
+      ],
+      "text_hint": "Security protections commensurate with the risk resulting from",
+      "label": "Security protections commensurate with the risk resulting from",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.366182,
+        0.243596,
+        0.382833
+      ],
+      "text_hint": "[OMB A -130]",
+      "label": "[OMB A -130]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.366688,
+        0.757842,
+        0.383551
+      ],
+      "text_hint": "the unauthorized access, use, disclosure, disruption,",
+      "label": "the unauthorized access, use, disclosure, disruption,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.383657,
+        0.795304,
+        0.40052
+      ],
+      "text_hint": "modification, or destruction of information. This includes",
+      "label": "modification, or destruction of information. This includes",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.400626,
+        0.822162,
+        0.417489
+      ],
+      "text_hint": "ensuring that information hosted on behalf of an agency and",
+      "label": "ensuring that information hosted on behalf of an agency and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.417595,
+        0.79586,
+        0.434459
+      ],
+      "text_hint": "information systems and applications used by the agency",
+      "label": "information systems and applications used by the agency",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:33; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.434564,
+        0.814339,
+        0.451428
+      ],
+      "text_hint": "operate effectively and provide appropriate confidentiality,",
+      "label": "operate effectively and provide appropriate confidentiality,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.451464,
+        0.844929,
+        0.468327
+      ],
+      "text_hint": "integrity, and availability protections through the application of",
+      "label": "integrity, and availability protections through the application of",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:35; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.468433,
+        0.603325,
+        0.485296
+      ],
+      "text_hint": "cost-effective security controls.",
+      "label": "cost-effective security controls.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15301,
+        0.490773,
+        0.301782,
+        0.507636
+      ],
+      "text_hint": "advanced persistent",
+      "label": "advanced persistent",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.49297,
+        0.85729,
+        0.509833
+      ],
+      "text_hint": "An adversary that possesses sophisticated levels of expertise and",
+      "label": "An adversary that possesses sophisticated levels of expertise and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15301,
+        0.504788,
+        0.199238,
+        0.521652
+      ],
+      "text_hint": "threat",
+      "label": "threat",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.509939,
+        0.827418,
+        0.526802
+      ],
+      "text_hint": "significant resources which allow it to create opportunities to",
+      "label": "significant resources which allow it to create opportunities to",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.232507,
+        0.536348
+      ],
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008 [SP 800-39]",
+      "label": "https/d/:oi.org0.1/T.SIN/8206P.S008 [SP 800-39]",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.526908,
+        0.834894,
+        0.543772
+      ],
+      "text_hint": "achieve its objectives by using multiple attack vectors, including",
+      "label": "achieve its objectives by using multiple attack vectors, including",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.543808,
+        0.852967,
+        0.560671
+      ],
+      "text_hint": "cyber, physical, and deception. These objectives typically include",
+      "label": "cyber, physical, and deception. These objectives typically include",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.560777,
+        0.850275,
+        0.57764
+      ],
+      "text_hint": "establishing and extending footholds within the IT infrastructure",
+      "label": "establishing and extending footholds within the IT infrastructure",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.577746,
+        0.789688,
+        0.594609
+      ],
+      "text_hint": "of the targeted organizations for purposes of exfiltrating",
+      "label": "of the targeted organizations for purposes of exfiltrating",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.594715,
+        0.800542,
+        0.611579
+      ],
+      "text_hint": "informati on, undermining or impeding critical aspects of a",
+      "label": "informati on, undermining or impeding critical aspects of a",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.611684,
+        0.836066,
+        0.628548
+      ],
+      "text_hint": "mission, program, or organization; or positioning itself to carry",
+      "label": "mission, program, or organization; or positioning itself to carry",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.628584,
+        0.808454,
+        0.645447
+      ],
+      "text_hint": "out these objectives in the future. The advanced persistent",
+      "label": "out these objectives in the future. The advanced persistent",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.645553,
+        0.800381,
+        0.662416
+      ],
+      "text_hint": "threat pursues its objectives repeatedly over an extended",
+      "label": "threat pursues its objectives repeatedly over an extended",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:46; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.662522,
+        0.762091,
+        0.679386
+      ],
+      "text_hint": "period; adapts to defe nders\u2019 efforts to resist it; and is",
+      "label": "period; adapts to defe nders\u2019 efforts to resist it; and is",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:47; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.679491,
+        0.802229,
+        0.696355
+      ],
+      "text_hint": "determined to maintain the level of interaction needed to",
+      "label": "determined to maintain the level of interaction needed to",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:48; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.69646,
+        0.535605,
+        0.713324
+      ],
+      "text_hint": "execute its objectives.",
+      "label": "execute its objectives.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:49; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "text_hint": "3r55 -",
+      "label": "3r55 -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.720924,
+        0.808849,
+        0.737788
+      ],
+      "text_hint": "Any executive agency or department, military department,",
+      "label": "Any executive agency or department, military department,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:50; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.153005,
+        0.720929,
+        0.204185,
+        0.737793
+      ],
+      "text_hint": "agency",
+      "label": "agency",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.737318,
+        0.243596,
+        0.75397
+      ],
+      "text_hint": "[OMB A -130]",
+      "label": "[OMB A -130]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.737893,
+        0.77865,
+        0.754757
+      ],
+      "text_hint": "Federal Government corporation, Federal Government -",
+      "label": "Federal Government corporation, Federal Government -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:51; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.754862,
+        0.841018,
+        0.771726
+      ],
+      "text_hint": "controlled corporation, or other establishment in the Executive",
+      "label": "controlled corporation, or other establishment in the Executive",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:52; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.771831,
+        0.783014,
+        0.788695
+      ],
+      "text_hint": "Branch of the Federal Government, or any independent",
+      "label": "Branch of the Federal Government, or any independent",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:53; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.788801,
+        0.668917,
+        0.805664
+      ],
+      "text_hint": "regulatory agency. See executive agency.",
+      "label": "regulatory agency. See executive agency.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:54; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.153005,
+        0.81327,
+        0.316147,
+        0.830134
+      ],
+      "text_hint": "all-source intelligence",
+      "label": "all-source intelligence",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.813273,
+        0.824314,
+        0.830136
+      ],
+      "text_hint": "Intelligence products and/or organizations and activities that",
+      "label": "Intelligence products and/or organizations and activities that",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:55; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.829667,
+        0.244184,
+        0.846318
+      ],
+      "text_hint": "[DODTERMS]",
+      "label": "[DODTERMS]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p421:line:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.830242,
+        0.852877,
+        0.847105
+      ],
+      "text_hint": "incorporate all sources of information, most frequently including",
+      "label": "incorporate all sources of information, most frequently including",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:56; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.847211,
+        0.752908,
+        0.864075
+      ],
+      "text_hint": "human resources intelligence, imagery intelligence,",
+      "label": "human resources intelligence, imagery intelligence,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:57; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.86418,
+        0.819165,
+        0.881044
+      ],
+      "text_hint": "measurement and signature intellig ence, signals intelligence,",
+      "label": "measurement and signature intellig ence, signals intelligence,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:58; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.881149,
+        0.843188,
+        0.898013
+      ],
+      "text_hint": "and open -source data in the production of finished intelligence.",
+      "label": "and open -source data in the production of finished intelligence.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p421:line:59; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.213916,
+        0.953818
+      ],
+      "text_hint": "APPENDIX A",
+      "label": "APPENDIX A",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p421:line:20; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.802353,
+        0.939742,
+        0.855381,
+        0.953818
+      ],
+      "text_hint": "PAGE 394",
+      "label": "PAGE 394",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p421:line:60; human should amend if rendered page contradicts this row."
+    }
+  ]
+}

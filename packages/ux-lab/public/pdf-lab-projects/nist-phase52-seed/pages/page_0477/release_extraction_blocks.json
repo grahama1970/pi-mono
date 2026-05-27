@@ -1,0 +1,3475 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page_index": 476,
+  "pdf_page_number": 477,
+  "blocks": [
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:0+actual:p476:line:24",
+      "merged_from": [
+        "actual:p476:line:0",
+        "actual:p476:line:24"
+      ],
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:25+actual:p476:line:46+actual:p476:line:66",
+      "merged_from": [
+        "actual:p476:line:25+actual:p476:line:46",
+        "actual:p476:line:66"
+      ],
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge+preset_merge",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.396147,
+        0.088879,
+        0.600174,
+        0.103848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:26",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TABLE C-12: PLANNING FAMILY",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:2",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:27",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.624569,
+        0.142091,
+        0.826005,
+        0.156242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:47",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IMPLEMENTED ASSURANCE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:3",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NUMBER",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:48",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "BY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:28",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL ENHANCEMENT NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.37949,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:29",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Policy and Procedures",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.180825,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:4",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-1",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:49",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.447578,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:30",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System Security and Privacy Plans",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.180825,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:5",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-2",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.20603,
+        0.672927,
+        0.218894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:50",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.199127,
+        0.235364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:6",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-2(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.221076,
+        0.756213,
+        0.234152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:51",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into PL-7.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.223,
+        0.366711,
+        0.235864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:31",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONCEPT OF OPERATIONS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.199127,
+        0.252409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:7",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-2(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.238121,
+        0.756221,
+        0.251197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:52",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into PL-8.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.240045,
+        0.37903,
+        0.252909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:32",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FUNCTIONAL ARCHITECTURE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.197092,
+        0.269455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:8",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-2(3)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.255167,
+        0.753915,
+        0.268242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:53",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into PL-2.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.257091,
+        0.549999,
+        0.269955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:33",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PLAN AND COORDINATE WITH OTHER ORGANIZATIONAL ENTITIES",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.272136,
+        0.419387,
+        0.2865
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:34",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System Security Plan Update",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:9",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available PL-3 free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "confidence": 0.82,
+      "embedded_from": "actual:p476:line:9",
+      "id": "actual:p476:line:9:embedded:requirement:0",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "original_type": "requirement",
+        "repair_reason": "inline_control_id_reference_not_formal_requirement",
+        "repair_source": "pdf_lab.second_pass.control_reference_repair"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_embedded",
+      "text": "PL-3",
+      "type": "control_reference"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.272212,
+        0.756221,
+        0.285288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:54",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into PL-2.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.183368,
+        0.303545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:10",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-4",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.289182,
+        0.350858,
+        0.303545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:35",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Rules of Behavior",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.291182,
+        0.672927,
+        0.304045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:55",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.305651,
+        0.578781,
+        0.321015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:36",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SOCIAL MEDIA AND EXTERNAL SITE / APPLICATION USAGE RESTRICTIONS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.199127,
+        0.320515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:11",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-4(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.308151,
+        0.672927,
+        0.321015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:56",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.180825,
+        0.337561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:12",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-5",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.323197,
+        0.405993,
+        0.337561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:37",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Privacy Impact Assessment",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.323273,
+        0.758573,
+        0.336349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:57",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into RA-8.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.180825,
+        0.354606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:13",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-6",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.340242,
+        0.448135,
+        0.354606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:38",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security-Related Activity Planning",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.340318,
+        0.756221,
+        0.353394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:58",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into PL-2.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.180825,
+        0.371652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:14",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-7",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.357288,
+        0.382373,
+        0.371652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:39",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Concept of Operations",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.359288,
+        0.672927,
+        0.372152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:59",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.374258,
+        0.180825,
+        0.388621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:15",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-8",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.374258,
+        0.449563,
+        0.388621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:40",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security and Privacy Architectures",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.376258,
+        0.672927,
+        0.389121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:60",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.391303,
+        0.199127,
+        0.405667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:18",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-8(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.393303,
+        0.33301,
+        0.406167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:41",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DEFENSE IN DEPTH",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.393303,
+        0.672927,
+        0.406167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:61",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.408348,
+        0.199127,
+        0.422712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:19",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-8(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.410349,
+        0.337943,
+        0.423212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:42",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SUPPLIER DIVERSITY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.410349,
+        0.672927,
+        0.423212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:62",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.425394,
+        0.180825,
+        0.439758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:20",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-9",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.425394,
+        0.369984,
+        0.439758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:43",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Central Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.427394,
+        0.672927,
+        0.440258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:63",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.442364,
+        0.188011,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:21",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-10",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.442364,
+        0.351965,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:44",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Baseline Selection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.444364,
+        0.672927,
+        0.457227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:64",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.459409,
+        0.188011,
+        0.473773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:22",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL-11",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.459409,
+        0.349551,
+        0.473773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:45",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Baseline Tailoring",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.461409,
+        0.672927,
+        0.474273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:65",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:16",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:23",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p476:line:75",
+      "page": 476,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 449",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:0+actual:p477:line:44",
+      "merged_from": [
+        "actual:p477:line:0",
+        "actual:p477:line:44"
+      ],
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.852874,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:46+actual:p477:line:57+actual:p477:line:68",
+      "merged_from": [
+        "actual:p477:line:46+actual:p477:line:57",
+        "actual:p477:line:68"
+      ],
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge+preset_merge",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION S YSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.344775,
+        0.088879,
+        0.650753,
+        0.103848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:45",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TABLE C-13: PROGRAM MANAGEMENT FAMILY",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:2",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.358196,
+        0.137394,
+        0.485685,
+        0.155258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:47",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.630157,
+        0.142091,
+        0.829044,
+        0.156242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:58+actual:p477:line:69",
+      "merged_from": [
+        "actual:p477:line:58",
+        "actual:p477:line:69"
+      ],
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "IMPLEMENTED ASSURANCE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:3",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NUMBER",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.663686,
+        0.154742,
+        0.68186,
+        0.168818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:59",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "BY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.343,
+        0.158,
+        0.50222,
+        0.170864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:48",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL ENHANCEMENT NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.186159,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:4",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-1",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.452621,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:49",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Information Security Program Plan",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.188985,
+        0.678613,
+        0.201849
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:60",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.186159,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:5",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-2",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.523185,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:50",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Information Security Program Leadership Role",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.20603,
+        0.678613,
+        0.218894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:61",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.221,
+        0.509108,
+        0.235364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:51",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Information Security and Privacy Resources",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.186159,
+        0.235364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:6",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-3",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.223,
+        0.678613,
+        0.235864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:62",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.238045,
+        0.476784,
+        0.252409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:52",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Plan of Action and Milestones Process",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.186159,
+        0.252409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:7",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-4",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.240045,
+        0.678613,
+        0.252909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:63",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.255091,
+        0.350917,
+        0.269455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:53",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System Inventory",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.186159,
+        0.269455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:8",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-5",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.257091,
+        0.678613,
+        0.269955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:64",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:9",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available PM-5(1) free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "confidence": 0.82,
+      "embedded_from": "actual:p477:line:9",
+      "id": "actual:p477:line:9:embedded:requirement:0",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "original_type": "requirement",
+        "repair_reason": "inline_control_id_reference_not_formal_requirement",
+        "repair_source": "pdf_lab.second_pass.control_reference_repair"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_embedded",
+      "text": "PM-5(1)",
+      "type": "control_reference"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.274136,
+        0.51701,
+        0.287
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:54",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "INVENTORY OF PERSONALLY IDENTIFIABLE INFORMATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.274136,
+        0.678613,
+        0.287
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:65",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.186159,
+        0.303545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:10",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-6",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.289182,
+        0.401951,
+        0.303545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:55",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Measures of Performance",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.291182,
+        0.678613,
+        0.304045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:66",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.186159,
+        0.320515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:11",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-7",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.306151,
+        0.387211,
+        0.320515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:56",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Enterprise Architecture",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.308151,
+        0.678613,
+        0.321015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:67",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.202754,
+        0.337561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:12",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-7(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.325197,
+        0.678613,
+        0.338061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:103",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.325197,
+        0.305859,
+        0.338061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:70",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "OFFLOADING",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.186159,
+        0.354606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:13",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-8",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.340242,
+        0.404505,
+        0.354606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:71",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Critical Infrastructure Plan",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.342242,
+        0.678613,
+        0.355106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:104",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.186159,
+        0.371652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:14",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-9",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.357288,
+        0.408534,
+        0.371652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:72",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Risk Management Strategy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.359288,
+        0.678613,
+        0.372152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:105",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.374258,
+        0.193567,
+        0.388621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:15",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-10",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.374258,
+        0.378696,
+        0.388621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:73",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Authorization Process",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.376258,
+        0.678613,
+        0.389121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:106",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.391303,
+        0.193567,
+        0.405667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:18",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-11",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.391303,
+        0.488475,
+        0.405667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:74",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Mission and Business Process Definition",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.393303,
+        0.678613,
+        0.406167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:107",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.408348,
+        0.193567,
+        0.422712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:19",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-12",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.408348,
+        0.38449,
+        0.422712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:75",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Insider Threat Program",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.410349,
+        0.678613,
+        0.423212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:108",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.425394,
+        0.193567,
+        0.439758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:20",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-13",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.425394,
+        0.434995,
+        0.439758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:76",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security and Privacy Workforce",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.427394,
+        0.678613,
+        0.440258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:109",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.442364,
+        0.193567,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:21",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-14",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.442364,
+        0.448931,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:77",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Testing, Training, and Monitoring",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.444364,
+        0.678613,
+        0.457227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:110",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.459409,
+        0.193567,
+        0.473773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:22",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-15",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.459409,
+        0.520887,
+        0.473773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:78",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security and Privacy Groups and Associations",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.461409,
+        0.678613,
+        0.474273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:111",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.476455,
+        0.193567,
+        0.490818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:23",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-16",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.476455,
+        0.409387,
+        0.490818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:79",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Threat Awareness Program",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.478455,
+        0.678613,
+        0.491318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:112",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.4935,
+        0.213368,
+        0.507864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:24",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-16(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.4955,
+        0.678613,
+        0.508364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:113",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.4955,
+        0.518536,
+        0.508364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:80",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AUTOMATED MEANS FOR SHARING THREAT INTELLIGENCE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.51047,
+        0.598844,
+        0.524833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:81",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Protecting Controlled Unclassified Information on External",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.510545,
+        0.193567,
+        0.524909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:25",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-17",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.512545,
+        0.678613,
+        0.525409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:114",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:16",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.524333,
+        0.294167,
+        0.538697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:82",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Systems",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.541379,
+        0.193567,
+        0.555742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:26",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-18",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.541379,
+        0.373696,
+        0.555742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:83",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Privacy Program Plan",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.543379,
+        0.678613,
+        0.556242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:115",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.558424,
+        0.193567,
+        0.572788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:27",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-19",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.558424,
+        0.444314,
+        0.572788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:84",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Privacy Program Leadership Role",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.560424,
+        0.678613,
+        0.573288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:116",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.57547,
+        0.193567,
+        0.589833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:28",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-20",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.57547,
+        0.526961,
+        0.589833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:85",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Dissemination of Privacy Program Information",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.57747,
+        0.678613,
+        0.590333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:117",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.592015,
+        0.580598,
+        0.607379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:86+actual:p477:line:101",
+      "merged_from": [
+        "actual:p477:line:86",
+        "actual:p477:line:101"
+      ],
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "PRIVACY POLICIES ON WEBSITES, APPLICATIONS , AND DIGITAL SERVICES",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.592515,
+        0.210097,
+        0.606879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:29",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-20(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.594515,
+        0.678613,
+        0.607379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:118",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.609561,
+        0.193567,
+        0.623924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:30",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-21",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.609561,
+        0.401137,
+        0.623924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:87",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Accounting of Disclosures",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.611561,
+        0.678613,
+        0.624424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:119",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.62653,
+        0.193567,
+        0.640894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:31",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-22",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.62653,
+        0.591181,
+        0.640894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:88",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Personally Identifiable Information Quality Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.62853,
+        0.678613,
+        0.641394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:120",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.643576,
+        0.193567,
+        0.657939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:32",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-23",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.643576,
+        0.384902,
+        0.657939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:89",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Data Governance Body",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.645576,
+        0.678613,
+        0.658439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:121",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.660621,
+        0.193567,
+        0.674985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:33",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-24",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.660621,
+        0.368373,
+        0.674985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:90",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Data Integrity Board",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.662621,
+        0.678613,
+        0.675485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:122",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.677591,
+        0.589787,
+        0.691955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:91",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Minimization of Personally Identifiable Information Used",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.677667,
+        0.193567,
+        0.69203
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:34",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-25",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.679667,
+        0.678613,
+        0.69253
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:123",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.691455,
+        0.449873,
+        0.705818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:92",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "in Testing, Training, and Research",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.7085,
+        0.193567,
+        0.722864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:35",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-26",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.7085,
+        0.392431,
+        0.722864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:93",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Complaint Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.7105,
+        0.678613,
+        0.723364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:124",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.725545,
+        0.193567,
+        0.739909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:36",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-27",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.725545,
+        0.351681,
+        0.739909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:94",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Privacy Reporting",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.727545,
+        0.678613,
+        0.740409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:125",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.742591,
+        0.193567,
+        0.756955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:37",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-28",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.742591,
+        0.322049,
+        0.756955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:95",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Risk Framing",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.744591,
+        0.678613,
+        0.757455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:126",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.759636,
+        0.19749,
+        0.774
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:38",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-29",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.759636,
+        0.512906,
+        0.774
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:96",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Risk Management Program Leadership Roles",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.761636,
+        0.678613,
+        0.7745
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:127",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.776682,
+        0.193567,
+        0.791045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:39",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-30",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.776682,
+        0.48746,
+        0.791045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:97",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Supply Chain Risk Management Strategy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.778682,
+        0.678613,
+        0.791545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:128",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.408882,
+        0.793152,
+        0.498156,
+        0.808515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:102",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "- ESSENTIAL ITEMS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.793652,
+        0.210097,
+        0.808015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:40",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-30(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.795652,
+        0.678613,
+        0.808515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:129",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.795652,
+        0.41413,
+        0.808515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:98",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SUPPLIERS OF CRITICAL OR MISSION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.810697,
+        0.193567,
+        0.825061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:41",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-31",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.810697,
+        0.441725,
+        0.825061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:99",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Continuous Monitoring Strategy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.812697,
+        0.678613,
+        0.825561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:130",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.827742,
+        0.302011,
+        0.842106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:100",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Purposing",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.827742,
+        0.193567,
+        0.842106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:42",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM-32",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.66702,
+        0.829742,
+        0.678613,
+        0.842606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:131",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:132",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 450",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p477:line:43",
+      "page": 477,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C",
+      "type": "running_footer"
+    }
+  ]
+}

@@ -1,0 +1,681 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0035",
+  "captured_at": "2026-05-26T19:14:03.534790+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "sections",
+    "tables",
+    "figures_images_captions",
+    "lists",
+    "headers_footers"
+  ],
+  "toc_entries": [
+    {
+      "toc_id": "toc:0010",
+      "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+      "level": 2,
+      "target_page": 8,
+      "matched_pdf_page_index": 34,
+      "extraction_page": 35
+    }
+  ],
+  "reviewer_questions": [
+    "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+    "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.",
+    "Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.",
+    "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+  ],
+  "fix_error_requests": [
+    {
+      "source_id": "actual:p35:line:3",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:4",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "for achieving the particular security and privacy objectives of the organization and reflecting the",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:5",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "protection needs of organizational stakeholders. Controls are selec ted and implemented by the",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:6",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "organization in order to satisfy the system requirements. Controls can include administrative,",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:7",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "technical, and physical aspects. In some cases, the selection and implementation of a control",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:8",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "may necessitate additional specification by the organization in the form of derived requirements",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:9",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "or instantiated control parameter values. The derived requirements and control parameter",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:10",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "values may be necessary to provide the appropriate level of implementation detail for particular",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:11",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "controls with in the SDLC.",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:12",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "2. 2 CONTROL STRUCTURE AND ORGANIZATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:14",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Security and privacy controls described in this publication have a well-defined organizati on and",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:15",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "structure. For ease of use in the security and privacy control selection and specification process,",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:16",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "controls are organized into 20 families. 25 Each family contains controls that are related to the",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:17",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "specific topic of the family. A two-character identifier uniquely identiies f each control family",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:18",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "(e.g., PS for Personnel Security ). Security and privacy controls may involve aspects of policy,",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:19",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "oversight, supervision, manual processes, and automated mechanisms that are implemented by",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:20",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "systems or actions by individuals. Table 1 lists the security and privacy control families and their",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:21",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "associated family identifiers.",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:22",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:24",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ID",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:35",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "FAMILY",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:46",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ID",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:57",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "FAMILY",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:25",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AC",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:47",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:36",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Access Control",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:58",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Physical and Environmental Protection",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:26",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:48",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PL",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:37",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Awareness and Training",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:59",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Planning",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:23",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:27",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AU",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:49",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PM",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:38",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Audit and Accountability",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:60",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Program Management",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:28",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CA",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:50",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:39",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Assessment, Authorization, and Monitoring",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:61",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Personnel Security",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:29",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CM",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:51",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:40",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Configuration Management",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:62",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "PII Processing and Transparency",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:30",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CP",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:52",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "RA",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:41",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Contingency Planning",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:63",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Risk Assessment",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:31",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IA",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:53",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SA",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:42",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Identification and Authentication",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:64",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "System and Services Acquisition",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:32",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IR",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:54",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SC",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:43",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Incident Response",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:65",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "System and Communications Protection",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:33",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MA",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:55",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SI",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:44",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Maintenance",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:66",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "System and Information Integrity",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:34",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MP",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:56",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SR",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:45",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Media Protection",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:67",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Supply Chain Risk Management",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:69",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Families of controls contain base controls and control enhancements, which are directly related",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:68",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "3r55 -",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:70",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "to their base controls. Control enhancements either add functionality or specificity to a base",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:71",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "control or increase the strength of a base control. C ontrol enhancements are used in systems",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:72",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "and environments of operation that require greater protection than the protection provided by",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:73",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "the base control. The need for organizations to select and implement control enhancements is",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:74",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "due to the potential adverse organizational or individual imp acts or when organizations require",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:75",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "additions to the base control functionality or assurance based on assessments of risk. The",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:76",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in FIPS [200].",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:77",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR)",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:78",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "families address enterprise- level program management, privacy, and supply chain risk considerations pertaining to",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p35:line:79",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "federal mandates emergent since [FIPS 200].",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    }
+  ],
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "label": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0014; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p35:line:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p35:line:1; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.229341,
+        0.953818
+      ],
+      "text_hint": "CHAPTER TWO",
+      "label": "CHAPTER TWO",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p35:line:80; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.812419,
+        0.939742,
+        0.851971,
+        0.953818
+      ],
+      "text_hint": "PAGE 8",
+      "label": "PAGE 8",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p35:line:81; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.015258,
+        0.089614,
+        0.082796,
+        0.922948
+      ],
+      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "running_header",
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "nist_sidebar_chrome_text",
+      "notes": "NIST Appendix C recurring rotated DOI/sidebar watermark; learned from human p.456 correction and generalized across TOC-backed Appendix C table candidates."
+    },
+    {
+      "family": "table",
+      "bbox_hint": [
+        0.146667,
+        0.461439,
+        0.852549,
+        0.658409
+      ],
+      "text_hint": "ID | FAMILY | ID | FAMILY\nAC | Access Control | PE | Physical and Environmental Protection\nAT | Awareness and raining | PL | Planning\nAU\nAU | Audit an\nAudit and Accountability | PM | Program Management\nCA | Assessment, Authorization, and Mo",
+      "label": "table_region rows=11 cols=4",
+      "allowed_types": [
+        "table"
+      ],
+      "match_strategy": "core_table_bbox",
+      "notes": "Phase 54 fix request source: pdf_oxide.extract_tables emitted this table region; source id: actual:p35:table:0. Non-table text fragments inside this region are reclassification fix-error requests, not standalone human tasks."
+    }
+  ]
+}

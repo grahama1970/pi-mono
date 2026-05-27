@@ -1,0 +1,1498 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase52_page_0015",
+  "captured_at": "2026-05-26T14:59:46.649729+00:00",
+  "source": "pdf_oxide deterministic TOC extraction plus toc_spine_verification",
+  "agent_decision": {
+    "status": "proposed",
+    "summary": "Agent proposes one parent Table of Contents annotation. Deterministic child entries are nested metadata, not separate human tasks unless geometry/text is wrong.",
+    "human_question": "Is the single TOC parent region correct, and are any child row boxes/text visibly wrong?"
+  },
+  "toc": {
+    "type": "toc",
+    "source": "table_of_contents_section",
+    "entry_count": 38,
+    "verified_entry_count": 38,
+    "verification": {
+      "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+      "toc_entry_count": 38,
+      "matched_count": 38,
+      "mismatch_count": 0,
+      "inferred_page_offset": 26
+    },
+    "tree": [
+      {
+        "id": "toc:0001",
+        "title": "CHAPTER ONE INTRODUCTION",
+        "target_page": 1,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0002",
+            "title": "1.1 PURPOSE AND APPLICABILITY",
+            "target_page": 2,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.146227,
+              0.853609,
+              0.161879
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 28,
+              "matched_pdf_page_index": 28,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0003",
+            "title": "1.2 TARGET AUDIENCE",
+            "target_page": 3,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.161606,
+              0.85363,
+              0.177258
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 29,
+              "matched_pdf_page_index": 29,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0004",
+            "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+            "target_page": 3,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.177061,
+              0.853624,
+              0.192712
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 29,
+              "matched_pdf_page_index": 29,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0005",
+            "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+            "target_page": 5,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.192439,
+              0.853629,
+              0.208091
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 31,
+              "matched_pdf_page_index": 31,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0006",
+            "title": "1.5 REVISIONS AND EXTENSIONS",
+            "target_page": 5,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.207818,
+              0.853626,
+              0.22347
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 31,
+              "matched_pdf_page_index": 31,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0007",
+            "title": "1.6 PUBLICATION ORGANIZATION",
+            "target_page": 5,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.223273,
+              0.853619,
+              0.238924
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 31,
+              "matched_pdf_page_index": 31,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          }
+        ],
+        "bbox_hint": [
+          0.145559,
+          0.125545,
+          0.853634,
+          0.142409
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 27,
+          "matched_pdf_page_index": 27,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0008",
+        "title": "CHAPTER TWO THE FUNDAMENTALS",
+        "target_page": 7,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0009",
+            "title": "2.1 REQUIREMENTS AND CONTROLS",
+            "target_page": 7,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.263197,
+              0.853618,
+              0.278848
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 33,
+              "matched_pdf_page_index": 33,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0010",
+            "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+            "target_page": 8,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.032912,
+              0.274939,
+              0.853622,
+              0.294303
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 34,
+              "matched_pdf_page_index": 34,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0011",
+            "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+            "target_page": 11,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.29403,
+              0.853743,
+              0.309682
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 37,
+              "matched_pdf_page_index": 37,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0012",
+            "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+            "target_page": 13,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.309409,
+              0.853733,
+              0.325061
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 39,
+              "matched_pdf_page_index": 39,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0013",
+            "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+            "target_page": 14,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.324864,
+              0.853731,
+              0.340515
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 40,
+              "matched_pdf_page_index": 40,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          }
+        ],
+        "bbox_hint": [
+          0.145559,
+          0.242515,
+          0.853647,
+          0.259379
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 33,
+          "matched_pdf_page_index": 33,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0014",
+        "title": "CHAPTER THREE THE CONTROLS",
+        "target_page": 16,
+        "level": 1,
+        "children": [
+          {
+            "id": "toc:0015",
+            "title": "3.1 ACCESS CONTROL",
+            "target_page": 18,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.364788,
+              0.853733,
+              0.380439
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 44,
+              "matched_pdf_page_index": 44,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0016",
+            "title": "3.2 AWARENESS AND TRAINING",
+            "target_page": 59,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.380242,
+              0.85373,
+              0.395894
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 85,
+              "matched_pdf_page_index": 85,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0017",
+            "title": "3.3 AUDIT AND ACCOUNTABILITY",
+            "target_page": 65,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.395621,
+              0.853634,
+              0.411273
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 91,
+              "matched_pdf_page_index": 91,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0018",
+            "title": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING",
+            "target_page": 83,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.411076,
+              0.853737,
+              0.426727
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 109,
+              "matched_pdf_page_index": 109,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0019",
+            "title": "3.5 CONFIGURATION MANAGEMENT",
+            "target_page": 96,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.426455,
+              0.853752,
+              0.442106
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 122,
+              "matched_pdf_page_index": 122,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0020",
+            "title": "3.6 CONTINGENCY PLANNING",
+            "target_page": 115,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.441833,
+              0.853751,
+              0.457485
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 141,
+              "matched_pdf_page_index": 141,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0021",
+            "title": "3.7 IDENTIFICATION AND AUTHENTICATION",
+            "target_page": 131,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.457288,
+              0.853764,
+              0.472939
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 157,
+              "matched_pdf_page_index": 157,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0022",
+            "title": "3.8 INCIDENT RESPONSE",
+            "target_page": 149,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.472667,
+              0.853738,
+              0.488318
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 175,
+              "matched_pdf_page_index": 175,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0023",
+            "title": "3.9 MAINTENANCE",
+            "target_page": 162,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.488121,
+              0.853757,
+              0.503773
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 188,
+              "matched_pdf_page_index": 188,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0024",
+            "title": "3.10 MEDIA PROTECTION",
+            "target_page": 171,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.5035,
+              0.853742,
+              0.519152
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 197,
+              "matched_pdf_page_index": 197,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0025",
+            "title": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION",
+            "target_page": 179,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.518955,
+              0.85374,
+              0.534606
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 205,
+              "matched_pdf_page_index": 205,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0026",
+            "title": "3.12 PLANNING",
+            "target_page": 194,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.534333,
+              0.853741,
+              0.549985
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 220,
+              "matched_pdf_page_index": 220,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0027",
+            "title": "3.13 PROGRAM MANAGEMENT",
+            "target_page": 203,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.549788,
+              0.853757,
+              0.565439
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 229,
+              "matched_pdf_page_index": 229,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0028",
+            "title": "3.14 PERSONNEL SECURITY",
+            "target_page": 222,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.565167,
+              0.853756,
+              0.580818
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 248,
+              "matched_pdf_page_index": 248,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0029",
+            "title": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+            "target_page": 229,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.580545,
+              0.853769,
+              0.596197
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 255,
+              "matched_pdf_page_index": 255,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0030",
+            "title": "3.16 RISK ASSESSMENT",
+            "target_page": 238,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.596,
+              0.853742,
+              0.611652
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 264,
+              "matched_pdf_page_index": 264,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0031",
+            "title": "3.17 SYSTEM AND SERVICES ACQUISITION",
+            "target_page": 249,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.611379,
+              0.853761,
+              0.62703
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 275,
+              "matched_pdf_page_index": 275,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0032",
+            "title": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION",
+            "target_page": 292,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.626833,
+              0.853719,
+              0.642485
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 318,
+              "matched_pdf_page_index": 318,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0033",
+            "title": "3.19 SYSTEM AND INFORMATION INTEGRITY",
+            "target_page": 332,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.642212,
+              0.853736,
+              0.657864
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 358,
+              "matched_pdf_page_index": 358,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          },
+          {
+            "id": "toc:0034",
+            "title": "3.20 SUPPLY CHAIN RISK MANAGEMENT",
+            "target_page": 363,
+            "level": 2,
+            "children": [],
+            "bbox_hint": [
+              0.165167,
+              0.657667,
+              0.853758,
+              0.673318
+            ],
+            "verification": {
+              "status": "matched",
+              "expected_pdf_page_index": 389,
+              "matched_pdf_page_index": 389,
+              "method": "toc target page text contains normalized title within \u00b11 page window"
+            }
+          }
+        ],
+        "bbox_hint": [
+          0.145559,
+          0.344106,
+          0.85366,
+          0.36097
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 42,
+          "matched_pdf_page_index": 42,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0035",
+        "title": "REFERENCES",
+        "target_page": 374,
+        "level": 1,
+        "children": [],
+        "bbox_hint": [
+          0.145559,
+          0.676909,
+          0.853647,
+          0.693773
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 400,
+          "matched_pdf_page_index": 400,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0036",
+        "title": "APPENDIX A GLOSSARY",
+        "target_page": 394,
+        "level": 1,
+        "children": [],
+        "bbox_hint": [
+          0.145559,
+          0.697667,
+          0.853628,
+          0.71453
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 420,
+          "matched_pdf_page_index": 420,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0037",
+        "title": "APPENDIX B ACRONYMS",
+        "target_page": 424,
+        "level": 1,
+        "children": [],
+        "bbox_hint": [
+          0.145559,
+          0.718424,
+          0.853643,
+          0.735288
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 450,
+          "matched_pdf_page_index": 450,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      },
+      {
+        "id": "toc:0038",
+        "title": "APPENDIX C CONTROL SUMMARIES",
+        "target_page": 428,
+        "level": 1,
+        "children": [],
+        "bbox_hint": [
+          0.145559,
+          0.739182,
+          0.853648,
+          0.756045
+        ],
+        "verification": {
+          "status": "matched",
+          "expected_pdf_page_index": 454,
+          "matched_pdf_page_index": 454,
+          "method": "toc target page text contains normalized title within \u00b11 page window"
+        }
+      }
+    ]
+  },
+  "expected_elements": [
+    {
+      "family": "toc",
+      "bbox_hint": [
+        0.032912,
+        0.088576,
+        0.853769,
+        0.756045
+      ],
+      "label": "Table of Contents",
+      "text_hint": "Nested TOC with 38 verified entries",
+      "allowed_types": [
+        "toc",
+        "TableOfContents"
+      ],
+      "match_strategy": "toc_parent_with_verified_child_entries",
+      "semantic_role": "toc",
+      "toc_entries": [
+        {
+          "id": "toc:0001",
+          "title": "CHAPTER ONE INTRODUCTION",
+          "target_page": 1,
+          "level": 1,
+          "children": [
+            {
+              "id": "toc:0002",
+              "title": "1.1 PURPOSE AND APPLICABILITY",
+              "target_page": 2,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.146227,
+                0.853609,
+                0.161879
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 28,
+                "matched_pdf_page_index": 28,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0003",
+              "title": "1.2 TARGET AUDIENCE",
+              "target_page": 3,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.161606,
+                0.85363,
+                0.177258
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 29,
+                "matched_pdf_page_index": 29,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0004",
+              "title": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+              "target_page": 3,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.177061,
+                0.853624,
+                0.192712
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 29,
+                "matched_pdf_page_index": 29,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0005",
+              "title": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS",
+              "target_page": 5,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.192439,
+                0.853629,
+                0.208091
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 31,
+                "matched_pdf_page_index": 31,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0006",
+              "title": "1.5 REVISIONS AND EXTENSIONS",
+              "target_page": 5,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.207818,
+                0.853626,
+                0.22347
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 31,
+                "matched_pdf_page_index": 31,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0007",
+              "title": "1.6 PUBLICATION ORGANIZATION",
+              "target_page": 5,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.223273,
+                0.853619,
+                0.238924
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 31,
+                "matched_pdf_page_index": 31,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            }
+          ],
+          "bbox_hint": [
+            0.145559,
+            0.125545,
+            0.853634,
+            0.142409
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 27,
+            "matched_pdf_page_index": 27,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0008",
+          "title": "CHAPTER TWO THE FUNDAMENTALS",
+          "target_page": 7,
+          "level": 1,
+          "children": [
+            {
+              "id": "toc:0009",
+              "title": "2.1 REQUIREMENTS AND CONTROLS",
+              "target_page": 7,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.263197,
+                0.853618,
+                0.278848
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 33,
+                "matched_pdf_page_index": 33,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0010",
+              "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+              "target_page": 8,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.032912,
+                0.274939,
+                0.853622,
+                0.294303
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 34,
+                "matched_pdf_page_index": 34,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0011",
+              "title": "2.3 CONTROL IMPLEMENTATION APPROACHES",
+              "target_page": 11,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.29403,
+                0.853743,
+                0.309682
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 37,
+                "matched_pdf_page_index": 37,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0012",
+              "title": "2.4 SECURITY AND PRIVACY CONTROLS",
+              "target_page": 13,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.309409,
+                0.853733,
+                0.325061
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 39,
+                "matched_pdf_page_index": 39,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0013",
+              "title": "2.5 TRUSTWORTHINESS AND ASSURANCE",
+              "target_page": 14,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.324864,
+                0.853731,
+                0.340515
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 40,
+                "matched_pdf_page_index": 40,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            }
+          ],
+          "bbox_hint": [
+            0.145559,
+            0.242515,
+            0.853647,
+            0.259379
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 33,
+            "matched_pdf_page_index": 33,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0014",
+          "title": "CHAPTER THREE THE CONTROLS",
+          "target_page": 16,
+          "level": 1,
+          "children": [
+            {
+              "id": "toc:0015",
+              "title": "3.1 ACCESS CONTROL",
+              "target_page": 18,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.364788,
+                0.853733,
+                0.380439
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 44,
+                "matched_pdf_page_index": 44,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0016",
+              "title": "3.2 AWARENESS AND TRAINING",
+              "target_page": 59,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.380242,
+                0.85373,
+                0.395894
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 85,
+                "matched_pdf_page_index": 85,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0017",
+              "title": "3.3 AUDIT AND ACCOUNTABILITY",
+              "target_page": 65,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.395621,
+                0.853634,
+                0.411273
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 91,
+                "matched_pdf_page_index": 91,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0018",
+              "title": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING",
+              "target_page": 83,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.411076,
+                0.853737,
+                0.426727
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 109,
+                "matched_pdf_page_index": 109,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0019",
+              "title": "3.5 CONFIGURATION MANAGEMENT",
+              "target_page": 96,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.426455,
+                0.853752,
+                0.442106
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 122,
+                "matched_pdf_page_index": 122,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0020",
+              "title": "3.6 CONTINGENCY PLANNING",
+              "target_page": 115,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.441833,
+                0.853751,
+                0.457485
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 141,
+                "matched_pdf_page_index": 141,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0021",
+              "title": "3.7 IDENTIFICATION AND AUTHENTICATION",
+              "target_page": 131,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.457288,
+                0.853764,
+                0.472939
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 157,
+                "matched_pdf_page_index": 157,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0022",
+              "title": "3.8 INCIDENT RESPONSE",
+              "target_page": 149,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.472667,
+                0.853738,
+                0.488318
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 175,
+                "matched_pdf_page_index": 175,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0023",
+              "title": "3.9 MAINTENANCE",
+              "target_page": 162,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.488121,
+                0.853757,
+                0.503773
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 188,
+                "matched_pdf_page_index": 188,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0024",
+              "title": "3.10 MEDIA PROTECTION",
+              "target_page": 171,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.5035,
+                0.853742,
+                0.519152
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 197,
+                "matched_pdf_page_index": 197,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0025",
+              "title": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION",
+              "target_page": 179,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.518955,
+                0.85374,
+                0.534606
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 205,
+                "matched_pdf_page_index": 205,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0026",
+              "title": "3.12 PLANNING",
+              "target_page": 194,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.534333,
+                0.853741,
+                0.549985
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 220,
+                "matched_pdf_page_index": 220,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0027",
+              "title": "3.13 PROGRAM MANAGEMENT",
+              "target_page": 203,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.549788,
+                0.853757,
+                0.565439
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 229,
+                "matched_pdf_page_index": 229,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0028",
+              "title": "3.14 PERSONNEL SECURITY",
+              "target_page": 222,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.565167,
+                0.853756,
+                0.580818
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 248,
+                "matched_pdf_page_index": 248,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0029",
+              "title": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+              "target_page": 229,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.580545,
+                0.853769,
+                0.596197
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 255,
+                "matched_pdf_page_index": 255,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0030",
+              "title": "3.16 RISK ASSESSMENT",
+              "target_page": 238,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.596,
+                0.853742,
+                0.611652
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 264,
+                "matched_pdf_page_index": 264,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0031",
+              "title": "3.17 SYSTEM AND SERVICES ACQUISITION",
+              "target_page": 249,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.611379,
+                0.853761,
+                0.62703
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 275,
+                "matched_pdf_page_index": 275,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0032",
+              "title": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION",
+              "target_page": 292,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.626833,
+                0.853719,
+                0.642485
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 318,
+                "matched_pdf_page_index": 318,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0033",
+              "title": "3.19 SYSTEM AND INFORMATION INTEGRITY",
+              "target_page": 332,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.642212,
+                0.853736,
+                0.657864
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 358,
+                "matched_pdf_page_index": 358,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            },
+            {
+              "id": "toc:0034",
+              "title": "3.20 SUPPLY CHAIN RISK MANAGEMENT",
+              "target_page": 363,
+              "level": 2,
+              "children": [],
+              "bbox_hint": [
+                0.165167,
+                0.657667,
+                0.853758,
+                0.673318
+              ],
+              "verification": {
+                "status": "matched",
+                "expected_pdf_page_index": 389,
+                "matched_pdf_page_index": 389,
+                "method": "toc target page text contains normalized title within \u00b11 page window"
+              }
+            }
+          ],
+          "bbox_hint": [
+            0.145559,
+            0.344106,
+            0.85366,
+            0.36097
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 42,
+            "matched_pdf_page_index": 42,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0035",
+          "title": "REFERENCES",
+          "target_page": 374,
+          "level": 1,
+          "children": [],
+          "bbox_hint": [
+            0.145559,
+            0.676909,
+            0.853647,
+            0.693773
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 400,
+            "matched_pdf_page_index": 400,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0036",
+          "title": "APPENDIX A GLOSSARY",
+          "target_page": 394,
+          "level": 1,
+          "children": [],
+          "bbox_hint": [
+            0.145559,
+            0.697667,
+            0.853628,
+            0.71453
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 420,
+            "matched_pdf_page_index": 420,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0037",
+          "title": "APPENDIX B ACRONYMS",
+          "target_page": 424,
+          "level": 1,
+          "children": [],
+          "bbox_hint": [
+            0.145559,
+            0.718424,
+            0.853643,
+            0.735288
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 450,
+            "matched_pdf_page_index": 450,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        },
+        {
+          "id": "toc:0038",
+          "title": "APPENDIX C CONTROL SUMMARIES",
+          "target_page": 428,
+          "level": 1,
+          "children": [],
+          "bbox_hint": [
+            0.145559,
+            0.739182,
+            0.853648,
+            0.756045
+          ],
+          "verification": {
+            "status": "matched",
+            "expected_pdf_page_index": 454,
+            "matched_pdf_page_index": 454,
+            "method": "toc target page text contains normalized title within \u00b11 page window"
+          }
+        }
+      ],
+      "notes": "Agent second pass: one parent TOC region; deterministic child rows verified against target PDF pages."
+    }
+  ]
+}

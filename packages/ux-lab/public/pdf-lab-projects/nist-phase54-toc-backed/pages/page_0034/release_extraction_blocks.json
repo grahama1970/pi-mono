@@ -1,0 +1,898 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page": 34,
+  "pdf_page_index": 33,
+  "toc_entries": [
+    {
+      "toc_id": "toc:0008",
+      "title": "CHAPTER TWO THE FUNDAMENTALS",
+      "level": 1,
+      "target_page": 7,
+      "matched_pdf_page_index": 33,
+      "extraction_page": 34
+    },
+    {
+      "toc_id": "toc:0009",
+      "title": "2.1 REQUIREMENTS AND CONTROLS",
+      "level": 2,
+      "target_page": 7,
+      "matched_pdf_page_index": 33,
+      "extraction_page": 34
+    }
+  ],
+  "table_materialization": {
+    "core_table_blocks_added": 0,
+    "existing_table_blocks": 0
+  },
+  "blocks": [
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0012",
+      "page": 34,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "THE FUNDAMENTALS",
+      "toc_backed": true,
+      "toc_id": "toc:0012",
+      "toc_level": 1,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0013",
+      "page": 34,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "2.1   REQUIREMENTS AND CONTROLS",
+      "toc_backed": true,
+      "toc_id": "toc:0013",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:0",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:1",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.091712,
+        0.277663,
+        0.112152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:3",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER TWO",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145053,
+        0.127772,
+        0.370886,
+        0.152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:4",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "THE FUNDAMENTALS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.156561,
+        0.689467,
+        0.173212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:5",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "STRUCTURE, TYPE, AND ORGANIZATION OF SECURITY AND PRIVACY CONTROLS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.187591,
+        0.833969,
+        0.204455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:6",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This chapter presents the fundamental concepts associated with security and privacy controls,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.20456,
+        0.825414,
+        0.221424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:7",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "including the relationship between requirements and controls, the structure of controls, how",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.221529,
+        0.85067,
+        0.238393
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:8",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "controls are organized in the consolidated control catalog, the different control implementation",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.238498,
+        0.833761,
+        0.255362
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:9",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "approaches for information systems and organizations, the relationship between security and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.255398,
+        0.835055,
+        0.272262
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:10",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "privacy controls, the impo rtance of the concepts of trustworthiness and assurance for security",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.272367,
+        0.805009,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:11",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is and available privacy free controls of charge, and from: the effects of the controls on achieving trustworthy, secure, and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145505,
+        0.289336,
+        0.274303,
+        0.3062
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:12",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "resilient systems.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.320727,
+        0.491237,
+        0.342379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:13",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2.1 REQUIREMENTS AND CONTROLS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.350621,
+        0.833334,
+        0.367485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:14",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "It is important to understand the relationship between requirements and controls. For federal",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.367521,
+        0.815892,
+        0.384385
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:15",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "information security and privacy policies, the term requirement is generally used to refer to",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.384485,
+        0.831396,
+        0.401354
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:16",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "information security and privacy obligations imposed on organization s. For example, [OMB A -",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.401455,
+        0.847768,
+        0.418318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:17",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "130] imposes information security and privacy requirements with which federal agencies must",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.418424,
+        0.813567,
+        0.435288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:18",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "comply when managing information resources. The term requirement can also be used in a",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.435393,
+        0.851997,
+        0.452257
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:19",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "broader sense to refe r to an expression of stakeholder protection needs for a particular system",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.452293,
+        0.8152,
+        0.469157
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:20",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "or organization. Stakeholder protection needs and the corresponding security and privacy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.469262,
+        0.81249,
+        0.486126
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:21",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "requirements may be derived from many sources (e.g., laws, executive orders, directives,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.486231,
+        0.827412,
+        0.503095
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:22",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "regulations, policies, standards, mission and business needs, or risk assessments). The term",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.5032,
+        0.870037,
+        0.520064
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:23",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "requirement, as used in this guideline, includes both legal and policy requirements, as well as an",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.846611,
+        0.537033
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:24",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008 expression of the broader set of stakeholder protection needs that may be derived from other",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.537069,
+        0.833739,
+        0.553933
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:25",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "sources. All of these requirements, when applied to a system, help determine the necessary",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.553955,
+        0.729729,
+        0.570902
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:26",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "characteristics of the system \u2014encompassing security, privacy, and assurance. 24",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145567,
+        0.586152,
+        0.82006,
+        0.603016
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:27",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Organizations may divide security and privacy requirements into more granular categories,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145567,
+        0.603121,
+        0.804803,
+        0.619985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:28",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "depending on where the requirements are employed in the ystem s development life cycle",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145585,
+        0.62009,
+        0.852788,
+        0.636954
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:29",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "original_type": "list_item",
+        "repair_reason": "list_item_without_list_marker_reclassified_as_paragraph",
+        "repair_source": "pdf_lab.second_pass.list_item_repair"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "(SDLC) and for what purpose. Organizations may use the term capability requirement to describe",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145585,
+        0.63699,
+        0.824109,
+        0.653854
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:30",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "a capability that the system or organization must provide to satisfy a stakeholder protection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145585,
+        0.653959,
+        0.830834,
+        0.670823
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:31",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "need. In addition, organizations may refer to system requirements that pertain to particular",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145585,
+        0.670928,
+        0.845988,
+        0.687792
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:32",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "hardware, software, and firmware components of a system as specification requirements \u2014that",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145603,
+        0.687898,
+        0.848416,
+        0.704761
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:34",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "is, capab ilities that implement all or part of a control and that may be assessed (i.e., as part of",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.701227,
+        0.035912,
+        0.715591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:33",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "-",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145603,
+        0.704867,
+        0.871901,
+        0.72173
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:36",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the verification, validation, testing, and evaluation processes). Finally, organizations may use the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032824,
+        0.705015,
+        0.043132,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:35",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3r55",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145603,
+        0.721766,
+        0.844684,
+        0.73863
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:37",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "term statement of work requirements to refer to actions that mus t be performed operationally",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145603,
+        0.738735,
+        0.381192,
+        0.755599
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:38",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "or during system development.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.816227,
+        0.857504,
+        0.830591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:39",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "24 The system characteristics that impact security and privacy vary and include the system type and function in terms",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.830091,
+        0.839963,
+        0.844455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:40",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "of its primary purpose; the system make -up in terms of its technology, mechanical, physical, and human elements;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.844034,
+        0.852809,
+        0.858398
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:41",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the modes and states within which the ystem s delivers its functions and services; the criticality or importance of the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.857898,
+        0.8265,
+        0.872261
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:42",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "system and its constituent functions and services; the sensitivity of the data or information processed, stored, or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.871761,
+        0.855441,
+        0.886125
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:43",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "transmitted; the consequence of loss, failure, or degradatio n relative to the ability of the system to execute correctly",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.885625,
+        0.766895,
+        0.899989
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:44",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and to provide for its own protection (i.e., self -protection); and monetary or other value [SP 800-160-1].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.229341,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:45",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER TWO",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.812419,
+        0.939742,
+        0.851971,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p34:line:46",
+      "page": 34,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 7",
+      "type": "running_footer"
+    }
+  ]
+}

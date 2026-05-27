@@ -1,0 +1,3074 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase52_page_0477",
+  "captured_at": "2026-05-26T14:59:46.685944+00:00",
+  "source": "phase-52-nist-agentic-sweep-golden-slice-seed release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; pdf_oxide output is comparison evidence only.",
+  "candidate_families": [
+    "sections",
+    "tables",
+    "footnotes_references",
+    "controls_requirements",
+    "definitions_glossary",
+    "appendix_tables",
+    "equations_or_expected_absent"
+  ],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p476:line:0+actual:p476:line:24 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p476:line:25+actual:p476:line:46+actual:p476:line:66 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "caption",
+      "bbox_hint": [
+        0.396147,
+        0.088879,
+        0.600174,
+        0.103848
+      ],
+      "text_hint": "TABLE C-12: PLANNING FAMILY",
+      "label": "TABLE C-12: PLANNING FAMILY",
+      "allowed_types": [
+        "caption"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: caption | Source id: actual:p476:line:26 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "text_hint": "CONTROL",
+      "label": "CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:2 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "text_hint": "CONTROL NAME",
+      "label": "CONTROL NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:27 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.624569,
+        0.142091,
+        0.826005,
+        0.156242
+      ],
+      "text_hint": "IMPLEMENTED ASSURANCE",
+      "label": "IMPLEMENTED ASSURANCE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:47 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "text_hint": "NUMBER",
+      "label": "NUMBER",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:3 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "text_hint": "BY",
+      "label": "BY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:48 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "text_hint": "CONTROL ENHANCEMENT NAME",
+      "label": "CONTROL ENHANCEMENT NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:28 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.186985,
+        0.37949,
+        0.201349
+      ],
+      "text_hint": "Policy and Procedures",
+      "label": "Policy and Procedures",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:29 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.186985,
+        0.180825,
+        0.201349
+      ],
+      "text_hint": "PL-1",
+      "label": "PL-1",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:4 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:49 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.20403,
+        0.447578,
+        0.218394
+      ],
+      "text_hint": "System Security and Privacy Plans",
+      "label": "System Security and Privacy Plans",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:30 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.20403,
+        0.180825,
+        0.218394
+      ],
+      "text_hint": "PL-2",
+      "label": "PL-2",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:5 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.20603,
+        0.672927,
+        0.218894
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:50 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.221,
+        0.199127,
+        0.235364
+      ],
+      "text_hint": "PL-2(1)",
+      "label": "PL-2(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:6 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.221076,
+        0.756213,
+        0.234152
+      ],
+      "text_hint": "W: Incorporated into PL-7.",
+      "label": "W: Incorporated into PL-7.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:51 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.223,
+        0.366711,
+        0.235864
+      ],
+      "text_hint": "CONCEPT OF OPERATIONS",
+      "label": "CONCEPT OF OPERATIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:31 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.238045,
+        0.199127,
+        0.252409
+      ],
+      "text_hint": "PL-2(2)",
+      "label": "PL-2(2)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:7 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.238121,
+        0.756221,
+        0.251197
+      ],
+      "text_hint": "W: Incorporated into PL-8.",
+      "label": "W: Incorporated into PL-8.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:52 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.240045,
+        0.37903,
+        0.252909
+      ],
+      "text_hint": "FUNCTIONAL ARCHITECTURE",
+      "label": "FUNCTIONAL ARCHITECTURE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:32 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.255091,
+        0.197092,
+        0.269455
+      ],
+      "text_hint": "PL-2(3)",
+      "label": "PL-2(3)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:8 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.255167,
+        0.753915,
+        0.268242
+      ],
+      "text_hint": "W: Incorporated into PL-2.",
+      "label": "W: Incorporated into PL-2.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:53 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.257091,
+        0.549999,
+        0.269955
+      ],
+      "text_hint": "PLAN AND COORDINATE WITH OTHER ORGANIZATIONAL ENTITIES",
+      "label": "PLAN AND COORDINATE WITH OTHER ORGANIZATIONAL ENTITIES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:33 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.272136,
+        0.419387,
+        0.2865
+      ],
+      "text_hint": "System Security Plan Update",
+      "label": "System Security Plan Update",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:34 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "text_hint": "This publication is available PL-3 free of charge from:",
+      "label": "This publication is available PL-3 free of charge from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:9 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "text_hint": "PL-3",
+      "label": "PL-3",
+      "allowed_types": [
+        "control_reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: control_reference | Source id: actual:p476:line:9:embedded:requirement:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.272212,
+        0.756221,
+        0.285288
+      ],
+      "text_hint": "W: Incorporated into PL-2.",
+      "label": "W: Incorporated into PL-2.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:54 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.289182,
+        0.183368,
+        0.303545
+      ],
+      "text_hint": "PL-4",
+      "label": "PL-4",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:10 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.289182,
+        0.350858,
+        0.303545
+      ],
+      "text_hint": "Rules of Behavior",
+      "label": "Rules of Behavior",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:35 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.291182,
+        0.672927,
+        0.304045
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:55 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.305651,
+        0.578781,
+        0.321015
+      ],
+      "text_hint": "SOCIAL MEDIA AND EXTERNAL SITE / APPLICATION USAGE RESTRICTIONS",
+      "label": "SOCIAL MEDIA AND EXTERNAL SITE / APPLICATION USAGE RESTRICTIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:36 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.306151,
+        0.199127,
+        0.320515
+      ],
+      "text_hint": "PL-4(1)",
+      "label": "PL-4(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:11 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.308151,
+        0.672927,
+        0.321015
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:56 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.323197,
+        0.180825,
+        0.337561
+      ],
+      "text_hint": "PL-5",
+      "label": "PL-5",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:12 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.323197,
+        0.405993,
+        0.337561
+      ],
+      "text_hint": "Privacy Impact Assessment",
+      "label": "Privacy Impact Assessment",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:37 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.323273,
+        0.758573,
+        0.336349
+      ],
+      "text_hint": "W: Incorporated into RA-8.",
+      "label": "W: Incorporated into RA-8.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:57 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.340242,
+        0.180825,
+        0.354606
+      ],
+      "text_hint": "PL-6",
+      "label": "PL-6",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:13 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.340242,
+        0.448135,
+        0.354606
+      ],
+      "text_hint": "Security-Related Activity Planning",
+      "label": "Security-Related Activity Planning",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:38 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.340318,
+        0.756221,
+        0.353394
+      ],
+      "text_hint": "W: Incorporated into PL-2.",
+      "label": "W: Incorporated into PL-2.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:58 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.357288,
+        0.180825,
+        0.371652
+      ],
+      "text_hint": "PL-7",
+      "label": "PL-7",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:14 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.357288,
+        0.382373,
+        0.371652
+      ],
+      "text_hint": "Concept of Operations",
+      "label": "Concept of Operations",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:39 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.359288,
+        0.672927,
+        0.372152
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:59 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.374258,
+        0.180825,
+        0.388621
+      ],
+      "text_hint": "PL-8",
+      "label": "PL-8",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:15 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.374258,
+        0.449563,
+        0.388621
+      ],
+      "text_hint": "Security and Privacy Architectures",
+      "label": "Security and Privacy Architectures",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:40 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.376258,
+        0.672927,
+        0.389121
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:60 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.391303,
+        0.199127,
+        0.405667
+      ],
+      "text_hint": "PL-8(1)",
+      "label": "PL-8(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:18 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.393303,
+        0.33301,
+        0.406167
+      ],
+      "text_hint": "DEFENSE IN DEPTH",
+      "label": "DEFENSE IN DEPTH",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:41 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.393303,
+        0.672927,
+        0.406167
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:61 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.408348,
+        0.199127,
+        0.422712
+      ],
+      "text_hint": "PL-8(2)",
+      "label": "PL-8(2)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:19 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.410349,
+        0.337943,
+        0.423212
+      ],
+      "text_hint": "SUPPLIER DIVERSITY",
+      "label": "SUPPLIER DIVERSITY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:42 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.410349,
+        0.672927,
+        0.423212
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:62 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.425394,
+        0.180825,
+        0.439758
+      ],
+      "text_hint": "PL-9",
+      "label": "PL-9",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:20 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.425394,
+        0.369984,
+        0.439758
+      ],
+      "text_hint": "Central Management",
+      "label": "Central Management",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:43 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.427394,
+        0.672927,
+        0.440258
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:63 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.442364,
+        0.188011,
+        0.456727
+      ],
+      "text_hint": "PL-10",
+      "label": "PL-10",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:21 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.442364,
+        0.351965,
+        0.456727
+      ],
+      "text_hint": "Baseline Selection",
+      "label": "Baseline Selection",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:44 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.444364,
+        0.672927,
+        0.457227
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:64 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.459409,
+        0.188011,
+        0.473773
+      ],
+      "text_hint": "PL-11",
+      "label": "PL-11",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p476:line:22 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.459409,
+        0.349551,
+        0.473773
+      ],
+      "text_hint": "Baseline Tailoring",
+      "label": "Baseline Tailoring",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:45 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.461409,
+        0.672927,
+        0.474273
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p476:line:65 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p476:line:16 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "text_hint": "APPENDIX C",
+      "label": "APPENDIX C",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p476:line:23 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "text_hint": "PAGE 449",
+      "label": "PAGE 449",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p476:line:75 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p477:line:0+actual:p477:line:44 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.852874,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION S YSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION S YSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p477:line:46+actual:p477:line:57+actual:p477:line:68 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "caption",
+      "bbox_hint": [
+        0.344775,
+        0.088879,
+        0.650753,
+        0.103848
+      ],
+      "text_hint": "TABLE C-13: PROGRAM MANAGEMENT FAMILY",
+      "label": "TABLE C-13: PROGRAM MANAGEMENT FAMILY",
+      "allowed_types": [
+        "caption"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: caption | Source id: actual:p477:line:45 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "text_hint": "CONTROL",
+      "label": "CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:2 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.358196,
+        0.137394,
+        0.485685,
+        0.155258
+      ],
+      "text_hint": "CONTROL NAME",
+      "label": "CONTROL NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:47 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.630157,
+        0.142091,
+        0.829044,
+        0.156242
+      ],
+      "text_hint": "IMPLEMENTED ASSURANCE",
+      "label": "IMPLEMENTED ASSURANCE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:58+actual:p477:line:69 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "text_hint": "NUMBER",
+      "label": "NUMBER",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:3 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.663686,
+        0.154742,
+        0.68186,
+        0.168818
+      ],
+      "text_hint": "BY",
+      "label": "BY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:59 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.343,
+        0.158,
+        0.50222,
+        0.170864
+      ],
+      "text_hint": "CONTROL ENHANCEMENT NAME",
+      "label": "CONTROL ENHANCEMENT NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:48 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.186985,
+        0.186159,
+        0.201349
+      ],
+      "text_hint": "PM-1",
+      "label": "PM-1",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:4 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.186985,
+        0.452621,
+        0.201349
+      ],
+      "text_hint": "Information Security Program Plan",
+      "label": "Information Security Program Plan",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:49 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.188985,
+        0.678613,
+        0.201849
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:60 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.20403,
+        0.186159,
+        0.218394
+      ],
+      "text_hint": "PM-2",
+      "label": "PM-2",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:5 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.20403,
+        0.523185,
+        0.218394
+      ],
+      "text_hint": "Information Security Program Leadership Role",
+      "label": "Information Security Program Leadership Role",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:50 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.20603,
+        0.678613,
+        0.218894
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:61 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.221,
+        0.509108,
+        0.235364
+      ],
+      "text_hint": "Information Security and Privacy Resources",
+      "label": "Information Security and Privacy Resources",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:51 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.221,
+        0.186159,
+        0.235364
+      ],
+      "text_hint": "PM-3",
+      "label": "PM-3",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:6 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.223,
+        0.678613,
+        0.235864
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:62 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.238045,
+        0.476784,
+        0.252409
+      ],
+      "text_hint": "Plan of Action and Milestones Process",
+      "label": "Plan of Action and Milestones Process",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:52 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.238045,
+        0.186159,
+        0.252409
+      ],
+      "text_hint": "PM-4",
+      "label": "PM-4",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:7 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.240045,
+        0.678613,
+        0.252909
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:63 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.255091,
+        0.350917,
+        0.269455
+      ],
+      "text_hint": "System Inventory",
+      "label": "System Inventory",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:53 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.255091,
+        0.186159,
+        0.269455
+      ],
+      "text_hint": "PM-5",
+      "label": "PM-5",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:8 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.257091,
+        0.678613,
+        0.269955
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:64 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "text_hint": "This publication is available PM-5(1) free of charge from:",
+      "label": "This publication is available PM-5(1) free of charge from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:9 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "text_hint": "PM-5(1)",
+      "label": "PM-5(1)",
+      "allowed_types": [
+        "control_reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: control_reference | Source id: actual:p477:line:9:embedded:requirement:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.274136,
+        0.51701,
+        0.287
+      ],
+      "text_hint": "INVENTORY OF PERSONALLY IDENTIFIABLE INFORMATION",
+      "label": "INVENTORY OF PERSONALLY IDENTIFIABLE INFORMATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:54 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.274136,
+        0.678613,
+        0.287
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:65 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.289182,
+        0.186159,
+        0.303545
+      ],
+      "text_hint": "PM-6",
+      "label": "PM-6",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:10 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.289182,
+        0.401951,
+        0.303545
+      ],
+      "text_hint": "Measures of Performance",
+      "label": "Measures of Performance",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:55 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.291182,
+        0.678613,
+        0.304045
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:66 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.306151,
+        0.186159,
+        0.320515
+      ],
+      "text_hint": "PM-7",
+      "label": "PM-7",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:11 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.306151,
+        0.387211,
+        0.320515
+      ],
+      "text_hint": "Enterprise Architecture",
+      "label": "Enterprise Architecture",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:56 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.308151,
+        0.678613,
+        0.321015
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:67 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.323197,
+        0.202754,
+        0.337561
+      ],
+      "text_hint": "PM-7(1)",
+      "label": "PM-7(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:12 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.325197,
+        0.678613,
+        0.338061
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:103 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.325197,
+        0.305859,
+        0.338061
+      ],
+      "text_hint": "OFFLOADING",
+      "label": "OFFLOADING",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:70 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.340242,
+        0.186159,
+        0.354606
+      ],
+      "text_hint": "PM-8",
+      "label": "PM-8",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:13 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.340242,
+        0.404505,
+        0.354606
+      ],
+      "text_hint": "Critical Infrastructure Plan",
+      "label": "Critical Infrastructure Plan",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:71 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.342242,
+        0.678613,
+        0.355106
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:104 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.357288,
+        0.186159,
+        0.371652
+      ],
+      "text_hint": "PM-9",
+      "label": "PM-9",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:14 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.357288,
+        0.408534,
+        0.371652
+      ],
+      "text_hint": "Risk Management Strategy",
+      "label": "Risk Management Strategy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:72 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.359288,
+        0.678613,
+        0.372152
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:105 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.374258,
+        0.193567,
+        0.388621
+      ],
+      "text_hint": "PM-10",
+      "label": "PM-10",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:15 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.374258,
+        0.378696,
+        0.388621
+      ],
+      "text_hint": "Authorization Process",
+      "label": "Authorization Process",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:73 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.376258,
+        0.678613,
+        0.389121
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:106 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.391303,
+        0.193567,
+        0.405667
+      ],
+      "text_hint": "PM-11",
+      "label": "PM-11",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:18 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.391303,
+        0.488475,
+        0.405667
+      ],
+      "text_hint": "Mission and Business Process Definition",
+      "label": "Mission and Business Process Definition",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:74 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.393303,
+        0.678613,
+        0.406167
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:107 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.408348,
+        0.193567,
+        0.422712
+      ],
+      "text_hint": "PM-12",
+      "label": "PM-12",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:19 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.408348,
+        0.38449,
+        0.422712
+      ],
+      "text_hint": "Insider Threat Program",
+      "label": "Insider Threat Program",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:75 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.410349,
+        0.678613,
+        0.423212
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:108 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.425394,
+        0.193567,
+        0.439758
+      ],
+      "text_hint": "PM-13",
+      "label": "PM-13",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:20 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.425394,
+        0.434995,
+        0.439758
+      ],
+      "text_hint": "Security and Privacy Workforce",
+      "label": "Security and Privacy Workforce",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:76 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.427394,
+        0.678613,
+        0.440258
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:109 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.442364,
+        0.193567,
+        0.456727
+      ],
+      "text_hint": "PM-14",
+      "label": "PM-14",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:21 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.442364,
+        0.448931,
+        0.456727
+      ],
+      "text_hint": "Testing, Training, and Monitoring",
+      "label": "Testing, Training, and Monitoring",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:77 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.444364,
+        0.678613,
+        0.457227
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:110 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.459409,
+        0.193567,
+        0.473773
+      ],
+      "text_hint": "PM-15",
+      "label": "PM-15",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:22 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.459409,
+        0.520887,
+        0.473773
+      ],
+      "text_hint": "Security and Privacy Groups and Associations",
+      "label": "Security and Privacy Groups and Associations",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:78 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.461409,
+        0.678613,
+        0.474273
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:111 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.476455,
+        0.193567,
+        0.490818
+      ],
+      "text_hint": "PM-16",
+      "label": "PM-16",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:23 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.476455,
+        0.409387,
+        0.490818
+      ],
+      "text_hint": "Threat Awareness Program",
+      "label": "Threat Awareness Program",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:79 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.478455,
+        0.678613,
+        0.491318
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:112 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.4935,
+        0.213368,
+        0.507864
+      ],
+      "text_hint": "PM-16(1)",
+      "label": "PM-16(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:24 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.4955,
+        0.678613,
+        0.508364
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:113 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.4955,
+        0.518536,
+        0.508364
+      ],
+      "text_hint": "AUTOMATED MEANS FOR SHARING THREAT INTELLIGENCE",
+      "label": "AUTOMATED MEANS FOR SHARING THREAT INTELLIGENCE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:80 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.51047,
+        0.598844,
+        0.524833
+      ],
+      "text_hint": "Protecting Controlled Unclassified Information on External",
+      "label": "Protecting Controlled Unclassified Information on External",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:81 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.510545,
+        0.193567,
+        0.524909
+      ],
+      "text_hint": "PM-17",
+      "label": "PM-17",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:25 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.512545,
+        0.678613,
+        0.525409
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:114 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:16 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.524333,
+        0.294167,
+        0.538697
+      ],
+      "text_hint": "Systems",
+      "label": "Systems",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:82 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.541379,
+        0.193567,
+        0.555742
+      ],
+      "text_hint": "PM-18",
+      "label": "PM-18",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:26 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.541379,
+        0.373696,
+        0.555742
+      ],
+      "text_hint": "Privacy Program Plan",
+      "label": "Privacy Program Plan",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:83 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.543379,
+        0.678613,
+        0.556242
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:115 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.558424,
+        0.193567,
+        0.572788
+      ],
+      "text_hint": "PM-19",
+      "label": "PM-19",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:27 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.558424,
+        0.444314,
+        0.572788
+      ],
+      "text_hint": "Privacy Program Leadership Role",
+      "label": "Privacy Program Leadership Role",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:84 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.560424,
+        0.678613,
+        0.573288
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:116 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.57547,
+        0.193567,
+        0.589833
+      ],
+      "text_hint": "PM-20",
+      "label": "PM-20",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:28 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.57547,
+        0.526961,
+        0.589833
+      ],
+      "text_hint": "Dissemination of Privacy Program Information",
+      "label": "Dissemination of Privacy Program Information",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:85 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.57747,
+        0.678613,
+        0.590333
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:117 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.592015,
+        0.580598,
+        0.607379
+      ],
+      "text_hint": "PRIVACY POLICIES ON WEBSITES, APPLICATIONS , AND DIGITAL SERVICES",
+      "label": "PRIVACY POLICIES ON WEBSITES, APPLICATIONS , AND DIGITAL SERVICES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:86+actual:p477:line:101 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.592515,
+        0.210097,
+        0.606879
+      ],
+      "text_hint": "PM-20(1)",
+      "label": "PM-20(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:29 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.594515,
+        0.678613,
+        0.607379
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:118 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.609561,
+        0.193567,
+        0.623924
+      ],
+      "text_hint": "PM-21",
+      "label": "PM-21",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:30 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.609561,
+        0.401137,
+        0.623924
+      ],
+      "text_hint": "Accounting of Disclosures",
+      "label": "Accounting of Disclosures",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:87 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.611561,
+        0.678613,
+        0.624424
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:119 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.62653,
+        0.193567,
+        0.640894
+      ],
+      "text_hint": "PM-22",
+      "label": "PM-22",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:31 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.62653,
+        0.591181,
+        0.640894
+      ],
+      "text_hint": "Personally Identifiable Information Quality Management",
+      "label": "Personally Identifiable Information Quality Management",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:88 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.62853,
+        0.678613,
+        0.641394
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:120 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.643576,
+        0.193567,
+        0.657939
+      ],
+      "text_hint": "PM-23",
+      "label": "PM-23",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:32 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.643576,
+        0.384902,
+        0.657939
+      ],
+      "text_hint": "Data Governance Body",
+      "label": "Data Governance Body",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:89 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.645576,
+        0.678613,
+        0.658439
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:121 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.660621,
+        0.193567,
+        0.674985
+      ],
+      "text_hint": "PM-24",
+      "label": "PM-24",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:33 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.660621,
+        0.368373,
+        0.674985
+      ],
+      "text_hint": "Data Integrity Board",
+      "label": "Data Integrity Board",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:90 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.662621,
+        0.678613,
+        0.675485
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:122 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.677591,
+        0.589787,
+        0.691955
+      ],
+      "text_hint": "Minimization of Personally Identifiable Information Used",
+      "label": "Minimization of Personally Identifiable Information Used",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:91 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.677667,
+        0.193567,
+        0.69203
+      ],
+      "text_hint": "PM-25",
+      "label": "PM-25",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:34 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.679667,
+        0.678613,
+        0.69253
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:123 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.691455,
+        0.449873,
+        0.705818
+      ],
+      "text_hint": "in Testing, Training, and Research",
+      "label": "in Testing, Training, and Research",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:92 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.7085,
+        0.193567,
+        0.722864
+      ],
+      "text_hint": "PM-26",
+      "label": "PM-26",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:35 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.7085,
+        0.392431,
+        0.722864
+      ],
+      "text_hint": "Complaint Management",
+      "label": "Complaint Management",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:93 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.7105,
+        0.678613,
+        0.723364
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:124 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.725545,
+        0.193567,
+        0.739909
+      ],
+      "text_hint": "PM-27",
+      "label": "PM-27",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:36 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.725545,
+        0.351681,
+        0.739909
+      ],
+      "text_hint": "Privacy Reporting",
+      "label": "Privacy Reporting",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:94 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.727545,
+        0.678613,
+        0.740409
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:125 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.742591,
+        0.193567,
+        0.756955
+      ],
+      "text_hint": "PM-28",
+      "label": "PM-28",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:37 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.742591,
+        0.322049,
+        0.756955
+      ],
+      "text_hint": "Risk Framing",
+      "label": "Risk Framing",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:95 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.744591,
+        0.678613,
+        0.757455
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:126 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.759636,
+        0.19749,
+        0.774
+      ],
+      "text_hint": "PM-29",
+      "label": "PM-29",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:38 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.759636,
+        0.512906,
+        0.774
+      ],
+      "text_hint": "Risk Management Program Leadership Roles",
+      "label": "Risk Management Program Leadership Roles",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:96 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.761636,
+        0.678613,
+        0.7745
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:127 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.776682,
+        0.193567,
+        0.791045
+      ],
+      "text_hint": "PM-30",
+      "label": "PM-30",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:39 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.776682,
+        0.48746,
+        0.791045
+      ],
+      "text_hint": "Supply Chain Risk Management Strategy",
+      "label": "Supply Chain Risk Management Strategy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:97 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.778682,
+        0.678613,
+        0.791545
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:128 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.408882,
+        0.793152,
+        0.498156,
+        0.808515
+      ],
+      "text_hint": "- ESSENTIAL ITEMS",
+      "label": "- ESSENTIAL ITEMS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:102 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.793652,
+        0.210097,
+        0.808015
+      ],
+      "text_hint": "PM-30(1)",
+      "label": "PM-30(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:40 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.795652,
+        0.678613,
+        0.808515
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:129 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.795652,
+        0.41413,
+        0.808515
+      ],
+      "text_hint": "SUPPLIERS OF CRITICAL OR MISSION",
+      "label": "SUPPLIERS OF CRITICAL OR MISSION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:98 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.810697,
+        0.193567,
+        0.825061
+      ],
+      "text_hint": "PM-31",
+      "label": "PM-31",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:41 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.810697,
+        0.441725,
+        0.825061
+      ],
+      "text_hint": "Continuous Monitoring Strategy",
+      "label": "Continuous Monitoring Strategy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:99 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.812697,
+        0.678613,
+        0.825561
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:130 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.827742,
+        0.302011,
+        0.842106
+      ],
+      "text_hint": "Purposing",
+      "label": "Purposing",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p477:line:100 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.827742,
+        0.193567,
+        0.842106
+      ],
+      "text_hint": "PM-32",
+      "label": "PM-32",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: requirement | Source id: actual:p477:line:42 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.66702,
+        0.829742,
+        0.678613,
+        0.842606
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p477:line:131 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "text_hint": "PAGE 450",
+      "label": "PAGE 450",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p477:line:132 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "text_hint": "APPENDIX C",
+      "label": "APPENDIX C",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p477:line:43 | Human should confirm/amend; release extraction is not ground truth."
+    }
+  ]
+}

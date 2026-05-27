@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { LocateFixed, Maximize2 } from "lucide-react";
+import { Archive, Ban, GitFork, LocateFixed, Maximize2, Play, Plus, ShieldCheck, Sparkles, Trash2 } from "lucide-react";
 import {
   analyzeExecGraphRuntimeReadiness,
   applyNicoPlanProposal,
@@ -42,6 +42,7 @@ export type ExecGraphNode = {
   review_scopes?: ReviewScopeSpec[];
   messages?: Array<Record<string, unknown>>;
   output_schema?: Record<string, unknown>;
+  command?: string | string[];
   template_id?: string;
   template_version?: string;
   template_sha256?: string;
@@ -121,6 +122,8 @@ export type ExecGraph = {
   exec_graph_version: string;
   graph_id: string;
   graph_goal: string;
+  cwd?: string;
+  max_concurrency?: number;
   self_improvement_iterations?: number;
   review_fanout_limits?: ReviewDomainLimits;
   review_iteration_limits?: ReviewDomainLimits;
@@ -477,6 +480,24 @@ function buildStates(graph: ExecGraph, status?: ExecStatus, events: ExecEvent[] 
     if (terminalState !== "pending") states[node.id] = terminalState;
   }
 
+  for (const nodeId of status?.running_node_ids ?? []) {
+    if (states[nodeId] === "pending" || states[nodeId] === "ready" || states[nodeId] === "queued") {
+      states[nodeId] = "running";
+    }
+  }
+
+  for (const nodeId of status?.paused_node_ids ?? []) {
+    if (states[nodeId] === "pending" || states[nodeId] === "ready" || states[nodeId] === "queued" || states[nodeId] === "running") {
+      states[nodeId] = "paused";
+    }
+  }
+
+  for (const nodeId of status?.disabled_node_ids ?? []) {
+    if (states[nodeId] === "pending" || states[nodeId] === "ready" || states[nodeId] === "queued") {
+      states[nodeId] = "skipped";
+    }
+  }
+
   for (const node of graph.nodes) {
     if (states[node.id] !== "pending") continue;
     const deps = node.depends_on ?? [];
@@ -510,9 +531,10 @@ function graphCanvasSize(graph: ExecGraph, width: number, height: number) {
   const maxDepth = Math.max(0, ...Array.from(depth.values()));
   const layers = d3.group(graph.nodes, (node) => depth.get(node.id) ?? 0);
   const widestLayer = Math.max(1, ...Array.from(layers.values()).map((layerNodes) => layerNodes.length));
+  const contentHeight = 140 + (maxDepth + 1) * (nodeHeight + 48);
   return {
     width: Math.max(width, 140 + widestLayer * (nodeWidth + 30)),
-    height: Math.max(height, 140 + (maxDepth + 1) * (nodeHeight + 48)),
+    height: Math.max(360, contentHeight),
   };
 }
 
@@ -721,6 +743,8 @@ function retryBudgetLabel(node: ExecGraphNode) {
 
 function executionKindLabel(node: ExecGraphNode, readiness?: RuntimeReadinessNodeReport) {
   const haystack = `${node.type} ${node.protocol_role ?? ""} ${node.persona_ref ?? ""} ${readiness?.adapter ?? ""} ${JSON.stringify(node.metadata ?? {})}`.toLowerCase();
+  if (/manual_gate|human_approval|approval_gate/.test(haystack)) return "human approval gate";
+  if (/human_interview|interview|clarif/.test(haystack)) return "human interview";
   if (/local_command|shell|command/.test(haystack)) return "local command";
   if (/codex|app[-_ ]server|subagent/.test(haystack)) return "Codex app-server subagent";
   if (/llm|model|chat|completion|review/.test(haystack)) return "one-shot LLM call";
@@ -913,6 +937,74 @@ function eventTone(event: ExecEvent): ExecNodeState {
 
 function nodeById(graph: ExecGraph, nodeId: string) {
   return graph.nodes.find((node) => node.id === nodeId);
+}
+
+function sampleProjectDag(): ExecGraph {
+  return {
+    exec_graph_version: "scillm.exec.graph.v1",
+    graph_id: `sample-project-dag-${new Date().toISOString().replace(/[:.]/g, "-")}`,
+    graph_goal: "Create a small sample project workflow: clarify the user goal, draft an implementation plan, run deterministic commands, ask a subagent for three clarifying turns, aggregate the answer, and stop at a human approval gate.",
+    nodes: [
+      {
+        id: "intake-goal",
+        type: "human_interview",
+        protocol_role: "planner",
+        node_goal: "Capture the project goal, constraints, and the first concrete acceptance test before any model or shell work begins.",
+        prompt: "Ask the human one concise clarifying question at a time until the sample project goal, constraints, and acceptance test are explicit.",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", sample_node: true },
+      },
+      {
+        id: "draft-plan",
+        type: "llm_call",
+        protocol_role: "planner",
+        model: "gpt-5.5",
+        depends_on: ["intake-goal"],
+        node_goal: "Convert the clarified goal into a minimal implementation plan with files to inspect, commands to run, and proof required before review.",
+        prompt: "Use the intake notes to produce a short plan. Keep it implementation-oriented and identify deterministic proof artifacts.",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", sample_node: true },
+      },
+      {
+        id: "run-baseline-checks",
+        type: "exec_command",
+        protocol_role: "tool",
+        depends_on: ["draft-plan"],
+        node_goal: "Run read-only baseline commands for the sample project and capture the outputs as evidence.",
+        command: ["bash", "-lc", "pwd && git status --short && rg --files | head -80"],
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", permission_profile: "read-only", sample_node: true },
+      },
+      {
+        id: "subagent-clarifier",
+        type: "subagent",
+        protocol_role: "worker",
+        model: "oc-kimi",
+        depends_on: ["draft-plan"],
+        node_goal: "Run a focused subagent conversation with about three turns of clarifying question iteration, then return the resolved assumptions.",
+        prompt: "Act as a subagent helping the project agent. Ask up to three concise clarification rounds, then summarize the assumptions and recommended next action.",
+        retry_policy: { max_tries: 3 },
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", sample_node: true },
+      },
+      {
+        id: "aggregate-decision",
+        type: "llm_call",
+        protocol_role: "worker",
+        model: "gpt-5.5",
+        depends_on: ["run-baseline-checks", "subagent-clarifier"],
+        node_goal: "Merge command evidence and subagent assumptions into the next concrete implementation step.",
+        prompt: "Read the baseline command evidence and subagent result. Return the smallest useful implementation step and the proof needed after it.",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", sample_node: true },
+      },
+      {
+        id: "human-approval-gate",
+        type: "manual_gate",
+        protocol_role: "verifier",
+        depends_on: ["aggregate-decision"],
+        node_goal: "Human reviews the proposed next step and either approves implementation or asks for another clarification loop.",
+        prompt: "Human gate: review the proposed implementation step and evidence. Approve, revise, or request another clarification round.",
+        gate_policy: { kind: "human_approval", required: true, source: "dag_viewer_sample_project" },
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-planner", sample_node: true },
+      },
+    ],
+  };
 }
 
 function patchAuditEntry(actor: string, patch: Parameters<typeof applyPlanPatch>[1], beforeGraph: ExecGraph, afterGraph: ExecGraph): PlanAuditEntry {
@@ -1172,6 +1264,9 @@ export function ScillmExecGraphDebugger({
   onSetAmendmentStatus,
   onApplyAmendment,
   onRuntimeAction,
+  onRunGraph,
+  runGraphDisabled = false,
+  runGraphLabel = "Run DAG",
 }: {
   graph: ExecGraph;
   baseGraphHash?: string;
@@ -1191,8 +1286,11 @@ export function ScillmExecGraphDebugger({
   onSetAmendmentStatus?: AmendmentStatusHandler;
   onApplyAmendment?: AmendmentApplyHandler;
   onRuntimeAction?: RuntimeActionHandler;
+  onRunGraph?: () => void;
+  runGraphDisabled?: boolean;
+  runGraphLabel?: string;
 }) {
-  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={{ state: "static", label: "Static snapshot" }} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan} amendBackendLabel={amendBackendLabel} amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={onRefreshAmendments} onSetAmendmentStatus={onSetAmendmentStatus} onApplyAmendment={onApplyAmendment} onRuntimeAction={onRuntimeAction} availableModels={availableModels} reviewCatalog={reviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={onSaveReviewCatalogEntry} />;
+  return <ScillmExecGraphDebuggerView graph={graph} baseGraphHash={baseGraphHash} status={status} events={events} connection={{ state: "static", label: "Static snapshot" }} enablePlanEditing={enablePlanEditing} nicoProposals={nicoProposals} onAmendPlan={onAmendPlan} amendBackendLabel={amendBackendLabel} amendments={amendments} amendmentsState={amendmentsState} onRefreshAmendments={onRefreshAmendments} onSetAmendmentStatus={onSetAmendmentStatus} onApplyAmendment={onApplyAmendment} onRuntimeAction={onRuntimeAction} onRunGraph={onRunGraph} runGraphDisabled={runGraphDisabled} runGraphLabel={runGraphLabel} availableModels={availableModels} reviewCatalog={reviewCatalog} runtimeReadiness={runtimeReadiness} onSaveReviewCatalogEntry={onSaveReviewCatalogEntry} />;
 }
 
 export function ScillmExecGraphDebuggerLive({
@@ -1501,6 +1599,9 @@ function ScillmExecGraphDebuggerView({
   runtimeReadiness,
   onSaveReviewCatalogEntry,
   onRuntimeAction,
+  onRunGraph,
+  runGraphDisabled = false,
+  runGraphLabel = "Run DAG",
 }: {
   graph: ExecGraph;
   baseGraphHash: string;
@@ -1521,6 +1622,9 @@ function ScillmExecGraphDebuggerView({
   runtimeReadiness?: RuntimeReadinessReport;
   onSaveReviewCatalogEntry?: SaveReviewCatalogEntryHandler;
   onRuntimeAction?: RuntimeActionHandler;
+  onRunGraph?: () => void;
+  runGraphDisabled?: boolean;
+  runGraphLabel?: string;
 }) {
   useRegisterAction("scillm-exec-graph:node:inspect", { app: "scillm", action: "SCILLM_EXEC_NODE_INSPECT", label: "Inspect node" });
   useRegisterAction("scillm-exec-graph:summary:optional-failed", { app: "scillm", action: "SCILLM_EXEC_GRAPH_SELECT_OPTIONAL_FAILURE", label: "Show optional failed node" });
@@ -1693,6 +1797,8 @@ function ScillmExecGraphDebuggerView({
   useEffect(() => {
     setDraftGraph(cloneExecGraph(graph));
     setDraftBaseGraphHash(baseGraphHash);
+    setSelectedId(graph.nodes[0]?.id ?? "");
+    setFollowExecution(false);
     setDraftHistory([]);
     setDraftFuture([]);
     setLastPlanIssue(undefined);
@@ -1784,6 +1890,32 @@ function ScillmExecGraphDebuggerView({
     };
     patchDraft({ op: "add_node", node });
     setSelectedId(id);
+  }
+
+  function startSampleDagDraft() {
+    const previous = cloneExecGraph(draftGraph);
+    const next = sampleProjectDag();
+    const ts = new Date().toISOString();
+    setProductMode("build");
+    setMode("plan_edit");
+    setDraftHistory((history) => [...history, previous]);
+    setDraftFuture([]);
+    setDraftGraph(next);
+    setSelectedId(next.nodes[0]?.id ?? "");
+    setAmendState({ status: "idle" });
+    setWarningsAcknowledged(false);
+    setDraftAuditLog((log) => [
+      {
+        id: `${ts}-sample-project-dag`,
+        ts,
+        actor: "scillm-exec-graph-editor",
+        action: "sample DAG started",
+        details: "Replaced the draft with a six-node sample project workflow: human intake, LLM planning, exec checks, subagent clarification, aggregation, and human approval.",
+        before: previous,
+        after: next,
+      },
+      ...log,
+    ].slice(0, 12));
   }
 
   function markCommittedNode(kind: "disabled" | "archived", anchorNode: ExecGraphNode) {
@@ -1986,6 +2118,34 @@ function ScillmExecGraphDebuggerView({
                   </button>
                 ))}
               </div>
+              {onRunGraph ? (
+                <button
+                  className="exec-control-button exec-control-button-compact exec-run-dag-button"
+                  type="button"
+                  data-qid="scillm-exec-graph:runtime:run-graph"
+                  data-qs-action="SCILLM_EXEC_RUNTIME_RUN_GRAPH"
+                  title="Run this DAG through the SCILLM exec graph endpoint"
+                  disabled={runGraphDisabled}
+                  aria-disabled={runGraphDisabled}
+                  onClick={onRunGraph}
+                >
+                  <Play size={14} aria-hidden />
+                  {runGraphLabel}
+                </button>
+              ) : null}
+              {enablePlanEditing ? (
+                <button
+                  className="exec-control-button exec-control-button-compact exec-sample-dag-button"
+                  type="button"
+                  data-qid="scillm-exec-graph:plan-edit:start-sample-dag"
+                  data-qs-action="SCILLM_EXEC_PLAN_START_SAMPLE_DAG"
+                  title="Create a local draft sample DAG with human intake, LLM, exec, subagent, aggregation, and approval nodes"
+                  onClick={startSampleDagDraft}
+                >
+                  <Sparkles size={14} aria-hidden />
+                  Sample DAG
+                </button>
+              ) : null}
               <div className="exec-controls-cluster" aria-describedby={liveControlsReasonId}>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
                 <button
@@ -2163,6 +2323,12 @@ function ScillmExecGraphDebuggerView({
                 onUpdateNode={mode === "plan_edit" ? (fields) => patchDraft({ op: "update_node", node_id: selected.id, fields }) : undefined}
                 onAddDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "add_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
                 onRemoveDependency={mode === "plan_edit" ? (dependency) => patchDraft({ op: "remove_dependency", node_id: selected.id, depends_on: dependency }) : undefined}
+                onAddChild={mode === "plan_edit" ? () => addDraftNode("child", selected) : undefined}
+                onAddSibling={mode === "plan_edit" ? () => addDraftNode("sibling", selected) : undefined}
+                onAddGate={mode === "plan_edit" ? () => addDraftNode("gate", selected) : undefined}
+                onDisableNode={mode === "plan_edit" ? () => markCommittedNode("disabled", selected) : undefined}
+                onRemoveNode={mode === "plan_edit" ? () => patchDraft({ op: "remove_node", node_id: selected.id }) : undefined}
+                onArchiveNode={mode === "plan_edit" ? () => markCommittedNode("archived", selected) : undefined}
                 availableModels={availableModels}
                 reviewCatalog={reviewCatalog}
                 onSaveReviewCatalogEntry={onSaveReviewCatalogEntry}
@@ -2345,6 +2511,7 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
   const hasValidationIssue = validationIssues.length > 0;
   const blockingCount = validationIssues.filter((issue) => issue.severity === "blocking").length;
   const draftOnly = Boolean(node.metadata?.draft_only || node.metadata?.amendment_state);
+  const executionLabel = node.model ? node.model : executionKindLabel(node);
   const optionalBorder = optional ? "2px solid rgba(184,194,214,0.54)" : `2px solid ${stateColor[node.state]}`;
   const validationBorder = hasBlockingIssue ? "3px solid var(--exec-failed, #ef4444)" : hasValidationIssue ? "2px dashed var(--exec-warning, #facc15)" : optionalBorder;
   const nodeClassName = [
@@ -2397,7 +2564,10 @@ function GraphNode({ node, result, optional, selected, validationIssues, onSelec
         }}
       >
         {hasBlockingIssue ? <span className="exec-node-blocking-icon" aria-hidden>!</span> : <span aria-hidden style={{ width: 9, height: 9, borderRadius: 999, background: stateColor[node.state] }} />}
-        <span style={{ minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12, lineHeight: "16px", fontWeight: 800 }}>{label}</span>
+        <span style={{ minWidth: 0, display: "grid", gap: 2 }}>
+          <span style={{ minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12, lineHeight: "16px", fontWeight: 800 }}>{label}</span>
+          <span className="exec-node-execution-chip">{executionLabel}</span>
+        </span>
         <span className={optional && node.state === "failed" ? "exec-node-status exec-node-status-warning" : `exec-node-status exec-node-status-${node.state}`}>{statusText}</span>
         {draftOnly ? <span className="exec-node-optional-badge">draft</span> : null}
       </button>
@@ -2419,6 +2589,12 @@ function Inspector({
   onUpdateNode,
   onAddDependency,
   onRemoveDependency,
+  onAddChild,
+  onAddSibling,
+  onAddGate,
+  onDisableNode,
+  onRemoveNode,
+  onArchiveNode,
   availableModels,
   reviewCatalog,
   onSaveReviewCatalogEntry,
@@ -2437,6 +2613,12 @@ function Inspector({
   onUpdateNode?: (fields: Partial<ExecGraphNode>) => void;
   onAddDependency?: (nodeId: string) => void;
   onRemoveDependency?: (nodeId: string) => void;
+  onAddChild?: () => void;
+  onAddSibling?: () => void;
+  onAddGate?: () => void;
+  onDisableNode?: () => void;
+  onRemoveNode?: () => void;
+  onArchiveNode?: () => void;
   availableModels?: string[];
   reviewCatalog?: ReviewCatalog;
   onSaveReviewCatalogEntry?: SaveReviewCatalogEntryHandler;
@@ -2464,6 +2646,7 @@ function Inspector({
   useRegisterAction("scillm-exec-graph:plan-edit:add-sibling", { app: "scillm", action: "SCILLM_EXEC_PLAN_ADD_SIBLING", label: "Add sibling node" });
   useRegisterAction("scillm-exec-graph:plan-edit:add-gate", { app: "scillm", action: "SCILLM_EXEC_PLAN_ADD_GATE", label: "Add gate node" });
   useRegisterAction("scillm-exec-graph:plan-edit:disable-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_DISABLE_NODE", label: "Disable node" });
+  useRegisterAction("scillm-exec-graph:plan-edit:remove-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_REMOVE_NODE", label: "Remove node" });
   useRegisterAction("scillm-exec-graph:plan-edit:archive-node", { app: "scillm", action: "SCILLM_EXEC_PLAN_ARCHIVE_NODE", label: "Archive node" });
   const [copied, setCopied] = useState(false);
   const [catalogSaveState, setCatalogSaveState] = useState<string>("");
@@ -2643,6 +2826,43 @@ function Inspector({
           <span className="exec-source-node-badge">{dataContext}</span>
           <span className="exec-source-node-badge">{executionKind}</span>
         </div>
+        {mode === "plan_edit" && onUpdateNode ? (
+          <div className="exec-inspector-primary-tools" data-qid="scillm-exec-graph:plan-edit:primary-node-tools">
+            <div className="exec-build-quick-actions exec-inspector-primary-actions" data-qid="scillm-exec-graph:plan-edit:primary-node-actions">
+              <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-child-primary" data-qs-action="SCILLM_EXEC_PLAN_ADD_CHILD" title="Create a downstream draft node that depends on this selected node" onClick={onAddChild}>
+                <Plus size={14} aria-hidden /> Child
+              </button>
+              <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-sibling-primary" data-qs-action="SCILLM_EXEC_PLAN_ADD_SIBLING" title="Create a sibling draft node with the same dependencies as this selected node" onClick={onAddSibling}>
+                <GitFork size={14} aria-hidden /> Sibling
+              </button>
+              <button className="exec-control-button exec-control-button-compact exec-control-button-danger" type="button" data-qid="scillm-exec-graph:plan-edit:remove-node-primary" data-qs-action="SCILLM_EXEC_PLAN_REMOVE_NODE" title="Remove this node from the draft DAG" onClick={onRemoveNode}>
+                <Trash2 size={14} aria-hidden /> Remove
+              </button>
+            </div>
+            <label className="exec-inspector-primary-model">
+              <span>Model</span>
+              <input className="exec-plan-input" list={`exec-model-options-${node.id}`} data-qid="scillm-exec-graph:plan-edit:model-primary" data-qs-action="SCILLM_EXEC_PLAN_EDIT_MODEL" title="Select selected node model" value={node.model ?? ""} placeholder="default" onChange={(event) => onUpdateNode({ model: event.target.value || undefined })} />
+              <datalist id={`exec-model-options-${node.id}`}>
+                {topLevelModelChoices.filter(Boolean).map((option) => <option key={option} value={option} />)}
+              </datalist>
+            </label>
+            <div className="exec-model-quick-picks" aria-label="Quick model choices">
+              {["oc-kimi", "gpt-5.5", "oc-glm"].map((model) => (
+                <button
+                  key={model}
+                  className={node.model === model ? "exec-model-pick exec-model-pick-active" : "exec-model-pick"}
+                  type="button"
+                  data-qid={`scillm-exec-graph:plan-edit:model-quick-${model}`}
+                  data-qs-action="SCILLM_EXEC_PLAN_QUICK_MODEL"
+                  title={`Set selected node model to ${model}`}
+                  onClick={() => onUpdateNode({ model })}
+                >
+                  {model}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
         <span style={{ display: "inline-flex", gap: 8, alignItems: "center", fontSize: 12 }}><span aria-hidden style={{ width: 10, height: 10, borderRadius: 999, background: stateColor[state] }} />{optional && state === "failed" ? "Optional failed" : stateLabel[state]} · {node.type}</span>
         <div className="exec-inspector-evidence-summary" aria-label="Selected node evidence summary">
           <span>Evidence</span>
@@ -2770,6 +2990,30 @@ function Inspector({
           ) : null}
         </Info> : null}
       </Section>
+      {mode === "plan_edit" && onUpdateNode ? (
+        <Section title="Build actions" defaultOpen>
+          <div className="exec-build-quick-actions" data-qid="scillm-exec-graph:plan-edit:node-actions">
+            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-child" data-qs-action="SCILLM_EXEC_PLAN_ADD_CHILD" title="Create a downstream draft node that depends on this selected node" onClick={onAddChild}>
+              <Plus size={14} aria-hidden /> Child
+            </button>
+            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-sibling" data-qs-action="SCILLM_EXEC_PLAN_ADD_SIBLING" title="Create a sibling draft node with the same dependencies as this selected node" onClick={onAddSibling}>
+              <GitFork size={14} aria-hidden /> Sibling
+            </button>
+            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:add-gate" data-qs-action="SCILLM_EXEC_PLAN_ADD_GATE" title="Create a human approval gate after this selected node" onClick={onAddGate}>
+              <ShieldCheck size={14} aria-hidden /> Gate
+            </button>
+            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:disable-node" data-qs-action="SCILLM_EXEC_PLAN_DISABLE_NODE" title="Mark this node disabled in the draft" onClick={onDisableNode}>
+              <Ban size={14} aria-hidden /> Disable
+            </button>
+            <button className="exec-control-button exec-control-button-compact exec-control-button-danger" type="button" data-qid="scillm-exec-graph:plan-edit:remove-node" data-qs-action="SCILLM_EXEC_PLAN_REMOVE_NODE" title="Remove this node from the draft DAG" onClick={onRemoveNode}>
+              <Trash2 size={14} aria-hidden /> Remove
+            </button>
+            <button className="exec-control-button exec-control-button-compact" type="button" data-qid="scillm-exec-graph:plan-edit:archive-node" data-qs-action="SCILLM_EXEC_PLAN_ARCHIVE_NODE" title="Mark this node archived in the draft" onClick={onArchiveNode}>
+              <Archive size={14} aria-hidden /> Archive
+            </button>
+          </div>
+        </Section>
+      ) : null}
       {mode === "plan_edit" && isReviewCodeNode(node) ? (
         <Section title="Review fanout" defaultOpen={reviewScopes.length === 0}>
           <div className="exec-plan-sensitive-group">
@@ -3733,6 +3977,20 @@ const execGraphDebuggerCss = `
   padding: 6px 10px;
   font-size: 12px;
 }
+.exec-sample-dag-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-color: rgba(52, 211, 153, 0.38);
+  background: rgba(52, 211, 153, 0.1);
+}
+.exec-run-dag-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-color: rgba(34,211,238,0.45);
+  background: rgba(34,211,238,0.12);
+}
 .exec-controls-cluster {
   display: grid;
   justify-items: end;
@@ -3821,6 +4079,16 @@ const execGraphDebuggerCss = `
   line-height: 11px;
   color: var(--exec-text, #e5e7eb);
   background: rgba(255,255,255,0.06);
+}
+.exec-node-execution-chip {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(184,194,214,0.74);
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 650;
 }
 .exec-node-status-passed {
   color: #d8fbe7;
@@ -4916,6 +5184,47 @@ button.exec-summary-chip {
   background: rgba(255,255,255,0.04);
 }
 .exec-inspector-evidence-summary > b {
+  color: var(--exec-text);
+}
+.exec-inspector-primary-actions {
+  margin: 10px 0 8px;
+}
+.exec-inspector-primary-tools {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 8px;
+}
+.exec-inspector-primary-model {
+  display: grid;
+  gap: 4px;
+  color: var(--exec-dim-contrast);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.exec-inspector-primary-model .exec-plan-input {
+  min-height: 34px;
+}
+.exec-model-quick-picks {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.exec-model-pick {
+  border: 1px solid rgba(148,163,184,0.28);
+  background: rgba(255,255,255,0.04);
+  color: var(--exec-dim-contrast);
+  border-radius: 6px;
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.exec-model-pick:hover,
+.exec-model-pick-active {
+  border-color: rgba(34,211,238,0.58);
+  background: rgba(34,211,238,0.12);
   color: var(--exec-text);
 }
 .exec-readonly-node-badge {

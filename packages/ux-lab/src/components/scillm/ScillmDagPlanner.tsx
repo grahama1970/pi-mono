@@ -8,6 +8,7 @@ import {
   GitBranch,
   Network,
   PencilRuler,
+  Play,
   ShieldCheck,
   RefreshCcw,
 } from "lucide-react";
@@ -25,6 +26,8 @@ import {
   type ReviewCatalogEntry,
   type RuntimeActionRequest,
 } from "./dag-planner/ScillmExecGraphDebugger";
+import { DagExplorerPane, type DagExplorerItem } from "./dag-planner/DagExplorerPane";
+import { DagContractEditor } from "./dag-planner/DagContractEditor";
 
 type DagSnapshot = {
   ok: boolean;
@@ -56,6 +59,23 @@ type LoadState =
 type PlannerSurface = "source" | "design" | "trace" | "checkpoints" | "debug";
 type SourcePayload = "graph" | "status" | "events" | "phase_status" | "snapshot";
 
+type DagWorkspaceRecord = {
+  id: string;
+  title: string;
+  subtitle: string;
+  status: string;
+  kind: "source" | "draft";
+  graph: ExecGraph;
+  baseGraphHash: string;
+  lastRun?: {
+    status: ExecStatus;
+    events: ExecEvent[];
+    runAt: string;
+  };
+  source?: Record<string, string>;
+  artifactPath?: string;
+};
+
 const API_HEADERS = { "Content-Type": "application/json" };
 
 function initialPhaseIdFromLocation() {
@@ -64,6 +84,81 @@ function initialPhaseIdFromLocation() {
   if (searchPhase) return searchPhase;
   const hashQuery = window.location.hash.includes("?") ? window.location.hash.slice(window.location.hash.indexOf("?") + 1) : "";
   return new URLSearchParams(hashQuery).get("phase_id") ?? "";
+}
+
+function graphEdgeCount(graph: ExecGraph) {
+  return graph.nodes.reduce((count, node) => count + (node.depends_on?.length ?? 0), 0);
+}
+
+function dagTitle(graph: ExecGraph) {
+  return graph.graph_id
+    .replace(/^phase-\d+-/, "")
+    .replace(/-run-\d+$/, "")
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .slice(0, 58) || "Untitled DAG";
+}
+
+function createStarterDag(seed = Date.now()): ExecGraph {
+  return {
+    exec_graph_version: "scillm.exec.graph.v1",
+    graph_id: `draft-project-dag-${seed}`,
+    graph_goal:
+      "Create and run a three-step project DAG that defines a goal, validates the goal artifact, and emits a final report.",
+    cwd: "/home/graham/workspace/experiments/scillm",
+    max_concurrency: 1,
+    nodes: [
+      {
+        id: "define-goal",
+        type: "local_command",
+        protocol_role: "planner",
+        node_goal:
+          "Write a concrete project goal artifact that the downstream DAG nodes can validate and summarize.",
+        command:
+          "python - <<'PY'\nimport json, pathlib, time\ntime.sleep(8)\nartifact = pathlib.Path('/tmp/scillm-dag-starter-goal.json')\npayload = {\n  'project_goal': 'Create a DAG from scratch in the viewer and run it through the SCILLM graph endpoint.',\n  'acceptance': [\n    'the draft contains define, check, and final report nodes',\n    'the validation node reads the goal artifact',\n    'the final report node emits a passed result'\n  ]\n}\nartifact.write_text(json.dumps(payload, indent=2), encoding='utf-8')\nprint(json.dumps({'ok': True, 'artifact': str(artifact), 'acceptance_count': len(payload['acceptance'])}))\nPY",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-explorer", output_artifact: "/tmp/scillm-dag-starter-goal.json" },
+      },
+      {
+        id: "check-goal",
+        type: "local_command",
+        protocol_role: "validator",
+        depends_on: ["define-goal"],
+        node_goal:
+          "Read the project goal artifact and fail if the starter DAG does not contain enough acceptance criteria to be useful.",
+        command:
+          "python - <<'PY'\nimport json, pathlib, sys, time\ntime.sleep(8)\nartifact = pathlib.Path('/tmp/scillm-dag-starter-goal.json')\npayload = json.loads(artifact.read_text(encoding='utf-8'))\ncriteria = payload.get('acceptance', [])\nif len(criteria) < 3:\n    raise SystemExit('expected at least three acceptance criteria')\nprint(json.dumps({'ok': True, 'validated_artifact': str(artifact), 'acceptance': criteria}))\nPY",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-explorer", validates: "define-goal" },
+      },
+      {
+        id: "final-report",
+        type: "local_command",
+        protocol_role: "reporter",
+        depends_on: ["check-goal"],
+        node_goal:
+          "Emit a short final report proving that the new project DAG executed end to end.",
+        command:
+          "python - <<'PY'\nimport json\nprint(json.dumps({'ok': True, 'final_result': 'passed', 'summary': 'Starter project DAG created, validated, and reported successfully.'}))\nPY",
+        metadata: { draft_only: true, created_by: "ux-lab.scillm-dag-explorer", final_report: true },
+      },
+    ],
+  };
+}
+
+function cloneGraphForExplorer(graph: ExecGraph, graphId: string): ExecGraph {
+  return {
+    ...graph,
+    graph_id: graphId,
+    nodes: graph.nodes.map((node) => ({
+      ...node,
+      depends_on: node.depends_on ? [...node.depends_on] : undefined,
+      review_scopes: node.review_scopes ? node.review_scopes.map((scope) => ({ ...scope })) : undefined,
+      messages: node.messages ? node.messages.map((message) => ({ ...message })) : undefined,
+      output_schema: node.output_schema ? { ...node.output_schema } : undefined,
+      retry_policy: node.retry_policy ? { ...node.retry_policy } : undefined,
+      gate_policy: node.gate_policy ? { ...node.gate_policy } : undefined,
+      metadata: { ...(node.metadata ?? {}), draft_only: true, duplicated_by: "ux-lab.scillm-dag-explorer" },
+    })),
+  };
 }
 
 export function ScillmDagPlanner() {
@@ -78,6 +173,12 @@ export function ScillmDagPlanner() {
   const [hashCheck, setHashCheck] = useState<"idle" | "checking" | "match" | "changed" | "error">("idle");
   const [copiedToken, setCopiedToken] = useState<string>("");
   const [phaseIdOverride, setPhaseIdOverride] = useState(() => initialPhaseIdFromLocation());
+  const [dagSearch, setDagSearch] = useState("");
+  const [activeDagId, setActiveDagId] = useState("");
+  const [localDags, setLocalDags] = useState<DagWorkspaceRecord[]>([]);
+  const [closedDagIds, setClosedDagIds] = useState<Set<string>>(() => new Set());
+  const [localRunResults, setLocalRunResults] = useState<Record<string, { status: ExecStatus; events: ExecEvent[] }>>({});
+  const [dagRunState, setDagRunState] = useState<{ status: "idle" | "running" | "ok" | "error"; message?: string }>({ status: "idle" });
 
   useRegisterAction("scillm:workspace:dag-refresh", {
     app: "ux-lab",
@@ -115,6 +216,59 @@ export function ScillmDagPlanner() {
     label: "Show DAG debug lens",
     description: "Open the missing-evidence and artifact debug lens",
   });
+  useRegisterAction("scillm:dag-planner:run-active-dag", {
+    app: "ux-lab",
+    action: "SCILLM_DAG_RUN_ACTIVE_DAG",
+    label: "Run active DAG",
+    description: "Submit the selected DAG graph to scillm exec graph and render the returned run result.",
+  });
+
+  const saveDagDraft = useCallback(async (record: DagWorkspaceRecord) => {
+    const response = await fetch("/api/scillm/dag-viewer/drafts", {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        draftId: record.id.replace(/^draft:/, ""),
+        title: record.title,
+        subtitle: record.subtitle,
+        status: record.status,
+        graph: record.graph,
+        lastRun: record.lastRun,
+        origin: "ux-lab #scillm/dag-planner",
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`draft save failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    return response.json();
+  }, []);
+
+  const loadDagDrafts = useCallback(async () => {
+    try {
+      const response = await fetch("/api/scillm/dag-viewer/drafts", { cache: "no-store" });
+      if (!response.ok) return;
+      const payload = await response.json();
+      const drafts = Array.isArray(payload.drafts) ? payload.drafts : [];
+      setLocalDags(drafts.map((draft: any) => ({
+        id: `draft:${String(draft.draftId ?? draft.graph?.graph_id ?? Date.now())}`,
+        title: String(draft.title ?? draft.graph?.graph_id ?? "Draft DAG"),
+        subtitle: String(draft.subtitle ?? "saved draft"),
+        status: String(draft.status ?? "draft"),
+        kind: "draft",
+        graph: draft.graph,
+        baseGraphHash: String(draft.baseGraphHash ?? (draft.graph ? graphEdgeCount(draft.graph) : "saved-draft")),
+        lastRun: draft.lastRun && typeof draft.lastRun === "object" ? {
+          status: draft.lastRun.status ?? { state: String(draft.status ?? "draft"), node_results: {} },
+          events: Array.isArray(draft.lastRun.events) ? draft.lastRun.events : [],
+          runAt: String(draft.lastRun.runAt ?? draft.updatedAt ?? ""),
+        } : undefined,
+        artifactPath: String(draft.artifactPath ?? ""),
+      })).filter((draft: DagWorkspaceRecord) => draft.graph?.nodes?.length));
+    } catch {
+      setLocalDags([]);
+    }
+  }, []);
 
   const loadAmendments = useCallback(async (graphId: string) => {
     setAmendmentsState({ status: "loading", message: "Loading scillm amendment records." });
@@ -176,13 +330,14 @@ export function ScillmDagPlanner() {
 
       setState({ status: "ready", snapshot });
       void loadAmendments(snapshot.graph.graph_id);
+      void loadDagDrafts();
     } catch (error) {
       setState({ status: "error", message: error instanceof Error ? error.message : String(error) });
       setCatalogState("catalog unavailable");
       setAmendments([]);
       setAmendmentsState({ status: "idle" });
     }
-  }, [loadAmendments, phaseIdOverride]);
+  }, [loadAmendments, loadDagDrafts, phaseIdOverride]);
 
   useEffect(() => {
     void load();
@@ -195,23 +350,75 @@ export function ScillmDagPlanner() {
     return `${phaseStatus} · review ${reviewStatus}`;
   }, [state]);
 
+  const sourceDagRecord = useMemo<DagWorkspaceRecord | null>(() => {
+    if (state.status !== "ready") return null;
+    const snapshot = state.snapshot;
+    return {
+      id: `source:${snapshot.graph.graph_id}`,
+      title: dagTitle(snapshot.graph),
+      subtitle: snapshot.phase_id,
+      status: snapshot.phase_status?.status ?? snapshot.status.state ?? "source",
+      kind: "source",
+      graph: snapshot.graph,
+      baseGraphHash: snapshot.base_graph_hash,
+      source: snapshot.source,
+    };
+  }, [state]);
+
+  const dagRecords = useMemo(() => {
+    const records = sourceDagRecord ? [sourceDagRecord, ...localDags] : localDags;
+    return records.filter((record) => !closedDagIds.has(record.id));
+  }, [closedDagIds, localDags, sourceDagRecord]);
+
+  useEffect(() => {
+    if (!sourceDagRecord) return;
+    if (!activeDagId || !dagRecords.some((record) => record.id === activeDagId)) {
+      setActiveDagId(dagRecords[0]?.id ?? sourceDagRecord.id);
+    }
+  }, [activeDagId, dagRecords, sourceDagRecord]);
+
+  const activeDagRecord = dagRecords.find((record) => record.id === activeDagId) ?? dagRecords[0] ?? sourceDagRecord;
+  const activeGraph = activeDagRecord?.graph ?? (state.status === "ready" ? state.snapshot.graph : undefined);
+  const activeBaseGraphHash = activeDagRecord?.baseGraphHash ?? (state.status === "ready" ? state.snapshot.base_graph_hash : "");
+  const activeGraphIsSource = activeDagRecord?.kind !== "draft";
+  const localRunResult = activeDagRecord?.id ? localRunResults[activeDagRecord.id] : undefined;
+  const persistedRunResult = activeDagRecord?.lastRun;
+  const activeStatus = activeGraphIsSource && state.status === "ready" ? state.snapshot.status : localRunResult?.status ?? {
+    state: persistedRunResult?.status?.state ?? "draft",
+    run_id: persistedRunResult?.status?.run_id,
+    node_results: persistedRunResult?.status?.node_results ?? {},
+  } satisfies ExecStatus;
+  const activeEvents = activeGraphIsSource && state.status === "ready" ? state.snapshot.events : localRunResult?.events ?? persistedRunResult?.events ?? [];
+  const dagExplorerItems = useMemo<DagExplorerItem[]>(() => dagRecords.map((record) => ({
+    id: record.id,
+    title: record.title,
+    subtitle: record.subtitle,
+    status: record.status,
+    kind: record.kind,
+    nodeCount: record.graph.nodes.length,
+    edgeCount: graphEdgeCount(record.graph),
+    active: record.id === activeDagRecord?.id,
+    deletable: record.kind === "draft",
+  })), [activeDagRecord?.id, dagRecords]);
+
   const sourceView = useMemo(() => {
     if (state.status !== "ready") return null;
     const snapshot = state.snapshot;
+    const graph = activeGraph ?? snapshot.graph;
     const payloads: Record<SourcePayload, unknown> = {
-      graph: snapshot.graph,
-      status: snapshot.status,
-      events: snapshot.events,
+      graph,
+      status: activeGraphIsSource ? snapshot.status : activeStatus,
+      events: activeGraphIsSource ? snapshot.events : activeEvents,
       phase_status: snapshot.phase_status,
       snapshot: {
         ok: snapshot.ok,
         phase_id: snapshot.phase_id,
-        source: snapshot.source,
-        base_graph_hash: snapshot.base_graph_hash,
+        source: activeDagRecord?.source ?? snapshot.source,
+        base_graph_hash: activeBaseGraphHash,
         hash_algorithm: snapshot.hash_algorithm,
-        graph: snapshot.graph,
-        status: snapshot.status,
-        events: snapshot.events,
+        graph,
+        status: activeGraphIsSource ? snapshot.status : activeStatus,
+        events: activeGraphIsSource ? snapshot.events : activeEvents,
         phase_status: snapshot.phase_status,
         snapshot_kind: snapshot.snapshot_kind,
         active_phase_id: snapshot.active_phase_id,
@@ -221,14 +428,16 @@ export function ScillmDagPlanner() {
     };
     return {
       payload: payloads[sourcePayload],
-      sourcePath: sourcePayload === "snapshot" ? "/api/scillm/dag-viewer/snapshot" : snapshot.source[sourcePayload] ?? "not reported",
+      sourcePath: sourcePayload === "snapshot"
+        ? activeGraphIsSource ? "/api/scillm/dag-viewer/snapshot" : activeDagRecord?.artifactPath ?? "local draft"
+        : activeGraphIsSource ? snapshot.source[sourcePayload] ?? "not reported" : activeDagRecord?.artifactPath ?? "local draft",
     };
-  }, [sourcePayload, state]);
+  }, [activeBaseGraphHash, activeDagRecord?.artifactPath, activeDagRecord?.source, activeEvents, activeGraph, activeGraphIsSource, activeStatus, sourcePayload, state]);
 
   const plannerSummary = useMemo(() => {
     if (state.status !== "ready") return null;
-    return summarizeDagSnapshot(state.snapshot);
-  }, [state]);
+    return summarizeDagSnapshot({ ...state.snapshot, graph: activeGraph ?? state.snapshot.graph, status: activeStatus, events: activeEvents });
+  }, [activeEvents, activeGraph, activeStatus, state]);
 
   async function saveReviewCatalogEntry(kind: "agents" | "contracts", entry: ReviewCatalogEntry) {
     const response = await fetch(`/api/scillm/v1/scillm/exec/review-catalog/${kind}?skill=review-code`, {
@@ -364,6 +573,32 @@ export function ScillmDagPlanner() {
     return payload;
   }
 
+  async function draftRuntimeAction(action: RuntimeActionRequest) {
+    const runId = activeStatus.run_id;
+    if (!runId) {
+      throw new Error("Runtime action requires a running local draft run_id.");
+    }
+    const response = await fetch(`/api/scillm/v1/scillm/exec/${encodeURIComponent(runId)}/actions`, {
+      method: "POST",
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        ...action,
+        actor: action.actor ?? "ux-lab.scillm-dag-planner",
+        provenance: {
+          graph_id: activeGraph?.graph_id,
+          run_id: runId,
+          origin: "ux-lab #scillm/dag-planner local draft",
+          ...(action.provenance ?? {}),
+        },
+      }),
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`runtime action failed (${response.status}): ${text.slice(0, 240)}`);
+    }
+    return response.json();
+  }
+
   async function verifyBackendHash() {
     if (state.status !== "ready") return;
     setHashCheck("checking");
@@ -384,6 +619,313 @@ export function ScillmDagPlanner() {
     void navigator.clipboard?.writeText(value);
     setCopiedToken(token);
     window.setTimeout(() => setCopiedToken(""), 1400);
+  }
+
+  async function addDag() {
+    const seed = Date.now();
+    const graph = createStarterDag(seed);
+    const record: DagWorkspaceRecord = {
+      id: `draft:${graph.graph_id}`,
+      title: "New project DAG",
+      subtitle: "local draft · not saved",
+      status: "draft",
+      kind: "draft",
+      graph,
+      baseGraphHash: `local-draft-${seed}`,
+    };
+    try {
+      const payload = await saveDagDraft(record);
+      const saved = payload.draft;
+      const nextRecord = saved?.graph ? { ...record, baseGraphHash: saved.baseGraphHash ?? record.baseGraphHash, artifactPath: saved.artifactPath } : record;
+      setClosedDagIds((ids) => {
+        const next = new Set(ids);
+        next.delete(record.id);
+        return next;
+      });
+      setLocalDags((records) => [nextRecord, ...records.filter((candidate) => candidate.id !== record.id)]);
+      setActiveDagId(record.id);
+      setSurface("design");
+    } catch (error) {
+      setDagRunState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  async function duplicateDag(id: string) {
+    const record = dagRecords.find((candidate) => candidate.id === id);
+    if (!record) return;
+    const seed = Date.now();
+    const graphId = `${record.graph.graph_id}-copy-${seed}`;
+    const graph = cloneGraphForExplorer(record.graph, graphId);
+    const duplicate: DagWorkspaceRecord = {
+      id: `draft:${graphId}`,
+      title: `${record.title} copy`,
+      subtitle: "local duplicate · not saved",
+      status: "draft",
+      kind: "draft",
+      graph,
+      baseGraphHash: `local-duplicate-${seed}`,
+    };
+    try {
+      const payload = await saveDagDraft(duplicate);
+      const saved = payload.draft;
+      const nextRecord = saved?.graph ? { ...duplicate, baseGraphHash: saved.baseGraphHash ?? duplicate.baseGraphHash, artifactPath: saved.artifactPath } : duplicate;
+      setLocalDags((records) => [nextRecord, ...records.filter((candidate) => candidate.id !== duplicate.id)]);
+      setActiveDagId(duplicate.id);
+      setSurface("design");
+    } catch (error) {
+      setDagRunState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  async function persistActiveDraftGraph(nextGraph: ExecGraph) {
+    const record = activeDagRecord;
+    if (!record) throw new Error("No active DAG is selected.");
+
+    if (record.kind === "draft") {
+      const nextRecord: DagWorkspaceRecord = {
+        ...record,
+        title: dagTitle(nextGraph),
+        subtitle: "local draft · saved",
+        status: "draft",
+        graph: nextGraph,
+        lastRun: undefined,
+      };
+      const payload = await saveDagDraft(nextRecord);
+      const saved = payload.draft;
+      const persistedRecord = saved?.graph ? {
+        ...nextRecord,
+        baseGraphHash: saved.baseGraphHash ?? nextRecord.baseGraphHash,
+        artifactPath: saved.artifactPath ?? nextRecord.artifactPath,
+      } : nextRecord;
+      setLocalDags((records) => records.map((candidate) => candidate.id === record.id ? persistedRecord : candidate));
+      setLocalRunResults((records) => {
+        const next = { ...records };
+        delete next[record.id];
+        return next;
+      });
+      return;
+    }
+
+    const seed = Date.now();
+    const graphId = `${nextGraph.graph_id}-draft-${seed}`;
+    const draftGraph = cloneGraphForExplorer(nextGraph, graphId);
+    const draftRecord: DagWorkspaceRecord = {
+      id: `draft:${graphId}`,
+      title: `${dagTitle(nextGraph)} draft`,
+      subtitle: "local draft · saved from source edit",
+      status: "draft",
+      kind: "draft",
+      graph: draftGraph,
+      baseGraphHash: `source-edit-${seed}`,
+    };
+    const payload = await saveDagDraft(draftRecord);
+    const saved = payload.draft;
+    const persistedRecord = saved?.graph ? {
+      ...draftRecord,
+      baseGraphHash: saved.baseGraphHash ?? draftRecord.baseGraphHash,
+      artifactPath: saved.artifactPath ?? draftRecord.artifactPath,
+    } : draftRecord;
+    setLocalDags((records) => [persistedRecord, ...records.filter((candidate) => candidate.id !== persistedRecord.id)]);
+    setClosedDagIds((ids) => {
+      const next = new Set(ids);
+      next.delete(persistedRecord.id);
+      return next;
+    });
+    setActiveDagId(persistedRecord.id);
+    setSurface("design");
+  }
+
+  function closeDag(id: string) {
+    setClosedDagIds((ids) => new Set(ids).add(id));
+    if (id === activeDagId) {
+      const nextRecord = dagRecords.find((record) => record.id !== id);
+      setActiveDagId(nextRecord?.id ?? "");
+    }
+  }
+
+  async function deleteDag(id: string) {
+    const record = localDags.find((candidate) => candidate.id === id);
+    if (record) {
+      const draftId = id.replace(/^draft:/, "");
+      const response = await fetch(`/api/scillm/dag-viewer/drafts/${encodeURIComponent(draftId)}`, { method: "DELETE" });
+      if (!response.ok) {
+        const text = await response.text();
+        setDagRunState({ status: "error", message: `draft delete failed (${response.status}): ${text.slice(0, 160)}` });
+        return;
+      }
+    }
+    setLocalDags((records) => records.filter((record) => record.id !== id));
+    setClosedDagIds((ids) => {
+      const next = new Set(ids);
+      next.delete(id);
+      return next;
+    });
+    if (id === activeDagId) {
+      const nextRecord = dagRecords.find((record) => record.id !== id);
+      setActiveDagId(nextRecord?.id ?? "");
+    }
+  }
+
+  async function runActiveDag(graphOverride?: ExecGraph) {
+    const record = activeDagRecord;
+    const graph = graphOverride ?? activeGraph;
+    if (!record || !graph) return;
+    const runtimeGraph: ExecGraph = {
+      ...graph,
+      graph_id: `${graph.graph_id}-run-${Date.now()}`,
+      cwd: graph.cwd ?? "/home/graham/workspace/experiments/scillm",
+      max_concurrency: graph.max_concurrency ?? 1,
+      nodes: graph.nodes.map((node) => ({
+        ...node,
+        type: node.type === "exec_command" ? "local_command" : node.type === "llm_call" ? "scillm_call" : node.type,
+      })),
+    };
+    const runEvents: ExecEvent[] = [];
+    const runningStatus: ExecStatus = {
+      state: "running",
+      run_id: runtimeGraph.graph_id,
+      node_results: {},
+      running_node_ids: runtimeGraph.nodes.filter((node) => !node.depends_on?.length).map((node) => node.id),
+    };
+    setDagRunState({ status: "running", message: `Running ${graph.graph_id}` });
+    setLocalRunResults((records) => ({ ...records, [record.id]: { status: runningStatus, events: runEvents } }));
+    setSurface("design");
+    try {
+      const response = await fetch("/api/scillm/v1/scillm/exec/graph", {
+        method: "POST",
+        headers: API_HEADERS,
+        body: JSON.stringify({ ...runtimeGraph, stream: true }),
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`exec graph failed (${response.status}): ${text.slice(0, 240)}`);
+      }
+      if (!response.body) throw new Error("exec graph stream returned no response body");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let finalResult: any = null;
+      const nodeResults: Record<string, Record<string, unknown>> = {};
+      let runningNodeIds = new Set(runningStatus.running_node_ids ?? []);
+      let pausedNodeIds = new Set<string>();
+      const commitStatus = (stateValue: string) => {
+        const status: ExecStatus = {
+          state: stateValue,
+          run_id: runtimeGraph.graph_id,
+          node_results: { ...nodeResults },
+          running_node_ids: Array.from(runningNodeIds),
+          paused_node_ids: Array.from(pausedNodeIds),
+          paused: pausedNodeIds.size > 0,
+          paused_graph: pausedNodeIds.size > 0,
+        };
+        setLocalRunResults((records) => ({ ...records, [record.id]: { status, events: [...runEvents] } }));
+      };
+      const handleStreamEvent = (eventName: string, payload: any) => {
+        if (eventName === "heartbeat") return;
+        if (eventName === "done") {
+          finalResult = payload;
+          return;
+        }
+        const event = { ...(payload as ExecEvent), type: String((payload as ExecEvent).type ?? eventName) } as ExecEvent;
+        runEvents.push(event);
+        const nodeId = typeof event.node_id === "string" ? event.node_id : "";
+        if (event.type === "node_scheduled" || event.type === "node_started") {
+          if (nodeId) runningNodeIds.add(nodeId);
+          commitStatus("running");
+          return;
+        }
+        if (event.type === "node_finished") {
+          if (nodeId) {
+            runningNodeIds.delete(nodeId);
+            nodeResults[nodeId] = { ok: true, status: "passed", node_id: nodeId };
+          }
+          commitStatus("running");
+          return;
+        }
+        if (event.type === "node_failed" || event.type === "node_skipped") {
+          if (nodeId) {
+            runningNodeIds.delete(nodeId);
+            nodeResults[nodeId] = { ok: false, status: event.type === "node_skipped" ? "skipped" : "failed", node_id: nodeId };
+          }
+          commitStatus("running");
+          return;
+        }
+        if (event.type === "node_disabled") {
+          if (nodeId) {
+            runningNodeIds.delete(nodeId);
+            nodeResults[nodeId] = { ok: true, status: "disabled", node_id: nodeId };
+          }
+          commitStatus("running");
+          return;
+        }
+        if (event.type === "graph_paused") {
+          const ids = Array.isArray((event as any).paused_node_ids) ? (event as any).paused_node_ids : [];
+          pausedNodeIds = new Set(ids.map(String));
+          runningNodeIds = new Set();
+          commitStatus("paused");
+          return;
+        }
+        if (event.type === "graph_finished") {
+          commitStatus(String((event as any).status ?? "completed"));
+        }
+      };
+      const consumeBlock = (block: string) => {
+        let eventName = "message";
+        const dataLines: string[] = [];
+        for (const line of block.split(/\r?\n/)) {
+          if (line.startsWith("event:")) eventName = line.slice(6).trim();
+          if (line.startsWith("data:")) dataLines.push(line.slice(5).trim());
+        }
+        const data = dataLines.join("\n");
+        if (!data || data === "[DONE]") return;
+        try {
+          handleStreamEvent(eventName, JSON.parse(data));
+        } catch {
+          runEvents.push({ ts: new Date().toISOString(), type: "dag_viewer.stream_parse_error", text: data } as ExecEvent);
+        }
+      };
+      while (true) {
+        const { value, done } = await reader.read();
+        if (value) {
+          buffer += decoder.decode(value, { stream: !done });
+          const blocks = buffer.split(/\n\n/);
+          buffer = blocks.pop() ?? "";
+          blocks.forEach(consumeBlock);
+        }
+        if (done) break;
+      }
+      if (buffer.trim()) consumeBlock(buffer);
+      const result = finalResult;
+      if (!result) throw new Error("exec graph stream ended without a terminal result");
+      const terminalNodeResults = result.node_results && typeof result.node_results === "object" ? result.node_results : {};
+      const status: ExecStatus = {
+        state: String(result.status ?? "completed"),
+        run_id: String(result.run_id ?? runtimeGraph.graph_id),
+        node_results: terminalNodeResults,
+      };
+      const events: ExecEvent[] = [{
+        ts: new Date().toISOString(),
+        type: "dag_viewer.run_completed",
+        text: `DAG run returned ${status.state}.`,
+      } as ExecEvent, ...runEvents];
+      const runAt = new Date().toISOString();
+      const nextRecord: DagWorkspaceRecord = {
+        ...record,
+        status: status.state ?? "completed",
+        subtitle: `local draft · last run ${status.state ?? "completed"}`,
+        lastRun: { status, events, runAt },
+      };
+      setLocalRunResults((records) => ({ ...records, [record.id]: { status, events } }));
+      if (record.kind === "draft") {
+        setLocalDags((records) => records.map((candidate) => candidate.id === record.id ? nextRecord : candidate));
+        void saveDagDraft(nextRecord).catch((error) => {
+          setDagRunState({ status: "error", message: `run completed but draft run result was not persisted: ${error instanceof Error ? error.message : String(error)}` });
+        });
+      }
+      setDagRunState({ status: "ok", message: `Run ${status.state}: ${status.run_id}` });
+    } catch (error) {
+      setDagRunState({ status: "error", message: error instanceof Error ? error.message : String(error) });
+    }
   }
 
   return (
@@ -444,178 +986,198 @@ export function ScillmDagPlanner() {
         </div>
       ) : (
         <div className="scillm-dashboard__main" style={{ padding: 0 }}>
-          {state.snapshot.phase_matches_active === false ? (
-            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.red}66` }}>
-              <div className="scillm-flex-row scillm-gap-8">
-                <AlertTriangle size={16} color={EMBRY.red} />
-                <span className="scillm-text-red scillm-fw-700">Loaded phase is not the active plan-iterate phase</span>
-              </div>
-              <div className="scillm-meta" style={{ marginTop: 6 }}>
-                Loaded {state.snapshot.phase_id}; active pointer is {state.snapshot.active_phase_id ?? "not reported"}. Use the phase override only for historical inspection.
-              </div>
-            </div>
-          ) : null}
-          {state.snapshot.snapshot_kind === "plan_iterate_phase_plan" ? (
-            <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
-              <div className="scillm-flex-row scillm-gap-8">
-                <AlertTriangle size={16} color={EMBRY.amber} />
-                <span className="scillm-text-amber scillm-fw-700">Runtime execution artifacts are not available for this phase</span>
-              </div>
-              <div className="scillm-meta" style={{ marginTop: 6 }}>
-                Showing the authoritative phase plan graph and runtime-readiness artifact. Start/resume state remains inadmissible until runtime graph, status, and event artifacts exist.
-              </div>
-            </div>
-          ) : null}
-          {state.snapshot.phase_status?.review_comparison?.closure_allowed === false ? (
-            <div className="scillm-dag-inline-alert">
-              <AlertTriangle size={15} color={EMBRY.bgDeep} />
-              <span className="scillm-text-amber scillm-fw-700">Closure and deploy are blocked</span>
-              <span className="scillm-meta">
-                Review pending; node success is not closure evidence. {state.snapshot.phase_status.review_comparison.reason}
-              </span>
-            </div>
-          ) : null}
-          <div className="scillm-dag-source-shell">
-            <div className="scillm-dag-source-shell__bar">
-              <div className="scillm-segmented" role="tablist" aria-label="DAG viewer-editor lenses">
-                {([
-                  ["design", "DAG", PencilRuler],
-                  ["source", "JSON", FileJson],
-                ] as const).map(([id, label, Icon]) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
-                    data-qid={`scillm:dag-planner:lens:${id}`}
-                    data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
-                    title={`Show ${label} lens`}
-                    onClick={() => setSurface(id)}
-                    role="tab"
-                    aria-selected={surface === id}
-                  >
-                    <Icon size={14} />
-                    {label}
-                  </button>
-                ))}
-                <details className="scillm-dag-lens-overflow">
-                  <summary>More</summary>
-                  {([
-                    ["trace", "Trace", Activity],
-                    ["checkpoints", "Checkpoints", CheckSquare],
-                    ["debug", "Debug", Bug],
-                  ] as const).map(([id, label, Icon]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
-                      data-qid={`scillm:dag-planner:lens:${id}`}
-                      data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
-                      title={`Show ${label} lens`}
-                      onClick={() => setSurface(id)}
-                      role="tab"
-                      aria-selected={surface === id}
-                    >
-                      <Icon size={14} />
-                      {label}
-                    </button>
-                  ))}
-                </details>
-              </div>
-              <div className="scillm-dag-source-shell__contract">
-                <span>Backend hash</span>
-                <code>{state.snapshot.base_graph_hash.slice(0, 16)}</code>
-                <span>{state.snapshot.hash_algorithm ?? "sha256 canonical executable graph"}</span>
-              </div>
-            </div>
-
-            {plannerSummary && surface !== "design" ? (
-              <DagLensSummary summary={plannerSummary} activeLens={surface} />
-            ) : null}
-
-            {surface === "source" && sourceView ? (
-              <section className="scillm-dag-source" aria-label="DAG source JSON viewer">
-                <div className="scillm-dag-source__header">
-                  <div>
-                    <div className="scillm-dag-source__eyebrow">Authoritative source contract</div>
-                    <h2>Actual DAG JSON</h2>
-                    <p>
-                      This is a draft executable graph source contract from the backend adapter. It is not an
-                      accepted baseline until phase review passes; layout edits and synthetic visual nodes stay outside it.
-                    </p>
+          <div className="scillm-dag-workspace">
+            <DagExplorerPane
+              items={dagExplorerItems}
+              search={dagSearch}
+              onSearchChange={setDagSearch}
+              onSelect={(id) => {
+                setActiveDagId(id);
+                setSurface("design");
+              }}
+              onAdd={addDag}
+              onDuplicate={duplicateDag}
+              onClose={closeDag}
+              onDelete={deleteDag}
+            />
+            <div className="scillm-dag-workspace__main">
+              {state.snapshot.phase_matches_active === false ? (
+                <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.red}66` }}>
+                  <div className="scillm-flex-row scillm-gap-8">
+                    <AlertTriangle size={16} color={EMBRY.red} />
+                    <span className="scillm-text-red scillm-fw-700">Loaded phase is not the active plan-iterate phase</span>
                   </div>
-                  <div className="scillm-dag-source__meta">
-                    <span>Graph ID</span>
-                    <code>{state.snapshot.graph.graph_id}</code>
-                    <span>Source</span>
-                    <code title={sourceView.sourcePath}>{sourceView.sourcePath}</code>
-                    <span>Hash check</span>
+                  <div className="scillm-meta" style={{ marginTop: 6 }}>
+                    Loaded {state.snapshot.phase_id}; active pointer is {state.snapshot.active_phase_id ?? "not reported"}. Use the phase override only for historical inspection.
+                  </div>
+                </div>
+              ) : null}
+              {state.snapshot.snapshot_kind === "plan_iterate_phase_plan" ? (
+                <div className="scillm-card" style={{ margin: 16, borderColor: `${EMBRY.amber}66` }}>
+                  <div className="scillm-flex-row scillm-gap-8">
+                    <AlertTriangle size={16} color={EMBRY.amber} />
+                    <span className="scillm-text-amber scillm-fw-700">Runtime execution artifacts are not available for this phase</span>
+                  </div>
+                  <div className="scillm-meta" style={{ marginTop: 6 }}>
+                    Showing the authoritative phase plan graph and runtime-readiness artifact. Start/resume state remains inadmissible until runtime graph, status, and event artifacts exist.
+                  </div>
+                </div>
+              ) : null}
+              {state.snapshot.phase_status?.review_comparison?.closure_allowed === false ? (
+                <div className="scillm-dag-inline-alert">
+                  <AlertTriangle size={15} color={EMBRY.bgDeep} />
+                  <span className="scillm-text-amber scillm-fw-700">Closure and deploy are blocked</span>
+                  <span className="scillm-meta">
+                    Review pending; node success is not closure evidence. {state.snapshot.phase_status.review_comparison.reason}
+                  </span>
+                </div>
+              ) : null}
+              <div className="scillm-dag-source-shell">
+                <div className="scillm-dag-source-shell__bar">
+                  <div className="scillm-segmented" role="tablist" aria-label="DAG viewer-editor lenses">
+                    {([
+                      ["design", "DAG", PencilRuler],
+                      ["source", "JSON", FileJson],
+                    ] as const).map(([id, label, Icon]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
+                        data-qid={`scillm:dag-planner:lens:${id}`}
+                        data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
+                        title={`Show ${label} lens`}
+                        onClick={() => setSurface(id)}
+                        role="tab"
+                        aria-selected={surface === id}
+                      >
+                        <Icon size={14} />
+                        {label}
+                      </button>
+                    ))}
+                    <details className="scillm-dag-lens-overflow">
+                      <summary>More</summary>
+                      {([
+                        ["trace", "Trace", Activity],
+                        ["checkpoints", "Checkpoints", CheckSquare],
+                        ["debug", "Debug", Bug],
+                      ] as const).map(([id, label, Icon]) => (
+                        <button
+                          key={id}
+                          type="button"
+                          className={`scillm-segmented__button ${surface === id ? "scillm-segmented__button--active" : ""}`}
+                          data-qid={`scillm:dag-planner:lens:${id}`}
+                          data-qs-action={`SCILLM_DAG_LENS_${id.toUpperCase()}`}
+                          title={`Show ${label} lens`}
+                          onClick={() => setSurface(id)}
+                          role="tab"
+                          aria-selected={surface === id}
+                        >
+                          <Icon size={14} />
+                          {label}
+                        </button>
+                      ))}
+                    </details>
+                  </div>
+                  <div className="scillm-dag-source-shell__contract">
                     <button
                       type="button"
                       className="scillm-dag-inline-action"
-                      onClick={() => void verifyBackendHash()}
-                      title="Fetch the current snapshot and compare its backend-computed baseGraphHash to the displayed hash."
+                      data-qid="scillm:dag-planner:run-active-dag"
+                      data-qs-action="SCILLM_DAG_RUN_ACTIVE_DAG"
+                      title="Run the selected DAG through scillm exec graph"
+                      disabled={dagRunState.status === "running" || !activeGraph}
+                      onClick={() => void runActiveDag()}
                     >
-                      <ShieldCheck size={13} />
-                      {hashCheck === "checking" ? "Checking" : hashCheck === "match" ? "Hash matches" : hashCheck === "changed" ? "Hash changed" : hashCheck === "error" ? "Check failed" : "Verify hash"}
+                      <Play size={13} />
+                      {dagRunState.status === "running" ? "Running" : "Run DAG"}
                     </button>
-                    <span>Copy</span>
-                    <button type="button" className="scillm-dag-inline-action" onClick={() => copyText(sourceView.sourcePath, "source-path")}>
-                      {copiedToken === "source-path" ? "Copied path" : "Copy path"}
-                    </button>
+                    <span>{activeGraphIsSource ? "Backend hash" : "Local draft"}</span>
+                    <code>{activeGraphIsSource ? state.snapshot.base_graph_hash.slice(0, 16) : activeBaseGraphHash.slice(0, 20)}</code>
+                    <span>{dagRunState.message ?? (activeGraphIsSource ? state.snapshot.hash_algorithm ?? "sha256 canonical executable graph" : "saved draft")}</span>
                   </div>
                 </div>
-                <div className="scillm-dag-source__tabs" role="tablist" aria-label="DAG JSON payload">
-                  {([
-                    ["graph", "Graph"],
-                    ["status", "Status"],
-                    ["events", "Events"],
-                    ["phase_status", "Phase status"],
-                    ["snapshot", "Full snapshot"],
-                  ] as const).map(([id, label]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      className={`scillm-dag-source__tab ${sourcePayload === id ? "scillm-dag-source__tab--active" : ""}`}
-                      onClick={() => setSourcePayload(id)}
-                      role="tab"
-                      aria-selected={sourcePayload === id}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-                <HighlightedJson value={sourceView.payload} />
-              </section>
-            ) : surface === "design" ? (
-              <>
-                <ScillmExecGraphDebugger
-                  graph={state.snapshot.graph}
-                  status={state.snapshot.status}
-                  events={state.snapshot.events}
-                  baseGraphHash={state.snapshot.base_graph_hash}
-                  amendBackendLabel="DAG-viewer draft endpoint"
-                  enablePlanEditing
-                  availableModels={availableModels}
-                  reviewCatalog={reviewCatalog}
-                  amendments={amendments}
-                  amendmentsState={amendmentsState}
-                  onRefreshAmendments={() => {
-                    void loadAmendments(state.snapshot.graph.graph_id);
-                  }}
-                  onSetAmendmentStatus={setAmendmentStatus}
-                  onApplyAmendment={applyAmendment}
-                  onAmendPlan={amendPlan}
-                  onSaveReviewCatalogEntry={saveReviewCatalogEntry}
-                  onRuntimeAction={state.snapshot.status.run_id ? runtimeAction : undefined}
-                />
-              </>
-            ) : surface === "trace" && plannerSummary ? (
-              <TraceLens snapshot={state.snapshot} summary={plannerSummary} onOpenDesign={() => setSurface("design")} />
-            ) : surface === "checkpoints" && plannerSummary ? (
-              <CheckpointLens snapshot={state.snapshot} summary={plannerSummary} onOpenDebug={() => setSurface("debug")} />
-            ) : plannerSummary ? (
-              <DebugLens snapshot={state.snapshot} summary={plannerSummary} onCopy={copyText} copiedToken={copiedToken} />
-            ) : null}
+
+                {plannerSummary && surface !== "design" ? (
+                  <DagLensSummary summary={plannerSummary} activeLens={surface} />
+                ) : null}
+
+                {surface === "source" && sourceView ? (
+                  <section className="scillm-dag-source" aria-label="DAG source JSON viewer">
+                    <div className="scillm-dag-source__header">
+                      <div>
+                        <div className="scillm-dag-source__eyebrow">Authoritative source contract</div>
+                        <h2>{activeGraphIsSource ? "Actual DAG JSON" : "Local draft DAG JSON"}</h2>
+                        <p>
+                          {activeGraphIsSource
+                            ? "This is a draft executable graph source contract from the backend adapter. It is not an accepted baseline until phase review passes; layout edits and synthetic visual nodes stay outside it."
+                            : "This local draft is for project-agent and human planning. It is not persisted to scillm until the amendment/apply contract accepts it."}
+                        </p>
+                      </div>
+                      <div className="scillm-dag-source__meta">
+                        <span>Graph ID</span>
+                        <code>{activeGraph?.graph_id ?? state.snapshot.graph.graph_id}</code>
+                        <span>Source</span>
+                        <code title={sourceView.sourcePath}>{sourceView.sourcePath}</code>
+                        <span>Hash check</span>
+                        <button
+                          type="button"
+                          className="scillm-dag-inline-action"
+                          disabled={!activeGraphIsSource}
+                          onClick={() => void verifyBackendHash()}
+                          title={activeGraphIsSource ? "Fetch the current snapshot and compare its backend-computed baseGraphHash to the displayed hash." : "Local draft DAGs do not have a backend hash yet."}
+                        >
+                          <ShieldCheck size={13} />
+                          {activeGraphIsSource ? hashCheck === "checking" ? "Checking" : hashCheck === "match" ? "Hash matches" : hashCheck === "changed" ? "Hash changed" : hashCheck === "error" ? "Check failed" : "Verify hash" : "Local draft"}
+                        </button>
+                        <span>Copy</span>
+                        <button type="button" className="scillm-dag-inline-action" onClick={() => copyText(sourceView.sourcePath, "source-path")}>
+                          {copiedToken === "source-path" ? "Copied path" : "Copy path"}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="scillm-dag-source__tabs" role="tablist" aria-label="DAG JSON payload">
+                      {([
+                        ["graph", "Graph"],
+                        ["status", "Status"],
+                        ["events", "Events"],
+                        ["phase_status", "Phase status"],
+                        ["snapshot", "Full snapshot"],
+                      ] as const).map(([id, label]) => (
+                        <button
+                          key={id}
+                          type="button"
+                          className={`scillm-dag-source__tab ${sourcePayload === id ? "scillm-dag-source__tab--active" : ""}`}
+                          onClick={() => setSourcePayload(id)}
+                          role="tab"
+                          aria-selected={sourcePayload === id}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <HighlightedJson value={sourceView.payload} />
+                  </section>
+                ) : surface === "design" && activeGraph ? (
+                  <DagContractEditor
+                    graph={activeGraph}
+                    status={activeStatus}
+                    events={activeEvents}
+                    baseGraphHash={activeBaseGraphHash}
+                    availableModels={availableModels}
+                    onRunGraph={(graph) => void runActiveDag(graph)}
+                    onDraftGraphChange={persistActiveDraftGraph}
+                    runGraphDisabled={dagRunState.status === "running" || !activeGraph}
+                    runGraphLabel={dagRunState.status === "running" ? "Running" : "Run draft via scillm"}
+                  />
+                ) : surface === "trace" && plannerSummary ? (
+                  <TraceLens snapshot={{ ...state.snapshot, graph: activeGraph ?? state.snapshot.graph, status: activeStatus, events: activeEvents }} summary={plannerSummary} onOpenDesign={() => setSurface("design")} />
+                ) : surface === "checkpoints" && plannerSummary ? (
+                  <CheckpointLens snapshot={{ ...state.snapshot, graph: activeGraph ?? state.snapshot.graph, status: activeStatus, events: activeEvents }} summary={plannerSummary} onOpenDebug={() => setSurface("debug")} />
+                ) : plannerSummary ? (
+                  <DebugLens snapshot={{ ...state.snapshot, graph: activeGraph ?? state.snapshot.graph, status: activeStatus, events: activeEvents }} summary={plannerSummary} onCopy={copyText} copiedToken={copiedToken} />
+                ) : null}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>scillm DAG Truth Editor</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f16;
+      --panel: #111722;
+      --panel-2: #151d2a;
+      --line: #273244;
+      --line-strong: #3c4b63;
+      --text: #e5edf7;
+      --muted: #9aa9bc;
+      --dim: #69788c;
+      --ready: #38bdf8;
+      --queued: #fbbf24;
+      --running: #60a5fa;
+      --passed: #34d399;
+      --failed: #fb7185;
+      --code: #05070b;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      background: #090d13;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: 18px;
+      letter-spacing: 0;
+      font-weight: 750;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 3px;
+      max-width: 980px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 7px;
+      padding: 8px 12px;
+      font: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    button.primary {
+      background: rgba(56, 189, 248, 0.13);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: #aee8ff;
+      font-weight: 750;
+    }
+
+    button.danger {
+      color: #ffd6dc;
+      border-color: rgba(251, 113, 133, 0.48);
+      background: rgba(251, 113, 133, 0.08);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .icon-button {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 7px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(620px, 1fr) minmax(420px, 34vw);
+      min-height: 0;
+    }
+
+    .canvas, .inspector {
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      background: var(--panel);
+    }
+
+    .canvas {
+      border-right: 1px solid var(--line);
+      padding: 16px;
+    }
+
+    .inspector {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+    }
+
+    .section-label {
+      color: var(--ready);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .graph-header, .summary-box {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: rgba(255,255,255,0.025);
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .graph-header pre,
+    .summary-box pre {
+      margin: 10px 0 0;
+      max-height: 220px;
+      overflow: auto;
+      background: var(--code);
+      color: #d6e5f8;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .json-highlight {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      tab-size: 2;
+    }
+
+    .json-key { color: #7dd3fc; }
+    .json-string { color: #bef264; }
+    .json-number { color: #fbbf24; }
+    .json-boolean { color: #c4b5fd; }
+    .json-null { color: #fb7185; }
+
+    .flow {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stage {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.014);
+    }
+
+    .stage.concurrent {
+      border-color: rgba(96, 165, 250, 0.48);
+    }
+
+    .stage-header {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+      align-items: center;
+    }
+
+    .stage-header strong {
+      font-size: 13px;
+    }
+
+    .stage-header span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .stage.concurrent .stage-header span {
+      color: #cfe5ff;
+    }
+
+    .stage-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .stage.concurrent .stage-body {
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+    }
+
+    .node-card {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--dim);
+      border-radius: 9px;
+      background: var(--code);
+      color: var(--text);
+      padding: 11px;
+      text-align: left;
+      display: grid;
+      gap: 8px;
+      min-height: 116px;
+      justify-content: stretch;
+      justify-items: stretch;
+      align-items: stretch;
+      transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    }
+
+    .node-card:hover {
+      border-color: var(--line-strong);
+    }
+
+    .node-card.selected {
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.32);
+    }
+
+    .node-card[data-state="ready"] { border-left-color: var(--ready); }
+    .node-card[data-state="queued"] { border-left-color: var(--queued); }
+    .node-card[data-state="running"] {
+      border-left-color: var(--running);
+      background: rgba(96, 165, 250, 0.1);
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.42), 0 0 24px rgba(96, 165, 250, 0.13);
+    }
+    .node-card[data-state="passed"] { border-left-color: var(--passed); }
+    .node-card[data-state="failed"] { border-left-color: var(--failed); }
+
+    .node-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .node-card strong {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .state {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .node-meta {
+      color: var(--muted);
+      font-size: 12px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .node-meta code,
+    .event code {
+      color: #aee8ff;
+      background: #02040a;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 11px;
+    }
+
+    .edge-row {
+      display: grid;
+      justify-items: center;
+      color: var(--dim);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .inspector-head {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 9px;
+    }
+
+    .selected-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .selected-title h2 {
+      font-size: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    .selected-title span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .inspector-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--code);
+    }
+
+    .view-toggle button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 5px 9px;
+    }
+
+    .view-toggle button.active {
+      background: rgba(56, 189, 248, 0.13);
+      color: #aee8ff;
+    }
+
+    .editor-form {
+      overflow: auto;
+      background: var(--code);
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .field label button {
+      border-radius: 6px;
+      color: #aee8ff;
+      background: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #080c13;
+      color: var(--text);
+      font: inherit;
+      padding: 9px 10px;
+      outline: 0;
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .editor-panel[hidden] {
+      display: none;
+    }
+
+    .json-editor-wrap {
+      position: relative;
+      min-height: 0;
+      background: var(--code);
+      overflow: hidden;
+    }
+
+    .json-editor-highlight,
+    .json-editor-wrap textarea {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 14px;
+      tab-size: 2;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .json-editor-highlight {
+      margin: 0;
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      pointer-events: none;
+      color: #d6e5f8;
+      border: 0;
+    }
+
+    .json-editor-wrap textarea {
+      position: relative;
+      z-index: 1;
+      resize: none;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: transparent;
+      caret-color: #e5edf7;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .json-editor-wrap textarea::selection {
+      background: rgba(96, 165, 250, 0.38);
+      -webkit-text-fill-color: transparent;
+    }
+
+    .validation {
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      min-height: 45px;
+    }
+
+    .validation[data-state="ok"] { color: #b8f8dc; }
+    .validation[data-state="error"] { color: #ffd0d8; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.62);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .text-modal {
+      width: min(920px, 100%);
+      max-height: min(760px, calc(100vh - 48px));
+      display: grid;
+      grid-template-rows: auto minmax(360px, 1fr) auto;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: 0 24px 90px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .text-modal header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #090d13;
+    }
+
+    .text-modal h2 {
+      font-size: 15px;
+    }
+
+    .text-modal textarea {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      resize: none;
+      border: 0;
+      outline: 0;
+      background: var(--code);
+      color: var(--text);
+      padding: 14px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .text-modal textarea.mono {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      background: #090d13;
+    }
+
+    details {
+      margin-top: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .events {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .event {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 9px;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .event strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 1080px) {
+      main { grid-template-columns: 1fr; }
+      .canvas { border-right: 0; border-bottom: 1px solid var(--line); }
+      header { grid-template-columns: 1fr; }
+      .toolbar { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>scillm DAG Truth Editor</h1>
+        <p class="subtitle">Connected DAG projection from the JSON contract. Select a node to inspect or edit its real JSON; Run submits the current draft graph.</p>
+      </div>
+      <div class="toolbar">
+        <button id="loadBtn">Reload source JSON</button>
+        <button id="copyBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy draft JSON</button>
+        <button id="runBtn" class="primary">Run draft via scillm</button>
+        <button id="resetBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Reset runtime</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="canvas">
+        <div class="section-label">Graph Contract</div>
+        <div class="graph-header">
+          <div id="graphLabel">Loading graph...</div>
+          <pre id="graphHeaderJson" class="json-highlight"></pre>
+        </div>
+
+        <div class="section-label">Connected DAG</div>
+        <div id="flow" class="flow"></div>
+
+        <div id="summaryBox" class="summary-box">
+          <strong>Run summary</strong>
+          <p>No run started.</p>
+        </div>
+
+        <details>
+          <summary>Raw runtime events</summary>
+          <div id="events" class="events"></div>
+        </details>
+      </section>
+
+      <aside class="inspector">
+        <div class="inspector-head">
+          <div class="selected-title">
+            <h2 id="selectedTitle">No node selected</h2>
+            <span id="selectedState">idle</span>
+          </div>
+          <p id="selectedMeta" class="subtitle"></p>
+        </div>
+        <div class="inspector-actions">
+          <div class="view-toggle" aria-label="Inspector view">
+            <button id="formViewBtn" class="active" type="button">Form</button>
+            <button id="jsonViewBtn" type="button">JSON</button>
+          </div>
+          <button id="applyNodeBtn" class="primary">Apply current view</button>
+          <button id="validateNodeBtn" title="Validate current node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Validate</button>
+          <button id="duplicateNodeBtn" title="Duplicate selected node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Duplicate</button>
+          <button id="deleteNodeBtn" class="danger" title="Delete selected node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M19 6l-1 14c-.1 1-1 2-2 2H8c-1 0-1.9-1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button>
+        </div>
+        <div id="formPanel" class="editor-form editor-panel">
+          <div class="field">
+            <label for="fieldId">Node id</label>
+            <input id="fieldId" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="fieldType">Type</label>
+            <select id="fieldType">
+              <option value="scillm_call">scillm_call</option>
+              <option value="local_command">local_command</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fieldLabel">Display label</label>
+            <input id="fieldLabel" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="fieldGoal">Node goal <button type="button" class="expand-text icon-button" data-field="fieldGoal" data-title="Node goal" aria-label="Expand Node goal" title="Expand Node goal"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M9 21H3v-6"/><path d="M14 10 3 21"/></svg><span class="sr-only">Expand</span></button></label>
+            <textarea id="fieldGoal"></textarea>
+          </div>
+          <div class="field">
+            <label for="fieldDepends">Depends on, comma-separated</label>
+            <input id="fieldDepends" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="fieldModel">Model</label>
+            <input id="fieldModel" autocomplete="off" placeholder="oc-kimi, gpt-5.1, none">
+          </div>
+          <div class="field">
+            <label for="fieldCommand">Local command <button type="button" class="expand-text icon-button" data-field="fieldCommand" data-title="Local command" data-mono="true" aria-label="Expand Local command" title="Expand Local command"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M9 21H3v-6"/><path d="M14 10 3 21"/></svg><span class="sr-only">Expand</span></button></label>
+            <textarea id="fieldCommand" placeholder="Only used for local_command nodes"></textarea>
+          </div>
+        </div>
+        <div id="jsonPanel" class="json-editor-wrap editor-panel" hidden>
+          <pre id="nodeEditorHighlight" class="json-editor-highlight json-highlight" aria-hidden="true"></pre>
+          <textarea id="nodeEditor" spellcheck="false" aria-label="Selected node JSON editor"></textarea>
+        </div>
+        <div id="validation" class="validation" data-state="idle">
+          <span>Select a node to edit its JSON.</span>
+          <span id="dirtyState">clean</span>
+        </div>
+      </aside>
+    </main>
+
+    <div id="textModalBackdrop" class="modal-backdrop" hidden>
+      <div class="text-modal" role="dialog" aria-modal="true" aria-labelledby="textModalTitle">
+        <header>
+          <h2 id="textModalTitle">Edit text</h2>
+          <button id="textModalClose" class="icon-button" type="button" aria-label="Close expanded editor" title="Close"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </header>
+        <textarea id="textModalEditor" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="textModalCancel" type="button">Cancel</button>
+          <button id="textModalApply" type="button" class="primary">Apply text</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const graphUrl = "/scillm-dag-truth/real-collaboration-dag.v2.json";
+    const execUrl = "/api/scillm/v1/scillm/exec/graph";
+    const states = new Map();
+    const runtime = new Map();
+    const eventRows = [];
+    let graph = null;
+    let selectedNodeId = null;
+    let finalSummary = null;
+    let running = false;
+    let dirty = false;
+    let inspectorView = "form";
+    let activeModalFieldId = null;
+
+    const groupLabels = {
+      "01_define_contract": "1. Define Contract",
+      "02_parallel_model_review": "2. Parallel Model Review",
+      "03_build_merge_prompt": "3. Build Merge Prompt",
+      "04_merge_outputs": "4. Merge Findings"
+    };
+
+    const groupModes = {
+      "01_define_contract": "sequential gate",
+      "02_parallel_model_review": "concurrent group - nodes may run together",
+      "03_build_merge_prompt": "sequential gate",
+      "04_merge_outputs": "sequential gate"
+    };
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#039;" }[char]));
+    }
+
+    function highlightJson(text) {
+      return String(text).replace(
+        /("(?:\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g,
+        (token) => {
+          let className = "json-number";
+          if (token.startsWith("\"")) className = token.endsWith(":") ? "json-key" : "json-string";
+          else if (token === "true" || token === "false") className = "json-boolean";
+          else if (token === "null") className = "json-null";
+          return `<span class="${className}">${escapeHtml(token)}</span>`;
+        }
+      );
+    }
+
+    function setHighlightedJson(element, value) {
+      element.innerHTML = highlightJson(JSON.stringify(value, null, 2));
+    }
+
+    function syncEditorHighlight() {
+      const editor = document.getElementById("nodeEditor");
+      const highlight = document.getElementById("nodeEditorHighlight");
+      highlight.innerHTML = highlightJson(editor.value) + "\n";
+      highlight.scrollTop = editor.scrollTop;
+      highlight.scrollLeft = editor.scrollLeft;
+    }
+
+    function nodeById(id) {
+      return graph?.nodes.find((node) => node.id === id) || null;
+    }
+
+    function stateFor(node) {
+      return states.get(node.id) || (node.depends_on?.length ? "pending" : "ready");
+    }
+
+    function runtimeFor(node) {
+      return runtime.get(node.id) || {
+        status: stateFor(node),
+        last_event: null,
+        started_at: null,
+        finished_at: null
+      };
+    }
+
+    function formField(id) {
+      return document.getElementById(id);
+    }
+
+    function graphHeaderView() {
+      if (!graph) return {};
+      return {
+        exec_graph_version: graph.exec_graph_version,
+        graph_id: graph.graph_id,
+        graph_goal: graph.graph_goal,
+        cwd: graph.cwd,
+        max_concurrency: graph.max_concurrency,
+        stream: graph.stream,
+        metadata: graph.metadata,
+        runtime: {
+          running_nodes: graph.nodes.filter((node) => runtimeFor(node).status === "running").map((node) => node.id),
+          failed_nodes: graph.nodes.filter((node) => runtimeFor(node).status === "failed").map((node) => node.id),
+          passed_nodes: graph.nodes.filter((node) => runtimeFor(node).status === "passed").map((node) => node.id),
+          event_count: eventRows.length
+        }
+      };
+    }
+
+    function renderHeader() {
+      document.getElementById("graphLabel").innerHTML = `<strong>${escapeHtml(graph.graph_id)}</strong><br><span class="subtitle">${escapeHtml(graph.graph_goal)}</span>`;
+      setHighlightedJson(document.getElementById("graphHeaderJson"), graphHeaderView());
+    }
+
+    function groupedNodes() {
+      const groups = new Map();
+      for (const node of graph.nodes) {
+        const group = node.metadata?.group || "ungrouped";
+        if (!groups.has(group)) groups.set(group, []);
+        groups.get(group).push(node);
+      }
+      return groups;
+    }
+
+    function renderFlow() {
+      if (!graph) return;
+      renderHeader();
+      const root = document.getElementById("flow");
+      root.innerHTML = "";
+      const groups = [...groupedNodes().entries()];
+      groups.forEach(([group, nodes], index) => {
+        if (index > 0) {
+          const edge = document.createElement("div");
+          edge.className = "edge-row";
+          edge.textContent = "↓";
+          root.appendChild(edge);
+        }
+        const mode = groupModes[group] || (nodes.length > 1 ? "concurrent group" : "sequential gate");
+        const section = document.createElement("section");
+        section.className = `stage ${mode.startsWith("concurrent") ? "concurrent" : ""}`;
+        section.innerHTML = `
+          <div class="stage-header">
+            <strong>${escapeHtml(groupLabels[group] || group)}</strong>
+            <span>${escapeHtml(mode)}</span>
+          </div>
+        `;
+        const body = document.createElement("div");
+        body.className = "stage-body";
+        for (const node of nodes) {
+          const rt = runtimeFor(node);
+          const model = node.model_config?.model || node.model || "none";
+          const button = document.createElement("button");
+          button.className = `node-card ${node.id === selectedNodeId ? "selected" : ""}`;
+          button.dataset.nodeId = node.id;
+          button.dataset.state = rt.status;
+          button.innerHTML = `
+            <div class="node-card-top">
+              <strong>${escapeHtml(node.metadata?.display_label || node.id)}</strong>
+              <span class="state">${escapeHtml(rt.status)}</span>
+            </div>
+            <div class="node-meta">
+              <span><code>${escapeHtml(node.id)}</code></span>
+              <span>${escapeHtml(node.type)} / ${escapeHtml(model)}</span>
+              <span>depends: ${node.depends_on?.length ? escapeHtml(node.depends_on.join(", ")) : "root"}</span>
+            </div>
+          `;
+          button.addEventListener("click", () => selectNode(node.id));
+          body.appendChild(button);
+        }
+        section.appendChild(body);
+        root.appendChild(section);
+      });
+      renderSummary();
+    }
+
+    function selectedNodeView(node) {
+      return { runtime: runtimeFor(node), ...node };
+    }
+
+    function renderInspector() {
+      const node = selectedNodeId ? nodeById(selectedNodeId) : null;
+      const title = document.getElementById("selectedTitle");
+      const state = document.getElementById("selectedState");
+      const meta = document.getElementById("selectedMeta");
+      const editor = document.getElementById("nodeEditor");
+      if (!node) {
+        title.textContent = "No node selected";
+        state.textContent = "idle";
+        meta.textContent = "";
+        editor.value = "";
+        renderForm(null);
+        syncEditorHighlight();
+        return;
+      }
+      const rt = runtimeFor(node);
+      const model = node.model_config?.model || node.model || "none";
+      title.textContent = node.id;
+      state.textContent = rt.status;
+      meta.textContent = `${node.type} / ${model} / ${node.depends_on?.length ? "depends on " + node.depends_on.join(", ") : "root node"}`;
+      editor.value = JSON.stringify(selectedNodeView(node), null, 2);
+      renderForm(node);
+      syncEditorHighlight();
+      dirty = false;
+      setValidation("idle", "Selected node JSON is loaded.", "clean");
+    }
+
+    function renderForm(node) {
+      const values = node ? {
+        id: node.id,
+        type: node.type,
+        label: node.metadata?.display_label || "",
+        goal: node.node_goal || "",
+        depends: (node.depends_on || []).join(", "),
+        model: node.model_config?.model || node.model || "",
+        command: node.command || ""
+      } : { id: "", type: "scillm_call", label: "", goal: "", depends: "", model: "", command: "" };
+      formField("fieldId").value = values.id;
+      formField("fieldType").value = values.type;
+      formField("fieldLabel").value = values.label;
+      formField("fieldGoal").value = values.goal;
+      formField("fieldDepends").value = values.depends;
+      formField("fieldModel").value = values.model;
+      formField("fieldCommand").value = values.command;
+    }
+
+    function setInspectorView(view) {
+      inspectorView = view;
+      document.getElementById("formPanel").hidden = view !== "form";
+      document.getElementById("jsonPanel").hidden = view !== "json";
+      document.getElementById("formViewBtn").classList.toggle("active", view === "form");
+      document.getElementById("jsonViewBtn").classList.toggle("active", view === "json");
+      if (view === "json") syncEditorHighlight();
+    }
+
+    function markFormDirty() {
+      dirty = true;
+      setValidation("idle", "Draft form values changed. Validate or apply before running.", "dirty");
+    }
+
+    function openTextModal(fieldId, title, monospace) {
+      const field = formField(fieldId);
+      if (!field) return;
+      activeModalFieldId = fieldId;
+      document.getElementById("textModalTitle").textContent = title;
+      const editor = document.getElementById("textModalEditor");
+      editor.value = field.value;
+      editor.classList.toggle("mono", Boolean(monospace));
+      document.getElementById("textModalBackdrop").hidden = false;
+      requestAnimationFrame(() => editor.focus());
+    }
+
+    function closeTextModal() {
+      activeModalFieldId = null;
+      document.getElementById("textModalBackdrop").hidden = true;
+    }
+
+    function applyTextModal() {
+      if (!activeModalFieldId) return;
+      const target = formField(activeModalFieldId);
+      target.value = document.getElementById("textModalEditor").value;
+      closeTextModal();
+      markFormDirty();
+    }
+
+    function selectNode(id) {
+      if (!nodeById(id)) return;
+      selectedNodeId = id;
+      renderFlow();
+      renderInspector();
+    }
+
+    function setValidation(state, text, badge = dirty ? "dirty" : "clean") {
+      const el = document.getElementById("validation");
+      el.dataset.state = state;
+      el.firstElementChild.textContent = text;
+      document.getElementById("dirtyState").textContent = badge;
+    }
+
+    function validateEditedNode() {
+      if (inspectorView === "form") return validateFormNode();
+      let parsed;
+      try {
+        parsed = JSON.parse(document.getElementById("nodeEditor").value);
+      } catch (error) {
+        setValidation("error", `Invalid JSON: ${error.message}`, "dirty");
+        return null;
+      }
+      const node = { ...parsed };
+      delete node.runtime;
+      const required = ["id", "type", "node_goal"];
+      const missing = required.filter((key) => !node[key]);
+      if (missing.length) {
+        setValidation("error", `Missing required field(s): ${missing.join(", ")}`, "dirty");
+        return null;
+      }
+      if (node.type === "scillm_call" && !node.model_config && !node.model) {
+        setValidation("error", "scillm_call node needs model or model_config.", "dirty");
+        return null;
+      }
+      if (node.type === "local_command" && !node.command) {
+        setValidation("error", "local_command node needs command.", "dirty");
+        return null;
+      }
+      if (node.id !== selectedNodeId && graph.nodes.some((candidate) => candidate.id === node.id)) {
+        setValidation("error", `Node id already exists: ${node.id}`, "dirty");
+        return null;
+      }
+      setValidation("ok", "Node JSON is valid.", dirty ? "dirty" : "clean");
+      return node;
+    }
+
+    function validateFormNode() {
+      const current = selectedNodeId ? nodeById(selectedNodeId) : null;
+      if (!current) return null;
+      const node = structuredClone(current);
+      node.id = formField("fieldId").value.trim();
+      node.type = formField("fieldType").value;
+      node.node_goal = formField("fieldGoal").value.trim();
+      node.depends_on = formField("fieldDepends").value
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
+      node.metadata = { ...(node.metadata || {}) };
+      const displayLabel = formField("fieldLabel").value.trim();
+      if (displayLabel) node.metadata.display_label = displayLabel;
+      else delete node.metadata.display_label;
+      const model = formField("fieldModel").value.trim();
+      if (node.type === "scillm_call") {
+        node.model_config = { ...(node.model_config || {}), model };
+        delete node.command;
+      } else {
+        node.command = formField("fieldCommand").value;
+        delete node.model_config;
+      }
+
+      const required = ["id", "type", "node_goal"];
+      const missing = required.filter((key) => !node[key]);
+      if (missing.length) {
+        setValidation("error", `Missing required field(s): ${missing.join(", ")}`, "dirty");
+        return null;
+      }
+      if (node.depends_on.some((dep) => dep === node.id)) {
+        setValidation("error", "Node cannot depend on itself.", "dirty");
+        return null;
+      }
+      if (node.id !== selectedNodeId && graph.nodes.some((candidate) => candidate.id === node.id)) {
+        setValidation("error", `Node id already exists: ${node.id}`, "dirty");
+        return null;
+      }
+      if (node.type === "scillm_call" && !model) {
+        setValidation("error", "scillm_call node needs a model.", "dirty");
+        return null;
+      }
+      if (node.type === "local_command" && !node.command) {
+        setValidation("error", "local_command node needs a command.", "dirty");
+        return null;
+      }
+      setValidation("ok", "Form values compile to valid node JSON.", dirty ? "dirty" : "clean");
+      return node;
+    }
+
+    function applyEditedNode() {
+      const node = validateEditedNode();
+      if (!node || !selectedNodeId) return;
+      const index = graph.nodes.findIndex((candidate) => candidate.id === selectedNodeId);
+      graph.nodes[index] = node;
+      const oldId = selectedNodeId;
+      selectedNodeId = node.id;
+      if (oldId !== node.id) {
+        const oldState = states.get(oldId);
+        const oldRuntime = runtime.get(oldId);
+        states.delete(oldId);
+        runtime.delete(oldId);
+        if (oldState) states.set(node.id, oldState);
+        if (oldRuntime) runtime.set(node.id, oldRuntime);
+      }
+      dirty = false;
+      renderFlow();
+      renderInspector();
+      setValidation("ok", "Applied to draft graph.", "clean");
+    }
+
+    function duplicateNode() {
+      const current = selectedNodeId ? nodeById(selectedNodeId) : null;
+      if (!current) return;
+      const copy = structuredClone(current);
+      copy.id = `${current.id}-copy-${Date.now().toString().slice(-4)}`;
+      copy.depends_on = [...(current.depends_on || [])];
+      copy.metadata = { ...(copy.metadata || {}), display_label: `${copy.metadata?.display_label || current.id} copy` };
+      graph.nodes.push(copy);
+      selectNode(copy.id);
+      setValidation("ok", "Duplicated node in draft graph.", "dirty");
+    }
+
+    function deleteNode() {
+      if (!selectedNodeId || graph.nodes.length <= 1) return;
+      const deleting = selectedNodeId;
+      graph.nodes = graph.nodes
+        .filter((node) => node.id !== deleting)
+        .map((node) => ({ ...node, depends_on: (node.depends_on || []).filter((dep) => dep !== deleting) }));
+      states.delete(deleting);
+      runtime.delete(deleting);
+      selectedNodeId = graph.nodes[0]?.id || null;
+      renderFlow();
+      renderInspector();
+      setValidation("ok", `Deleted ${deleting} from draft graph.`, "dirty");
+    }
+
+    function setState(nodeId, state) {
+      if (!nodeId) return;
+      states.set(nodeId, state);
+      const previous = runtime.get(nodeId) || {};
+      runtime.set(nodeId, {
+        status: state,
+        last_event: previous.last_event || null,
+        started_at: state === "running" ? new Date().toISOString() : previous.started_at || null,
+        finished_at: ["passed", "failed", "skipped"].includes(state) ? new Date().toISOString() : previous.finished_at || null,
+        event_ts: previous.event_ts || null
+      });
+      renderFlow();
+      if (nodeId === selectedNodeId) renderInspector();
+    }
+
+    function addEvent(payload, eventName) {
+      const type = payload.type || eventName || "message";
+      const node = payload.node_id || "-";
+      const status = payload.status || "";
+      eventRows.unshift({ type, node, status, payload });
+      eventRows.splice(80);
+      if (type === "stdout" && typeof payload.text === "string") {
+        try {
+          const parsed = JSON.parse(payload.text);
+          if (parsed.result && parsed.model && parsed.artifact) {
+            finalSummary = { ...(finalSummary || {}), final_result: parsed.result };
+          }
+        } catch {}
+      }
+      const events = document.getElementById("events");
+      events.innerHTML = eventRows.map((row) => `
+        <div class="event">
+          <strong>${escapeHtml(row.type)} <code>${escapeHtml(row.node)}</code> ${escapeHtml(row.status)}</strong>
+          <span>${escapeHtml(row.payload.ts || "")}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderSummary() {
+      const box = document.getElementById("summaryBox");
+      if (finalSummary?.status) {
+        box.innerHTML = `
+          <strong>Run summary</strong>
+          <p>Status: ${escapeHtml(finalSummary.status)}. Completed: ${escapeHtml(finalSummary.completed)}. Failed: ${escapeHtml(finalSummary.failed)}.</p>
+          ${finalSummary.final_result ? `<pre>${escapeHtml(JSON.stringify(finalSummary.final_result, null, 2))}</pre>` : ""}
+        `;
+        return;
+      }
+      const runningNodes = graph?.nodes.filter((node) => runtimeFor(node).status === "running").map((node) => node.id) || [];
+      if (runningNodes.length) {
+        box.innerHTML = `<strong>Run summary</strong><p>Running: ${escapeHtml(runningNodes.join(", "))}</p>`;
+        return;
+      }
+      box.innerHTML = "<strong>Run summary</strong><p>No run started.</p>";
+    }
+
+    function applyRuntimeEvent(payload, eventName) {
+      const type = payload.type || eventName;
+      if (payload.node_id) {
+        const previous = runtime.get(payload.node_id) || {};
+        runtime.set(payload.node_id, {
+          status: previous.status || "pending",
+          last_event: type,
+          started_at: previous.started_at || null,
+          finished_at: previous.finished_at || null,
+          event_ts: payload.ts || null
+        });
+      }
+      if (type === "node_scheduled") setState(payload.node_id, "queued");
+      if (type === "node_started") setState(payload.node_id, "running");
+      if (type === "node_finished") setState(payload.node_id, payload.status === "passed" ? "passed" : "failed");
+      if (type === "node_failed") setState(payload.node_id, "failed");
+      if (type === "node_skipped") setState(payload.node_id, "skipped");
+      if (type === "graph_finished") {
+        finalSummary = { ...(finalSummary || {}), status: payload.status, completed: payload.completed, failed: payload.failed };
+      }
+      addEvent(payload, type);
+      renderFlow();
+      if (payload.node_id === selectedNodeId) renderInspector();
+    }
+
+    async function loadGraph() {
+      const response = await fetch(graphUrl, { cache: "no-store" });
+      if (!response.ok) throw new Error(`failed to load graph: ${response.status}`);
+      graph = await response.json();
+      states.clear();
+      runtime.clear();
+      eventRows.length = 0;
+      finalSummary = null;
+      selectedNodeId = graph.nodes[0]?.id || null;
+      document.getElementById("events").innerHTML = "";
+      renderFlow();
+      renderInspector();
+    }
+
+    function parseSseChunk(buffer, onEvent) {
+      const blocks = buffer.split("\n\n");
+      const rest = blocks.pop() || "";
+      for (const block of blocks) {
+        let eventName = "message";
+        const data = [];
+        for (const line of block.split("\n")) {
+          if (line.startsWith("event:")) eventName = line.slice(6).trim();
+          if (line.startsWith("data:")) data.push(line.slice(5).trim());
+        }
+        if (!data.length) continue;
+        const text = data.join("\n");
+        if (text === "[DONE]") continue;
+        try {
+          onEvent(JSON.parse(text), eventName);
+        } catch {
+          onEvent({ raw: text }, eventName);
+        }
+      }
+      return rest;
+    }
+
+    async function runGraph() {
+      if (!graph || running) return;
+      running = true;
+      document.getElementById("runBtn").disabled = true;
+      states.clear();
+      runtime.clear();
+      finalSummary = null;
+      eventRows.length = 0;
+      document.getElementById("events").innerHTML = "";
+      renderFlow();
+      renderInspector();
+      const request = { ...structuredClone(graph), graph_id: `${graph.graph_id}-${Date.now()}`, stream: true };
+      const response = await fetch(execUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+      });
+      if (!response.ok || !response.body) {
+        const text = await response.text();
+        running = false;
+        document.getElementById("runBtn").disabled = false;
+        finalSummary = { status: "failed_to_start", completed: 0, failed: graph.nodes.length, final_result: { status: response.status, text } };
+        renderSummary();
+        return;
+      }
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          buffer = parseSseChunk(buffer, applyRuntimeEvent);
+        }
+      } finally {
+        running = false;
+        document.getElementById("runBtn").disabled = false;
+      }
+    }
+
+    document.getElementById("loadBtn").addEventListener("click", () => loadGraph().catch((error) => {
+      finalSummary = { status: "load_failed", completed: 0, failed: 0, final_result: { error: error.message } };
+      renderSummary();
+    }));
+    document.getElementById("runBtn").addEventListener("click", () => runGraph().catch((error) => {
+      running = false;
+      document.getElementById("runBtn").disabled = false;
+      finalSummary = { status: "run_failed", completed: 0, failed: graph?.nodes.length || 0, final_result: { error: error.message } };
+      renderSummary();
+    }));
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      if (!graph) return;
+      await navigator.clipboard.writeText(JSON.stringify(graph, null, 2));
+      setValidation("ok", "Copied draft graph JSON.", dirty ? "dirty" : "clean");
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      states.clear();
+      runtime.clear();
+      eventRows.length = 0;
+      finalSummary = null;
+      document.getElementById("events").innerHTML = "";
+      renderFlow();
+      renderInspector();
+    });
+    document.getElementById("validateNodeBtn").addEventListener("click", validateEditedNode);
+    document.getElementById("applyNodeBtn").addEventListener("click", applyEditedNode);
+    document.getElementById("duplicateNodeBtn").addEventListener("click", duplicateNode);
+    document.getElementById("deleteNodeBtn").addEventListener("click", deleteNode);
+    document.getElementById("formViewBtn").addEventListener("click", () => setInspectorView("form"));
+    document.getElementById("jsonViewBtn").addEventListener("click", () => setInspectorView("json"));
+    ["fieldId", "fieldType", "fieldLabel", "fieldGoal", "fieldDepends", "fieldModel", "fieldCommand"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", () => {
+        markFormDirty();
+      });
+      document.getElementById(id).addEventListener("change", () => {
+        markFormDirty();
+      });
+    });
+    document.querySelectorAll(".expand-text").forEach((button) => {
+      button.addEventListener("click", () => openTextModal(button.dataset.field, button.dataset.title, button.dataset.mono === "true"));
+    });
+    document.getElementById("textModalApply").addEventListener("click", applyTextModal);
+    document.getElementById("textModalCancel").addEventListener("click", closeTextModal);
+    document.getElementById("textModalClose").addEventListener("click", closeTextModal);
+    document.getElementById("textModalBackdrop").addEventListener("click", (event) => {
+      if (event.target.id === "textModalBackdrop") closeTextModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !document.getElementById("textModalBackdrop").hidden) closeTextModal();
+    });
+    document.getElementById("nodeEditor").addEventListener("input", () => {
+      dirty = true;
+      syncEditorHighlight();
+      setValidation("idle", "Draft node JSON changed. Validate or apply before running.", "dirty");
+    });
+    document.getElementById("nodeEditor").addEventListener("scroll", syncEditorHighlight);
+    setInspectorView("form");
+
+    loadGraph().catch((error) => {
+      finalSummary = { status: "load_failed", completed: 0, failed: 0, final_result: { error: error.message } };
+      renderSummary();
+    });
+  </script>
+</body>
+</html>

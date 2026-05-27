@@ -1,0 +1,1614 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase52_page_0030",
+  "captured_at": "2026-05-26T14:59:46.662005+00:00",
+  "source": "phase-52-nist-agentic-sweep-golden-slice-seed release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; pdf_oxide output is comparison evidence only.",
+  "candidate_families": [
+    "sections",
+    "lists",
+    "footnotes_references"
+  ],
+  "expected_elements": [
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "1.1   PURPOSE AND APPLICABILITY",
+      "label": "1.1   PURPOSE AND APPLICABILITY",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_anchor | Source id: toc:section_anchor:0006 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p29:line:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p29:line:1 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.088803,
+        0.807646,
+        0.105667
+      ],
+      "text_hint": "The answers to these questions are not given in isolation but rather in the context of a risk",
+      "label": "The answers to these questions are not given in isolation but rather in the context of a risk",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:3 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.105772,
+        0.833984,
+        0.122636
+      ],
+      "text_hint": "management process for the organization that identifies, assesses, responds to, and monitors",
+      "label": "management process for the organization that identifies, assesses, responds to, and monitors",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:4 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.122591,
+        0.815939,
+        0.139536
+      ],
+      "text_hint": "security and privacy risks arising from its information and systems on an ongoing basis. 8 The",
+      "label": "security and privacy risks arising from its information and systems on an ongoing basis. 8 The",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:5 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145564,
+        0.139636,
+        0.829539,
+        0.156499
+      ],
+      "text_hint": "security and privacy controls in this publication are recommended for use by organizations to",
+      "label": "security and privacy controls in this publication are recommended for use by organizations to",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:6 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145546,
+        0.156605,
+        0.837254,
+        0.173468
+      ],
+      "text_hint": "satisfy their information security and privacy requirements. The control catalog can be viewed",
+      "label": "satisfy their information security and privacy requirements. The control catalog can be viewed",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:7 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145546,
+        0.173574,
+        0.855929,
+        0.190438
+      ],
+      "text_hint": "as a tool box containing a collection of safeguards, countermeasures, techniques, and processes",
+      "label": "as a tool box containing a collection of safeguards, countermeasures, techniques, and processes",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:8 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145546,
+        0.190543,
+        0.849723,
+        0.207407
+      ],
+      "text_hint": "to respond to security and privacy risk s. The controls are employed as part of a well -defined risk",
+      "label": "to respond to security and privacy risk s. The controls are employed as part of a well -defined risk",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:9 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145528,
+        0.207443,
+        0.851937,
+        0.224306
+      ],
+      "text_hint": "management proc ess that supports organizational information security and privacy programs. In",
+      "label": "management proc ess that supports organizational information security and privacy programs. In",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:10 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145492,
+        0.224412,
+        0.842274,
+        0.241276
+      ],
+      "text_hint": "turn, those information security and privacy programs lay the foundation for the success of the",
+      "label": "turn, those information security and privacy programs lay the foundation for the success of the",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:11 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145492,
+        0.241381,
+        0.52863,
+        0.258245
+      ],
+      "text_hint": "mission and business functions of the organization.",
+      "label": "mission and business functions of the organization.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:12 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032868,
+        0.273503,
+        0.820649,
+        0.290367
+      ],
+      "text_hint": "This publication is It available is important free that of charge responsible from: officials understand the security and privacy risks that could",
+      "label": "This publication is It available is important free that of charge responsible from: officials understand the security an",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:13 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145474,
+        0.290472,
+        0.837196,
+        0.307336
+      ],
+      "text_hint": "adversely affect organizational operations and assets, individuals, other organizations, and the",
+      "label": "adversely affect organizational operations and assets, individuals, other organizations, and the",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:14 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145456,
+        0.307288,
+        0.822719,
+        0.324236
+      ],
+      "text_hint": "Nation. 9 These officials must also understand the current status of their security and privacy",
+      "label": "Nation. 9 These officials must also understand the current status of their security and privacy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:15 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145561,
+        0.324333,
+        0.846491,
+        0.341196
+      ],
+      "text_hint": "programs and the controls plann ed or in place to protect information, information systems, and",
+      "label": "programs and the controls plann ed or in place to protect information, information systems, and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:16 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145561,
+        0.341302,
+        0.84196,
+        0.358165
+      ],
+      "text_hint": "organization s in order to make informed judgments and investments that respond to identified",
+      "label": "organization s in order to make informed judgments and investments that respond to identified",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:17 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145543,
+        0.358271,
+        0.843459,
+        0.375134
+      ],
+      "text_hint": "risks in an accepta ble manner. The objective is to manage these risks through the selection and",
+      "label": "risks in an accepta ble manner. The objective is to manage these risks through the selection and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:18 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145525,
+        0.37524,
+        0.502424,
+        0.392104
+      ],
+      "text_hint": "implementation of security and privacy controls.",
+      "label": "implementation of security and privacy controls.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:19 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.406636,
+        0.464392,
+        0.428288
+      ],
+      "text_hint": "1.1 PURPOSE AND APPLICABILITY",
+      "label": "1.1 PURPOSE AND APPLICABILITY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p29:line:20 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.436455,
+        0.783455,
+        0.453318
+      ],
+      "text_hint": "This publication establishes controls for systems and organizations. The controls can be",
+      "label": "This publication establishes controls for systems and organizations. The controls can be",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:21 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.453424,
+        0.871732,
+        0.470287
+      ],
+      "text_hint": "implemented within any organization or system that processes, stores, or transmits information.",
+      "label": "implemented within any organization or system that processes, stores, or transmits information.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:22 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.470318,
+        0.818987,
+        0.487256
+      ],
+      "text_hint": "The use of these controls is mandatory for federal information systems 10 in accordance with",
+      "label": "The use of these controls is mandatory for federal information systems 10 in accordance with",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:23 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145566,
+        0.487363,
+        0.846602,
+        0.504227
+      ],
+      "text_hint": "Office of Management and Budget (OMB) Circular A- 130 [OMB A -130] and the provisions of the",
+      "label": "Office of Management and Budget (OMB) Circular A- 130 [OMB A -130] and the provisions of the",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:24 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.504182,
+        0.84366,
+        0.521121
+      ],
+      "text_hint": "Federal Information Security Modernization Act 11 [FISMA], which requires the implementation",
+      "label": "Federal Information Security Modernization Act 11 [FISMA], which requires the implementation",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:25 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.851454,
+        0.538091
+      ],
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008 of minimum controls to protect federal information and information systems. 12 This publication,",
+      "label": "https/d/:oi.org0.1/T.SIN/8206P.S008 of minimum controls to protect federal information and information systems. 12 This ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:26 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145555,
+        0.538196,
+        0.821412,
+        0.55506
+      ],
+      "text_hint": "along with other supporting NIST publications, is designed to help organizations identify the",
+      "label": "along with other supporting NIST publications, is designed to help organizations identify the",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:27 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145555,
+        0.555165,
+        0.809382,
+        0.572029
+      ],
+      "text_hint": "security and privacy controls needed to manage risk and to satisf y the security and p rivacy",
+      "label": "security and privacy controls needed to manage risk and to satisf y the security and p rivacy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:28 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145555,
+        0.572135,
+        0.822794,
+        0.588998
+      ],
+      "text_hint": "requirements in FISMA, the Privacy Act of 1974 [PRIVACT], OMB policies (e.g., [OMB A -130]),",
+      "label": "requirements in FISMA, the Privacy Act of 1974 [PRIVACT], OMB policies (e.g., [OMB A -130]),",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:29 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.58903,
+        0.84805,
+        0.605894
+      ],
+      "text_hint": "and designated Federal Information Processing Standards (FIPS), among others. It accomplishes",
+      "label": "and designated Federal Information Processing Standards (FIPS), among others. It accomplishes",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:30 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.605999,
+        0.85233,
+        0.622863
+      ],
+      "text_hint": "this objective by providing a comprehensive and flexible catalog of security and privacy controls",
+      "label": "this objective by providing a comprehensive and flexible catalog of security and privacy controls",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:31 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.622968,
+        0.790189,
+        0.639832
+      ],
+      "text_hint": "to meet current and future protection needs based on changing threats, vulnerabilities,",
+      "label": "to meet current and future protection needs based on changing threats, vulnerabilities,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:32 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.639938,
+        0.778563,
+        0.656801
+      ],
+      "text_hint": "requirements, and technologies. The publication also improve s communication among",
+      "label": "requirements, and technologies. The publication also improve s communication among",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:33 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145541,
+        0.656837,
+        0.836917,
+        0.673701
+      ],
+      "text_hint": "organizations by providing a common lexicon that supports the discussion of security, privacy,",
+      "label": "organizations by providing a common lexicon that supports the discussion of security, privacy,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:34 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145541,
+        0.673806,
+        0.384432,
+        0.69067
+      ],
+      "text_hint": "and risk management concepts.",
+      "label": "and risk management concepts.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:35 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "text_hint": "3r55 -",
+      "label": "3r55 -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:36 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.73047,
+        0.816706,
+        0.744833
+      ],
+      "text_hint": "8 The Risk Management Framework in [- SP 800 37] is an example of a comprehensive risk management process.",
+      "label": "8 The Risk Management Framework in [- SP 800 37] is an example of a comprehensive risk management process.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:37 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.746409,
+        0.648015,
+        0.761773
+      ],
+      "text_hint": "9 This includes risk to critical infrastructure and key resources described in HSPD-7]. [",
+      "label": "9 This includes risk to critical infrastructure and key resources described in HSPD-7]. [",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p29:line:38 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.763273,
+        0.859318,
+        0.777636
+      ],
+      "text_hint": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or",
+      "label": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:39 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145564,
+        0.777136,
+        0.423181,
+        0.7915
+      ],
+      "text_hint": "another organization on behalf of an agency.",
+      "label": "another organization on behalf of an agency.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:40 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.793576,
+        0.858779,
+        0.807939
+      ],
+      "text_hint": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542,",
+      "label": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:41 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.807439,
+        0.856301,
+        0.821803
+      ],
+      "text_hint": "are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected",
+      "label": "are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:42 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.821303,
+        0.835985,
+        0.835667
+      ],
+      "text_hint": "for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal",
+      "label": "for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:43 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.835167,
+        0.824759,
+        0.84953
+      ],
+      "text_hint": "officials exercising policy authority over such systems. CNSSP [22] and [CNSSI 1253] provide gu idance for national",
+      "label": "officials exercising policy authority over such systems. CNSSP [22] and [CNSSI 1253] provide gu idance for national",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:44 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.84903,
+        0.657681,
+        0.863394
+      ],
+      "text_hint": "security systems. [DODI 8510.01] provides guidance for the Department of Defense.",
+      "label": "security systems. [DODI 8510.01] provides guidance for the Department of Defense.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:45 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.86547,
+        0.865873,
+        0.879833
+      ],
+      "text_hint": "12 While the controls established in this publication are mandatory for federal information systems and organizations,",
+      "label": "12 While the controls established in this publication are mandatory for federal information systems and organizations,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:46 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.879333,
+        0.857574,
+        0.893697
+      ],
+      "text_hint": "other organizations such as state, local, and tribal governments as well as private secto r organizations are encouraged",
+      "label": "other organizations such as state, local, and tribal governments as well as private secto r organizations are encouraged",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:47 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.893197,
+        0.732887,
+        0.907561
+      ],
+      "text_hint": "to consider using these guidelines, as appropriate. See [- SP 800 53B] for federal control baselines.",
+      "label": "to consider using these guidelines, as appropriate. See [- SP 800 53B] for federal control baselines.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p29:line:48 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.226029,
+        0.953818
+      ],
+      "text_hint": "CHAPTER ONE",
+      "label": "CHAPTER ONE",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p29:line:49 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.812028,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "text_hint": "PAGE 2",
+      "label": "PAGE 2",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p29:line:50 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "1.2   TARGET AUDIENCE",
+      "label": "1.2   TARGET AUDIENCE",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_anchor | Source id: toc:section_anchor:0007 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "1.3   ORGANIZATIONAL RESPONSIBILITIES",
+      "label": "1.3   ORGANIZATIONAL RESPONSIBILITIES",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_anchor | Source id: toc:section_anchor:0008 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p30:line:0 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_header | Source id: actual:p30:line:1 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.088803,
+        0.809,
+        0.105667
+      ],
+      "text_hint": "Finally, the controls are independent of the process employed to select those controls. The",
+      "label": "Finally, the controls are independent of the process employed to select those controls. The",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:3 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145577,
+        0.105772,
+        0.798342,
+        0.122636
+      ],
+      "text_hint": "control selection process can be part of an organization- widerisk management process, a",
+      "label": "control selection process can be part of an organization- widerisk management process, a",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:4 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.122591,
+        0.825309,
+        0.139536
+      ],
+      "text_hint": "systems engineering process [SP 800-160 -1], 13 the Risk Management Framework [SP 800-37],",
+      "label": "systems engineering process [SP 800-160 -1], 13 the Risk Management Framework [SP 800-37],",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:5 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.139561,
+        0.809716,
+        0.1565
+      ],
+      "text_hint": "the Cybersecurity Framework [NIST CSF], or the Privacy Framework [NIST PF]. 14 The control",
+      "label": "the Cybersecurity Framework [NIST CSF], or the Privacy Framework [NIST PF]. 14 The control",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:6 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.156606,
+        0.828804,
+        0.17347
+      ],
+      "text_hint": "selection criteria can be guided and informed by many factors, including mission and business",
+      "label": "selection criteria can be guided and informed by many factors, including mission and business",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:7 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.173575,
+        0.837489,
+        0.190439
+      ],
+      "text_hint": "needs, stakeholder protection needs, threats, vulnerabilities, and requirements to comply with",
+      "label": "needs, stakeholder protection needs, threats, vulnerabilities, and requirements to comply with",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:8 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145523,
+        0.190544,
+        0.827806,
+        0.207408
+      ],
+      "text_hint": "federal laws, executive orders, directives, regulations, policies, standards, and guidelines. The",
+      "label": "federal laws, executive orders, directives, regulations, policies, standards, and guidelines. The",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:9 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145523,
+        0.207444,
+        0.807019,
+        0.224308
+      ],
+      "text_hint": "combination of a catalog of security and privacy controls and a risk-based control selection",
+      "label": "combination of a catalog of security and privacy controls and a risk-based control selection",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:10 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145523,
+        0.224413,
+        0.82128,
+        0.241277
+      ],
+      "text_hint": "process can help organizations comply with stated security and privacy requirements, obtain",
+      "label": "process can help organizations comply with stated security and privacy requirements, obtain",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:11 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145505,
+        0.241382,
+        0.778438,
+        0.258246
+      ],
+      "text_hint": "adequate security for their information systems, and protect the privacy of individuals.",
+      "label": "adequate security for their information systems, and protect the privacy of individuals.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:12 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.273273,
+        0.361657,
+        0.293924
+      ],
+      "text_hint": "This publication is 1.2 available TARGET free of charge AUDIENCE from:",
+      "label": "This publication is 1.2 available TARGET free of charge AUDIENCE from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:13 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.302667,
+        0.628585,
+        0.31953
+      ],
+      "text_hint": "This publication is intended to serve a diverse audience, including:",
+      "label": "This publication is intended to serve a diverse audience, including:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:14 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.327898,
+        0.826071,
+        0.523551
+      ],
+      "text_hint": "\u2022 Individuals with system, information security, privacy, or risk management and oversight responsibilities, including authorizing officials, chief information officers, senior agency information security officers, and senior agency officials for privacy;\n\u2022 Individuals with system development responsibilities, including mission owners, program managers, system engineers, system security engineers, privacy engineers, hardware and software developers, system integrators, and acquisition or procure",
+      "label": "\u2022 Individuals with system, information security, privacy, or risk management and oversight responsibilities, including a",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list | Source id: actual:p30:list:0:15-25 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145559,
+        0.327898,
+        0.820794,
+        0.344762
+      ],
+      "text_hint": "\u2022 Individuals with system, information security, privacy, or risk management and oversight",
+      "label": "\u2022 Individuals with system, information security, privacy, or risk management and oversight",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:15 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174947,
+        0.344868,
+        0.808666,
+        0.361731
+      ],
+      "text_hint": "responsibilities, including authorizing officials, chief information officers, senior agency",
+      "label": "responsibilities, including authorizing officials, chief information officers, senior agency",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:16 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174947,
+        0.361837,
+        0.669218,
+        0.3787
+      ],
+      "text_hint": "information security officers, and senior agency officials for privacy;",
+      "label": "information security officers, and senior agency officials for privacy;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:17 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.387068,
+        0.823964,
+        0.403932
+      ],
+      "text_hint": "\u2022 Individuals with system development responsibilities, including mission owners, program",
+      "label": "\u2022 Individuals with system development responsibilities, including mission owners, program",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:18 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174947,
+        0.404038,
+        0.826071,
+        0.420901
+      ],
+      "text_hint": "managers, system engineers, system security engineers, privacy engineers, hardware and",
+      "label": "managers, system engineers, system security engineers, privacy engineers, hardware and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:19 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174965,
+        0.421007,
+        0.773578,
+        0.43787
+      ],
+      "text_hint": "software developers, system integrators, and acquisition or procurement officials;",
+      "label": "software developers, system integrators, and acquisition or procurement officials;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:20 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145559,
+        0.446227,
+        0.774415,
+        0.464379
+      ],
+      "text_hint": "\u2022 Individuals with logistical or disposition-related responsibilities, including program",
+      "label": "\u2022 Individuals with logistical or disposition-related responsibilities, including program",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:21 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174971,
+        0.464484,
+        0.741593,
+        0.481348
+      ],
+      "text_hint": "managers, procurement officials, system integrators, and property managers;",
+      "label": "managers, procurement officials, system integrators, and property managers;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:22 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145559,
+        0.489788,
+        0.793391,
+        0.506651
+      ],
+      "text_hint": "\u2022 Individuals with security and privacy implementation and operations responsibilities,",
+      "label": "\u2022 Individuals with security and privacy implementation and operations responsibilities,",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:23 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174947,
+        0.506688,
+        0.810858,
+        0.523551
+      ],
+      "text_hint": "including mission or business owners, system owners, information owners or stewards,",
+      "label": "including mission or business owners, system owners, information owners or stewards,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:25 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:24 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174947,
+        0.523657,
+        0.779653,
+        0.54052
+      ],
+      "text_hint": "system administrators, continuity planners, and system security or privacy officers;",
+      "label": "system administrators, continuity planners, and system security or privacy officers;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:26 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145505,
+        0.548958,
+        0.847247,
+        0.65893
+      ],
+      "text_hint": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including auditors, Inspectors General, system evaluators, control assessors, independent verifiers and validators, and analysts; and\n\u2022 Commercial entities, including industry partners, producing component products and systems, creating security and privacy technologies, or providing services or capabilities that support information security or privacy.",
+      "label": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including auditors, Inspectors Gener",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list | Source id: actual:p30:list:1:27-32 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.548958,
+        0.833117,
+        0.565821
+      ],
+      "text_hint": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including",
+      "label": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:27 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174929,
+        0.565858,
+        0.820892,
+        0.582721
+      ],
+      "text_hint": "auditors, Inspectors General, system evaluators, control assessors, independent verifiers",
+      "label": "auditors, Inspectors General, system evaluators, control assessors, independent verifiers",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:28 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174929,
+        0.582827,
+        0.413742,
+        0.59969
+      ],
+      "text_hint": "and validators, and analysts; and",
+      "label": "and validators, and analysts; and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:29 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145505,
+        0.608128,
+        0.795734,
+        0.624991
+      ],
+      "text_hint": "\u2022 Commercial entities, including industry partners, producing component products and",
+      "label": "\u2022 Commercial entities, including industry partners, producing component products and",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:30 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174911,
+        0.625097,
+        0.847247,
+        0.641961
+      ],
+      "text_hint": "systems, creating security and privacy technologies, or providing services or capabilities that",
+      "label": "systems, creating security and privacy technologies, or providing services or capabilities that",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:31 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174911,
+        0.642066,
+        0.465179,
+        0.65893
+      ],
+      "text_hint": "support information security or privacy.",
+      "label": "support information security or privacy.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:32 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.673379,
+        0.532332,
+        0.69503
+      ],
+      "text_hint": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+      "label": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: section_header | Source id: actual:p30:line:33 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.703273,
+        0.795337,
+        0.720136
+      ],
+      "text_hint": "Managing security and privacy risks is a complex, multifaceted undertaking that requires:",
+      "label": "Managing security and privacy risks is a complex, multifaceted undertaking that requires:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:35 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.728574,
+        0.808109,
+        0.787638
+      ],
+      "text_hint": "\u2022 Well-defined security and privacy requirements for systems and organizations;\n\u2022 The use of trustworthy information system components based on state-of-the-practice hardware, firmware, and software development and acquisition processes;",
+      "label": "\u2022 Well-defined security and privacy requirements for systems and organizations;\n\u2022 The use of trustworthy information sys",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list | Source id: actual:p30:list:2:36-38 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.728574,
+        0.752674,
+        0.745438
+      ],
+      "text_hint": "\u2022 Well-defined security and privacy requirements for systems and organizations;",
+      "label": "\u2022 Well-defined security and privacy requirements for systems and organizations;",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:36 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145541,
+        0.753806,
+        0.808109,
+        0.770669
+      ],
+      "text_hint": "\u2022 The use of trustworthy information system components based on state-of-the-practice",
+      "label": "\u2022 The use of trustworthy information system components based on state-of-the-practice",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: list_item | Source id: actual:p30:line:37 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.174929,
+        0.770775,
+        0.721957,
+        0.787638
+      ],
+      "text_hint": "hardware, firmware, and software development and acquisition processes;",
+      "label": "hardware, firmware, and software development and acquisition processes;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:38 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.827591,
+        0.847815,
+        0.841955
+      ],
+      "text_hint": "13 Risk management is an integral part of systems engineering, systems security engineerin g, and privacy engineering.",
+      "label": "13 Risk management is an integral part of systems engineering, systems security engineerin g, and privacy engineering.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:39 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.84403,
+        0.829067,
+        0.858394
+      ],
+      "text_hint": "14 [OMB A-130] requires federal agencies to implement the NIST Risk Management Framework for the selection of",
+      "label": "14 [OMB A-130] requires federal agencies to implement the NIST Risk Management Framework for the selection of",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:40 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.857894,
+        0.845682,
+        0.872258
+      ],
+      "text_hint": "controls for federal information systems. [EO 13800] requires federal agencies to implement the NIST Framework for",
+      "label": "controls for federal information systems. [EO 13800] requires federal agencies to implement the NIST Framework for",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:41 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.871758,
+        0.836695,
+        0.886121
+      ],
+      "text_hint": "Improving Critical Infrastructure Cybersecurity to manage cybersecurity risk. The NIST frameworks are also available",
+      "label": "Improving Critical Infrastructure Cybersecurity to manage cybersecurity risk. The NIST frameworks are also available",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:42 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145574,
+        0.885621,
+        0.445482,
+        0.899985
+      ],
+      "text_hint": "to nonfederal organizations as optional resources.",
+      "label": "to nonfederal organizations as optional resources.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: paragraph | Source id: actual:p30:line:43 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.221145,
+        0.953818
+      ],
+      "text_hint": "CHAPTER ONE",
+      "label": "CHAPTER ONE",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p30:line:44 | Human should confirm/amend; release extraction is not ground truth."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.812028,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "text_hint": "PAGE 3",
+      "label": "PAGE 3",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 52 source type: running_footer | Source id: actual:p30:line:45 | Human should confirm/amend; release extraction is not ground truth."
+    }
+  ]
+}

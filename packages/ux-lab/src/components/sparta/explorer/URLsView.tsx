@@ -99,6 +99,7 @@ export function URLsView() {
   useRegisterAction('urls:row:select', { app: 'sparta-explorer', action: 'SELECT_URL', label: 'Select URL', description: 'Select a URL to view pipeline status' })
   useRegisterAction('urls:filter:domain', { app: 'sparta-explorer', action: 'SET_DOMAIN_FILTER', label: 'Filter by Domain', description: 'Filter URLs by domain' })
   useRegisterAction('urls:detail:close', { app: 'sparta-explorer', action: 'CLOSE_DETAIL', label: 'Close Detail', description: 'Close the URL detail panel' })
+  useRegisterAction('urls:detail:clean-content', { app: 'sparta-explorer', action: 'INSPECT_CLEAN_CONTENT', label: 'Inspect Clean Content', description: 'Inspect the complete cleaned URL text loaded for the selected URL' })
   useRegisterAction('urls:page:prev', { app: 'sparta-explorer', action: 'PAGE_PREV', label: 'Previous Page', description: 'Navigate to previous page of URLs' })
   useRegisterAction('urls:page:next', { app: 'sparta-explorer', action: 'PAGE_NEXT', label: 'Next Page', description: 'Navigate to next page of URLs' })
 
@@ -359,15 +360,21 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
       {/* Clean extracted text */}
       {cleanText && (
         <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 6 }}>Clean Content ({textLength.toLocaleString()} chars)</div>
-          <div style={{
+          <div style={{ ...label, marginBottom: 6 }}>
+            Clean Content ({(textLength || cleanText.length).toLocaleString()} chars)
+          </div>
+          <div
+            data-qid="urls:detail:clean-content"
+            data-qs-action="INSPECT_CLEAN_CONTENT"
+            title="Complete cleaned URL content"
+            style={{
             fontSize: 12, lineHeight: 1.6, color: EMBRY.dim,
-            maxHeight: 300, overflow: 'auto',
+            maxHeight: 420, overflow: 'auto',
             padding: 12, borderRadius: 6,
             backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`,
             whiteSpace: 'pre-wrap', fontFamily: 'inherit',
           }}>
-            {cleanText.slice(0, 3000)}{cleanText.length > 3000 ? '\n\n... (truncated)' : ''}
+            {cleanText}
           </div>
         </div>
       )}

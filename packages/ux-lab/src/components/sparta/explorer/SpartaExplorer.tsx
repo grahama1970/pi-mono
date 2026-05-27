@@ -64,6 +64,12 @@ const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
   'Supply Chain': Network,
 }
 
+const NAV_GROUPS: { id: string; label: string; tabs: TabName[] }[] = [
+  { id: 'compliance', label: 'Brandon compliance', tabs: ['Posture'] },
+  { id: 'maintenance', label: 'Nico maintenance', tabs: ['Coverage', 'Controls', 'QRAs', 'Sources', 'URLs'] },
+  { id: 'analysis', label: 'Mission analysis', tabs: ['Threat Matrix', 'Supply Chain'] },
+]
+
 interface TabPlaceholderProps { name: TabName; message?: string }
 function TabPlaceholder({ name, message }: TabPlaceholderProps) {
   return (
@@ -944,23 +950,38 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             <Sparkles size={16} />
           </button>
           <div style={{ width: 1, height: 24, backgroundColor: EMBRY.border, margin: '0 8px' }} />
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              role="tab"
-              aria-selected={activeTab === tab}
-              data-qid={`sparta:button:tab-${tab.toLowerCase().replace(/\s+/g, '-')}`}
-              data-qs-action="NAVIGATE_TAB"
-              onClick={() => navigateToTab(tab)}
-              title={tab}
-              style={{
-                ...S.tabBtn,
-                ...(activeTab === tab ? S.tabBtnActive : {}),
-              }}
-            >
-              {(() => { const Icon = TAB_ICON_COMPONENTS[tab]; return Icon ? <Icon size={14} style={{ marginRight: 6 }} /> : null })()}
-              {tab}
-            </button>
+          {NAV_GROUPS.map((group, groupIndex) => (
+            <React.Fragment key={group.id}>
+              {groupIndex > 0 && (
+                <span
+                  aria-hidden="true"
+                  title={group.label}
+                  style={S.navGroupDivider}
+                >
+                  |
+                </span>
+              )}
+              <div role="group" aria-label={group.label} style={S.navGroup}>
+                {group.tabs.map((tab) => (
+                  <button
+                    key={tab}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    data-qid={`sparta:button:tab-${tab.toLowerCase().replace(/\s+/g, '-')}`}
+                    data-qs-action="NAVIGATE_TAB"
+                    onClick={() => navigateToTab(tab)}
+                    title={`${tab} - ${group.label}`}
+                    style={{
+                      ...S.tabBtn,
+                      ...(activeTab === tab ? S.tabBtnActive : {}),
+                    }}
+                  >
+                    {(() => { const Icon = TAB_ICON_COMPONENTS[tab]; return Icon ? <Icon size={14} style={{ marginRight: 6 }} /> : null })()}
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            </React.Fragment>
           ))}
         </div>
         <div style={S.tabStripRight}>
@@ -1178,6 +1199,24 @@ const S = {
     display: 'flex',
     alignItems: 'center',
     gap: 4,
+    minWidth: 0,
+    overflowX: 'auto',
+    overflowY: 'hidden',
+  } as React.CSSProperties,
+  navGroup: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    flexShrink: 0,
+  } as React.CSSProperties,
+  navGroupDivider: {
+    color: 'rgba(148, 163, 184, 0.45)',
+    fontSize: 18,
+    fontWeight: 300,
+    lineHeight: 1,
+    margin: '0 8px',
+    flexShrink: 0,
+    userSelect: 'none',
   } as React.CSSProperties,
   tabStripRight: {
     display: 'flex',

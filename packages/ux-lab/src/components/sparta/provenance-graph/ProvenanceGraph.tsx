@@ -158,17 +158,39 @@ const NodeCircle: React.FC<NodeCircleProps> = ({
 }) => {
   const visual = computeVisualState(layoutNode.node, cascadeState, isSelected)
   const fillColor = CASCADE_COLORS[cascadeState] ?? '#6b7280'
+  const nodeLabel = `${layoutNode.node.label}: ${cascadeState.replace(/_/g, ' ')}; impact ${impactScore.toFixed(2)}`
 
   const handleClick = useCallback(() => {
     onSelect(layoutNode.node)
   }, [layoutNode.node, onSelect])
 
   return (
-    <g data-qid="provenance-graph-provenancegraph:auto:169" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_169"
+    <g
+      data-qid={`provenance-graph:node:${layoutNode.node.id}`}
+      data-qs-action="SELECT_PROVENANCE_NODE"
+      {...({ title: nodeLabel } as Record<string, string>)}
+      aria-label={nodeLabel}
+      role="button"
+      tabIndex={0}
       transform={`translate(${layoutNode.x}, ${layoutNode.y})`}
       onClick={handleClick}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          handleClick()
+        }
+      }}
       style={{ cursor: 'pointer' }}
     >
+      <title>{nodeLabel}</title>
+      <rect
+        x={-22}
+        y={-22}
+        width={44}
+        height={44}
+        fill="transparent"
+        pointerEvents="all"
+      />
       {/* Outer glow for cascade state */}
       {visual.border !== 'none' && (
         <circle
@@ -293,13 +315,18 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         Decay Horizon
       </label>
       <div className="flex items-center gap-2 mt-1">
-        <input data-qid="provenance-graph-provenancegraph:auto:301" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_301"
+        <input
+          data-qid="provenance-graph:control:decay-horizon"
+          data-qs-action="SET_DECAY_HORIZON"
+          title="Set provenance decay horizon in days"
+          aria-label="Set provenance decay horizon in days"
           type="range"
           min={0}
           max={365}
           value={horizonDays}
           onChange={e => onHorizonChange(Number(e.target.value))}
           className="flex-1"
+          style={{ minHeight: 44 }}
         />
         <span className="text-sm text-gray-300 w-16">
           {horizonDays === 0 ? 'Now' : `+${horizonDays}d`}
@@ -314,12 +341,17 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       </label>
       <div className="mt-1 space-y-1 max-h-32 overflow-y-auto">
         {suppliers.slice(0, 10).map(s => (
-          <label key={s.id} className="flex items-center gap-2 text-sm">
-            <input data-qid="provenance-graph-provenancegraph:auto:321" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_321"
+          <label key={s.id} className="flex min-h-[44px] items-center gap-2 text-sm">
+            <input
+              data-qid={`provenance-graph:control:supplier-taint:${s.id}`}
+              data-qs-action="TOGGLE_SUPPLIER_TAINT"
+              title={`Toggle isolation simulation for ${s.name}`}
+              aria-label={`Toggle isolation simulation for ${s.name}`}
               type="checkbox"
               checked={virtualTaints.has(s.id)}
               onChange={() => onTaintToggle(s.id)}
               className="rounded border-gray-600"
+              style={{ minWidth: 44, minHeight: 44 }}
             />
             <span className={virtualTaints.has(s.id) ? 'text-red-400' : 'text-gray-300'}>
               {s.name}
@@ -336,10 +368,13 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       </label>
       <div className="flex gap-1 mt-1">
         {[1, 2, 3].map(tier => (
-          <button data-qid="provenance-graph-provenancegraph:auto:341" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_341"
+          <button
+            data-qid={`provenance-graph:control:tier:${tier}`}
+            data-qs-action="EXPAND_SUPPLY_CHAIN_TIER"
+            title={`Show supply chain tier ${tier}`}
             key={tier}
             onClick={() => onTierExpand(tier)}
-            className={`px-3 py-1 rounded text-sm ${
+            className={`min-h-[44px] min-w-[56px] px-3 py-1 rounded text-sm ${
               expandedTier === tier
                 ? 'bg-blue-600 text-white'
                 : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -728,7 +763,11 @@ export const ProvenanceGraph: React.FC<ProvenanceGraphProps> = ({
       style={{ minHeight: layout.bounds.height + SWIMLANE_HEADER_HEIGHT }}
     >
       {/* Canvas layer for edges (clickable for O(1) edge picking) */}
-      <canvas data-qid="provenance-graph-provenancegraph:auto:736" data-qs-action="PROVENANCE_GRAPH_PROVENANCEGRAPH_AUTO_736"
+      <canvas
+        data-qid="provenance-graph:canvas:edge-picker"
+        data-qs-action="SELECT_PROVENANCE_EDGE"
+        title="Select a provenance dependency edge"
+        aria-label="Select a provenance dependency edge"
         ref={canvasRef}
         width={layout.bounds.width}
         height={layout.bounds.height}

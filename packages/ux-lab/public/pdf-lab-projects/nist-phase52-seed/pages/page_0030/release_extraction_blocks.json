@@ -1,0 +1,1926 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page_index": 29,
+  "pdf_page_number": 30,
+  "blocks": [
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0006",
+      "page": 29,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "1.1   PURPOSE AND APPLICABILITY",
+      "toc_backed": true,
+      "toc_id": "toc:0006",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:0",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:1",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.088803,
+        0.807646,
+        0.105667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:3",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "The answers to these questions are not given in isolation but rather in the context of a risk",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.105772,
+        0.833984,
+        0.122636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:4",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "management process for the organization that identifies, assesses, responds to, and monitors",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.122591,
+        0.815939,
+        0.139536
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:5",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "security and privacy risks arising from its information and systems on an ongoing basis. 8 The",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145564,
+        0.139636,
+        0.829539,
+        0.156499
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:6",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "security and privacy controls in this publication are recommended for use by organizations to",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145546,
+        0.156605,
+        0.837254,
+        0.173468
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:7",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "satisfy their information security and privacy requirements. The control catalog can be viewed",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145546,
+        0.173574,
+        0.855929,
+        0.190438
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:8",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "as a tool box containing a collection of safeguards, countermeasures, techniques, and processes",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145546,
+        0.190543,
+        0.849723,
+        0.207407
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:9",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to respond to security and privacy risk s. The controls are employed as part of a well -defined risk",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145528,
+        0.207443,
+        0.851937,
+        0.224306
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:10",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "management proc ess that supports organizational information security and privacy programs. In",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145492,
+        0.224412,
+        0.842274,
+        0.241276
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:11",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "turn, those information security and privacy programs lay the foundation for the success of the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145492,
+        0.241381,
+        0.52863,
+        0.258245
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:12",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "mission and business functions of the organization.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.273503,
+        0.820649,
+        0.290367
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:13",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is It available is important free that of charge responsible from: officials understand the security and privacy risks that could",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145474,
+        0.290472,
+        0.837196,
+        0.307336
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:14",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "adversely affect organizational operations and assets, individuals, other organizations, and the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145456,
+        0.307288,
+        0.822719,
+        0.324236
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:15",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Nation. 9 These officials must also understand the current status of their security and privacy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145561,
+        0.324333,
+        0.846491,
+        0.341196
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:16",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "programs and the controls plann ed or in place to protect information, information systems, and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145561,
+        0.341302,
+        0.84196,
+        0.358165
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:17",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organization s in order to make informed judgments and investments that respond to identified",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145543,
+        0.358271,
+        0.843459,
+        0.375134
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:18",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "risks in an accepta ble manner. The objective is to manage these risks through the selection and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145525,
+        0.37524,
+        0.502424,
+        0.392104
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:19",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "implementation of security and privacy controls.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.406636,
+        0.464392,
+        0.428288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:20",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.1 PURPOSE AND APPLICABILITY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.436455,
+        0.783455,
+        0.453318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:21",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication establishes controls for systems and organizations. The controls can be",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.453424,
+        0.871732,
+        0.470287
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:22",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "implemented within any organization or system that processes, stores, or transmits information.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.470318,
+        0.818987,
+        0.487256
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:23",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "The use of these controls is mandatory for federal information systems 10 in accordance with",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145566,
+        0.487363,
+        0.846602,
+        0.504227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:24",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Office of Management and Budget (OMB) Circular A- 130 [OMB A -130] and the provisions of the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.504182,
+        0.84366,
+        0.521121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:25",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Federal Information Security Modernization Act 11 [FISMA], which requires the implementation",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.851454,
+        0.538091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:26",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008 of minimum controls to protect federal information and information systems. 12 This publication,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145555,
+        0.538196,
+        0.821412,
+        0.55506
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:27",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "along with other supporting NIST publications, is designed to help organizations identify the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145555,
+        0.555165,
+        0.809382,
+        0.572029
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:28",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "security and privacy controls needed to manage risk and to satisf y the security and p rivacy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145555,
+        0.572135,
+        0.822794,
+        0.588998
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:29",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "requirements in FISMA, the Privacy Act of 1974 [PRIVACT], OMB policies (e.g., [OMB A -130]),",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.58903,
+        0.84805,
+        0.605894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:30",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and designated Federal Information Processing Standards (FIPS), among others. It accomplishes",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.605999,
+        0.85233,
+        0.622863
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:31",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "this objective by providing a comprehensive and flexible catalog of security and privacy controls",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.622968,
+        0.790189,
+        0.639832
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:32",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to meet current and future protection needs based on changing threats, vulnerabilities,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.639938,
+        0.778563,
+        0.656801
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:33",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "requirements, and technologies. The publication also improve s communication among",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.656837,
+        0.836917,
+        0.673701
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:34",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organizations by providing a common lexicon that supports the discussion of security, privacy,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.673806,
+        0.384432,
+        0.69067
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:35",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and risk management concepts.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:36",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3r55 -",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.73047,
+        0.816706,
+        0.744833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:37",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "8 The Risk Management Framework in [- SP 800 37] is an example of a comprehensive risk management process.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.746409,
+        0.648015,
+        0.761773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:38",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "9 This includes risk to critical infrastructure and key resources described in HSPD-7]. [",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.763273,
+        0.859318,
+        0.777636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:39",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145564,
+        0.777136,
+        0.423181,
+        0.7915
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:40",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "another organization on behalf of an agency.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.793576,
+        0.858779,
+        0.807939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:41",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.807439,
+        0.856301,
+        0.821803
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:42",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.821303,
+        0.835985,
+        0.835667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:43",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.835167,
+        0.824759,
+        0.84953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:44",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "officials exercising policy authority over such systems. CNSSP [22] and [CNSSI 1253] provide gu idance for national",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.84903,
+        0.657681,
+        0.863394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:45",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "security systems. [DODI 8510.01] provides guidance for the Department of Defense.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.86547,
+        0.865873,
+        0.879833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:46",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12 While the controls established in this publication are mandatory for federal information systems and organizations,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.879333,
+        0.857574,
+        0.893697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:47",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "other organizations such as state, local, and tribal governments as well as private secto r organizations are encouraged",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.893197,
+        0.732887,
+        0.907561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:48",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to consider using these guidelines, as appropriate. See [- SP 800 53B] for federal control baselines.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.226029,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:49",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER ONE",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.812028,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p29:line:50",
+      "page": 29,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 2",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0007",
+      "page": 30,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "1.2   TARGET AUDIENCE",
+      "toc_backed": true,
+      "toc_id": "toc:0007",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0008",
+      "page": 30,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "1.3   ORGANIZATIONAL RESPONSIBILITIES",
+      "toc_backed": true,
+      "toc_id": "toc:0008",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:0",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:1",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.088803,
+        0.809,
+        0.105667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:3",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Finally, the controls are independent of the process employed to select those controls. The",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.105772,
+        0.798342,
+        0.122636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:4",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "control selection process can be part of an organization- widerisk management process, a",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.122591,
+        0.825309,
+        0.139536
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:5",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "systems engineering process [SP 800-160 -1], 13 the Risk Management Framework [SP 800-37],",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.139561,
+        0.809716,
+        0.1565
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:6",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the Cybersecurity Framework [NIST CSF], or the Privacy Framework [NIST PF]. 14 The control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.156606,
+        0.828804,
+        0.17347
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:7",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "selection criteria can be guided and informed by many factors, including mission and business",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.173575,
+        0.837489,
+        0.190439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:8",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "needs, stakeholder protection needs, threats, vulnerabilities, and requirements to comply with",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145523,
+        0.190544,
+        0.827806,
+        0.207408
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:9",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "federal laws, executive orders, directives, regulations, policies, standards, and guidelines. The",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145523,
+        0.207444,
+        0.807019,
+        0.224308
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:10",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "combination of a catalog of security and privacy controls and a risk-based control selection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145523,
+        0.224413,
+        0.82128,
+        0.241277
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:11",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "process can help organizations comply with stated security and privacy requirements, obtain",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145505,
+        0.241382,
+        0.778438,
+        0.258246
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:12",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "adequate security for their information systems, and protect the privacy of individuals.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.273273,
+        0.361657,
+        0.293924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:13",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is 1.2 available TARGET free of charge AUDIENCE from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.302667,
+        0.628585,
+        0.31953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:14",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is intended to serve a diverse audience, including:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.327898,
+        0.826071,
+        0.523551
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:list:0:15-25",
+      "page": 30,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p30:line:15",
+          "actual:p30:line:16",
+          "actual:p30:line:17",
+          "actual:p30:line:18",
+          "actual:p30:line:19",
+          "actual:p30:line:20",
+          "actual:p30:line:21",
+          "actual:p30:line:22",
+          "actual:p30:line:23",
+          "actual:p30:line:25"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p30:line:15",
+              "actual:p30:line:16",
+              "actual:p30:line:17"
+            ],
+            "start_id": "actual:p30:line:15",
+            "text": "\u2022 Individuals with system, information security, privacy, or risk management and oversight responsibilities, including authorizing officials, chief information officers, senior agency information security officers, and senior agency officials for privacy;"
+          },
+          {
+            "line_ids": [
+              "actual:p30:line:18",
+              "actual:p30:line:19",
+              "actual:p30:line:20"
+            ],
+            "start_id": "actual:p30:line:18",
+            "text": "\u2022 Individuals with system development responsibilities, including mission owners, program managers, system engineers, system security engineers, privacy engineers, hardware and software developers, system integrators, and acquisition or procurement officials;"
+          },
+          {
+            "line_ids": [
+              "actual:p30:line:21",
+              "actual:p30:line:22"
+            ],
+            "start_id": "actual:p30:line:21",
+            "text": "\u2022 Individuals with logistical or disposition-related responsibilities, including program managers, procurement officials, system integrators, and property managers;"
+          },
+          {
+            "line_ids": [
+              "actual:p30:line:23",
+              "actual:p30:line:25"
+            ],
+            "start_id": "actual:p30:line:23",
+            "text": "\u2022 Individuals with security and privacy implementation and operations responsibilities, including mission or business owners, system owners, information owners or stewards,"
+          }
+        ],
+        "list_style": "bullet"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "\u2022 Individuals with system, information security, privacy, or risk management and oversight responsibilities, including authorizing officials, chief information officers, senior agency information security officers, and senior agency officials for privacy;\n\u2022 Individuals with system development responsibilities, including mission owners, program managers, system engineers, system security engineers, privacy engineers, hardware and software developers, system integrators, and acquisition or procurement officials;\n\u2022 Individuals with logistical or disposition-related responsibilities, including program managers, procurement officials, system integrators, and property managers;\n\u2022 Individuals with security and privacy implementation and operations responsibilities, including mission or business owners, system owners, information owners or stewards,",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.327898,
+        0.820794,
+        0.344762
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:15",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Individuals with system, information security, privacy, or risk management and oversight",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.344868,
+        0.808666,
+        0.361731
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:16",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "responsibilities, including authorizing officials, chief information officers, senior agency",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.361837,
+        0.669218,
+        0.3787
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:17",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "information security officers, and senior agency officials for privacy;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.387068,
+        0.823964,
+        0.403932
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:18",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Individuals with system development responsibilities, including mission owners, program",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.404038,
+        0.826071,
+        0.420901
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:19",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "managers, system engineers, system security engineers, privacy engineers, hardware and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174965,
+        0.421007,
+        0.773578,
+        0.43787
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:20",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "software developers, system integrators, and acquisition or procurement officials;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.446227,
+        0.774415,
+        0.464379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:21",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Individuals with logistical or disposition-related responsibilities, including program",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174971,
+        0.464484,
+        0.741593,
+        0.481348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:22",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "managers, procurement officials, system integrators, and property managers;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.489788,
+        0.793391,
+        0.506651
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:23",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Individuals with security and privacy implementation and operations responsibilities,",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.506688,
+        0.810858,
+        0.523551
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:25",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "including mission or business owners, system owners, information owners or stewards,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:24",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.523657,
+        0.779653,
+        0.54052
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:26",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "system administrators, continuity planners, and system security or privacy officers;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145505,
+        0.548958,
+        0.847247,
+        0.65893
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:list:1:27-32",
+      "page": 30,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p30:line:27",
+          "actual:p30:line:28",
+          "actual:p30:line:29",
+          "actual:p30:line:30",
+          "actual:p30:line:31",
+          "actual:p30:line:32"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p30:line:27",
+              "actual:p30:line:28",
+              "actual:p30:line:29"
+            ],
+            "start_id": "actual:p30:line:27",
+            "text": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including auditors, Inspectors General, system evaluators, control assessors, independent verifiers and validators, and analysts; and"
+          },
+          {
+            "line_ids": [
+              "actual:p30:line:30",
+              "actual:p30:line:31",
+              "actual:p30:line:32"
+            ],
+            "start_id": "actual:p30:line:30",
+            "text": "\u2022 Commercial entities, including industry partners, producing component products and systems, creating security and privacy technologies, or providing services or capabilities that support information security or privacy."
+          }
+        ],
+        "list_style": "bullet"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including auditors, Inspectors General, system evaluators, control assessors, independent verifiers and validators, and analysts; and\n\u2022 Commercial entities, including industry partners, producing component products and systems, creating security and privacy technologies, or providing services or capabilities that support information security or privacy.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.548958,
+        0.833117,
+        0.565821
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:27",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Individuals with security and privacy assessment and monitoring responsibilities, including",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174929,
+        0.565858,
+        0.820892,
+        0.582721
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:28",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "auditors, Inspectors General, system evaluators, control assessors, independent verifiers",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174929,
+        0.582827,
+        0.413742,
+        0.59969
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:29",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and validators, and analysts; and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145505,
+        0.608128,
+        0.795734,
+        0.624991
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:30",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Commercial entities, including industry partners, producing component products and",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174911,
+        0.625097,
+        0.847247,
+        0.641961
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:31",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "systems, creating security and privacy technologies, or providing services or capabilities that",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174911,
+        0.642066,
+        0.465179,
+        0.65893
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:32",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "support information security or privacy.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.673379,
+        0.532332,
+        0.69503
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:33",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.3 ORGANIZATIONAL RESPONSIBILITIES",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.703273,
+        0.795337,
+        0.720136
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:35",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Managing security and privacy risks is a complex, multifaceted undertaking that requires:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.728574,
+        0.808109,
+        0.787638
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:list:2:36-38",
+      "page": 30,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p30:line:36",
+          "actual:p30:line:37",
+          "actual:p30:line:38"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p30:line:36"
+            ],
+            "start_id": "actual:p30:line:36",
+            "text": "\u2022 Well-defined security and privacy requirements for systems and organizations;"
+          },
+          {
+            "line_ids": [
+              "actual:p30:line:37",
+              "actual:p30:line:38"
+            ],
+            "start_id": "actual:p30:line:37",
+            "text": "\u2022 The use of trustworthy information system components based on state-of-the-practice hardware, firmware, and software development and acquisition processes;"
+          }
+        ],
+        "list_style": "bullet"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "\u2022 Well-defined security and privacy requirements for systems and organizations;\n\u2022 The use of trustworthy information system components based on state-of-the-practice hardware, firmware, and software development and acquisition processes;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.728574,
+        0.752674,
+        0.745438
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:36",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 Well-defined security and privacy requirements for systems and organizations;",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.753806,
+        0.808109,
+        0.770669
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:37",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 The use of trustworthy information system components based on state-of-the-practice",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174929,
+        0.770775,
+        0.721957,
+        0.787638
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:38",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "hardware, firmware, and software development and acquisition processes;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.827591,
+        0.847815,
+        0.841955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:39",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "13 Risk management is an integral part of systems engineering, systems security engineerin g, and privacy engineering.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.84403,
+        0.829067,
+        0.858394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:40",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "14 [OMB A-130] requires federal agencies to implement the NIST Risk Management Framework for the selection of",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.857894,
+        0.845682,
+        0.872258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:41",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "controls for federal information systems. [EO 13800] requires federal agencies to implement the NIST Framework for",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.871758,
+        0.836695,
+        0.886121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:42",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Improving Critical Infrastructure Cybersecurity to manage cybersecurity risk. The NIST frameworks are also available",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145574,
+        0.885621,
+        0.445482,
+        0.899985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:43",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to nonfederal organizations as optional resources.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.221145,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:44",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER ONE",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.812028,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p30:line:45",
+      "page": 30,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 3",
+      "type": "running_footer"
+    }
+  ]
+}

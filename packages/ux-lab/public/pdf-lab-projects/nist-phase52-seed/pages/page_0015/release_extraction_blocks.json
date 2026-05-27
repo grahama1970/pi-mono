@@ -1,0 +1,1019 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page_index": 14,
+  "pdf_page_number": 15,
+  "blocks": [
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:0",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:1+actual:p14:line:14",
+      "merged_from": [
+        "actual:p14:line:1",
+        "actual:p14:line:14"
+      ],
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.300843,
+        0.130424,
+        0.68564,
+        0.148288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:3",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FEDERAL RECORDS MANAGEMENT COLLABORATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.155394,
+        0.816078,
+        0.171045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:4",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Federal records management processes have a nexus with certain information security and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.170778,
+        0.819925,
+        0.18643
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:5",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "privacy requirements and controls. For example, records officers may be managing records",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.186238,
+        0.818656,
+        0.20189
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:6",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "retention, including when records will be deleted. Collaborating with records officers on the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.201623,
+        0.819598,
+        0.217274
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:7",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "selection and implementation of security and privacy controls related to records management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.747424,
+        0.217007,
+        0.816684,
+        0.232658
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:15",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "curity and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.217007,
+        0.754255,
+        0.232658
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:8",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "can support consistency and efficiency and ultimately strengthen the organization\u2019s se",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.181441,
+        0.232543,
+        0.288501,
+        0.248194
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:9",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "privacy posture.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.274939,
+        0.345618,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:10",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:11",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.491431,
+        0.938152,
+        0.507773,
+        0.953515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p14:line:13",
+      "page": 14,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "xii",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:0",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:1",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.414775,
+        0.088576,
+        0.580702,
+        0.109227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:3",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table of Contents",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.125545,
+        0.853634,
+        0.142409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:4",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER ONE INTRODUCTION...................................................................................................... 1",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.146227,
+        0.853609,
+        0.161879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:5",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.1 PURPOSE AND APPLICABILITY................................................................................................... 2",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.161606,
+        0.85363,
+        0.177258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:6",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.2 TARGET AUDIENCE.................................................................................................................. 3",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.177061,
+        0.853624,
+        0.192712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:7",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.3 ORGANIZATIONAL RESPONSIBILITIES......................................................................................... 3",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.192439,
+        0.853629,
+        0.208091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:8",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.4 RELATIONSHIP TO OTHER PUBLICATIONS................................................................................... 5",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.207818,
+        0.853626,
+        0.22347
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:9",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.5 REVISIONS AND EXTENSIONS.................................................................................................... 5",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.223273,
+        0.853619,
+        0.238924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:10",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1.6 PUBLICATION ORGANIZATION.................................................................................................. 5",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.242515,
+        0.853647,
+        0.259379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:11",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER TWO THE FUNDAMENTALS............................................................................................ 7",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.263197,
+        0.853618,
+        0.278848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:12",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2.1 REQUIREMENTS AND CONTROLS.............................................................................................. 7",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.274939,
+        0.853622,
+        0.294303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:13",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available 2.2 CONTROL free of charge STRUCTURE from: AND ORGANIZATION.............................................................................. 8",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.29403,
+        0.853743,
+        0.309682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:14",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2.3 CONTROL IMPLEMENTATION APPROACHES............................................................................. 11",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.309409,
+        0.853733,
+        0.325061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:15",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2.4 SECURITY AND PRIVACY CONTROLS......................................................................................... 13",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.324864,
+        0.853731,
+        0.340515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:16",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2.5 TRUSTWORTHINESS AND ASSURANCE..................................................................................... 14",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.344106,
+        0.85366,
+        0.36097
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:17",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER THREE THE CONTROLS................................................................................................. 16",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.364788,
+        0.853733,
+        0.380439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:18",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.1 ACCESS CONTROL.................................................................................................................. 18",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.380242,
+        0.85373,
+        0.395894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:19",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.2 AWARENESS AND TRAINING................................................................................................... 59",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.395621,
+        0.853634,
+        0.411273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:20",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.3 AUDIT AND ACCOUNTABILITY................................................................................................. 65",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.411076,
+        0.853737,
+        0.426727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:21",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.4 ASSESSMENT, AUTHORIZATION, AND MONITORING................................................................. 83",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.426455,
+        0.853752,
+        0.442106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:22",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.5 CONFIGURATION MANAGEMENT........................................................................................... 96",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.441833,
+        0.853751,
+        0.457485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:23",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.6 CONTINGENCY PLANNING.................................................................................................... 115",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.457288,
+        0.853764,
+        0.472939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:24",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.7 IDENTIFICATION AND AUTHENTICATION............................................................................... 131",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.472667,
+        0.853738,
+        0.488318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:25",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.8 INCIDENT RESPONSE............................................................................................................ 149",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.488121,
+        0.853757,
+        0.503773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:26",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.9 MAINTENANCE.................................................................................................................... 162",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.5035,
+        0.853742,
+        0.519152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:27",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.10 MEDIA PROTECTION.......................................................................................................... 171",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:28",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.518955,
+        0.85374,
+        0.534606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:29",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.11 PHYSICAL AND ENVIRONMENTAL PROTECTION.................................................................... 179",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.534333,
+        0.853741,
+        0.549985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:30",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.12 PLANNING........................................................................................................................ 194",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.549788,
+        0.853757,
+        0.565439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:31",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.13 PROGRAM MANAGEMENT................................................................................................. 203",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.565167,
+        0.853756,
+        0.580818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:32",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.14 PERSONNEL SECURITY........................................................................................................ 222",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.580545,
+        0.853769,
+        0.596197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:33",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.15 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY....................... 229",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.596,
+        0.853742,
+        0.611652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:34",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.16 RISK ASSESSMENT.............................................................................................................. 238",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.611379,
+        0.853761,
+        0.62703
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:35",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.17 SYSTEM AND SERVICES ACQUISITION.................................................................................. 249",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.626833,
+        0.853719,
+        0.642485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:36",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.18 SYSTEM AND COMMUNICATIONS PROTECTION................................................................... 292",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.642212,
+        0.853736,
+        0.657864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:37",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.19 SYSTEM AND INFORMATION INTEGRITY.............................................................................. 332",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.165167,
+        0.657667,
+        0.853758,
+        0.673318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:38",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.20 SUPPLY CHAIN RISK MANAGEMENT..................................................................................... 363",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.676909,
+        0.853647,
+        0.693773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:39",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "REFERENCES................................................................................................................................ 374",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.697667,
+        0.853628,
+        0.71453
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:41",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX A GLOSSARY.............................................................................................................. 394",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.718424,
+        0.853643,
+        0.735288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:42",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX B ACRONYMS............................................................................................................ 424",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.739182,
+        0.853648,
+        0.756045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:43",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C CONTROL SUMMARIES.......................................................................................... 428",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.489765,
+        0.938152,
+        0.5096,
+        0.953515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p15:line:44",
+      "page": 15,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "xiii",
+      "type": "running_footer"
+    }
+  ]
+}

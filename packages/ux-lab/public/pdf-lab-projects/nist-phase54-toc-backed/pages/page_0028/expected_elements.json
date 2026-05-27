@@ -1,0 +1,798 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0028",
+  "captured_at": "2026-05-26T19:14:03.528309+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "sections",
+    "lists",
+    "headers_footers"
+  ],
+  "toc_entries": [
+    {
+      "toc_id": "toc:0001",
+      "title": "CHAPTER ONE INTRODUCTION",
+      "level": 1,
+      "target_page": 1,
+      "matched_pdf_page_index": 27,
+      "extraction_page": 28
+    }
+  ],
+  "reviewer_questions": [
+    "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+    "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "INTRODUCTION",
+      "label": "INTRODUCTION",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0005; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p28:line:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p28:line:2; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.091712,
+        0.274536,
+        0.112152
+      ],
+      "text_hint": "CHAPTER ONE",
+      "label": "CHAPTER ONE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p28:line:3; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145053,
+        0.127772,
+        0.312974,
+        0.151999
+      ],
+      "text_hint": "INTRODUCTION",
+      "label": "INTRODUCTION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p28:line:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.156561,
+        0.716848,
+        0.173212
+      ],
+      "text_hint": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "label": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p28:line:5; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.187515,
+        0.807652,
+        0.204455
+      ],
+      "text_hint": "Modern information systems can 1 include a variety of computing platforms (e.g., industrial",
+      "label": "Modern information systems can 1 include a variety of computing platforms (e.g.,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145561,
+        0.20456,
+        0.844932,
+        0.221424
+      ],
+      "text_hint": "control systems, general purpose computing systems, cyber-physical systems, super computers,",
+      "label": "control systems, general purpose computing systems, cyber-physical systems, supe",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145543,
+        0.221529,
+        0.829051,
+        0.238393
+      ],
+      "text_hint": "weapons systems, communications systems, environmental control systems, medical devices,",
+      "label": "weapons systems, communications systems, environmental control systems, medical ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145507,
+        0.238498,
+        0.79899,
+        0.255362
+      ],
+      "text_hint": "embedded devices, sensors, and mobile devices such as smart phones and tablets). These",
+      "label": "embedded devices, sensors, and mobile devices such as smart phones and tablets).",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:9; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145471,
+        0.255398,
+        0.823514,
+        0.272262
+      ],
+      "text_hint": "platforms all share a common foundation\u2014computers with complex hardware, software and",
+      "label": "platforms all share a common foundation\u2014computers with complex hardware, softwar",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.272367,
+        0.818918,
+        0.289303
+      ],
+      "text_hint": "This publication is firmware available providing free of charge a capability from: that supports the essential mission and business functions of",
+      "label": "This publication is firmware available providing free of charge a capability fro",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145489,
+        0.289258,
+        0.257904,
+        0.3062
+      ],
+      "text_hint": "organizations. 2",
+      "label": "organizations. 2",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145557,
+        0.321455,
+        0.795954,
+        0.338319
+      ],
+      "text_hint": "Security controls are the safeguards or countermeasures employed within a system or an",
+      "label": "Security controls are the safeguards or countermeasures employed within a system",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145539,
+        0.338425,
+        0.797239,
+        0.355288
+      ],
+      "text_hint": "organization to protect the confidentiality, integrity, and availability of the system and its",
+      "label": "organization to protect the confidentiality, integrity, and availability of the ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145539,
+        0.355242,
+        0.829412,
+        0.372188
+      ],
+      "text_hint": "information and to manage information security risk. 3 Privacy controls are the administrative,",
+      "label": "information and to manage information security risk. 3 Privacy controls are the ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145563,
+        0.372287,
+        0.807181,
+        0.389151
+      ],
+      "text_hint": "technical, and physical safeguards employed within a system or an organization to manage",
+      "label": "technical, and physical safeguards employed within a system or an organization t",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145563,
+        0.389182,
+        0.806883,
+        0.40612
+      ],
+      "text_hint": "privacy risks and to ensure compliance with applicable privacy requirements. 4 Security and",
+      "label": "privacy risks and to ensure compliance with applicable privacy requirements. 4 S",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.406227,
+        0.810637,
+        0.42309
+      ],
+      "text_hint": "privacy controls are selected and implemented to satisfy security and privacy requirements",
+      "label": "privacy controls are selected and implemented to satisfy security and privacy re",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.423196,
+        0.780149,
+        0.440059
+      ],
+      "text_hint": "levied on a system or organization. Security and privacy requirements are derived from",
+      "label": "levied on a system or organization. Security and privacy requirements are derive",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.440095,
+        0.848171,
+        0.456959
+      ],
+      "text_hint": "applicable laws, executive orders, directives, regulations, policies, standards, and mission needs",
+      "label": "applicable laws, executive orders, directives, regulations, policies, standards,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:20; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.457065,
+        0.809777,
+        0.473928
+      ],
+      "text_hint": "to ensure the confidentiality, integrity, and availability of information processed, stored, or",
+      "label": "to ensure the confidentiality, integrity, and availability of information proces",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.474034,
+        0.537341,
+        0.490897
+      ],
+      "text_hint": "transmitted and to manage risks to individual privacy.",
+      "label": "transmitted and to manage risks to individual privacy.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.506076,
+        0.840385,
+        0.523019
+      ],
+      "text_hint": "The selection, design, and implementation of security and privacy controls 5 are important tasks",
+      "label": "The selection, design, and implementation of security and privacy controls 5 are",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.523045,
+        0.83307,
+        0.539984
+      ],
+      "text_hint": "that have significant implications for the operations 6 and assets of organizations as well as the",
+      "label": "that have significant implications for the operations 6 and assets of organizati",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145568,
+        0.540021,
+        0.839251,
+        0.556885
+      ],
+      "text_hint": "welfare of individuals and the Nation. Organizations should answer several key questions when",
+      "label": "welfare of individuals and the Nation. Organizations should answer several key q",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145568,
+        0.55699,
+        0.532936,
+        0.573854
+      ],
+      "text_hint": "addressing information security and privacy controls:",
+      "label": "addressing information security and privacy controls:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145586,
+        0.582291,
+        0.837768,
+        0.683557
+      ],
+      "text_hint": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals?\n\u2022 Have the selected controls been implemented or is there a plan in place ",
+      "label": "\u2022 What security and privacy controls are needed to satisfy security and privacy ",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p28:list:0:28-32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145586,
+        0.582291,
+        0.837768,
+        0.599155
+      ],
+      "text_hint": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements",
+      "label": "\u2022 What security and privacy controls are needed to satisfy security and privacy ",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p28:line:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.17501,
+        0.59926,
+        0.702413,
+        0.616124
+      ],
+      "text_hint": "and to adequately manage mission/business risks or risks to individuals?",
+      "label": "and to adequately manage mission/business risks or risks to individuals?",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145586,
+        0.624561,
+        0.770734,
+        0.641425
+      ],
+      "text_hint": "\u2022 Have the selected controls been implemented or is there a plan in place to do so?",
+      "label": "\u2022 Have the selected controls been implemented or is there a plan in place to do ",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p28:line:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145604,
+        0.649793,
+        0.802088,
+        0.666657
+      ],
+      "text_hint": "\u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected",
+      "label": "\u2022 What is the required level of assurance (i.e., grounds for confidence) that th",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p28:line:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.175009,
+        0.666606,
+        0.580355,
+        0.683557
+      ],
+      "text_hint": "controls, as designed and implemented, are effective? 7",
+      "label": "controls, as designed and implemented, are effective? 7",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.72547,
+        0.780227,
+        0.739833
+      ],
+      "text_hint": "1 An information system is a discrete set of information resources organized for the collection, processing,",
+      "label": "1 An information system is a discrete set of information resources organized for",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.739333,
+        0.656253,
+        0.753697
+      ],
+      "text_hint": "maintenance, use, sharing, dissemination, or disposition of information [OMB A-130].",
+      "label": "maintenance, use, sharing, dissemination, or disposition of information [OMB A-1",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:35; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.755697,
+        0.838201,
+        0.770061
+      ],
+      "text_hint": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure",
+      "label": "2 The term organization describes an entity of any size, complexity, or position",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145574,
+        0.769561,
+        0.590581,
+        0.783924
+      ],
+      "text_hint": "(e.g., a federal agency or, as appropriate, any of its operational elements).",
+      "label": "(e.g., a federal agency or, as appropriate, any of its operational elements).",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.786,
+        0.697158,
+        0.800364
+      ],
+      "text_hint": "3 The two terms information security and security are used synonymously in this publication.",
+      "label": "3 The two terms information security and security are used synonymously in this ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.801864,
+        0.458603,
+        0.817227
+      ],
+      "text_hint": "4 [OMB A-130] defines security and privacy controls.",
+      "label": "4 [OMB A-130] defines security and privacy controls.",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p28:line:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.818803,
+        0.839595,
+        0.833167
+      ],
+      "text_hint": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce",
+      "label": "5 Controls provide safeguards and countermeasures in systems security and privac",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145549,
+        0.832667,
+        0.419123,
+        0.84703
+      ],
+      "text_hint": "risk during the system development life cycle.",
+      "label": "risk during the system development life cycle.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.84853,
+        0.611559,
+        0.863894
+      ],
+      "text_hint": "6 Organizational operations include mission, functions, image, and re putation.",
+      "label": "6 Organizational operations include mission, functions, image, and re putation.",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p28:line:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.86547,
+        0.828425,
+        0.879833
+      ],
+      "text_hint": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly,",
+      "label": "7 Security and privacy control effectiveness addresses the extent to which the c",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.879333,
+        0.813694,
+        0.893697
+      ],
+      "text_hint": "operating as intended, and producing the desired outcome with respect to meeting the designated security and",
+      "label": "operating as intended, and producing the desired outcome with respect to meeting",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.893197,
+        0.35705,
+        0.907561
+      ],
+      "text_hint": "privacy requirements [- SP 800 53A].",
+      "label": "privacy requirements [- SP 800 53A].",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p28:line:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.221145,
+        0.953818
+      ],
+      "text_hint": "CHAPTER ONE",
+      "label": "CHAPTER ONE",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p28:line:46; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.812028,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "text_hint": "PAGE 1",
+      "label": "PAGE 1",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p28:line:47; human should amend if rendered page contradicts this row."
+    }
+  ]
+}

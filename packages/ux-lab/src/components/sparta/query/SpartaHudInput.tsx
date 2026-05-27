@@ -180,6 +180,9 @@ export function SpartaHudInput({
               ref={pdfInputRef}
               type="file"
               accept="application/pdf,.pdf"
+              data-qid="sparta:hud:pdf-file-input"
+              data-qs-action="SELECT_PDF_EVIDENCE_FILE"
+              title="Select PDF evidence file"
               onChange={handlePdfChange}
               style={{ display: 'none' }}
             />

@@ -1,0 +1,2426 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page_index": 35,
+  "pdf_page_number": 36,
+  "blocks": [
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0014",
+      "page": 35,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "toc_backed": true,
+      "toc_id": "toc:0014",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:0",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:1",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.088803,
+        0.860044,
+        0.105667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:3",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.105772,
+        0.863928,
+        0.122636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:4",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "for achieving the particular security and privacy objectives of the organization and reflecting the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.122672,
+        0.848337,
+        0.139536
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:5",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "protection needs of organizational stakeholders. Controls are selec ted and implemented by the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145577,
+        0.139641,
+        0.840877,
+        0.156505
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:6",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organization in order to satisfy the system requirements. Controls can include administrative,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.15661,
+        0.838451,
+        0.173474
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:7",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "technical, and physical aspects. In some cases, the selection and implementation of a control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.173579,
+        0.858097,
+        0.190443
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:8",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "may necessitate additional specification by the organization in the form of derived requirements",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.190548,
+        0.824224,
+        0.207412
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:9",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "or instantiated control parameter values. The derived requirements and control parameter",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.207448,
+        0.866457,
+        0.224312
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:10",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "values may be necessary to provide the appropriate level of implementation detail for particular",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.224417,
+        0.333066,
+        0.241281
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:11",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "controls with in the SDLC.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.255803,
+        0.584207,
+        0.277455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:12",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2. 2 CONTROL STRUCTURE AND ORGANIZATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.274939,
+        0.357353,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:13",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.285697,
+        0.843223,
+        0.302561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:14",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security and privacy controls described in this publication have a well-defined organizati on and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.302666,
+        0.849287,
+        0.31953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:15",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "structure. For ease of use in the security and privacy control selection and specification process,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.319485,
+        0.833585,
+        0.336429
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:16",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "controls are organized into 20 families. 25 Each family contains controls that are related to the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.14556,
+        0.33653,
+        0.821767,
+        0.353393
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:17",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "specific topic of the family. A two-character identifier uniquely identiies f each control family",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145542,
+        0.353499,
+        0.816467,
+        0.370362
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:18",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "(e.g., PS for Personnel Security ). Security and privacy controls may involve aspects of policy,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.14556,
+        0.370468,
+        0.847284,
+        0.387332
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:19",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "oversight, supervision, manual processes, and automated mechanisms that are implemented by",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145524,
+        0.387437,
+        0.848176,
+        0.404301
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:20",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "systems or actions by individuals. Table 1 lists the security and privacy control families and their",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145506,
+        0.404406,
+        0.357467,
+        0.42127
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:21",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "associated family identifiers.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.327127,
+        0.43653,
+        0.6748,
+        0.4515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:22",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.170451,
+        0.465651,
+        0.18991,
+        0.481621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:24",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ID",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.329471,
+        0.465651,
+        0.379848,
+        0.481621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:35",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FAMILY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.523392,
+        0.465651,
+        0.542851,
+        0.481621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:46",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ID",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.682412,
+        0.465651,
+        0.732789,
+        0.481621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:57",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FAMILY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.169078,
+        0.486864,
+        0.187454,
+        0.502227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:25",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AC",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.522804,
+        0.486864,
+        0.540069,
+        0.502227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:47",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.487364,
+        0.311588,
+        0.501727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:36",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Access Control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.487364,
+        0.811853,
+        0.501727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:58",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Physical and Environmental Protection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.169275,
+        0.503909,
+        0.187324,
+        0.519273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:26",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.523294,
+        0.503909,
+        0.539905,
+        0.519273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:48",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PL",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.504409,
+        0.368456,
+        0.518773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:37",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Awareness and Training",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.504409,
+        0.628132,
+        0.518773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:59",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Planning",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:23",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.168098,
+        0.520955,
+        0.187716,
+        0.536318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:27",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AU",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.519961,
+        0.520955,
+        0.541016,
+        0.536318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:49",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PM",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.521455,
+        0.373676,
+        0.535818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:38",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Audit and Accountability",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.521455,
+        0.712985,
+        0.535818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:60",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Program Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.169078,
+        0.538,
+        0.187454,
+        0.553364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:28",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CA",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.522902,
+        0.538,
+        0.540036,
+        0.553364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:50",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.5385,
+        0.484137,
+        0.552864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:39",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Assessment, Authorization, and Monitoring",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.5385,
+        0.689206,
+        0.552864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:61",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Personnel Security",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.167118,
+        0.555045,
+        0.188108,
+        0.570409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:29",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CM",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.522804,
+        0.555045,
+        0.540134,
+        0.570409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:51",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.555545,
+        0.3915,
+        0.569909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:40",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Configuration Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.555545,
+        0.771235,
+        0.569909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:62",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PII Processing and Transparency",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.169569,
+        0.572015,
+        0.187225,
+        0.587379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:30",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CP",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.521725,
+        0.572015,
+        0.540428,
+        0.587379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:52",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "RA",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.572515,
+        0.354279,
+        0.586879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:41",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Contingency Planning",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.572515,
+        0.675735,
+        0.586879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:63",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Risk Assessment",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.170941,
+        0.589061,
+        0.189647,
+        0.604424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:31",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.522412,
+        0.589061,
+        0.540265,
+        0.604424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:53",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SA",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.589561,
+        0.426088,
+        0.603924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:42",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Identification and Authentication",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.589561,
+        0.770809,
+        0.603924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:64",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System and Services Acquisition",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.171333,
+        0.606106,
+        0.190039,
+        0.62147
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:32",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IR",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.523,
+        0.606106,
+        0.540069,
+        0.62147
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:54",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SC",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.606606,
+        0.334059,
+        0.62097
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:43",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Incident Response",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.606606,
+        0.819794,
+        0.62097
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:65",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System and Communications Protection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.166529,
+        0.623152,
+        0.188304,
+        0.638515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:33",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MA",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.524863,
+        0.623152,
+        0.543598,
+        0.638515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:55",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SI",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.623652,
+        0.302985,
+        0.638015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:44",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Maintenance",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.623652,
+        0.778338,
+        0.638015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:66",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "System and Information Integrity",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.16702,
+        0.640121,
+        0.188075,
+        0.655485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:34",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MP",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.522706,
+        0.640121,
+        0.540101,
+        0.655485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:56",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SR",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.219088,
+        0.640621,
+        0.328147,
+        0.654985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:45",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Media Protection",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.572029,
+        0.640621,
+        0.767926,
+        0.654985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:67",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Supply Chain Risk Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.697584,
+        0.851975,
+        0.714448
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:69",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Families of controls contain base controls and control enhancements, which are directly related",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:68",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3r55 -",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.714553,
+        0.835311,
+        0.731417
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:70",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to their base controls. Control enhancements either add functionality or specificity to a base",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.731453,
+        0.830902,
+        0.748317
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:71",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "control or increase the strength of a base control. C ontrol enhancements are used in systems",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.748422,
+        0.855854,
+        0.765286
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:72",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and environments of operation that require greater protection than the protection provided by",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.765391,
+        0.836876,
+        0.782255
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:73",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the base control. The need for organizations to select and implement control enhancements is",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.78236,
+        0.849287,
+        0.799224
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:74",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "due to the potential adverse organizational or individual imp acts or when organizations require",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.799329,
+        0.802425,
+        0.816193
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:75",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "additions to the base control functionality or assurance based on assessments of risk. The",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.851606,
+        0.840719,
+        0.86597
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:76",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in FIPS [200].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.86547,
+        0.812627,
+        0.879833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:77",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR)",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.879333,
+        0.839763,
+        0.893697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:78",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "families address enterprise- level program management, privacy, and supply chain risk considerations pertaining to",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.893197,
+        0.413118,
+        0.907561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:79",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "federal mandates emergent since [FIPS 200].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.229341,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:80",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER TWO",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.812419,
+        0.939742,
+        0.851971,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p35:line:81",
+      "page": 35,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 8",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:0",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:1",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.088803,
+        0.800271,
+        0.105667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:3",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "selection and implementation of control enhancements always requires the selection and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.105772,
+        0.409277,
+        0.122636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:4",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "implementation of the base control.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.137811,
+        0.826915,
+        0.154675
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:5",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "The families are arranged in alphabetical order, while the controls and control enhancements",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.15478,
+        0.796343,
+        0.171644
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:6",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "within each family are in numerical order. The order of the families, controls, and control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.171749,
+        0.828741,
+        0.188613
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:7",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "enhancements does not imply any logical progression, level of prioritization or importance, or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.188718,
+        0.837846,
+        0.205582
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:8",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "order in which the controls or control enhancements are to be implemented. Rather, it reflects",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.205687,
+        0.846729,
+        0.222551
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:9",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the order in which they were included in the catalog. Control designations are not re-used when",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.222656,
+        0.313394,
+        0.23952
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:10",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "a control is withdrawn.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.254695,
+        0.828854,
+        0.271559
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:11",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Security and privacy controls have the following structure: a base control section, a discussion",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.271664,
+        0.821028,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:12",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is section, available a free related of charge controls from: section, a control enhancements section, and a references section.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145505,
+        0.288633,
+        0.52467,
+        0.305497
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:13",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Figure 1 illustrates the structure of a typical control.",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.136147,
+        0.339258,
+        0.243897,
+        0.353621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:14",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control Identifier",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.336735,
+        0.339258,
+        0.424824,
+        0.353621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:15",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control Name",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.624382,
+        0.368727,
+        0.825868,
+        0.383091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:50",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Organization-defined Parameter",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216428,
+        0.376788,
+        0.415516,
+        0.394652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:28",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AUDIT STORAGE CAPACITY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.158108,
+        0.377288,
+        0.194156,
+        0.394152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:16",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AU-4",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.401758,
+        0.831698,
+        0.417409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:29+actual:p36:line:51",
+      "merged_from": [
+        "actual:p36:line:29",
+        "actual:p36:line:51"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Control: Allocate audit record storage capacity to accommodate [ Assignment: organization-",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.138598,
+        0.411606,
+        0.170377,
+        0.42597
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:17",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Base",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.417288,
+        0.518878,
+        0.432939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:30",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "defined audit record retention requirements].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.13026,
+        0.42547,
+        0.178907,
+        0.439833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:18",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.440167,
+        0.799942,
+        0.455818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:31",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Discussion: Organizations consider the types of auditing to be performed and the audit",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.455545,
+        0.821066,
+        0.471197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:32",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "processing requirements when allocating audit storage capacity. Allocating sufficient audit",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.471006,
+        0.79821,
+        0.486657
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:33",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "storage capacity reduces the likelihood of such capacity being exceeded and resulting i",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.791248,
+        0.471006,
+        0.828941,
+        0.486657
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:52",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "n the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.486466,
+        0.539335,
+        0.502117
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:34",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "potential loss or reduction of auditing capability.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.509485,
+        0.720874,
+        0.525136
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:35",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Related Controls: AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:19",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.532439,
+        0.372167,
+        0.548091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:36",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control Enhancements:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.614578,
+        0.541303,
+        0.816064,
+        0.555667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:53",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Organization-defined Parameter",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.55547,
+        0.591831,
+        0.571121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:37",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "(1) AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.246343,
+        0.574561,
+        0.825804,
+        0.590212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:38+actual:p36:line:54",
+      "merged_from": [
+        "actual:p36:line:38",
+        "actual:p36:line:54"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Off-load audit records [Assignment: organization-defined frequency ] onto a different",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.134775,
+        0.57653,
+        0.183422,
+        0.590894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:20",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.115466,
+        0.590097,
+        0.577727,
+        0.605748
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:21+actual:p36:line:39",
+      "merged_from": [
+        "actual:p36:line:21",
+        "actual:p36:line:39"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Enhancement system or media than the system being audited.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246343,
+        0.609182,
+        0.781996,
+        0.624833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:40",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Discussion: Off-loading is a process designed to preserve the confidentiality and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246343,
+        0.624636,
+        0.836233,
+        0.640288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:41+actual:p36:line:55",
+      "merged_from": [
+        "actual:p36:line:41",
+        "actual:p36:line:55"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "integrity of audit records by moving the records from th e primary system to a secondary",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246343,
+        0.640015,
+        0.786822,
+        0.655672
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:42",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "or alternate system. It is a common process in systems with limited audit storage",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246345,
+        0.655399,
+        0.796564,
+        0.671051
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:43",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "capacity; the audit storage is used only in a transitory fashion until the system can",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246345,
+        0.67086,
+        0.645102,
+        0.686511
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:44",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "communicate with the secondary or alternate system desig",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.639574,
+        0.67086,
+        0.8183,
+        0.686511
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:56",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "nated for storing the audit",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246345,
+        0.68632,
+        0.608591,
+        0.701971
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:45",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "records, at which point the information is transferred.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.246343,
+        0.705545,
+        0.408484,
+        0.721197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:46",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Related Controls: None.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.216931,
+        0.728348,
+        0.741318,
+        0.751652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:47+actual:p36:line:57",
+      "merged_from": [
+        "actual:p36:line:47",
+        "actual:p36:line:57"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "References: None. Sources for additional information related to the control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.393988,
+        0.800535,
+        0.601823,
+        0.815505
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:48",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FIGURE 1: CONTROL STRUCTURE",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.83403,
+        0.831137,
+        0.850894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:23+actual:p36:line:49",
+      "merged_from": [
+        "actual:p36:line:23",
+        "actual:p36:line:49"
+      ],
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "The control section prescribes a security or privacy capability to be implemented. Security and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.850999,
+        0.800882,
+        0.867863
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:24",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "privacy capabilities are achieved by the activities or actions, automated or nonautomated,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.867968,
+        0.848598,
+        0.884832
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:25",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "carried out by information systems and organizations. Organizations designate the responsibility",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.884938,
+        0.841174,
+        0.901801
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:26",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "for control development, implementation, assessment, and monitoring. Organizations have the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.224109,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:27",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER TWO",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.812419,
+        0.939742,
+        0.851971,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p36:line:58",
+      "page": 36,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 9",
+      "type": "running_footer"
+    }
+  ]
+}

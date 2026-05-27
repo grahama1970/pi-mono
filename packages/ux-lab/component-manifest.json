@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-    "updated": "2026-05-24",
+  "updated": "2026-05-26",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -34,7 +34,15 @@
       "NIST": "#4a9eff",
       "CWE": "#ffaa00"
     },
-    "shared_styles": ["card", "panel", "label", "heading", "body", "glowDot()", "fwBadge()"],
+    "shared_styles": [
+      "card",
+      "panel",
+      "label",
+      "heading",
+      "body",
+      "glowDot()",
+      "fwBadge()"
+    ],
     "rules": [
       "NEVER use raw hex colors — always reference EMBRY.* tokens",
       "NEVER use raw font sizes — use label (10px), heading (14px), body (13px) presets",
@@ -56,9 +64,21 @@
         "techniques": "ThreatTechnique[] — technique objects with id, name, tactic, coverage, issueCount, frameworks",
         "onSelect": "(technique: ThreatTechnique) => void — optional click handler"
       },
-      "token_usage": ["card", "heading", "label", "glowDot", "fwBadge", "EMBRY.bg*", "EMBRY.border", "EMBRY.green/red/amber/dim"],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "glowDot",
+        "fwBadge",
+        "EMBRY.bg*",
+        "EMBRY.border",
+        "EMBRY.green/red/amber/dim"
+      ],
       "data_source": "ArangoDB: sparta_techniques collection, grouped by tactic",
-      "variations": ["full (all 9 tactics)", "recon-only (filtered to Reconnaissance)"],
+      "variations": [
+        "full (all 9 tactics)",
+        "recon-only (filtered to Reconnaissance)"
+      ],
       "test_status": "none",
       "composition": "Used in Composed Explorer pane 1 (Threat Overview, 30% width)"
     },
@@ -72,10 +92,26 @@
         "controls": "ControlRow[] — control objects with id, framework, name, tactic, urlCount, relCount, knowledgeChunks, issueCount",
         "onSelect": "(control: ControlRow) => void — optional row click handler"
       },
-      "features": ["column sorting (id, framework, name, issueCount, relCount)", "text search", "framework filter buttons"],
-      "token_usage": ["card", "heading", "label", "glowDot", "fwBadge", "EMBRY.bgDeep", "EMBRY.border", "EMBRY.red/green"],
+      "features": [
+        "column sorting (id, framework, name, issueCount, relCount)",
+        "text search",
+        "framework filter buttons"
+      ],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "glowDot",
+        "fwBadge",
+        "EMBRY.bgDeep",
+        "EMBRY.border",
+        "EMBRY.red/green"
+      ],
       "data_source": "ArangoDB: sparta_controls collection",
-      "variations": ["all (12 controls)", "issues-only (filtered to issueCount > 0)"],
+      "variations": [
+        "all (12 controls)",
+        "issues-only (filtered to issueCount > 0)"
+      ],
       "test_status": "none",
       "composition": "Used in Composed Explorer pane 2 (Evidence Hub, 35% width)"
     },
@@ -89,10 +125,32 @@
         "messages": "ChatMessage[] — message objects with id, role, content, type (natural|aql), timestamp, resultCount",
         "onSend": "(query: string, type: 'natural' | 'aql') => void — optional send handler"
       },
-      "features": ["English/AQL mode toggle", "Enter to send", "user/agent message differentiation", "shield agent avatar", "collapsed Evidence Case before final answer", "explicit Answer divider", "PDF evidence attachment and validation state", "reviewer actions: approve/reject/request-more/open-source/export", "monospace for AQL"],
-      "token_usage": ["card", "heading", "label", "EMBRY.blue", "EMBRY.green", "EMBRY.amber", "EMBRY.bgDeep", "EMBRY.border"],
+      "features": [
+        "English/AQL mode toggle",
+        "Enter to send",
+        "user/agent message differentiation",
+        "shield agent avatar",
+        "collapsed Evidence Case before final answer",
+        "explicit Answer divider",
+        "PDF evidence attachment and validation state",
+        "reviewer actions: approve/reject/request-more/open-source/export",
+        "monospace for AQL"
+      ],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "EMBRY.blue",
+        "EMBRY.green",
+        "EMBRY.amber",
+        "EMBRY.bgDeep",
+        "EMBRY.border"
+      ],
       "data_source": "ArangoDB: queries via /api/memory/* proxy (natural language → AQL translation)",
-      "variations": ["with-history (4 sample messages)", "empty (placeholder prompt)"],
+      "variations": [
+        "with-history (4 sample messages)",
+        "empty (placeholder prompt)"
+      ],
       "test_status": "none",
       "composition": "Used in SPARTA Explorer ChatTab and shared chat surfaces; Evidence Case card is implemented in src/components/shared-chat/InlineEvidenceCase.tsx"
     },
@@ -107,10 +165,27 @@
         "edges": "GraphEdge[] — edge objects with source, target, method, validated",
         "onNodeClick": "(node: GraphNode) => void — optional node click handler"
       },
-      "features": ["circular layout (static)", "framework-colored nodes", "validated/unvalidated edge styles", "edge method labels", "stats bar"],
-      "token_usage": ["card", "heading", "label", "glowDot", "EMBRY.fw[*]", "EMBRY.green/red/dim", "EMBRY.bgDeep"],
+      "features": [
+        "circular layout (static)",
+        "framework-colored nodes",
+        "validated/unvalidated edge styles",
+        "edge method labels",
+        "stats bar"
+      ],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "glowDot",
+        "EMBRY.fw[*]",
+        "EMBRY.green/red/dim",
+        "EMBRY.bgDeep"
+      ],
       "data_source": "ArangoDB: sparta_relationships collection (edges between controls)",
-      "variations": ["full (10 nodes, 10 edges)", "validated-only (filtered to validated edges)"],
+      "variations": [
+        "full (10 nodes, 10 edges)",
+        "validated-only (filtered to validated edges)"
+      ],
       "test_status": "none",
       "layout": "D3 force-directed simulation with drag, collision, charge repulsion",
       "composition": "Used in Composed Explorer pane 2 (Evidence Hub, below ControlTable)"
@@ -127,9 +202,20 @@
         "coverageLabel": "string — label for coverage metric",
         "issueCount": "number — total issues detected"
       },
-      "token_usage": ["card", "heading", "label", "EMBRY.green/amber/red", "EMBRY.white", "EMBRY.border"],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "EMBRY.green/amber/red",
+        "EMBRY.white",
+        "EMBRY.border"
+      ],
       "data_source": "ArangoDB: /sparta/validate/relationship-integrity endpoint",
-      "variations": ["nominal", "degraded", "critical"],
+      "variations": [
+        "nominal",
+        "degraded",
+        "critical"
+      ],
       "test_status": "none",
       "composition": "Used in Composed Explorer pane 3 (Query & Synthesis, above ChatWell)"
     },
@@ -143,9 +229,22 @@
         "control": "ControlDetailData — id, framework, name, description, controlType, domain, parentId, scope, weaknesses, relatedControls",
         "onClose": "() => void — optional close handler"
       },
-      "token_usage": ["card", "heading", "label", "body", "fwBadge", "glowDot", "EMBRY.fw[*]", "EMBRY.bgDeep", "EMBRY.border"],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "body",
+        "fwBadge",
+        "glowDot",
+        "EMBRY.fw[*]",
+        "EMBRY.bgDeep",
+        "EMBRY.border"
+      ],
       "data_source": "ArangoDB: single control document + graph traversal for relationships",
-      "variations": ["with-relations", "minimal"],
+      "variations": [
+        "with-relations",
+        "minimal"
+      ],
       "test_status": "none",
       "composition": "Replaces ControlTable in Composed Explorer pane 2 when a control is selected"
     },
@@ -161,10 +260,27 @@
         "onClose": "() => void — close panel",
         "onWhatIf": "(controlId, param, value) => Promise<WhatIfResponse> — triggers /lean4-prove what-if"
       },
-      "features": ["typed parameter controls (bool/float/enum)", "what-if trigger button", "cascade result visualization with BROKEN/HOLDS status"],
-      "token_usage": ["card", "heading", "label", "body", "fwBadge", "glowDot", "EMBRY.accent", "EMBRY.bgDeep"],
+      "features": [
+        "typed parameter controls (bool/float/enum)",
+        "what-if trigger button",
+        "cascade result visualization with BROKEN/HOLDS status"
+      ],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "body",
+        "fwBadge",
+        "glowDot",
+        "EMBRY.accent",
+        "EMBRY.bgDeep"
+      ],
       "data_source": "ArangoDB: control metadata + /lean4-prove what-if JSON output",
-      "variations": ["with-edges", "with-results", "no-params"],
+      "variations": [
+        "with-edges",
+        "with-results",
+        "no-params"
+      ],
       "test_status": "none",
       "composition": "Appears below LemmaGraph in pane 2 (Evidence Hub) when a node is clicked"
     },
@@ -180,10 +296,25 @@
         "flash": "boolean — optional pulse animation for in-progress states",
         "children": "ReactNode — pill label text"
       },
-      "token_usage": ["EMBRY.green", "EMBRY.amber", "EMBRY.red", "EMBRY.blue", "EMBRY.accent (purple)", "EMBRY.dim (neutral)"],
+      "token_usage": [
+        "EMBRY.green",
+        "EMBRY.amber",
+        "EMBRY.red",
+        "EMBRY.blue",
+        "EMBRY.accent (purple)",
+        "EMBRY.dim (neutral)"
+      ],
       "data_sources": [],
-      "used_by": ["ClassificationTab", "RegressionTab", "CascadeTab", "ModelHealthTab"],
-      "variations": ["all-variants", "flash"],
+      "used_by": [
+        "ClassificationTab",
+        "RegressionTab",
+        "CascadeTab",
+        "ModelHealthTab"
+      ],
+      "variations": [
+        "all-variants",
+        "flash"
+      ],
       "test_status": "none"
     },
     {
@@ -194,10 +325,24 @@
       "lines": 210,
       "description": "Live classifier training supervision: recharts training curve (F1/Loss), per-class recall bar chart, promotion table with StatusPill badges and clickable rows. Stop Training button sends WS command.",
       "props": {},
-      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.blue", "EMBRY.amber", "card", "heading", "label"],
-      "data_sources": ["useWebSocket (ws://localhost:3003) — epoch_update messages"],
-      "used_by": ["UnifiedLab"],
-      "variations": ["live"],
+      "token_usage": [
+        "EMBRY.green",
+        "EMBRY.red",
+        "EMBRY.blue",
+        "EMBRY.amber",
+        "card",
+        "heading",
+        "label"
+      ],
+      "data_sources": [
+        "useWebSocket (ws://localhost:3003) — epoch_update messages"
+      ],
+      "used_by": [
+        "UnifiedLab"
+      ],
+      "variations": [
+        "live"
+      ],
       "test_status": "none",
       "source_mockup": "tab_classification_r7.html"
     },
@@ -209,10 +354,25 @@
       "lines": 220,
       "description": "Regressor model supervision: model table with staleness StatusPill badges, inline SVG residual scatter plot, hover-reveal Re-evaluate action, summary stat cards.",
       "props": {},
-      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.amber", "EMBRY.blue", "EMBRY.dim", "card", "heading", "label"],
-      "data_sources": ["useLabStore (static mock data, future: useLabStore aggregated)"],
-      "used_by": ["UnifiedLab"],
-      "variations": ["default"],
+      "token_usage": [
+        "EMBRY.green",
+        "EMBRY.red",
+        "EMBRY.amber",
+        "EMBRY.blue",
+        "EMBRY.dim",
+        "card",
+        "heading",
+        "label"
+      ],
+      "data_sources": [
+        "useLabStore (static mock data, future: useLabStore aggregated)"
+      ],
+      "used_by": [
+        "UnifiedLab"
+      ],
+      "variations": [
+        "default"
+      ],
       "test_status": "none",
       "source_mockup": "tab_regression_r7.html"
     },
@@ -224,10 +384,21 @@
       "lines": 90,
       "description": "Wave 0.5 Coming Soon placeholder. Lock SVG icon, prerequisite checklist, StatusPill (blue: Track Wave 0.5), what's-coming feature list.",
       "props": {},
-      "token_usage": ["EMBRY.blue", "EMBRY.green", "EMBRY.dim", "card", "heading", "label"],
+      "token_usage": [
+        "EMBRY.blue",
+        "EMBRY.green",
+        "EMBRY.dim",
+        "card",
+        "heading",
+        "label"
+      ],
       "data_sources": [],
-      "used_by": ["UnifiedLab"],
-      "variations": ["placeholder"],
+      "used_by": [
+        "UnifiedLab"
+      ],
+      "variations": [
+        "placeholder"
+      ],
       "test_status": "none",
       "source_mockup": "tab_cascade_r7.html"
     },
@@ -239,10 +410,26 @@
       "lines": 250,
       "description": "Cross-lab model health registry using @tanstack/react-table for sortable/filterable columns. Summary stat cards (total/healthy/failing/stale). Hover reveals View in Lab link. Supports lab type filter dropdown.",
       "props": {},
-      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.amber", "EMBRY.blue", "EMBRY.accent", "EMBRY.dim", "card", "heading", "label"],
-      "data_sources": ["useLabStore (static mock, future: aggregated model registry API)"],
-      "used_by": ["UnifiedLab"],
-      "variations": ["default"],
+      "token_usage": [
+        "EMBRY.green",
+        "EMBRY.red",
+        "EMBRY.amber",
+        "EMBRY.blue",
+        "EMBRY.accent",
+        "EMBRY.dim",
+        "card",
+        "heading",
+        "label"
+      ],
+      "data_sources": [
+        "useLabStore (static mock, future: aggregated model registry API)"
+      ],
+      "used_by": [
+        "UnifiedLab"
+      ],
+      "variations": [
+        "default"
+      ],
       "test_status": "none",
       "source_mockup": "tab_model_health_r7.html"
     },
@@ -255,14 +442,67 @@
       "props": {
         "none": "The component currently uses an in-file fixture shaped like the future /api/hack/evolve-runs/latest adapter contract."
       },
-      "features": ["current exploit panel", "latest event list", "availableActions[] rendering with disabled reasons", "previous exploits table scoped to the same attempts.jsonl run", "source pills on every visible value"],
-      "token_usage": ["card", "heading", "label", "body", "glowDot", "EMBRY.bg*", "EMBRY.border", "EMBRY.green/red/amber/blue/dim"],
+      "features": [
+        "current exploit panel",
+        "latest event list",
+        "availableActions[] rendering with disabled reasons",
+        "previous exploits table scoped to the same attempts.jsonl run",
+        "source pills on every visible value"
+      ],
+      "token_usage": [
+        "card",
+        "heading",
+        "label",
+        "body",
+        "glowDot",
+        "EMBRY.bg*",
+        "EMBRY.border",
+        "EMBRY.green/red/amber/blue/dim"
+      ],
       "data_source": "Fixture data shaped like /api/hack/evolve-runs/latest. Future adapter should derive currentExploit and previousExploits from attempts.jsonl, enrich promoted anomalies from anomalies.jsonl, and expose availableActions[].",
-      "variations": ["current-exploit"],
+      "variations": [
+        "current-exploit"
+      ],
       "test_status": "TypeScript + CDP visual verification required after every layout change",
       "composition": "Registered in ComponentGallery under Hack / Composed as the two-pane current-exploit monitor for $hack evolve-campaign."
+    },
+    {
+      "id": "scillm-dag-contract-editor",
+      "name": "DagContractEditor",
+      "file": "src/components/scillm/dag-planner/DagContractEditor.tsx",
+      "lines": 827,
+      "description": "Minimal source-backed SCILLM DAG contract editor used by #scillm/dag-planner Design lens: dependency-derived DAG layers, graph/node Form and JSON views, expanded text editor, persisted draft saves, runtime evidence pane, and Run draft via scillm action.",
+      "props": {
+        "graph": "ExecGraph — selected source or draft DAG contract",
+        "status": "ExecStatus — active runtime state and node_results for highlighting",
+        "events": "ExecEvent[] — runtime event count and context",
+        "baseGraphHash": "string — backend or local draft hash shown in graph header",
+        "availableModels": "string[] — model dropdown options from /api/scillm/v1/scillm/models",
+        "onRunGraph": "(graph: ExecGraph) => void — submits the current edited draft graph to the parent runner"
+      },
+      "token_usage": [
+        "EMBRY.bg*",
+        "EMBRY.border",
+        "EMBRY.white",
+        "EMBRY.dim",
+        "EMBRY.blue",
+        "EMBRY.green/red"
+      ],
+      "data_source": "Receives selected graph/status/events from ScillmDagPlanner, which loads /api/scillm/dag-viewer/snapshot and local draft records.",
+      "features": [
+        "connected top-down DAG groups derived from depends_on when metadata groups are absent",
+        "sequential/concurrent layer labeling",
+        "graph-level Form editor for id, goal, cwd, and max_concurrency",
+        "selected-node Form editor",
+        "safe dependency picker with cycle prevention",
+        "raw JSON editor escape hatch",
+        "expanded text modal for node_goal and local command",
+        "runtime node-state highlighting and selected-node hash/artifact evidence",
+        "applied form/json edits persist through /api/scillm/dag-viewer/drafts; source edits create a local draft instead of mutating phase evidence"
+      ],
+      "test_status": "TypeScript + CDP screenshot verification required after every layout change",
+      "composition": "Used by ScillmDagPlanner Design lens in place of the older ScillmExecGraphDebugger visual core for the current professional DAG viewer-editor iteration."
     }
-
   ],
   "compositions": [
     {
@@ -272,12 +512,39 @@
       "file": "src/components/gallery/ComponentGallery.tsx (registry entry)",
       "pattern": {
         "top_bar": "ThoughtTrace pipeline: Ingest → Resolve → Map → Verify → Score with glow dots",
-        "pane_1": { "label": "Threat Overview", "width": "30%", "bg": "#141414", "components": ["ThreatMap"] },
-        "pane_2": { "label": "Evidence Hub", "width": "35%", "bg": "#111111", "components": ["ControlTable", "LemmaGraph"] },
-        "pane_3": { "label": "Query & Synthesis", "width": "35%", "bg": "#0c0c0c", "components": ["IntegrityCard", "ChatWell"] }
+        "pane_1": {
+          "label": "Threat Overview",
+          "width": "30%",
+          "bg": "#141414",
+          "components": [
+            "ThreatMap"
+          ]
+        },
+        "pane_2": {
+          "label": "Evidence Hub",
+          "width": "35%",
+          "bg": "#111111",
+          "components": [
+            "ControlTable",
+            "LemmaGraph"
+          ]
+        },
+        "pane_3": {
+          "label": "Query & Synthesis",
+          "width": "35%",
+          "bg": "#0c0c0c",
+          "components": [
+            "IntegrityCard",
+            "ChatWell"
+          ]
+        }
       },
       "section_headers": "Colored pill (5x16px, rounded) + 11px font-black uppercase tracking-[0.2em] text-slate-400",
-      "variations": ["3-column (5 tactics)", "threat-map-focus (all 9 tactics, taller)", "live (real ArangoDB data via useSpartaData hook)"]
+      "variations": [
+        "3-column (5 tactics)",
+        "threat-map-focus (all 9 tactics, taller)",
+        "live (real ArangoDB data via useSpartaData hook)"
+      ]
     },
     {
       "id": "hack-evolve-monitor",
@@ -286,13 +553,30 @@
       "file": "src/components/gallery/ComponentGallery.tsx (registry entry)",
       "pattern": {
         "top_bar": "Active artifact path and exploit source only; no health, queue, score, or memory status chrome",
-        "pane_1": { "label": "Current Exploit", "components": ["HackEvolveMonitor.CurrentExploitPanel"] },
-        "pane_2": { "label": "Latest Events + Actions", "components": ["HackEvolveMonitor.RecentEvents", "HackEvolveMonitor.AvailableActions"] },
-        "bottom": { "label": "Previous Exploits", "components": ["HackEvolveMonitor.PreviousExploits"] }
+        "pane_1": {
+          "label": "Current Exploit",
+          "components": [
+            "HackEvolveMonitor.CurrentExploitPanel"
+          ]
+        },
+        "pane_2": {
+          "label": "Latest Events + Actions",
+          "components": [
+            "HackEvolveMonitor.RecentEvents",
+            "HackEvolveMonitor.AvailableActions"
+          ]
+        },
+        "bottom": {
+          "label": "Previous Exploits",
+          "components": [
+            "HackEvolveMonitor.PreviousExploits"
+          ]
+        }
       },
-      "variations": ["current-exploit"]
+      "variations": [
+        "current-exploit"
+      ]
     }
-
   ],
   "data_hooks": [
     {
@@ -300,7 +584,10 @@
       "name": "useSpartaData",
       "file": "src/hooks/useSpartaData.ts",
       "description": "React hook fetching real SPARTA data from memory daemon via Express proxy",
-      "endpoints": ["/sparta/validate/collection-sample", "/sparta/validate/relationship-integrity"],
+      "endpoints": [
+        "/sparta/validate/collection-sample",
+        "/sparta/validate/relationship-integrity"
+      ],
       "returns": "controls, tactics, techniques, graphNodes, graphEdges, integrity, loading, error, refresh"
     }
   ],
@@ -308,8 +595,18 @@
     "description": "Inspector panel composes with /lean4-prove for what-if cascade propagation analysis",
     "skill": "lean4-prove",
     "command": "python qra_consistency.py what-if --control {control_id} --param {param} --value {value} --dry-run --output-format json",
-    "predicates": ["subsumes", "countered_by", "mitigated_by", "exploits", "maps_to"],
-    "parameter_types": ["bool", "float", "enum"],
+    "predicates": [
+      "subsumes",
+      "countered_by",
+      "mitigated_by",
+      "exploits",
+      "maps_to"
+    ],
+    "parameter_types": [
+      "bool",
+      "float",
+      "enum"
+    ],
     "output_format": {
       "control": "string — control ID modified",
       "parameter": "string — parameter name changed",
@@ -318,13 +615,13 @@
       "summary": "object — { total, broken, held }"
     }
   },
-    "pdf_lab": {
-      "id": "pdf-lab-agentic-workflow",
-      "name": "PdfLabView",
-      "file": "src/components/pdf-lab/PdfLabView.tsx",
-      "description": "Default PDF Lab surface presents the real-data agentic workflow and Coverage proof layer: agent scan, candidate pages, deterministic extraction, parity comparison, preset/code improvement, full extraction, human triage, candidate audit confirmation, and Nico evidence QA.",
-      "labeling_surface": "PdfLabLabelingPage uses the shared common/LeftPane for the candidate explorer, a compact canvas toolbar, and a static right selected-region inspector with visible document hierarchy path metadata.",
-      "composition": "Coverage starts with a candidate audit table showing all promoted sweep candidate pages, thumbnails, detected PDF element families, agent correction notes, ArangoDB memory keys, and pass/warn/fail state; Surgical Triage remains the focused human ambiguity deck.",
+  "pdf_lab": {
+    "id": "pdf-lab-agentic-workflow",
+    "name": "PdfLabView",
+    "file": "src/components/pdf-lab/PdfLabView.tsx",
+    "description": "Default PDF Lab surface presents the real-data agentic workflow and Coverage proof layer: agent scan, candidate pages, deterministic extraction, parity comparison, preset/code improvement, full extraction, human triage, candidate audit confirmation, and Nico evidence QA.",
+    "labeling_surface": "PdfLabLabelingPage uses the shared common/LeftPane for the candidate explorer, a compact canvas toolbar, and a static right selected-region inspector with visible document hierarchy path metadata.",
+    "composition": "Coverage starts with a candidate audit table showing all promoted sweep candidate pages, thumbnails, detected PDF element families, agent correction notes, ArangoDB memory keys, and pass/warn/fail state; Surgical Triage remains the focused human ambiguity deck.",
     "data_sources": [
       "public/pdf-lab-nist-workflow-manifest.json",
       "public/pdf-lab-nist-full-extraction.json",
@@ -415,12 +712,16 @@
     "id": "scillm-dag-planner",
     "name": "ScillmDagPlanner",
     "file": "src/components/scillm/ScillmDagPlanner.tsx",
-    "description": "DAG Viewer-Editor tab for scillm. Loads a fail-closed snapshot adapter from /api/scillm/dag-viewer/snapshot and renders five source-derived lenses: Source, Design, Trace, Checkpoints, and Debug. Design mode reuses ScillmExecGraphDebugger and saves semantic edits as DAG-viewer amendment drafts without applying them to committed execution.",
+    "description": "DAG Viewer-Editor tab for scillm. Loads a fail-closed snapshot adapter from /api/scillm/dag-viewer/snapshot, keeps the DagExplorerPane, and uses DagContractEditor in the Design lens for a professional source-backed connected DAG + Form/JSON selected-node editor. Source, Trace, Checkpoints, and Debug lenses remain available for lower-level inspection.",
     "data_sources": [
       "GET /api/scillm/dag-viewer/snapshot",
       "GET /api/scillm/v1/scillm/models",
       "GET /api/scillm/v1/scillm/exec/review-catalog?skill=review-code",
       "POST /api/scillm/dag-viewer/amendments",
+      "GET /api/scillm/dag-viewer/drafts",
+      "POST /api/scillm/dag-viewer/drafts",
+      "DELETE /api/scillm/dag-viewer/drafts/{draftId}",
+      "POST /api/scillm/v1/scillm/exec/graph",
       "POST /api/scillm/v1/scillm/exec/review-catalog/{agents|contracts}?skill=review-code",
       "src/components/scillm/dag-planner/dagViewModel.ts",
       "/home/graham/workspace/experiments/scillm/.plan-iterate/{phase}/evidence-artifacts/scillm-exec-run-hash-bound/{graph.request.json,status.json,events.jsonl}",
@@ -434,16 +735,38 @@
       "viewport_controls": "The graph canvas exposes zoom in, zoom out, move/pan, and fit controls in the top-right canvas well and the same actions in the canvas context menu.",
       "layout_spacing": "The DAG layout is top-down for editing: depth maps to vertical position, same-depth nodes fan out horizontally, and the internal graph canvas sizes from deepest layer and widest layer so adjacent nodes do not overlap 270px cards.",
       "plan_iterate_shape": "Current plan-iterate graphs render as a top-down editable workflow map: synthesis/goal upstream, review fanout across a horizontal layer, aggregate/implement/verify/validate downstream.",
-      "node_inspector": "Node inspection uses a persistent right-side selected-node workbench. Selecting a different node updates the same pane in place; the pane focuses on editable node contract fields, dependencies, source-backed run evidence, and collapsed raw/debug payloads instead of runtime dashboard controls.",
+      "node_inspector": "Node inspection uses a persistent right-side selected-node Form/JSON workbench from DagContractEditor. Form edits common contract fields and JSON remains the raw escape hatch; expanded text editing is available for long goals and commands.",
       "view_model": "dagViewModel.ts derives DagViewModel from executable graph nodes, status/events/artifacts, draft amendment diff, and separate UI layout state. Build/Run/Debug are the primary product modes; Evidence/Plan edit/Nico proposals are lower-level capabilities.",
       "base_graph_hash": "GET /api/scillm/dag-viewer/snapshot returns a backend-computed sha256 canonical executable graph hash. UI draft saves include that hash and display stale-hash warnings when the draft base hash no longer matches the current snapshot.",
       "amendment_drafts": "Build mode semantic edits create local AmendmentDraft operations. Save Draft posts operations to /api/scillm/dag-viewer/amendments; Apply Amendment is intentionally disabled until a backend apply validator exists.",
+      "dag_explorer": "The left DagExplorerPane is a shared DAG workspace control for #scillm/dag-planner. It lists the source DAG plus persisted local draft DAGs, supports search, open/select, add, duplicate, close, and local draft delete. Source DAG delete remains disabled because it is backed by phase evidence, not a workspace draft.",
+      "starter_dag": "New project DAG creates a valid three-node local_command exec graph: define-goal writes a project-goal artifact, check-goal validates it, and final-report emits the terminal report. The first node is selected immediately so the inspector is never blank after creating or opening a draft.",
+      "draft_persistence": "Local draft DAGs are saved under the scillm project through /api/scillm/dag-viewer/drafts. DagContractEditor Apply/Duplicate/Delete now persists the edited graph through the parent planner. Editing an authoritative source DAG creates a new local draft and switches the explorer to that draft instead of mutating source phase evidence.",
+      "run_active_dag": "The Run DAG action submits the selected graph to /api/scillm/v1/scillm/exec/graph and renders returned run_id, state, and node_results as the active graph status. Test manifest test-interactions/manifests/scillm-dag-viewer-editor.yaml covers edit -> run -> inspect run evidence.",
       "build_mode_controls": "Build mode exposes add child, add sibling, add gate, disable node, and archive node controls in the node inspector. These mutate only the local draft graph and formal amendment diff.",
-      "five_lens_shell": "The top-level DAG viewer-editor shell separates Source (raw graph/status/events JSON), Design (visual graph and amendment drafting), Trace (live/review execution chronology), Checkpoints (human gates and interrupt-style queue), and Debug (evidence, artifacts, hashes, and missing fields). This borrows product requirements from LangGraph/Studio, Agent Flow, and Agent Inbox without copying source code."
+      "five_lens_shell": "The top-level DAG viewer-editor shell separates Source (raw graph/status/events JSON), Design (visual graph and amendment drafting), Trace (live/review execution chronology), Checkpoints (human gates and interrupt-style queue), and Debug (evidence, artifacts, hashes, and missing fields). This borrows product requirements from LangGraph/Studio, Agent Flow, and Agent Inbox without copying source code.",
+      "design_lens": "Design lens now renders DagContractEditor as the primary professional DAG viewer-editor surface: left dependency-layered DAG projection, graph/node Form and JSON views, right selected-node runtime evidence, source-backed runtime state, and current draft graph submission through /api/scillm/v1/scillm/exec/graph."
     },
     "test_status": "TypeScript + local adapter health + actual screenshot inspection required before claiming ready"
   },
-
+  "scillm_dag_explorer_pane": {
+    "id": "scillm-dag-explorer-pane",
+    "name": "DagExplorerPane",
+    "file": "src/components/scillm/dag-planner/DagExplorerPane.tsx",
+    "description": "Shared left DAG explorer for scillm DAG workspaces. Provides search, open/select, add, duplicate, close, and persisted local draft delete affordances.",
+    "props": {
+      "items": "DagExplorerItem[] — visible source and draft DAG records with node/edge counts, active state, and delete capability.",
+      "search": "string — controlled search query.",
+      "onSearchChange": "(value: string) => void — update the search query.",
+      "onSelect": "(id: string) => void — open/select a DAG.",
+      "onAdd": "() => void — create a new local draft DAG.",
+      "onDuplicate": "(id: string) => void — clone a DAG into a local draft.",
+      "onClose": "(id: string) => void — close a DAG from the explorer.",
+      "onDelete": "(id: string) => void — delete a local draft DAG."
+    },
+    "data_contract": "Source DAGs are backed by /api/scillm/dag-viewer/snapshot. Added and duplicated DAGs are saved through /api/scillm/dag-viewer/drafts as workspace drafts and remain separate from authoritative phase evidence until a scillm amendment/apply endpoint accepts them.",
+    "test_status": "TypeScript + CDP screenshot verification required after component changes"
+  },
   "hack_monitor": {
     "id": "hack-evolve-monitor",
     "name": "HackEvolveMonitor",
@@ -457,7 +780,12 @@
       "promotion_tasks": "Downstream handoff tasks generated from promoted anomalies; not exploit attempts.",
       "docker_logs": "Optional evidence opened through availableActions[]; not a dashboard log wall."
     },
-    "known_gaps_exposed_by_ui": ["Implement /api/hack/evolve-runs/latest artifact adapter.", "Define attempts.jsonl selectors and line-pointer support.", "Expose availableActions[] with enabled/disabled reasons.", "Map anomalies.jsonl promoted records onto currentExploit without inventing state."],
+    "known_gaps_exposed_by_ui": [
+      "Implement /api/hack/evolve-runs/latest artifact adapter.",
+      "Define attempts.jsonl selectors and line-pointer support.",
+      "Expose availableActions[] with enabled/disabled reasons.",
+      "Map anomalies.jsonl promoted records onto currentExploit without inventing state."
+    ],
     "adapter_contract": "GET /api/hack/evolve-runs/latest returns active artifact path, currentExploit, previousExploits, latestEvents, availableActions, and sourceDetail for every visible field.",
     "gallery_entry": "Hack / Composed / HackEvolveMonitor",
     "app_shell_route": "Sidebar project id hack renders HackEvolveMonitor directly at #hack/final-site and appears near the top of the project list."

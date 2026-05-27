@@ -1,0 +1,5197 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page_index": 26,
+  "pdf_page_number": 27,
+  "blocks": [
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:0",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.852874,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:64+actual:p26:line:121",
+      "merged_from": [
+        "actual:p26:line:64",
+        "actual:p26:line:121"
+      ],
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.793784,
+        0.096485,
+        0.833581,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:122",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.180255,
+        0.096485,
+        0.21942,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:2",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DATE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.284863,
+        0.096485,
+        0.321358,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:34",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TYPE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.528392,
+        0.096485,
+        0.599612,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:65",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "REVISION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.120242,
+        0.720948,
+        0.134606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:66",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "References [SP 800-181]: Change \u201cNewhouse WD, Witte GA,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.132894,
+        0.730574,
+        0.147258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:67",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Scribner B, Keith S (2017) National Initiative for Cybersecurity",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.145545,
+        0.749883,
+        0.159909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:68",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Education (NICE) Cybersecurity Workforce Framework. (National",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.158121,
+        0.743206,
+        0.172485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:69",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Institute of Standards and Technology, Gaithersburg, MD), NIST",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.170697,
+        0.55557,
+        0.185061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:70",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Special Publication (SP) 800-181.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.184136,
+        0.829368,
+        0.1995
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:123",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "388",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.184136,
+        0.235271,
+        0.1995
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:3",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.184636,
+        0.76574,
+        0.199
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:35+actual:p26:line:71",
+      "merged_from": [
+        "actual:p26:line:35",
+        "actual:p26:line:71"
+      ],
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Editorial https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D,",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.197288,
+        0.742794,
+        0.211652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:72",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.209939,
+        0.752441,
+        0.224303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:73",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Cybersecurity (NICE Framework). (National Institute of Standards",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.222515,
+        0.749453,
+        0.236879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:74",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and Technology, Gaithersburg, MD), NIST Special Publication (SP)",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.234591,
+        0.457606,
+        0.249955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:75",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "800-181, Rev. 1.",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.24903,
+        0.625731,
+        0.263394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:76",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800-181r1\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.264788,
+        0.56001,
+        0.279152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:77",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "References [DODTERMS]: Change",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.274939,
+        0.703007,
+        0.298091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:4+actual:p26:line:78",
+      "merged_from": [
+        "actual:p26:line:4",
+        "actual:p26:line:78"
+      ],
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "This publication is available 12-10-2020 free of charge from: \u201chttp://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf\u201d to",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.283227,
+        0.829368,
+        0.298591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:124",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "391",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.283727,
+        0.329595,
+        0.298091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:36",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.290091,
+        0.769838,
+        0.304455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:79",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u201chttps://www.jcs.mil/Portals/36/Documents/Doctrine/pubs/diction",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.302667,
+        0.409443,
+        0.31703
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:80",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ary.pdf\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.318,
+        0.756034,
+        0.333364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:81",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (counterfeit): Change \u201c[SP 800-161-1]\u201d to [SP",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.324288,
+        0.829368,
+        0.339651
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:125",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "400",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.324288,
+        0.235271,
+        0.339651
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:5",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.324788,
+        0.329595,
+        0.339151
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:37",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.330576,
+        0.420668,
+        0.345939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:82",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "800-161]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.346409,
+        0.826257,
+        0.361773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:126",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "419",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.346409,
+        0.235253,
+        0.361773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:6",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.346409,
+        0.693832,
+        0.361773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:83",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (supplier): Delete \u201c[SP 800-161-1]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.346909,
+        0.329599,
+        0.361273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:38",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.362167,
+        0.826257,
+        0.37753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:127",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "419",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.362167,
+        0.235253,
+        0.37753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:7",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.362167,
+        0.720069,
+        0.37753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:84",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (supply chain): Delete \u201c[SP 800-161-1]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.362667,
+        0.329599,
+        0.37703
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:39",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.377924,
+        0.826257,
+        0.393288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:128",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "420",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.377924,
+        0.235253,
+        0.393288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:8",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.377924,
+        0.744376,
+        0.393288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:85",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (supply chain risk): Delete \u201c[SP 800-161-1]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.378424,
+        0.329599,
+        0.392788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:40",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.393758,
+        0.741996,
+        0.409121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:86",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (supply chain risk assessment): Delete \u201c[SP",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.400045,
+        0.235271,
+        0.415409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:11",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.400045,
+        0.829368,
+        0.415409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:129",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "420",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.400545,
+        0.329595,
+        0.414909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:41",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.406333,
+        0.432685,
+        0.421697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:87",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "800-161-1]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.422167,
+        0.752323,
+        0.43753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:88",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix A Glossary (supply chain risk management): Delete \u201c[SP",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.428455,
+        0.235271,
+        0.443818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:12",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.428455,
+        0.829368,
+        0.443818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:130",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "420",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.428955,
+        0.329595,
+        0.443318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:42",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.434742,
+        0.432685,
+        0.450106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:89",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "800-161-1]\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.450576,
+        0.235253,
+        0.465939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:13",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.450576,
+        0.826257,
+        0.465939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:131",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "424",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.450576,
+        0.71721,
+        0.465939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:90",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cBGP Border Gateway Protocol\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.451076,
+        0.329599,
+        0.465439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:43",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.466333,
+        0.826257,
+        0.481697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:132",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "424",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.466333,
+        0.235253,
+        0.481697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:14",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.466333,
+        0.694073,
+        0.481697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:91",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cCAC Common Access Card\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.466833,
+        0.329599,
+        0.481197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:44",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.482091,
+        0.826257,
+        0.497455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:133",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "424",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.482091,
+        0.235253,
+        0.497455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:15",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.482091,
+        0.727244,
+        0.497455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:92",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cCONOPS Concept of Operations\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.482591,
+        0.329599,
+        0.496955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:45",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.497924,
+        0.826257,
+        0.513288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:134",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "424",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.497924,
+        0.235253,
+        0.513288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:16",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.497924,
+        0.70138,
+        0.513288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:93",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cDSB Defense Science Board\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.498424,
+        0.329599,
+        0.512788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:46",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.513682,
+        0.767977,
+        0.529045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:94",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cFICAM Federal Identity, Credential, and",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:9",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.51997,
+        0.829368,
+        0.535333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:135",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.51997,
+        0.235271,
+        0.535333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:17",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.52047,
+        0.329595,
+        0.534833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:47",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.526758,
+        0.489107,
+        0.541121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:95",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Access Management\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.542091,
+        0.70924,
+        0.557455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:96",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cIEEE Institute of Electrical and",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.548379,
+        0.829368,
+        0.563742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:136",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.548379,
+        0.235271,
+        0.563742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:18",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.548879,
+        0.329595,
+        0.563242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:48",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.555167,
+        0.493605,
+        0.56953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:97",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Electronics Engineers\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.5705,
+        0.759411,
+        0.585864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:98",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cISAC Information Sharing and Analysis",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.576788,
+        0.829368,
+        0.592152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:137",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.576788,
+        0.235271,
+        0.592152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:19",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.577288,
+        0.329595,
+        0.591652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:49",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.583576,
+        0.412581,
+        0.597939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:99",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Centers\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.598909,
+        0.761245,
+        0.614273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:100",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cISAO Information Sharing and Analysis",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.605197,
+        0.829368,
+        0.620561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:138",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.605197,
+        0.235271,
+        0.620561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:20",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.605697,
+        0.329595,
+        0.620061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:50",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.611985,
+        0.448903,
+        0.626348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:101",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Organizations\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.627318,
+        0.69608,
+        0.642682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:102",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cITL Information Technology",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.633606,
+        0.829368,
+        0.64897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:139",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.633606,
+        0.235271,
+        0.64897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:21",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.634106,
+        0.329595,
+        0.64847
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:51",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.640394,
+        0.431826,
+        0.654758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:103",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Laboratory\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.655727,
+        0.67079,
+        0.671091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:104",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cMLS Multilevel Secure\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.655727,
+        0.826257,
+        0.671091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:140",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "425",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.655727,
+        0.235253,
+        0.671091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:22",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.656227,
+        0.329599,
+        0.670591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:52",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.671485,
+        0.729363,
+        0.686848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:105",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cNDA Non-Disclosure Agreement\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.671485,
+        0.826257,
+        0.686848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:141",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.671485,
+        0.235253,
+        0.686848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:23",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.671985,
+        0.329599,
+        0.686348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:53",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.687318,
+        0.76314,
+        0.702682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:106",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cODNI Office of the Director of National",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.693606,
+        0.829368,
+        0.70897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:142",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.693606,
+        0.235271,
+        0.70897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:24",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.694106,
+        0.329595,
+        0.70847
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:54",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.700394,
+        0.436449,
+        0.714758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:107",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Intelligence\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.715727,
+        0.76698,
+        0.731091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:108",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cOPM Office of Personnel Management",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.715727,
+        0.235253,
+        0.731091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:25",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.762618,
+        0.716227,
+        0.825757,
+        0.730591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:143",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u201d 426",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.716227,
+        0.329599,
+        0.730591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:55",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.731485,
+        0.733845,
+        0.746848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:109",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cPDS Position Designation System\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.731485,
+        0.826257,
+        0.746848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:144",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.731485,
+        0.235253,
+        0.746848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:26",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.731985,
+        0.329599,
+        0.746348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:56",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.747242,
+        0.68109,
+        0.762606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:110",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cRPKI Resource Public Key",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.753606,
+        0.829368,
+        0.76897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:145",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.753606,
+        0.235271,
+        0.76897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:27",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.754106,
+        0.329595,
+        0.76847
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:57",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.760394,
+        0.449928,
+        0.774758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:111",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Infrastructure\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.775652,
+        0.826257,
+        0.791015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:112+actual:p26:line:146",
+      "merged_from": [
+        "actual:p26:line:112",
+        "actual:p26:line:146"
+      ],
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Appendix B Acronyms: Add \u201cSCRM Supply Chain Risk Management\u201d 426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.775652,
+        0.235253,
+        0.791015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:28",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.776152,
+        0.329599,
+        0.790515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:58",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.791485,
+        0.826257,
+        0.806848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:113+actual:p26:line:147",
+      "merged_from": [
+        "actual:p26:line:113",
+        "actual:p26:line:147"
+      ],
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "Appendix B Acronyms: Add \u201cSDLC System Development Life Cycle\u201d 426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.791485,
+        0.235253,
+        0.806848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:29",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.791985,
+        0.329599,
+        0.806348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:59",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.807242,
+        0.751694,
+        0.822606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:114",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cSIEM Security Information and Event",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.81353,
+        0.829368,
+        0.828894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:148",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "426",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.81353,
+        0.235271,
+        0.828894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:30",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.81403,
+        0.329595,
+        0.828394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:60",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.820318,
+        0.445576,
+        0.834682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:115",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Management\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.835652,
+        0.710971,
+        0.851015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:116",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cSWID Software Identification\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.835652,
+        0.826257,
+        0.851015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:149",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "427",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.835652,
+        0.235253,
+        0.851015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:31",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.836152,
+        0.329599,
+        0.850515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:61",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.851409,
+        0.73559,
+        0.866773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:117",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cTIC Trusted Internet Connections\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.851409,
+        0.826257,
+        0.866773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:150",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "427",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.851409,
+        0.235253,
+        0.866773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:32",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.851909,
+        0.329599,
+        0.866273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:62",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.867242,
+        0.730968,
+        0.882606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:118",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cUEFI Unified Extensible Firmware",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.87353,
+        0.829368,
+        0.888894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:151",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "427",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.87353,
+        0.235271,
+        0.888894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:33",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.87403,
+        0.329595,
+        0.888394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:63",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.880318,
+        0.420832,
+        0.894682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:119",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Interface\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.486627,
+        0.938152,
+        0.511486,
+        0.953515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p26:line:120",
+      "page": 26,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "xxiv",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:0",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, R EV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:68+actual:p27:line:111",
+      "merged_from": [
+        "actual:p27:line:68",
+        "actual:p27:line:111"
+      ],
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.793784,
+        0.096485,
+        0.833581,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:112",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.180255,
+        0.096485,
+        0.21942,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:2",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DATE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.284863,
+        0.096485,
+        0.315487,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:36",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TYPE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.528392,
+        0.096485,
+        0.599612,
+        0.114348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:69",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "REVISION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.119742,
+        0.826257,
+        0.135106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:113",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "427",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.119742,
+        0.235253,
+        0.135106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:3",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.119742,
+        0.745181,
+        0.135106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:70",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.120242,
+        0.332725,
+        0.134606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:37",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.1355,
+        0.826257,
+        0.150864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:114",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "428",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.1355,
+        0.235253,
+        0.150864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:4",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.1355,
+        0.649132,
+        0.150864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:71",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.136,
+        0.332725,
+        0.150364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:38",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.151333,
+        0.826257,
+        0.166697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:115",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "429",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.151333,
+        0.235253,
+        0.166697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:5",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.151833,
+        0.332725,
+        0.166197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:39",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.151833,
+        0.719304,
+        0.166197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:72",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.167091,
+        0.826257,
+        0.182455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:116",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "429",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.167091,
+        0.235253,
+        0.182455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:6",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.167591,
+        0.332725,
+        0.181955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:40",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.167591,
+        0.740143,
+        0.181955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:73",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.182849,
+        0.826257,
+        0.198212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:117",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "431",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.182849,
+        0.235253,
+        0.198212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:7",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.183349,
+        0.332725,
+        0.197712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:41",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.183349,
+        0.71664,
+        0.197712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:74",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU -6\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.199182,
+        0.729669,
+        0.213545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:75",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.20497,
+        0.829368,
+        0.220333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:118",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "434",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.20497,
+        0.235271,
+        0.220333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:8",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.20547,
+        0.332725,
+        0.219833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:42",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.211258,
+        0.443739,
+        0.226621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:76",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AND SEARCH\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.227091,
+        0.826257,
+        0.242455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:119",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "435",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.227091,
+        0.235253,
+        0.242455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:9",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.227591,
+        0.332725,
+        0.241955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:43",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.227591,
+        0.702966,
+        0.241955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:77",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.243348,
+        0.71611,
+        0.257712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:78",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.249136,
+        0.235271,
+        0.2645
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:10",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.249136,
+        0.829368,
+        0.2645
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:120",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "436",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.249636,
+        0.332725,
+        0.264
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:44",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.255424,
+        0.454163,
+        0.270788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:79",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONNECTIONS\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.271758,
+        0.750708,
+        0.286121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:80",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.274939,
+        0.357353,
+        0.292409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:11",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available 12-10-2020 free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.277545,
+        0.829368,
+        0.292909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:121",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "437",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.278045,
+        0.332725,
+        0.292409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:45",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.283833,
+        0.679455,
+        0.299197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:81",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u201cUNAUTHORIZED SOFTWARE \u2013 DENY -BY-EXCEPTION\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.300167,
+        0.734439,
+        0.31453
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:82",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.305955,
+        0.235271,
+        0.321318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:12",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.305955,
+        0.829368,
+        0.321318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:122",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "437",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.306455,
+        0.332725,
+        0.320818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:46",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.312242,
+        0.670759,
+        0.327606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:83",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.328076,
+        0.826257,
+        0.343439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:123",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "438",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.328076,
+        0.235253,
+        0.343439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:13",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.328576,
+        0.332725,
+        0.342939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:47",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.328576,
+        0.605063,
+        0.342939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:84",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -5: Delete duplicate row CM -8(5).",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.344333,
+        0.752696,
+        0.358697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:85",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.350197,
+        0.829368,
+        0.365561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:124",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "440",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.350197,
+        0.235271,
+        0.365561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:14",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.350697,
+        0.332725,
+        0.365061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:48",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.356485,
+        0.667813,
+        0.371849
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:86",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.372242,
+        0.826257,
+        0.387606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:125",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "441",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.372242,
+        0.235253,
+        0.387606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:15",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.372742,
+        0.332725,
+        0.387106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:49",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.372742,
+        0.743452,
+        0.387106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:87",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -7 (IA-5(11)): Change \u201cIA -2(1)(2)\u201d to \u201cIA -2(1) and IA -2(2)\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.388576,
+        0.73915,
+        0.402939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:88",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -8 (IR-10) Title: Change \u201cIntegrated Information Security",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.394364,
+        0.829368,
+        0.409727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:126",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "444",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.394364,
+        0.235271,
+        0.409727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:16",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.394864,
+        0.332725,
+        0.409227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:50",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.401152,
+        0.723525,
+        0.415515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:89",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.416485,
+        0.826257,
+        0.431848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:127",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "445",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.416485,
+        0.235253,
+        0.431848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:19",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.416985,
+        0.332725,
+        0.431348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:51",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.416985,
+        0.746051,
+        0.431348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:90",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA -4\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.432242,
+        0.826257,
+        0.447606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:128",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "447",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.432242,
+        0.235253,
+        0.447606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:20",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.432742,
+        0.332725,
+        0.447106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:52",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.432742,
+        0.705659,
+        0.447106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:91",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE -3\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.448,
+        0.826257,
+        0.463364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:129",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "448",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.448,
+        0.235253,
+        0.463364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:21",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.4485,
+        0.332725,
+        0.462864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:53",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.4485,
+        0.664096,
+        0.462864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:92",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -11 (PE-19(1)) Title: Delete\u201dAND TEMPEST\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.463833,
+        0.826257,
+        0.479197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:130",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "451",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.463833,
+        0.235253,
+        0.479197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:22",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.464333,
+        0.332725,
+        0.478697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:54",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.464333,
+        0.747574,
+        0.478697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:93",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -14 (PS-3(1)) Title: Change \u201cI NFORMATION\u201d to \u201cINFORMATION\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.479591,
+        0.826257,
+        0.494955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:131",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "451",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.479591,
+        0.235253,
+        0.494955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:23",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.480091,
+        0.332725,
+        0.494455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:55",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.480091,
+        0.690819,
+        0.494455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:94",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.495348,
+        0.826257,
+        0.510712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:132",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "454",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.495348,
+        0.235253,
+        0.510712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:24",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.495848,
+        0.332725,
+        0.510212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:56",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.495848,
+        0.723698,
+        0.510212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:95",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI -7\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.511182,
+        0.826257,
+        0.526545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:133",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "454",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.511182,
+        0.235253,
+        0.526545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:25",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.511682,
+        0.332725,
+        0.526045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:57",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.511682,
+        0.723698,
+        0.526045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:96",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI -7\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:17",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.526939,
+        0.826257,
+        0.542303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:134",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "456",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.526939,
+        0.235253,
+        0.542303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:26",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.527439,
+        0.332725,
+        0.541803
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:58",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.527439,
+        0.753404,
+        0.541803
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:97",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA -9\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.542697,
+        0.826257,
+        0.558061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:135",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "456",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.542697,
+        0.235253,
+        0.558061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:27",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.543197,
+        0.332725,
+        0.557561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:59",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.543197,
+        0.764931,
+        0.557561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:98",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR -4(2)\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.55853,
+        0.826257,
+        0.573894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:136",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "456",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.55853,
+        0.235253,
+        0.573894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:28",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.55903,
+        0.332725,
+        0.573394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:60",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.55903,
+        0.726554,
+        0.573394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:99",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.574788,
+        0.730109,
+        0.589152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:100",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.580576,
+        0.829368,
+        0.595939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:137",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "459",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.580576,
+        0.235271,
+        0.595939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:29",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.581076,
+        0.332725,
+        0.595439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:61",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.586864,
+        0.454163,
+        0.602227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:101",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONNECTIONS\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.602697,
+        0.826257,
+        0.618061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:138",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "459",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.602697,
+        0.235253,
+        0.618061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:30",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.603197,
+        0.669923,
+        0.617561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:102",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.603197,
+        0.332725,
+        0.617561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:62",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.618455,
+        0.826257,
+        0.633818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:139",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "459",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.618455,
+        0.235253,
+        0.633818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:31",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.618955,
+        0.669923,
+        0.633318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:103",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.618955,
+        0.332725,
+        0.633318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:63",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.634288,
+        0.826257,
+        0.649652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:140",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "459",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.634288,
+        0.235253,
+        0.649652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:32",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.634788,
+        0.647578,
+        0.649152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:104",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.634788,
+        0.332725,
+        0.649152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:64",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.650545,
+        0.718718,
+        0.664909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:105",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -18 (SC-19): Change \u201caddressed by other controls for",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.656333,
+        0.829368,
+        0.671697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:141",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "460",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.656333,
+        0.235271,
+        0.671697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:33",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.656833,
+        0.332725,
+        0.671197
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:65",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.663121,
+        0.729471,
+        0.677485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:106",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "protocols\u201d to \u201caddressed as any other technology or protocol.\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.678455,
+        0.826257,
+        0.693818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:142",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "463",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.678455,
+        0.235253,
+        0.693818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:34",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.678955,
+        0.647142,
+        0.693318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:107",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.678955,
+        0.332725,
+        0.693318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:66",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.694712,
+        0.702549,
+        0.709076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:108",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Table C -19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.700576,
+        0.829368,
+        0.715939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:143",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "464",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.700576,
+        0.235271,
+        0.715939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:35",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "12-10-2020",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.701076,
+        0.332725,
+        0.715439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:67",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Editorial",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:18",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3r55 -",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.706864,
+        0.435623,
+        0.722227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:109",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SOFTWARE\u201d",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.488294,
+        0.938152,
+        0.51275,
+        0.953515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p27:line:110",
+      "page": 27,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "xxv",
+      "type": "running_footer"
+    }
+  ]
+}

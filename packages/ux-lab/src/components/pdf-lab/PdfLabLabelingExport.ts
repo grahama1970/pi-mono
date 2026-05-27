@@ -1,4 +1,5 @@
 export type FamilyId =
+	| "toc"
 	| "section_heading"
 	| "section_label"
 	| "list"
@@ -54,6 +55,27 @@ export interface ExportableRegion {
 	breadcrumb?: string[];
 	breadcrumb_nodes?: BreadcrumbNode[];
 	notes?: string;
+	semantic_role?: string;
+	target_page?: number;
+	dot_leader?: boolean;
+	toc_title?: string;
+	toc_entries?: TocEntry[];
+}
+
+export interface TocEntry {
+	id: string;
+	title: string;
+	target_page: number;
+	level: number;
+	source_id?: string;
+	bbox_hint?: [number, number, number, number];
+	verification?: {
+		status: "matched" | "mismatch" | "unchecked";
+		expected_pdf_page_index?: number;
+		matched_pdf_page_index?: number;
+		method?: string;
+	};
+	children?: TocEntry[];
 }
 
 export interface ExpectedElement {
@@ -69,6 +91,11 @@ export interface ExpectedElement {
 	match_strategy?: string;
 	desired_role?: string;
 	desired_lead_label?: string;
+	semantic_role?: string;
+	target_page?: number;
+	dot_leader?: boolean;
+	toc_title?: string;
+	toc_entries?: TocEntry[];
 }
 
 export const BREADCRUMB_NODE_KINDS: BreadcrumbNodeKind[] = [
@@ -84,6 +111,7 @@ export const BREADCRUMB_NODE_KINDS: BreadcrumbNodeKind[] = [
 ];
 
 const DEFAULT_ALLOWED_TYPES: Record<FamilyId, string[]> = {
+	toc: ["toc", "TableOfContents"],
 	section_heading: ["section_heading"],
 	section_label: ["section_label", "content_label", "paragraph_block"],
 	list: ["list"],
@@ -306,6 +334,11 @@ export function regionsToExpected(
 				e.desired_lead_label = r.lead_label;
 			}
 			if (r.notes) e.notes = r.notes;
+			if (r.semantic_role) e.semantic_role = r.semantic_role;
+			if (typeof r.target_page === "number") e.target_page = r.target_page;
+			if (typeof r.dot_leader === "boolean") e.dot_leader = r.dot_leader;
+			if (r.toc_title) e.toc_title = r.toc_title;
+			if (r.toc_entries?.length) e.toc_entries = r.toc_entries;
 			return e;
 		}),
 	};

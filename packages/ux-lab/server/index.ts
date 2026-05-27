@@ -79,6 +79,7 @@ const SCILLM_PROJECT_ROOT = process.env.SCILLM_PROJECT_ROOT ?? '/home/graham/wor
 const SCILLM_DAG_PHASE_ID = process.env.SCILLM_DAG_PHASE_ID ?? ''
 const SCILLM_DAG_FALLBACK_PHASE_ID = 'phase-20260519-dag-self-improvement-loop'
 const SCILLM_DAG_RUN_ARTIFACT_DIR = process.env.SCILLM_DAG_RUN_ARTIFACT_DIR ?? 'scillm-exec-run-hash-bound'
+const SCILLM_DAG_DRAFT_DIR = process.env.SCILLM_DAG_DRAFT_DIR ?? resolve(SCILLM_PROJECT_ROOT, '.codex', 'dag-viewer', 'drafts')
 const ARCH_SCOPE = 'architecture'
 const RE_QUESTION_SKILL = '/home/graham/workspace/experiments/agent-skills/skills/review-question'
 const WORKSHEETS_PATH = process.env.WORKSHEETS_YAML ?? resolve(__dirname, '../fixtures/sparta-reference/worksheets.yaml')
@@ -91,7 +92,7 @@ const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH 
 const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
 const SPARTA_SUPERVISOR_STATUS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'status.json')
 const SPARTA_SUPERVISOR_COMMANDS_PATH = resolve(SPARTA_SUPERVISOR_STATE_DIR, 'commands.jsonl')
-const SPARTA_SUPERVISOR_RUN_ENABLED = process.env.SPARTA_SUPERVISOR_RUN_ENABLED === '1'
+const SPARTA_SUPERVISOR_RUN_ENABLED = process.env.SPARTA_SUPERVISOR_RUN_ENABLED !== '0'
 const SPARTA_GAP_PLAN_DIR = resolve(MEMORY_REPO_ROOT, 'artifacts/monitor_sparta_gap_plan')
 const SPARTA_COVERAGE_SIGNATURE_COLLECTIONS = [
   'sparta_controls',
@@ -1815,10 +1816,6 @@ async function buildSpartaCoverageChangeSignature(): Promise<JsonRecord> {
   return {
     schema: 'sparta_coverage_change_signature.v1',
     collections: Object.fromEntries(counts),
-    supervisor_status_mtime_ms: await fileMtimeMs(SPARTA_SUPERVISOR_STATUS_PATH),
-    supervisor_commands_mtime_ms: await fileMtimeMs(SPARTA_SUPERVISOR_COMMANDS_PATH),
-    monitor_state_mtime_ms: await fileMtimeMs('/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json'),
-    monitor_task_state_mtime_ms: await fileMtimeMs('/mnt/storage12tb/media/agents/shared/monitor-sparta/task_state.json'),
   }
 }
 
@@ -2039,33 +2036,102 @@ function attachQraTrustStatus(payload: JsonRecord): JsonRecord {
   return { ...payload, qraTrust: qraTrustStatus(corpus) }
 }
 
+async function attachFreshSupervisorToCoveragePayload(payload: JsonRecord): Promise<JsonRecord> {
+  const supervisor = await refreshSpartaSupervisorState()
+  if (!supervisor || typeof supervisor !== 'object' || Array.isArray(supervisor)) return payload
+  const existingSupervisor = payload.supervisor && typeof payload.supervisor === 'object' && !Array.isArray(payload.supervisor)
+    ? payload.supervisor as JsonRecord
+    : {}
+  const sourceEmbeddingCoverage = existingSupervisor.source_embedding_coverage
+    && typeof existingSupervisor.source_embedding_coverage === 'object'
+    && !Array.isArray(existingSupervisor.source_embedding_coverage)
+    ? existingSupervisor.source_embedding_coverage
+    : null
+  return {
+    ...payload,
+    supervisor: {
+      ...(supervisor as JsonRecord),
+      ...(sourceEmbeddingCoverage ? { source_embedding_coverage: sourceEmbeddingCoverage } : {}),
+    },
+  }
+}
+
 async function buildSpartaCoveragePayload(): Promise<JsonRecord> {
   const auditScript = `
 import json
-from pathlib import Path
 from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls, get_sparta_control_framework_inventory
 from scripts.validation.sparta_corpus_inventory import scan as scan_corpus_inventory
-
-state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/state.json")
-task_state_path = Path("/mnt/storage12tb/media/agents/shared/monitor-sparta/task_state.json")
+from scripts.validation.source_embedding_coverage import scan as scan_source_embedding_coverage
 
 
 client = create_health_client(timeout=45.0)
 try:
-    checks = [r.to_dict() for r in run_all_checks(client)]
+    raw_checks = [r.to_dict() for r in run_all_checks(client)]
 finally:
     client.close()
 
-remaining = check_create_qras_remaining_calls().to_dict()
+checks = [{
+    "ok": check.get("ok"),
+    "dimension": check.get("dimension"),
+    "message": str(check.get("message", ""))[:1000],
+    "malformed": check.get("malformed"),
+    "scanned": check.get("scanned"),
+    "course_corrected_non_generation": check.get("course_corrected_non_generation"),
+    "course_corrected_by_collection": check.get("course_corrected_by_collection"),
+    "malformed_by_collection": check.get("malformed_by_collection"),
+    "rule_counts": check.get("rule_counts"),
+    "output_path": check.get("output_path"),
+} for check in raw_checks]
+
+remaining_raw = check_create_qras_remaining_calls().to_dict()
+remaining = {
+    "ok": remaining_raw.get("ok"),
+    "dimension": remaining_raw.get("dimension"),
+    "message": remaining_raw.get("message"),
+    "native_remaining_any_collection_total": remaining_raw.get("native_remaining_any_collection_total"),
+    "native_remaining_non_sparta_total": remaining_raw.get("native_remaining_non_sparta_total"),
+    "native_remaining_sparta_any_collection": remaining_raw.get("native_remaining_sparta_any_collection"),
+    "native_by_framework": remaining_raw.get("native_by_framework"),
+    "sparta_v2_remaining_total": remaining_raw.get("sparta_v2_remaining_total"),
+    "sparta_v2_native_remaining_target_collection": remaining_raw.get("sparta_v2_native_remaining_target_collection"),
+    "sparta_v2_contextual_remaining_target_collection": remaining_raw.get("sparta_v2_contextual_remaining_target_collection"),
+    "sparta_v2_remaining_prompt_kinds": remaining_raw.get("sparta_v2_remaining_prompt_kinds"),
+    "sparta_control_to_control_raw_candidate_pairs": remaining_raw.get("sparta_control_to_control_raw_candidate_pairs"),
+    "sparta_control_to_control_gated_pairs": remaining_raw.get("sparta_control_to_control_gated_pairs"),
+    "sparta_control_to_control_gated_skip_reasons": remaining_raw.get("sparta_control_to_control_gated_skip_reasons"),
+    "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": remaining_raw.get("implemented_backlog_total_if_legacy_sparta_native_counts_as_done"),
+    "implemented_backlog_total_if_v2_sparta_native_required": remaining_raw.get("implemented_backlog_total_if_v2_sparta_native_required"),
+    "exact_remaining_calls_total": remaining_raw.get("exact_remaining_calls_total"),
+    "total_with_raw_comparison_candidates": remaining_raw.get("total_with_raw_comparison_candidates"),
+}
+try:
+    source_embedding_coverage = scan_source_embedding_coverage(artifact_dir=None)
+except Exception as exc:
+    source_embedding_coverage = {
+        "schema_version": 1,
+        "status": "blocked",
+        "state": "scanner_failed",
+        "gaps": {
+            "blocked_reasons": [f"source_embedding_coverage_failed:{exc}"],
+            "fail_reasons": [],
+            "missing_vectors": 0,
+            "stale_vectors": 0,
+        },
+        "backfill": {"required": False, "mode": "review_required", "mutation_enabled": False, "manifest": None},
+        "resume_hint": "Fix source_embedding_coverage scanner error before marking this lane pass.",
+    }
 payload = {
     "checks": checks,
     "passed": sum(1 for c in checks if c.get("ok")),
     "total": len(checks),
     "remaining": remaining,
     "corpus_inventory": scan_corpus_inventory(),
-    "control_frameworks": get_sparta_control_framework_inventory(),
-    "monitor_state": json.loads(state_path.read_text()) if state_path.exists() else {},
-    "task_state": json.loads(task_state_path.read_text()) if task_state_path.exists() else {},
+    "source_embedding_coverage": source_embedding_coverage,
+    "control_frameworks": [{
+        **row,
+        "defects": (row.get("defects") or [])[:25],
+        "defect_count": len(row.get("defects") or []),
+    } for row in get_sparta_control_framework_inventory()],
 }
 print(json.dumps(payload, default=str))
 `.trim()
@@ -2076,19 +2142,18 @@ print(json.dumps(payload, default=str))
     bestPracticeBase,
     artifacts,
     promptAudit,
-    supervisor,
   ] = await Promise.all([
     runCommandJson('uv', ['run', 'python', '-c', auditScript], {
       cwd: MEMORY_REPO_ROOT,
       env: { PYTHONPATH: 'src', MEMORY_SERVICE_URL: 'http://127.0.0.1:8601' },
-      timeout: 180_000,
+      timeout: 420_000,
     }),
     buildSpartaCoverageChangeSignature(),
     runBestPracticeAudit(),
     readLatestArtifactSummary(),
     auditSpartaPrompts(),
-    refreshSpartaSupervisorState(),
   ])
+  const supervisor = await refreshSpartaSupervisorState()
   const counts = (changeSignature.collections && typeof changeSignature.collections === 'object' && !Array.isArray(changeSignature.collections))
     ? changeSignature.collections as Record<string, number>
     : {}
@@ -2136,6 +2201,20 @@ print(json.dumps(payload, default=str))
       corpus_inventory: (monitor as JsonRecord).corpus_inventory,
     }
     : monitor
+  const freshSourceEmbedding = monitor && typeof monitor === 'object' && !Array.isArray(monitor)
+    && (monitor as JsonRecord).source_embedding_coverage
+    && typeof (monitor as JsonRecord).source_embedding_coverage === 'object'
+    && !Array.isArray((monitor as JsonRecord).source_embedding_coverage)
+    ? (monitor as JsonRecord).source_embedding_coverage as JsonRecord
+    : null
+  const supervisorForCoverage = supervisor && typeof supervisor === 'object' && !Array.isArray(supervisor)
+    ? {
+      ...(supervisor as JsonRecord),
+      ...(freshSourceEmbedding ? { source_embedding_coverage: freshSourceEmbedding } : {}),
+    }
+    : freshSourceEmbedding
+      ? { source_embedding_coverage: freshSourceEmbedding }
+      : supervisor
 
   return {
     generated_at: new Date().toISOString(),
@@ -2177,10 +2256,10 @@ print(json.dumps(payload, default=str))
       ? (monitor as JsonRecord).control_frameworks
       : [],
     monitor: compactMonitor,
-    bestPractices: deriveBestPracticeAudit(bestPracticeBase as Array<Record<string, unknown>>, promptAudit, supervisor),
+    bestPractices: deriveBestPracticeAudit(bestPracticeBase as Array<Record<string, unknown>>, promptAudit, supervisorForCoverage),
     promptAudit,
     artifacts,
-    supervisor,
+    supervisor: supervisorForCoverage,
     createQrasBackfill: await readCreateQrasBackfillProgress(),
   }
 }
@@ -2236,7 +2315,9 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
     const waitForRefresh = req.query.wait === '1'
 
     if (!forceRefresh && spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
-      return res.json(await attachLiveCreateQrasProgress(spartaCoverageCache.payload))
+      const payload = await attachFreshSupervisorToCoveragePayload(spartaCoverageCache.payload)
+      spartaCoverageCache = { ...spartaCoverageCache, payload }
+      return res.json(await attachLiveCreateQrasProgress(payload))
     }
 
     const snapshot = spartaCoverageCache?.payload ?? await readSpartaCoverageSnapshot()
@@ -2250,13 +2331,13 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
     const signatureChanged = Boolean(currentSignature && !sameCoverageChangeSignature(currentSignature, snapshotSignature))
 
     if (snapshot && !forceRefresh && currentSignature && !signatureChanged) {
-      const payload = {
+      const payload = await attachFreshSupervisorToCoveragePayload({
         ...snapshot,
         stale: false,
         refreshing: false,
         refresh_policy: 'change_gated',
         coverage_change_signature: currentSignature,
-      }
+      })
       spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
       return res.json(await attachLiveCreateQrasProgress(payload))
     }
@@ -2265,13 +2346,14 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
       if (forceRefresh || signatureChanged) {
         refreshSpartaCoverageInBackground(forceRefresh).catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
       }
-      return res.json(await attachLiveCreateQrasProgress({
+      const payload = await attachFreshSupervisorToCoveragePayload({
         ...snapshot,
         stale: true,
         refreshing: forceRefresh || signatureChanged,
         refresh_policy: forceRefresh ? 'force_requested' : signatureChanged ? 'change_detected' : 'snapshot_only',
         coverage_change_signature: currentSignature ?? snapshotSignature,
-      }))
+      })
+      return res.json(await attachLiveCreateQrasProgress(payload))
     }
 
     const payload = await refreshSpartaCoverageInBackground(forceRefresh)
@@ -2287,7 +2369,7 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
 
 app.get('/api/sparta/supervisor-state', async (_req, res) => {
   try {
-    const supervisor = await readSpartaSupervisorState()
+    const supervisor = await refreshSpartaSupervisorState()
     if (!supervisor) {
       return res.status(404).json({
         error: 'sparta_supervisor_state_missing',
@@ -4462,6 +4544,17 @@ app.post('/api/scillm', (req, res) => {
     },
     (proxyRes) => {
       res.status(proxyRes.statusCode ?? 500)
+      const contentType = String(proxyRes.headers['content-type'] ?? '')
+      const shouldStream = contentType.includes('text/event-stream') || req.body?.stream === true
+      if (shouldStream) {
+        res.writeHead(proxyRes.statusCode ?? 200, {
+          'Content-Type': contentType || 'text/event-stream; charset=utf-8',
+          'Cache-Control': String(proxyRes.headers['cache-control'] ?? 'no-cache'),
+          'X-Accel-Buffering': 'no',
+        })
+        proxyRes.pipe(res)
+        return
+      }
       const chunks: Buffer[] = []
       proxyRes.on('data', (chunk: Buffer) => chunks.push(chunk))
       proxyRes.on('end', () => {
@@ -4808,6 +4901,128 @@ app.post('/api/scillm/dag-viewer/amendments', async (req, res) => {
       error: 'amendment_draft_save_failed',
       detail: err instanceof Error ? err.message : String(err),
     })
+  }
+})
+
+app.get('/api/scillm/dag-viewer/drafts', async (_req, res) => {
+  if (!isPathInside(SCILLM_PROJECT_ROOT, SCILLM_DAG_DRAFT_DIR)) {
+    res.status(500).json({ ok: false, error: 'configured scillm DAG draft path escapes project root' })
+    return
+  }
+  try {
+    await mkdir(SCILLM_DAG_DRAFT_DIR, { recursive: true })
+    const entries = await readdir(SCILLM_DAG_DRAFT_DIR, { withFileTypes: true })
+    const drafts = await Promise.all(entries
+      .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+      .map(async (entry) => {
+        const path = resolve(SCILLM_DAG_DRAFT_DIR, entry.name)
+        const payload = JSON.parse(await readFile(path, 'utf-8'))
+        return { ...payload, artifactPath: path }
+      }))
+    drafts.sort((a: any, b: any) => String(b.updatedAt ?? b.createdAt ?? '').localeCompare(String(a.updatedAt ?? a.createdAt ?? '')))
+    res.json({ ok: true, drafts })
+  } catch (err) {
+    res.status(503).json({ ok: false, error: 'dag_drafts_read_failed', detail: err instanceof Error ? err.message : String(err) })
+  }
+})
+
+app.post('/api/scillm/dag-viewer/drafts', async (req, res) => {
+  if (!isPathInside(SCILLM_PROJECT_ROOT, SCILLM_DAG_DRAFT_DIR)) {
+    res.status(500).json({ ok: false, error: 'configured scillm DAG draft path escapes project root' })
+    return
+  }
+  try {
+    const graph = req.body?.graph
+    if (!graph || typeof graph !== 'object' || !String(graph.graph_id ?? '').trim()) {
+      res.status(400).json({ ok: false, error: 'invalid_draft_graph' })
+      return
+    }
+    const now = new Date().toISOString()
+    const graphId = String(graph.graph_id)
+    const draftId = safeArtifactName(String(req.body?.draftId ?? req.body?.draft_id ?? graphId))
+    const artifactPath = resolve(SCILLM_DAG_DRAFT_DIR, `${draftId}.json`)
+    if (!isPathInside(SCILLM_PROJECT_ROOT, artifactPath)) {
+      res.status(500).json({ ok: false, error: 'configured scillm DAG draft artifact path escapes project root' })
+      return
+    }
+    const previous = existsSync(artifactPath) ? JSON.parse(await readFile(artifactPath, 'utf-8')) : null
+    const payload = {
+      schema: 'scillm.dag_viewer.workspace_draft.v1',
+      draftId,
+      title: String(req.body?.title ?? graphId),
+      subtitle: String(req.body?.subtitle ?? 'saved draft'),
+      status: String(req.body?.status ?? 'draft'),
+      kind: 'draft',
+      graph,
+      lastRun: req.body?.lastRun && typeof req.body.lastRun === 'object' ? req.body.lastRun : previous?.lastRun,
+      baseGraphHash: executableGraphHash(graph),
+      createdAt: previous?.createdAt ?? now,
+      updatedAt: now,
+      source: {
+        project_root: SCILLM_PROJECT_ROOT,
+        origin: req.body?.origin ?? 'ux-lab #scillm/dag-planner',
+      },
+    }
+    await mkdir(SCILLM_DAG_DRAFT_DIR, { recursive: true })
+    await writeFile(artifactPath, JSON.stringify(payload, null, 2) + '\n', 'utf-8')
+    res.json({ ok: true, draft: { ...payload, artifactPath } })
+  } catch (err) {
+    res.status(503).json({ ok: false, error: 'dag_draft_save_failed', detail: err instanceof Error ? err.message : String(err) })
+  }
+})
+
+app.delete('/api/scillm/dag-viewer/drafts/:draftId', async (req, res) => {
+  const draftId = safeArtifactName(String(req.params.draftId ?? ''))
+  const artifactPath = resolve(SCILLM_DAG_DRAFT_DIR, `${draftId}.json`)
+  if (!draftId || !isPathInside(SCILLM_PROJECT_ROOT, artifactPath)) {
+    res.status(400).json({ ok: false, error: 'invalid_draft_id' })
+    return
+  }
+  try {
+    if (existsSync(artifactPath)) await unlink(artifactPath)
+    res.json({ ok: true, draftId })
+  } catch (err) {
+    res.status(503).json({ ok: false, error: 'dag_draft_delete_failed', detail: err instanceof Error ? err.message : String(err) })
+  }
+})
+
+app.post('/api/scillm/v1/scillm/exec/graph', async (req, res) => {
+  try {
+    const upstream = await fetch(`${SCILLM_URL}/v1/scillm/exec/graph`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
+        'X-Caller-Skill': 'ux-lab',
+      },
+      body: JSON.stringify(req.body ?? {}),
+    })
+    const contentType = upstream.headers.get('content-type') ?? ''
+    if (contentType.includes('text/event-stream') || req.body?.stream === true) {
+      res.writeHead(upstream.status, {
+        'Content-Type': contentType || 'text/event-stream; charset=utf-8',
+        'Cache-Control': upstream.headers.get('cache-control') ?? 'no-cache',
+        'X-Accel-Buffering': 'no',
+      })
+      if (!upstream.body) {
+        res.end()
+        return
+      }
+      for await (const chunk of upstream.body as any) {
+        res.write(Buffer.from(chunk))
+      }
+      res.end()
+      return
+    }
+    const text = await upstream.text()
+    res.status(upstream.status)
+    try {
+      res.json(JSON.parse(text))
+    } catch {
+      res.send(text)
+    }
+  } catch (error) {
+    res.status(502).json({ error: 'scillm unreachable', detail: error instanceof Error ? error.message : String(error) })
   }
 })
 

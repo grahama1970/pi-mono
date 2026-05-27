@@ -1,0 +1,1022 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0401",
+  "captured_at": "2026-05-26T19:14:03.541420+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "sections",
+    "footnotes_references",
+    "headers_footers"
+  ],
+  "toc_entries": [
+    {
+      "toc_id": "toc:0035",
+      "title": "REFERENCES",
+      "level": 1,
+      "target_page": 374,
+      "matched_pdf_page_index": 400,
+      "extraction_page": 401
+    }
+  ],
+  "reviewer_questions": [
+    "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+    "Distinguish references, citation blocks, footnotes, and ordinary body paragraphs.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "REFERENCES",
+      "label": "REFERENCES",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0355; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p401:line:0+actual:p401:line:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p401:line:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.087924,
+        0.276488,
+        0.112152
+      ],
+      "text_hint": "REFERENCES",
+      "label": "REFERENCES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:2; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.288581,
+        0.116788,
+        0.662975,
+        0.133439
+      ],
+      "text_hint": "CTIVES, REGULATIONS, STANDARDS, AND GUIDELINES 34",
+      "label": "CTIVES, REGULATIONS, STANDARDS, AND GUIDELINES 34",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.116788,
+        0.296526,
+        0.133439
+      ],
+      "text_hint": "LAWS, POLICIES, DIRE",
+      "label": "LAWS, POLICIES, DIRE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:3; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.40251,
+        0.157394,
+        0.591466,
+        0.172758
+      ],
+      "text_hint": "LAWS AND EXECUTIVE ORDERS",
+      "label": "LAWS AND EXECUTIVE ORDERS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.187015,
+        0.228792,
+        0.203667
+      ],
+      "text_hint": "[ATOM54]",
+      "label": "[ATOM54]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.187515,
+        0.626132,
+        0.204379
+      ],
+      "text_hint": "Atomic Energy Act (P.L. 83- 703), August 1954.",
+      "label": "Atomic Energy Act (P.L. 83- 703), August 1954.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.204485,
+        0.817841,
+        0.220136
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/STATUTE -68/pdf/STATUTE -68-Pg919.pdf",
+      "label": "https://www.govinfo.gov/content/pkg/STATUTE -68/pdf/STATUTE -68-Pg919.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.226939,
+        0.218608,
+        0.243591
+      ],
+      "text_hint": "[CMPPA]",
+      "label": "[CMPPA]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:5; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.227439,
+        0.807572,
+        0.244303
+      ],
+      "text_hint": "Computer Matching and Privacy Protection Act of 1988 (P.L. 100-503),",
+      "label": "Computer Matching and Privacy Protection Act of 1988 (P.L. 100-503),",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.244408,
+        0.395678,
+        0.261272
+      ],
+      "text_hint": "October 1988.",
+      "label": "October 1988.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.261303,
+        0.770417,
+        0.276955
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/STATUTE -102/pdf/STATUTE -102-",
+      "label": "https://www.govinfo.gov/content/pkg/STATUTE -102/pdf/STATUTE -102-",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032868,
+        0.274939,
+        0.357353,
+        0.289303
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.276758,
+        0.366866,
+        0.292409
+      ],
+      "text_hint": "Pg2507.pdf",
+      "label": "Pg2507.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.299288,
+        0.207982,
+        0.315939
+      ],
+      "text_hint": "[EGOV]",
+      "label": "[EGOV]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.299712,
+        0.782429,
+        0.316576
+      ],
+      "text_hint": "E-Government Act [includes FISMA] (P.L. 107 -347), December 2002.",
+      "label": "E-Government Act [includes FISMA] (P.L. 107 -347), December 2002.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:33; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.316682,
+        0.761461,
+        0.332333
+      ],
+      "text_hint": "https://www.congress.gov/107/plaws/publ347/PLAW 107publ347.pdf -",
+      "label": "https://www.congress.gov/107/plaws/publ347/PLAW 107publ347.pdf -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.339212,
+        0.222181,
+        0.355864
+      ],
+      "text_hint": "[EVID ACT]",
+      "label": "[EVID ACT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.339712,
+        0.822619,
+        0.356576
+      ],
+      "text_hint": "Foundations for Evidence- Based Polic ymaking Act of 2018 (P.L. 115-435),",
+      "label": "Foundations for Evidence- Based Polic ymaking Act of 2018 (P.L. 115-435),",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:35; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286753,
+        0.356612,
+        0.392969,
+        0.373476
+      ],
+      "text_hint": "January 2019.",
+      "label": "January 2019.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.373576,
+        0.761461,
+        0.389227
+      ],
+      "text_hint": "https://www.congress.gov/115/plaws/publ435/PLAW 115publ435.pdf -",
+      "label": "https://www.congress.gov/115/plaws/publ435/PLAW 115publ435.pdf -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.396106,
+        0.21923,
+        0.412758
+      ],
+      "text_hint": "[FASC18]",
+      "label": "[FASC18]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.396606,
+        0.835237,
+        0.41347
+      ],
+      "text_hint": "Secure Technology Act [includes Federal Acquisition Supply Chain Security",
+      "label": "Secure Technology Act [includes Federal Acquisition Supply Chain Security",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286717,
+        0.413506,
+        0.555103,
+        0.430369
+      ],
+      "text_hint": "Act] (P.L. 115 -390), December 2018.",
+      "label": "Act] (P.L. 115 -390), December 2018.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.43047,
+        0.718008,
+        0.446121
+      ],
+      "text_hint": "https://www.congress.gov/bill/115th -congress/senate -bill/3085",
+      "label": "https://www.congress.gov/bill/115th -congress/senate -bill/3085",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.453,
+        0.212616,
+        0.469652
+      ],
+      "text_hint": "[FISMA]",
+      "label": "[FISMA]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.4535,
+        0.824992,
+        0.470364
+      ],
+      "text_hint": "Federal Information Security Moderni zation Act (P.L. 113 -283), December",
+      "label": "Federal Information Security Moderni zation Act (P.L. 113 -283), December",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.286253,
+        0.4699,
+        0.32778,
+        0.487763
+      ],
+      "text_hint": "2014.",
+      "label": "2014.",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.487364,
+        0.761461,
+        0.503015
+      ],
+      "text_hint": "https://www.congress.gov/113/plaws/publ283/PLAW 113publ283.pdf -",
+      "label": "https://www.congress.gov/113/plaws/publ283/PLAW 113publ283.pdf -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.509894,
+        0.218264,
+        0.526545
+      ],
+      "text_hint": "[FOIA96]",
+      "label": "[FOIA96]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.510394,
+        0.829306,
+        0.527258
+      ],
+      "text_hint": "Freedom of Information Act (FOIA), 5 U.S.C. \u00a7 552, As Amended By Public",
+      "label": "Freedom of Information Act (FOIA), 5 U.S.C. \u00a7 552, As Amended By Public",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "label": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:9; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.527294,
+        0.817369,
+        0.544157
+      ],
+      "text_hint": "Law No. 104- 231, 110 Stat. 3048, Electronic Freedom of Information Act",
+      "label": "Law No. 104- 231, 110 Stat. 3048, Electronic Freedom of Information Act",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.544263,
+        0.454956,
+        0.561126
+      ],
+      "text_hint": "Amendments of 1996.",
+      "label": "Amendments of 1996.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:46; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.561152,
+        0.754929,
+        0.576803
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/PLAW -104publ231/pdf/PLAW -",
+      "label": "https://www.govinfo.gov/content/pkg/PLAW -104publ231/pdf/PLAW -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:47; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.576682,
+        0.397532,
+        0.592333
+      ],
+      "text_hint": "104publ231.pdf",
+      "label": "104publ231.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:48; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.599136,
+        0.227482,
+        0.615788
+      ],
+      "text_hint": "[PRIVACT]",
+      "label": "[PRIVACT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.599636,
+        0.599829,
+        0.6165
+      ],
+      "text_hint": "Privacy Act (P.L. 93-579), December 1974.",
+      "label": "Privacy Act (P.L. 93-579), December 1974.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:49; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.616606,
+        0.82998,
+        0.632258
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/STATUTE -88/pdf/STATUTE -88-Pg1896.pdf",
+      "label": "https://www.govinfo.gov/content/pkg/STATUTE -88/pdf/STATUTE -88-Pg1896.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:50; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.639061,
+        0.260505,
+        0.655712
+      ],
+      "text_hint": "[USA PATRIOT]",
+      "label": "[USA PATRIOT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.639561,
+        0.612605,
+        0.656424
+      ],
+      "text_hint": "USA Patriot Act (P.L. 107 -56), October 2001.",
+      "label": "USA Patriot Act (P.L. 107 -56), October 2001.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:51; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.65653,
+        0.744876,
+        0.672182
+      ],
+      "text_hint": "https://www.congress.gov/107/plaws/publ56/PLAW -107publ56.pdf",
+      "label": "https://www.congress.gov/107/plaws/publ56/PLAW -107publ56.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:52; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.679061,
+        0.224519,
+        0.695712
+      ],
+      "text_hint": "[USC 552]",
+      "label": "[USC 552]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.679485,
+        0.796825,
+        0.696348
+      ],
+      "text_hint": "United States Code, 2006 Edition, Supplement 4, Title 5-Government",
+      "label": "United States Code, 2006 Edition, Supplement 4, Title 5-Government",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:53; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.696454,
+        0.610057,
+        0.713318
+      ],
+      "text_hint": "Organization and Employees, January 2011.",
+      "label": "Organization and Employees, January 2011.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:54; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "text_hint": "3r55 -",
+      "label": "3r55 -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.713348,
+        0.819338,
+        0.729
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/USCODE -2010-title5/pdf/USCODE -2010-",
+      "label": "https://www.govinfo.gov/content/pkg/USCODE -2010-title5/pdf/USCODE -2010-",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:55; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.728879,
+        0.562387,
+        0.74453
+      ],
+      "text_hint": "title5 -partI -chap5-subchapII -sec552a.pdf",
+      "label": "title5 -partI -chap5-subchapII -sec552a.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:56; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.751333,
+        0.232852,
+        0.767985
+      ],
+      "text_hint": "[USC 2901]",
+      "label": "[USC 2901]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p401:line:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.751833,
+        0.857555,
+        0.768697
+      ],
+      "text_hint": "United States Code, 2008 Edition, Title 44-Public Printing and Documents,",
+      "label": "United States Code, 2008 Edition, Title 44-Public Printing and Documents,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:57; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.768802,
+        0.576407,
+        0.785666
+      ],
+      "text_hint": "Chapters 29, 31, and 33, January 2012.",
+      "label": "Chapters 29, 31, and 33, January 2012.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:58; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.785697,
+        0.827574,
+        0.801348
+      ],
+      "text_hint": "https://www.govinfo.gov/content/pkg/USCODE -2011-title44/pdf/USCODE -2011-",
+      "label": "https://www.govinfo.gov/content/pkg/USCODE -2011-title44/pdf/USCODE -2011-",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:59; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.801152,
+        0.473218,
+        0.816803
+      ],
+      "text_hint": "title44-chap29-sec2901.pdf",
+      "label": "title44-chap29-sec2901.pdf",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:60; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.851606,
+        0.847399,
+        0.86597
+      ],
+      "text_hint": "34 The references cited in this appendix are those external publications that directly support the FISMA and Privacy",
+      "label": "34 The references cited in this appendix are those external publications that di",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.86547,
+        0.680527,
+        0.879833
+      ],
+      "text_hint": "Projects at NIST. Additional NIST standards, guidelines, and interagency reports are also",
+      "label": "Projects at NIST. Additional NIST standards, guidelines, and interagency reports",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.671941,
+        0.86547,
+        0.804353,
+        0.879833
+      ],
+      "text_hint": "cited throughout this",
+      "label": "cited throughout this",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:61; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145574,
+        0.879333,
+        0.8335,
+        0.893697
+      ],
+      "text_hint": "publication, including in the references section of the applicable controls in Chapter Three. Direct links to the NIST",
+      "label": "publication, including in the references section of the applicable controls in C",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:20+actual:p401:line:62; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.893197,
+        0.516191,
+        0.907561
+      ],
+      "text_hint": "website are provided to obtain access to those publications.",
+      "label": "website are provided to obtain access to those publications.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p401:line:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.212785,
+        0.953818
+      ],
+      "text_hint": "REFERENCES",
+      "label": "REFERENCES",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p401:line:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.801989,
+        0.939742,
+        0.852106,
+        0.953818
+      ],
+      "text_hint": "PAGE 374",
+      "label": "PAGE 374",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p401:line:63; human should amend if rendered page contradicts this row."
+    }
+  ]
+}

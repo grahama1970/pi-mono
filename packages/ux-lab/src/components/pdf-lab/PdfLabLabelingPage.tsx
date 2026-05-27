@@ -18,6 +18,7 @@ import {
   type BreadcrumbNode,
   type BreadcrumbNodeKind,
   type ExpectedElement,
+  type TocEntry,
   BREADCRUMB_NODE_KINDS,
   applyKnownBreadcrumbNode,
   breadcrumbMetadataChanged,
@@ -41,6 +42,7 @@ import './PdfLabLabelingPage.css'
  *  paragraph_block / section_label / section_heading region. They are NOT
  *  human-labeling chips. */
 const CANONICAL_FAMILIES = [
+  { id: 'toc',                 color: '#00d4b8', hotkey: 't' },
   { id: 'section_heading',     color: '#a8ff57', hotkey: '1' },
   { id: 'section_label',       color: '#fbbc04', hotkey: '2' },
   { id: 'list',                color: '#4a9eff', hotkey: '3' },
@@ -62,6 +64,7 @@ type LabelAnchor = 'top-outside' | 'top-inside' | 'bottom-inside' | 'bottom-outs
 type OverlayMode = 'clean' | 'compact' | 'debug'
 
 const FAMILY_ABBREVIATIONS: Record<FamilyId, string> = {
+  toc: 'TOC',
   section_heading: 'HDG',
   section_label: 'LBL',
   list: 'LST',
@@ -90,6 +93,12 @@ interface Region {
   breadcrumb?: string[]
   breadcrumb_nodes?: BreadcrumbNode[]
   notes?: string
+  semantic_role?: string
+  target_page?: number
+  dot_leader?: boolean
+  toc_title?: string
+  toc_entries?: TocEntry[]
+  extraction?: RegionExtraction
   /** Where the family tag sits relative to the bbox. Click the tag to
    *  cycle through the four anchored positions. Default `top-outside` =
    *  just above the bbox's top-left, the conventional CVAT / VIA position. */
@@ -107,6 +116,19 @@ interface Region {
     destPage?: number | null
     destYNorm?: number | null
     actionUrl?: string | null
+  }
+}
+
+interface RegionExtraction {
+  source?: string
+  source_id?: string
+  bbox?: [number, number, number, number]
+  text?: string
+  table_json?: {
+    row_count?: number
+    col_count?: number
+    semantic_type?: string
+    rows?: Array<Array<string | Record<string, unknown>>>
   }
 }
 
@@ -158,6 +180,134 @@ function sameRegionIdentity(a: Region, b: Region): boolean {
   const bText = normalizedRegionText(b.text_hint)
   const textMatches = aText.length > 0 && bText.length > 0 && aText === bText
   return textMatches || bboxDistance(a, b) <= 0.01
+}
+
+function bboxIntersectionArea(a: [number, number, number, number], b: [number, number, number, number]): number {
+  const width = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0]))
+  const height = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]))
+  return width * height
+}
+
+function bboxArea(bbox: [number, number, number, number]): number {
+  return Math.max(0, bbox[2] - bbox[0]) * Math.max(0, bbox[3] - bbox[1])
+}
+
+function extractionMatchScore(region: Region, source: Region): number {
+  if (region.family !== source.family) return 0
+  const overlap = bboxIntersectionArea(region.bbox, source.bbox)
+  const smaller = Math.min(bboxArea(region.bbox), bboxArea(source.bbox))
+  if (smaller <= 0) return 0
+  return overlap / smaller
+}
+
+function tableJsonFromBlock(block: Record<string, unknown>): RegionExtraction['table_json'] {
+  const raw = (block.raw && typeof block.raw === 'object') ? block.raw as Record<string, unknown> : {}
+  const rawRows = Array.isArray(raw.rows) ? raw.rows as Array<Array<Record<string, unknown>>> : []
+  if (rawRows.length > 0) {
+    return {
+      row_count: Number(raw.row_count) || rawRows.length || undefined,
+      col_count: Number(raw.col_count) || Math.max(0, ...rawRows.map(row => Array.isArray(row) ? row.length : 0)) || undefined,
+      semantic_type: typeof raw.semantic_type === 'string' ? raw.semantic_type : undefined,
+      rows: rawRows,
+    }
+  }
+  const text = String(block.text ?? '')
+  const rows = text.split('\n')
+    .map(line => line.split('|').map(cell => cell.trim()).filter(Boolean))
+    .filter(row => row.length > 0)
+  return {
+    row_count: Number(raw.row_count) || rows.length || undefined,
+    col_count: Number(raw.col_count) || Math.max(0, ...rows.map(row => row.length)) || undefined,
+    semantic_type: typeof raw.semantic_type === 'string' ? raw.semantic_type : undefined,
+    rows: rows.length > 0 ? rows : undefined,
+  }
+}
+
+function releaseExtractionUrlFromExpected(expectedElementsUrl: string | null | undefined): string | null {
+  if (!expectedElementsUrl) return null
+  const slash = expectedElementsUrl.lastIndexOf('/')
+  if (slash < 0) return 'release_extraction_blocks.json'
+  return `${expectedElementsUrl.slice(0, slash + 1)}release_extraction_blocks.json`
+}
+
+async function fetchExtractionSourceRegions(expectedElementsUrl: string | null | undefined): Promise<Region[]> {
+  const url = releaseExtractionUrlFromExpected(expectedElementsUrl)
+  if (!url) return []
+  try {
+    const resp = await fetch(url)
+    if (!resp.ok) return []
+    const payload = await resp.json() as { blocks?: Array<Record<string, unknown>> }
+    const regions: Region[] = []
+    for (const block of payload.blocks ?? []) {
+      const family = String(block.type ?? block.source_type ?? '')
+      if (family !== 'table' && family !== 'figure') continue
+      const bbox = block.bbox
+      if (!Array.isArray(bbox) || bbox.length !== 4) continue
+      regions.push({
+        id: newId(),
+        family: family as FamilyId,
+        bbox: normalizeRect(Number(bbox[0]), Number(bbox[1]), Number(bbox[2]), Number(bbox[3])),
+        label: String(block.id ?? family),
+        text_hint: String(block.text ?? ''),
+        extraction: {
+          source: String(block.source ?? 'release_extraction_blocks'),
+          source_id: String(block.id ?? ''),
+          bbox: normalizeRect(Number(bbox[0]), Number(bbox[1]), Number(bbox[2]), Number(bbox[3])),
+          text: String(block.text ?? ''),
+          table_json: family === 'table' ? tableJsonFromBlock(block) : undefined,
+        },
+      })
+    }
+    return regions
+  } catch {
+    return []
+  }
+}
+
+function backfillMissingExtractionPayloads(regions: Region[], source: Region[]): Region[] {
+  if (source.length === 0) return regions
+  return regions.map(region => {
+    if (region.extraction) return region
+    let best: Region | null = null
+    let bestScore = 0
+    for (const candidate of source) {
+      const score = extractionMatchScore(region, candidate)
+      if (score > bestScore) {
+        best = candidate
+        bestScore = score
+      }
+    }
+    if (!best || bestScore < 0.5 || !best.extraction) return region
+    return { ...region, extraction: best.extraction }
+  })
+}
+
+function overlayLabelForRegion(region: Region, overlayMode: OverlayMode): string {
+  if (region.semantic_role === 'toc' || region.family === 'toc') {
+    return `TOC (${region.toc_entries?.length ?? 0})`
+  }
+  if (region.semantic_role === 'toc_entry') {
+    return typeof region.target_page === 'number' ? `TOC→p.${region.target_page}` : 'TOC'
+  }
+  if (region.semantic_role === 'toc_heading') return 'TOC HEAD'
+  if (overlayMode === 'debug') {
+    return `${region.family}${region.label ? ` · ${region.label.slice(0, 24)}` : ''}`
+  }
+  return FAMILY_ABBREVIATIONS[region.family]
+}
+
+function flattenTocEntries(entries: TocEntry[] | undefined): TocEntry[] {
+  if (!entries) return []
+  const rows: TocEntry[] = []
+  for (const entry of entries) {
+    rows.push(entry)
+    rows.push(...flattenTocEntries(entry.children))
+  }
+  return rows
+}
+
+function formatTocJson(entries: TocEntry[] | undefined): string {
+  return JSON.stringify(entries ?? [], null, 2)
 }
 
 function isPageChromeRegion(region: Region): boolean {
@@ -360,6 +510,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
   // expected_elements.json — our schema.
   if (Array.isArray(obj.expected_elements)) {
     const rows: Region[] = []
+    const tocPayload = obj.toc as { tree?: TocEntry[]; entry_count?: number } | undefined
     for (const el of obj.expected_elements as ExpectedElement[]) {
       if (!Array.isArray(el.bbox_hint) || el.bbox_hint.length !== 4) {
         warnings.push(`expected_elements: dropped row with bad bbox_hint`)
@@ -375,7 +526,32 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
         breadcrumb: parseBreadcrumb(el.breadcrumb),
         breadcrumb_nodes: normalizeBreadcrumbNodes(el.breadcrumb_nodes, el.breadcrumb),
         notes: el.notes,
+        semantic_role: el.semantic_role,
+        target_page: el.target_page,
+        dot_leader: el.dot_leader,
+        toc_title: el.toc_title,
+        toc_entries: el.toc_entries,
       })
+    }
+    if (tocPayload?.tree?.length) {
+      const tocRows = rows.filter(row => row.semantic_role === 'toc_entry')
+      const heading = rows.find(row => row.semantic_role === 'toc_heading')
+      if (tocRows.length >= 3) {
+        const x0 = Math.min(...tocRows.map(row => row.bbox[0]))
+        const y0 = Math.min(heading?.bbox[1] ?? 1, ...tocRows.map(row => row.bbox[1]))
+        const x1 = Math.max(...tocRows.map(row => row.bbox[2]))
+        const y1 = Math.max(...tocRows.map(row => row.bbox[3]))
+        rows.unshift({
+          id: newId(),
+          family: 'toc',
+          bbox: normalizeRect(x0, y0, x1, y1),
+          label: 'Table of Contents',
+          text_hint: `Nested TOC with ${tocPayload.entry_count ?? flattenTocEntries(tocPayload.tree).length} entries`,
+          notes: 'Primary annotation object for the Table of Contents. Child rows remain as extraction evidence.',
+          semantic_role: 'toc',
+          toc_entries: tocPayload.tree,
+        })
+      }
     }
     return { regions: rows, warnings, format: 'expected_elements.json' }
   }
@@ -464,7 +640,7 @@ function importJson(raw: unknown): { regions: Region[]; warnings: string[]; form
  *  labeler can see the dest_page / URL the link points to and verify it.
  */
 function linksToRegions(
-  sidecar: any,
+  sidecar: { links?: unknown[] } | null | undefined,
   contextRegions: Region[],
 ): { regions: Region[]; warnings: string[] } {
   const out: Region[] = []
@@ -627,6 +803,35 @@ interface ProjectIndexEntry {
   name: string
   url: string
   page_count: number
+}
+
+function isSnapshotAtLeastAsFresh(snapshotTime: string | undefined, sourceTime: string | undefined): boolean {
+  if (!sourceTime) return true
+  if (!snapshotTime) return false
+  const snapshotMs = Date.parse(snapshotTime)
+  const sourceMs = Date.parse(sourceTime)
+  if (!Number.isFinite(sourceMs)) return true
+  if (!Number.isFinite(snapshotMs)) return false
+  return snapshotMs >= sourceMs
+}
+
+function familyCountsFor(regions: Region[]): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const region of regions) {
+    counts[region.family] = (counts[region.family] ?? 0) + 1
+  }
+  return counts
+}
+
+function isInProgressCompatibleWithSource(regions: Region[], sourceRegions: Region[]): boolean {
+  const sourceCounts = familyCountsFor(sourceRegions)
+  const snapshotCounts = familyCountsFor(regions)
+  for (const [family, sourceCount] of Object.entries(sourceCounts)) {
+    if (sourceCount >= 10 && (snapshotCounts[family] ?? 0) < Math.ceil(sourceCount * 0.5)) {
+      return false
+    }
+  }
+  return true
 }
 
 /** Per-page sign-off snapshot persisted in localStorage. The agreed
@@ -1081,16 +1286,16 @@ export function PdfLabLabelingPage() {
   const [imageNaturalSize, setImageNaturalSize] = useState<{ w: number; h: number } | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const selectedRegion = useMemo(() => regions.find(r => r.id === selectedId) ?? null, [regions, selectedId])
   const breadcrumbOptions = useMemo(() => collectBreadcrumbOptions(regions), [regions])
   const [drag, setDrag] = useState<DragState | null>(null)
   const [slug, setSlug] = useState('manual_labeling')
-  const [warnings, setWarnings] = useState<string[]>([])
+  const [, setWarnings] = useState<string[]>([])
   const [savedPages, setSavedPages] = useState<Record<string, SavedPage>>(() => loadSavedPages())
   /** Agent-generated projects (multi-page candidate queues). Loaded from
    *  /pdf-lab-projects/index.json on mount. */
   const [projects, setProjects] = useState<Project[]>([])
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
+  const didAutoLoadProjectRef = useRef(false)
   /** Per-page sign-off snapshots, keyed by `${project_id}::${page_slug}`. */
   const [projectSignoffs, setProjectSignoffs] = useState<Record<string, PageSignoff>>(() => loadProjectSignoffs())
   /** Snapshot of agent-emitted regions captured at page-load. Used as the
@@ -1105,6 +1310,24 @@ export function PdfLabLabelingPage() {
    *    'diff'      — overlay showing where agent and human disagree
    *  Only 'human' is editable. */
   const [viewMode, setViewMode] = useState<'original' | 'agent' | 'human' | 'diff'>('human')
+  const [dataPaneWidth, setDataPaneWidth] = useState<number>(() => {
+    const saved = Number(window.localStorage.getItem('pdf-lab-labeling-data-pane-width'))
+    return Number.isFinite(saved) ? Math.max(280, Math.min(640, saved)) : 340
+  })
+  const [labelPalettePos, setLabelPalettePos] = useState<{ x: number; y: number }>(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem('pdf-lab-labeling-label-palette-pos') ?? 'null') as { x?: number; y?: number } | null
+      if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+        return {
+          x: Math.max(8, Math.min(window.innerWidth - 260, Number(saved.x))),
+          y: Math.max(48, Math.min(window.innerHeight - 360, Number(saved.y))),
+        }
+      }
+    } catch {
+      // Ignore corrupt localStorage; use safe default.
+    }
+    return { x: 260, y: 96 }
+  })
   /** Regions emitted by the scillm second-pass (Agent view). Loaded from
    *  the second_pass_url sidecar at page-load time. */
   const [regionsAgent, setRegionsAgent] = useState<Region[]>([])
@@ -1359,6 +1582,8 @@ export function PdfLabLabelingPage() {
           importWarnings.push(`link_sidecar fetch failed: ${err instanceof Error ? err.message : String(err)}`)
         }
       }
+      const extractionSourceRegions = await fetchExtractionSourceRegions(page.expected_elements_url)
+      importedRegions = backfillMissingExtractionPayloads(importedRegions, extractionSourceRegions)
       if (signoff && signoff.agreed_regions.length > 0) {
         importWarnings.push(`Restored signed-off snapshot from ${signoff.agreed_at} by ${signoff.agreed_by}`)
       }
@@ -1373,7 +1598,10 @@ export function PdfLabLabelingPage() {
           if (resp.ok) {
             const json = await resp.json()
             const { regions: rs, warnings: ws } = importJson(json)
-            agentRegions = rs.map(r => ({ ...r, origin: 'agent_dispatcher' as const }))
+            agentRegions = backfillMissingExtractionPayloads(
+              rs.map(r => ({ ...r, origin: 'agent_dispatcher' as const })),
+              extractionSourceRegions,
+            )
             importWarnings.push(...ws.map(w => `second_pass: ${w}`))
           }
         } catch (err) {
@@ -1386,12 +1614,24 @@ export function PdfLabLabelingPage() {
         const resp = await fetch('/pdf-lab-api/signoffs/load-in-progress')
         if (resp.ok) {
           const payload = await resp.json() as {
-            entries?: Record<string, { regions?: Region[]; updated_at?: string }>
+            entries?: Record<string, { regions?: Region[]; updated_at?: string; source_generated_at?: string }>
           }
           const entry = payload.entries?.[key]
           if (entry?.regions?.length) {
-            diskWipRegions = backfillMissingBreadcrumbPaths(entry.regions, importedRegions)
-            importWarnings.push(`Restored in-progress human feedback from disk (${entry.regions.length} regions, ${entry.updated_at ?? 'unknown time'})`)
+            const sourceMatches = entry.source_generated_at
+              ? entry.source_generated_at === project.generated_at
+              : isInProgressCompatibleWithSource(entry.regions, importedRegions)
+            if (sourceMatches && isSnapshotAtLeastAsFresh(entry.updated_at, project.generated_at)) {
+              diskWipRegions = backfillMissingExtractionPayloads(
+                backfillMissingBreadcrumbPaths(entry.regions, importedRegions),
+                extractionSourceRegions,
+              )
+              importWarnings.push(`Restored in-progress human feedback from disk (${entry.regions.length} regions, ${entry.updated_at ?? 'unknown time'})`)
+            } else {
+              importWarnings.push(
+                `Ignored stale in-progress human feedback from disk (${entry.updated_at ?? 'unknown time'} does not match current project artifact)`,
+              )
+            }
           }
         }
       } catch {
@@ -1403,7 +1643,10 @@ export function PdfLabLabelingPage() {
       // human the merging/cleanup work the agent already did). Fall back to
       // importedRegions (Original heuristic) otherwise.
       const humanSeed = (signoff && signoff.agreed_regions.length > 0)
-        ? backfillMissingBreadcrumbPaths(signoff.agreed_regions, importedRegions)
+        ? backfillMissingExtractionPayloads(
+            backfillMissingBreadcrumbPaths(signoff.agreed_regions, importedRegions),
+            extractionSourceRegions,
+          )
         : (diskWipRegions.length > 0
             ? diskWipRegions
             : agentRegions.length > 0
@@ -1564,6 +1807,15 @@ export function PdfLabLabelingPage() {
     return () => { cancelled = true }
   }, [])
 
+  useEffect(() => {
+    if (didAutoLoadProjectRef.current || currentProjectId || projects.length === 0) return
+    const preferred = projects[0]
+    const firstPending = preferred.pages.find(page => page.status !== 'agreed') ?? preferred.pages[0]
+    if (!firstPending) return
+    didAutoLoadProjectRef.current = true
+    void loadProjectPage(preferred, firstPending)
+  }, [currentProjectId, loadProjectPage, projects])
+
   /** Continuous auto-save of the current edit state to disk. Every time
    *  `regions` changes while a project page is loaded, POST a debounced
    *  snapshot to /pdf-lab-api/signoffs/save-in-progress. The agent reads
@@ -1585,6 +1837,7 @@ export function PdfLabLabelingPage() {
             regions,
             regions_initial: regionsInitial,
             updated_at: new Date().toISOString(),
+            source_generated_at: project.generated_at,
           }),
         })
       } catch {/* offline / no middleware — swallow */}
@@ -1917,15 +2170,83 @@ export function PdfLabLabelingPage() {
   }, [drag])
 
   const activeFamilyDef = CANONICAL_FAMILIES.find(f => f.id === activeFamily)!
+  const agentViewRegions = regionsAgent.length > 0 ? regionsAgent : regionsInitial
   const paneRegions = viewMode === 'original'
     ? regionsInitial
     : viewMode === 'agent'
-      ? regionsAgent
+      ? agentViewRegions
       : regions
   const paneSelectedRegion = paneRegions.find(r => r.id === selectedId) ?? null
   const inspectorRegions = paneSelectedRegion ? [paneSelectedRegion] : []
   const currentProject = currentProjectId ? projects.find(p => p.project_id === currentProjectId) : null
-  const activeProjectPages = currentProject?.pages ?? []
+  const activeProjectPage = currentProject?.pages.find(p => p.slug === slug) ?? null
+  const selectedFamilyDef = paneSelectedRegion
+    ? CANONICAL_FAMILIES.find(f => f.id === paneSelectedRegion.family)
+    : activeFamilyDef
+  const activePageNotes = activeProjectPage?.notes
+    ? activeProjectPage.notes.split(';').map(note => note.trim()).filter(Boolean)
+    : []
+  const activePagePrimaryNote = activePageNotes[0] ?? activeProjectPage?.stratum ?? null
+  const activeTocRegion = paneSelectedRegion?.semantic_role === 'toc' || paneSelectedRegion?.family === 'toc'
+    ? paneSelectedRegion
+    : paneRegions.find(region => region.semantic_role === 'toc' || region.family === 'toc') ?? null
+  const activeTocEntries = activeTocRegion?.toc_entries ?? []
+  const activeTocFlatEntries = flattenTocEntries(activeTocEntries)
+  const selectedHumanRegion = viewMode === 'human'
+    ? regions.find(region => region.id === selectedId) ?? null
+    : null
+  const applyFamilyToSelectedRegion = useCallback((family: FamilyId) => {
+    setActiveFamily(family)
+    if (!selectedId || viewMode !== 'human') return
+    setRegions(prev => prev.map(region => region.id === selectedId ? { ...region, family } : region))
+  }, [selectedId, viewMode])
+  const onLabelPaletteDragStart = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const startX = event.clientX
+    const startY = event.clientY
+    const startPos = labelPalettePos
+    document.body.style.cursor = 'move'
+    document.body.style.userSelect = 'none'
+
+    const onMove = (moveEvent: MouseEvent) => {
+      const next = {
+        x: Math.max(8, Math.min(window.innerWidth - 260, startPos.x + moveEvent.clientX - startX)),
+        y: Math.max(48, Math.min(window.innerHeight - 360, startPos.y + moveEvent.clientY - startY)),
+      }
+      setLabelPalettePos(next)
+      window.localStorage.setItem('pdf-lab-labeling-label-palette-pos', JSON.stringify(next))
+    }
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+  }, [labelPalettePos])
+  const onDataPaneResizeStart = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    const startX = event.clientX
+    const startWidth = dataPaneWidth
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+
+    const onMove = (moveEvent: MouseEvent) => {
+      const nextWidth = Math.max(280, Math.min(640, startWidth - (moveEvent.clientX - startX)))
+      setDataPaneWidth(nextWidth)
+      window.localStorage.setItem('pdf-lab-labeling-data-pane-width', String(nextWidth))
+    }
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+  }, [dataPaneWidth])
 
   return (
     <div
@@ -1968,8 +2289,6 @@ export function PdfLabLabelingPage() {
                       const isInReview = !isAgreed && pg.status === 'in_review'
                       const statusIcon = isAgreed ? '●' : (isInReview ? '◐' : '◯')
                       const statusClass = isAgreed ? 'is-status-agreed' : (isInReview ? 'is-status-inreview' : 'is-status-pending')
-                      // Only agreed rows show a hint line (agreed date); pending
-                      // rows compress to one line for queue scannability.
                       const hint = isAgreed
                         ? `${signoff?.agreed_at?.slice(0, 10) ?? pg.agreed_at?.slice(0, 10) ?? ''}`
                         : null
@@ -2082,24 +2401,6 @@ export function PdfLabLabelingPage() {
           )
         })()}
 
-        <div className="pdf-lab-labeling-chips-title">Family</div>
-        <div className="pdf-lab-labeling-chips-hint">
-          Click a chip, then drag on the page. The badge on the right is a keyboard shortcut.
-        </div>
-        {CANONICAL_FAMILIES.map(f => (
-          <button
-            key={f.id}
-            data-qid={`pdf-lab:labeling:chip-${f.id}`}
-            className={`pdf-lab-labeling-chip ${activeFamily === f.id ? 'is-active' : ''}`}
-            style={{ ['--chip-color' as string]: f.color }}
-            onClick={() => setActiveFamily(f.id)}
-            title={`${f.id} (${f.hotkey})`}
-          >
-            <span className="pdf-lab-labeling-chip-swatch" />
-            <span className="pdf-lab-labeling-chip-label">{f.id}</span>
-            <span className="pdf-lab-labeling-chip-hotkey">{f.hotkey}</span>
-          </button>
-        ))}
       </div>
       </LeftPane>
 
@@ -2350,8 +2651,9 @@ export function PdfLabLabelingPage() {
                   // at page-load before any human or scillm edits).
                   displayed = regionsInitial.map(r => ({ ...r, _diffStatus: 'identical' as const }))
                 } else if (viewMode === 'agent') {
-                  // Agent = scillm second-pass refined classification.
-                  displayed = regionsAgent.map(r => ({ ...r, _diffStatus: 'identical' as const }))
+                  // Agent = scillm second-pass when present; otherwise the
+                  // deterministic pdf_oxide + ledger annotation contract.
+                  displayed = agentViewRegions.map(r => ({ ...r, _diffStatus: 'identical' as const }))
                 } else if (viewMode === 'human') {
                   displayed = regions
                 } else {
@@ -2402,21 +2704,17 @@ export function PdfLabLabelingPage() {
                       background: overlayMode === 'debug' ? `${def?.color ?? '#fff'}26` : 'transparent',
                     }}
                   >
-                    {overlayMode !== 'clean' && (
-                      <span
-                        className={`pdf-lab-labeling-region-tag tag-anchor-${r.labelAnchor ?? 'top-outside'}`}
-                        style={{ ['--region-color' as string]: def?.color ?? '#fff' }}
-                        onMouseDown={e => { e.stopPropagation(); e.preventDefault() }}
-                        onClick={e => handleLabelClick(e, r.id)}
-                        title={overlayMode === 'debug'
-                          ? 'Debug overlay label. Click to cycle label position.'
-                          : `${r.family}. Click to cycle label position.`}
-                      >
-                        {overlayMode === 'debug'
-                          ? `${r.family}${r.label ? ` · ${r.label.slice(0, 24)}` : ''}`
-                          : FAMILY_ABBREVIATIONS[r.family]}
-                      </span>
-                    )}
+                    <span
+                      className={`pdf-lab-labeling-region-tag tag-anchor-${r.labelAnchor ?? 'top-outside'} ${r.semantic_role === 'toc_entry' ? 'is-toc-entry' : ''} ${r.semantic_role === 'toc_heading' ? 'is-toc-heading' : ''}`}
+                      style={{ ['--region-color' as string]: def?.color ?? '#fff' }}
+                      onMouseDown={e => { e.stopPropagation(); e.preventDefault() }}
+                      onClick={e => handleLabelClick(e, r.id)}
+                      title={overlayMode === 'debug'
+                        ? 'Debug overlay label. Click to cycle label position.'
+                        : `${r.semantic_role ?? r.family}${typeof r.target_page === 'number' ? ` target page ${r.target_page}` : ''}. Click to cycle label position.`}
+                    >
+                      {overlayLabelForRegion(r, overlayMode)}
+                    </span>
                     {isSelected && (['nw','n','ne','e','se','s','sw','w'] as const).map(dir => (
                       <div
                         key={dir}
@@ -2429,6 +2727,41 @@ export function PdfLabLabelingPage() {
                   )
                 })
               })()}
+              {selectedHumanRegion && (
+                <div
+                  className="pdf-lab-labeling-family-popover"
+                  data-qid="pdf-lab:labeling:family-popover"
+                  style={{
+                    left: labelPalettePos.x,
+                    top: labelPalettePos.y,
+                  }}
+                  onMouseDown={event => { event.stopPropagation(); event.preventDefault() }}
+                >
+                  <div
+                    className="pdf-lab-labeling-family-popover-title"
+                    data-qid="pdf-lab:labeling:family-popover-drag-handle"
+                    title="Drag to move label hotkey reference"
+                    onMouseDown={onLabelPaletteDragStart}
+                  >
+                    Set label
+                  </div>
+                  <div className="pdf-lab-labeling-family-popover-grid">
+                    {CANONICAL_FAMILIES.map(family => (
+                      <button
+                        key={family.id}
+                        className={`pdf-lab-labeling-family-popover-chip ${selectedHumanRegion.family === family.id ? 'is-active' : ''}`}
+                        data-qid={`pdf-lab:labeling:popover-family-${family.id}`}
+                        style={{ ['--chip-color' as string]: family.color }}
+                        onClick={() => applyFamilyToSelectedRegion(family.id)}
+                        title={`${family.id} (${family.hotkey})`}
+                      >
+                        <span>{family.hotkey}</span>
+                        <strong>{family.id}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               {previewRect && (
                 <div
                   className={`pdf-lab-labeling-region is-preview ${marqueeMode ? 'is-marquee-delete' : ''}`}
@@ -2524,14 +2857,96 @@ export function PdfLabLabelingPage() {
           </div>
         )}
 
-        {warnings.length > 0 && (
-          <div className="pdf-lab-labeling-warnings" data-qid="pdf-lab:labeling:warnings">
-            {warnings.map((w, i) => <div key={i}>· {w}</div>)}
-          </div>
-        )}
       </section>
 
-      <aside className="pdf-lab-labeling-regions-pane" data-qid="pdf-lab:labeling:regions-pane">
+      <div
+        className="pdf-lab-labeling-data-pane-resizer"
+        data-qid="pdf-lab:labeling:data-pane-resizer"
+        data-qs-action="PDF_LAB_RESIZE_DATA_PANE"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize annotation data pane"
+        title="Drag to resize data pane"
+        onMouseDown={onDataPaneResizeStart}
+      />
+
+      <aside
+        className="pdf-lab-labeling-regions-pane"
+        data-qid="pdf-lab:labeling:regions-pane"
+        style={{ ['--data-pane-width' as string]: `${dataPaneWidth}px` }}
+      >
+        <div className="pdf-lab-labeling-inspector-hero" data-qid="pdf-lab:labeling:inspector-hero">
+          <div className="pdf-lab-labeling-inspector-kicker">Annotation Decision</div>
+          <h2>{paneSelectedRegion ? 'Amend selected region' : 'Select or draw a region'}</h2>
+          <p>
+            {activeProjectPage
+              ? `${currentProject?.name ?? 'Project'} · ${activeProjectPage.label}`
+              : 'Open an artifact-backed project page from the queue.'}
+          </p>
+          <div className="pdf-lab-labeling-inspector-facts">
+            <span>{paneRegions.length} visible region{paneRegions.length === 1 ? '' : 's'}</span>
+            <span>{viewMode} view</span>
+            <span>{selectedFamilyDef?.id ?? activeFamily}</span>
+          </div>
+        </div>
+        {activeProjectPage && activePageNotes.length > 0 && (
+          <div className="pdf-lab-labeling-human-task" data-qid="pdf-lab:labeling:human-task">
+            <div className="pdf-lab-labeling-human-task-kicker">What the agent is unsure about</div>
+            <strong>{activePagePrimaryNote}</strong>
+            <ul>
+              {activePageNotes.slice(1).map(note => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {activeTocRegion && (
+          <div className="pdf-lab-labeling-toc-inspector" data-qid="pdf-lab:labeling:toc-inspector">
+            <div className="pdf-lab-labeling-toc-inspector-head">
+              <span>Extracted TOC Structure</span>
+              <strong>{activeTocFlatEntries.length} entries</strong>
+            </div>
+          <div className="pdf-lab-labeling-toc-tree">
+              {activeTocFlatEntries.slice(0, 18).map(entry => (
+                <div
+                  key={entry.id}
+                  className="pdf-lab-labeling-toc-tree-row"
+                  style={{ ['--toc-depth' as string]: Math.max(0, entry.level - 1) }}
+                >
+                  <span>{entry.title}</span>
+                  <em>p.{entry.target_page}{entry.verification?.status === 'matched' ? ' ✓' : ''}</em>
+                </div>
+              ))}
+              {activeTocFlatEntries.length > 18 && (
+                <div className="pdf-lab-labeling-toc-tree-more">+ {activeTocFlatEntries.length - 18} more entries in JSON</div>
+              )}
+            </div>
+            <details className="pdf-lab-labeling-toc-json">
+              <summary>Show nested JSON</summary>
+              <pre>{formatTocJson(activeTocEntries)}</pre>
+            </details>
+          </div>
+        )}
+        <div className="pdf-lab-labeling-family-grid" data-qid="pdf-lab:labeling:family-grid">
+          {CANONICAL_FAMILIES.map(f => (
+            <button
+              key={f.id}
+              className={`pdf-lab-labeling-family-tile ${activeFamily === f.id || paneSelectedRegion?.family === f.id ? 'is-active' : ''}`}
+              style={{ ['--chip-color' as string]: f.color }}
+              onClick={() => {
+                setActiveFamily(f.id)
+                if (paneSelectedRegion && viewMode === 'human') {
+                  setRegions(prev => prev.map(r => r.id === paneSelectedRegion.id ? { ...r, family: f.id } : r))
+                }
+              }}
+              title={`${f.id} (${f.hotkey})`}
+              data-qid={`pdf-lab:labeling:family-tile-${f.id}`}
+            >
+              <span className="pdf-lab-labeling-family-tile-key">{f.hotkey}</span>
+              <span className="pdf-lab-labeling-family-tile-label">{f.id}</span>
+            </button>
+          ))}
+        </div>
         <div className="pdf-lab-labeling-regions-title">
           <span>{paneSelectedRegion ? 'Selected region' : `Regions (${paneRegions.length})`}</span>
           {imageNaturalSize && <span className="pdf-lab-labeling-regions-meta">{imageNaturalSize.w}×{imageNaturalSize.h}px</span>}
@@ -2628,6 +3043,25 @@ export function PdfLabLabelingPage() {
                 onChange={e => update({ text_hint: e.target.value || undefined })}
                 placeholder="text_hint — exact text the matcher should find"
               />
+              {r.extraction && (
+                <div className="pdf-lab-labeling-extraction-card" data-qid="pdf-lab:labeling:selected-extraction">
+                  <div className="pdf-lab-labeling-extraction-card-head">
+                    <span>Extracted {r.family} JSON</span>
+                    <em>{r.extraction.source_id || r.extraction.source || 'release extraction'}</em>
+                  </div>
+                  {r.family === 'table' && r.extraction.table_json && (
+                    <div className="pdf-lab-labeling-extraction-summary">
+                      <span>{r.extraction.table_json.row_count ?? 'unknown'} rows</span>
+                      <span>{r.extraction.table_json.col_count ?? 'unknown'} cols</span>
+                      {r.extraction.table_json.semantic_type && <span>{r.extraction.table_json.semantic_type}</span>}
+                    </div>
+                  )}
+                  <details open>
+                    <summary>Structured payload</summary>
+                    <pre>{JSON.stringify(r.extraction.table_json ?? r.extraction, null, 2)}</pre>
+                  </details>
+                </div>
+              )}
               <BreadcrumbEditor
                 region={r}
                 options={breadcrumbOptions}

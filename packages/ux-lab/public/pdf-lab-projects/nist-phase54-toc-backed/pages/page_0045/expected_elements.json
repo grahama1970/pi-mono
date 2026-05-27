@@ -1,0 +1,848 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0045",
+  "captured_at": "2026-05-26T19:14:03.537461+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "sections",
+    "lists",
+    "headers_footers",
+    "controls_requirements"
+  ],
+  "toc_entries": [
+    {
+      "toc_id": "toc:0015",
+      "title": "3.1 ACCESS CONTROL",
+      "level": 2,
+      "target_page": 18,
+      "matched_pdf_page_index": 44,
+      "extraction_page": 45
+    }
+  ],
+  "reviewer_questions": [
+    "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+    "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+    "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "3.1   ACCESS CONTROL",
+      "label": "3.1   ACCESS CONTROL",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0019; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "text_hint": "AC-1 POLICY AND PROCEDURES",
+      "label": "AC-1 POLICY AND PROCEDURES",
+      "allowed_types": [
+        "section_anchor"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0020; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p45:line:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p45:line:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.088076,
+        0.350419,
+        0.109727
+      ],
+      "text_hint": "3.1 ACCESS CONTROL",
+      "label": "3.1 ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p45:line:2; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.125545,
+        0.47186,
+        0.142409
+      ],
+      "text_hint": "Quick link to Access Control S ummary Table",
+      "label": "Quick link to Access Control S ummary Table",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:3; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.145559,
+        0.165242,
+        0.389218,
+        0.182106
+      ],
+      "text_hint": "AC-1 POLICY AND PROCEDURES",
+      "label": "AC-1 POLICY AND PROCEDURES",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p45:line:5; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145,
+        0.165242,
+        0.212,
+        0.182106
+      ],
+      "text_hint": "AC-1",
+      "label": "AC-1",
+      "allowed_types": [
+        "control_reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: control_reference; source id: actual:p45:line:5:embedded:requirement:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.189712,
+        0.260896,
+        0.205364
+      ],
+      "text_hint": "Control:",
+      "label": "Control:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.212667,
+        0.820532,
+        0.228318
+      ],
+      "text_hint": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or",
+      "label": "a. Develop, document, and disseminate to [Assignment: organization-defined perso",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p45:line:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.23382,
+        0.228127,
+        0.277457,
+        0.243778
+      ],
+      "text_hint": "roles]:",
+      "label": "roles]:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.23382,
+        0.251077,
+        0.825053,
+        0.266728
+      ],
+      "text_hint": "1. [Selection (one or more): O rganization-level; Mission/business process- level; System-",
+      "label": "1. [Selection (one or more): O rganization-level; Mission/business process- leve",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:9; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032868,
+        0.266537,
+        0.48141,
+        0.289303
+      ],
+      "text_hint": "This publication is available free of level charge] access from: control policy that:",
+      "label": "This publication is available free of level charge] access from: control policy ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.289487,
+        0.85326,
+        0.359008
+      ],
+      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and\n(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, stand",
+      "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, co",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p45:list:0:11-14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.289487,
+        0.816348,
+        0.305138
+      ],
+      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
+      "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p45:line:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.292647,
+        0.304947,
+        0.738459,
+        0.320598
+      ],
+      "text_hint": "coordination among organizational entities, and compliance; and",
+      "label": "coordination among organizational entities, and compliance; and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.327897,
+        0.85326,
+        0.343548
+      ],
+      "text_hint": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies,",
+      "label": "(b) Is consistent with applicable laws, executive orders, directives, regulation",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p45:line:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.292647,
+        0.343357,
+        0.504151,
+        0.359008
+      ],
+      "text_hint": "standards, and guidelines; and",
+      "label": "standards, and guidelines; and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.23332,
+        0.365731,
+        0.796967,
+        0.382382
+      ],
+      "text_hint": "2. Procedures to facilitate the im plementation of the access control policy and the",
+      "label": "2. Procedures to facilitate the im plementation of the access control policy and",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p45:line:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.263209,
+        0.381767,
+        0.44598,
+        0.397418
+      ],
+      "text_hint": "associated access controls;",
+      "label": "associated access controls;",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.458778
+      ],
+      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and\nc. Review and update the current access control:",
+      "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p45:list:1:17-19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.420292
+      ],
+      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development,",
+      "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p45:line:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.233788,
+        0.420177,
+        0.79035,
+        0.435828
+      ],
+      "text_hint": "documentation, and dissemination of the access control policy and procedures; and",
+      "label": "documentation, and dissemination of the access control policy and procedures; an",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.443127,
+        0.55132,
+        0.458778
+      ],
+      "text_hint": "c. Review and update the current access control:",
+      "label": "c. Review and update the current access control:",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p45:line:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.23332,
+        0.465576,
+        0.800117,
+        0.482228
+      ],
+      "text_hint": "1. Policy [Assignment: organization-defined frequency] and following [Assignment:",
+      "label": "1. Policy [Assignment: organization-defined frequency] and following [Assignment",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p45:line:20; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.263225,
+        0.481537,
+        0.487846,
+        0.497188
+      ],
+      "text_hint": "organization-defined events]; and",
+      "label": "organization-defined events]; and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.233304,
+        0.503986,
+        0.833346,
+        0.520638
+      ],
+      "text_hint": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment:",
+      "label": "2. Procedures [Assignment: organization-defined frequency] and following [Assign",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p45:line:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "label": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.263209,
+        0.519947,
+        0.45988,
+        0.535598
+      ],
+      "text_hint": "organization-defined events].",
+      "label": "organization-defined events].",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.542894,
+        0.839559,
+        0.558545
+      ],
+      "text_hint": "Discussion: Access control policy and procedures address the controls in the AC family that are",
+      "label": "Discussion: Access control policy and procedures address the controls in the AC ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.558273,
+        0.847333,
+        0.573924
+      ],
+      "text_hint": "implemented within systems and organizations. The risk management strategy is an important",
+      "label": "implemented within systems and organizations. The risk management strategy is an",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.573657,
+        0.85513,
+        0.589308
+      ],
+      "text_hint": "factor in establishing such policies aP nd procedures. olicies and procedures contribute to security",
+      "label": "factor in establishing such policies aP nd procedures. olicies and procedures co",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.589117,
+        0.854573,
+        0.604769
+      ],
+      "text_hint": "and privacy assurance. Therefore, it is important that security and privacy programs collaborate",
+      "label": "and privacy assurance. Therefore, it is important that security and privacy prog",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.604501,
+        0.812264,
+        0.620153
+      ],
+      "text_hint": "on the development of access control policy and procedures. Security and privacy program",
+      "label": "on the development of access control policy and procedures. Security and privacy",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.619962,
+        0.843593,
+        0.635613
+      ],
+      "text_hint": "policies and procedures at the organization level are preferable, in general, and may obviate the",
+      "label": "policies and procedures at the organization level are preferable, in general, an",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.635346,
+        0.841131,
+        0.650997
+      ],
+      "text_hint": "need for mission-or system-specific policies and procedures. The policy can be include d as part",
+      "label": "need for mission-or system-specific policies and procedures. The policy can be i",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.650806,
+        0.841381,
+        0.666457
+      ],
+      "text_hint": "of the general security and privacy policy or be represented by multiple policies reflectin g the",
+      "label": "of the general security and privacy policy or be represented by multiple policie",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.66619,
+        0.798164,
+        0.681842
+      ],
+      "text_hint": "complex nature of organizations. Procedures can be established for security and privacy",
+      "label": "complex nature of organizations. Procedures can be established for security and ",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:33; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204366,
+        0.68165,
+        0.832535,
+        0.697302
+      ],
+      "text_hint": "programs, for mission or business processes, and for systems, if needed. Procedures describe",
+      "label": "programs, for mission or business processes, and for systems, if needed. Procedu",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.697035,
+        0.849062,
+        0.712686
+      ],
+      "text_hint": "how the policies or controls are implemented and can be directed at the individual or role that is",
+      "label": "how the policies or controls are implemented and can be directed at the individu",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "text_hint": "3r55 -",
+      "label": "3r55 -",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:35; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.712419,
+        0.867835,
+        0.72807
+      ],
+      "text_hint": "the object of the procedure. Procedures can be documented in system security and privacy plans",
+      "label": "the object of the procedure. Procedures can be documented in system security and",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.727879,
+        0.846631,
+        0.743531
+      ],
+      "text_hint": "or in one or more separate documents. Events that may precipitate an update to access control",
+      "label": "or in one or more separate documents. Events that may precipitate an update to a",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.743263,
+        0.826969,
+        0.758915
+      ],
+      "text_hint": "policy and procedures include assessment or audit findings, security incidents or breaches, or",
+      "label": "policy and procedures include assessment or audit findings, security incidents o",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.758723,
+        0.821697,
+        0.774375
+      ],
+      "text_hint": "changes in laws, executive orders, directives, regulations, policies, standards, and guidelines.",
+      "label": "changes in laws, executive orders, directives, regulations, policies, standards,",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204399,
+        0.774184,
+        0.774546,
+        0.789835
+      ],
+      "text_hint": "Simply restating controls does not constitute an organizational policy or procedure.",
+      "label": "Simply restating controls does not constitute an organizational policy or proced",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.797136,
+        0.531089,
+        0.812788
+      ],
+      "text_hint": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "label": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.820091,
+        0.411352,
+        0.835742
+      ],
+      "text_hint": "Control Enhancements: None.",
+      "label": "Control Enhancements: None.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.843121,
+        0.793057,
+        0.858773
+      ],
+      "text_hint": "References: [OMB A -130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [IR 7874].",
+      "label": "References: [OMB A -130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p45:line:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.237034,
+        0.953818
+      ],
+      "text_hint": "CHAPTER THREE",
+      "label": "CHAPTER THREE",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p45:line:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.805756,
+        0.939742,
+        0.839264,
+        0.953818
+      ],
+      "text_hint": "PAGE 18",
+      "label": "PAGE 18",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p45:line:46; human should amend if rendered page contradicts this row."
+    }
+  ]
+}
