@@ -1800,6 +1800,17 @@
   line-height: 1.35;
 }
 
+.pdf-lab-labeling-selected-breadcrumb-error {
+  border: 1px solid rgba(251, 146, 60, 0.45);
+  border-radius: 8px;
+  background: rgba(251, 146, 60, 0.1);
+  color: #fdba74;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 8px;
+}
+
 .pdf-lab-labeling-breadcrumb-empty-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2072,6 +2083,18 @@
   white-space: pre-wrap;
 }
 
+.pdf-lab-labeling-extraction-missing {
+  border: 1px solid rgba(251, 146, 60, 0.4);
+  border-radius: 8px;
+  background: rgba(251, 146, 60, 0.08);
+  color: #fdba74;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 8px 0;
+  padding: 8px;
+}
+
 .pdf-lab-labeling-family-tile {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
@@ -2106,9 +2129,7 @@
 }
 
 .pdf-lab-labeling-family-tile-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   font-family: ui-monospace, monospace;
   font-size: 10px;
 }
@@ -2169,8 +2190,8 @@
 .pdf-lab-labeling-family-popover {
   position: fixed;
   z-index: 50;
-  width: 220px;
-  max-width: min(220px, 34vw);
+  width: 360px;
+  max-width: min(360px, 46vw);
   border: 1px solid #27384c;
   border-radius: 10px;
   background: rgba(8, 13, 19, 0.96);
@@ -2192,7 +2213,7 @@
 
 .pdf-lab-labeling-family-popover-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
   gap: 5px;
   max-height: 250px;
   overflow-y: auto;
@@ -2200,7 +2221,7 @@
 
 .pdf-lab-labeling-family-popover-chip {
   display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
+  grid-template-columns: 24px minmax(0, 1fr);
   align-items: center;
   gap: 5px;
   border: 1px solid #263446;
@@ -2231,11 +2252,39 @@
 }
 
 .pdf-lab-labeling-family-popover-chip strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   font-family: ui-monospace, monospace;
   font-size: 10px;
+}
+
+.pdf-lab-labeling-family-popover-custom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pdf-lab-labeling-family-popover-custom input {
+  min-width: 0;
+  border: 1px solid #263446;
+  border-radius: 7px;
+  background: #070b10;
+  color: #d8e2ec;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 7px 8px;
+}
+
+.pdf-lab-labeling-family-popover-custom button {
+  border: 1px solid #3b4b61;
+  border-radius: 7px;
+  background: #172033;
+  color: #f0f6fc;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 7px 10px;
 }
 
 .pdf-lab-labeling-regions-title {

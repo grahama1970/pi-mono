@@ -1,10 +1,12 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0455",
-  "captured_at": "2026-05-26T19:14:03.549201+00:00",
+  "captured_at": "2026-05-27T19:18:29.002571+00:00",
   "source": "phase-54 deterministic TOC-backed candidate materialization",
   "agent_decision": {
     "status": "candidate_for_human_amendment",
+    "human_review_required": true,
+    "learned_bug_report_reason": null,
     "selection_sources": [
       "deterministic_page_scan",
       "verified_toc_spine"
@@ -21,7 +23,7 @@
       "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
       "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
     ],
-    "fix_error_request_count": 0
+    "fix_error_request_count": 2
   },
   "toc_entries": [
     {
@@ -33,55 +35,117 @@
       "extraction_page": 455
     }
   ],
-  "fix_error_requests": [],
-  "expected_elements": [
+  "fix_error_requests": [
     {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.0,
-        0.0,
-        1.0,
-        0.0
-      ],
-      "text_hint": "CONTROL SUMMARIES",
-      "label": "CONTROL SUMMARIES",
-      "allowed_types": [
-        "section_anchor"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: section_anchor; source id: toc:section_anchor:0358; human should amend if rendered page contradicts this row."
+      "source_id": "actual:p455:line:10",
+      "current_type": "paragraph",
+      "requested_family": "page_chrome_noise_or_split_from_body",
+      "text_hint": "This publication is available light gray free of text. charge from:",
+      "reason": "Recurring NIST DOI/sidebar page chrome is leaking into body extraction or standalone paragraph regions.",
+      "owner": "pdf_oxide_core_chrome_filter"
     },
+    {
+      "source_id": "actual:p455:line:22",
+      "current_type": "paragraph",
+      "requested_family": "page_chrome_noise_or_split_from_body",
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "reason": "Recurring NIST DOI/sidebar page chrome is leaking into body extraction or standalone paragraph regions.",
+      "owner": "pdf_oxide_core_chrome_filter"
+    }
+  ],
+  "expected_elements": [
     {
       "family": "page_chrome_noise",
       "bbox_hint": [
         0.145059,
         0.043,
-        0.264101,
+        0.841671,
         0.057076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5",
-      "label": "NIST SP 800-53, REV. 5",
+      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "running_header_merged",
       "allowed_types": [
-        "running_header"
+        "running_header",
+        "page_chrome_noise"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p455:line:0; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_running_header_group",
+      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "page_chrome_noise",
       "bbox_hint": [
-        0.464176,
-        0.043,
-        0.841671,
-        0.057076
+        0.032912,
+        0.263733,
+        0.345618,
+        0.719379
       ],
-      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
-      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
       "allowed_types": [
-        "running_header"
+        "page_chrome_noise",
+        "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p455:line:1; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_sidebar_chrome_group",
+      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "text_hint": "APPENDIX C PAGE 428",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_footer_group",
+      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "section_heading",
@@ -97,10 +161,24 @@
         "section_header"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p455:line:3; human should amend if rendered page contradicts this row."
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
-      "family": "section_heading",
+      "family": "section_subtitle",
       "bbox_hint": [
         0.145056,
         0.127772,
@@ -110,13 +188,29 @@
       "text_hint": "CONTROL SUMMARIES",
       "label": "CONTROL SUMMARIES",
       "allowed_types": [
-        "section_header"
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p455:line:4; human should amend if rendered page contradicts this row."
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
-      "family": "section_heading",
+      "family": "section_subtitle",
       "bbox_hint": [
         0.145059,
         0.156561,
@@ -126,10 +220,26 @@
       "text_hint": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS",
       "label": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS",
       "allowed_types": [
-        "section_header"
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p455:line:5; human should amend if rendered page contradicts this row."
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
@@ -137,31 +247,29 @@
         0.145559,
         0.187591,
         0.812632,
-        0.204455
-      ],
-      "text_hint": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control",
-      "label": "Tables C-1 through C-20 provide a summary of the security and privacy controls a",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:6; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.20456,
-        0.737021,
         0.221424
       ],
-      "text_hint": "enhancements in Chapter Three. Each table focuses on a different control family.",
-      "label": "enhancements in Chapter Three. Each table focuses on a different control family.",
+      "text_hint": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control enhancements in Chapter Three. Each table focuses on a different control family.",
+      "label": "body_paragraph_1",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:7; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -176,8 +284,22 @@
       "allowed_types": [
         "list_item"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p455:line:8; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
@@ -188,28 +310,26 @@
         0.263627
       ],
       "text_hint": "indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in",
-      "label": "indicated by a \u201cW\u201d and an explanation of the control or control enhancement disp",
+      "label": "body_paragraph_2",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:9; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.032912,
-        0.263733,
-        0.345618,
-        0.289303
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
       ],
-      "text_hint": "This publication is available light gray free of text. charge from:",
-      "label": "This publication is available light gray free of text. charge from:",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:10; human should amend if rendered page contradicts this row."
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -224,8 +344,22 @@
       "allowed_types": [
         "list"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p455:list:0:11-20; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -240,8 +374,22 @@
       "allowed_types": [
         "list_item"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p455:line:11; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
@@ -252,12 +400,26 @@
         0.322866
       ],
       "text_hint": "through technical means is indicated by an \u201cS\u201d in the implemented by column.",
-      "label": "through technical means is indicated by an \u201cS\u201d in the implemented by column.",
+      "label": "body_paragraph_3",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:12; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -272,8 +434,22 @@
       "allowed_types": [
         "list_item"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p455:line:13; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
@@ -281,31 +457,29 @@
         0.174947,
         0.348204,
         0.819218,
-        0.365067
-      ],
-      "text_hint": "an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by",
-      "label": "an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemen",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:14; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.174965,
-        0.365091,
-        0.249337,
         0.382036
       ],
-      "text_hint": "column. 35",
-      "label": "column. 35",
+      "text_hint": "an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column. 35",
+      "label": "body_paragraph_4",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:15; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -320,8 +494,22 @@
       "allowed_types": [
         "list_item"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p455:line:16; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
@@ -332,12 +520,26 @@
         0.424231
       ],
       "text_hint": "a combination of the two is indicated by an \u201cO/S.\u201d",
-      "label": "a combination of the two is indicated by an \u201cO/S.\u201d",
+      "label": "body_paragraph_5",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:17; human should amend if rendered page contradicts this row."
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "list",
@@ -352,472 +554,52 @@
       "allowed_types": [
         "list_item"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: list_item; source id: actual:p455:line:18; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.174955,
-        0.449568,
-        0.844483,
-        0.466432
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
       ],
-      "text_hint": "control or control enhancement contributes to the grounds for confidence that a security or",
-      "label": "control or control enhancement contributes to the grounds for confidence that a ",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:19; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.174973,
-        0.466455,
-        0.500807,
-        0.483401
-      ],
-      "text_hint": "privacy claim has been or will be achieved. 36",
-      "label": "privacy claim has been or will be achieved. 36",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:20; human should amend if rendered page contradicts this row."
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     },
     {
       "family": "paragraph_block",
       "bbox_hint": [
         0.145557,
-        0.498652,
-        0.837315,
-        0.515516
-      ],
-      "text_hint": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for",
-      "label": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked t",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:21; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145575,
-        0.515621,
-        0.555955,
-        0.532485
-      ],
-      "text_hint": "that control and control enhancement in Chapter Three.",
-      "label": "that control and control enhancement in Chapter Three.",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:23; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.032912,
-        0.518727,
-        0.270618,
-        0.533091
-      ],
-      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
-      "label": "https://doi.org/10.6028/NIST.SP.800",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:22; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.540167,
-        0.844551,
-        0.55703
-      ],
-      "text_hint": "Families of controls contain base controls and control enhancements, which are directly related",
-      "label": "Families of controls contain base controls and control enhancements, which are d",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:24; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.557066,
-        0.820259,
-        0.57393
-      ],
-      "text_hint": "to their base controls. Control enhancements either add functionality or specificity to a base",
-      "label": "to their base controls. Control enhancements either add functionality or specifi",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:25; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.574036,
-        0.844638,
-        0.590899
-      ],
-      "text_hint": "control or increase the strength of a base control. In both cases, control enhancements are used",
-      "label": "control or increase the strength of a base control. In both cases, control enhan",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:26; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.591005,
-        0.840748,
-        0.607868
-      ],
-      "text_hint": "in systems and environments of operation that require greater protection than provided by the",
-      "label": "in systems and environments of operation that require greater protection than pr",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:27; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.607974,
-        0.853773,
-        0.624837
-      ],
-      "text_hint": "base control. This increased protection is required due to the potential adverse org anizational or",
-      "label": "base control. This increased protection is required due to the potential adverse",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:28; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.624943,
-        0.83201,
-        0.641806
-      ],
-      "text_hint": "individual impacts or when organizations require additions to the base control functionality or",
-      "label": "individual impacts or when organizations require additions to the base control f",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:29; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.641843,
-        0.852149,
-        0.658706
-      ],
-      "text_hint": "assurance based on organizational assessments of risk. The use of control enhancements always",
-      "label": "assurance based on organizational assessments of risk. The use of control enhanc",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:30; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.658812,
-        0.410437,
-        0.675675
-      ],
-      "text_hint": "requires the use of the base control.",
-      "label": "requires the use of the base control.",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:31; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.690924,
-        0.826915,
-        0.707788
-      ],
-      "text_hint": "The families are arranged in alphabetical order, while the controls and control enhancements",
-      "label": "The families are arranged in alphabetical order, while the controls and control ",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:33; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.032912,
-        0.701227,
-        0.040809,
-        0.715591
-      ],
-      "text_hint": "-",
-      "label": "-",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:32; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.032912,
-        0.705015,
-        0.065162,
-        0.719379
-      ],
-      "text_hint": "53r5",
-      "label": "53r5",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:34; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.707893,
-        0.831278,
-        0.724757
-      ],
-      "text_hint": "within each family are arranged in numerical order. The alphabetical or numerical order of the",
-      "label": "within each family are arranged in numerical order. The alphabetical or numerica",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:35; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.724862,
-        0.834553,
-        0.741726
-      ],
-      "text_hint": "families, controls, and control enhancements does not imply any type of prioritization, level of",
-      "label": "families, controls, and control enhancements does not imply any type of prioriti",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:36; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.741832,
-        0.820797,
-        0.758695
-      ],
-      "text_hint": "importance, or order in which the controls or control enhancements are to be implemented.",
-      "label": "importance, or order in which the controls or control enhancements are to be imp",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:37; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.793576,
-        0.83779,
-        0.807939
-      ],
-      "text_hint": "35 The indication that a certain control or control enhancement is implem ented by a system or by an organization in",
-      "label": "35 The indication that a certain control or control enhancement is implem ented ",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:38; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145573,
-        0.807439,
-        0.852166,
-        0.821803
-      ],
-      "text_hint": "Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control",
-      "label": "Tables C-1 through C-20 is notional. Organizations have the flexibility to imple",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:39; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145573,
-        0.821303,
-        0.847241,
-        0.835667
-      ],
-      "text_hint": "enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the",
-      "label": "enhancements in the most cost-effective and efficient manner while simultaneousl",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:40; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145573,
-        0.835167,
-        0.835471,
-        0.84953
-      ],
-      "text_hint": "controls or control enhancements. In certain situations, a control or control enhancement may be implemented by",
-      "label": "controls or control enhancements. In certain situations, a control or control en",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:41; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145573,
-        0.84903,
-        0.539835,
-        0.863394
-      ],
-      "text_hint": "the system, the organization, or a combination of the two entities.",
-      "label": "the system, the organization, or a combination of the two entities.",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:42; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.86547,
+        0.449568,
         0.853866,
-        0.879833
-      ],
-      "text_hint": "36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence",
-      "label": "36 Assurance is a critical aspect in determining the trustworthiness of systems.",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:43; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.879333,
-        0.823471,
-        0.893697
-      ],
-      "text_hint": "that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of",
-      "label": "that the security and privacy functions, features, practices, policies, procedur",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:44; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.145559,
-        0.893197,
-        0.720629,
         0.907561
       ],
-      "text_hint": "organizational systems accurately mediate and enforce established security and privacy policies.",
-      "label": "organizational systems accurately mediate and enforce established security and p",
+      "text_hint": "control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved. 36 Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for that c",
+      "label": "body_paragraph_6",
       "allowed_types": [
         "paragraph"
       ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p455:line:45; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "page_chrome_noise",
-      "bbox_hint": [
-        0.145059,
-        0.939742,
-        0.209845,
-        0.953818
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
       ],
-      "text_hint": "APPENDIX C",
-      "label": "APPENDIX C",
-      "allowed_types": [
-        "running_footer"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p455:line:46; human should amend if rendered page contradicts this row."
-    },
-    {
-      "family": "page_chrome_noise",
-      "bbox_hint": [
-        0.802283,
-        0.939742,
-        0.854755,
-        0.953818
-      ],
-      "text_hint": "PAGE 428",
-      "label": "PAGE 428",
-      "allowed_types": [
-        "running_footer"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p455:line:47; human should amend if rendered page contradicts this row."
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "id": "toc:0038",
+          "node_id": "toc:0038",
+          "source": "toc",
+          "page": 428
+        }
+      ]
     }
   ]
 }

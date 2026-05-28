@@ -1145,7 +1145,31 @@ app.get('/api/posture/v2', async (_req, res) => {
     const famMap = new Map<string, { family: string; total: number; satisfied: number; inconclusive: number; failed: number; noEvidence: number }>()
     for (const c of controls) { const cid = String(c.control_id || ''); const fam = cid.match(/^([A-Z]{2})[-_]/)?.[1] ?? (cid.slice(0, 2).toUpperCase() || 'UN'); if (!famMap.has(fam)) famMap.set(fam, { family: fam, total: 0, satisfied: 0, inconclusive: 0, failed: 0, noEvidence: 0 }); const b = famMap.get(fam)!; b.total += 1; if (!controlsWithEvidence.has(cid)) { b.noEvidence += 1; continue } const ec2 = cases.filter((ec: any) => ec.control_ids.includes(cid)); if (ec2.some((ec: any) => ec.verdict === 'satisfied') && !ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.satisfied += 1; else if (ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.failed += 1; else b.inconclusive += 1 }
     const families = [...famMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.satisfied / f.total) * 100) : 0 })).sort((a, b) => a.family.localeCompare(b.family))
-    const riskControls = notSatisfied.flatMap((ec: any) => ec.control_ids.map((cid: string) => { const ctrl = controls.find((c: any) => String(c.control_id) === cid); return { control_id: cid, name: ctrl?.name ?? '', source_framework: ctrl?.source_framework ?? '', verdict: 'not_satisfied', grade: ec.grade, question: ec.question } })).slice(0, 10)
+    const riskControls = notSatisfied.map((ec: any, index: number) => {
+      const mappedControls = (ec.control_ids || []).map((cid: string) => {
+        const ctrl = controls.find((c: any) => String(c.control_id) === cid)
+        return {
+          control_id: cid,
+          name: ctrl?.name ?? '',
+          source_framework: ctrl?.source_framework ?? '',
+        }
+      })
+      const primaryControl = mappedControls[0]
+      const findingId = `F36-FINDING-${String(index + 1).padStart(3, '0')}`
+      return {
+        control_id: findingId,
+        finding_id: findingId,
+        name: ec.question || 'F-36 evidence obligation not satisfied',
+        source_framework: 'F-36 corpora evidence case',
+        verdict: 'not_satisfied',
+        grade: ec.grade,
+        question: ec.question,
+        mapped_controls: mappedControls.map((c: any) => c.control_id),
+        primary_control_id: primaryControl?.control_id ?? '',
+        primary_control_name: primaryControl?.name ?? '',
+        primary_control_framework: primaryControl?.source_framework ?? '',
+      }
+    }).slice(0, 10)
     const controlsWithRel = controls.filter((c: any) => relSet.has(String(c.control_id))).length
     const relTypes: Record<string, number> = {}; for (const r of rels) { const t = String(r.relationship_type || 'unknown'); relTypes[t] = (relTypes[t] ?? 0) + 1 }
     const reqToControl = cases.length ? Math.round((cases.filter((c: any) => c.control_ids.length > 0).length / cases.length) * 100) : 0

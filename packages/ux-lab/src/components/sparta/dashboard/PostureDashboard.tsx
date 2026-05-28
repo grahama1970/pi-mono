@@ -10,6 +10,14 @@ type Props = {
 }
 
 type Tab = 'Posture' | 'Traceability' | 'Assurance Case Health'
+type BlockerQueueRow = {
+  rank: number
+  id: string
+  outcome: string
+  reason: string
+  entityType: 'finding' | 'control-family'
+  mappedControls?: string[]
+}
 
 // ── Shared sub-components ──
 
@@ -89,21 +97,22 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
   const requestResolutionAction = (labelText: string) => {
     setActionFeedback(`${labelText} requested for ${blockerId}.`)
   }
-  const blockerId = firstRisk?.control_id ?? firstNoCaseFamily?.family ?? 'Evidence case coverage'
+  const blockerId = firstRisk?.finding_id ?? firstRisk?.control_id ?? firstNoCaseFamily?.family ?? 'Evidence case coverage'
   const blockerTitle = firstRisk?.name || firstRisk?.question || (firstNoCaseFamily ? `${firstNoCaseFamily.family} family has ${firstNoCaseFamily.noEvidence} controls with no case` : 'No current blocker selected')
   const blockerOutcome = firstRisk ? firstRiskVerdict.replace(/_/g, ' ') : firstNoCaseFamily ? 'no case' : 'satisfied'
   const blockerReason = firstRisk
-    ? `${firstRisk.control_id} has an unresolved ${firstRiskVerdict.replace(/_/g, ' ')} evidence case, so Brandon cannot treat the selected scope as signoff-ready.`
+    ? `${blockerId} is an unresolved ${firstRiskVerdict.replace(/_/g, ' ')} F-36 evidence finding mapped to ${firstRisk.mapped_controls?.join(', ') || 'the selected control set'}, so Brandon cannot treat the selected scope as signoff-ready.`
     : firstNoCaseFamily
       ? `${firstNoCaseFamily.family} includes controls with no evidence case, so Brandon cannot assert scope readiness.`
       : 'No not-satisfied, inconclusive, or no-case blocker is exposed by the current posture response.'
-  const blockerQueue = [
+  const blockerQueue: BlockerQueueRow[] = [
     ...riskControls.map((risk, index) => ({
       rank: index + 1,
-      id: risk.control_id,
+      id: risk.finding_id ?? risk.control_id,
       outcome: String(risk.verdict || 'not_satisfied').replace(/_/g, ' '),
-      reason: risk.question || risk.name || 'Evidence case requires review.',
-      entityType: 'control',
+      reason: `${risk.question || risk.name || 'Evidence case requires review.'} Mapped controls: ${risk.mapped_controls?.join(', ') || 'not recorded'}.`,
+      entityType: 'finding' as const,
+      mappedControls: risk.mapped_controls ?? [],
     })),
     ...families
       .filter((family) => family.noEvidence > 0)
@@ -113,7 +122,7 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
         id: family.family,
         outcome: 'no case',
         reason: `${family.noEvidence}/${family.total} controls have no evidence case.`,
-        entityType: 'control-family',
+        entityType: 'control-family' as const,
       })),
   ].slice(0, 5)
   const blockerContext = firstRisk
@@ -239,8 +248,8 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
                     data-entity-type={row.entityType}
                     aria-label={`Inspect next signoff blocker ${row.id}: ${row.outcome}`}
                     title={`Click to inspect next blocker ${row.id}`}
-                    onClick={() => row.entityType === 'control' ? onNavigateToControl?.(row.id) : undefined}
-                    style={{ border: `1px solid ${EMBRY.border}`, background: 'rgba(255,255,255,0.03)', color: EMBRY.white, padding: '4px 8px', minHeight: 44, fontSize: 12, fontWeight: 800, cursor: row.entityType === 'control' ? 'pointer' : 'default', boxShadow: 'inset 0 -2px 0 rgba(0, 209, 255, 0.22)' }}
+                    onClick={() => row.entityType === 'finding' && row.mappedControls?.[0] ? onNavigateToControl?.(row.mappedControls[0]) : undefined}
+                    style={{ border: `1px solid ${EMBRY.border}`, background: 'rgba(255,255,255,0.03)', color: EMBRY.white, padding: '4px 8px', minHeight: 44, fontSize: 12, fontWeight: 800, cursor: row.entityType === 'finding' && row.mappedControls?.[0] ? 'pointer' : 'default', boxShadow: 'inset 0 -2px 0 rgba(0, 209, 255, 0.22)' }}
                   >
                     {row.rank}. {row.id} <span style={{ color: row.outcome.includes('not') ? criticalText : row.outcome.includes('no') ? '#60a5fa' : EMBRY.amber }}>{row.outcome}</span>
                     <span style={{ color: '#00d1ff', marginLeft: 6 }}>inspect</span>
@@ -308,15 +317,16 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
               data-qid={`posture:blocker:${String(blockerId).replace(/[^A-Za-z0-9_-]/g, '-').toLowerCase()}`}
               data-qs-action="POSTURE_OPEN_FIRST_BLOCKER"
               data-entity-id={blockerId}
-              data-entity-type={firstRisk ? 'control' : firstNoCaseFamily ? 'control-family' : 'posture'}
+              data-entity-type={firstRisk ? 'finding' : firstNoCaseFamily ? 'control-family' : 'posture'}
               aria-label={`Inspect first signoff blocker ${blockerId}: ${blockerOutcome}`}
               title={`Inspect first signoff blocker ${blockerId}`}
-              onClick={() => firstRisk ? onNavigateToControl?.(firstRisk.control_id) : undefined}
+              onClick={() => firstRisk?.mapped_controls?.[0] ? onNavigateToControl?.(firstRisk.mapped_controls[0]) : undefined}
               style={{ background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, minHeight: 44, padding: 12, textAlign: 'left', cursor: firstRisk ? 'pointer' : 'default', width: '100%' }}
             >
               <div style={{ fontSize: 16, fontWeight: 800 }}>{blockerId}</div>
               <div style={{ color: criticalText, fontSize: 12, fontWeight: 800, textTransform: 'uppercase', marginTop: 6 }}>{blockerOutcome}</div>
               <div style={{ color: EMBRY.dim, fontSize: 12, marginTop: 8, lineHeight: 1.35 }}>{blockerTitle}</div>
+              {firstRisk?.mapped_controls?.length ? <div style={{ color: '#00d1ff', fontSize: 11, marginTop: 8, lineHeight: 1.35 }}>Mapped controls: {firstRisk.mapped_controls.join(', ')}</div> : null}
             </button>
           </div>
             <div style={{ display: 'grid', gap: 14 }}>
@@ -340,7 +350,7 @@ function PostureTab({ postureScore, complianceScore, criticalFindings, openFindi
               <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}><div style={label}>COVERAGE SIGNAL</div><strong>{missingCases} unresolved</strong></div>
               <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}><div style={label}>SOURCE ARTIFACT</div><strong>Evidence case</strong></div>
               <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}><div style={label}>QRA / TEST</div><strong>{totalCases} cases</strong></div>
-              <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}><div style={label}>CONTROL MAPPING</div><strong>{blockerId}</strong></div>
+              <div style={{ borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}><div style={label}>CONTROL MAPPING</div><strong>{firstRisk?.mapped_controls?.slice(0, 2).join(', ') || blockerId}</strong></div>
             </div>
             {onAnalyzeProofChain && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>

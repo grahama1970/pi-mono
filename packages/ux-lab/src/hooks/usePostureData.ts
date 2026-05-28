@@ -23,11 +23,13 @@ export type Family = {
 
 export type RiskControl = {
 	control_id: string;
+	finding_id?: string;
 	name: string;
 	source_framework: string;
 	verdict: string;
 	grade: string;
 	question: string;
+	mapped_controls?: string[];
 };
 
 export type BrokenTrace = {

@@ -1,6 +1,7 @@
 export type FamilyId =
 	| "toc"
 	| "section_heading"
+	| "section_subtitle"
 	| "section_label"
 	| "list"
 	| "paragraph_block"
@@ -113,6 +114,7 @@ export const BREADCRUMB_NODE_KINDS: BreadcrumbNodeKind[] = [
 const DEFAULT_ALLOWED_TYPES: Record<FamilyId, string[]> = {
 	toc: ["toc", "TableOfContents"],
 	section_heading: ["section_heading"],
+	section_subtitle: ["section_subtitle", "section_heading", "paragraph_block"],
 	section_label: ["section_label", "content_label", "paragraph_block"],
 	list: ["list"],
 	paragraph_block: ["paragraph_block"],

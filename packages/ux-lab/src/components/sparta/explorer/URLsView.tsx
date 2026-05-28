@@ -15,10 +15,93 @@ const PAGE_SIZE = 100
 interface URLPipelineRow extends SpartaURL {
   control_ids: string[]
   fetched: boolean
+  content_verified: boolean
   fetch_status: number | null
   fetch_error: string | null
+  content_warning: string | null
   knowledge_chunks: number
   summary: string
+}
+
+function normalizeUrlForIdentity(value: unknown): string {
+  return String(value ?? '').trim().replace(/\/+$/, '').toLowerCase()
+}
+
+function contentIdentityState(content: Record<string, unknown> | undefined, selectedUrl: string): { verified: boolean; warning: string | null } {
+  if (!content) return { verified: false, warning: null }
+  const recoveryStatus = String(content.clean_text_recovery_status ?? '')
+  if (recoveryStatus.includes('source_identity_mismatch')) {
+    return {
+      verified: false,
+      warning: String(content.clean_text_identity_error ?? 'Clean content source identity mismatch.'),
+    }
+  }
+  const sourceUrl = normalizeUrlForIdentity(content.source_url ?? content.url)
+  if (sourceUrl && sourceUrl !== normalizeUrlForIdentity(selectedUrl)) {
+    return {
+      verified: false,
+      warning: `Clean content belongs to ${sourceUrl}, not the selected URL.`,
+    }
+  }
+  return { verified: true, warning: null }
+}
+
+function selectTrustedContent(
+  contents: Record<string, unknown>[] | undefined,
+  selectedUrl: string,
+): { content: Record<string, unknown> | undefined; identity: { verified: boolean; warning: string | null } } {
+  const candidates = contents ?? []
+  for (const content of candidates) {
+    const identity = contentIdentityState(content, selectedUrl)
+    if (identity.verified) return { content, identity }
+  }
+  const first = candidates[0]
+  const identity = contentIdentityState(first, selectedUrl)
+  if (!first) return { content: undefined, identity: { verified: false, warning: null } }
+  return {
+    content: first,
+    identity: {
+      verified: false,
+      warning: identity.warning ?? 'No trusted clean content record matches the selected URL.',
+    },
+  }
+}
+
+async function loadURLContentByIds(urlIds: number[], includeFullText = false): Promise<Map<number, Record<string, unknown>[]>> {
+  if (urlIds.length === 0) return new Map()
+  const response = await fetch(`${DAEMON}/query`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      aql: `
+        FOR doc IN sparta_url_content
+          FILTER doc.url_id IN @url_ids
+          SORT doc.url_id ASC, doc.updated_at DESC, doc._key ASC
+          RETURN {
+            _key: doc._key,
+            url_id: doc.url_id,
+            status_code: doc.status_code,
+            error_message: doc.error_message,
+            text_length: doc.text_length,
+            url: doc.url,
+            source_url: doc.source_url,
+            clean_text_recovery_status: doc.clean_text_recovery_status,
+            clean_text_identity_error: doc.clean_text_identity_error,
+            clean_text: @include_full_text ? TO_STRING(doc.clean_text || "") : SUBSTRING(TO_STRING(doc.clean_text || ""), 0, 1200)
+          }
+      `,
+      bind_vars: { url_ids: urlIds, include_full_text: includeFullText },
+    }),
+  })
+  const payload = await response.json().catch(() => ({ documents: [] }))
+  const byId = new Map<number, Record<string, unknown>[]>()
+  for (const doc of payload.documents ?? []) {
+    const uid = Number(doc.url_id)
+    if (!Number.isFinite(uid)) continue
+    if (!byId.has(uid)) byId.set(uid, [])
+    byId.get(uid)!.push(doc)
+  }
+  return byId
 }
 
 /** Batch-enrich a page of URLs with 4 batch API calls instead of N per-URL calls. */
@@ -32,9 +115,9 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
       .catch(() => ({ documents: [] }))
 
   // 4 batch calls
-  const [ctrlRes, contentRes, knowRes] = await Promise.all([
+  const [ctrlRes, contentMap, knowRes] = await Promise.all([
     post('/recall/by-keys', { collection: 'sparta_control_urls', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'control_id'] }),
-    post('/recall/by-keys', { collection: 'sparta_url_content', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message', 'clean_text'] }),
+    loadURLContentByIds(urlIds, false),
     post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'topic'] }),
   ])
 
@@ -44,15 +127,6 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
     const uid = d.url_id as number
     if (!ctrlMap.has(uid)) ctrlMap.set(uid, [])
     if (d.control_id) ctrlMap.get(uid)!.push(d.control_id as string)
-  }
-
-  const contentMap = new Map<number, { status: number | null; error: string | null; summary: string }>()
-  for (const d of contentRes.documents ?? []) {
-    const text = (d.clean_text as string) ?? ''
-    // First meaningful sentence as summary
-    const firstLine = text.split('\n').find((l: string) => l.trim().length > 20)?.trim() ?? ''
-    const summary = firstLine.length > 80 ? `${firstLine.slice(0, 80)}...` : firstLine
-    contentMap.set(d.url_id as number, { status: d.status_code as number | null, error: d.error_message as string | null, summary })
   }
 
   // Knowledge: count + first topic as fallback summary
@@ -71,17 +145,23 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
 
   return urls.map((url) => {
     const uid = url.url_id
-    const content = contentMap.get(uid)
+    const { content, identity } = selectTrustedContent(contentMap.get(uid), url.url)
+    const text = identity.verified ? ((content?.clean_text as string) ?? '') : ''
+    const firstLine = text.split('\n').find((l: string) => l.trim().length > 20)?.trim() ?? ''
+    const summary = identity.warning
+      ? identity.warning
+      : firstLine.length > 80 ? `${firstLine.slice(0, 80)}...` : firstLine
     // Summary priority: clean_text first sentence > first topic > empty
-    const summary = content?.summary || topicMap.get(uid) || ''
     return {
       ...url,
       control_ids: ctrlMap.get(uid) ?? [],
-      fetched: contentMap.has(uid),
-      fetch_status: content?.status ?? null,
-      fetch_error: content?.error ?? null,
+      fetched: (contentMap.get(uid)?.length ?? 0) > 0 && identity.verified,
+      content_verified: identity.verified,
+      fetch_status: content?.status_code as number | null ?? null,
+      fetch_error: (identity.warning ?? content?.error_message) as string | null,
+      content_warning: identity.warning,
       knowledge_chunks: chunkCounts.get(uid) ?? 0,
-      summary,
+      summary: summary || topicMap.get(uid) || '',
     }
   })
 }
@@ -259,6 +339,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
   const [qras, setQras] = useState<Array<{ question?: string; reasoning?: string; answer?: string; control_id?: string }>>([])
   const [cleanText, setCleanText] = useState<string | null>(null)
   const [textLength, setTextLength] = useState<number>(0)
+  const [contentWarning, setContentWarning] = useState<string | null>(url.content_warning)
   const [mindTags, setMindTags] = useState<string[]>([])
   const [loadingK, setLoadingK] = useState(true)
 
@@ -266,6 +347,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
     let cancelled = false
     setLoadingK(true)
     setCleanText(null)
+    setContentWarning(url.content_warning)
     setQras([])
     setMindTags([])
     const post = (path: string, body: Record<string, unknown>) =>
@@ -282,13 +364,14 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
       : Promise.resolve({ documents: [] })
 
     Promise.all([
-      post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'clean_text', 'text_length', 'status_code'] }),
+      loadURLContentByIds([url.url_id], true),
       qraFetch,
       controlFetch,
-    ]).then(([contentRes, qraRes, ctrlRes]) => {
+    ]).then(([contentById, qraRes, ctrlRes]) => {
       if (cancelled) return
-      const content = (contentRes.documents ?? [])[0]
-      if (content?.clean_text) {
+      const { content, identity } = selectTrustedContent(contentById.get(url.url_id), url.url)
+      setContentWarning(identity.warning)
+      if (identity.verified && content?.clean_text) {
         setCleanText(content.clean_text as string)
         setTextLength(content.text_length as number ?? 0)
       }
@@ -302,7 +385,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
       setLoadingK(false)
     })
     return () => { cancelled = true }
-  }, [url.url_id, url.control_ids])
+  }, [url.url_id, url.url, url.content_warning, url.control_ids])
 
   const allGood = url.fetched && url.knowledge_chunks > 0 && url.control_ids.length > 0
 
@@ -329,10 +412,16 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         <div style={{ ...label, marginBottom: 8 }}>Pipeline Stages</div>
         <StatusRow label="Control Mapping" value={`${url.control_ids.length} controls`} ok={url.control_ids.length > 0} />
         <StatusRow label="Content Fetched" value={url.fetched ? `HTTP ${url.fetch_status}` : url.fetch_error || 'Not fetched'} ok={url.fetched && url.fetch_status === 200} />
-        <StatusRow label="Clean Text" value={cleanText ? `${textLength.toLocaleString()} chars` : 'Not extracted'} ok={!!cleanText} />
+        <StatusRow label="Clean Text" value={contentWarning ?? (cleanText ? `${textLength.toLocaleString()} chars` : 'Not extracted')} ok={contentWarning ? false : !!cleanText} />
         <StatusRow label="QRAs Generated" value={loadingK ? '...' : `${qras.length} QRAs`} ok={qras.length > 0} />
         <StatusRow label="Taxonomy" value={loadingK ? '...' : mindTags.length > 0 ? `${mindTags.length} mind tags` : 'Not tagged'} ok={mindTags.length > 0} />
       </div>
+
+      {contentWarning && (
+        <div data-qid="urls:detail:content-identity-warning" style={{ margin: '12px 20px', padding: 10, border: `1px solid ${EMBRY.red}`, color: EMBRY.red, backgroundColor: `${EMBRY.red}10`, fontSize: 12, lineHeight: 1.45 }}>
+          Clean content identity is not trusted for this URL. {contentWarning}
+        </div>
+      )}
 
       {/* Mind / Taxonomy tags (from linked controls) */}
       <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>

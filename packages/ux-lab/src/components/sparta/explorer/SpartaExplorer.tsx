@@ -13,6 +13,8 @@ import PostureDashboard from '../dashboard/PostureDashboard'
 import { OverviewLanding } from './OverviewLanding'
 import { EvidenceWorkspace } from './EvidenceWorkspace'
 import { useReducedMotion } from 'motion/react'
+import { PagePurposeStrip } from './PagePurposeStrip'
+import { TAB_PURPOSE_CONTRACTS } from './pagePurposeContracts'
 
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
@@ -293,9 +295,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   // Chat panel state
   const [chatOpen, setChatOpen] = useState(() => hashRequestsChat())
+  const [currentHash, setCurrentHash] = useState(() => window.location.hash || '')
 
   useEffect(() => {
     const syncChatHash = () => {
+      setCurrentHash(window.location.hash || '')
       if (hashRequestsChat()) setChatOpen(true)
     }
     syncChatHash()
@@ -407,7 +411,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
   useEffect(() => {
     if (demoEvidenceSeededRef.current) return
-    const hash = window.location.hash || ''
+    const hash = currentHash || window.location.hash || ''
     if (!hash.includes('/chat') || !hash.includes('demo=evidence-case')) return
     demoEvidenceSeededRef.current = true
     setChatOpen(true)
@@ -454,7 +458,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         response_action: 'answer',
       },
     })
-  }, [addMsg])
+  }, [addMsg, currentHash])
   const runTypedEvidenceCaseStream = useCallback(async (query: string) => {
     const question = query.replace(EVIDENCE_CASE_COMMAND_RE, '').trim() || query.trim()
     const userMsg = addMsg({ role: 'user', content: query, type: 'natural', skillUsed: 'create-evidence-case' })
@@ -1053,6 +1057,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           <SpartaNavContext.Provider value={navContextValue}>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                <PagePurposeStrip contract={TAB_PURPOSE_CONTRACTS[activeTab]} />
                 {activeView}
               </div>
             </div>

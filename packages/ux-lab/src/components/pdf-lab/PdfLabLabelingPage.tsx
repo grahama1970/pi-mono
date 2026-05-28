@@ -44,6 +44,7 @@ import './PdfLabLabelingPage.css'
 const CANONICAL_FAMILIES = [
   { id: 'toc',                 color: '#00d4b8', hotkey: 't' },
   { id: 'section_heading',     color: '#a8ff57', hotkey: '1' },
+  { id: 'section_subtitle',    color: '#7ddc6f', hotkey: 's' },
   { id: 'section_label',       color: '#fbbc04', hotkey: '2' },
   { id: 'list',                color: '#4a9eff', hotkey: '3' },
   { id: 'paragraph_block',     color: '#94a3b8', hotkey: '4' },
@@ -58,14 +59,16 @@ const CANONICAL_FAMILIES = [
   { id: 'human_decision',      color: '#ff6b6b', hotkey: 'q' },
 ] as const
 
-type FamilyId = typeof CANONICAL_FAMILIES[number]['id']
+type FamilyId = string
+type FamilyDef = { id: FamilyId; color: string; hotkey: string }
 
 type LabelAnchor = 'top-outside' | 'top-inside' | 'bottom-inside' | 'bottom-outside'
 type OverlayMode = 'clean' | 'compact' | 'debug'
 
-const FAMILY_ABBREVIATIONS: Record<FamilyId, string> = {
+const FAMILY_ABBREVIATIONS: Record<string, string> = {
   toc: 'TOC',
   section_heading: 'HDG',
+  section_subtitle: 'SUB',
   section_label: 'LBL',
   list: 'LST',
   paragraph_block: 'TXT',
@@ -78,6 +81,22 @@ const FAMILY_ABBREVIATIONS: Record<FamilyId, string> = {
   footnote: 'FNT',
   page_chrome_noise: 'CHR',
   human_decision: 'DEC',
+}
+
+const CUSTOM_FAMILY_COLOR = '#d6bcfa'
+const CUSTOM_FAMILIES_STORAGE_KEY = 'pdf-lab-labeling-custom-families'
+
+function loadCustomFamilyIds(): string[] {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(CUSTOM_FAMILIES_STORAGE_KEY) ?? '[]')
+    return Array.isArray(parsed) ? parsed.map(value => String(value).trim()).filter(Boolean) : []
+  } catch {
+    return []
+  }
+}
+
+function normalizeFamilyId(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9_:-]+/g, '_').replace(/^_+|_+$/g, '')
 }
 
 interface Region {
@@ -162,12 +181,15 @@ function hasBreadcrumbPath(region: Region): boolean {
   return (region.breadcrumb_nodes?.length ?? 0) > 0 || (region.breadcrumb?.length ?? 0) > 0
 }
 
+const HIERARCHY_UNRESOLVED_NOTE = 'Hierarchy unresolved: no TOC-backed page breadcrumb source was available when this region was labeled.'
+const EXTRACTION_CAPABLE_FAMILIES = new Set(['table', 'list', 'figure', 'equation'])
+
 function hierarchyPathText(region: Region | null): string {
   if (!region) return '(none selected)'
   const structured = breadcrumbNodesFromRegion(region).map(node => node.label).filter(Boolean)
   if (structured.length > 0) return formatBreadcrumb(structured)
   if (region.breadcrumb?.length) return region.breadcrumb.join(' › ')
-  return '(root)'
+  return '(missing hierarchy)'
 }
 
 function bboxDistance(a: Region, b: Region): number {
@@ -448,7 +470,8 @@ function canonicalizeHumanRegions(regions: Region[]): Region[] {
 
 function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Region[] {
   const canonicalRegions = canonicalizeHumanRegions(regions)
-  if (canonicalRegions.length === 0 || source.length === 0) return canonicalRegions
+  if (canonicalRegions.length === 0) return canonicalRegions
+  if (source.length === 0) return canonicalRegions.map(withHierarchyUnresolvedNote)
   const used = new Set<number>()
   return canonicalRegions.map((region, index) => {
     if (hasBreadcrumbPath(region)) return region
@@ -464,7 +487,10 @@ function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Re
     ) {
       sourceIndex = index
     }
-    if (sourceIndex < 0) return region
+    if (sourceIndex < 0) {
+      sourceIndex = findNearestBreadcrumbSourceIndex(region, source)
+    }
+    if (sourceIndex < 0) return withHierarchyUnresolvedNote(region)
 
     used.add(sourceIndex)
     const sourceRegion = source[sourceIndex]
@@ -476,6 +502,46 @@ function backfillMissingBreadcrumbPaths(regions: Region[], source: Region[]): Re
         : region.breadcrumb_nodes,
     }
   })
+}
+
+function regionCenter(region: Region): { x: number; y: number } {
+  return {
+    x: (region.bbox[0] + region.bbox[2]) / 2,
+    y: (region.bbox[1] + region.bbox[3]) / 2,
+  }
+}
+
+function findNearestBreadcrumbSourceIndex(region: Region, source: Region[]): number {
+  const regionMid = regionCenter(region)
+  const candidates = source
+    .map((candidate, index) => ({ candidate, index, center: regionCenter(candidate) }))
+    .filter(({ candidate }) => hasBreadcrumbPath(candidate) && candidate.family !== 'page_chrome_noise')
+  if (candidates.length === 0) return -1
+
+  const preceding = candidates
+    .filter(({ center }) => center.y <= regionMid.y + 0.02)
+    .sort((a, b) => {
+      const yDelta = b.center.y - a.center.y
+      return Math.abs(yDelta) > 0.001 ? yDelta : Math.abs(a.center.x - regionMid.x) - Math.abs(b.center.x - regionMid.x)
+    })
+  if (preceding.length > 0) return preceding[0].index
+
+  candidates.sort((a, b) => Math.abs(a.center.y - regionMid.y) - Math.abs(b.center.y - regionMid.y))
+  return candidates[0].index
+}
+
+function withHierarchyUnresolvedNote(region: Region): Region {
+  if (hasBreadcrumbPath(region) || region.notes?.includes(HIERARCHY_UNRESOLVED_NOTE)) return region
+  return {
+    ...region,
+    notes: region.notes ? `${region.notes}\n${HIERARCHY_UNRESOLVED_NOTE}` : HIERARCHY_UNRESOLVED_NOTE,
+  }
+}
+
+function hydrateRegionMetadata(region: Region, breadcrumbSource: Region[], extractionSource: Region[]): Region {
+  const withBreadcrumb = backfillMissingBreadcrumbPaths([region], breadcrumbSource)[0] ?? region
+  if (!EXTRACTION_CAPABLE_FAMILIES.has(withBreadcrumb.family)) return withBreadcrumb
+  return backfillMissingExtractionPayloads([withBreadcrumb], extractionSource)[0] ?? withBreadcrumb
 }
 
 async function fetchBreadcrumbSourceRegions(expectedElementsUrl: string | null | undefined): Promise<Region[]> {
@@ -803,16 +869,6 @@ interface ProjectIndexEntry {
   name: string
   url: string
   page_count: number
-}
-
-function isSnapshotAtLeastAsFresh(snapshotTime: string | undefined, sourceTime: string | undefined): boolean {
-  if (!sourceTime) return true
-  if (!snapshotTime) return false
-  const snapshotMs = Date.parse(snapshotTime)
-  const sourceMs = Date.parse(sourceTime)
-  if (!Number.isFinite(sourceMs)) return true
-  if (!Number.isFinite(snapshotMs)) return false
-  return snapshotMs >= sourceMs
 }
 
 function familyCountsFor(regions: Region[]): Record<string, number> {
@@ -1285,6 +1341,8 @@ export function PdfLabLabelingPage() {
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null)
   const [imageNaturalSize, setImageNaturalSize] = useState<{ w: number; h: number } | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
+  const [customFamilyIds, setCustomFamilyIds] = useState<string[]>(() => loadCustomFamilyIds())
+  const [customFamilyInput, setCustomFamilyInput] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const breadcrumbOptions = useMemo(() => collectBreadcrumbOptions(regions), [regions])
   const [drag, setDrag] = useState<DragState | null>(null)
@@ -1331,6 +1389,7 @@ export function PdfLabLabelingPage() {
   /** Regions emitted by the scillm second-pass (Agent view). Loaded from
    *  the second_pass_url sidecar at page-load time. */
   const [regionsAgent, setRegionsAgent] = useState<Region[]>([])
+  const [extractionSourceRegions, setExtractionSourceRegions] = useState<Region[]>([])
   const [overlayMode, setOverlayMode] = useState<OverlayMode>('clean')
   /** Context neighbors for the focal page being annotated. The human labels
    *  ONLY the focal canvas; prev/next are rendered as read-only thumbnails
@@ -1375,6 +1434,33 @@ export function PdfLabLabelingPage() {
 
   const ZOOM_MIN = 0.25
   const ZOOM_MAX = 8
+  const familyDefs = useMemo<FamilyDef[]>(() => {
+    const byId = new Map<string, FamilyDef>()
+    CANONICAL_FAMILIES.forEach(family => byId.set(family.id, family))
+    customFamilyIds.forEach((id, index) => {
+      if (!byId.has(id)) byId.set(id, { id, color: CUSTOM_FAMILY_COLOR, hotkey: String((index + 1) % 10) })
+    })
+    ;[...regions, ...regionsInitial, ...regionsAgent].forEach(region => {
+      if (region.family && !byId.has(region.family)) byId.set(region.family, { id: region.family, color: CUSTOM_FAMILY_COLOR, hotkey: '·' })
+    })
+    return [...byId.values()]
+  }, [customFamilyIds, regions, regionsAgent, regionsInitial])
+  const activeFamilyDef = familyDefs.find(f => f.id === activeFamily) ?? familyDefs[0]
+  const addCustomFamily = useCallback(() => {
+    const id = normalizeFamilyId(customFamilyInput)
+    if (!id) return
+    setCustomFamilyIds(prev => {
+      if (prev.includes(id) || CANONICAL_FAMILIES.some(family => family.id === id)) return prev
+      const next = [...prev, id]
+      window.localStorage.setItem(CUSTOM_FAMILIES_STORAGE_KEY, JSON.stringify(next))
+      return next
+    })
+    setActiveFamily(id)
+    if (selectedId && viewMode === 'human') {
+      setRegions(prev => prev.map(region => region.id === selectedId ? hydrateRegionMetadata({ ...region, family: id }, prev, extractionSourceRegions) : region))
+    }
+    setCustomFamilyInput('')
+  }, [customFamilyInput, extractionSourceRegions, selectedId, viewMode])
 
   const zoomIn = useCallback(() => setZoom(z => Math.min(ZOOM_MAX, z * 1.25)), [])
   const zoomOut = useCallback(() => setZoom(z => Math.max(ZOOM_MIN, z / 1.25)), [])
@@ -1463,6 +1549,9 @@ export function PdfLabLabelingPage() {
     })
     if (slug === targetSlug) {
       setRegions([])
+      setRegionsInitial([])
+      setRegionsAgent([])
+      setExtractionSourceRegions([])
       setImageUrl(null)
       setImageDataUrl(null)
       setImageNaturalSize(null)
@@ -1472,6 +1561,9 @@ export function PdfLabLabelingPage() {
 
   const newPage = useCallback(() => {
     setRegions([])
+    setRegionsInitial([])
+    setRegionsAgent([])
+    setExtractionSourceRegions([])
     setImageUrl(null)
     setImageDataUrl(null)
     setImageNaturalSize(null)
@@ -1523,14 +1615,18 @@ export function PdfLabLabelingPage() {
       }
 
       const allRegions = [...importedRegions, ...agentLinkRegions]
+      const extractionSourceRegions = await fetchExtractionSourceRegions(slice.expectedElementsUrl)
       const local = savedPages[slice.slug]
       const humanRegions = local && local.regions.length > 0
-        ? backfillMissingBreadcrumbPaths(local.regions, allRegions)
+        ? backfillMissingExtractionPayloads(backfillMissingBreadcrumbPaths(local.regions, allRegions), extractionSourceRegions)
         : allRegions
       setSlug(slice.slug)
       setImageUrl(dataUrl)
       setImageDataUrl(dataUrl)
       setRegions(humanRegions)
+      setRegionsInitial(JSON.parse(JSON.stringify(allRegions)))
+      setRegionsAgent([])
+      setExtractionSourceRegions(extractionSourceRegions)
       setSelectedId(null)
       const linkSummary = agentLinkRegions.length > 0
         ? ` · ${agentLinkRegions.length} agent-link candidate${agentLinkRegions.length === 1 ? '' : 's'}`
@@ -1618,18 +1714,19 @@ export function PdfLabLabelingPage() {
           }
           const entry = payload.entries?.[key]
           if (entry?.regions?.length) {
-            const sourceMatches = entry.source_generated_at
-              ? entry.source_generated_at === project.generated_at
-              : isInProgressCompatibleWithSource(entry.regions, importedRegions)
-            if (sourceMatches && isSnapshotAtLeastAsFresh(entry.updated_at, project.generated_at)) {
+            const sourceMatches = isInProgressCompatibleWithSource(entry.regions, importedRegions)
+            if (sourceMatches) {
               diskWipRegions = backfillMissingExtractionPayloads(
                 backfillMissingBreadcrumbPaths(entry.regions, importedRegions),
                 extractionSourceRegions,
               )
-              importWarnings.push(`Restored in-progress human feedback from disk (${entry.regions.length} regions, ${entry.updated_at ?? 'unknown time'})`)
+              const sourceNote = entry.source_generated_at && entry.source_generated_at !== project.generated_at
+                ? '; source artifact was regenerated but region families stayed compatible'
+                : ''
+              importWarnings.push(`Restored in-progress human feedback from disk (${entry.regions.length} regions, ${entry.updated_at ?? 'unknown time'}${sourceNote})`)
             } else {
               importWarnings.push(
-                `Ignored stale in-progress human feedback from disk (${entry.updated_at ?? 'unknown time'} does not match current project artifact)`,
+                `Ignored incompatible in-progress human feedback from disk (${entry.updated_at ?? 'unknown time'} does not match current region families)`,
               )
             }
           }
@@ -1700,6 +1797,7 @@ export function PdfLabLabelingPage() {
       // Diff stays meaningful: Original vs Human-final.
       setRegionsInitial(JSON.parse(JSON.stringify(importedRegions)))
       setRegionsAgent(agentRegions)
+      setExtractionSourceRegions(extractionSourceRegions)
       setContextPrev(prevNbr)
       setContextNext(nextNbr)
       setSelectedId(null)
@@ -1975,10 +2073,10 @@ export function PdfLabLabelingPage() {
       return
     }
     const id = newId()
-    setRegions(prev => [...prev, { id, family: drag.family, bbox }])
+    setRegions(prev => [...prev, hydrateRegionMetadata({ id, family: drag.family, bbox }, prev, extractionSourceRegions)])
     setSelectedId(id)
     setDrag(null)
-  }, [drag, regionDrag, marqueeMode])
+  }, [drag, extractionSourceRegions, regionDrag, marqueeMode])
 
   /** Click the family tag → cycle through 4 anchored positions. The label
    *  is always pinned to a corner of the bbox so move/resize keep them
@@ -2090,12 +2188,19 @@ export function PdfLabLabelingPage() {
       }
       // Family hotkeys — but skip if Ctrl/Cmd held (those mean zoom).
       if (e.ctrlKey || e.metaKey) return
-      const match = CANONICAL_FAMILIES.find(f => f.hotkey === e.key.toLowerCase())
-      if (match) setActiveFamily(match.id)
+      const match = familyDefs.find(f => f.hotkey === e.key.toLowerCase())
+      if (match) {
+        setActiveFamily(match.id)
+        if (selectedId && viewMode === 'human') {
+          setRegions(prev => prev.map(region => region.id === selectedId
+            ? hydrateRegionMetadata({ ...region, family: match.id }, prev, extractionSourceRegions)
+            : region))
+        }
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [selectedId, zoomIn, zoomOut, zoomReset, zoomFit])
+  }, [extractionSourceRegions, familyDefs, selectedId, viewMode, zoomIn, zoomOut, zoomReset, zoomFit])
 
   /** Ctrl/Cmd + scroll zooms; plain scroll uses native canvas scrolling. */
   const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -2169,7 +2274,6 @@ export function PdfLabLabelingPage() {
     return bbox
   }, [drag])
 
-  const activeFamilyDef = CANONICAL_FAMILIES.find(f => f.id === activeFamily)!
   const agentViewRegions = regionsAgent.length > 0 ? regionsAgent : regionsInitial
   const paneRegions = viewMode === 'original'
     ? regionsInitial
@@ -2181,7 +2285,7 @@ export function PdfLabLabelingPage() {
   const currentProject = currentProjectId ? projects.find(p => p.project_id === currentProjectId) : null
   const activeProjectPage = currentProject?.pages.find(p => p.slug === slug) ?? null
   const selectedFamilyDef = paneSelectedRegion
-    ? CANONICAL_FAMILIES.find(f => f.id === paneSelectedRegion.family)
+    ? familyDefs.find(f => f.id === paneSelectedRegion.family)
     : activeFamilyDef
   const activePageNotes = activeProjectPage?.notes
     ? activeProjectPage.notes.split(';').map(note => note.trim()).filter(Boolean)
@@ -2198,8 +2302,8 @@ export function PdfLabLabelingPage() {
   const applyFamilyToSelectedRegion = useCallback((family: FamilyId) => {
     setActiveFamily(family)
     if (!selectedId || viewMode !== 'human') return
-    setRegions(prev => prev.map(region => region.id === selectedId ? { ...region, family } : region))
-  }, [selectedId, viewMode])
+    setRegions(prev => prev.map(region => region.id === selectedId ? hydrateRegionMetadata({ ...region, family }, prev, extractionSourceRegions) : region))
+  }, [extractionSourceRegions, selectedId, viewMode])
   const onLabelPaletteDragStart = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault()
     event.stopPropagation()
@@ -2439,7 +2543,7 @@ export function PdfLabLabelingPage() {
               data-qid="pdf-lab:labeling:family-select"
               aria-label="Active annotation family"
             >
-              {CANONICAL_FAMILIES.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
+              {familyDefs.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
             </select>
           </label>
           <input
@@ -2682,7 +2786,7 @@ export function PdfLabLabelingPage() {
                   }
                 }
                 return displayed.map(r => {
-                  const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
+                  const def = familyDefs.find(f => f.id === r.family)
                   const isSelected = selectedId === r.id && viewMode === 'human'
                   const isEditable = viewMode === 'human'
                   const diffClass = r._diffStatus && r._diffStatus !== 'identical'
@@ -2746,7 +2850,7 @@ export function PdfLabLabelingPage() {
                     Set label
                   </div>
                   <div className="pdf-lab-labeling-family-popover-grid">
-                    {CANONICAL_FAMILIES.map(family => (
+                    {familyDefs.map(family => (
                       <button
                         key={family.id}
                         className={`pdf-lab-labeling-family-popover-chip ${selectedHumanRegion.family === family.id ? 'is-active' : ''}`}
@@ -2759,6 +2863,27 @@ export function PdfLabLabelingPage() {
                         <strong>{family.id}</strong>
                       </button>
                     ))}
+                  </div>
+                  <div className="pdf-lab-labeling-family-popover-custom">
+                    <input
+                      value={customFamilyInput}
+                      onChange={event => setCustomFamilyInput(event.target.value)}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault()
+                          addCustomFamily()
+                        }
+                      }}
+                      placeholder="custom_label"
+                      data-qid="pdf-lab:labeling:custom-family-input"
+                    />
+                    <button
+                      type="button"
+                      onClick={addCustomFamily}
+                      data-qid="pdf-lab:labeling:add-custom-family"
+                    >
+                      Add
+                    </button>
                   </div>
                 </div>
               )}
@@ -2825,11 +2950,11 @@ export function PdfLabLabelingPage() {
               <>
                 <div className="pdf-lab-labeling-ctx-divider" />
                 <div className="pdf-lab-labeling-ctx-header">Change family</div>
-                {CANONICAL_FAMILIES.map(f => (
+                {familyDefs.map(f => (
                   <button
                     key={f.id}
                     onClick={() => {
-                      setRegions(prev => prev.map(r => r.id === contextMenu.regionId ? { ...r, family: f.id } : r))
+                      setRegions(prev => prev.map(r => r.id === contextMenu.regionId ? hydrateRegionMetadata({ ...r, family: f.id }, prev, extractionSourceRegions) : r))
                       setContextMenu(null)
                     }}
                   >
@@ -2928,7 +3053,7 @@ export function PdfLabLabelingPage() {
           </div>
         )}
         <div className="pdf-lab-labeling-family-grid" data-qid="pdf-lab:labeling:family-grid">
-          {CANONICAL_FAMILIES.map(f => (
+          {familyDefs.map(f => (
             <button
               key={f.id}
               className={`pdf-lab-labeling-family-tile ${activeFamily === f.id || paneSelectedRegion?.family === f.id ? 'is-active' : ''}`}
@@ -2936,7 +3061,7 @@ export function PdfLabLabelingPage() {
               onClick={() => {
                 setActiveFamily(f.id)
                 if (paneSelectedRegion && viewMode === 'human') {
-                  setRegions(prev => prev.map(r => r.id === paneSelectedRegion.id ? { ...r, family: f.id } : r))
+                  setRegions(prev => prev.map(r => r.id === paneSelectedRegion.id ? hydrateRegionMetadata({ ...r, family: f.id }, prev, extractionSourceRegions) : r))
                 }
               }}
               title={`${f.id} (${f.hotkey})`}
@@ -2976,6 +3101,11 @@ export function PdfLabLabelingPage() {
             Document hierarchy metadata; not a PDF element type.
           </div>
         )}
+        {paneSelectedRegion?.notes?.includes(HIERARCHY_UNRESOLVED_NOTE) && (
+          <div className="pdf-lab-labeling-selected-breadcrumb-error" data-qid="pdf-lab:labeling:hierarchy-error">
+            Hierarchy could not be auto-derived for this region. Add a path or inspect the TOC-backed source regions.
+          </div>
+        )}
         {viewMode === 'human' && regions.length > 1 && (
           <button
             className="pdf-lab-labeling-regions-sort"
@@ -2992,8 +3122,8 @@ export function PdfLabLabelingPage() {
           </div>
         )}
         {inspectorRegions.map((r) => {
-          const def = CANONICAL_FAMILIES.find(f => f.id === r.family)
-          const update = (patch: Partial<Region>) => setRegions(prev => prev.map(x => x.id === r.id ? { ...x, ...patch } : x))
+          const def = familyDefs.find(f => f.id === r.family)
+          const update = (patch: Partial<Region>) => setRegions(prev => prev.map(x => x.id === r.id ? hydrateRegionMetadata({ ...x, ...patch }, prev, extractionSourceRegions) : x))
           const remove = () => { setRegions(prev => prev.filter(x => x.id !== r.id)); if (selectedId === r.id) setSelectedId(null) }
           const isDragging = reorderDragId === r.id
           const isDropTarget = reorderHoverId === r.id && reorderDragId && reorderDragId !== r.id
@@ -3027,7 +3157,7 @@ export function PdfLabLabelingPage() {
                 >≡</span>
                 <span className="pdf-lab-labeling-region-row-swatch" style={{ background: def?.color }} />
                 <select value={r.family} onChange={e => update({ family: e.target.value as FamilyId })}>
-                  {CANONICAL_FAMILIES.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
+                  {familyDefs.map(f => <option key={f.id} value={f.id}>{f.id}</option>)}
                 </select>
                 <button className="pdf-lab-labeling-region-row-del" onClick={e => { e.stopPropagation(); remove() }}>×</button>
               </div>
@@ -3060,6 +3190,11 @@ export function PdfLabLabelingPage() {
                     <summary>Structured payload</summary>
                     <pre>{JSON.stringify(r.extraction.table_json ?? r.extraction, null, 2)}</pre>
                   </details>
+                </div>
+              )}
+              {!r.extraction && EXTRACTION_CAPABLE_FAMILIES.has(r.family) && (
+                <div className="pdf-lab-labeling-extraction-missing" data-qid="pdf-lab:labeling:extraction-missing">
+                  No structured extraction payload matched this {r.family} bbox. Treat this as an extractor/materialization bug if the visual element is real.
                 </div>
               )}
               <BreadcrumbEditor

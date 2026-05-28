@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T01:54:53.486Z",
+  "generated_at": "2026-05-27T19:15:40.327Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -12,7 +12,7 @@
       "sparta_qra_relationship": 1892,
       "sparta_relationships": 262426,
       "sparta_urls": 6854,
-      "sparta_url_knowledge": 43398,
+      "sparta_url_knowledge": 43402,
       "datalake_chunks": 2529120
     }
   },
@@ -24,7 +24,7 @@
     "qrasTotal": 267027,
     "relationships": 262426,
     "urls": 6854,
-    "urlKnowledge": 43398,
+    "urlKnowledge": 43402,
     "datalakeChunks": 2529120
   },
   "qraTrust": {
@@ -49,7 +49,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-27T01:54:32Z",
+    "generated_at": "2026-05-27T19:15:18Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -70,9 +70,9 @@
     },
     "url_knowledge": {
       "missing": 0,
-      "target": 43398,
+      "target": 43402,
       "distinct_urls": 5867,
-      "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+      "next": "43,402 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
     },
     "datalake_chunks": {
       "missing": 0,
@@ -385,8 +385,8 @@
     }
   ],
   "monitor": {
-    "passed": 26,
-    "total": 26,
+    "passed": 27,
+    "total": 28,
     "checks": [
       {
         "ok": true,
@@ -473,9 +473,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "embedding_gaps",
-        "message": "All documents have embeddings",
+        "message": "1 collections with embedding gaps: sparta_url_knowledge=6",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -693,6 +693,30 @@
       },
       {
         "ok": true,
+        "dimension": "url_content_identity",
+        "message": "URL clean-text identity metadata has no known mismatches",
+        "malformed": null,
+        "scanned": null,
+        "course_corrected_non_generation": null,
+        "course_corrected_by_collection": null,
+        "malformed_by_collection": null,
+        "rule_counts": null,
+        "output_path": null
+      },
+      {
+        "ok": true,
+        "dimension": "sparta_explorer_page_purpose",
+        "message": "Sparta Explorer page-purpose contracts and dashboard-theater guardrails are present",
+        "malformed": null,
+        "scanned": null,
+        "course_corrected_non_generation": null,
+        "course_corrected_by_collection": null,
+        "malformed_by_collection": null,
+        "rule_counts": null,
+        "output_path": null
+      },
+      {
+        "ok": true,
         "dimension": "consumer_path_canaries",
         "message": "Consumer-path canaries pass (4 pass, 1 known_gap_classified, 0 fail) with Sparta Chat visual proof",
         "malformed": null,
@@ -813,7 +837,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T01:54:32Z",
+      "generated_at": "2026-05-27T19:15:18Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -834,9 +858,9 @@
       },
       "url_knowledge": {
         "missing": 0,
-        "target": 43398,
+        "target": 43402,
         "distinct_urls": 5867,
-        "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+        "next": "43,402 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
       },
       "datalake_chunks": {
         "missing": 0,
@@ -875,9 +899,9 @@
     {
       "name": "Arango/Qdrant source embedding coverage",
       "skill": "best-practices-arangodb",
-      "ok": true,
-      "status": "pass",
-      "message": "43,398 Arango docs synced; 653,981 Qdrant vectors observed."
+      "ok": false,
+      "status": "fail",
+      "message": "6 Arango/Qdrant vector gap(s). Review generated Arango/Qdrant backfill manifest before running any mutation."
     }
   ],
   "promptAudit": {
@@ -1949,10 +1973,10 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-27T01:54:33.536791Z",
-    "heartbeat_at": "2026-05-27T01:54:33.536791Z",
+    "generated_at": "2026-05-27T19:15:19.130452Z",
+    "heartbeat_at": "2026-05-27T19:15:19.130452Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 524,
+    "previous_snapshot_age_seconds": 36,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -3248,7 +3272,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T01:54:53Z",
+      "generated_at": "2026-05-27T19:15:40Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3269,9 +3293,9 @@
       },
       "url_knowledge": {
         "missing": 0,
-        "target": 43398,
+        "target": 43402,
         "distinct_urls": 5867,
-        "next": "43,398 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
+        "next": "43,402 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
       },
       "datalake_chunks": {
         "missing": 0,
@@ -3282,38 +3306,40 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T01:54:53Z",
+      "generated_at": "2026-05-27T19:15:40Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 2039,
-        "end": 2247
+        "start": 2083,
+        "end": 2291
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T01:54:26Z",
-      "status": "pass",
-      "state": "reconciled",
+      "generated_at": "2026-05-27T19:15:13Z",
+      "status": "fail",
+      "state": "gaps_found",
       "target_counts": {
-        "arango_embeddable_docs": 43398,
-        "source_embedding_targets": 43398
+        "arango_embeddable_docs": 43402,
+        "source_embedding_targets": 43402
       },
       "observed_counts": {
         "arango_embedding_docs": 0,
-        "arango_synced_docs": 43398,
-        "qdrant_vectors": 653981
+        "arango_synced_docs": 43396,
+        "qdrant_vectors": 654058
       },
       "gaps": {
-        "missing_vectors": 0,
+        "missing_vectors": 6,
         "stale_vectors": 0,
         "missing_bm25_views": [],
         "missing_graph_collections": [],
         "blocked_reasons": [],
-        "fail_reasons": []
+        "fail_reasons": [
+          "missing_vectors"
+        ]
       },
       "arango": {
         "role": "documents_bm25_graph",
@@ -3332,14 +3358,75 @@
               "description",
               "url"
             ],
-            "total_docs": 43398,
-            "embeddable_docs": 43398,
+            "total_docs": 43402,
+            "embeddable_docs": 43402,
             "embedded_docs": 0,
-            "synced_docs": 43398,
-            "qdrant_pointer_docs": 43398,
-            "missing_vectors": 0,
+            "synced_docs": 43396,
+            "qdrant_pointer_docs": 43396,
+            "missing_vectors": 6,
             "stale_vectors": 0,
-            "manifest_candidates": [],
+            "manifest_candidates": [
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__0",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "167009ca6b3d75493519f3f4b4b7f0f9e6cd6522",
+                "current_text_hash": "01b8a66b9ec331b69351eddb981f8a3ff1c34c3f"
+              },
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__1",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "9933e7eca048191479178eb50df4ecf1da6bc1a9",
+                "current_text_hash": "6306858856add7c19c0e4f91babb194663cc5d3e"
+              },
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__2",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "c5f8927409efcdbdb8a0ce023e61c24ca4c891f8",
+                "current_text_hash": "1e0601e07a283411bf521e016815722576ec439d"
+              },
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__3",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "5524b75e541a8cfb8c23202d49a8f02906f66c01",
+                "current_text_hash": "7d3cfe9406632cad140bf53a367d623cb8e09e76"
+              },
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__4",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "6a83af6022f548b77275390020467b9b1ec7171c",
+                "current_text_hash": "33c1c9f45f2cf990aa2fb04f3261cc1b92369eb2"
+              },
+              {
+                "collection": "sparta_url_knowledge",
+                "key": "uk__1007__5",
+                "action": "qdrant_embed",
+                "reason": "missing_or_unsynced_qdrant_point",
+                "qdrant_point_id": null,
+                "semantic_sync_state": "pending",
+                "stored_text_hash": "cfc1401b6da1aa4d19cc590a839fab5baaf85ebf",
+                "current_text_hash": "e3535e9c45d12f9afb95286bc5b9308b3f622efc"
+              }
+            ],
             "manifest_truncated": false
           }
         ],
@@ -3375,13 +3462,13 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 653981,
+        "point_count": 654058,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43398
         }
       },
       "backfill": {
-        "required": false,
+        "required": true,
         "mode": "review_required",
         "mutation_enabled": false,
         "manifest": null
@@ -3390,7 +3477,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T01:54:51Z",
+      "generated_at": "2026-05-27T19:15:38Z",
       "status": "pass",
       "state": "covered",
       "summary": {
@@ -3487,7 +3574,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 1486606,
+    "current_log_age_seconds": 1549053,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3496,6 +3583,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 1486606s ago."
+    "message": "No active create-qras worker observed; latest log changed 1549053s ago."
   }
 }

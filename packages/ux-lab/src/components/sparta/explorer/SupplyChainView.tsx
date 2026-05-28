@@ -214,7 +214,7 @@ export function SupplyChainView() {
   // Register actions for QID compliance
   useRegisterAction('supply-chain:scenario-select', { app: 'sparta-explorer', action: 'SUPPLY_CHAIN_SELECT_SCENARIO', label: 'Select Scenario', description: 'Select a supply chain simulation scenario' })
   useRegisterAction('supply-chain:reset-kills', { app: 'sparta-explorer', action: 'SUPPLY_CHAIN_RESET_KILLS', label: 'Reset Killed Suppliers', description: 'Clear all killed supplier simulations' })
-  useRegisterAction('supply-chain:guide-toggle', { app: 'sparta-explorer', action: 'SUPPLY_CHAIN_TOGGLE_WORKFLOW_GUIDE', label: 'Toggle Brandon Workflow Guide', description: 'Show or hide the Brandon compliance workflow instructions' })
+  useRegisterAction('supply-chain:guide-toggle', { app: 'sparta-explorer', action: 'SUPPLY_CHAIN_TOGGLE_WORKFLOW_GUIDE', label: 'Toggle Mission Assurance Workflow Guide', description: 'Show or hide the mission-assurance supply-chain workflow instructions' })
 
   const currentScenario = SCENARIOS[scenario]
   const virtualTaints = useMemo(() => killedSuppliers, [killedSuppliers])
@@ -295,7 +295,7 @@ export function SupplyChainView() {
         <button
           data-qid="supply-chain-workflow-toggle"
           data-qs-action="SUPPLY_CHAIN_TOGGLE_WORKFLOW_GUIDE"
-          title="Show or hide the Brandon compliance workflow guide"
+          title="Show or hide the mission-assurance supply-chain workflow guide"
           onClick={() => setShowWorkflowGuide(v => !v)}
           style={{
             background: showWorkflowGuide ? 'rgba(0, 209, 255, 0.12)' : 'rgba(255,255,255,0.04)',
@@ -310,7 +310,7 @@ export function SupplyChainView() {
             cursor: 'pointer',
           }}
         >
-          {showWorkflowGuide ? 'Hide Brandon Workflow' : 'Show Brandon Workflow'}
+          {showWorkflowGuide ? 'Hide Mission Workflow' : 'Show Mission Workflow'}
         </button>
 
         {/* Kill Switch Status */}
@@ -367,16 +367,19 @@ export function SupplyChainView() {
           }}
         >
           <div style={{ fontSize: 11, fontWeight: 800, color: '#00d1ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            Brandon Compliance Workflow
+            Mission Assurance Supply-Chain Workflow
           </div>
           <div style={{ fontSize: 11, color: EMBRY.dim }}>
-            Objective: verify traceability from supplier evidence to control and framework impact.
+            Objective: trace supplier, evidence, control, and framework dependencies into mission risk without treating this fixture as procurement or compliance signoff.
           </div>
           <div style={{ fontSize: 11, color: EMBRY.white }}>1. Select a scenario with <strong>Scenario</strong> to load the supplier graph.</div>
           <div style={{ fontSize: 11, color: EMBRY.white }}>2. Click supplier nodes to inspect DAL, tier, and framework metadata.</div>
           <div style={{ fontSize: 11, color: EMBRY.white }}>3. Trigger supplier kill-switches in the graph, then compare affected evidence/control paths.</div>
           <div style={{ fontSize: 11, color: EMBRY.white }}>4. Use <strong>Reset kill chain simulation</strong> to rerun the audit baseline.</div>
           <div style={{ fontSize: 11, color: EMBRY.white }}>5. Capture export rationale for assessor evidence packages.</div>
+          <div data-qid="supply-chain-source-state" style={{ marginTop: 4, paddingTop: 6, borderTop: `1px solid ${EMBRY.border}`, fontSize: 11, color: EMBRY.dim }}>
+            Source state: F-36 golden fixture simulation only. Missing live SBOM, VEX, vendor attestation, procurement record, or evidence artifact lineage must be treated as <strong style={{ color: EMBRY.amber }}>unknown/stale</strong>, not as a clean supplier status.
+          </div>
         </div>
       )}
 

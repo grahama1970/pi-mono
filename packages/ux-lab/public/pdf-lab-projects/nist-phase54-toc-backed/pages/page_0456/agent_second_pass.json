@@ -1,10 +1,12 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0456",
-  "captured_at": "2026-05-26T19:14:03.554072+00:00",
+  "captured_at": "2026-05-27T19:18:29.006670+00:00",
   "source": "phase-54 deterministic TOC-backed candidate materialization",
   "agent_decision": {
-    "status": "candidate_for_human_amendment",
+    "status": "learned_bug_report_hidden_from_human_queue",
+    "human_review_required": false,
+    "learned_bug_report_reason": "Appendix C table/chrome correction materialized from human feedback",
     "selection_sources": [
       "deterministic_equation_sweep",
       "deterministic_page_scan"
