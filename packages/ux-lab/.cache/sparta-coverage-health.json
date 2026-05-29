@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T19:15:40.327Z",
+  "generated_at": "2026-05-28T17:08:36.472Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -49,7 +49,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-27T19:15:18Z",
+    "generated_at": "2026-05-28T17:07:44Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -385,7 +385,7 @@
     }
   ],
   "monitor": {
-    "passed": 27,
+    "passed": 15,
     "total": 28,
     "checks": [
       {
@@ -473,9 +473,9 @@
         "output_path": null
       },
       {
-        "ok": false,
+        "ok": true,
         "dimension": "embedding_gaps",
-        "message": "1 collections with embedding gaps: sparta_url_knowledge=6",
+        "message": "All documents have embeddings",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -533,9 +533,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_evidence_coverage",
-        "message": "245,962/245,962 with evidence_case (100.0%), 245,962/245,962 structurally complete (100.0%)",
+        "message": "Can't connect to host(s) within limit (3)",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -545,9 +545,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_reasoning_coverage",
-        "message": "241,123/241,123 QRAs have valid reasoning (100.0%)",
+        "message": "Can't connect to host(s) within limit (3)",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -557,9 +557,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "crosswalk_edges",
-        "message": "262,426 edges (31 paths)",
+        "message": "Can't connect to host(s) within limit (3)",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -569,9 +569,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "crosswalk_chain_schema",
-        "message": "15 relationship QRAs with chains (0 violations)",
+        "message": "Can't connect to host(s) within limit (3)",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -581,9 +581,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "create_qras_remaining_calls",
-        "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
+        "message": "Can't connect to host(s) within limit (3)",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -593,24 +593,21 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_question_surface_quality",
-        "message": "0 malformed question surfaces across 21,052 scanned QRAs; 925 course-corrected non-generation placeholders",
-        "malformed": 0,
-        "scanned": 21052,
-        "course_corrected_non_generation": 925,
-        "course_corrected_by_collection": {
-          "sparta_qra_canonical": 485,
-          "sparta_qra_relationship": 440
-        },
-        "malformed_by_collection": {},
-        "rule_counts": {},
-        "output_path": "artifacts/monitor-sparta/health_qra_question_surface_findings.jsonl"
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
+        "malformed": null,
+        "scanned": null,
+        "course_corrected_non_generation": null,
+        "course_corrected_by_collection": null,
+        "malformed_by_collection": null,
+        "rule_counts": null,
+        "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "description_completeness",
-        "message": "All non-deprecated controls have real descriptions",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -620,9 +617,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_coverage_per_control",
-        "message": "All in-scope text-backed controls have valid QRA coverage or accepted non-generation disposition",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -632,9 +629,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "framework_name_normalization",
-        "message": "All source_framework values are case-normalized",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -656,9 +653,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "sparta_relationship_integrity",
-        "message": "SPARTA relationships have valid endpoints and edge_type",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -668,9 +665,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "inline_embedding_policy",
-        "message": "No inline embedding arrays found in SPARTA Arango collections",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -680,9 +677,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "qra_stub_grounding",
-        "message": "No QRAs are grounded in stub-described controls",
+        "message": "[HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -692,9 +689,9 @@
         "output_path": null
       },
       {
-        "ok": true,
+        "ok": false,
         "dimension": "url_content_identity",
-        "message": "URL clean-text identity metadata has no known mismatches",
+        "message": "URL content identity check failed: [HTTP 503][ERR 30] shutdown in progress",
         "malformed": null,
         "scanned": null,
         "course_corrected_non_generation": null,
@@ -729,115 +726,28 @@
       }
     ],
     "remaining": {
-      "ok": true,
+      "ok": false,
       "dimension": "create_qras_remaining_calls",
-      "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
-      "native_remaining_any_collection_total": 0,
-      "native_remaining_non_sparta_total": 0,
-      "native_remaining_sparta_any_collection": 0,
-      "native_by_framework": [
-        {
-          "framework": "ATT&CK",
-          "expected_calls": 516,
-          "completed_calls_any_collection": 516,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "ATT_CK_Enterprise",
-          "expected_calls": 1273,
-          "completed_calls_any_collection": 1273,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "ATT_CK_ICS",
-          "expected_calls": 131,
-          "completed_calls_any_collection": 131,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "ATT_CK_Mobile",
-          "expected_calls": 225,
-          "completed_calls_any_collection": 225,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "CAPEC",
-          "expected_calls": 615,
-          "completed_calls_any_collection": 615,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "CWE",
-          "expected_calls": 970,
-          "completed_calls_any_collection": 970,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "D3FEND",
-          "expected_calls": 424,
-          "completed_calls_any_collection": 424,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "ESA",
-          "expected_calls": 137,
-          "completed_calls_any_collection": 137,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "NIST",
-          "expected_calls": 1905,
-          "completed_calls_any_collection": 1905,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "NVD",
-          "expected_calls": 4830,
-          "completed_calls_any_collection": 4830,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        },
-        {
-          "framework": "SPARTA",
-          "expected_calls": 315,
-          "completed_calls_any_collection": 315,
-          "remaining_calls": 0,
-          "remaining_control_ids": []
-        }
-      ],
-      "sparta_v2_remaining_total": 0,
-      "sparta_v2_native_remaining_target_collection": 0,
-      "sparta_v2_contextual_remaining_target_collection": 0,
-      "sparta_v2_remaining_prompt_kinds": {
-        "sparta_tactic_canonical": 0,
-        "sparta_technique_canonical": 0,
-        "sparta_countermeasure_canonical": 0,
-        "sparta_tactic_technique_relationship": 0,
-        "sparta_technique_countermeasure_relationship": 0
-      },
-      "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 315,
-      "sparta_control_to_control_gated_skip_reasons": {
-        "no_grounded_overlap": 7786,
-        "non_substantive_node": 6
-      },
-      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
-      "implemented_backlog_total_if_v2_sparta_native_required": 0,
-      "exact_remaining_calls_total": 315,
-      "total_with_raw_comparison_candidates": 8107
+      "message": "Can't connect to host(s) within limit (3)",
+      "native_remaining_any_collection_total": null,
+      "native_remaining_non_sparta_total": null,
+      "native_remaining_sparta_any_collection": null,
+      "native_by_framework": null,
+      "sparta_v2_remaining_total": null,
+      "sparta_v2_native_remaining_target_collection": null,
+      "sparta_v2_contextual_remaining_target_collection": null,
+      "sparta_v2_remaining_prompt_kinds": null,
+      "sparta_control_to_control_raw_candidate_pairs": null,
+      "sparta_control_to_control_gated_pairs": null,
+      "sparta_control_to_control_gated_skip_reasons": null,
+      "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": null,
+      "implemented_backlog_total_if_v2_sparta_native_required": null,
+      "exact_remaining_calls_total": null,
+      "total_with_raw_comparison_candidates": null
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T19:15:18Z",
+      "generated_at": "2026-05-28T17:07:44Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -887,7 +797,7 @@
       "ok": true,
       "status": "pass",
       "message": "No silent fallback violations found",
-      "detail": "INFO     | Scanning 248 files under /home/graham/workspace/experiments/memory/src/graph_memory\nINFO     | No silent fallback violations found."
+      "detail": "INFO     | Scanning 254 files under /home/graham/workspace/experiments/memory/src/graph_memory\nINFO     | No silent fallback violations found."
     },
     {
       "name": "Prompt best-practice static scan",
@@ -1973,10 +1883,10 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-27T19:15:19.130452Z",
-    "heartbeat_at": "2026-05-27T19:15:19.130452Z",
+    "generated_at": "2026-05-28T17:07:45.806994Z",
+    "heartbeat_at": "2026-05-28T17:07:45.806994Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 36,
+    "previous_snapshot_age_seconds": 63,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -3271,42 +3181,17 @@
       }
     },
     "corpus_inventory": {
-      "schema_version": 1,
-      "generated_at": "2026-05-27T19:15:40Z",
+      "status": "blocked",
+      "state": "scanner_error",
       "source": "sparta_corpus_inventory",
-      "status": "pass",
-      "legacy_qras": {
-        "missing": 0,
-        "next": "Reference-only legacy corpus; excluded from completion target."
-      },
-      "relationships": {
-        "missing": 0,
-        "target": 262426,
-        "next": "Relationship graph present; monitor relationship and crosswalk-chain checks are authoritative."
-      },
-      "urls": {
-        "missing": 0,
-        "target": 6854,
-        "with_content": 6854,
-        "with_200_file": 6139,
-        "next": "6,854/6,854 normalized URLs have fetch records; 6,139 fetched HTTP 200 with files."
-      },
-      "url_knowledge": {
-        "missing": 0,
-        "target": 43402,
-        "distinct_urls": 5867,
-        "next": "43,402 URL-knowledge chunks across 5,867 URLs; source embedding lane verifies embedding coverage."
-      },
-      "datalake_chunks": {
-        "missing": 0,
-        "target": 2529120,
-        "qdrant_synced": 0,
-        "next": "Generic datalake corpus is reference inventory for SPARTA Coverage; 0 chunks are Qdrant-synced, and SPARTA source targets are checked separately."
-      }
+      "blocked_reasons": [
+        "[HTTP 410][ERR 1500] AQL: query killed [node #49: EnumerateCollectionNode] [node #79: SubqueryEndNode] [node #76: SubqueryStartNode] [node #75: IndexNode] [node #77: SubqueryEndNode] [node #60: CalculationNode] [node #61: ReturnNode] (while executing)"
+      ],
+      "resume_hint": "Fix memory-owned SPARTA corpus inventory scanner before trusting Coverage inventory lanes."
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T19:15:40Z",
+      "generated_at": "2026-05-28T17:08:36Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -3319,7 +3204,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-27T19:15:13Z",
+      "generated_at": "2026-05-28T17:07:21Z",
       "status": "fail",
       "state": "gaps_found",
       "target_counts": {
@@ -3327,18 +3212,18 @@
         "source_embedding_targets": 43402
       },
       "observed_counts": {
-        "arango_embedding_docs": 0,
-        "arango_synced_docs": 43396,
-        "qdrant_vectors": 654058
+        "arango_embedding_docs": 43402,
+        "arango_synced_docs": 43402,
+        "qdrant_vectors": 654251
       },
       "gaps": {
-        "missing_vectors": 6,
-        "stale_vectors": 0,
+        "missing_vectors": 0,
+        "stale_vectors": 6,
         "missing_bm25_views": [],
         "missing_graph_collections": [],
         "blocked_reasons": [],
         "fail_reasons": [
-          "missing_vectors"
+          "stale_vectors"
         ]
       },
       "arango": {
@@ -3360,69 +3245,69 @@
             ],
             "total_docs": 43402,
             "embeddable_docs": 43402,
-            "embedded_docs": 0,
-            "synced_docs": 43396,
-            "qdrant_pointer_docs": 43396,
-            "missing_vectors": 6,
-            "stale_vectors": 0,
+            "embedded_docs": 43402,
+            "synced_docs": 43402,
+            "qdrant_pointer_docs": 43402,
+            "missing_vectors": 0,
+            "stale_vectors": 6,
             "manifest_candidates": [
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__0",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "525e49ed-e886-5ca4-842a-e6b87e8669f0",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "167009ca6b3d75493519f3f4b4b7f0f9e6cd6522",
                 "current_text_hash": "01b8a66b9ec331b69351eddb981f8a3ff1c34c3f"
               },
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__1",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "9ab9e610-7dad-5789-9bcd-26feed56c37e",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "9933e7eca048191479178eb50df4ecf1da6bc1a9",
                 "current_text_hash": "6306858856add7c19c0e4f91babb194663cc5d3e"
               },
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__2",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "1d5dc780-f303-5cc9-a71a-1bb9d9b4751a",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "c5f8927409efcdbdb8a0ce023e61c24ca4c891f8",
                 "current_text_hash": "1e0601e07a283411bf521e016815722576ec439d"
               },
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__3",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "52f9b3a8-ebef-55d6-ae90-441f18b02322",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "5524b75e541a8cfb8c23202d49a8f02906f66c01",
                 "current_text_hash": "7d3cfe9406632cad140bf53a367d623cb8e09e76"
               },
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__4",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "cc809cf8-04ad-57f0-8b44-59d19cd374f5",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "6a83af6022f548b77275390020467b9b1ec7171c",
                 "current_text_hash": "33c1c9f45f2cf990aa2fb04f3261cc1b92369eb2"
               },
               {
                 "collection": "sparta_url_knowledge",
                 "key": "uk__1007__5",
-                "action": "qdrant_embed",
-                "reason": "missing_or_unsynced_qdrant_point",
-                "qdrant_point_id": null,
-                "semantic_sync_state": "pending",
+                "action": "qdrant_reembed",
+                "reason": "stale_text_hash",
+                "qdrant_point_id": "efd7e416-056c-59b1-89f7-54d673a08d66",
+                "semantic_sync_state": "synced",
                 "stored_text_hash": "cfc1401b6da1aa4d19cc590a839fab5baaf85ebf",
                 "current_text_hash": "e3535e9c45d12f9afb95286bc5b9308b3f622efc"
               }
@@ -3462,9 +3347,9 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 654058,
+        "point_count": 654251,
         "points_by_arango_collection": {
-          "sparta_url_knowledge": 43398
+          "sparta_url_knowledge": 43402
         }
       },
       "backfill": {
@@ -3476,60 +3361,13 @@
       "resume_hint": "Review generated Arango/Qdrant backfill manifest before running any mutation."
     },
     "source_text_qra_coverage": {
-      "schema_version": 1,
-      "generated_at": "2026-05-27T19:15:38Z",
-      "status": "pass",
-      "state": "covered",
-      "summary": {
-        "control_text_missing_or_stub": 0,
-        "control_qra_missing": 0,
-        "control_qra_generation_required": 0,
-        "control_qra_terminal_non_generation_required": 0,
-        "url_text_missing_or_stub": 0,
-        "url_qra_missing": 0
-      },
-      "controls": {
-        "total": 12309,
-        "text_ok": 12269,
-        "text_missing_or_stub": 0,
-        "qra_scope": 11301,
-        "qra_ok": 11301,
-        "qra_missing": 0,
-        "qra_missing_generation_required": 0,
-        "qra_missing_terminal_non_generation_required": 0,
-        "qra_disposition_counts": {},
-        "terminal_reason_counts": {},
-        "manifest_truncated": false
-      },
-      "urls": {
-        "raw_total": 6854,
-        "total": 881,
-        "scope": "sparta_qra_url_knowledge",
-        "scope_rule": "sparta_url_knowledge.topic/url contains 'sparta'",
-        "scoped_url_ids": 881,
-        "valid_urls": 881,
-        "text_ok": 881,
-        "text_missing_or_stub": 0,
-        "qra_ok": 881,
-        "direct_qra_ok": 0,
-        "control_mediated_qra_ok": 881,
-        "direct_qra_attribution_missing": 881,
-        "qra_missing": 0,
-        "manifest_truncated": false
-      },
-      "qra_indexes": {
-        "control_ids_with_valid_qra": 11604,
-        "url_ids_with_direct_valid_qra": 0
-      },
+      "status": "blocked",
+      "state": "scanner_error",
+      "summary": {},
       "gaps": {
-        "control_text_missing_or_stub": 0,
-        "control_qra_missing": 0,
-        "control_qra_generation_required": 0,
-        "control_qra_terminal_non_generation_required": 0,
-        "url_text_missing_or_stub": 0,
-        "url_qra_missing": 0,
-        "url_direct_qra_attribution_missing": 881,
-        "fail_reasons": []
+        "blocked_reasons": [
+          "Can't connect to host(s) within limit (3)"
+        ]
       },
       "backfill": {
         "required": false,
@@ -3537,7 +3375,7 @@
         "mutation_enabled": false,
         "manifest": null
       },
-      "resume_hint": "Review generated source text/QRA manifest before running any fetch, control backfill, or QRA generation."
+      "resume_hint": "Fix source_text_qra_coverage scanner error before marking this lane pass."
     },
     "last_actions": [],
     "next_scheduled_actions": [
@@ -3574,7 +3412,7 @@
     "process_count": 0,
     "pid_summary": null,
     "current_log": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_autorun_20260509_205807.log",
-    "current_log_age_seconds": 1549053,
+    "current_log_age_seconds": 1627829,
     "manifest_path": "/home/graham/workspace/experiments/memory/artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260509_205806.json",
     "total_jobs": 0,
     "canonical_jobs": null,
@@ -3583,6 +3421,6 @@
     "heartbeat": null,
     "stored": null,
     "progress_percent": null,
-    "message": "No active create-qras worker observed; latest log changed 1549053s ago."
+    "message": "No active create-qras worker observed; latest log changed 1627829s ago."
   }
 }

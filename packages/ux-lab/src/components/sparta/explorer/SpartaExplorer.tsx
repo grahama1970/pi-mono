@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback, useRef, useContext, type ReactNode } from 'react'
+import React, { createContext, useState, useEffect, useCallback, useRef, useContext, useMemo, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { StatusBar } from '../../common/StatusBar'
 import { OfflineBanner } from '../../common/OfflineBanner'
@@ -14,7 +14,7 @@ import { OverviewLanding } from './OverviewLanding'
 import { EvidenceWorkspace } from './EvidenceWorkspace'
 import { useReducedMotion } from 'motion/react'
 import { PagePurposeStrip } from './PagePurposeStrip'
-import { TAB_PURPOSE_CONTRACTS } from './pagePurposeContracts'
+import { PAGE_PURPOSE_CONTRACTS, TAB_PURPOSE_CONTRACTS, deriveCoveragePagePurposeState, deriveSpartaChatPagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 
 export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
@@ -153,6 +153,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const demoEvidenceSeededRef = useRef(false)
+  const [coverageHealthSnapshot, setCoverageHealthSnapshot] = useState<CoverageHealthSnapshot | null>(null)
   const [chatReadiness, setChatReadiness] = useState<{ ready: boolean; warning?: string }>({
     ready: false,
     warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
@@ -344,10 +345,31 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     return () => clearInterval(interval)
   }, [checkHealth])
 
+  const effectivePagePurposeContract = useMemo(() => {
+    if (chatOpen) {
+      const base = PAGE_PURPOSE_CONTRACTS.find((c) => c.id === 'sparta-chat')
+      if (!base) return undefined
+      const live = deriveSpartaChatPagePurposeState({
+        memoryDaemonOk: daemonHealth.ok,
+        ready: chatReadiness.ready,
+        warning: chatReadiness.warning,
+      })
+      const state = live.state === 'pass' || live.state === 'degraded' || live.state === 'fail' ? live.state : 'fail'
+      return { ...base, ...live, state }
+    }
+    const base = TAB_PURPOSE_CONTRACTS[activeTab]
+    if (!base) return undefined
+    if (activeTab !== 'Coverage') return base
+    const live = deriveCoveragePagePurposeState(coverageHealthSnapshot)
+    const state = live.state === 'pass' || live.state === 'degraded' || live.state === 'fail' ? live.state : 'fail'
+    return { ...base, ...live, state }
+  }, [activeTab, chatOpen, chatReadiness.ready, chatReadiness.warning, coverageHealthSnapshot, daemonHealth.ok])
+
   const checkChatReadiness = useCallback(async () => {
     try {
       const res = await fetch(`${API}/api/sparta/coverage-health`)
       const body = await res.json()
+      setCoverageHealthSnapshot(body as CoverageHealthSnapshot)
       if (!res.ok) throw new Error(body?.detail || body?.error || `HTTP ${res.status}`)
       const supervisor = body?.supervisor ?? {}
       const heartbeatAt = typeof supervisor.heartbeat_at === 'string' ? new Date(supervisor.heartbeat_at) : null
@@ -1057,7 +1079,10 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           <SpartaNavContext.Provider value={navContextValue}>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-                <PagePurposeStrip contract={TAB_PURPOSE_CONTRACTS[activeTab]} />
+                {(() => {
+                  const pageContract = effectivePagePurposeContract ?? TAB_PURPOSE_CONTRACTS[activeTab]
+                  return pageContract ? <PagePurposeStrip contract={pageContract} /> : null
+                })()}
                 {activeView}
               </div>
             </div>

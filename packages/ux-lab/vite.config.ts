@@ -138,6 +138,7 @@ export default defineConfig({
         '**/captures/**',
         '**/dist/**',
         '**/public/pdf-lab-evidence/**',
+        '**/public/pdf-lab-pages/**',
         '**/public/sparta-artifacts/**',
         '**/public/artifacts/**',
         '**/public/**/*-extraction.json',

@@ -248,6 +248,113 @@ export const PAGE_PURPOSE_CONTRACTS: PagePurposeContract[] = [
   },
 ]
 
+/** Live monitor-sparta snapshot shape (subset of /api/sparta/coverage-health). */
+export type CoverageHealthSnapshot = {
+  stale?: boolean
+  refreshing?: boolean
+  refresh_policy?: string
+  monitor?: { passed?: number; total?: number; remaining?: { critical?: number; high?: number } }
+  corpusInventory?: Record<string, { missing?: number; target?: number }>
+  controlFrameworks?: Array<{ quality_gaps?: number }>
+  supervisor?: {
+    needs_attention?: unknown[]
+    blocked?: unknown[]
+    command_status_counts?: Record<string, number>
+  }
+}
+
+export function deriveCoveragePagePurposeState(
+  health: CoverageHealthSnapshot | null | undefined,
+): Pick<PagePurposeContract, 'state' | 'stateReason' | 'nextStateAction'> {
+  if (!health) {
+    return {
+      state: 'fail',
+      stateReason: 'Coverage health payload unavailable; page state cannot bind to monitor-sparta.',
+      nextStateAction: 'Load /api/sparta/coverage-health (force=1 if stale) and retry.',
+    }
+  }
+  const passed = Number(health.monitor?.passed ?? 0)
+  const total = Number(health.monitor?.total ?? 0)
+  const monitorOk = total > 0 && passed === total
+  if (!monitorOk) {
+    return {
+      state: 'fail',
+      stateReason: `Monitor health ${passed}/${total} — Coverage cannot claim readiness while monitor-sparta dimensions fail.`,
+      nextStateAction: 'Repair failing monitor-sparta lanes before Coverage pass.',
+    }
+  }
+  if (health.stale && health.refreshing !== true) {
+    return {
+      state: 'fail',
+      stateReason: `Coverage snapshot is stale (policy=${health.refresh_policy ?? 'unknown'}); fail-closed until refresh completes.`,
+      nextStateAction: 'Force refresh coverage-health or wait for change-gated background refresh.',
+    }
+  }
+  const inventory = health.corpusInventory ?? {}
+  const missingTotal = Object.values(inventory).reduce((sum, lane) => sum + Number(lane?.missing ?? 0), 0)
+  const qualityGaps = (health.controlFrameworks ?? []).reduce(
+    (sum, row) => sum + Number(row.quality_gaps ?? 0),
+    0,
+  )
+  const reviewRequired = Number(health.supervisor?.command_status_counts?.review_required ?? 0)
+  const attention = Array.isArray(health.supervisor?.needs_attention)
+    ? health.supervisor!.needs_attention!.length
+    : Array.isArray(health.supervisor?.blocked)
+      ? health.supervisor!.blocked!.length
+      : 0
+  const blockers: string[] = []
+  if (missingTotal > 0) blockers.push(`${missingTotal} corpus inventory gap(s)`)
+  if (qualityGaps > 0) blockers.push(`${qualityGaps} control-quality gap(s)`)
+  if (reviewRequired > 0) blockers.push(`${reviewRequired} supervisor review gate(s)`)
+  if (attention > 0) blockers.push(`${attention} supervisor attention item(s)`)
+  if (blockers.length > 0) {
+    return {
+      state: 'degraded',
+      stateReason: `Monitor ${passed}/${total} pass; Coverage binds live health but blockers remain: ${blockers.join('; ')}.`,
+      nextStateAction: 'Clear inventory gaps and supervisor gates; then re-run Coverage TI before pass.',
+    }
+  }
+  return {
+    state: 'pass',
+    stateReason: `Monitor ${passed}/${total} pass; corpus inventory lanes show no missing items; snapshot ${health.stale ? 'stale but refreshing' : 'current'}.`,
+    nextStateAction: 'Maintain change-gated snapshots; keep completion_claim_allowed false until human signoff.',
+  }
+}
+
+
+
+/** Live Sparta Chat readiness (memory + coverage pre-signoff gates). */
+export type SpartaChatReadinessSnapshot = {
+  memoryDaemonOk?: boolean
+  ready?: boolean
+  warning?: string
+}
+
+export function deriveSpartaChatPagePurposeState(
+  snap: SpartaChatReadinessSnapshot | null | undefined,
+): Pick<PagePurposeContract, 'state' | 'stateReason' | 'nextStateAction'> {
+  if (!snap?.memoryDaemonOk) {
+    return {
+      state: 'fail',
+      stateReason: 'Memory daemon offline; Sparta Chat cannot ground controls, QRAs, or evidence cases.',
+      nextStateAction: 'Restore /api/health memory_daemon=connected before chat verification.',
+    }
+  }
+  if (!snap.ready) {
+    return {
+      state: 'degraded',
+      stateReason: snap.warning ?? 'Pre-signoff: coverage/supervisor readiness blockers; chat is verification-only.',
+      nextStateAction: 'Clear monitor-sparta and supervisor gates; re-run consumer-path canaries before pass.',
+    }
+  }
+  return {
+    state: 'degraded',
+    stateReason:
+      'Memory and coverage pre-signoff gates are clear; Phase-06 prompt/consumer canaries pass, but full evidence-case binding across refresh/navigation is not production-proven.',
+    nextStateAction: 'Complete sparta-chat TI + persona review (phase-09) before claiming pass.',
+  }
+}
+
 export const TAB_PURPOSE_CONTRACTS = Object.fromEntries(
   PAGE_PURPOSE_CONTRACTS.filter((contract): contract is PagePurposeContract & { tab: TabName } => Boolean(contract.tab))
     .map((contract) => [contract.tab, contract]),

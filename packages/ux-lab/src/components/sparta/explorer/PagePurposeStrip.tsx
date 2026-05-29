@@ -9,7 +9,7 @@ const stateTone = {
 } as const
 
 export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }) {
-  const tone = stateTone[contract.state]
+  const tone = stateTone[contract.state] ?? stateTone.fail
   const Icon = tone.icon
   return (
     <section
