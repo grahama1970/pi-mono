@@ -2060,8 +2060,13 @@ function attachQraTrustStatus(payload: JsonRecord): JsonRecord {
   return { ...payload, qraTrust: qraTrustStatus(corpus) }
 }
 
-async function attachFreshSupervisorToCoveragePayload(payload: JsonRecord): Promise<JsonRecord> {
-  const supervisor = await refreshSpartaSupervisorState()
+async function attachFreshSupervisorToCoveragePayload(payload: JsonRecord, options: { refresh?: boolean } = {}): Promise<JsonRecord> {
+  const refresh = options.refresh ?? true
+  const supervisor = refresh
+    ? await refreshSpartaSupervisorState()
+    : (payload.supervisor && typeof payload.supervisor === 'object' && !Array.isArray(payload.supervisor)
+      ? payload.supervisor
+      : await readSpartaSupervisorState())
   if (!supervisor || typeof supervisor !== 'object' || Array.isArray(supervisor)) return payload
   const existingSupervisor = payload.supervisor && typeof payload.supervisor === 'object' && !Array.isArray(payload.supervisor)
     ? payload.supervisor as JsonRecord
@@ -2081,31 +2086,11 @@ async function attachFreshSupervisorToCoveragePayload(payload: JsonRecord): Prom
 }
 
 async function buildSpartaCoveragePayload(): Promise<JsonRecord> {
-  const auditScript = `
+  const supplementScript = `
 import json
-from scripts.validation._health_checks import create_health_client, run_all_checks, check_create_qras_remaining_calls, get_sparta_control_framework_inventory
+from scripts.validation._health_checks import check_create_qras_remaining_calls, get_sparta_control_framework_inventory
 from scripts.validation.sparta_corpus_inventory import scan as scan_corpus_inventory
 from scripts.validation.source_embedding_coverage import scan as scan_source_embedding_coverage
-
-
-client = create_health_client(timeout=45.0)
-try:
-    raw_checks = [r.to_dict() for r in run_all_checks(client)]
-finally:
-    client.close()
-
-checks = [{
-    "ok": check.get("ok"),
-    "dimension": check.get("dimension"),
-    "message": str(check.get("message", ""))[:1000],
-    "malformed": check.get("malformed"),
-    "scanned": check.get("scanned"),
-    "course_corrected_non_generation": check.get("course_corrected_non_generation"),
-    "course_corrected_by_collection": check.get("course_corrected_by_collection"),
-    "malformed_by_collection": check.get("malformed_by_collection"),
-    "rule_counts": check.get("rule_counts"),
-    "output_path": check.get("output_path"),
-} for check in raw_checks]
 
 remaining_raw = check_create_qras_remaining_calls().to_dict()
 remaining = {
@@ -2144,10 +2129,7 @@ except Exception as exc:
         "backfill": {"required": False, "mode": "review_required", "mutation_enabled": False, "manifest": None},
         "resume_hint": "Fix source_embedding_coverage scanner error before marking this lane pass.",
     }
-payload = {
-    "checks": checks,
-    "passed": sum(1 for c in checks if c.get("ok")),
-    "total": len(checks),
+print(json.dumps({
     "remaining": remaining,
     "corpus_inventory": scan_corpus_inventory(),
     "source_embedding_coverage": source_embedding_coverage,
@@ -2156,27 +2138,36 @@ payload = {
         "defects": (row.get("defects") or [])[:25],
         "defect_count": len(row.get("defects") or []),
     } for row in get_sparta_control_framework_inventory()],
-}
-print(json.dumps(payload, default=str))
+}, default=str))
 `.trim()
 
+  const monitorHealth = await runCommandJson('uv', ['run', 'python', 'scripts/validation/monitor_sparta.py', 'health', '--json'], {
+    cwd: MEMORY_REPO_ROOT,
+    env: { PYTHONPATH: 'src', MEMORY_SERVICE_URL: 'http://127.0.0.1:8601' },
+    timeout: 540_000,
+  })
+
   const [
-    monitor,
+    supplement,
     changeSignature,
     bestPracticeBase,
     artifacts,
     promptAudit,
   ] = await Promise.all([
-    runCommandJson('uv', ['run', 'python', '-c', auditScript], {
+    runCommandJson('uv', ['run', 'python', '-c', supplementScript], {
       cwd: MEMORY_REPO_ROOT,
       env: { PYTHONPATH: 'src', MEMORY_SERVICE_URL: 'http://127.0.0.1:8601' },
-      timeout: 420_000,
+      timeout: 180_000,
     }),
     buildSpartaCoverageChangeSignature(),
     runBestPracticeAudit(),
     readLatestArtifactSummary(),
     auditSpartaPrompts(),
   ])
+  const monitor = {
+    ...(monitorHealth as JsonRecord),
+    ...(supplement as JsonRecord),
+  }
   const supervisor = await refreshSpartaSupervisorState()
   const counts = (changeSignature.collections && typeof changeSignature.collections === 'object' && !Array.isArray(changeSignature.collections))
     ? changeSignature.collections as Record<string, number>
@@ -2339,45 +2330,35 @@ app.get('/api/sparta/coverage-health', async (req, res) => {
     const waitForRefresh = req.query.wait === '1'
 
     if (!forceRefresh && spartaCoverageCache && Date.now() < spartaCoverageCache.expiresAt) {
-      const payload = await attachFreshSupervisorToCoveragePayload(spartaCoverageCache.payload)
+      const payload = await attachFreshSupervisorToCoveragePayload(spartaCoverageCache.payload, { refresh: false })
       spartaCoverageCache = { ...spartaCoverageCache, payload }
-      return res.json(await attachLiveCreateQrasProgress(payload))
+      return res.json(attachQraTrustStatus(payload))
     }
 
     const snapshot = spartaCoverageCache?.payload ?? await readSpartaCoverageSnapshot()
-    const currentSignature = !forceRefresh && snapshot
-      ? await buildSpartaCoverageChangeSignature().catch((err) => {
-        console.error('[sparta/coverage-health] failed to build change signature', err)
-        return null
-      })
-      : null
-    const snapshotSignature = snapshot?.coverage_change_signature
-    const signatureChanged = Boolean(currentSignature && !sameCoverageChangeSignature(currentSignature, snapshotSignature))
-
-    if (snapshot && !forceRefresh && currentSignature && !signatureChanged) {
-      const payload = await attachFreshSupervisorToCoveragePayload({
-        ...snapshot,
-        stale: false,
-        refreshing: false,
-        refresh_policy: 'change_gated',
-        coverage_change_signature: currentSignature,
-      })
-      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
-      return res.json(await attachLiveCreateQrasProgress(payload))
-    }
 
     if (snapshot && !waitForRefresh) {
-      if (forceRefresh || signatureChanged) {
-        refreshSpartaCoverageInBackground(forceRefresh).catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
+      if (forceRefresh) {
+        refreshSpartaCoverageInBackground(true).catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
+      } else {
+        void buildSpartaCoverageChangeSignature()
+          .then((currentSignature) => {
+            if (!currentSignature) return
+            if (!sameCoverageChangeSignature(currentSignature, snapshot.coverage_change_signature)) {
+              refreshSpartaCoverageInBackground(false).catch((err) => console.error('[sparta/coverage-health] background refresh failed', err))
+            }
+          })
+          .catch((err) => console.error('[sparta/coverage-health] failed to build change signature', err))
       }
       const payload = await attachFreshSupervisorToCoveragePayload({
         ...snapshot,
-        stale: true,
-        refreshing: forceRefresh || signatureChanged,
-        refresh_policy: forceRefresh ? 'force_requested' : signatureChanged ? 'change_detected' : 'snapshot_only',
-        coverage_change_signature: currentSignature ?? snapshotSignature,
-      })
-      return res.json(await attachLiveCreateQrasProgress(payload))
+        stale: false,
+        refreshing: forceRefresh,
+        refresh_policy: forceRefresh ? 'force_requested' : 'snapshot_served',
+        coverage_change_signature: snapshot.coverage_change_signature,
+      }, { refresh: false })
+      spartaCoverageCache = { expiresAt: Date.now() + SPARTA_COVERAGE_CACHE_TTL_MS, payload }
+      return res.json(attachQraTrustStatus(payload))
     }
 
     const payload = await refreshSpartaCoverageInBackground(forceRefresh)

@@ -1,7 +1,7 @@
 {
   "schema_version": "pdf_lab.golden_slice.v2",
   "slice_id": "nist_phase54_page_0045",
-  "captured_at": "2026-05-27T19:18:28.993096+00:00",
+  "captured_at": "2026-05-29T15:43:22.352675+00:00",
   "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
   "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
   "candidate_families": [
@@ -26,16 +26,7 @@
     "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
     "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
   ],
-  "fix_error_requests": [
-    {
-      "source_id": "actual:p45:line:10",
-      "current_type": "paragraph",
-      "requested_family": "page_chrome_noise_or_split_from_body",
-      "text_hint": "This publication is available free of level charge] access from: control policy that:",
-      "reason": "Recurring NIST DOI/sidebar page chrome is leaking into body extraction or standalone paragraph regions.",
-      "owner": "pdf_oxide_core_chrome_filter"
-    }
-  ],
+  "fix_error_requests": [],
   "expected_elements": [
     {
       "family": "page_chrome_noise",

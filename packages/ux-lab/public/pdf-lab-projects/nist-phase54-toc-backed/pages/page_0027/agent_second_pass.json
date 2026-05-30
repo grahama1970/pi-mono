@@ -1,7 +1,7 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0027",
-  "captured_at": "2026-05-27T19:18:28.980568+00:00",
+  "captured_at": "2026-05-29T15:43:22.339490+00:00",
   "source": "phase-54 deterministic TOC-backed candidate materialization",
   "agent_decision": {
     "status": "learned_bug_report_hidden_from_human_queue",

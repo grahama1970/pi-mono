@@ -20,6 +20,25 @@ export type Scope = 'sparta' | 'f36' | 'both'
 export type GateDepth = 'fast' | 'medium' | 'accurate'
 
 const API = ''
+const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
+
+function readCoverageHealthCache(): CoverageHealthSnapshot | null {
+  try {
+    const raw = window.localStorage.getItem(COVERAGE_HEALTH_CACHE_KEY)
+    return raw ? (JSON.parse(raw) as CoverageHealthSnapshot) : null
+  } catch {
+    return null
+  }
+}
+
+function writeCoverageHealthCache(payload: CoverageHealthSnapshot): void {
+  try {
+    window.localStorage.setItem(COVERAGE_HEALTH_CACHE_KEY, JSON.stringify(payload))
+  } catch {
+    // Ignore quota/private-mode failures; live fetch remains source of truth.
+  }
+}
+
 const EVIDENCE_CASE_COMMAND_RE = /^\s*\/create-evidence-case(?:\s+|$)/i
 const FRAMEWORKS = ['SPARTA', 'NIST', 'CWE', 'ATT&CK', 'D3FEND', 'ESA', 'ISO', 'NASA'] as const
 
@@ -153,7 +172,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const demoEvidenceSeededRef = useRef(false)
-  const [coverageHealthSnapshot, setCoverageHealthSnapshot] = useState<CoverageHealthSnapshot | null>(null)
+  const [coverageHealthSnapshot, setCoverageHealthSnapshot] = useState<CoverageHealthSnapshot | null>(() => readCoverageHealthCache())
   const [chatReadiness, setChatReadiness] = useState<{ ready: boolean; warning?: string }>({
     ready: false,
     warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
@@ -360,7 +379,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     const base = TAB_PURPOSE_CONTRACTS[activeTab]
     if (!base) return undefined
     if (activeTab !== 'Coverage') return base
-    const live = deriveCoveragePagePurposeState(coverageHealthSnapshot)
+    const snapshotForPurpose = coverageHealthSnapshot ?? readCoverageHealthCache()
+    const live = deriveCoveragePagePurposeState(snapshotForPurpose)
     const state = live.state === 'pass' || live.state === 'degraded' || live.state === 'fail' ? live.state : 'fail'
     return { ...base, ...live, state }
   }, [activeTab, chatOpen, chatReadiness.ready, chatReadiness.warning, coverageHealthSnapshot, daemonHealth.ok])
@@ -369,9 +389,15 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     try {
       const res = await fetch(`${API}/api/sparta/coverage-health`)
       const body = await res.json()
-      setCoverageHealthSnapshot(body as CoverageHealthSnapshot)
       if (!res.ok) throw new Error(body?.detail || body?.error || `HTTP ${res.status}`)
+      const snapshot = body as CoverageHealthSnapshot
+      setCoverageHealthSnapshot(snapshot)
+      writeCoverageHealthCache(snapshot)
       const supervisor = body?.supervisor ?? {}
+      const passed = Number(body?.monitor?.passed ?? 0)
+      const total = Number(body?.monitor?.total ?? 0)
+      const monitorOk = total > 0 && passed === total
+      const snapshotServed = body?.refresh_policy === 'snapshot_served'
       const heartbeatAt = typeof supervisor.heartbeat_at === 'string' ? new Date(supervisor.heartbeat_at) : null
       const heartbeatAgeSeconds = heartbeatAt ? Math.max(0, Math.round((Date.now() - heartbeatAt.getTime()) / 1000)) : null
       const heartbeatFresh = heartbeatAgeSeconds != null && heartbeatAgeSeconds <= 120
@@ -384,9 +410,18 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         : Array.isArray(supervisor.blocked)
           ? supervisor.blocked.length
           : 0
+      const inventory = body?.corpusInventory ?? {}
+      const missingTotal = Object.values(inventory).reduce(
+        (sum: number, lane: { missing?: number }) => sum + Number(lane?.missing ?? 0),
+        0,
+      )
       const blockers = [
-        body?.stale ? 'snapshot is stale' : '',
-        !heartbeatFresh ? `heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}` : '',
+        body?.stale && body?.refreshing !== true ? 'snapshot is stale' : '',
+        !monitorOk ? `monitor health ${passed}/${total}` : '',
+        missingTotal > 0 ? `${missingTotal} corpus inventory gap(s)` : '',
+        !snapshotServed && !heartbeatFresh
+          ? `heartbeat age is ${heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}`
+          : '',
         reviewRequired > 0 ? `${reviewRequired} review gate(s)` : '',
         attention > 0 ? `${attention} attention item(s)` : '',
         qualityGaps > 0 ? `${qualityGaps} control-quality gap(s)` : '',
@@ -410,6 +445,27 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     const interval = setInterval(checkChatReadiness, 60_000)
     return () => clearInterval(interval)
   }, [checkChatReadiness])
+
+  useEffect(() => {
+    const wsUrl = API.replace(/^http/, 'ws')
+    let closed = false
+    const ws = new WebSocket(wsUrl)
+    ws.onmessage = (event) => {
+      try {
+        const message = JSON.parse(String(event.data))
+        if (message?.type !== 'sparta-coverage-health' || !message.payload) return
+        const snapshot = message.payload as CoverageHealthSnapshot
+        setCoverageHealthSnapshot(snapshot)
+        writeCoverageHealthCache(snapshot)
+      } catch {
+        // Ignore non-JSON websocket frames from other ux-lab producers.
+      }
+    }
+    return () => {
+      closed = true
+      ws.close()
+    }
+  }, [])
 
   // ── Chat cascade pipeline ────────────────────────────────────────────────
 

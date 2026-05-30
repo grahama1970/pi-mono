@@ -1,7 +1,7 @@
 {
   "schema_version": "pdf_lab.golden_slice.v2",
   "slice_id": "nist_phase54_page_0421",
-  "captured_at": "2026-05-27T19:18:28.999904+00:00",
+  "captured_at": "2026-05-29T15:43:22.363047+00:00",
   "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
   "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
   "candidate_families": [

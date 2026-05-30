@@ -2,11 +2,37 @@
   "schema_version": "pdf_lab.project.v1",
   "project_id": "nist-phase54-toc-backed",
   "name": "NIST Phase 54 TOC-Backed Candidates",
-  "source": "phase-54-toc-backed-candidate-page-selection + phase-69-labeling-suppression-policy",
-  "description": "10-page NIST review packet selected from the verified p.15 TOC spine plus deterministic page scans. p.15 is excluded as human ambiguity and used only as routing evidence. Active human queue suppresses pages whose human corrections were already converted into extractor/preset bug reports.",
-  "generated_at": "2026-05-27T19:18:29.055420+00:00",
-  "generated_by": "scripts/pdf_lab/apply_pdf_lab_labeling_policy.py",
+  "source": "phase-54-toc-backed-candidate-page-selection",
+  "description": "10-page NIST review packet selected from the verified p.15 TOC spine plus deterministic page scans. p.15 is excluded as human ambiguity and used only as routing evidence.",
+  "generated_at": "2026-05-29T15:43:22.386608+00:00",
+  "generated_by": "phase-54 materialize_phase54_project.py",
   "pages": [
+    {
+      "slug": "nist_phase54_page_0027",
+      "label": "NIST p.27 \u00b7 tables, figures_images_captions, headers_footers",
+      "anchor_page": 27,
+      "control_id_declared": null,
+      "stratum": "tables, figures_images_captions, headers_footers",
+      "image_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0027/page.png",
+      "expected_elements_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0027/expected_elements.json",
+      "second_pass_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0027/agent_second_pass.json",
+      "status": "pending",
+      "agent_origin": "phase-54-toc-backed-candidate-page-selection",
+      "notes": "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.; Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.; Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+    },
+    {
+      "slug": "nist_phase54_page_0028",
+      "label": "NIST p.28 \u00b7 CHAPTER ONE INTRODUCTION -> p.1",
+      "anchor_page": 28,
+      "control_id_declared": null,
+      "stratum": "sections, lists, headers_footers",
+      "image_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0028/page.png",
+      "expected_elements_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0028/expected_elements.json",
+      "second_pass_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0028/agent_second_pass.json",
+      "status": "pending",
+      "agent_origin": "phase-54-toc-backed-candidate-page-selection",
+      "notes": "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.; Mark nested/continued list items and distinguish bullets from prose line wraps.; Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+    },
     {
       "slug": "nist_phase54_page_0034",
       "label": "NIST p.34 \u00b7 CHAPTER TWO THE FUNDAMENTALS -> p.7; 2.1 REQUIREMENTS AND CONTROLS -> p.7",
@@ -84,50 +110,32 @@
       "status": "pending",
       "agent_origin": "phase-54-toc-backed-candidate-page-selection",
       "notes": "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.; Mark nested/continued list items and distinguish bullets from prose line wraps.; Separate running headers, footers, printed page numbers, and side boilerplate from body content.; Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
+    },
+    {
+      "slug": "nist_phase54_page_0456",
+      "label": "NIST p.456 \u00b7 tables, figures_images_captions, headers_footers",
+      "anchor_page": 456,
+      "control_id_declared": null,
+      "stratum": "tables, figures_images_captions, headers_footers, controls_requirements, equations_or_expected_absent",
+      "image_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0456/page.png",
+      "expected_elements_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0456/expected_elements.json",
+      "second_pass_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0456/agent_second_pass.json",
+      "status": "pending",
+      "agent_origin": "phase-54-toc-backed-candidate-page-selection",
+      "notes": "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.; Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.; Separate running headers, footers, printed page numbers, and side boilerplate from body content.; Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables.; Confirm whether any true displayed equation exists; Appendix C sqrt/check marks are expected table notation unless visually contradicted."
+    },
+    {
+      "slug": "nist_phase54_page_0468",
+      "label": "NIST p.468 \u00b7 tables, figures_images_captions, headers_footers",
+      "anchor_page": 468,
+      "control_id_declared": null,
+      "stratum": "tables, figures_images_captions, headers_footers, controls_requirements, equations_or_expected_absent",
+      "image_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0468/page.png",
+      "expected_elements_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0468/expected_elements.json",
+      "second_pass_url": "/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0468/agent_second_pass.json",
+      "status": "pending",
+      "agent_origin": "phase-54-toc-backed-candidate-page-selection",
+      "notes": "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.; Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.; Separate running headers, footers, printed page numbers, and side boilerplate from body content.; Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables.; Confirm whether any true displayed equation exists; Appendix C sqrt/check marks are expected table notation unless visually contradicted."
     }
-  ],
-  "labeling_policy": {
-    "schema": "pdf_oxide.pdf_lab_labeling_policy.v1",
-    "applied_at": "2026-05-27T19:18:29.055420+00:00",
-    "phase69_suppressed_table_residual_count": 9,
-    "learned_human_bug_report_pages_hidden": [
-      27,
-      28,
-      456,
-      468
-    ],
-    "table_prompt_suppressed_pages": [],
-    "hidden_pages": [
-      {
-        "slug": "nist_phase54_page_0027",
-        "anchor_page": 27,
-        "label": "NIST p.27 \u00b7 tables, figures_images_captions, headers_footers",
-        "suppression_kind": "learned_human_bug_report",
-        "reason": "p27 human table/chrome correction is already materialized as a bug report; remaining work is extractor/table-bbox engineering, not more human annotation."
-      },
-      {
-        "slug": "nist_phase54_page_0028",
-        "anchor_page": 28,
-        "label": "NIST p.28 \u00b7 CHAPTER ONE INTRODUCTION -> p.1",
-        "suppression_kind": "learned_human_bug_report",
-        "reason": "p28 line-level body/list/footnote/sidebar correction is already materialized as a bug report; remaining work is extractor/block-grouping engineering, not more human annotation."
-      },
-      {
-        "slug": "nist_phase54_page_0456",
-        "anchor_page": 456,
-        "label": "NIST p.456 \u00b7 tables, figures_images_captions, headers_footers",
-        "suppression_kind": "learned_human_bug_report",
-        "reason": "p456 Appendix C table/chrome correction is already materialized and generalized from human feedback."
-      },
-      {
-        "slug": "nist_phase54_page_0468",
-        "anchor_page": 468,
-        "label": "NIST p.468 \u00b7 tables, figures_images_captions, headers_footers",
-        "suppression_kind": "learned_human_bug_report",
-        "reason": "p468 Appendix C table/chrome correction is already materialized and generalized from human feedback."
-      }
-    ],
-    "visible_page_count": 6,
-    "policy": "Do not ask the human to re-annotate pages already converted into bug reports; regenerate candidates from the remaining unresolved page families."
-  }
+  ]
 }
