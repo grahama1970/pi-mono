@@ -1,10 +1,10 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0028",
-  "captured_at": "2026-05-29T15:43:22.343545+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-30T22:02:41.653566+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "learned_bug_report_hidden_from_human_queue",
+    "status": "closure_rematerialized",
     "human_review_required": false,
     "learned_bug_report_reason": "human-visible line-level body/list/footnote/sidebar correction materialized as grouping/chrome bug report",
     "selection_sources": [
@@ -38,7 +38,7 @@
       "source_id": "actual:p28:line:11",
       "current_type": "paragraph",
       "requested_family": "paragraph_block+page_chrome_noise_split",
-      "text_hint": "This publication is firmware available providing free of charge a capability from: that supports the essential mission and business functions of",
+      "text_hint": "",
       "reason": "Extractor interleaves rotated sidebar DOI/page-chrome text with body paragraph text.",
       "owner": "pdf_oxide_core_text_order_or_chrome_filter"
     },
@@ -46,7 +46,7 @@
       "source_id": "actual:p28:line:24",
       "current_type": "paragraph",
       "requested_family": "page_chrome_noise",
-      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "text_hint": "",
       "reason": "DOI/sidebar watermark fragment should be page chrome, not body paragraph.",
       "owner": "pdf_oxide_core_chrome_filter"
     },
@@ -54,7 +54,7 @@
       "source_id": "actual:p28:line:29+actual:p28:line:32",
       "current_type": "paragraph",
       "requested_family": "list_continuation",
-      "text_hint": "and to adequately manage mission/business risks or risks to individuals? controls, as designed and implemented, are effective? 7",
+      "text_hint": "",
       "reason": "Continuation lines belong to the enclosing bullet list.",
       "owner": "pdf_oxide_list_grouping"
     },
@@ -62,7 +62,7 @@
       "source_id": "actual:p28:line:39+actual:p28:line:42",
       "current_type": "section_header",
       "requested_family": "footnote",
-      "text_hint": "4 [OMB A-130] defines security and privacy controls. 6 Organizational operations include mission, functions, image, and re putation.",
+      "text_hint": "",
       "reason": "Numbered footnote lines were misclassified as section headers.",
       "owner": "pdf_oxide_block_classifier"
     }
@@ -76,7 +76,7 @@
         0.841671,
         0.057076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "text_hint": "",
       "label": "running_header_merged",
       "allowed_types": [
         "running_header",
@@ -138,7 +138,7 @@
         0.716848,
         0.173212
       ],
-      "text_hint": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "text_hint": "",
       "label": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
       "allowed_types": [
         "section_subtitle",
@@ -171,7 +171,7 @@
         0.844932,
         0.3062
       ],
-      "text_hint": "Modern information systems can 1 include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental ",
+      "text_hint": " firmware providing a capability that supports the essential mission and business functions of organizations.",
       "label": "body_paragraph_1",
       "allowed_types": [
         "paragraph"
@@ -198,10 +198,10 @@
       "bbox_hint": [
         0.145539,
         0.321455,
-        0.848171,
+        0.829412,
         0.490897
       ],
-      "text_hint": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security risk. 3 Pri",
+      "text_hint": "",
       "label": "body_paragraph_2",
       "allowed_types": [
         "paragraph"
@@ -231,7 +231,7 @@
         0.840385,
         0.573854
       ],
-      "text_hint": "The selection, design, and implementation of security and privacy controls 5 are important tasks that have significant implications for the operations 6 and assets of organizations as well as the welfare of individuals and the Nation. Organ",
+      "text_hint": "",
       "label": "body_paragraph_3",
       "allowed_types": [
         "paragraph"
@@ -261,7 +261,7 @@
         0.837768,
         0.683557
       ],
-      "text_hint": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals?\n\u2022 Have the selected controls been implemented or is there a plan in place ",
+      "text_hint": "",
       "label": "security_privacy_control_questions",
       "allowed_types": [
         "list",
@@ -287,12 +287,12 @@
     {
       "family": "footnote",
       "bbox_hint": [
-        0.145059,
+        0.145559,
         0.72547,
         0.839595,
         0.907561
       ],
-      "text_hint": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of",
+      "text_hint": "",
       "label": "footnotes_1_7",
       "allowed_types": [
         "paragraph",
@@ -354,7 +354,7 @@
         0.854885,
         0.953818
       ],
-      "text_hint": "CHAPTER ONE PAGE 1",
+      "text_hint": "",
       "label": "footer_page_chrome",
       "allowed_types": [
         "running_footer",

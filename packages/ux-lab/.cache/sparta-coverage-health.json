@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-29T16:18:51.088Z",
+  "generated_at": "2026-05-30T17:24:12.899Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -9,7 +9,7 @@
       "sparta_controls": 12309,
       "sparta_qra": 245975,
       "sparta_qra_canonical": 19160,
-      "sparta_qra_relationship": 1892,
+      "sparta_qra_relationship": 1893,
       "sparta_relationships": 262426,
       "sparta_urls": 6854,
       "sparta_url_knowledge": 43402,
@@ -20,8 +20,8 @@
     "controls": 12309,
     "qrasLegacy": 245975,
     "qrasCanonical": 19160,
-    "qrasRelationship": 1892,
-    "qrasTotal": 267027,
+    "qrasRelationship": 1893,
+    "qrasTotal": 267028,
     "relationships": 262426,
     "urls": 6854,
     "urlKnowledge": 43402,
@@ -41,15 +41,15 @@
     "counts": {
       "legacy": 245975,
       "canonical": 19160,
-      "relationship": 1892,
-      "total": 267027
+      "relationship": 1893,
+      "total": 267028
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-05-29T16:18:28Z",
+    "generated_at": "2026-05-30T17:23:51Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -471,14 +471,14 @@
       {
         "ok": true,
         "dimension": "create_qras_remaining_calls",
-        "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
+        "message": "0 implemented calls remain; 314 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
       },
       {
         "ok": true,
         "dimension": "qra_question_surface_quality",
-        "message": "0 malformed question surfaces across 21,052 scanned QRAs; 925 course-corrected non-generation placeholders",
+        "message": "0 malformed question surfaces across 21,053 scanned QRAs; 925 course-corrected non-generation placeholders",
         "malformed": 0,
-        "scanned": 21052,
+        "scanned": 21053,
         "course_corrected_non_generation": 925,
         "course_corrected_by_collection": {
           "sparta_qra_canonical": 485,
@@ -542,7 +542,7 @@
     "remaining": {
       "ok": true,
       "dimension": "create_qras_remaining_calls",
-      "message": "0 implemented calls remain; 315 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
+      "message": "0 implemented calls remain; 314 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
       "native_remaining_any_collection_total": 0,
       "native_remaining_non_sparta_total": 0,
       "native_remaining_sparta_any_collection": 0,
@@ -636,19 +636,20 @@
         "sparta_technique_countermeasure_relationship": 0
       },
       "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 315,
+      "sparta_control_to_control_gated_pairs": 314,
       "sparta_control_to_control_gated_skip_reasons": {
         "no_grounded_overlap": 7786,
+        "already_materialized": 1,
         "non_substantive_node": 6
       },
       "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
       "implemented_backlog_total_if_v2_sparta_native_required": 0,
-      "exact_remaining_calls_total": 315,
+      "exact_remaining_calls_total": 314,
       "total_with_raw_comparison_candidates": 8107
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-29T16:18:28Z",
+      "generated_at": "2026-05-30T17:23:51Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1756,17 +1757,22 @@
     "total": 10
   },
   "artifacts": {
-    "recent": [],
+    "recent": [
+      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260530_170823.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_accepted_failures_20260530_canary.jsonl",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260530_170823.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260530_170823.json"
+    ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
   },
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-05-29T16:18:29.026468Z",
-    "heartbeat_at": "2026-05-29T16:18:29.026468Z",
+    "generated_at": "2026-05-30T17:23:52.007044Z",
+    "heartbeat_at": "2026-05-30T17:23:52.007044Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 26,
+    "previous_snapshot_age_seconds": 69,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -3062,7 +3068,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-05-29T16:18:50Z",
+      "generated_at": "2026-05-30T17:24:12Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3096,20 +3102,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-05-29T16:18:50Z",
+      "generated_at": "2026-05-30T17:24:12Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 2083,
-        "end": 2277
+        "start": 2088,
+        "end": 2282
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-29T16:18:25Z",
+      "generated_at": "2026-05-30T17:23:45Z",
       "status": "fail",
       "state": "gaps_found",
       "target_counts": {
@@ -3119,7 +3125,7 @@
       "observed_counts": {
         "arango_embedding_docs": 0,
         "arango_synced_docs": 43396,
-        "qdrant_vectors": 654352
+        "qdrant_vectors": 654448
       },
       "gaps": {
         "missing_vectors": 0,
@@ -3252,7 +3258,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 654352,
+        "point_count": 654448,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43402
         }
@@ -3267,7 +3273,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-05-29T16:18:49Z",
+      "generated_at": "2026-05-30T17:24:11Z",
       "status": "pass",
       "state": "covered",
       "summary": {
