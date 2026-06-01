@@ -1,11 +1,11 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0035",
-  "captured_at": "2026-05-29T15:43:22.349084+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-31T22:36:43.565236+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "candidate_for_human_amendment",
-    "human_review_required": true,
+    "status": "closure_rematerialized",
+    "human_review_required": false,
     "learned_bug_report_reason": null,
     "selection_sources": [
       "deterministic_page_scan",
@@ -40,21 +40,170 @@
   "fix_error_requests": [],
   "expected_elements": [
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.045,
+        1.0,
+        0.055076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "NIST SP 800-53, REV. 5                                                          ",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:0; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "id": "toc:0010",
+          "node_id": "toc:0010",
+          "source": "toc",
+          "page": 8
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.057197,
+        0.855884,
+        0.067273
+      ],
+      "text_hint": "_________________________________________________________________________________________________",
+      "label": "________________________________________________________________________________",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:1; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "id": "toc:0010",
+          "node_id": "toc:0010",
+          "source": "toc",
+          "page": 8
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.941742,
+        0.855897,
+        0.951818
+      ],
+      "text_hint": "CHAPTER TWO  PAGE 8",
+      "label": "CHAPTER TWO  PAGE 8",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:2; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "id": "toc:0010",
+          "node_id": "toc:0010",
+          "source": "toc",
+          "page": 8
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
       "bbox_hint": [
         0.034412,
         0.276439,
         0.349823,
+        0.287803
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:3; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "id": "toc:0010",
+          "node_id": "toc:0010",
+          "source": "toc",
+          "page": 8
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.520227,
+        0.270525,
+        0.531591
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:4; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+          "id": "toc:0010",
+          "node_id": "toc:0010",
+          "source": "toc",
+          "page": 8
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.702727,
+        0.063809,
         0.717879
       ],
-      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
-      "label": "left_sidebar_watermark",
+      "text_hint": "-53r5",
+      "label": "-53r5",
       "allowed_types": [
-        "page_chrome_noise",
-        "paragraph"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_sidebar_chrome_group",
-      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p35:block:5; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "2.2 CONTROL STRUCTURE AND ORGANIZATION"
       ],
@@ -75,11 +224,11 @@
       "bbox_hint": [
         0.147059,
         0.090303,
-        0.806275,
-        0.121136
+        0.853699,
+        0.239781
       ],
-      "text_hint": "selection and implementation of control enhancements always requires the selection and implementation of the base control.",
-      "label": "selection and implementation of control enhancements always requires the selecti",
+      "text_hint": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and reflecting the protection needs of organizational stakehol",
+      "label": "Controls can be viewed as descriptions of the safeguards and protection capabili",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -104,17 +253,17 @@
       "family": "paragraph_block",
       "bbox_hint": [
         0.147059,
-        0.139311,
-        0.85282,
-        0.23802
+        0.257803,
+        0.604365,
+        0.275455
       ],
-      "text_hint": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are in numerical order. The order of the families, controls, and control enhancements does not imply any logical progression, le",
-      "label": "The families are arranged in alphabetical order, while the controls and control ",
+      "text_hint": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "label": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
       "allowed_types": [
-        "paragraph_block"
+        "section_heading"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:7; human should amend if rendered page contradicts this row.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p35:block:7; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "2.2 CONTROL STRUCTURE AND ORGANIZATION"
       ],
@@ -133,13 +282,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.147041,
-        0.256195,
-        0.834425,
-        0.287028
+        0.147006,
+        0.287197,
+        0.851872,
+        0.41977
       ],
-      "text_hint": "Security and privacy controls have the following structure: a base control section, a discussion section, a related controls section, a control enhancements section, and a references section.",
-      "label": "Security and privacy controls have the following structure: a base control secti",
+      "text_hint": "Security and privacy controls described in this publication have a well-defined organization and structure. For ease of use in the security and privacy control selection and specification process, controls are organized into 20 families.25 ",
+      "label": "Security and privacy controls described in this publication have a well-defined ",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -163,13 +312,13 @@
     {
       "family": "caption",
       "bbox_hint": [
-        0.147005,
-        0.290133,
-        0.529888,
-        0.303997
+        0.328627,
+        0.43803,
+        0.674771,
+        0.45
       ],
-      "text_hint": "Figure 1 illustrates the structure of a typical control.",
-      "label": "Figure 1 illustrates the structure of a typical control.",
+      "text_hint": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
+      "label": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
       "allowed_types": [
         "caption"
       ],
@@ -193,18 +342,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.137647,
-        0.33697,
-        0.428235,
-        0.352121
+        0.172451,
+        0.46447,
+        0.737667,
+        0.479621
       ],
-      "text_hint": "Control Identifier Control Name",
-      "label": "Control Identifier Control Name",
+      "text_hint": "ID FAMILY ID FAMILY",
+      "label": "ID FAMILY ID FAMILY",
       "allowed_types": [
         "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:27; human should amend if rendered page contradicts this row.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:10; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "2.2 CONTROL STRUCTURE AND ORGANIZATION"
       ],
@@ -223,18 +372,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.625882,
-        0.366439,
-        0.828529,
-        0.381591
+        0.171078,
+        0.488864,
+        0.810775,
+        0.500227
       ],
-      "text_hint": "Organization-defined Parameter",
-      "label": "Organization-defined Parameter",
+      "text_hint": "AC Access Control PE Physical and Environmental Protection",
+      "label": "AC Access Control PE Physical and Environmental Protection",
       "allowed_types": [
         "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:26; human should amend if rendered page contradicts this row.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:11; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "2.2 CONTROL STRUCTURE AND ORGANIZATION"
       ],
@@ -253,13 +402,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.159608,
-        0.378788,
-        0.422383,
-        0.392652
+        0.171275,
+        0.505909,
+        0.628422,
+        0.517273
       ],
-      "text_hint": "AU-4 AUDIT STORAGE CAPACITY",
-      "label": "AU-4 AUDIT STORAGE CAPACITY",
+      "text_hint": "AT Awareness and Training PL Planning",
+      "label": "AT Awareness and Training PL Planning",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -283,13 +432,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.218431,
-        0.403258,
-        0.830198,
-        0.431439
+        0.170098,
+        0.522955,
+        0.711951,
+        0.534318
       ],
-      "text_hint": "Control:  Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention requirements].",
-      "label": "Control:  Allocate audit record storage capacity to accommodate [Assignment: org",
+      "text_hint": "AU Audit and Accountability PM Program Management",
+      "label": "AU Audit and Accountability PM Program Management",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -313,43 +462,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.13176,
-        0.413106,
-        0.182059,
-        0.438333
+        0.171078,
+        0.54,
+        0.687931,
+        0.551364
       ],
-      "text_hint": "Base Control",
-      "label": "Base Control",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:22; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.218431,
-        0.441667,
-        0.830999,
-        0.500617
-      ],
-      "text_hint": "Discussion:  Organizations consider the types of auditing to be performed and the audit processing requirements when allocating audit storage capacity. Allocating sufficient audit storage capacity reduces the likelihood of such capacity bei",
-      "label": "Discussion:  Organizations consider the types of auditing to be performed and th",
+      "text_hint": "CA Assessment, Authorization, and Monitoring PS Personnel Security",
+      "label": "CA Assessment, Authorization, and Monitoring PS Personnel Security",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -373,13 +492,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.218431,
-        0.510985,
-        0.726053,
-        0.523636
+        0.169118,
+        0.557045,
+        0.76852,
+        0.585379
       ],
-      "text_hint": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4.",
-      "label": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4.",
+      "text_hint": "CM Configuration Management PT PII Processing and Transparency CP Contingency Planning RA Risk Assessment",
+      "label": "CM Configuration Management PT PII Processing and Transparency CP Contingency Pl",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -403,13 +522,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.218431,
-        0.533939,
-        0.377916,
-        0.546591
+        0.172941,
+        0.591061,
+        0.767441,
+        0.602424
       ],
-      "text_hint": "Control Enhancements:",
-      "label": "Control Enhancements:",
+      "text_hint": "IA Identification and Authentication SA System and Services Acquisition",
+      "label": "IA Identification and Authentication SA System and Services Acquisition",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -433,43 +552,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.616078,
-        0.539015,
-        0.818725,
-        0.554167
+        0.173333,
+        0.608106,
+        0.815873,
+        0.61947
       ],
-      "text_hint": "Organization-defined Parameter",
-      "label": "Organization-defined Parameter",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:23; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.218431,
-        0.55697,
-        0.596672,
-        0.569621
-      ],
-      "text_hint": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE",
-      "label": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE",
+      "text_hint": "IR Incident Response SC System and Communications Protection",
+      "label": "IR Incident Response SC System and Communications Protection",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -493,13 +582,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.247827,
-        0.576061,
-        0.827348,
-        0.604248
+        0.168529,
+        0.625152,
+        0.7745,
+        0.653485
       ],
-      "text_hint": "Off-load audit records [Assignment: organization-defined frequency] onto a different system or media than the system being audited.",
-      "label": "Off-load audit records [Assignment: organization-defined frequency] onto a diffe",
+      "text_hint": "MA Maintenance  SI System and Information Integrity MP Media Protection  SR Supply Chain Risk Management",
+      "label": "MA Maintenance  SI System and Information Integrity MP Media Protection  SR Supp",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -523,43 +612,13 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.116966,
-        0.57803,
-        0.205882,
-        0.603337
+        0.147059,
+        0.699084,
+        0.848695,
+        0.814693
       ],
-      "text_hint": "Control Enhancement",
-      "label": "Control Enhancement",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:24; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.247843,
-        0.610682,
-        0.837867,
-        0.700471
-      ],
-      "text_hint": "Discussion:  Off-loading is a process designed to preserve the confidentiality and integrity of audit records by moving the records from the primary system to a secondary or alternate system. It is a common process in systems with limited a",
-      "label": "Discussion:  Off-loading is a process designed to preserve the confidentiality a",
+      "text_hint": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base contro",
+      "label": "Families of controls contain base controls and control enhancements, which are d",
       "allowed_types": [
         "paragraph_block"
       ],
@@ -583,138 +642,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.247843,
-        0.707045,
-        0.413615,
-        0.719697
+        0.147059,
+        0.835227,
+        0.844499,
+        0.906061
       ],
-      "text_hint": "Related Controls:  None.",
-      "label": "Related Controls:  None.",
+      "text_hint": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address ",
+      "label": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum",
       "allowed_types": [
         "paragraph_block"
       ],
       "match_strategy": "text_contains",
       "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:20; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.218431,
-        0.727348,
-        0.34902,
-        0.7425
-      ],
-      "text_hint": "References:  None.",
-      "label": "References:  None.",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:21; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.394902,
-        0.738788,
-        0.743181,
-        0.750152
-      ],
-      "text_hint": "Sources for additional information related to the control",
-      "label": "Sources for additional information related to the control",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:25; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "caption",
-      "bbox_hint": [
-        0.395488,
-        0.802035,
-        0.607909,
-        0.814005
-      ],
-      "text_hint": "FIGURE 1: CONTROL STRUCTURE",
-      "label": "FIGURE 1: CONTROL STRUCTURE",
-      "allowed_types": [
-        "caption"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: caption; source id: actual:p35:block:10; human should amend if rendered page contradicts this row.",
-      "breadcrumb": [
-        "2.2 CONTROL STRUCTURE AND ORGANIZATION"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-          "id": "toc:0010",
-          "node_id": "toc:0010",
-          "source": "toc",
-          "page": 8
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.147059,
-        0.83553,
-        0.854689,
-        0.900301
-      ],
-      "text_hint": "The control section prescribes a security or privacy capability to be implemented. Security and privacy capabilities are achieved by the activities or actions, automated or nonautomated, carried out by information systems and organizations.",
-      "label": "The control section prescribes a security or privacy capability to be implemente",
-      "allowed_types": [
-        "paragraph_block"
-      ],
-      "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p35:block:11; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "2.2 CONTROL STRUCTURE AND ORGANIZATION"
       ],

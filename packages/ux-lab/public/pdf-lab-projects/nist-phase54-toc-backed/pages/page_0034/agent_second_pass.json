@@ -1,11 +1,11 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0034",
-  "captured_at": "2026-05-29T15:43:22.346260+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-31T22:36:43.133982+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "candidate_for_human_amendment",
-    "human_review_required": true,
+    "status": "closure_rematerialized",
+    "human_review_required": false,
     "learned_bug_report_reason": null,
     "selection_sources": [
       "deterministic_page_scan",
@@ -44,21 +44,20 @@
   "fix_error_requests": [],
   "expected_elements": [
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.043,
-        0.854802,
-        0.057076
+        0.147059,
+        0.045,
+        1.0,
+        0.055076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-      "label": "running_header_merged",
+      "text_hint": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "NIST SP 800-53, REV. 5                                                          ",
       "allowed_types": [
-        "running_header",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_running_header_group",
-      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:0; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -85,21 +84,20 @@
       ]
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.032912,
-        0.701227,
-        0.035912,
-        0.715591
+        0.147059,
+        0.057197,
+        0.855884,
+        0.067273
       ],
-      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
-      "label": "left_sidebar_watermark",
+      "text_hint": "_________________________________________________________________________________________________",
+      "label": "________________________________________________________________________________",
       "allowed_types": [
-        "page_chrome_noise",
-        "paragraph"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_sidebar_chrome_group",
-      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:1; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -126,21 +124,20 @@
       ]
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.939742,
-        0.851971,
-        0.953818
+        0.147059,
+        0.941742,
+        0.855897,
+        0.951818
       ],
-      "text_hint": "CHAPTER TWO PAGE 7",
-      "label": "footer_page_chrome",
+      "text_hint": "CHAPTER TWO  PAGE 7",
+      "label": "CHAPTER TWO  PAGE 7",
       "allowed_types": [
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_footer_group",
-      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:2; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -167,20 +164,140 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.091712,
-        0.277663,
-        0.112152
+        0.034412,
+        0.276439,
+        0.349823,
+        0.287803
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:3; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.520227,
+        0.270525,
+        0.531591
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:4; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.702727,
+        0.063809,
+        0.717879
+      ],
+      "text_hint": "-53r5",
+      "label": "-53r5",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p34:block:5; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.089924,
+        0.283563,
+        0.110152
       ],
       "text_hint": "CHAPTER TWO",
       "label": "CHAPTER TWO",
       "allowed_types": [
-        "section_header"
+        "section_heading"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p34:block:6; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -207,20 +324,20 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145053,
-        0.127772,
-        0.370886,
-        0.152
+        0.147053,
+        0.129772,
+        0.383459,
+        0.15
       ],
       "text_hint": "THE FUNDAMENTALS",
       "label": "THE FUNDAMENTALS",
       "allowed_types": [
-        "section_header"
+        "section_heading"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p34:block:7; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -249,100 +366,18 @@
     {
       "family": "section_subtitle",
       "bbox_hint": [
-        0.145059,
-        0.156561,
-        0.689467,
-        0.173212
+        0.147059,
+        0.158561,
+        0.67527,
+        0.171212
       ],
       "text_hint": "STRUCTURE, TYPE, AND ORGANIZATION OF SECURITY AND PRIVACY CONTROLS",
       "label": "STRUCTURE, TYPE, AND ORGANIZATION OF SECURITY AND PRIVACY CONTROLS",
       "allowed_types": [
-        "section_subtitle",
-        "section_heading",
-        "paragraph_block"
-      ],
-      "match_strategy": "nist_section_subtitle_heading_context",
-      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
-      "breadcrumb": [
-        "CHAPTER TWO THE FUNDAMENTALS",
-        "2.1 REQUIREMENTS AND CONTROLS"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 1,
-          "kind": "chapter",
-          "label": "CHAPTER TWO THE FUNDAMENTALS",
-          "id": "toc:0008",
-          "node_id": "toc:0008",
-          "source": "toc",
-          "page": 7
-        },
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.1 REQUIREMENTS AND CONTROLS",
-          "id": "toc:0009",
-          "node_id": "toc:0009",
-          "source": "toc",
-          "page": 7
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.032868,
-        0.187591,
-        0.85067,
-        0.3062
-      ],
-      "text_hint": "This chapter presents the fundamental concepts associated with security and privacy controls, including the relationship between requirements and controls, the structure of controls, how controls are organized in the consolidated control ca",
-      "label": "body_paragraph_1",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "CHAPTER TWO THE FUNDAMENTALS",
-        "2.1 REQUIREMENTS AND CONTROLS"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 1,
-          "kind": "chapter",
-          "label": "CHAPTER TWO THE FUNDAMENTALS",
-          "id": "toc:0008",
-          "node_id": "toc:0008",
-          "source": "toc",
-          "page": 7
-        },
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "2.1 REQUIREMENTS AND CONTROLS",
-          "id": "toc:0009",
-          "node_id": "toc:0009",
-          "source": "toc",
-          "page": 7
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.145059,
-        0.320727,
-        0.491237,
-        0.342379
-      ],
-      "text_hint": "2.1 REQUIREMENTS AND CONTROLS",
-      "label": "2.1 REQUIREMENTS AND CONTROLS",
-      "allowed_types": [
-        "section_header"
+        "section_subtitle"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_subtitle; source id: actual:p34:block:8; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"
@@ -371,18 +406,178 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.032824,
-        0.350621,
-        0.871901,
-        0.899989
+        0.147005,
+        0.189091,
+        0.85094,
+        0.3047
+      ],
+      "text_hint": "This chapter presents the fundamental concepts associated with security and privacy controls, including the relationship between requirements and controls, the structure of controls, how controls are organized in the consolidated control ca",
+      "label": "This chapter presents the fundamental concepts associated with security and priv",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p34:block:9; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.322727,
+        0.501238,
+        0.340379
+      ],
+      "text_hint": "2.1   REQUIREMENTS AND CONTROLS",
+      "label": "2.1   REQUIREMENTS AND CONTROLS",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p34:block:10; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.352121,
+        0.851297,
+        0.569402
       ],
       "text_hint": "It is important to understand the relationship between requirements and controls. For federal information security and privacy policies, the term requirement is generally used to refer to information security and privacy obligations imposed",
-      "label": "body_paragraph_2",
+      "label": "It is important to understand the relationship between requirements and controls",
       "allowed_types": [
-        "paragraph"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p34:block:11; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147067,
+        0.587652,
+        0.856899,
+        0.754099
+      ],
+      "text_hint": "Organizations may divide security and privacy requirements into more granular categories, depending on where the requirements are employed in the system development life cycle (SDLC) and for what purpose. Organizations may use the term capa",
+      "label": "Organizations may divide security and privacy requirements into more granular ca",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p34:block:12; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "CHAPTER TWO THE FUNDAMENTALS",
+        "2.1 REQUIREMENTS AND CONTROLS"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER TWO THE FUNDAMENTALS",
+          "id": "toc:0008",
+          "node_id": "toc:0008",
+          "source": "toc",
+          "page": 7
+        },
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "2.1 REQUIREMENTS AND CONTROLS",
+          "id": "toc:0009",
+          "node_id": "toc:0009",
+          "source": "toc",
+          "page": 7
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.799848,
+        0.847628,
+        0.898489
+      ],
+      "text_hint": "24 The system characteristics that impact security and privacy vary and include the system type and function in terms of its primary purpose; the system make-up in terms of its technology, mechanical, physical, and human elements; the modes",
+      "label": "24 The system characteristics that impact security and privacy vary and include ",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p34:block:13; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "CHAPTER TWO THE FUNDAMENTALS",
         "2.1 REQUIREMENTS AND CONTROLS"

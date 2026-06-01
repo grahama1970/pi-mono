@@ -1,11 +1,11 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0421",
-  "captured_at": "2026-05-29T15:43:22.363047+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-31T22:36:44.774016+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "candidate_for_human_amendment",
-    "human_review_required": true,
+    "status": "closure_rematerialized",
+    "human_review_required": false,
     "learned_bug_report_reason": null,
     "selection_sources": [
       "deterministic_page_scan",
@@ -36,21 +36,20 @@
   "fix_error_requests": [],
   "expected_elements": [
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.043,
-        0.854802,
-        0.057076
+        0.147059,
+        0.045,
+        1.0,
+        0.055076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-      "label": "running_header_merged",
+      "text_hint": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "NIST SP 800-53, REV. 5                                                          ",
       "allowed_types": [
-        "running_header",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_running_header_group",
-      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:0; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -67,21 +66,20 @@
       ]
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.939742,
-        0.855381,
-        0.953818
+        0.147059,
+        0.057197,
+        0.855884,
+        0.067273
       ],
-      "text_hint": "APPENDIX A PAGE 394",
-      "label": "footer_page_chrome",
+      "text_hint": "_________________________________________________________________________________________________",
+      "label": "________________________________________________________________________________",
       "allowed_types": [
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "learned_footer_group",
-      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:1; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -98,20 +96,140 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.091712,
-        0.256772,
-        0.112152
+        0.147059,
+        0.940455,
+        0.856265,
+        0.951818
+      ],
+      "text_hint": "APPENDIX A   PAGE 394",
+      "label": "APPENDIX A   PAGE 394",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:2; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.276439,
+        0.349823,
+        0.287803
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:3; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.520227,
+        0.270525,
+        0.531591
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:4; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.702727,
+        0.063809,
+        0.717879
+      ],
+      "text_hint": "-53r5",
+      "label": "-53r5",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p421:block:5; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.089924,
+        0.26121,
+        0.110152
       ],
       "text_hint": "APPENDIX A",
       "label": "APPENDIX A",
       "allowed_types": [
-        "section_header"
+        "section_heading"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p421:block:6; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -128,20 +246,20 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145054,
-        0.127772,
-        0.246536,
-        0.151999
+        0.147054,
+        0.129772,
+        0.267283,
+        0.149999
       ],
       "text_hint": "GLOSSARY",
       "label": "GLOSSARY",
       "allowed_types": [
-        "section_header"
+        "section_heading"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p421:block:7; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -158,52 +276,50 @@
       ]
     },
     {
-      "family": "section_subtitle",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.156561,
-        0.392862,
-        0.173212
+        0.147059,
+        0.158561,
+        0.392336,
+        0.171212
       ],
       "text_hint": "COMMON TERMS AND DEFINITIONS",
       "label": "COMMON TERMS AND DEFINITIONS",
       "allowed_types": [
-        "section_subtitle",
-        "section_heading",
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p421:block:8; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.189091,
+        0.856713,
+        0.236893
+      ],
+      "text_hint": "Appendix A provides definitions for terminology used in NIST Special Publication 800-53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800",
+      "label": "Appendix A provides definitions for terminology used in NIST Special Publication",
+      "allowed_types": [
         "paragraph_block"
       ],
-      "match_strategy": "nist_section_subtitle_heading_context",
-      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
-      "breadcrumb": [
-        "APPENDIX A GLOSSARY"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 1,
-          "kind": "section",
-          "label": "APPENDIX A GLOSSARY",
-          "id": "toc:0036",
-          "node_id": "toc:0036",
-          "source": "toc",
-          "page": 394
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.145059,
-        0.187091,
-        0.598467,
-        0.204955
-      ],
-      "text_hint": "Appendix A provides definitions for terminology used in NIST",
-      "label": "Appendix A provides definitions for terminology used in NIST",
-      "allowed_types": [
-        "section_header"
-      ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:9; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -222,48 +338,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.032868,
-        0.187591,
-        0.858241,
-        0.366652
+        0.154504,
+        0.258936,
+        0.263461,
+        0.272799
       ],
-      "text_hint": "Special Publication 800 -53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800 -53. access control The process of granting or denying spec",
-      "label": "body_paragraph_1",
+      "text_hint": "access control",
+      "label": "access control",
       "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "APPENDIX A GLOSSARY"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 1,
-          "kind": "section",
-          "label": "APPENDIX A GLOSSARY",
-          "id": "toc:0036",
-          "node_id": "toc:0036",
-          "source": "toc",
-          "page": 394
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.15251,
-        0.366182,
-        0.243596,
-        0.382833
-      ],
-      "text_hint": "[OMB A -130]",
-      "label": "[OMB A -130]",
-      "allowed_types": [
-        "section_header"
+        "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:10; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -282,48 +368,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.032824,
-        0.366688,
-        0.85729,
-        0.737793
+        0.15451,
+        0.275833,
+        0.237615,
+        0.288485
       ],
-      "text_hint": "the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate eff",
-      "label": "body_paragraph_2",
+      "text_hint": "[FIPS 201-2]",
+      "label": "[FIPS 201-2]",
       "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "APPENDIX A GLOSSARY"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 1,
-          "kind": "section",
-          "label": "APPENDIX A GLOSSARY",
-          "id": "toc:0036",
-          "node_id": "toc:0036",
-          "source": "toc",
-          "page": 394
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.15251,
-        0.737318,
-        0.243596,
-        0.75397
-      ],
-      "text_hint": "[OMB A -130]",
-      "label": "[OMB A -130]",
-      "allowed_types": [
-        "section_header"
+        "reference"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: reference; source id: actual:p421:block:11; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -342,18 +398,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.153005,
-        0.737893,
-        0.841018,
-        0.830136
+        0.369118,
+        0.258939,
+        0.838391,
+        0.34061
       ],
-      "text_hint": "Federal Government corporation, Federal Government - controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency. all-source intelligence Intel",
-      "label": "body_paragraph_3",
+      "text_hint": "The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border cr",
+      "label": "The process of granting or denying specific requests for obtaining and using inf",
       "allowed_types": [
-        "paragraph"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:12; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -370,20 +426,320 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.15251,
-        0.829667,
-        0.244184,
-        0.846318
+        0.154505,
+        0.351285,
+        0.296599,
+        0.365149
+      ],
+      "text_hint": "adequate security",
+      "label": "adequate security",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:13; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15451,
+        0.36697,
+        0.245231,
+        0.380833
+      ],
+      "text_hint": "[OMB A-130]",
+      "label": "[OMB A-130]",
+      "allowed_types": [
+        "reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: reference; source id: actual:p421:block:14; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.369118,
+        0.351288,
+        0.836469,
+        0.483796
+      ],
+      "text_hint": "Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and info",
+      "label": "Security protections commensurate with the risk resulting from the unauthorized ",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:15; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15451,
+        0.492273,
+        0.309403,
+        0.520152
+      ],
+      "text_hint": "advanced persistent threat",
+      "label": "advanced persistent threat",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:16; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15451,
+        0.520985,
+        0.234643,
+        0.534848
+      ],
+      "text_hint": "[SP 800-39]",
+      "label": "[SP 800-39]",
+      "allowed_types": [
+        "reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: reference; source id: actual:p421:block:17; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.369118,
+        0.49447,
+        0.847386,
+        0.711824
+      ],
+      "text_hint": "An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objec",
+      "label": "An adversary that possesses sophisticated levels of expertise and significant re",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:18; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.154505,
+        0.722429,
+        0.210715,
+        0.736293
+      ],
+      "text_hint": "agency",
+      "label": "agency",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:19; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15451,
+        0.738106,
+        0.245231,
+        0.75197
+      ],
+      "text_hint": "[OMB A-130]",
+      "label": "[OMB A-130]",
+      "allowed_types": [
+        "reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: reference; source id: actual:p421:block:20; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.369118,
+        0.722424,
+        0.834207,
+        0.804164
+      ],
+      "text_hint": "Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory age",
+      "label": "Any executive agency or department, military department, Federal Government corp",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:21; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.154505,
+        0.81477,
+        0.321609,
+        0.828634
+      ],
+      "text_hint": "all-source intelligence",
+      "label": "all-source intelligence",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:22; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.15451,
+        0.830455,
+        0.245819,
+        0.844318
       ],
       "text_hint": "[DODTERMS]",
       "label": "[DODTERMS]",
       "allowed_types": [
-        "section_header"
+        "reference"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: reference; source id: actual:p421:block:23; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],
@@ -402,18 +758,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.367618,
-        0.830242,
-        0.852877,
-        0.898013
+        0.369118,
+        0.814773,
+        0.845447,
+        0.896513
       ],
-      "text_hint": "incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intellig ence, signals intelligence, and open -source data in the production of finished intelli",
-      "label": "body_paragraph_4",
+      "text_hint": "Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligenc",
+      "label": "Intelligence products and/or organizations and activities that incorporate all s",
       "allowed_types": [
-        "paragraph"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p421:block:24; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "APPENDIX A GLOSSARY"
       ],

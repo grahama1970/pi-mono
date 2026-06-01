@@ -1,10 +1,10 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0456",
-  "captured_at": "2026-05-29T15:43:22.374920+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-31T22:36:45.641470+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "learned_bug_report_hidden_from_human_queue",
+    "status": "closure_rematerialized",
     "human_review_required": false,
     "learned_bug_report_reason": "Appendix C table/chrome correction materialized from human feedback",
     "selection_sources": [
@@ -25,808 +25,906 @@
       "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables.",
       "Confirm whether any true displayed equation exists; Appendix C sqrt/check marks are expected table notation unless visually contradicted."
     ],
-    "fix_error_request_count": 95
+    "fix_error_request_count": 0
   },
   "toc_entries": [],
-  "fix_error_requests": [
-    {
-      "source_id": "actual:p456:line:2",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:52",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "CONTROL NAME",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:106",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ASSURANCE",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:98",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "IMPLEMENTED",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:3",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "NUMBER",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:99",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "BY",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:53",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "CONTROL ENHANCEMENT NAME",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:54",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "Policy and Procedures",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:100",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:55",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "Account Management",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:101",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:102",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:56",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:103",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:57",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:104",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:58",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DISABLE ACCOUNTS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:105",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:59",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "AUTOMATED AUDIT ACTIONS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:107",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:60",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "INACTIVITY LOGOUT",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:108",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:61",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DYNAMIC PRIVILEGE MANAGEMENT",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:109",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:62",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "PRIVILEGED USER ACCOUNTS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:110",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:63",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DYNAMIC ACCOUNT MANAGEMENT",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:111",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:64",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:112",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "W: Incorporated into AC-2k.",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:65",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:113",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:66",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "USAGE CONDITIONS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:114",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:67",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ACCOUNT MONITORING FOR ATYPICAL USAGE",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:68+actual:p456:line:77",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DISABLE ACCOUNTS FOR HIGH- RISK INDIVIDUALS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:115",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:69",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "Access Enforcement",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:116",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:117",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "W: Incorporated into AC-6.",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:70",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:118",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:71",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DUAL AUTHORIZATION",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:119",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:72",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "MANDATORY ACCESS CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:120",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:73",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DISCRETIONARY ACCESS CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:74",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "SECURITY-RELEVANT INFORMATION",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:121",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:122",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "W: Incorporated into MP-4 and SC-28.",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:75",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "PROTECTION OF USER AND SYSTEM INFORMATION",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:123",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:76",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ROLE-BASED ACCESS CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:124",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:78",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "REVOCATION OF ACCESS AUTHORIZATIONS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:125",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:79",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "CONTROLLED RELEASE",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:126",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:80",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:127",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:81",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:128",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:82",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ASSERT AND ENFORCE APPLICATION ACCESS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:83",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ATTRIBUTE-BASED ACCESS CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:129",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:130",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:84",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "INDIVIDUAL ACCESS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:131",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:85",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DISCRETIONARY AND MANDATORY ACCESS CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:86",
-      "current_type": "paragraph",
-      "requested_family": "table",
-      "text_hint": "Information Flow Enforcement",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:132",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:133",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:87",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "OBJECT SECURITY AND PRIVACY ATTRIBUTES",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:134",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:88",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "PROCESSING DOMAINS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:135",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:89",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "DYNAMIC INFORMATION FLOW CONTROL",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:136",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:90",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "FLOW CONTROL OF ENCRYPTED INFORMATION",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:137",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:91",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "EMBEDDED DATA TYPES",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:138",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:92",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "METADATA",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:93",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ONE-WAY FLOW MECHANISMS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:139",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:140",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:94",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "SECURITY AND PRIVACY POLICY FILTERS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:141",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "O / S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:95",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "HUMAN REVIEWS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:142",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "S",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "actual:p456:line:96",
-      "current_type": "section_header",
-      "requested_family": "table",
-      "text_hint": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS",
-      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
-    },
-    {
-      "source_id": "human:p456:page_chrome_grouping:0",
-      "current_type": null,
-      "requested_family": "page_chrome_noise",
-      "text_hint": "NIST SP 800-53, REV. 5\nAPPENDIX C",
-      "reason": "Human adjusted running header chrome grouping; materialization should reflect visual page chrome without making it semantic content.",
-      "owner": "nist_preset_or_materialization",
-      "human_bbox": [
-        0.0590023551198257,
-        0.043,
-        0.9166064466230937,
-        0.08008062626262635
-      ]
-    },
-    {
-      "source_id": "human:p456:page_chrome_noise:3",
-      "current_type": null,
-      "requested_family": "page_chrome_noise",
-      "text_hint": "",
-      "reason": "Human marked the left DOI/sidebar watermark as page chrome; it must not be a table/figure/text candidate.",
-      "owner": "nist_preset_or_materialization",
-      "human_bbox": [
-        0.015257914038117326,
-        0.08961411494308148,
-        0.08279621567141393,
-        0.9229484034129377
-      ]
-    },
-    {
-      "source_id": "human:p456:page_chrome_noise:4",
-      "current_type": null,
-      "requested_family": "page_chrome_noise",
-      "text_hint": "",
-      "reason": "Human marked footer/page-number chrome as one bottom page-chrome band.",
-      "owner": "nist_preset_or_materialization",
-      "human_bbox": [
-        0.12745876006294224,
-        0.9258604722181891,
-        0.8921650805949854,
-        0.9721568969558272
-      ]
-    },
-    {
-      "source_id": "human:p456:table_caption:5",
-      "current_type": null,
-      "requested_family": "caption",
-      "text_hint": "",
-      "reason": "Human marked the visual table title/caption separately from the table body. Materialization must keep this as caption, not merge it into table JSON.",
-      "owner": "nist_preset_or_materialization",
-      "human_bbox": [
-        0.34968179490822654,
-        0.08800713394037794,
-        0.6612297751324976,
-        0.10736745701248111
-      ]
-    }
-  ],
+  "fix_error_requests": [],
   "expected_elements": [
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.059002,
-        0.043,
-        0.916606,
-        0.080081
+        0.147059,
+        0.045,
+        1.0,
+        0.055076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5\nAPPENDIX C",
-      "label": "NIST SP 800-53, REV. 5",
+      "text_hint": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "NIST SP 800-53, REV. 5                                                          ",
       "allowed_types": [
-        "running_header",
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "human_feedback_bbox",
-      "notes": "Human p.456 correction: page chrome should not be routed as semantic PDF content."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:0; human should amend if rendered page contradicts this row."
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.464176,
-        0.043,
-        0.841671,
-        0.057076
+        0.147059,
+        0.057197,
+        0.855884,
+        0.067273
       ],
-      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
-      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "text_hint": "_________________________________________________________________________________________________",
+      "label": "________________________________________________________________________________",
       "allowed_types": [
-        "running_header",
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "human_feedback_bbox",
-      "notes": "Human p.456 correction: page chrome should not be routed as semantic PDF content."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:1; human should amend if rendered page contradicts this row."
     },
     {
-      "family": "table",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.146667,
-        0.113712,
-        0.852549,
-        0.904091
+        0.147059,
+        0.940455,
+        0.856265,
+        0.951818
       ],
-      "text_hint": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE\nAC-1 | Policy and Procedures | O | \u221a\nAC-2 | Account Management | O\nAC-2(1) | AUTOMATED YSTEM CCOUNT ANAGEMENT | O\nAC-2(2) | AUTOMATED EMPORARY ND MERGENCY CCO",
-      "label": "table_region rows=43 cols=4",
+      "text_hint": "APPENDIX C   PAGE 429",
+      "label": "APPENDIX C   PAGE 429",
       "allowed_types": [
-        "table"
+        "header_footer_noise"
       ],
-      "match_strategy": "human_feedback_bbox_core_table",
-      "notes": "Human p.456 correction confirmed this Appendix C control-family grid as one table region. Preserve the table family and attach extracted table JSON."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:2; human should amend if rendered page contradicts this row."
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.015258,
-        0.089614,
-        0.082796,
-        0.922948
+        0.034412,
+        0.276439,
+        0.349823,
+        0.287803
       ],
-      "text_hint": "left_sidebar_watermark",
-      "label": "left_sidebar_watermark",
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
       "allowed_types": [
-        "running_header",
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "human_feedback_bbox",
-      "notes": "Human p.456 correction: page chrome should not be routed as semantic PDF content."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:3; human should amend if rendered page contradicts this row."
     },
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.127459,
-        0.92586,
-        0.892165,
-        0.972157
+        0.034412,
+        0.520227,
+        0.270525,
+        0.531591
       ],
-      "text_hint": "footer_page_chrome",
-      "label": "footer_page_chrome",
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
       "allowed_types": [
-        "running_header",
-        "running_footer",
-        "page_chrome_noise"
+        "header_footer_noise"
       ],
-      "match_strategy": "human_feedback_bbox",
-      "notes": "Human p.456 correction: page chrome should not be routed as semantic PDF content."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.702727,
+        0.063809,
+        0.717879
+      ],
+      "text_hint": "-53r5",
+      "label": "-53r5",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p456:block:5; human should amend if rendered page contradicts this row."
     },
     {
       "family": "caption",
       "bbox_hint": [
-        0.349682,
-        0.088007,
-        0.66123,
-        0.107367
+        0.37902,
+        0.090379,
+        0.624481,
+        0.102348
       ],
-      "text_hint": "TABLE C-1: ACCESS CONTROL FAMILY",
-      "label": "TABLE C-1: ACCESS CONTROL FAMILY",
+      "text_hint": "TABLE C-1:  ACCESS CONTROL FAMILY",
+      "label": "TABLE C-1:  ACCESS CONTROL FAMILY",
       "allowed_types": [
         "caption"
       ],
-      "match_strategy": "human_feedback_bbox",
-      "notes": "Human p.456 correction marked the table title separately from the table body."
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: caption; source id: actual:p456:block:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.160784,
+        0.136515,
+        0.223957,
+        0.150379
+      ],
+      "text_hint": "CONTROL",
+      "label": "CONTROL",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.162451,
+        0.151667,
+        0.221657,
+        0.16303
+      ],
+      "text_hint": "NUMBER",
+      "label": "NUMBER",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.357647,
+        0.135606,
+        0.486437,
+        0.153258
+      ],
+      "text_hint": "CONTROL NAME",
+      "label": "CONTROL NAME",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:9; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.342451,
+        0.1575,
+        0.499696,
+        0.168864
+      ],
+      "text_hint": "CONTROL ENHANCEMENT NAME",
+      "label": "CONTROL ENHANCEMENT NAME",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.626471,
+        0.141515,
+        0.711445,
+        0.154167
+      ],
+      "text_hint": "IMPLEMENTED",
+      "label": "IMPLEMENTED",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.660098,
+        0.154167,
+        0.677916,
+        0.166818
+      ],
+      "text_hint": "BY",
+      "label": "BY",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.758039,
+        0.141515,
+        0.82772,
+        0.154167
+      ],
+      "text_hint": "ASSURANCE",
+      "label": "ASSURANCE",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.188485,
+        0.798029,
+        0.199849
+      ],
+      "text_hint": "AC-1 Policy and Procedures   O \u221a",
+      "label": "AC-1 Policy and Procedures   O \u221a",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.20553,
+        0.794304,
+        0.216894
+      ],
+      "text_hint": "AC-2 Account Management O",
+      "label": "AC-2 Account Management O",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.155882,
+        0.2225,
+        0.794304,
+        0.233864
+      ],
+      "text_hint": "AC-2(1) AUTOMATED SYSTEM ACCOUNT MANAGEMENT O",
+      "label": "AC-2(1) AUTOMATED SYSTEM ACCOUNT MANAGEMENT O",
+      "allowed_types": [
+        "section_subtitle"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_subtitle; source id: actual:p456:block:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.155882,
+        0.239545,
+        0.794304,
+        0.250909
+      ],
+      "text_hint": "AC-2(2) AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT S",
+      "label": "AC-2(2) AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT S",
+      "allowed_types": [
+        "section_subtitle"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_subtitle; source id: actual:p456:block:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.256591,
+        0.794304,
+        0.267955
+      ],
+      "text_hint": "AC-2(3) DISABLE ACCOUNTS S",
+      "label": "AC-2(3) DISABLE ACCOUNTS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.273636,
+        0.794304,
+        0.285
+      ],
+      "text_hint": "AC-2(4) AUTOMATED AUDIT ACTIONS S",
+      "label": "AC-2(4) AUTOMATED AUDIT ACTIONS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.290682,
+        0.794304,
+        0.302045
+      ],
+      "text_hint": "AC-2(5) INACTIVITY LOGOUT O/S",
+      "label": "AC-2(5) INACTIVITY LOGOUT O/S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:20; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.307651,
+        0.794304,
+        0.319015
+      ],
+      "text_hint": "AC-2(6) DYNAMIC PRIVILEGE MANAGEMENT S",
+      "label": "AC-2(6) DYNAMIC PRIVILEGE MANAGEMENT S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.324697,
+        0.794304,
+        0.336061
+      ],
+      "text_hint": "AC-2(7) PRIVILEGED USER ACCOUNTS O",
+      "label": "AC-2(7) PRIVILEGED USER ACCOUNTS O",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.341742,
+        0.794304,
+        0.353106
+      ],
+      "text_hint": "AC-2(8) DYNAMIC ACCOUNT MANAGEMENT S",
+      "label": "AC-2(8) DYNAMIC ACCOUNT MANAGEMENT S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.358788,
+        0.794304,
+        0.370152
+      ],
+      "text_hint": "AC-2(9) RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS O",
+      "label": "AC-2(9) RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS O",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.375758,
+        0.765986,
+        0.387121
+      ],
+      "text_hint": "AC-2(10) SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE W: Incorporated into AC-2k.",
+      "label": "AC-2(10) SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE W: Incorporated into AC-2k.",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.392803,
+        0.794304,
+        0.404167
+      ],
+      "text_hint": "AC-2(11) USAGE CONDITIONS S",
+      "label": "AC-2(11) USAGE CONDITIONS S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.409848,
+        0.794304,
+        0.421212
+      ],
+      "text_hint": "AC-2(12) ACCOUNT MONITORING FOR ATYPICAL USAGE O/S",
+      "label": "AC-2(12) ACCOUNT MONITORING FOR ATYPICAL USAGE O/S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.426894,
+        0.794304,
+        0.438258
+      ],
+      "text_hint": "AC-2(13) DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS O",
+      "label": "AC-2(13) DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS O",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.443864,
+        0.794304,
+        0.455227
+      ],
+      "text_hint": "AC-3 Access Enforcement S",
+      "label": "AC-3 Access Enforcement S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.458409,
+        0.760382,
+        0.472273
+      ],
+      "text_hint": "AC-3(1) RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS W: Incorporated into AC-6.",
+      "label": "AC-3(1) RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS W: Incorporated into AC-6.",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.477955,
+        0.794304,
+        0.489318
+      ],
+      "text_hint": "AC-3(2) DUAL AUTHORIZATION S",
+      "label": "AC-3(2) DUAL AUTHORIZATION S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.495,
+        0.794304,
+        0.506364
+      ],
+      "text_hint": "AC-3(3) MANDATORY ACCESS CONTROL S",
+      "label": "AC-3(3) MANDATORY ACCESS CONTROL S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.512045,
+        0.794304,
+        0.523409
+      ],
+      "text_hint": "AC-3(4) DISCRETIONARY ACCESS CONTROL S",
+      "label": "AC-3(4) DISCRETIONARY ACCESS CONTROL S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:33; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.529015,
+        0.794304,
+        0.540379
+      ],
+      "text_hint": "AC-3(5) SECURITY-RELEVANT INFORMATION S",
+      "label": "AC-3(5) SECURITY-RELEVANT INFORMATION S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.543561,
+        0.819892,
+        0.557424
+      ],
+      "text_hint": "AC-3(6) PROTECTION OF USER AND SYSTEM INFORMATION W: Incorporated into MP-4  andSC-28.",
+      "label": "AC-3(6) PROTECTION OF USER AND SYSTEM INFORMATION W: Incorporated into MP-4  and",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:35; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.563106,
+        0.794304,
+        0.57447
+      ],
+      "text_hint": "AC-3(7) ROLE-BASED ACCESS CONTROL O/S",
+      "label": "AC-3(7) ROLE-BASED ACCESS CONTROL O/S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.580152,
+        0.794304,
+        0.591515
+      ],
+      "text_hint": "AC-3(8) REVOCATION OF ACCESS AUTHORIZATIONS O/S",
+      "label": "AC-3(8) REVOCATION OF ACCESS AUTHORIZATIONS O/S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.598333,
+        0.794304,
+        0.609697
+      ],
+      "text_hint": "AC-3(9) CONTROLLED RELEASE O/S",
+      "label": "AC-3(9) CONTROLLED RELEASE O/S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.615303,
+        0.794304,
+        0.626667
+      ],
+      "text_hint": "AC-3(10) AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS O",
+      "label": "AC-3(10) AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS O",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.632348,
+        0.794304,
+        0.643712
+      ],
+      "text_hint": "AC-3(11) RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES S",
+      "label": "AC-3(11) RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.649394,
+        0.794304,
+        0.660758
+      ],
+      "text_hint": "AC-3(12) ASSERT AND ENFORCE APPLICATION ACCESS S",
+      "label": "AC-3(12) ASSERT AND ENFORCE APPLICATION ACCESS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.666439,
+        0.794304,
+        0.677803
+      ],
+      "text_hint": "AC-3(13) ATTRIBUTE-BASED ACCESS CONTROL S",
+      "label": "AC-3(13) ATTRIBUTE-BASED ACCESS CONTROL S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.683409,
+        0.794304,
+        0.694773
+      ],
+      "text_hint": "AC-3(14) INDIVIDUAL ACCESS S",
+      "label": "AC-3(14) INDIVIDUAL ACCESS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.700455,
+        0.794304,
+        0.711818
+      ],
+      "text_hint": "AC-3(15) DISCRETIONARY AND MANDATORY ACCESS CONTROL S",
+      "label": "AC-3(15) DISCRETIONARY AND MANDATORY ACCESS CONTROL S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.7175,
+        0.794304,
+        0.728864
+      ],
+      "text_hint": "AC-4 Information Flow Enforcement S",
+      "label": "AC-4 Information Flow Enforcement S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.734545,
+        0.794304,
+        0.745909
+      ],
+      "text_hint": "AC-4(1) OBJECT SECURITY AND PRIVACY ATTRIBUTES S",
+      "label": "AC-4(1) OBJECT SECURITY AND PRIVACY ATTRIBUTES S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:46; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.751591,
+        0.794304,
+        0.762955
+      ],
+      "text_hint": "AC-4(2) PROCESSING DOMAINS S",
+      "label": "AC-4(2) PROCESSING DOMAINS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:47; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.768561,
+        0.794304,
+        0.779924
+      ],
+      "text_hint": "AC-4(3) DYNAMIC INFORMATION FLOW CONTROL S",
+      "label": "AC-4(3) DYNAMIC INFORMATION FLOW CONTROL S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:48; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.785606,
+        0.794304,
+        0.79697
+      ],
+      "text_hint": "AC-4(4) FLOW CONTROL OF ENCRYPTED INFORMATION S",
+      "label": "AC-4(4) FLOW CONTROL OF ENCRYPTED INFORMATION S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:49; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.802652,
+        0.794304,
+        0.814015
+      ],
+      "text_hint": "AC-4(5) EMBEDDED DATA TYPES S",
+      "label": "AC-4(5) EMBEDDED DATA TYPES S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:50; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.819697,
+        0.794304,
+        0.831061
+      ],
+      "text_hint": "AC-4(6) METADATA S",
+      "label": "AC-4(6) METADATA S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:51; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.836667,
+        0.794304,
+        0.84803
+      ],
+      "text_hint": "AC-4(7) ONE-WAY FLOW MECHANISMS S",
+      "label": "AC-4(7) ONE-WAY FLOW MECHANISMS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:52; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.853712,
+        0.794304,
+        0.865076
+      ],
+      "text_hint": "AC-4(8) SECURITY AND PRIVACY POLICY FILTERS S",
+      "label": "AC-4(8) SECURITY AND PRIVACY POLICY FILTERS S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:53; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.870758,
+        0.794304,
+        0.882121
+      ],
+      "text_hint": "AC-4(9) HUMAN REVIEWS O/S",
+      "label": "AC-4(9) HUMAN REVIEWS O/S",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p456:block:54; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.155882,
+        0.887803,
+        0.794304,
+        0.899167
+      ],
+      "text_hint": "AC-4(10) ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS S",
+      "label": "AC-4(10) ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS S",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p456:block:55; human should amend if rendered page contradicts this row."
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0045",
-  "captured_at": "2026-05-29T15:43:22.352675+00:00",
-  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "captured_at": "2026-05-31T22:36:43.977860+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
-    "status": "candidate_for_human_amendment",
-    "human_review_required": true,
+    "status": "closure_rematerialized",
+    "human_review_required": false,
     "learned_bug_report_reason": null,
     "selection_sources": [
       "deterministic_page_scan",
@@ -39,113 +39,20 @@
   "fix_error_requests": [],
   "expected_elements": [
     {
-      "family": "page_chrome_noise",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145059,
-        0.043,
-        0.854802,
-        0.057076
+        0.147059,
+        0.045,
+        1.0,
+        0.055076
       ],
-      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-      "label": "running_header_merged",
+      "text_hint": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "NIST SP 800-53, REV. 5                                                          ",
       "allowed_types": [
-        "running_header",
-        "page_chrome_noise"
-      ],
-      "match_strategy": "learned_running_header_group",
-      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "page_chrome_noise",
-      "bbox_hint": [
-        0.032868,
-        0.266537,
-        0.48141,
-        0.289303
-      ],
-      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
-      "label": "left_sidebar_watermark",
-      "allowed_types": [
-        "page_chrome_noise",
-        "paragraph"
-      ],
-      "match_strategy": "learned_sidebar_chrome_group",
-      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "page_chrome_noise",
-      "bbox_hint": [
-        0.145059,
-        0.939742,
-        0.839264,
-        0.953818
-      ],
-      "text_hint": "CHAPTER THREE PAGE 18",
-      "label": "footer_page_chrome",
-      "allowed_types": [
-        "running_footer",
-        "page_chrome_noise"
-      ],
-      "match_strategy": "learned_footer_group",
-      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.145059,
-        0.088076,
-        0.350419,
-        0.109727
-      ],
-      "text_hint": "3.1 ACCESS CONTROL",
-      "label": "3.1 ACCESS CONTROL",
-      "allowed_types": [
-        "section_header"
+        "header_footer_noise"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p45:block:0; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -164,48 +71,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.145559,
-        0.125545,
-        0.47186,
-        0.142409
+        0.147059,
+        0.057197,
+        0.855884,
+        0.067273
       ],
-      "text_hint": "Quick link to Access Control S ummary Table",
-      "label": "body_paragraph_1",
+      "text_hint": "_________________________________________________________________________________________________",
+      "label": "________________________________________________________________________________",
       "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "labeled_references",
-      "bbox_hint": [
-        0.145,
-        0.165242,
-        0.212,
-        0.182106
-      ],
-      "text_hint": "AC-1",
-      "label": "AC-1",
-      "allowed_types": [
-        "control_reference"
+        "header_footer_noise"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: control_reference; source id: actual:p45:line:5:embedded:requirement:0; human should amend if rendered page contradicts this row.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p45:block:1; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -222,20 +99,200 @@
       ]
     },
     {
-      "family": "labeled_controls",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.145559,
-        0.165242,
-        0.389218,
-        0.182106
+        0.147059,
+        0.941742,
+        0.839625,
+        0.951818
+      ],
+      "text_hint": "CHAPTER THREE   18 PAGE",
+      "label": "CHAPTER THREE   18 PAGE",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:2; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.276439,
+        0.349823,
+        0.287803
+      ],
+      "text_hint": "This publication is available free of charge from:",
+      "label": "This publication is available free of charge from:",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p45:block:3; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.520227,
+        0.270525,
+        0.531591
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p45:block:4; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.034412,
+        0.702727,
+        0.063809,
+        0.717879
+      ],
+      "text_hint": "-53r5",
+      "label": "-53r5",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: header_footer_noise; source id: actual:p45:block:5; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.090076,
+        0.36056,
+        0.107727
+      ],
+      "text_hint": "3.1   ACCESS CONTROL",
+      "label": "3.1   ACCESS CONTROL",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_heading; source id: actual:p45:block:6; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.127045,
+        0.477878,
+        0.140909
+      ],
+      "text_hint": "Quick link to Access Control Summary Table",
+      "label": "Quick link to Access Control Summary Table",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:7; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.147059,
+        0.166742,
+        0.405731,
+        0.180606
       ],
       "text_hint": "AC-1 POLICY AND PROCEDURES",
       "label": "AC-1 POLICY AND PROCEDURES",
       "allowed_types": [
-        "requirement"
+        "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p45:line:5; human should amend if rendered page contradicts this row.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:8; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -254,18 +311,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.204382,
-        0.189712,
-        0.260896,
-        0.205364
+        0.205882,
+        0.191212,
+        0.263399,
+        0.203864
       ],
       "text_hint": "Control:",
-      "label": "body_paragraph_2",
+      "label": "Control:",
       "allowed_types": [
-        "paragraph"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:9; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -284,48 +341,18 @@
     {
       "family": "list",
       "bbox_hint": [
-        0.204382,
-        0.212667,
-        0.820532,
-        0.228318
+        0.205882,
+        0.214167,
+        0.823553,
+        0.280688
       ],
-      "text_hint": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or",
+      "text_hint": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]: 1. [Selection (one or more): Organization-level; Mission/business process-level; System- level] access control policy that:",
       "label": "a. Develop, document, and disseminate to [Assignment: organization-defined perso",
       "allowed_types": [
-        "list_item"
+        "list"
       ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.23382,
-        0.228127,
-        0.825053,
-        0.266728
-      ],
-      "text_hint": "roles]: 1. [Selection (one or more): O rganization-level; Mission/business process- level; System-",
-      "label": "body_paragraph_3",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p45:block:10; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -344,48 +371,18 @@
     {
       "family": "list",
       "bbox_hint": [
-        0.263225,
-        0.289487,
-        0.85326,
-        0.359008
+        0.264725,
+        0.290987,
+        0.852333,
+        0.357508
       ],
-      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and\n(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, stand",
+      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and (b) Is consistent with applicable laws, executive orders, directives, regulations, policies, stand",
       "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, co",
       "allowed_types": [
         "list"
       ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "list",
-      "bbox_hint": [
-        0.263225,
-        0.289487,
-        0.816348,
-        0.305138
-      ],
-      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
-      "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
-      "allowed_types": [
-        "list_item"
-      ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p45:block:11; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -404,138 +401,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.292647,
-        0.304947,
-        0.738459,
-        0.320598
+        0.23532,
+        0.367731,
+        0.797378,
+        0.395918
       ],
-      "text_hint": "coordination among organizational entities, and compliance; and",
-      "label": "body_paragraph_4",
+      "text_hint": "2. Procedures to facilitate the implementation of the access control policy and the associated access controls;",
+      "label": "2. Procedures to facilitate the implementation of the access control policy and ",
       "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "list",
-      "bbox_hint": [
-        0.263225,
-        0.327897,
-        0.85326,
-        0.343548
-      ],
-      "text_hint": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies,",
-      "label": "(b) Is consistent with applicable laws, executive orders, directives, regulation",
-      "allowed_types": [
-        "list_item"
-      ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.292647,
-        0.343357,
-        0.504151,
-        0.359008
-      ],
-      "text_hint": "standards, and guidelines; and",
-      "label": "body_paragraph_5",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.23332,
-        0.365731,
-        0.796967,
-        0.382382
-      ],
-      "text_hint": "2. Procedures to facilitate the im plementation of the access control policy and the",
-      "label": "2. Procedures to facilitate the im plementation of the access control policy and",
-      "allowed_types": [
-        "section_header"
+        "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "paragraph_block",
-      "bbox_hint": [
-        0.263209,
-        0.381767,
-        0.44598,
-        0.397418
-      ],
-      "text_hint": "associated access controls;",
-      "label": "body_paragraph_6",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:12; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -554,48 +431,18 @@
     {
       "family": "list",
       "bbox_hint": [
-        0.204382,
-        0.404641,
-        0.807065,
-        0.458778
+        0.205882,
+        0.406141,
+        0.807904,
+        0.434328
       ],
-      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and\nc. Review and update the current access control:",
+      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and",
       "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
       "allowed_types": [
         "list"
       ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "list",
-      "bbox_hint": [
-        0.204382,
-        0.404641,
-        0.807065,
-        0.420292
-      ],
-      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development,",
-      "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
-      "allowed_types": [
-        "list_item"
-      ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: list; source id: actual:p45:block:13; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -614,48 +461,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.233788,
-        0.420177,
-        0.79035,
-        0.435828
-      ],
-      "text_hint": "documentation, and dissemination of the access control policy and procedures; and",
-      "label": "body_paragraph_7",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "list",
-      "bbox_hint": [
-        0.204382,
-        0.443127,
-        0.55132,
-        0.458778
+        0.205882,
+        0.444627,
+        0.547152,
+        0.457278
       ],
       "text_hint": "c. Review and update the current access control:",
       "label": "c. Review and update the current access control:",
       "allowed_types": [
-        "list_item"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_list_group",
-      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:14; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -672,20 +489,20 @@
       ]
     },
     {
-      "family": "section_heading",
+      "family": "paragraph_block",
       "bbox_hint": [
-        0.23332,
-        0.465576,
-        0.800117,
-        0.482228
+        0.23532,
+        0.467576,
+        0.798307,
+        0.495688
       ],
-      "text_hint": "1. Policy [Assignment: organization-defined frequency] and following [Assignment:",
+      "text_hint": "1. Policy [Assignment: organization-defined frequency] and following [Assignment: organization-defined events]; and",
       "label": "1. Policy [Assignment: organization-defined frequency] and following [Assignment",
       "allowed_types": [
-        "section_header"
+        "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:15; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -704,48 +521,18 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.263225,
-        0.481537,
-        0.487846,
-        0.497188
+        0.235304,
+        0.505986,
+        0.83458,
+        0.534098
       ],
-      "text_hint": "organization-defined events]; and",
-      "label": "body_paragraph_8",
-      "allowed_types": [
-        "paragraph"
-      ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
-      "breadcrumb": [
-        "3.1 ACCESS CONTROL"
-      ],
-      "breadcrumb_nodes": [
-        {
-          "level": 2,
-          "kind": "section",
-          "label": "3.1 ACCESS CONTROL",
-          "id": "toc:0015",
-          "node_id": "toc:0015",
-          "source": "toc",
-          "page": 18
-        }
-      ]
-    },
-    {
-      "family": "section_heading",
-      "bbox_hint": [
-        0.233304,
-        0.503986,
-        0.833346,
-        0.520638
-      ],
-      "text_hint": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment:",
+      "text_hint": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment: organization-defined events].",
       "label": "2. Procedures [Assignment: organization-defined frequency] and following [Assign",
       "allowed_types": [
-        "section_header"
+        "paragraph_block"
       ],
       "match_strategy": "text_contains",
-      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:16; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],
@@ -764,18 +551,108 @@
     {
       "family": "paragraph_block",
       "bbox_hint": [
-        0.032824,
-        0.518727,
-        0.867835,
-        0.858773
+        0.205866,
+        0.544394,
+        0.855732,
+        0.788335
       ],
-      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008 organization-defined events]. Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is ",
-      "label": "body_paragraph_9",
+      "text_hint": "Discussion:  Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies aPnd procedures",
+      "label": "Discussion:  Access control policy and procedures address the controls in the AC",
       "allowed_types": [
-        "paragraph"
+        "paragraph_block"
       ],
-      "match_strategy": "learned_paragraph_line_group",
-      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:17; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.205882,
+        0.798636,
+        0.535865,
+        0.811288
+      ],
+      "text_hint": "Related Controls:  IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "label": "Related Controls:  IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:18; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.205882,
+        0.821591,
+        0.412733,
+        0.834242
+      ],
+      "text_hint": "Control Enhancements:  None.",
+      "label": "Control Enhancements:  None.",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:19; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.205882,
+        0.844621,
+        0.797418,
+        0.857273
+      ],
+      "text_hint": "References:  [OMB A-130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [IR 7874].",
+      "label": "References:  [OMB A-130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph_block; source id: actual:p45:block:20; human should amend if rendered page contradicts this row.",
       "breadcrumb": [
         "3.1 ACCESS CONTROL"
       ],

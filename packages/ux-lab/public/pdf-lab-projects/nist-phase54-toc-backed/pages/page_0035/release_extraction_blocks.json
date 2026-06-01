@@ -2,31 +2,22 @@
   "source_extraction": "pdf_oxide.snapshot_current_extraction",
   "page": 35,
   "pdf_page_index": 34,
-  "toc_entries": [
-    {
-      "toc_id": "toc:0010",
-      "title": "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-      "level": 2,
-      "target_page": 8,
-      "matched_pdf_page_index": 34,
-      "extraction_page": 35
-    }
-  ],
-  "table_materialization": {
-    "core_table_blocks_added": 1,
-    "table_extraction_error_count": 0,
-    "existing_table_blocks": 0
-  },
+  "toc_entries": [],
+  "table_materialization": null,
   "blocks": [
     {
       "bbox": [
         0.14705882352941177,
-        0.04500001849550195,
-        0.8929468292036867,
-        0.05507575141059029
+        0.04500001849550189,
+        1.0,
+        0.055075751410590276
       ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
       "id": "actual:p35:block:0",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           90.0,
@@ -49,12 +40,16 @@
     {
       "bbox": [
         0.14705882352941177,
-        0.057197031348642624,
+        0.05719703134864268,
         0.8558836294934641,
-        0.06727276426373108
+        0.06727276426373106
       ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
       "id": "actual:p35:block:1",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           90.0,
@@ -81,8 +76,12 @@
         0.8558965944776348,
         0.9518181820108433
       ],
+      "font_name": "TT0",
+      "font_size": 7.980000019073486,
       "id": "actual:p35:block:2",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           90.0,
@@ -96,21 +95,25 @@
         "font_size": 7.980000019073486,
         "header_level": null,
         "is_bold": false,
-        "text": "CHAPTER TWO  PAGE 9"
+        "text": "CHAPTER TWO  PAGE 8"
       },
       "source_type": "Body",
-      "text": "CHAPTER TWO  PAGE 9",
-      "type": "paragraph_block"
+      "text": "CHAPTER TWO  PAGE 8",
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
         0.03441176383323919,
-        0.2764393970219776,
+        0.27643939702197756,
         0.3498234998166951,
         0.28780303338561397
       ],
+      "font_name": "TT1",
+      "font_size": 9.0,
       "id": "actual:p35:block:3",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           21.059999465942383,
@@ -118,7 +121,7 @@
           193.031982421875,
           9.0
         ],
-        "block_type": "Boilerplate",
+        "block_type": "Body",
         "confidence": 0.8999999761581421,
         "font_name": "TT1",
         "font_size": 9.0,
@@ -126,19 +129,23 @@
         "is_bold": false,
         "text": "This publication is available free of charge from:"
       },
-      "source_type": "Boilerplate",
+      "source_type": "Body",
       "text": "This publication is available free of charge from:",
       "type": "header_footer_noise"
     },
     {
       "bbox": [
         0.03441176383323919,
-        0.5202272588556462,
+        0.5202272588556464,
         0.2705250191532709,
         0.5315908952192827
       ],
+      "font_name": "TT1",
+      "font_size": 9.0,
       "id": "actual:p35:block:4",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           21.059999465942383,
@@ -146,7 +153,7 @@
           144.50131225585938,
           9.0
         ],
-        "block_type": "Boilerplate",
+        "block_type": "Body",
         "confidence": 0.8999999761581421,
         "font_name": "TT1",
         "font_size": 9.0,
@@ -154,7 +161,7 @@
         "is_bold": false,
         "text": "https://doi.org/10.6028/NIST.SP.800"
       },
-      "source_type": "Boilerplate",
+      "source_type": "Body",
       "text": "https://doi.org/10.6028/NIST.SP.800",
       "type": "header_footer_noise"
     },
@@ -165,8 +172,12 @@
         0.06380882761836831,
         0.7178787847962043
       ],
+      "font_name": "TT1",
+      "font_size": 9.0,
       "id": "actual:p35:block:5",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           21.059999465942383,
@@ -188,132 +199,216 @@
     },
     {
       "bbox": [
-        0.14705882352941177,
-        0.0903030549636995,
-        0.806275162042356,
-        0.12113575020221745
+        0.14705877366408804,
+        0.09030305496369949,
+        0.8536988301993975,
+        0.23978077281605115
       ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
       "id": "actual:p35:block:6",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          90.0,
-          696.0604858398438,
-          403.4403991699219,
-          24.41949462890625
+          89.99996948242188,
+          602.0936279296875,
+          432.4637145996094,
+          118.3863525390625
         ],
         "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.980000495910645,
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
         "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 96,
+            "title_case_ratio": 0.07692307978868484,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate"
+        },
         "is_bold": false,
-        "text": "selection and implementation of control enhancements always requires the selection and implementation of the base control."
+        "text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and reflecting the protection needs of organizational stakeholders. Controls are selected and implemented by the organization in order to satisfy the system requirements. Controls can include administrative, technical, and physical aspects. In some cases, the selection and implementation of a control may necessitate additional specification by the organization in the form of derived requirements or instantiated control parameter values. The derived requirements and control parameter values may be necessary to provide the appropriate level of implementation detail for particular controls within the SDLC."
       },
       "source_type": "Body",
-      "text": "selection and implementation of control enhancements always requires the selection and implementation of the base control.",
+      "text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and reflecting the protection needs of organizational stakeholders. Controls are selected and implemented by the organization in order to satisfy the system requirements. Controls can include administrative, technical, and physical aspects. In some cases, the selection and implementation of a control may necessitate additional specification by the organization in the form of derived requirements or instantiated control parameter values. The derived requirements and control parameter values may be necessary to provide the appropriate level of implementation detail for particular controls within the SDLC.",
       "type": "paragraph_block"
     },
     {
       "bbox": [
         0.14705882352941177,
-        0.13931097165502682,
-        0.852819904003268,
-        0.23802000103574805
+        0.25780302105527936,
+        0.6043654298470691,
+        0.2754545115461253
       ],
+      "font_name": "TT3",
+      "font_size": 12.889089584350586,
       "id": "actual:p35:block:7",
+      "is_bold": true,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
           90.0,
-          603.4881591796875,
-          431.92578125,
-          78.17755126953125
+          573.8400268554688,
+          279.87164306640625,
+          13.97998046875
         ],
-        "block_type": "Body",
+        "block_type": "Title",
         "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.979999542236328,
-        "header_level": null,
-        "is_bold": false,
-        "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are in numerical order. The order of the families, controls, and control enhancements does not imply any logical progression, level of prioritization or importance, or order in which the controls or control enhancements are to be implemented. Rather, it reflects the order in which they were included in the catalog. Control designations are not re-used when a control is withdrawn."
+        "font_name": "TT3",
+        "font_size": 12.889089584350586,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 2,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 12.889089584350586,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 2,
+            "size_ratio": 1.4321210384368896,
+            "text_len": 40,
+            "title_case_ratio": 0.800000011920929,
+            "word_count": 5
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 2,
+          "number_text": "2.2",
+          "reasons": [
+            "numbering",
+            "bold_large_font",
+            "title_case_like"
+          ],
+          "title_text": "CONTROL STRUCTURE AND ORGANIZATION"
+        },
+        "is_bold": true,
+        "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION"
       },
-      "source_type": "Body",
-      "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are in numerical order. The order of the families, controls, and control enhancements does not imply any logical progression, level of prioritization or importance, or order in which the controls or control enhancements are to be implemented. Rather, it reflects the order in which they were included in the catalog. Control designations are not re-used when a control is withdrawn.",
-      "type": "paragraph_block"
+      "source_type": "Title",
+      "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "type": "section_heading"
     },
     {
       "bbox": [
-        0.14704092187819137,
-        0.2561952224885574,
-        0.834424735673892,
-        0.2870279177270755
+        0.14700626547819648,
+        0.28719699744022253,
+        0.8518719641990911,
+        0.4197696724323311
       ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
       "id": "actual:p35:block:8",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          89.98904418945312,
-          564.6738891601562,
-          420.67889404296875,
-          24.41949462890625
+          89.96783447265625,
+          459.54241943359375,
+          431.3778076171875,
+          104.99755859375
         ],
         "block_type": "Body",
-        "confidence": 0.8999999761581421,
+        "confidence": 0.0,
         "font_name": "TT0",
-        "font_size": 10.979997634887695,
+        "font_size": 10.979999542236328,
         "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 96,
+            "title_case_ratio": 0.07692307978868484,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Security and privacy controls described in this publication have a well-defined organization and"
+        },
         "is_bold": false,
-        "text": "Security and privacy controls have the following structure: a base control section, a discussion section, a related controls section, a control enhancements section, and a references section."
+        "text": "Security and privacy controls described in this publication have a well-defined organization and structure. For ease of use in the security and privacy control selection and specification process, controls are organized into 20 families.25 Each family contains controls that are related to the specific topic of the family. A two-character identifier uniquely identifies each control family (e.g., PS for Personnel Security). Security and privacy controls may involve aspects of policy, oversight, supervision, manual processes, and automated mechanisms that are implemented by systems or actions by individuals. Table 1 lists the security and privacy control families and their associated family identifiers."
       },
       "source_type": "Body",
-      "text": "Security and privacy controls have the following structure: a base control section, a discussion section, a related controls section, a control enhancements section, and a references section.",
+      "text": "Security and privacy controls described in this publication have a well-defined organization and structure. For ease of use in the security and privacy control selection and specification process, controls are organized into 20 families.25 Each family contains controls that are related to the specific topic of the family. A two-character identifier uniquely identifies each control family (e.g., PS for Personnel Security). Security and privacy controls may involve aspects of policy, oversight, supervision, manual processes, and automated mechanisms that are implemented by systems or actions by individuals. Table 1 lists the security and privacy control families and their associated family identifiers.",
       "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.14700506871042687,
-        0.29013338955965906,
-        0.5298876793555964,
-        0.3039970012626263
+        0.32862744300194036,
+        0.4380302814522175,
+        0.6747713275984222,
+        0.4499999922935409
       ],
+      "font_name": "TT3",
+      "font_size": 9.479999542236328,
       "id": "actual:p35:block:9",
+      "is_bold": true,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          89.96710205078125,
-          551.234375,
-          234.32415771484375,
-          10.97998046875
-        ],
-        "block_type": "Caption",
-        "confidence": 0.800000011920929,
-        "font_name": "TT0",
-        "font_size": 10.979999542236328,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Figure 1 illustrates the structure of a typical control."
-      },
-      "semantic_role": "figure_caption",
-      "source_type": "Caption",
-      "text": "Figure 1 illustrates the structure of a typical control.",
-      "type": "caption"
-    },
-    {
-      "bbox": [
-        0.39548764197654973,
-        0.8020351294315222,
-        0.6079094581354677,
-        0.8140048210066978
-      ],
-      "id": "actual:p35:block:10",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          242.03843688964844,
-          147.3081817626953,
-          130.0021514892578,
-          9.479995727539062
+          201.1199951171875,
+          435.6000061035156,
+          211.84005737304688,
+          9.480010986328125
         ],
         "block_type": "Caption",
         "confidence": 0.800000011920929,
@@ -321,61 +416,37 @@
         "font_size": 9.479999542236328,
         "header_level": null,
         "is_bold": true,
-        "text": "FIGURE 1: CONTROL STRUCTURE"
+        "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES"
       },
-      "semantic_role": "figure_caption",
+      "semantic_role": "table_caption",
       "source_type": "Caption",
-      "text": "FIGURE 1: CONTROL STRUCTURE",
+      "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
       "type": "caption"
     },
     {
       "bbox": [
-        0.14705882352941177,
-        0.8355303099661162,
-        0.8546892552593954,
-        0.9003012204411054
+        0.17245098188811658,
+        0.46446967847419507,
+        0.7376666474186517,
+        0.4796211936257102
       ],
-      "id": "actual:p35:block:11",
+      "font_name": "TT3",
+      "font_size": 10.739999771118164,
+      "id": "actual:p35:block:10",
+      "is_bold": true,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          90.0,
-          78.96143341064453,
-          433.06982421875,
-          51.298561096191406
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.979999542236328,
-        "header_level": null,
-        "is_bold": false,
-        "text": "The control section prescribes a security or privacy capability to be implemented. Security and privacy capabilities are achieved by the activities or actions, automated or nonautomated, carried out by information systems and organizations. Organizations designate the responsibility for control development, implementation, assessment, and monitoring. Organizations have the"
-      },
-      "source_type": "Body",
-      "text": "The control section prescribes a security or privacy capability to be implemented. Security and privacy capabilities are achieved by the activities or actions, automated or nonautomated, carried out by information systems and organizations. Organizations designate the responsibility for control development, implementation, assessment, and monitoring. Organizations have the",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.15960784363590813,
-        0.3787878787878788,
-        0.42238333957647184,
-        0.3926515290231416
-      ],
-      "id": "actual:p35:block:12",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          97.68000030517578,
-          481.0199890136719,
-          160.818603515625,
-          10.980010986328125
+          105.54000091552734,
+          412.1400146484375,
+          345.9119873046875,
+          12.0
         ],
         "block_type": "Body",
         "confidence": 0.44999998807907104,
         "font_name": "TT3",
-        "font_size": 10.979999542236328,
+        "font_size": 10.739999771118164,
         "header_level": null,
         "header_validation": {
           "confidence": 0.44999998807907104,
@@ -385,7 +456,7 @@
             "ends_with_colon": false,
             "ends_with_other_punct": false,
             "ends_with_period": false,
-            "font_size": 10.979999542236328,
+            "font_size": 10.739999771118164,
             "has_bullet_char": false,
             "has_formal_prefix": false,
             "has_number_prefix": false,
@@ -396,8 +467,8 @@
             "is_multi_sentence": false,
             "is_too_long": false,
             "numbering_depth": 0,
-            "size_ratio": 1.0958082675933838,
-            "text_len": 27,
+            "size_ratio": 1.1933332681655884,
+            "text_len": 19,
             "title_case_ratio": 1.0,
             "word_count": 4
           },
@@ -406,221 +477,52 @@
           "level": null,
           "number_text": "",
           "reasons": [
-            "title_case_like"
+            "title_case_like",
+            "all_caps_medium"
           ],
-          "title_text": "AU-4 AUDIT STORAGE CAPACITY"
+          "title_text": "ID FAMILY ID FAMILY"
         },
         "is_bold": true,
-        "text": "AU-4 AUDIT STORAGE CAPACITY"
+        "text": "ID FAMILY ID FAMILY"
       },
       "source_type": "Body",
-      "text": "AU-4 AUDIT STORAGE CAPACITY",
+      "text": "ID FAMILY ID FAMILY",
       "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.2184313605813419,
-        0.4032575819227431,
-        0.8301981009689032,
-        0.4314394093523122
+        0.17107842638601664,
+        0.48886362711588544,
+        0.810774535135506,
+        0.5002272634795217
       ],
-      "id": "actual:p35:block:13",
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:11",
+      "is_bold": true,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          133.67999267578125,
-          450.29998779296875,
-          374.4012451171875,
-          22.32000732421875
+          104.69999694824219,
+          395.82000732421875,
+          391.4940185546875,
+          9.0
         ],
         "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Control:  Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention requirements]."
-      },
-      "source_type": "Body",
-      "text": "Control:  Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention requirements].",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2184313605813419,
-        0.44166668978604406,
-        0.8309988383374183,
-        0.5006172873757102
-      ],
-      "id": "actual:p35:block:14",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          133.67999267578125,
-          395.5111083984375,
-          374.89129638671875,
-          46.688873291015625
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Discussion:  Organizations consider the types of auditing to be performed and the audit processing requirements when allocating audit storage capacity. Allocating sufficient audit storage capacity reduces the likelihood of such capacity being exceeded and resulting in the potential loss or reduction of auditing capability."
-      },
-      "source_type": "Body",
-      "text": "Discussion:  Organizations consider the types of auditing to be performed and the audit processing requirements when allocating audit storage capacity. Allocating sufficient audit storage capacity reduces the likelihood of such capacity being exceeded and resulting in the potential loss or reduction of auditing capability.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2184313605813419,
-        0.5109848638977668,
-        0.7260531257180607,
-        0.5236363651776554
-      ],
-      "id": "actual:p35:block:15",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          133.67999267578125,
-          377.2799987792969,
-          310.6645202636719,
-          10.019989013671875
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.019998550415039,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4."
-      },
-      "source_type": "Body",
-      "text": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2184313605813419,
-        0.5339394001045612,
-        0.37791589973798767,
-        0.54659090138445
-      ],
-      "id": "actual:p35:block:16",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          133.67999267578125,
-          359.1000061035156,
-          97.60453796386719,
-          10.019989013671875
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Control Enhancements:"
-      },
-      "source_type": "Body",
-      "text": "Control Enhancements:",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2184313605813419,
-        0.5569697293368252,
-        0.5966723074320874,
-        0.569621230616714
-      ],
-      "id": "actual:p35:block:17",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          133.67999267578125,
-          340.8599853515625,
-          231.48345947265625,
-          10.019989013671875
-        ],
-        "block_type": "Body",
-        "confidence": 0.3499999940395355,
+        "confidence": 0.44999998807907104,
         "font_name": "TT3",
-        "font_size": 8.65999984741211,
+        "font_size": 9.0,
         "header_level": null,
         "header_validation": {
-          "confidence": 0.3499999940395355,
+          "confidence": 0.44999998807907104,
           "depth_level": 0,
           "disposition": "Escalate",
           "features": {
             "ends_with_colon": false,
             "ends_with_other_punct": false,
             "ends_with_period": false,
-            "font_size": 8.65999984741211,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": true,
-            "is_all_caps": true,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 0.8642714023590088,
-            "text_len": 57,
-            "title_case_ratio": 0.75,
-            "word_count": 8
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [
-            "title_case_like",
-            "parentheses_negative"
-          ],
-          "title_text": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE"
-        },
-        "is_bold": true,
-        "text": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE"
-      },
-      "source_type": "Body",
-      "text": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2478267195957159,
-        0.5760606322625671,
-        0.8273478987949346,
-        0.6042482010041825
-      ],
-      "id": "actual:p35:block:18",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          151.66995239257812,
-          313.4354248046875,
-          354.6669616699219,
-          22.324554443359375
-        ],
-        "block_type": "Body",
-        "confidence": 0.0,
-        "font_name": "TT3",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.0,
-          "depth_level": 0,
-          "disposition": "Reject",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 10.020000457763672,
+            "font_size": 9.0,
             "has_bullet_char": false,
             "has_formal_prefix": false,
             "has_number_prefix": false,
@@ -632,470 +534,605 @@
             "is_too_long": false,
             "numbering_depth": 0,
             "size_ratio": 1.0,
-            "text_len": 84,
-            "title_case_ratio": 0.1111111119389534,
-            "word_count": 9
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [],
-          "title_text": "Off-load audit records [Assignment: organization-defined frequency] onto a different"
-        },
-        "is_bold": true,
-        "text": "Off-load audit records [Assignment: organization-defined frequency] onto a different system or media than the system being audited."
-      },
-      "source_type": "Body",
-      "text": "Off-load audit records [Assignment: organization-defined frequency] onto a different system or media than the system being audited.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.24784312528722427,
-        0.6106818228056936,
-        0.8378672880284926,
-        0.7004712422688801
-      ],
-      "id": "actual:p35:block:19",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          151.67999267578125,
-          237.22677612304688,
-          361.09478759765625,
-          71.11322021484375
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Discussion:  Off-loading is a process designed to preserve the confidentiality and integrity of audit records by moving the records from the primary system to a secondary or alternate system. It is a common process in systems with limited audit storage capacity; the audit storage is used only in a transitory fashion until the system can communicate with the secondary or alternate system designated for storing the audit records, at which point the information is transferred."
-      },
-      "source_type": "Body",
-      "text": "Discussion:  Off-loading is a process designed to preserve the confidentiality and integrity of audit records by moving the records from the primary system to a secondary or alternate system. It is a common process in systems with limited audit storage capacity; the audit storage is used only in a transitory fashion until the system can communicate with the secondary or alternate system designated for storing the audit records, at which point the information is transferred.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.24784312528722427,
-        0.7070454491509331,
-        0.4136152080461091,
-        0.7196969696969697
-      ],
-      "id": "actual:p35:block:20",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          151.67999267578125,
-          222.0,
-          101.4525146484375,
-          10.020004272460938
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.020000457763672,
-        "header_level": null,
-        "is_bold": false,
-        "text": "Related Controls:  None."
-      },
-      "source_type": "Body",
-      "text": "Related Controls:  None.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.2184313605813419,
-        0.7273484817659013,
-        0.349019617816202,
-        0.7424999969174164
-      ],
-      "id": "actual:p35:block:21",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          133.67999267578125,
-          203.94000244140625,
-          79.92001342773438,
-          12.0
-        ],
-        "block_type": "Body",
-        "confidence": 0.8999999761581421,
-        "font_name": "TT0",
-        "font_size": 10.680000305175781,
-        "header_level": null,
-        "is_bold": false,
-        "text": "References:  None."
-      },
-      "source_type": "Body",
-      "text": "References:  None.",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.13175980561698963,
-        0.4131060513583097,
-        0.18205882053749234,
-        0.43833333795720886
-      ],
-      "id": "actual:p35:block:22",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          80.63700103759766,
-          444.8399963378906,
-          30.782997131347656,
-          19.980010986328125
-        ],
-        "block_type": "Body",
-        "confidence": 0.0,
-        "font_name": "TT3",
-        "font_size": 9.0,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.0,
-          "depth_level": 0,
-          "disposition": "Reject",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 9.0,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": false,
-            "is_all_caps": false,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 0.8982035517692566,
-            "text_len": 4,
-            "title_case_ratio": 1.0,
-            "word_count": 1
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [
-            "single_word_negative"
-          ],
-          "title_text": "Base"
-        },
-        "is_bold": true,
-        "text": "Base Control"
-      },
-      "source_type": "Body",
-      "text": "Base Control",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.6160784453348397,
-        0.5390151438086923,
-        0.8187254862068525,
-        0.5541666589602076
-      ],
-      "id": "actual:p35:block:23",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          377.0400085449219,
-          353.1000061035156,
-          124.01998901367188,
-          12.0
-        ],
-        "block_type": "Body",
-        "confidence": 0.44999998807907104,
-        "font_name": "TT3",
-        "font_size": 9.75,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.44999998807907104,
-          "depth_level": 0,
-          "disposition": "Escalate",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 9.75,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": false,
-            "is_all_caps": false,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 0.9730538725852966,
-            "text_len": 30,
-            "title_case_ratio": 1.0,
-            "word_count": 2
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [
-            "title_case_like"
-          ],
-          "title_text": "Organization-defined Parameter"
-        },
-        "is_bold": true,
-        "text": "Organization-defined Parameter"
-      },
-      "source_type": "Body",
-      "text": "Organization-defined Parameter",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.11696568657370175,
-        0.5780302876173848,
-        0.20588235294117646,
-        0.6033371048744278
-      ],
-      "id": "actual:p35:block:24",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          71.58300018310547,
-          314.1570129394531,
-          54.41699981689453,
-          20.042999267578125
-        ],
-        "block_type": "Body",
-        "confidence": 0.0,
-        "font_name": "TT3",
-        "font_size": 9.0,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.0,
-          "depth_level": 0,
-          "disposition": "Reject",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 9.0,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": false,
-            "is_all_caps": false,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 0.8982035517692566,
-            "text_len": 7,
-            "title_case_ratio": 1.0,
-            "word_count": 1
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [
-            "single_word_negative"
-          ],
-          "title_text": "Control"
-        },
-        "is_bold": true,
-        "text": "Control Enhancement"
-      },
-      "source_type": "Body",
-      "text": "Control Enhancement",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.39490194881663604,
-        0.7387878726227115,
-        0.7431813159020119,
-        0.7501515089863479
-      ],
-      "id": "actual:p35:block:25",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          241.67999267578125,
-          197.8800048828125,
-          213.14697265625,
-          9.0
-        ],
-        "block_type": "Body",
-        "confidence": 0.0,
-        "font_name": "TT3",
-        "font_size": 9.0,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.0,
-          "depth_level": 0,
-          "disposition": "Reject",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 9.0,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": false,
-            "is_all_caps": false,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 0.8982035517692566,
-            "text_len": 57,
-            "title_case_ratio": 0.125,
+            "text_len": 58,
+            "title_case_ratio": 0.875,
             "word_count": 8
           },
           "has_numbering": false,
           "is_header": false,
           "level": null,
           "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "AC Access Control PE Physical and Environmental Protection"
+        },
+        "is_bold": true,
+        "text": "AC Access Control PE Physical and Environmental Protection"
+      },
+      "source_type": "Body",
+      "text": "AC Access Control PE Physical and Environmental Protection",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17127450930526833,
+        0.50590908166134,
+        0.6284215465869779,
+        0.5172727180249763
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:12",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          104.81999969482422,
+          382.32000732421875,
+          279.77398681640625,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 37,
+            "title_case_ratio": 0.8333333134651184,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "AT Awareness and Training PL Planning"
+        },
+        "is_bold": true,
+        "text": "AT Awareness and Training PL Planning"
+      },
+      "source_type": "Body",
+      "text": "AT Awareness and Training PL Planning",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17009803672242008,
+        0.5229545362067946,
+        0.711950950373232,
+        0.5343181725704309
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:13",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          104.0999984741211,
+          368.82000732421875,
+          331.6139831542969,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 49,
+            "title_case_ratio": 0.8571428656578064,
+            "word_count": 7
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "AU Audit and Accountability PM Program Management"
+        },
+        "is_bold": true,
+        "text": "AU Audit and Accountability PM Program Management"
+      },
+      "source_type": "Body",
+      "text": "AU Audit and Accountability PM Program Management",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17107842638601664,
+        0.539999990752249,
+        0.6879314098482817,
+        0.5513636271158854
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:14",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          104.69999694824219,
+          355.32000732421875,
+          316.31402587890625,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 66,
+            "title_case_ratio": 0.875,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "CA Assessment, Authorization, and Monitoring PS Personnel Security"
+        },
+        "is_bold": true,
+        "text": "CA Assessment, Authorization, and Monitoring PS Personnel Security"
+      },
+      "source_type": "Body",
+      "text": "CA Assessment, Authorization, and Monitoring PS Personnel Security",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.16911764705882354,
+        0.5570454452977036,
+        0.7685195823120915,
+        0.5853787817136206
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:15",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          103.5,
+          328.3800048828125,
+          366.833984375,
+          22.44000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 62,
+            "title_case_ratio": 0.875,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "CM Configuration Management PT PII Processing and Transparency"
+        },
+        "is_bold": true,
+        "text": "CM Configuration Management PT PII Processing and Transparency CP Contingency Planning RA Risk Assessment"
+      },
+      "source_type": "Body",
+      "text": "CM Configuration Management PT PII Processing and Transparency CP Contingency Planning RA Risk Assessment",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1729411704867494,
+        0.5910605998954388,
+        0.7674411948210274,
+        0.6024242362590752
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:16",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          105.83999633789062,
+          314.8800048828125,
+          363.8340148925781,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 71,
+            "title_case_ratio": 0.7777777910232544,
+            "word_count": 9
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "IA Identification and Authentication SA System and Services Acquisition"
+        },
+        "is_bold": true,
+        "text": "IA Identification and Authentication SA System and Services Acquisition"
+      },
+      "source_type": "Body",
+      "text": "IA Identification and Authentication SA System and Services Acquisition",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17333333632525275,
+        0.6081060544408933,
+        0.8158725663727405,
+        0.6194696908045296
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:17",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          106.08000183105469,
+          301.3800048828125,
+          393.2340087890625,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 60,
+            "title_case_ratio": 0.875,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "IR Incident Response SC System and Communications Protection"
+        },
+        "is_bold": true,
+        "text": "IR Incident Response SC System and Communications Protection"
+      },
+      "source_type": "Body",
+      "text": "IR Incident Response SC System and Communications Protection",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1685294107673994,
+        0.6251515089863479,
+        0.7745000053854549,
+        0.6534848454022648
+      ],
+      "font_name": "TT3",
+      "font_size": 9.0,
+      "id": "actual:p35:block:18",
+      "is_bold": true,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          103.13999938964844,
+          274.44000244140625,
+          370.85400390625,
+          22.44000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 9.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 51,
+            "title_case_ratio": 0.8571428656578064,
+            "word_count": 7
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "MA Maintenance  SI System and Information Integrity"
+        },
+        "is_bold": true,
+        "text": "MA Maintenance  SI System and Information Integrity MP Media Protection  SR Supply Chain Risk Management"
+      },
+      "source_type": "Body",
+      "text": "MA Maintenance  SI System and Information Integrity MP Media Protection  SR Supply Chain Risk Management",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1470587985967499,
+        0.6990840988929825,
+        0.8486951192220052,
+        0.8146929114755957
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p35:block:19",
+      "is_bold": false,
+      "page": 35,
+      "pdf_page_index": 34,
+      "raw": {
+        "bbox": [
+          89.99998474121094,
+          146.76321411132812,
+          429.40142822265625,
+          91.56217956542969
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 95,
+            "title_case_ratio": 0.07692307978868484,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
           "reasons": [],
-          "title_text": "Sources for additional information related to the control"
+          "title_text": "Families of controls contain base controls and control enhancements, which are directly related"
         },
-        "is_bold": true,
-        "text": "Sources for additional information related to the control"
+        "is_bold": false,
+        "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. Control enhancements are used in systems and environments of operation that require greater protection than the protection provided by the base control. The need for organizations to select and implement control enhancements is due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on assessments of risk. The"
       },
       "source_type": "Body",
-      "text": "Sources for additional information related to the control",
+      "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. Control enhancements are used in systems and environments of operation that require greater protection than the protection provided by the base control. The need for organizations to select and implement control enhancements is due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on assessments of risk. The",
       "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.6258823669034671,
-        0.3664393954806857,
-        0.82852940777548,
-        0.38159091063220096
+        0.14705877366408804,
+        0.8352272727272727,
+        0.8444994758157169,
+        0.9060606137670651
       ],
-      "id": "actual:p35:block:26",
+      "font_name": "TT4",
+      "font_size": 12.0,
+      "id": "actual:p35:block:20",
+      "is_bold": false,
       "page": 35,
+      "pdf_page_index": 34,
       "raw": {
         "bbox": [
-          383.0400085449219,
-          489.7799987792969,
-          124.01998901367188,
-          12.0
+          89.99996948242188,
+          74.39999389648438,
+          426.8337097167969,
+          56.100006103515625
         ],
         "block_type": "Body",
-        "confidence": 0.44999998807907104,
-        "font_name": "TT3",
-        "font_size": 9.75,
+        "confidence": 0.0,
+        "font_name": "TT4",
+        "font_size": 12.0,
         "header_level": null,
         "header_validation": {
-          "confidence": 0.44999998807907104,
+          "confidence": 0.0,
           "depth_level": 0,
-          "disposition": "Escalate",
+          "disposition": "Reject",
           "features": {
             "ends_with_colon": false,
             "ends_with_other_punct": false,
             "ends_with_period": false,
-            "font_size": 9.75,
+            "font_size": 12.0,
             "has_bullet_char": false,
             "has_formal_prefix": false,
             "has_number_prefix": false,
             "has_parentheses": false,
             "is_all_caps": false,
-            "is_bold": true,
+            "is_bold": false,
             "is_caption_pattern": false,
             "is_multi_sentence": false,
             "is_too_long": false,
             "numbering_depth": 0,
-            "size_ratio": 0.9730538725852966,
-            "text_len": 30,
-            "title_case_ratio": 1.0,
-            "word_count": 2
+            "size_ratio": 1.3333333730697632,
+            "text_len": 0,
+            "title_case_ratio": 0.0,
+            "word_count": 0
           },
           "has_numbering": false,
           "is_header": false,
           "level": null,
           "number_text": "",
-          "reasons": [
-            "title_case_like"
-          ],
-          "title_text": "Organization-defined Parameter"
+          "reasons": [],
+          "title_text": ""
         },
-        "is_bold": true,
-        "text": "Organization-defined Parameter"
+        "is_bold": false,
+        "text": " 25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address enterprise-level program management, privacy, and supply chain risk considerations pertaining to federal mandates emergent since [FIPS 200]."
       },
       "source_type": "Body",
-      "text": "Organization-defined Parameter",
-      "type": "paragraph_block"
-    },
-    {
-      "bbox": [
-        0.13764705533295676,
-        0.3369697031348643,
-        0.42823528464323557,
-        0.35212121828637943
-      ],
-      "id": "actual:p35:block:27",
-      "page": 35,
-      "raw": {
-        "bbox": [
-          84.23999786376953,
-          513.1199951171875,
-          177.83999633789062,
-          12.0
-        ],
-        "block_type": "Body",
-        "confidence": 0.44999998807907104,
-        "font_name": "TT3",
-        "font_size": 10.5,
-        "header_level": null,
-        "header_validation": {
-          "confidence": 0.44999998807907104,
-          "depth_level": 0,
-          "disposition": "Escalate",
-          "features": {
-            "ends_with_colon": false,
-            "ends_with_other_punct": false,
-            "ends_with_period": false,
-            "font_size": 10.5,
-            "has_bullet_char": false,
-            "has_formal_prefix": false,
-            "has_number_prefix": false,
-            "has_parentheses": false,
-            "is_all_caps": false,
-            "is_bold": true,
-            "is_caption_pattern": false,
-            "is_multi_sentence": false,
-            "is_too_long": false,
-            "numbering_depth": 0,
-            "size_ratio": 1.047904133796692,
-            "text_len": 31,
-            "title_case_ratio": 1.0,
-            "word_count": 4
-          },
-          "has_numbering": false,
-          "is_header": false,
-          "level": null,
-          "number_text": "",
-          "reasons": [
-            "title_case_like"
-          ],
-          "title_text": "Control Identifier Control Name"
-        },
-        "is_bold": true,
-        "text": "Control Identifier Control Name"
-      },
-      "source_type": "Body",
-      "text": "Control Identifier Control Name",
+      "text": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address enterprise-level program management, privacy, and supply chain risk considerations pertaining to federal mandates emergent since [FIPS 200].",
       "type": "paragraph_block"
     }
   ]

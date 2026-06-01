@@ -513,11 +513,19 @@
 }
 
 /* Project page rows: visual states for the agent-curated queue. */
-.pdf-lab-labeling-pages-row.is-agreed .pdf-lab-labeling-pages-row-slug {
-  color: #4ade80;
+.pdf-lab-labeling-pages-row.is-queue-human-signed-off,
+.pdf-lab-labeling-pages-row.is-queue-second-pass-resolved {
+  border-color: rgba(46, 204, 113, 0.48);
+  background: linear-gradient(90deg, rgba(25, 135, 84, 0.22), #181d23 44%);
 }
-.pdf-lab-labeling-pages-row.is-agreed .pdf-lab-labeling-pages-row-hint {
-  color: rgba(74, 222, 128, 0.6);
+
+.pdf-lab-labeling-pages-row.is-queue-human-needed {
+  border-color: rgba(251, 188, 4, 0.65);
+  background: linear-gradient(90deg, rgba(130, 82, 0, 0.32), #181d23 46%);
+}
+
+.pdf-lab-labeling-pages-row.is-queue-in-review {
+  border-color: rgba(88, 166, 255, 0.55);
 }
 
 /* Project block in the side panel — groups the project header with its pages. */
@@ -548,15 +556,24 @@
   text-align: center;
   line-height: 1;
   font-family: ui-monospace, monospace;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .pdf-lab-labeling-pages-row-status.is-status-pending {
-  color: #6b7280;
+  color: #7a8491;
 }
-.pdf-lab-labeling-pages-row-status.is-status-inreview {
+.pdf-lab-labeling-pages-row-status.is-status-in-review {
+  color: #58a6ff;
+}
+.pdf-lab-labeling-pages-row-status.is-status-human-signed-off {
+  color: #58a6ff;
+}
+.pdf-lab-labeling-pages-row-status.is-status-second-pass-resolved {
+  color: #35d07f;
+}
+.pdf-lab-labeling-pages-row-status.is-status-human-needed {
   color: #fbbc04;
-}
-.pdf-lab-labeling-pages-row-status.is-status-agreed {
-  color: #4ade80;
 }
 .pdf-lab-labeling-pages-row.pdf-lab-labeling-pages-row-compact .pdf-lab-labeling-pages-row-slug {
   flex: 1 1 auto;
@@ -567,9 +584,43 @@
 }
 .pdf-lab-labeling-pages-row-hint-inline {
   flex: 0 0 auto;
-  font-size: 10px;
-  opacity: 0.6;
+  min-width: 58px;
+  border: 1px solid rgba(126, 143, 165, 0.28);
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
   margin-left: auto;
+}
+
+.pdf-lab-labeling-pages-row-hint-inline.is-status-second-pass-resolved {
+  color: #baf7cf;
+  border-color: rgba(53, 208, 127, 0.45);
+  background: rgba(21, 97, 55, 0.34);
+}
+
+.pdf-lab-labeling-pages-row-hint-inline.is-status-human-needed {
+  color: #ffe49c;
+  border-color: rgba(251, 188, 4, 0.55);
+  background: rgba(98, 65, 0, 0.38);
+}
+
+.pdf-lab-labeling-pages-row-hint-inline.is-status-human-signed-off {
+  color: #c8e1ff;
+  border-color: rgba(88, 166, 255, 0.45);
+  background: rgba(25, 83, 142, 0.34);
+}
+
+.pdf-lab-labeling-pages-row-hint-inline.is-status-in-review {
+  color: #c8e1ff;
+}
+
+.pdf-lab-labeling-pages-row-hint-inline.is-status-pending {
+  color: #a4afbd;
 }
 
 /* Resize handles — 4 corners + 4 edges, shown only on the selected region. */

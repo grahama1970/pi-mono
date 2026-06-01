@@ -1,7 +1,7 @@
 {
   "schema_version": "pdf_lab.agent_second_pass.v1",
   "slice_id": "nist_phase54_page_0028",
-  "captured_at": "2026-05-30T22:02:41.653566+00:00",
+  "captured_at": "2026-05-31T22:36:42.708433+00:00",
   "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
   "agent_decision": {
     "status": "closure_rematerialized",
@@ -21,7 +21,7 @@
       "Mark nested/continued list items and distinguish bullets from prose line wraps.",
       "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
     ],
-    "fix_error_request_count": 4
+    "fix_error_request_count": 0
   },
   "toc_entries": [
     {
@@ -33,40 +33,7 @@
       "extraction_page": 28
     }
   ],
-  "fix_error_requests": [
-    {
-      "source_id": "actual:p28:line:11",
-      "current_type": "paragraph",
-      "requested_family": "paragraph_block+page_chrome_noise_split",
-      "text_hint": "",
-      "reason": "Extractor interleaves rotated sidebar DOI/page-chrome text with body paragraph text.",
-      "owner": "pdf_oxide_core_text_order_or_chrome_filter"
-    },
-    {
-      "source_id": "actual:p28:line:24",
-      "current_type": "paragraph",
-      "requested_family": "page_chrome_noise",
-      "text_hint": "",
-      "reason": "DOI/sidebar watermark fragment should be page chrome, not body paragraph.",
-      "owner": "pdf_oxide_core_chrome_filter"
-    },
-    {
-      "source_id": "actual:p28:line:29+actual:p28:line:32",
-      "current_type": "paragraph",
-      "requested_family": "list_continuation",
-      "text_hint": "",
-      "reason": "Continuation lines belong to the enclosing bullet list.",
-      "owner": "pdf_oxide_list_grouping"
-    },
-    {
-      "source_id": "actual:p28:line:39+actual:p28:line:42",
-      "current_type": "section_header",
-      "requested_family": "footnote",
-      "text_hint": "",
-      "reason": "Numbered footnote lines were misclassified as section headers.",
-      "owner": "pdf_oxide_block_classifier"
-    }
-  ],
+  "fix_error_requests": [],
   "expected_elements": [
     {
       "family": "page_chrome_noise",

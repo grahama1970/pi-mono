@@ -1,1106 +1,1039 @@
 {
-  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "source_extraction": "pdf_oxide.snapshot_current_extraction",
   "page": 421,
   "pdf_page_index": 420,
-  "toc_entries": [
-    {
-      "toc_id": "toc:0036",
-      "title": "APPENDIX A GLOSSARY",
-      "level": 1,
-      "target_page": 394,
-      "matched_pdf_page_index": 420,
-      "extraction_page": 421
-    }
-  ],
-  "table_materialization": {
-    "core_table_blocks_added": 0,
-    "existing_table_blocks": 0
-  },
+  "toc_entries": [],
+  "table_materialization": null,
   "blocks": [
     {
       "bbox": [
-        0.0,
-        0.0,
+        0.14705882352941177,
+        0.04500001849550189,
         1.0,
-        0.0
+        0.055075751410590276
       ],
-      "confidence": 1.0,
-      "id": "toc:section_anchor:0356",
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p421:block:0",
+      "is_bold": false,
       "page": 421,
-      "review_role": "semantic_document_structure",
-      "semantic_role": "section_anchor",
-      "source": "pdf_outline.toc",
-      "text": "GLOSSARY",
-      "toc_backed": true,
-      "toc_id": "toc:0356",
-      "toc_level": 1,
-      "type": "section_anchor"
+      "pdf_page_index": 420,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Footer",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "source_type": "Footer",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
-        0.145059,
-        0.043,
-        0.264101,
-        0.057076
+        0.14705882352941177,
+        0.05719703134864268,
+        0.8558836294934641,
+        0.06727276426373106
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:0",
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p421:block:1",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Footer",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "NIST SP 800-53, REV. 5",
-      "type": "running_header"
+      "source_type": "Footer",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
-        0.464176,
-        0.043,
-        0.854802,
-        0.057076
+        0.14705882352941177,
+        0.940454545647207,
+        0.8562647002974367,
+        0.9518181820108433
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:21",
+      "font_name": "TT0",
+      "font_size": 8.125714302062988,
+      "id": "actual:p421:block:2",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.125714302062988,
+        "header_level": null,
+        "is_bold": false,
+        "text": "APPENDIX A   PAGE 394"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-      "type": "running_header"
+      "source_type": "Body",
+      "text": "APPENDIX A   PAGE 394",
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
-        0.145059,
-        0.091712,
-        0.256772,
-        0.112152
+        0.03441176383323919,
+        0.27643939702197756,
+        0.3498234998166951,
+        0.28780303338561397
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:2",
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p421:block:3",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          21.059999465942383,
+          564.0599975585938,
+          193.031982421875,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from:"
       },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Body",
+      "text": "This publication is available free of charge from:",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.03441176383323919,
+        0.5202272588556464,
+        0.2705250191532709,
+        0.5315908952192827
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p421:block:4",
+      "is_bold": false,
+      "page": 421,
+      "pdf_page_index": 420,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          370.9800109863281,
+          144.50131225585938,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "https://doi.org/10.6028/NIST.SP.800"
+      },
+      "source_type": "Body",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.03441176383323919,
+        0.7027272696446891,
+        0.06380882761836831,
+        0.7178787847962043
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p421:block:5",
+      "is_bold": false,
+      "page": 421,
+      "pdf_page_index": 420,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          17.991003036499023,
+          12.0
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "-53r5"
+      },
+      "source_type": "List",
+      "text": "-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.08992420543323863,
+        0.26120999903460734,
+        0.11015150282118055
+      ],
+      "font_name": "TT2",
+      "font_size": 14.020000457763672,
+      "id": "actual:p421:block:6",
+      "is_bold": true,
+      "page": 421,
+      "pdf_page_index": 420,
+      "raw": {
+        "bbox": [
+          90.0,
+          704.760009765625,
+          69.86051940917969,
+          16.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 14.020000457763672,
+        "header_level": 1,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 1,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 14.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": true,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 1,
+            "size_ratio": 1.276867151260376,
+            "text_len": 10,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 1,
+          "number_text": "A",
+          "reasons": [
+            "numbering",
+            "bold_large_font",
+            "formal_prefix",
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": ""
+        },
+        "is_bold": true,
+        "text": "APPENDIX A"
+      },
+      "source_type": "Title",
       "text": "APPENDIX A",
-      "type": "section_header"
+      "type": "section_heading"
     },
     {
       "bbox": [
-        0.145054,
-        0.127772,
-        0.246536,
-        0.151999
+        0.14705441044826134,
+        0.1297719165532276,
+        0.2672829222834967,
+        0.1499992139411695
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:3",
+      "font_name": "TT2",
+      "font_size": 16.020000457763672,
+      "id": "actual:p421:block:7",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          89.99729919433594,
+          673.2006225585938,
+          73.57984924316406,
+          16.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.25,
+        "font_name": "TT2",
+        "font_size": 16.020000457763672,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.25,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 16.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.4590164422988892,
+            "text_len": 8,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "all_caps_medium",
+            "single_word_negative",
+            "short_all_caps_negative"
+          ],
+          "title_text": "GLOSSARY"
+        },
+        "is_bold": true,
+        "text": "GLOSSARY"
       },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Title",
       "text": "GLOSSARY",
-      "type": "section_header"
+      "type": "section_heading"
     },
     {
       "bbox": [
-        0.145059,
-        0.156561,
-        0.392862,
-        0.173212
+        0.14705882352941177,
+        0.15856055057410037,
+        0.39233597898794936,
+        0.1712120903862847
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:4",
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p421:block:8",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          90.0,
+          656.4000244140625,
+          150.109619140625,
+          10.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": 3,
+        "is_bold": false,
+        "text": "COMMON TERMS AND DEFINITIONS"
       },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Title",
       "text": "COMMON TERMS AND DEFINITIONS",
-      "type": "section_header"
+      "type": "section_heading"
     },
     {
       "bbox": [
-        0.145059,
-        0.187091,
-        0.598467,
-        0.204955
+        0.14705882352941177,
+        0.18909092142124367,
+        0.8567130892884498,
+        0.2368927001953125
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:5",
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:9",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          90.0,
+          604.3809814453125,
+          434.30841064453125,
+          37.8590087890625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Appendix A provides definitions for terminology used in NIST Special Publication 800-53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800-53."
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Appendix A provides definitions for terminology used in NIST",
-      "type": "section_header"
+      "source_type": "Body",
+      "text": "Appendix A provides definitions for terminology used in NIST Special Publication 800-53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800-53.",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.593496,
-        0.187591,
-        0.851502,
-        0.204455
+        0.1545044892753651,
+        0.25893587054628314,
+        0.26346124387254904,
+        0.2727994822492503
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:22",
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:10",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55674743652344,
+          575.9428100585938,
+          66.68153381347656,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 14,
+            "title_case_ratio": 0.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "access control"
+        },
+        "is_bold": true,
+        "text": "access control"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Special Publication 800 -53. Sources",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.145559,
-        0.20456,
-        0.858241,
-        0.221424
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:6",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "for terms used in this publication are cited as applicable. Where no citation is noted, the source",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.451241,
-        0.221529,
-        0.480076,
-        0.238393
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:23",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "-53.",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.145559,
-        0.221529,
-        0.460717,
-        0.238393
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:7",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "of the definition is Special Publication 800",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.153004,
-        0.257436,
-        0.257697,
-        0.274299
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:8",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Body",
       "text": "access control",
-      "type": "paragraph"
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.257439,
-        0.780018,
-        0.274303
+        0.15450979993234273,
+        0.275833284011995,
+        0.23761522380355138,
+        0.2884848238241793
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:24",
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p421:block:11",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          563.52001953125,
+          50.86051940917969,
+          10.02001953125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": true,
+        "text": "[FIPS 201-2]"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "The process of granting or denying specific requests for",
-      "type": "paragraph"
+      "source_type": "Reference",
+      "text": "[FIPS 201-2]",
+      "type": "reference"
     },
     {
       "bbox": [
-        0.032868,
-        0.274333,
-        0.792218,
-        0.291203
+        0.3691176370857588,
+        0.2589394155174795,
+        0.8383907741970487,
+        0.3406100802951389
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:9+actual:p421:line:25",
-      "merged_from": [
-        "actual:p421:line:9",
-        "actual:p421:line:25"
-      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:12",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          225.89999389648438,
+          522.23681640625,
+          287.1951599121094,
+          64.68316650390625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border crossing entrances)."
       },
-      "source": "pdf_oxide.extract_text_lines+preset_merge",
-      "text": "This publication is [FIPS available 201-2] free of charge from: obtaining and using information and related information",
-      "type": "paragraph"
+      "source_type": "Body",
+      "text": "The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border crossing entrances).",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.291308,
-        0.845054,
-        0.308172
+        0.15450533698586857,
+        0.3512850674715909,
+        0.2965994442210478,
+        0.3651487177068537
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:26",
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:13",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55726623535156,
+          502.8022155761719,
+          86.96159362792969,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 17,
+            "title_case_ratio": 0.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "adequate security"
+        },
+        "is_bold": true,
+        "text": "adequate security"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "processing services; and to enter specific physical facilities (e.g.,",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.308277,
-        0.83612,
-        0.325141
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:27",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Federal buildings, military establishments, and border crossing",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.325246,
-        0.451954,
-        0.34211
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:28",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "entrances ).",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.153005,
-        0.349785,
-        0.283142,
-        0.366649
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:10",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Body",
       "text": "adequate security",
-      "type": "paragraph"
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.349788,
-        0.842399,
-        0.366652
+        0.15450979993234273,
+        0.3669696769329033,
+        0.24523117963005514,
+        0.38083332716816604
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:29",
+      "font_name": "TT0",
+      "font_size": 10.180000305175781,
+      "id": "actual:p421:block:14",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          490.3800048828125,
+          55.521484375,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.180000305175781,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB A-130]"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Security protections commensurate with the risk resulting from",
-      "type": "paragraph"
+      "source_type": "Reference",
+      "text": "[OMB A-130]",
+      "type": "reference"
     },
     {
       "bbox": [
-        0.15251,
-        0.366182,
-        0.243596,
-        0.382833
+        0.3691176370857588,
+        0.3512879188614662,
+        0.836469213946972,
+        0.4837964761136758
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:11",
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:15",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          225.89999389648438,
+          408.83319091796875,
+          286.0191650390625,
+          104.94677734375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate effectively and provide appropriate confidentiality, integrity, and availability protections through the application of cost-effective security controls."
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "[OMB A -130]",
-      "type": "section_header"
+      "source_type": "Body",
+      "text": "Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate effectively and provide appropriate confidentiality, integrity, and availability protections through the application of cost-effective security controls.",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.366688,
-        0.757842,
-        0.383551
+        0.15450979993234273,
+        0.49227269490559894,
+        0.3094031639348448,
+        0.5201515043624724
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:30",
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:16",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          380.0400085449219,
+          94.79473876953125,
+          22.08001708984375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 19,
+            "title_case_ratio": 0.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "advanced persistent"
+        },
+        "is_bold": true,
+        "text": "advanced persistent threat"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "the unauthorized access, use, disclosure, disruption,",
-      "type": "paragraph"
+      "source_type": "Body",
+      "text": "advanced persistent threat",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.383657,
-        0.795304,
-        0.40052
+        0.15450979993234273,
+        0.5209848423196812,
+        0.23464292638442097,
+        0.5348484925549439
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:31",
+      "font_name": "TT0",
+      "font_size": 10.180000305175781,
+      "id": "actual:p421:block:17",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          368.3999938964844,
+          49.041473388671875,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.180000305175781,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[SP 800-39]"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "modification, or destruction of information. This includes",
-      "type": "paragraph"
+      "source_type": "Reference",
+      "text": "[SP 800-39]",
+      "type": "reference"
     },
     {
       "bbox": [
-        0.367618,
-        0.400626,
-        0.822162,
-        0.417489
+        0.3691176370857588,
+        0.4944696908045297,
+        0.8473863788679534,
+        0.711823704266789
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:32",
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:18",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          225.89999389648438,
+          228.23562622070312,
+          292.7004699707031,
+          172.14437866210938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objectives typically include establishing and extending footholds within the IT infrastructure of the targeted organizations for purposes of exfiltrating information, undermining or impeding critical aspects of a mission, program, or organization; or positioning itself to carry out these objectives in the future. The advanced persistent threat pursues its objectives repeatedly over an extended period; adapts to defenders\u2019 efforts to resist it; and is determined to maintain the level of interaction needed to execute its objectives."
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "ensuring that information hosted on behalf of an agency and",
-      "type": "paragraph"
+      "source_type": "Body",
+      "text": "An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objectives typically include establishing and extending footholds within the IT infrastructure of the targeted organizations for purposes of exfiltrating information, undermining or impeding critical aspects of a mission, program, or organization; or positioning itself to carry out these objectives in the future. The advanced persistent threat pursues its objectives repeatedly over an extended period; adapts to defenders\u2019 efforts to resist it; and is determined to maintain the level of interaction needed to execute its objectives.",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.417595,
-        0.79586,
-        0.434459
+        0.15450536191853043,
+        0.7224293911095822,
+        0.21071507572348602,
+        0.7362930220786972
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:33",
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:19",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55728149414062,
+          208.85592651367188,
+          34.40034484863281,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 6,
+            "title_case_ratio": 0.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "single_word_negative"
+          ],
+          "title_text": "agency"
+        },
+        "is_bold": true,
+        "text": "agency"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "information systems and applications used by the agency",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.434564,
-        0.814339,
-        0.451428
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:34",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "operate effectively and provide appropriate confidentiality,",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.451464,
-        0.844929,
-        0.468327
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:35",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "integrity, and availability protections through the application of",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.468433,
-        0.603325,
-        0.485296
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:36",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "cost-effective security controls.",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.15301,
-        0.490773,
-        0.301782,
-        0.507636
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:12",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "advanced persistent",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.49297,
-        0.85729,
-        0.509833
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:37",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "An adversary that possesses sophisticated levels of expertise and",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.15301,
-        0.504788,
-        0.199238,
-        0.521652
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:13",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "threat",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.509939,
-        0.827418,
-        0.526802
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:38",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "significant resources which allow it to create opportunities to",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.032912,
-        0.518727,
-        0.232507,
-        0.536348
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:14",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008 [SP 800-39]",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.526908,
-        0.834894,
-        0.543772
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:39",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "achieve its objectives by using multiple attack vectors, including",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.543808,
-        0.852967,
-        0.560671
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:40",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "cyber, physical, and deception. These objectives typically include",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.560777,
-        0.850275,
-        0.57764
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:41",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "establishing and extending footholds within the IT infrastructure",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.577746,
-        0.789688,
-        0.594609
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:42",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "of the targeted organizations for purposes of exfiltrating",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.594715,
-        0.800542,
-        0.611579
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:43",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "informati on, undermining or impeding critical aspects of a",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.611684,
-        0.836066,
-        0.628548
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:44",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "mission, program, or organization; or positioning itself to carry",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.628584,
-        0.808454,
-        0.645447
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:45",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "out these objectives in the future. The advanced persistent",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.645553,
-        0.800381,
-        0.662416
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:46",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "threat pursues its objectives repeatedly over an extended",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.662522,
-        0.762091,
-        0.679386
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:47",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "period; adapts to defe nders\u2019 efforts to resist it; and is",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.679491,
-        0.802229,
-        0.696355
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:48",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "determined to maintain the level of interaction needed to",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.69646,
-        0.535605,
-        0.713324
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:49",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "execute its objectives.",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.032824,
-        0.701227,
-        0.043132,
-        0.719379
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:15",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "3r55 -",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.720924,
-        0.808849,
-        0.737788
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:50",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Any executive agency or department, military department,",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.153005,
-        0.720929,
-        0.204185,
-        0.737793
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:16",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Body",
       "text": "agency",
-      "type": "paragraph"
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.15251,
-        0.737318,
-        0.243596,
-        0.75397
+        0.15450979993234273,
+        0.7381060629179983,
+        0.24523117963005514,
+        0.7519696938871133
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:17",
+      "font_name": "TT0",
+      "font_size": 10.180000305175781,
+      "id": "actual:p421:block:20",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          196.44000244140625,
+          55.521484375,
+          10.979995727539062
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.180000305175781,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB A-130]"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "[OMB A -130]",
-      "type": "section_header"
+      "source_type": "Reference",
+      "text": "[OMB A-130]",
+      "type": "reference"
     },
     {
       "bbox": [
-        0.367618,
-        0.737893,
-        0.77865,
-        0.754757
+        0.3691176370857588,
+        0.7224242470481179,
+        0.8342067244785284,
+        0.8041642121594361
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:51",
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:21",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          225.89999389648438,
+          155.10194396972656,
+          284.634521484375,
+          64.73805236816406
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency."
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Federal Government corporation, Federal Government -",
-      "type": "paragraph"
+      "source_type": "Body",
+      "text": "Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency.",
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.754862,
-        0.841018,
-        0.771726
+        0.15450526218788296,
+        0.8147698990022293,
+        0.32160937240700316,
+        0.8286335299713443
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:52",
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:22",
+      "is_bold": true,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55722045898438,
+          135.7222442626953,
+          102.26771545410156,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 23,
+            "title_case_ratio": 0.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "all-source intelligence"
+        },
+        "is_bold": true,
+        "text": "all-source intelligence"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "controlled corporation, or other establishment in the Executive",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.771831,
-        0.783014,
-        0.788695
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:53",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Branch of the Federal Government, or any independent",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.788801,
-        0.668917,
-        0.805664
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:54",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "regulatory agency. See executive agency.",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.153005,
-        0.81327,
-        0.316147,
-        0.830134
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:18",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Body",
       "text": "all-source intelligence",
-      "type": "paragraph"
+      "type": "paragraph_block"
     },
     {
       "bbox": [
-        0.367618,
-        0.813273,
-        0.824314,
-        0.830136
+        0.15450979993234273,
+        0.8304545469958373,
+        0.24581941592147927,
+        0.8443181779649522
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:55",
+      "font_name": "TT0",
+      "font_size": 10.260000228881836,
+      "id": "actual:p421:block:23",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          94.55999755859375,
+          123.30000305175781,
+          55.88148498535156,
+          10.979995727539062
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.260000228881836,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[DODTERMS]"
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "Intelligence products and/or organizations and activities that",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.15251,
-        0.829667,
-        0.244184,
-        0.846318
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:19",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
+      "source_type": "Reference",
       "text": "[DODTERMS]",
-      "type": "section_header"
+      "type": "reference"
     },
     {
       "bbox": [
-        0.367618,
-        0.830242,
-        0.852877,
-        0.847105
+        0.3691176370857588,
+        0.8147727311259568,
+        0.845446817236009,
+        0.8965127347695707
       ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:56",
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p421:block:24",
+      "is_bold": false,
       "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
+      "pdf_page_index": 420,
       "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
+        "bbox": [
+          225.89999389648438,
+          81.9619140625,
+          291.5134582519531,
+          64.73808288574219
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligence, and open-source data in the production of finished intelligence."
       },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "incorporate all sources of information, most frequently including",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.847211,
-        0.752908,
-        0.864075
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:57",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "human resources intelligence, imagery intelligence,",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.86418,
-        0.819165,
-        0.881044
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:58",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "measurement and signature intellig ence, signals intelligence,",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.367618,
-        0.881149,
-        0.843188,
-        0.898013
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:59",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "and open -source data in the production of finished intelligence.",
-      "type": "paragraph"
-    },
-    {
-      "bbox": [
-        0.145059,
-        0.939742,
-        0.213916,
-        0.953818
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:20",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "APPENDIX A",
-      "type": "running_footer"
-    },
-    {
-      "bbox": [
-        0.802353,
-        0.939742,
-        0.855381,
-        0.953818
-      ],
-      "confidence": 1.0,
-      "id": "actual:p421:line:60",
-      "page": 421,
-      "preset_applied": "nist_sp_800_53r5_pdf",
-      "raw": {
-        "bbox_space": "normalized_top_left_xyxy"
-      },
-      "source": "pdf_oxide.extract_text_lines",
-      "text": "PAGE 394",
-      "type": "running_footer"
+      "source_type": "Body",
+      "text": "Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligence, and open-source data in the production of finished intelligence.",
+      "type": "paragraph_block"
     }
   ]
 }

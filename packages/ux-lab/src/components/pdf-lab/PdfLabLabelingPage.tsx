@@ -14,6 +14,7 @@
  * resolution independent and matches the matcher contract directly.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { AlertTriangle, CheckCircle2, Circle, CircleDashed, UserCheck } from 'lucide-react'
 import {
   type BreadcrumbNode,
   type BreadcrumbNodeKind,
@@ -870,6 +871,60 @@ interface ProjectIndexEntry {
   url: string
   page_count: number
 }
+interface AgentSecondPassSummary {
+  status?: string
+  human_review_required?: boolean
+  fix_error_request_count?: number
+  captured_at?: string
+}
+
+type ProjectPageQueueState = 'human_signed_off' | 'second_pass_resolved' | 'human_needed' | 'in_review' | 'pending'
+
+function agentSecondPassSummary(raw: unknown): AgentSecondPassSummary | null {
+  if (!raw || typeof raw !== 'object') return null
+  const obj = raw as Record<string, unknown>
+  const decision = obj.agent_decision
+  if (!decision || typeof decision !== 'object') return null
+  const d = decision as Record<string, unknown>
+  return {
+    status: typeof d.status === 'string' ? d.status : undefined,
+    human_review_required: typeof d.human_review_required === 'boolean' ? d.human_review_required : undefined,
+    fix_error_request_count: typeof d.fix_error_request_count === 'number' ? d.fix_error_request_count : undefined,
+    captured_at: typeof obj.captured_at === 'string' ? obj.captured_at : undefined,
+  }
+}
+
+function queueStateForPage(
+  page: ProjectPage,
+  signoff: PageSignoff | undefined,
+  secondPass: AgentSecondPassSummary | undefined,
+): ProjectPageQueueState {
+  if (page.status === 'agreed' || signoff) return 'human_signed_off'
+  if (secondPass?.human_review_required || (secondPass?.fix_error_request_count ?? 0) > 0) return 'human_needed'
+  if (secondPass?.status === 'closure_rematerialized') return 'second_pass_resolved'
+  if (page.status === 'in_review') return 'in_review'
+  return 'pending'
+}
+
+function queueStateLabel(state: ProjectPageQueueState): string {
+  switch (state) {
+    case 'human_signed_off': return 'agreed'
+    case 'second_pass_resolved': return '2nd pass'
+    case 'human_needed': return 'human'
+    case 'in_review': return 'review'
+    case 'pending': return 'pending'
+  }
+}
+
+function queueStateLongLabel(state: ProjectPageQueueState): string {
+  switch (state) {
+    case 'human_signed_off': return 'human signed off'
+    case 'second_pass_resolved': return 'second-pass rematerialized; no fix requests'
+    case 'human_needed': return 'human review required'
+    case 'in_review': return 'in review'
+    case 'pending': return 'pending'
+  }
+}
 
 function familyCountsFor(regions: Region[]): Record<string, number> {
   const counts: Record<string, number> = {}
@@ -1356,6 +1411,10 @@ export function PdfLabLabelingPage() {
   const didAutoLoadProjectRef = useRef(false)
   /** Per-page sign-off snapshots, keyed by `${project_id}::${page_slug}`. */
   const [projectSignoffs, setProjectSignoffs] = useState<Record<string, PageSignoff>>(() => loadProjectSignoffs())
+  /** Per-page second-pass status sidecars, keyed by `${project_id}::${page_slug}`.
+   *  This is intentionally separate from human signoff state: the queue needs
+   *  to show what the agent rematerialized even before the human signs off. */
+  const [projectSecondPass, setProjectSecondPass] = useState<Record<string, AgentSecondPassSummary>>({})
   /** Snapshot of agent-emitted regions captured at page-load. Used as the
    *  diff baseline when the human signs off — turns each sign-off into
    *  either a `confirmed` regression fixture or an `amended` bug spec. */
@@ -1905,6 +1964,32 @@ export function PdfLabLabelingPage() {
     return () => { cancelled = true }
   }, [])
 
+  /** Load lightweight second-pass summaries for every project page so the
+   *  left queue shows agent/machine status without requiring each page to be
+   *  opened first. */
+  useEffect(() => {
+    if (projects.length === 0) return
+    let cancelled = false
+    ;(async () => {
+      const entries: Record<string, AgentSecondPassSummary> = {}
+      await Promise.all(projects.flatMap(project =>
+        project.pages.map(async page => {
+          if (!page.second_pass_url) return
+          try {
+            const resp = await fetch(page.second_pass_url)
+            if (!resp.ok) return
+            const summary = agentSecondPassSummary(await resp.json())
+            if (summary) entries[signoffKey(project.project_id, page.slug)] = summary
+          } catch {
+            // Missing sidecars degrade to the manifest's pending/in-review state.
+          }
+        }),
+      ))
+      if (!cancelled) setProjectSecondPass(entries)
+    })()
+    return () => { cancelled = true }
+  }, [projects])
+
   useEffect(() => {
     if (didAutoLoadProjectRef.current || currentProjectId || projects.length === 0) return
     const preferred = projects[0]
@@ -2377,30 +2462,52 @@ export function PdfLabLabelingPage() {
             <div className="pdf-lab-labeling-pages">
               {projects.length > 0 && projects.map(proj => {
                 let agreed = 0
+                let secondPassResolved = 0
+                let humanNeeded = 0
                 for (const pg of proj.pages) {
-                  if (pg.status === 'agreed' || projectSignoffs[signoffKey(proj.project_id, pg.slug)]) agreed++
+                  const key = signoffKey(proj.project_id, pg.slug)
+                  const state = queueStateForPage(pg, projectSignoffs[key], projectSecondPass[key])
+                  if (state === 'human_signed_off') agreed++
+                  if (state === 'second_pass_resolved') secondPassResolved++
+                  if (state === 'human_needed') humanNeeded++
                 }
                 return (
                   <div key={proj.project_id} className="pdf-lab-labeling-pages-project">
                     <div className="pdf-lab-labeling-chips-title">
                       🤖 {proj.name}
-                      <span className="pdf-lab-labeling-project-progress"> · {agreed}/{proj.pages.length} agreed</span>
+                      <span className="pdf-lab-labeling-project-progress">
+                        · {secondPassResolved}/{proj.pages.length} second pass · {humanNeeded} human · {agreed} agreed
+                      </span>
                     </div>
                     {proj.pages.map(pg => {
                       const isActive = pg.slug === slug && currentProjectId === proj.project_id
-                      const signoff = projectSignoffs[signoffKey(proj.project_id, pg.slug)]
-                      const isAgreed = pg.status === 'agreed' || !!signoff
-                      const isInReview = !isAgreed && pg.status === 'in_review'
-                      const statusIcon = isAgreed ? '●' : (isInReview ? '◐' : '◯')
-                      const statusClass = isAgreed ? 'is-status-agreed' : (isInReview ? 'is-status-inreview' : 'is-status-pending')
-                      const hint = isAgreed
-                        ? `${signoff?.agreed_at?.slice(0, 10) ?? pg.agreed_at?.slice(0, 10) ?? ''}`
-                        : null
-                      const tooltip = `${pg.label} · ${isAgreed ? 'agreed' : (isInReview ? 'in review' : 'pending')} · ${pg.agent_origin ?? 'agent'}`
+                      const key = signoffKey(proj.project_id, pg.slug)
+                      const signoff = projectSignoffs[key]
+                      const secondPass = projectSecondPass[key]
+                      const queueState = queueStateForPage(pg, signoff, secondPass)
+                      const statusClass = `is-status-${queueState.replace(/_/g, '-')}`
+                      const hint = queueStateLabel(queueState)
+                      const tooltipParts = [
+                        pg.label,
+                        queueStateLongLabel(queueState),
+                        secondPass?.fix_error_request_count !== undefined ? `${secondPass.fix_error_request_count} fix request${secondPass.fix_error_request_count === 1 ? '' : 's'}` : null,
+                        secondPass?.captured_at ? `second pass ${secondPass.captured_at.slice(0, 10)}` : null,
+                        pg.agent_origin ?? 'agent',
+                      ].filter(Boolean)
+                      const tooltip = tooltipParts.join(' · ')
+                      const StatusIcon = queueState === 'human_signed_off'
+                        ? UserCheck
+                        : queueState === 'second_pass_resolved'
+                        ? CheckCircle2
+                        : queueState === 'human_needed'
+                        ? AlertTriangle
+                        : queueState === 'in_review'
+                        ? CircleDashed
+                        : Circle
                       return (
                         <div
                           key={pg.slug}
-                          className={`pdf-lab-labeling-pages-row pdf-lab-labeling-pages-row-compact ${isActive ? 'is-active' : ''} ${isAgreed ? 'is-agreed' : ''}`}
+                          className={`pdf-lab-labeling-pages-row pdf-lab-labeling-pages-row-compact is-queue-${queueState.replace(/_/g, '-')} ${isActive ? 'is-active' : ''}`}
                           data-qid={`pdf-lab:labeling:page-${pg.slug}`}
                         >
                           <button
@@ -2409,10 +2516,13 @@ export function PdfLabLabelingPage() {
                             data-qs-action="PDF_LAB_LABELING_OPEN_PROJECT_PAGE"
                             onClick={() => loadProjectPage(proj, pg)}
                             title={tooltip}
+                            aria-label={tooltip}
                           >
-                            <span className={`pdf-lab-labeling-pages-row-status ${statusClass}`} aria-label={isAgreed ? 'agreed' : (isInReview ? 'in review' : 'pending')}>{statusIcon}</span>
+                            <span className={`pdf-lab-labeling-pages-row-status ${statusClass}`} aria-label={queueStateLongLabel(queueState)}>
+                              <StatusIcon size={14} strokeWidth={2.4} aria-hidden="true" />
+                            </span>
                             <span className="pdf-lab-labeling-pages-row-slug">{pg.label}</span>
-                            {hint && <span className="pdf-lab-labeling-pages-row-hint pdf-lab-labeling-pages-row-hint-inline">{hint}</span>}
+                            <span className={`pdf-lab-labeling-pages-row-hint pdf-lab-labeling-pages-row-hint-inline ${statusClass}`}>{hint}</span>
                           </button>
                         </div>
                       )
