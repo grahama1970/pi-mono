@@ -24,6 +24,8 @@ import { BinaryGraph } from '../binary-explorer/BinaryGraph'
 import { useBinaryData } from '../../hooks/useBinaryData'
 import EntitySpanViewer from '../shared-chat/EntitySpanViewer'
 import { ScillmDashboard, RealtimeLogTable } from '../scillm'
+import { TransportCollaborationRoom } from '../scillm/transport'
+import '../scillm/transport/transport-room-mockup.css'
 import { sampleLogs } from '../scillm/sampleData'
 import { HackEvolveMonitor } from '../hack/HackEvolveMonitor'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
@@ -719,6 +721,19 @@ const registry: GalleryEntry[] = [
       }
       return <EntitySpanViewer query={queries[v] || queries.nonsensical} />
     },
+  },
+
+  {
+    id: 'transport-collaboration-room',
+    name: 'TransportCollaborationRoom',
+    folder: ['scillm', 'Transport'],
+    variations: ['mock', 'live'],
+    render: (v) => (
+      <TransportCollaborationRoom
+        mode={v === 'mock' ? 'mock' : 'live'}
+        initialRunId={v === 'live' ? 'otr-proof-r008' : undefined}
+      />
+    ),
   },
   /* ─── scillm Dashboard ─── */
   {

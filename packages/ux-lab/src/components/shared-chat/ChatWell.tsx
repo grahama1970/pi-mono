@@ -47,6 +47,8 @@ export interface ChatWellProps {
   messages: ChatMessage[]
   onSend?: (query: string, type: 'natural' | 'aql') => void
   renderExtras?: (msg: ChatMessage) => ReactNode
+  /** Override default SPARTA shield / user bubble-only layout */
+  renderAvatar?: (msg: ChatMessage) => ReactNode
   onClarifyClick?: (question: string) => void
   onFeedback?: (msgId: string, feedback: 'up' | 'down') => void
   onRunEvidenceCase?: (msg: ChatMessage) => void
@@ -54,6 +56,10 @@ export interface ChatWellProps {
   onNavigateMatrix?: () => void
   /** Skills list for / palette — if provided, typing / triggers skill autocomplete */
   skills?: Skill[]
+  /** Composer placeholder (transport room, terminals) */
+  composerPlaceholder?: string
+  /** 'transport' uses collaboration bubbles + slim HUD */
+  surfaceVariant?: 'default' | 'transport'
   /** Entity click handler — clicking AC-17, CWE-79, /assess triggers this */
   onEntityClick?: (entity: string, type: string) => void
   /** Starter questions from sparta_qra — replaces hardcoded defaults when provided */
@@ -80,7 +86,7 @@ const LAYER_COLORS: Record<CascadeLayer, string> = {
 // ── Message Component ────────────────────────────────────────────────────
 
 function MessageItem({
-  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras, onNavigateMatrix, onEntityClick,
+  msg, onFeedback, onClarifyClick, onRunEvidenceCase, evidenceCaseLoading, renderExtras, renderAvatar, onNavigateMatrix, onEntityClick, surfaceVariant,
 }: {
   msg: ChatMessage
   onFeedback?: (id: string, fb: 'up' | 'down') => void
@@ -88,8 +94,11 @@ function MessageItem({
   onRunEvidenceCase?: (msg: ChatMessage) => void
   evidenceCaseLoading?: string | null
   renderExtras?: (msg: ChatMessage) => ReactNode
+  /** Override default SPARTA shield / user bubble-only layout */
+  renderAvatar?: (msg: ChatMessage) => ReactNode
   onNavigateMatrix?: () => void
   onEntityClick?: (entity: string, type: string) => void
+  surfaceVariant?: 'default' | 'transport'
 }) {
   const isUser = msg.role === 'user'
 
@@ -104,8 +113,21 @@ function MessageItem({
 
   // ── User message: right-aligned bubble ──
   if (isUser) {
+    const userAvatar = renderAvatar?.(msg)
+    if (surfaceVariant === 'transport') {
+      const collab = msg.transportCollaborator || 'human'
+      return (
+        <div className={`transport-message transport-message--${collab}`} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: 10, padding: '12px 0' }}>
+          <div className="transport-message__bubble" style={{ maxWidth: 'min(85%, 520px)' }}>
+            <div className="transport-message__body">{highlight(msg.content)}</div>
+            {renderExtras?.(msg)}
+          </div>
+          {userAvatar}
+        </div>
+      )
+    }
     return (
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: 10, padding: '10px 0' }}>
         <div style={{
           maxWidth: '85%', padding: '10px 14px',
           borderRadius: '14px 14px 4px 14px',
@@ -116,31 +138,50 @@ function MessageItem({
         }}>
           {highlight(msg.content)}
         </div>
+        {userAvatar}
       </div>
     )
   }
 
   // ── Agent/system message: shield identity + operational surface ──
   const layerColor = msg.cascadeLayer ? LAYER_COLORS[msg.cascadeLayer] : EMBRY.border
+
+  if (surfaceVariant === 'transport') {
+    const collab = msg.transportCollaborator || 'unknown'
+    return (
+      <div className={`transport-message transport-message--${collab}`} style={{ display: 'grid', gridTemplateColumns: '36px minmax(0, 1fr)', gap: 12, padding: '12px 0', alignItems: 'start' }}>
+        {renderAvatar?.(msg) ?? <div style={{ width: 28, height: 28 }} />}
+        <div className="transport-message__surface" style={{ minWidth: 0 }}>
+          <div className="transport-message__speaker">{msg.agent || collab}</div>
+          {msg.skillUsed && <ToolAction label={`/${msg.skillUsed}`} qid={`chat:skill:${msg.skillUsed}`} />}
+          <div className="transport-message__body">{highlight(answerContent)}</div>
+          {renderExtras?.(msg)}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '32px minmax(0, 1fr)', gap: 10, padding: '10px 0', alignItems: 'start' }}>
-      <div
-        aria-label="SPARTA agent"
-        title="SPARTA agent"
-        style={{
-          width: 28,
-          height: 28,
-          borderRadius: 6,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: EMBRY.amber,
-          backgroundColor: `${EMBRY.amber}10`,
-          border: `1px solid ${EMBRY.border}`,
-        }}
-      >
-        <Shield size={18} strokeWidth={1.7} />
-      </div>
+      {renderAvatar?.(msg) ?? (
+        <div
+          aria-label="SPARTA agent"
+          title="SPARTA agent"
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: 6,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: EMBRY.amber,
+            backgroundColor: `${EMBRY.amber}10`,
+            border: `1px solid ${EMBRY.border}`,
+          }}
+        >
+          <Shield size={18} strokeWidth={1.7} />
+        </div>
+      )}
       <div style={{
         padding: '10px 12px', margin: 0,
         borderRadius: 8, borderLeft: `3px solid ${layerColor}`,
@@ -349,7 +390,7 @@ function MessageItem({
 
 // ── Main ChatWell ────────────────────────────────────────────────────────
 
-export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions, preSignoffWarning, starterMode = 'normal', isStreaming, streamingSteps }: ChatWellProps) {
+export function ChatWell({ messages, onSend, renderExtras, renderAvatar, onClarifyClick, onFeedback, onRunEvidenceCase, evidenceCaseLoading, onNavigateMatrix, skills, onEntityClick, starterQuestions, preSignoffWarning, starterMode = 'normal', isStreaming, streamingSteps, composerPlaceholder, surfaceVariant = 'default' }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [showPalette, setShowPalette] = useState(false)
   const [skillFilter, setSkillFilter] = useState('')
@@ -368,17 +409,23 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
     setShowPalette(false)
   }, [input, onSend])
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value
+  const applyInputValue = useCallback((val: string) => {
     setInput(val)
     const lastWord = val.split(/\s+/).pop() || ''
     if (lastWord.startsWith('/') && lastWord.length > 1) {
       setShowPalette(true)
       setSkillFilter(lastWord.slice(1))
+    } else if (lastWord === '/' && skills && skills.length > 0) {
+      setShowPalette(true)
+      setSkillFilter('')
     } else {
       setShowPalette(false)
     }
-  }, [])
+  }, [skills])
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    applyInputValue(e.target.value)
+  }, [applyInputValue])
 
   const handleSkillSelect = useCallback((name: string) => {
     const words = input.split(/\s+/)
@@ -399,9 +446,9 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
   const composerDockHeight = 104
 
   return (
-    <div style={{
+    <div className={surfaceVariant === 'transport' ? 'transport-chat-well' : undefined} style={{
       display: 'flex', flexDirection: 'column', flex: 1, height: '100%', minHeight: 0, overflow: 'hidden',
-      background: EMBRY.bg,
+      background: surfaceVariant === 'transport' ? 'transparent' : EMBRY.bg,
     }}>
       {/* Messages — scrollable, full height */}
       <div style={{
@@ -439,7 +486,7 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
                 background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`,
                 borderRadius: 8, padding: '10px 16px', cursor: 'pointer',
                 color: EMBRY.dim, fontSize: 12, textAlign: 'left', width: '100%',
-                minWidth: 44, minHeight: 44, transition: 'all 0.15s',
+                minWidth: 44, minHeight: 44, transition: 'border-color 0.15s ease, color 0.15s ease',
               }} onMouseEnter={e => { e.currentTarget.style.borderColor = EMBRY.accent; e.currentTarget.style.color = EMBRY.white }}
                  onMouseLeave={e => { e.currentTarget.style.borderColor = `${EMBRY.accent}22`; e.currentTarget.style.color = EMBRY.dim }}>
                 {q}
@@ -456,8 +503,10 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
             onRunEvidenceCase={onRunEvidenceCase}
             evidenceCaseLoading={evidenceCaseLoading}
             renderExtras={renderExtras}
+            renderAvatar={renderAvatar}
             onNavigateMatrix={onNavigateMatrix}
             onEntityClick={onEntityClick}
+            surfaceVariant={surfaceVariant}
           />
         ))}
         {/* Live streaming gate progression — animated evidence case building */}
@@ -492,11 +541,20 @@ export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFee
           </div>
         )}
         <SpartaHudInput
+          value={input}
+          onValueChange={applyInputValue}
           onSend={(query, type) => onSend?.(query, type)}
-          onSkillsOpen={() => setShowPalette(true)}
+          onSkillsOpen={() => {
+            if (skills && skills.length > 0) {
+              setShowPalette(true)
+              setSkillFilter('')
+            }
+          }}
+          placeholder={composerPlaceholder}
           isThinking={isStreaming}
           thinkingLabel={isStreaming ? 'Building Evidence Case' : 'CAE Trace'}
           reasoningSteps={streamingSteps ?? []}
+          variant={surfaceVariant === 'transport' ? 'transport' : 'sparta'}
         />
       </div>
     </div>

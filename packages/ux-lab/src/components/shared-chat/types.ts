@@ -243,6 +243,8 @@ export interface ChatMessage {
 	resultCount?: number;
 	// Interaction
 	feedback?: "up" | "down" | null;
+	/** scillm transport room: human | project_agent | worker */
+	transportCollaborator?: string;
 }
 
 // ── Activity Feed Types ─────────────────────────────────────────────────

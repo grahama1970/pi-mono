@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "app": "Transport Collaboration Room",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "transport-room-live",
+      "path": "/#scillm/transport",
+      "wait_ready": "[data-qid='transport:room:header']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "chrome",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Transport room loaded"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:sidebar:toggle']",
+              "description": "Collapse run history sidebar",
+              "assert_qs_action": "[data-qid='transport:sidebar:toggle']",
+              "assert_title": "[data-qid='transport:sidebar:toggle']",
+              "screenshot_after": true
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:sidebar:toggle']",
+              "description": "Expand run history sidebar",
+              "assert_visible": "[data-qid='transport:runs:search']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:meta:toggle']",
+              "description": "Toggle call inspector drawer",
+              "assert_qs_action": "[data-qid='transport:meta:toggle']",
+              "assert_title": "[data-qid='transport:meta:toggle']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:room:refresh']",
+              "description": "Refresh transport run",
+              "assert_qs_action": "[data-qid='transport:room:refresh']",
+              "assert_title": "[data-qid='transport:room:refresh']",
+              "assert_min_size": {
+                "selector": "[data-qid='transport:room:refresh']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        },
+        {
+          "name": "run-history",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='transport:runs:search']",
+              "value": "proof",
+              "description": "Filter run history",
+              "assert_qs_action": "[data-qid='transport:runs:search']",
+              "assert_title": "[data-qid='transport:runs:search']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:run:otr-proof-r008']",
+              "description": "Select transport run from history",
+              "screenshot_after": true,
+              "assert_visible": "[data-qid='transport:timeline']",
+              "assert_qs_action": "[data-qid='transport:run:otr-proof-r008']",
+              "assert_title": "[data-qid='transport:run:otr-proof-r008']",
+              "assert_min_size": {
+                "selector": "[data-qid='transport:run:otr-proof-r008']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        },
+        {
+          "name": "call-inspector",
+          "interactions": [
+            {
+              "action": "wait",
+              "target": "[data-qid='transport:room:call-inspector']",
+              "timeout_ms": 3000,
+              "description": "Wait for call inspector"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:call-inspector:identity:toggle']",
+              "description": "Collapse identity section",
+              "assert_qs_action": "[data-qid='transport:call-inspector:identity:toggle']",
+              "assert_title": "[data-qid='transport:call-inspector:identity:toggle']"
+            }
+          ]
+        },
+        {
+          "name": "load-run",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='transport:room:run-id']",
+              "value": "otr-proof-r008",
+              "description": "Enter run id",
+              "assert_qs_action": "[data-qid='transport:room:run-id']",
+              "assert_title": "[data-qid='transport:room:run-id']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='transport:room:apply-run']",
+              "description": "Load run by id",
+              "assert_qs_action": "[data-qid='transport:room:apply-run']",
+              "assert_title": "[data-qid='transport:room:apply-run']"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

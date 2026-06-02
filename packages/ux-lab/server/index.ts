@@ -27,6 +27,7 @@ import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as 
 import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream, createWriteStream, watch } from 'fs'
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
+import { listSkillsCatalog } from './skillsCatalog.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -5029,6 +5030,113 @@ app.post('/api/scillm/v1/scillm/exec/graph', async (req, res) => {
   } catch (error) {
     res.status(502).json({ error: 'scillm unreachable', detail: error instanceof Error ? error.message : String(error) })
   }
+})
+
+
+
+
+// ── Skills catalog (slash palette for ChatWell / transport room) ───────────
+app.get('/api/skills', async (_req, res) => {
+  try {
+    const skills = await listSkillsCatalog()
+    res.json(skills)
+  } catch (error) {
+    res.status(500).json({
+      error: 'skills catalog failed',
+      detail: error instanceof Error ? error.message : String(error),
+    })
+  }
+})
+
+function transportArtifactBases(projectRoot: string): string[] {
+  const bases: string[] = []
+  const serve = process.env.SCILLM_OPENCODE_SERVE_OUTPUT_DIR?.trim()
+  if (serve) {
+    bases.push(serve.startsWith('/') ? resolve(serve, 'transport') : resolve(projectRoot, serve, 'transport'))
+  }
+  const legacy = process.env.SCILLM_OPENCODE_TRANSPORT_DIR?.trim()
+  if (legacy) {
+    bases.push(legacy.startsWith('/') ? legacy : resolve(projectRoot, legacy))
+  }
+  bases.push(resolve(projectRoot, '.scillm', 'opencode-serve', 'transport'))
+  bases.push(resolve(projectRoot, '.scillm', 'opencode-transport'))
+  return [...new Set(bases)]
+}
+
+async function scanTransportRunIndexBase(
+  base: string,
+): Promise<Array<{ transport_run_id: string; dag_node_id?: string; mtime_ms: number }>> {
+  const names = await readdir(base, { withFileTypes: true }).catch(() => [])
+  const runs: Array<{ transport_run_id: string; dag_node_id?: string; mtime_ms: number }> = []
+  for (const ent of names) {
+    if (!ent.isDirectory()) continue
+    const dir = resolve(base, ent.name)
+    const statePath = resolve(dir, 'transport_state.json')
+    try {
+      const st = await stat(statePath)
+      const raw = await readFile(statePath, 'utf8')
+      const state = JSON.parse(raw) as { transport_run_id?: string; dag_node_id?: string }
+      runs.push({
+        transport_run_id: String(state.transport_run_id || ent.name),
+        dag_node_id: state.dag_node_id,
+        mtime_ms: st.mtimeMs,
+      })
+    } catch {
+      /* skip incomplete dirs */
+    }
+  }
+  return runs
+}
+
+// ── scillm transport run index (artifact dirs on disk; prefer scillm proxy route) ─
+app.get('/api/transport/run-index', async (_req, res) => {
+  try {
+    const byId = new Map<string, { transport_run_id: string; dag_node_id?: string; mtime_ms: number }>()
+    for (const base of transportArtifactBases(SCILLM_PROJECT_ROOT)) {
+      const chunk = await scanTransportRunIndexBase(base)
+      for (const row of chunk) {
+        const prev = byId.get(row.transport_run_id)
+        if (!prev || row.mtime_ms > prev.mtime_ms) byId.set(row.transport_run_id, row)
+      }
+    }
+    const runs = [...byId.values()].sort((a, b) => b.mtime_ms - a.mtime_ms)
+    res.json({ schema: 'scillm.transport.run_index.v1', runs })
+  } catch (error) {
+    res.status(500).json({ error: 'transport run index failed', detail: error instanceof Error ? error.message : String(error) })
+  }
+})
+
+// ── scillm transport SSE (must not use JSON catch-all) ─────────────────────
+app.get('/api/scillm/v1/scillm/opencode/transport/runs/:transportRunId/events/stream', (req, res) => {
+  const transportRunId = req.params.transportRunId
+  const url = new URL(`${SCILLM_URL}/v1/scillm/opencode/transport/runs/${encodeURIComponent(transportRunId)}/events/stream`)
+  if (req.url.includes('?')) {
+    url.search = req.url.slice(req.url.indexOf('?'))
+  }
+  const proxyReq = httpRequest(
+    {
+      hostname: url.hostname,
+      port: url.port,
+      path: `${url.pathname}${url.search}`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
+        'X-Caller-Skill': 'ux-lab',
+        Accept: 'text/event-stream',
+      },
+    },
+    (proxyRes) => {
+      res.status(proxyRes.statusCode ?? 500)
+      res.setHeader('Content-Type', proxyRes.headers['content-type'] || 'text/event-stream')
+      res.setHeader('Cache-Control', 'no-cache')
+      res.setHeader('Connection', 'keep-alive')
+      proxyRes.pipe(res)
+    },
+  )
+  proxyReq.on('error', (err) => {
+    res.status(502).json({ error: 'scillm transport stream unreachable', detail: err.message })
+  })
+  proxyReq.end()
 })
 
 app.all('/api/scillm/{*path}', (req, res) => {

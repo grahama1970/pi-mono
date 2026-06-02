@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Activity, GitBranch, ServerCog } from "lucide-react";
+import { Activity, GitBranch, MessageSquare, ServerCog } from "lucide-react";
 import { EMBRY } from "../common/EmbryStyle";
 import { useRegisterAction } from "../../hooks/useRegisterAction";
 import { ScillmDashboard } from "./ScillmDashboard";
 import { ScillmDagPlanner } from "./ScillmDagPlanner";
 import { ScillmAppServerSession } from "./ScillmAppServerSession";
+import { TransportCollaborationRoom } from "./transport";
 import "./scillm-dashboard.css";
 
-type ScillmWorkspaceTab = "monitor" | "app-server" | "dag-planner";
+type ScillmWorkspaceTab = "monitor" | "transport" | "app-server" | "dag-planner";
 
 const TABS: Array<{
   id: ScillmWorkspaceTab;
@@ -20,6 +21,12 @@ const TABS: Array<{
     label: "Monitor",
     title: "Inspect live scillm calls, provider health, jobs, and model-pool state",
     icon: Activity,
+  },
+  {
+    id: "transport",
+    label: "Transport room",
+    title: "Three-way collaboration room (human + project agent + worker) via scillm OpenCode transport",
+    icon: MessageSquare,
   },
   {
     id: "app-server",
@@ -69,7 +76,11 @@ export function ScillmWorkspace({ initialTab }: { initialTab?: string }) {
               title={tab.title}
               onClick={() => {
                 setActiveTab(tab.id);
-                window.location.hash = tab.id === "monitor" ? "scillm" : `scillm/${tab.id}`;
+                window.location.hash = tab.id === "monitor"
+                  ? "scillm"
+                  : tab.id === "transport"
+                    ? "scillm/transport"
+                    : `scillm/${tab.id}`;
               }}
               className={`scillm-workspace__tab press-scale scillm-focus${selected ? " scillm-workspace__tab--active" : ""}`}
             >
@@ -80,7 +91,17 @@ export function ScillmWorkspace({ initialTab }: { initialTab?: string }) {
         })}
       </nav>
       <div className="scillm-workspace__panel" role="tabpanel">
-        {activeTab === "monitor" ? <ScillmDashboard /> : activeTab === "app-server" ? <ScillmAppServerSession /> : <ScillmDagPlanner />}
+        {activeTab === "monitor" ? (
+          <ScillmDashboard />
+        ) : activeTab === "transport" ? (
+          <div className="scillm-workspace__panel-transport" data-qid="scillm:workspace:transport-panel">
+            <TransportCollaborationRoom mode="live" />
+          </div>
+        ) : activeTab === "app-server" ? (
+          <ScillmAppServerSession />
+        ) : (
+          <ScillmDagPlanner />
+        )}
       </div>
     </div>
   );

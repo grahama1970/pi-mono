@@ -981,7 +981,7 @@ const ProjectSidebar = ({
     { id: 'embry-terminal', title: 'Embry Terminal', subtitle: 'Agent control surface (Claude/Pi/Codex)', date: '2026-03-31', type: 'desktop' as const },
     { id: 'datalake-explorer', title: 'Datalake Explorer', subtitle: 'PDF extraction QA', date: '2026-03-31', type: 'desktop' as const, thumbnail: '' },
     { id: 'pdf-lab', title: 'PDF Lab', subtitle: 'Visual extraction verification', date: '2026-04-16', type: 'desktop' as const },
-    { id: 'scillm', title: 'scillm Monitor', subtitle: 'LLM proxy batch dashboard', date: '2026-04-13', type: 'desktop' as const },
+    { id: 'scillm', title: 'scillm Monitor', subtitle: 'LLM proxy, transport collaboration room, DAG planner', date: '2026-04-13', type: 'desktop' as const },
   ];
 
   const filteredProjects = searchQuery

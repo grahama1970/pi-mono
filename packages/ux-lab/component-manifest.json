@@ -1,7 +1,7 @@
 {
   "$schema": "component-manifest/v1",
   "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
-  "updated": "2026-05-26",
+  "updated": "2026-05-27",
   "tokens": {
     "file": "src/components/sparta/common/EmbryStyle.ts",
     "system": "NVIS MIL-STD-3009",
@@ -44,8 +44,8 @@
       "fwBadge()"
     ],
     "rules": [
-      "NEVER use raw hex colors — always reference EMBRY.* tokens",
-      "NEVER use raw font sizes — use label (10px), heading (14px), body (13px) presets",
+      "NEVER use raw hex colors \u2014 always reference EMBRY.* tokens",
+      "NEVER use raw font sizes \u2014 use label (10px), heading (14px), body (13px) presets",
       "All borders use EMBRY.border, never custom rgba values",
       "Card surfaces use card preset, darker wells use panel preset",
       "Framework-specific colors MUST come from EMBRY.fw[framework]",
@@ -60,9 +60,9 @@
       "lines": 152,
       "description": "ATT&CK Navigator-style grid: tactics as columns, techniques as cells with coverage indicators",
       "props": {
-        "tactics": "string[] — tactic names for column headers",
-        "techniques": "ThreatTechnique[] — technique objects with id, name, tactic, coverage, issueCount, frameworks",
-        "onSelect": "(technique: ThreatTechnique) => void — optional click handler"
+        "tactics": "string[] \u2014 tactic names for column headers",
+        "techniques": "ThreatTechnique[] \u2014 technique objects with id, name, tactic, coverage, issueCount, frameworks",
+        "onSelect": "(technique: ThreatTechnique) => void \u2014 optional click handler"
       },
       "token_usage": [
         "card",
@@ -89,8 +89,8 @@
       "lines": 182,
       "description": "Sortable, filterable table of security controls with framework badges and issue indicators",
       "props": {
-        "controls": "ControlRow[] — control objects with id, framework, name, tactic, urlCount, relCount, knowledgeChunks, issueCount",
-        "onSelect": "(control: ControlRow) => void — optional row click handler"
+        "controls": "ControlRow[] \u2014 control objects with id, framework, name, tactic, urlCount, relCount, knowledgeChunks, issueCount",
+        "onSelect": "(control: ControlRow) => void \u2014 optional row click handler"
       },
       "features": [
         "column sorting (id, framework, name, issueCount, relCount)",
@@ -122,8 +122,8 @@
       "lines": 504,
       "description": "Shared SPARTA compliance chat surface with Kimi v3-style inline Evidence Case card, answer divider, shield agent identity, PDF evidence upload, and message history",
       "props": {
-        "messages": "ChatMessage[] — message objects with id, role, content, type (natural|aql), timestamp, resultCount",
-        "onSend": "(query: string, type: 'natural' | 'aql') => void — optional send handler"
+        "messages": "ChatMessage[] \u2014 message objects with id, role, content, type (natural|aql), timestamp, resultCount",
+        "onSend": "(query: string, type: 'natural' | 'aql') => void \u2014 optional send handler"
       },
       "features": [
         "English/AQL mode toggle",
@@ -146,7 +146,7 @@
         "EMBRY.bgDeep",
         "EMBRY.border"
       ],
-      "data_source": "ArangoDB: queries via /api/memory/* proxy (natural language → AQL translation)",
+      "data_source": "ArangoDB: queries via /api/memory/* proxy (natural language \u2192 AQL translation)",
       "variations": [
         "with-history (4 sample messages)",
         "empty (placeholder prompt)"
@@ -161,9 +161,9 @@
       "lines": 196,
       "description": "SVG knowledge graph showing cross-framework relationships with validation status",
       "props": {
-        "nodes": "GraphNode[] — node objects with id, label, framework, size",
-        "edges": "GraphEdge[] — edge objects with source, target, method, validated",
-        "onNodeClick": "(node: GraphNode) => void — optional node click handler"
+        "nodes": "GraphNode[] \u2014 node objects with id, label, framework, size",
+        "edges": "GraphEdge[] \u2014 edge objects with source, target, method, validated",
+        "onNodeClick": "(node: GraphNode) => void \u2014 optional node click handler"
       },
       "features": [
         "circular layout (static)",
@@ -197,10 +197,10 @@
       "lines": 87,
       "description": "Graph integrity status card: NOMINAL/DEGRADED/CRITICAL with coverage % and issue count",
       "props": {
-        "status": "IntegrityStatus — 'NOMINAL' | 'DEGRADED' | 'CRITICAL'",
-        "coveragePercent": "number — percentage of healthy edges",
-        "coverageLabel": "string — label for coverage metric",
-        "issueCount": "number — total issues detected"
+        "status": "IntegrityStatus \u2014 'NOMINAL' | 'DEGRADED' | 'CRITICAL'",
+        "coveragePercent": "number \u2014 percentage of healthy edges",
+        "coverageLabel": "string \u2014 label for coverage metric",
+        "issueCount": "number \u2014 total issues detected"
       },
       "token_usage": [
         "card",
@@ -226,8 +226,8 @@
       "lines": 155,
       "description": "Drill-down panel for a single control: metadata grid, weaknesses, related controls with framework badges",
       "props": {
-        "control": "ControlDetailData — id, framework, name, description, controlType, domain, parentId, scope, weaknesses, relatedControls",
-        "onClose": "() => void — optional close handler"
+        "control": "ControlDetailData \u2014 id, framework, name, description, controlType, domain, parentId, scope, weaknesses, relatedControls",
+        "onClose": "() => void \u2014 optional close handler"
       },
       "token_usage": [
         "card",
@@ -255,10 +255,10 @@
       "lines": 270,
       "description": "LemmaGraph node inspector: typed parameter editor (bool toggle, float slider, enum dropdown) + what-if cascade analysis via /lean4-prove",
       "props": {
-        "node": "GraphNode — selected node from LemmaGraph",
-        "edges": "GraphEdge[] — all graph edges (filtered to connected)",
-        "onClose": "() => void — close panel",
-        "onWhatIf": "(controlId, param, value) => Promise<WhatIfResponse> — triggers /lean4-prove what-if"
+        "node": "GraphNode \u2014 selected node from LemmaGraph",
+        "edges": "GraphEdge[] \u2014 all graph edges (filtered to connected)",
+        "onClose": "() => void \u2014 close panel",
+        "onWhatIf": "(controlId, param, value) => Promise<WhatIfResponse> \u2014 triggers /lean4-prove what-if"
       },
       "features": [
         "typed parameter controls (bool/float/enum)",
@@ -293,8 +293,8 @@
       "description": "Shared status badge with 7 variants (green/amber/red/blue/purple/neutral/flash). The ONE standard for all badges, tags, and counts across Unified Lab tabs.",
       "props": {
         "variant": "'green' | 'amber' | 'red' | 'blue' | 'purple' | 'neutral'",
-        "flash": "boolean — optional pulse animation for in-progress states",
-        "children": "ReactNode — pill label text"
+        "flash": "boolean \u2014 optional pulse animation for in-progress states",
+        "children": "ReactNode \u2014 pill label text"
       },
       "token_usage": [
         "EMBRY.green",
@@ -335,7 +335,7 @@
         "label"
       ],
       "data_sources": [
-        "useWebSocket (ws://localhost:3003) — epoch_update messages"
+        "useWebSocket (ws://localhost:3003) \u2014 epoch_update messages"
       ],
       "used_by": [
         "UnifiedLab"
@@ -473,12 +473,12 @@
       "lines": 827,
       "description": "Minimal source-backed SCILLM DAG contract editor used by #scillm/dag-planner Design lens: dependency-derived DAG layers, graph/node Form and JSON views, expanded text editor, persisted draft saves, runtime evidence pane, and Run draft via scillm action.",
       "props": {
-        "graph": "ExecGraph — selected source or draft DAG contract",
-        "status": "ExecStatus — active runtime state and node_results for highlighting",
-        "events": "ExecEvent[] — runtime event count and context",
-        "baseGraphHash": "string — backend or local draft hash shown in graph header",
-        "availableModels": "string[] — model dropdown options from /api/scillm/v1/scillm/models",
-        "onRunGraph": "(graph: ExecGraph) => void — submits the current edited draft graph to the parent runner"
+        "graph": "ExecGraph \u2014 selected source or draft DAG contract",
+        "status": "ExecStatus \u2014 active runtime state and node_results for highlighting",
+        "events": "ExecEvent[] \u2014 runtime event count and context",
+        "baseGraphHash": "string \u2014 backend or local draft hash shown in graph header",
+        "availableModels": "string[] \u2014 model dropdown options from /api/scillm/v1/scillm/models",
+        "onRunGraph": "(graph: ExecGraph) => void \u2014 submits the current edited draft graph to the parent runner"
       },
       "token_usage": [
         "EMBRY.bg*",
@@ -502,6 +502,25 @@
       ],
       "test_status": "TypeScript + CDP screenshot verification required after every layout change",
       "composition": "Used by ScillmDagPlanner Design lens in place of the older ScillmExecGraphDebugger visual core for the current professional DAG viewer-editor iteration."
+    },
+    {
+      "id": "transport-collaboration-room",
+      "name": "TransportCollaborationRoom",
+      "file": "src/components/scillm/transport/TransportCollaborationRoom.tsx",
+      "folder": [
+        "scillm",
+        "Transport"
+      ],
+      "description": "Three-way scillm transport collaboration room (human + project agent + worker) via transport dialog API",
+      "data_source": "/api/scillm/v1/scillm/opencode/transport/runs/{transport_run_id}/dialog",
+      "variations": [
+        "mock",
+        "live"
+      ],
+      "props": [
+        "mode",
+        "initialRunId"
+      ]
     }
   ],
   "compositions": [
@@ -511,7 +530,7 @@
       "description": "3-pane waterfall layout matching evidence-case-viewer pattern",
       "file": "src/components/gallery/ComponentGallery.tsx (registry entry)",
       "pattern": {
-        "top_bar": "ThoughtTrace pipeline: Ingest → Resolve → Map → Verify → Score with glow dots",
+        "top_bar": "ThoughtTrace pipeline: Ingest \u2192 Resolve \u2192 Map \u2192 Verify \u2192 Score with glow dots",
         "pane_1": {
           "label": "Threat Overview",
           "width": "30%",
@@ -608,11 +627,11 @@
       "enum"
     ],
     "output_format": {
-      "control": "string — control ID modified",
-      "parameter": "string — parameter name changed",
-      "new_value": "any — new parameter value",
-      "affected_chains": "array — chains with status BROKEN/HOLDS/DRY_RUN",
-      "summary": "object — { total, broken, held }"
+      "control": "string \u2014 control ID modified",
+      "parameter": "string \u2014 parameter name changed",
+      "new_value": "any \u2014 new parameter value",
+      "affected_chains": "array \u2014 chains with status BROKEN/HOLDS/DRY_RUN",
+      "summary": "object \u2014 { total, broken, held }"
     }
   },
   "pdf_lab": {
@@ -755,14 +774,14 @@
     "file": "src/components/scillm/dag-planner/DagExplorerPane.tsx",
     "description": "Shared left DAG explorer for scillm DAG workspaces. Provides search, open/select, add, duplicate, close, and persisted local draft delete affordances.",
     "props": {
-      "items": "DagExplorerItem[] — visible source and draft DAG records with node/edge counts, active state, and delete capability.",
-      "search": "string — controlled search query.",
-      "onSearchChange": "(value: string) => void — update the search query.",
-      "onSelect": "(id: string) => void — open/select a DAG.",
-      "onAdd": "() => void — create a new local draft DAG.",
-      "onDuplicate": "(id: string) => void — clone a DAG into a local draft.",
-      "onClose": "(id: string) => void — close a DAG from the explorer.",
-      "onDelete": "(id: string) => void — delete a local draft DAG."
+      "items": "DagExplorerItem[] \u2014 visible source and draft DAG records with node/edge counts, active state, and delete capability.",
+      "search": "string \u2014 controlled search query.",
+      "onSearchChange": "(value: string) => void \u2014 update the search query.",
+      "onSelect": "(id: string) => void \u2014 open/select a DAG.",
+      "onAdd": "() => void \u2014 create a new local draft DAG.",
+      "onDuplicate": "(id: string) => void \u2014 clone a DAG into a local draft.",
+      "onClose": "(id: string) => void \u2014 close a DAG from the explorer.",
+      "onDelete": "(id: string) => void \u2014 delete a local draft DAG."
     },
     "data_contract": "Source DAGs are backed by /api/scillm/dag-viewer/snapshot. Added and duplicated DAGs are saved through /api/scillm/dag-viewer/drafts as workspace drafts and remain separate from authoritative phase evidence until a scillm amendment/apply endpoint accepts them.",
     "test_status": "TypeScript + CDP screenshot verification required after component changes"
@@ -828,7 +847,7 @@
     "file": "src/components/gallery/ComponentGallery.tsx",
     "lines": 434,
     "sample_data": "src/components/gallery/sampleData.ts",
-    "structure": "Folder tree sidebar (search + collapsible folders) → Main preview (toolbar + variation tabs + canvas)"
+    "structure": "Folder tree sidebar (search + collapsible folders) \u2192 Main preview (toolbar + variation tabs + canvas)"
   },
   "server": {
     "file": "server/index.ts",
@@ -852,12 +871,12 @@
       },
       {
         "pattern": "Structured JSON commands",
-        "why": "Agent needs to tell the server 'run this AQL and show results in ChatWell' — not just proxy raw HTTP. Add POST /api/command with { command, args } contract.",
+        "why": "Agent needs to tell the server 'run this AQL and show results in ChatWell' \u2014 not just proxy raw HTTP. Add POST /api/command with { command, args } contract.",
         "priority": "when connecting real data"
       },
       {
         "pattern": "Generate-more loop",
-        "why": "Human says 'show me more variations' → agent generates them on demand. Maps to component variation generation.",
+        "why": "Human says 'show me more variations' \u2192 agent generates them on demand. Maps to component variation generation.",
         "priority": "nice-to-have"
       }
     ],
@@ -869,7 +888,7 @@
       },
       {
         "pattern": "Token enforcement lint",
-        "why": "Automated check that no component uses raw hex/px — all values via EMBRY.* tokens.",
+        "why": "Automated check that no component uses raw hex/px \u2014 all values via EMBRY.* tokens.",
         "priority": "before adding more components"
       }
     ]

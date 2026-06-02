@@ -55,19 +55,22 @@ interface SpartaHudInputProps {
   value?: string
   /** Controlled value change handler */
   onValueChange?: (value: string) => void
+  variant?: 'sparta' | 'transport'
 }
 
 export function SpartaHudInput({
   onSend,
   onSkillsOpen,
   onIngestEvidence,
-  placeholder = 'Enter a prompt for SPARTA Explorer...',
+  placeholder,
+  defaultPlaceholder = 'Enter a prompt for SPARTA Explorer...',
   disabled = false,
   isThinking = false,
   reasoningSteps = [],
   thinkingLabel = 'Thinking',
   value: controlledValue,
   onValueChange,
+  variant = 'sparta',
 }: SpartaHudInputProps) {
   const [internalValue, setInternalValue] = useState('')
   const [thinkingExpanded, setThinkingExpanded] = useState(false)
@@ -151,18 +154,20 @@ export function SpartaHudInput({
 
   const canSend = value.trim().length > 0 && !disabled && !isThinking
 
+  const isTransport = variant === 'transport'
+
   return (
-    <div style={styles.container}>
-      <div style={styles.hud}>
+    <div className={isTransport ? 'transport-hud-root' : undefined} style={styles.container}>
+      <div className={isTransport ? 'transport-hud-panel' : undefined} style={styles.hud}>
         {/* Top Tier: Shield + Query Input */}
         <div style={styles.topTier}>
-          <Shield size={16} strokeWidth={1.25} style={styles.shieldIcon} />
+          {!isTransport && <Shield size={16} strokeWidth={1.25} style={styles.shieldIcon} />}
           <textarea
             ref={textareaRef}
             data-qid="sparta:hud:input"
             data-qs-action="ENTER_QUERY"
             title="Enter a compliance query for SPARTA (Enter to send, Shift+Enter for newline)"
-            placeholder={placeholder}
+            placeholder={placeholder ?? defaultPlaceholder}
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
@@ -176,7 +181,7 @@ export function SpartaHudInput({
         <div style={styles.bottomTier}>
           {/* Left: Tool Cluster */}
           <div style={styles.toolCluster}>
-            <input
+            {!isTransport && <input
               ref={pdfInputRef}
               type="file"
               accept="application/pdf,.pdf"
@@ -185,8 +190,8 @@ export function SpartaHudInput({
               title="Select PDF evidence file"
               onChange={handlePdfChange}
               style={{ display: 'none' }}
-            />
-            <button
+            />}
+            {!isTransport && <button
               data-qid="sparta:hud:pdf-upload"
               data-qs-action="UPLOAD_PDF_EVIDENCE"
               title="Attach PDF evidence"
@@ -196,7 +201,7 @@ export function SpartaHudInput({
             >
               <FileText size={16} strokeWidth={1.25} />
               <span>PDF</span>
-            </button>
+            </button>}
             <button
               data-qid="sparta:hud:skills"
               data-qs-action="OPEN_SKILLS"
@@ -213,7 +218,7 @@ export function SpartaHudInput({
           {/* Right: Status Cluster */}
           <div style={styles.statusCluster}>
             {/* Thinking Pill */}
-            {(isThinking || reasoningSteps.length > 0) && (
+            {!isTransport && (isThinking || reasoningSteps.length > 0) && (
               <button
                 data-qid="sparta:hud:thinking"
                 data-qs-action="TOGGLE_REASONING"
@@ -253,7 +258,7 @@ export function SpartaHudInput({
           </div>
         </div>
 
-        {(pdfName || pdfStatus) && (
+        {!isTransport && (pdfName || pdfStatus) && (
           <div
             data-qid="sparta:hud:pdf-status"
             title={pdfStatus || `Attached PDF evidence: ${pdfName}`}
@@ -276,7 +281,7 @@ export function SpartaHudInput({
         )}
 
         {/* Expanded: Reasoning Trace */}
-        {thinkingExpanded && reasoningSteps.length > 0 && (
+        {!isTransport && thinkingExpanded && reasoningSteps.length > 0 && (
           <div style={styles.reasoningTrace}>
             {reasoningSteps.map((step) => (
               <div key={step.id} style={styles.reasoningStep}>

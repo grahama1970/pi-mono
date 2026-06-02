@@ -39,6 +39,24 @@ const MENU_ITEMS: { action: ContextMenuAction; label: string; color?: string }[]
 ]
 
 export function ContextMenu({ x, y, visible, onAction, onClose }: ContextMenuProps) {
+  useRegisterAction('left-pane:context:rename', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_CONTEXT_RENAME',
+    label: 'Context menu rename',
+    description: 'Rename item from left pane context menu',
+  })
+  useRegisterAction('left-pane:context:copy', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_CONTEXT_COPY',
+    label: 'Context menu copy',
+    description: 'Copy item from left pane context menu',
+  })
+  useRegisterAction('left-pane:context:delete', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_CONTEXT_DELETE',
+    label: 'Context menu delete',
+    description: 'Delete item from left pane context menu',
+  })
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -59,14 +77,24 @@ export function ContextMenu({ x, y, visible, onAction, onClose }: ContextMenuPro
       borderRadius: 6, padding: '4px 0', minWidth: 120,
       boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
     }}>
-      {MENU_ITEMS.map(({ action, label: text, color }) => (
-        <button key={action} style={{ ...menuItemBase, color: color ?? EMBRY.white }}
+      {MENU_ITEMS.map(({ action, label: text, color }) => {
+        const qs = action === 'rename' ? 'LEFT_PANE_CONTEXT_RENAME' : action === 'copy' ? 'LEFT_PANE_CONTEXT_COPY' : 'LEFT_PANE_CONTEXT_DELETE'
+        return (
+        <button
+          key={action}
+          type="button"
+          data-qid={`left-pane:context:${action}`}
+          data-qs-action={qs}
+          title={text}
+          style={{ ...menuItemBase, color: color ?? EMBRY.white }}
           onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-          onClick={() => { onAction(action); onClose() }}>
+          onClick={() => { onAction(action); onClose() }}
+        >
           {text}
         </button>
-      ))}
+        )
+      })}
     </div>
   )
 }
@@ -99,7 +127,7 @@ const SORT_ICONS: { mode: SortMode; Icon: typeof Clock; title: string }[] = [
   { mode: 'alpha', Icon: ArrowDownAZ, title: 'Sort A-Z' },
 ]
 
-export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId, search: externalSearch, onSearchChange, searchPlaceholder, defaultCollapsed = false }: {
+export function LeftPane({ title, children, width = 260, searchable = false, sortable = false, sortModes, activeFilter, onClearFilter, searchTestId, search: externalSearch, onSearchChange, searchPlaceholder, defaultCollapsed = false, collapsible = true }: {
   title: string
   children: React.ReactNode
   width?: number
@@ -121,6 +149,8 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
   onSearchChange?: React.Dispatch<React.SetStateAction<string>>
   /** Placeholder text for search input */
   searchPlaceholder?: string
+  /** Show built-in collapse control (transport room disables — shell has its own) */
+  collapsible?: boolean
 }) {
   const paneId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'pane'
 
@@ -142,6 +172,50 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
   const search = externalSearch ?? internalSearch
   const setSearch = onSearchChange ?? setInternalSearch
   const [sortMode, setSortMode] = useState<SortMode>('recent')
+  useRegisterAction('left-pane:expand', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_EXPAND',
+    label: 'Expand left pane',
+    description: 'Expand a collapsed left pane',
+  })
+  useRegisterAction('left-pane:collapse', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_COLLAPSE',
+    label: 'Collapse left pane',
+    description: 'Collapse a left pane sidebar',
+  })
+  useRegisterAction('left-pane:clear-filter', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_CLEAR_FILTER',
+    label: 'Clear left pane filter',
+    description: 'Clear active filter chip on left pane',
+  })
+  useRegisterAction('left-pane:sort-recent', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_SORT_RECENT',
+    label: 'Sort left pane by recent',
+    description: 'Sort left pane items by most recent',
+  })
+  useRegisterAction('left-pane:sort-score', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_SORT_SCORE',
+    label: 'Sort left pane by score',
+    description: 'Sort left pane items by score',
+  })
+  useRegisterAction('left-pane:filter-search', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_FILTER_SEARCH',
+    label: 'Filter left pane list',
+    description: 'Filter items in a searchable left pane',
+  })
+
+  useRegisterAction('left-pane:sort-alpha', {
+    app: 'ux-lab',
+    action: 'LEFT_PANE_SORT_ALPHA',
+    label: 'Sort left pane A-Z',
+    description: 'Sort left pane items alphabetically',
+  })
+
   const modes = sortModes ?? ['recent', 'score', 'alpha']
 
   if (collapsed) {
@@ -152,6 +226,7 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
         justifyContent: 'center', paddingTop: 12,
       }}>
         <button
+          type="button"
           data-qid={`left-pane:${paneId}:expand`}
           data-qs-action="LEFT_PANE_EXPAND"
           title={`Expand ${title}`}
@@ -173,18 +248,21 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
         }}>
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
+            padding: '12px 16px', borderBottom: (title || collapsible) ? `1px solid ${EMBRY.border}` : undefined, flexShrink: 0,
           }}>
-            <div style={label}>{title}</div>
-            <button
-              data-qid={`left-pane:${paneId}:collapse`}
-              data-qs-action="LEFT_PANE_COLLAPSE"
-              title={`Collapse ${title}`}
-              onClick={() => setCollapsed(true)}
-              aria-label={`Collapse ${title}`}
-              style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
-              <PanelLeftClose size={14} />
-            </button>
+            {title ? <div style={label}>{title}</div> : <div />}
+            {collapsible ? (
+              <button
+                type="button"
+                data-qid={`left-pane:${paneId}:collapse`}
+                data-qs-action="LEFT_PANE_COLLAPSE"
+                title={`Collapse ${title}`}
+                onClick={() => setCollapsed(true)}
+                aria-label={`Collapse ${title}`}
+                style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', padding: 2 }}>
+                <PanelLeftClose size={14} />
+              </button>
+            ) : null}
           </div>
           {searchable && (
             <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
@@ -192,15 +270,22 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
                 <Search size={12} color={EMBRY.dim} />
                 <input value={search} onChange={e => setSearch(e.target.value)}
                   data-qid={searchTestId}
-                  data-qs-action={searchTestId ? `${searchTestId.replace(/:/g, '_').toUpperCase()}_SEARCH` : undefined}
+                  data-qs-action="LEFT_PANE_FILTER_SEARCH"
                   title={`Search ${title}`}
                   placeholder="Filter..." aria-label={`Search ${title}`}
                   style={{ flex: 1, minHeight: 44, background: 'none', border: 'none', outline: 'none', color: EMBRY.white, fontSize: 11, fontFamily: MONO }} />
                 {sortable && (
                   <div style={{ display: 'flex', gap: 2, alignItems: 'center', flexShrink: 0 }}>
                     {SORT_ICONS.filter(s => modes.includes(s.mode)).map(s => (
-                      <button key={s.mode} onClick={() => setSortMode(s.mode)} title={s.title}
-                        style={{ background: 'none', border: 'none', padding: 2, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                      <button
+                        key={s.mode}
+                        type="button"
+                        data-qid={searchTestId ? `${searchTestId}:sort:${s.mode}` : undefined}
+                        data-qs-action={`LEFT_PANE_SORT_${s.mode.toUpperCase()}`}
+                        title={s.title}
+                        onClick={() => setSortMode(s.mode)}
+                        style={{ background: 'none', border: 'none', padding: 2, cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                      >
                         <s.Icon size={14} color={sortMode === s.mode ? EMBRY.accent : EMBRY.dim} />
                       </button>
                     ))}
@@ -208,7 +293,13 @@ export function LeftPane({ title, children, width = 260, searchable = false, sor
                 )}
               </div>
               {activeFilter && (
-                <button onClick={onClearFilter} style={{
+                <button
+                  type="button"
+                  data-qid={`left-pane:${paneId}:clear-filter`}
+                  data-qs-action="LEFT_PANE_CLEAR_FILTER"
+                  title={`Clear filter ${activeFilter}`}
+                  onClick={onClearFilter}
+                  style={{
                   marginTop: 4, background: 'rgba(255,60,60,0.1)', border: `1px solid ${EMBRY.red}`,
                   color: EMBRY.red, padding: '2px 8px', borderRadius: 3, fontSize: 9, fontWeight: 700, cursor: 'pointer',
                   fontFamily: MONO,

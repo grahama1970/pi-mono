@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T02:05:01.095Z",
+  "generated_at": "2026-06-01T18:59:29.985Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -9,7 +9,7 @@
       "sparta_controls": 12309,
       "sparta_qra": 245975,
       "sparta_qra_canonical": 19160,
-      "sparta_qra_relationship": 2178,
+      "sparta_qra_relationship": 2250,
       "sparta_relationships": 262426,
       "sparta_urls": 6854,
       "sparta_url_knowledge": 43402,
@@ -20,8 +20,8 @@
     "controls": 12309,
     "qrasLegacy": 245975,
     "qrasCanonical": 19160,
-    "qrasRelationship": 2178,
-    "qrasTotal": 267313,
+    "qrasRelationship": 2250,
+    "qrasTotal": 267385,
     "relationships": 262426,
     "urls": 6854,
     "urlKnowledge": 43402,
@@ -41,15 +41,15 @@
     "counts": {
       "legacy": 245975,
       "canonical": 19160,
-      "relationship": 2178,
-      "total": 267313
+      "relationship": 2250,
+      "total": 267385
     },
     "use_policy": "Use current QRAs as plausible corpus artifacts for testing Sparta Explorer, Sparta Chat, /create-evidence-case, retrieval, and conversation-lab workflows; do not present them as Aerospace Corp expert-blessed answers.",
     "next_action": "After SPARTA Corpora and Explorer surfaces are complete, route current QRAs through Aerospace Corp cybersecurity expert evaluation and blessing metadata."
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-06-01T02:04:38Z",
+    "generated_at": "2026-06-01T18:59:08Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -471,14 +471,14 @@
       {
         "ok": true,
         "dimension": "create_qras_remaining_calls",
-        "message": "0 implemented calls remain; 69 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
+        "message": "0 implemented calls remain; 0 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)"
       },
       {
         "ok": true,
         "dimension": "qra_question_surface_quality",
-        "message": "0 malformed question surfaces across 21,338 scanned QRAs; 936 course-corrected and 55 terminal non-generation placeholders classified outside QRA surfaces",
+        "message": "0 malformed question surfaces across 21,410 scanned QRAs; 936 course-corrected and 86 terminal non-generation placeholders classified outside QRA surfaces",
         "malformed": 0,
-        "scanned": 21338,
+        "scanned": 21410,
         "course_corrected_non_generation": 936,
         "course_corrected_by_collection": {
           "sparta_qra_canonical": 485,
@@ -542,7 +542,7 @@
     "remaining": {
       "ok": true,
       "dimension": "create_qras_remaining_calls",
-      "message": "0 implemented calls remain; 69 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
+      "message": "0 implemented calls remain; 0 comparison candidates are review-gated pending accepted /create-evidence-case responses (8,107 raw candidates)",
       "native_remaining_any_collection_total": 0,
       "native_remaining_non_sparta_total": 0,
       "native_remaining_sparta_any_collection": 0,
@@ -636,20 +636,20 @@
         "sparta_technique_countermeasure_relationship": 0
       },
       "sparta_control_to_control_raw_candidate_pairs": 8107,
-      "sparta_control_to_control_gated_pairs": 69,
+      "sparta_control_to_control_gated_pairs": 0,
       "sparta_control_to_control_gated_skip_reasons": {
         "no_grounded_overlap": 7786,
-        "already_materialized": 246,
+        "already_materialized": 315,
         "non_substantive_node": 6
       },
       "implemented_backlog_total_if_legacy_sparta_native_counts_as_done": 0,
       "implemented_backlog_total_if_v2_sparta_native_required": 0,
-      "exact_remaining_calls_total": 69,
+      "exact_remaining_calls_total": 0,
       "total_with_raw_comparison_candidates": 8107
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T02:04:38Z",
+      "generated_at": "2026-06-01T18:59:08Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -706,7 +706,7 @@
       "skill": "best-practices-prompt",
       "ok": false,
       "status": "fail",
-      "message": "31/38 scanned prompt files pass; 10/10 active prompt units pass."
+      "message": "14/21 scanned prompt files pass; 2/2 active prompt units pass."
     },
     {
       "name": "Arango/Qdrant source embedding coverage",
@@ -718,142 +718,6 @@
   ],
   "promptAudit": {
     "allRows": [
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
-        "prompt_kind": "frameworks/attack",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
-        "prompt_kind": "frameworks/capec",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
-        "prompt_kind": "frameworks/cve",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
-        "prompt_kind": "frameworks/cwe",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
-        "prompt_kind": "frameworks/d3fend",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
-        "prompt_kind": "frameworks/doc2qra",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
-        "prompt_kind": "frameworks/esa",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
-        "prompt_kind": "frameworks/nist",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_user.txt"
-      },
       {
         "banned_words": [],
         "checks": {
@@ -1219,159 +1083,6 @@
           "rejectionCriteria": true
         },
         "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
-        "prompt_kind": "review/sparta_reviewer",
-        "source": "create-qras-production",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/countermeasure_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/tactic_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/technique_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/tactic_technique_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-        "prompt_kind": "sparta/repair/ambiguous_qra_repair",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-        "prompt_kind": "sparta/standalone/url_excerpt",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
         "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
         "prompt_kind": "sparta/variants/blessed_qra_variant",
         "source": "create-qras-active-sparta",
@@ -1397,8 +1108,8 @@
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/qra_term_recall_alias_user.txt"
       }
     ],
-    "all_passed": 31,
-    "all_total": 38,
+    "all_passed": 14,
+    "all_total": 21,
     "autofix": {
       "mode": "review_required",
       "resume_hint": "Run review-prompt for failed prompt units, then apply only passing mechanical patches.",
@@ -1566,144 +1277,8 @@
         "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/native/sparta_url_user.txt"
       }
     ],
-    "passed": 10,
+    "passed": 2,
     "rows": [
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/countermeasure_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/tactic_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-        "prompt_kind": "sparta/canonical/technique_canonical",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/tactic_technique_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-        "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-        "prompt_kind": "sparta/repair/ambiguous_qra_repair",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt"
-      },
-      {
-        "banned_words": [],
-        "checks": {
-          "exactJson": true,
-          "grounding": true,
-          "inputOutput": true,
-          "rationale": true,
-          "rejectionCriteria": true
-        },
-        "failures": [],
-        "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-        "prompt_kind": "sparta/standalone/url_excerpt",
-        "source": "create-qras-active-sparta",
-        "status": "pass",
-        "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-        "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt"
-      },
       {
         "banned_words": [],
         "checks": {
@@ -1742,34 +1317,27 @@
     "schema_version": 1,
     "scopes": [
       {
-        "passed": 10,
+        "passed": 2,
         "source": "create-qras-active-sparta",
-        "total": 10
+        "total": 2
       },
       {
-        "passed": 21,
+        "passed": 12,
         "source": "create-qras-production",
-        "total": 28
+        "total": 19
       }
     ],
     "state": "covered",
     "status": "pass",
-    "total": 10
+    "total": 2
   },
   "artifacts": {
     "recent": [
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260530_170823.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260531_212536.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260601_020101.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_backfill_summary_20260601_020214.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_accepted_failures_20260530.jsonl",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_accepted_failures_20260530_canary.jsonl",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_accepted_failures_20260530_partial.jsonl",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_accepted_failures_20260531_212536.jsonl",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260530_170823.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260531_212536.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_020101.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_020214.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_170557_retry_schema_ia000503.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_170819.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_171037.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_gated_manifest_20260601_171215.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_non_generation_20260601_020214_retry_failures_01.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_pending_failures_20260531.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_retry2_failures_20260531.jsonl",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_comparison_retry3_failures_20260531.jsonl",
@@ -1777,7 +1345,14 @@
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260530_170823.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260531_212536.json",
       "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_020101.json",
-      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_020214.json"
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_020214.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_164655.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_165018.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_170504.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_170557.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_170819.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_171037.json",
+      "artifacts/monitor_sparta_gap_plan/create_qras_sparta_remaining_manifest_20260601_171215.json"
     ],
     "c2cAuditPath": "artifacts/monitor_sparta_gap_plan/c2c_final_audit_20260427T221000Z.json",
     "nonC2cAuditPath": "artifacts/monitor_sparta_gap_plan/sparta_non_c2c_175_final_audit_20260428T115440Z.json"
@@ -1785,10 +1360,10 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-06-01T02:04:39.247250Z",
-    "heartbeat_at": "2026-06-01T02:04:39.247250Z",
+    "generated_at": "2026-06-01T18:59:09.292036Z",
+    "heartbeat_at": "2026-06-01T18:59:09.292036Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 56,
+    "previous_snapshot_age_seconds": 15866,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2046,147 +1621,11 @@
       "schema_version": 1,
       "status": "pass",
       "state": "covered",
-      "passed": 10,
-      "total": 10,
-      "all_passed": 31,
-      "all_total": 38,
+      "passed": 2,
+      "total": 2,
+      "all_passed": 14,
+      "all_total": 21,
       "rows": [
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/countermeasure_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/tactic_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/technique_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/tactic_technique_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/repair/ambiguous_qra_repair",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/standalone/url_excerpt",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
         {
           "source": "create-qras-active-sparta",
           "prompt_kind": "sparta/variants/blessed_qra_variant",
@@ -2223,142 +1662,6 @@
         }
       ],
       "allRows": [
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/attack",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/attack_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/capec",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/capec_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/cve",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cve_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/cwe",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/cwe_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/d3fend",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/d3fend_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/doc2qra",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/doc2qra_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/esa",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/esa_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-production",
-          "prompt_kind": "frameworks/nist",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/frameworks/nist_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
         {
           "source": "create-qras-production",
           "prompt_kind": "native/attack",
@@ -2715,159 +2018,6 @@
           ]
         },
         {
-          "source": "create-qras-production",
-          "prompt_kind": "review/sparta_reviewer",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/review/sparta_reviewer_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/countermeasure_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/countermeasure_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/tactic_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/tactic_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/canonical/technique_canonical",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/canonical/technique_canonical_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/tactic_technique_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/tactic_technique_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/technique_countermeasure_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_countermeasure_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/relationship/technique_related_controls_relationship",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/relationship/technique_related_controls_relationship_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/repair/ambiguous_qra_repair",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/repair/ambiguous_qra_repair_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
-          "source": "create-qras-active-sparta",
-          "prompt_kind": "sparta/standalone/url_excerpt",
-          "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-          "system_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_system.txt",
-          "user_path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/standalone/url_excerpt_user.txt",
-          "status": "pass",
-          "checks": {
-            "rationale": true,
-            "inputOutput": true,
-            "exactJson": true,
-            "grounding": true,
-            "rejectionCriteria": true
-          },
-          "banned_words": [],
-          "failures": []
-        },
-        {
           "source": "create-qras-active-sparta",
           "prompt_kind": "sparta/variants/blessed_qra_variant",
           "path": "/home/graham/workspace/experiments/agent-skills/skills/create-qras/prompts/sparta/variants/blessed_qra_variant_system.txt",
@@ -3058,13 +2208,13 @@
       "scopes": [
         {
           "source": "create-qras-active-sparta",
-          "passed": 10,
-          "total": 10
+          "passed": 2,
+          "total": 2
         },
         {
           "source": "create-qras-production",
-          "passed": 21,
-          "total": 28
+          "passed": 12,
+          "total": 19
         }
       ],
       "autofix": {
@@ -3084,7 +2234,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T02:05:01Z",
+      "generated_at": "2026-06-01T18:59:29Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -3118,7 +2268,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T02:05:01Z",
+      "generated_at": "2026-06-01T18:59:29Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -3131,7 +2281,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T02:04:33Z",
+      "generated_at": "2026-06-01T18:59:03Z",
       "status": "fail",
       "state": "gaps_found",
       "target_counts": {
@@ -3141,7 +2291,7 @@
       "observed_counts": {
         "arango_embedding_docs": 0,
         "arango_synced_docs": 43396,
-        "qdrant_vectors": 654554
+        "qdrant_vectors": 654573
       },
       "gaps": {
         "missing_vectors": 0,
@@ -3274,7 +2424,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 654554,
+        "point_count": 654573,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43402
         }
@@ -3289,7 +2439,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T02:04:59Z",
+      "generated_at": "2026-06-01T18:59:28Z",
       "status": "pass",
       "state": "covered",
       "summary": {

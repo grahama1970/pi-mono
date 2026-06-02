@@ -3,6 +3,7 @@
  * Used by Embry Terminal and SPARTA Explorer chat input bars.
  */
 import { useState, useEffect, useMemo, memo } from 'react';
+import { useRegisterAction } from '../../hooks/useRegisterAction';
 import Fuse from 'fuse.js';
 import type { Skill } from './types';
 
@@ -17,6 +18,20 @@ export interface SkillPaletteProps {
 
 export const SkillPalette = memo(function SkillPalette({ filter, skills, onSelect, onClose, onKeyNav, maxResults = 12 }: SkillPaletteProps) {
   const [index, setIndex] = useState(0);
+
+  useRegisterAction('skill-palette:open', {
+    app: 'ux-lab',
+    action: 'SKILL_PALETTE_OPEN',
+    label: 'Skills palette open',
+    description: 'Skill palette dropdown is visible',
+  });
+
+  useRegisterAction('skill-palette:select', {
+    app: 'ux-lab',
+    action: 'SKILL_PALETTE_SELECT_SKILL',
+    label: 'Select skill from palette',
+    description: 'Insert a skill slash command from the palette',
+  });
 
   // Deduplicate by name
   const uniqueSkills = useMemo(() => {
@@ -56,9 +71,15 @@ export const SkillPalette = memo(function SkillPalette({ filter, skills, onSelec
       width: 320, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.13)',
       borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', zIndex: 100,
       maxHeight: 280, overflow: 'auto',
-    }} data-qs-action="SKILL_PALETTE_OPEN" data-qid="skill-palette:dropdown">
+    }} data-qs-action="SKILL_PALETTE_OPEN" data-qid="skill-palette:dropdown" title="Skills palette">
       {filtered.map((skill, i) => (
-        <button key={skill.name} onClick={() => onSelect(skill.name)}
+        <button
+          key={skill.name}
+          type="button"
+          data-qid={`skill-palette:skill:${skill.name}:select`}
+          data-qs-action="SKILL_PALETTE_SELECT_SKILL"
+          title={`Insert skill /${skill.name}`}
+          onClick={() => onSelect(skill.name)}
           onMouseEnter={() => setIndex(i)}
           style={{
             display: 'block', width: '100%', textAlign: 'left', padding: '8px 14px',
@@ -67,7 +88,6 @@ export const SkillPalette = memo(function SkillPalette({ filter, skills, onSelec
             border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui, sans-serif)',
             transition: 'background 0.1s',
           }}
-          data-qid={`skill-palette:skill:${skill.name}:select`}
         >
           <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: 12, fontWeight: 600, color: '#4a9eff' }}>/{skill.name}</span>
           <div style={{ fontSize: 10, color: '#64748b', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.description}</div>
