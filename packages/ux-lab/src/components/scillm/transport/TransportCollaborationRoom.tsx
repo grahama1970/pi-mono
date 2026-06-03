@@ -12,8 +12,8 @@ import {
 } from './callInspector'
 import { TransportMessageTimeline, type TransportTimelineHandle } from './TransportMessageTimeline'
 import { TransportComposer } from './TransportComposer'
-import type { ComposerSpeaker } from './TransportCollaborationRoom.types'
 import { SPEAKER_LABEL } from './TransportCollaborationRoom.types'
+import type { ComposerSpeaker } from './TransportCollaborationRoom.types'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import {
   fetchTransportDialog,
@@ -47,9 +47,29 @@ export interface TransportCollaborationRoomProps {
   initialRunId?: string
 }
 
-const DEFAULT_LIVE_RUN_ID = 'otr-proof-r008'
+const TRANSPORT_UI_REV = '2026-06-02-persona'
+const DEFAULT_LIVE_RUN_ID = ''
 const POLL_MS = 4000
 const MAX_EVENTS = 250
+
+
+function TransportStaleRunBanner({
+  activeChild,
+}: {
+  activeChild?: { agent_id?: string; subagent_kind?: string; role?: string } | null
+}) {
+  if (!activeChild || (activeChild.agent_id || '').trim()) return null
+  return (
+    <div className="transport-stale-run-banner" data-qid="transport:stale-run-banner" role="status">
+      <strong>This run has no worker template id.</strong>
+      {' '}
+      Personas stay generic (e.g. “Reviewer”) until you start a new transport run with{' '}
+      <code>agent_id</code> (e.g. <code>code-reviewer</code>).
+      {' '}
+      Run <code>scripts/transport_opencode_review_round.sh 009</code> in scillm, then open the new run id here.
+    </div>
+  )
+}
 
 export function TransportCollaborationRoom({
   mode = 'live',
@@ -71,10 +91,12 @@ export function TransportCollaborationRoom({
   const [sending, setSending] = useState(false)
   const [streamConnected, setStreamConnected] = useState(false)
   const [lastRefreshAt, setLastRefreshAt] = useState<number | null>(isMock ? Date.now() : null)
-  const [composerSpeaker, setComposerSpeaker] = useState<ComposerSpeaker>('human')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [metaOpen, setMetaOpen] = useState(true)
+  const [metaOpen, setMetaOpen] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 1400 : false,
+  )
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null)
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
   const [highlightAnchor, setHighlightAnchor] = useState<string | null>(null)
   const streamPreset = 'handoffs' as const
   const timelineRef = useRef<TransportTimelineHandle>(null)
@@ -98,6 +120,24 @@ export function TransportCollaborationRoom({
   }, [isMock])
 
   useEffect(() => { void refreshRunIndex() }, [refreshRunIndex])
+  useEffect(() => {
+    if (isMock || initialRunId || runId.trim()) return
+    void (async () => {
+      try {
+        const remote = await fetchTransportRunIndex()
+        if (!remote.length) return
+        const newest = [...remote].sort((a, b) => (b.mtime_ms || 0) - (a.mtime_ms || 0))[0]
+        if (newest?.transport_run_id) {
+          setRunId(newest.transport_run_id)
+          setDraftRunId(newest.transport_run_id)
+        }
+      } catch {
+        /* keep empty */
+      }
+    })()
+  }, [isMock, initialRunId, runId])
+
+
 
   const refresh = useCallback(async () => {
     if (isMock) {
@@ -197,6 +237,7 @@ export function TransportCollaborationRoom({
       setEvents([])
     }
     setSelectedCallId(null)
+    setSelectedMessageId(null)
   }, [runId, isMock])
 
   useEffect(() => {
@@ -221,17 +262,20 @@ export function TransportCollaborationRoom({
       allEvents: events,
       turns,
       parentModel: observation?.parent_ui_model,
+      focusMessageId: selectedMessageId,
     }),
-    [selectedCall, events, turns, observation?.parent_ui_model],
+    [selectedCall, events, turns, observation?.parent_ui_model, selectedMessageId],
   )
 
-  const handleSelectCall = useCallback((id: string) => {
+  const handleSelectCall = useCallback((id: string, messageId?: string) => {
     setSelectedCallId(id)
+    setSelectedMessageId(messageId ?? null)
     setMetaOpen(true)
   }, [])
 
-  const handleSend = useCallback(async (text: string) => {
-    if (!text.trim()) return
+  const handleSend = useCallback(async (body: string, speaker: ComposerSpeaker = 'human') => {
+    const trimmed = body.trim()
+    if (!trimmed) return
     if (isMock) {
       setDialog((current) => {
         const base = current ?? mockTransportDialog
@@ -241,9 +285,9 @@ export function TransportCollaborationRoom({
             ...base.turns,
             {
               message_id: `mock-${Date.now()}`,
-              collaborator: composerSpeaker === 'human' ? 'human' : 'project_agent',
-              speaker: SPEAKER_LABEL[composerSpeaker],
-              text: text.trim(),
+              collaborator: speaker === 'human' ? 'human' : 'project_agent',
+              speaker: SPEAKER_LABEL[speaker],
+              text: trimmed,
             },
           ],
         }
@@ -253,18 +297,18 @@ export function TransportCollaborationRoom({
     }
     setSending(true)
     try {
-      const slugs = extractSkillSlugs(text)
-      const primary = primarySkillSlug(text, skills)
+      const slugs = extractSkillSlugs(trimmed)
+      const primary = primarySkillSlug(trimmed, skills)
       if (primary && slugs.length > 0) {
         await postTransportDialog(runId.trim(), {
-          speaker: SPEAKER_LABEL[composerSpeaker],
-          body: text.trim(),
+          speaker: SPEAKER_LABEL[speaker],
+          body: trimmed,
           execute_skills: true,
         })
       } else {
         await postTransportDialog(runId.trim(), {
-          speaker: SPEAKER_LABEL[composerSpeaker],
-          body: text.trim(),
+          speaker: SPEAKER_LABEL[speaker],
+          body: trimmed,
           execute_skills: false,
         })
       }
@@ -274,7 +318,7 @@ export function TransportCollaborationRoom({
     } finally {
       setSending(false)
     }
-  }, [isMock, runId, refresh, composerSpeaker, skills])
+  }, [isMock, runId, refresh, skills])
 
   const selectRun = useCallback((id: string) => {
     const trimmed = id.trim()
@@ -288,13 +332,26 @@ export function TransportCollaborationRoom({
     }
   }, [isMock])
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
+        const target = e.target as HTMLElement | null
+        if (target?.closest('input, textarea, [contenteditable="true"]')) return
+        e.preventDefault()
+        const next = window.prompt('Transport run id', runId)
+        if (next?.trim()) selectRun(next.trim())
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [runId, selectRun])
+
   return (
     <div className={`transport-room transport-room--${isMock ? 'mock' : 'live'}`} data-qid="transport:room:root">
       <div className={`transport-room__shell${sidebarCollapsed ? ' transport-room__shell--sidebar-collapsed' : ''}${metaOpen ? '' : ' transport-room__shell--meta-closed'}`}>
         <TransportRunSidebar
           runs={runHistory}
           activeRunId={runId}
-          activeRunHealth={runHealth}
           calls={calls}
           selectedCallId={selectedCallId}
           onSelectCall={handleSelectCall}
@@ -307,7 +364,8 @@ export function TransportCollaborationRoom({
         />
 
         <div className="transport-main">
-          <TransportRoomHeader
+          {/* ui bundle: {TRANSPORT_UI_REV} */}
+        <TransportRoomHeader
             runId={runId}
             onRefresh={() => void refresh()}
             loading={loading}
@@ -319,17 +377,20 @@ export function TransportCollaborationRoom({
             sidebarCollapsed={sidebarCollapsed}
             onSidebarToggle={() => setSidebarCollapsed((v) => !v)}
             runHealth={runHealth}
+            dagNodeId={runState?.state?.dag_node_id}
           />
 
-          <TransportNowStrip health={runHealth} />
+          {runHealth.nextAction ? <TransportNowStrip health={runHealth} /> : null}
 
           {error && (
             <div className="transport-room-error" data-qid="transport:room:error" role="alert">{error}</div>
           )}
 
+          <TransportStaleRunBanner activeChild={dialog?.active_subagent ?? null} />
+
           <div className="transport-body-row">
             <main className="transport-chat-column" data-qid="transport:room:chat">
-<TransportMessageTimeline
+              <TransportMessageTimeline
                 ref={timelineRef}
                 turns={turns}
                 runId={runId}
@@ -338,13 +399,16 @@ export function TransportCollaborationRoom({
                 workerUrl={workerUrl}
                 streamPreset={streamPreset}
                 highlightAnchor={highlightAnchor}
+                calls={calls}
+                events={events}
+                selectedCallId={selectedCallId}
+                selectedMessageId={selectedMessageId}
                 onSelectCall={handleSelectCall}
               />
               <TransportComposer
-                speaker={composerSpeaker}
-                onSpeakerChange={setComposerSpeaker}
-                onSend={(t) => void handleSend(t)}
+                onSend={(t, s) => void handleSend(t, s)}
                 skills={skills}
+                sending={sending}
                 pendingCount={pendingCount}
               />
             </main>

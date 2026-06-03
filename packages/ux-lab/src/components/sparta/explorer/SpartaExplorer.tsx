@@ -21,6 +21,30 @@ export type GateDepth = 'fast' | 'medium' | 'accurate'
 
 const API = ''
 const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
+type ChatEvidenceBindingState = {
+  run_ok: boolean
+  stream_ok: boolean
+  gates_passed: number
+  gates_total: number
+  verdict?: string
+}
+
+function normalizeChatEvidenceBinding(
+  binding: unknown,
+  expectedSource: 'run' | 'stream',
+): Omit<ChatEvidenceBindingState, 'run_ok' | 'stream_ok'> & { ok: boolean } {
+  if (!binding || typeof binding !== 'object') {
+    return { ok: false, gates_passed: 0, gates_total: 0 }
+  }
+  const record = binding as Record<string, unknown>
+  const sourceOk = record.source === expectedSource
+  return {
+    ok: record.predicate === 'CHAT_EVIDENCE_BINDING' && record.ok === true && sourceOk,
+    gates_passed: Number(record.gates_passed ?? 0),
+    gates_total: Number(record.gates_total ?? 0),
+    verdict: typeof record.verdict === 'string' ? record.verdict : undefined,
+  }
+}
 
 function readCoverageHealthCache(): CoverageHealthSnapshot | null {
   try {
@@ -176,6 +200,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const [chatReadiness, setChatReadiness] = useState<{ ready: boolean; warning?: string }>({
     ready: false,
     warning: 'Coverage readiness is not loaded yet. Chat is verification-only; conversation-lab is not approved.',
+  })
+  const [chatEvidenceBinding, setChatEvidenceBinding] = useState<ChatEvidenceBindingState>({
+    run_ok: false,
+    stream_ok: false,
+    gates_passed: 0,
+    gates_total: 0,
   })
   const [evidenceCaseLoading, setEvidenceCaseLoading] = useState<string | null>(null)
   const [evidenceStreaming, setEvidenceStreaming] = useState(false)
@@ -372,6 +402,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         memoryDaemonOk: daemonHealth.ok,
         ready: chatReadiness.ready,
         warning: chatReadiness.warning,
+        evidenceBinding: chatEvidenceBinding,
       })
       const state = live.state === 'pass' || live.state === 'degraded' || live.state === 'fail' ? live.state : 'fail'
       return { ...base, ...live, state }
@@ -383,7 +414,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     const live = deriveCoveragePagePurposeState(snapshotForPurpose)
     const state = live.state === 'pass' || live.state === 'degraded' || live.state === 'fail' ? live.state : 'fail'
     return { ...base, ...live, state }
-  }, [activeTab, chatOpen, chatReadiness.ready, chatReadiness.warning, coverageHealthSnapshot, daemonHealth.ok])
+  }, [activeTab, chatOpen, chatReadiness.ready, chatReadiness.warning, chatEvidenceBinding, coverageHealthSnapshot, daemonHealth.ok])
 
   const checkChatReadiness = useCallback(async () => {
     try {
@@ -655,6 +686,21 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
 
       if (finalPayload) {
         const responsePolicy = finalPayload.response_policy ?? {}
+        const bindingProof = normalizeChatEvidenceBinding(finalPayload.chat_evidence_binding, 'stream')
+        let runBindingPayload: any = null
+        let runBindingProof: ReturnType<typeof normalizeChatEvidenceBinding> = { ok: false, gates_passed: 0, gates_total: 0 }
+        try {
+          const runRes = await fetch(`${API}/api/evidence-case/run`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question, nodeLabel: activeTab, profile: scopeToEvidenceProfile(scope), evidenceProfile: scopeToEvidenceProfile(scope) }),
+            signal: AbortSignal.timeout(90_000),
+          })
+          runBindingPayload = await runRes.json()
+          runBindingProof = normalizeChatEvidenceBinding(runBindingPayload?.chat_evidence_binding, 'run')
+        } catch {
+          runBindingPayload = null
+        }
         const gates: EvidenceGate[] = (finalPayload.gate_trace ?? []).map((g: any) => ({
           gate: g.gate ?? g.name ?? '?',
           passed: !!g.passed,
@@ -662,6 +708,13 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           duration: g.duration,
         }))
         const verdict = String(finalPayload.verdict?.state ?? 'inconclusive')
+        setChatEvidenceBinding(prev => ({
+          run_ok: prev.run_ok || runBindingProof.ok,
+          stream_ok: bindingProof.ok,
+          gates_passed: bindingProof.gates_passed,
+          gates_total: bindingProof.gates_total,
+          verdict: bindingProof.verdict ?? verdict,
+        }))
         const glossaryEntities: EntityRef[] = (Array.isArray(finalPayload.glossary) ? finalPayload.glossary : []).slice(0, 16).map((g: any) => ({
           id: String(g.term ?? g.id ?? g.name),
           label: String(g.term ?? g.name ?? g.id),
@@ -692,6 +745,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             glossary: finalPayload.glossary ?? [],
             diagnostics: finalPayload.diagnostics ?? {},
             response_policy: responsePolicy,
+            chat_evidence_binding: finalPayload.chat_evidence_binding,
+            chat_evidence_run_binding: runBindingPayload?.chat_evidence_binding,
             evidence_case_version: finalPayload.evidence_case_version,
             gap_review: finalPayload.gap_review,
             gap_review_status: finalPayload.gap_review_status,
@@ -895,6 +950,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       })
       const data = await res.json()
       const responsePolicy = data.response_policy ?? {}
+      const bindingProof = normalizeChatEvidenceBinding(data.chat_evidence_binding, 'run')
       const gates: EvidenceGate[] = (data.gates ?? data.gate_trace ?? []).map((g: any) => ({
         gate: g.gate ?? g.name ?? '?',
         passed: !!g.passed,
@@ -902,6 +958,13 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       }))
       const verdict = data.verdict?.state ?? data.verdict_state ?? 'unknown'
       const tier = data.tier ?? 'T0'
+      setChatEvidenceBinding(prev => ({
+        run_ok: res.ok && bindingProof.ok,
+        stream_ok: prev.stream_ok,
+        gates_passed: bindingProof.gates_passed,
+        gates_total: bindingProof.gates_total,
+        verdict: bindingProof.verdict ?? String(verdict),
+      }))
       const tierLabel = tier === 'T2' ? ' [LLM Adjudicated]' : ''
       addMsg({
         role: 'system',
@@ -924,6 +987,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           glossary: data.glossary ?? [],
           diagnostics: data.diagnostics ?? {},
           response_policy: responsePolicy,
+          chat_evidence_binding: data.chat_evidence_binding,
           evidence_case_version: data.evidence_case_version,
           gap_review: data.gap_review,
           gap_review_status: data.gap_review_status,

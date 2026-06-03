@@ -84,7 +84,7 @@ export function MetadataPills({ metadata, workerUrl }: { metadata: DisplayMetada
           title={`Open trace URL ${url}`}
         >
           <ExternalLink size={12} aria-hidden />
-          Trace
+          View trace link
         </a>
       ))}
     </div>

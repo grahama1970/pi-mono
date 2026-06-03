@@ -2,9 +2,12 @@
  * Typed card labels for transport transcript (role + phase + collapse policy).
  */
 import type { DisplayMessage, DisplayMessageKind } from './messageParse'
+import { TRANSPORT_ROLE_VISUALS } from './transportRoleVisuals'
+import { workerPersonaName } from './transportActorDisplay'
 
-export type CardRoleClass = 'human' | 'reviewer' | 'worker' | 'system'
-export type CardIconKind = 'human' | 'handoff' | 'worker' | 'skill' | 'system'
+export type CardRoleClass = 'human' | 'planner' | 'subagent' | 'orchestrator'
+/** plan=Route (planner); orchestrate=Workflow (harness dispatch/spawn/system) */
+export type CardIconKind = 'human' | 'plan' | 'orchestrate' | 'worker' | 'skill' | 'system'
 
 export interface CardContract {
   roleLabel: string
@@ -56,79 +59,97 @@ export function summarizeMessage(message: DisplayMessage): string {
 
 function roleClassFor(kind: DisplayMessageKind): CardRoleClass {
   if (kind === 'human') return 'human'
-  if (kind === 'worker' || kind === 'task_card') return 'worker'
-  if (kind === 'system' || kind === 'transport_start') return 'system'
-  return 'reviewer'
+  if (kind === 'worker' || kind === 'task_card') return 'subagent'
+  if (kind === 'system' || kind === 'transport_start') return 'orchestrator'
+  return 'planner'
 }
 
 export function cardContractFor(message: DisplayMessage): CardContract {
   if (isSkillCallMessage(message)) {
+    const v = TRANSPORT_ROLE_VISUALS.skill
     return {
-      roleLabel: 'Reviewer',
+      roleLabel: v.label,
       phaseLabel: 'Skill',
-      roleClass: 'reviewer',
+      roleClass: 'planner',
       icon: 'skill',
       headerTitle: 'Skill call',
     }
   }
 
   switch (message.kind) {
-    case 'human':
+    case 'human': {
+      const v = TRANSPORT_ROLE_VISUALS.human
       return {
-        roleLabel: 'Human',
-        phaseLabel: 'Input',
+        roleLabel: v.label,
+        phaseLabel: 'Steering',
         roleClass: 'human',
         icon: 'human',
         headerTitle: 'Human',
       }
-    case 'agent_card':
+    }
+    case 'agent_card': {
+      const v = TRANSPORT_ROLE_VISUALS.planner
+      const persona = workerPersonaName(message)
       return {
-        roleLabel: 'Reviewer',
+        roleLabel: v.label,
         phaseLabel: 'Spawn',
-        roleClass: 'reviewer',
-        icon: 'handoff',
-        headerTitle: 'Reviewer spawned worker',
+        roleClass: 'planner',
+        icon: 'plan',
+        headerTitle: message.title || `Spawned ${persona}`,
       }
-    case 'task_card':
+    }
+    case 'task_card': {
+      const persona = workerPersonaName(message)
       return {
-        roleLabel: 'Worker',
-        phaseLabel: 'Spawn',
-        roleClass: 'worker',
+        roleLabel: persona,
+        phaseLabel: 'Task',
+        roleClass: 'subagent',
         icon: 'worker',
-        headerTitle: 'Worker task',
+        headerTitle: message.title || `${persona} — task`,
       }
-    case 'worker':
+    }
+    case 'worker': {
+      const persona = workerPersonaName(message)
       return {
-        roleLabel: 'Worker',
-        phaseLabel: message.metadata.verdict ? 'Result' : 'Handoff',
-        roleClass: 'worker',
+        roleLabel: persona,
+        phaseLabel: message.metadata.verdict ? 'Result' : 'Update',
+        roleClass: 'subagent',
         icon: 'worker',
-        headerTitle: message.metadata.verdict ? 'Worker result' : 'Worker update',
+        headerTitle: message.metadata.verdict
+          ? `${persona} — ${message.metadata.verdict}`
+          : `${persona} — update`,
       }
-    case 'transport_start':
+    }
+    case 'transport_start': {
+      const v = TRANSPORT_ROLE_VISUALS.orchestrator
       return {
-        roleLabel: 'System',
-        phaseLabel: 'System',
-        roleClass: 'system',
-        icon: 'system',
+        roleLabel: v.label,
+        phaseLabel: 'Transport',
+        roleClass: 'orchestrator',
+        icon: 'orchestrate',
         headerTitle: 'Transport started',
       }
-    case 'system':
+    }
+    case 'system': {
+      const v = TRANSPORT_ROLE_VISUALS.orchestrator
       return {
-        roleLabel: 'System',
+        roleLabel: v.label,
         phaseLabel: 'System',
-        roleClass: 'system',
-        icon: 'system',
-        headerTitle: message.collapseLabel || 'System event',
+        roleClass: 'orchestrator',
+        icon: 'orchestrate',
+        headerTitle: message.collapseLabel || 'Harness event',
       }
+    }
     case 'reviewer':
-    default:
+    default: {
+      const v = TRANSPORT_ROLE_VISUALS.planner
       return {
-        roleLabel: 'Reviewer',
-        phaseLabel: 'Handoff',
-        roleClass: 'reviewer',
-        icon: 'handoff',
-        headerTitle: 'Reviewer handoff',
+        roleLabel: v.label,
+        phaseLabel: 'Plan',
+        roleClass: 'planner',
+        icon: 'plan',
+        headerTitle: 'Project agent update',
       }
+    }
   }
 }

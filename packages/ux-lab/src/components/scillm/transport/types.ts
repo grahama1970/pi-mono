@@ -8,6 +8,7 @@ export interface TransportSubagentSummary {
   subagent_kind?: string
   subagent_label?: string
   agent?: string
+  agent_id?: string
   mode?: string
   attempt_id?: number
   child_session_id?: string
@@ -28,6 +29,7 @@ export interface TransportDialogTurn {
   subagent_kind?: string
   subagent_label?: string
   agent?: string
+  agent_id?: string
   mode?: string
   attempt_id?: number
   skills?: string[]

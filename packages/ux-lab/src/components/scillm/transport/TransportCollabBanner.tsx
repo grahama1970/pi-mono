@@ -13,7 +13,7 @@ export function TransportCollabBanner({
 }) {
   const collab = collaborators.length
     ? collaborators.map((c) => c.replace('_', ' ')).join(' + ')
-    : 'Human + Reviewer + Worker'
+    : 'Human + Project agent + Subagent'
 
   return (
     <div className="transport-collab-banner" data-qid="transport:collab:banner">

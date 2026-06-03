@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react'
-import { RefreshCw, PanelRightOpen, PanelRightClose, PanelLeftClose, PanelLeftOpen, Copy } from 'lucide-react'
+import { RefreshCw, PanelRightOpen, PanelRightClose, PanelLeftClose, PanelLeftOpen, Copy, Package } from 'lucide-react'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import type { RunHealth } from './runHealth'
-import { copyPageForWebReview, copyStaticReviewSnapshot } from './copyPageForWebReview'
+import { copyPageForWebReview } from './copyPageForWebReview'
+import { copyTransportForReview } from './transportReviewBundle'
+import { runDisplayName } from './transportTime'
 
 function formatAgo(ms: number): string {
   const sec = Math.max(0, Math.floor((Date.now() - ms) / 1000))
@@ -10,10 +12,6 @@ function formatAgo(ms: number): string {
   if (sec < 60) return `${sec}s ago`
   const min = Math.floor(sec / 60)
   return `${min}m ago`
-}
-
-function displayRunName(runId: string): string {
-  return runId.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
 export function TransportRoomHeader({
@@ -28,6 +26,7 @@ export function TransportRoomHeader({
   sidebarCollapsed,
   onSidebarToggle,
   runHealth,
+  dagNodeId,
 }: {
   runId: string
   onRefresh: () => void
@@ -40,9 +39,14 @@ export function TransportRoomHeader({
   sidebarCollapsed: boolean
   onSidebarToggle: () => void
   runHealth: RunHealth
+  dagNodeId?: string
 }) {
+  const displayName = useMemo(
+    () => runDisplayName({ transport_run_id: runId, dag_node_id: dagNodeId }),
+    [runId, dagNodeId],
+  )
   const [copiedLive, setCopiedLive] = useState(false)
-  const [copiedSnapshot, setCopiedSnapshot] = useState(false)
+  const [copyReviewState, setCopyReviewState] = useState<'idle' | 'working' | 'clipboard' | 'download' | 'error'>('idle')
 
   useRegisterAction('transport:room:refresh', {
     app: 'ux-lab',
@@ -57,6 +61,13 @@ export function TransportRoomHeader({
     label: 'Copy live DOM for web review',
     description: 'Copy rendered page HTML including runtime scripts',
   })
+  useRegisterAction('transport:room:copy-for-review', {
+    app: 'ux-lab',
+    action: 'TRANSPORT_ROOM_COPY_FOR_REVIEW',
+    label: 'Copy for review',
+    description: 'Screenshot + REVIEW_REQUEST + source bundle zip to clipboard or download',
+  })
+
 
   useRegisterAction('transport:sidebar:toggle', {
     app: 'ux-lab',
@@ -72,45 +83,52 @@ export function TransportRoomHeader({
     description: 'Show or hide the per-call inspector drawer',
   })
 
-  useRegisterAction('transport:room:copy-snapshot', {
-    app: 'ux-lab',
-    action: 'TRANSPORT_ROOM_COPY_SNAPSHOT',
-    label: 'Copy static review snapshot',
-    description: 'Copy HTML without Vite/client scripts for design review',
-  })
-
   const lastLabel = useMemo(() => {
-    if (!lastRefreshAt) return 'Never synced'
+    if (!lastRefreshAt) return 'never synced'
     return formatAgo(lastRefreshAt)
   }, [lastRefreshAt, loading])
 
   const statusLine = isMock ? 'Fixture mode' : runHealth.label
-  const streamLabel = isMock
-    ? null
-    : streamConnected
-      ? 'Stream live'
-      : 'Stream reconnecting'
+  const showStreamWarning = !isMock && !streamConnected
 
-  const flash = (setter: (v: boolean) => void) => {
-    setter(true)
-    window.setTimeout(() => setter(false), 1600)
+
+  const handleCopyForReview = async () => {
+    setCopyReviewState('working')
+    try {
+      const result = await copyTransportForReview({
+        runId,
+        pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+        runStatusLabel: statusLine,
+        dagNodeId,
+        streamConnected,
+        isMock,
+      })
+      setDiffInBundle(result.diffCaptured)
+      setCopyReviewState(result.clipboard ? 'clipboard' : 'download')
+      window.setTimeout(() => { setCopyReviewState('idle'); setDiffInBundle(false) }, 2400)
+    } catch {
+      setCopyReviewState('error')
+      window.setTimeout(() => { setCopyReviewState('idle'); setDiffInBundle(false) }, 2400)
+    }
   }
+
+  const [diffInBundle, setDiffInBundle] = useState(false)
+
+  const copyReviewLabel = (() => {
+    if (copyReviewState === 'working') return 'Building…'
+    if (copyReviewState === 'clipboard') return diffInBundle ? 'Copied zip + diff' : 'Copied zip'
+    if (copyReviewState === 'download') return diffInBundle ? 'Downloaded + diff' : 'Downloaded'
+    if (copyReviewState === 'error') return 'Copy failed'
+    return 'Copy for review'
+  })()
 
   const handleCopyLive = async () => {
     try {
       await copyPageForWebReview(document, 'live')
-      flash(setCopiedLive)
+      setCopiedLive(true)
+      window.setTimeout(() => setCopiedLive(false), 1600)
     } catch {
       setCopiedLive(false)
-    }
-  }
-
-  const handleCopySnapshot = async () => {
-    try {
-      await copyStaticReviewSnapshot()
-      flash(setCopiedSnapshot)
-    } catch {
-      setCopiedSnapshot(false)
     }
   }
 
@@ -118,7 +136,7 @@ export function TransportRoomHeader({
     <header className="tr-chat-header" data-qid="transport:room:header">
       <div className="tr-collab-title">
         <div className="tr-collab-label">Collaboration</div>
-        <div className="tr-collab-name">{displayRunName(runId)}</div>
+        <div className="tr-collab-name">{displayName}</div>
         <div className="tr-collab-status">
           <span
             className={`tr-status-dot tr-status-dot--${runHealth.kind}${
@@ -129,6 +147,12 @@ export function TransportRoomHeader({
             aria-hidden
           />
           <span>{statusLine}</span>
+          <span className="tr-collab-status__meta">· synced {lastLabel}</span>
+          {showStreamWarning && (
+            <span className="tr-stream-pill tr-stream-pill--reconnecting" data-qid="transport:stream:status">
+              Reconnecting stream
+            </span>
+          )}
         </div>
       </div>
 
@@ -153,22 +177,13 @@ export function TransportRoomHeader({
         >
           {metaOpen ? <PanelRightClose size={16} /> : <PanelRightOpen size={16} />}
         </button>
-        {streamLabel && (
-          <span
-            className={`tr-stream-pill${streamConnected ? ' tr-stream-pill--live' : ' tr-stream-pill--reconnecting'}`}
-            data-qid="transport:stream:status"
-            title="Events stream replays events.jsonl then tails live"
-          >
-            {streamLabel}
-          </span>
-        )}
         <button
           type="button"
-          className="tr-btn tr-btn--ghost"
+          className={`tr-btn tr-btn--ghost tr-btn--copy-live${copiedLive ? ' tr-btn--copied' : ''}`}
           data-qid="transport:room:copy-live"
           data-qs-action="TRANSPORT_ROOM_COPY_LIVE"
           data-copied={copiedLive || undefined}
-          title="Copy live DOM (includes runtime scripts)"
+          title="Copy live DOM for design review (includes runtime scripts)"
           onClick={() => void handleCopyLive()}
         >
           <Copy size={14} />
@@ -176,27 +191,29 @@ export function TransportRoomHeader({
         </button>
         <button
           type="button"
-          className="tr-btn tr-btn--ghost"
-          data-qid="transport:room:copy-snapshot"
-          data-qs-action="TRANSPORT_ROOM_COPY_SNAPSHOT"
-          data-copied={copiedSnapshot || undefined}
-          title="Copy static snapshot without Vite/client scripts"
-          onClick={() => void handleCopySnapshot()}
+          className={`tr-btn tr-btn--ghost tr-btn--copy-review${copyReviewState !== 'idle' ? ' tr-btn--copied' : ''}`}
+          data-qid="transport:room:copy-for-review"
+          data-qs-action="TRANSPORT_ROOM_COPY_FOR_REVIEW"
+          data-copied={copyReviewState === 'clipboard' || copyReviewState === 'download' || undefined}
+          title="Screenshot + REVIEW_REQUEST.md + source bundle zip (Gemini, ChatGPT, UX Pilot)"
+          disabled={copyReviewState === 'working'}
+          onClick={() => void handleCopyForReview()}
         >
-          <Copy size={14} />
-          {copiedSnapshot ? 'Copied' : 'Copy snapshot'}
+          <Package size={14} />
+          {copyReviewLabel}
         </button>
+
         <button
           type="button"
-          className="tr-btn tr-btn--primary"
+          className="tr-btn tr-btn--primary tr-btn--icon-label"
           data-qid="transport:room:refresh"
           data-qs-action="TRANSPORT_ROOM_REFRESH"
-          title={`Refresh (${lastLabel})`}
+          title={`Refresh · ${lastLabel}`}
           onClick={onRefresh}
           disabled={loading}
         >
           <RefreshCw size={14} className={loading ? 'transport-spin' : undefined} />
-          Refresh
+          <span className="tr-btn__label">Refresh</span>
         </button>
       </div>
     </header>

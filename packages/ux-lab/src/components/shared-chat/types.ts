@@ -194,6 +194,8 @@ export interface EvidenceCaseData {
 	approval_state?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
 	response_policy?: Record<string, unknown>;
+	chat_evidence_binding?: Record<string, unknown>;
+	chat_evidence_run_binding?: Record<string, unknown>;
 	glossary?: GlossaryTerm[];
 	diagnostics?: Record<string, unknown>;
 	evidence_case_version?: Record<string, unknown>;

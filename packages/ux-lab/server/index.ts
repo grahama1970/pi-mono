@@ -88,6 +88,54 @@ const WORKSHEETS_CACHE_TTL_MS = 60_000
 const MEMORY_REPO_ROOT = process.env.MEMORY_REPO_ROOT ?? '/home/graham/workspace/experiments/memory'
 const CREATE_QRAS_SKILL_ROOT = process.env.CREATE_QRAS_SKILL_ROOT ?? '/home/graham/workspace/experiments/agent-skills/skills/create-qras'
 const SPARTA_PROJECT_ROOT = process.env.SPARTA_PROJECT_ROOT ?? '/home/graham/workspace/experiments/sparta'
+const SPARTA_MONITOR_CLOSURE_AUDIT_PATH = process.env.SPARTA_MONITOR_CLOSURE_AUDIT_PATH
+  ?? resolve(SPARTA_PROJECT_ROOT, 'artifacts/monitor_sparta_closure/closure_audit_20260602T1615Z.json')
+
+async function readMonitorClosureBaseline(): Promise<JsonRecord | null> {
+  try {
+    const raw = await readFile(SPARTA_MONITOR_CLOSURE_AUDIT_PATH, 'utf8')
+    const audit = JSON.parse(raw) as JsonRecord
+    const gates = Array.isArray(audit.gates) ? audit.gates as JsonRecord[] : []
+    const dataIntegrity = gates.find((gate) => gate.name === 'data_integrity_reconciled')
+    const evidence = dataIntegrity?.evidence && typeof dataIntegrity.evidence === 'object'
+      ? dataIntegrity.evidence as JsonRecord
+      : {}
+    const summary = evidence.summary && typeof evidence.summary === 'object'
+      ? evidence.summary as JsonRecord
+      : {}
+    const rawSummary = evidence.raw_ops_arango_summary && typeof evidence.raw_ops_arango_summary === 'object'
+      ? evidence.raw_ops_arango_summary as JsonRecord
+      : {}
+    const rawNonpassing = Array.isArray(evidence.raw_ops_arango_nonpassing)
+      ? (evidence.raw_ops_arango_nonpassing as JsonRecord[]).slice(0, 14)
+      : []
+    return {
+      artifact_id: 'closure_audit_20260602T1615Z',
+      artifact_path: SPARTA_MONITOR_CLOSURE_AUDIT_PATH,
+      generated_at: audit.generated_at ?? null,
+      status: audit.status ?? 'unknown',
+      passed: audit.passed ?? null,
+      total: audit.total ?? null,
+      failed_gates: audit.failed_gates ?? [],
+      data_integrity_reconciled: {
+        status: dataIntegrity?.status ?? 'unknown',
+        passed: summary.passed ?? null,
+        warnings: summary.warnings ?? null,
+        failed: summary.failed ?? null,
+      },
+      raw_ops_arango: {
+        passed: rawSummary.passed ?? null,
+        warnings: rawSummary.warnings ?? null,
+        failed: rawSummary.failed ?? null,
+        nonpassing: rawNonpassing,
+      },
+    }
+  } catch (err) {
+    console.warn('[sparta/coverage-health] monitor closure baseline unavailable', err)
+    return null
+  }
+}
+
 const SPARTA_COVERAGE_CACHE_TTL_MS = 30_000
 const SPARTA_COVERAGE_SNAPSHOT_PATH = process.env.SPARTA_COVERAGE_SNAPSHOT_PATH ?? resolve(__dirname, '../.cache/sparta-coverage-health.json')
 const SPARTA_SUPERVISOR_STATE_DIR = process.env.SPARTA_SUPERVISOR_STATE_DIR ?? resolve(MEMORY_REPO_ROOT, 'artifacts/sparta_supervisor/dev')
@@ -2154,6 +2202,7 @@ print(json.dumps({
     bestPracticeBase,
     artifacts,
     promptAudit,
+    monitorClosure,
   ] = await Promise.all([
     runCommandJson('uv', ['run', 'python', '-c', supplementScript], {
       cwd: MEMORY_REPO_ROOT,
@@ -2164,6 +2213,7 @@ print(json.dumps({
     runBestPracticeAudit(),
     readLatestArtifactSummary(),
     auditSpartaPrompts(),
+    readMonitorClosureBaseline(),
   ])
   const monitor = {
     ...(monitorHealth as JsonRecord),
@@ -2277,6 +2327,7 @@ print(json.dumps({
     artifacts,
     supervisor: supervisorForCoverage,
     createQrasBackfill: await readCreateQrasBackfillProgress(),
+    monitorClosure,
   }
 }
 
@@ -9522,10 +9573,59 @@ function buildSpartaChatResponsePolicy(question: string, payload: JsonRecord, pr
   }
 }
 
-function attachSpartaChatResponsePolicy(question: string, payload: JsonRecord, profile: unknown): JsonRecord {
+function buildSpartaChatEvidenceBinding(payload: JsonRecord, source: 'run' | 'stream', runId?: string): JsonRecord {
+  const responsePolicy = payload.response_policy && typeof payload.response_policy === 'object' ? payload.response_policy as JsonRecord : {}
+  const responseAction = typeof responsePolicy.response_action === 'string' ? responsePolicy.response_action : ''
+  const gateTrace = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
+  const requiredGates = gateTrace.filter((gate) => gate.required !== false)
+  const gatesPassed = requiredGates.filter((gate) => gate.passed !== false).length
+  const gatesTotal = requiredGates.length
+  const citations = Array.isArray(responsePolicy.citations) ? responsePolicy.citations : []
+  const evidenceItems = Array.isArray(responsePolicy.evidence_items) ? responsePolicy.evidence_items : []
+  const inspectableArtifacts = Array.isArray(responsePolicy.inspectable_artifacts) ? responsePolicy.inspectable_artifacts : []
+  const responseActionClosedVocabulary = ['answer', 'clarify', 'deflect'].includes(responseAction)
+  const answerHasEvidence = responseAction !== 'answer' || citations.length > 0 || evidenceItems.length > 0
+  const failedRequiredGate = requiredGates.some((gate) => gate.passed === false)
+  const predicates: Record<string, boolean> = {
+    production_source: source === 'run' || source === 'stream',
+    response_policy_present: Object.keys(responsePolicy).length > 0,
+    response_action_closed_vocabulary: responseActionClosedVocabulary,
+    gate_trace_present: gateTrace.length > 0,
+    required_gates_passed: !failedRequiredGate,
+    inspectable_artifacts_present: inspectableArtifacts.length > 0,
+    answer_cites_evidence: answerHasEvidence,
+  }
+  const failedPredicates = Object.entries(predicates)
+    .filter(([, passed]) => !passed)
+    .map(([name]) => name)
+  return {
+    predicate: 'CHAT_EVIDENCE_BINDING',
+    ok: failedPredicates.length === 0,
+    source,
+    run_id: runId ?? null,
+    response_action: responseAction || null,
+    gates_passed: gatesPassed,
+    gates_total: gatesTotal,
+    verdict: payload.verdict && typeof payload.verdict === 'object' ? (payload.verdict as JsonRecord).state ?? null : payload.verdict_state ?? null,
+    citation_count: citations.length,
+    evidence_item_count: evidenceItems.length,
+    inspectable_artifact_count: inspectableArtifacts.length,
+    predicates,
+    failed_predicates: failedPredicates,
+  }
+}
+
+function attachSpartaChatResponsePolicy(
+  question: string,
+  payload: JsonRecord,
+  profile: unknown,
+  source: 'run' | 'stream' = 'run',
+  runId?: string,
+): JsonRecord {
   const responsePolicy = buildSpartaChatResponsePolicy(question, payload, profile)
   payload.response_policy = responsePolicy
   payload.response_action = responsePolicy.response_action
+  payload.chat_evidence_binding = buildSpartaChatEvidenceBinding(payload, source, runId)
   return payload
 }
 
@@ -9965,7 +10065,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       payload.proposed_correction = gapReview.proposed_correction
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
-      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
+      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile, 'stream', run.id)
       run.status = 'completed'
       run.completed_at = new Date().toISOString()
       run.verdict = payload.verdict as JsonRecord
@@ -10001,7 +10101,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       payload.proposed_correction = gapReview.proposed_correction
       payload.correction_lineage = gapReview.correction_lineage
       payload.evidence_case_version = gapReview.evidence_case_version
-      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
+      attachSpartaChatResponsePolicy(String(question), payload, selectedProfile, 'stream', run.id)
       run.status = 'completed'
       run.completed_at = new Date().toISOString()
       run.verdict = payload.verdict as JsonRecord
@@ -10053,7 +10153,7 @@ app.post('/api/evidence-case/stream', async (req, res) => {
       emit('correction_suggested', { proposed_correction: gapReview.proposed_correction, correction_lineage: gapReview.correction_lineage })
       emit('human_intervention_requested', { human_review_state: gapReview.human_review_state })
     }
-    attachSpartaChatResponsePolicy(String(question), payload, selectedProfile)
+    attachSpartaChatResponsePolicy(String(question), payload, selectedProfile, 'stream', run.id)
     const gates = Array.isArray(payload.gate_trace) ? payload.gate_trace as JsonRecord[] : []
     for (const gate of gates) emit('gate', { gate })
     emit('diagnostics', { diagnostics: payload.diagnostics as JsonRecord })

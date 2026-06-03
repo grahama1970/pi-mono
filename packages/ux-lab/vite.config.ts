@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs'
 import type { Plugin } from 'vite'
+import { transportReviewBundlePlugin } from './plugins/transportReviewBundlePlugin'
 
 /** PDF Lab sign-off persistence middleware.
  *
@@ -115,7 +116,7 @@ function pdfLabSignoffsPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), pdfLabSignoffsPlugin()],
+  plugins: [react(), tailwindcss(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
   resolve: {
     alias: {
       // Import skill components directly — no duplication

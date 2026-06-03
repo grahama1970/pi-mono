@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T18:59:29.985Z",
+  "generated_at": "2026-06-02T21:36:22.890Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -49,7 +49,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-06-01T18:59:08Z",
+    "generated_at": "2026-06-02T21:35:59Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -649,7 +649,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T18:59:08Z",
+      "generated_at": "2026-06-02T21:35:59Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1360,10 +1360,10 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-06-01T18:59:09.292036Z",
-    "heartbeat_at": "2026-06-01T18:59:09.292036Z",
+    "generated_at": "2026-06-02T21:35:59.895053Z",
+    "heartbeat_at": "2026-06-02T21:35:59.895053Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 15866,
+    "previous_snapshot_age_seconds": 15953,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -1476,10 +1476,26 @@
         "next_action": "Run cleanup observe/plan only; execution is human-gated."
       }
     ],
-    "active_jobs": [],
+    "active_jobs": [
+      {
+        "command_id": "cmd-1780420210515-9f09ef70e5a44",
+        "created_at": "2026-06-02T17:10:10.515Z",
+        "source": "ui",
+        "intent": "run_audit_now",
+        "target_lane": "monitor_health",
+        "risk": "read_only",
+        "status": "queued",
+        "action_state": "queued",
+        "payload": {},
+        "safe_default": "observe_only",
+        "operator_approval_required": false,
+        "checkpoint_required": false,
+        "resume_hint": "Human review required before any mutation-capable remediation."
+      }
+    ],
     "blocked": [],
     "command_source_counts": {
-      "ui": 0,
+      "ui": 1,
       "cli": 0,
       "discord": 0,
       "slack": 0,
@@ -1488,7 +1504,7 @@
     },
     "command_status_counts": {
       "observed": 0,
-      "queued": 0,
+      "queued": 1,
       "dry_run": 0,
       "review_required": 0,
       "blocked": 0,
@@ -2234,7 +2250,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T18:59:29Z",
+      "generated_at": "2026-06-02T21:36:22Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2268,20 +2284,20 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T18:59:29Z",
+      "generated_at": "2026-06-02T21:36:22Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
       "coverage_block_lines": {
-        "start": 2088,
-        "end": 2282
+        "start": 2137,
+        "end": 2334
       },
       "violations": [],
       "resume_hint": "Move Coverage corpus inventory AQL into memory scripts/validation and import/call that scanner from the UI API."
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T18:59:03Z",
+      "generated_at": "2026-06-02T21:35:55Z",
       "status": "fail",
       "state": "gaps_found",
       "target_counts": {
@@ -2291,7 +2307,7 @@
       "observed_counts": {
         "arango_embedding_docs": 0,
         "arango_synced_docs": 43396,
-        "qdrant_vectors": 654573
+        "qdrant_vectors": 655180
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2424,7 +2440,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 654573,
+        "point_count": 655180,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43402
         }
@@ -2439,7 +2455,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-01T18:59:28Z",
+      "generated_at": "2026-06-02T21:36:21Z",
       "status": "pass",
       "state": "covered",
       "summary": {
@@ -2546,5 +2562,368 @@
     "stored": null,
     "progress_percent": null,
     "message": "No create-qras backfill log found."
+  },
+  "monitorClosure": {
+    "artifact_id": "closure_audit_20260602T1615Z",
+    "artifact_path": "/home/graham/workspace/experiments/sparta/artifacts/monitor_sparta_closure/closure_audit_20260602T1615Z.json",
+    "generated_at": "2026-06-02T16:14:43.702389Z",
+    "status": "pass",
+    "passed": 9,
+    "total": 9,
+    "failed_gates": [],
+    "data_integrity_reconciled": {
+      "status": "healthy",
+      "passed": 26,
+      "warnings": 0,
+      "failed": 0
+    },
+    "raw_ops_arango": {
+      "passed": 12,
+      "warnings": 6,
+      "failed": 8,
+      "nonpassing": [
+        {
+          "check": "qra_schema.reasoning_valid",
+          "status": "warning",
+          "count": 2,
+          "expected": "0 QRAs with <5 word reasoning",
+          "query_hint": "FILTER LENGTH(TOKENS(d.reasoning, 'text_en')) < 5",
+          "details": [
+            "408be5709b204904",
+            "6a57559bf2fb36ea"
+          ]
+        },
+        {
+          "check": "qra_schema.evidence_quotes_present",
+          "status": "failed",
+          "count": 4260,
+          "expected": "0 native QRAs with empty evidence_quotes (sparta_context excluded)",
+          "query_hint": "FILTER category != 'sparta_context' AND LENGTH(evidence_quotes) == 0",
+          "details": [
+            "00010480ba059c84",
+            "00060df71baa74da",
+            "00093812960847ff",
+            "000c360cb043ddd5",
+            "0011d46c1113ae3a",
+            "001aaee465600ccc",
+            "003569b2051b748b",
+            "0042b17b33a14ec6",
+            "0057c2c22400380b",
+            "007b56218713f49c"
+          ]
+        },
+        {
+          "check": "qra_schema.control_id_present",
+          "status": "warning",
+          "count": 85,
+          "expected": "0 QRAs missing both source_control_id and control_id",
+          "query_hint": "FILTER d.source_control_id == null AND d.control_id == null",
+          "details": [
+            "conv_stress_20260226_085407_f1dcc286_f1dcc286b5e5",
+            "conv_stress_20260226_091133_37da25eb_37da25eb7794",
+            "conv_stress_20260226_094356_1eb861f6_1eb861f6b016",
+            "conv_stress_20260226_101544_c5b69908_c5b69908ae17",
+            "conv_stress_20260226_102040_51084cd5_51084cd58338",
+            "conv_stress_20260226_105600_97c4c284_97c4c2848b91",
+            "conv_stress_20260226_110223_9240d9b9_9240d9b9dd5c",
+            "conv_stress_20260226_110445_1e7c14ec_1e7c14ecfbd7",
+            "conv_stress_20260226_110954_0fba02a9_0fba02a953fb",
+            "conv_stress_20260226_114445_df39415a_df39415a2290"
+          ]
+        },
+        {
+          "check": "qra_schema.verdict_valid",
+          "status": "failed",
+          "count": 200,
+          "expected": "0 QRAs with invalid verdict enum",
+          "query_hint": "FILTER d.verdict NOT IN ['SATISFIED', 'NEEDS_REVIEW', 'REJECTED']",
+          "details": [
+            {
+              "key": "000a5d68cbd446e5",
+              "verdict": ""
+            },
+            {
+              "key": "005606da2c435e2a",
+              "verdict": ""
+            },
+            {
+              "key": "00713b16c54d1464",
+              "verdict": ""
+            },
+            {
+              "key": "007c927223130c9f",
+              "verdict": ""
+            },
+            {
+              "key": "009317b86f2231834c8597163a8a3a21da29ad3c",
+              "verdict": ""
+            },
+            {
+              "key": "00b8604c4302e0b4",
+              "verdict": ""
+            },
+            {
+              "key": "00fb555558cb9213e20ec7ea88ce0ebcfbaf9ed3",
+              "verdict": ""
+            },
+            {
+              "key": "01246bc4d6cf555f",
+              "verdict": ""
+            },
+            {
+              "key": "017f46363f864360ed709070546ef6a1f826aaa2",
+              "verdict": ""
+            },
+            {
+              "key": "019693a29619c2ba8184cc7faf4206432a7d4c0a",
+              "verdict": ""
+            }
+          ]
+        },
+        {
+          "check": "qra_schema.embedding_384dim",
+          "status": "failed",
+          "count": 245975,
+          "expected": "0 QRAs with missing/invalid 384-dim embedding",
+          "query_hint": "FILTER LENGTH(d.embedding) != 384",
+          "details": [
+            "00010480ba059c84",
+            "00060df71baa74da",
+            "00093812960847ff",
+            "000a5d68cbd446e5",
+            "000c360cb043ddd5",
+            "0011d46c1113ae3a",
+            "001aaee465600ccc",
+            "003569b2051b748b",
+            "0042b17b33a14ec6",
+            "005606da2c435e2a"
+          ]
+        },
+        {
+          "check": "evidence_case.crosswalk_chains_populated",
+          "status": "failed",
+          "count": 500,
+          "expected": "0 evidence_cases with empty crosswalk_chains",
+          "query_hint": "FILTER LENGTH(d.evidence_case.crosswalk_chains) == 0",
+          "details": [
+            "009317b86f2231834c8597163a8a3a21da29ad3c",
+            "00fb555558cb9213e20ec7ea88ce0ebcfbaf9ed3",
+            "013e7a110aa976a6",
+            "017f46363f864360ed709070546ef6a1f826aaa2",
+            "0182fa5aa8599b1d",
+            "019693a29619c2ba8184cc7faf4206432a7d4c0a",
+            "01b1e60eb5c373d2",
+            "01e8243f65aac9527b4ad68a2d4dda52ea2e233c",
+            "02015ba99feca072",
+            "0205824eae29f0758417eb7c2e05595384ade2b5"
+          ]
+        },
+        {
+          "check": "evidence_case.review_status_valid",
+          "status": "failed",
+          "count": 245975,
+          "expected": "0 evidence_cases with invalid review_status",
+          "query_hint": "FILTER d.evidence_case.review_status NOT IN [valid values]",
+          "details": [
+            {
+              "key": "00010480ba059c84",
+              "status": "auto"
+            },
+            {
+              "key": "00060df71baa74da",
+              "status": "auto"
+            },
+            {
+              "key": "00093812960847ff",
+              "status": "auto"
+            },
+            {
+              "key": "000a5d68cbd446e5",
+              "status": "auto"
+            },
+            {
+              "key": "000c360cb043ddd5",
+              "status": "auto"
+            },
+            {
+              "key": "0011d46c1113ae3a",
+              "status": "auto"
+            },
+            {
+              "key": "001aaee465600ccc",
+              "status": "auto"
+            },
+            {
+              "key": "003569b2051b748b",
+              "status": "auto"
+            },
+            {
+              "key": "0042b17b33a14ec6",
+              "status": "auto"
+            },
+            {
+              "key": "005606da2c435e2a",
+              "status": "auto"
+            }
+          ]
+        },
+        {
+          "check": "edge_integrity.is_edge_collection",
+          "status": "warning",
+          "count": 1,
+          "expected": "sparta_relationships is edge collection (type 3)",
+          "query_hint": "collection.properties().type = 2",
+          "details": [
+            {
+              "type": 2,
+              "edge": false
+            }
+          ]
+        },
+        {
+          "check": "edge_integrity.no_null_endpoints",
+          "status": "failed",
+          "count": 262426,
+          "expected": "0 edges with null _from or _to",
+          "query_hint": "FILTER e._from == null OR e._to == null",
+          "details": [
+            "rel__100000",
+            "rel__100001",
+            "rel__100002",
+            "rel__100003",
+            "rel__100004",
+            "rel__100005",
+            "rel__100006",
+            "rel__100007",
+            "rel__100008",
+            "rel__100009"
+          ]
+        },
+        {
+          "check": "edge_integrity.no_duplicate_edges",
+          "status": "warning",
+          "count": 5,
+          "expected": "0 duplicate edges (same from/to/type)",
+          "query_hint": "COLLECT ... FILTER cnt > 1",
+          "details": [
+            {
+              "from": null,
+              "to": null,
+              "type": null,
+              "count": 255451
+            },
+            {
+              "from": null,
+              "to": null,
+              "type": "exploited_by",
+              "count": 2825
+            },
+            {
+              "from": null,
+              "to": null,
+              "type": "maps_to",
+              "count": 244
+            },
+            {
+              "from": null,
+              "to": null,
+              "type": "reverse-related-to",
+              "count": 3115
+            },
+            {
+              "from": null,
+              "to": null,
+              "type": "self_reference",
+              "count": 791
+            }
+          ]
+        },
+        {
+          "check": "cross_reference.qra_control_exists",
+          "status": "failed",
+          "count": 100,
+          "expected": "0 QRAs referencing non-existent controls",
+          "query_hint": "FILTER source_control_id NOT IN control_ids",
+          "details": [
+            {
+              "key": "conv_stress_20260226_085407_f1dcc286_f1dcc286b5e5",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_091133_37da25eb_37da25eb7794",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_094356_1eb861f6_1eb861f6b016",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_101544_c5b69908_c5b69908ae17",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_102040_51084cd5_51084cd58338",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_105600_97c4c284_97c4c2848b91",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_110223_9240d9b9_9240d9b9dd5c",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_110445_1e7c14ec_1e7c14ecfbd7",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_110954_0fba02a9_0fba02a953fb",
+              "control_id": ""
+            },
+            {
+              "key": "conv_stress_20260226_114445_df39415a_df39415a2290",
+              "control_id": ""
+            }
+          ]
+        },
+        {
+          "check": "index_health.vector_index_exists",
+          "status": "warning",
+          "count": 1,
+          "expected": "Vector index exists on sparta_qra",
+          "query_hint": "collection.indexes() type='vector'",
+          "details": null
+        },
+        {
+          "check": "index_health.search_view_exists",
+          "status": "warning",
+          "count": 1,
+          "expected": "ArangoSearch view exists",
+          "query_hint": "db.views()",
+          "details": [
+            "aerospace_terms_search",
+            "agent_conversations_search",
+            "app_actions_search",
+            "binary_features_search",
+            "checkpoints_search"
+          ]
+        },
+        {
+          "check": "url_knowledge.embeddings_complete",
+          "status": "failed",
+          "count": 43402,
+          "expected": "≥99% URL knowledge has embeddings (0.0%)",
+          "query_hint": "FILTER LENGTH(d.embedding) == 384",
+          "details": [
+            {
+              "total": 43402,
+              "with_embedding": 0,
+              "pct": 0
+            }
+          ]
+        }
+      ]
+    }
   }
 }

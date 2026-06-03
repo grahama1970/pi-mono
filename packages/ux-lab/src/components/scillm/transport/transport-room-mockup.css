@@ -872,28 +872,7 @@
   height: 14px;
 }
 
-.transport-room .tr-nested-execution-block {
-  margin-left: 24px;
-  padding-left: 20px;
-  border-left: 2px solid var(--accent-worker-border);
-  position: relative;
-  margin-bottom: 20px;
-  padding-top: 8px;
-}
-
-.transport-room .tr-nested-execution-block::before {
-  content: 'Subagent execution';
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-worker);
-  background: var(--bg-base);
-  padding: 0 6px;
-}
+/* nested block spacing overridden in transport-room.css */
 
 .transport-room .tr-jump-anchor {
   animation: tr-flash-highlight 2s ease;

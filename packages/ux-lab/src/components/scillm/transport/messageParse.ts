@@ -3,24 +3,36 @@
  */
 import type { TransportCollaborator, TransportDialogTurn, TransportSubagentSummary } from './types'
 import { deriveRunHealth } from './runHealth'
+import {
+  formatDispatchSubtitle,
+  formatSpawnHeader,
+  formatSubagentPersona,
+  formatTaskHeader,
+} from './transportRoleVisuals'
 
 
 function structuredChipLabel(turn: TransportDialogTurn): string | null {
-  if (turn.subagent_kind?.trim()) return turn.subagent_kind.trim()
+  if (turn.subagent_label?.trim()) {
+    const head = turn.subagent_label.split('·')[0]?.trim()
+    if (head) return head
+  }
+  if (turn.subagent_kind?.trim()) return formatSubagentPersona(turn.subagent_kind)
+  if (turn.agent_id?.trim()) return formatSubagentPersona(turn.agent_id.replace(/-/g, ' '))
   return null
 }
 
 function structuredTitle(turn: TransportDialogTurn, fallback: string): string {
   if (turn.subagent_label?.trim()) return turn.subagent_label.trim()
-  if (turn.subagent_kind && turn.agent) return `${turn.subagent_kind} · ${turn.agent}`
-  if (turn.subagent_kind) return turn.subagent_kind
+  const persona = formatSubagentPersona(turn.subagent_kind)
+  if (turn.agent) return `${persona} · ${turn.agent}`
+  if (turn.subagent_kind?.trim()) return persona
   return fallback
 }
 
 const SPEAKER_PREFIX = /^\*\*(.+?)\*\*\s*\n+/s
 const FORWARD_RE = /forwarding\s+\*\*human\*\*/i
-const SPAWN_RE = /spawned worker/i
-const DISPATCH_RE = /dispatching\s+\*\*reviewer\*\*/i
+const SPAWN_RE = /spawned\s+(?:worker|[\w*]+)/i
+const DISPATCH_RE = /dispatching\s+\*\*[^*]+\*\*/i
 const START_RE = /started transport run/i
 const TASK_RE = /##\s*Worker task|you are the external reviewer/i
 const VERDICT_RE = /VERDICT:\s*(\w+)/i
@@ -49,6 +61,9 @@ export interface DisplayMetadata {
   mode?: string
   subagentRunId?: string
   attemptId?: number
+  subagentPersona?: string
+  subagentRoleSlug?: string
+  agentId?: string
 }
 
 export interface DisplayMessage {
@@ -84,6 +99,15 @@ function extractMetadata(text: string): DisplayMetadata {
   return { sessions: [...new Set(sessions)], urls, verdict, workerAgent, model, mode }
 }
 
+export function stripUrlsFromProse(prose: string, urls: string[]): string {
+  const drop = new Set(urls)
+  return prose
+    .replace(URL_RE, (match) => (drop.has(match) ? '' : match))
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 function splitArtifacts(body: string): { prose: string; artifacts: string[] } {
   const artifacts: string[] = []
   const prose = body.replace(CODE_FENCE_RE, (block) => {
@@ -96,8 +120,11 @@ function splitArtifacts(body: string): { prose: string; artifacts: string[] } {
 function classifyKind(turn: TransportDialogTurn, body: string): DisplayMessageKind {
   if (turn.collaborator === 'human') return 'human'
   if (FORWARD_RE.test(body)) return 'system'
-  if (turn.collaborator === 'worker' || /worker\s*\(/i.test(turn.speaker)) return 'worker'
   if (TASK_RE.test(body)) return 'task_card'
+  if (turn.collaborator === 'worker' || /worker\s*\(/i.test(turn.speaker)) return 'worker'
+  if (
+    turn.subagent_run_id && (SPAWN_RE.test(body) || DISPATCH_RE.test(body))
+  ) return 'agent_card'
   if (SPAWN_RE.test(body) || (DISPATCH_RE.test(body) && /Agent:/i.test(body))) return 'agent_card'
   if (START_RE.test(body)) return 'transport_start'
   if (turn.collaborator === 'opencode_model' && !body.trim()) return 'system'
@@ -107,10 +134,10 @@ function classifyKind(turn: TransportDialogTurn, body: string): DisplayMessageKi
 
 const CHIP: Record<DisplayMessageKind, string> = {
   human: 'Human',
-  reviewer: 'Reviewer',
+  reviewer: 'Project agent',
   worker: 'Worker',
   system: 'System',
-  agent_card: 'Reviewer',
+  agent_card: 'Project agent',
   task_card: 'Worker',
   transport_start: 'System',
 }
@@ -148,7 +175,8 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
 
   const kind = classifyKind(turn, body)
   const metadata = extractMetadata(body)
-  const { prose, artifacts } = splitArtifacts(body)
+  const { prose: rawProse, artifacts } = splitArtifacts(body)
+  const prose = stripUrlsFromProse(rawProse, metadata.urls)
 
   if (kind === 'system') {
     return {
@@ -169,18 +197,18 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
 
   if (kind === 'agent_card') {
     const attempt = turn.attempt_id || Number(body.match(/attempt\s+(\d+)/i)?.[1] || 0)
-    const kindLabel = turn.subagent_kind || 'Worker'
+    const persona = structuredChipLabel(turn) || formatSubagentPersona(turn.subagent_kind)
     const agent = turn.agent || metadata.workerAgent
     return {
       id: turn.message_id,
       kind: 'agent_card',
       collaborator: turn.collaborator,
-      speaker: turn.speaker || 'Project agent',
-      chipLabel: kindLabel,
-      title: attempt
-        ? `Spawned ${kindLabel}${agent ? ` · ${agent}` : ''} — attempt ${attempt}`
-        : `Spawned ${kindLabel}`,
-      subtitle: DISPATCH_RE.test(body) ? 'Dispatching worker task' : 'Worker handoff',
+      speaker: 'Project agent',
+      chipLabel: persona,
+      title: formatSpawnHeader(persona, agent, attempt || undefined),
+      subtitle: DISPATCH_RE.test(body)
+        ? formatDispatchSubtitle(persona, agent)
+        : 'Subagent handoff',
       prose,
       artifacts,
       collapsed: false,
@@ -189,6 +217,9 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
         subagentRunId: turn.subagent_run_id,
         attemptId: turn.attempt_id,
         workerAgent: turn.agent || metadata.workerAgent,
+        agentId: turn.agent_id,
+        subagentPersona: persona,
+        subagentRoleSlug: turn.role,
       },
       raw,
       skills: turn.skills,
@@ -196,18 +227,33 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
   }
 
   if (kind === 'task_card') {
+    const persona = structuredChipLabel(turn) || formatSubagentPersona(turn.subagent_kind)
+    const title = turn.subagent_label?.trim() || formatTaskHeader(persona)
+    const subtitle = DISPATCH_RE.test(body)
+      ? formatDispatchSubtitle(persona, turn.agent || metadata.workerAgent)
+      : undefined
     return {
       id: turn.message_id,
       kind: 'task_card',
       collaborator: 'worker',
-      speaker: 'Worker task',
-      chipLabel: 'Worker',
-      title: 'Worker Task — External Reviewer',
+      speaker: persona,
+      chipLabel: persona,
+      title,
+      subtitle,
       prose,
       artifacts,
       collapsed: false,
-      metadata,
+      metadata: {
+        ...metadata,
+        subagentRunId: turn.subagent_run_id,
+        attemptId: turn.attempt_id,
+        workerAgent: turn.agent || metadata.workerAgent,
+        agentId: turn.agent_id,
+        subagentPersona: persona,
+        subagentRoleSlug: turn.role,
+      },
       raw,
+      skills: turn.skills,
     }
   }
 
@@ -241,7 +287,7 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
     chipLabel,
     title,
     subtitle: turn.mode ? `Mode: ${turn.mode}` : turn.attempt_id ? `Attempt ${turn.attempt_id}` : undefined,
-    prose: prose || body,
+    prose,
     artifacts,
     collapsed: false,
     metadata: {
@@ -250,6 +296,9 @@ function _parseDisplayMessageInner(turn: TransportDialogTurn): DisplayMessage {
       mode: turn.mode || metadata.mode,
       subagentRunId: turn.subagent_run_id,
       attemptId: turn.attempt_id,
+      subagentPersona: chipFromApi || (kind === 'worker' ? formatSubagentPersona(turn.subagent_kind) : undefined),
+      subagentRoleSlug: turn.role,
+      agentId: turn.agent_id,
     },
     raw,
     skills: turn.skills,
@@ -283,13 +332,13 @@ export function inferRoutingHint(
     if (fromApi) return fromApi
   }
   if (message.kind === 'human') {
-    return { label: 'Reviewer room', tone: 'to-reviewer', inferred: true }
+    return { label: 'Project agent room', tone: 'to-reviewer', inferred: true }
   }
   if (message.kind === 'worker') {
     return { label: 'Collaboration room', tone: 'to-human', inferred: true }
   }
   if (message.kind === 'reviewer' && /dispatch/i.test(message.prose)) {
-    return { label: 'Worker', tone: 'to-worker', inferred: true }
+    return { label: 'Subagent', tone: 'to-worker', inferred: true }
   }
   return null
 }

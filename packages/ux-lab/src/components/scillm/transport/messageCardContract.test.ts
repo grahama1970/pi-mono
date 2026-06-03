@@ -5,8 +5,8 @@ import { cardContractFor, shouldCollapseByDefault, summarizeMessage } from './me
 function msg(partial: Partial<DisplayMessage> & Pick<DisplayMessage, 'kind' | 'id'>): DisplayMessage {
   return {
     collaborator: 'project_agent',
-    speaker: 'Agent',
-    chipLabel: 'Reviewer',
+    speaker: 'Project agent',
+    chipLabel: 'Project agent',
     title: 'Title',
     prose: '',
     artifacts: [],
@@ -20,16 +20,28 @@ function msg(partial: Partial<DisplayMessage> & Pick<DisplayMessage, 'kind' | 'i
 describe('messageCardContract', () => {
   it('labels human input', () => {
     const c = cardContractFor(msg({ id: '1', kind: 'human', collaborator: 'human' }))
-    expect(c.headerTitle).toBe('Human')
-    expect(c.phaseLabel).toBe('Input')
+    expect(c.roleClass).toBe('human')
+  })
+
+  it('spawn card uses planner icon and spawn header from title', () => {
+    const c = cardContractFor(
+      msg({
+        id: '2',
+        kind: 'agent_card',
+        title: 'Spawned subagent: Reviewer → scillm-worker (attempt 1)',
+      }),
+    )
+    expect(c.icon).toBe('plan')
+    expect(c.roleClass).toBe('planner')
+    expect(c.headerTitle).toContain('Spawned subagent')
   })
 
   it('collapses task cards by default', () => {
-    expect(shouldCollapseByDefault(msg({ id: '2', kind: 'task_card', prose: 'x'.repeat(50) }))).toBe(true)
+    expect(shouldCollapseByDefault(msg({ id: '3', kind: 'task_card', prose: 'x'.repeat(50) }))).toBe(true)
   })
 
   it('summarizes verdict lines', () => {
-    const s = summarizeMessage(msg({ id: '3', kind: 'worker', prose: 'long', metadata: { verdict: 'PASS' } }))
+    const s = summarizeMessage(msg({ id: '4', kind: 'worker', prose: 'long', metadata: { verdict: 'PASS' } }))
     expect(s).toBe('VERDICT: PASS')
   })
 })

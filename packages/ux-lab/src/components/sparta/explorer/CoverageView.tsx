@@ -30,6 +30,22 @@ interface CoveragePayload {
     nonC2cAuditPath?: string
   }
   createQrasBackfill?: CreateQrasBackfillProgress
+  monitorClosure?: {
+    artifact_id?: string
+    artifact_path?: string
+    generated_at?: string
+    status?: string
+    passed?: number
+    total?: number
+    failed_gates?: string[]
+    data_integrity_reconciled?: { status?: string; passed?: number; warnings?: number; failed?: number }
+    raw_ops_arango?: {
+      passed?: number
+      warnings?: number
+      failed?: number
+      nonpassing?: Array<{ check?: string; status?: string; count?: number; expected?: string }>
+    }
+  } | null
 }
 
 interface CreateQrasBackfillProgress {
@@ -811,7 +827,7 @@ export function CoverageView() {
         data-action-state={state}
         disabled={disabled}
         title={disabled ? `${row.lane} is ${label.toLowerCase()}.` : `${row.lane}: ${row.action}`}
-        style={{ ...S.rowButton, minWidth: 92, color: tone, borderColor: `${tone}66`, opacity: disabled ? 0.82 : 1, cursor: disabled ? 'wait' : 'default' }}
+        style={{ ...S.rowButton, minWidth: 92, minHeight: 44, color: tone, borderColor: `${tone}66`, opacity: disabled ? 0.82 : 1, cursor: disabled ? 'wait' : 'default' }}
       >
         {(state === 'running' || state === 'refreshing') && <RefreshCw size={12} style={{ marginRight: 6, verticalAlign: -2 }} />}
         {label}
@@ -1116,6 +1132,43 @@ export function CoverageView() {
           <span style={S.statusMetric}><b>{remediationPlans.length}</b> dry-run plans</span>
         </div>
       </section>
+      {data?.monitorClosure ? (
+        <section
+          data-qid="coverage:monitor-closure-panel"
+          data-qs-action="MONITOR_CLOSURE_BASELINE"
+          title="Durable monitor-sparta closure baseline versus live dimension health"
+          style={{ ...S.statusStrip, borderColor: `${data.monitorClosure.status === 'pass' ? EMBRY.green : EMBRY.amber}66` }}
+        >
+          <div>
+            <div style={S.statusEyebrow}>Monitor Closure Baseline</div>
+            <strong style={{ ...S.statusTitle, color: data.monitorClosure.status === 'pass' ? EMBRY.green : EMBRY.amber }}>
+              {data.monitorClosure.passed ?? '?'}/{data.monitorClosure.total ?? '?'} closure gates · {String(data.monitorClosure.status ?? 'unknown').toUpperCase()}
+            </strong>
+            <span style={S.statusText}>
+              artifact {data.monitorClosure.artifact_id ?? 'unknown'}
+              {data.monitorClosure.generated_at ? ` · closure ${new Date(data.monitorClosure.generated_at).toLocaleString()}` : ''}
+              {data?.generated_at ? ` · live snapshot ${new Date(data.generated_at).toLocaleString()}` : ''}
+            </span>
+          </div>
+          <div style={S.statusMetrics}>
+            <span data-qid="coverage:monitor-closure:reconciled" style={S.statusMetric}>
+              <b>reconciled</b> {data.monitorClosure.data_integrity_reconciled?.passed ?? '?'}/{data.monitorClosure.data_integrity_reconciled?.warnings ?? 0}/{data.monitorClosure.data_integrity_reconciled?.failed ?? '?'} pass/warn/fail
+            </span>
+            <span data-qid="coverage:monitor-closure:raw-ops-arango" style={S.statusMetric}>
+              <b>raw ops-arango</b> {data.monitorClosure.raw_ops_arango?.passed ?? '?'}/{data.monitorClosure.raw_ops_arango?.warnings ?? 0}/{data.monitorClosure.raw_ops_arango?.failed ?? '?'} pass/warn/fail
+            </span>
+            <span data-qid="coverage:monitor-closure:failed-gates" style={S.statusMetric}>
+              <b>{data.monitorClosure.failed_gates?.length ?? 0}</b> failed closure gates
+            </span>
+          </div>
+          {Array.isArray(data.monitorClosure.raw_ops_arango?.nonpassing) && data.monitorClosure.raw_ops_arango.nonpassing.length > 0 ? (
+            <div style={{ gridColumn: '1 / -1', fontSize: 11, color: EMBRY.dim, lineHeight: 1.5 }}>
+              Raw legacy checks still reported by /ops-arango (reconciled under monitor contract):{' '}
+              {data.monitorClosure.raw_ops_arango.nonpassing.slice(0, 6).map((row) => `${row.check} (${row.status}, ${row.count})`).join(' · ')}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
       {!hasData ? (
         <div style={S.loadingPanel}>
           <strong>Loading coverage snapshot.</strong>
@@ -1491,7 +1544,7 @@ const S: Record<string, React.CSSProperties> = {
   nextText: { color: EMBRY.muted, fontSize: 12, lineHeight: 1.35 },
   actionStack: { display: 'grid', gap: 8 },
   actionButtons: { display: 'flex', flexWrap: 'wrap', gap: 6 },
-  rowButton: { border: `1px solid ${EMBRY.border}`, background: '#172033', color: EMBRY.white, padding: '5px 8px', minHeight: 30, fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer' },
+  rowButton: { border: `1px solid ${EMBRY.border}`, background: '#172033', color: EMBRY.white, padding: '8px 10px', minHeight: 44, minWidth: 44, boxSizing: 'border-box', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer' },
   defectList: { display: 'grid', gap: 4, paddingTop: 4 },
   defectItem: { color: EMBRY.muted, fontSize: 11, lineHeight: 1.45 },
   artifacts: { display: 'grid', gap: 8 },

@@ -75,7 +75,7 @@
 }
 
 .transport-room--live .tr-right-drawer {
-  width: 300px;
+  width: min(360px, 38vw);
   flex-shrink: 0;
   min-height: 0;
   display: flex;

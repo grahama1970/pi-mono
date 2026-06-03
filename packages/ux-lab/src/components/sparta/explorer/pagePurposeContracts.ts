@@ -254,6 +254,16 @@ export type CoverageHealthSnapshot = {
   refreshing?: boolean
   refresh_policy?: string
   monitor?: { passed?: number; total?: number; remaining?: { critical?: number; high?: number } }
+  monitorClosure?: {
+    artifact_id?: string
+    generated_at?: string
+    status?: string
+    passed?: number
+    total?: number
+    failed_gates?: unknown[]
+    data_integrity_reconciled?: { status?: string; passed?: number; warnings?: number; failed?: number }
+    raw_ops_arango?: { passed?: number; warnings?: number; failed?: number; nonpassing?: unknown[] }
+  } | null
   corpusInventory?: Record<string, { missing?: number; target?: number }>
   controlFrameworks?: Array<{ quality_gaps?: number }>
   supervisor?: {
@@ -290,6 +300,38 @@ export function deriveCoveragePagePurposeState(
       nextStateAction: 'Force refresh coverage-health or wait for change-gated background refresh.',
     }
   }
+  const closure = health.monitorClosure
+  const closurePassed = Number(closure?.passed ?? 0)
+  const closureTotal = Number(closure?.total ?? 0)
+  const closureOk = Boolean(
+    closure
+      && closure.artifact_id === 'closure_audit_20260602T1615Z'
+      && closure.status === 'pass'
+      && closureTotal > 0
+      && closurePassed === closureTotal,
+  )
+  if (!closureOk) {
+    return {
+      state: 'fail',
+      stateReason: 'Coverage is missing the canonical 2026-06-02 monitor closure audit or the audit did not pass.',
+      nextStateAction: 'Expose closure_audit_20260602T1615Z from /api/sparta/coverage-health before Coverage pass.',
+    }
+  }
+  const reconciled = closure?.data_integrity_reconciled
+  const rawOps = closure?.raw_ops_arango
+  const reconciledOk = Number(reconciled?.passed ?? -1) === 26
+    && Number(reconciled?.warnings ?? -1) === 0
+    && Number(reconciled?.failed ?? -1) === 0
+  const rawOpsDisclosed = Number(rawOps?.passed ?? -1) === 12
+    && Number(rawOps?.warnings ?? -1) === 6
+    && Number(rawOps?.failed ?? -1) === 8
+  if (!reconciledOk || !rawOpsDisclosed) {
+    return {
+      state: 'fail',
+      stateReason: 'Coverage must disclose reconciled data integrity 26/0/0 and raw ops-arango 12/6/8 caveats together.',
+      nextStateAction: 'Add raw-vs-reconciled ops-arango fields to coverage-health and the Coverage page.',
+    }
+  }
   const inventory = health.corpusInventory ?? {}
   const missingTotal = Object.values(inventory).reduce((sum, lane) => sum + Number(lane?.missing ?? 0), 0)
   const qualityGaps = (health.controlFrameworks ?? []).reduce(
@@ -316,7 +358,7 @@ export function deriveCoveragePagePurposeState(
   }
   return {
     state: 'pass',
-    stateReason: `Monitor ${passed}/${total} pass; corpus inventory lanes show no missing items; snapshot ${health.stale ? 'stale but refreshing' : 'current'}.`,
+    stateReason: `Monitor ${passed}/${total} pass; closure ${closurePassed}/${closureTotal} pass; reconciled 26/0/0 and raw ops-arango 12/6/8 caveat disclosed; snapshot ${health.stale ? 'stale but refreshing' : 'current'}.`,
     nextStateAction: 'Maintain change-gated snapshots; keep completion_claim_allowed false until human signoff.',
   }
 }
@@ -328,6 +370,13 @@ export type SpartaChatReadinessSnapshot = {
   memoryDaemonOk?: boolean
   ready?: boolean
   warning?: string
+  evidenceBinding?: {
+    run_ok?: boolean
+    stream_ok?: boolean
+    gates_passed?: number
+    gates_total?: number
+    verdict?: string
+  }
 }
 
 export function deriveSpartaChatPagePurposeState(
@@ -347,11 +396,30 @@ export function deriveSpartaChatPagePurposeState(
       nextStateAction: 'Clear monitor-sparta and supervisor gates; re-run consumer-path canaries before pass.',
     }
   }
+  const binding = snap.evidenceBinding
+  const bindingOk = Boolean(binding?.run_ok && binding?.stream_ok)
+  const gatesTotal = Number(binding?.gates_total ?? 0)
+  const gatesPassed = Number(binding?.gates_passed ?? 0)
+  if (!bindingOk) {
+    return {
+      state: 'fail',
+      stateReason:
+        'CHAT_EVIDENCE_BINDING is not proven on production /api/evidence-case/run and /api/evidence-case/stream paths in this session.',
+      nextStateAction: 'Run a real evidence-case question through chat (stream path) and verify gate trace + response_policy before pass.',
+    }
+  }
+  if (gatesTotal > 0 && gatesPassed < gatesTotal) {
+    return {
+      state: 'degraded',
+      stateReason: `Production evidence-case paths responded, but only ${gatesPassed}/${gatesTotal} gates passed in the latest binding proof.`,
+      nextStateAction: 'Repair failing evidence gates, then re-run stream binding proof.',
+    }
+  }
   return {
     state: 'degraded',
     stateReason:
-      'Memory and coverage pre-signoff gates are clear; Phase-06 prompt/consumer canaries pass, but full evidence-case binding across refresh/navigation is not production-proven.',
-    nextStateAction: 'Complete sparta-chat TI + persona review (phase-09) before claiming pass.',
+      'Production /api/evidence-case/run and /api/evidence-case/stream binding is proven for this session; refresh/navigation persistence and reviewer disposition remain pre-signoff.',
+    nextStateAction: 'Complete sparta-chat TI + persona review before claiming pass.',
   }
 }
 

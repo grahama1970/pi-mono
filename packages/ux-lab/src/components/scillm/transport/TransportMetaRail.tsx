@@ -53,17 +53,17 @@ function MicroDag({
   const workerLabel =
     activeStep === 'done' ? 'Completed' : activeStep === 'worker' ? 'Active' : 'Pending'
   return (
-    <div className="tr-micro-dag" data-qid="transport:meta:dag-preview" aria-label="reviewer to scillm-worker">
+    <div className="tr-micro-dag" data-qid="transport:meta:dag-preview" aria-label="Project agent spawn to subagent runtime">
       <div className="tr-dag-node">
         <button
           type="button"
           className="tr-dag-node-box tr-dag-node-box--completed tr-dag-node-box--clickable"
           data-qid="transport:meta:dag-reviewer"
           data-qs-action="TRANSPORT_META_JUMP_REVIEWER"
-          title="Jump to reviewer spawn"
+          title="Jump to project agent spawn"
           onClick={onReviewerClick}
         >
-          reviewer
+          Project agent
         </button>
         <div className="tr-dag-label">Completed</div>
       </div>
@@ -125,8 +125,8 @@ export function TransportMetaRail({
   useRegisterAction('transport:meta:dag-reviewer', {
     app: 'ux-lab',
     action: 'TRANSPORT_META_JUMP_REVIEWER',
-    label: 'Jump to reviewer in timeline',
-    description: 'Scroll timeline to reviewer spawn',
+    label: 'Jump to project agent spawn in timeline',
+    description: 'Scroll timeline to spawn card',
   })
 
   useRegisterAction('transport:meta:dag-worker', {
@@ -207,14 +207,14 @@ export function TransportMetaRail({
           <span className="tr-info-value"><span className="tr-chip">{observation?.parent_ui_model ?? 'gpt-5.5'}</span></span>
         </div>
         <div className="tr-info-row">
-          <span className="tr-info-label">Agent</span>
+          <span className="tr-info-label">Subagent</span>
+          <span className="tr-info-value">{activeChild?.subagent_kind ?? '—'}</span>
+        </div>
+        <div className="tr-info-row">
+          <span className="tr-info-label">Runtime</span>
           <span className="tr-info-value">
             <span className="tr-chip tr-chip--worker">{activeChild?.agent ?? 'scillm-worker'}</span>
           </span>
-        </div>
-        <div className="tr-info-row">
-          <span className="tr-info-label">Role</span>
-          <span className="tr-info-value">{activeChild?.subagent_kind ?? activeChild?.role ?? 'reviewer'}</span>
         </div>
         {(activeChild?.skills_materialized?.length || activeChild?.skills?.length) ? (
           <div className="tr-info-row">
