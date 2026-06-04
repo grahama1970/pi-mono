@@ -89,7 +89,7 @@ export function TransportRoomHeader({
   }, [lastRefreshAt, loading])
 
   const statusLine = isMock ? 'Fixture mode' : runHealth.label
-  const showStreamWarning = !isMock && !streamConnected
+  const showStreamWarning = !isMock && !streamConnected && !['completed', 'aborted'].includes(runHealth.kind)
 
 
   const handleCopyForReview = async () => {

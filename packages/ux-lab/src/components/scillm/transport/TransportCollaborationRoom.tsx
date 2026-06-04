@@ -42,7 +42,7 @@ import {
 import { TransportRunSidebar } from './TransportRunSidebar'
 import './transport-room.css'
 import { useSkillsCatalog } from '../../../hooks/useSkillsCatalog'
-import { deriveRunHealth } from './runHealth'
+import { deriveRunHealth, type RunHealth } from './runHealth'
 import { extractSkillSlugs, primarySkillSlug } from './skillSyntax'
 import type { TransportDialogResponse, TransportRunResponse, TransportStreamEvent } from './types'
 
@@ -60,13 +60,18 @@ const MAX_EVENTS = 250
 
 
 
-function TransportServeChildBanner({ runId }: { runId: string }) {
+function TransportServeChildBanner({ runId, runHealth }: { runId: string; runHealth: RunHealth }) {
   if (!isServeChildRunId(runId)) return null
+  const terminal = runHealth.kind === 'completed' || runHealth.kind === 'aborted'
   return (
     <div className="transport-stale-run-banner" data-qid="transport:serve-child-banner" role="status">
       <strong>OpenCode serve child</strong>
       {' '}
-      PDF Lab serve child — timeline streams live (poll + SSE). Project agent: <code>@project-agent</code> in the composer. <strong>Worker trace</strong> opens the full monitor.
+      {terminal
+        ? 'PDF Lab serve child — terminal timeline is available from poll + SSE replay.'
+        : 'PDF Lab serve child — timeline streams live (poll + SSE).'}
+      {' '}
+      Project agent: <code>@project-agent</code> in the composer. <strong>Worker trace</strong> opens the full monitor.
     </div>
   )
 }
@@ -420,7 +425,7 @@ export function TransportCollaborationRoom({
             <div className="transport-room-error" data-qid="transport:room:error" role="alert">{error}</div>
           )}
 
-          <TransportServeChildBanner runId={runId} />
+          <TransportServeChildBanner runId={runId} runHealth={runHealth} />
           <TransportStaleRunBanner runId={runId} activeChild={dialog?.active_subagent ?? null} />
 
           <div className="transport-body-row">

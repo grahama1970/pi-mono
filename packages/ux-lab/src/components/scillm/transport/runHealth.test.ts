@@ -31,6 +31,21 @@ describe('deriveRunHealth', () => {
     expect(h.eventTailMessage).toContain('completed')
   })
 
+  it('does not describe terminal completed runs as reconnecting when SSE is closed', () => {
+    const h = deriveRunHealth({
+      runId: 'oc-pdf-oxide-confirm-issue11-p45-1780602551',
+      pendingCount: 0,
+      deliveryState: 'completed',
+      sseLive: false,
+      events: [{ event_type: 'run_completed', ts: '2026-06-04T19:49:20.000Z' }],
+      workerTraceAvailable: true,
+    })
+
+    expect(h.kind).toBe('completed')
+    expect(h.stripSegments).toContain('Event stream closed')
+    expect(h.stripSegments.join(' ')).not.toContain('reconnecting')
+  })
+
   it('aligns event tail with running state', () => {
     const h = deriveRunHealth({
       runId: 'x',

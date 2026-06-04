@@ -148,7 +148,12 @@ export function deriveRunHealth(input: DeriveRunHealthInput): RunHealth {
 
   if (ds === 'completed' || ds === 'done') {
     const label = 'Completed'
-    const segments = [label, roundLabel, sseSegment, traceSegment]
+    const terminalStreamSegment = isMock
+      ? 'Fixture mode'
+      : sseLive
+        ? 'Event stream connected'
+        : 'Event stream closed'
+    const segments = [label, roundLabel, terminalStreamSegment, traceSegment]
     if (lastEventLabel) segments.splice(2, 0, `Last event ${lastEventLabel}`)
     return {
       kind: 'completed',

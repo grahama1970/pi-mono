@@ -191,6 +191,13 @@ export function TransportCallInspector({
   const personaVisual = roleVisualForSubagentPersona(persona, call?.role)
   const PersonaIcon = personaVisual.Icon
   const promptPayload = inspector?.promptPayload ?? inspector?.promptSnippet
+  const streamLabel = isMock
+    ? 'Fixture data'
+    : runHealth.kind === 'completed' || runHealth.kind === 'aborted'
+      ? 'SSE replay'
+      : streamConnected
+        ? 'SSE replay + live'
+        : 'SSE reconnecting'
 
   useEffect(() => {
     setPromptExpanded(false)
@@ -243,7 +250,7 @@ export function TransportCallInspector({
           <span className="tr-call-inspector__sep" aria-hidden>
             ·
           </span>
-          <span>{isMock ? 'Fixture data' : streamConnected ? 'SSE replay + live' : 'SSE reconnecting'}</span>
+          <span>{streamLabel}</span>
         </p>
       </header>
 
