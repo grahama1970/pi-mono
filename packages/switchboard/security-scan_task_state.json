@@ -5,13 +5,13 @@
   "description": "security-scan",
   "current_item": "secrets",
   "progress_pct": 100.0,
-  "elapsed_seconds": 2.1,
+  "elapsed_seconds": 1.5,
   "eta_seconds": null,
-  "throughput_per_sec": 1.43,
+  "throughput_per_sec": 2.05,
   "stats": {
     "success": 3,
     "failed": 0
   },
-  "last_updated": "2026-06-02 04:43:39",
+  "last_updated": "2026-06-03 03:46:24",
   "status": "completed"
 }

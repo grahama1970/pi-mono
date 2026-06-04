@@ -248,14 +248,18 @@ export const PAGE_PURPOSE_CONTRACTS: PagePurposeContract[] = [
   },
 ]
 
+const SUPERVISOR_HEARTBEAT_FRESH_SECONDS = 120
+
 /** Live monitor-sparta snapshot shape (subset of /api/sparta/coverage-health). */
 export type CoverageHealthSnapshot = {
+  generated_at?: string
   stale?: boolean
   refreshing?: boolean
   refresh_policy?: string
   monitor?: { passed?: number; total?: number; remaining?: { critical?: number; high?: number } }
   monitorClosure?: {
     artifact_id?: string
+    artifact_path?: string
     generated_at?: string
     status?: string
     passed?: number
@@ -267,10 +271,24 @@ export type CoverageHealthSnapshot = {
   corpusInventory?: Record<string, { missing?: number; target?: number }>
   controlFrameworks?: Array<{ quality_gaps?: number }>
   supervisor?: {
+    heartbeat_at?: string
+    snapshot_age_seconds?: number | null
     needs_attention?: unknown[]
     blocked?: unknown[]
     command_status_counts?: Record<string, number>
   }
+}
+
+function supervisorHeartbeatAgeSeconds(health: CoverageHealthSnapshot): number | null {
+  const heartbeatAt = health.supervisor?.heartbeat_at
+  if (!heartbeatAt) return null
+  return Math.max(0, Math.round((Date.now() - new Date(heartbeatAt).getTime()) / 1000))
+}
+
+function isSupervisorHeartbeatStale(health: CoverageHealthSnapshot): boolean {
+  const age = supervisorHeartbeatAgeSeconds(health)
+  if (age == null) return true
+  return age > SUPERVISOR_HEARTBEAT_FRESH_SECONDS
 }
 
 export function deriveCoveragePagePurposeState(
@@ -330,6 +348,14 @@ export function deriveCoveragePagePurposeState(
       state: 'fail',
       stateReason: 'Coverage must disclose reconciled data integrity 26/0/0 and raw ops-arango 12/6/8 caveats together.',
       nextStateAction: 'Add raw-vs-reconciled ops-arango fields to coverage-health and the Coverage page.',
+    }
+  }
+  if (isSupervisorHeartbeatStale(health) && health.stale !== true) {
+    const heartbeatAge = supervisorHeartbeatAgeSeconds(health)
+    return {
+      state: 'degraded',
+      stateReason: `SUPERVISOR STALE: audit snapshot is current but supervisor heartbeat age is ${heartbeatAge == null ? 'unknown' : `${heartbeatAge}s`}; Coverage is PASS-with-caveat until supervisor refresh.`,
+      nextStateAction: 'Queue read-only supervisor audit or refresh supervisor-state before treating Coverage as fully green.',
     }
   }
   const inventory = health.corpusInventory ?? {}

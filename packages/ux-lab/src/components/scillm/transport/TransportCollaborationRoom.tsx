@@ -16,11 +16,15 @@ import { SPEAKER_LABEL } from './TransportCollaborationRoom.types'
 import type { ComposerSpeaker } from './TransportCollaborationRoom.types'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import {
+  fetchMergedTransportRunIndex,
+  fetchServeTransportDialog,
+  fetchServeTransportRun,
   fetchTransportDialog,
   fetchTransportRun,
-  fetchTransportRunIndex,
+  isServeChildRunId,
+  openServeEventStream,
   openTransportEventStream,
-  postTransportDialog,
+  postCollaborationDialog,
 } from './transportClient'
 import {
   MOCK_TRANSPORT_RUN_ID,
@@ -50,15 +54,34 @@ export interface TransportCollaborationRoomProps {
 const TRANSPORT_UI_REV = '2026-06-02-persona'
 const DEFAULT_LIVE_RUN_ID = ''
 const POLL_MS = 4000
+const SERVE_POLL_MS = 1500
 const MAX_EVENTS = 250
 
 
+
+
+function TransportServeChildBanner({ runId }: { runId: string }) {
+  if (!isServeChildRunId(runId)) return null
+  return (
+    <div className="transport-stale-run-banner" data-qid="transport:serve-child-banner" role="status">
+      <strong>OpenCode serve child</strong>
+      {' '}
+      PDF Lab serve child — timeline streams live (poll + SSE). Project agent: <code>@project-agent</code> in the composer. <strong>Worker trace</strong> opens the full monitor.
+    </div>
+  )
+}
+
 function TransportStaleRunBanner({
+  runId,
   activeChild,
 }: {
-  activeChild?: { agent_id?: string; subagent_kind?: string; role?: string } | null
+  runId: string
+  activeChild?: { agent_id?: string; agent?: string; subagent_kind?: string; role?: string } | null
 }) {
-  if (!activeChild || (activeChild.agent_id || '').trim()) return null
+  if (isServeChildRunId(runId)) return null
+  if (!activeChild) return null
+  if ((activeChild.agent_id || activeChild.agent || '').trim()) return null
+  if (activeChild.subagent_kind === 'opencode_serve') return null
   return (
     <div className="transport-stale-run-banner" data-qid="transport:stale-run-banner" role="status">
       <strong>This run has no worker template id.</strong>
@@ -112,7 +135,7 @@ export function TransportCollaborationRoom({
   const refreshRunIndex = useCallback(async () => {
     if (isMock) return
     try {
-      const remote = await fetchTransportRunIndex()
+      const remote = await fetchMergedTransportRunIndex()
       setRunHistory((local) => mergeRunIndex(local, remote))
     } catch {
       /* keep local */
@@ -124,7 +147,7 @@ export function TransportCollaborationRoom({
     if (isMock || initialRunId || runId.trim()) return
     void (async () => {
       try {
-        const remote = await fetchTransportRunIndex()
+        const remote = await fetchMergedTransportRunIndex()
         if (!remote.length) return
         const newest = [...remote].sort((a, b) => (b.mtime_ms || 0) - (a.mtime_ms || 0))[0]
         if (newest?.transport_run_id) {
@@ -155,9 +178,10 @@ export function TransportCollaborationRoom({
     setLoading(true)
     setError(null)
     try {
+      const serveChild = isServeChildRunId(id)
       const [dialogResp, runResp] = await Promise.all([
-        fetchTransportDialog(id),
-        fetchTransportRun(id),
+        serveChild ? fetchServeTransportDialog(id) : fetchTransportDialog(id),
+        serveChild ? fetchServeTransportRun(id) : fetchTransportRun(id),
       ])
       setDialog(dialogResp)
       setRunState(runResp)
@@ -175,16 +199,21 @@ export function TransportCollaborationRoom({
 
   useEffect(() => {
     if (isMock || !runId.trim()) return undefined
-    const timer = window.setInterval(() => void refresh(), POLL_MS)
+    const serveChild = isServeChildRunId(runId.trim())
+    const active = serveChild && (runState?.state?.children?.some((c) => c.active) ?? false)
+    const ms = serveChild && active ? SERVE_POLL_MS : POLL_MS
+    const timer = window.setInterval(() => void refresh(), ms)
     return () => window.clearInterval(timer)
-  }, [isMock, runId, refresh])
+  }, [isMock, runId, refresh, runState?.state?.children])
 
   useEffect(() => {
     if (isMock || !runId.trim()) {
       setStreamConnected(false)
       return undefined
     }
-    const close = openTransportEventStream(
+    const serveChild = isServeChildRunId(runId.trim())
+    const openStream = serveChild ? openServeEventStream : openTransportEventStream
+    const close = openStream(
       runId.trim(),
       {
         onEvent: (event) => {
@@ -194,7 +223,12 @@ export function TransportCollaborationRoom({
             event.event_type === 'message.completed'
             || event.event_type === 'child.created'
             || event.event_type === 'transport.child.created'
+            || event.event_type === 'run.completed'
+            || event.event_type === 'run.timeout'
+            || event.event_type === 'run.failed'
             || event.delivery_state === 'completed'
+            || event.delivery_state === 'timed_out'
+            || event.delivery_state === 'failed'
           ) {
             void refresh()
           }
@@ -300,13 +334,13 @@ export function TransportCollaborationRoom({
       const slugs = extractSkillSlugs(trimmed)
       const primary = primarySkillSlug(trimmed, skills)
       if (primary && slugs.length > 0) {
-        await postTransportDialog(runId.trim(), {
+        await postCollaborationDialog(runId.trim(), {
           speaker: SPEAKER_LABEL[speaker],
           body: trimmed,
           execute_skills: true,
         })
       } else {
-        await postTransportDialog(runId.trim(), {
+        await postCollaborationDialog(runId.trim(), {
           speaker: SPEAKER_LABEL[speaker],
           body: trimmed,
           execute_skills: false,
@@ -386,7 +420,8 @@ export function TransportCollaborationRoom({
             <div className="transport-room-error" data-qid="transport:room:error" role="alert">{error}</div>
           )}
 
-          <TransportStaleRunBanner activeChild={dialog?.active_subagent ?? null} />
+          <TransportServeChildBanner runId={runId} />
+          <TransportStaleRunBanner runId={runId} activeChild={dialog?.active_subagent ?? null} />
 
           <div className="transport-body-row">
             <main className="transport-chat-column" data-qid="transport:room:chat">
@@ -410,6 +445,12 @@ export function TransportCollaborationRoom({
                 skills={skills}
                 sending={sending}
                 pendingCount={pendingCount}
+                readOnly={!isMock && (isServeChildRunId(runId) ? dialog?.project_agent_can_participate === false : dialog?.human_can_participate === false)}
+                readOnlyNote={
+                  !isMock && isServeChildRunId(runId)
+                    ? 'Serve child (oc-*): live transcript + SSE. Type @project-agent … to post as project agent (mirrored into the OpenCode session).'
+                    : undefined
+                }
               />
             </main>
 

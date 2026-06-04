@@ -71,6 +71,7 @@ export interface TransportDialogResponse {
   transport_run_id?: string
   collaborators?: string[]
   human_can_participate?: boolean
+  project_agent_can_participate?: boolean
   dialog_session_id?: string
   children?: TransportSubagentSummary[]
   active_subagent?: TransportSubagentSummary | null

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T21:36:22.890Z",
+  "generated_at": "2026-06-03T16:52:25.443Z",
   "stale": false,
   "refreshing": false,
   "refresh_policy": "change_gated",
@@ -49,7 +49,7 @@
   },
   "corpusInventory": {
     "schema_version": 1,
-    "generated_at": "2026-06-02T21:35:59Z",
+    "generated_at": "2026-06-03T16:52:00Z",
     "source": "sparta_corpus_inventory",
     "status": "pass",
     "legacy_qras": {
@@ -649,7 +649,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-02T21:35:59Z",
+      "generated_at": "2026-06-03T16:52:00Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -1360,10 +1360,10 @@
   "supervisor": {
     "schema_version": 2,
     "source": "monitor-sparta-supervisor",
-    "generated_at": "2026-06-02T21:35:59.895053Z",
-    "heartbeat_at": "2026-06-02T21:35:59.895053Z",
+    "generated_at": "2026-06-03T16:52:01.303713Z",
+    "heartbeat_at": "2026-06-03T16:52:01.303713Z",
     "snapshot_age_seconds": 0,
-    "previous_snapshot_age_seconds": 15953,
+    "previous_snapshot_age_seconds": 67868,
     "status": "observing",
     "phase": "phase2_3_gated_supervisor",
     "gate_policy": {
@@ -2250,7 +2250,7 @@
     },
     "corpus_inventory": {
       "schema_version": 1,
-      "generated_at": "2026-06-02T21:36:22Z",
+      "generated_at": "2026-06-03T16:52:25Z",
       "source": "sparta_corpus_inventory",
       "status": "pass",
       "legacy_qras": {
@@ -2284,7 +2284,7 @@
     },
     "ui_coverage_aql_guard": {
       "schema_version": 1,
-      "generated_at": "2026-06-02T21:36:22Z",
+      "generated_at": "2026-06-03T16:52:25Z",
       "status": "pass",
       "state": "memory_owned",
       "target": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/server/index.ts",
@@ -2297,7 +2297,7 @@
     },
     "source_embedding_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-02T21:35:55Z",
+      "generated_at": "2026-06-03T16:51:50Z",
       "status": "fail",
       "state": "gaps_found",
       "target_counts": {
@@ -2307,7 +2307,7 @@
       "observed_counts": {
         "arango_embedding_docs": 0,
         "arango_synced_docs": 43396,
-        "qdrant_vectors": 655180
+        "qdrant_vectors": 655704
       },
       "gaps": {
         "missing_vectors": 0,
@@ -2440,7 +2440,7 @@
         "url": "http://127.0.0.1:6333",
         "collection": "memory_chunks_mm_jina_v4_1024",
         "reachable": true,
-        "point_count": 655180,
+        "point_count": 655704,
         "points_by_arango_collection": {
           "sparta_url_knowledge": 43402
         }
@@ -2455,7 +2455,7 @@
     },
     "source_text_qra_coverage": {
       "schema_version": 1,
-      "generated_at": "2026-06-02T21:36:21Z",
+      "generated_at": "2026-06-03T16:52:23Z",
       "status": "pass",
       "state": "covered",
       "summary": {

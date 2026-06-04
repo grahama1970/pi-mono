@@ -11,11 +11,15 @@ export function TransportComposer({
   skills,
   sending,
   pendingCount,
+  readOnly = false,
+  readOnlyNote,
 }: {
   onSend: (text: string, speaker: 'human' | 'project_agent') => void
   skills: Skill[]
   sending: boolean
   pendingCount: number
+  readOnly?: boolean
+  readOnlyNote?: string
 }) {
   const wrappedSend = useCallback(
     (text: string) => {
@@ -28,6 +32,12 @@ export function TransportComposer({
 
   return (
     <footer className="transport-chat-composer" data-qid="transport:composer">
+      {readOnly && readOnlyNote ? (
+        <p className="transport-chat-composer__pending" data-qid="transport:composer:readonly-note" role="status">
+          {readOnlyNote}
+        </p>
+      ) : null}
+
       {pendingCount > 0 && (
         <p className="transport-chat-composer__pending" data-qid="transport:composer:pending-note">
           {pendingCount} message{pendingCount === 1 ? '' : 's'} queued for the next worker dispatch.
@@ -37,8 +47,8 @@ export function TransportComposer({
       <ChatInput
         app="transport"
         skills={skills}
-        disabled={sending}
-        loading={sending}
+        disabled={sending || readOnly}
+        loading={sending && !readOnly}
         onSend={wrappedSend}
         placeholder="Interject as Human… (Enter to send, Shift+Enter for newline, / for skills)"
       />

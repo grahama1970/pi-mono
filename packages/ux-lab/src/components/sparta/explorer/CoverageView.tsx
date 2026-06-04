@@ -1071,6 +1071,20 @@ export function CoverageView() {
     },
   ]
 
+  const rawOpsFailed = Number(data?.monitorClosure?.raw_ops_arango?.failed ?? 0)
+  const rawOpsWarnings = Number(data?.monitorClosure?.raw_ops_arango?.warnings ?? 0)
+  const reconciledPassed = Number(data?.monitorClosure?.data_integrity_reconciled?.passed ?? 0)
+  const reconciledWarnings = Number(data?.monitorClosure?.data_integrity_reconciled?.warnings ?? 0)
+  const reconciledFailed = Number(data?.monitorClosure?.data_integrity_reconciled?.failed ?? 0)
+  const closureGatesPass = data?.monitorClosure?.status === 'pass'
+  const closureHeadlineTone = !heartbeatFresh || rawOpsFailed > 0 || rawOpsWarnings > 0 ? EMBRY.amber : closureGatesPass ? EMBRY.green : EMBRY.amber
+  const provenanceSources = [
+    data?.monitorClosure?.artifact_path,
+    data?.artifacts?.c2cAuditPath,
+    data?.artifacts?.nonC2cAuditPath,
+    ...(data?.artifacts?.recent ?? []),
+  ].filter((value): value is string => Boolean(value))
+
   return (
     <div style={S.page}>
       <header style={S.topbar}>
@@ -1137,33 +1151,63 @@ export function CoverageView() {
           data-qid="coverage:monitor-closure-panel"
           data-qs-action="MONITOR_CLOSURE_BASELINE"
           title="Durable monitor-sparta closure baseline versus live dimension health"
-          style={{ ...S.statusStrip, borderColor: `${data.monitorClosure.status === 'pass' ? EMBRY.green : EMBRY.amber}66` }}
+          style={{ ...S.closurePanel, borderColor: `${closureHeadlineTone}66` }}
         >
-          <div>
-            <div style={S.statusEyebrow}>Monitor Closure Baseline</div>
-            <strong style={{ ...S.statusTitle, color: data.monitorClosure.status === 'pass' ? EMBRY.green : EMBRY.amber }}>
-              {data.monitorClosure.passed ?? '?'}/{data.monitorClosure.total ?? '?'} closure gates · {String(data.monitorClosure.status ?? 'unknown').toUpperCase()}
-            </strong>
-            <span style={S.statusText}>
-              artifact {data.monitorClosure.artifact_id ?? 'unknown'}
-              {data.monitorClosure.generated_at ? ` · closure ${new Date(data.monitorClosure.generated_at).toLocaleString()}` : ''}
-              {data?.generated_at ? ` · live snapshot ${new Date(data.generated_at).toLocaleString()}` : ''}
-            </span>
+          <div style={S.closureHeaderRow}>
+            <div>
+              <div style={S.statusEyebrow}>Monitor Closure Baseline</div>
+              <strong style={{ ...S.statusTitle, color: closureGatesPass ? EMBRY.green : EMBRY.amber }}>
+                {data.monitorClosure.passed ?? '?'}/{data.monitorClosure.total ?? '?'} closure gates · {String(data.monitorClosure.status ?? 'unknown').toUpperCase()} (reconciled contract)
+              </strong>
+              {!heartbeatFresh ? (
+                <span style={{ ...S.closureCaveatBadge, borderColor: `${EMBRY.amber}88`, color: EMBRY.amber }}>
+                  SUPERVISOR STALE · heartbeat {heartbeatAgeSeconds == null ? 'unknown' : `${heartbeatAgeSeconds}s`}
+                </span>
+              ) : null}
+            </div>
+            <div
+              data-qid="coverage:monitor-closure:provenance"
+              style={S.closureProvenance}
+              title="Closure artifact lineage and live snapshot binding"
+            >
+              <div style={S.statusEyebrow}>Provenance</div>
+              <div style={S.provenanceLine}><b>artifact</b> {data.monitorClosure.artifact_id ?? 'unknown'}</div>
+              <div style={S.provenanceLine}><b>closure snapshot</b> {data.monitorClosure.generated_at ? new Date(data.monitorClosure.generated_at).toLocaleString() : 'unknown'}</div>
+              <div style={S.provenanceLine}><b>live snapshot</b> {data?.generated_at ? new Date(data.generated_at).toLocaleString() : 'not loaded'}</div>
+              <div style={S.provenanceLine}><b>supervisor heartbeat</b> {heartbeatAgeSeconds == null ? 'not loaded' : `${heartbeatAgeSeconds}s`}</div>
+              <div style={S.provenanceLine}><b>source json</b> {provenanceSources.length > 0 ? provenanceSources.slice(0, 4).join(' · ') : 'none loaded'}</div>
+            </div>
+          </div>
+          <div style={S.closureSplit}>
+            <div
+              data-qid="coverage:monitor-closure:reconciled"
+              style={{ ...S.closureLane, borderColor: `${reconciledFailed > 0 ? EMBRY.red : EMBRY.green}66` }}
+            >
+              <div style={S.closureLaneTitle}>Reconciled (monitor contract)</div>
+              <strong style={{ ...S.closureLaneValue, color: reconciledFailed > 0 ? EMBRY.red : EMBRY.green }}>
+                {reconciledPassed}/{reconciledWarnings}/{reconciledFailed} pass/warn/fail
+              </strong>
+              <span style={S.closureLaneNote}>Authoritative closure health under monitor-sparta reconciliation.</span>
+            </div>
+            <div
+              data-qid="coverage:monitor-closure:raw-ops-arango"
+              style={{ ...S.closureLane, borderColor: `${rawOpsFailed > 0 || rawOpsWarnings > 0 ? EMBRY.amber : EMBRY.border}66` }}
+            >
+              <div style={S.closureLaneTitle}>Raw ops-arango (legacy)</div>
+              <strong style={{ ...S.closureLaneValue, color: rawOpsFailed > 0 || rawOpsWarnings > 0 ? EMBRY.amber : EMBRY.white }}>
+                {data.monitorClosure.raw_ops_arango?.passed ?? '?'}/{data.monitorClosure.raw_ops_arango?.warnings ?? 0}/{data.monitorClosure.raw_ops_arango?.failed ?? '?'} pass/warn/fail
+              </strong>
+              <span style={S.closureLaneNote}>Legacy checks still reported; must stay visible beside reconciled PASS.</span>
+            </div>
           </div>
           <div style={S.statusMetrics}>
-            <span data-qid="coverage:monitor-closure:reconciled" style={S.statusMetric}>
-              <b>reconciled</b> {data.monitorClosure.data_integrity_reconciled?.passed ?? '?'}/{data.monitorClosure.data_integrity_reconciled?.warnings ?? 0}/{data.monitorClosure.data_integrity_reconciled?.failed ?? '?'} pass/warn/fail
-            </span>
-            <span data-qid="coverage:monitor-closure:raw-ops-arango" style={S.statusMetric}>
-              <b>raw ops-arango</b> {data.monitorClosure.raw_ops_arango?.passed ?? '?'}/{data.monitorClosure.raw_ops_arango?.warnings ?? 0}/{data.monitorClosure.raw_ops_arango?.failed ?? '?'} pass/warn/fail
-            </span>
             <span data-qid="coverage:monitor-closure:failed-gates" style={S.statusMetric}>
               <b>{data.monitorClosure.failed_gates?.length ?? 0}</b> failed closure gates
             </span>
           </div>
           {Array.isArray(data.monitorClosure.raw_ops_arango?.nonpassing) && data.monitorClosure.raw_ops_arango.nonpassing.length > 0 ? (
-            <div style={{ gridColumn: '1 / -1', fontSize: 11, color: EMBRY.dim, lineHeight: 1.5 }}>
-              Raw legacy checks still reported by /ops-arango (reconciled under monitor contract):{' '}
+            <div style={S.closureNonpassing}>
+              Raw legacy checks still reported by ops-arango (reconciled under monitor contract):{' '}
               {data.monitorClosure.raw_ops_arango.nonpassing.slice(0, 6).map((row) => `${row.check} (${row.status}, ${row.count})`).join(' · ')}
             </div>
           ) : null}
@@ -1512,6 +1556,17 @@ const S: Record<string, React.CSSProperties> = {
   statusText: { display: 'block', color: EMBRY.muted, fontSize: 12, marginTop: 3 },
   statusMetrics: { display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' },
   statusMetric: { border: `1px solid ${EMBRY.border}`, padding: '3px 7px', fontSize: 11, background: '#172033', color: EMBRY.white },
+  closurePanel: { display: 'grid', gap: 12, border: '1px solid', background: EMBRY.bgPanel, padding: '12px 14px', marginBottom: 14 },
+  closureHeaderRow: { display: 'grid', gridTemplateColumns: 'minmax(240px, 1.2fr) minmax(240px, 1fr)', gap: 16, alignItems: 'start' },
+  closureProvenance: { border: `1px solid ${EMBRY.border}`, background: '#101826', padding: '8px 10px', minWidth: 0 },
+  provenanceLine: { color: EMBRY.muted, fontSize: 11, lineHeight: 1.45, fontFamily: 'JetBrains Mono, monospace' },
+  closureCaveatBadge: { display: 'inline-block', marginTop: 8, padding: '4px 8px', border: '1px solid', fontSize: 10, fontWeight: 900, letterSpacing: '0.08em', textTransform: 'uppercase' },
+  closureSplit: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 },
+  closureLane: { border: '1px solid', background: '#101826', padding: '10px 12px', minWidth: 0 },
+  closureLaneTitle: { fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: EMBRY.dim, fontWeight: 800 },
+  closureLaneValue: { display: 'block', fontSize: 20, lineHeight: 1.2, marginTop: 6 },
+  closureLaneNote: { display: 'block', color: EMBRY.muted, fontSize: 11, lineHeight: 1.4, marginTop: 6 },
+  closureNonpassing: { fontSize: 11, color: EMBRY.dim, lineHeight: 1.5 },
   section: { border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, padding: 16, marginBottom: 18 },
   sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14 },
   heading: { margin: 0, fontSize: 17, color: EMBRY.white },
