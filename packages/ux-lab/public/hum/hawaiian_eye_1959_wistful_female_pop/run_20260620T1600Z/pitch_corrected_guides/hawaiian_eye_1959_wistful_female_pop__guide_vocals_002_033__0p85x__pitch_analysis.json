@@ -1,0 +1,43 @@
+{
+  "schema": "hum.pitch_correction_analysis_bundle.v1",
+  "before": {
+    "schema": "hum.pitch_analysis.v1",
+    "created_utc": "2026-06-20T17:13:36.416774+00:00",
+    "audio_path": "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/tempo/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x.wav",
+    "audio_sha256": "0d64a3b89a372779e2ec7a0408c1e8b60a80ead0395c4a6e43ab36bfb08a476f",
+    "sample_rate": 44100,
+    "duration_seconds": 36.454104,
+    "fmin_hz": 80.0,
+    "fmax_hz": 880.0,
+    "voiced_frame_count": 5837,
+    "total_frame_estimate": 6280,
+    "voiced_ratio": 0.929459,
+    "median_f0_hz": 318.15693562161516,
+    "median_detune_cents": -11.317942364756561,
+    "mean_detune_cents": -4.09505389465263,
+    "median_abs_detune_cents": 28.682057635243297,
+    "p90_abs_detune_cents": 41.3179423647577,
+    "p95_abs_detune_cents": 48.68205763524287,
+    "note": "This is a diagnostic pitch-centering estimate. It does not prove musical usability; human listening remains the gate."
+  },
+  "after": {
+    "schema": "hum.pitch_analysis.v1",
+    "created_utc": "2026-06-20T17:13:48.904152+00:00",
+    "audio_path": "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/pitch_corrected_guides/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x__pitch_global_+11.3c.wav",
+    "audio_sha256": "c8fdd520d53ce66a81dce5f92d4d0f132815e126fbd74d36ff0cf40061f2c6fa",
+    "sample_rate": 44100,
+    "duration_seconds": 36.454104,
+    "fmin_hz": 80.0,
+    "fmax_hz": 880.0,
+    "voiced_frame_count": 5815,
+    "total_frame_estimate": 6280,
+    "voiced_ratio": 0.925955,
+    "median_f0_hz": 321.8537411417131,
+    "median_detune_cents": -11.317942364756561,
+    "mean_detune_cents": -4.224219234920528,
+    "median_abs_detune_cents": 21.317942364757414,
+    "p90_abs_detune_cents": 41.3179423647577,
+    "p95_abs_detune_cents": 48.68205763524216,
+    "note": "This is a diagnostic pitch-centering estimate. It does not prove musical usability; human listening remains the gate."
+  }
+}

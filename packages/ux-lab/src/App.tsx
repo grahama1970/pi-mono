@@ -48,6 +48,7 @@ const ComponentGalleryView = React.lazy(() => import('./components/gallery/Compo
 const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m => ({ default: m.PdfLabView })));
 const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/InitialSweepStaticProof').then(m => ({ default: m.InitialSweepStaticProof })));
 const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
+const HumBakeoffView = React.lazy(() => import('./components/hum/HumBakeoffView').then(m => ({ default: m.HumBakeoffView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
 import { HackEvolveMonitor } from './components/hack/HackEvolveMonitor';
@@ -295,12 +296,13 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
           {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
           {projectId === 'scillm' && <ScillmWorkspace initialTab={subpath} />}
+          {projectId === 'hum-bakeoff' && <HumBakeoffView />}
           {projectId === 'hack' && (
             <div className="flex-1 overflow-auto p-6">
               <HackEvolveMonitor />
             </div>
           )}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'hack'].includes(projectId) && (
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'hum-bakeoff', 'hack'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -970,6 +972,7 @@ const ProjectSidebar = ({
   // Real projects with working component routing
   const projects: Project[] = [
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
+    { id: 'hum-bakeoff', title: 'Hum Bakeoff', subtitle: 'Embry STS guide and voice controls', date: '2026-06-20', type: 'desktop' as const },
     { id: 'hack', title: 'Hack Evolve Monitor', subtitle: 'Greybox hardening campaign UX', date: '2026-05-06', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
     { id: 'lean4-lemma', title: 'Lean4 Lemma Viewer', subtitle: 'Formal proof graph explorer', date: '2026-04-02', type: 'desktop' as const },

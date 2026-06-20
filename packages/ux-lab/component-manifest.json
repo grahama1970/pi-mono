@@ -809,6 +809,31 @@
     "gallery_entry": "Hack / Composed / HackEvolveMonitor",
     "app_shell_route": "Sidebar project id hack renders HackEvolveMonitor directly at #hack/final-site and appears near the top of the project list."
   },
+  "hum_bakeoff_view": {
+    "id": "hum-bakeoff-view",
+    "name": "HumBakeoffView",
+    "file": "src/components/hum/HumBakeoffView.tsx",
+    "description": "React final-site review surface for the hum skill. It renders a playable Embry persona STS bakeoff using real Hawaiian Eye guide and candidate artifacts, exposes speed/guide/voice choices, and previews ElevenLabs STS voice_settings without implying that the browser can spend API credits directly.",
+    "route": "http://localhost:3002/#hum-bakeoff",
+    "project_shell": {
+      "id": "hum-bakeoff",
+      "title": "Hum Bakeoff",
+      "subtitle": "Embry STS guide and voice controls"
+    },
+    "data_sources": [
+      "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/tempo/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x.wav",
+      "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/pitch_corrected_guides/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x__pitch_global_+11.3c.wav",
+      "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/sts/*.wav",
+      "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/receipts/*.receipt.redacted.json",
+      "/hum/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/**"
+    ],
+    "interaction_contract": "The surface exposes stable data-qid selectors for the page root, waveform, and each candidate card. Candidate selection updates the local draft controls; copy buttons copy local paths or JSON payloads without invoking ElevenLabs.",
+    "payload_contract": "The previewed STS payload contains voice_id, model_id, source audio, remove_background_noise, file_format, and JSON voice_settings only. It intentionally omits text, lyrics, transcript, and style_prompt fields because the STS endpoint does not document them.",
+    "layout_contract": "The first viewport must show the header image, source guide player, waveform/selection preview, and control knobs. The right rail shows the selected winner, why it held pitch, and the human listening gate.",
+    "visual_contract": "The page borrows the Watch waveform selection language but uses the hum README header image, warm studio color, tactile knob controls, and compact candidate cards so it feels like a listening workbench rather than a status dashboard.",
+    "safety_contract": "The page must not claim cache publication or API generation. Backend execution controls stay explicitly disabled until a real hum bake endpoint exists.",
+    "test_status": "TypeScript + CDP visual verification against http://localhost:3002/#hum-bakeoff required after changes"
+  },
   "route_shell_contracts": [
     {
       "id": "sparta-explorer-final-site",

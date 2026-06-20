@@ -1,0 +1,18 @@
+{
+  "schema": "hum.pitch_corrected_guide.v1",
+  "created_utc": "2026-06-20T17:13:48.907030+00:00",
+  "input_wav": "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/tempo/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x.wav",
+  "input_sha256": "0d64a3b89a372779e2ec7a0408c1e8b60a80ead0395c4a6e43ab36bfb08a476f",
+  "output_wav": "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/pitch_corrected_guides/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x__pitch_global_+11.3c.wav",
+  "output_sha256": "c8fdd520d53ce66a81dce5f92d4d0f132815e126fbd74d36ff0cf40061f2c6fa",
+  "method": "global_median_detune_correction",
+  "reason": "median_detune_to_nearest_equal_temperament",
+  "sample_rate": 44100,
+  "max_correction_cents": 35.0,
+  "applied_correction_cents": 11.317942364756561,
+  "min_voiced_ratio": 0.08,
+  "analysis_json": "/home/graham/workspace/experiments/agent-skills/skills/hum/jobs/hawaiian_eye_1959_wistful_female_pop/run_20260620T1600Z/pitch_corrected_guides/hawaiian_eye_1959_wistful_female_pop__guide_vocals_002_033__0p85x__pitch_analysis.json",
+  "bakeoff_role": "pre_elevenlabs_guide_variant",
+  "release_gate": "human_listening_required",
+  "warning": "This is intentionally light preprocessing before STS. It is not hard autotune, and it should be compared against the raw guide in the bakeoff."
+}
