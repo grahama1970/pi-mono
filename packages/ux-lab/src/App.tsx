@@ -276,6 +276,11 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
       </div>
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
+          {projectId === 'ux-lab' && (
+            <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_SHARED_CHAT...</div>}>
+              <SharedChatPage />
+            </React.Suspense>
+          )}
           {projectId === 'sparta-explorer' && (subpath === 'chat' || subpath === 'chat/personaplex' || subpath === 'personaplex-chat') && (
             <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PERSONAPLEX_CHAT...</div>}>
               <SharedChatPage />
@@ -315,7 +320,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
               <HackEvolveMonitor />
             </div>
           )}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'watch', 'hum-bakeoff', 'hum', 'hack'].includes(projectId) && (
+          {!['ux-lab', 'sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'watch', 'hum-bakeoff', 'hum', 'hack'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -984,6 +989,7 @@ const ProjectSidebar = ({
 
   // Real projects with working component routing
   const projects: Project[] = [
+    { id: 'ux-lab', title: 'Global Chat', subtitle: 'Self-contained shared chat surface (skill-owned)', date: '2026-06-24', type: 'desktop' as const },
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
     { id: 'watch', title: 'Watch', subtitle: 'Question-driven movie evidence report', date: '2026-06-18', type: 'desktop' as const },
     { id: 'hum-bakeoff', title: 'Hum Bakeoff', subtitle: 'Embry STS guide and voice controls', date: '2026-06-20', type: 'desktop' as const },
