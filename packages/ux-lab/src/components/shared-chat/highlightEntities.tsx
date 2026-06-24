@@ -4,7 +4,7 @@
  * and skill names (/skill-name) in text, returns JSX with lightweight inline emphasis.
  */
 import type { ReactNode } from 'react';
-import type { EntityType } from './types';
+import type { EntityType, EvidenceCaseSpan } from './types';
 
 // Patterns for compliance/security entities + skills
 // NOTE: Domain phrases come from /create-evidence-case glossary, NOT hardcoded here
@@ -201,6 +201,85 @@ export function highlightWithGlossary(
     }
     return part;
   });
+}
+
+
+const FRAMEWORK_ENTITY: Record<string, EntityType> = {
+  SPARTA: 'sparta',
+  CWE: 'cwe',
+  NIST: 'control',
+  CMMC: 'framework',
+};
+
+function entityTypeForSpan(span: EvidenceCaseSpan): EntityType {
+  if (span.kind === 'control_id') {
+    const fw = String(span.framework ?? '').toUpperCase();
+    if (fw === 'CWE') return 'cwe';
+    if (fw === 'SPARTA') return 'sparta';
+    return 'control';
+  }
+  if (span.kind === 'phrase' || span.kind === 'aerospace_term') return 'domain';
+  return classifyEntity(span.text);
+}
+
+/**
+ * Highlight text using pre-computed evidence_case.spans from /create-evidence-case backfill.
+ * Spans take precedence over regex/glossary highlighting.
+ */
+export function highlightWithSpans(
+  text: string,
+  spans: EvidenceCaseSpan[],
+  onEntityClick?: (entity: string, type: EntityType) => void,
+): ReactNode[] {
+  if (!spans.length) return highlightEntities(text, onEntityClick);
+
+  const sorted = [...spans]
+    .filter((s) => Array.isArray(s.span) && s.span.length === 2 && s.span[1] > s.span[0])
+    .sort((a, b) => a.span[0] - b.span[0]);
+
+  const nodes: ReactNode[] = [];
+  let lastEnd = 0;
+
+  for (const s of sorted) {
+    const [start, end] = s.span;
+    if (start < lastEnd) continue;
+    if (start > text.length) break;
+    const clampedEnd = Math.min(end, text.length);
+    if (start > lastEnd) nodes.push(text.slice(lastEnd, start));
+
+    const slice = text.slice(start, clampedEnd);
+    const type = entityTypeForSpan(s);
+    const style = ENTITY_STYLES[type];
+    const tooltip = s.name
+      ? `${s.name}${s.framework ? ` (${s.framework})` : ''}`
+      : slice;
+
+    nodes.push(
+      <span
+        key={`span-${start}-${end}`}
+        data-qid={`entity-span:${start}-${end}`}
+        data-entity-grounded={s.grounded_to_framework ? 'true' : 'false'}
+        onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(slice, type); } : undefined}
+        style={{
+          color: style.color,
+          fontWeight: 700,
+          background: 'transparent',
+          boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
+          borderBottom: `1px solid ${style.color}44`,
+          textDecorationLine: onEntityClick ? 'underline' : 'none',
+          textUnderlineOffset: '2px',
+          cursor: onEntityClick ? 'pointer' : 'inherit',
+        }}
+        title={tooltip}
+      >
+        {slice}
+      </span>,
+    );
+    lastEnd = clampedEnd;
+  }
+
+  if (lastEnd < text.length) nodes.push(text.slice(lastEnd));
+  return nodes;
 }
 
 export { ENTITY_PATTERN, ENTITY_STYLES };

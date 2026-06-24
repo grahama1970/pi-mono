@@ -48,6 +48,7 @@ const ComponentGalleryView = React.lazy(() => import('./components/gallery/Compo
 const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m => ({ default: m.PdfLabView })));
 const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/InitialSweepStaticProof').then(m => ({ default: m.InitialSweepStaticProof })));
 const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
+const WatchReportView = React.lazy(() => import('./components/watch/WatchReportView').then(m => ({ default: m.WatchReportView })));
 const HumBakeoffView = React.lazy(() => import('./components/hum/HumBakeoffView').then(m => ({ default: m.HumBakeoffView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
@@ -55,6 +56,7 @@ import { HackEvolveMonitor } from './components/hack/HackEvolveMonitor';
 import { apiUrl } from './lib/apiBase';
 
 // SPARTA sub-views
+const SharedChatPage = React.lazy(() => import('./components/shared-chat/SharedChatPage').then(m => ({ default: m.SharedChatPage })));
 const ChatTabView = React.lazy(() => import('./components/sparta/explorer/ChatTab').then(m => ({ default: m.ChatTab })));
 const SourcesView = React.lazy(() => import('./components/sparta/explorer/SourcesView').then(m => ({ default: m.SourcesView })));
 const ControlsView = React.lazy(() => import('./components/sparta/explorer/ControlsView').then(m => ({ default: m.ControlsView })));
@@ -274,7 +276,12 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
       </div>
       <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
-          {projectId === 'sparta-explorer' && (
+          {projectId === 'sparta-explorer' && (subpath === 'chat' || subpath === 'chat/personaplex' || subpath === 'personaplex-chat') && (
+            <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_PERSONAPLEX_CHAT...</div>}>
+              <SharedChatPage />
+            </React.Suspense>
+          )}
+          {projectId === 'sparta-explorer' && !['chat', 'chat/personaplex', 'personaplex-chat'].includes(subpath || '') && (
             <SpartaExplorerView initialTab={subpath} views={{
               Coverage: <React.Suspense fallback={null}><CoverageView /></React.Suspense>,
               Sources: <React.Suspense fallback={null}><SourcesView /></React.Suspense>,
@@ -296,13 +303,19 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'datalake-explorer' && <DatalakeExplorer />}
           {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
           {projectId === 'scillm' && <ScillmWorkspace initialTab={subpath} />}
+          {projectId === 'watch' && <WatchReportView />}
           {projectId === 'hum-bakeoff' && <HumBakeoffView />}
+          {projectId === 'hum' && (
+            <div className="w-full h-full">
+              <HumDashboard />
+            </div>
+          )}
           {projectId === 'hack' && (
             <div className="flex-1 overflow-auto p-6">
               <HackEvolveMonitor />
             </div>
           )}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'hum-bakeoff', 'hack'].includes(projectId) && (
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'watch', 'hum-bakeoff', 'hum', 'hack'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -953,12 +966,12 @@ const ProjectSidebar = ({
   isCollapsed, 
   onToggle, 
   activeProjectId, 
-  onProjectSelect 
+  onProjectSelect,
 }: { 
   isCollapsed: boolean, 
   onToggle: () => void,
   activeProjectId: string,
-  onProjectSelect: (id: string) => void
+  onProjectSelect: (id: string) => void,
 }) => {
   const [activeTab, setActiveTab] = useState<'my' | 'shared'>('my');
   const [searchQuery, setSidebarSearch] = useState('');
@@ -972,6 +985,7 @@ const ProjectSidebar = ({
   // Real projects with working component routing
   const projects: Project[] = [
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
+    { id: 'watch', title: 'Watch', subtitle: 'Question-driven movie evidence report', date: '2026-06-18', type: 'desktop' as const },
     { id: 'hum-bakeoff', title: 'Hum Bakeoff', subtitle: 'Embry STS guide and voice controls', date: '2026-06-20', type: 'desktop' as const },
     { id: 'hack', title: 'Hack Evolve Monitor', subtitle: 'Greybox hardening campaign UX', date: '2026-05-06', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
@@ -998,166 +1012,178 @@ const ProjectSidebar = ({
   }
 
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; projectId: string } | null>(null);
+  const [searchExpanded, setSearchExpanded] = useState(false);
 
-  const ProjectItem = ({ project }: { project: Project }) => (
-    <div
-      data-qid={`sidebar:item:project:${project.id}`}
-      data-qs-action="SIDEBAR_SELECT_PROJECT"
-      title={`Open project: ${project.title}`}
-      onClick={() => onProjectSelect(project.id)}
-      onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, projectId: project.id }); }}
-      className={cn(
-        "flex cursor-pointer transition-colors group relative min-h-[44px]",
-        isCollapsed ? "items-center justify-center p-1.5 min-w-[44px]" : "items-start gap-3 p-2.5 px-3",
-        "hover:bg-white/5",
-        activeProjectId === project.id && "bg-tactical-primary/10 border-r-2 border-tactical-primary"
-      )}
-    >
-      <div className={cn(
-        "bg-surface-lowest border flex items-center justify-center overflow-hidden flex-shrink-0",
-        isCollapsed ? "w-8 h-8" : "w-9 h-9",
-        activeProjectId === project.id ? "border-tactical-primary/40" : "border-white/5"
-      )}>
-        {project.thumbnail ? (
-          <img
-            src={project.thumbnail}
-            alt={project.title}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <span className={cn(
-            "text-[9px] font-mono font-bold",
-            activeProjectId === project.id ? "text-tactical-primary" : "text-slate-500"
-          )}>{getInitials(project.title)}</span>
-        )}
-      </div>
-      {!isCollapsed ? (
-        <div className="flex-1 min-w-0">
-          <h4 className={cn(
-            "text-[11px] font-headline font-bold truncate leading-tight transition-colors",
-            activeProjectId === project.id ? "text-tactical-primary" : "text-white group-hover:text-tactical-primary"
-          )}>
+  const ProjectItem = ({ project }: { project: Project }) => {
+    const isActive = activeProjectId === project.id
+    if (isCollapsed) {
+      return (
+        <div
+          data-qid={`sidebar:item:project:${project.id}`}
+          data-qs-action="SIDEBAR_SELECT_PROJECT"
+          title={`${project.title} — ${project.subtitle}`}
+          onClick={() => onProjectSelect(project.id)}
+          onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, projectId: project.id }); }}
+          className={cn(
+            'group relative mx-auto flex min-h-[48px] w-10 cursor-pointer items-center justify-center rounded-r-[24px] transition-colors',
+            isActive ? 'workspace-sidebar__nav-item--active bg-[#2d2e30]' : 'hover:bg-white/[0.04]',
+          )}
+        >
+          <div className="workspace-sidebar__icon-box" style={{ marginRight: 0 }}>
+            {project.thumbnail ? (
+              <img src={project.thumbnail} alt="" />
+            ) : (
+              <span style={{ color: isActive ? '#8ab4f8' : '#e3e3e3' }}>{getInitials(project.title)}</span>
+            )}
+          </div>
+          <div className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#2d2e30] px-2 py-1 text-[12px] text-[#e3e3e3] opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
             {project.title}
-          </h4>
-          <p className="text-[10px] font-mono text-slate-500 truncate">{project.subtitle}</p>
+          </div>
         </div>
-      ) : (
-        <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-surface-high border border-white/10 px-2 py-1 rounded text-[10px] font-mono text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl">
-          {project.title}
+      )
+    }
+
+    return (
+      <div
+        data-qid={`sidebar:item:project:${project.id}`}
+        data-qs-action="SIDEBAR_SELECT_PROJECT"
+        title={`${project.title} — ${project.subtitle}`}
+        onClick={() => onProjectSelect(project.id)}
+        onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, projectId: project.id }); }}
+        className={cn('workspace-sidebar__nav-item', isActive && 'workspace-sidebar__nav-item--active')}
+        style={isActive ? { minHeight: 48, height: 48, borderRadius: '0 24px 24px 0', marginRight: 12 } : { minHeight: 48, height: 48 }}
+      >
+        <div className="workspace-sidebar__icon-box">
+          {project.thumbnail ? (
+            <img src={project.thumbnail} alt="" />
+          ) : (
+            <span style={{ color: isActive ? '#8ab4f8' : '#e3e3e3' }}>{getInitials(project.title)}</span>
+          )}
         </div>
-      )}
-    </div>
-  );
+        <div className="min-w-0 flex-1 overflow-hidden">
+          <div className="workspace-sidebar__title">{project.title}</div>
+          <div className="workspace-sidebar__subtitle">{project.subtitle}</div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <aside className={cn(
-      "bg-surface-low border-r border-white/10 flex flex-col h-full min-h-0 overflow-hidden transition-all duration-300",
-      isCollapsed ? "w-12" : "w-[300px]"
-    )}>
-      {/* UX Lab Header */}
-      <div className={cn("p-6 pb-4", isCollapsed && "p-2 pb-1")}>
-        <div className={cn("flex items-center mb-6", isCollapsed ? "justify-center mb-1" : "justify-between")}>
-          {!isCollapsed && (
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-headline font-bold text-white tracking-tight">UX Lab</h1>
-              <span className="text-[8px] font-mono px-1.5 py-0.5 border border-white/20 rounded text-slate-400 uppercase">Beta</span>
-            </div>
-          )}
-          <button
-            data-qid="sidebar:button:toggle"
-            data-qs-action="SIDEBAR_TOGGLE"
-            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            onClick={onToggle}
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white/5 rounded transition-colors text-slate-500 hover:text-white"
-          >
-            {isCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
-          </button>
-        </div>
-
-        {!isCollapsed && (
-          <>
-            {/* Tabs */}
-            <div className="flex bg-surface-lowest p-1 rounded-lg mb-4">
-              <button
-                data-qid="sidebar:tab:my-projects"
-                data-qs-action="SIDEBAR_TAB_MY_PROJECTS"
-                title="View my projects"
-                onClick={() => setActiveTab('my')}
-                className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] text-[10px] font-headline font-bold rounded-md transition-all",
-                  activeTab === 'my' ? "bg-surface-high text-white shadow-sm" : "text-slate-500 hover:text-slate-300"
-                )}
-              >
-                <Grid className="w-3 h-3" /> My Projects
-              </button>
-              <button
-                data-qid="sidebar:tab:shared"
-                data-qs-action="SIDEBAR_TAB_SHARED"
-                title="View shared projects"
-                onClick={() => setActiveTab('shared')}
-                className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] text-[10px] font-headline font-bold rounded-md transition-all",
-                  activeTab === 'shared' ? "bg-surface-high text-white shadow-sm" : "text-slate-500 hover:text-slate-300"
-                )}
-              >
-                <User className="w-3 h-3" /> Shared
-              </button>
-            </div>
-
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500" />
-              <input
-                data-qid="sidebar:input:search"
-                data-qs-action="SIDEBAR_SEARCH"
-                title="Search projects by name or description"
-                type="text"
-                placeholder="Search projects"
-                value={searchQuery}
-                onChange={(e) => setSidebarSearch(e.target.value)}
-                className="w-full min-h-[44px] bg-surface-lowest border border-white/5 rounded-lg py-3 pl-9 pr-4 text-[11px] font-mono text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-tactical-primary/30 transition-colors"
-              />
-            </div>
-          </>
-        )}
-      </div>
-      
-      <div className={cn("flex-1 min-h-0 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]", isCollapsed ? "px-0.5 pb-1" : "px-3 pb-4")}>
-        {!isCollapsed && <h3 className="px-3 py-2 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Projects</h3>}
-        {filteredProjects.map(p => <ProjectItem key={p.id} project={p} />)}
-      </div>
-
-      {/* Create New Project — compact, no separate background */}
-      <div className={cn("px-3 py-2 border-t border-white/10", isCollapsed && "px-1")}>
+    <aside
+      className={cn(
+        'workspace-sidebar flex h-full min-h-0 flex-col overflow-hidden border-r border-white/10 transition-all duration-300',
+        isCollapsed && 'workspace-sidebar--collapsed w-12',
+      )}
+    >
+      <div className={cn('flex items-center px-3', isCollapsed ? 'justify-center py-2' : 'justify-between py-1')}>
+        {!isCollapsed && <span className="workspace-sidebar__label">UX Lab</span>}
         <button
-          data-qid="sidebar:button:new-project"
-          data-qs-action="SIDEBAR_NEW_PROJECT"
-          title="Create a new project"
-          className={cn(
-            "w-full flex items-center justify-center gap-1.5 py-3 min-h-[44px] border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
-            isCollapsed && "p-2.5 min-w-[44px]"
-          )}>
-          <Plus className="w-3 h-3" /> {!isCollapsed && "New Project"}
+          data-qid="sidebar:button:toggle"
+          data-qs-action="SIDEBAR_TOGGLE"
+          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          onClick={onToggle}
+          className="flex h-8 w-8 items-center justify-center rounded-md text-[#9aa0a6] transition-colors hover:bg-white/5 hover:text-[#e3e3e3]"
+        >
+          {isCollapsed ? <PanelLeft className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
         </button>
       </div>
 
-      {/* Right-click context menu */}
+      {!isCollapsed && (
+        <>
+          <button
+            data-qid="sidebar:button:new-project"
+            data-qs-action="SIDEBAR_NEW_PROJECT"
+            title="Create a new project"
+            className="workspace-sidebar__new-btn"
+          >
+            <Plus className="h-4 w-4" /> New project
+          </button>
+
+          <div className="mb-3 flex items-center gap-2 px-3">
+            <button
+              data-qid="sidebar:tab:my-projects"
+              data-qs-action="SIDEBAR_TAB_MY_PROJECTS"
+              title="View my projects"
+              onClick={() => setActiveTab('my')}
+              className={cn('workspace-sidebar__chip', activeTab === 'my' && 'workspace-sidebar__chip--active')}
+            >
+              Mine
+            </button>
+            <button
+              data-qid="sidebar:tab:shared"
+              data-qs-action="SIDEBAR_TAB_SHARED"
+              title="View shared projects"
+              onClick={() => setActiveTab('shared')}
+              className={cn('workspace-sidebar__chip', activeTab === 'shared' && 'workspace-sidebar__chip--active')}
+            >
+              Shared
+            </button>
+          </div>
+
+          <div className="mb-2 flex items-center px-3">
+            {searchExpanded ? (
+              <div className="flex w-full items-center gap-2">
+                <Search className="h-4 w-4 shrink-0 text-[#9aa0a6]" />
+                <input
+                  data-qid="sidebar:input:search"
+                  data-qs-action="SIDEBAR_SEARCH"
+                  title="Search projects by name or description"
+                  type="text"
+                  placeholder="Search projects"
+                  value={searchQuery}
+                  onChange={(e) => setSidebarSearch(e.target.value)}
+                  onBlur={() => { if (!searchQuery) setSearchExpanded(false) }}
+                  autoFocus
+                  className="workspace-sidebar__search-input"
+                />
+              </div>
+            ) : (
+              <button
+                type="button"
+                title="Search projects"
+                onClick={() => setSearchExpanded(true)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-[#9aa0a6] transition-colors hover:bg-white/5 hover:text-[#e3e3e3]"
+                aria-label="Search projects"
+              >
+                <Search className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      <div className="min-h-0 flex-1 overflow-y-auto py-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {!isCollapsed && (
+          <div className="px-3 pb-1 pt-1 text-[11px] font-medium text-[#9aa0a6]">Projects</div>
+        )}
+        <div>
+          {filteredProjects.map(p => <ProjectItem key={p.id} project={p} />)}
+        </div>
+      </div>
+
       {ctxMenu && (
         <>
           <div className="fixed inset-0 z-[9998]" onClick={() => setCtxMenu(null)} />
-          <div style={{ position: 'fixed', top: ctxMenu.y, left: ctxMenu.x, zIndex: 9999 }}
-            className="bg-[#1a1a1a] border border-white/10 rounded shadow-xl py-0.5 min-w-[120px]">
+          <div
+            style={{ position: 'fixed', top: ctxMenu.y, left: ctxMenu.x, zIndex: 9999 }}
+            className="min-w-[120px] rounded border border-white/10 bg-[#2d2e30] py-0.5 shadow-xl"
+          >
             {[
               { label: 'Open in New Tab', action: () => window.open(`#${ctxMenu.projectId}`, '_blank') },
               { label: 'Rename', action: () => {} },
               { label: 'Duplicate', action: () => {} },
               { label: 'Delete', danger: true, action: () => {} },
             ].map((item, i) => (
-              <button key={i} onClick={() => { item.action(); setCtxMenu(null); }}
+              <button
+                key={i}
+                onClick={() => { item.action(); setCtxMenu(null); }}
                 className={cn(
-                  "w-full text-left px-2.5 py-1 text-[9px] font-mono hover:bg-white/5 transition-colors",
-                  (item as any).danger ? "text-red-400 hover:text-red-300" : "text-slate-300 hover:text-white"
-                )}>{item.label}</button>
+                  'w-full px-2.5 py-1 text-left text-[12px] transition-colors hover:bg-white/5',
+                  (item as { danger?: boolean }).danger ? 'text-red-400 hover:text-red-300' : 'text-[#e3e3e3] hover:text-white',
+                )}
+              >
+                {item.label}
+              </button>
             ))}
           </div>
         </>
@@ -1165,7 +1191,6 @@ const ProjectSidebar = ({
     </aside>
   );
 };
-
 const ViewHeader = ({ activeView, onViewChange, systemHealth, deployBlockedReason }: {
   activeView: View,
   onViewChange: (view: View) => void,
@@ -1182,82 +1207,79 @@ const ViewHeader = ({ activeView, onViewChange, systemHealth, deployBlockedReaso
     label: isDeployBlocked ? 'Deploy Blocked' : 'Deploy',
     description: isDeployBlocked ? deployBlockedReason || 'Deployment is blocked by the current review gate' : 'Deploy the current project to production'
   });
+  const developerToolViews: { label: string; id: View }[] = [
+    { label: 'Mockups', id: 'mockups' },
+    { label: 'Components', id: 'components' },
+    { label: 'Design board', id: 'design-board' },
+    { label: 'Reviews', id: 'reviews' },
+    { label: 'Testing', id: 'testing' },
+    { label: 'Final site', id: 'final-site' },
+  ]
+
   return (
-    <header className="h-14 bg-black border-b border-tactical-primary/20 flex items-center justify-between px-6 z-40">
-      <div className="flex h-full items-center space-x-8">
-        {['Mockups', 'Components', 'Design Board', 'Reviews', 'Testing', 'Final Site'].map((label) => {
-          const id = label.toLowerCase().replace(' ', '-') as View;
-          const isActive = activeView === id;
-          return (
-            <button
-              key={label}
-              data-qid={`header:tab:${id}`}
-              data-qs-action={`HEADER_TAB_${id.toUpperCase().replace('-', '_')}`}
-              title={`Switch to ${label} view`}
-              onClick={() => onViewChange(id)}
-              className={cn(
-                "h-full min-h-[44px] flex flex-col items-center justify-center px-4 font-headline font-medium uppercase text-[10px] tracking-[0.2em] transition-all relative group",
-                isActive ? "text-tactical-primary" : "text-slate-600 hover:text-slate-300"
-              )}
-            >
-              <div className="flex items-center gap-2 relative z-10">
-                <span>{label}</span>
-              </div>
-              {isActive && (
-                <motion.div 
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-tactical-primary shadow-[0_0_10px_rgba(0,255,102,0.5)]"
-                />
-              )}
-              <div className="absolute inset-0 bg-tactical-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
-          );
-        })}
+    <header className="z-40 flex h-11 items-center justify-between border-b border-white/10 bg-surface-low px-4">
+      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
+        <span className="shrink-0 text-[11px] font-medium text-slate-500">Developer tools</span>
+        <div className="flex shrink-0 items-center gap-1 rounded-full bg-white/5 p-0.5">
+          {developerToolViews.map(({ label, id }) => {
+            const isActive = activeView === id
+            return (
+              <button
+                key={id}
+                data-qid={`header:tab:${id}`}
+                data-qs-action={`HEADER_TAB_${id.toUpperCase().replace('-', '_')}`}
+                title={`Switch to ${label}`}
+                onClick={() => onViewChange(id)}
+                className={cn(
+                  'whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors',
+                  isActive ? 'bg-white/12 text-white' : 'text-slate-500 hover:text-slate-200',
+                )}
+              >
+                {label}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <div className={cn(
-          "flex items-center gap-2 px-3 py-1 border rounded-sm transition-colors",
-          systemHealth.health === 'NOMINAL' ? "border-tactical-primary/20 bg-tactical-primary/5" :
-          systemHealth.health === 'DEGRADED' ? "border-tactical-warning/20 bg-tactical-warning/5" :
-          "border-tactical-danger/20 bg-tactical-danger/5"
-        )} title={systemHealth.details}>
-          <div className={cn(
-            "w-1.5 h-1.5 rounded-full animate-pulse",
-            systemHealth.health === 'NOMINAL' ? "bg-tactical-success" :
-            systemHealth.health === 'DEGRADED' ? "bg-tactical-warning" :
-            "bg-tactical-danger"
-          )} />
+      <div className="flex items-center gap-2">
+        <div
+          className={cn(
+            'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px]',
+            systemHealth.health === 'NOMINAL' && 'bg-tactical-success/10 text-tactical-success',
+            systemHealth.health === 'DEGRADED' && 'bg-tactical-warning/10 text-tactical-warning',
+            systemHealth.health === 'OFFLINE' && 'bg-tactical-danger/10 text-tactical-danger',
+          )}
+          title={systemHealth.details}
+        >
           <span className={cn(
-            "text-[9px] font-mono uppercase tracking-tighter",
-            systemHealth.health === 'NOMINAL' ? "text-tactical-success" :
-            systemHealth.health === 'DEGRADED' ? "text-tactical-warning" :
-            "text-tactical-danger"
-          )}>
-            System: {systemHealth.health}
-          </span>
+            'h-1.5 w-1.5 rounded-full',
+            systemHealth.health === 'NOMINAL' && 'bg-tactical-success',
+            systemHealth.health === 'DEGRADED' && 'bg-tactical-warning',
+            systemHealth.health === 'OFFLINE' && 'bg-tactical-danger',
+          )} />
+          {systemHealth.health}
         </div>
-        <div className="w-px h-6 bg-tactical-primary/20 mx-2" />
-        <button data-qid="header:button:history" data-qs-action="HEADER_HISTORY" title="View project history" className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-tactical-primary transition-all"><History className="w-4 h-4" /></button>
-        <button data-qid="header:button:notifications" data-qs-action="HEADER_NOTIFICATIONS" title="View notifications" className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-tactical-primary transition-all relative">
-          <Bell className="w-4 h-4" />
-          <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-tactical-danger rounded-full" />
+        <button data-qid="header:button:history" data-qs-action="HEADER_HISTORY" title="View project history" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-white/5 hover:text-white"><History className="h-4 w-4" /></button>
+        <button data-qid="header:button:notifications" data-qs-action="HEADER_NOTIFICATIONS" title="View notifications" className="relative flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-white/5 hover:text-white">
+          <Bell className="h-4 w-4" />
+          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-tactical-danger" />
         </button>
         <button
           data-qid="header:button:deploy"
-          data-qs-action={isDeployBlocked ? "HEADER_DEPLOY_BLOCKED" : "HEADER_DEPLOY"}
+          data-qs-action={isDeployBlocked ? 'HEADER_DEPLOY_BLOCKED' : 'HEADER_DEPLOY'}
           title={isDeployBlocked ? deployBlockedReason || 'Deploy blocked by the current review gate' : 'Deploy project to production'}
           disabled={isDeployBlocked}
           aria-disabled={isDeployBlocked}
           className={cn(
-            "px-4 py-2.5 min-h-[44px] text-[10px] font-mono font-black tracking-widest uppercase flex items-center gap-2 transition-all border",
+            'flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium transition-colors',
             isDeployBlocked
-              ? "bg-tactical-danger/10 border-tactical-danger/40 text-tactical-danger cursor-not-allowed"
-              : "bg-tactical-primary border-tactical-primary text-black hover:bg-tactical-success"
+              ? 'cursor-not-allowed bg-tactical-danger/15 text-tactical-danger'
+              : 'bg-tactical-primary text-black hover:bg-tactical-success',
           )}
         >
-          {isDeployBlocked ? <AlertCircle className="w-3.5 h-3.5" /> : <Rocket className="w-3.5 h-3.5" />}
-          {isDeployBlocked ? 'Deploy blocked' : 'Deploy'}
+          {isDeployBlocked ? <AlertCircle className="h-3.5 w-3.5" /> : <Rocket className="h-3.5 w-3.5" />}
+          {isDeployBlocked ? 'Blocked' : 'Deploy'}
         </button>
       </div>
     </header>

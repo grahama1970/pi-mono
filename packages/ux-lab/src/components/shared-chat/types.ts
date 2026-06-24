@@ -134,6 +134,16 @@ export interface Artifact {
 	data?: unknown;
 	figureSpec?: FigureSpec;
 	description?: string;
+	code?: string;
+	sourceSkill?: string;
+	caseId?: string;
+	sampleDerived?: boolean;
+	provenanceState?: string;
+	sha256?: string;
+	caption?: string;
+	sectionHeading?: string;
+	sectionIntro?: string;
+	preview?: { kind: string; content: string };
 }
 
 export interface Skill {
@@ -159,6 +169,7 @@ export interface GlossaryTerm {
 		| "countermeasure"
 		| "technique"
 		| "domain_term";
+	definition?: string;
 }
 
 export interface EvidenceCaseData {
@@ -193,10 +204,12 @@ export interface EvidenceCaseData {
 	trace_state?: string;
 	approval_state?: string;
 	response_action?: "answer" | "deflect" | "clarify" | string;
+	blocker_reason?: string;
 	response_policy?: Record<string, unknown>;
 	chat_evidence_binding?: Record<string, unknown>;
 	chat_evidence_run_binding?: Record<string, unknown>;
 	glossary?: GlossaryTerm[];
+	spans?: EvidenceCaseSpan[];
 	diagnostics?: Record<string, unknown>;
 	evidence_case_version?: Record<string, unknown>;
 	gap_review?: Record<string, unknown>;
@@ -247,6 +260,14 @@ export interface ChatMessage {
 	feedback?: "up" | "down" | null;
 	/** scillm transport room: human | project_agent | worker */
 	transportCollaborator?: string;
+	answerState?: "bound" | "clarify" | "deflect";
+	askPrompts?: string[];
+	tryPrompts?: string[];
+	blockedReasons?: string[];
+	heardQueryLabel?: string;
+	inputChannel?: "voice" | "typed";
+	/** Pre-computed /create-evidence-case spans for question highlighting */
+	entitySpans?: EvidenceCaseSpan[];
 }
 
 // ── Activity Feed Types ─────────────────────────────────────────────────

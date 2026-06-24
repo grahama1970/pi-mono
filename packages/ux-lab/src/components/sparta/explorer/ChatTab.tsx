@@ -22,7 +22,9 @@ import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState,
 import { LemmaGraph } from '../lemma-graph/LemmaGraph'
 import type { GraphNode, GraphEdge } from '../lemma-graph/LemmaGraph'
 import PostureDashboard from '../dashboard/PostureDashboard'
+import { PersonaPlexVoiceTracePanel } from './PersonaPlexVoiceTracePanel'
 
+import { sendPersonaPlexSpeechFinalBestEffort } from './personaplexSpeechFinalClient'
 const API = ''
 
 // ── Shared state between chat + viz ──────────────────────────────────────
@@ -241,6 +243,10 @@ export function ChatTab() {
 
   const handleSend = useCallback((query: string, type: 'natural' | 'aql') => {
     piChat.send(query, type)
+    void sendPersonaPlexSpeechFinalBestEffort(query, {
+      wsUrl: 'ws://127.0.0.1:8788/ws',
+      personaId: 'embry',
+    })
   }, [piChat])
 
   // Legacy handleSend deleted — Pi handles everything via usePiChat hook.
@@ -590,6 +596,7 @@ export function ChatTab() {
               isStreaming={piChat.isStreaming}
               streamingSteps={piChat.streamingSteps}
             />
+            <PersonaPlexVoiceTracePanel className="mt-4" />
           </div>
 
         </div>

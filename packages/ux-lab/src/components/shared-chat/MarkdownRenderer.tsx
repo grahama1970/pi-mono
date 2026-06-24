@@ -37,27 +37,41 @@ hljs.registerLanguage('sh', bash);
 interface MarkdownRendererProps {
   content: string;
   onEntityClick?: (entity: string, type: EntityType) => void;
+  /** Legacy: cap tables at 3 rows with fade + workspace link (non-sidebar only) */
+  teaserMode?: boolean;
+  /** Gemini sidebar: full readable prose/tables on flat canvas */
+  sidebarMode?: boolean;
+  onOpenWorkspace?: () => void;
+  tableRowCount?: number;
 }
 
-export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEntityClick }: MarkdownRendererProps) {
-  const hl = (text: string) => highlightEntities(text, onEntityClick);
+export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEntityClick, teaserMode = false, sidebarMode = false, onOpenWorkspace, tableRowCount }: MarkdownRendererProps) {
+  // Sidebar: clean reading surface — no neon entity underlines (workspace owns that).
+  const hl = (text: string) => sidebarMode ? text : highlightEntities(text, onEntityClick);
 
   return (
+    <div className={sidebarMode ? 'chat-prose chat-prose--sidebar' : 'chat-prose'}>
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
         p: ({ children }) => (
-          <p style={{ margin: '4px 0' }}>
+          <p>
             {typeof children === 'string' ? hl(children) : children}
           </p>
         ),
         strong: ({ children }) => (
-          <strong style={{ fontWeight: 700, color: '#f8fafc' }}>
+          <strong>
             {typeof children === 'string' ? hl(children) : children}
           </strong>
         ),
+        h1: ({ children }) => <h1>{children}</h1>,
+        h2: ({ children }) => <h2>{children}</h2>,
+        h3: ({ children }) => <h3>{children}</h3>,
+        h4: ({ children }) => <h4>{children}</h4>,
+        ul: ({ children }) => <ul>{children}</ul>,
+        ol: ({ children }) => <ol>{children}</ol>,
         li: ({ children }) => (
-          <li style={{ margin: '2px 0' }}>
+          <li>
             {typeof children === 'string' ? hl(children) : children}
           </li>
         ),
@@ -65,6 +79,9 @@ export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEnti
           const lang = className?.replace('language-', '') || '';
           const text = String(children).replace(/\n$/, '');
           if (!className) {
+            if (sidebarMode) {
+              return <code className="chat-prose__code">{text}</code>;
+            }
             return (
               <code style={{
                 fontFamily: 'var(--font-mono, monospace)', fontSize: 13,
@@ -96,38 +113,33 @@ export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEnti
             </div>
           );
         },
-        table: ({ children }) => (
-          <div style={{ margin: '12px 0', overflow: 'hidden', background: '#0b1220', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8 }}>
-            <table style={{ width: '100%', fontSize: 13, fontFamily: 'var(--font-mono, monospace)', borderCollapse: 'collapse' }}>{children}</table>
-          </div>
+        img: ({ src, alt, title }) => (
+          <figure className="chat-prose__figure">
+            <img src={src} alt={alt ?? ''} title={title} loading="lazy" className="chat-prose__img" />
+            {alt ? <figcaption className="chat-prose__caption">{alt}</figcaption> : null}
+          </figure>
         ),
-        th: ({ children }) => (
-          <th style={{
-            padding: '8px 12px', textAlign: 'left', fontSize: 10, fontWeight: 600,
-            color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5,
-            background: '#0b1220', borderBottom: '1px solid rgba(255,255,255,0.1)',
-          }}>
-            {children}
-          </th>
-        ),
-        td: ({ children }) => {
-          const text = String(children || '');
-          let color = '#e2e8f0';
-          if (text.includes('✅') || text.includes('Pass')) color = '#00ff88';
-          else if (text.includes('❌') || text.includes('Fail')) color = '#ff4444';
-          else if (text.includes('⚠️') || text.includes('Warn')) color = '#ffaa00';
+        table: ({ children }) => {
+          const teaser = teaserMode && !sidebarMode;
           return (
-            <td style={{
-              padding: '6px 12px', color, fontSize: 12,
-              borderBottom: '1px solid rgba(255,255,255,0.04)',
-            }}>
-              {typeof children === 'string' ? hl(children) : children}
-            </td>
+            <div className={teaser ? 'chat-prose-table-teaser' : 'chat-prose-table'}>
+              <table>{children}</table>
+              {teaser && onOpenWorkspace ? (
+                <button type="button" className="chat-prose-table-workspace-link" data-qid="chat:markdown-table:workspace" onClick={onOpenWorkspace}>
+                  ↗ View all{tableRowCount ? ` ${tableRowCount}` : ''} rows in Workspace
+                </button>
+              ) : null}
+            </div>
           );
         },
+        th: ({ children }) => <th>{children}</th>,
+        td: ({ children }) => (
+          <td>{typeof children === 'string' ? hl(children) : children}</td>
+        ),
       }}
     >
       {content}
     </ReactMarkdown>
+    </div>
   );
 });

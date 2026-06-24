@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useCallback, useRef, useCont
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { StatusBar } from '../../common/StatusBar'
 import { OfflineBanner } from '../../common/OfflineBanner'
-import { ChatWell, type StreamingStep } from '../../shared-chat'
+import { ChatWell, SharedChatShell, type StreamingStep } from '../../shared-chat'
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../../shared-chat'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
 import { useMemoryHealth } from '../../../hooks/useMemoryHealth'
@@ -1189,7 +1189,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               </div>
             </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
-              <ChatWell messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} isStreaming={evidenceStreaming} streamingSteps={evidenceStreamingSteps} />
+              <SharedChatShell surface="sparta-explorer" shellQid="sparta:chat:shell:slideover" hideHeader showModeToggle={false} messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} isStreaming={evidenceStreaming} streamingSteps={evidenceStreamingSteps} />
             </div>
           </div>
         )}
