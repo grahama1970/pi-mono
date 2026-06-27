@@ -160,6 +160,42 @@ describe("tauAgentHandoff", () => {
 		expect(summarizeTauHandoffGithubProjection(projection)).toContain("| status | refused |");
 	});
 
+	it("derives PR transport commands and refuses malformed GitHub targets", () => {
+		const handoff = buildTauAgentHandoff({
+			repo: "grahama1970/chatgpt-lab",
+			target: "pr#456",
+			contextSummary: "PR handoff.",
+			resultStatus: "NEEDS_REVIEW",
+			resultSummary: "PR needs review.",
+			rationale: "Reviewer should inspect the PR.",
+			nextAgentName: "reviewer",
+			nextAgentReason: "Read-only validation is required.",
+			requiredEvidence: ["Reviewer receipt"],
+			stopCondition: "Reviewer posts a schema-valid receipt.",
+		});
+
+		const projection = deriveTauHandoffGithubProjection(handoff);
+		const receipt = deriveTauHandoffGithubTransportReceipt(projection);
+
+		expect(receipt.ok).toBe(true);
+		expect(receipt.commands).toEqual([
+			"gh pr comment 456 --repo grahama1970/chatgpt-lab --body-file -",
+			"gh pr edit 456 --repo grahama1970/chatgpt-lab --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked",
+		]);
+
+		const malformed = deriveTauHandoffGithubTransportReceipt({
+			...projection,
+			target: { repo: "grahama1970/chatgpt-lab", target: "ticket#abc" },
+		});
+
+		expect(malformed).toMatchObject({
+			ok: false,
+			commandCount: 0,
+			commands: [],
+		});
+		expect(malformed.errors[0]).toContain("unsupported GitHub target");
+	});
+
 	it("refuses projection when next_agent is missing", () => {
 		const handoff = buildTauAgentHandoff({
 			contextSummary: "Missing next agent.",

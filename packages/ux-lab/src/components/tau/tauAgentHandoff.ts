@@ -354,18 +354,34 @@ export function deriveTauHandoffGithubTransportReceipt(
 		};
 	}
 
+	const target = parseTauGithubTarget(projection.target.target);
+	if (!target.ok) {
+		return {
+			schema: "tau.handoff_github_transport_receipt.v1",
+			ok: false,
+			dryRun: true,
+			applied: false,
+			target: projection.target,
+			labels: projection.labels,
+			commandCount: 0,
+			commands: [],
+			errors: [target.error],
+			sourceProjectionContract: "tau.handoff_github_projection.rendered.v1",
+		};
+	}
+
 	const labelCsv = projection.labels.add.join(",");
 	const removeLabelCsv = projection.labels.remove.join(",");
 	const commentCommand =
-		projection.target.target === "new"
+		target.kind === "new"
 			? `gh issue create --repo ${projection.target.repo} --title "Tau agent handoff: ${projection.nextAgent ?? "next-agent"}" --body-file - --label ${labelCsv}`
-			: `gh issue comment ${projection.target.target.replace(/^issue#/, "")} --repo ${projection.target.repo} --body-file -`;
+			: `gh ${target.kind} comment ${target.number} --repo ${projection.target.repo} --body-file -`;
 	const commands = [
 		commentCommand,
-		...(projection.target.target === "new"
+		...(target.kind === "new"
 			? []
 			: [
-					`gh issue edit ${projection.target.target.replace(/^issue#/, "")} --repo ${projection.target.repo} --add-label ${labelCsv} --remove-label ${removeLabelCsv}`,
+					`gh ${target.kind} edit ${target.number} --repo ${projection.target.repo} --add-label ${labelCsv} --remove-label ${removeLabelCsv}`,
 				]),
 	];
 
@@ -391,6 +407,27 @@ export function renderTauHandoffGithubTransportReceiptJsonBlock(receipt: TauHand
 		JSON.stringify(receipt, null, 2),
 		"```",
 	].join("\n");
+}
+
+function parseTauGithubTarget(target: string):
+	| { ok: true; kind: "new" }
+	| { ok: true; kind: "issue" | "pr"; number: number }
+	| { ok: false; error: string } {
+	if (target === "new") return { ok: true, kind: "new" };
+
+	const match = /^(issue|pr)#([1-9]\d*)$/.exec(target);
+	if (!match) {
+		return {
+			ok: false,
+			error: `unsupported GitHub target "${target}"; expected new, issue#<number>, or pr#<number>`,
+		};
+	}
+
+	return {
+		ok: true,
+		kind: match[1] as "issue" | "pr",
+		number: Number(match[2]),
+	};
 }
 
 function nextAgentForRoute(action: string, branch: string) {
