@@ -15,6 +15,7 @@ const scenarios = [
 	{ name: "answer", expected: { mocked: false, live: true, nextAgent: "reviewer" } },
 	{ name: "research", expected: { mocked: false, live: true, nextAgent: "research-auditor" } },
 	{ name: "clarify", expected: { mocked: true, live: false, nextAgent: "human" } },
+	{ name: "clarify-invalid-product", expected: { mocked: true, live: false, handoffAbsent: true } },
 	{ name: "deflect-invalid-product", expected: { mocked: true, live: false, handoffAbsent: true } },
 	{ name: "answer-invalid-product", expected: { mocked: true, live: false, handoffAbsent: true } },
 	{ name: "clarify-availability", expected: { mocked: false, live: true, clarifyAvailable: false } },

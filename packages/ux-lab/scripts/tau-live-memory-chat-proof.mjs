@@ -134,6 +134,45 @@ const scenarios = {
 			};
 		},
 	},
+	"clarify-invalid-product": {
+		prompt: "How do I secure it?",
+		waitFor: "Tau stopped fail-closed while running /clarify.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "CLARIFY",
+				confidence: 0.58,
+				response_mode: "clarify",
+				content_type: "clarification",
+				entities: [],
+				frameworks: [],
+				recall_profile: null,
+			},
+			"/api/memory/clarify": {
+				schema: "memory.clarify.v1",
+				needs_clarification: true,
+				questions: [],
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_lead_visible: chatText.includes("Tau stopped fail-closed while running /clarify."),
+				invalid_clarify_reason_visible: chatText.includes("Memory /clarify requested clarification without questions"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_human_next_agent_visible: !/next agent\s+human/.test(chatText) && !chatText.includes('"name": "human"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				clarify_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/clarify") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 	answer: {
 		prompt: "What is the current project status?",
 		waitFor: "Tau routed this turn to Memory answer.",
