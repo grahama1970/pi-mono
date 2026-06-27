@@ -86,6 +86,9 @@ function makeAdapter(
 		ok: true,
 		dryRun: true,
 		applied: false,
+		persisted: true,
+		artifactPath: `/tmp/tau-subagent-receipt-expectations/test/${intake.nextAgent}-subagent-receipt-expectation.json`,
+		proofRoot: "/tmp/tau-subagent-receipt-expectations",
 		target: intake.target,
 		nextAgent: intake.nextAgent,
 		executor: intake.executor,
@@ -497,6 +500,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain('"nextAgent": "reviewer"');
 		expect(message.content).toContain("### Tau subagent receipt expectation JSON contract");
 		expect(message.content).toContain('"schema": "tau.subagent_receipt_expectation.v1"');
+		expect(message.content).toContain('"persisted": true');
+		expect(message.content).toContain(
+			"/tmp/tau-subagent-receipt-expectations/test/reviewer-subagent-receipt-expectation.json",
+		);
 		expect(message.content).toContain('"previous_subagent": "reviewer"');
 		expect(message.content).toContain('"next_agent_required": true');
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
@@ -553,6 +560,8 @@ describe("TauReceiptAdapter Memory routing", () => {
 			ok: true,
 			dryRun: true,
 			applied: false,
+			persisted: true,
+			artifactPath: "/tmp/tau-subagent-receipt-expectations/test/reviewer-subagent-receipt-expectation.json",
 			nextAgent: "reviewer",
 			requiredReceipt: {
 				schema: "tau.agent_handoff.v1",

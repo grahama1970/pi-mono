@@ -1,6 +1,6 @@
 import type { Express, Request, Response } from 'express'
 import { existsSync } from 'fs'
-import { readFile, stat } from 'fs/promises'
+import { mkdir, readFile, stat, writeFile } from 'fs/promises'
 import { resolve } from 'path'
 
 type JsonRecord = Record<string, unknown>
@@ -10,6 +10,9 @@ const TAU_COMMAND_LOOP_PROOF_ROOT = resolve(
 )
 const TAU_COMMAND_LOOP_SUMMARY_PATH = resolve(
 	process.env.TAU_COMMAND_LOOP_SUMMARY_PATH ?? resolve(TAU_COMMAND_LOOP_PROOF_ROOT, 'summary.json'),
+)
+const TAU_SUBAGENT_EXPECTATION_PROOF_ROOT = resolve(
+	process.env.TAU_SUBAGENT_EXPECTATION_PROOF_ROOT ?? '/tmp/tau-subagent-receipt-expectations',
 )
 
 function isPathInside(root: string, absolutePath: string): boolean {
@@ -347,6 +350,33 @@ export function normalizeTauSubagentReceiptExpectation(intake: unknown): JsonRec
 	}
 }
 
+export async function persistTauSubagentReceiptExpectation(
+	intake: unknown,
+	proofRoot = TAU_SUBAGENT_EXPECTATION_PROOF_ROOT,
+	now = new Date(),
+): Promise<JsonRecord> {
+	const receipt = normalizeTauSubagentReceiptExpectation(intake)
+	const root = resolve(proofRoot)
+	const nextAgent = asString(receipt.nextAgent) ?? 'unknown'
+	const safeAgent = nextAgent.replace(/[^A-Za-z0-9_.-]/g, '_')
+	const timestamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z')
+	const artifactDir = resolve(root, timestamp)
+	const artifactPath = resolve(artifactDir, `${safeAgent}-subagent-receipt-expectation.json`)
+	if (!isPathInside(root, artifactPath)) {
+		throw new Error('Tau subagent receipt expectation artifact path escapes proof root')
+	}
+
+	const persisted = {
+		...receipt,
+		persisted: true,
+		artifactPath,
+		proofRoot: root,
+	}
+	await mkdir(artifactDir, { recursive: true })
+	await writeFile(artifactPath, `${JSON.stringify(persisted, null, 2)}\n`, 'utf8')
+	return persisted
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -389,9 +419,9 @@ export function registerTauRoutes(app: Express): void {
 		}
 	})
 
-	app.post('/api/tau/handoff/subagent-receipt/expectation', (req: Request, res: Response) => {
+	app.post('/api/tau/handoff/subagent-receipt/expectation', async (req: Request, res: Response) => {
 		try {
-			const receipt = normalizeTauSubagentReceiptExpectation(req.body)
+			const receipt = await persistTauSubagentReceiptExpectation(req.body)
 			res.json({ ok: true, receipt })
 		} catch (error) {
 			res.status(400).json({

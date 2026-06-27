@@ -64,6 +64,14 @@ async function runScenario(scenario) {
 		readError = error instanceof Error ? error.message : String(error);
 	}
 	const assertions = validateScenarioProof(proof, scenario.expected);
+	const persistedExpectation = await readPersistedExpectation(proof?.subagentReceiptExpectation?.artifactPath);
+	if (scenario.expected.nextAgent) {
+		assertions.subagent_receipt_expectation_artifact_readable = persistedExpectation.ok;
+		assertions.subagent_receipt_expectation_artifact_schema =
+			persistedExpectation.json?.schema === "tau.subagent_receipt_expectation.v1";
+		assertions.subagent_receipt_expectation_artifact_next_agent =
+			persistedExpectation.json?.nextAgent === scenario.expected.nextAgent;
+	}
 	const ok = exitCode === 0 && Boolean(proof?.ok) && Object.values(assertions).every(Boolean);
 	return {
 		name: scenario.name,
@@ -85,6 +93,8 @@ async function runScenario(scenario) {
 		handoffOrchestratorIntakeAccepted: proof?.handoffOrchestratorIntake?.accepted ?? null,
 		subagentReceiptExpectationSchema: proof?.subagentReceiptExpectation?.schema ?? null,
 		subagentReceiptExpectationNextAgent: proof?.subagentReceiptExpectation?.nextAgent ?? null,
+		subagentReceiptExpectationArtifactPath: proof?.subagentReceiptExpectation?.artifactPath ?? null,
+		subagentReceiptExpectationArtifactReadable: persistedExpectation.ok,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -150,6 +160,11 @@ function validateScenarioProof(proof, expected) {
 			proof.subagentReceiptExpectation?.requiredReceipt?.next_agent_required === true;
 		assertions.subagent_receipt_expectation_dry_run =
 			proof.subagentReceiptExpectation?.dryRun === true && proof.subagentReceiptExpectation?.applied === false;
+		assertions.subagent_receipt_expectation_persisted =
+			proof.subagentReceiptExpectation?.persisted === true;
+		assertions.subagent_receipt_expectation_artifact_path_present =
+			typeof proof.subagentReceiptExpectation?.artifactPath === "string"
+			&& proof.subagentReceiptExpectation.artifactPath.includes("/tau-subagent-receipt-expectations/");
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -165,6 +180,18 @@ function validateScenarioProof(proof, expected) {
 		assertions.clarify_available_matches = proof.clarifyAvailable === expected.clarifyAvailable;
 	}
 	return assertions;
+}
+
+async function readPersistedExpectation(artifactPath) {
+	if (typeof artifactPath !== "string" || !artifactPath) {
+		return { ok: false, json: null, error: "artifact path missing" };
+	}
+	try {
+		const json = JSON.parse(await readFile(artifactPath, "utf8"));
+		return { ok: true, json, error: null };
+	} catch (error) {
+		return { ok: false, json: null, error: error instanceof Error ? error.message : String(error) };
+	}
 }
 
 function tail(text) {
@@ -198,6 +225,7 @@ async function main() {
 				"Successful handoff route proofs extract the rendered tau.handoff_github_transport_validation.v1 JSON.",
 				"Successful handoff route proofs extract the rendered tau.handoff_orchestrator_intake.v1 JSON.",
 				"Successful handoff route proofs extract the rendered tau.subagent_receipt_expectation.v1 JSON.",
+				"Successful handoff route proofs read the persisted tau.subagent_receipt_expectation.v1 artifact from disk.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

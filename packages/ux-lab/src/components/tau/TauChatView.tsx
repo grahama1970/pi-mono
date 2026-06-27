@@ -256,6 +256,9 @@ type TauSubagentReceiptExpectation = {
   ok: boolean
   dryRun: true
   applied: false
+  persisted?: boolean
+  artifactPath?: string
+  proofRoot?: string
   target: {
     repo: string
     target: string

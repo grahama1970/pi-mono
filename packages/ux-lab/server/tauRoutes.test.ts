@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from 'fs/promises'
+import { mkdtemp, readFile, rm, writeFile } from 'fs/promises'
 import { tmpdir } from 'os'
 import { resolve } from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -7,6 +7,7 @@ import {
 	normalizeTauChatHandoffTransportReceipt,
 	normalizeTauCommandLoopProjection,
 	normalizeTauSubagentReceiptExpectation,
+	persistTauSubagentReceiptExpectation,
 } from './tauRoutes'
 
 const roots: string[] = []
@@ -355,5 +356,35 @@ describe('normalizeTauSubagentReceiptExpectation', () => {
 				accepted: false,
 			}),
 		).toThrow('orchestrator intake is not accepted')
+	})
+
+	it('persists the expectation receipt as a non-mutating proof artifact', async () => {
+		const root = await makeRoot()
+		const receipt = await persistTauSubagentReceiptExpectation(
+			validIntake(),
+			root,
+			new Date('2026-06-27T22:30:00Z'),
+		)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.subagent_receipt_expectation.v1',
+			persisted: true,
+			proofRoot: root,
+			artifactPath: resolve(root, '20260627T223000Z/reviewer-subagent-receipt-expectation.json'),
+			dryRun: true,
+			applied: false,
+			nextAgent: 'reviewer',
+		})
+
+		const persisted = JSON.parse(String(await readFile(String(receipt.artifactPath), 'utf8')))
+		expect(persisted).toMatchObject({
+			schema: 'tau.subagent_receipt_expectation.v1',
+			persisted: true,
+			artifactPath: receipt.artifactPath,
+			requiredReceipt: {
+				schema: 'tau.agent_handoff.v1',
+				previous_subagent: 'reviewer',
+			},
+		})
 	})
 })

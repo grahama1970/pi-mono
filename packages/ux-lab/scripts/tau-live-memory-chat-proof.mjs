@@ -616,6 +616,11 @@ function handoffProofAssertions(
 			subagentReceiptExpectation?.requiredReceipt?.next_agent_required === true,
 		subagent_receipt_expectation_dry_run:
 			subagentReceiptExpectation?.dryRun === true && subagentReceiptExpectation?.applied === false,
+		subagent_receipt_expectation_persisted:
+			subagentReceiptExpectation?.persisted === true,
+		subagent_receipt_expectation_artifact_path_present:
+			typeof subagentReceiptExpectation?.artifactPath === "string"
+			&& subagentReceiptExpectation.artifactPath.includes("/tau-subagent-receipt-expectations/"),
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
