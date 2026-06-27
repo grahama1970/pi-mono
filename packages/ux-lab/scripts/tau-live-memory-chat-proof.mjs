@@ -76,6 +76,29 @@ const scenarios = {
 			};
 		},
 	},
+	research: {
+		prompt: "search the web for latest Chutes pricing",
+		waitFor: "Tau identified a research route and stopped before unsupported web claims.",
+		assertions(chatText, memoryRequests) {
+			return {
+				research_lead_visible: chatText.includes(
+					"Tau identified a research route and stopped before unsupported web claims.",
+				),
+				memory_action_visible: /action\s+RESEARCH/.test(chatText),
+				research_product_not_called_visible: chatText.includes("Memory product: not called in this slice."),
+				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
+				research_next_agent_visible:
+					/next agent\s+research-auditor/.test(chatText) || chatText.includes('"name": "research-auditor"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 };
 const scenario = scenarios[scenarioName];
 if (!scenario) {
@@ -127,11 +150,13 @@ async function main() {
 			scenario.waitFor,
 			{ timeout: 30_000 },
 		);
-		await page.waitForFunction(
-			() => document.body.innerText.includes("Tau handoff JSON contract"),
-			null,
-			{ timeout: 30_000 },
-		);
+		if (scenario.waitForHandoff !== false) {
+			await page.waitForFunction(
+				() => document.body.innerText.includes("Tau handoff JSON contract"),
+				null,
+				{ timeout: 30_000 },
+			);
+		}
 
 		const chatText = compact(await page.locator('[data-qid="tau:chat:shell:well"]').innerText());
 		const visibleAssertions = {
