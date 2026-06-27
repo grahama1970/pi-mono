@@ -9,6 +9,7 @@ const scenarios = {
 	compliance: {
 		prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
 		waitFor: "Tau routed this turn through Memory intent into a compliance evidence path.",
+		expectedNextAgent: "reviewer",
 		assertions(chatText, memoryRequests) {
 			return {
 				compliance_lead_visible: chatText.includes(
@@ -33,6 +34,7 @@ const scenarios = {
 	deflect: {
 		prompt: "what is the weather?",
 		waitFor: "Tau routed this turn to Memory deflect.",
+		expectedNextAgent: "human",
 		assertions(chatText, memoryRequests) {
 			return {
 				deflect_lead_visible: chatText.includes("Tau routed this turn to Memory deflect."),
@@ -55,6 +57,7 @@ const scenarios = {
 	answer: {
 		prompt: "What is the current project status?",
 		waitFor: "Tau routed this turn to Memory answer.",
+		expectedNextAgent: "reviewer",
 		assertions(chatText, memoryRequests) {
 			return {
 				answer_lead_visible: chatText.includes("Tau routed this turn to Memory answer."),
@@ -79,6 +82,7 @@ const scenarios = {
 	research: {
 		prompt: "search the web for latest Chutes pricing",
 		waitFor: "Tau identified a research route and stopped before unsupported web claims.",
+		expectedNextAgent: "research-auditor",
 		assertions(chatText, memoryRequests) {
 			return {
 				research_lead_visible: chatText.includes(
@@ -125,6 +129,72 @@ const outDir =
 
 function compact(text) {
 	return text.replace(/\s+/g, " ");
+}
+
+function extractTauHandoff(rawText) {
+	const marker = "Tau handoff JSON contract";
+	const markerIndex = rawText.indexOf(marker);
+	if (markerIndex < 0) {
+		return { ok: false, error: "handoff marker not found", json: null };
+	}
+	const handoffText = rawText
+		.slice(markerIndex)
+		.split("\n")
+		.filter((line) => !/^\d+$/.test(line.trim()))
+		.join("\n");
+	const start = handoffText.indexOf("{");
+	if (start < 0) {
+		return { ok: false, error: "handoff JSON start not found", json: null };
+	}
+	let depth = 0;
+	let inString = false;
+	let escaped = false;
+	for (let index = start; index < handoffText.length; index += 1) {
+		const char = handoffText[index];
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+		if (char === "\\") {
+			escaped = true;
+			continue;
+		}
+		if (char === '"') {
+			inString = !inString;
+			continue;
+		}
+		if (inString) continue;
+		if (char === "{") depth += 1;
+		if (char === "}") {
+			depth -= 1;
+			if (depth === 0) {
+				const source = handoffText.slice(start, index + 1);
+				try {
+					return { ok: true, error: null, json: JSON.parse(source) };
+				} catch (error) {
+					return {
+						ok: false,
+						error: error instanceof Error ? error.message : String(error),
+						json: null,
+					};
+				}
+			}
+		}
+	}
+	return { ok: false, error: "handoff JSON end not found", json: null };
+}
+
+function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
+	const handoff = handoffExtraction.json;
+	return {
+		handoff_json_extracted: handoffExtraction.ok,
+		handoff_schema_valid: handoff?.schema === "tau.agent_handoff.v1",
+		handoff_goal_present: Boolean(handoff?.goal?.goal_id && handoff?.goal?.goal_hash),
+		handoff_context_present: Boolean(handoff?.context?.summary && Array.isArray(handoff?.context?.artifacts)),
+		handoff_result_present: Boolean(handoff?.result?.status && handoff?.result?.summary && Array.isArray(handoff?.result?.evidence)),
+		handoff_next_agent_matches: expectedNextAgent ? handoff?.next_agent?.name === expectedNextAgent : Boolean(handoff?.next_agent?.name),
+		handoff_stop_condition_present: typeof handoff?.stop_condition === "string" && handoff.stop_condition.length > 0,
+	};
 }
 
 async function main() {
@@ -230,10 +300,13 @@ async function main() {
 			);
 		}
 
-		const chatText = compact(await page.locator('[data-qid="tau:chat:shell:well"]').innerText());
+		const rawChatText = await page.locator('[data-qid="tau:chat:shell:well"]').innerText();
+		const chatText = compact(rawChatText);
+		const handoffExtraction = extractTauHandoff(rawChatText);
 		const visibleAssertions = {
 			prompt_visible: chatText.includes(prompt),
 			...scenario.assertions(chatText, memoryRequests),
+			...handoffProofAssertions(handoffExtraction, scenario.expectedNextAgent),
 		};
 		const ok = Object.values(visibleAssertions).every(Boolean);
 		const screenshot = path.join(outDir, "tau-live-memory-chat.png");
@@ -247,6 +320,8 @@ async function main() {
 			url,
 			prompt,
 			visibleAssertions,
+			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
+			handoffExtractionError: handoffExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,
