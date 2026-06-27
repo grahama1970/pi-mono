@@ -111,6 +111,11 @@ describe("tauAgentHandoff", () => {
 
 		expect(projection.ok).toBe(true);
 		expect(projection.target).toEqual({ repo: "grahama1970/chatgpt-lab", target: "issue#123" });
+		expect(projection.goal).toEqual({
+			goal_id: "goal-tau-chat-hardening",
+			goal_version: 1,
+			goal_hash: "sha256:active-goal",
+		});
 		expect(projection.labels?.add).toEqual(["agent-work", "next:reviewer", "executor:either"]);
 		expect(projection.labels?.remove).toEqual(["agent-active", "agent-blocked"]);
 		expect(projection.comment?.body).toContain("<!-- tau-agent-handoff:v1 -->");
@@ -127,11 +132,14 @@ describe("tauAgentHandoff", () => {
 			ok: true,
 			dryRun: true,
 			applied: false,
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+				goal_hash: "sha256:active-goal",
+			},
 			commandCount: 2,
 		});
-		expect(transportReceipt.commands[0]).toBe(
-			"gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -",
-		);
+		expect(transportReceipt.commands[0]).toBe("gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -");
 		expect(transportReceipt.commands[1]).toContain("--add-label agent-work,next:reviewer,executor:either");
 		expect(renderTauHandoffGithubTransportReceiptJsonBlock(transportReceipt)).toContain(
 			"### Tau handoff GitHub transport receipt JSON contract",

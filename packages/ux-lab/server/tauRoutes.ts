@@ -46,6 +46,32 @@ function stringArray(value: unknown): string[] {
 	return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
 }
 
+function normalizeGoal(value: unknown, prefix: string): JsonRecord {
+	const goal = asRecord(value)
+	if (!goal) throw new Error(`${prefix} goal is missing`)
+	const goalId = asString(goal.goal_id)
+	const goalVersion = goal.goal_version
+	const goalHash = asString(goal.goal_hash)
+	if (!goalId) throw new Error(`${prefix} goal.goal_id is missing`)
+	if (typeof goalVersion !== 'number' || !Number.isInteger(goalVersion) || goalVersion < 1) {
+		throw new Error(`${prefix} goal.goal_version is invalid`)
+	}
+	if (!goalHash) throw new Error(`${prefix} goal.goal_hash is missing`)
+	return {
+		goal_id: goalId,
+		goal_version: goalVersion,
+		goal_hash: goalHash,
+	}
+}
+
+function goalsMatch(actual: JsonRecord, expected: JsonRecord): boolean {
+	return (
+		asString(actual.goal_id) === asString(expected.goal_id)
+		&& actual.goal_version === expected.goal_version
+		&& asString(actual.goal_hash) === asString(expected.goal_hash)
+	)
+}
+
 function parseGithubTarget(target: string): { kind: 'new' } | { kind: 'issue' | 'pr'; number: string } | null {
 	if (target === 'new') return { kind: 'new' }
 	const match = /^(issue|pr)#([1-9]\d*)$/.exec(target)
@@ -136,6 +162,7 @@ export function normalizeTauChatHandoffTransportReceipt(receipt: unknown): JsonR
 	}
 
 	const target = asRecord(record.target)
+	const goal = normalizeGoal(record.goal, 'Tau handoff transport receipt')
 	const labels = asRecord(record.labels)
 	const repo = asString(target?.repo)
 	const targetValue = asString(target?.target)
@@ -184,6 +211,7 @@ export function normalizeTauChatHandoffTransportReceipt(receipt: unknown): JsonR
 		dryRun: true,
 		applied: false,
 		target: { repo, target: targetValue },
+		goal,
 		labels: { add: addLabels, remove: removeLabels },
 		commandCount,
 		commands,
@@ -210,6 +238,7 @@ export function normalizeTauChatHandoffOrchestratorIntake(validation: unknown): 
 	if (record.applied !== false) throw new Error('Tau handoff orchestrator intake requires applied=false')
 
 	const target = asRecord(record.target)
+	const goal = normalizeGoal(record.goal, 'Tau handoff orchestrator intake')
 	const labels = asRecord(record.labels)
 	const repo = asString(target?.repo)
 	const targetValue = asString(target?.target)
@@ -238,6 +267,7 @@ export function normalizeTauChatHandoffOrchestratorIntake(validation: unknown): 
 		applied: false,
 		accepted: true,
 		target: { repo, target: targetValue },
+		goal,
 		nextAgent,
 		executor,
 		labels: {
@@ -279,6 +309,7 @@ export function normalizeTauSubagentReceiptExpectation(intake: unknown): JsonRec
 	if (record.applied !== false) throw new Error('Tau subagent receipt expectation requires applied=false')
 
 	const target = asRecord(record.target)
+	const goal = normalizeGoal(record.goal, 'Tau subagent receipt expectation')
 	const repo = asString(target?.repo)
 	const targetValue = asString(target?.target)
 	if (!repo || !targetValue || !parseGithubTarget(targetValue)) {
@@ -308,6 +339,7 @@ export function normalizeTauSubagentReceiptExpectation(intake: unknown): JsonRec
 		dryRun: true,
 		applied: false,
 		target: { repo, target: targetValue },
+		goal,
 		nextAgent,
 		executor,
 		requiredReceipt: {
@@ -334,6 +366,7 @@ export function normalizeTauSubagentReceiptExpectation(intake: unknown): JsonRec
 			],
 			next_agent_required: true,
 			evidence_required: true,
+			goal_preservation_required: true,
 			stop_condition: stopCondition,
 		},
 		claims: {
@@ -414,7 +447,11 @@ export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRec
 
 	const context = asRecord(handoff.context)
 	const result = asRecord(handoff.result)
-	const goal = asRecord(handoff.goal)
+	const expectationGoal = normalizeGoal(expectation.goal, 'Tau subagent receipt expectation')
+	const goal = normalizeGoal(handoff.goal, 'Tau subagent handoff')
+	if (!goalsMatch(goal, expectationGoal)) {
+		throw new Error('Tau subagent handoff goal does not match expectation')
+	}
 	const nextAgent = asRecord(handoff.next_agent)
 	const requiredEvidence = stringArray(handoff.required_evidence)
 	const resultEvidence = stringArray(result?.evidence)
@@ -462,6 +499,7 @@ export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRec
 		previousSubagent: expectedPrevious,
 		nextAgent: asString(nextAgent?.name),
 		resultStatus: asString(result?.status),
+		goal,
 		resultEvidenceCount: resultEvidence.length,
 		requiredEvidenceCount: requiredEvidence.length,
 		expectationArtifactPath: asString(expectation.artifactPath),
@@ -470,6 +508,7 @@ export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRec
 			'handoff_schema',
 			'target_match',
 			'previous_subagent_match',
+			'goal_preserved',
 			'required_fields',
 			'next_agent_present',
 			'evidence_present',
@@ -478,6 +517,7 @@ export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRec
 			proves: [
 				'Tau can validate a candidate next-subagent tau.agent_handoff.v1 against the persisted receipt expectation.',
 				'Tau refuses to advance the loop unless the candidate receipt includes required routing and evidence fields.',
+				'Tau refuses candidate subagent receipts that change the accepted goal metadata.',
 			],
 			does_not_prove: [
 				'The next subagent actually executed.',

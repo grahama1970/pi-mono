@@ -641,6 +641,8 @@ function handoffProofAssertions(
 			subagentReceiptExpectation?.requiredReceipt?.schema === "tau.agent_handoff.v1",
 		subagent_receipt_expectation_requires_next_agent:
 			subagentReceiptExpectation?.requiredReceipt?.next_agent_required === true,
+		subagent_receipt_expectation_goal_matches_handoff:
+			subagentReceiptExpectation?.goal?.goal_hash === handoff?.goal?.goal_hash,
 		subagent_receipt_expectation_dry_run:
 			subagentReceiptExpectation?.dryRun === true && subagentReceiptExpectation?.applied === false,
 		subagent_receipt_expectation_persisted:
@@ -653,6 +655,8 @@ function handoffProofAssertions(
 			candidateSubagentHandoff?.schema === "tau.agent_handoff.v1",
 		candidate_subagent_handoff_previous_matches_expectation:
 			candidateSubagentHandoff?.previous_subagent === subagentReceiptExpectation?.requiredReceipt?.previous_subagent,
+		candidate_subagent_handoff_goal_matches_expectation:
+			candidateSubagentHandoff?.goal?.goal_hash === subagentReceiptExpectation?.goal?.goal_hash,
 		candidate_subagent_handoff_declares_noop:
 			candidateSubagentHandoff?.result?.status === "NOOP",
 		subagent_handoff_validation_extracted: subagentHandoffValidationExtraction.ok,
@@ -662,6 +666,8 @@ function handoffProofAssertions(
 			subagentHandoffValidation?.executed === false && subagentHandoffValidation?.candidateOnly === true,
 		subagent_handoff_validation_previous_matches:
 			subagentHandoffValidation?.previousSubagent === subagentReceiptExpectation?.requiredReceipt?.previous_subagent,
+		subagent_handoff_validation_goal_matches_expectation:
+			subagentHandoffValidation?.goal?.goal_hash === subagentReceiptExpectation?.goal?.goal_hash,
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",

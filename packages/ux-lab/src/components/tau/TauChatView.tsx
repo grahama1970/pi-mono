@@ -219,6 +219,7 @@ type TauHandoffGithubTransportValidation = {
     repo: string
     target: string
   }
+  goal?: TauGoalRef
   labels?: {
     add: string[]
     remove: string[]
@@ -238,6 +239,7 @@ type TauHandoffOrchestratorIntake = {
     repo: string
     target: string
   }
+  goal: TauGoalRef
   nextAgent: string
   executor: string
   labels: {
@@ -270,6 +272,7 @@ type TauSubagentReceiptExpectation = {
     repo: string
     target: string
   }
+  goal: TauGoalRef
   nextAgent: string
   executor: string
   requiredReceipt: {
@@ -278,6 +281,7 @@ type TauSubagentReceiptExpectation = {
     fields: string[]
     next_agent_required: boolean
     evidence_required: boolean
+    goal_preservation_required?: boolean
     stop_condition: string
   }
   claims: {
@@ -286,17 +290,19 @@ type TauSubagentReceiptExpectation = {
   }
 }
 
+type TauGoalRef = {
+  goal_id: string
+  goal_version: number
+  goal_hash: string
+}
+
 type TauAgentCandidateHandoff = {
   schema: 'tau.agent_handoff.v1'
   github: {
     repo: string
     target: string
   }
-  goal: {
-    goal_id: string
-    goal_version: number
-    goal_hash: string
-  }
+  goal: TauGoalRef
   previous_subagent: string
   context: {
     summary: string
@@ -331,6 +337,7 @@ type TauSubagentHandoffValidation = {
   previousSubagent: string
   nextAgent: string
   resultStatus: string
+  goal?: TauGoalRef
   resultEvidenceCount: number
   requiredEvidenceCount: number
   expectationArtifactPath?: string
@@ -1036,9 +1043,9 @@ function buildCandidateSubagentHandoff(expectation: TauSubagentReceiptExpectatio
       target: expectation.target.target,
     },
     goal: {
-      goal_id: 'goal-tau-chat-hardening',
-      goal_version: 1,
-      goal_hash: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',
+      goal_id: expectation.goal.goal_id,
+      goal_version: expectation.goal.goal_version,
+      goal_hash: expectation.goal.goal_hash,
     },
     previous_subagent: expectation.requiredReceipt.previous_subagent,
     context: {

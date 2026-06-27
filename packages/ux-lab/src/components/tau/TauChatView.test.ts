@@ -46,6 +46,7 @@ function makeAdapter(
 		dryRun: true,
 		applied: false,
 		target: receipt.target,
+		goal: receipt.goal,
 		labels: receipt.labels,
 		commandCount: receipt.commandCount,
 		commands: receipt.commands,
@@ -62,6 +63,11 @@ function makeAdapter(
 			applied: false,
 			accepted: true,
 			target: validation.target ?? { repo: "grahama1970/tau", target: "new" },
+			goal: validation.goal ?? {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+				goal_hash: "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+			},
 			nextAgent,
 			executor,
 			labels,
@@ -90,6 +96,7 @@ function makeAdapter(
 		artifactPath: `/tmp/tau-subagent-receipt-expectations/test/${intake.nextAgent}-subagent-receipt-expectation.json`,
 		proofRoot: "/tmp/tau-subagent-receipt-expectations",
 		target: intake.target,
+		goal: intake.goal,
 		nextAgent: intake.nextAgent,
 		executor: intake.executor,
 		requiredReceipt: {
@@ -116,6 +123,7 @@ function makeAdapter(
 			],
 			next_agent_required: true,
 			evidence_required: true,
+			goal_preservation_required: true,
 			stop_condition: intake.routing.stop_condition,
 		},
 		claims: {
@@ -134,6 +142,7 @@ function makeAdapter(
 		previousSubagent: handoff.previous_subagent,
 		nextAgent: handoff.next_agent.name,
 		resultStatus: handoff.result.status,
+		goal: handoff.goal,
 		resultEvidenceCount: handoff.result.evidence.length,
 		requiredEvidenceCount: handoff.required_evidence.length,
 		expectationArtifactPath: expectation.artifactPath,
@@ -142,6 +151,7 @@ function makeAdapter(
 			"handoff_schema",
 			"target_match",
 			"previous_subagent_match",
+			"goal_preserved",
 			"required_fields",
 			"next_agent_present",
 			"evidence_present",
@@ -574,12 +584,20 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.metadata?.tauAgentHandoffGithubProjection).toMatchObject({
 			ok: true,
 			nextAgent: "reviewer",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			labels: { add: ["agent-work", "next:reviewer", "executor:either"] },
 		});
 		expect(message.metadata?.tauAgentHandoffGithubTransportReceipt).toMatchObject({
 			ok: true,
 			dryRun: true,
 			applied: false,
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			commandCount: 1,
 		});
 		expect(message.metadata?.tauAgentHandoffGithubTransportValidation).toMatchObject({
@@ -587,6 +605,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 			ok: true,
 			dryRun: true,
 			applied: false,
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			commandCount: 1,
 		});
 		expect(message.metadata?.tauAgentHandoffOrchestratorIntake).toMatchObject({
@@ -595,6 +617,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 			dryRun: true,
 			applied: false,
 			accepted: true,
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			nextAgent: "reviewer",
 			executor: "either",
 		});
@@ -605,6 +631,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 			applied: false,
 			persisted: true,
 			artifactPath: "/tmp/tau-subagent-receipt-expectations/test/reviewer-subagent-receipt-expectation.json",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			nextAgent: "reviewer",
 			requiredReceipt: {
 				schema: "tau.agent_handoff.v1",
@@ -614,6 +644,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 		});
 		expect(message.metadata?.tauCandidateSubagentHandoff).toMatchObject({
 			schema: "tau.agent_handoff.v1",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 			previous_subagent: "reviewer",
 			result: {
 				status: "NOOP",
@@ -633,6 +667,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 			previousSubagent: "reviewer",
 			nextAgent: "human",
 			resultStatus: "NOOP",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
 		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({
 			summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",

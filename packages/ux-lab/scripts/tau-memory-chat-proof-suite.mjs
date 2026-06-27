@@ -96,8 +96,12 @@ async function runScenario(scenario) {
 		subagentReceiptExpectationArtifactPath: proof?.subagentReceiptExpectation?.artifactPath ?? null,
 		subagentReceiptExpectationArtifactReadable: persistedExpectation.ok,
 		candidateSubagentPrevious: proof?.candidateSubagentHandoff?.previous_subagent ?? null,
+		candidateSubagentGoalHashMatches:
+			proof?.candidateSubagentHandoff?.goal?.goal_hash === proof?.subagentReceiptExpectation?.goal?.goal_hash,
 		subagentHandoffValidationSchema: proof?.subagentHandoffValidation?.schema ?? null,
 		subagentHandoffValidationCandidateOnly: proof?.subagentHandoffValidation?.candidateOnly ?? null,
+		subagentHandoffValidationGoalHashMatches:
+			proof?.subagentHandoffValidation?.goal?.goal_hash === proof?.subagentReceiptExpectation?.goal?.goal_hash,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -161,6 +165,8 @@ function validateScenarioProof(proof, expected) {
 			proof.subagentReceiptExpectation?.requiredReceipt?.schema === "tau.agent_handoff.v1";
 		assertions.subagent_receipt_expectation_requires_next_agent =
 			proof.subagentReceiptExpectation?.requiredReceipt?.next_agent_required === true;
+		assertions.subagent_receipt_expectation_goal_matches_handoff =
+			proof.subagentReceiptExpectation?.goal?.goal_hash === proof.handoff?.goal?.goal_hash;
 		assertions.subagent_receipt_expectation_dry_run =
 			proof.subagentReceiptExpectation?.dryRun === true && proof.subagentReceiptExpectation?.applied === false;
 		assertions.subagent_receipt_expectation_persisted =
@@ -173,6 +179,8 @@ function validateScenarioProof(proof, expected) {
 		assertions.candidate_subagent_handoff_previous_matches_expectation =
 			proof.candidateSubagentHandoff?.previous_subagent
 			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
+		assertions.candidate_subagent_handoff_goal_matches_expectation =
+			proof.candidateSubagentHandoff?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
 		assertions.candidate_subagent_handoff_noop =
 			proof.candidateSubagentHandoff?.result?.status === "NOOP";
 		assertions.subagent_handoff_validation_schema =
@@ -183,6 +191,8 @@ function validateScenarioProof(proof, expected) {
 		assertions.subagent_handoff_validation_previous_matches =
 			proof.subagentHandoffValidation?.previousSubagent
 			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
+		assertions.subagent_handoff_validation_goal_matches_expectation =
+			proof.subagentHandoffValidation?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -245,6 +255,7 @@ async function main() {
 				"Successful handoff route proofs extract the rendered tau.subagent_receipt_expectation.v1 JSON.",
 				"Successful handoff route proofs read the persisted tau.subagent_receipt_expectation.v1 artifact from disk.",
 				"Successful handoff route proofs validate a candidate next-subagent tau.agent_handoff.v1 without executing that subagent.",
+				"Successful handoff route proofs preserve the accepted goal hash through expectation, candidate receipt, and validation receipt.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

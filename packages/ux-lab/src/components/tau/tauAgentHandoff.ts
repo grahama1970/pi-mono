@@ -75,6 +75,7 @@ export interface TauHandoffGithubProjection {
 		repo: string;
 		target: string;
 	};
+	goal?: TauAgentHandoff["goal"];
 	labels?: {
 		add: string[];
 		remove: string[];
@@ -94,6 +95,7 @@ export interface TauHandoffGithubTransportReceipt {
 		repo: string;
 		target: string;
 	};
+	goal?: TauAgentHandoff["goal"];
 	labels?: {
 		add: string[];
 		remove: string[];
@@ -209,6 +211,7 @@ export function deriveTauHandoffGithubProjection(
 			repo: typed.github.repo,
 			target: typed.github.target,
 		},
+		goal: typed.goal,
 		labels: {
 			add: labels,
 			remove: ["agent-active", "agent-blocked"],
@@ -346,6 +349,7 @@ export function deriveTauHandoffGithubTransportReceipt(
 			dryRun: true,
 			applied: false,
 			target: projection.target,
+			goal: projection.goal,
 			labels: projection.labels,
 			commandCount: 0,
 			commands: [],
@@ -362,6 +366,7 @@ export function deriveTauHandoffGithubTransportReceipt(
 			dryRun: true,
 			applied: false,
 			target: projection.target,
+			goal: projection.goal,
 			labels: projection.labels,
 			commandCount: 0,
 			commands: [],
@@ -391,6 +396,7 @@ export function deriveTauHandoffGithubTransportReceipt(
 		dryRun: true,
 		applied: false,
 		target: projection.target,
+		goal: projection.goal,
 		labels: projection.labels,
 		commandCount: commands.length,
 		commands,
@@ -409,10 +415,9 @@ export function renderTauHandoffGithubTransportReceiptJsonBlock(receipt: TauHand
 	].join("\n");
 }
 
-function parseTauGithubTarget(target: string):
-	| { ok: true; kind: "new" }
-	| { ok: true; kind: "issue" | "pr"; number: number }
-	| { ok: false; error: string } {
+function parseTauGithubTarget(
+	target: string,
+): { ok: true; kind: "new" } | { ok: true; kind: "issue" | "pr"; number: number } | { ok: false; error: string } {
 	if (target === "new") return { ok: true, kind: "new" };
 
 	const match = /^(issue|pr)#([1-9]\d*)$/.exec(target);

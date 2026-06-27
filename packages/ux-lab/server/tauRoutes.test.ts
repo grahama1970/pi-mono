@@ -12,6 +12,11 @@ import {
 } from './tauRoutes'
 
 const roots: string[] = []
+const ACTIVE_GOAL = {
+	goal_id: 'goal-tau-chat-hardening',
+	goal_version: 1,
+	goal_hash: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',
+}
 
 async function makeRoot(): Promise<string> {
 	const root = await mkdtemp(resolve(tmpdir(), 'tau-route-test-'))
@@ -136,6 +141,7 @@ describe('normalizeTauChatHandoffTransportReceipt', () => {
 				repo: 'grahama1970/tau',
 				target,
 			},
+			goal: ACTIVE_GOAL,
 			labels: {
 				add: ['agent-work', 'next:reviewer', 'executor:either'],
 				remove: ['agent-active', 'agent-blocked'],
@@ -164,6 +170,7 @@ describe('normalizeTauChatHandoffTransportReceipt', () => {
 			dryRun: true,
 			applied: false,
 			target: { repo: 'grahama1970/tau', target: 'new' },
+			goal: ACTIVE_GOAL,
 			commandCount: 1,
 			commands: [
 				'gh issue create --repo grahama1970/tau --title "Tau agent handoff: reviewer" --body-file - --label agent-work,next:reviewer,executor:either',
@@ -178,6 +185,7 @@ describe('normalizeTauChatHandoffTransportReceipt', () => {
 		expect(receipt).toMatchObject({
 			ok: true,
 			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: ACTIVE_GOAL,
 			commandCount: 2,
 		})
 		expect(receipt.commands).toEqual([
@@ -233,6 +241,7 @@ describe('normalizeTauChatHandoffOrchestratorIntake', () => {
 				repo: 'grahama1970/tau',
 				target: 'new',
 			},
+			goal: ACTIVE_GOAL,
 			labels: {
 				add: ['agent-work', 'next:reviewer', 'executor:either'],
 				remove: ['agent-active', 'agent-blocked'],
@@ -256,6 +265,7 @@ describe('normalizeTauChatHandoffOrchestratorIntake', () => {
 			applied: false,
 			accepted: true,
 			target: { repo: 'grahama1970/tau', target: 'new' },
+			goal: ACTIVE_GOAL,
 			nextAgent: 'reviewer',
 			executor: 'either',
 			commandCount: 1,
@@ -299,6 +309,7 @@ describe('normalizeTauSubagentReceiptExpectation', () => {
 					repo: 'grahama1970/tau',
 					target: 'issue#123',
 				},
+				goal: ACTIVE_GOAL,
 				labels: {
 					add: ['agent-work', 'next:reviewer', 'executor:either'],
 					remove: ['agent-active', 'agent-blocked'],
@@ -323,11 +334,13 @@ describe('normalizeTauSubagentReceiptExpectation', () => {
 			dryRun: true,
 			applied: false,
 			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: ACTIVE_GOAL,
 			nextAgent: 'reviewer',
 			executor: 'either',
 			requiredReceipt: {
 				schema: 'tau.agent_handoff.v1',
 				previous_subagent: 'reviewer',
+				goal_preservation_required: true,
 				next_agent_required: true,
 				evidence_required: true,
 			},
@@ -403,6 +416,7 @@ describe('normalizeTauSubagentHandoffValidation', () => {
 						repo: 'grahama1970/tau',
 						target: 'issue#123',
 					},
+					goal: ACTIVE_GOAL,
 					labels: {
 						add: ['agent-work', 'next:reviewer', 'executor:either'],
 						remove: ['agent-active', 'agent-blocked'],
@@ -423,11 +437,7 @@ describe('normalizeTauSubagentHandoffValidation', () => {
 		return {
 			schema: 'tau.agent_handoff.v1',
 			github: { repo: 'grahama1970/tau', target: 'issue#123' },
-			goal: {
-				goal_id: 'goal-tau-chat-hardening',
-				goal_version: 1,
-				goal_hash: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',
-			},
+			goal: { ...ACTIVE_GOAL },
 			previous_subagent: 'reviewer',
 			context: {
 				summary: 'Candidate reviewer receipt for Tau dry-run validation.',
@@ -466,9 +476,11 @@ describe('normalizeTauSubagentHandoffValidation', () => {
 			previousSubagent: 'reviewer',
 			nextAgent: 'human',
 			resultStatus: 'NOOP',
+			goal: ACTIVE_GOAL,
 			resultEvidenceCount: 1,
 		})
 		expect(receipt.checks).toContain('previous_subagent_match')
+		expect(receipt.checks).toContain('goal_preserved')
 		expect(receipt.claims).toMatchObject({
 			does_not_prove: [
 				'The next subagent actually executed.',
@@ -498,5 +510,15 @@ describe('normalizeTauSubagentHandoffValidation', () => {
 				},
 			}),
 		).toThrow('missing result.evidence')
+
+		expect(() =>
+			normalizeTauSubagentHandoffValidation({
+				expectation: expectation(),
+				handoff: {
+					...candidateHandoff(),
+					goal: { ...ACTIVE_GOAL, goal_hash: 'sha256:drifted' },
+				},
+			}),
+		).toThrow('goal does not match expectation')
 	})
 })
