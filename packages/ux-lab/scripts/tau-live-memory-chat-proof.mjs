@@ -54,6 +54,44 @@ const scenarios = {
 			};
 		},
 	},
+	"deflect-invalid-product": {
+		prompt: "what is the weather?",
+		waitFor: "Tau stopped fail-closed while running /deflect.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "DEFLECT",
+				confidence: 0.89,
+				response_mode: null,
+				content_type: "deflection",
+				entities: [],
+				frameworks: [],
+				recall_profile: null,
+			},
+			"/api/memory/deflect": {
+				schema: "memory.deflect.v1",
+				should_deflect: false,
+				deflection_type: "none",
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_lead_visible: chatText.includes("Tau stopped fail-closed while running /deflect."),
+				invalid_deflect_reason_visible: chatText.includes("Memory /deflect did not confirm deflection"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_human_next_agent_visible: !/next agent\s+human/.test(chatText) && !chatText.includes('"name": "human"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				deflect_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/deflect") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+			};
+		},
+	},
 	clarify: {
 		prompt: "How do I secure it?",
 		waitFor: "Tau routed this turn to Memory clarify.",
