@@ -77,6 +77,7 @@ async function runScenario(scenario) {
 		live: proof?.live ?? null,
 		handoffNextAgent: proof?.handoff?.next_agent?.name ?? null,
 		handoffStatus: proof?.handoff?.result?.status ?? null,
+		githubProjectionLabels: proof?.githubProjection?.labels ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -100,6 +101,19 @@ function validateScenarioProof(proof, expected) {
 	if (expected.nextAgent) {
 		assertions.next_agent_matches = proof.handoff?.next_agent?.name === expected.nextAgent;
 		assertions.handoff_schema_valid = proof.handoff?.schema === "tau.agent_handoff.v1";
+		assertions.github_projection_target_present = Boolean(
+			proof.githubProjection?.target?.repo && proof.githubProjection?.target?.target,
+		);
+		assertions.github_projection_next_label_matches =
+			proof.githubProjection?.labels?.add?.includes(`next:${expected.nextAgent}`) === true;
+		assertions.github_projection_agent_work_label =
+			proof.githubProjection?.labels?.add?.includes("agent-work") === true;
+		assertions.github_projection_executor_label_present =
+			Array.isArray(proof.githubProjection?.labels?.add)
+			&& proof.githubProjection.labels.add.some((label) => /^executor:/.test(label));
+		assertions.github_projection_stale_labels_removed =
+			proof.githubProjection?.labels?.remove?.includes("agent-active") === true
+			&& proof.githubProjection?.labels?.remove?.includes("agent-blocked") === true;
 	}
 	if (expected.handoffAbsent) {
 		assertions.handoff_absent = proof.handoff === null;

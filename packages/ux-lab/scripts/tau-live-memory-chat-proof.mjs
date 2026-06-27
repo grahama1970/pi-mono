@@ -447,6 +447,7 @@ function extractTauHandoff(rawText) {
 
 function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
 	const handoff = handoffExtraction.json;
+	const projection = deriveGithubProjection(handoff);
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
 		handoff_schema_valid: handoff?.schema === "tau.agent_handoff.v1",
@@ -455,6 +456,18 @@ function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
 		handoff_result_present: Boolean(handoff?.result?.status && handoff?.result?.summary && Array.isArray(handoff?.result?.evidence)),
 		handoff_next_agent_matches: expectedNextAgent ? handoff?.next_agent?.name === expectedNextAgent : Boolean(handoff?.next_agent?.name),
 		handoff_stop_condition_present: typeof handoff?.stop_condition === "string" && handoff.stop_condition.length > 0,
+		handoff_github_target_present: Boolean(projection?.target?.repo && projection?.target?.target),
+		handoff_github_agent_work_label: projection?.labels?.add?.includes("agent-work") === true,
+		handoff_github_next_label_matches:
+			typeof handoff?.next_agent?.name === "string"
+			&& projection?.labels?.add?.includes(`next:${handoff.next_agent.name}`) === true,
+		handoff_github_executor_label_matches:
+			typeof projection?.executor === "string"
+			&& projection?.labels?.add?.includes(`executor:${projection.executor}`) === true,
+		handoff_github_stale_labels_removed:
+			projection?.labels?.remove?.includes("agent-active") === true
+			&& projection?.labels?.remove?.includes("agent-blocked") === true,
+		handoff_github_comment_embeds_json: projection?.comment?.body?.includes("<!-- tau-agent-handoff:v1 -->") === true,
 	};
 }
 
@@ -462,6 +475,43 @@ function failClosedHandoffAbsenceAssertions(handoffExtraction) {
 	return {
 		handoff_json_absent: !handoffExtraction.ok,
 		handoff_absence_reason_recorded: handoffExtraction.error === "handoff marker not found",
+	};
+}
+
+function deriveGithubProjection(handoff) {
+	if (!handoff || typeof handoff !== "object") return null;
+	const nextAgent = handoff.next_agent?.name;
+	if (typeof nextAgent !== "string" || !nextAgent.trim()) return null;
+	const executor =
+		typeof handoff.next_agent?.executor === "string" && handoff.next_agent.executor.trim()
+			? handoff.next_agent.executor
+			: "either";
+	return {
+		ok: true,
+		target: {
+			repo: handoff.github?.repo ?? null,
+			target: handoff.github?.target ?? null,
+		},
+		executor,
+		labels: {
+			add: ["agent-work", `next:${nextAgent}`, `executor:${executor}`],
+			remove: ["agent-active", "agent-blocked"],
+		},
+		comment: {
+			body: [
+				"## Tau Agent Handoff",
+				"",
+				`Result: \`${handoff.result?.status ?? "unknown"}\``,
+				`Next agent: \`${nextAgent}\``,
+				`Executor: \`${executor}\``,
+				"",
+				"<!-- tau-agent-handoff:v1 -->",
+				"```json",
+				JSON.stringify(handoff, null, 2),
+				"```",
+			].join("\n"),
+		},
+		nextAgent,
 	};
 }
 
@@ -584,6 +634,7 @@ async function main() {
 		const rawChatText = await page.locator('[data-qid="tau:chat:shell:well"]').innerText();
 		const chatText = compact(rawChatText);
 		const handoffExtraction = extractTauHandoff(rawChatText);
+		const githubProjection = handoffExtraction.ok ? deriveGithubProjection(handoffExtraction.json) : null;
 		const handoffAssertions =
 			scenario.waitForHandoff === false
 				? failClosedHandoffAbsenceAssertions(handoffExtraction)
@@ -606,6 +657,7 @@ async function main() {
 			prompt,
 			visibleAssertions,
 			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
+			githubProjection,
 			handoffExtractionError: handoffExtraction.error,
 			memoryRequests,
 			errors,
