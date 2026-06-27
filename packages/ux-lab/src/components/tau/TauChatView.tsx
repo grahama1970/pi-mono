@@ -429,6 +429,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       summarizeTauHandoffGithubProjection(handoffGithubProjection),
       '',
+      renderTauHandoffJsonBlock(handoff),
+      '',
       'Remaining production work is replacing this UX Lab adapter with the final Sparta Chat engine while keeping the same receipt and proof-boundary contract.',
     ].join('\n')
 
@@ -650,6 +652,16 @@ function productSummaryMarkdown(route: TauRoute, product: unknown): string {
     `| can answer | ${String(summary.can_answer ?? 'not reported')} |`,
     `| should deflect | ${String(summary.should_deflect ?? 'not reported')} |`,
     `| item count | ${String(summary.item_count ?? 'not reported')} |`,
+  ].join('\n')
+}
+
+function renderTauHandoffJsonBlock(handoff: unknown): string {
+  return [
+    '### Tau handoff JSON contract',
+    '',
+    '```json',
+    JSON.stringify(handoff, null, 2),
+    '```',
   ].join('\n')
 }
 

@@ -32,6 +32,9 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('Tau routed this turn to Memory clarify.')
     expect(message.content).toContain('| Current receipt stage | Clarifying... (PASS) |')
     expect(message.content).toContain('| next agent | human |')
+    expect(message.content).toContain('### Tau handoff JSON contract')
+    expect(message.content).toContain('"schema": "tau.agent_handoff.v1"')
+    expect(message.content).toContain('"name": "human"')
     expect(message.metadata?.memoryBacked).toBe(true)
     expect(message.metadata?.tauCurrentStage).toMatchObject({
       schema: 'tau.loop2_pipeline_stage.v1',
@@ -62,6 +65,7 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('Tau stopped fail-closed while running /clarify.')
     expect(message.content).toContain('| GitHub/subagent handoff | not emitted because the route product is missing |')
     expect(message.content).not.toContain('| next agent | human |')
+    expect(message.content).not.toContain('### Tau handoff JSON contract')
     expect(message.metadata?.memoryBacked).toBe(false)
     expect(message.metadata?.tauCurrentStage).toMatchObject({
       stage: 'clarify',
@@ -161,6 +165,8 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('Tau identified a research route and stopped before unsupported web claims.')
     expect(message.content).toContain('Memory product: not called in this slice.')
     expect(message.content).toContain('| next agent | research-auditor |')
+    expect(message.content).toContain('### Tau handoff JSON contract')
+    expect(message.content).toContain('"name": "research-auditor"')
     expect(message.metadata?.memoryBacked).toBe(true)
     expect(message.metadata?.tauCurrentStage).toMatchObject({
       stage: 'brave_search',
@@ -196,6 +202,8 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('| found | true |')
     expect(message.content).toContain('| schema | tau.agent_handoff.v1 |')
     expect(message.content).toContain('| labels add | agent-work, next:reviewer, executor:either |')
+    expect(message.content).toContain('### Tau handoff JSON contract')
+    expect(message.content).toContain('"name": "reviewer"')
     expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: 'reviewer' })
     expect(message.metadata?.tauAgentHandoffGithubProjection).toMatchObject({
       ok: true,
