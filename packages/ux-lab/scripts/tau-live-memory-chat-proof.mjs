@@ -4,11 +4,64 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 const url = process.env.TAU_CHAT_URL ?? "http://127.0.0.1:3002/#tau";
-const prompt =
-	process.env.TAU_CHAT_PROMPT ?? "How does Tau handle a CWE-287 SPARTA evidence case?";
+const scenarioName = process.env.TAU_CHAT_SCENARIO ?? "compliance";
+const scenarios = {
+	compliance: {
+		prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
+		waitFor: "Tau routed this turn through Memory intent into a compliance evidence path.",
+		assertions(chatText, memoryRequests) {
+			return {
+				compliance_lead_visible: chatText.includes(
+					"Tau routed this turn through Memory intent into a compliance evidence path.",
+				),
+				memory_action_visible: /action\s+COMPLIANCE/.test(chatText),
+				recall_product_visible: /endpoint\s+\/recall/.test(chatText),
+				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
+				reviewer_next_agent_visible:
+					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
+				github_projection_visible: chatText.includes("Tau command-loop GitHub projection receipt"),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/recall") && request.status >= 200 && request.status < 300,
+				),
+			};
+		},
+	},
+	deflect: {
+		prompt: "what is the weather?",
+		waitFor: "Tau routed this turn to Memory deflect.",
+		assertions(chatText, memoryRequests) {
+			return {
+				deflect_lead_visible: chatText.includes("Tau routed this turn to Memory deflect."),
+				memory_action_visible: /action\s+NO_MATCH/.test(chatText),
+				deflect_product_visible: /endpoint\s+\/deflect/.test(chatText),
+				should_deflect_visible: /should deflect\s+true/.test(chatText),
+				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
+				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				deflect_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/deflect") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+			};
+		},
+	},
+};
+const scenario = scenarios[scenarioName];
+if (!scenario) {
+	console.error(`Unknown TAU_CHAT_SCENARIO ${scenarioName}. Expected one of: ${Object.keys(scenarios).join(", ")}`);
+	process.exit(2);
+}
+const prompt = process.env.TAU_CHAT_PROMPT ?? scenario.prompt;
 const outDir =
 	process.env.TAU_CHAT_PROOF_DIR ??
-	`/tmp/tau-live-memory-chat-proof-${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z")}`;
+	`/tmp/tau-live-memory-chat-proof-${scenarioName}-${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z")}`;
 
 function compact(text) {
 	return text.replace(/\s+/g, " ");
@@ -46,11 +99,8 @@ async function main() {
 		await page.locator('[data-qid="tau:chat:shell:well:input"]').fill(prompt);
 		await page.locator('[data-qid="tau:chat:shell:well:send"]').click();
 		await page.waitForFunction(
-			() =>
-				document.body.innerText.includes(
-					"Tau routed this turn through Memory intent into a compliance evidence path.",
-				),
-			null,
+			(expected) => document.body.innerText.includes(expected),
+			scenario.waitFor,
 			{ timeout: 30_000 },
 		);
 		await page.waitForFunction(
@@ -62,22 +112,7 @@ async function main() {
 		const chatText = compact(await page.locator('[data-qid="tau:chat:shell:well"]').innerText());
 		const visibleAssertions = {
 			prompt_visible: chatText.includes(prompt),
-			compliance_lead_visible: chatText.includes(
-				"Tau routed this turn through Memory intent into a compliance evidence path.",
-			),
-			memory_action_visible: /action\s+COMPLIANCE/.test(chatText),
-			recall_product_visible: /endpoint\s+\/recall/.test(chatText),
-			handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
-			handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
-			reviewer_next_agent_visible:
-				/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
-			github_projection_visible: chatText.includes("Tau command-loop GitHub projection receipt"),
-			intent_request_seen: memoryRequests.some(
-				(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
-			),
-			recall_request_seen: memoryRequests.some(
-				(request) => request.url.includes("/api/memory/recall") && request.status >= 200 && request.status < 300,
-			),
+			...scenario.assertions(chatText, memoryRequests),
 		};
 		const ok = Object.values(visibleAssertions).every(Boolean);
 		const screenshot = path.join(outDir, "tau-live-memory-chat.png");
@@ -87,6 +122,7 @@ async function main() {
 			ok,
 			mocked: false,
 			live: true,
+			scenario: scenarioName,
 			url,
 			prompt,
 			visibleAssertions,
@@ -108,6 +144,7 @@ async function main() {
 			ok: false,
 			mocked: false,
 			live: true,
+			scenario: scenarioName,
 			url,
 			prompt,
 			visibleAssertions: {},
