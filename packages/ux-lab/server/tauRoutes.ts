@@ -528,6 +528,66 @@ export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRec
 	}
 }
 
+export function normalizeTauExternalSubagentReceiptIntake(payload: unknown): JsonRecord {
+	const record = asRecord(payload)
+	if (!record) throw new Error('Tau external subagent receipt intake requires a JSON object')
+	const validation = normalizeTauSubagentHandoffValidation({
+		expectation: record.expectation,
+		handoff: record.receipt,
+	})
+	const receipt = asRecord(record.receipt)
+	if (!receipt) throw new Error('Tau external subagent receipt intake missing receipt')
+	const result = asRecord(receipt.result)
+	const nextAgent = asRecord(receipt.next_agent)
+	const externalReceiptId = asString(record.externalReceiptId) ?? asString(record.receipt_id) ?? null
+	return {
+		schema: 'tau.external_subagent_receipt_intake.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		accepted: true,
+		externalReceipt: true,
+		executed: false,
+		target: validation.target,
+		goal: validation.goal,
+		previousSubagent: validation.previousSubagent,
+		nextAgent: validation.nextAgent,
+		resultStatus: asString(result?.status),
+		resultEvidenceCount: validation.resultEvidenceCount,
+		requiredEvidenceCount: validation.requiredEvidenceCount,
+		externalReceiptId,
+		nextRoute: {
+			subagent: asString(nextAgent?.name),
+			executor: asString(nextAgent?.executor) ?? 'either',
+			reason: asString(nextAgent?.reason),
+		},
+		sourceValidation: validation,
+		checks: [
+			'expectation_schema',
+			'receipt_schema',
+			'target_match',
+			'previous_subagent_match',
+			'goal_preserved',
+			'required_fields',
+			'next_agent_present',
+			'evidence_present',
+			'external_receipt_accepted',
+		],
+		claims: {
+			proves: [
+				'Tau can ingest an externally supplied tau.agent_handoff.v1 receipt against the persisted expectation.',
+				'Tau preserves the accepted goal metadata while accepting the external receipt into the dry-run harness.',
+				'Tau derives the next route from the accepted external receipt instead of inventing routing.',
+			],
+			does_not_prove: [
+				'The external subagent actually executed in this browser proof.',
+				'The external receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		},
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -591,6 +651,19 @@ export function registerTauRoutes(app: Express): void {
 			res.status(400).json({
 				ok: false,
 				error: 'tau_subagent_handoff_validation_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/subagent-receipt/intake', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauExternalSubagentReceiptIntake(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_external_subagent_receipt_intake_invalid',
 				detail: error instanceof Error ? error.message : String(error),
 			})
 		}

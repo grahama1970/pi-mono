@@ -167,6 +167,71 @@ function makeAdapter(
 			],
 		},
 	}),
+	externalSubagentReceiptIntake: ConstructorParameters<typeof TauReceiptAdapter>[6] = async ({
+		expectation,
+		receipt,
+		externalReceiptId,
+	}) => ({
+		schema: "tau.external_subagent_receipt_intake.v1",
+		ok: true,
+		dryRun: true,
+		applied: false,
+		accepted: true,
+		externalReceipt: true,
+		executed: false,
+		target: expectation.target,
+		goal: receipt.goal,
+		previousSubagent: receipt.previous_subagent,
+		nextAgent: receipt.next_agent.name,
+		resultStatus: receipt.result.status,
+		resultEvidenceCount: receipt.result.evidence.length,
+		requiredEvidenceCount: receipt.required_evidence.length,
+		externalReceiptId,
+		nextRoute: {
+			subagent: receipt.next_agent.name,
+			executor: receipt.next_agent.executor,
+			reason: receipt.next_agent.reason,
+		},
+		sourceValidation: {
+			schema: "tau.subagent_handoff_validation.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			executed: false,
+			candidateOnly: true,
+			target: expectation.target,
+			previousSubagent: receipt.previous_subagent,
+			nextAgent: receipt.next_agent.name,
+			resultStatus: receipt.result.status,
+			goal: receipt.goal,
+			resultEvidenceCount: receipt.result.evidence.length,
+			requiredEvidenceCount: receipt.required_evidence.length,
+			checks: ["goal_preserved", "external_receipt_accepted"],
+			claims: {
+				proves: ["Tau validates the external receipt shape."],
+				does_not_prove: ["The external subagent actually executed in this browser proof."],
+			},
+		},
+		checks: [
+			"expectation_schema",
+			"receipt_schema",
+			"target_match",
+			"previous_subagent_match",
+			"goal_preserved",
+			"required_fields",
+			"next_agent_present",
+			"evidence_present",
+			"external_receipt_accepted",
+		],
+		claims: {
+			proves: ["Tau can ingest an externally supplied tau.agent_handoff.v1 receipt against the persisted expectation."],
+			does_not_prove: [
+				"The external subagent actually executed in this browser proof.",
+				"The external receipt was posted to GitHub.",
+				"Live GitHub mutation.",
+			],
+		},
+	}),
 ) {
 	const calls: MemoryCall[] = [];
 	const adapter = new TauReceiptAdapter(
@@ -181,6 +246,7 @@ function makeAdapter(
 		orchestratorIntake,
 		subagentReceiptExpectation,
 		subagentHandoffValidator,
+		externalSubagentReceiptIntake,
 	);
 	return { adapter, calls };
 }
@@ -559,6 +625,15 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain('"schema": "tau.subagent_handoff_validation.v1"');
 		expect(message.content).toContain('"executed": false');
 		expect(message.content).toContain('"candidateOnly": true');
+		expect(message.content).toContain("### Tau external subagent receipt fixture JSON contract");
+		expect(message.content).toContain(
+			"External reviewer receipt fixture for Tau intake validation; no subagent executed in this browser proof.",
+		);
+		expect(message.content).toContain('"status": "COMPLETED"');
+		expect(message.content).toContain("### Tau external subagent receipt intake JSON contract");
+		expect(message.content).toContain('"schema": "tau.external_subagent_receipt_intake.v1"');
+		expect(message.content).toContain('"externalReceipt": true');
+		expect(message.content).toContain('"external_receipt_accepted"');
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(
@@ -670,6 +745,41 @@ describe("TauReceiptAdapter Memory routing", () => {
 			goal: {
 				goal_id: "goal-tau-chat-hardening",
 				goal_version: 1,
+			},
+		});
+		expect(message.metadata?.tauExternalSubagentReceipt).toMatchObject({
+			schema: "tau.agent_handoff.v1",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
+			previous_subagent: "reviewer",
+			result: {
+				status: "COMPLETED",
+			},
+			next_agent: {
+				name: "human",
+				executor: "human",
+			},
+		});
+		expect(message.metadata?.tauExternalSubagentReceiptIntake).toMatchObject({
+			schema: "tau.external_subagent_receipt_intake.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			accepted: true,
+			externalReceipt: true,
+			executed: false,
+			previousSubagent: "reviewer",
+			nextAgent: "human",
+			resultStatus: "COMPLETED",
+			goal: {
+				goal_id: "goal-tau-chat-hardening",
+				goal_version: 1,
+			},
+			nextRoute: {
+				subagent: "human",
+				executor: "human",
 			},
 		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({

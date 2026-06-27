@@ -102,6 +102,12 @@ async function runScenario(scenario) {
 		subagentHandoffValidationCandidateOnly: proof?.subagentHandoffValidation?.candidateOnly ?? null,
 		subagentHandoffValidationGoalHashMatches:
 			proof?.subagentHandoffValidation?.goal?.goal_hash === proof?.subagentReceiptExpectation?.goal?.goal_hash,
+		externalSubagentReceiptPrevious: proof?.externalSubagentReceipt?.previous_subagent ?? null,
+		externalSubagentReceiptStatus: proof?.externalSubagentReceipt?.result?.status ?? null,
+		externalSubagentReceiptIntakeSchema: proof?.externalSubagentReceiptIntake?.schema ?? null,
+		externalSubagentReceiptIntakeAccepted: proof?.externalSubagentReceiptIntake?.accepted ?? null,
+		externalSubagentReceiptIntakeGoalHashMatches:
+			proof?.externalSubagentReceiptIntake?.goal?.goal_hash === proof?.subagentReceiptExpectation?.goal?.goal_hash,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -193,6 +199,24 @@ function validateScenarioProof(proof, expected) {
 			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
 		assertions.subagent_handoff_validation_goal_matches_expectation =
 			proof.subagentHandoffValidation?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
+		assertions.external_subagent_receipt_schema =
+			proof.externalSubagentReceipt?.schema === "tau.agent_handoff.v1";
+		assertions.external_subagent_receipt_previous_matches_expectation =
+			proof.externalSubagentReceipt?.previous_subagent
+			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
+		assertions.external_subagent_receipt_goal_matches_expectation =
+			proof.externalSubagentReceipt?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
+		assertions.external_subagent_receipt_completed =
+			proof.externalSubagentReceipt?.result?.status === "COMPLETED";
+		assertions.external_subagent_receipt_intake_schema =
+			proof.externalSubagentReceiptIntake?.schema === "tau.external_subagent_receipt_intake.v1";
+		assertions.external_subagent_receipt_intake_accepted =
+			proof.externalSubagentReceiptIntake?.accepted === true
+			&& proof.externalSubagentReceiptIntake?.externalReceipt === true;
+		assertions.external_subagent_receipt_intake_not_executed =
+			proof.externalSubagentReceiptIntake?.executed === false;
+		assertions.external_subagent_receipt_intake_goal_matches_expectation =
+			proof.externalSubagentReceiptIntake?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -256,6 +280,7 @@ async function main() {
 				"Successful handoff route proofs read the persisted tau.subagent_receipt_expectation.v1 artifact from disk.",
 				"Successful handoff route proofs validate a candidate next-subagent tau.agent_handoff.v1 without executing that subagent.",
 				"Successful handoff route proofs preserve the accepted goal hash through expectation, candidate receipt, and validation receipt.",
+				"Successful handoff route proofs ingest an external tau.agent_handoff.v1 receipt fixture without claiming subagent execution.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

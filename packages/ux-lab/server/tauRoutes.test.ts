@@ -6,6 +6,7 @@ import {
 	normalizeTauChatHandoffOrchestratorIntake,
 	normalizeTauChatHandoffTransportReceipt,
 	normalizeTauCommandLoopProjection,
+	normalizeTauExternalSubagentReceiptIntake,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
 	persistTauSubagentReceiptExpectation,
@@ -520,5 +521,126 @@ describe('normalizeTauSubagentHandoffValidation', () => {
 				},
 			}),
 		).toThrow('goal does not match expectation')
+	})
+})
+
+describe('normalizeTauExternalSubagentReceiptIntake', () => {
+	function expectation() {
+		return normalizeTauSubagentReceiptExpectation(
+			normalizeTauChatHandoffOrchestratorIntake(
+				normalizeTauChatHandoffTransportReceipt({
+					schema: 'tau.handoff_github_transport_receipt.v1',
+					ok: true,
+					dryRun: true,
+					applied: false,
+					target: {
+						repo: 'grahama1970/tau',
+						target: 'issue#123',
+					},
+					goal: ACTIVE_GOAL,
+					labels: {
+						add: ['agent-work', 'next:reviewer', 'executor:either'],
+						remove: ['agent-active', 'agent-blocked'],
+					},
+					commandCount: 2,
+					commands: [
+						'gh issue comment 123 --repo grahama1970/tau --body-file -',
+						'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+					],
+					errors: [],
+					sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+				}),
+			),
+		)
+	}
+
+	function externalReceipt() {
+		return {
+			schema: 'tau.agent_handoff.v1',
+			github: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: { ...ACTIVE_GOAL },
+			previous_subagent: 'reviewer',
+			context: {
+				summary: 'Reviewer inspected the dry-run Tau receipt contract.',
+				artifacts: ['/tmp/tau-subagent-receipt-expectations/example.json'],
+			},
+			result: {
+				status: 'COMPLETED',
+				summary: 'External reviewer receipt was supplied for harness intake validation.',
+				evidence: ['/tmp/tau-subagent-receipts/reviewer.receipt.json'],
+			},
+			rationale: 'The next route should return to the human after an accepted external receipt fixture.',
+			next_agent: {
+				name: 'human',
+				executor: 'human',
+				reason: 'Human decides whether to dispatch a real subagent execution rung.',
+			},
+			required_evidence: ['Human-approved live subagent execution receipt.'],
+			stop_condition: 'Human approves the next live execution step.',
+		}
+	}
+
+	it('accepts an external subagent receipt without claiming execution', () => {
+		const receipt = normalizeTauExternalSubagentReceiptIntake({
+			expectation: expectation(),
+			receipt: externalReceipt(),
+			externalReceiptId: 'reviewer-fixture-001',
+		})
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.external_subagent_receipt_intake.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			accepted: true,
+			externalReceipt: true,
+			executed: false,
+			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: ACTIVE_GOAL,
+			previousSubagent: 'reviewer',
+			nextAgent: 'human',
+			resultStatus: 'COMPLETED',
+			resultEvidenceCount: 1,
+			externalReceiptId: 'reviewer-fixture-001',
+			nextRoute: {
+				subagent: 'human',
+				executor: 'human',
+			},
+		})
+		expect(receipt.checks).toContain('external_receipt_accepted')
+		expect(receipt.sourceValidation).toMatchObject({
+			schema: 'tau.subagent_handoff_validation.v1',
+			ok: true,
+			goal: ACTIVE_GOAL,
+		})
+		expect(receipt.claims).toMatchObject({
+			does_not_prove: [
+				'The external subagent actually executed in this browser proof.',
+				'The external receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		})
+	})
+
+	it('fails closed when the external receipt drifts from the expectation', () => {
+		expect(() =>
+			normalizeTauExternalSubagentReceiptIntake({
+				expectation: expectation(),
+				receipt: {
+					...externalReceipt(),
+					goal: { ...ACTIVE_GOAL, goal_hash: 'sha256:drifted' },
+				},
+			}),
+		).toThrow('goal does not match expectation')
+
+		expect(() =>
+			normalizeTauExternalSubagentReceiptIntake({
+				expectation: expectation(),
+				receipt: {
+					...externalReceipt(),
+					next_agent: { name: '', executor: 'human', reason: '' },
+				},
+			}),
+		).toThrow('missing required fields')
 	})
 })
