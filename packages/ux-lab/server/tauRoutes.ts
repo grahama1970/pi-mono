@@ -46,9 +46,13 @@ async function readJson(path: string): Promise<JsonRecord> {
 	return record
 }
 
-async function normalizeTauCommandLoopProjection(summaryPath: string): Promise<JsonRecord> {
+export async function normalizeTauCommandLoopProjection(
+	summaryPath: string,
+	proofRoot = TAU_COMMAND_LOOP_PROOF_ROOT,
+): Promise<JsonRecord> {
 	const absoluteSummaryPath = resolve(summaryPath)
-	if (!isPathInside(TAU_COMMAND_LOOP_PROOF_ROOT, absoluteSummaryPath)) {
+	const absoluteProofRoot = resolve(proofRoot)
+	if (!isPathInside(absoluteProofRoot, absoluteSummaryPath)) {
 		throw new Error('summary path escapes Tau command-loop proof root')
 	}
 	if (!existsSync(absoluteSummaryPath)) throw new Error('Tau command-loop summary receipt not found')
@@ -71,11 +75,11 @@ async function normalizeTauCommandLoopProjection(summaryPath: string): Promise<J
 	const sourceLoopReceiptPath = asString(githubTransport?.source_loop_receipt_path)
 	const reconciliationReceiptPath = asString(githubTransport?.reconciliation_receipt_path)
 	const ticketSourcePath = asString(githubTransport?.ticket_source_path)
-	const transportReceiptPath = resolve(TAU_COMMAND_LOOP_PROOF_ROOT, 'command-loop-reconciliation-github-transport.json')
+	const transportReceiptPath = resolve(absoluteProofRoot, 'command-loop-reconciliation-github-transport.json')
 
 	for (const path of [sourceLoopReceiptPath, reconciliationReceiptPath, ticketSourcePath, transportReceiptPath]) {
 		if (!path) throw new Error('Tau command-loop projection receipt is missing a required path')
-		if (!isPathInside(TAU_COMMAND_LOOP_PROOF_ROOT, resolve(path))) {
+		if (!isPathInside(absoluteProofRoot, resolve(path))) {
 			throw new Error(`Tau command-loop projection path escapes proof root: ${path}`)
 		}
 	}
@@ -85,7 +89,7 @@ async function normalizeTauCommandLoopProjection(summaryPath: string): Promise<J
 		summaryPath: absoluteSummaryPath,
 		sourceLoopReceiptPath,
 		reconciliationReceiptPath,
-		actualReconciliationStepReceiptPath: resolve(TAU_COMMAND_LOOP_PROOF_ROOT, 'command-loop/command-loop-step-001.receipt.json'),
+		actualReconciliationStepReceiptPath: resolve(absoluteProofRoot, 'command-loop/command-loop-step-001.receipt.json'),
 		ticketSourcePath,
 		transportReceiptPath,
 		dryRun: asBoolean(githubTransport?.dry_run),
