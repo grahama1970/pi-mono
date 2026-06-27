@@ -11,6 +11,7 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const proofRunner = path.join(scriptDir, "tau-live-memory-chat-proof.mjs");
 const scenarios = [
 	{ name: "compliance", expected: { mocked: false, live: true, nextAgent: "reviewer" } },
+	{ name: "compliance-invalid-recall", expected: { mocked: true, live: false, handoffAbsent: true } },
 	{ name: "deflect", expected: { mocked: false, live: true, nextAgent: "human" } },
 	{ name: "answer", expected: { mocked: false, live: true, nextAgent: "reviewer" } },
 	{ name: "research", expected: { mocked: false, live: true, nextAgent: "research-auditor" } },

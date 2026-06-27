@@ -31,6 +31,45 @@ const scenarios = {
 			};
 		},
 	},
+	"compliance-invalid-recall": {
+		prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
+		waitFor: "Tau stopped fail-closed while running /recall.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "COMPLIANCE",
+				confidence: 0.94,
+				response_mode: "evidence_case",
+				content_type: "evidence",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+				recall_profile: "exact_control_lookup",
+				k: 12,
+			},
+			"/api/memory/recall": {
+				found: true,
+				confidence: 8.2,
+				results: [{ _key: "ctrl__CWE-287" }],
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_lead_visible: chatText.includes("Tau stopped fail-closed while running /recall."),
+				invalid_recall_reason_visible: chatText.includes("Memory /recall missing items array"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_reviewer_next_agent_visible: !/next agent\s+reviewer/.test(chatText) && !chatText.includes('"name": "reviewer"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/recall") && request.status >= 200 && request.status < 300,
+				),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 	deflect: {
 		prompt: "what is the weather?",
 		waitFor: "Tau routed this turn to Memory deflect.",
