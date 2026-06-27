@@ -310,6 +310,37 @@ const scenarios = {
 			"Is it compliant?",
 		],
 	},
+	"intent-unavailable": {
+		prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
+		waitFor: "Tau could not start the Memory-backed turn because Memory /intent was unavailable.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				__status: 503,
+				body: {
+					error: "intent unavailable in proof fixture",
+				},
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_intent_visible: chatText.includes(
+					"Tau could not start the Memory-backed turn because Memory /intent was unavailable.",
+				),
+				no_memory_route_visible: !chatText.includes("Tau routed this turn"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_next_agent_visible: !/next agent\s+/.test(chatText),
+				intent_request_failed_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status === 503,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				clarify_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/clarify")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 };
 const scenario = scenarios[scenarioName];
 if (!scenario) {
@@ -427,10 +458,12 @@ async function main() {
 	if (scenario.mockResponses) {
 		for (const [endpoint, responseBody] of Object.entries(scenario.mockResponses)) {
 			await page.route(`**${endpoint}`, async (route) => {
+				const status = typeof responseBody?.__status === "number" ? responseBody.__status : 200;
+				const body = Object.hasOwn(responseBody, "body") ? responseBody.body : responseBody;
 				await route.fulfill({
-					status: 200,
+					status,
 					contentType: "application/json",
-					body: JSON.stringify(responseBody),
+					body: JSON.stringify(body),
 				});
 			});
 		}
