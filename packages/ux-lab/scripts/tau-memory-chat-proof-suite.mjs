@@ -79,6 +79,7 @@ async function runScenario(scenario) {
 		handoffStatus: proof?.handoff?.result?.status ?? null,
 		githubProjectionLabels: proof?.githubProjection?.labels ?? null,
 		githubTransportCommandCount: proof?.githubTransportReceipt?.commandCount ?? null,
+		githubTransportValidationSchema: proof?.githubTransportValidation?.body?.receipt?.schema ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -122,6 +123,12 @@ function validateScenarioProof(proof, expected) {
 			Array.isArray(proof.githubTransportReceipt?.commands)
 			&& proof.githubTransportReceipt.commands.length === proof.githubTransportReceipt.commandCount
 			&& proof.githubTransportReceipt.commandCount > 0;
+		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
+		assertions.github_transport_server_validation_schema =
+			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
+		assertions.github_transport_server_validation_dry_run =
+			proof.githubTransportValidation?.body?.receipt?.dryRun === true
+			&& proof.githubTransportValidation?.body?.receipt?.applied === false;
 	}
 	if (expected.handoffAbsent) {
 		assertions.handoff_absent = proof.handoff === null;
@@ -160,6 +167,7 @@ async function main() {
 			proves: [
 				"Tau chat browser route proofs can be run as one auditable suite.",
 				"Successful route proofs extract or check tau.agent_handoff.v1 JSON according to each route boundary.",
+				"Successful handoff route proofs POST the rendered dry-run GitHub transport receipt to the Tau server validator.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

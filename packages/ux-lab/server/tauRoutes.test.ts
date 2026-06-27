@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from 'fs/promises'
 import { tmpdir } from 'os'
 import { resolve } from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { normalizeTauCommandLoopProjection } from './tauRoutes'
+import { normalizeTauChatHandoffTransportReceipt, normalizeTauCommandLoopProjection } from './tauRoutes'
 
 const roots: string[] = []
 
@@ -115,5 +115,102 @@ describe('normalizeTauCommandLoopProjection', () => {
 		await expect(normalizeTauCommandLoopProjection(summaryPath, root)).rejects.toThrow(
 			'Tau command-loop projection path escapes proof root',
 		)
+	})
+})
+
+describe('normalizeTauChatHandoffTransportReceipt', () => {
+	function validTransportReceipt(target = 'new') {
+		return {
+			schema: 'tau.handoff_github_transport_receipt.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			target: {
+				repo: 'grahama1970/tau',
+				target,
+			},
+			labels: {
+				add: ['agent-work', 'next:reviewer', 'executor:either'],
+				remove: ['agent-active', 'agent-blocked'],
+			},
+			commandCount: target === 'new' ? 1 : 2,
+			commands:
+				target === 'new'
+					? [
+							'gh issue create --repo grahama1970/tau --title "Tau agent handoff: reviewer" --body-file - --label agent-work,next:reviewer,executor:either',
+						]
+					: [
+							'gh issue comment 123 --repo grahama1970/tau --body-file -',
+							'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+						],
+			errors: [],
+			sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+		}
+	}
+
+	it('normalizes the rendered Tau chat dry-run transport receipt', () => {
+		const receipt = normalizeTauChatHandoffTransportReceipt(validTransportReceipt())
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.handoff_github_transport_validation.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			target: { repo: 'grahama1970/tau', target: 'new' },
+			commandCount: 1,
+			commands: [
+				'gh issue create --repo grahama1970/tau --title "Tau agent handoff: reviewer" --body-file - --label agent-work,next:reviewer,executor:either',
+			],
+		})
+		expect(receipt.checks).toContain('command_target')
+	})
+
+	it('normalizes existing issue transport commands', () => {
+		const receipt = normalizeTauChatHandoffTransportReceipt(validTransportReceipt('issue#123'))
+
+		expect(receipt).toMatchObject({
+			ok: true,
+			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			commandCount: 2,
+		})
+		expect(receipt.commands).toEqual([
+			'gh issue comment 123 --repo grahama1970/tau --body-file -',
+			'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+		])
+	})
+
+	it('fails closed when commands do not match the target repo or target kind', () => {
+		expect(() =>
+			normalizeTauChatHandoffTransportReceipt({
+				...validTransportReceipt(),
+				commands: ['gh issue create --repo grahama1970/other --body-file -'],
+			}),
+		).toThrow('command repo does not match target.repo')
+
+		expect(() =>
+			normalizeTauChatHandoffTransportReceipt({
+				...validTransportReceipt('pr#123'),
+				commands: [
+					'gh issue comment 123 --repo grahama1970/tau --body-file -',
+					'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+				],
+			}),
+		).toThrow('existing target must start with a matching comment command')
+	})
+
+	it('fails closed when labels or dry-run boundaries are missing', () => {
+		expect(() =>
+			normalizeTauChatHandoffTransportReceipt({
+				...validTransportReceipt(),
+				applied: true,
+			}),
+		).toThrow('applied=false')
+
+		expect(() =>
+			normalizeTauChatHandoffTransportReceipt({
+				...validTransportReceipt(),
+				labels: { add: ['agent-work', 'executor:either'], remove: [] },
+			}),
+		).toThrow('missing next:<agent> label')
 	})
 })

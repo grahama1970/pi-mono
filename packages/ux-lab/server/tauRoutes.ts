@@ -38,6 +38,18 @@ function commandToText(command: unknown): string | null {
 	return command.join(' ')
 }
 
+function stringArray(value: unknown): string[] {
+	if (!Array.isArray(value)) return []
+	return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+}
+
+function parseGithubTarget(target: string): { kind: 'new' } | { kind: 'issue' | 'pr'; number: string } | null {
+	if (target === 'new') return { kind: 'new' }
+	const match = /^(issue|pr)#([1-9]\d*)$/.exec(target)
+	if (!match) return null
+	return { kind: match[1] as 'issue' | 'pr', number: match[2] }
+}
+
 async function readJson(path: string): Promise<JsonRecord> {
 	const raw = await readFile(path, 'utf8')
 	const parsed = JSON.parse(raw)
@@ -107,6 +119,83 @@ export async function normalizeTauCommandLoopProjection(
 	}
 }
 
+export function normalizeTauChatHandoffTransportReceipt(receipt: unknown): JsonRecord {
+	const record = asRecord(receipt)
+	if (!record) throw new Error('Tau handoff transport receipt must be a JSON object')
+	if (record.schema !== 'tau.handoff_github_transport_receipt.v1') {
+		throw new Error('unexpected Tau handoff transport receipt schema')
+	}
+	if (record.ok !== true) throw new Error('Tau handoff transport receipt is not ok')
+	if (record.dryRun !== true) throw new Error('Tau handoff transport receipt must be dryRun=true')
+	if (record.applied !== false) throw new Error('Tau handoff transport receipt must be applied=false')
+	if (record.sourceProjectionContract !== 'tau.handoff_github_projection.rendered.v1') {
+		throw new Error('Tau handoff transport receipt source projection contract mismatch')
+	}
+
+	const target = asRecord(record.target)
+	const labels = asRecord(record.labels)
+	const repo = asString(target?.repo)
+	const targetValue = asString(target?.target)
+	if (!repo || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+		throw new Error('Tau handoff transport receipt target.repo is invalid')
+	}
+	if (!targetValue) throw new Error('Tau handoff transport receipt target.target is required')
+	const parsedTarget = parseGithubTarget(targetValue)
+	if (!parsedTarget) throw new Error('Tau handoff transport receipt target is unsupported')
+
+	const addLabels = stringArray(labels?.add)
+	const removeLabels = stringArray(labels?.remove)
+	if (!addLabels.includes('agent-work')) throw new Error('Tau handoff transport receipt missing agent-work label')
+	if (!addLabels.some((label) => /^next:[A-Za-z0-9_.-]+$/.test(label))) {
+		throw new Error('Tau handoff transport receipt missing next:<agent> label')
+	}
+	if (!addLabels.some((label) => /^executor:[A-Za-z0-9_.-]+$/.test(label))) {
+		throw new Error('Tau handoff transport receipt missing executor:<executor> label')
+	}
+
+	const commands = stringArray(record.commands)
+	const commandCount = asNumber(record.commandCount)
+	if (!Number.isInteger(commandCount) || commandCount !== commands.length || commandCount < 1) {
+		throw new Error('Tau handoff transport receipt commandCount does not match commands')
+	}
+	if (commands.some((command) => !command.includes(`--repo ${repo}`))) {
+		throw new Error('Tau handoff transport receipt command repo does not match target.repo')
+	}
+	if (parsedTarget.kind === 'new') {
+		if (commands.length !== 1 || !commands[0].startsWith('gh issue create ')) {
+			throw new Error('Tau handoff transport receipt new target must create one issue command')
+		}
+	} else {
+		const prefix = `gh ${parsedTarget.kind}`
+		if (commands.length !== 2 || !commands[0].startsWith(`${prefix} comment ${parsedTarget.number} `)) {
+			throw new Error('Tau handoff transport receipt existing target must start with a matching comment command')
+		}
+		if (!commands[1].startsWith(`${prefix} edit ${parsedTarget.number} `)) {
+			throw new Error('Tau handoff transport receipt existing target must include a matching label edit command')
+		}
+	}
+
+	return {
+		schema: 'tau.handoff_github_transport_validation.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		target: { repo, target: targetValue },
+		labels: { add: addLabels, remove: removeLabels },
+		commandCount,
+		commands,
+		checks: [
+			'schema',
+			'dry_run_not_applied',
+			'target',
+			'labels',
+			'command_count',
+			'command_repo',
+			'command_target',
+		],
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -119,6 +208,19 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				summaryPath: TAU_COMMAND_LOOP_SUMMARY_PATH,
 				proofRoot: TAU_COMMAND_LOOP_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/transport/validate', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauChatHandoffTransportReceipt(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_handoff_transport_receipt_invalid',
+				detail: error instanceof Error ? error.message : String(error),
 			})
 		}
 	})

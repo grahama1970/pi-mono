@@ -470,10 +470,49 @@ function extractTauGithubTransportReceipt(rawText) {
 		: { ok: false, error: "github transport receipt JSON object not found", json: null };
 }
 
-function handoffProofAssertions(handoffExtraction, projectionExtraction, transportReceiptExtraction, expectedNextAgent) {
+async function validateTauGithubTransportReceipt(page, receipt) {
+	if (!receipt) return { ok: false, status: null, body: null, error: "github transport receipt is missing" };
+	return page.evaluate(async (payload) => {
+		try {
+			const response = await fetch("/api/tau/handoff/transport/validate", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload),
+			});
+			let body = null;
+			try {
+				body = await response.json();
+			} catch {
+				body = { parse_error: true };
+			}
+			return {
+				ok: response.ok && body?.ok === true,
+				status: response.status,
+				body,
+				error: response.ok ? null : body?.detail || body?.error || `HTTP ${response.status}`,
+			};
+		} catch (error) {
+			return {
+				ok: false,
+				status: null,
+				body: null,
+				error: error instanceof Error ? error.message : String(error),
+			};
+		}
+	}, receipt);
+}
+
+function handoffProofAssertions(
+	handoffExtraction,
+	projectionExtraction,
+	transportReceiptExtraction,
+	transportValidation,
+	expectedNextAgent,
+) {
 	const handoff = handoffExtraction.json;
 	const projection = projectionExtraction.json;
 	const transportReceipt = transportReceiptExtraction.json;
+	const validationReceipt = transportValidation?.body?.receipt;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
 		handoff_schema_valid: handoff?.schema === "tau.agent_handoff.v1",
@@ -513,6 +552,11 @@ function handoffProofAssertions(handoffExtraction, projectionExtraction, transpo
 			Array.isArray(transportReceipt?.labels?.add)
 			&& Array.isArray(projection?.labels?.add)
 			&& projection.labels.add.every((label) => transportReceipt.labels.add.includes(label)),
+		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
+		handoff_github_transport_server_validation_schema:
+			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
+		handoff_github_transport_server_validation_dry_run:
+			validationReceipt?.dryRun === true && validationReceipt?.applied === false,
 	};
 }
 
@@ -644,6 +688,10 @@ async function main() {
 		const handoffExtraction = extractTauHandoff(rawChatText);
 		const githubProjectionExtraction = extractTauGithubProjection(rawChatText);
 		const githubTransportReceiptExtraction = extractTauGithubTransportReceipt(rawChatText);
+		const githubTransportValidation =
+			scenario.waitForHandoff === false
+				? { ok: false, status: null, body: null, error: "handoff not expected" }
+				: await validateTauGithubTransportReceipt(page, githubTransportReceiptExtraction.json);
 		const handoffAssertions =
 			scenario.waitForHandoff === false
 				? failClosedHandoffAbsenceAssertions(handoffExtraction)
@@ -651,6 +699,7 @@ async function main() {
 						handoffExtraction,
 						githubProjectionExtraction,
 						githubTransportReceiptExtraction,
+						githubTransportValidation,
 						scenario.expectedNextAgent,
 					);
 		const visibleAssertions = {
@@ -673,6 +722,7 @@ async function main() {
 			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
 			githubProjection: githubProjectionExtraction.ok ? githubProjectionExtraction.json : null,
 			githubTransportReceipt: githubTransportReceiptExtraction.ok ? githubTransportReceiptExtraction.json : null,
+			githubTransportValidation,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
 			githubTransportReceiptExtractionError: githubTransportReceiptExtraction.error,
