@@ -99,6 +99,19 @@ const scenarios = {
 			};
 		},
 	},
+	"clarify-availability": {
+		prompt: "CLARIFY availability probe",
+		candidatePrompts: [
+			"How do I secure it?",
+			"Assess compliance for this system",
+			"What control applies?",
+			"Can you explain this?",
+			"Which one should I use?",
+			"What is the relationship?",
+			"Use that evidence case",
+			"Is it compliant?",
+		],
+	},
 };
 const scenario = scenarios[scenarioName];
 if (!scenario) {
@@ -143,6 +156,65 @@ async function main() {
 
 	try {
 		await page.goto(url, { waitUntil: "networkidle", timeout: 30_000 });
+		if (scenario.candidatePrompts) {
+			const intentResults = await page.evaluate(async (prompts) => {
+				const results = [];
+				for (const q of prompts) {
+					const response = await fetch("/api/memory/intent", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ q, scope: "tau", session_id: "tau-chat", fast: true }),
+					});
+					let body = null;
+					try {
+						body = await response.json();
+					} catch {
+						body = { parse_error: true };
+					}
+					results.push({
+						q,
+						status: response.status,
+						action: body?.action ?? null,
+						confidence: body?.confidence ?? null,
+						response_mode: body?.response_mode ?? null,
+						content_type: body?.content_type ?? null,
+						recall_profile: body?.recall_profile ?? null,
+					});
+				}
+				return results;
+			}, scenario.candidatePrompts);
+			const visibleAssertions = {
+				intent_probe_count: intentResults.length === scenario.candidatePrompts.length,
+				intent_requests_all_200: intentResults.every((result) => result.status >= 200 && result.status < 300),
+				clarify_not_emitted: intentResults.every((result) => result.action !== "CLARIFY"),
+				observed_non_clarify_actions: intentResults.some((result) => result.action && result.action !== "CLARIFY"),
+			};
+			const ok = Object.values(visibleAssertions).every(Boolean);
+			const screenshot = path.join(outDir, "tau-live-memory-chat.png");
+			await page.screenshot({ path: screenshot, fullPage: true });
+			const proof = {
+				schema: "tau.live_memory_chat_browser_proof.v1",
+				ok,
+				mocked: false,
+				live: true,
+				scenario: scenarioName,
+				url,
+				prompt,
+				clarifyAvailable: intentResults.some((result) => result.action === "CLARIFY"),
+				candidatePrompts: scenario.candidatePrompts,
+				intentResults,
+				visibleAssertions,
+				memoryRequests,
+				errors,
+				screenshot,
+				capturedAt: new Date().toISOString(),
+			};
+			await writeFile(path.join(outDir, "proof.json"), `${JSON.stringify(proof, null, 2)}\n`);
+			console.log(JSON.stringify({ artifactRoot: outDir, ...proof }, null, 2));
+			await browser.close();
+			process.exit(ok ? 0 : 1);
+		}
+
 		await page.locator('[data-qid="tau:chat:shell:well:input"]').fill(prompt);
 		await page.locator('[data-qid="tau:chat:shell:well:send"]').click();
 		await page.waitForFunction(
