@@ -3,6 +3,7 @@ import {
 	buildTauAgentHandoff,
 	buildTauRouteHandoff,
 	deriveTauHandoffGithubProjection,
+	renderTauHandoffGithubProjectionJsonBlock,
 	summarizeTauAgentHandoff,
 	summarizeTauHandoffGithubProjection,
 	TAU_AGENT_HANDOFF_SCHEMA,
@@ -113,6 +114,10 @@ describe("tauAgentHandoff", () => {
 		expect(projection.comment?.body).toContain("<!-- tau-agent-handoff:v1 -->");
 		expect(projection.comment?.body).toContain('"schema": "tau.agent_handoff.v1"');
 		expect(summarizeTauHandoffGithubProjection(projection)).toContain("| status | dry-run |");
+		expect(renderTauHandoffGithubProjectionJsonBlock(projection)).toContain(
+			"### Tau handoff GitHub projection JSON contract",
+		);
+		expect(renderTauHandoffGithubProjectionJsonBlock(projection)).toContain('"next:reviewer"');
 	});
 
 	it("refuses projection when active goal hash does not match", () => {

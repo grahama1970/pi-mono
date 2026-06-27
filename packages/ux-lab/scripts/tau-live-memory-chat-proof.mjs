@@ -18,10 +18,11 @@ const scenarios = {
 				memory_action_visible: /action\s+COMPLIANCE/.test(chatText),
 				recall_product_visible: /endpoint\s+\/recall/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				reviewer_next_agent_visible:
 					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
-				github_projection_visible: chatText.includes("Tau command-loop GitHub projection receipt"),
+				command_loop_github_projection_visible: chatText.includes("Tau command-loop GitHub projection receipt"),
 				intent_request_seen: memoryRequests.some(
 					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
 				),
@@ -81,6 +82,7 @@ const scenarios = {
 				deflect_product_visible: /endpoint\s+\/deflect/.test(chatText),
 				should_deflect_visible: /should deflect\s+true/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
 				intent_request_seen: memoryRequests.some(
@@ -159,6 +161,7 @@ const scenarios = {
 				clarify_product_visible: /endpoint\s+\/clarify/.test(chatText),
 				clarify_question_visible: chatText.includes("Which system, asset, or evidence case should Tau secure?"),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
 				intent_request_seen: memoryRequests.some(
@@ -224,6 +227,7 @@ const scenarios = {
 				answer_product_visible: /endpoint\s+\/answer/.test(chatText),
 				can_answer_visible: /can answer\s+true/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				reviewer_next_agent_visible:
 					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
@@ -285,6 +289,7 @@ const scenarios = {
 				memory_action_visible: /action\s+RESEARCH/.test(chatText),
 				research_product_not_called_visible: chatText.includes("Memory product: not called in this slice."),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				research_next_agent_visible:
 					/next agent\s+research-auditor/.test(chatText) || chatText.includes('"name": "research-auditor"'),
@@ -392,62 +397,68 @@ function compact(text) {
 	return text.replace(/\s+/g, " ");
 }
 
-function extractTauHandoff(rawText) {
-	const marker = "Tau handoff JSON contract";
-	const markerIndex = rawText.indexOf(marker);
-	if (markerIndex < 0) {
-		return { ok: false, error: "handoff marker not found", json: null };
-	}
-	const handoffText = rawText
-		.slice(markerIndex)
+function renderedJsonObjects(rawText) {
+	const text = rawText
 		.split("\n")
 		.filter((line) => !/^\d+$/.test(line.trim()))
 		.join("\n");
-	const start = handoffText.indexOf("{");
-	if (start < 0) {
-		return { ok: false, error: "handoff JSON start not found", json: null };
-	}
-	let depth = 0;
-	let inString = false;
-	let escaped = false;
-	for (let index = start; index < handoffText.length; index += 1) {
-		const char = handoffText[index];
-		if (escaped) {
-			escaped = false;
-			continue;
-		}
-		if (char === "\\") {
-			escaped = true;
-			continue;
-		}
-		if (char === '"') {
-			inString = !inString;
-			continue;
-		}
-		if (inString) continue;
-		if (char === "{") depth += 1;
-		if (char === "}") {
-			depth -= 1;
-			if (depth === 0) {
-				const source = handoffText.slice(start, index + 1);
-				try {
-					return { ok: true, error: null, json: JSON.parse(source) };
-				} catch (error) {
-					return {
-						ok: false,
-						error: error instanceof Error ? error.message : String(error),
-						json: null,
-					};
+	const objects = [];
+	for (let start = text.indexOf("{"); start >= 0; start = text.indexOf("{", start + 1)) {
+		let depth = 0;
+		let inString = false;
+		let escaped = false;
+		for (let index = start; index < text.length; index += 1) {
+			const char = text[index];
+			if (escaped) {
+				escaped = false;
+				continue;
+			}
+			if (char === "\\") {
+				escaped = true;
+				continue;
+			}
+			if (char === '"') {
+				inString = !inString;
+				continue;
+			}
+			if (inString) continue;
+			if (char === "{") depth += 1;
+			if (char === "}") {
+				depth -= 1;
+				if (depth === 0) {
+					const source = text.slice(start, index + 1);
+					try {
+						objects.push(JSON.parse(source));
+					} catch {
+						// Not a standalone JSON object rendered by the chat.
+					}
+					break;
 				}
 			}
 		}
 	}
-	return { ok: false, error: "handoff JSON end not found", json: null };
+	return objects;
 }
 
-function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
+function extractTauHandoff(rawText) {
+	const handoff = renderedJsonObjects(rawText).find((item) => item?.schema === "tau.agent_handoff.v1");
+	return handoff
+		? { ok: true, error: null, json: handoff }
+		: { ok: false, error: "handoff JSON object not found", json: null };
+}
+
+function extractTauGithubProjection(rawText) {
+	const projection = renderedJsonObjects(rawText).find(
+		(item) => item?.contract === "tau.handoff_github_projection.rendered.v1",
+	);
+	return projection
+		? { ok: true, error: null, json: projection }
+		: { ok: false, error: "github projection JSON object not found", json: null };
+}
+
+function handoffProofAssertions(handoffExtraction, projectionExtraction, expectedNextAgent) {
 	const handoff = handoffExtraction.json;
-	const projection = deriveGithubProjection(handoff);
+	const projection = projectionExtraction.json;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
 		handoff_schema_valid: handoff?.schema === "tau.agent_handoff.v1",
@@ -456,62 +467,29 @@ function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
 		handoff_result_present: Boolean(handoff?.result?.status && handoff?.result?.summary && Array.isArray(handoff?.result?.evidence)),
 		handoff_next_agent_matches: expectedNextAgent ? handoff?.next_agent?.name === expectedNextAgent : Boolean(handoff?.next_agent?.name),
 		handoff_stop_condition_present: typeof handoff?.stop_condition === "string" && handoff.stop_condition.length > 0,
+		handoff_github_projection_json_extracted: projectionExtraction.ok,
+		handoff_github_projection_ok: projection?.ok === true,
 		handoff_github_target_present: Boolean(projection?.target?.repo && projection?.target?.target),
 		handoff_github_agent_work_label: projection?.labels?.add?.includes("agent-work") === true,
 		handoff_github_next_label_matches:
 			typeof handoff?.next_agent?.name === "string"
 			&& projection?.labels?.add?.includes(`next:${handoff.next_agent.name}`) === true,
 		handoff_github_executor_label_matches:
-			typeof projection?.executor === "string"
-			&& projection?.labels?.add?.includes(`executor:${projection.executor}`) === true,
+			typeof handoff?.next_agent?.executor === "string"
+			&& projection?.labels?.add?.includes(`executor:${handoff.next_agent.executor}`) === true,
 		handoff_github_stale_labels_removed:
 			projection?.labels?.remove?.includes("agent-active") === true
 			&& projection?.labels?.remove?.includes("agent-blocked") === true,
-		handoff_github_comment_embeds_json: projection?.comment?.body?.includes("<!-- tau-agent-handoff:v1 -->") === true,
+		handoff_github_comment_embeds_json:
+			projection?.comment?.body_marker === "<!-- tau-agent-handoff:v1 -->"
+			&& projection?.comment?.body_embeds_handoff_json === true,
 	};
 }
 
 function failClosedHandoffAbsenceAssertions(handoffExtraction) {
 	return {
 		handoff_json_absent: !handoffExtraction.ok,
-		handoff_absence_reason_recorded: handoffExtraction.error === "handoff marker not found",
-	};
-}
-
-function deriveGithubProjection(handoff) {
-	if (!handoff || typeof handoff !== "object") return null;
-	const nextAgent = handoff.next_agent?.name;
-	if (typeof nextAgent !== "string" || !nextAgent.trim()) return null;
-	const executor =
-		typeof handoff.next_agent?.executor === "string" && handoff.next_agent.executor.trim()
-			? handoff.next_agent.executor
-			: "either";
-	return {
-		ok: true,
-		target: {
-			repo: handoff.github?.repo ?? null,
-			target: handoff.github?.target ?? null,
-		},
-		executor,
-		labels: {
-			add: ["agent-work", `next:${nextAgent}`, `executor:${executor}`],
-			remove: ["agent-active", "agent-blocked"],
-		},
-		comment: {
-			body: [
-				"## Tau Agent Handoff",
-				"",
-				`Result: \`${handoff.result?.status ?? "unknown"}\``,
-				`Next agent: \`${nextAgent}\``,
-				`Executor: \`${executor}\``,
-				"",
-				"<!-- tau-agent-handoff:v1 -->",
-				"```json",
-				JSON.stringify(handoff, null, 2),
-				"```",
-			].join("\n"),
-		},
-		nextAgent,
+		handoff_absence_reason_recorded: handoffExtraction.error === "handoff JSON object not found",
 	};
 }
 
@@ -634,11 +612,11 @@ async function main() {
 		const rawChatText = await page.locator('[data-qid="tau:chat:shell:well"]').innerText();
 		const chatText = compact(rawChatText);
 		const handoffExtraction = extractTauHandoff(rawChatText);
-		const githubProjection = handoffExtraction.ok ? deriveGithubProjection(handoffExtraction.json) : null;
+		const githubProjectionExtraction = extractTauGithubProjection(rawChatText);
 		const handoffAssertions =
 			scenario.waitForHandoff === false
 				? failClosedHandoffAbsenceAssertions(handoffExtraction)
-				: handoffProofAssertions(handoffExtraction, scenario.expectedNextAgent);
+				: handoffProofAssertions(handoffExtraction, githubProjectionExtraction, scenario.expectedNextAgent);
 		const visibleAssertions = {
 			prompt_visible: chatText.includes(prompt),
 			...scenario.assertions(chatText, memoryRequests),
@@ -657,8 +635,9 @@ async function main() {
 			prompt,
 			visibleAssertions,
 			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
-			githubProjection,
+			githubProjection: githubProjectionExtraction.ok ? githubProjectionExtraction.json : null,
 			handoffExtractionError: handoffExtraction.error,
+			githubProjectionExtractionError: githubProjectionExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,

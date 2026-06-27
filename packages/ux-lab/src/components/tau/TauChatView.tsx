@@ -35,6 +35,7 @@ import {
 import {
   buildTauRouteHandoff,
   deriveTauHandoffGithubProjection,
+  renderTauHandoffGithubProjectionJsonBlock,
   summarizeTauAgentHandoff,
   summarizeTauHandoffGithubProjection,
   validateTauAgentHandoff,
@@ -488,6 +489,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       summarizeTauAgentHandoff(handoff),
       '',
       summarizeTauHandoffGithubProjection(handoffGithubProjection),
+      '',
+      renderTauHandoffGithubProjectionJsonBlock(handoffGithubProjection),
       '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',

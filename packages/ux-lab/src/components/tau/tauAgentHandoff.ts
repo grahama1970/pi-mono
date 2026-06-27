@@ -296,6 +296,27 @@ export function summarizeTauHandoffGithubProjection(projection: TauHandoffGithub
 	].join("\n");
 }
 
+export function renderTauHandoffGithubProjectionJsonBlock(projection: TauHandoffGithubProjection): string {
+	const renderedProjection = {
+		contract: "tau.handoff_github_projection.rendered.v1",
+		...projection,
+		comment: projection.comment
+			? {
+					body_format: "github-markdown",
+					body_marker: "<!-- tau-agent-handoff:v1 -->",
+					body_embeds_handoff_json: projection.comment.body.includes('"schema": "tau.agent_handoff.v1"'),
+				}
+			: undefined,
+	};
+	return [
+		"### Tau handoff GitHub projection JSON contract",
+		"",
+		"```json",
+		JSON.stringify(renderedProjection, null, 2),
+		"```",
+	].join("\n");
+}
+
 function nextAgentForRoute(action: string, branch: string) {
 	if (action === "CLARIFY") {
 		return {

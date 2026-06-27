@@ -395,6 +395,9 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain("| found | true |");
 		expect(message.content).toContain("| schema | tau.agent_handoff.v1 |");
 		expect(message.content).toContain("| labels add | agent-work, next:reviewer, executor:either |");
+		expect(message.content).toContain("### Tau handoff GitHub projection JSON contract");
+		expect(message.content).toContain('"next:reviewer"');
+		expect(message.content).toContain('"agent-active"');
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(

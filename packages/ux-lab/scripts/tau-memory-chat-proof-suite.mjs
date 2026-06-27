@@ -117,7 +117,7 @@ function validateScenarioProof(proof, expected) {
 	}
 	if (expected.handoffAbsent) {
 		assertions.handoff_absent = proof.handoff === null;
-		assertions.handoff_absence_reason_recorded = proof.handoffExtractionError === "handoff marker not found";
+		assertions.handoff_absence_reason_recorded = proof.handoffExtractionError === "handoff JSON object not found";
 	}
 	if (typeof expected.clarifyAvailable === "boolean") {
 		assertions.clarify_available_matches = proof.clarifyAvailable === expected.clarifyAvailable;
