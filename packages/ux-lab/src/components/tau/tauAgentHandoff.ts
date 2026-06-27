@@ -85,6 +85,25 @@ export interface TauHandoffGithubProjection {
 	nextAgent?: string;
 }
 
+export interface TauHandoffGithubTransportReceipt {
+	schema: "tau.handoff_github_transport_receipt.v1";
+	ok: boolean;
+	dryRun: true;
+	applied: false;
+	target?: {
+		repo: string;
+		target: string;
+	};
+	labels?: {
+		add: string[];
+		remove: string[];
+	};
+	commandCount: number;
+	commands: string[];
+	errors: string[];
+	sourceProjectionContract: "tau.handoff_github_projection.rendered.v1";
+}
+
 export function buildTauAgentHandoff(input: TauAgentHandoffInput): TauAgentHandoff {
 	return {
 		schema: TAU_AGENT_HANDOFF_SCHEMA,
@@ -313,6 +332,63 @@ export function renderTauHandoffGithubProjectionJsonBlock(projection: TauHandoff
 		"",
 		"```json",
 		JSON.stringify(renderedProjection, null, 2),
+		"```",
+	].join("\n");
+}
+
+export function deriveTauHandoffGithubTransportReceipt(
+	projection: TauHandoffGithubProjection,
+): TauHandoffGithubTransportReceipt {
+	if (!projection.ok || !projection.target || !projection.labels || !projection.comment) {
+		return {
+			schema: "tau.handoff_github_transport_receipt.v1",
+			ok: false,
+			dryRun: true,
+			applied: false,
+			target: projection.target,
+			labels: projection.labels,
+			commandCount: 0,
+			commands: [],
+			errors: projection.errors.length ? projection.errors : ["projection is not transportable"],
+			sourceProjectionContract: "tau.handoff_github_projection.rendered.v1",
+		};
+	}
+
+	const labelCsv = projection.labels.add.join(",");
+	const removeLabelCsv = projection.labels.remove.join(",");
+	const commentCommand =
+		projection.target.target === "new"
+			? `gh issue create --repo ${projection.target.repo} --title "Tau agent handoff: ${projection.nextAgent ?? "next-agent"}" --body-file - --label ${labelCsv}`
+			: `gh issue comment ${projection.target.target.replace(/^issue#/, "")} --repo ${projection.target.repo} --body-file -`;
+	const commands = [
+		commentCommand,
+		...(projection.target.target === "new"
+			? []
+			: [
+					`gh issue edit ${projection.target.target.replace(/^issue#/, "")} --repo ${projection.target.repo} --add-label ${labelCsv} --remove-label ${removeLabelCsv}`,
+				]),
+	];
+
+	return {
+		schema: "tau.handoff_github_transport_receipt.v1",
+		ok: true,
+		dryRun: true,
+		applied: false,
+		target: projection.target,
+		labels: projection.labels,
+		commandCount: commands.length,
+		commands,
+		errors: [],
+		sourceProjectionContract: "tau.handoff_github_projection.rendered.v1",
+	};
+}
+
+export function renderTauHandoffGithubTransportReceiptJsonBlock(receipt: TauHandoffGithubTransportReceipt): string {
+	return [
+		"### Tau handoff GitHub transport receipt JSON contract",
+		"",
+		"```json",
+		JSON.stringify(receipt, null, 2),
 		"```",
 	].join("\n");
 }

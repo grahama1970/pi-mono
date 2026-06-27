@@ -35,7 +35,9 @@ import {
 import {
   buildTauRouteHandoff,
   deriveTauHandoffGithubProjection,
+  deriveTauHandoffGithubTransportReceipt,
   renderTauHandoffGithubProjectionJsonBlock,
+  renderTauHandoffGithubTransportReceiptJsonBlock,
   summarizeTauAgentHandoff,
   summarizeTauHandoffGithubProjection,
   validateTauAgentHandoff,
@@ -461,6 +463,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     })
     const handoffValidation = validateTauAgentHandoff(handoff)
     const handoffGithubProjection = deriveTauHandoffGithubProjection(handoff)
+    const handoffGithubTransportReceipt = deriveTauHandoffGithubTransportReceipt(handoffGithubProjection)
 
     const content = [
       route.finalLead,
@@ -492,6 +495,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauHandoffGithubProjectionJsonBlock(handoffGithubProjection),
       '',
+      renderTauHandoffGithubTransportReceiptJsonBlock(handoffGithubTransportReceipt),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -514,6 +519,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoff: handoff,
         tauAgentHandoffValidation: handoffValidation,
         tauAgentHandoffGithubProjection: handoffGithubProjection,
+        tauAgentHandoffGithubTransportReceipt: handoffGithubTransportReceipt,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,

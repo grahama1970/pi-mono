@@ -3,7 +3,9 @@ import {
 	buildTauAgentHandoff,
 	buildTauRouteHandoff,
 	deriveTauHandoffGithubProjection,
+	deriveTauHandoffGithubTransportReceipt,
 	renderTauHandoffGithubProjectionJsonBlock,
+	renderTauHandoffGithubTransportReceiptJsonBlock,
 	summarizeTauAgentHandoff,
 	summarizeTauHandoffGithubProjection,
 	TAU_AGENT_HANDOFF_SCHEMA,
@@ -118,6 +120,22 @@ describe("tauAgentHandoff", () => {
 			"### Tau handoff GitHub projection JSON contract",
 		);
 		expect(renderTauHandoffGithubProjectionJsonBlock(projection)).toContain('"next:reviewer"');
+
+		const transportReceipt = deriveTauHandoffGithubTransportReceipt(projection);
+		expect(transportReceipt).toMatchObject({
+			schema: "tau.handoff_github_transport_receipt.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			commandCount: 2,
+		});
+		expect(transportReceipt.commands[0]).toBe(
+			"gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -",
+		);
+		expect(transportReceipt.commands[1]).toContain("--add-label agent-work,next:reviewer,executor:either");
+		expect(renderTauHandoffGithubTransportReceiptJsonBlock(transportReceipt)).toContain(
+			"### Tau handoff GitHub transport receipt JSON contract",
+		);
 	});
 
 	it("refuses projection when active goal hash does not match", () => {

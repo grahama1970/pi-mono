@@ -398,6 +398,9 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain("### Tau handoff GitHub projection JSON contract");
 		expect(message.content).toContain('"next:reviewer"');
 		expect(message.content).toContain('"agent-active"');
+		expect(message.content).toContain("### Tau handoff GitHub transport receipt JSON contract");
+		expect(message.content).toContain('"schema": "tau.handoff_github_transport_receipt.v1"');
+		expect(message.content).toContain("gh issue create --repo grahama1970/tau");
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(
@@ -424,6 +427,12 @@ describe("TauReceiptAdapter Memory routing", () => {
 			ok: true,
 			nextAgent: "reviewer",
 			labels: { add: ["agent-work", "next:reviewer", "executor:either"] },
+		});
+		expect(message.metadata?.tauAgentHandoffGithubTransportReceipt).toMatchObject({
+			ok: true,
+			dryRun: true,
+			applied: false,
+			commandCount: 1,
 		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({
 			summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",

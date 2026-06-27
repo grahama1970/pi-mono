@@ -19,6 +19,7 @@ const scenarios = {
 				recall_product_visible: /endpoint\s+\/recall/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
 				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
+				handoff_github_transport_receipt_visible: chatText.includes("Tau handoff GitHub transport receipt JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				reviewer_next_agent_visible:
 					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
@@ -83,6 +84,7 @@ const scenarios = {
 				should_deflect_visible: /should deflect\s+true/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
 				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
+				handoff_github_transport_receipt_visible: chatText.includes("Tau handoff GitHub transport receipt JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
 				intent_request_seen: memoryRequests.some(
@@ -162,6 +164,7 @@ const scenarios = {
 				clarify_question_visible: chatText.includes("Which system, asset, or evidence case should Tau secure?"),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
 				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
+				handoff_github_transport_receipt_visible: chatText.includes("Tau handoff GitHub transport receipt JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
 				intent_request_seen: memoryRequests.some(
@@ -228,6 +231,7 @@ const scenarios = {
 				can_answer_visible: /can answer\s+true/.test(chatText),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
 				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
+				handoff_github_transport_receipt_visible: chatText.includes("Tau handoff GitHub transport receipt JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				reviewer_next_agent_visible:
 					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
@@ -290,6 +294,7 @@ const scenarios = {
 				research_product_not_called_visible: chatText.includes("Memory product: not called in this slice."),
 				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
 				handoff_github_projection_json_visible: chatText.includes("Tau handoff GitHub projection JSON contract"),
+				handoff_github_transport_receipt_visible: chatText.includes("Tau handoff GitHub transport receipt JSON contract"),
 				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
 				research_next_agent_visible:
 					/next agent\s+research-auditor/.test(chatText) || chatText.includes('"name": "research-auditor"'),
@@ -456,9 +461,19 @@ function extractTauGithubProjection(rawText) {
 		: { ok: false, error: "github projection JSON object not found", json: null };
 }
 
-function handoffProofAssertions(handoffExtraction, projectionExtraction, expectedNextAgent) {
+function extractTauGithubTransportReceipt(rawText) {
+	const receipt = renderedJsonObjects(rawText).find(
+		(item) => item?.schema === "tau.handoff_github_transport_receipt.v1",
+	);
+	return receipt
+		? { ok: true, error: null, json: receipt }
+		: { ok: false, error: "github transport receipt JSON object not found", json: null };
+}
+
+function handoffProofAssertions(handoffExtraction, projectionExtraction, transportReceiptExtraction, expectedNextAgent) {
 	const handoff = handoffExtraction.json;
 	const projection = projectionExtraction.json;
+	const transportReceipt = transportReceiptExtraction.json;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
 		handoff_schema_valid: handoff?.schema === "tau.agent_handoff.v1",
@@ -483,6 +498,21 @@ function handoffProofAssertions(handoffExtraction, projectionExtraction, expecte
 		handoff_github_comment_embeds_json:
 			projection?.comment?.body_marker === "<!-- tau-agent-handoff:v1 -->"
 			&& projection?.comment?.body_embeds_handoff_json === true,
+		handoff_github_transport_receipt_extracted: transportReceiptExtraction.ok,
+		handoff_github_transport_receipt_ok: transportReceipt?.ok === true,
+		handoff_github_transport_receipt_dry_run: transportReceipt?.dryRun === true && transportReceipt?.applied === false,
+		handoff_github_transport_command_count_matches:
+			Array.isArray(transportReceipt?.commands)
+			&& transportReceipt.commands.length === transportReceipt.commandCount
+			&& transportReceipt.commandCount > 0,
+		handoff_github_transport_command_targets_repo:
+			Array.isArray(transportReceipt?.commands)
+			&& typeof projection?.target?.repo === "string"
+			&& transportReceipt.commands.some((command) => command.includes(`--repo ${projection.target.repo}`)),
+		handoff_github_transport_labels_match_projection:
+			Array.isArray(transportReceipt?.labels?.add)
+			&& Array.isArray(projection?.labels?.add)
+			&& projection.labels.add.every((label) => transportReceipt.labels.add.includes(label)),
 	};
 }
 
@@ -613,10 +643,16 @@ async function main() {
 		const chatText = compact(rawChatText);
 		const handoffExtraction = extractTauHandoff(rawChatText);
 		const githubProjectionExtraction = extractTauGithubProjection(rawChatText);
+		const githubTransportReceiptExtraction = extractTauGithubTransportReceipt(rawChatText);
 		const handoffAssertions =
 			scenario.waitForHandoff === false
 				? failClosedHandoffAbsenceAssertions(handoffExtraction)
-				: handoffProofAssertions(handoffExtraction, githubProjectionExtraction, scenario.expectedNextAgent);
+				: handoffProofAssertions(
+						handoffExtraction,
+						githubProjectionExtraction,
+						githubTransportReceiptExtraction,
+						scenario.expectedNextAgent,
+					);
 		const visibleAssertions = {
 			prompt_visible: chatText.includes(prompt),
 			...scenario.assertions(chatText, memoryRequests),
@@ -636,8 +672,10 @@ async function main() {
 			visibleAssertions,
 			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
 			githubProjection: githubProjectionExtraction.ok ? githubProjectionExtraction.json : null,
+			githubTransportReceipt: githubTransportReceiptExtraction.ok ? githubTransportReceiptExtraction.json : null,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
+			githubTransportReceiptExtractionError: githubTransportReceiptExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,

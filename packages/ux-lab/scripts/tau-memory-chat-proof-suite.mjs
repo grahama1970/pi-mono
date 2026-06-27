@@ -78,6 +78,7 @@ async function runScenario(scenario) {
 		handoffNextAgent: proof?.handoff?.next_agent?.name ?? null,
 		handoffStatus: proof?.handoff?.result?.status ?? null,
 		githubProjectionLabels: proof?.githubProjection?.labels ?? null,
+		githubTransportCommandCount: proof?.githubTransportReceipt?.commandCount ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -114,6 +115,13 @@ function validateScenarioProof(proof, expected) {
 		assertions.github_projection_stale_labels_removed =
 			proof.githubProjection?.labels?.remove?.includes("agent-active") === true
 			&& proof.githubProjection?.labels?.remove?.includes("agent-blocked") === true;
+		assertions.github_transport_receipt_ok = proof.githubTransportReceipt?.ok === true;
+		assertions.github_transport_receipt_dry_run =
+			proof.githubTransportReceipt?.dryRun === true && proof.githubTransportReceipt?.applied === false;
+		assertions.github_transport_command_count_matches =
+			Array.isArray(proof.githubTransportReceipt?.commands)
+			&& proof.githubTransportReceipt.commands.length === proof.githubTransportReceipt.commandCount
+			&& proof.githubTransportReceipt.commandCount > 0;
 	}
 	if (expected.handoffAbsent) {
 		assertions.handoff_absent = proof.handoff === null;
