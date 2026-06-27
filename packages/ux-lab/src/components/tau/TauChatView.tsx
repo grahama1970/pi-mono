@@ -202,6 +202,13 @@ type TauSubagentReceiptExpectationPoster = (
   intake: TauHandoffOrchestratorIntake,
   signal?: AbortSignal,
 ) => Promise<TauSubagentReceiptExpectation>
+type TauSubagentHandoffValidator = (
+  payload: {
+    expectation: TauSubagentReceiptExpectation
+    handoff: TauAgentCandidateHandoff
+  },
+  signal?: AbortSignal,
+) => Promise<TauSubagentHandoffValidation>
 
 type TauHandoffGithubTransportValidation = {
   schema: 'tau.handoff_github_transport_validation.v1'
@@ -279,6 +286,61 @@ type TauSubagentReceiptExpectation = {
   }
 }
 
+type TauAgentCandidateHandoff = {
+  schema: 'tau.agent_handoff.v1'
+  github: {
+    repo: string
+    target: string
+  }
+  goal: {
+    goal_id: string
+    goal_version: number
+    goal_hash: string
+  }
+  previous_subagent: string
+  context: {
+    summary: string
+    artifacts: string[]
+  }
+  result: {
+    status: string
+    summary: string
+    evidence: string[]
+  }
+  rationale: string
+  next_agent: {
+    name: string
+    executor: string
+    reason: string
+  }
+  required_evidence: string[]
+  stop_condition: string
+}
+
+type TauSubagentHandoffValidation = {
+  schema: 'tau.subagent_handoff_validation.v1'
+  ok: boolean
+  dryRun: true
+  applied: false
+  executed: false
+  candidateOnly: true
+  target: {
+    repo: string
+    target: string
+  }
+  previousSubagent: string
+  nextAgent: string
+  resultStatus: string
+  resultEvidenceCount: number
+  requiredEvidenceCount: number
+  expectationArtifactPath?: string
+  checks: string[]
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
@@ -289,6 +351,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     private readonly handoffTransportValidator: TauHandoffTransportValidator = postTauHandoffTransportValidation,
     private readonly handoffOrchestratorIntakePoster: TauHandoffOrchestratorIntakePoster = postTauHandoffOrchestratorIntake,
     private readonly subagentReceiptExpectationPoster: TauSubagentReceiptExpectationPoster = postTauSubagentReceiptExpectation,
+    private readonly subagentHandoffValidator: TauSubagentHandoffValidator = postTauSubagentHandoffValidation,
   ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
@@ -559,6 +622,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     let handoffGithubTransportValidation: TauHandoffGithubTransportValidation | null = null
     let handoffOrchestratorIntake: TauHandoffOrchestratorIntake | null = null
     let subagentReceiptExpectation: TauSubagentReceiptExpectation | null = null
+    let candidateSubagentHandoff: TauAgentCandidateHandoff | null = null
+    let subagentHandoffValidation: TauSubagentHandoffValidation | null = null
     try {
       handoffGithubTransportValidation = await this.handoffTransportValidator(
         handoffGithubTransportReceipt,
@@ -580,6 +645,17 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       )
       if (!subagentReceiptExpectation.ok) {
         throw new Error('Tau subagent receipt expectation returned ok=false')
+      }
+      candidateSubagentHandoff = buildCandidateSubagentHandoff(subagentReceiptExpectation)
+      subagentHandoffValidation = await this.subagentHandoffValidator(
+        {
+          expectation: subagentReceiptExpectation,
+          handoff: candidateSubagentHandoff,
+        },
+        input.abortSignal,
+      )
+      if (!subagentHandoffValidation.ok) {
+        throw new Error('Tau subagent handoff validator returned ok=false')
       }
     } catch (error) {
       const validationError = error instanceof Error ? error.message : String(error)
@@ -623,6 +699,10 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
             : { ok: false, error: validationError },
           tauSubagentReceiptExpectation: subagentReceiptExpectation
             ? subagentReceiptExpectation
+            : { ok: false, error: validationError },
+          tauCandidateSubagentHandoff: candidateSubagentHandoff,
+          tauSubagentHandoffValidation: subagentHandoffValidation
+            ? subagentHandoffValidation
             : { ok: false, error: validationError },
           tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
           tauReceiptPaths,
@@ -670,6 +750,10 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauSubagentReceiptExpectationJsonBlock(subagentReceiptExpectation),
       '',
+      renderTauCandidateSubagentHandoffJsonBlock(candidateSubagentHandoff),
+      '',
+      renderTauSubagentHandoffValidationJsonBlock(subagentHandoffValidation),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -696,6 +780,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoffGithubTransportValidation: handoffGithubTransportValidation,
         tauAgentHandoffOrchestratorIntake: handoffOrchestratorIntake,
         tauSubagentReceiptExpectation: subagentReceiptExpectation,
+        tauCandidateSubagentHandoff: candidateSubagentHandoff,
+        tauSubagentHandoffValidation: subagentHandoffValidation,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,
@@ -848,6 +934,40 @@ async function postTauSubagentReceiptExpectation(
   return receiptPayload as TauSubagentReceiptExpectation
 }
 
+async function postTauSubagentHandoffValidation(
+  payload: {
+    expectation: TauSubagentReceiptExpectation
+    handoff: TauAgentCandidateHandoff
+  },
+  signal?: AbortSignal,
+): Promise<TauSubagentHandoffValidation> {
+  const response = await fetch(apiUrl('/tau/handoff/subagent-receipt/validate'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  })
+  const text = await response.text()
+  let parsed: unknown = {}
+  try {
+    parsed = text ? JSON.parse(text) : {}
+  } catch {
+    parsed = { raw: text }
+  }
+  if (!response.ok) {
+    const detail = typeof parsed === 'object' && parsed && 'detail' in parsed ? (parsed as { detail?: unknown }).detail : text
+    throw new Error(`Tau subagent handoff validation failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
+  }
+  const receiptPayload =
+    typeof parsed === 'object' && parsed && 'receipt' in parsed
+      ? (parsed as { receipt?: unknown }).receipt
+      : null
+  if (!receiptPayload || typeof receiptPayload !== 'object') {
+    throw new Error('Tau subagent handoff validation returned no receipt')
+  }
+  return receiptPayload as TauSubagentHandoffValidation
+}
+
 function renderTauHandoffGithubTransportValidationJsonBlock(
   validation: TauHandoffGithubTransportValidation,
 ): string {
@@ -882,6 +1002,63 @@ function renderTauSubagentReceiptExpectationJsonBlock(
     JSON.stringify(expectation, null, 2),
     '```',
   ].join('\n')
+}
+
+function renderTauCandidateSubagentHandoffJsonBlock(
+  handoff: TauAgentCandidateHandoff,
+): string {
+  return [
+    '### Tau candidate subagent handoff JSON contract',
+    '',
+    '```json',
+    JSON.stringify(handoff, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function renderTauSubagentHandoffValidationJsonBlock(
+  validation: TauSubagentHandoffValidation,
+): string {
+  return [
+    '### Tau subagent handoff validation JSON contract',
+    '',
+    '```json',
+    JSON.stringify(validation, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function buildCandidateSubagentHandoff(expectation: TauSubagentReceiptExpectation): TauAgentCandidateHandoff {
+  return {
+    schema: 'tau.agent_handoff.v1',
+    github: {
+      repo: expectation.target.repo,
+      target: expectation.target.target,
+    },
+    goal: {
+      goal_id: 'goal-tau-chat-hardening',
+      goal_version: 1,
+      goal_hash: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',
+    },
+    previous_subagent: expectation.requiredReceipt.previous_subagent,
+    context: {
+      summary: `Dry-run candidate receipt for ${expectation.nextAgent}; no subagent executed.`,
+      artifacts: expectation.artifactPath ? [expectation.artifactPath] : [],
+    },
+    result: {
+      status: 'NOOP',
+      summary: 'Candidate receipt shape was generated only to validate the next-subagent handoff contract.',
+      evidence: expectation.artifactPath ? [expectation.artifactPath] : ['tau.subagent_receipt_expectation.v1 rendered in chat'],
+    },
+    rationale: 'Tau must prove the receipt contract before dispatching a real subagent.',
+    next_agent: {
+      name: 'human',
+      executor: 'human',
+      reason: 'Stop after dry-run candidate validation; real subagent execution is a later rung.',
+    },
+    required_evidence: ['Human-approved live subagent execution receipt.'],
+    stop_condition: 'Human approves a real subagent execution step or routes to another dry-run harness rung.',
+  }
 }
 
 function validateIntentRoute(intent: TauMemoryIntentResponse): string | null {

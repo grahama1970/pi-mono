@@ -6,6 +6,7 @@ import {
 	normalizeTauChatHandoffOrchestratorIntake,
 	normalizeTauChatHandoffTransportReceipt,
 	normalizeTauCommandLoopProjection,
+	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
 	persistTauSubagentReceiptExpectation,
 } from './tauRoutes'
@@ -386,5 +387,116 @@ describe('normalizeTauSubagentReceiptExpectation', () => {
 				previous_subagent: 'reviewer',
 			},
 		})
+	})
+})
+
+describe('normalizeTauSubagentHandoffValidation', () => {
+	function expectation() {
+		return normalizeTauSubagentReceiptExpectation(
+			normalizeTauChatHandoffOrchestratorIntake(
+				normalizeTauChatHandoffTransportReceipt({
+					schema: 'tau.handoff_github_transport_receipt.v1',
+					ok: true,
+					dryRun: true,
+					applied: false,
+					target: {
+						repo: 'grahama1970/tau',
+						target: 'issue#123',
+					},
+					labels: {
+						add: ['agent-work', 'next:reviewer', 'executor:either'],
+						remove: ['agent-active', 'agent-blocked'],
+					},
+					commandCount: 2,
+					commands: [
+						'gh issue comment 123 --repo grahama1970/tau --body-file -',
+						'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+					],
+					errors: [],
+					sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+				}),
+			),
+		)
+	}
+
+	function candidateHandoff() {
+		return {
+			schema: 'tau.agent_handoff.v1',
+			github: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: {
+				goal_id: 'goal-tau-chat-hardening',
+				goal_version: 1,
+				goal_hash: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',
+			},
+			previous_subagent: 'reviewer',
+			context: {
+				summary: 'Candidate reviewer receipt for Tau dry-run validation.',
+				artifacts: ['/tmp/tau-subagent-receipt-expectations/example.json'],
+			},
+			result: {
+				status: 'NOOP',
+				summary: 'Candidate receipt shape was produced for validation only.',
+				evidence: ['/tmp/tau-subagent-receipt-expectations/example.json'],
+			},
+			rationale: 'This candidate proves receipt shape only, not reviewer execution.',
+			next_agent: {
+				name: 'human',
+				executor: 'human',
+				reason: 'Stop after dry-run candidate validation.',
+			},
+			required_evidence: ['Human decides whether to run a real reviewer subagent.'],
+			stop_condition: 'Human approves a real subagent execution step.',
+		}
+	}
+
+	it('validates a candidate next-subagent handoff against the expectation', () => {
+		const receipt = normalizeTauSubagentHandoffValidation({
+			expectation: expectation(),
+			handoff: candidateHandoff(),
+		})
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.subagent_handoff_validation.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			executed: false,
+			candidateOnly: true,
+			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			previousSubagent: 'reviewer',
+			nextAgent: 'human',
+			resultStatus: 'NOOP',
+			resultEvidenceCount: 1,
+		})
+		expect(receipt.checks).toContain('previous_subagent_match')
+		expect(receipt.claims).toMatchObject({
+			does_not_prove: [
+				'The next subagent actually executed.',
+				'The candidate receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		})
+	})
+
+	it('fails closed when candidate handoff does not match the expectation', () => {
+		expect(() =>
+			normalizeTauSubagentHandoffValidation({
+				expectation: expectation(),
+				handoff: {
+					...candidateHandoff(),
+					previous_subagent: 'coder',
+				},
+			}),
+		).toThrow('previous_subagent does not match expectation')
+
+		expect(() =>
+			normalizeTauSubagentHandoffValidation({
+				expectation: expectation(),
+				handoff: {
+					...candidateHandoff(),
+					result: { status: 'NOOP', summary: 'No evidence.', evidence: [] },
+				},
+			}),
+		).toThrow('missing result.evidence')
 	})
 })

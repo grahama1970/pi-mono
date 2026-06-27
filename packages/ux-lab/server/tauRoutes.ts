@@ -377,6 +377,117 @@ export async function persistTauSubagentReceiptExpectation(
 	return persisted
 }
 
+export function normalizeTauSubagentHandoffValidation(payload: unknown): JsonRecord {
+	const record = asRecord(payload)
+	if (!record) throw new Error('Tau subagent handoff validation requires a JSON object')
+	const expectation = asRecord(record.expectation)
+	const handoff = asRecord(record.handoff)
+	if (!expectation) throw new Error('Tau subagent handoff validation missing expectation')
+	if (!handoff) throw new Error('Tau subagent handoff validation missing handoff')
+	if (expectation.schema !== 'tau.subagent_receipt_expectation.v1') {
+		throw new Error('unexpected Tau subagent receipt expectation schema')
+	}
+	if (expectation.ok !== true) throw new Error('Tau subagent receipt expectation is not ok')
+	if (expectation.dryRun !== true || expectation.applied !== false) {
+		throw new Error('Tau subagent receipt expectation must be dryRun=true and applied=false')
+	}
+	if (handoff.schema !== 'tau.agent_handoff.v1') throw new Error('unexpected Tau agent handoff schema')
+
+	const expectedTarget = asRecord(expectation.target)
+	const handoffGithub = asRecord(handoff.github)
+	const expectedRepo = asString(expectedTarget?.repo)
+	const expectedTargetValue = asString(expectedTarget?.target)
+	if (!expectedRepo || !expectedTargetValue) throw new Error('Tau expectation target is missing')
+	if (asString(handoffGithub?.repo) !== expectedRepo) {
+		throw new Error('Tau subagent handoff repo does not match expectation')
+	}
+	if (asString(handoffGithub?.target) !== expectedTargetValue) {
+		throw new Error('Tau subagent handoff target does not match expectation')
+	}
+
+	const requiredReceipt = asRecord(expectation.requiredReceipt)
+	const expectedPrevious = asString(requiredReceipt?.previous_subagent)
+	if (!expectedPrevious) throw new Error('Tau expectation missing required previous_subagent')
+	if (asString(handoff.previous_subagent) !== expectedPrevious) {
+		throw new Error('Tau subagent handoff previous_subagent does not match expectation')
+	}
+
+	const context = asRecord(handoff.context)
+	const result = asRecord(handoff.result)
+	const goal = asRecord(handoff.goal)
+	const nextAgent = asRecord(handoff.next_agent)
+	const requiredEvidence = stringArray(handoff.required_evidence)
+	const resultEvidence = stringArray(result?.evidence)
+	const fields = stringArray(requiredReceipt?.fields)
+	const missingFields: string[] = []
+	const requireField = (field: string, ok: boolean) => {
+		if (fields.includes(field) && !ok) missingFields.push(field)
+	}
+	requireField('github.repo', Boolean(asString(handoffGithub?.repo)))
+	requireField('github.target', Boolean(asString(handoffGithub?.target)))
+	requireField('goal.goal_id', Boolean(asString(goal?.goal_id)))
+	requireField('goal.goal_version', typeof goal?.goal_version === 'number' && Number.isInteger(goal.goal_version))
+	requireField('goal.goal_hash', Boolean(asString(goal?.goal_hash)))
+	requireField('context.summary', Boolean(asString(context?.summary)))
+	requireField('context.artifacts', Array.isArray(context?.artifacts))
+	requireField('result.status', Boolean(asString(result?.status)))
+	requireField('result.summary', Boolean(asString(result?.summary)))
+	requireField('result.evidence', Array.isArray(result?.evidence))
+	requireField('rationale', Boolean(asString(handoff.rationale)))
+	requireField('next_agent.name', Boolean(asString(nextAgent?.name)))
+	requireField('next_agent.reason', Boolean(asString(nextAgent?.reason)))
+	requireField('required_evidence', Array.isArray(handoff.required_evidence))
+	requireField('stop_condition', Boolean(asString(handoff.stop_condition)))
+	if (missingFields.length) {
+		throw new Error(`Tau subagent handoff missing required fields: ${missingFields.join(', ')}`)
+	}
+	if (requiredReceipt?.next_agent_required === true && !asString(nextAgent?.name)) {
+		throw new Error('Tau subagent handoff missing next_agent.name')
+	}
+	if (requiredReceipt?.evidence_required === true && resultEvidence.length < 1) {
+		throw new Error('Tau subagent handoff missing result.evidence')
+	}
+
+	return {
+		schema: 'tau.subagent_handoff_validation.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		executed: false,
+		candidateOnly: true,
+		target: {
+			repo: expectedRepo,
+			target: expectedTargetValue,
+		},
+		previousSubagent: expectedPrevious,
+		nextAgent: asString(nextAgent?.name),
+		resultStatus: asString(result?.status),
+		resultEvidenceCount: resultEvidence.length,
+		requiredEvidenceCount: requiredEvidence.length,
+		expectationArtifactPath: asString(expectation.artifactPath),
+		checks: [
+			'expectation_schema',
+			'handoff_schema',
+			'target_match',
+			'previous_subagent_match',
+			'required_fields',
+			'next_agent_present',
+			'evidence_present',
+		],
+		claims: {
+			proves: [
+				'Tau can validate a candidate next-subagent tau.agent_handoff.v1 against the persisted receipt expectation.',
+				'Tau refuses to advance the loop unless the candidate receipt includes required routing and evidence fields.',
+			],
+			does_not_prove: [
+				'The next subagent actually executed.',
+				'The candidate receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		},
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -427,6 +538,19 @@ export function registerTauRoutes(app: Express): void {
 			res.status(400).json({
 				ok: false,
 				error: 'tau_subagent_receipt_expectation_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/subagent-receipt/validate', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauSubagentHandoffValidation(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_subagent_handoff_validation_invalid',
 				detail: error instanceof Error ? error.message : String(error),
 			})
 		}

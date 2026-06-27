@@ -95,6 +95,9 @@ async function runScenario(scenario) {
 		subagentReceiptExpectationNextAgent: proof?.subagentReceiptExpectation?.nextAgent ?? null,
 		subagentReceiptExpectationArtifactPath: proof?.subagentReceiptExpectation?.artifactPath ?? null,
 		subagentReceiptExpectationArtifactReadable: persistedExpectation.ok,
+		candidateSubagentPrevious: proof?.candidateSubagentHandoff?.previous_subagent ?? null,
+		subagentHandoffValidationSchema: proof?.subagentHandoffValidation?.schema ?? null,
+		subagentHandoffValidationCandidateOnly: proof?.subagentHandoffValidation?.candidateOnly ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -165,6 +168,21 @@ function validateScenarioProof(proof, expected) {
 		assertions.subagent_receipt_expectation_artifact_path_present =
 			typeof proof.subagentReceiptExpectation?.artifactPath === "string"
 			&& proof.subagentReceiptExpectation.artifactPath.includes("/tau-subagent-receipt-expectations/");
+		assertions.candidate_subagent_handoff_schema =
+			proof.candidateSubagentHandoff?.schema === "tau.agent_handoff.v1";
+		assertions.candidate_subagent_handoff_previous_matches_expectation =
+			proof.candidateSubagentHandoff?.previous_subagent
+			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
+		assertions.candidate_subagent_handoff_noop =
+			proof.candidateSubagentHandoff?.result?.status === "NOOP";
+		assertions.subagent_handoff_validation_schema =
+			proof.subagentHandoffValidation?.schema === "tau.subagent_handoff_validation.v1";
+		assertions.subagent_handoff_validation_candidate_only =
+			proof.subagentHandoffValidation?.executed === false
+			&& proof.subagentHandoffValidation?.candidateOnly === true;
+		assertions.subagent_handoff_validation_previous_matches =
+			proof.subagentHandoffValidation?.previousSubagent
+			=== proof.subagentReceiptExpectation?.requiredReceipt?.previous_subagent;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -226,6 +244,7 @@ async function main() {
 				"Successful handoff route proofs extract the rendered tau.handoff_orchestrator_intake.v1 JSON.",
 				"Successful handoff route proofs extract the rendered tau.subagent_receipt_expectation.v1 JSON.",
 				"Successful handoff route proofs read the persisted tau.subagent_receipt_expectation.v1 artifact from disk.",
+				"Successful handoff route proofs validate a candidate next-subagent tau.agent_handoff.v1 without executing that subagent.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

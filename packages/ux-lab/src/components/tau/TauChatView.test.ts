@@ -123,6 +123,40 @@ function makeAdapter(
 			does_not_prove: ["The next subagent actually executed.", "The expected receipt was posted to GitHub."],
 		},
 	}),
+	subagentHandoffValidator: ConstructorParameters<typeof TauReceiptAdapter>[5] = async ({ expectation, handoff }) => ({
+		schema: "tau.subagent_handoff_validation.v1",
+		ok: true,
+		dryRun: true,
+		applied: false,
+		executed: false,
+		candidateOnly: true,
+		target: expectation.target,
+		previousSubagent: handoff.previous_subagent,
+		nextAgent: handoff.next_agent.name,
+		resultStatus: handoff.result.status,
+		resultEvidenceCount: handoff.result.evidence.length,
+		requiredEvidenceCount: handoff.required_evidence.length,
+		expectationArtifactPath: expectation.artifactPath,
+		checks: [
+			"expectation_schema",
+			"handoff_schema",
+			"target_match",
+			"previous_subagent_match",
+			"required_fields",
+			"next_agent_present",
+			"evidence_present",
+		],
+		claims: {
+			proves: [
+				"Tau can validate a candidate next-subagent tau.agent_handoff.v1 against the persisted receipt expectation.",
+			],
+			does_not_prove: [
+				"The next subagent actually executed.",
+				"The candidate receipt was posted to GitHub.",
+				"Live GitHub mutation.",
+			],
+		},
+	}),
 ) {
 	const calls: MemoryCall[] = [];
 	const adapter = new TauReceiptAdapter(
@@ -136,6 +170,7 @@ function makeAdapter(
 		transportValidator,
 		orchestratorIntake,
 		subagentReceiptExpectation,
+		subagentHandoffValidator,
 	);
 	return { adapter, calls };
 }
@@ -506,6 +541,14 @@ describe("TauReceiptAdapter Memory routing", () => {
 		);
 		expect(message.content).toContain('"previous_subagent": "reviewer"');
 		expect(message.content).toContain('"next_agent_required": true');
+		expect(message.content).toContain("### Tau candidate subagent handoff JSON contract");
+		expect(message.content).toContain("Dry-run candidate receipt for reviewer; no subagent executed.");
+		expect(message.content).toContain('"previous_subagent": "reviewer"');
+		expect(message.content).toContain('"name": "human"');
+		expect(message.content).toContain("### Tau subagent handoff validation JSON contract");
+		expect(message.content).toContain('"schema": "tau.subagent_handoff_validation.v1"');
+		expect(message.content).toContain('"executed": false');
+		expect(message.content).toContain('"candidateOnly": true');
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(
@@ -568,6 +611,28 @@ describe("TauReceiptAdapter Memory routing", () => {
 				previous_subagent: "reviewer",
 				next_agent_required: true,
 			},
+		});
+		expect(message.metadata?.tauCandidateSubagentHandoff).toMatchObject({
+			schema: "tau.agent_handoff.v1",
+			previous_subagent: "reviewer",
+			result: {
+				status: "NOOP",
+			},
+			next_agent: {
+				name: "human",
+				executor: "human",
+			},
+		});
+		expect(message.metadata?.tauSubagentHandoffValidation).toMatchObject({
+			schema: "tau.subagent_handoff_validation.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			executed: false,
+			candidateOnly: true,
+			previousSubagent: "reviewer",
+			nextAgent: "human",
+			resultStatus: "NOOP",
 		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({
 			summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
@@ -718,6 +783,52 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.metadata?.tauSubagentReceiptExpectation).toMatchObject({
 			ok: false,
 			error: "receipt expectation refused next:reviewer route",
+		});
+	});
+
+	it("fails closed when the candidate subagent handoff validator refuses the receipt", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "COMPLIANCE",
+				confidence: 0.95,
+				response_mode: "evidence_case",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+				recall_profile: "exact_control_lookup",
+				k: 12,
+			},
+			{ "/recall": { found: true, confidence: 12.4, items: [{ _key: "ctrl__CWE-287" }] } },
+			COMMAND_LOOP_PROJECTION,
+			undefined,
+			undefined,
+			undefined,
+			async () => {
+				throw new Error("candidate receipt missing required next_agent");
+			},
+		);
+
+		const { message } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "How does Tau handle a CWE-287 SPARTA evidence case?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/recall"]);
+		expect(message.content).toContain(
+			"Tau stopped fail-closed while validating the GitHub transport or orchestrator intake receipt.",
+		);
+		expect(message.content).toContain("candidate receipt missing required next_agent");
+		expect(message.content).toContain(
+			"| GitHub/subagent handoff | not emitted because the transport/intake receipt was not server-accepted |",
+		);
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.content).not.toContain("### Tau subagent handoff validation JSON contract");
+		expect(message.metadata?.memoryBacked).toBe(false);
+		expect(message.metadata?.tauCandidateSubagentHandoff).toMatchObject({
+			schema: "tau.agent_handoff.v1",
+			previous_subagent: "reviewer",
+		});
+		expect(message.metadata?.tauSubagentHandoffValidation).toMatchObject({
+			ok: false,
+			error: "candidate receipt missing required next_agent",
 		});
 	});
 
