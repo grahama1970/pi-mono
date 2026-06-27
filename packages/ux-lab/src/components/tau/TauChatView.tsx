@@ -40,6 +40,7 @@ import {
   renderTauHandoffGithubTransportReceiptJsonBlock,
   summarizeTauAgentHandoff,
   summarizeTauHandoffGithubProjection,
+  type TauHandoffGithubTransportReceipt,
   validateTauAgentHandoff,
 } from './tauAgentHandoff'
 import {
@@ -189,6 +190,28 @@ const sampleMessages: ChatMessage[] = [
 ]
 
 type TauMemoryTransport = <T = unknown>(path: string, body: Record<string, unknown>, signal?: AbortSignal) => Promise<T>
+type TauHandoffTransportValidator = (
+  receipt: TauHandoffGithubTransportReceipt,
+  signal?: AbortSignal,
+) => Promise<TauHandoffGithubTransportValidation>
+
+type TauHandoffGithubTransportValidation = {
+  schema: 'tau.handoff_github_transport_validation.v1'
+  ok: boolean
+  dryRun: true
+  applied: false
+  target?: {
+    repo: string
+    target: string
+  }
+  labels?: {
+    add: string[]
+    remove: string[]
+  }
+  commandCount: number
+  commands: string[]
+  checks: string[]
+}
 
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
@@ -197,6 +220,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
   constructor(
     private readonly memoryTransport: TauMemoryTransport = postMemoryProduct,
     private readonly commandLoopGithubProjection?: TauCommandLoopGithubProjectionReceipt,
+    private readonly handoffTransportValidator: TauHandoffTransportValidator = postTauHandoffTransportValidation,
   ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
@@ -464,6 +488,59 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const handoffValidation = validateTauAgentHandoff(handoff)
     const handoffGithubProjection = deriveTauHandoffGithubProjection(handoff)
     const handoffGithubTransportReceipt = deriveTauHandoffGithubTransportReceipt(handoffGithubProjection)
+    let handoffGithubTransportValidation: TauHandoffGithubTransportValidation | null = null
+    try {
+      handoffGithubTransportValidation = await this.handoffTransportValidator(
+        handoffGithubTransportReceipt,
+        input.abortSignal,
+      )
+      if (!handoffGithubTransportValidation.ok) {
+        throw new Error('Tau handoff transport validator returned ok=false')
+      }
+    } catch (error) {
+      const validationError = error instanceof Error ? error.message : String(error)
+      const message = makeFinalMessage({
+        branch: route.branch,
+        content: [
+          'Tau stopped fail-closed while validating the GitHub transport receipt.',
+          '',
+          `Error: ${validationError}`,
+          '',
+          '| Contract field | Current experiment state |',
+          '| --- | --- |',
+          '| Memory-first routing | completed before transport validation |',
+          '| GitHub/subagent handoff | not emitted because the transport receipt was not server-validated |',
+          '| Mutation applied | false |',
+          '| Production Sparta Chat | not claimed from this preview |',
+          '',
+          'This is fail-closed: Tau is not publishing a handoff that the server transport boundary refused.',
+        ].join('\n'),
+        reasoningSteps: streamingStepsToThinkingTrace(steps),
+        metadata: {
+          source: 'tau-receipt-adapter',
+          memoryBacked: false,
+          memoryIntent: summarizeMemoryIntent(intent),
+          memoryProduct: memoryProductSummary,
+          tauStageTrace,
+          tauCurrentStage: currentStage,
+          tauAgentHandoffValidation: {
+            ok: false,
+            errors: ['transport_receipt_validation_failed'],
+            nextAgent: handoffValidation.nextAgent ?? null,
+          },
+          tauAgentHandoffGithubProjection: handoffGithubProjection,
+          tauAgentHandoffGithubTransportReceipt: handoffGithubTransportReceipt,
+          tauAgentHandoffGithubTransportValidation: {
+            ok: false,
+            error: validationError,
+          },
+          tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
+          tauReceiptPaths,
+        },
+      })
+      yield makeFinalStep(message, route.branch)
+      return message
+    }
 
     const content = [
       route.finalLead,
@@ -497,6 +574,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauHandoffGithubTransportReceiptJsonBlock(handoffGithubTransportReceipt),
       '',
+      renderTauHandoffGithubTransportValidationJsonBlock(handoffGithubTransportValidation),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -520,6 +599,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoffValidation: handoffValidation,
         tauAgentHandoffGithubProjection: handoffGithubProjection,
         tauAgentHandoffGithubTransportReceipt: handoffGithubTransportReceipt,
+        tauAgentHandoffGithubTransportValidation: handoffGithubTransportValidation,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,
@@ -577,6 +657,49 @@ async function postMemoryProduct<T = unknown>(path: string, body: Record<string,
     throw new Error(`Memory ${path} failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
   }
   return parsed as T
+}
+
+async function postTauHandoffTransportValidation(
+  receipt: TauHandoffGithubTransportReceipt,
+  signal?: AbortSignal,
+): Promise<TauHandoffGithubTransportValidation> {
+  const response = await fetch(apiUrl('/tau/handoff/transport/validate'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(receipt),
+    signal,
+  })
+  const text = await response.text()
+  let parsed: unknown = {}
+  try {
+    parsed = text ? JSON.parse(text) : {}
+  } catch {
+    parsed = { raw: text }
+  }
+  if (!response.ok) {
+    const detail = typeof parsed === 'object' && parsed && 'detail' in parsed ? (parsed as { detail?: unknown }).detail : text
+    throw new Error(`Tau transport validator failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
+  }
+  const receiptPayload =
+    typeof parsed === 'object' && parsed && 'receipt' in parsed
+      ? (parsed as { receipt?: unknown }).receipt
+      : null
+  if (!receiptPayload || typeof receiptPayload !== 'object') {
+    throw new Error('Tau transport validator returned no receipt')
+  }
+  return receiptPayload as TauHandoffGithubTransportValidation
+}
+
+function renderTauHandoffGithubTransportValidationJsonBlock(
+  validation: TauHandoffGithubTransportValidation,
+): string {
+  return [
+    '### Tau handoff GitHub transport server validation JSON contract',
+    '',
+    '```json',
+    JSON.stringify(validation, null, 2),
+    '```',
+  ].join('\n')
 }
 
 function validateIntentRoute(intent: TauMemoryIntentResponse): string | null {

@@ -79,6 +79,7 @@ async function runScenario(scenario) {
 		handoffStatus: proof?.handoff?.result?.status ?? null,
 		githubProjectionLabels: proof?.githubProjection?.labels ?? null,
 		githubTransportCommandCount: proof?.githubTransportReceipt?.commandCount ?? null,
+		githubTransportValidationRenderedSchema: proof?.githubTransportValidationRendered?.schema ?? null,
 		githubTransportValidationSchema: proof?.githubTransportValidation?.body?.receipt?.schema ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
@@ -123,6 +124,11 @@ function validateScenarioProof(proof, expected) {
 			Array.isArray(proof.githubTransportReceipt?.commands)
 			&& proof.githubTransportReceipt.commands.length === proof.githubTransportReceipt.commandCount
 			&& proof.githubTransportReceipt.commandCount > 0;
+		assertions.github_transport_validation_rendered_schema =
+			proof.githubTransportValidationRendered?.schema === "tau.handoff_github_transport_validation.v1";
+		assertions.github_transport_validation_rendered_dry_run =
+			proof.githubTransportValidationRendered?.dryRun === true
+			&& proof.githubTransportValidationRendered?.applied === false;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -168,6 +174,7 @@ async function main() {
 				"Tau chat browser route proofs can be run as one auditable suite.",
 				"Successful route proofs extract or check tau.agent_handoff.v1 JSON according to each route boundary.",
 				"Successful handoff route proofs POST the rendered dry-run GitHub transport receipt to the Tau server validator.",
+				"Successful handoff route proofs extract the rendered tau.handoff_github_transport_validation.v1 JSON.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

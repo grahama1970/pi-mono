@@ -470,6 +470,15 @@ function extractTauGithubTransportReceipt(rawText) {
 		: { ok: false, error: "github transport receipt JSON object not found", json: null };
 }
 
+function extractTauGithubTransportValidation(rawText) {
+	const validation = renderedJsonObjects(rawText).find(
+		(item) => item?.schema === "tau.handoff_github_transport_validation.v1",
+	);
+	return validation
+		? { ok: true, error: null, json: validation }
+		: { ok: false, error: "github transport validation JSON object not found", json: null };
+}
+
 async function validateTauGithubTransportReceipt(page, receipt) {
 	if (!receipt) return { ok: false, status: null, body: null, error: "github transport receipt is missing" };
 	return page.evaluate(async (payload) => {
@@ -506,12 +515,14 @@ function handoffProofAssertions(
 	handoffExtraction,
 	projectionExtraction,
 	transportReceiptExtraction,
+	renderedTransportValidationExtraction,
 	transportValidation,
 	expectedNextAgent,
 ) {
 	const handoff = handoffExtraction.json;
 	const projection = projectionExtraction.json;
 	const transportReceipt = transportReceiptExtraction.json;
+	const renderedTransportValidation = renderedTransportValidationExtraction.json;
 	const validationReceipt = transportValidation?.body?.receipt;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
@@ -552,6 +563,11 @@ function handoffProofAssertions(
 			Array.isArray(transportReceipt?.labels?.add)
 			&& Array.isArray(projection?.labels?.add)
 			&& projection.labels.add.every((label) => transportReceipt.labels.add.includes(label)),
+		handoff_github_transport_validation_rendered: renderedTransportValidationExtraction.ok,
+		handoff_github_transport_validation_rendered_schema:
+			renderedTransportValidation?.schema === "tau.handoff_github_transport_validation.v1",
+		handoff_github_transport_validation_rendered_dry_run:
+			renderedTransportValidation?.dryRun === true && renderedTransportValidation?.applied === false,
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
@@ -688,6 +704,7 @@ async function main() {
 		const handoffExtraction = extractTauHandoff(rawChatText);
 		const githubProjectionExtraction = extractTauGithubProjection(rawChatText);
 		const githubTransportReceiptExtraction = extractTauGithubTransportReceipt(rawChatText);
+		const githubTransportValidationExtraction = extractTauGithubTransportValidation(rawChatText);
 		const githubTransportValidation =
 			scenario.waitForHandoff === false
 				? { ok: false, status: null, body: null, error: "handoff not expected" }
@@ -699,6 +716,7 @@ async function main() {
 						handoffExtraction,
 						githubProjectionExtraction,
 						githubTransportReceiptExtraction,
+						githubTransportValidationExtraction,
 						githubTransportValidation,
 						scenario.expectedNextAgent,
 					);
@@ -722,10 +740,14 @@ async function main() {
 			handoff: handoffExtraction.ok ? handoffExtraction.json : null,
 			githubProjection: githubProjectionExtraction.ok ? githubProjectionExtraction.json : null,
 			githubTransportReceipt: githubTransportReceiptExtraction.ok ? githubTransportReceiptExtraction.json : null,
+			githubTransportValidationRendered: githubTransportValidationExtraction.ok
+				? githubTransportValidationExtraction.json
+				: null,
 			githubTransportValidation,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
 			githubTransportReceiptExtractionError: githubTransportReceiptExtraction.error,
+			githubTransportValidationExtractionError: githubTransportValidationExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,
