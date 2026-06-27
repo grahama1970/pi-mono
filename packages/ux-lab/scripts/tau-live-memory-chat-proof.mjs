@@ -54,6 +54,48 @@ const scenarios = {
 			};
 		},
 	},
+	clarify: {
+		prompt: "How do I secure it?",
+		waitFor: "Tau routed this turn to Memory clarify.",
+		expectedNextAgent: "human",
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "CLARIFY",
+				confidence: 0.58,
+				response_mode: "clarify",
+				content_type: "clarification",
+				entities: [],
+				frameworks: [],
+				recall_profile: null,
+			},
+			"/api/memory/clarify": {
+				schema: "memory.clarify.v1",
+				needs_clarification: true,
+				questions: ["Which system, asset, or evidence case should Tau secure?"],
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				clarify_lead_visible: chatText.includes("Tau routed this turn to Memory clarify."),
+				memory_action_visible: /action\s+CLARIFY/.test(chatText),
+				clarify_product_visible: /endpoint\s+\/clarify/.test(chatText),
+				clarify_question_visible: chatText.includes("Which system, asset, or evidence case should Tau secure?"),
+				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
+				human_next_agent_visible: /next agent\s+human/.test(chatText) || chatText.includes('"name": "human"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				clarify_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/clarify") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 	answer: {
 		prompt: "What is the current project status?",
 		waitFor: "Tau routed this turn to Memory answer.",

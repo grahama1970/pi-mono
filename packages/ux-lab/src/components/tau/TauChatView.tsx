@@ -641,6 +641,7 @@ function summarizeMemoryIntent(intent: TauMemoryIntentResponse): Record<string, 
 function summarizeMemoryProduct(product: unknown): Record<string, unknown> | null {
   if (!product || typeof product !== 'object') return null
   const record = product as Record<string, unknown>
+  const questions = Array.isArray(record.questions) ? record.questions.filter((item): item is string => typeof item === 'string' && item.trim().length > 0) : []
   return {
     schema: record.schema ?? null,
     found: record.found ?? null,
@@ -648,6 +649,8 @@ function summarizeMemoryProduct(product: unknown): Record<string, unknown> | nul
     should_deflect: record.should_deflect ?? null,
     confidence: record.confidence ?? null,
     item_count: Array.isArray(record.items) ? record.items.length : null,
+    question_count: questions.length,
+    first_question: questions[0] ?? null,
   }
 }
 
@@ -710,6 +713,8 @@ function productSummaryMarkdown(route: TauRoute, product: unknown): string {
     `| can answer | ${String(summary.can_answer ?? 'not reported')} |`,
     `| should deflect | ${String(summary.should_deflect ?? 'not reported')} |`,
     `| item count | ${String(summary.item_count ?? 'not reported')} |`,
+    `| question count | ${String(summary.question_count ?? 'not reported')} |`,
+    `| first question | ${String(summary.first_question ?? 'not reported')} |`,
   ].join('\n')
 }
 

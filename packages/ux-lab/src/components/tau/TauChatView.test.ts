@@ -63,6 +63,8 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
 		expect(steps.some((step) => step.id === "clarifying" && step.status === "completed")).toBe(true);
 		expect(message.content).toContain("Tau routed this turn to Memory clarify.");
+		expect(message.content).toContain("| question count | 1 |");
+		expect(message.content).toContain("| first question | Which system? |");
 		expect(message.content).toContain("| Current receipt stage | Clarifying... (PASS) |");
 		expect(message.content).toContain("| next agent | human |");
 		expect(message.content).toContain("### Tau handoff JSON contract");
