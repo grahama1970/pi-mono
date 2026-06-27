@@ -90,7 +90,42 @@ const RECEIPTS = [
     value: '12 / 12',
     detail: 'Earlier same-day full non-mocked loop stress pass.',
   },
+  {
+    label: 'GitHub projection',
+    path: '/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json',
+    value: '2 commands',
+    detail: 'Tau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.',
+  },
 ] as const
+
+const TAU_COMMAND_LOOP_GITHUB_PROJECTION = {
+  schema: 'tau.command_loop_explicit_ticket_source_summary.v1',
+  summaryPath: '/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json',
+  sourceLoopReceiptPath:
+    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-receipt.json',
+  reconciliationReceiptPath:
+    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-artifacts/command-loop-step-001/goal-guardian-reconciliation-receipt.json',
+  actualReconciliationStepReceiptPath:
+    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-step-001.receipt.json',
+  ticketSourcePath: '/tmp/tau-command-loop-explicit-ticket-source-proof/ticket-source.json',
+  transportReceiptPath:
+    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop-reconciliation-github-transport.json',
+  dryRun: true,
+  applied: false,
+  mocked: false,
+  live: true,
+  commandCount: 2,
+  reconciliationCounts: {
+    keep: 1,
+    close: 0,
+    migrate: 3,
+    regenerate: 0,
+  },
+  commands: [
+    'gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -',
+    'gh issue edit 123 --repo grahama1970/chatgpt-lab --add-label agent-work,next:human,executor:human,goal-change --remove-label next:goal-guardian,agent-active',
+  ],
+} as const
 
 const STAGES = [
   { id: 'intent', label: 'Getting Intent', icon: Bot },
@@ -429,6 +464,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       summarizeTauHandoffGithubProjection(handoffGithubProjection),
       '',
+      summarizeTauCommandLoopGithubProjection(TAU_COMMAND_LOOP_GITHUB_PROJECTION),
+      '',
       renderTauHandoffJsonBlock(handoff),
       '',
       'Remaining production work is replacing this UX Lab adapter with the final Sparta Chat engine while keeping the same receipt and proof-boundary contract.',
@@ -449,6 +486,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoff: handoff,
         tauAgentHandoffValidation: handoffValidation,
         tauAgentHandoffGithubProjection: handoffGithubProjection,
+        tauCommandLoopGithubProjection: TAU_COMMAND_LOOP_GITHUB_PROJECTION,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths: RECEIPTS.map((receipt) => receipt.path),
         personaVoiceStatus: 'REQUESTED_NO_PERSONAPLEX_RECEIPT',
@@ -661,6 +699,34 @@ function renderTauHandoffJsonBlock(handoff: unknown): string {
     '',
     '```json',
     JSON.stringify(handoff, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function summarizeTauCommandLoopGithubProjection(
+  projection: typeof TAU_COMMAND_LOOP_GITHUB_PROJECTION,
+): string {
+  const counts = projection.reconciliationCounts
+  return [
+    '### Tau command-loop GitHub projection receipt',
+    '',
+    '| Receipt field | Value |',
+    '| --- | --- |',
+    `| summary | \`${projection.summaryPath}\` |`,
+    `| source loop receipt | \`${projection.sourceLoopReceiptPath}\` |`,
+    `| reconciliation receipt | \`${projection.reconciliationReceiptPath}\` |`,
+    `| actual reconciliation step receipt | \`${projection.actualReconciliationStepReceiptPath}\` |`,
+    `| ticket source | \`${projection.ticketSourcePath}\` |`,
+    `| transport receipt | \`${projection.transportReceiptPath}\` |`,
+    `| mocked | ${String(projection.mocked)} |`,
+    `| live | ${String(projection.live)} |`,
+    `| dry run | ${String(projection.dryRun)} |`,
+    `| mutation applied | ${String(projection.applied)} |`,
+    `| dry-run commands | ${projection.commandCount} |`,
+    `| reconciliation counts | keep=${counts.keep}, close=${counts.close}, migrate=${counts.migrate}, regenerate=${counts.regenerate} |`,
+    '',
+    '```text',
+    ...projection.commands,
     '```',
   ].join('\n')
 }

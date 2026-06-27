@@ -1,6 +1,6 @@
 # Project Knowledge: pi-mono
 
-**Last updated:** 2026-04-29 12:27 by agent
+**Last updated:** 2026-06-27 15:55 by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -12,6 +12,7 @@
 - No-exceptions batch policy: ALL/ANY batch LLM work must follow the `scillm` SKILL.md and `best-practices-skills`; synchronous per-item `httpx` endpoint loops such as `relationship-manifest -> /create-evidence-case enable_llm=True` are forbidden. On 2026-04-27 the violating `create-evidence-case-adjudication` PID 3801357 was killed, the memory agent was notified as `memory_0c888bd7`, the scillm agent was notified as `scillm_d3c672dc`, and `create-qras/runtime/maintenance/batch_evidence_cases.py` was patched to fail closed before constructing a memory endpoint client.
 - SPARTA Explorer Coverage URL QRA lane must not use all `sparta_urls` rows as SPARTA URL-QRA targets. `sparta_urls=6,854` is the broad normalized URL universe; the SPARTA URL-QRA scope follows preflight inventory: distinct `sparta_url_knowledge.url_id` where `topic` or `url` contains `sparta`. As of 2026-04-29 12:58 ET, that scope is 881 URLs, with 881 fetched-text OK, 881 control-mediated QRA covered, 0 direct URL-attributed standalone QRAs, and 0 URL QRA gaps.
 - SPARTA Explorer Coverage State at a Glance reached all-pass source lanes on 2026-04-29 13:30 ET after correcting false scanner scope: Source/Embedding no longer counts all generic datalake chunks as SPARTA vector targets, Source Text/QRA follows create-qras terminal outcome semantics, and live API reports source text/QRA `pass/covered` plus source embedding `pass/reconciled`.
+- 2026-06-27 Tau UX Lab #tau now exposes the Tau command-loop GitHub projection receipt as a visible receipt card and adapter metadata. Source proof is /tmp/tau-command-loop-explicit-ticket-source-proof/summary.json with dry-run GitHub command count 2, mutation applied false, and explicit ticket source /tmp/tau-command-loop-explicit-ticket-source-proof/ticket-source.json. UI marker: /tmp/codex-ui-verification/pi-mono/tau-command-loop-github-projection-ui/20260627T195418Z.meta.json.
 
 ## Recent Decisions
 

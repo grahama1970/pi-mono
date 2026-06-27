@@ -1,0 +1,157 @@
+import { describe, expect, it } from "vitest";
+import {
+	buildTauAgentHandoff,
+	buildTauRouteHandoff,
+	deriveTauHandoffGithubProjection,
+	summarizeTauAgentHandoff,
+	summarizeTauHandoffGithubProjection,
+	TAU_AGENT_HANDOFF_SCHEMA,
+	validateTauAgentHandoff,
+} from "./tauAgentHandoff";
+
+describe("tauAgentHandoff", () => {
+	it("builds the minimal tau.agent_handoff.v1 envelope", () => {
+		const handoff = buildTauAgentHandoff({
+			contextSummary: "Tau Chat handled one Memory-backed turn.",
+			resultStatus: "NEEDS_REVIEW",
+			resultSummary: "Memory intent and recall completed.",
+			rationale: "A reviewer should inspect the Memory packet before promotion.",
+			nextAgentName: "reviewer",
+			nextAgentReason: "Independent validation is required.",
+			requiredEvidence: ["Reviewer receipt"],
+			stopCondition: "Reviewer posts a schema-valid receipt.",
+		});
+
+		expect(handoff.schema).toBe(TAU_AGENT_HANDOFF_SCHEMA);
+		expect(handoff.github).toEqual({ repo: "grahama1970/tau", target: "new" });
+		expect(handoff.goal.goal_id).toBe("goal-tau-chat-hardening");
+		expect(handoff.previous_subagent).toBe("webgpt-ticket-author");
+		expect(handoff.next_agent.name).toBe("reviewer");
+		expect(validateTauAgentHandoff(handoff)).toEqual({
+			ok: true,
+			errors: [],
+			nextAgent: "reviewer",
+		});
+	});
+
+	it("rejects missing next-agent routing", () => {
+		const handoff = buildTauAgentHandoff({
+			contextSummary: "Missing route.",
+			resultStatus: "BLOCKED",
+			resultSummary: "No route.",
+			rationale: "Route is required.",
+			nextAgentName: "",
+			nextAgentReason: "",
+			requiredEvidence: [],
+			stopCondition: "Tau refuses routing.",
+		});
+
+		const result = validateTauAgentHandoff(handoff);
+
+		expect(result.ok).toBe(false);
+		expect(result.errors).toContain("next_agent.name must be a non-empty string");
+		expect(result.errors).toContain("next_agent.reason must be a non-empty string");
+	});
+
+	it("routes research handoffs to research-auditor without claiming web evidence exists", () => {
+		const handoff = buildTauRouteHandoff({
+			action: "RESEARCH",
+			query: "search latest Chutes pricing",
+			branch: "compliance",
+			memoryProductSummary: null,
+		});
+
+		expect(handoff.result.status).toBe("NEEDS_AGENT");
+		expect(handoff.next_agent.name).toBe("research-auditor");
+		expect(handoff.required_evidence).toContain("Research receipt with sources and retrieval timestamp.");
+		expect(summarizeTauAgentHandoff(handoff)).toContain("| next agent | research-auditor |");
+	});
+
+	it("routes clarify and deflect handoffs to the human lane", () => {
+		const clarify = buildTauRouteHandoff({
+			action: "CLARIFY",
+			query: "secure it",
+			branch: "compliance",
+		});
+		const deflect = buildTauRouteHandoff({
+			action: "NO_MATCH",
+			query: "weather",
+			branch: "compliance",
+		});
+
+		expect(clarify.result.status).toBe("NEEDS_HUMAN");
+		expect(clarify.next_agent).toMatchObject({ name: "human", executor: "human" });
+		expect(deflect.result.status).toBe("NOOP");
+		expect(deflect.next_agent).toMatchObject({ name: "human", executor: "human" });
+	});
+
+	it("derives a non-mutating GitHub comment projection with labels", () => {
+		const handoff = buildTauAgentHandoff({
+			repo: "grahama1970/chatgpt-lab",
+			target: "issue#123",
+			goalHash: "sha256:active-goal",
+			contextSummary: "Tau Chat handled one Memory-backed turn.",
+			resultStatus: "NEEDS_REVIEW",
+			resultSummary: "Memory intent and recall completed.",
+			resultEvidence: ["/api/memory/intent", "/api/memory/recall"],
+			rationale: "A reviewer should inspect the Memory packet before promotion.",
+			nextAgentName: "reviewer",
+			nextAgentExecutor: "either",
+			nextAgentReason: "Independent validation is required.",
+			requiredEvidence: ["Reviewer receipt"],
+			stopCondition: "Reviewer posts a schema-valid receipt.",
+		});
+
+		const projection = deriveTauHandoffGithubProjection(handoff, {
+			activeGoalHash: "sha256:active-goal",
+		});
+
+		expect(projection.ok).toBe(true);
+		expect(projection.target).toEqual({ repo: "grahama1970/chatgpt-lab", target: "issue#123" });
+		expect(projection.labels?.add).toEqual(["agent-work", "next:reviewer", "executor:either"]);
+		expect(projection.labels?.remove).toEqual(["agent-active", "agent-blocked"]);
+		expect(projection.comment?.body).toContain("<!-- tau-agent-handoff:v1 -->");
+		expect(projection.comment?.body).toContain('"schema": "tau.agent_handoff.v1"');
+		expect(summarizeTauHandoffGithubProjection(projection)).toContain("| status | dry-run |");
+	});
+
+	it("refuses projection when active goal hash does not match", () => {
+		const handoff = buildTauAgentHandoff({
+			goalHash: "sha256:stale-goal",
+			contextSummary: "Stale handoff.",
+			resultStatus: "NEEDS_REVIEW",
+			resultSummary: "Goal hash changed.",
+			rationale: "Should fail.",
+			nextAgentName: "reviewer",
+			nextAgentReason: "Review.",
+			requiredEvidence: ["None"],
+			stopCondition: "Refuse stale handoff.",
+		});
+
+		const projection = deriveTauHandoffGithubProjection(handoff, {
+			activeGoalHash: "sha256:active-goal",
+		});
+
+		expect(projection.ok).toBe(false);
+		expect(projection.errors).toContain("agent handoff may not change goal.goal_hash");
+		expect(summarizeTauHandoffGithubProjection(projection)).toContain("| status | refused |");
+	});
+
+	it("refuses projection when next_agent is missing", () => {
+		const handoff = buildTauAgentHandoff({
+			contextSummary: "Missing next agent.",
+			resultStatus: "BLOCKED",
+			resultSummary: "No route.",
+			rationale: "Should fail.",
+			nextAgentName: "",
+			nextAgentReason: "",
+			requiredEvidence: [],
+			stopCondition: "Refuse missing route.",
+		});
+
+		const projection = deriveTauHandoffGithubProjection(handoff);
+
+		expect(projection.ok).toBe(false);
+		expect(projection.errors).toContain("next_agent.name must be a non-empty string");
+	});
+});
