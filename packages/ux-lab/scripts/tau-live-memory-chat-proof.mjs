@@ -479,6 +479,15 @@ function extractTauGithubTransportValidation(rawText) {
 		: { ok: false, error: "github transport validation JSON object not found", json: null };
 }
 
+function extractTauHandoffOrchestratorIntake(rawText) {
+	const intake = renderedJsonObjects(rawText).find(
+		(item) => item?.schema === "tau.handoff_orchestrator_intake.v1",
+	);
+	return intake
+		? { ok: true, error: null, json: intake }
+		: { ok: false, error: "handoff orchestrator intake JSON object not found", json: null };
+}
+
 async function validateTauGithubTransportReceipt(page, receipt) {
 	if (!receipt) return { ok: false, status: null, body: null, error: "github transport receipt is missing" };
 	return page.evaluate(async (payload) => {
@@ -516,6 +525,7 @@ function handoffProofAssertions(
 	projectionExtraction,
 	transportReceiptExtraction,
 	renderedTransportValidationExtraction,
+	orchestratorIntakeExtraction,
 	transportValidation,
 	expectedNextAgent,
 ) {
@@ -523,6 +533,7 @@ function handoffProofAssertions(
 	const projection = projectionExtraction.json;
 	const transportReceipt = transportReceiptExtraction.json;
 	const renderedTransportValidation = renderedTransportValidationExtraction.json;
+	const orchestratorIntake = orchestratorIntakeExtraction.json;
 	const validationReceipt = transportValidation?.body?.receipt;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
@@ -568,6 +579,15 @@ function handoffProofAssertions(
 			renderedTransportValidation?.schema === "tau.handoff_github_transport_validation.v1",
 		handoff_github_transport_validation_rendered_dry_run:
 			renderedTransportValidation?.dryRun === true && renderedTransportValidation?.applied === false,
+		handoff_orchestrator_intake_extracted: orchestratorIntakeExtraction.ok,
+		handoff_orchestrator_intake_schema:
+			orchestratorIntake?.schema === "tau.handoff_orchestrator_intake.v1",
+		handoff_orchestrator_intake_accepted:
+			orchestratorIntake?.ok === true && orchestratorIntake?.accepted === true,
+		handoff_orchestrator_intake_next_agent_matches:
+			typeof handoff?.next_agent?.name === "string" && orchestratorIntake?.nextAgent === handoff.next_agent.name,
+		handoff_orchestrator_intake_dry_run:
+			orchestratorIntake?.dryRun === true && orchestratorIntake?.applied === false,
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
@@ -705,6 +725,7 @@ async function main() {
 		const githubProjectionExtraction = extractTauGithubProjection(rawChatText);
 		const githubTransportReceiptExtraction = extractTauGithubTransportReceipt(rawChatText);
 		const githubTransportValidationExtraction = extractTauGithubTransportValidation(rawChatText);
+		const handoffOrchestratorIntakeExtraction = extractTauHandoffOrchestratorIntake(rawChatText);
 		const githubTransportValidation =
 			scenario.waitForHandoff === false
 				? { ok: false, status: null, body: null, error: "handoff not expected" }
@@ -717,6 +738,7 @@ async function main() {
 						githubProjectionExtraction,
 						githubTransportReceiptExtraction,
 						githubTransportValidationExtraction,
+						handoffOrchestratorIntakeExtraction,
 						githubTransportValidation,
 						scenario.expectedNextAgent,
 					);
@@ -743,11 +765,15 @@ async function main() {
 			githubTransportValidationRendered: githubTransportValidationExtraction.ok
 				? githubTransportValidationExtraction.json
 				: null,
+			handoffOrchestratorIntake: handoffOrchestratorIntakeExtraction.ok
+				? handoffOrchestratorIntakeExtraction.json
+				: null,
 			githubTransportValidation,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
 			githubTransportReceiptExtractionError: githubTransportReceiptExtraction.error,
 			githubTransportValidationExtractionError: githubTransportValidationExtraction.error,
+			handoffOrchestratorIntakeExtractionError: handoffOrchestratorIntakeExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,

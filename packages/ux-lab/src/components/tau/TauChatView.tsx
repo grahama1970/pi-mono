@@ -194,6 +194,10 @@ type TauHandoffTransportValidator = (
   receipt: TauHandoffGithubTransportReceipt,
   signal?: AbortSignal,
 ) => Promise<TauHandoffGithubTransportValidation>
+type TauHandoffOrchestratorIntakePoster = (
+  validation: TauHandoffGithubTransportValidation,
+  signal?: AbortSignal,
+) => Promise<TauHandoffOrchestratorIntake>
 
 type TauHandoffGithubTransportValidation = {
   schema: 'tau.handoff_github_transport_validation.v1'
@@ -213,6 +217,36 @@ type TauHandoffGithubTransportValidation = {
   checks: string[]
 }
 
+type TauHandoffOrchestratorIntake = {
+  schema: 'tau.handoff_orchestrator_intake.v1'
+  ok: boolean
+  dryRun: true
+  applied: false
+  accepted: boolean
+  target: {
+    repo: string
+    target: string
+  }
+  nextAgent: string
+  executor: string
+  labels: {
+    add: string[]
+    remove: string[]
+  }
+  commandCount: number
+  commands: string[]
+  routing: {
+    queue: string
+    next_agent: string
+    executor: string
+    stop_condition: string
+  }
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
@@ -221,6 +255,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     private readonly memoryTransport: TauMemoryTransport = postMemoryProduct,
     private readonly commandLoopGithubProjection?: TauCommandLoopGithubProjectionReceipt,
     private readonly handoffTransportValidator: TauHandoffTransportValidator = postTauHandoffTransportValidation,
+    private readonly handoffOrchestratorIntakePoster: TauHandoffOrchestratorIntakePoster = postTauHandoffOrchestratorIntake,
   ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
@@ -489,6 +524,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const handoffGithubProjection = deriveTauHandoffGithubProjection(handoff)
     const handoffGithubTransportReceipt = deriveTauHandoffGithubTransportReceipt(handoffGithubProjection)
     let handoffGithubTransportValidation: TauHandoffGithubTransportValidation | null = null
+    let handoffOrchestratorIntake: TauHandoffOrchestratorIntake | null = null
     try {
       handoffGithubTransportValidation = await this.handoffTransportValidator(
         handoffGithubTransportReceipt,
@@ -497,19 +533,26 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       if (!handoffGithubTransportValidation.ok) {
         throw new Error('Tau handoff transport validator returned ok=false')
       }
+      handoffOrchestratorIntake = await this.handoffOrchestratorIntakePoster(
+        handoffGithubTransportValidation,
+        input.abortSignal,
+      )
+      if (!handoffOrchestratorIntake.ok || !handoffOrchestratorIntake.accepted) {
+        throw new Error('Tau handoff orchestrator intake returned ok=false')
+      }
     } catch (error) {
       const validationError = error instanceof Error ? error.message : String(error)
       const message = makeFinalMessage({
         branch: route.branch,
         content: [
-          'Tau stopped fail-closed while validating the GitHub transport receipt.',
+          'Tau stopped fail-closed while validating the GitHub transport or orchestrator intake receipt.',
           '',
           `Error: ${validationError}`,
           '',
           '| Contract field | Current experiment state |',
           '| --- | --- |',
           '| Memory-first routing | completed before transport validation |',
-          '| GitHub/subagent handoff | not emitted because the transport receipt was not server-validated |',
+          '| GitHub/subagent handoff | not emitted because the transport/intake receipt was not server-accepted |',
           '| Mutation applied | false |',
           '| Production Sparta Chat | not claimed from this preview |',
           '',
@@ -534,6 +577,9 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
             ok: false,
             error: validationError,
           },
+          tauAgentHandoffOrchestratorIntake: handoffOrchestratorIntake
+            ? handoffOrchestratorIntake
+            : { ok: false, error: validationError },
           tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
           tauReceiptPaths,
         },
@@ -576,6 +622,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauHandoffGithubTransportValidationJsonBlock(handoffGithubTransportValidation),
       '',
+      renderTauHandoffOrchestratorIntakeJsonBlock(handoffOrchestratorIntake),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -600,6 +648,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoffGithubProjection: handoffGithubProjection,
         tauAgentHandoffGithubTransportReceipt: handoffGithubTransportReceipt,
         tauAgentHandoffGithubTransportValidation: handoffGithubTransportValidation,
+        tauAgentHandoffOrchestratorIntake: handoffOrchestratorIntake,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,
@@ -690,6 +739,37 @@ async function postTauHandoffTransportValidation(
   return receiptPayload as TauHandoffGithubTransportValidation
 }
 
+async function postTauHandoffOrchestratorIntake(
+  validation: TauHandoffGithubTransportValidation,
+  signal?: AbortSignal,
+): Promise<TauHandoffOrchestratorIntake> {
+  const response = await fetch(apiUrl('/tau/handoff/orchestrator/intake'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(validation),
+    signal,
+  })
+  const text = await response.text()
+  let parsed: unknown = {}
+  try {
+    parsed = text ? JSON.parse(text) : {}
+  } catch {
+    parsed = { raw: text }
+  }
+  if (!response.ok) {
+    const detail = typeof parsed === 'object' && parsed && 'detail' in parsed ? (parsed as { detail?: unknown }).detail : text
+    throw new Error(`Tau orchestrator intake failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
+  }
+  const receiptPayload =
+    typeof parsed === 'object' && parsed && 'receipt' in parsed
+      ? (parsed as { receipt?: unknown }).receipt
+      : null
+  if (!receiptPayload || typeof receiptPayload !== 'object') {
+    throw new Error('Tau orchestrator intake returned no receipt')
+  }
+  return receiptPayload as TauHandoffOrchestratorIntake
+}
+
 function renderTauHandoffGithubTransportValidationJsonBlock(
   validation: TauHandoffGithubTransportValidation,
 ): string {
@@ -698,6 +778,18 @@ function renderTauHandoffGithubTransportValidationJsonBlock(
     '',
     '```json',
     JSON.stringify(validation, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function renderTauHandoffOrchestratorIntakeJsonBlock(
+  intake: TauHandoffOrchestratorIntake,
+): string {
+  return [
+    '### Tau handoff orchestrator intake JSON contract',
+    '',
+    '```json',
+    JSON.stringify(intake, null, 2),
     '```',
   ].join('\n')
 }

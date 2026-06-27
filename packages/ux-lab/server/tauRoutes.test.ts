@@ -2,7 +2,11 @@ import { mkdtemp, rm, writeFile } from 'fs/promises'
 import { tmpdir } from 'os'
 import { resolve } from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { normalizeTauChatHandoffTransportReceipt, normalizeTauCommandLoopProjection } from './tauRoutes'
+import {
+	normalizeTauChatHandoffOrchestratorIntake,
+	normalizeTauChatHandoffTransportReceipt,
+	normalizeTauCommandLoopProjection,
+} from './tauRoutes'
 
 const roots: string[] = []
 
@@ -209,6 +213,71 @@ describe('normalizeTauChatHandoffTransportReceipt', () => {
 		expect(() =>
 			normalizeTauChatHandoffTransportReceipt({
 				...validTransportReceipt(),
+				labels: { add: ['agent-work', 'executor:either'], remove: [] },
+			}),
+		).toThrow('missing next:<agent> label')
+	})
+})
+
+describe('normalizeTauChatHandoffOrchestratorIntake', () => {
+	function validValidationReceipt() {
+		return normalizeTauChatHandoffTransportReceipt({
+			schema: 'tau.handoff_github_transport_receipt.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			target: {
+				repo: 'grahama1970/tau',
+				target: 'new',
+			},
+			labels: {
+				add: ['agent-work', 'next:reviewer', 'executor:either'],
+				remove: ['agent-active', 'agent-blocked'],
+			},
+			commandCount: 1,
+			commands: [
+				'gh issue create --repo grahama1970/tau --title "Tau agent handoff: reviewer" --body-file - --label agent-work,next:reviewer,executor:either',
+			],
+			errors: [],
+			sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+		})
+	}
+
+	it('normalizes a server-validated handoff transport receipt into orchestrator intake', () => {
+		const receipt = normalizeTauChatHandoffOrchestratorIntake(validValidationReceipt())
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.handoff_orchestrator_intake.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			accepted: true,
+			target: { repo: 'grahama1970/tau', target: 'new' },
+			nextAgent: 'reviewer',
+			executor: 'either',
+			commandCount: 1,
+			routing: {
+				queue: 'github-ticket',
+				next_agent: 'reviewer',
+				executor: 'either',
+			},
+		})
+		expect(receipt.claims).toMatchObject({
+			does_not_prove: ['Live GitHub mutation.', 'Live subagent execution.', 'Final Sparta Chat readiness.'],
+		})
+	})
+
+	it('fails closed for unvalidated or unroutable intake payloads', () => {
+		expect(() =>
+			normalizeTauChatHandoffOrchestratorIntake({
+				...validValidationReceipt(),
+				schema: 'tau.handoff_github_transport_receipt.v1',
+			}),
+		).toThrow('unexpected Tau handoff transport validation schema')
+
+		expect(() =>
+			normalizeTauChatHandoffOrchestratorIntake({
+				...validValidationReceipt(),
 				labels: { add: ['agent-work', 'executor:either'], remove: [] },
 			}),
 		).toThrow('missing next:<agent> label')

@@ -51,6 +51,36 @@ function makeAdapter(
 		commands: receipt.commands,
 		checks: ["schema", "dry_run_not_applied", "target", "labels", "command_count", "command_repo", "command_target"],
 	}),
+	orchestratorIntake: ConstructorParameters<typeof TauReceiptAdapter>[3] = async (validation) => {
+		const labels = validation.labels ?? { add: ["agent-work", "next:reviewer", "executor:either"], remove: [] };
+		const nextAgent = labels.add.find((label) => label.startsWith("next:"))?.slice("next:".length) ?? "reviewer";
+		const executor = labels.add.find((label) => label.startsWith("executor:"))?.slice("executor:".length) ?? "either";
+		return {
+			schema: "tau.handoff_orchestrator_intake.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			accepted: true,
+			target: validation.target ?? { repo: "grahama1970/tau", target: "new" },
+			nextAgent,
+			executor,
+			labels,
+			commandCount: validation.commandCount,
+			commands: validation.commands,
+			routing: {
+				queue: "github-ticket",
+				next_agent: nextAgent,
+				executor,
+				stop_condition: `${nextAgent} posts a schema-valid Tau receipt before the next route.`,
+			},
+			claims: {
+				proves: [
+					"Tau chat handoff transport validation can be normalized into a non-mutating orchestrator intake receipt.",
+				],
+				does_not_prove: ["Live GitHub mutation", "Live subagent execution", "Final Sparta Chat readiness"],
+			},
+		};
+	},
 ) {
 	const calls: MemoryCall[] = [];
 	const adapter = new TauReceiptAdapter(async (path, body) => {
@@ -58,7 +88,7 @@ function makeAdapter(
 		if (path === "/intent") return intent;
 		if (path in products) return products[path];
 		throw new Error(`unexpected memory path ${path}`);
-	}, commandLoopProjection ?? undefined, transportValidator);
+	}, commandLoopProjection ?? undefined, transportValidator, orchestratorIntake);
 	return { adapter, calls };
 }
 
@@ -416,6 +446,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain('"schema": "tau.handoff_github_transport_validation.v1"');
 		expect(message.content).toContain('"dryRun": true');
 		expect(message.content).toContain('"applied": false');
+		expect(message.content).toContain("### Tau handoff orchestrator intake JSON contract");
+		expect(message.content).toContain('"schema": "tau.handoff_orchestrator_intake.v1"');
+		expect(message.content).toContain('"accepted": true');
+		expect(message.content).toContain('"nextAgent": "reviewer"');
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(
@@ -456,6 +490,15 @@ describe("TauReceiptAdapter Memory routing", () => {
 			applied: false,
 			commandCount: 1,
 		});
+		expect(message.metadata?.tauAgentHandoffOrchestratorIntake).toMatchObject({
+			schema: "tau.handoff_orchestrator_intake.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			accepted: true,
+			nextAgent: "reviewer",
+			executor: "either",
+		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({
 			summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
 			sourceLoopReceiptPath:
@@ -495,10 +538,12 @@ describe("TauReceiptAdapter Memory routing", () => {
 		);
 
 		expect(calls.map((call) => call.path)).toEqual(["/intent", "/recall"]);
-		expect(message.content).toContain("Tau stopped fail-closed while validating the GitHub transport receipt.");
+		expect(message.content).toContain(
+			"Tau stopped fail-closed while validating the GitHub transport or orchestrator intake receipt.",
+		);
 		expect(message.content).toContain("server rejected dry-run transport receipt");
 		expect(message.content).toContain(
-			"| GitHub/subagent handoff | not emitted because the transport receipt was not server-validated |",
+			"| GitHub/subagent handoff | not emitted because the transport/intake receipt was not server-accepted |",
 		);
 		expect(message.content).toContain("| Mutation applied | false |");
 		expect(message.content).not.toContain("### Tau handoff JSON contract");
@@ -512,6 +557,51 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.metadata?.tauAgentHandoffGithubTransportValidation).toMatchObject({
 			ok: false,
 			error: "server rejected dry-run transport receipt",
+		});
+	});
+
+	it("fails closed when the orchestrator intake refuses a server-validated handoff receipt", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "COMPLIANCE",
+				confidence: 0.95,
+				response_mode: "evidence_case",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+				recall_profile: "exact_control_lookup",
+				k: 12,
+			},
+			{ "/recall": { found: true, confidence: 12.4, items: [{ _key: "ctrl__CWE-287" }] } },
+			COMMAND_LOOP_PROJECTION,
+			undefined,
+			async () => {
+				throw new Error("orchestrator refused next:reviewer route");
+			},
+		);
+
+		const { message } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "How does Tau handle a CWE-287 SPARTA evidence case?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/recall"]);
+		expect(message.content).toContain(
+			"Tau stopped fail-closed while validating the GitHub transport or orchestrator intake receipt.",
+		);
+		expect(message.content).toContain("orchestrator refused next:reviewer route");
+		expect(message.content).toContain(
+			"| GitHub/subagent handoff | not emitted because the transport/intake receipt was not server-accepted |",
+		);
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.content).not.toContain("### Tau handoff orchestrator intake JSON contract");
+		expect(message.metadata?.memoryBacked).toBe(false);
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+			ok: false,
+			errors: ["transport_receipt_validation_failed"],
+			nextAgent: "reviewer",
+		});
+		expect(message.metadata?.tauAgentHandoffOrchestratorIntake).toMatchObject({
+			ok: false,
+			error: "orchestrator refused next:reviewer route",
 		});
 	});
 

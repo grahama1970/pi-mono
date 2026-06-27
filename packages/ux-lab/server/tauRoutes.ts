@@ -196,6 +196,73 @@ export function normalizeTauChatHandoffTransportReceipt(receipt: unknown): JsonR
 	}
 }
 
+export function normalizeTauChatHandoffOrchestratorIntake(validation: unknown): JsonRecord {
+	const record = asRecord(validation)
+	if (!record) throw new Error('Tau handoff orchestrator intake requires a JSON object')
+	if (record.schema !== 'tau.handoff_github_transport_validation.v1') {
+		throw new Error('unexpected Tau handoff transport validation schema')
+	}
+	if (record.ok !== true) throw new Error('Tau handoff transport validation is not ok')
+	if (record.dryRun !== true) throw new Error('Tau handoff orchestrator intake requires dryRun=true')
+	if (record.applied !== false) throw new Error('Tau handoff orchestrator intake requires applied=false')
+
+	const target = asRecord(record.target)
+	const labels = asRecord(record.labels)
+	const repo = asString(target?.repo)
+	const targetValue = asString(target?.target)
+	if (!repo || !targetValue || !parseGithubTarget(targetValue)) {
+		throw new Error('Tau handoff orchestrator intake target is invalid')
+	}
+
+	const addLabels = stringArray(labels?.add)
+	const nextLabel = addLabels.find((label) => /^next:[A-Za-z0-9_.-]+$/.test(label))
+	const executorLabel = addLabels.find((label) => /^executor:[A-Za-z0-9_.-]+$/.test(label))
+	if (!nextLabel) throw new Error('Tau handoff orchestrator intake missing next:<agent> label')
+	if (!executorLabel) throw new Error('Tau handoff orchestrator intake missing executor:<executor> label')
+
+	const commands = stringArray(record.commands)
+	const commandCount = asNumber(record.commandCount)
+	if (!Number.isInteger(commandCount) || commandCount !== commands.length || commandCount < 1) {
+		throw new Error('Tau handoff orchestrator intake commandCount does not match commands')
+	}
+
+	const nextAgent = nextLabel.slice('next:'.length)
+	const executor = executorLabel.slice('executor:'.length)
+	return {
+		schema: 'tau.handoff_orchestrator_intake.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		accepted: true,
+		target: { repo, target: targetValue },
+		nextAgent,
+		executor,
+		labels: {
+			add: addLabels,
+			remove: stringArray(labels?.remove),
+		},
+		commandCount,
+		commands,
+		routing: {
+			queue: 'github-ticket',
+			next_agent: nextAgent,
+			executor,
+			stop_condition: `${nextAgent} posts a schema-valid Tau receipt before the next route.`,
+		},
+		claims: {
+			proves: [
+				'Tau chat handoff transport validation can be normalized into a non-mutating orchestrator intake receipt.',
+				'Tau can derive next agent and executor from validated labels without inventing routing.',
+			],
+			does_not_prove: [
+				'Live GitHub mutation.',
+				'Live subagent execution.',
+				'Final Sparta Chat readiness.',
+			],
+		},
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -220,6 +287,19 @@ export function registerTauRoutes(app: Express): void {
 			res.status(400).json({
 				ok: false,
 				error: 'tau_handoff_transport_receipt_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/orchestrator/intake', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauChatHandoffOrchestratorIntake(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_handoff_orchestrator_intake_invalid',
 				detail: error instanceof Error ? error.message : String(error),
 			})
 		}

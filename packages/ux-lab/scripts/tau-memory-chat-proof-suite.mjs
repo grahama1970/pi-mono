@@ -81,6 +81,8 @@ async function runScenario(scenario) {
 		githubTransportCommandCount: proof?.githubTransportReceipt?.commandCount ?? null,
 		githubTransportValidationRenderedSchema: proof?.githubTransportValidationRendered?.schema ?? null,
 		githubTransportValidationSchema: proof?.githubTransportValidation?.body?.receipt?.schema ?? null,
+		handoffOrchestratorIntakeSchema: proof?.handoffOrchestratorIntake?.schema ?? null,
+		handoffOrchestratorIntakeAccepted: proof?.handoffOrchestratorIntake?.accepted ?? null,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -129,6 +131,13 @@ function validateScenarioProof(proof, expected) {
 		assertions.github_transport_validation_rendered_dry_run =
 			proof.githubTransportValidationRendered?.dryRun === true
 			&& proof.githubTransportValidationRendered?.applied === false;
+		assertions.handoff_orchestrator_intake_schema =
+			proof.handoffOrchestratorIntake?.schema === "tau.handoff_orchestrator_intake.v1";
+		assertions.handoff_orchestrator_intake_accepted = proof.handoffOrchestratorIntake?.accepted === true;
+		assertions.handoff_orchestrator_intake_next_agent_matches =
+			proof.handoffOrchestratorIntake?.nextAgent === expected.nextAgent;
+		assertions.handoff_orchestrator_intake_dry_run =
+			proof.handoffOrchestratorIntake?.dryRun === true && proof.handoffOrchestratorIntake?.applied === false;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -175,6 +184,7 @@ async function main() {
 				"Successful route proofs extract or check tau.agent_handoff.v1 JSON according to each route boundary.",
 				"Successful handoff route proofs POST the rendered dry-run GitHub transport receipt to the Tau server validator.",
 				"Successful handoff route proofs extract the rendered tau.handoff_github_transport_validation.v1 JSON.",
+				"Successful handoff route proofs extract the rendered tau.handoff_orchestrator_intake.v1 JSON.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [
