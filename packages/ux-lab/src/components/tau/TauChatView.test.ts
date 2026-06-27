@@ -1,20 +1,53 @@
 import { describe, expect, it } from "vitest";
 import { collectMemoryTurn } from "../shared-chat/memory-turn";
 import { stageTraceFromStreamingSteps, TauReceiptAdapter } from "./TauChatView";
+import type { TauCommandLoopGithubProjectionReceipt } from "./tauCommandLoopProjection";
 
 type MemoryCall = {
 	path: string;
 	body: Record<string, unknown>;
 };
 
-function makeAdapter(intent: Record<string, unknown>, products: Record<string, unknown> = {}) {
+const COMMAND_LOOP_PROJECTION: TauCommandLoopGithubProjectionReceipt = {
+	schema: "tau.command_loop_explicit_ticket_source_summary.v1",
+	summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
+	sourceLoopReceiptPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-receipt.json",
+	reconciliationReceiptPath:
+		"/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-artifacts/command-loop-step-001/goal-guardian-reconciliation-receipt.json",
+	actualReconciliationStepReceiptPath:
+		"/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-step-001.receipt.json",
+	ticketSourcePath: "/tmp/tau-command-loop-explicit-ticket-source-proof/ticket-source.json",
+	transportReceiptPath:
+		"/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop-reconciliation-github-transport.json",
+	dryRun: true,
+	applied: false,
+	mocked: false,
+	live: true,
+	commandCount: 2,
+	reconciliationCounts: {
+		keep: 1,
+		close: 0,
+		migrate: 3,
+		regenerate: 0,
+	},
+	commands: [
+		"gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -",
+		"gh issue edit 123 --repo grahama1970/chatgpt-lab --add-label agent-work,next:human,executor:human,goal-change --remove-label next:goal-guardian,agent-active",
+	],
+};
+
+function makeAdapter(
+	intent: Record<string, unknown>,
+	products: Record<string, unknown> = {},
+	commandLoopProjection: TauCommandLoopGithubProjectionReceipt | null = COMMAND_LOOP_PROJECTION,
+) {
 	const calls: MemoryCall[] = [];
 	const adapter = new TauReceiptAdapter(async (path, body) => {
 		calls.push({ path, body });
 		if (path === "/intent") return intent;
 		if (path in products) return products[path];
 		throw new Error(`unexpected memory path ${path}`);
-	});
+	}, commandLoopProjection ?? undefined);
 	return { adapter, calls };
 }
 
@@ -258,6 +291,31 @@ describe("TauReceiptAdapter Memory routing", () => {
 			commandCount: 2,
 		});
 		expect(message.metadata?.tauReceiptPaths).toContain(
+			"/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
+		);
+	});
+
+	it("omits command-loop GitHub projection when no receipt is supplied", async () => {
+		const { adapter } = makeAdapter(
+			{
+				action: "COMPLIANCE",
+				confidence: 0.95,
+				response_mode: "evidence_case",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+			},
+			{ "/recall": { found: true, confidence: 12.4, items: [{ _key: "ctrl__CWE-287" }] } },
+			null,
+		);
+
+		const { message } = await collectMemoryTurn(adapter.sendTurn({ text: "How does Tau handle CWE-287?" }));
+
+		expect(message.content).toContain("| status | unavailable |");
+		expect(message.content).toContain(
+			"command-loop GitHub projection is omitted until `/api/tau/command-loop/github-projection` returns a schema-valid receipt",
+		);
+		expect(message.metadata?.tauCommandLoopGithubProjection).toBeNull();
+		expect(message.metadata?.tauReceiptPaths).not.toContain(
 			"/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
 		);
 	});

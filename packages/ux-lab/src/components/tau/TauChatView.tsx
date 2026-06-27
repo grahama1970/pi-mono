@@ -39,6 +39,11 @@ import {
   summarizeTauHandoffGithubProjection,
   validateTauAgentHandoff,
 } from './tauAgentHandoff'
+import {
+  loadTauCommandLoopGithubProjection,
+  type TauCommandLoopGithubProjectionReceipt,
+  type TauCommandLoopGithubProjectionState,
+} from './tauCommandLoopProjection'
 import { apiUrl } from '../../lib/apiBase'
 
 const RECEIPTS = [
@@ -92,40 +97,11 @@ const RECEIPTS = [
   },
   {
     label: 'GitHub projection',
-    path: '/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json',
-    value: '2 commands',
-    detail: 'Tau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.',
+    path: 'loaded from /api/tau/command-loop/github-projection',
+    value: 'PENDING',
+    detail: 'Tau command-loop GitHub projection is loaded from a backend receipt endpoint and fails closed if the summary is missing or malformed.',
   },
 ] as const
-
-const TAU_COMMAND_LOOP_GITHUB_PROJECTION = {
-  schema: 'tau.command_loop_explicit_ticket_source_summary.v1',
-  summaryPath: '/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json',
-  sourceLoopReceiptPath:
-    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-receipt.json',
-  reconciliationReceiptPath:
-    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-artifacts/command-loop-step-001/goal-guardian-reconciliation-receipt.json',
-  actualReconciliationStepReceiptPath:
-    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop/command-loop-step-001.receipt.json',
-  ticketSourcePath: '/tmp/tau-command-loop-explicit-ticket-source-proof/ticket-source.json',
-  transportReceiptPath:
-    '/tmp/tau-command-loop-explicit-ticket-source-proof/command-loop-reconciliation-github-transport.json',
-  dryRun: true,
-  applied: false,
-  mocked: false,
-  live: true,
-  commandCount: 2,
-  reconciliationCounts: {
-    keep: 1,
-    close: 0,
-    migrate: 3,
-    regenerate: 0,
-  },
-  commands: [
-    'gh issue comment 123 --repo grahama1970/chatgpt-lab --body-file -',
-    'gh issue edit 123 --repo grahama1970/chatgpt-lab --add-label agent-work,next:human,executor:human,goal-change --remove-label next:goal-guardian,agent-active',
-  ],
-} as const
 
 const STAGES = [
   { id: 'intent', label: 'Getting Intent', icon: Bot },
@@ -215,7 +191,10 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
 
-  constructor(private readonly memoryTransport: TauMemoryTransport = postMemoryProduct) {}
+  constructor(
+    private readonly memoryTransport: TauMemoryTransport = postMemoryProduct,
+    private readonly commandLoopGithubProjection?: TauCommandLoopGithubProjectionReceipt,
+  ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
     const query = (input.text || input.query || input.question || '').trim()
@@ -422,11 +401,12 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const memoryProductSummary = summarizeMemoryProduct(product)
     const tauStageTrace = stageTraceFromStreamingSteps(steps)
     const currentStage = tauStageTrace[tauStageTrace.length - 1] ?? null
+    const tauReceiptPaths = receiptPathsForCommandLoopProjection(this.commandLoopGithubProjection)
     const handoff = buildTauRouteHandoff({
       action: intent.action,
       query,
       branch: route.branch,
-      contextArtifacts: RECEIPTS.map((receipt) => receipt.path),
+      contextArtifacts: tauReceiptPaths,
       resultEvidence: [
         '/api/memory/intent',
         ...(route.endpoint ? [`/api/memory${route.endpoint}`] : []),
@@ -464,7 +444,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       summarizeTauHandoffGithubProjection(handoffGithubProjection),
       '',
-      summarizeTauCommandLoopGithubProjection(TAU_COMMAND_LOOP_GITHUB_PROJECTION),
+      summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
       '',
@@ -486,9 +466,9 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoff: handoff,
         tauAgentHandoffValidation: handoffValidation,
         tauAgentHandoffGithubProjection: handoffGithubProjection,
-        tauCommandLoopGithubProjection: TAU_COMMAND_LOOP_GITHUB_PROJECTION,
+        tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
-        tauReceiptPaths: RECEIPTS.map((receipt) => receipt.path),
+        tauReceiptPaths,
         personaVoiceStatus: 'REQUESTED_NO_PERSONAPLEX_RECEIPT',
       },
     })
@@ -703,9 +683,17 @@ function renderTauHandoffJsonBlock(handoff: unknown): string {
   ].join('\n')
 }
 
-function summarizeTauCommandLoopGithubProjection(
-  projection: typeof TAU_COMMAND_LOOP_GITHUB_PROJECTION,
-): string {
+function summarizeTauCommandLoopGithubProjection(projection?: TauCommandLoopGithubProjectionReceipt): string {
+  if (!projection) {
+    return [
+      '### Tau command-loop GitHub projection receipt',
+      '',
+      '| Receipt field | Value |',
+      '| --- | --- |',
+      '| status | unavailable |',
+      '| fail-closed behavior | command-loop GitHub projection is omitted until `/api/tau/command-loop/github-projection` returns a schema-valid receipt |',
+    ].join('\n')
+  }
   const counts = projection.reconciliationCounts
   return [
     '### Tau command-loop GitHub projection receipt',
@@ -729,6 +717,20 @@ function summarizeTauCommandLoopGithubProjection(
     ...projection.commands,
     '```',
   ].join('\n')
+}
+
+function receiptPathsForCommandLoopProjection(projection?: TauCommandLoopGithubProjectionReceipt): string[] {
+  const paths = RECEIPTS.map((receipt) => receipt.path).filter((path) => !path.startsWith('loaded from '))
+  if (!projection) return paths
+  return [
+    ...paths,
+    projection.summaryPath,
+    projection.sourceLoopReceiptPath,
+    projection.reconciliationReceiptPath,
+    projection.actualReconciliationStepReceiptPath,
+    projection.ticketSourcePath,
+    projection.transportReceiptPath,
+  ]
 }
 
 export function stageTraceFromStreamingSteps(steps: StreamingStep[]): TauPipelineStageReceipt[] {
@@ -766,7 +768,12 @@ function normalizeStageStatus(status: StreamingStep['status']): string {
 }
 
 export function TauChatView(): JSX.Element {
-  const adapter = useMemo(() => new TauReceiptAdapter(), [])
+  const [commandLoopProjectionState, setCommandLoopProjectionState] =
+    useState<TauCommandLoopGithubProjectionState | null>(null)
+  const adapter = useMemo(
+    () => new TauReceiptAdapter(postMemoryProduct, commandLoopProjectionState?.ok ? commandLoopProjectionState.receipt : undefined),
+    [commandLoopProjectionState],
+  )
   const [peerConfig, setPeerConfig] = useState<TauPeerMonitorConfig>(() =>
     readTauPeerMonitorConfig(
       typeof window === 'undefined' ? '' : window.location.search,
@@ -786,6 +793,26 @@ export function TauChatView(): JSX.Element {
     summarizeTauLoopMonitor(null, null, 'loop monitor not checked yet'),
   )
   const [peerLoading, setPeerLoading] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    void loadTauCommandLoopGithubProjection()
+      .then((state) => {
+        if (!cancelled) setCommandLoopProjectionState(state)
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setCommandLoopProjectionState({
+            ok: false,
+            error: 'tau_command_loop_projection_unavailable',
+            detail: error instanceof Error ? error.message : String(error),
+          })
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     const nextConfig = readTauPeerMonitorConfig(window.location.search, window.localStorage)
@@ -880,6 +907,31 @@ export function TauChatView(): JSX.Element {
   const streamedLastEvent = streamEvents[streamEvents.length - 1]
   const streamStatusColor = streamError ? '#ef4444' : streamEnd ? '#22c55e' : '#38bdf8'
   const streamStatusLabel = streamError ? 'ERROR' : streamEnd ? 'STREAM READY' : 'STREAMING'
+  const receiptCards = useMemo(
+    () =>
+      RECEIPTS.map((receipt) => {
+        if (receipt.label !== 'GitHub projection') return receipt
+        if (!commandLoopProjectionState) {
+          return { ...receipt, value: 'LOADING', detail: 'Reading Tau command-loop GitHub projection receipt from UX Lab API.' }
+        }
+        if (!commandLoopProjectionState.ok) {
+          return {
+            ...receipt,
+            value: 'UNAVAILABLE',
+            detail: `Fail-closed: ${commandLoopProjectionState.detail}`,
+            path: commandLoopProjectionState.summaryPath ?? receipt.path,
+          }
+        }
+        return {
+          ...receipt,
+          value: `${commandLoopProjectionState.receipt.commandCount} commands`,
+          detail:
+            'Tau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.',
+          path: commandLoopProjectionState.receipt.summaryPath,
+        }
+      }),
+    [commandLoopProjectionState],
+  )
 
   return (
     <section
@@ -909,7 +961,7 @@ export function TauChatView(): JSX.Element {
           </header>
 
           <section data-qid="tau:chat:receipts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10 }}>
-            {RECEIPTS.map((receipt) => (
+            {receiptCards.map((receipt) => (
               <article key={receipt.path} style={{ border: '1px solid rgba(148,163,184,0.18)', background: 'rgba(15,23,42,0.72)', borderRadius: 8, padding: 14, minHeight: 128 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
                   <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700 }}>{receipt.label}</span>
