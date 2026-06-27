@@ -112,6 +112,26 @@ describe("TauReceiptAdapter Memory routing", () => {
 		});
 	});
 
+	it("fails closed when CLARIFY returns a malformed product", async () => {
+		const { adapter, calls } = makeAdapter(
+			{ action: "CLARIFY", confidence: 0.61, entities: [], frameworks: [] },
+			{ "/clarify": { schema: "memory.clarify.v1", needs_clarification: true, questions: [] } },
+		);
+
+		const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: "secure it" }));
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
+		expect(steps.some((step) => step.id === "clarifying" && step.status === "failed")).toBe(true);
+		expect(message.content).toContain("Tau stopped fail-closed while running /clarify.");
+		expect(message.content).toContain("Memory /clarify requested clarification without questions");
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+			ok: false,
+			errors: ["route_product_invalid"],
+			nextAgent: null,
+		});
+	});
+
 	it("routes DEFLECT and NO_MATCH through /deflect instead of recall", async () => {
 		const { adapter, calls } = makeAdapter(
 			{ action: "NO_MATCH", confidence: 0.72, entities: [], frameworks: [] },
@@ -141,6 +161,26 @@ describe("TauReceiptAdapter Memory routing", () => {
 			stage: "deflect",
 			status: "FAILED",
 			source: "checking-gates",
+		});
+	});
+
+	it("fails closed when DEFLECT returns a non-deflecting product", async () => {
+		const { adapter, calls } = makeAdapter(
+			{ action: "DEFLECT", confidence: 0.72, entities: [], frameworks: [] },
+			{ "/deflect": { schema: "memory.deflect.v1", should_deflect: false, deflection_type: "none" } },
+		);
+
+		const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: "what is the weather?" }));
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/deflect"]);
+		expect(steps.some((step) => step.id === "checking-gates" && step.status === "failed")).toBe(true);
+		expect(message.content).toContain("Tau stopped fail-closed while running /deflect.");
+		expect(message.content).toContain("Memory /deflect did not confirm deflection");
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+			ok: false,
+			errors: ["route_product_invalid"],
+			nextAgent: null,
 		});
 	});
 
@@ -191,6 +231,40 @@ describe("TauReceiptAdapter Memory routing", () => {
 			stage: "answer",
 			status: "FAILED",
 			source: "answering",
+		});
+	});
+
+	it("fails closed when ANSWER cannot produce a final response", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "ANSWER",
+				confidence: 0.84,
+				entities: ["Tau"],
+				frameworks: [],
+				recall_profile: "procedural_memory",
+			},
+			{
+				"/answer": {
+					schema: "memory.answer.v1",
+					can_answer: false,
+					answer_type: "insufficient_memory_evidence",
+				},
+			},
+		);
+
+		const { message, steps } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "What did we decide about Tau memory?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/answer"]);
+		expect(steps.some((step) => step.id === "answering" && step.status === "failed")).toBe(true);
+		expect(message.content).toContain("Tau stopped fail-closed while running /answer.");
+		expect(message.content).toContain("Memory /answer did not confirm can_answer=true");
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+			ok: false,
+			errors: ["route_product_invalid"],
+			nextAgent: null,
 		});
 	});
 

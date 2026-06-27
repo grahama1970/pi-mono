@@ -274,6 +274,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const route = routeFromIntent(intent)
     let product: unknown = null
     let routeError: string | null = null
+    let routeErrorKind = 'route_product_missing'
     if (route.endpoint) {
       yield emit(makeStep({
         id: route.stepId,
@@ -285,6 +286,11 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       }))
       try {
         product = await this.memoryTransport(route.endpoint, route.body(query, intent), input.abortSignal)
+        const validationError = validateMemoryRouteProduct(route, product)
+        if (validationError) {
+          routeErrorKind = 'route_product_invalid'
+          throw new Error(validationError)
+        }
         yield emit(makeStep({
           id: route.stepId,
           branch: route.branch,
@@ -346,7 +352,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
           routeError,
           tauStageTrace,
           tauCurrentStage: currentStage,
-          tauAgentHandoffValidation: { ok: false, errors: ['route_product_missing'], nextAgent: null },
+          tauAgentHandoffValidation: { ok: false, errors: [routeErrorKind], nextAgent: null },
         },
       })
       yield makeFinalStep(message, route.branch)
@@ -643,6 +649,40 @@ function summarizeMemoryProduct(product: unknown): Record<string, unknown> | nul
     confidence: record.confidence ?? null,
     item_count: Array.isArray(record.items) ? record.items.length : null,
   }
+}
+
+function validateMemoryRouteProduct(route: TauRoute, product: unknown): string | null {
+  if (!product || typeof product !== 'object' || Array.isArray(product)) {
+    return `Memory ${route.endpoint} returned a non-object product`
+  }
+  const record = product as Record<string, unknown>
+  if (route.endpoint === '/clarify') {
+    if (record.schema !== 'memory.clarify.v1') return 'Memory /clarify returned an unexpected schema'
+    if (typeof record.needs_clarification !== 'boolean') {
+      return 'Memory /clarify missing needs_clarification boolean'
+    }
+    const questions = record.questions
+    if (record.needs_clarification === true && (!Array.isArray(questions) || questions.length === 0)) {
+      return 'Memory /clarify requested clarification without questions'
+    }
+  }
+  if (route.endpoint === '/deflect') {
+    if (record.schema !== 'memory.deflect.v1') return 'Memory /deflect returned an unexpected schema'
+    if (typeof record.should_deflect !== 'boolean') return 'Memory /deflect missing should_deflect boolean'
+    if (record.should_deflect !== true) return 'Memory /deflect did not confirm deflection'
+  }
+  if (route.endpoint === '/answer') {
+    if (record.schema !== 'memory.answer.v1') return 'Memory /answer returned an unexpected schema'
+    if (record.can_answer !== true) return 'Memory /answer did not confirm can_answer=true'
+    if (typeof record.final_response !== 'string' || !record.final_response.trim()) {
+      return 'Memory /answer missing final_response'
+    }
+  }
+  if (route.endpoint === '/recall') {
+    if (!Array.isArray(record.items)) return 'Memory /recall missing items array'
+    if (typeof record.found !== 'boolean') return 'Memory /recall missing found boolean'
+  }
+  return null
 }
 
 function summarizeProductStatus(product: unknown, fallback: string): string {
