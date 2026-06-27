@@ -259,6 +259,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
 
     const route = routeFromIntent(intent)
     let product: unknown = null
+    let routeError: string | null = null
     if (route.endpoint) {
       yield emit(makeStep({
         id: route.stepId,
@@ -280,14 +281,15 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
           data: product,
         }))
       } catch (error) {
+        routeError = error instanceof Error ? error.message : String(error)
         yield emit(makeStep({
           id: route.stepId,
           branch: route.branch,
           status: 'failed',
           label: route.label,
           liveStatusLabel: route.liveStatusLabel,
-          detail: error instanceof Error ? error.message : String(error),
-          error: error instanceof Error ? error.message : String(error),
+          detail: routeError,
+          error: routeError,
         }))
       }
     } else {
@@ -299,6 +301,42 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         liveStatusLabel: route.liveStatusLabel,
         detail: route.detail,
       }))
+    }
+
+    if (routeError) {
+      const tauStageTrace = stageTraceFromStreamingSteps(steps)
+      const currentStage = tauStageTrace[tauStageTrace.length - 1] ?? null
+      const message = makeFinalMessage({
+        branch: route.branch,
+        content: [
+          `Tau stopped fail-closed while running ${route.endpoint}.`,
+          '',
+          `Memory route: ${route.label}`,
+          `Error: ${routeError}`,
+          '',
+          '| Contract field | Current experiment state |',
+          '| --- | --- |',
+          '| Memory-first routing | `/intent` completed before the route endpoint failed |',
+          `| Current receipt stage | ${currentStage ? `${currentStage.label} (${currentStage.status})` : 'not emitted'} |`,
+          '| GitHub/subagent handoff | not emitted because the route product is missing |',
+          '| Production Sparta Chat | not claimed from this preview |',
+          '',
+          'This is fail-closed: Tau is not fabricating a Memory product or downstream agent handoff from a failed route.',
+        ].join('\n'),
+        reasoningSteps: streamingStepsToThinkingTrace(steps),
+        metadata: {
+          source: 'tau-memory-adapter',
+          memoryBacked: false,
+          memoryIntent: summarizeMemoryIntent(intent),
+          routeEndpoint: route.endpoint,
+          routeError,
+          tauStageTrace,
+          tauCurrentStage: currentStage,
+          tauAgentHandoffValidation: { ok: false, errors: ['route_product_missing'], nextAgent: null },
+        },
+      })
+      yield makeFinalStep(message, route.branch)
+      return message
     }
 
     const lower = query.toLowerCase()
@@ -631,11 +669,11 @@ function normalizeTauStage(label: string): string {
   const lower = label.toLowerCase()
   if (lower.includes('intent')) return 'intent'
   if (lower.includes('entit')) return 'extract_entities'
+  if (lower.includes('answer')) return 'answer'
   if (lower.includes('memory')) return 'recall'
   if (lower.includes('evidence')) return 'evidence_case'
   if (lower.includes('search') || lower.includes('web')) return 'brave_search'
   if (lower.includes('voice') || lower.includes('persona')) return 'personaplex'
-  if (lower.includes('answer')) return 'answer'
   if (lower.includes('clarif')) return 'clarify'
   if (lower.includes('deflect')) return 'deflect'
   return 'unknown'

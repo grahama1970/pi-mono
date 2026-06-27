@@ -50,6 +50,31 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: 'human' })
   })
 
+  it('fails closed when CLARIFY route product is unavailable', async () => {
+    const { adapter, calls } = makeAdapter(
+      { action: 'CLARIFY', confidence: 0.61, entities: [], frameworks: [] },
+    )
+
+    const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: 'secure it' }))
+
+    expect(calls.map((call) => call.path)).toEqual(['/intent', '/clarify'])
+    expect(steps.some((step) => step.id === 'clarifying' && step.status === 'failed')).toBe(true)
+    expect(message.content).toContain('Tau stopped fail-closed while running /clarify.')
+    expect(message.content).toContain('| GitHub/subagent handoff | not emitted because the route product is missing |')
+    expect(message.content).not.toContain('| next agent | human |')
+    expect(message.metadata?.memoryBacked).toBe(false)
+    expect(message.metadata?.tauCurrentStage).toMatchObject({
+      stage: 'clarify',
+      status: 'FAILED',
+      source: 'clarifying',
+    })
+    expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+      ok: false,
+      errors: ['route_product_missing'],
+      nextAgent: null,
+    })
+  })
+
   it('routes DEFLECT and NO_MATCH through /deflect instead of recall', async () => {
     const { adapter, calls } = makeAdapter(
       { action: 'NO_MATCH', confidence: 0.72, entities: [], frameworks: [] },
@@ -65,6 +90,25 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: 'human' })
   })
 
+  it('fails closed when DEFLECT route product is unavailable', async () => {
+    const { adapter, calls } = makeAdapter(
+      { action: 'DEFLECT', confidence: 0.72, entities: [], frameworks: [] },
+    )
+
+    const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: 'what is the weather?' }))
+
+    expect(calls.map((call) => call.path)).toEqual(['/intent', '/deflect'])
+    expect(steps.some((step) => step.id === 'checking-gates' && step.status === 'failed')).toBe(true)
+    expect(message.content).toContain('Tau stopped fail-closed while running /deflect.')
+    expect(message.content).not.toContain('Tau routed this turn to Memory deflect.')
+    expect(message.metadata?.memoryBacked).toBe(false)
+    expect(message.metadata?.tauCurrentStage).toMatchObject({
+      stage: 'deflect',
+      status: 'FAILED',
+      source: 'checking-gates',
+    })
+  })
+
   it('routes ANSWER through /answer and records answer product metadata', async () => {
     const { adapter, calls } = makeAdapter(
       { action: 'ANSWER', confidence: 0.84, entities: ['Tau'], frameworks: [], recall_profile: 'procedural_memory' },
@@ -78,6 +122,26 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('Tau routed this turn to Memory answer.')
     expect(message.content).toContain('| can answer | true |')
     expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: 'reviewer' })
+  })
+
+  it('fails closed when ANSWER route product is unavailable', async () => {
+    const { adapter, calls } = makeAdapter(
+      { action: 'ANSWER', confidence: 0.84, entities: ['Tau'], frameworks: [], recall_profile: 'procedural_memory' },
+    )
+
+    const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: 'What did we decide about Tau memory?' }))
+
+    expect(calls.map((call) => call.path)).toEqual(['/intent', '/answer'])
+    expect(steps.some((step) => step.id === 'answering' && step.status === 'failed')).toBe(true)
+    expect(message.content).toContain('Tau stopped fail-closed while running /answer.')
+    expect(message.content).not.toContain('Tau routed this turn to Memory answer.')
+    expect(message.content).not.toContain('| next agent | reviewer |')
+    expect(message.metadata?.memoryBacked).toBe(false)
+    expect(message.metadata?.tauCurrentStage).toMatchObject({
+      stage: 'answer',
+      status: 'FAILED',
+      source: 'answering',
+    })
   })
 
   it('routes RESEARCH fail-closed without claiming Brave Search ran', async () => {
@@ -97,6 +161,12 @@ describe('TauReceiptAdapter Memory routing', () => {
     expect(message.content).toContain('Tau identified a research route and stopped before unsupported web claims.')
     expect(message.content).toContain('Memory product: not called in this slice.')
     expect(message.content).toContain('| next agent | research-auditor |')
+    expect(message.metadata?.memoryBacked).toBe(true)
+    expect(message.metadata?.tauCurrentStage).toMatchObject({
+      stage: 'brave_search',
+      status: 'SKIPPED',
+      source: 'getting-results',
+    })
     expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: 'research-auditor' })
   })
 
