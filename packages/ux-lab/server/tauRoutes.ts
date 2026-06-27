@@ -263,6 +263,90 @@ export function normalizeTauChatHandoffOrchestratorIntake(validation: unknown): 
 	}
 }
 
+export function normalizeTauSubagentReceiptExpectation(intake: unknown): JsonRecord {
+	const record = asRecord(intake)
+	if (!record) throw new Error('Tau subagent receipt expectation requires a JSON object')
+	if (record.schema !== 'tau.handoff_orchestrator_intake.v1') {
+		throw new Error('unexpected Tau handoff orchestrator intake schema')
+	}
+	if (record.ok !== true || record.accepted !== true) {
+		throw new Error('Tau handoff orchestrator intake is not accepted')
+	}
+	if (record.dryRun !== true) throw new Error('Tau subagent receipt expectation requires dryRun=true')
+	if (record.applied !== false) throw new Error('Tau subagent receipt expectation requires applied=false')
+
+	const target = asRecord(record.target)
+	const repo = asString(target?.repo)
+	const targetValue = asString(target?.target)
+	if (!repo || !targetValue || !parseGithubTarget(targetValue)) {
+		throw new Error('Tau subagent receipt expectation target is invalid')
+	}
+
+	const nextAgent = asString(record.nextAgent)
+	const executor = asString(record.executor) ?? 'either'
+	if (!nextAgent) throw new Error('Tau subagent receipt expectation missing nextAgent')
+
+	const labels = asRecord(record.labels)
+	const addLabels = stringArray(labels?.add)
+	if (!addLabels.includes(`next:${nextAgent}`)) {
+		throw new Error('Tau subagent receipt expectation next label does not match nextAgent')
+	}
+	if (!addLabels.includes(`executor:${executor}`)) {
+		throw new Error('Tau subagent receipt expectation executor label does not match executor')
+	}
+
+	const routing = asRecord(record.routing)
+	const stopCondition = asString(routing?.stop_condition)
+	if (!stopCondition) throw new Error('Tau subagent receipt expectation missing routing.stop_condition')
+
+	return {
+		schema: 'tau.subagent_receipt_expectation.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		target: { repo, target: targetValue },
+		nextAgent,
+		executor,
+		requiredReceipt: {
+			schema: 'tau.agent_handoff.v1',
+			previous_subagent: nextAgent,
+			fields: [
+				'schema',
+				'github.repo',
+				'github.target',
+				'goal.goal_id',
+				'goal.goal_version',
+				'goal.goal_hash',
+				'previous_subagent',
+				'context.summary',
+				'context.artifacts',
+				'result.status',
+				'result.summary',
+				'result.evidence',
+				'rationale',
+				'next_agent.name',
+				'next_agent.reason',
+				'required_evidence',
+				'stop_condition',
+			],
+			next_agent_required: true,
+			evidence_required: true,
+			stop_condition: stopCondition,
+		},
+		claims: {
+			proves: [
+				'Tau can derive the next subagent receipt expectation from accepted dry-run orchestrator intake.',
+				'Tau requires the next subagent to return tau.agent_handoff.v1 with next_agent before the loop can continue.',
+			],
+			does_not_prove: [
+				'The next subagent actually executed.',
+				'The expected receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		},
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
@@ -300,6 +384,19 @@ export function registerTauRoutes(app: Express): void {
 			res.status(400).json({
 				ok: false,
 				error: 'tau_handoff_orchestrator_intake_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/subagent-receipt/expectation', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauSubagentReceiptExpectation(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_subagent_receipt_expectation_invalid',
 				detail: error instanceof Error ? error.message : String(error),
 			})
 		}

@@ -198,6 +198,10 @@ type TauHandoffOrchestratorIntakePoster = (
   validation: TauHandoffGithubTransportValidation,
   signal?: AbortSignal,
 ) => Promise<TauHandoffOrchestratorIntake>
+type TauSubagentReceiptExpectationPoster = (
+  intake: TauHandoffOrchestratorIntake,
+  signal?: AbortSignal,
+) => Promise<TauSubagentReceiptExpectation>
 
 type TauHandoffGithubTransportValidation = {
   schema: 'tau.handoff_github_transport_validation.v1'
@@ -247,6 +251,31 @@ type TauHandoffOrchestratorIntake = {
   }
 }
 
+type TauSubagentReceiptExpectation = {
+  schema: 'tau.subagent_receipt_expectation.v1'
+  ok: boolean
+  dryRun: true
+  applied: false
+  target: {
+    repo: string
+    target: string
+  }
+  nextAgent: string
+  executor: string
+  requiredReceipt: {
+    schema: 'tau.agent_handoff.v1'
+    previous_subagent: string
+    fields: string[]
+    next_agent_required: boolean
+    evidence_required: boolean
+    stop_condition: string
+  }
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
@@ -256,6 +285,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     private readonly commandLoopGithubProjection?: TauCommandLoopGithubProjectionReceipt,
     private readonly handoffTransportValidator: TauHandoffTransportValidator = postTauHandoffTransportValidation,
     private readonly handoffOrchestratorIntakePoster: TauHandoffOrchestratorIntakePoster = postTauHandoffOrchestratorIntake,
+    private readonly subagentReceiptExpectationPoster: TauSubagentReceiptExpectationPoster = postTauSubagentReceiptExpectation,
   ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
@@ -525,6 +555,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const handoffGithubTransportReceipt = deriveTauHandoffGithubTransportReceipt(handoffGithubProjection)
     let handoffGithubTransportValidation: TauHandoffGithubTransportValidation | null = null
     let handoffOrchestratorIntake: TauHandoffOrchestratorIntake | null = null
+    let subagentReceiptExpectation: TauSubagentReceiptExpectation | null = null
     try {
       handoffGithubTransportValidation = await this.handoffTransportValidator(
         handoffGithubTransportReceipt,
@@ -539,6 +570,13 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       )
       if (!handoffOrchestratorIntake.ok || !handoffOrchestratorIntake.accepted) {
         throw new Error('Tau handoff orchestrator intake returned ok=false')
+      }
+      subagentReceiptExpectation = await this.subagentReceiptExpectationPoster(
+        handoffOrchestratorIntake,
+        input.abortSignal,
+      )
+      if (!subagentReceiptExpectation.ok) {
+        throw new Error('Tau subagent receipt expectation returned ok=false')
       }
     } catch (error) {
       const validationError = error instanceof Error ? error.message : String(error)
@@ -579,6 +617,9 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
           },
           tauAgentHandoffOrchestratorIntake: handoffOrchestratorIntake
             ? handoffOrchestratorIntake
+            : { ok: false, error: validationError },
+          tauSubagentReceiptExpectation: subagentReceiptExpectation
+            ? subagentReceiptExpectation
             : { ok: false, error: validationError },
           tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
           tauReceiptPaths,
@@ -624,6 +665,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauHandoffOrchestratorIntakeJsonBlock(handoffOrchestratorIntake),
       '',
+      renderTauSubagentReceiptExpectationJsonBlock(subagentReceiptExpectation),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -649,6 +692,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauAgentHandoffGithubTransportReceipt: handoffGithubTransportReceipt,
         tauAgentHandoffGithubTransportValidation: handoffGithubTransportValidation,
         tauAgentHandoffOrchestratorIntake: handoffOrchestratorIntake,
+        tauSubagentReceiptExpectation: subagentReceiptExpectation,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,
@@ -770,6 +814,37 @@ async function postTauHandoffOrchestratorIntake(
   return receiptPayload as TauHandoffOrchestratorIntake
 }
 
+async function postTauSubagentReceiptExpectation(
+  intake: TauHandoffOrchestratorIntake,
+  signal?: AbortSignal,
+): Promise<TauSubagentReceiptExpectation> {
+  const response = await fetch(apiUrl('/tau/handoff/subagent-receipt/expectation'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(intake),
+    signal,
+  })
+  const text = await response.text()
+  let parsed: unknown = {}
+  try {
+    parsed = text ? JSON.parse(text) : {}
+  } catch {
+    parsed = { raw: text }
+  }
+  if (!response.ok) {
+    const detail = typeof parsed === 'object' && parsed && 'detail' in parsed ? (parsed as { detail?: unknown }).detail : text
+    throw new Error(`Tau subagent receipt expectation failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
+  }
+  const receiptPayload =
+    typeof parsed === 'object' && parsed && 'receipt' in parsed
+      ? (parsed as { receipt?: unknown }).receipt
+      : null
+  if (!receiptPayload || typeof receiptPayload !== 'object') {
+    throw new Error('Tau subagent receipt expectation returned no receipt')
+  }
+  return receiptPayload as TauSubagentReceiptExpectation
+}
+
 function renderTauHandoffGithubTransportValidationJsonBlock(
   validation: TauHandoffGithubTransportValidation,
 ): string {
@@ -790,6 +865,18 @@ function renderTauHandoffOrchestratorIntakeJsonBlock(
     '',
     '```json',
     JSON.stringify(intake, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function renderTauSubagentReceiptExpectationJsonBlock(
+  expectation: TauSubagentReceiptExpectation,
+): string {
+  return [
+    '### Tau subagent receipt expectation JSON contract',
+    '',
+    '```json',
+    JSON.stringify(expectation, null, 2),
     '```',
   ].join('\n')
 }

@@ -6,6 +6,7 @@ import {
 	normalizeTauChatHandoffOrchestratorIntake,
 	normalizeTauChatHandoffTransportReceipt,
 	normalizeTauCommandLoopProjection,
+	normalizeTauSubagentReceiptExpectation,
 } from './tauRoutes'
 
 const roots: string[] = []
@@ -281,5 +282,78 @@ describe('normalizeTauChatHandoffOrchestratorIntake', () => {
 				labels: { add: ['agent-work', 'executor:either'], remove: [] },
 			}),
 		).toThrow('missing next:<agent> label')
+	})
+})
+
+describe('normalizeTauSubagentReceiptExpectation', () => {
+	function validIntake() {
+		return normalizeTauChatHandoffOrchestratorIntake(
+			normalizeTauChatHandoffTransportReceipt({
+				schema: 'tau.handoff_github_transport_receipt.v1',
+				ok: true,
+				dryRun: true,
+				applied: false,
+				target: {
+					repo: 'grahama1970/tau',
+					target: 'issue#123',
+				},
+				labels: {
+					add: ['agent-work', 'next:reviewer', 'executor:either'],
+					remove: ['agent-active', 'agent-blocked'],
+				},
+				commandCount: 2,
+				commands: [
+					'gh issue comment 123 --repo grahama1970/tau --body-file -',
+					'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+				],
+				errors: [],
+				sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+			}),
+		)
+	}
+
+	it('derives the next subagent receipt expectation from accepted intake', () => {
+		const receipt = normalizeTauSubagentReceiptExpectation(validIntake())
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.subagent_receipt_expectation.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			nextAgent: 'reviewer',
+			executor: 'either',
+			requiredReceipt: {
+				schema: 'tau.agent_handoff.v1',
+				previous_subagent: 'reviewer',
+				next_agent_required: true,
+				evidence_required: true,
+			},
+		})
+		expect(receipt.requiredReceipt.fields).toContain('goal.goal_hash')
+		expect(receipt.requiredReceipt.fields).toContain('next_agent.name')
+		expect(receipt.claims).toMatchObject({
+			does_not_prove: [
+				'The next subagent actually executed.',
+				'The expected receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		})
+	})
+
+	it('fails closed when accepted intake routing and labels disagree', () => {
+		expect(() =>
+			normalizeTauSubagentReceiptExpectation({
+				...validIntake(),
+				nextAgent: 'coder',
+			}),
+		).toThrow('next label does not match nextAgent')
+
+		expect(() =>
+			normalizeTauSubagentReceiptExpectation({
+				...validIntake(),
+				accepted: false,
+			}),
+		).toThrow('orchestrator intake is not accepted')
 	})
 })

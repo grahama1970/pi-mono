@@ -446,7 +446,13 @@ function renderedJsonObjects(rawText) {
 }
 
 function extractTauHandoff(rawText) {
-	const handoff = renderedJsonObjects(rawText).find((item) => item?.schema === "tau.agent_handoff.v1");
+	const handoff = renderedJsonObjects(rawText).find(
+		(item) =>
+			item?.schema === "tau.agent_handoff.v1"
+			&& typeof item?.previous_subagent === "string"
+			&& item?.next_agent
+			&& typeof item.next_agent.name === "string",
+	);
 	return handoff
 		? { ok: true, error: null, json: handoff }
 		: { ok: false, error: "handoff JSON object not found", json: null };
@@ -488,6 +494,15 @@ function extractTauHandoffOrchestratorIntake(rawText) {
 		: { ok: false, error: "handoff orchestrator intake JSON object not found", json: null };
 }
 
+function extractTauSubagentReceiptExpectation(rawText) {
+	const expectation = renderedJsonObjects(rawText).find(
+		(item) => item?.schema === "tau.subagent_receipt_expectation.v1",
+	);
+	return expectation
+		? { ok: true, error: null, json: expectation }
+		: { ok: false, error: "subagent receipt expectation JSON object not found", json: null };
+}
+
 async function validateTauGithubTransportReceipt(page, receipt) {
 	if (!receipt) return { ok: false, status: null, body: null, error: "github transport receipt is missing" };
 	return page.evaluate(async (payload) => {
@@ -526,6 +541,7 @@ function handoffProofAssertions(
 	transportReceiptExtraction,
 	renderedTransportValidationExtraction,
 	orchestratorIntakeExtraction,
+	subagentReceiptExpectationExtraction,
 	transportValidation,
 	expectedNextAgent,
 ) {
@@ -534,6 +550,7 @@ function handoffProofAssertions(
 	const transportReceipt = transportReceiptExtraction.json;
 	const renderedTransportValidation = renderedTransportValidationExtraction.json;
 	const orchestratorIntake = orchestratorIntakeExtraction.json;
+	const subagentReceiptExpectation = subagentReceiptExpectationExtraction.json;
 	const validationReceipt = transportValidation?.body?.receipt;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
@@ -588,6 +605,17 @@ function handoffProofAssertions(
 			typeof handoff?.next_agent?.name === "string" && orchestratorIntake?.nextAgent === handoff.next_agent.name,
 		handoff_orchestrator_intake_dry_run:
 			orchestratorIntake?.dryRun === true && orchestratorIntake?.applied === false,
+		subagent_receipt_expectation_extracted: subagentReceiptExpectationExtraction.ok,
+		subagent_receipt_expectation_schema:
+			subagentReceiptExpectation?.schema === "tau.subagent_receipt_expectation.v1",
+		subagent_receipt_expectation_next_agent_matches:
+			typeof handoff?.next_agent?.name === "string" && subagentReceiptExpectation?.nextAgent === handoff.next_agent.name,
+		subagent_receipt_expectation_required_handoff_schema:
+			subagentReceiptExpectation?.requiredReceipt?.schema === "tau.agent_handoff.v1",
+		subagent_receipt_expectation_requires_next_agent:
+			subagentReceiptExpectation?.requiredReceipt?.next_agent_required === true,
+		subagent_receipt_expectation_dry_run:
+			subagentReceiptExpectation?.dryRun === true && subagentReceiptExpectation?.applied === false,
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
@@ -726,6 +754,7 @@ async function main() {
 		const githubTransportReceiptExtraction = extractTauGithubTransportReceipt(rawChatText);
 		const githubTransportValidationExtraction = extractTauGithubTransportValidation(rawChatText);
 		const handoffOrchestratorIntakeExtraction = extractTauHandoffOrchestratorIntake(rawChatText);
+		const subagentReceiptExpectationExtraction = extractTauSubagentReceiptExpectation(rawChatText);
 		const githubTransportValidation =
 			scenario.waitForHandoff === false
 				? { ok: false, status: null, body: null, error: "handoff not expected" }
@@ -739,6 +768,7 @@ async function main() {
 						githubTransportReceiptExtraction,
 						githubTransportValidationExtraction,
 						handoffOrchestratorIntakeExtraction,
+						subagentReceiptExpectationExtraction,
 						githubTransportValidation,
 						scenario.expectedNextAgent,
 					);
@@ -768,12 +798,16 @@ async function main() {
 			handoffOrchestratorIntake: handoffOrchestratorIntakeExtraction.ok
 				? handoffOrchestratorIntakeExtraction.json
 				: null,
+			subagentReceiptExpectation: subagentReceiptExpectationExtraction.ok
+				? subagentReceiptExpectationExtraction.json
+				: null,
 			githubTransportValidation,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
 			githubTransportReceiptExtractionError: githubTransportReceiptExtraction.error,
 			githubTransportValidationExtractionError: githubTransportValidationExtraction.error,
 			handoffOrchestratorIntakeExtractionError: handoffOrchestratorIntakeExtraction.error,
+			subagentReceiptExpectationExtractionError: subagentReceiptExpectationExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,
