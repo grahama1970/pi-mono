@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { parseTauCommandLoopGithubProjectionResponse } from "./tauCommandLoopProjection";
+import {
+	loadTauCommandLoopGithubProjection,
+	parseTauCommandLoopGithubProjectionResponse,
+} from "./tauCommandLoopProjection";
 
 const VALID_RESPONSE = {
 	ok: true,
@@ -85,5 +88,48 @@ describe("tauCommandLoopProjection", () => {
 		});
 		expect(parsed.ok ? "" : parsed.detail).toContain("commandCount must be a finite number");
 		expect(parsed.ok ? "" : parsed.detail).toContain("commands must be a string array");
+	});
+
+	it("loads the Tau projection endpoint through the API helper", async () => {
+		const calls: string[] = [];
+		const fetcher = async (url: RequestInfo | URL) => {
+			calls.push(String(url));
+			return new Response(JSON.stringify(VALID_RESPONSE), { status: 200 });
+		};
+
+		const parsed = await loadTauCommandLoopGithubProjection(fetcher as typeof fetch);
+
+		expect(calls).toEqual(["/api/tau/command-loop/github-projection"]);
+		expect(parsed).toMatchObject({
+			ok: true,
+			receipt: {
+				summaryPath: "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
+				commandCount: 2,
+			},
+		});
+	});
+
+	it("fails closed when the endpoint returns invalid JSON", async () => {
+		const fetcher = async () => new Response("not-json", { status: 200 });
+
+		const parsed = await loadTauCommandLoopGithubProjection(fetcher as typeof fetch);
+
+		expect(parsed).toEqual({
+			ok: false,
+			error: "invalid_json",
+			detail: "not-json",
+		});
+	});
+
+	it("fails closed when HTTP status contradicts a valid-looking receipt", async () => {
+		const fetcher = async () => new Response(JSON.stringify(VALID_RESPONSE), { status: 503 });
+
+		const parsed = await loadTauCommandLoopGithubProjection(fetcher as typeof fetch);
+
+		expect(parsed).toEqual({
+			ok: false,
+			error: "http_error",
+			detail: "Tau projection endpoint returned 503",
+		});
 	});
 });
