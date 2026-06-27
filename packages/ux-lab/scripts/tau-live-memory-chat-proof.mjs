@@ -341,6 +341,42 @@ const scenarios = {
 			};
 		},
 	},
+	"intent-unsupported-action": {
+		prompt: "What should Tau do with this unknown Memory route?",
+		waitFor: "Tau stopped fail-closed because Memory /intent returned an unsupported route.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "BANANA",
+				confidence: 0.88,
+				response_mode: null,
+				content_type: null,
+				entities: ["Tau"],
+				frameworks: [],
+				recall_profile: null,
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_unsupported_intent_visible: chatText.includes(
+					"Tau stopped fail-closed because Memory /intent returned an unsupported route.",
+				),
+				unsupported_action_visible: chatText.includes("Intent action: BANANA"),
+				unsupported_reason_visible: chatText.includes("Memory /intent action BANANA is not a supported Tau route"),
+				route_endpoint_not_called_visible: chatText.includes("Memory route endpoint") && chatText.includes("not called"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_next_agent_visible: !/next agent\s+/.test(chatText),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+				answer_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/answer")),
+				clarify_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/clarify")),
+				deflect_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/deflect")),
+			};
+		},
+	},
 };
 const scenario = scenarios[scenarioName];
 if (!scenario) {

@@ -332,6 +332,41 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "research-auditor" });
 	});
 
+	it("fails closed when Memory intent returns an unmapped action", async () => {
+		const { adapter, calls } = makeAdapter({
+			action: "BANANA",
+			confidence: 0.88,
+			entities: ["Tau"],
+			frameworks: [],
+		});
+
+		const { message, steps } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "What should Tau do with this unknown route?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent"]);
+		expect(calls.some((call) => call.path === "/recall")).toBe(false);
+		expect(calls.some((call) => call.path === "/answer")).toBe(false);
+		expect(calls.some((call) => call.path === "/clarify")).toBe(false);
+		expect(calls.some((call) => call.path === "/deflect")).toBe(false);
+		expect(steps.some((step) => step.id === "extracting-entities" && step.status === "completed")).toBe(true);
+		expect(message.content).toContain(
+			"Tau stopped fail-closed because Memory `/intent` returned an unsupported route.",
+		);
+		expect(message.content).toContain("Intent action: BANANA");
+		expect(message.content).toContain("Memory /intent action BANANA is not a supported Tau route");
+		expect(message.content).toContain("| Memory route endpoint | not called |");
+		expect(message.content).toContain("| GitHub/subagent handoff | not emitted because intent routing is invalid |");
+		expect(message.content).not.toContain("Tau routed this turn through Memory recall.");
+		expect(message.content).not.toContain("### Tau handoff JSON contract");
+		expect(message.metadata?.memoryBacked).toBe(false);
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({
+			ok: false,
+			errors: ["intent_route_invalid"],
+			nextAgent: null,
+		});
+	});
+
 	it("routes COMPLIANCE through /recall and marks evidence synthesis as not executed in this slice", async () => {
 		const { adapter, calls } = makeAdapter(
 			{

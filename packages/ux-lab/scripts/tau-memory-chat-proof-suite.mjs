@@ -21,6 +21,7 @@ const scenarios = [
 	{ name: "answer-invalid-product", expected: { mocked: true, live: false, handoffAbsent: true } },
 	{ name: "clarify-availability", expected: { mocked: false, live: true, clarifyAvailable: false } },
 	{ name: "intent-unavailable", expected: { mocked: true, live: false, handoffAbsent: true } },
+	{ name: "intent-unsupported-action", expected: { mocked: true, live: false, handoffAbsent: true } },
 ];
 
 const timestamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");

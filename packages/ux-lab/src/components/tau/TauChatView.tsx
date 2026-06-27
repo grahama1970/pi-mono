@@ -271,6 +271,45 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       data: intent.entity_context ?? intent.entities ?? null,
     }))
 
+    const intentRouteError = validateIntentRoute(intent)
+    if (intentRouteError) {
+      const tauStageTrace = stageTraceFromStreamingSteps(steps)
+      const currentStage = tauStageTrace[tauStageTrace.length - 1] ?? null
+      const action = String(intent.action || 'UNKNOWN')
+      const message = makeFinalMessage({
+        branch: 'compliance',
+        content: [
+          'Tau stopped fail-closed because Memory `/intent` returned an unsupported route.',
+          '',
+          `Intent action: ${action}`,
+          `Error: ${intentRouteError}`,
+          '',
+          '| Contract field | Current experiment state |',
+          '| --- | --- |',
+          '| Memory-first routing | `/intent` completed but did not provide a supported Tau route |',
+          `| Current receipt stage | ${currentStage ? `${currentStage.label} (${currentStage.status})` : 'not emitted'} |`,
+          '| Memory route endpoint | not called |',
+          '| GitHub/subagent handoff | not emitted because intent routing is invalid |',
+          '| Production Sparta Chat | not claimed from this preview |',
+          '',
+          'This is fail-closed: Tau is not falling back to recall from an unknown Memory intent action.',
+        ].join('\n'),
+        reasoningSteps: streamingStepsToThinkingTrace(steps),
+        metadata: {
+          source: 'tau-memory-adapter',
+          memoryBacked: false,
+          memoryIntent: summarizeMemoryIntent(intent),
+          routeEndpoint: null,
+          routeError: intentRouteError,
+          tauStageTrace,
+          tauCurrentStage: currentStage,
+          tauAgentHandoffValidation: { ok: false, errors: ['intent_route_invalid'], nextAgent: null },
+        },
+      })
+      yield makeFinalStep(message, 'compliance')
+      return message
+    }
+
     const route = routeFromIntent(intent)
     let product: unknown = null
     let routeError: string | null = null
@@ -531,6 +570,25 @@ async function postMemoryProduct<T = unknown>(path: string, body: Record<string,
   return parsed as T
 }
 
+function validateIntentRoute(intent: TauMemoryIntentResponse): string | null {
+  const action = (intent.action || '').toUpperCase()
+  if (
+    action === 'CLARIFY'
+    || action === 'DEFLECT'
+    || action === 'NO_MATCH'
+    || action === 'OFF_TOPIC'
+    || action === 'ANSWER'
+    || action === 'COMPLIANCE'
+    || action === 'RESEARCH'
+    || action === 'QUERY'
+  ) {
+    return null
+  }
+  if (intent.response_mode === 'memory_grounded_answer') return null
+  if (intent.response_mode === 'evidence_case' || intent.content_type === 'evidence_case') return null
+  return `Memory /intent action ${action || 'UNKNOWN'} is not a supported Tau route`
+}
+
 function routeFromIntent(intent: TauMemoryIntentResponse): TauRoute {
   const action = (intent.action || '').toUpperCase()
   if (action === 'CLARIFY') {
@@ -601,6 +659,19 @@ function routeFromIntent(intent: TauMemoryIntentResponse): TauRoute {
       finalLead: 'Tau identified a research route and stopped before unsupported web claims.',
       body: () => ({}),
       completedDetail: () => 'Research not executed in this slice.',
+    }
+  }
+  if (action === 'QUERY') {
+    return {
+      branch: 'compliance',
+      endpoint: '/recall',
+      stepId: 'looking-in-memory',
+      label: 'Accessing Memory',
+      liveStatusLabel: 'Accessing Memory...',
+      detail: 'Memory intent selected a query-style route.',
+      finalLead: 'Tau routed this turn through Memory recall.',
+      body: (query, selectedIntent) => ({ q: query, scope: 'tau', k: selectedIntent.k || 5 }),
+      completedDetail: (product) => summarizeProductStatus(product, 'Recall product returned.'),
     }
   }
   return {
