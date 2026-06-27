@@ -52,6 +52,30 @@ const scenarios = {
 			};
 		},
 	},
+	answer: {
+		prompt: "What is the current project status?",
+		waitFor: "Tau routed this turn to Memory answer.",
+		assertions(chatText, memoryRequests) {
+			return {
+				answer_lead_visible: chatText.includes("Tau routed this turn to Memory answer."),
+				memory_action_visible: /action\s+QUERY/.test(chatText),
+				response_mode_visible: /response mode\s+memory_grounded_answer/.test(chatText),
+				answer_product_visible: /endpoint\s+\/answer/.test(chatText),
+				can_answer_visible: /can answer\s+true/.test(chatText),
+				handoff_section_visible: chatText.includes("Tau handoff JSON contract"),
+				handoff_schema_visible: chatText.includes("schema") && chatText.includes("tau.agent_handoff.v1"),
+				reviewer_next_agent_visible:
+					/next agent\s+reviewer/.test(chatText) || chatText.includes('"name": "reviewer"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				answer_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/answer") && request.status >= 200 && request.status < 300,
+				),
+				recall_request_absent: !memoryRequests.some((request) => request.url.includes("/api/memory/recall")),
+			};
+		},
+	},
 };
 const scenario = scenarios[scenarioName];
 if (!scenario) {

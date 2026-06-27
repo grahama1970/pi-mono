@@ -208,6 +208,38 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "reviewer" });
 	});
 
+	it("routes QUERY memory_grounded_answer intents through /answer", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "QUERY",
+				confidence: 0.8,
+				response_mode: "memory_grounded_answer",
+				content_type: "markdown",
+				entities: [],
+				frameworks: [],
+				recall_profile: "general_memory_recall",
+			},
+			{
+				"/answer": {
+					schema: "memory.answer.v1",
+					can_answer: true,
+					confidence: 0.75,
+					final_response: "Memory first means recall before scanning.",
+				},
+			},
+		);
+
+		const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: "What is memory first?" }));
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/answer"]);
+		expect(steps.some((step) => step.id === "answering" && step.status === "completed")).toBe(true);
+		expect(message.content).toContain("Tau routed this turn to Memory answer.");
+		expect(message.content).toContain("| action | QUERY |");
+		expect(message.content).toContain("| response mode | memory_grounded_answer |");
+		expect(message.content).toContain("| endpoint | /answer |");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "reviewer" });
+	});
+
 	it("fails closed when ANSWER route product is unavailable", async () => {
 		const { adapter, calls } = makeAdapter({
 			action: "ANSWER",

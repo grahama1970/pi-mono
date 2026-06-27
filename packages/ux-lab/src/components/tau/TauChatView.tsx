@@ -559,7 +559,7 @@ function routeFromIntent(intent: TauMemoryIntentResponse): TauRoute {
       completedDetail: (product) => summarizeProductStatus(product, 'Deflection product returned.'),
     }
   }
-  if (action === 'ANSWER') {
+  if (action === 'ANSWER' || intent.response_mode === 'memory_grounded_answer') {
     return {
       branch: 'compliance',
       endpoint: '/answer',
