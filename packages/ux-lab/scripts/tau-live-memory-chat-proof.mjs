@@ -79,6 +79,42 @@ const scenarios = {
 			};
 		},
 	},
+	"answer-invalid-product": {
+		prompt: "What is the current project status?",
+		waitFor: "Tau stopped fail-closed while running /answer.",
+		waitForHandoff: false,
+		mockedMemory: true,
+		mockResponses: {
+			"/api/memory/intent": {
+				action: "ANSWER",
+				confidence: 0.91,
+				response_mode: "memory_grounded_answer",
+				content_type: "markdown",
+				entities: ["Tau"],
+				frameworks: [],
+				recall_profile: "procedural_memory",
+			},
+			"/api/memory/answer": {
+				schema: "memory.answer.v1",
+				can_answer: false,
+				answer_type: "insufficient_memory_evidence",
+			},
+		},
+		assertions(chatText, memoryRequests) {
+			return {
+				fail_closed_lead_visible: chatText.includes("Tau stopped fail-closed while running /answer."),
+				invalid_answer_reason_visible: chatText.includes("Memory /answer did not confirm can_answer=true"),
+				no_handoff_section_visible: !chatText.includes("Tau handoff JSON contract"),
+				no_reviewer_next_agent_visible: !/next agent\s+reviewer/.test(chatText) && !chatText.includes('"name": "reviewer"'),
+				intent_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/intent") && request.status >= 200 && request.status < 300,
+				),
+				answer_request_seen: memoryRequests.some(
+					(request) => request.url.includes("/api/memory/answer") && request.status >= 200 && request.status < 300,
+				),
+			};
+		},
+	},
 	research: {
 		prompt: "search the web for latest Chutes pricing",
 		waitFor: "Tau identified a research route and stopped before unsupported web claims.",
@@ -197,6 +233,13 @@ function handoffProofAssertions(handoffExtraction, expectedNextAgent) {
 	};
 }
 
+function failClosedHandoffAbsenceAssertions(handoffExtraction) {
+	return {
+		handoff_json_absent: !handoffExtraction.ok,
+		handoff_absence_reason_recorded: handoffExtraction.error === "handoff marker not found",
+	};
+}
+
 async function main() {
 	await mkdir(outDir, { recursive: true });
 	const browser = await chromium.launch({ headless: true });
@@ -223,6 +266,17 @@ async function main() {
 			});
 		}
 	});
+	if (scenario.mockResponses) {
+		for (const [endpoint, responseBody] of Object.entries(scenario.mockResponses)) {
+			await page.route(`**${endpoint}`, async (route) => {
+				await route.fulfill({
+					status: 200,
+					contentType: "application/json",
+					body: JSON.stringify(responseBody),
+				});
+			});
+		}
+	}
 
 	try {
 		await page.goto(url, { waitUntil: "networkidle", timeout: 30_000 });
@@ -303,10 +357,14 @@ async function main() {
 		const rawChatText = await page.locator('[data-qid="tau:chat:shell:well"]').innerText();
 		const chatText = compact(rawChatText);
 		const handoffExtraction = extractTauHandoff(rawChatText);
+		const handoffAssertions =
+			scenario.waitForHandoff === false
+				? failClosedHandoffAbsenceAssertions(handoffExtraction)
+				: handoffProofAssertions(handoffExtraction, scenario.expectedNextAgent);
 		const visibleAssertions = {
 			prompt_visible: chatText.includes(prompt),
 			...scenario.assertions(chatText, memoryRequests),
-			...handoffProofAssertions(handoffExtraction, scenario.expectedNextAgent),
+			...handoffAssertions,
 		};
 		const ok = Object.values(visibleAssertions).every(Boolean);
 		const screenshot = path.join(outDir, "tau-live-memory-chat.png");
@@ -314,8 +372,8 @@ async function main() {
 		const proof = {
 			schema: "tau.live_memory_chat_browser_proof.v1",
 			ok,
-			mocked: false,
-			live: true,
+			mocked: Boolean(scenario.mockedMemory),
+			live: !scenario.mockedMemory,
 			scenario: scenarioName,
 			url,
 			prompt,
