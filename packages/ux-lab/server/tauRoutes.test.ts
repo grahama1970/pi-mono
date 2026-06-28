@@ -10,6 +10,7 @@ import {
 	normalizeTauExternalSubagentGithubProjection,
 	normalizeTauExternalSubagentReceiptIntake,
 	normalizeTauMemoryRouteProof,
+	normalizeTauWatchdogReceiptChain,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
 	persistTauSubagentReceiptExpectation,
@@ -176,6 +177,130 @@ function validMemoryRouteManifest(root: string) {
 		],
 		_test_root: root,
 	}
+}
+
+async function writeValidWatchdogProof(root: string) {
+	const proofRoot = resolve(root, 'watchdog-proof')
+	await mkdir(proofRoot, { recursive: true })
+	const paths = {
+		manifest: resolve(proofRoot, 'manifest.json'),
+		watchdogReceipt: resolve(proofRoot, 'watchdog-receipt.json'),
+		commandLoopReceipt: resolve(proofRoot, 'command-loop-receipt.json'),
+		commandLoopStepReceipt: resolve(proofRoot, 'command-loop-step-001.receipt.json'),
+		githubTransport: resolve(proofRoot, 'github-transport.json'),
+		issueFinal: resolve(proofRoot, 'github-issue-15-final.json'),
+		issueBody: resolve(proofRoot, 'issue-body.md'),
+		issueCreateStdout: resolve(proofRoot, 'github-issue-create.stdout.txt'),
+	}
+	await writeJson(paths.watchdogReceipt, {
+		schema: 'agent_skills.project_watchdog.tick_receipt.v1',
+		ok: true,
+		status: 'COMPLETED',
+		run_id: 'project-watchdog-20260628T143801Z',
+		handled_count: 1,
+		errors: [],
+	})
+	await writeJson(paths.commandLoopReceipt, {
+		schema: 'tau.agent_handoff_command_loop_receipt.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+		status: 'WAITING',
+		step_count: 1,
+		stop_reason: 'next_agent_is_human',
+		terminal_agent: 'human',
+		dispatches: [],
+		errors: [],
+	})
+	await writeJson(paths.commandLoopStepReceipt, {
+		schema: 'tau.agent_handoff_dispatch_receipt.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+		selected_agent: 'reviewer',
+		status: 'COMPLETED',
+	})
+	await writeJson(paths.githubTransport, {
+		schema: 'tau.github_command_loop_terminal_transport_receipt.v1',
+		ok: true,
+		dry_run: true,
+		applied: false,
+		target: { repo: 'grahama1970/tau', target: 'new' },
+	})
+	await writeFile(paths.issueBody, 'project-watchdog-action:tau-handoff-dispatch start=proof/start.json\n', 'utf8')
+	await writeFile(paths.issueCreateStdout, 'https://github.com/grahama1970/tau/issues/15\n', 'utf8')
+	await writeJson(paths.issueFinal, {
+		number: 15,
+		title: 'Tau watchdog proof: fresh compliance UI handoff',
+		state: 'CLOSED',
+		url: 'https://github.com/grahama1970/tau/issues/15',
+		labels: [{ name: 'agent-work' }, { name: 'agent-done' }],
+		comments: [{ body: 'lease' }, { body: 'evidence' }],
+	})
+	const manifest = {
+		schema: 'tau.project_watchdog_fresh_compliance_ui_handoff_proof.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+		scope: 'Installed project-watchdog cron consumed a live Tau GitHub issue.',
+		does_not_prove: ['Final Sparta Chat readiness.'],
+		github_issue: {
+			created_body: 'issue-body.md',
+			created_stdout: 'github-issue-create.stdout.txt',
+			final: 'github-issue-15-final.json',
+			number: 15,
+			url: 'https://github.com/grahama1970/tau/issues/15',
+			title: 'Tau watchdog proof: fresh compliance UI handoff',
+			created_labels: ['agent-work', 'executor:local', 'next:reviewer'],
+			final_labels: ['agent-work', 'agent-done'],
+			final_state: 'CLOSED',
+			closed_at: '2026-06-28T14:38:07Z',
+			comment_count: 2,
+		},
+		watchdog: {
+			run_id: 'project-watchdog-20260628T143801Z',
+			receipt: 'watchdog-receipt.json',
+			schema: 'agent_skills.project_watchdog.tick_receipt.v1',
+			ok: true,
+			status: 'COMPLETED',
+			handled_count: 1,
+			lease_comment_seen: true,
+			evidence_comment_seen: true,
+		},
+		watchdog_inputs: {
+			action: 'tau_handoff_dispatch',
+			start: 'experiments/goal-locked-subagents/proofs/fresh-compliance-ui-handoff-command-loop-20260628T142600Z/start-handoff.json',
+			max_steps: 1,
+			active_goal_hash: ACTIVE_GOAL.goal_hash,
+			apply_transport: false,
+			issue: 'issue#15',
+		},
+		command_loop: {
+			receipt: 'command-loop-receipt.json',
+			step_receipt: 'command-loop-step-001.receipt.json',
+			schema: 'tau.agent_handoff_command_loop_receipt.v1',
+			ok: true,
+			mocked: false,
+			live: true,
+			step_count: 1,
+			selected_agent: 'reviewer',
+			selected_agent_command_exit_code: 0,
+			selected_agent_timed_out: false,
+			status: 'WAITING',
+			stop_reason: 'next_agent_is_human',
+			terminal_agent: 'human',
+		},
+		github_transport: {
+			receipt: 'github-transport.json',
+			schema: 'tau.github_command_loop_terminal_transport_receipt.v1',
+			ok: true,
+			dry_run: true,
+			applied: false,
+			target: { repo: 'grahama1970/tau', target: 'new' },
+		},
+	}
+	await writeJson(paths.manifest, manifest)
+	return { proofRoot, manifestPath: paths.manifest, manifest }
 }
 
 afterEach(async () => {
@@ -350,6 +475,76 @@ describe('normalizeTauMemoryRouteProof', () => {
 
 		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
 			'Tau Memory route proof must preserve ANSWER selector limitation',
+		)
+	})
+})
+
+describe('normalizeTauWatchdogReceiptChain', () => {
+	it('normalizes a live watchdog receipt chain for the Tau chat view', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath } = await writeValidWatchdogProof(root)
+
+		const receipt = await normalizeTauWatchdogReceiptChain(manifestPath, proofRoot)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.watchdog_receipt_chain_view.v1',
+			ok: true,
+			manifestPath,
+			proofRoot,
+			mocked: false,
+			live: true,
+			runId: 'project-watchdog-20260628T143801Z',
+			issue: {
+				number: 15,
+				finalState: 'CLOSED',
+				finalLabels: ['agent-work', 'agent-done'],
+				commentCount: 2,
+			},
+			inputs: {
+				action: 'tau_handoff_dispatch',
+				maxSteps: 1,
+				applyTransport: false,
+				issue: 'issue#15',
+			},
+			watchdog: {
+				status: 'COMPLETED',
+				handledCount: 1,
+				leaseCommentSeen: true,
+				evidenceCommentSeen: true,
+			},
+			commandLoop: {
+				status: 'WAITING',
+				stepCount: 1,
+				selectedAgent: 'reviewer',
+				selectedAgentCommandExitCode: 0,
+				terminalAgent: 'human',
+			},
+			githubTransport: {
+				dryRun: true,
+				applied: false,
+			},
+		})
+	})
+
+	it('fails closed when the watchdog proof is mocked', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath, manifest } = await writeValidWatchdogProof(root)
+		manifest.mocked = true
+		await writeJson(manifestPath, manifest)
+
+		await expect(normalizeTauWatchdogReceiptChain(manifestPath, proofRoot)).rejects.toThrow(
+			'Tau watchdog receipt-chain manifest must be mocked=false',
+		)
+	})
+
+	it('fails closed when cron did not select the expected non-human reviewer route', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath, manifest } = await writeValidWatchdogProof(root)
+		manifest.command_loop.selected_agent = 'human'
+		await writeJson(manifestPath, manifest)
+
+		await expect(normalizeTauWatchdogReceiptChain(manifestPath, proofRoot)).rejects.toThrow(
+			'Tau watchdog receipt-chain must select reviewer',
 		)
 	})
 })

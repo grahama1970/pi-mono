@@ -516,6 +516,64 @@ type TauMemoryRouteProofState =
   | { ok: true; receipt: TauMemoryRouteProofView }
   | { ok: false; error: string; detail?: string; manifestPath?: string; proofRoot?: string }
 
+type TauWatchdogReceiptChainView = {
+  schema: 'tau.watchdog_receipt_chain_view.v1'
+  ok: true
+  manifestPath: string
+  proofRoot: string
+  sourceSchema: string
+  mocked: false
+  live: true
+  runId: string
+  scope?: string | null
+  issue: {
+    number: number
+    url: string
+    title: string
+    finalState: string
+    finalLabels: string[]
+    commentCount: number
+  }
+  inputs: {
+    action?: string | null
+    start?: string | null
+    maxSteps?: number | null
+    activeGoalHash?: string | null
+    applyTransport?: boolean | null
+    issue?: string | null
+  }
+  watchdog: {
+    receipt?: string | null
+    status?: string | null
+    handledCount?: number | null
+    leaseCommentSeen?: boolean | null
+    evidenceCommentSeen?: boolean | null
+  }
+  commandLoop: {
+    receipt?: string | null
+    stepReceipt?: string | null
+    status?: string | null
+    stepCount?: number | null
+    selectedAgent?: string | null
+    selectedAgentCommandExitCode?: number | null
+    stopReason?: string | null
+    terminalAgent?: string | null
+  }
+  githubTransport: {
+    receipt?: string | null
+    dryRun?: boolean | null
+    applied?: boolean | null
+  }
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauWatchdogReceiptChainState =
+  | { ok: true; receipt: TauWatchdogReceiptChainView }
+  | { ok: false; error: string; detail?: string; manifestPath?: string; proofRoot?: string }
+
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
@@ -1300,6 +1358,28 @@ export async function loadTauMemoryRouteProof(signal?: AbortSignal): Promise<Tau
   return { ok: true, receipt: payload.receipt }
 }
 
+export async function loadTauWatchdogReceiptChain(signal?: AbortSignal): Promise<TauWatchdogReceiptChainState> {
+  const response = await fetch(apiUrl('/tau/watchdog/receipt-chain'), { signal })
+  const payload = await response.json().catch(() => ({})) as {
+    ok?: boolean
+    receipt?: TauWatchdogReceiptChainView
+    error?: string
+    detail?: string
+    manifestPath?: string
+    proofRoot?: string
+  }
+  if (!response.ok || !payload.ok || !payload.receipt) {
+    return {
+      ok: false,
+      error: payload.error ?? `tau_watchdog_receipt_chain_http_${response.status}`,
+      detail: payload.detail,
+      manifestPath: payload.manifestPath,
+      proofRoot: payload.proofRoot,
+    }
+  }
+  return { ok: true, receipt: payload.receipt }
+}
+
 function renderTauHandoffGithubTransportValidationJsonBlock(
   validation: TauHandoffGithubTransportValidation,
 ): string {
@@ -1839,6 +1919,7 @@ export function TauChatView(): JSX.Element {
     useState<TauCommandLoopGithubProjectionState | null>(null)
   const [chatUxContractState, setChatUxContractState] = useState<TauChatUxContractState | null>(null)
   const [memoryRouteProofState, setMemoryRouteProofState] = useState<TauMemoryRouteProofState | null>(null)
+  const [watchdogReceiptChainState, setWatchdogReceiptChainState] = useState<TauWatchdogReceiptChainState | null>(null)
   const adapter = useMemo(
     () => new TauReceiptAdapter(postMemoryProduct, commandLoopProjectionState?.ok ? commandLoopProjectionState.receipt : undefined),
     [commandLoopProjectionState],
@@ -1887,6 +1968,21 @@ export function TauChatView(): JSX.Element {
         setMemoryRouteProofState({
           ok: false,
           error: 'tau_memory_route_failclosed_proof_unavailable',
+          detail: error instanceof Error ? error.message : String(error),
+        })
+      })
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    void loadTauWatchdogReceiptChain(controller.signal)
+      .then((state) => setWatchdogReceiptChainState(state))
+      .catch((error) => {
+        if (controller.signal.aborted) return
+        setWatchdogReceiptChainState({
+          ok: false,
+          error: 'tau_watchdog_receipt_chain_unavailable',
           detail: error instanceof Error ? error.message : String(error),
         })
       })
@@ -2008,6 +2104,8 @@ export function TauChatView(): JSX.Element {
   const streamStatusLabel = streamError ? 'ERROR' : streamEnd ? 'STREAM READY' : 'STREAMING'
   const memoryRouteProofStatusColor = memoryRouteProofState?.ok ? '#22c55e' : memoryRouteProofState ? '#f97316' : '#38bdf8'
   const memoryRouteProofStatusLabel = memoryRouteProofState?.ok ? 'LIVE RECEIPT' : memoryRouteProofState ? 'UNAVAILABLE' : 'LOADING'
+  const watchdogReceiptChainStatusColor = watchdogReceiptChainState?.ok ? '#22c55e' : watchdogReceiptChainState ? '#f97316' : '#38bdf8'
+  const watchdogReceiptChainStatusLabel = watchdogReceiptChainState?.ok ? 'CRON RECEIPT' : watchdogReceiptChainState ? 'UNAVAILABLE' : 'LOADING'
   const receiptCards = useMemo(
     () =>
       RECEIPTS.map((receipt) => {
@@ -2272,6 +2370,122 @@ export function TauChatView(): JSX.Element {
             ) : (
               <p style={{ margin: 0, color: '#fed7aa', fontSize: 12, lineHeight: 1.45 }}>
                 Fail-closed: {memoryRouteProofState?.detail ?? 'waiting for /api/tau/memory/routes/failclosed-proof'}
+              </p>
+            )}
+          </section>
+
+          <section
+            data-qid="tau:chat:watchdog-receipt-chain"
+            style={{
+              border: '1px solid rgba(45,212,191,0.24)',
+              background: 'rgba(19,78,74,0.24)',
+              borderRadius: 8,
+              padding: 16,
+              display: 'grid',
+              gap: 12,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 14, color: '#ccfbf1' }}>Watchdog Receipt Chain</h2>
+                <p style={{ margin: '8px 0 0', color: '#99f6e4', fontSize: 12, lineHeight: 1.48 }}>
+                  This panel reads a T’au proof manifest for a live GitHub issue handled by the installed project-watchdog cron.
+                </p>
+              </div>
+              <span
+                data-qid="tau:chat:watchdog-receipt-chain-status"
+                style={{
+                  color: watchdogReceiptChainStatusColor,
+                  border: `1px solid ${watchdogReceiptChainStatusColor}55`,
+                  background: `${watchdogReceiptChainStatusColor}14`,
+                  borderRadius: 999,
+                  padding: '5px 9px',
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {watchdogReceiptChainStatusLabel}
+              </span>
+            </div>
+
+            {watchdogReceiptChainState?.ok ? (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10 }}>
+                  <PeerFact label="run id" value={watchdogReceiptChainState.receipt.runId} />
+                  <PeerFact label="issue" value={`#${watchdogReceiptChainState.receipt.issue.number} ${watchdogReceiptChainState.receipt.issue.finalState}`} />
+                  <PeerFact label="selected agent" value={watchdogReceiptChainState.receipt.commandLoop.selectedAgent ?? 'unknown'} />
+                  <PeerFact label="terminal" value={watchdogReceiptChainState.receipt.commandLoop.terminalAgent ?? 'unknown'} />
+                </div>
+                <div
+                  data-qid="tau:chat:watchdog-receipt-chain-flow"
+                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 8 }}
+                >
+                  {[
+                    {
+                      label: 'GitHub issue',
+                      value: watchdogReceiptChainState.receipt.issue.title,
+                      detail: `${watchdogReceiptChainState.receipt.issue.finalLabels.join(', ')} · ${watchdogReceiptChainState.receipt.issue.commentCount} comments`,
+                    },
+                    {
+                      label: 'Watchdog cron',
+                      value: watchdogReceiptChainState.receipt.watchdog.status ?? 'unknown',
+                      detail: `handled=${watchdogReceiptChainState.receipt.watchdog.handledCount ?? 'n/a'} lease=${String(watchdogReceiptChainState.receipt.watchdog.leaseCommentSeen)}`,
+                    },
+                    {
+                      label: 'Command loop',
+                      value: `${watchdogReceiptChainState.receipt.commandLoop.stepCount ?? 0} step`,
+                      detail: `${watchdogReceiptChainState.receipt.commandLoop.selectedAgent ?? 'unknown'} exit ${watchdogReceiptChainState.receipt.commandLoop.selectedAgentCommandExitCode ?? 'n/a'}`,
+                    },
+                    {
+                      label: 'GitHub transport',
+                      value: watchdogReceiptChainState.receipt.githubTransport.dryRun ? 'dry-run' : 'apply',
+                      detail: `applied=${String(watchdogReceiptChainState.receipt.githubTransport.applied)}`,
+                    },
+                  ].map((item) => (
+                    <article
+                      key={item.label}
+                      data-qid={`tau:chat:watchdog-receipt-chain:${item.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                      style={{
+                        border: '1px solid rgba(45,212,191,0.22)',
+                        background: 'rgba(15,23,42,0.56)',
+                        borderRadius: 7,
+                        padding: 10,
+                        minWidth: 0,
+                        display: 'grid',
+                        gap: 7,
+                      }}
+                    >
+                      <div style={{ color: '#ccfbf1', fontSize: 11, fontWeight: 800 }}>{item.label}</div>
+                      <div style={{ color: '#f8fafc', fontSize: 12, lineHeight: 1.35, overflowWrap: 'anywhere' }}>{item.value}</div>
+                      <div style={{ color: '#5eead4', fontSize: 10, lineHeight: 1.35 }}>{item.detail}</div>
+                    </article>
+                  ))}
+                </div>
+                <div data-qid="tau:chat:watchdog-receipt-chain-artifacts" style={{ display: 'grid', gap: 6 }}>
+                  {[
+                    watchdogReceiptChainState.receipt.manifestPath,
+                    watchdogReceiptChainState.receipt.watchdog.receipt,
+                    watchdogReceiptChainState.receipt.commandLoop.receipt,
+                    watchdogReceiptChainState.receipt.githubTransport.receipt,
+                  ].filter(Boolean).map((path) => (
+                    <code key={path} style={{ color: '#5eead4', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}>
+                      {path}
+                    </code>
+                  ))}
+                </div>
+                <div data-qid="tau:chat:watchdog-receipt-chain-boundaries" style={{ display: 'grid', gap: 5 }}>
+                  <div style={{ color: '#2dd4bf', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Does not prove</div>
+                  {watchdogReceiptChainState.receipt.claims.does_not_prove.slice(0, 4).map((item) => (
+                    <div key={item} style={{ color: '#99f6e4', fontSize: 11, lineHeight: 1.4 }}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p style={{ margin: 0, color: '#fed7aa', fontSize: 12, lineHeight: 1.45 }}>
+                Fail-closed: {watchdogReceiptChainState?.detail ?? 'waiting for /api/tau/watchdog/receipt-chain'}
               </p>
             )}
           </section>

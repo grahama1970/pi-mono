@@ -5,6 +5,7 @@ import { resolve } from 'path'
 
 type JsonRecord = Record<string, unknown>
 
+const TAU_REPO_ROOT = resolve(process.env.TAU_REPO_ROOT ?? '/home/graham/workspace/experiments/tau')
 const TAU_COMMAND_LOOP_PROOF_ROOT = resolve(
 	process.env.TAU_COMMAND_LOOP_PROOF_ROOT ?? '/tmp/tau-command-loop-explicit-ticket-source-proof',
 )
@@ -23,6 +24,13 @@ const TAU_MEMORY_ROUTE_PROOF_ROOT = resolve(
 )
 const TAU_MEMORY_ROUTE_PROOF_MANIFEST = resolve(
 	process.env.TAU_MEMORY_ROUTE_PROOF_MANIFEST ?? resolve(TAU_MEMORY_ROUTE_PROOF_ROOT, 'manifest.json'),
+)
+const TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT = resolve(
+	process.env.TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT
+		?? '/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/project-watchdog-fresh-compliance-ui-handoff-20260628T143800Z',
+)
+const TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST = resolve(
+	process.env.TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST ?? resolve(TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT, 'manifest.json'),
 )
 
 function isPathInside(root: string, absolutePath: string): boolean {
@@ -54,6 +62,14 @@ function commandToText(command: unknown): string | null {
 function stringArray(value: unknown): string[] {
 	if (!Array.isArray(value)) return []
 	return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+}
+
+function resolveTauProofArtifact(path: string, proofRoot: string): string {
+	const absoluteProofRoot = resolve(proofRoot)
+	if (path.startsWith('/')) return resolve(path)
+	const repoRelative = resolve(TAU_REPO_ROOT, path)
+	if (isPathInside(absoluteProofRoot, repoRelative)) return repoRelative
+	return resolve(absoluteProofRoot, path)
 }
 
 function normalizeGoal(value: unknown, prefix: string): JsonRecord {
@@ -419,6 +435,159 @@ export async function normalizeTauMemoryRouteProof(
 		claims: {
 			proves: stringArray(claims?.proves),
 			does_not_prove: stringArray(claims?.does_not_prove),
+		},
+	}
+}
+
+export async function normalizeTauWatchdogReceiptChain(
+	manifestPath = TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST,
+	proofRoot = TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT,
+): Promise<JsonRecord> {
+	const absoluteManifestPath = resolve(manifestPath)
+	const absoluteProofRoot = resolve(proofRoot)
+	if (!isPathInside(absoluteProofRoot, absoluteManifestPath)) {
+		throw new Error('Tau watchdog receipt-chain manifest path escapes proof root')
+	}
+	if (!existsSync(absoluteManifestPath)) throw new Error('Tau watchdog receipt-chain manifest not found')
+
+	const manifestStat = await stat(absoluteManifestPath)
+	if (!manifestStat.isFile()) throw new Error('Tau watchdog receipt-chain manifest path is not a file')
+
+	const manifest = await readJson(absoluteManifestPath)
+	if (manifest.schema !== 'tau.project_watchdog_fresh_compliance_ui_handoff_proof.v1') {
+		throw new Error('unexpected Tau watchdog receipt-chain manifest schema')
+	}
+	if (manifest.ok !== true) throw new Error('Tau watchdog receipt-chain manifest is not ok')
+	if (manifest.mocked !== false) throw new Error('Tau watchdog receipt-chain manifest must be mocked=false')
+	if (manifest.live !== true) throw new Error('Tau watchdog receipt-chain manifest must be live=true')
+
+	const githubIssue = asRecord(manifest.github_issue)
+	const watchdog = asRecord(manifest.watchdog)
+	const inputs = asRecord(manifest.watchdog_inputs)
+	const commandLoop = asRecord(manifest.command_loop)
+	const githubTransport = asRecord(manifest.github_transport)
+	if (!githubIssue) throw new Error('Tau watchdog receipt-chain manifest missing github_issue')
+	if (!watchdog) throw new Error('Tau watchdog receipt-chain manifest missing watchdog')
+	if (!inputs) throw new Error('Tau watchdog receipt-chain manifest missing watchdog_inputs')
+	if (!commandLoop) throw new Error('Tau watchdog receipt-chain manifest missing command_loop')
+	if (!githubTransport) throw new Error('Tau watchdog receipt-chain manifest missing github_transport')
+
+	const issueNumber = asNumber(githubIssue.number)
+	const issueUrl = asString(githubIssue.url)
+	const issueTitle = asString(githubIssue.title)
+	const finalState = asString(githubIssue.final_state)
+	const finalLabels = stringArray(githubIssue.final_labels)
+	if (!Number.isInteger(issueNumber) || issueNumber < 1) throw new Error('Tau watchdog receipt-chain issue number is invalid')
+	if (!issueUrl || !issueUrl.includes(`/issues/${issueNumber}`)) throw new Error('Tau watchdog receipt-chain issue URL is invalid')
+	if (!issueTitle) throw new Error('Tau watchdog receipt-chain issue title is missing')
+	if (finalState !== 'CLOSED') throw new Error('Tau watchdog receipt-chain issue must be closed after proof capture')
+	if (!finalLabels.includes('agent-done')) throw new Error('Tau watchdog receipt-chain issue missing final agent-done label')
+
+	const runId = asString(watchdog.run_id)
+	const watchdogReceipt = asString(watchdog.receipt)
+	if (!runId) throw new Error('Tau watchdog receipt-chain missing run_id')
+	if (watchdog.schema !== 'agent_skills.project_watchdog.tick_receipt.v1') {
+		throw new Error('Tau watchdog receipt-chain watchdog receipt schema mismatch')
+	}
+	if (watchdog.ok !== true || asString(watchdog.status) !== 'COMPLETED') {
+		throw new Error('Tau watchdog receipt-chain watchdog receipt must be completed')
+	}
+	if (asNumber(watchdog.handled_count) !== 1) {
+		throw new Error('Tau watchdog receipt-chain watchdog handled_count must equal 1')
+	}
+
+	const commandLoopReceipt = asString(commandLoop.receipt)
+	const selectedAgent = asString(commandLoop.selected_agent)
+	const commandLoopStatus = asString(commandLoop.status)
+	if (commandLoop.schema !== 'tau.agent_handoff_command_loop_receipt.v1') {
+		throw new Error('Tau watchdog receipt-chain command-loop schema mismatch')
+	}
+	if (commandLoop.ok !== true || commandLoop.mocked !== false || commandLoop.live !== true) {
+		throw new Error('Tau watchdog receipt-chain command loop must be ok, mocked=false, live=true')
+	}
+	if (asNumber(commandLoop.step_count) !== 1) throw new Error('Tau watchdog receipt-chain command loop must have one step')
+	if (selectedAgent !== 'reviewer') throw new Error('Tau watchdog receipt-chain must select reviewer')
+	if (asNumber(commandLoop.selected_agent_command_exit_code) !== 0) {
+		throw new Error('Tau watchdog receipt-chain reviewer command exit code must be 0')
+	}
+	if (commandLoopStatus !== 'WAITING' || asString(commandLoop.terminal_agent) !== 'human') {
+		throw new Error('Tau watchdog receipt-chain command loop must stop at human')
+	}
+
+	const transportReceipt = asString(githubTransport.receipt)
+	if (githubTransport.schema !== 'tau.github_command_loop_terminal_transport_receipt.v1') {
+		throw new Error('Tau watchdog receipt-chain transport schema mismatch')
+	}
+	if (githubTransport.ok !== true || githubTransport.dry_run !== true || githubTransport.applied !== false) {
+		throw new Error('Tau watchdog receipt-chain transport must be ok dry_run=true applied=false')
+	}
+
+	const localPaths = [watchdogReceipt, commandLoopReceipt, asString(commandLoop.step_receipt), transportReceipt].filter(
+		(path): path is string => Boolean(path),
+	)
+	for (const path of localPaths) {
+		const absolutePath = resolveTauProofArtifact(path, absoluteProofRoot)
+		if (!isPathInside(absoluteProofRoot, absolutePath)) {
+			throw new Error(`Tau watchdog receipt-chain path escapes proof root: ${path}`)
+		}
+		if (!existsSync(absolutePath)) throw new Error(`Tau watchdog receipt-chain artifact missing: ${path}`)
+	}
+
+	return {
+		schema: 'tau.watchdog_receipt_chain_view.v1',
+		ok: true,
+		manifestPath: absoluteManifestPath,
+		proofRoot: absoluteProofRoot,
+		sourceSchema: manifest.schema,
+		mocked: false,
+		live: true,
+		runId,
+		scope: asString(manifest.scope),
+		issue: {
+			number: issueNumber,
+			url: issueUrl,
+			title: issueTitle,
+			finalState,
+			finalLabels,
+			commentCount: asNumber(githubIssue.comment_count) ?? 0,
+		},
+		inputs: {
+			action: asString(inputs.action),
+			start: asString(inputs.start),
+			maxSteps: asNumber(inputs.max_steps),
+			activeGoalHash: asString(inputs.active_goal_hash),
+			applyTransport: asBoolean(inputs.apply_transport),
+			issue: asString(inputs.issue),
+		},
+		watchdog: {
+			receipt: watchdogReceipt,
+			status: asString(watchdog.status),
+			handledCount: asNumber(watchdog.handled_count),
+			leaseCommentSeen: asBoolean(watchdog.lease_comment_seen),
+			evidenceCommentSeen: asBoolean(watchdog.evidence_comment_seen),
+		},
+		commandLoop: {
+			receipt: commandLoopReceipt,
+			stepReceipt: asString(commandLoop.step_receipt),
+			status: commandLoopStatus,
+			stepCount: asNumber(commandLoop.step_count),
+			selectedAgent,
+			selectedAgentCommandExitCode: asNumber(commandLoop.selected_agent_command_exit_code),
+			stopReason: asString(commandLoop.stop_reason),
+			terminalAgent: asString(commandLoop.terminal_agent),
+		},
+		githubTransport: {
+			receipt: transportReceipt,
+			dryRun: asBoolean(githubTransport.dry_run),
+			applied: asBoolean(githubTransport.applied),
+		},
+		claims: {
+			proves: [
+				'Installed project-watchdog cron can consume a live Tau GitHub issue and route it into one bounded Tau handoff command-loop tick.',
+				'The GitHub issue route selected the non-human reviewer command spec before stopping at human.',
+				'The watchdog commented receipt evidence and closed the proof issue without leaving an active queue item.',
+			],
+			does_not_prove: stringArray(manifest.does_not_prove),
 		},
 	}
 }
@@ -1037,6 +1206,21 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				manifestPath: TAU_MEMORY_ROUTE_PROOF_MANIFEST,
 				proofRoot: TAU_MEMORY_ROUTE_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/watchdog/receipt-chain', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauWatchdogReceiptChain(TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_watchdog_receipt_chain_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				manifestPath: TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST,
+				proofRoot: TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT,
 			})
 		}
 	})
