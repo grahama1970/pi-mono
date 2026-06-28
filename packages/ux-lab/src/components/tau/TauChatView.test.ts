@@ -402,6 +402,113 @@ describe("TauReceiptAdapter Memory routing", () => {
 		});
 	});
 
+	it("routes low-confidence COMPLIANCE intents through /clarify instead of recall", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "COMPLIANCE",
+				confidence: 0.42,
+				response_mode: "evidence_case",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+				recall_profile: "exact_control_lookup",
+			},
+			{
+				"/clarify": {
+					schema: "memory.clarify.v1",
+					needs_clarification: true,
+					questions: ["Which system or evidence source should Tau use for CWE-287?"],
+				},
+			},
+		);
+
+		const { message, steps } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "How does Tau handle CWE-287?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
+		expect(calls.some((call) => call.path === "/recall")).toBe(false);
+		expect(calls[1].body).toMatchObject({
+			scope: "tau",
+			context: "Tau routed this turn to clarify because Memory /intent confidence was below the routing threshold.",
+		});
+		expect(steps.some((step) => step.id === "clarifying" && step.status === "completed")).toBe(true);
+		expect(message.content).toContain("Tau routed this low-confidence Memory intent to Memory clarify.");
+		expect(message.content).toContain("| action | COMPLIANCE |");
+		expect(message.content).toContain("| confidence | 0.42 |");
+		expect(message.content).toContain("| next agent | human |");
+		expect(message.content).not.toContain("Tau routed this turn through Memory intent into a compliance evidence path.");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
+	});
+
+	it("routes low-confidence RESEARCH intents through /clarify instead of emitting research-auditor handoff", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "RESEARCH",
+				confidence: 0.45,
+				entities: ["latest Chutes pricing"],
+				frameworks: [],
+			},
+			{
+				"/clarify": {
+					schema: "memory.clarify.v1",
+					needs_clarification: true,
+					questions: ["Which current source should Tau use for Chutes pricing?"],
+				},
+			},
+		);
+
+		const { message } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "search the web for latest Chutes pricing" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
+		expect(calls.some((call) => call.path === "/recall")).toBe(false);
+		expect(calls.some((call) => call.path === "/answer")).toBe(false);
+		expect(message.content).toContain("Tau routed this low-confidence Memory intent to Memory clarify.");
+		expect(message.content).toContain("| action | RESEARCH |");
+		expect(message.content).toContain("| confidence | 0.45 |");
+		expect(message.content).toContain('"name": "human"');
+		expect(message.content).not.toContain('"name": "research-auditor"');
+		expect(message.content).not.toContain("Tau identified a research route and stopped before unsupported web claims.");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
+	});
+
+	it("routes close-ranked Memory intents through /clarify instead of forcing the top action", async () => {
+		const { adapter, calls } = makeAdapter(
+			{
+				action: "COMPLIANCE",
+				confidence: 0.66,
+				response_mode: "evidence_case",
+				entities: ["CWE-287"],
+				frameworks: ["CWE"],
+				top_intents: [
+					{ action: "COMPLIANCE", confidence: 0.66 },
+					{ action: "QUERY", confidence: 0.61 },
+				],
+			},
+			{
+				"/clarify": {
+					schema: "memory.clarify.v1",
+					needs_clarification: true,
+					questions: ["Do you want a compliance evidence case or a general Tau memory answer?"],
+				},
+			},
+		);
+
+		const { message } = await collectMemoryTurn(
+			adapter.sendTurn({ text: "What does Tau know about CWE-287?" }),
+		);
+
+		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
+		expect(calls.some((call) => call.path === "/recall")).toBe(false);
+		expect(message.content).toContain("Tau routed this low-confidence Memory intent to Memory clarify.");
+		expect(message.content).toContain("| action | COMPLIANCE |");
+		expect(message.content).toContain("| confidence | 0.66 |");
+		expect(message.content).toContain("| next agent | human |");
+		expect(message.content).not.toContain("Tau routed this turn through Memory intent into a compliance evidence path.");
+		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
+	});
+
 	it("routes DEFLECT and NO_MATCH through /deflect instead of recall", async () => {
 		const { adapter, calls } = makeAdapter(
 			{ action: "NO_MATCH", confidence: 0.72, entities: [], frameworks: [] },

@@ -737,8 +737,9 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     const tauStageTrace = stageTraceFromStreamingSteps(steps)
     const currentStage = tauStageTrace[tauStageTrace.length - 1] ?? null
     const tauReceiptPaths = receiptPathsForCommandLoopProjection(this.commandLoopGithubProjection)
+    const handoffAction = effectiveHandoffActionForRoute(intent, route)
     const handoff = buildTauRouteHandoff({
-      action: intent.action,
+      action: handoffAction,
       query,
       branch: route.branch,
       contextArtifacts: tauReceiptPaths,
@@ -969,6 +970,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
 type TauMemoryIntentResponse = {
   action?: string
   confidence?: number
+  top_intents?: unknown
+  candidate_intents?: unknown
   response_mode?: string
   content_type?: string
   recall_profile?: string
@@ -1423,6 +1426,24 @@ function validateIntentRoute(intent: TauMemoryIntentResponse): string | null {
 
 function routeFromIntent(intent: TauMemoryIntentResponse): TauRoute {
   const action = (intent.action || '').toUpperCase()
+  if (shouldClarifyLowConfidenceIntent(intent)) {
+    return {
+      branch: 'compliance',
+      endpoint: '/clarify',
+      stepId: 'clarifying',
+      label: 'Clarifying',
+      liveStatusLabel: 'Clarifying...',
+      detail: 'Memory intent confidence is below Tau\'s routing threshold, so Tau asks for clarification instead of forcing the selected route.',
+      finalLead: 'Tau routed this low-confidence Memory intent to Memory clarify.',
+      body: (query) => ({
+        q: query,
+        scope: 'tau',
+        context: 'Tau routed this turn to clarify because Memory /intent confidence was below the routing threshold.',
+        k: 5,
+      }),
+      completedDetail: (product) => summarizeProductStatus(product, 'Clarify product returned.'),
+    }
+  }
   if (action === 'CLARIFY') {
     return {
       branch: 'compliance',
@@ -1517,6 +1538,37 @@ function routeFromIntent(intent: TauMemoryIntentResponse): TauRoute {
     body: (query, selectedIntent) => ({ q: query, scope: 'tau', k: selectedIntent.k || 5 }),
     completedDetail: (product) => summarizeProductStatus(product, 'Recall product returned.'),
   }
+}
+
+function shouldClarifyLowConfidenceIntent(intent: TauMemoryIntentResponse): boolean {
+  const action = (intent.action || '').toUpperCase()
+  if (action === 'CLARIFY' || action === 'DEFLECT' || action === 'NO_MATCH' || action === 'OFF_TOPIC') return false
+  if (typeof intent.confidence !== 'number' || !Number.isFinite(intent.confidence)) return false
+  return intent.confidence < 0.6 || intentTopTwoAreTooClose(intent)
+}
+
+function intentTopTwoAreTooClose(intent: TauMemoryIntentResponse): boolean {
+  const candidates = Array.isArray(intent.top_intents)
+    ? intent.top_intents
+    : Array.isArray(intent.candidate_intents)
+      ? intent.candidate_intents
+      : []
+  const confidences = candidates
+    .map((candidate) => {
+      if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) return null
+      const confidence = (candidate as { confidence?: unknown }).confidence
+      return typeof confidence === 'number' && Number.isFinite(confidence) ? confidence : null
+    })
+    .filter((confidence): confidence is number => confidence !== null)
+    .sort((left, right) => right - left)
+  if (confidences.length < 2) return false
+  return Math.abs(confidences[0] - confidences[1]) < 0.08
+}
+
+function effectiveHandoffActionForRoute(intent: TauMemoryIntentResponse, route: TauRoute): string | undefined {
+  if (route.endpoint === '/clarify') return 'CLARIFY'
+  if (route.endpoint === '/deflect') return 'DEFLECT'
+  return intent.action
 }
 
 function formatConfidence(value: unknown): string {
